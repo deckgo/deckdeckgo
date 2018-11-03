@@ -1,0 +1,20 @@
+div.deckgo-pager-container {
+  width: 30vw;
+  margin-bottom: 8px;
+
+  display: flex;
+  justify-content: flex-start;
+
+  div.deckgo-pager-step {
+    background: lightgrey;
+    height: 2px;
+
+    &:not(:last-child) {
+      margin-right: 2px;
+    }
+
+    &.deckgo-pager-current {
+      background: black;
+    }
+  }
+}

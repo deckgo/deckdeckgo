@@ -1,0 +1,32 @@
+:host {
+  background: var(--background);
+  color: var(--color);
+}
+
+div.deckgo-slide {
+
+  display: flex;
+
+  padding: var(--padding-top, 16px) var(--padding-end, 32px) var(--padding-bottom, 16px) var(--padding-start, 32px);
+
+  width: calc(100vw - var(--padding-start, 32px) - var(--padding-end, 32px));
+  height: 100vh;
+
+  // Don't allow text selection
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+::slotted(ul), ::slotted(ol) {
+  padding-inline-start: var(--padding, 32px);
+}
+
+@media print {
+  div.deckgo-slide {
+    padding: 0;
+  }
+}

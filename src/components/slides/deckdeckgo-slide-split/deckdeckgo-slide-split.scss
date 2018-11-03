@@ -1,0 +1,15 @@
+@import "../deckdeckgo-slides";
+
+div.deckgo-slide {
+  flex-flow: row wrap;
+  align-items: flex-start;
+}
+
+::slotted([slot="title"]) {
+  flex: 1 100%;
+}
+
+::slotted([slot="start"]), ::slotted([slot="end"]) {
+  flex: 1 auto;
+  height: 100%;
+}

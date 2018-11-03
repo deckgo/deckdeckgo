@@ -1,0 +1,30 @@
+div.deckgo-deck {
+  display: flex;
+
+  position: fixed;
+  top: 0;
+
+  --transformX: 0px;
+  --transformXDuration: 0ms;
+
+  transform: translate3d(var(--transformX), 0px, 0px);
+  transition-duration: var(--transformXDuration, 0ms);
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+div.deckgo-pager {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+@media print {
+  div.deckgo-deck {
+    display: initial;
+    position: initial;
+  }
+}

@@ -1,0 +1,39 @@
+@import "../deckdeckgo-slides";
+
+div.deckgo-slide {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+div.deckgo-code-container {
+  overflow-y: auto;
+  width: 100%;
+
+  margin-bottom: var(--margin-bottom, 64px);
+
+  transform-origin: bottom left;
+  transition: all .2s ease-in-out;
+  transform: scale(var(--zoom-code, 1));
+
+  code {
+    white-space: pre-wrap;
+    overflow-y: scroll;
+
+    div:empty {
+      min-height: 1rem;
+    }
+
+    div.deckgo-code-anchor-hidden {
+      visibility: hidden;
+      height: 0;
+    }
+  }
+}
+
+@media print {
+  div.deckgo-slide {
+    height: 100%;
+  }
+}
+

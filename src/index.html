@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>DeckDeckGo</title>
+
+  <script src="/build/deckdeckgodeck.js"></script>
+
+</head>
+<body style="margin: 0;">
+
+<deckgo-deck>
+  <deckgo-slide-title>
+    <h1 slot="title">DeckDeckGo</h1>
+    <p slot="content">
+      Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+    </p>
+  </deckgo-slide-title>
+
+  <deckgo-slide-content reveal="true">
+    <h1 slot="title">DeckDeckGo</h1>
+    <div slot="content">
+      <ul slot="content">
+        <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
+        <li><strong>Ionic</strong> components and icons to create your content</li>
+        <li><strong>Style</strong> your presentation quickly</li>
+        <li>Lightweight and <strong>lazy</strong> loaded images</li>
+        <li>Bundles the presentation with an <strong>offline</strong> support</li>
+      </ul>
+
+      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+    </div>
+  </deckgo-slide-content>
+
+  <deckgo-slide-split>
+    <h1 slot="title">DeckDeckGo</h1>
+    <div slot="start">
+      Hello World 1 <a href="https://ionicframework.com">Ionic</a> 🚀
+    </div>
+    <div slot="end">
+     Cool beans
+      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+    </div>
+  </deckgo-slide-split>
+
+  <deckgo-slide-split reveal="true">
+    <div slot="start">
+      <p>Hello World 1 <a href="https://ionicframework.com">Ionic</a> 🚀</p>
+      <p>Cool</p>
+    </div>
+    <div slot="end">
+      <p>Cool</p>
+      <p>Cool cool</p>
+      <p>Cool cool cool</p>
+      <p>Cool beans</p>
+    </div>
+  </deckgo-slide-split>
+
+  <deckgo-slide-title>
+    <h1 slot="title">Not reveal list</h1>
+    <ul slot="content">
+      <li>Blue cheese</li>
+      <li>Feta</li>
+      <li>Gruyère</li>
+    </ul>
+  </deckgo-slide-title>
+
+  <deckgo-slide-title reveal="true" reveal-show-first="true">
+    <h1 slot="title">Reveal list</h1>
+    <div slot="content">
+      <ul slot="content">
+        <li>Blue cheese</li>
+        <li>Feta</li>
+        <li>Gruyère</li>
+      </ul>
+      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+    </div>
+  </deckgo-slide-title>
+
+  <deckgo-slide-code src-file="https://raw.githubusercontent.com/peterpeterparker/deckdeckgo-deck/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+    <h1 slot="title">Code</h1>
+  </deckgo-slide-code>
+
+</deckgo-deck>
+
+<script type="text/javascript">
+  function slideNext() {
+    const elem = document.getElementsByTagName('deckgo-deck');
+    if (elem && elem.length > 0) {
+      elem[0].slideNext();
+    }
+  }
+
+  function slidePrev() {
+    const elem = document.getElementsByTagName('deckgo-deck');
+    if (elem && elem.length > 0) {
+      elem[0].slidePrev();
+    }
+  }
+
+  function slideTo() {
+    const elem = document.getElementsByTagName('deckgo-deck');
+    if (elem && elem.length > 0) {
+      elem[0].slideTo(6, 0);
+    }
+  }
+
+  function toggleFullScreen() {
+    const elem = document.getElementsByTagName('deckgo-deck');
+    if (elem && elem.length > 0) {
+      elem[0].toggleFullScreen();
+    }
+  }
+
+  function doPrint() {
+    const elem = document.getElementsByTagName('deckgo-deck');
+    if (elem && elem.length > 0) {
+      elem[0].doPrint();
+    }
+  }
+</script>
+
+<div style="position: fixed; bottom: 0;">
+  <button onclick="slidePrev()">Prev</button>
+  <button onclick="slideNext()">Next</button>
+  <button onclick="slideTo()">Slide to</button>
+  <button onclick="toggleFullScreen()">Full screen</button>
+  <button onclick="doPrint()">Print</button>
+</div>
+
+</body>
+</html>
