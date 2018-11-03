@@ -19,7 +19,7 @@ This slide could be for example use for the very first and last slide of your pr
 
 ### Layout
 
-<img src="https://github.com/peterpeterparker/deckdeckgo-deck/blob/master/doc/slides/deckdeckgo-slide-title-layout.png" width="450px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-layout.png" width="450px">
 
 ### Usage
 
@@ -71,7 +71,7 @@ This slide could be for example use for the every slides of your presentation wh
 
 ### Layout
 
-<img src="https://github.com/peterpeterparker/deckdeckgo-deck/blob/master/doc/slides/deckdeckgo-slide-content-layout.png" width="450px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-content-layout.png" width="450px">
 
 ### Usage
 
@@ -121,7 +121,7 @@ The "Split" slide is a simple slide which display two panes on the page.
 
 ### Layout
 
-<img src="https://github.com/peterpeterparker/deckdeckgo-deck/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="450px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="450px">
 
 ### Usage
 
@@ -160,7 +160,7 @@ The "Code" slide is a the slide to use if you would like to showcase code during
 
 ### Layout
 
-<img src="https://github.com/peterpeterparker/deckdeckgo-deck/blob/master/doc/slides/deckdeckgo-slide-code-layout.gif" width="450px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-code-layout.gif" width="450px">
 
 ### Usage
 
@@ -190,7 +190,7 @@ The attribute `src-file` is for this component mandatory. Other attributes are o
 #### Example
 
 ```
-<deckgo-slide-code hide-anchor="fals" src-file="https://raw.githubusercontent.com/peterpeterparker/deckdeckgo-deck/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+<deckgo-slide-code hide-anchor="fals" src-file="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
   <h1 slot="title">Code</h1>
 </deckgo-slide-code>
 ```

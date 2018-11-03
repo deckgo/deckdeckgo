@@ -1,7 +1,7 @@
 {
-  "name": "deckdeckgo-deck",
+  "name": "deckdeckgo",
   "version": "0.0.1",
-  "description": "DeckDeckGo predefined layouts",
+  "description": "Add a lightweight presentation to your web project using HTML and Web Components",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
   "types": "dist/types/components.d.ts",
@@ -28,12 +28,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fluster/deckdeckgo-deck.git"
+    "url": "git+https://github.com/fluster/deckdeckgo.git"
   },
   "author": "David Dal Busco",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fluster/deckdeckgo-deck"
+    "url": "https://github.com/fluster/deckdeckgo"
   },
   "homepage": "https://deckdeckgo.com"
 }
