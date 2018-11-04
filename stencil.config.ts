@@ -5,7 +5,7 @@ import { postcss } from '@stencil/postcss';
 import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
-  namespace: 'deckdeckgodeck',
+  namespace: 'deckdeckgo',
   outputTargets:[
     {
       type: 'dist'
