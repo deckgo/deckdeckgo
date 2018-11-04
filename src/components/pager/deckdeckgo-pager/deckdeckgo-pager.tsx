@@ -17,7 +17,7 @@ export class DeckdeckgoPager {
 
   @Watch('length')
   calculateProgression() {
-    this.steps = [...Array(this.length).keys()];
+    this.steps = Array.from({ length: this.length }, (_v, i) => i);
     this.progression = Math.round(((this.activeIndex + 1) / this.length) * 100);
   }
 
