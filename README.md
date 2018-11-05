@@ -1,6 +1,6 @@
 # DeckDeckGo
 
-Add a lightweight presentation to your web project using HTML and Web Components.
+Create a lightweight presentation using HTML and Web Components.
 
 [DeckDeckGo] is build with [Stencil](https://stenciljs.com) and could be use in any modern framework or even without any.
 
