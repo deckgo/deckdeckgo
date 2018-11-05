@@ -35,7 +35,7 @@ Create a lightweight presentation using HTML and Web Components.
 
 * 🌅 Create a **lightweight** presentation where images are **lazy** loaded
 
-* 📱 Ceate slides which looks good on **mobile** devices too
+* 📱 Design slides which looks good on **mobile** devices too
 
 * 🎁 Free and **open source**
 
@@ -43,7 +43,7 @@ Create a lightweight presentation using HTML and Web Components.
 
 [DeckDeckGo] offers also a [starter kit](https://github.com/fluster/deckdeckgo-starter) kit which lets you additionally:
 
-* 🚀 Bundles your presentation as a **Progressive Web App**
+* 🚀 Bundle your presentation as a **Progressive Web App** with a **offline** support
 
 * 🦄 Use **Ionic** components and icons to create the content or even add extra features
 
