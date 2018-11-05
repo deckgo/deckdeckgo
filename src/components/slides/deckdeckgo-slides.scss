@@ -7,9 +7,9 @@ div.deckgo-slide {
 
   display: flex;
 
-  padding: var(--padding-top, 16px) var(--padding-end, 32px) var(--padding-bottom, 16px) var(--padding-start, 32px);
+  padding: var(--slide-padding-top, 16px) var(--slide-padding-end, 32px) var(--slide-padding-bottom, 16px) var(--slide-padding-start, 32px);
 
-  width: calc(100vw - var(--padding-start, 32px) - var(--padding-end, 32px));
+  width: calc(100vw - var(--slide-padding-start, 32px) - var(--slide-padding-end, 32px));
   height: 100vh;
 
   // Don't allow text selection
@@ -22,7 +22,7 @@ div.deckgo-slide {
 }
 
 ::slotted(ul), ::slotted(ol) {
-  padding-inline-start: var(--padding, 32px);
+  padding-inline-start: var(--slide-padding-start, 32px);
 }
 
 @media print {
