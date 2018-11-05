@@ -18,6 +18,7 @@ export class DeckdeckgoDeck {
   @Prop() keyboard: boolean = true;
 
   @Prop() pager: boolean = true;
+  @Prop() pagerPercentage: boolean = true;
 
   private startX: number = null;
   private deckTranslateX: number = 0;
@@ -378,7 +379,7 @@ export class DeckdeckgoDeck {
   render() {
     return [
       <div class="deckgo-deck"><slot/></div>,
-      <div class="deckgo-pager">{this.pager ? <deckgo-pager active-index={this.activeIndex} length={this.length}></deckgo-pager> : ''}</div>
+      <div class="deckgo-pager">{this.pager ? <deckgo-pager active-index={this.activeIndex} length={this.length} percentage={this.pagerPercentage}></deckgo-pager> : ''}</div>
     ]
   }
 

@@ -20,6 +20,7 @@ export namespace Components {
     'isEnd': () => Promise<boolean>;
     'keyboard': boolean;
     'pager': boolean;
+    'pagerPercentage': boolean;
     'slideNext': () => Promise<void>;
     'slidePrev': () => Promise<void>;
     'slideTo': (index: number, speed?: number) => Promise<void>;
@@ -28,15 +29,18 @@ export namespace Components {
   interface DeckgoDeckAttributes extends StencilHTMLAttributes {
     'keyboard'?: boolean;
     'pager'?: boolean;
+    'pagerPercentage'?: boolean;
   }
 
   interface DeckgoPager {
     'activeIndex': number;
     'length': number;
+    'percentage': boolean;
   }
   interface DeckgoPagerAttributes extends StencilHTMLAttributes {
     'activeIndex'?: number;
     'length'?: number;
+    'percentage'?: boolean;
   }
 
   interface DeckgoSlideCode {
