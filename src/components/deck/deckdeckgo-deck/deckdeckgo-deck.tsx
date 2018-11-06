@@ -140,6 +140,7 @@ export class DeckdeckgoDeck {
         return;
       }
 
+
       const couldSwipeLeft: boolean = deltaX.swipeLeft && this.activeIndex < this.length - 1;
       const couldSwipeRight: boolean = !deltaX.swipeLeft && this.activeIndex > 0;
 
@@ -147,12 +148,12 @@ export class DeckdeckgoDeck {
         const windowWidth: number = window.outerWidth;
         if (deltaX.deltaX > (windowWidth / this.autoSwipeRatio)) {
           this.deckTranslateX = deltaX.swipeLeft ? this.deckTranslateX - windowWidth : this.deckTranslateX + windowWidth;
-        }
 
-        if (deltaX.swipeLeft) {
-          this.activeIndex++;
-        } else {
-          this.activeIndex--;
+          if (deltaX.swipeLeft) {
+            this.activeIndex++;
+          } else {
+            this.activeIndex--;
+          }
         }
       }
 
