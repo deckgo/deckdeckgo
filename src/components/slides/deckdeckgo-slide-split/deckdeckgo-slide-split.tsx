@@ -37,8 +37,8 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
   render() {
     return <div class="deckgo-slide">
       <slot name="title"></slot>
-      <slot name="start"></slot>
-      <slot name="end"></slot>
+      <div class="deckgo-slide-split deckgo-slide-split-start"><slot name="start"></slot></div>
+      <div class="deckgo-slide-split deckgo-slide-split-end"><slot name="end"></slot></div>
     </div>;
   }
 

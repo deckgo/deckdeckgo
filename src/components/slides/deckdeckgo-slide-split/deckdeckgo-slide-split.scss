@@ -2,14 +2,36 @@
 
 div.deckgo-slide {
   flex-flow: row wrap;
-  align-items: flex-start;
+
+  padding: 0;
+  width: 100vw;
+}
+
+div.deckgo-slide-split {
+  flex: 1;
+
+  height: 100%;
+
+  display: flex;
+  align-items: var(--slide-split-align, inherit);
+  text-align: var(--slide-split-text-align, inherit);
+
+  padding: var(--slide-padding-top, 16px) var(--slide-padding-end, 32px) var(--slide-padding-bottom, 16px) var(--slide-padding-start, 32px);
+
+  &.deckgo-slide-split-start {
+    background: var(--slide-split-background-start);
+    color: var(--slide-split-color-start);
+  }
+
+  &.deckgo-slide-split-end {
+    background: var(--slide-split-background-end);
+    color: var(--slide-split-color-end);
+  }
 }
 
 ::slotted([slot="title"]) {
   flex: 1 100%;
+
+  padding: var(--slide-padding-top, 16px) var(--slide-padding-end, 32px) var(--slide-padding-bottom, 16px) var(--slide-padding-start, 32px);
 }
 
-::slotted([slot="start"]), ::slotted([slot="end"]) {
-  flex: 1 auto;
-  height: 100%;
-}
