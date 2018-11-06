@@ -95,6 +95,7 @@ export class DeckDeckGoSlideUtils {
     });
   };
 
+  // Source: http://detectmobilebrowsers.com
   static isMobile(): boolean {
     if (!window) {
       return false;
