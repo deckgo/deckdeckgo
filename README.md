@@ -27,7 +27,7 @@ Create a lightweight presentation using HTML and Web Components.
 
 ## Features
 
-* ✏️ Use HTML and CSS to create **without effort** your presentation
+* ✏️ Create **without effort** your presentation using HTML and CSS
 
 * 📰 Use predefined **templates**
 
@@ -43,7 +43,7 @@ Create a lightweight presentation using HTML and Web Components.
 
 [DeckDeckGo] offers also a [starter kit](https://github.com/fluster/deckdeckgo-starter) kit which lets you additionally:
 
-* 🚀 Bundle your presentation as a **Progressive Web App** with a **offline** support
+* 🚀 Publish your presentation as a **Progressive Web App** with a **offline** support
 
 * 🦄 Use **Ionic** components and icons to create the content or even add extra features
 
