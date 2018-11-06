@@ -76,7 +76,6 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-end | 32px | Padding right of the all slide |
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
-| --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
 
 ## Slide: Content
 
@@ -142,7 +141,6 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-end | 32px | Padding right of the all slide |
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
-| --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
 
 ## Slide: Split
 
@@ -247,5 +245,22 @@ The attribute `src-file` is for this component mandatory. Other attributes are o
   <h1 slot="title">Code</h1>
 </deckgo-slide-code>
 ```
+
+### Theming
+
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |:-----------------:|:-----------------:|
+| --background |  |  |
+| --color |  |  |
+| --code-color |  | The color of the displayed code |
+| --code-font-size |  | The size of the font for the code |
+| --slide-padding-top | 16px | Padding top of the all slide |
+| --slide-padding-end | 32px | Padding right of the all slide |
+| --slide-padding-bottom | 16px | Padding bottom of the all slide |
+| --slide-padding-start | 32px | Padding left of the all slide |
+| --code-margin-bottom | 64px | Padding bottom of the code scroller |
+| --zoom-code | 1 | If you wish to manually zoom the code |
 
 [DeckDeckGo]: https://deckdeckgo.com
