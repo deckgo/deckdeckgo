@@ -86,6 +86,11 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
         container.style.setProperty('--zoom-code', zoom ? '2' : '1');
       }
 
+      const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
+      if (title) {
+        title.style.setProperty('opacity', zoom ? '0' : '1');
+      }
+
       resolve();
     });
   }

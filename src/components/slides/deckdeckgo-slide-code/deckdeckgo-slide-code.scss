@@ -10,7 +10,9 @@ div.deckgo-code-container {
   overflow-y: auto;
   width: 100%;
 
-  margin-bottom: var(--margin-bottom, 64px);
+  color: var(--code-color, inherit);
+
+  margin-bottom: var(--code-margin-bottom, 64px);
 
   transform-origin: bottom left;
   transition: all .2s ease-in-out;
@@ -19,6 +21,8 @@ div.deckgo-code-container {
   code {
     white-space: pre-wrap;
     overflow-y: scroll;
+
+    font-size: var(--code-font-size);
 
     div:empty {
       min-height: 1rem;
@@ -29,6 +33,10 @@ div.deckgo-code-container {
       height: 0;
     }
   }
+}
+
+::slotted([slot="title"]) {
+  transition: opacity 0.5s ease-in;
 }
 
 @media print {
