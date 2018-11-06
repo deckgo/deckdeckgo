@@ -256,6 +256,7 @@ The following theming options will affect this component if set on its host or p
 | --color |  |  |
 | --code-color |  | The color of the displayed code |
 | --code-font-size |  | The size of the font for the code |
+| --code-font-family |  | The family of the font for the code |
 | --slide-padding-top | 16px | Padding top of the all slide |
 | --slide-padding-end | 32px | Padding right of the all slide |
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |

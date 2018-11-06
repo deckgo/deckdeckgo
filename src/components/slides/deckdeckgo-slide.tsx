@@ -8,7 +8,7 @@ export class DeckDeckGoSlideUtils {
 
   static hideElements(el: HTMLElement, revealShowFirst: boolean): Promise<void> {
     return new Promise<void>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealShowFirst ? '[slot] > li:not(:first-child), [slot] > p:not(:first-child), [slot] > img:not(:first-child)' : '[slot] > li, [slot] > p, [slot] > img');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealShowFirst ? '[slot] > li:not(:first-child), [slot] > p:not(:first-child), [slot] > span:not(:first-child) [slot] > img:not(:first-child)' : '[slot] > li, [slot] > p, [slot] > span, [slot] > img');
 
       if (!elements) {
         resolve();
@@ -22,7 +22,7 @@ export class DeckDeckGoSlideUtils {
 
   private static showElement(el: HTMLElement): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > li, [slot] > p, [slot] > img');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > li, [slot] > p, [slot] > span, [slot] > img');
 
       let couldSwipe: boolean = true;
 
@@ -43,7 +43,7 @@ export class DeckDeckGoSlideUtils {
 
   private static hideElement(el: HTMLElement): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > li, [slot] > p, [slot] > img');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > li, [slot] > p, [slot] > span, [slot] > img');
 
       let couldSwipe: boolean = true;
 

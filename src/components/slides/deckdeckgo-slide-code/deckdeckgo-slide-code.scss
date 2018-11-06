@@ -23,6 +23,7 @@ div.deckgo-code-container {
     overflow-y: scroll;
 
     font-size: var(--code-font-size);
+    font-family: var(--code-font-family);
 
     div:empty {
       min-height: 1rem;
