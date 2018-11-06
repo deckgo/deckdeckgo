@@ -63,6 +63,21 @@ This component offers the following options which could be set using attributes:
   </deckgo-slide-title>
 </deckgo-deck>
 ```
+
+### Theming
+
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |:-----------------:|:-----------------:|
+| --background |  |  |
+| --color |  |  |
+| --slide-padding-top | 16px | Padding top of the all slide |
+| --slide-padding-end | 32px | Padding right of the all slide |
+| --slide-padding-bottom | 16px | Padding bottom of the all slide |
+| --slide-padding-start | 32px | Padding left of the all slide |
+| --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
+
 ## Slide: Content
 
 The "Content" slide is a simple slide which display its title and content aligned to the start of the page.
@@ -115,6 +130,20 @@ This component offers the following options which could be set using attributes:
 </deckgo-deck>
 ```
 
+### Theming
+
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |:-----------------:|:-----------------:|
+| --background |  |  |
+| --color |  |  |
+| --slide-padding-top | 16px | Padding top of the all slide |
+| --slide-padding-end | 32px | Padding right of the all slide |
+| --slide-padding-bottom | 16px | Padding bottom of the all slide |
+| --slide-padding-start | 32px | Padding left of the all slide |
+| --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
+
 ## Slide: Split
 
 The "Split" slide is a simple slide which display two panes on the page.
@@ -153,6 +182,30 @@ This component offers the following options which could be set using attributes:
 | -------------------------- |:-----------------:|:-----------------:|:-----------------:|
 | reveal | boolean | false | Hide the slotted elements `li`, `p` an `img` and display them when navigating using `slideNext()` or `slidePrev()` (see [documention](/doc/features/navigation.md)) |
 | reveal-show-first | boolean | false | Show the first elements which would be hidden if `reveal` is set to `true` |
+
+### Theming
+
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |:-----------------:|:-----------------:|
+| --background |  |  |
+| --color |  |  |
+| --slide-split-background-start | | Left split pane background |
+| --slide-split-color-start | | Left split pane color |
+| --slide-split-background-end | | Right split pane background |
+| --slide-split-color-end | | Right split pane color |
+| --slide-split-padding-top | 16px | Padding top of a slide split pane |
+| --slide-split-padding-end | 32px | Padding right of a slide split pane |
+| --slide-split-padding-bottom | 16px | Padding bottom of a slide split pane |
+| --slide-split-padding-start | 32px | Padding left of a slide split pane |
+| --slide-split-title-padding-top | 16px | Padding top of the title of the |
+| --slide-split-title-padding-end | 32px | Padding right of the title of the |
+| --slide-split-title-padding-bottom | 16px | Padding bottom of the title of the |
+| --slide-split-title-padding-start | 32px | Padding left of the title of the |
+| --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
+| --slide-split-align | inherit | Modify for example to center if you want to align the content in the middle |
+| --slide-split-text-align | inherit | Modify for example to center if you want to align the text in the middle |
 
 ## Slide: Code
 

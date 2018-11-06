@@ -126,7 +126,9 @@ In order to lazy load the images of your presentation, provide their url using t
 
 ## Theming
 
-Theming is an ongoing improvement I'm currently working on. The already available options are described in the slides [documentation](doc/slides/slides.md). 
+[DeckDeckGo] offers various theming options which could be set using CSS variables and which are described in their respective slides' templates [documentation](doc/slides/slides.md).
+
+*Note: If you would miss or need further theming options, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more theming flexibility and options*
 
 ## Talks
 

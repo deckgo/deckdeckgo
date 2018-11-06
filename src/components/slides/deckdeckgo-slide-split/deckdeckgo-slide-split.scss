@@ -16,7 +16,7 @@ div.deckgo-slide-split {
   align-items: var(--slide-split-align, inherit);
   text-align: var(--slide-split-text-align, inherit);
 
-  padding: var(--slide-padding-top, 16px) var(--slide-padding-end, 32px) var(--slide-padding-bottom, 16px) var(--slide-padding-start, 32px);
+  padding: var(--slide-split-padding-top, 16px) var(--slide-split-padding-end, 32px) var(--slide-split-padding-bottom, 16px) var(--slide-split-padding-start, 32px);
 
   &.deckgo-slide-split-start {
     background: var(--slide-split-background-start);
@@ -32,6 +32,6 @@ div.deckgo-slide-split {
 ::slotted([slot="title"]) {
   flex: 1 100%;
 
-  padding: var(--slide-padding-top, 16px) var(--slide-padding-end, 32px) var(--slide-padding-bottom, 16px) var(--slide-padding-start, 32px);
+  padding: var(--slide-split-title-padding-top, 16px) var(--slide-split-title-padding-end, 32px) var(--slide-split-title-padding-bottom, 16px) var(--slide-split-title-padding-start, 32px);
 }
 
