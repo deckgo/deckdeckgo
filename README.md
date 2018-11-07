@@ -58,7 +58,7 @@ To get started and **to create your presentation**, simply run the following com
 npm init deckdeckgo
 ```
 
-Once your presentation created, simply go to your new project's folder and start editing `src/index.html` to prepare your sliders and content for your talk 😉
+Once your presentation created, simply go to your new project's folder and start editing `src/index.html` to prepare your slides and content for your talk 😉
 
 ## Installing DeckDeckGo in any projects
 
