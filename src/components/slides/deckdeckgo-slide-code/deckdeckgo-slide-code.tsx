@@ -2,6 +2,11 @@ import {Component, Element, Event, EventEmitter, Method, Prop, State} from '@ste
 
 import {DeckdeckgoSlide, DeckDeckGoSlideUtils} from '../deckdeckgo-slide';
 
+enum DeckdeckgoSlideCodeAction {
+  SWIPE,
+  SCROLL
+}
+
 @Component({
   tag: 'deckgo-slide-code',
   styleUrl: 'deckdeckgo-slide-code.scss',
@@ -13,6 +18,8 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
+  @Event() scrolling: EventEmitter<void>;
+
   @Prop() srcFile: string;
 
   @Prop() anchor: string = '// DeckDeckGo';
@@ -23,6 +30,10 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @State()
   private code: string[] = [];
+
+  private startX: number = null;
+  private detectThreshold: number = 10;
+  private action: DeckdeckgoSlideCodeAction = null;
 
   async componentDidLoad() {
     this.slideDidLoad.emit();
@@ -134,10 +145,59 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   // DeckDeckGo
   render() {
-    return <div class="deckgo-slide">
+    return <div class="deckgo-slide"
+                onTouchStart={(event: TouchEvent) => this.touchScrollStart(event)}
+                onTouchMove={(event: TouchEvent) => this.touchScrollMove(event)}
+                onTouchEnd={() => this.touchScrollEnd()}>
       <slot name="title"></slot>
-      <div class="deckgo-code-container"><code>{this.renderCode()}</code></div>
+      <div class="deckgo-code-container" onScroll={() => this.emitScrolling()}><code>{this.renderCode()}</code></div>
     </div>;
+  }
+
+  private touchScrollStart(event: TouchEvent) {
+    this.startX = event.changedTouches ? event.changedTouches[0].clientX : null;
+  }
+
+  private touchScrollMove(event: TouchEvent) {
+    if (this.action) {
+      return;
+    }
+
+    const currentX: number = event.changedTouches ? event.changedTouches[0].clientX : null;
+
+    const swipeLeft: boolean = this.startX > currentX + this.detectThreshold;
+    const swipeRight: boolean = this.startX < currentX - this.detectThreshold;
+
+    this.action = swipeLeft || swipeRight ? DeckdeckgoSlideCodeAction.SWIPE : DeckdeckgoSlideCodeAction.SCROLL;
+
+    if (!swipeLeft && !swipeRight) {
+      this.scrolling.emit();
+      this.unlockScroll();
+    } else {
+      this.lockScroll();
+    }
+  }
+
+  private touchScrollEnd() {
+    this.action = null;
+
+    this.unlockScroll();
+  }
+
+  private lockScroll() {
+    const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
+    container.style.setProperty('overflow-y', 'hidden');
+  }
+
+  private unlockScroll() {
+    const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
+    container.style.removeProperty('overflow-y');
+  }
+
+  private emitScrolling() {
+    if (this.action === DeckdeckgoSlideCodeAction.SCROLL) {
+      this.scrolling.emit();
+    }
   }
 
   private renderCode() {

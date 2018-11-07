@@ -55,6 +55,7 @@ export namespace Components {
     'anchor'?: string;
     'anchorZoom'?: string;
     'hideAnchor'?: boolean;
+    'onScrolling'?: (event: CustomEvent<void>) => void;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'srcFile'?: string;
   }

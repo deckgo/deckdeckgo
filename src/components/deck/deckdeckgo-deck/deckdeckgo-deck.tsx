@@ -22,7 +22,9 @@ export class DeckdeckgoDeck {
 
   private startX: number = null;
   private deckTranslateX: number = 0;
-  private autoSwipeRatio: number = 4;
+  private autoSwipeRatio: number = 10;
+
+  private blockSlide: boolean = false;
 
   @State()
   private activeIndex: number = 0;
@@ -103,6 +105,11 @@ export class DeckdeckgoDeck {
     this.startX = null;
   }
 
+  @Listen('scrolling')
+  scrolling() {
+    this.blockSlide = true;
+  }
+
   private unify(e) {
     return e.changedTouches ? e.changedTouches[0] : e;
   }
@@ -112,6 +119,10 @@ export class DeckdeckgoDeck {
   }
 
   private async move(e: Event) {
+
+    if (this.blockSlide) {
+      return;
+    }
 
     const deltaX: DeltaX = await this.getDeltaX(e);
 
@@ -126,6 +137,11 @@ export class DeckdeckgoDeck {
   }
 
   private async stop(e: Event) {
+    if (this.blockSlide) {
+      this.blockSlide = false;
+      return;
+    }
+
     const deltaX: DeltaX = await this.getDeltaX(e);
 
     await this.swipeSlide(deltaX);
