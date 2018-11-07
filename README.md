@@ -52,13 +52,13 @@ Create a lightweight presentation using HTML and Web Components.
 
 [DeckDeckGo] provides a [CLI](https://github.com/fluster/create-deckdeckgo) and a [starter kit](https://github.com/fluster/deckdeckgo-starter).
 
-To get started and **to create your presentation**, simply run the following command and follow the prompt:
+To get started and **to create your presentation**, run the following command and follow the prompt:
 
 ```bash
 npm init deckdeckgo
 ```
 
-Once your presentation created, simply go to your new project's folder and start editing `src/index.html` to prepare your slides and content for your talk 😉
+Once your presentation created, go to your new project's folder and start editing `src/index.html` to prepare your slides and content for your talk 😉
 
 ## Installing DeckDeckGo in any projects
 
