@@ -19,6 +19,8 @@ div.deckgo-slide {
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
+  user-drag: none;
+  -webkit-user-drag: none;
 }
 
 ::slotted(ul), ::slotted(ol) {

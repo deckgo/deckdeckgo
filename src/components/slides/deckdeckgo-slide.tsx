@@ -89,6 +89,9 @@ export class DeckDeckGoSlideUtils {
           image.setAttribute('src', image.getAttribute('data-src'));
           image.removeAttribute('data-src');
         }
+
+        // Furthermore to lazy loading, we set pointer-events to none. Doing so we prevent images of being dragged.
+        image.style.setProperty('pointer-events', 'none');
       });
 
       resolve();
