@@ -33,7 +33,6 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private code: string[] = [];
 
   private startX: number = null;
-  private detectThreshold: number = 10;
   private action: DeckdeckgoSlideCodeAction = null;
 
   async componentDidLoad() {
@@ -166,8 +165,8 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
     const currentX: number = DeckDeckGoUtils.unifyEvent(event).clientX;
 
-    const swipeLeft: boolean = this.startX > currentX + this.detectThreshold;
-    const swipeRight: boolean = this.startX < currentX - this.detectThreshold;
+    const swipeLeft: boolean = this.startX > currentX;
+    const swipeRight: boolean = this.startX < currentX;
 
     this.action = swipeLeft || swipeRight ? DeckdeckgoSlideCodeAction.SWIPE : DeckdeckgoSlideCodeAction.SCROLL;
 
