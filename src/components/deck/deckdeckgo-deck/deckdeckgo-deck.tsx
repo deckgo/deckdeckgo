@@ -161,7 +161,7 @@ export class DeckdeckgoDeck {
       const couldSwipeRight: boolean = !deltaX.swipeLeft && this.activeIndex > 0;
 
       if (couldSwipeLeft || couldSwipeRight) {
-        const windowWidth: number = window.outerWidth;
+        const windowWidth: number = window.innerWidth;
         if (deltaX.deltaX > (windowWidth / this.autoSwipeRatio)) {
           this.deckTranslateX = deltaX.swipeLeft ? this.deckTranslateX - windowWidth : this.deckTranslateX + windowWidth;
 
@@ -289,7 +289,7 @@ export class DeckdeckgoDeck {
       const deltaX: DeltaX = {
         slider: slider,
         swipeLeft: swipeLeft,
-        deltaX: window.outerWidth
+        deltaX: window.innerWidth
       };
 
       await this.swipeSlide(deltaX);
@@ -334,7 +334,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    this.deckTranslateX = index * -1 * window.outerWidth;
+    this.deckTranslateX = index * -1 * window.innerWidth;
     this.activeIndex = index;
 
     await this.lazyLoadImages(this.activeIndex);
