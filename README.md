@@ -58,6 +58,8 @@ To get started and **to create your presentation**, simply run the following com
 npm init deckdeckgo
 ```
 
+Once your presentation created, simply go to your new project's folder and start editing `src/index.html` to prepare your sliders and content for your talk 😉
+
 ## Installing DeckDeckGo in any projects
 
 If you wish to use the [DeckDeckGo] presentation tool without any tooling, use it directly in your project from a CDN, using a simple script include, or install it from [npm](https://www.npmjs.com/package/deckdeckgo).
