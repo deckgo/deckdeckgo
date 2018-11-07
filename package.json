@@ -35,5 +35,15 @@
   "bugs": {
     "url": "https://github.com/fluster/deckdeckgo"
   },
-  "homepage": "https://deckdeckgo.com"
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk"
+  ]
 }
