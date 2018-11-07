@@ -1,5 +1,7 @@
 import {Component, Element, Listen, Method, Prop, State} from '@stencil/core';
 
+import {DeckDeckGoUtils} from '../../utils/deckdeckgo-utils';
+
 interface DeltaX {
   slider: HTMLElement
   swipeLeft: boolean;
@@ -110,12 +112,8 @@ export class DeckdeckgoDeck {
     this.blockSlide = true;
   }
 
-  private unify(e) {
-    return e.changedTouches ? e.changedTouches[0] : e;
-  }
-
   private start(e: Event) {
-    this.startX = this.unify(e).clientX;
+    this.startX = DeckDeckGoUtils.unifyEvent(e).clientX;
   }
 
   private async move(e: Event) {
@@ -207,7 +205,7 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      const currentX: number = this.unify(e).clientX;
+      const currentX: number = DeckDeckGoUtils.unifyEvent(e).clientX;
 
       if (this.startX === currentX) {
         resolve(null);
@@ -370,15 +368,15 @@ export class DeckdeckgoDeck {
 
   @Method()
   doPrint(): Promise<void> {
-   return new Promise<void>(async (resolve) => {
-     if (window) {
-       await this.lazyLoadAllImages();
+    return new Promise<void>(async (resolve) => {
+      if (window) {
+        await this.lazyLoadAllImages();
 
-       window.print();
-     }
+        window.print();
+      }
 
-     resolve();
-   });
+      resolve();
+    });
   }
 
   private lazyLoadAllImages(): Promise<any[]> {
@@ -395,8 +393,11 @@ export class DeckdeckgoDeck {
 
   render() {
     return [
-      <div class="deckgo-deck"><slot/></div>,
-      <div class="deckgo-pager">{this.pager ? <deckgo-pager active-index={this.activeIndex} length={this.length} percentage={this.pagerPercentage}></deckgo-pager> : ''}</div>
+      <div class="deckgo-deck">
+        <slot/>
+      </div>,
+      <div class="deckgo-pager">{this.pager ? <deckgo-pager active-index={this.activeIndex} length={this.length}
+                                                            percentage={this.pagerPercentage}></deckgo-pager> : ''}</div>
     ]
   }
 

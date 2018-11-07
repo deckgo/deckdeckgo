@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckDeckGoSlideUtils} from '../deckdeckgo-slide';
+import {DeckDeckGoUtils} from '../../utils/deckdeckgo-utils';
 
 enum DeckdeckgoSlideCodeAction {
   SWIPE,
@@ -155,7 +156,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   }
 
   private touchScrollStart(event: TouchEvent) {
-    this.startX = event.changedTouches ? event.changedTouches[0].clientX : null;
+    this.startX = DeckDeckGoUtils.unifyEvent(event).clientX;
   }
 
   private touchScrollMove(event: TouchEvent) {
@@ -163,7 +164,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
       return;
     }
 
-    const currentX: number = event.changedTouches ? event.changedTouches[0].clientX : null;
+    const currentX: number = DeckDeckGoUtils.unifyEvent(event).clientX;
 
     const swipeLeft: boolean = this.startX > currentX + this.detectThreshold;
     const swipeRight: boolean = this.startX < currentX - this.detectThreshold;
