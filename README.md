@@ -10,7 +10,8 @@ Create a lightweight presentation using HTML and Web Components.
 	- [Table of contents](#table-of-contents)
 	- [Features](#features)
 		- [Starter kit extra features](#starter-kit-extra-features)
-	- [Getting Started](#getting-started)
+  - [Getting Started](#getting-started)
+	- [Installing DeckDeckGo in any projects](#installing-deckdeckgo-in-any-projects)
 		- [Using DeckDeckGo from a CDN](#using-deckdeckgo-from-a-cdn)
 		- [Install DeckDeckGo from npm](#install-deckdeckgo-from-npm)
 		- [Framework integration](#framework-integration)
@@ -47,11 +48,19 @@ Create a lightweight presentation using HTML and Web Components.
 
 * 🦄 Use **Ionic** components and icons to create the content or even add extra features
 
-*Note: [DeckDeckGo] will soon offer a CLI to let you initialize your presentation based on the starter kit more easily* 
-
 ## Getting Started
 
-Use [DeckDeckGo] directly in your project from a CDN using a simple script include or install it from [npm](https://www.npmjs.com/package/deckdeckgo)
+[DeckDeckGo] provides a [CLI](https://github.com/fluster/create-deckdeckgo) and a [starter kit](https://github.com/fluster/deckdeckgo-starter).
+
+To get started and to create your presentation, simply run the following command and follow the prompt:
+
+```bash
+npm init deckdeckgo
+```
+
+## Installing DeckDeckGo in any projects
+
+If you wish to use the [DeckDeckGo] presentation tool without any tooling, use it directly in your project from a CDN using a simple script include or install it from [npm](https://www.npmjs.com/package/deckdeckgo).
 
 ### Using DeckDeckGo from a CDN
 
