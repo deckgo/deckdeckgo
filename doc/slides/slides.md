@@ -125,7 +125,7 @@ This component offers the following options which could be set using attributes:
       <li>Cool</li>
       <li>Beans</li>
     </p>
-  </deckgo-slide-title>
+  </deckgo-slide-content>
 </deckgo-deck>
 ```
 
@@ -164,7 +164,7 @@ The "Split" slide's Web Component could be integrated using the tag `<deckgo-sli
     <p slot="end">
       The content you want to display on the right side of the page
     </p>
-  </deckgo-slide-title>
+  </deckgo-slide-split>
 </deckgo-deck>
 ```
 
