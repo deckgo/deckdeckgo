@@ -1,13 +1,9 @@
-:host {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
-
 div.deckgo-deck {
   display: flex;
 
-  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
 
   --transformX: 0px;
   --transformXDuration: 0ms;
