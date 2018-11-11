@@ -1,6 +1,7 @@
 :host {
   background: var(--background);
   color: var(--color);
+  height: 100%;
 }
 
 div.deckgo-slide {
@@ -10,7 +11,7 @@ div.deckgo-slide {
   padding: var(--slide-padding-top, 16px) var(--slide-padding-end, 32px) var(--slide-padding-bottom, 16px) var(--slide-padding-start, 32px);
 
   width: calc(100vw - var(--slide-padding-start, 32px) - var(--slide-padding-end, 32px));
-  height: 100vh;
+  height: calc(100% - var(--slide-padding-top, 16px) - var(--slide-padding-bottom, 16px));
 
   // Don't allow text selection
   -webkit-touch-callout: none; /* iOS Safari */
