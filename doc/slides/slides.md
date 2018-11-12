@@ -237,6 +237,7 @@ The attribute `src-file` is for this component mandatory. Other attributes are o
 | anchor | string | // DeckDeckGo | The anchor identifier which will be use to scroll through your code when navigating using `slideNext()` or `slidePrev()` (see [documention](/doc/features/navigation.md)) |
 | anchor-zoom | string | // DeckDeckGoZoom | The anchor identifier which will be use to zoom inside your code when navigating using `slideNext()` or `slidePrev()` (see [documention](/doc/features/navigation.md)) |
 | hide-anchor | boolean | true | Set this attribute to `false` in case you would like to actually display the anchor value too |
+| language | string | javascript | Define the language to be used for the syntax highlighting. The list of [supported languages](https://prismjs.com/#languages-list) is defined by [Prism.js](https://prismjs.com/#languages-list) |
 
 #### Example
 
@@ -263,5 +264,9 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-start | 32px | Padding left of the all slide |
 | --code-margin-bottom | 64px | Padding bottom of the code scroller |
 | --zoom-code | 1 | If you wish to manually zoom the code |
+
+### Syntax highlighting
+
+The library [Prism.js](https://prismjs.com) is use for the syntax highlighting.
 
 [DeckDeckGo]: https://deckdeckgo.com
