@@ -100,7 +100,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
 
       if (container) {
-        container.style.setProperty('--zoom-code', zoom ? '2' : '1');
+        container.style.setProperty('--zoom-code', zoom ? '1.3' : '1');
       }
 
       const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
