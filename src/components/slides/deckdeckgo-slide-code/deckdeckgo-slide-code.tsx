@@ -29,7 +29,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  @Prop() language: string = 'typescript';
+  @Prop() language: string = 'javascript';
 
   private anchorOffsetTop: number = 0;
 
