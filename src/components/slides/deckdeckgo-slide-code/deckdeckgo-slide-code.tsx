@@ -1,4 +1,6 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
+
+import Prism from 'prismjs';
 
 import {DeckdeckgoSlide, DeckDeckGoSlideUtils} from '../deckdeckgo-slide';
 import {DeckDeckGoUtils} from '../../utils/deckdeckgo-utils';
@@ -27,10 +29,9 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  private anchorOffsetTop: number = 0;
+  @Prop() language: string = 'typescript';
 
-  @State()
-  private code: string[] = [];
+  private anchorOffsetTop: number = 0;
 
   private startX: number = null;
   private action: DeckdeckgoSlideCodeAction = null;
@@ -122,25 +123,27 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
       return;
     }
 
+    let fetchedCode: string;
     try {
       const response: Response = await fetch(this.srcFile);
-      const fetchedCode: string = await response.text();
+      fetchedCode = await response.text();
 
-      this.code = await this.splitCode(fetchedCode);
+      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
+
+      if (container) {
+        const highlightedCode: string = Prism.highlight(fetchedCode, Prism.languages[this.language]);
+
+        container.children[0].innerHTML = highlightedCode;
+      }
 
     } catch (e) {
-      this.code = null;
-    }
-  }
+      // Prism might not be able to parse the code for the selected language
+      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
 
-  private splitCode(fetchedCode: string): Promise<string[]> {
-    return new Promise<string[]>((resolve) => {
-      if (!fetchedCode) {
-        resolve([]);
-      } else {
-        resolve(fetchedCode.split('\n'));
+      if (container && fetchedCode) {
+        container.children[0].innerHTML = fetchedCode;
       }
-    });
+    }
   }
 
   // DeckDeckGo
@@ -150,7 +153,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
                 onTouchMove={(event: TouchEvent) => this.touchScrollMove(event)}
                 onTouchEnd={() => this.touchScrollEnd()}>
       <slot name="title"></slot>
-      <div class="deckgo-code-container" onScroll={() => this.emitScrolling()}><code>{this.renderCode()}</code></div>
+      <div class="deckgo-code-container" onScroll={() => this.emitScrolling()}><code></code></div>
     </div>;
   }
 
@@ -198,22 +201,6 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     if (this.action === DeckdeckgoSlideCodeAction.SCROLL) {
       this.scrolling.emit();
     }
-  }
-
-  private renderCode() {
-    return (
-      this.code.map((line: string) => {
-        return <div
-          class={this.hasLineAnchor(line) ? 'deckgo-code-anchor' + (this.hideAnchor ? ' ' + 'deckgo-code-anchor-hidden' : '') : undefined}
-        >{line}</div>
-      })
-    );
-  }
-
-  private hasLineAnchor(line: string): boolean {
-    return line && this.anchor &&
-      line.indexOf('@Prop') === -1 &&
-      line.split(' ').join('').indexOf(this.anchor.split(' ').join('')) > -1;
   }
 
   private hasLineZoom(line: string): boolean {

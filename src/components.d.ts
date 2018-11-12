@@ -48,6 +48,7 @@ export namespace Components {
     'anchorZoom': string;
     'beforeSwipe': (swipeLeft: boolean) => Promise<boolean>;
     'hideAnchor': boolean;
+    'language': string;
     'lazyLoadImages': () => Promise<void>;
     'srcFile': string;
   }
@@ -55,6 +56,7 @@ export namespace Components {
     'anchor'?: string;
     'anchorZoom'?: string;
     'hideAnchor'?: boolean;
+    'language'?: string;
     'onScrolling'?: (event: CustomEvent<void>) => void;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'srcFile'?: string;
