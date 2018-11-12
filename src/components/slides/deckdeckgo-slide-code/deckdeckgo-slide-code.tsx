@@ -58,7 +58,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   // DeckDeckGo
   private scrollToNext(swipeLeft: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
-      const elements: NodeListOf<HTMLElement> = this.el.shadowRoot.querySelectorAll('div.deckgo-code-anchor');
+      const elements: NodeListOf<HTMLElement> = this.el.shadowRoot.querySelectorAll('span.deckgo-code-anchor');
 
       let couldSwipe: boolean = true;
 
@@ -134,8 +134,9 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
         const highlightedCode: string = Prism.highlight(fetchedCode, Prism.languages[this.language]);
 
         container.children[0].innerHTML = highlightedCode;
-      }
 
+        await this.addAnchors();
+      }
     } catch (e) {
       // Prism might not be able to parse the code for the selected language
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
@@ -144,6 +145,38 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
         container.children[0].innerHTML = fetchedCode;
       }
     }
+  }
+
+  private addAnchors(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const elements: NodeListOf<HTMLElement> = this.el.shadowRoot.querySelectorAll('span.comment');
+
+      if (elements) {
+        const elementsArray: HTMLElement[] = Array.from(elements);
+
+        const anchors: HTMLElement[] = elementsArray.filter((element: HTMLElement) => {
+          return this.hasLineAnchor(element.innerHTML);
+        });
+
+        if (anchors) {
+          anchors.forEach((anchor: HTMLElement) => {
+            anchor.classList.add('deckgo-code-anchor');
+
+            if (this.hideAnchor) {
+              anchor.classList.add('deckgo-code-anchor-hidden');
+            }
+          });
+        }
+      }
+
+      resolve();
+    });
+  }
+
+  private hasLineAnchor(line: string): boolean {
+    return line && this.anchor &&
+      line.indexOf('@Prop') === -1 &&
+      line.split(' ').join('').indexOf(this.anchor.split(' ').join('')) > -1;
   }
 
   // DeckDeckGo
