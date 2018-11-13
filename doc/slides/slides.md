@@ -267,6 +267,10 @@ The following theming options will affect this component if set on its host or p
 
 ### Syntax highlighting
 
-The library [Prism.js](https://prismjs.com) is use for the syntax highlighting.
+The library [Prism.js](https://prismjs.com) from [James DiGioia](https://github.com/mAAdhaTTah) is use for the syntax highlighting.
+
+#### Note regarding highlight extra languages
+
+No extra [Prism.js](https://prismjs.com) languages than the default one are bundled in the [DeckDeckGo] Web Component. If you would specify another `language` (see above list of attributes) the component will inject and load the required extra scripts from [unpkg](https://unpkg.com) at runtime. 
 
 [DeckDeckGo]: https://deckdeckgo.com
