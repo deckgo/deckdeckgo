@@ -1,0 +1,50 @@
+@import "../deckdeckgo-slides";
+
+div.deckgo-slide {
+  flex-flow: row wrap;
+
+  padding: 0;
+  width: 100vw;
+}
+
+div.deckgo-slide-author {
+  flex: 1;
+
+  height: 100%;
+
+  display: flex;
+  align-items: var(--slide-author-align, inherit);
+  text-align: var(--slide-author-text-align, inherit);
+
+  padding: var(--slide-author-padding-top, 16px) var(--slide-author-padding-end, 32px) var(--slide-author-padding-bottom, 16px) var(--slide-author-padding-start, 32px);
+
+  &.deckgo-slide-author-start {
+    background: var(--slide-author-background-start);
+    color: var(--slide-author-color-start);
+
+    justify-content: center;
+    align-items: center;
+
+    img {
+      border-radius: 50%;
+      width: var(--slide-author-img-size, 16rem);
+      height: var(--slide-author-img-size, 16rem);
+    }
+  }
+
+  &.deckgo-slide-author-end {
+    background: var(--slide-author-background-end);
+    color: var(--slide-author-color-end);
+
+    flex-direction: column;
+    justify-content: center;
+
+    div.deckgo-slide-author-social {
+      display: grid;
+      grid-template-columns: 30% 30% 30%;
+      grid-gap: 10px;
+
+      padding-top: var(--slide-author-social-padding-top, 32px);
+    }
+  }
+}

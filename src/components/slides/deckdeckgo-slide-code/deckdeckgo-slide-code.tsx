@@ -91,9 +91,9 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(swipeLeft: boolean): Promise<boolean> {
+  beforeSwipe(_swipeLeft: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
-      const couldSwipe: boolean = await this.scrollToNext(swipeLeft);
+      const couldSwipe: boolean = await this.scrollToNext(_swipeLeft);
 
       if (couldSwipe) {
         await this.zoomCode(false);

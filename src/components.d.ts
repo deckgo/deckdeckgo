@@ -43,10 +43,20 @@ export namespace Components {
     'percentage'?: boolean;
   }
 
+  interface DeckgoSlideAuthor {
+    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'imgUrl': string;
+    'lazyLoadImages': () => Promise<void>;
+  }
+  interface DeckgoSlideAuthorAttributes extends StencilHTMLAttributes {
+    'imgUrl'?: string;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+  }
+
   interface DeckgoSlideCode {
     'anchor': string;
     'anchorZoom': string;
-    'beforeSwipe': (swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'hideAnchor': boolean;
     'language': string;
     'lazyLoadImages': () => Promise<void>;
@@ -63,7 +73,7 @@ export namespace Components {
   }
 
   interface DeckgoSlideContent {
-    'beforeSwipe': (swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'lazyLoadImages': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
@@ -75,7 +85,7 @@ export namespace Components {
   }
 
   interface DeckgoSlideSplit {
-    'beforeSwipe': (swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'lazyLoadImages': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
@@ -87,7 +97,7 @@ export namespace Components {
   }
 
   interface DeckgoSlideTitle {
-    'beforeSwipe': (swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'lazyLoadImages': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
@@ -97,25 +107,44 @@ export namespace Components {
     'reveal'?: boolean;
     'revealShowFirst'?: boolean;
   }
+
+  interface DeckgoSocial {
+    'fullUrl': string;
+    'github': string;
+    'linkedin': string;
+    'medium': string;
+    'twitter': string;
+  }
+  interface DeckgoSocialAttributes extends StencilHTMLAttributes {
+    'fullUrl'?: string;
+    'github'?: string;
+    'linkedin'?: string;
+    'medium'?: string;
+    'twitter'?: string;
+  }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'DeckgoDeck': Components.DeckgoDeck;
     'DeckgoPager': Components.DeckgoPager;
+    'DeckgoSlideAuthor': Components.DeckgoSlideAuthor;
     'DeckgoSlideCode': Components.DeckgoSlideCode;
     'DeckgoSlideContent': Components.DeckgoSlideContent;
     'DeckgoSlideSplit': Components.DeckgoSlideSplit;
     'DeckgoSlideTitle': Components.DeckgoSlideTitle;
+    'DeckgoSocial': Components.DeckgoSocial;
   }
 
   interface StencilIntrinsicElements {
     'deckgo-deck': Components.DeckgoDeckAttributes;
     'deckgo-pager': Components.DeckgoPagerAttributes;
+    'deckgo-slide-author': Components.DeckgoSlideAuthorAttributes;
     'deckgo-slide-code': Components.DeckgoSlideCodeAttributes;
     'deckgo-slide-content': Components.DeckgoSlideContentAttributes;
     'deckgo-slide-split': Components.DeckgoSlideSplitAttributes;
     'deckgo-slide-title': Components.DeckgoSlideTitleAttributes;
+    'deckgo-social': Components.DeckgoSocialAttributes;
   }
 
 
@@ -129,6 +158,12 @@ declare global {
   var HTMLDeckgoPagerElement: {
     prototype: HTMLDeckgoPagerElement;
     new (): HTMLDeckgoPagerElement;
+  };
+
+  interface HTMLDeckgoSlideAuthorElement extends Components.DeckgoSlideAuthor, HTMLStencilElement {}
+  var HTMLDeckgoSlideAuthorElement: {
+    prototype: HTMLDeckgoSlideAuthorElement;
+    new (): HTMLDeckgoSlideAuthorElement;
   };
 
   interface HTMLDeckgoSlideCodeElement extends Components.DeckgoSlideCode, HTMLStencilElement {}
@@ -155,22 +190,32 @@ declare global {
     new (): HTMLDeckgoSlideTitleElement;
   };
 
+  interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
+  var HTMLDeckgoSocialElement: {
+    prototype: HTMLDeckgoSocialElement;
+    new (): HTMLDeckgoSocialElement;
+  };
+
   interface HTMLElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement
     'deckgo-pager': HTMLDeckgoPagerElement
+    'deckgo-slide-author': HTMLDeckgoSlideAuthorElement
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement
     'deckgo-slide-content': HTMLDeckgoSlideContentElement
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement
+    'deckgo-social': HTMLDeckgoSocialElement
   }
 
   interface ElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
+    'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
     'deckgo-slide-content': HTMLDeckgoSlideContentElement;
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement;
+    'deckgo-social': HTMLDeckgoSocialElement;
   }
 
 

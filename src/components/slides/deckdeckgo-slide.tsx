@@ -1,5 +1,5 @@
 export interface DeckdeckgoSlide {
-  beforeSwipe(swipeLeft: boolean): Promise<boolean>;
+  beforeSwipe(_swipeLeft: boolean): Promise<boolean>;
 
   lazyLoadImages(): Promise<void>;
 }
@@ -82,9 +82,12 @@ export class DeckDeckGoSlideUtils {
 
   static async lazyLoadImages(el: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
-      const allImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > img');
+      const allSlotedImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > img');
+      const allShadowImages: NodeListOf<HTMLElement> = el.shadowRoot.querySelectorAll('img');
 
-      Array.from(allImages).forEach((image: HTMLElement) => {
+      const images: HTMLElement[] = Array.from(allSlotedImages).concat(Array.from(allShadowImages));
+
+      images.forEach((image: HTMLElement) => {
         if (image.getAttribute('data-src')) {
           image.setAttribute('src', image.getAttribute('data-src'));
           image.removeAttribute('data-src');
