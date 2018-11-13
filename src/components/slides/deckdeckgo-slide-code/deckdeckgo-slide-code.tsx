@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, Watch} from '@stencil/core';
 
 import Prism from 'prismjs';
 
@@ -39,7 +39,55 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   async componentDidLoad() {
     this.slideDidLoad.emit();
 
+    await this.loadLanguage();
+
     await this.fetchCode();
+
+    await this.parseSlottedCode();
+  }
+
+  @Watch('language')
+  loadLanguage(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!document || this.language === 'javascript') {
+        resolve();
+        return;
+      }
+
+      const scripts = document.querySelector('[deckdeckgo-prims=\'' + this.language + '\']');
+
+      if (scripts) {
+        // Already loaded
+        await this.parseSlottedCode();
+        resolve();
+        return;
+      }
+
+      const script = document.createElement('script');
+
+      script.onload = async () => {
+        await this.parseSlottedCode();
+      };
+
+      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + this.language + '.js';
+      script.setAttribute('deckdeckgo-prims', this.language);
+      script.defer = true;
+
+      document.head.appendChild(script);
+
+      resolve();
+    });
+  }
+
+  private parseSlottedCode(): Promise<void> {
+    const code: HTMLElement = this.el.querySelector('[slot=\'code\']');
+    if (code) {
+      return this.parseCode(code.innerHTML);
+    } else {
+      return new Promise<void>((resolve) => {
+        resolve();
+      })
+    }
   }
 
   @Method()
@@ -128,15 +176,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
       const response: Response = await fetch(this.srcFile);
       fetchedCode = await response.text();
 
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
-
-      if (container) {
-        const highlightedCode: string = Prism.highlight(fetchedCode, Prism.languages[this.language]);
-
-        container.children[0].innerHTML = highlightedCode;
-
-        await this.addAnchors();
-      }
+      await this.parseCode(fetchedCode);
     } catch (e) {
       // Prism might not be able to parse the code for the selected language
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
@@ -145,6 +185,26 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
         container.children[0].innerHTML = fetchedCode;
       }
     }
+  }
+
+  private parseCode(code: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
+
+      if (container) {
+        try {
+          const highlightedCode: string = Prism.highlight(code, Prism.languages[this.language]);
+
+          container.children[0].innerHTML = highlightedCode;
+
+          await this.addAnchors();
+        } catch (err) {
+          // The highlighting might fail if the language is not yet defined
+        }
+      }
+
+      resolve();
+    });
   }
 
   private addAnchors(): Promise<void> {
@@ -186,7 +246,10 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
                 onTouchMove={(event: TouchEvent) => this.touchScrollMove(event)}
                 onTouchEnd={() => this.touchScrollEnd()}>
       <slot name="title"></slot>
-      <div class="deckgo-code-container" onScroll={() => this.emitScrolling()}><code></code></div>
+      <div class="deckgo-code-container" onScroll={() => this.emitScrolling()}>
+        <code></code>
+      </div>
+      <slot name="code"></slot>
     </div>;
   }
 

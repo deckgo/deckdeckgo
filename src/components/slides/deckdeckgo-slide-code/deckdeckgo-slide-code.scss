@@ -41,6 +41,10 @@ div.deckgo-code-container {
   transition: opacity 0.5s ease-in;
 }
 
+::slotted([slot="code"]) {
+  display: none;
+}
+
 @media print {
   div.deckgo-slide {
     height: 100%;
