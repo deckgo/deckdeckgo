@@ -16,7 +16,7 @@ Create a lightweight presentation using HTML and Web Components.
       - [Install DeckDeckGo from npm](#install-deckdeckgo-from-npm)
       - [Framework integration](#framework-integration)
   - [Editing](#editing)
-    - [Documentation](doc/slides/slides.md)
+    - [Detailed documentation](doc/slides/slides.md)
     - [Showcasing code](#showcasing-code)
   - [Navigation](#navigation)
   - [Extra features](#extra-features)
