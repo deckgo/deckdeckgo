@@ -360,7 +360,7 @@ Notes:
 
 #### Social components
 
-The details of the component `<deckgo-social/>` is described in the components [documentation](doc/components/components.md).
+The details of the component `<deckgo-social/>` is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
 
 ### Attributes
 
