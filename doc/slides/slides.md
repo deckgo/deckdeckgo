@@ -356,7 +356,11 @@ Notes:
 
 * The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be use for the navigation modal
 
-* You could provide up to six `social-link` slots
+* You could provide up to six `social-link` slots. Each of these could be your custom code or you could use the component `<deckgo-social/>` to easily provide a link to an external URI.
+
+#### Social components
+
+The details of the component `<deckgo-social/>` is described in the components [documentation](doc/components/components.md).
 
 ### Attributes
 
