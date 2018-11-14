@@ -6,7 +6,7 @@ export interface DeckdeckgoSlide {
 
 export class DeckDeckGoSlideUtils {
 
-  static hideElements(el: HTMLElement, revealShowFirst: boolean): Promise<void> {
+  static hideRevealElements(el: HTMLElement, revealShowFirst: boolean): Promise<void> {
     return new Promise<void>((resolve) => {
       // No keyboard on mobile device to reveal elements
       if (this.isMobile()) {
@@ -14,7 +14,7 @@ export class DeckDeckGoSlideUtils {
         return;
       }
 
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealShowFirst ? '[slot] > li:not(:first-child), [slot] > p:not(:first-child), [slot] > span:not(:first-child) [slot] > img:not(:first-child)' : '[slot] > li, [slot] > p, [slot] > span, [slot] > img');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealShowFirst ? '[slot] > li:not(:first-child), [slot] > p:not(:first-child), [slot] > span:not(:first-child), [slot] > img:not(:first-child)' : '[slot] > li, [slot] > p, [slot] > span, [slot] > img, img');
 
       if (!elements) {
         resolve();
@@ -26,7 +26,7 @@ export class DeckDeckGoSlideUtils {
     });
   }
 
-  private static showElement(el: HTMLElement): Promise<boolean> {
+  private static showRevealElement(el: HTMLElement): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > li, [slot] > p, [slot] > span, [slot] > img');
 
@@ -47,7 +47,7 @@ export class DeckDeckGoSlideUtils {
     });
   }
 
-  private static hideElement(el: HTMLElement): Promise<boolean> {
+  private static hideRevealElement(el: HTMLElement): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > li, [slot] > p, [slot] > span, [slot] > img');
 
@@ -72,7 +72,7 @@ export class DeckDeckGoSlideUtils {
   static beforeSwipe(el: HTMLElement, swipeLeft: boolean, reveal: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       if (reveal) {
-        const couldSwipe: boolean = swipeLeft ? await this.showElement(el) : await this.hideElement(el);
+        const couldSwipe: boolean = swipeLeft ? await this.showRevealElement(el) : await this.hideRevealElement(el);
         resolve(couldSwipe);
       } else {
         resolve(true);
@@ -80,17 +80,34 @@ export class DeckDeckGoSlideUtils {
     });
   }
 
+  static hideLazyLoadImages(el: HTMLElement): Promise<void> {
+    return new Promise<void>((resolve) => {
+      let images: HTMLElement[] = this.getAllImages(el);
+
+      if (!images) {
+        resolve();
+      } else {
+        images = images.filter((image: HTMLElement) => image.getAttribute('data-src'));
+
+        images.forEach((image: HTMLElement) => {
+          image.style.setProperty('visibility', 'hidden');
+        });
+
+        resolve();
+      }
+    });
+  }
+
   static async lazyLoadImages(el: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
-      const allSlotedImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > img');
-      const allShadowImages: NodeListOf<HTMLElement> = el.shadowRoot.querySelectorAll('img');
-
-      const images: HTMLElement[] = Array.from(allSlotedImages).concat(Array.from(allShadowImages));
+      const images: HTMLElement[] = this.getAllImages(el);
 
       images.forEach((image: HTMLElement) => {
         if (image.getAttribute('data-src')) {
           image.setAttribute('src', image.getAttribute('data-src'));
           image.removeAttribute('data-src');
+
+          image.style.setProperty('visibility', 'initial');
         }
 
         // Furthermore to lazy loading, we set pointer-events to none. Doing so we prevent images of being dragged.
@@ -100,6 +117,13 @@ export class DeckDeckGoSlideUtils {
       resolve();
     });
   };
+
+  static getAllImages(el: HTMLElement): HTMLElement[] {
+    const allSlotedImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > img');
+    const allShadowImages: NodeListOf<HTMLElement> = el.shadowRoot.querySelectorAll('img');
+
+    return Array.from(allSlotedImages).concat(Array.from(allShadowImages));
+  }
 
   // Source: http://detectmobilebrowsers.com
   static isMobile(): boolean {

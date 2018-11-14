@@ -16,6 +16,8 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Prop() imgUrl: string;
 
   async componentDidLoad() {
+    await DeckDeckGoSlideUtils.hideLazyLoadImages(this.el);
+
     this.slideDidLoad.emit();
   }
 

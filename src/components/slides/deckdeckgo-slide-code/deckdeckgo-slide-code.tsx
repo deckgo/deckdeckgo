@@ -37,6 +37,8 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private action: DeckdeckgoSlideCodeAction = null;
 
   async componentDidLoad() {
+    await DeckDeckGoSlideUtils.hideLazyLoadImages(this.el);
+
     this.slideDidLoad.emit();
 
     await this.loadLanguage();

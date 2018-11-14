@@ -17,10 +17,12 @@ export class DeckdeckgoSlideTitle implements DeckdeckgoSlide {
   @Prop() revealShowFirst: boolean = false;
 
   async componentDidLoad() {
+    await DeckDeckGoSlideUtils.hideLazyLoadImages(this.el);
+
     this.slideDidLoad.emit();
 
     if (this.reveal) {
-      await DeckDeckGoSlideUtils.hideElements(this.el, this.revealShowFirst);
+      await DeckDeckGoSlideUtils.hideRevealElements(this.el, this.revealShowFirst);
     }
   }
 
