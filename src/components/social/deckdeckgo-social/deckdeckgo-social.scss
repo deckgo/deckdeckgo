@@ -1,0 +1,11 @@
+a {
+  color: inherit;
+  text-decoration: inherit;
+
+  display: flex;
+  align-items: center;
+}
+
+::slotted([slot="icon"]) {
+  margin-right: 8px;
+}

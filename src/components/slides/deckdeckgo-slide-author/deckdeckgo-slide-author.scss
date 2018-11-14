@@ -1,16 +1,15 @@
 @import "../deckdeckgo-slides";
 
 div.deckgo-slide {
-  flex-flow: row wrap;
+  flex-flow: row;
 
   padding: 0;
   width: 100vw;
 }
 
 div.deckgo-slide-author {
-  flex: 1;
-
   height: 100%;
+  width: 50%;
 
   display: flex;
   align-items: var(--slide-author-align, inherit);
@@ -27,8 +26,7 @@ div.deckgo-slide-author {
 
     img {
       border-radius: 50%;
-      width: var(--slide-author-img-size, 16rem);
-      height: var(--slide-author-img-size, 16rem);
+      width: var(--slide-author-img-size, 80%);
     }
   }
 
@@ -41,10 +39,26 @@ div.deckgo-slide-author {
 
     div.deckgo-slide-author-social {
       display: grid;
-      grid-template-columns: 30% 30% 30%;
+      grid-template-columns: 50% 50%;
       grid-gap: 10px;
 
       padding-top: var(--slide-author-social-padding-top, 32px);
+    }
+  }
+}
+
+@media(min-width: 992px) {
+  div.deckgo-slide-author {
+    &.deckgo-slide-author-start {
+      width: calc(100% / 3 * 1);
+    }
+
+    &.deckgo-slide-author-end {
+      width: calc(100% / 3 * 2);
+
+      div.deckgo-slide-author-social {
+        grid-template-columns: 30% 30% 30%;
+      }
     }
   }
 }

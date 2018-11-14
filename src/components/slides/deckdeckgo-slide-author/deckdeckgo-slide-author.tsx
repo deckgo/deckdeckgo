@@ -39,12 +39,12 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
       <div class="deckgo-slide-author deckgo-slide-author-end">
         <slot name="author"></slot>
         <div class="deckgo-slide-author-social">
-          <slot name="social-link-a"></slot>
-          <slot name="social-link-b"></slot>
-          <slot name="social-link-c"></slot>
-          <slot name="social-link-d"></slot>
-          <slot name="social-link-e"></slot>
-          <slot name="social-link-f"></slot>
+          <slot name="social-link"></slot>
+          <slot name="social-link"></slot>
+          <slot name="social-link"></slot>
+          <slot name="social-link"></slot>
+          <slot name="social-link"></slot>
+          <slot name="social-link"></slot>
         </div>
       </div>
     </div>;
