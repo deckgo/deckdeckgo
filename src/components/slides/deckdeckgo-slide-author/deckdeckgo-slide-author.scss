@@ -62,3 +62,7 @@ div.deckgo-slide-author {
     }
   }
 }
+
+::slotted([slot="title"]) {
+  display: none;
+}

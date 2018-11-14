@@ -32,6 +32,8 @@ div.deckgo-slide-split {
 ::slotted([slot="title"]) {
   flex: 1 100%;
 
+  display: var(--slide-split-title-display, none);
+
   padding: var(--slide-split-title-padding-top, 16px) var(--slide-split-title-padding-end, 32px) var(--slide-split-title-padding-bottom, 16px) var(--slide-split-title-padding-start, 32px);
 }
 

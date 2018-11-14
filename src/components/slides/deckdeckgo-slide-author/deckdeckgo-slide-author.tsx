@@ -33,6 +33,7 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
 
   render() {
     return <div class="deckgo-slide">
+      <slot name="title"></slot>
       <div class="deckgo-slide-author deckgo-slide-author-start">
         <img data-src={this.imgUrl}/>
       </div>

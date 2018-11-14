@@ -172,6 +172,8 @@ The "Split" slide's Web Component could be integrated using the tag `<deckgo-sli
 
 Both slots `title` and `content` are optional. Without providing one of them, the page will remain empty.
 
+Note: The slot `title` is per default hidden.
+
 ### Attributes
 
 This component offers the following options which could be set using attributes:
@@ -204,6 +206,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
 | --slide-split-align | inherit | Modify for example to center if you want to align the content in the middle |
 | --slide-split-text-align | inherit | Modify for example to center if you want to align the text in the middle |
+| --slide-split-title-display | none | Modify this attribute if you wish to display a title |
 
 ## Slide: Code
 
