@@ -1,3 +1,18 @@
+<a name="1.0.0-beta.4"></a>
+# [1.0.0-beta.4](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2018-11-14)
+
+### Templates
+
+* introduce a new template to let you introduce the author of the presentation ([#9](https://github.com/fluster/deckdeckgo/issues/9))
+
+### Features
+
+* highlight the code displayed with the related template using [Prismjs](https://prismjs.com) ([#4](https://github.com/fluster/deckdeckgo/issues/4))
+
+### Fix
+
+* hide all lazy loaded images per default ([#10](https://github.com/fluster/deckdeckgo/issues/10))
+
 <a name="1.0.0-beta.3"></a>
 # [1.0.0-beta.3](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2018-11-11)
 
