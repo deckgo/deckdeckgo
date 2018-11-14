@@ -17,7 +17,6 @@ Create a lightweight presentation using HTML and Web Components.
       - [Framework integration](#framework-integration)
   - [Editing](#editing)
     - [Detailed documentation](doc/slides/slides.md)
-    - [Showcasing code](#showcasing-code)
   - [Navigation](#navigation)
   - [Extra features](#extra-features)
   - [Lazy loading](#lazy-loading)
@@ -87,34 +86,26 @@ The [Stencil documentation](https://stenciljs.com/docs/overview) provide example
 
 ## Editing
 
-[DeckDeckGo] is a deck of slides where each slide has its own layout and behaviour. Their content could be edited and structured using the provided `slots`.
+[DeckDeckGo] is a deck of slides where each slide has its own layout and behaviour. Their content could be edited and structured using the provided `slots` and other attributes.
 
-The slides [documentation](doc/slides/slides.md) display all templates and all options available for each slide.
+The deck should be declared using the tag `<deckgo-deck>` and each slide should be added to its children.
 
 ```
 <deckgo-deck>
   <deckgo-slide-title>
-    <h1 slot="title">My presentation title</h1>
+    <h1 slot="title">The first slide</h1>
     <p slot="content">
       Hello World 🚀
     </p>
   </deckgo-slide-title>
+  
+  <deckgo-slide-content>
+      <h1 slot="title">The second slide</h1>
+  </deckgo-slide-content>
 </deckgo-deck>
 ```
 
-### Showcasing code
-
-[DeckDeckGo] offers an handy slide to showcase code in your presentation. Instead of having to copy/paste your code inside the presentation itself, the provided template only need an url to the piece of code you would like display.
-
-For example, in the following example, the slide is showcasing a piece of code of [DeckDeckGo] hosted on [Github](https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx).
-
-```
-<deckgo-deck>
-  <deckgo-slide-code src-file="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
-    <h1 slot="title">My code</h1>
-  </deckgo-slide-title>
-</deckgo-deck>
-```
+The [detailed documentation](doc/slides/slides.md) display all templates and all options available for each slides.
 
 ## Navigation
 

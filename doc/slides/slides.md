@@ -10,6 +10,7 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 - [Slide: Content](#slide-content)
 - [Slide: Split](#slide-split)
 - [Slide: Code](#slide-code)
+- [Slide: Author](#slide-author)
 
 ## Slide: Title
 
@@ -225,21 +226,25 @@ You could provide a file URI to the code you want to display or provide it with 
 #### Usage with file URI
 
 ```
-<deckgo-slide-code src-file="https://domain.com/path-to-my-code.extension">
-  <h1 slot="title">My code</h1>
-</deckgo-slide-code>
+<deckgo-deck>
+  <deckgo-slide-code src-file="https://domain.com/path-to-my-code.extension">
+    <h1 slot="title">My code</h1>
+  </deckgo-slide-code>
+</deckgo-deck>  
 ```
 
 #### Usage with slotted element
 
 ```
-<deckgo-slide-code language="java">
-    <h1 slot="title">Manual code</h1>
-    <code slot="code">
-interface DeckDeckGoDemo {
-  boolean helloWorld();
-}
-</deckgo-slide-code>
+<deckgo-deck>
+  <deckgo-slide-code language="java">
+      <h1 slot="title">Manual code</h1>
+      <code slot="code">
+  interface DeckDeckGoDemo {
+    boolean helloWorld();
+  }
+  </deckgo-slide-code>
+</deckgo-deck>  
 ```
 
 #### Slots
@@ -261,31 +266,35 @@ The attribute `src-file` is for this component mandatory. Other attributes are o
 #### Example with file URI
 
 ```
-<deckgo-slide-code hide-anchor="fals" src-file="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
-  <h1 slot="title">Code</h1>
-</deckgo-slide-code>
+<deckgo-deck>
+  <deckgo-slide-code hide-anchor="fals" src-file="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+    <h1 slot="title">Code</h1>
+  </deckgo-slide-code>
+</deckgo-deck>
 ```
 
 #### Example with slotted element
 
 ```
-<deckgo-slide-code language="java">
-    <h1 slot="title">Manual code</h1>
-    <code slot="code">interface NumericTest {
-  boolean computeTest(int n);
-}
-
-public static void main(String args[]) {
-  NumericTest isEven = (n) -> (n % 2) == 0;
-  NumericTest isNegative = (n) -> (n < 0);
-
-  // Output: false
-  System.out.println(isEven.computeTest(5));
-
-  // Output: true
-  System.out.println(isNegative.computeTest(-5));
-}</code>
+<deckgo-deck>
+  <deckgo-slide-code language="java">
+      <h1 slot="title">Manual code</h1>
+      <code slot="code">interface NumericTest {
+    boolean computeTest(int n);
+  }
+  
+  public static void main(String args[]) {
+    NumericTest isEven = (n) -> (n % 2) == 0;
+    NumericTest isNegative = (n) -> (n < 0);
+  
+    // Output: false
+    System.out.println(isEven.computeTest(5));
+  
+    // Output: true
+    System.out.println(isNegative.computeTest(-5));
+  }</code>
   </deckgo-slide-code>
+</deckgo-deck>  
 ```
 
 ### Theming
@@ -313,5 +322,86 @@ The library [Prism.js](https://prismjs.com) from [James DiGioia](https://github.
 #### Note regarding highlight extra languages
 
 No extra [Prism.js](https://prismjs.com) languages than the default one are bundled in the [DeckDeckGo] Web Component. If you would specify another `language` (see above list of attributes) the component will inject and load the required extra scripts from [unpkg](https://unpkg.com) at runtime. 
+
+## Slide: Author
+
+The "Author" slide let you introduce the author of the presentation.
+
+### Layout
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-author.png" width="450px">
+
+### Usage
+
+The "Author" slide's Web Component could be integrated using the tag `<deckgo-slide-author/>`.
+
+```
+<deckgo-deck>
+  <deckgo-slide-author img-url="/assets/author.jpeg">
+    <h1 slot="title">Author</h1>
+    <div slot="author">
+      <h2>David</h2>
+      <p>Something about me</p>
+    </div>
+    <div slot="social-link"><deckgo-social twitter="daviddalbusco">twitter</deckgo-social></div>
+  </deckgo-slide-author>
+</deckgo-deck>  
+```
+
+#### Slots
+
+Both slots `title`, `author` and `social-link` are optional, but of course the slide would looks better with at least the slot `author` would be provided.
+
+Notes: 
+
+* The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be use for the navigation modal.
+
+* You could provide up to six `social-link` slots. 
+
+### Attributes
+
+This component offers the following options which could be set using attributes:
+
+| Attribute                      | Type   | Default   | Description   |
+| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
+| img-url | string |  | An image URI, for example a picture of the author. Note: this image will be displayed as a circle. |
+
+#### Example
+
+```
+<deckgo-deck>
+  <deckgo-slide-author img-url="/assets/author.jpeg">
+    <div slot="author">
+      <h2>David</h2>
+      <p>Something about me</p>
+    </div>
+    <div slot="social-link"><deckgo-social twitter="daviddalbusco">twitter</deckgo-social></div>
+    <div slot="social-link"><deckgo-social linkedin="david-dal-busco/">linkedin</deckgo-social></div>
+    <div slot="social-link"><deckgo-social medium="david.dalbusco">medium</deckgo-social></div>
+  </deckgo-slide-author>
+</deckgo-deck>
+```
+
+### Theming
+
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |:-----------------:|:-----------------:|
+| --background |  |  |
+| --color |  |  |
+| --slide-author-background-start | | Left pane background |
+| --slide-author-color-start | | Left pane color |
+| --slide-author-background-end | | Right pane background |
+| --slide-author-color-end | | Right pane color |
+| --slide-author-padding-top | 16px | Padding top of a slide |
+| --slide-author-padding-end | 32px | Padding right of a slide |
+| --slide-author-padding-bottom | 16px | Padding bottom of a slide |
+| --slide-author-padding-start | 32px | Padding left of a slide |
+| --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
+| --slide-author-align | inherit | Modify for example to center if you want to align the content in the middle |
+| --slide-author-text-align | inherit | Modify for example to center if you want to align the text in the middle |
+| --slide-author-img-size | 80% | The size of the image of the left pane |
+| --slide-author-social-padding-top | 32px | The spacing between the author description and the social links |
 
 [DeckDeckGo]: https://deckdeckgo.com
