@@ -105,22 +105,20 @@
 
   <deckgo-slide-code language="java">
     <h1 slot="title">Manual code</h1>
-    <div slot="code">
-      interface NumericTest {
-        boolean computeTest(int n);
-      }
+    <code slot="code">interface NumericTest {
+  boolean computeTest(int n);
+}
 
-      public static void main(String args[]) {
-        NumericTest isEven = (n) -> (n % 2) == 0;
-        NumericTest isNegative = (n) -> (n < 0);
+public static void main(String args[]) {
+  NumericTest isEven = (n) -> (n % 2) == 0;
+  NumericTest isNegative = (n) -> (n < 0);
 
-        // Output: false
-        System.out.println(isEven.computeTest(5));
+  // Output: false
+  System.out.println(isEven.computeTest(5));
 
-        // Output: true
-        System.out.println(isNegative.computeTest(-5));
-      }
-    </div>
+  // Output: true
+  System.out.println(isNegative.computeTest(-5));
+}</code>
   </deckgo-slide-code>
 
 </deckgo-deck>

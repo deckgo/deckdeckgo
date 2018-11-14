@@ -217,15 +217,31 @@ The "Code" slide is a the slide to use if you would like to showcase code during
 
 The "Code" slide's Web Component could be integrated using the tag `<deckgo-slide-code/>`.
 
+You could provide a file URI to the code you want to display or provide it with a slotted element.
+
+#### Usage with file URI
+
 ```
 <deckgo-slide-code src-file="https://domain.com/path-to-my-code.extension">
   <h1 slot="title">My code</h1>
 </deckgo-slide-code>
 ```
 
+#### Usage with slotted element
+
+```
+<deckgo-slide-code language="java">
+    <h1 slot="title">Manual code</h1>
+    <code slot="code">
+interface DeckDeckGoDemo {
+  boolean helloWorld();
+}
+</deckgo-slide-code>
+```
+
 #### Slots
 
-The slot `title` is optional.
+The slots `title` and `code` are optional.
 
 ### Attributes
 
@@ -239,12 +255,34 @@ The attribute `src-file` is for this component mandatory. Other attributes are o
 | hide-anchor | boolean | true | Set this attribute to `false` in case you would like to actually display the anchor value too |
 | language | string | javascript | Define the language to be used for the syntax highlighting. The list of [supported languages](https://prismjs.com/#languages-list) is defined by [Prism.js](https://prismjs.com/#languages-list) |
 
-#### Example
+#### Example with file URI
 
 ```
 <deckgo-slide-code hide-anchor="fals" src-file="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
   <h1 slot="title">Code</h1>
 </deckgo-slide-code>
+```
+
+#### Example with slotted element
+
+```
+<deckgo-slide-code language="java">
+    <h1 slot="title">Manual code</h1>
+    <code slot="code">interface NumericTest {
+  boolean computeTest(int n);
+}
+
+public static void main(String args[]) {
+  NumericTest isEven = (n) -> (n % 2) == 0;
+  NumericTest isNegative = (n) -> (n < 0);
+
+  // Output: false
+  System.out.println(isEven.computeTest(5));
+
+  // Output: true
+  System.out.println(isNegative.computeTest(-5));
+}</code>
+  </deckgo-slide-code>
 ```
 
 ### Theming
