@@ -17,33 +17,25 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 
 [DeckDeckGo] provide the following templates:
 
-<div style="display: grid; grid-template-columns: 30% 30% 30%; grid-gap: 10px;">
-  <div style="display: flex; flex-direction: column;">
-    <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-layout.png" width="250px">
-    <p>"Title"</p>
-  </div>
-  
-  <div style="display: flex; flex-direction: column;">
-    <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-content-layout.png" width="250px">
-    <p>"Content"</p>
-  </div>
-  
-  <div style="display: flex; flex-direction: column;">
-    <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="250px">
-    <p>"Split"</p>
-  </div>
-  
-  <div style="display: flex; flex-direction: column;">
-    <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-code-layout.gif" width="250px">
-    <p>"Code"</p>
-  </div>
-  
-  <div style="display: flex; flex-direction: column;">
-    <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-author.png" width="250px">
-    <p>"Author"</p>
-  </div>
+* [Title](#slide-title)
 
-</div>
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-layout.png" width="200px">
+
+* [Content](#slide-content)
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-content-layout.png" width="200px">
+
+* [Split](#slide-split)
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="200px">
+
+* [Code](#slide-code)
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-code-layout.gif" width="200px">
+
+* [Author](#slide-author)
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-author.png" width="200px">
 
 *Note: If you would miss or need further templates, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more options*
 
