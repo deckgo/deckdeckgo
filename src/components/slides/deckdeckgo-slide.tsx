@@ -14,13 +14,14 @@ export class DeckDeckGoSlideUtils {
         return;
       }
 
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealShowFirst ? '[slot] > li:not(:first-child), [slot] > p:not(:first-child), [slot] > span:not(:first-child), [slot] > img:not(:first-child)' : '[slot] > li, [slot] > p, [slot] > span, [slot] > img, img');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealShowFirst ? '[slot] > li:not(:first-child), [slot] > p:not(:first-child), [slot] > span:not(:first-child), [slot] > img:not(:first-child)' : '[slot] > li, [slot] > p, [slot] > span, [slot] > img');
 
       if (!elements) {
         resolve();
       } else {
         Array.from(elements).forEach((element: HTMLElement) => {
           element.style.setProperty('visibility', 'hidden');
+          element.classList.add('deckgo-reveal');
         });
       }
     });
@@ -107,7 +108,10 @@ export class DeckDeckGoSlideUtils {
           image.setAttribute('src', image.getAttribute('data-src'));
           image.removeAttribute('data-src');
 
-          image.style.setProperty('visibility', 'initial');
+          // If image is part of a reveal group, let it be revealed with the reveal feature
+          if (!image.classList.contains('deckgo-reveal')) {
+            image.style.setProperty('visibility', 'initial');
+          }
         }
 
         // Furthermore to lazy loading, we set pointer-events to none. Doing so we prevent images of being dragged.
