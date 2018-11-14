@@ -354,9 +354,9 @@ Both slots `title`, `author` and `social-link` are optional, but of course the s
 
 Notes: 
 
-* The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be use for the navigation modal.
+* The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be use for the navigation modal
 
-* You could provide up to six `social-link` slots. 
+* You could provide up to six `social-link` slots
 
 ### Attributes
 

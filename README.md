@@ -88,7 +88,7 @@ The [Stencil documentation](https://stenciljs.com/docs/overview) provide example
 
 [DeckDeckGo] is a deck of slides where each slide has its own layout and behaviour. Their content could be edited and structured using the provided `slots` and other attributes.
 
-The deck should be declared using the tag `<deckgo-deck>` and each slide should be added to its children.
+The deck should be declared using the tag `<deckgo-deck/>` and each slide should be added to its children.
 
 ```
 <deckgo-deck>
