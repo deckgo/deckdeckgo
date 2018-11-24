@@ -20,5 +20,8 @@ export const config: Config = {
     postcss({
       plugins: [autoprefixer()]
     })
+  ],
+  copy: [
+    { src: 'components/slides/deckdeckgo-slides.scss' }
   ]
 };
