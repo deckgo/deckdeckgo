@@ -349,10 +349,13 @@ export class DeckdeckgoDeck {
       const doc = window.document;
       const docEl = doc.documentElement;
 
-      const requestFullScreen = docEl.requestFullscreen || (docEl as any).mozRequestFullScreen || docEl.webkitRequestFullScreen || (docEl as any).msRequestFullscreen;
-      const cancelFullScreen = doc.exitFullscreen || (doc as any).mozCancelFullScreen || doc.webkitExitFullscreen || (doc as any).msExitFullscreen;
+      // @ts-ignore
+      const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+      // @ts-ignore
+      const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
 
-      if (!doc.fullscreenElement && !(doc as any).mozFullScreenElement && !doc.webkitFullscreenElement && !(doc as any).msFullscreenElement) {
+      // @ts-ignore
+      if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
         requestFullScreen.call(docEl);
       } else {
         cancelFullScreen.call(doc);
