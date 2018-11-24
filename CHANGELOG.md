@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.5"></a>
+# [1.0.0-beta.5](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2018-11-24)
+
+### Features
+
+* add features for the remote controller ([#15](https://github.com/fluster/deckdeckgo/issues/15))
+
+### Fix
+
+* export missing deckdeckgo-slides.scss into the bundle ([#14](https://github.com/fluster/deckdeckgo/issues/14))
+
 <a name="1.0.0-beta.4"></a>
 # [1.0.0-beta.4](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2018-11-14)
 
