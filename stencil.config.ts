@@ -22,6 +22,6 @@ export const config: Config = {
     })
   ],
   copy: [
-    { src: 'components/slides/deckdeckgo-slides.scss' }
+    { src: 'components/slides/deckdeckgo-slide.scss' }
   ]
 };
