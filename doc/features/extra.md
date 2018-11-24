@@ -7,6 +7,7 @@ The [DeckDeckGo] deck expose a couple of extra features which could be added to 
 - [Extra features](#extra-features)
   - [Toggle on/off the full screen mode](#toggle-onoff-the-full-screen-mode)
   - [Print the presentation](#print-the-presentation)
+- [Extra events](#extra-events)
 
 ## Extra features
 
@@ -29,5 +30,16 @@ await deck.toggleFullScreen();
 ```
 await deck.print();
 ```
+
+## Extra events
+
+[DeckDeckGo] triggers the following events:
+
+| Event                     | Emitted value | Description |
+| -------------------------- |:-----------------:|:-----------------:|
+| slideNextStart | number | Emitted when the next slide has started. Emit the index of the new active slide. |
+| slidePrevStart | number | Emitted when the previous slide has ended. Emit the index of the new active slide. |
+| slideDrag | number | Emitted when the slider is actively being moved. Emit the transformX value of the deck. |
+| slideWillChange | number | Emitted before the active slide has changed. Emit the transformX value of the deck. |
 
 [DeckDeckGo]: https://deckdeckgo.com

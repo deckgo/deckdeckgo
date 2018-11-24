@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Method, Prop, State} from '@stencil/core';
+import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '../../utils/deckdeckgo-utils';
 
@@ -33,6 +33,11 @@ export class DeckdeckgoDeck {
 
   @State()
   private length: number = 0;
+
+  @Event() slideNextStart: EventEmitter<number>;
+  @Event() slidePrevStart: EventEmitter<number>;
+  @Event() slideDrag: EventEmitter<number>;
+  @Event() slideWillChange: EventEmitter<number>;
 
   async componentDidLoad() {
     this.initWindowResize();
@@ -132,6 +137,8 @@ export class DeckdeckgoDeck {
 
     deltaX.slider.style.setProperty('--transformX', transformX + 'px');
     deltaX.slider.style.setProperty('--transformXDuration', '0ms');
+
+    this.slideDrag.emit(transformX);
   }
 
   private async stop(e: Event) {
@@ -165,8 +172,12 @@ export class DeckdeckgoDeck {
 
           if (deltaX.swipeLeft) {
             this.activeIndex++;
+
+            this.slideNextStart.emit(this.activeIndex);
           } else {
             this.activeIndex--;
+
+            this.slidePrevStart.emit(this.activeIndex);
           }
         }
       }
@@ -184,6 +195,8 @@ export class DeckdeckgoDeck {
     return new Promise<void>((resolve) => {
       slider.style.setProperty('--transformX', this.deckTranslateX + 'px');
       slider.style.setProperty('--transformXDuration', '' + (!isNaN(speed) ? speed : 300) + 'ms');
+
+      this.slideWillChange.emit(this.deckTranslateX);
 
       this.startX = null;
 

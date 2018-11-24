@@ -28,6 +28,10 @@ export namespace Components {
   }
   interface DeckgoDeckAttributes extends StencilHTMLAttributes {
     'keyboard'?: boolean;
+    'onSlideDrag'?: (event: CustomEvent<number>) => void;
+    'onSlideNextStart'?: (event: CustomEvent<number>) => void;
+    'onSlidePrevStart'?: (event: CustomEvent<number>) => void;
+    'onSlideWillChange'?: (event: CustomEvent<number>) => void;
     'pager'?: boolean;
     'pagerPercentage'?: boolean;
   }
