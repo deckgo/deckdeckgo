@@ -5,6 +5,8 @@ div.deckgo-deck {
   top: 0;
   bottom: 0;
 
+  z-index: var(--zIndex);
+
   --transformX: 0px;
   --transformXDuration: 0ms;
 
