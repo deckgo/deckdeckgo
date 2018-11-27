@@ -10,6 +10,7 @@ Create a lightweight presentation using HTML and Web Components.
 	- [Table of contents](#table-of-contents)
 	- [Features](#features)
 		- [Starter kit extra features](#starter-kit-extra-features)
+		- [Remote control](#remote-control)
   - [Getting Started](#getting-started)
     - [Installing DeckDeckGo in any projects](#installing-deckdeckgo-in-any-projects)
       - [Using DeckDeckGo from a CDN](#using-deckdeckgo-from-a-cdn)
@@ -47,6 +48,10 @@ Create a lightweight presentation using HTML and Web Components.
 * 🚀 Publish your presentation as a **Progressive Web App** with a **offline** support
 
 * 🦄 Use **Ionic** components and icons to create the content or even add extra features
+
+### Remote control
+
+Cherry on the cake 🍒🎂 [DeckDeckGo] comes with its [Progressive Web App](https://deckdeckgo.app) that allows you to remote control your presentation 🚀
 
 ## Getting Started
 
