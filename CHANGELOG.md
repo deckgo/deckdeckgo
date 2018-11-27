@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.6"></a>
+# [1.0.0-beta.6](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2018-11-27)
+
+### Fix
+
+* absolute is better suited than fixed if deckdeckgo is included in a not full screen page on Safari ([20b164e](https://github.com/fluster/deckdeckgo/commit/20b164ed5b3a920b478c9be3ed67db2f6e032ffb))
+
 <a name="1.0.0-beta.5"></a>
 # [1.0.0-beta.5](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2018-11-24)
 
