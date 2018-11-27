@@ -37,7 +37,7 @@ Create a lightweight presentation using HTML and Web Components.
 
 * 🌅 Create a **lightweight** presentation where images are **lazy** loaded
 
-* 📱 Design slides which looks good on **mobile** devices too
+* 📱 Ship your presentation as a **Progressive Web App**
 
 * 🎁 Free and **open source**
 
