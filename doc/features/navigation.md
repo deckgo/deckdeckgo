@@ -6,7 +6,9 @@ Furthermore than the default swiping, the [DeckDeckGo] deck expose the following
 
 - [Navigation](#navigation)
   - [Go to next slide](#go-to-next-slide)
+    - [Optional parameters](#pptional-parameters)
   - [Go to previous slide](#go-to-previous-slide)
+    - [Optional parameters](#pptional-parameters)
   - [Go to a specific slide](#go-to-a-specific-slide)
   - [Is the deck at the begin](#is-the-deck-at-the-begin)
   - [Is the deck at the end](#is-the-deck-at-the-end)
@@ -32,10 +34,17 @@ const deck = document.getElementsByTagName('deckgo-deck');
 await deck.slideNext();
 ```
 
-*Optional parameter:* Optionally your could provide a boolean parameter to this method in case you would not like the event `slideNextDidChange` and `slidePrevDidChange` to be fired.
+For example:
+
+#### Optional parameters
+
+| Parameter                      | Type | Default | Description |
+| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
+| slideAnimation | boolean | true | Set to `false` in case you would not like the inner animation of a slide, like the reveal or code animation for example, to be performed. |
+| emitEvent | boolean | true | Set to `false` in case you would not like the events `slideNextDidChange` and `slidePrevDidChange` to be fired. Note that to use this parameter, the previous should be set too. |
 
 ```
-await deck.slideNext(false);
+await deck.slideNext(false, false);
 ```
 
 ### Go to previous slide
@@ -44,10 +53,17 @@ await deck.slideNext(false);
 await deck.slidePrev();
 ```
 
-*Optional parameter:* Optionally your could provide a boolean parameter to this method in case you would not like the event `slideNextDidChange` and `slidePrevDidChange` to be fired.
+#### Optional parameters
+
+| Parameter                      | Type | Default | Description |
+| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
+| slideAnimation | boolean | true | Set to `false` in case you would not like the inner animation of a slide, like the reveal or code animation for example, to be performed. |
+| emitEvent | boolean | true | Set to `false` in case you would not like the events `slideNextDidChange` and `slidePrevDidChange` to be fired. Note that to use this parameter, the previous should be set too. |
+
+For example:
 
 ```
-await deck.slidePrev(false);
+await deck.slidePrev(false, false);
 ```
 
 ### Go to a specific slide

@@ -21,16 +21,16 @@ export namespace Components {
     'keyboard': boolean;
     'pager': boolean;
     'pagerPercentage': boolean;
-    'slideNext': (emitEvent?: boolean) => Promise<void>;
-    'slidePrev': (emitEvent?: boolean) => Promise<void>;
+    'slideNext': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
+    'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number) => Promise<void>;
     'toggleFullScreen': () => Promise<void>;
   }
   interface DeckgoDeckAttributes extends StencilHTMLAttributes {
     'keyboard'?: boolean;
     'onSlideDrag'?: (event: CustomEvent<number>) => void;
-    'onSlideNextStart'?: (event: CustomEvent<number>) => void;
-    'onSlidePrevStart'?: (event: CustomEvent<number>) => void;
+    'onSlideNextDidChange'?: (event: CustomEvent<number>) => void;
+    'onSlidePrevDidChange'?: (event: CustomEvent<number>) => void;
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
     'pager'?: boolean;
     'pagerPercentage'?: boolean;

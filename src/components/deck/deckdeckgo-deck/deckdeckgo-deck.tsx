@@ -281,23 +281,29 @@ export class DeckdeckgoDeck {
   /* BEGIN: Manual sliding */
 
   @Method()
-  async slideNext(emitEvent?: boolean) {
-    await this.slideNextPrev(true, emitEvent);
+  async slideNext(slideAnimation?: boolean, emitEvent?: boolean) {
+    await this.slideNextPrev(true, slideAnimation, emitEvent);
   }
 
   @Method()
-  async slidePrev(emitEvent?: boolean) {
-    await this.slideNextPrev(false, emitEvent);
+  async slidePrev(slideAnimation?: boolean, emitEvent?: boolean) {
+    await this.slideNextPrev(false, slideAnimation, emitEvent);
   }
 
-  private async slideNextPrev(swipeLeft: boolean, emitEvent?: boolean) {
+  private async slideNextPrev(swipeLeft: boolean, slideAnimation: boolean = true, emitEvent?: boolean) {
     const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
     if (!slider || !window) {
       return;
     }
 
-    const couldSwipe: boolean = await this.couldSwipe(swipeLeft);
+    let couldSwipe: boolean;
+
+    if (!slideAnimation) {
+      couldSwipe = true;
+    } else {
+      couldSwipe = await this.couldSwipe(swipeLeft);
+    }
 
     // We might want first to show hide stuffs in the slide before swiping
     if (couldSwipe) {
