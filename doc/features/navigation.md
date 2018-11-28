@@ -78,7 +78,7 @@ await deck.slideTo(0); // parameters: index: number, speed?: number | undefined
 | Parameter                      | Type | Default | Description |
 | -------------------------- |:-----------------:|:-----------------:|:-----------------:|
 | index | number | | Slide index of the specific slide. |
-| speed | number | 0 | The slide transition speed. |
+| speed | number | 300 | The slide transition speed. Default 300ms. |
 | emitEvent | boolean | true | In case you would not like to emit the event `slideToChange`. Note that if you would use this parameter, the above `speed` parameter must be provided too. |
 
 ### Is the deck at the begin
