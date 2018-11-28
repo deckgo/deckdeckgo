@@ -21,8 +21,8 @@ export namespace Components {
     'keyboard': boolean;
     'pager': boolean;
     'pagerPercentage': boolean;
-    'slideNext': () => Promise<void>;
-    'slidePrev': () => Promise<void>;
+    'slideNext': (emitEvent?: boolean) => Promise<void>;
+    'slidePrev': (emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number) => Promise<void>;
     'toggleFullScreen': () => Promise<void>;
   }

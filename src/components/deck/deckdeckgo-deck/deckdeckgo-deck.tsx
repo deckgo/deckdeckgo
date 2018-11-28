@@ -154,7 +154,7 @@ export class DeckdeckgoDeck {
     this.startX = null;
   }
 
-  private swipeSlide(deltaX: DeltaX): Promise<void> {
+  private swipeSlide(deltaX: DeltaX, emitEvent: boolean = true): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!deltaX || !window) {
         resolve();
@@ -173,11 +173,15 @@ export class DeckdeckgoDeck {
           if (deltaX.swipeLeft) {
             this.activeIndex++;
 
-            this.slideNextStart.emit(this.activeIndex);
+            if (emitEvent) {
+              this.slideNextStart.emit(this.activeIndex);
+            }
           } else {
             this.activeIndex--;
 
-            this.slidePrevStart.emit(this.activeIndex);
+            if (emitEvent) {
+              this.slidePrevStart.emit(this.activeIndex);
+            }
           }
         }
       }
@@ -277,16 +281,16 @@ export class DeckdeckgoDeck {
   /* BEGIN: Manual sliding */
 
   @Method()
-  async slideNext() {
-    await this.slideNextPrev(true);
+  async slideNext(emitEvent?: boolean) {
+    await this.slideNextPrev(true, emitEvent);
   }
 
   @Method()
-  async slidePrev() {
-    await this.slideNextPrev(false);
+  async slidePrev(emitEvent?: boolean) {
+    await this.slideNextPrev(false, emitEvent);
   }
 
-  private async slideNextPrev(swipeLeft: boolean) {
+  private async slideNextPrev(swipeLeft: boolean, emitEvent?: boolean) {
     const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
     if (!slider || !window) {
@@ -303,7 +307,7 @@ export class DeckdeckgoDeck {
         deltaX: window.innerWidth
       };
 
-      await this.swipeSlide(deltaX);
+      await this.swipeSlide(deltaX, emitEvent);
     }
   }
 

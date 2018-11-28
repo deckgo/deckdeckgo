@@ -32,10 +32,22 @@ const deck = document.getElementsByTagName('deckgo-deck');
 await deck.slideNext();
 ```
 
+*Optional parameter:* Optionally your could provide a boolean parameter to this method in case you would not like the event `slideNextStart` and `slidePrevStart` to be fired.
+
+```
+await deck.slideNext(false);
+```
+
 ### Go to previous slide
 
 ```
 await deck.slidePrev();
+```
+
+*Optional parameter:* Optionally your could provide a boolean parameter to this method in case you would not like the event `slideNextStart` and `slidePrevStart` to be fired.
+
+```
+await deck.slidePrev(false);
 ```
 
 ### Go to a specific slide

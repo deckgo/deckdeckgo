@@ -127,14 +127,14 @@ public static void main(String args[]) {
   function slideNext() {
     const elem = document.getElementsByTagName('deckgo-deck');
     if (elem && elem.length > 0) {
-      elem[0].slideNext();
+      elem[0].slideNext(false);
     }
   }
 
   function slidePrev() {
     const elem = document.getElementsByTagName('deckgo-deck');
     if (elem && elem.length > 0) {
-      elem[0].slidePrev();
+      elem[0].slidePrev(false);
     }
   }
 
