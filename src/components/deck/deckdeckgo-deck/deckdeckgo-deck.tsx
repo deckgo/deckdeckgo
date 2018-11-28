@@ -36,6 +36,7 @@ export class DeckdeckgoDeck {
 
   @Event() slideNextDidChange: EventEmitter<number>;
   @Event() slidePrevDidChange: EventEmitter<number>;
+  @Event() slideToChange: EventEmitter<number>;
   @Event() slideDrag: EventEmitter<number>;
   @Event() slideWillChange: EventEmitter<number>;
 
@@ -344,7 +345,7 @@ export class DeckdeckgoDeck {
   }
 
   @Method()
-  async slideTo(index: number, speed?: number | undefined) {
+  async slideTo(index: number, speed?: number | undefined, emitEvent: boolean = true) {
     if (index > this.length || index < 0) {
       return;
     }
@@ -360,6 +361,10 @@ export class DeckdeckgoDeck {
 
     await this.lazyLoadImages(this.activeIndex);
     await this.doSwipeSlide(slider, speed);
+
+    if (emitEvent) {
+      this.slideToChange.emit(index);
+    }
   }
 
   /* END: Manual sliding */

@@ -8,8 +8,9 @@ Furthermore than the default swiping, the [DeckDeckGo] deck expose the following
   - [Go to next slide](#go-to-next-slide)
     - [Optional parameters](#pptional-parameters)
   - [Go to previous slide](#go-to-previous-slide)
-    - [Optional parameters](#pptional-parameters)
+    - [Optional parameters](#optional-parameters)
   - [Go to a specific slide](#go-to-a-specific-slide)
+      - [Parameters](#parameters)
   - [Is the deck at the begin](#is-the-deck-at-the-begin)
   - [Is the deck at the end](#is-the-deck-at-the-end)
   - [Get the index of the current slide](#get-the-index-of-the-current-slide)
@@ -71,6 +72,14 @@ await deck.slidePrev(false, false);
 ```
 await deck.slideTo(0); // parameters: index: number, speed?: number | undefined
 ```
+
+#### Parameters
+
+| Parameter                      | Type | Default | Description |
+| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
+| index | number | | Slide index of the specific slide. |
+| speed | number | 0 | The slide transition speed. |
+| emitEvent | boolean | true | In case you would not like to emit the event `slideToChange`. Note that if you would use this parameter, the above `speed` parameter must be provided too. |
 
 ### Is the deck at the begin
 
