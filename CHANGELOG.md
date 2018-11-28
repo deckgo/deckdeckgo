@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.8"></a>
+# [1.0.0-beta.8](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2018-11-28)
+
+### Features
+
+* add a new event slideToChange ([#dd37c90](https://github.com/fluster/deckdeckgo/commit/dd37c9021f2b433eb7ada5dc715c0f11910f5bcc))
+
 <a name="1.0.0-beta.7"></a>
 # [1.0.0-beta.7](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2018-11-28)
 
