@@ -37,8 +37,8 @@ await deck.print();
 
 | Event                     | Emitted value | Description |
 | -------------------------- |:-----------------:|:-----------------:|
-| slideNextStart | number | Emitted when the next slide has started. Emit the index of the new active slide. |
-| slidePrevStart | number | Emitted when the previous slide has ended. Emit the index of the new active slide. |
+| slideNextDidChange | number | Emitted when the next slide has started. Emit the index of the new active slide. |
+| slidePrevDidChange | number | Emitted when the previous slide has ended. Emit the index of the new active slide. |
 | slideDrag | number | Emitted when the slider is actively being moved. Emit the transformX value of the deck. |
 | slideWillChange | number | Emitted before the active slide has changed. Emit the transformX value of the deck. |
 

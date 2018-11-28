@@ -34,8 +34,8 @@ export class DeckdeckgoDeck {
   @State()
   private length: number = 0;
 
-  @Event() slideNextStart: EventEmitter<number>;
-  @Event() slidePrevStart: EventEmitter<number>;
+  @Event() slideNextDidChange: EventEmitter<number>;
+  @Event() slidePrevDidChange: EventEmitter<number>;
   @Event() slideDrag: EventEmitter<number>;
   @Event() slideWillChange: EventEmitter<number>;
 
@@ -174,13 +174,13 @@ export class DeckdeckgoDeck {
             this.activeIndex++;
 
             if (emitEvent) {
-              this.slideNextStart.emit(this.activeIndex);
+              this.slideNextDidChange.emit(this.activeIndex);
             }
           } else {
             this.activeIndex--;
 
             if (emitEvent) {
-              this.slidePrevStart.emit(this.activeIndex);
+              this.slidePrevDidChange.emit(this.activeIndex);
             }
           }
         }
