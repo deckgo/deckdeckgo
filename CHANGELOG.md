@@ -1,3 +1,16 @@
+<a name="1.0.0-beta.7"></a>
+# [1.0.0-beta.7](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2018-11-28)
+
+### Breaking changes
+
+* event `slideNextStart` renamed to `slideNextDidChange` ([#90df088](https://github.com/fluster/deckdeckgo/commit/90df0889345c15a3969a92cec00e90e4a3e79649))
+* event `slidePrevStart` renamed to `slidePrevDidChange` ([#90df088](https://github.com/fluster/deckdeckgo/commit/90df0889345c15a3969a92cec00e90e4a3e79649))
+
+### Features
+
+* add an option to not perform the inner slide animation on slideNext and slidePrev ([#cd06c76](https://github.com/fluster/deckdeckgo/commit/cd06c76e0d7776e2c6348bd3eba58ece942255c3))
+* add an option to not trigger slideStart events on slideNext and slidePrev ([#cd56d20](https://github.com/fluster/deckdeckgo/commit/cd56d2083464007d418c190dd15ccec14737c981))
+
 <a name="1.0.0-beta.6"></a>
 # [1.0.0-beta.6](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2018-11-27)
 
