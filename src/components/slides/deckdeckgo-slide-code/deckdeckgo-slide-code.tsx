@@ -2,8 +2,8 @@ import {Component, Element, Event, EventEmitter, Method, Prop, Watch} from '@ste
 
 import Prism from 'prismjs';
 
-import {DeckdeckgoSlide, DeckDeckGoSlideUtils} from '../deckdeckgo-slide';
-import {DeckDeckGoUtils} from '../../utils/deckdeckgo-utils';
+import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
+import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 
 enum DeckdeckgoSlideCodeAction {
   SWIPE,
@@ -37,7 +37,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private action: DeckdeckgoSlideCodeAction = null;
 
   async componentDidLoad() {
-    await DeckDeckGoSlideUtils.hideLazyLoadImages(this.el);
+    await DeckdeckgoSlideUtils.hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
 
@@ -164,7 +164,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadImages(): Promise<void> {
-    return DeckDeckGoUtils.lazyLoadImages(this.el);
+    return DeckdeckgoUtils.lazyLoadImages(this.el);
   }
 
   // DeckDeckGoZoom
@@ -256,7 +256,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   }
 
   private touchScrollStart(event: TouchEvent) {
-    this.startX = DeckDeckGoUtils.unifyEvent(event).clientX;
+    this.startX = DeckdeckgoUtils.unifyEvent(event).clientX;
   }
 
   private touchScrollMove(event: TouchEvent) {
@@ -264,7 +264,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
       return;
     }
 
-    const currentX: number = DeckDeckGoUtils.unifyEvent(event).clientX;
+    const currentX: number = DeckdeckgoUtils.unifyEvent(event).clientX;
 
     const swipeLeft: boolean = this.startX > currentX;
     const swipeRight: boolean = this.startX < currentX;

@@ -1,4 +1,4 @@
-import {DeckDeckGoUtils} from '../utils/deckdeckgo-utils';
+import {DeckdeckgoUtils} from '../utils/deckdeckgo-utils';
 
 export interface DeckdeckgoSlide {
   beforeSwipe(_swipeLeft: boolean): Promise<boolean>;
@@ -6,7 +6,7 @@ export interface DeckdeckgoSlide {
   lazyLoadImages(): Promise<void>;
 }
 
-export class DeckDeckGoSlideUtils {
+export class DeckdeckgoSlideUtils {
 
   static hideRevealElements(el: HTMLElement, revealShowFirst: boolean): Promise<void> {
     return new Promise<void>((resolve) => {
@@ -85,7 +85,7 @@ export class DeckDeckGoSlideUtils {
 
   static hideLazyLoadImages(el: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
-      let images: HTMLElement[] = DeckDeckGoUtils.getAllImages(el);
+      let images: HTMLElement[] = DeckdeckgoUtils.getAllImages(el);
 
       if (!images) {
         resolve();

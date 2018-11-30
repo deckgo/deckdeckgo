@@ -1,6 +1,6 @@
 import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '../../utils/deckdeckgo-utils';
+import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 
 interface DeltaX {
   slider: HTMLElement
@@ -119,7 +119,7 @@ export class DeckdeckgoDeck {
   }
 
   private start(e: Event) {
-    this.startX = DeckDeckGoUtils.unifyEvent(e).clientX;
+    this.startX = DeckdeckgoUtils.unifyEvent(e).clientX;
   }
 
   private async move(e: Event) {
@@ -223,7 +223,7 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      const currentX: number = DeckDeckGoUtils.unifyEvent(e).clientX;
+      const currentX: number = DeckdeckgoUtils.unifyEvent(e).clientX;
 
       if (this.startX === currentX) {
         resolve(null);
