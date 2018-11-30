@@ -113,6 +113,17 @@ export namespace Components {
     'revealShowFirst'?: boolean;
   }
 
+  interface DeckgoGif {
+    'alt': string;
+    'fullscreen': boolean;
+    'gif': string;
+  }
+  interface DeckgoGifAttributes extends StencilHTMLAttributes {
+    'alt'?: string;
+    'fullscreen'?: boolean;
+    'gif'?: string;
+  }
+
   interface DeckgoSocial {
     'fullUrl': string;
     'github': string;
@@ -138,6 +149,7 @@ declare global {
     'DeckgoSlideContent': Components.DeckgoSlideContent;
     'DeckgoSlideSplit': Components.DeckgoSlideSplit;
     'DeckgoSlideTitle': Components.DeckgoSlideTitle;
+    'DeckgoGif': Components.DeckgoGif;
     'DeckgoSocial': Components.DeckgoSocial;
   }
 
@@ -149,6 +161,7 @@ declare global {
     'deckgo-slide-content': Components.DeckgoSlideContentAttributes;
     'deckgo-slide-split': Components.DeckgoSlideSplitAttributes;
     'deckgo-slide-title': Components.DeckgoSlideTitleAttributes;
+    'deckgo-gif': Components.DeckgoGifAttributes;
     'deckgo-social': Components.DeckgoSocialAttributes;
   }
 
@@ -195,6 +208,12 @@ declare global {
     new (): HTMLDeckgoSlideTitleElement;
   };
 
+  interface HTMLDeckgoGifElement extends Components.DeckgoGif, HTMLStencilElement {}
+  var HTMLDeckgoGifElement: {
+    prototype: HTMLDeckgoGifElement;
+    new (): HTMLDeckgoGifElement;
+  };
+
   interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
   var HTMLDeckgoSocialElement: {
     prototype: HTMLDeckgoSocialElement;
@@ -209,6 +228,7 @@ declare global {
     'deckgo-slide-content': HTMLDeckgoSlideContentElement
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement
+    'deckgo-gif': HTMLDeckgoGifElement
     'deckgo-social': HTMLDeckgoSocialElement
   }
 
@@ -220,6 +240,7 @@ declare global {
     'deckgo-slide-content': HTMLDeckgoSlideContentElement;
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement;
+    'deckgo-gif': HTMLDeckgoGifElement;
     'deckgo-social': HTMLDeckgoSocialElement;
   }
 
