@@ -1,6 +1,6 @@
 import {Component, Element, Prop, Listen} from '@stencil/core';
 
-import {DeckDeckGoSlideUtils} from '../../slides/deckdeckgo-slide';
+import {DeckDeckGoUtils} from '../../utils/deckdeckgo-utils';
 
 @Component({
   tag: 'deckgo-gif',
@@ -22,7 +22,7 @@ export class DeckdeckgoGif {
 
   @Listen('gif')
   async lazyLoadGif() {
-    await DeckDeckGoSlideUtils.lazyLoadImages(this.el);
+    await DeckDeckGoUtils.lazyLoadImages(this.el);
   }
 
   render() {

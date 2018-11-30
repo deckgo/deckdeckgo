@@ -164,7 +164,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadImages(): Promise<void> {
-    return DeckDeckGoSlideUtils.lazyLoadImages(this.el);
+    return DeckDeckGoUtils.lazyLoadImages(this.el);
   }
 
   // DeckDeckGoZoom
