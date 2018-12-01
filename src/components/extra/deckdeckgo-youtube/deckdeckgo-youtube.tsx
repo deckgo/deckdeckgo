@@ -20,6 +20,11 @@ export class DeckdeckgoYoutube {
 
   private createIFrame(): Promise<void> {
     return new Promise<void>((resolve) => {
+      if (!this.src) {
+        resolve();
+        return;
+      }
+
       const element: HTMLIFrameElement = document.createElement('iframe');
 
       const allow: Attr = document.createAttribute('allow');
@@ -31,7 +36,7 @@ export class DeckdeckgoYoutube {
       element.setAttributeNode(allow);
       element.setAttributeNode(allowFullScreen);
 
-      element.src = this.src;
+      element.src = this.formatSrc();
       element.width = '' + this.width;
       element.height = '' + this.height;
       element.frameBorder = '0';
@@ -47,6 +52,19 @@ export class DeckdeckgoYoutube {
 
       resolve();
     });
+  }
+
+  private formatSrc(): string {
+    // Direct URL can't be embedded, like https://www.youtube.com/watch?v=oUOjJIfPIjw
+    const url: URL = new URL(this.src);
+    const videoId: string = url.searchParams.get('v');
+    if (videoId) {
+      // In such a case return a link which could be embedded
+      return 'https://www.youtube.com/embed/' + videoId;
+    } else {
+      // Otherwise we try the provided url
+      return this.src;
+    }
   }
 
   render() {
