@@ -138,6 +138,17 @@ export namespace Components {
     'medium'?: string;
     'twitter'?: string;
   }
+
+  interface DeckgoYoutube {
+    'height': number;
+    'url': string;
+    'width': number;
+  }
+  interface DeckgoYoutubeAttributes extends StencilHTMLAttributes {
+    'height'?: number;
+    'url'?: string;
+    'width'?: number;
+  }
 }
 
 declare global {
@@ -151,6 +162,7 @@ declare global {
     'DeckgoSlideTitle': Components.DeckgoSlideTitle;
     'DeckgoGif': Components.DeckgoGif;
     'DeckgoSocial': Components.DeckgoSocial;
+    'DeckgoYoutube': Components.DeckgoYoutube;
   }
 
   interface StencilIntrinsicElements {
@@ -163,6 +175,7 @@ declare global {
     'deckgo-slide-title': Components.DeckgoSlideTitleAttributes;
     'deckgo-gif': Components.DeckgoGifAttributes;
     'deckgo-social': Components.DeckgoSocialAttributes;
+    'deckgo-youtube': Components.DeckgoYoutubeAttributes;
   }
 
 
@@ -220,6 +233,12 @@ declare global {
     new (): HTMLDeckgoSocialElement;
   };
 
+  interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {}
+  var HTMLDeckgoYoutubeElement: {
+    prototype: HTMLDeckgoYoutubeElement;
+    new (): HTMLDeckgoYoutubeElement;
+  };
+
   interface HTMLElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement
     'deckgo-pager': HTMLDeckgoPagerElement
@@ -230,6 +249,7 @@ declare global {
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement
     'deckgo-gif': HTMLDeckgoGifElement
     'deckgo-social': HTMLDeckgoSocialElement
+    'deckgo-youtube': HTMLDeckgoYoutubeElement
   }
 
   interface ElementTagNameMap {
@@ -242,6 +262,7 @@ declare global {
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement;
     'deckgo-gif': HTMLDeckgoGifElement;
     'deckgo-social': HTMLDeckgoSocialElement;
+    'deckgo-youtube': HTMLDeckgoYoutubeElement;
   }
 
 
