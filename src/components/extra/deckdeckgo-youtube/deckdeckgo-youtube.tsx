@@ -10,7 +10,7 @@ export class DeckdeckgoYoutube {
 
   @Element() el: HTMLElement;
 
-  @Prop() url: string;
+  @Prop() src: string;
   @Prop() width: number;
   @Prop() height: number;
 
@@ -31,7 +31,7 @@ export class DeckdeckgoYoutube {
       element.setAttributeNode(allow);
       element.setAttributeNode(allowFullScreen);
 
-      element.src = this.url;
+      element.src = this.src;
       element.width = '' + this.width;
       element.height = '' + this.height;
       element.frameBorder = '0';

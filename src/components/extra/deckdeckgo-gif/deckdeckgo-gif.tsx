@@ -11,7 +11,7 @@ export class DeckdeckgoGif {
 
   @Element() el: HTMLElement;
 
-  @Prop() gif: string;
+  @Prop() src: string;
   @Prop() alt: string;
 
   @Prop() fullscreen: boolean = false;
@@ -28,7 +28,7 @@ export class DeckdeckgoGif {
   render() {
     return <div class="deckgo-gif">
       <slot name="header"></slot>
-      <img data-src={this.gif} alt={this.alt}/>
+      <img data-src={this.src} alt={this.alt}/>
       <slot name="footer"></slot>
     </div>;
   }

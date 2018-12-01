@@ -40,12 +40,12 @@ export namespace Components {
   interface DeckgoGif {
     'alt': string;
     'fullscreen': boolean;
-    'gif': string;
+    'src': string;
   }
   interface DeckgoGifAttributes extends StencilHTMLAttributes {
     'alt'?: string;
     'fullscreen'?: boolean;
-    'gif'?: string;
+    'src'?: string;
   }
 
   interface DeckgoSocial {
@@ -65,12 +65,12 @@ export namespace Components {
 
   interface DeckgoYoutube {
     'height': number;
-    'url': string;
+    'src': string;
     'width': number;
   }
   interface DeckgoYoutubeAttributes extends StencilHTMLAttributes {
     'height'?: number;
-    'url'?: string;
+    'src'?: string;
     'width'?: number;
   }
 
