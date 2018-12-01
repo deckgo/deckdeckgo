@@ -34,4 +34,15 @@ export class DeckdeckgoUtils {
     return Array.from(allSlotedImages).concat(Array.from(allShadowImages));
   }
 
+  static debounce(func: Function, timeout?: number) {
+    let timer: number;
+    return (event) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+
+      timer = setTimeout(func, timeout > 0 ? timeout : 300, event);
+    };
+  }
+
 }

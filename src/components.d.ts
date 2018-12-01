@@ -66,6 +66,7 @@ export namespace Components {
   interface DeckgoYoutube {
     'height': number;
     'src': string;
+    'updateIFrame': (width: number, height: number) => Promise<void>;
     'width': number;
   }
   interface DeckgoYoutubeAttributes extends StencilHTMLAttributes {
@@ -149,6 +150,22 @@ export namespace Components {
     'reveal'?: boolean;
     'revealShowFirst'?: boolean;
   }
+
+  interface DeckgoSlideYoutube {
+    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'fullSize': boolean;
+    'height': number;
+    'lazyLoadImages': () => Promise<void>;
+    'src': string;
+    'width': number;
+  }
+  interface DeckgoSlideYoutubeAttributes extends StencilHTMLAttributes {
+    'fullSize'?: boolean;
+    'height'?: number;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'src'?: string;
+    'width'?: number;
+  }
 }
 
 declare global {
@@ -163,6 +180,7 @@ declare global {
     'DeckgoSlideContent': Components.DeckgoSlideContent;
     'DeckgoSlideSplit': Components.DeckgoSlideSplit;
     'DeckgoSlideTitle': Components.DeckgoSlideTitle;
+    'DeckgoSlideYoutube': Components.DeckgoSlideYoutube;
   }
 
   interface StencilIntrinsicElements {
@@ -176,6 +194,7 @@ declare global {
     'deckgo-slide-content': Components.DeckgoSlideContentAttributes;
     'deckgo-slide-split': Components.DeckgoSlideSplitAttributes;
     'deckgo-slide-title': Components.DeckgoSlideTitleAttributes;
+    'deckgo-slide-youtube': Components.DeckgoSlideYoutubeAttributes;
   }
 
 
@@ -239,6 +258,12 @@ declare global {
     new (): HTMLDeckgoSlideTitleElement;
   };
 
+  interface HTMLDeckgoSlideYoutubeElement extends Components.DeckgoSlideYoutube, HTMLStencilElement {}
+  var HTMLDeckgoSlideYoutubeElement: {
+    prototype: HTMLDeckgoSlideYoutubeElement;
+    new (): HTMLDeckgoSlideYoutubeElement;
+  };
+
   interface HTMLElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement
     'deckgo-gif': HTMLDeckgoGifElement
@@ -250,6 +275,7 @@ declare global {
     'deckgo-slide-content': HTMLDeckgoSlideContentElement
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement
+    'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement
   }
 
   interface ElementTagNameMap {
@@ -263,6 +289,7 @@ declare global {
     'deckgo-slide-content': HTMLDeckgoSlideContentElement;
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement;
+    'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement;
   }
 
 

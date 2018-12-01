@@ -52,9 +52,9 @@ export class DeckdeckgoDeck {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', async () => {
+      window.addEventListener('resize', DeckdeckgoUtils.debounce(async () => {
         await this.slideTo(this.activeIndex);
-      });
+      }, 100));
     }
   }
 

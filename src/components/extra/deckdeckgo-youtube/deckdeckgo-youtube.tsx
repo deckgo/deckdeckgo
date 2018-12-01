@@ -1,4 +1,4 @@
-import {Component, Element, Prop} from '@stencil/core';
+import {Component, Element, Method, Prop} from '@stencil/core';
 
 
 @Component({
@@ -16,6 +16,16 @@ export class DeckdeckgoYoutube {
 
   async componentDidLoad() {
     await this.createIFrame();
+  }
+
+  @Method()
+  async updateIFrame(width: number, height: number) {
+    const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
+
+    if (iframe) {
+      iframe.width = '' + width;
+      iframe.height = '' + height;
+    }
   }
 
   private createIFrame(): Promise<void> {
