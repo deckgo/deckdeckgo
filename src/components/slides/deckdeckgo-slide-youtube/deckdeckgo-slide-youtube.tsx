@@ -18,8 +18,6 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   @Prop() width: number;
   @Prop() height: number;
 
-  @Prop() fullSize: boolean = false;
-
   @State() videoWidth: number;
   @State() videoHeight: number;
 
@@ -47,19 +45,17 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
 
   private initSize(): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (this.fullSize) {
+      // If width and height, use them otherwise full size
+      if (this.width > 0 && this.height > 0) {
+        this.videoWidth = this.width;
+        this.videoHeight = this.height;
+      } else {
         const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-youtube-container');
 
         if (container) {
           this.videoWidth = container.clientWidth;
           this.videoHeight = container.clientHeight;
-        } else {
-          this.videoWidth = this.width;
-          this.videoHeight = this.height;
         }
-      } else {
-        this.videoWidth = this.width;
-        this.videoHeight = this.height;
       }
 
       resolve();

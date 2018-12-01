@@ -153,14 +153,12 @@ export namespace Components {
 
   interface DeckgoSlideYoutube {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
-    'fullSize': boolean;
     'height': number;
     'lazyLoadImages': () => Promise<void>;
     'src': string;
     'width': number;
   }
   interface DeckgoSlideYoutubeAttributes extends StencilHTMLAttributes {
-    'fullSize'?: boolean;
     'height'?: number;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'src'?: string;
