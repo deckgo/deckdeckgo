@@ -23,7 +23,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Event() scrolling: EventEmitter<void>;
 
-  @Prop() srcFile: string;
+  @Prop() src: string;
 
   @Prop() anchor: string = '// DeckDeckGo';
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
@@ -169,13 +169,13 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   // DeckDeckGoZoom
   async fetchCode() {
-    if (!this.srcFile) {
+    if (!this.src) {
       return;
     }
 
     let fetchedCode: string;
     try {
-      const response: Response = await fetch(this.srcFile);
+      const response: Response = await fetch(this.src);
       fetchedCode = await response.text();
 
       await this.parseCode(fetchedCode);

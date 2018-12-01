@@ -254,7 +254,7 @@ You could provide a file URI to the code you want to display or provide it with 
 
 ```
 <deckgo-deck>
-  <deckgo-slide-code src-file="https://domain.com/path-to-my-code.extension">
+  <deckgo-slide-code src="https://domain.com/path-to-my-code.extension">
     <h1 slot="title">My code</h1>
   </deckgo-slide-code>
 </deckgo-deck>  
@@ -280,11 +280,11 @@ The slots `title` and `code` are optional.
 
 ### Attributes
 
-The attribute `src-file` is for this component mandatory. Other attributes are optional.
+The attribute `src` is for this component mandatory. Other attributes are optional.
 
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |:-----------------:|:-----------------:|:-----------------:|
-| src-file | string | | The web url to the source code you would like to showcase |
+| src | string | | The web url to the source code you would like to showcase |
 | anchor | string | // DeckDeckGo | The anchor identifier which will be use to scroll through your code when navigating using `slideNext()` or `slidePrev()` (see [documention](/doc/features/navigation.md)) |
 | anchor-zoom | string | // DeckDeckGoZoom | The anchor identifier which will be use to zoom inside your code when navigating using `slideNext()` or `slidePrev()` (see [documention](/doc/features/navigation.md)) |
 | hide-anchor | boolean | true | Set this attribute to `false` in case you would like to actually display the anchor value too |
@@ -294,7 +294,7 @@ The attribute `src-file` is for this component mandatory. Other attributes are o
 
 ```
 <deckgo-deck>
-  <deckgo-slide-code hide-anchor="fals" src-file="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+  <deckgo-slide-code hide-anchor="fals" src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
     <h1 slot="title">Code</h1>
   </deckgo-slide-code>
 </deckgo-deck>

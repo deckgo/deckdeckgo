@@ -102,7 +102,7 @@ export namespace Components {
     'hideAnchor': boolean;
     'language': string;
     'lazyLoadImages': () => Promise<void>;
-    'srcFile': string;
+    'src': string;
   }
   interface DeckgoSlideCodeAttributes extends StencilHTMLAttributes {
     'anchor'?: string;
@@ -111,7 +111,7 @@ export namespace Components {
     'language'?: string;
     'onScrolling'?: (event: CustomEvent<void>) => void;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'srcFile'?: string;
+    'src'?: string;
   }
 
   interface DeckgoSlideContent {
