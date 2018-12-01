@@ -37,6 +37,43 @@ export namespace Components {
     'pagerPercentage'?: boolean;
   }
 
+  interface DeckgoGif {
+    'alt': string;
+    'fullscreen': boolean;
+    'gif': string;
+  }
+  interface DeckgoGifAttributes extends StencilHTMLAttributes {
+    'alt'?: string;
+    'fullscreen'?: boolean;
+    'gif'?: string;
+  }
+
+  interface DeckgoSocial {
+    'fullUrl': string;
+    'github': string;
+    'linkedin': string;
+    'medium': string;
+    'twitter': string;
+  }
+  interface DeckgoSocialAttributes extends StencilHTMLAttributes {
+    'fullUrl'?: string;
+    'github'?: string;
+    'linkedin'?: string;
+    'medium'?: string;
+    'twitter'?: string;
+  }
+
+  interface DeckgoYoutube {
+    'height': number;
+    'url': string;
+    'width': number;
+  }
+  interface DeckgoYoutubeAttributes extends StencilHTMLAttributes {
+    'height'?: number;
+    'url'?: string;
+    'width'?: number;
+  }
+
   interface DeckgoPager {
     'activeIndex': number;
     'length': number;
@@ -112,70 +149,33 @@ export namespace Components {
     'reveal'?: boolean;
     'revealShowFirst'?: boolean;
   }
-
-  interface DeckgoGif {
-    'alt': string;
-    'fullscreen': boolean;
-    'gif': string;
-  }
-  interface DeckgoGifAttributes extends StencilHTMLAttributes {
-    'alt'?: string;
-    'fullscreen'?: boolean;
-    'gif'?: string;
-  }
-
-  interface DeckgoSocial {
-    'fullUrl': string;
-    'github': string;
-    'linkedin': string;
-    'medium': string;
-    'twitter': string;
-  }
-  interface DeckgoSocialAttributes extends StencilHTMLAttributes {
-    'fullUrl'?: string;
-    'github'?: string;
-    'linkedin'?: string;
-    'medium'?: string;
-    'twitter'?: string;
-  }
-
-  interface DeckgoYoutube {
-    'height': number;
-    'url': string;
-    'width': number;
-  }
-  interface DeckgoYoutubeAttributes extends StencilHTMLAttributes {
-    'height'?: number;
-    'url'?: string;
-    'width'?: number;
-  }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'DeckgoDeck': Components.DeckgoDeck;
+    'DeckgoGif': Components.DeckgoGif;
+    'DeckgoSocial': Components.DeckgoSocial;
+    'DeckgoYoutube': Components.DeckgoYoutube;
     'DeckgoPager': Components.DeckgoPager;
     'DeckgoSlideAuthor': Components.DeckgoSlideAuthor;
     'DeckgoSlideCode': Components.DeckgoSlideCode;
     'DeckgoSlideContent': Components.DeckgoSlideContent;
     'DeckgoSlideSplit': Components.DeckgoSlideSplit;
     'DeckgoSlideTitle': Components.DeckgoSlideTitle;
-    'DeckgoGif': Components.DeckgoGif;
-    'DeckgoSocial': Components.DeckgoSocial;
-    'DeckgoYoutube': Components.DeckgoYoutube;
   }
 
   interface StencilIntrinsicElements {
     'deckgo-deck': Components.DeckgoDeckAttributes;
+    'deckgo-gif': Components.DeckgoGifAttributes;
+    'deckgo-social': Components.DeckgoSocialAttributes;
+    'deckgo-youtube': Components.DeckgoYoutubeAttributes;
     'deckgo-pager': Components.DeckgoPagerAttributes;
     'deckgo-slide-author': Components.DeckgoSlideAuthorAttributes;
     'deckgo-slide-code': Components.DeckgoSlideCodeAttributes;
     'deckgo-slide-content': Components.DeckgoSlideContentAttributes;
     'deckgo-slide-split': Components.DeckgoSlideSplitAttributes;
     'deckgo-slide-title': Components.DeckgoSlideTitleAttributes;
-    'deckgo-gif': Components.DeckgoGifAttributes;
-    'deckgo-social': Components.DeckgoSocialAttributes;
-    'deckgo-youtube': Components.DeckgoYoutubeAttributes;
   }
 
 
@@ -183,6 +183,24 @@ declare global {
   var HTMLDeckgoDeckElement: {
     prototype: HTMLDeckgoDeckElement;
     new (): HTMLDeckgoDeckElement;
+  };
+
+  interface HTMLDeckgoGifElement extends Components.DeckgoGif, HTMLStencilElement {}
+  var HTMLDeckgoGifElement: {
+    prototype: HTMLDeckgoGifElement;
+    new (): HTMLDeckgoGifElement;
+  };
+
+  interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
+  var HTMLDeckgoSocialElement: {
+    prototype: HTMLDeckgoSocialElement;
+    new (): HTMLDeckgoSocialElement;
+  };
+
+  interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {}
+  var HTMLDeckgoYoutubeElement: {
+    prototype: HTMLDeckgoYoutubeElement;
+    new (): HTMLDeckgoYoutubeElement;
   };
 
   interface HTMLDeckgoPagerElement extends Components.DeckgoPager, HTMLStencilElement {}
@@ -221,48 +239,30 @@ declare global {
     new (): HTMLDeckgoSlideTitleElement;
   };
 
-  interface HTMLDeckgoGifElement extends Components.DeckgoGif, HTMLStencilElement {}
-  var HTMLDeckgoGifElement: {
-    prototype: HTMLDeckgoGifElement;
-    new (): HTMLDeckgoGifElement;
-  };
-
-  interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
-  var HTMLDeckgoSocialElement: {
-    prototype: HTMLDeckgoSocialElement;
-    new (): HTMLDeckgoSocialElement;
-  };
-
-  interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {}
-  var HTMLDeckgoYoutubeElement: {
-    prototype: HTMLDeckgoYoutubeElement;
-    new (): HTMLDeckgoYoutubeElement;
-  };
-
   interface HTMLElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement
+    'deckgo-gif': HTMLDeckgoGifElement
+    'deckgo-social': HTMLDeckgoSocialElement
+    'deckgo-youtube': HTMLDeckgoYoutubeElement
     'deckgo-pager': HTMLDeckgoPagerElement
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement
     'deckgo-slide-content': HTMLDeckgoSlideContentElement
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement
-    'deckgo-gif': HTMLDeckgoGifElement
-    'deckgo-social': HTMLDeckgoSocialElement
-    'deckgo-youtube': HTMLDeckgoYoutubeElement
   }
 
   interface ElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement;
+    'deckgo-gif': HTMLDeckgoGifElement;
+    'deckgo-social': HTMLDeckgoSocialElement;
+    'deckgo-youtube': HTMLDeckgoYoutubeElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
     'deckgo-slide-content': HTMLDeckgoSlideContentElement;
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement;
-    'deckgo-gif': HTMLDeckgoGifElement;
-    'deckgo-social': HTMLDeckgoSocialElement;
-    'deckgo-youtube': HTMLDeckgoYoutubeElement;
   }
 
 
