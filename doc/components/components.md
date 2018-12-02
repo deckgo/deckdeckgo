@@ -39,7 +39,7 @@ This component offers the following options which could be set using attributes:
 
 ### Note
 
-Of course, as other images add to a presentation build with [DeckDeckGo], gifs are lazy loaded. 
+Of course, as other images added to a presentation build with [DeckDeckGo], gifs are lazy loaded too. 
 
 ## Youtube
 
