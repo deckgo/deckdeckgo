@@ -49,3 +49,9 @@ div.deckgo-gif {
     }
   }
 }
+
+:host(.deckgo-gif-hidden) {
+  ::slotted([slot="header"]), ::slotted([slot="footer"]) {
+    display: none;
+  }
+}

@@ -134,6 +134,20 @@ export namespace Components {
     'revealShowFirst'?: boolean;
   }
 
+  interface DeckgoSlideGif {
+    'alt': string;
+    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'fullscreen': boolean;
+    'lazyLoadContent': () => Promise<void>;
+    'src': string;
+  }
+  interface DeckgoSlideGifAttributes extends StencilHTMLAttributes {
+    'alt'?: string;
+    'fullscreen'?: boolean;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'src'?: string;
+  }
+
   interface DeckgoSlideSplit {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'lazyLoadContent': () => Promise<void>;
@@ -183,6 +197,7 @@ declare global {
     'DeckgoSlideAuthor': Components.DeckgoSlideAuthor;
     'DeckgoSlideCode': Components.DeckgoSlideCode;
     'DeckgoSlideContent': Components.DeckgoSlideContent;
+    'DeckgoSlideGif': Components.DeckgoSlideGif;
     'DeckgoSlideSplit': Components.DeckgoSlideSplit;
     'DeckgoSlideTitle': Components.DeckgoSlideTitle;
     'DeckgoSlideYoutube': Components.DeckgoSlideYoutube;
@@ -197,6 +212,7 @@ declare global {
     'deckgo-slide-author': Components.DeckgoSlideAuthorAttributes;
     'deckgo-slide-code': Components.DeckgoSlideCodeAttributes;
     'deckgo-slide-content': Components.DeckgoSlideContentAttributes;
+    'deckgo-slide-gif': Components.DeckgoSlideGifAttributes;
     'deckgo-slide-split': Components.DeckgoSlideSplitAttributes;
     'deckgo-slide-title': Components.DeckgoSlideTitleAttributes;
     'deckgo-slide-youtube': Components.DeckgoSlideYoutubeAttributes;
@@ -251,6 +267,12 @@ declare global {
     new (): HTMLDeckgoSlideContentElement;
   };
 
+  interface HTMLDeckgoSlideGifElement extends Components.DeckgoSlideGif, HTMLStencilElement {}
+  var HTMLDeckgoSlideGifElement: {
+    prototype: HTMLDeckgoSlideGifElement;
+    new (): HTMLDeckgoSlideGifElement;
+  };
+
   interface HTMLDeckgoSlideSplitElement extends Components.DeckgoSlideSplit, HTMLStencilElement {}
   var HTMLDeckgoSlideSplitElement: {
     prototype: HTMLDeckgoSlideSplitElement;
@@ -278,6 +300,7 @@ declare global {
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement
     'deckgo-slide-content': HTMLDeckgoSlideContentElement
+    'deckgo-slide-gif': HTMLDeckgoSlideGifElement
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement
     'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement
@@ -292,6 +315,7 @@ declare global {
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
     'deckgo-slide-content': HTMLDeckgoSlideContentElement;
+    'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement;
     'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement;

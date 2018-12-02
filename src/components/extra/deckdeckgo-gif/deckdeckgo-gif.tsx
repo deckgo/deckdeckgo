@@ -1,4 +1,4 @@
-import {Component, Element, Prop, Method} from '@stencil/core';
+import {Component, Element, Prop, Method, State} from '@stencil/core';
 
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 import {DeckdeckgoExtra} from '../deckdeckgo-extra';
@@ -17,8 +17,18 @@ export class DeckdeckgoGif implements DeckdeckgoExtra {
 
   @Prop() fullscreen: boolean = false;
 
+  @State() loaded: boolean = false;
+
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
+
+    const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
+
+    if (img) {
+      img.addEventListener('load', () => {
+        this.loaded = true;
+      }, false);
+    }
   }
 
   @Method()
@@ -37,7 +47,8 @@ export class DeckdeckgoGif implements DeckdeckgoExtra {
   hostData() {
     return {
       class: {
-        'deckgo-gif-fullscreen': this.fullscreen
+        'deckgo-gif-fullscreen': this.fullscreen,
+        'deckgo-gif-hidden': !this.loaded
       }
     }
   }
