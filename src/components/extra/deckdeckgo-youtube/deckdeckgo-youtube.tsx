@@ -1,12 +1,13 @@
 import {Component, Element, Method, Prop} from '@stencil/core';
 
+import {DeckdeckgoExtra} from '../deckdeckgo-extra';
 
 @Component({
   tag: 'deckgo-youtube',
   styleUrl: 'deckdeckgo-youtube.scss',
   shadow: true
 })
-export class DeckdeckgoYoutube {
+export class DeckdeckgoYoutube implements DeckdeckgoExtra {
 
   @Element() el: HTMLElement;
 
@@ -16,8 +17,6 @@ export class DeckdeckgoYoutube {
 
   async componentDidLoad() {
     await this.addPreconnectLink();
-
-    await this.createIFrame();
   }
 
   private addPreconnectLink(): Promise<void> {
@@ -54,9 +53,20 @@ export class DeckdeckgoYoutube {
     }
   }
 
+  @Method()
+  lazyLoadContent(): Promise<void> {
+    return this.createIFrame();
+  }
+
   private createIFrame(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.src) {
+        resolve();
+        return;
+      }
+
+      const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
+      if (iframe) {
         resolve();
         return;
       }

@@ -1,13 +1,14 @@
 import {Component, Element, Prop, Method} from '@stencil/core';
 
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
+import {DeckdeckgoExtra} from '../deckdeckgo-extra';
 
 @Component({
   tag: 'deckgo-gif',
   styleUrl: 'deckdeckgo-gif.scss',
   shadow: true
 })
-export class DeckdeckgoGif {
+export class DeckdeckgoGif implements DeckdeckgoExtra {
 
   @Element() el: HTMLElement;
 

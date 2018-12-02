@@ -1,12 +1,13 @@
-import {Component, Prop, State, Watch} from '@stencil/core';
+import {Component, Method, Prop, State, Watch} from '@stencil/core';
 
+import {DeckdeckgoExtra} from '../deckdeckgo-extra';
 
 @Component({
   tag: 'deckgo-social',
   styleUrl: 'deckdeckgo-social.scss',
   shadow: true
 })
-export class DeckdeckgoSocial {
+export class DeckdeckgoSocial implements DeckdeckgoExtra {
 
   @State() url: string;
 
@@ -22,6 +23,13 @@ export class DeckdeckgoSocial {
     this.concatMediumUrl();
     this.concatGithubUrl();
     this.concatFullUrl();
+  }
+
+  @Method()
+  lazyLoadContent(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
   }
 
   @Watch('twitter')

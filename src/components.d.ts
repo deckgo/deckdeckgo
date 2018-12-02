@@ -52,6 +52,7 @@ export namespace Components {
   interface DeckgoSocial {
     'fullUrl': string;
     'github': string;
+    'lazyLoadContent': () => Promise<void>;
     'linkedin': string;
     'medium': string;
     'twitter': string;
@@ -66,6 +67,7 @@ export namespace Components {
 
   interface DeckgoYoutube {
     'height': number;
+    'lazyLoadContent': () => Promise<void>;
     'src': string;
     'updateIFrame': (width: number, height: number) => Promise<void>;
     'width': number;

@@ -1,4 +1,5 @@
 import {DeckdeckgoUtils} from '../utils/deckdeckgo-utils';
+import {DeckdeckgoExtraUtils} from '../extra/deckdeckgo-extra';
 
 export interface DeckdeckgoSlide {
   beforeSwipe(_swipeLeft: boolean): Promise<boolean>;
@@ -95,31 +96,16 @@ export class DeckdeckgoSlideUtils {
 
   static lazyLoadContent(el: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      await DeckdeckgoUtils.lazyLoadImages(el);
+      const promises = [];
 
-      const gifs: HTMLElement[] = this.getAllElements(el, 'deckgo-gif');
+      promises.push(DeckdeckgoUtils.lazyLoadImages(el));
+      promises.push(DeckdeckgoExtraUtils.lazyLoadContent(el, 'deckgo-gif'));
+      promises.push(DeckdeckgoExtraUtils.lazyLoadContent(el, 'deckgo-youtube'));
 
-      if (gifs && gifs.length > 0) {
-        const promises = [];
-
-        gifs.forEach((gif: HTMLDeckgoGifElement) => {
-            promises.push(gif.lazyLoadContent());
-        });
-
-        await Promise.all(promises);
-
-        resolve();
-      }
+      await Promise.all(promises);
 
       resolve();
     });
-  }
-
-  private static getAllElements(el: HTMLElement, tag: string): HTMLElement[] {
-    const allSlottedElements: NodeListOf<HTMLElement> = el.querySelectorAll(tag);
-    const allShadowsElements: NodeListOf<HTMLElement> = el.shadowRoot.querySelectorAll(tag);
-
-    return Array.from(allSlottedElements).concat(Array.from(allShadowsElements));
   }
 
 }

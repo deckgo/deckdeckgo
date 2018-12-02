@@ -88,7 +88,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     } else {
       return new Promise<void>((resolve) => {
         resolve();
-      })
+      });
     }
   }
 
