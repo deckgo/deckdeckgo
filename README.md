@@ -110,7 +110,9 @@ The deck should be declared using the tag `<deckgo-deck/>` and each slide should
 </deckgo-deck>
 ```
 
-The [detailed documentation](doc/slides/slides.md) display all templates and all options available for each slides.
+The 👉 [extended documentation](doc/slides/slides.md) 👈 displays all templates and options available for each slides.
+
+[DeckDeckGo] also offers a couple of components which could be used in almost every templates, these are documented in a separate [chapter](doc/components/components.md) of the documentation. 
 
 ## Navigation
 
