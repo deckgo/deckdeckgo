@@ -247,7 +247,7 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
 
 ### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-youtube-author.png" width="450px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-youtube-layout.png" width="450px">
 
 ### Usage
 
