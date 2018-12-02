@@ -10,6 +10,7 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 - [Slide: Title](#slide-title)
 - [Slide: Content](#slide-content)
 - [Slide: Split](#slide-split)
+- [Slide: Gif](#slide-gif)
 - [Slide: Youtube](#slide-youtube)
 - [Slide: Code](#slide-code)
 - [Slide: Author](#slide-author)
@@ -29,6 +30,10 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 * [Split](#slide-split)
 
 <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="200px">
+
+* [Gif](#slide-gif)
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-gif-layout.gif" width="200px">
 
 * [Youtube](#slide-youtube)
 
@@ -240,6 +245,57 @@ The following theming options will affect this component if set on its host or p
 | --slide-split-align | inherit | Modify for example to center if you want to align the content in the middle |
 | --slide-split-text-align | inherit | Modify for example to center if you want to align the text in the middle |
 | --slide-split-title-display | none | Modify this attribute if you wish to display a title |
+
+## Slide: Gif
+
+The "Gif" slide let you add easily a gif, like those provided by [Giphy](https://giphy.com), to your presentation.
+
+### Layout
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-gif-layout.gif" width="450px">
+
+### Usage
+
+The "Gif" slide's Web Component could be integrated using the tag `<deckgo-slide-gif/>`.
+
+```
+<deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen="true">
+  <h1 slot="title">My title</h1>
+  <h1 slot="header">Hey</h1>
+  <h2 slot="footer">It's a cool gif</h2>
+</deckgo-slide-gif>
+```
+
+#### Slots
+
+The slots `title`, `header` and `footer` are both optional. `header` and `footer` would be displayed over the gif.
+
+#### Gif component
+
+The slide "Gif" relies on the component `<deckgo-gif/>` which is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+
+### Attributes
+
+This component offers the following options which could be set using attributes:
+
+| Attribute                      | Type   | Default   | Description   |
+| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
+| src | string |  | The source url, the src, of the Gif. Could be an embeddable external url or a local one. |
+| alt | string |  | And alt information could be provided for accessibility reason. |
+| fullscreen | number | false | If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen. |
+
+### Theming
+
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |:-----------------:|:-----------------:|
+| --background |  |  |
+| --color |  |  |
+| --slide-padding-top | 16px | Padding top of the all slide |
+| --slide-padding-end | 32px | Padding right of the all slide |
+| --slide-padding-bottom | 16px | Padding bottom of the all slide |
+| --slide-padding-start | 32px | Padding left of the all slide |
 
 ## Slide: Youtube
 
