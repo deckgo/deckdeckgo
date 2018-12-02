@@ -2,7 +2,7 @@ import {Component, Element, Event, EventEmitter, Method, Prop, Watch} from '@ste
 
 import Prism from 'prismjs';
 
-import {DeckdeckgoSlide} from '../deckdeckgo-slide';
+import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 
 enum DeckdeckgoSlideCodeAction {
@@ -163,8 +163,8 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   }
 
   @Method()
-  lazyLoadImages(): Promise<void> {
-    return DeckdeckgoUtils.lazyLoadImages(this.el);
+  lazyLoadContent(): Promise<void> {
+    return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
 
   // DeckDeckGoZoom

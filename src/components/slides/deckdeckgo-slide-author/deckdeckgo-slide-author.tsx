@@ -1,6 +1,6 @@
 import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
 
-import {DeckdeckgoSlide} from '../deckdeckgo-slide';
+import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 
 @Component({
@@ -30,8 +30,8 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   }
 
   @Method()
-  lazyLoadImages(): Promise<void> {
-    return DeckdeckgoUtils.lazyLoadImages(this.el);
+  lazyLoadContent(): Promise<void> {
+    return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
 
   render() {

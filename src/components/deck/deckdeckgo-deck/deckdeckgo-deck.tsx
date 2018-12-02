@@ -44,10 +44,10 @@ export class DeckdeckgoDeck {
     this.initWindowResize();
     this.initKeyboardAssist();
 
-    const lazyLoadImagesFirstSlide = this.lazyLoadImages(0);
-    const lazyLoadImagesSecondSlide = this.lazyLoadImages(1);
+    const lazyLoadContentFirstSlide = this.lazyLoadContent(0);
+    const lazyLoadContentSecondSlide = this.lazyLoadContent(1);
 
-    await Promise.all([lazyLoadImagesFirstSlide, lazyLoadImagesSecondSlide]);
+    await Promise.all([lazyLoadContentFirstSlide, lazyLoadContentSecondSlide]);
   }
 
   private initWindowResize() {
@@ -190,7 +190,7 @@ export class DeckdeckgoDeck {
       await this.doSwipeSlide(deltaX.slider);
 
       // We want to lazy load the next slide images in the background
-      await this.lazyLoadImages(this.activeIndex + 1);
+      await this.lazyLoadContent(this.activeIndex + 1);
 
       resolve();
     });
@@ -332,12 +332,12 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private lazyLoadImages(index: number): Promise<void> {
+  private lazyLoadContent(index: number): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
       if (slide) {
-        await (slide as any).lazyLoadImages();
+        await (slide as any).lazyLoadContent();
       }
 
       resolve();
@@ -359,7 +359,7 @@ export class DeckdeckgoDeck {
     this.deckTranslateX = index * -1 * window.innerWidth;
     this.activeIndex = index;
 
-    await this.lazyLoadImages(this.activeIndex);
+    await this.lazyLoadContent(this.activeIndex);
     await this.doSwipeSlide(slider, speed);
 
     if (emitEvent) {
@@ -401,7 +401,7 @@ export class DeckdeckgoDeck {
   doPrint(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (window) {
-        await this.lazyLoadAllImages();
+        await this.lazyLoadAllContent();
 
         window.print();
       }
@@ -410,11 +410,11 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private lazyLoadAllImages(): Promise<any[]> {
+  private lazyLoadAllContent(): Promise<void[]> {
     const promises = [];
 
     for (let i = 0; i < this.length; i++) {
-      promises.push(this.lazyLoadImages(i));
+      promises.push(this.lazyLoadContent(i));
     }
 
     return Promise.all(promises);

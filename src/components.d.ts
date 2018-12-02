@@ -89,7 +89,7 @@ export namespace Components {
   interface DeckgoSlideAuthor {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'imgUrl': string;
-    'lazyLoadImages': () => Promise<void>;
+    'lazyLoadContent': () => Promise<void>;
   }
   interface DeckgoSlideAuthorAttributes extends StencilHTMLAttributes {
     'imgUrl'?: string;
@@ -102,7 +102,7 @@ export namespace Components {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'hideAnchor': boolean;
     'language': string;
-    'lazyLoadImages': () => Promise<void>;
+    'lazyLoadContent': () => Promise<void>;
     'src': string;
   }
   interface DeckgoSlideCodeAttributes extends StencilHTMLAttributes {
@@ -117,7 +117,7 @@ export namespace Components {
 
   interface DeckgoSlideContent {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
-    'lazyLoadImages': () => Promise<void>;
+    'lazyLoadContent': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
@@ -129,7 +129,7 @@ export namespace Components {
 
   interface DeckgoSlideSplit {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
-    'lazyLoadImages': () => Promise<void>;
+    'lazyLoadContent': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
@@ -141,7 +141,7 @@ export namespace Components {
 
   interface DeckgoSlideTitle {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
-    'lazyLoadImages': () => Promise<void>;
+    'lazyLoadContent': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
@@ -154,7 +154,7 @@ export namespace Components {
   interface DeckgoSlideYoutube {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'height': number;
-    'lazyLoadImages': () => Promise<void>;
+    'lazyLoadContent': () => Promise<void>;
     'src': string;
     'width': number;
   }

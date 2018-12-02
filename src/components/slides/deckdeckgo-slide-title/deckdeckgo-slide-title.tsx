@@ -33,8 +33,8 @@ export class DeckdeckgoSlideTitle implements DeckdeckgoSlide {
   }
 
   @Method()
-  lazyLoadImages(): Promise<void> {
-    return DeckdeckgoUtils.lazyLoadImages(this.el);
+  lazyLoadContent(): Promise<void> {
+    return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
 
   render() {
