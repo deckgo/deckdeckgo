@@ -14,7 +14,8 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() imgUrl: string;
+  @Prop() imgSrc: string;
+  @Prop() imgAlt: string;
 
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
@@ -38,7 +39,7 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
     return <div class="deckgo-slide">
       <slot name="title"></slot>
       <div class="deckgo-slide-author deckgo-slide-author-start">
-        <img data-src={this.imgUrl}/>
+        <img data-src={this.imgSrc} alt={this.imgAlt}/>
       </div>
       <div class="deckgo-slide-author deckgo-slide-author-end">
         <slot name="author"></slot>

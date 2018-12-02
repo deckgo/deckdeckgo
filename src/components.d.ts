@@ -91,11 +91,13 @@ export namespace Components {
 
   interface DeckgoSlideAuthor {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
-    'imgUrl': string;
+    'imgAlt': string;
+    'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
   }
   interface DeckgoSlideAuthorAttributes extends StencilHTMLAttributes {
-    'imgUrl'?: string;
+    'imgAlt'?: string;
+    'imgSrc'?: string;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
   }
 

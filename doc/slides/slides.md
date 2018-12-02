@@ -364,7 +364,7 @@ The "Author" slide's Web Component could be integrated using the tag `<deckgo-sl
 
 ```
 <deckgo-deck>
-  <deckgo-slide-author img-url="/assets/author.jpeg">
+  <deckgo-slide-author img-src="/assets/author.jpeg" img-alt="My self">
     <h1 slot="title">Author</h1>
     <div slot="author">
       <h2>David</h2>
@@ -395,13 +395,14 @@ This component offers the following options which could be set using attributes:
 
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |:-----------------:|:-----------------:|:-----------------:|
-| img-url | string |  | An image URI, for example a picture of the author. Note: this image will be displayed as a circle. |
+| img-src | string |  | An image URI, for example a picture of the author. Note: this image will be displayed as a circle. |
+| img-alt | string |  | An optional accessibility alt for the image. |
 
 #### Example
 
 ```
 <deckgo-deck>
-  <deckgo-slide-author img-url="/assets/author.jpeg">
+  <deckgo-slide-author img-src="/assets/author.jpeg">
     <div slot="author">
       <h2>David</h2>
       <p>Something about me</p>
