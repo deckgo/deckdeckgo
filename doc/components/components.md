@@ -5,6 +5,7 @@
 ## Table of contents
 
 - [Social](#social)
+- [Youtube](#youtube)
 
 ## Social
 
@@ -54,5 +55,33 @@ With for example `ion-icon`:
 <deckgo-social twitter="daviddalbusco"><ion-icon slot="icon" name="logo-twitter"></ion-icon> Twitter</deckgo-social>
 <deckgo-social github="fluster/deckdeckgo"><ion-icon slot="icon" name="logo-github"></ion-icon> DeckDeckGo on Github</deckgo-social>
 ```
+
+## Youtube
+
+The "Youtube" component allows you to easily add a [Youtube](https://youtube.com) video in almost any slide of your presentation.
+
+### Usage
+
+The "Youtube" slide's Web Component could be integrated using the tag `<deckgo-youtube/>`.
+
+```
+<deckgo-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
+</deckgo-youtube>
+```
+
+#### Slots
+
+No slots are available for this component.
+
+### Attributes
+
+This component offers the following options which could be set using attributes:
+
+| Attribute                      | Type   | Default   | Description   |
+| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
+| src | string |  | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
+| width | number |  | The width of the video player. |
+| height | number |  | The height of the video player. |
+| frame-title | string |  | A title for the frame, could be use for accessibility reason. |
 
 [DeckDeckGo]: https://deckdeckgo.com

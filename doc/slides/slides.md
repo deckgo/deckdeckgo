@@ -10,6 +10,7 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 - [Slide: Title](#slide-title)
 - [Slide: Content](#slide-content)
 - [Slide: Split](#slide-split)
+- [Slide: Youtube](#slide-youtube)
 - [Slide: Code](#slide-code)
 - [Slide: Author](#slide-author)
 
@@ -28,6 +29,10 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 * [Split](#slide-split)
 
 <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="200px">
+
+* [Youtube](#slide-youtube)
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-youtube-layout.png" width="200px">
 
 * [Code](#slide-code)
 
@@ -235,6 +240,55 @@ The following theming options will affect this component if set on its host or p
 | --slide-split-align | inherit | Modify for example to center if you want to align the content in the middle |
 | --slide-split-text-align | inherit | Modify for example to center if you want to align the text in the middle |
 | --slide-split-title-display | none | Modify this attribute if you wish to display a title |
+
+## Slide: Youtube
+
+The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to your presentation.
+
+### Layout
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-youtube-author.png" width="450px">
+
+### Usage
+
+The "Youtube" slide's Web Component could be integrated using the tag `<deckgo-slide-youtube/>`.
+
+```
+<deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
+  <h1 slot="title">A 16/9 video</h1>
+</deckgo-slide-youtube>
+```
+
+#### Slots
+
+The slot `title` is optional.
+
+#### Youtube component
+
+The slide "Youtube" relies on the component `<deckgo-youtube/>` which is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+
+### Attributes
+
+This component offers the following options which could be set using attributes:
+
+| Attribute                      | Type   | Default   | Description   |
+| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
+| src | string |  | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
+| width | number | Per default the video width will be calculated according the content size available. | Using this option you would be able to define your own width. |
+| height | number | Per default the video height will be calculated according the content size available. | Using this option you would be able to define your own height. |
+
+### Theming
+
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |:-----------------:|:-----------------:|
+| --background |  |  |
+| --color |  |  |
+| --slide-padding-top | 16px | Padding top of the all slide |
+| --slide-padding-end | 32px | Padding right of the all slide |
+| --slide-padding-bottom | 16px | Padding bottom of the all slide |
+| --slide-padding-start | 32px | Padding left of the all slide |
 
 ## Slide: Code
 
