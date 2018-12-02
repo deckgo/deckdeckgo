@@ -40,6 +40,7 @@ export namespace Components {
   interface DeckgoGif {
     'alt': string;
     'fullscreen': boolean;
+    'lazyLoadContent': () => Promise<void>;
     'src': string;
   }
   interface DeckgoGifAttributes extends StencilHTMLAttributes {

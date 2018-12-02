@@ -27,13 +27,6 @@ export class DeckdeckgoUtils {
     });
   };
 
-  static getAllImages(el: HTMLElement): HTMLElement[] {
-    const allSlotedImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > img');
-    const allShadowImages: NodeListOf<HTMLElement> = el.shadowRoot.querySelectorAll('img');
-
-    return Array.from(allSlotedImages).concat(Array.from(allShadowImages));
-  }
-
   static hideLazyLoadImages(el: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
       let images: HTMLElement[] = DeckdeckgoUtils.getAllImages(el);
@@ -50,6 +43,13 @@ export class DeckdeckgoUtils {
         resolve();
       }
     });
+  }
+
+  private static getAllImages(el: HTMLElement): HTMLElement[] {
+    const allSlotedImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > img');
+    const allShadowImages: NodeListOf<HTMLElement> = el.shadowRoot.querySelectorAll('img');
+
+    return Array.from(allSlotedImages).concat(Array.from(allShadowImages));
   }
 
   static debounce(func: Function, timeout?: number) {

@@ -1,4 +1,4 @@
-import {Component, Element, Prop, Listen} from '@stencil/core';
+import {Component, Element, Prop, Method} from '@stencil/core';
 
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 
@@ -17,12 +17,12 @@ export class DeckdeckgoGif {
   @Prop() fullscreen: boolean = false;
 
   async componentDidLoad() {
-    this.lazyLoadGif();
+    await DeckdeckgoUtils.hideLazyLoadImages(this.el);
   }
 
-  @Listen('gif')
-  async lazyLoadGif() {
-    await DeckdeckgoUtils.lazyLoadImages(this.el);
+  @Method()
+  lazyLoadContent(): Promise<void> {
+    return DeckdeckgoUtils.lazyLoadImages(this.el);
   }
 
   render() {
