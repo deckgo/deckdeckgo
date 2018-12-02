@@ -466,7 +466,7 @@ The "Author" slide let you introduce the author of the presentation.
 
 ### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-author.png" width="450px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-author-layout.png" width="450px">
 
 ### Usage
 
