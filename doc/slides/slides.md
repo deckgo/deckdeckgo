@@ -35,7 +35,7 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 
 * [Author](#slide-author)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-author.png" width="200px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-author-layout.png" width="200px">
 
 *Note: If you would miss or need further templates, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more options*
 
