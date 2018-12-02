@@ -1,3 +1,16 @@
+<a name="1.0.0-beta.9"></a>
+# [1.0.0-beta.9](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2018-11-02)
+
+### Breaking Changes
+
+* "author" template, the property `img-url` has been renamed to `img-src` ([#19](https://github.com/fluster/deckdeckgo/issues/19))
+* "code" template, the property `src-file` has been renamed to `src` ([#18](https://github.com/fluster/deckdeckgo/issues/18))
+
+### Templates and components
+
+* add a new template and component to easily integrate Gifs ([#12](https://github.com/fluster/deckdeckgo/issues/12))
+* add a new template and component to easily integrate Youtube video ([#12](https://github.com/fluster/deckdeckgo/issues/12))
+
 <a name="1.0.0-beta.8"></a>
 # [1.0.0-beta.8](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2018-11-28)
 
