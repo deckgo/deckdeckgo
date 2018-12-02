@@ -15,7 +15,33 @@ export class DeckdeckgoYoutube {
   @Prop() height: number;
 
   async componentDidLoad() {
+    await this.addPreconnectLink();
+
     await this.createIFrame();
+  }
+
+  private addPreconnectLink(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.src) {
+        resolve();
+        return;
+      }
+
+      const links: NodeListOf<HTMLElement> = document.head.querySelectorAll('link[rel=\'preconnect\']');
+
+      if (links && links.length > 0) {
+        resolve();
+        return;
+      }
+
+      const link: HTMLLinkElement = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = 'https://www.youtube.com';
+
+      document.head.appendChild(link);
+
+      resolve();
+    });
   }
 
   @Method()
