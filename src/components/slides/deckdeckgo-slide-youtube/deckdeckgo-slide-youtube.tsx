@@ -21,12 +21,16 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   @State() videoWidth: number;
   @State() videoHeight: number;
 
+  @State() frameTitle: string;
+
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
 
     this.initWindowResize();
+
+    await this.initFrameTitle();
 
     await this.initSize();
   }
@@ -41,6 +45,18 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   @Method()
   lazyLoadContent(): Promise<void> {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+  }
+
+  private initFrameTitle(): Promise<string> {
+    return new Promise<string>((resolve) => {
+      const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
+
+      if (title) {
+        this.frameTitle = title.innerHTML;
+      }
+
+      resolve();
+    });
   }
 
   private initSize(): Promise<void> {
@@ -91,7 +107,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
     if (!this.videoWidth || !this.videoHeight) {
       return undefined;
     } else {
-      return <deckgo-youtube src={this.src} width={this.videoWidth} height={this.videoHeight}></deckgo-youtube>
+      return <deckgo-youtube src={this.src} width={this.videoWidth} height={this.videoHeight} frame-title={this.frameTitle}></deckgo-youtube>
     }
   }
 

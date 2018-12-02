@@ -66,6 +66,7 @@ export namespace Components {
   }
 
   interface DeckgoYoutube {
+    'frameTitle': string;
     'height': number;
     'lazyLoadContent': () => Promise<void>;
     'src': string;
@@ -73,6 +74,7 @@ export namespace Components {
     'width': number;
   }
   interface DeckgoYoutubeAttributes extends StencilHTMLAttributes {
+    'frameTitle'?: string;
     'height'?: number;
     'src'?: string;
     'width'?: number;

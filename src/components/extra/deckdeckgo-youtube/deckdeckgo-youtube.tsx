@@ -12,8 +12,11 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
   @Element() el: HTMLElement;
 
   @Prop() src: string;
+
   @Prop() width: number;
   @Prop() height: number;
+
+  @Prop() frameTitle: string;
 
   async componentDidLoad() {
     await this.addPreconnectLink();
@@ -86,6 +89,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
       element.width = '' + this.width;
       element.height = '' + this.height;
       element.frameBorder = '0';
+      element.title = this.frameTitle;
 
       const div: HTMLElement = this.el.shadowRoot.querySelector('div');
 
