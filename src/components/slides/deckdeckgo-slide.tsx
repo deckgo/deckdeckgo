@@ -1,5 +1,3 @@
-import {DeckdeckgoUtils} from '../utils/deckdeckgo-utils';
-
 export interface DeckdeckgoSlide {
   beforeSwipe(_swipeLeft: boolean): Promise<boolean>;
 
@@ -79,24 +77,6 @@ export class DeckdeckgoSlideUtils {
         resolve(couldSwipe);
       } else {
         resolve(true);
-      }
-    });
-  }
-
-  static hideLazyLoadImages(el: HTMLElement): Promise<void> {
-    return new Promise<void>((resolve) => {
-      let images: HTMLElement[] = DeckdeckgoUtils.getAllImages(el);
-
-      if (!images) {
-        resolve();
-      } else {
-        images = images.filter((image: HTMLElement) => image.getAttribute('data-src'));
-
-        images.forEach((image: HTMLElement) => {
-          image.style.setProperty('visibility', 'hidden');
-        });
-
-        resolve();
       }
     });
   }

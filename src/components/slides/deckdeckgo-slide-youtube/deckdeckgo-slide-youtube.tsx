@@ -1,6 +1,6 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State} from '@stencil/core';
 
-import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
+import {DeckdeckgoSlide} from '../deckdeckgo-slide';
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 
 @Component({
@@ -22,7 +22,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   @State() videoHeight: number;
 
   async componentDidLoad() {
-    await DeckdeckgoSlideUtils.hideLazyLoadImages(this.el);
+    await DeckdeckgoUtils.hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
 

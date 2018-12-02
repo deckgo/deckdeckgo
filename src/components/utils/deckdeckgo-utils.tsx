@@ -34,6 +34,24 @@ export class DeckdeckgoUtils {
     return Array.from(allSlotedImages).concat(Array.from(allShadowImages));
   }
 
+  static hideLazyLoadImages(el: HTMLElement): Promise<void> {
+    return new Promise<void>((resolve) => {
+      let images: HTMLElement[] = DeckdeckgoUtils.getAllImages(el);
+
+      if (!images) {
+        resolve();
+      } else {
+        images = images.filter((image: HTMLElement) => image.getAttribute('data-src'));
+
+        images.forEach((image: HTMLElement) => {
+          image.style.setProperty('visibility', 'hidden');
+        });
+
+        resolve();
+      }
+    });
+  }
+
   static debounce(func: Function, timeout?: number) {
     let timer: number;
     return (event) => {
