@@ -37,6 +37,10 @@ This component offers the following options which could be set using attributes:
 | alt | string |  | And alt information could be provided for accessibility reason. |
 | fullscreen | number | false | If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen. |
 
+### Note
+
+Of course, as other images add to a presentation build with [DeckDeckGo], gifs are lazy loaded. 
+
 ## Youtube
 
 The "Youtube" component allows you to easily add a [Youtube](https://youtube.com) video in almost any slide of your presentation.
@@ -63,7 +67,7 @@ This component offers the following options which could be set using attributes:
 | src | string |  | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
 | width | number |  | The width of the video player. |
 | height | number |  | The height of the video player. |
-| frame-title | string |  | A title for the frame, could be use for accessibility reason. |
+| frame-title | string |  | A title for the frame, could be use for accessibility reason. | 
 
 ## Social
 
