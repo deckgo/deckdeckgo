@@ -33,6 +33,7 @@ export namespace Components {
     'onSlidePrevDidChange'?: (event: CustomEvent<number>) => void;
     'onSlideToChange'?: (event: CustomEvent<number>) => void;
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
+    'onSlidesDidLoad'?: (event: CustomEvent<string[]>) => void;
     'pager'?: boolean;
     'pagerPercentage'?: boolean;
   }

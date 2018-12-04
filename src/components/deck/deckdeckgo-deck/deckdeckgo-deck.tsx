@@ -34,6 +34,7 @@ export class DeckdeckgoDeck {
   @State()
   private length: number = 0;
 
+  @Event() slidesDidLoad: EventEmitter<string[]>;
   @Event() slideNextDidChange: EventEmitter<number>;
   @Event() slidePrevDidChange: EventEmitter<number>;
   @Event() slideToChange: EventEmitter<number>;
@@ -245,8 +246,24 @@ export class DeckdeckgoDeck {
   /* BEGIN: Slide length and active index */
 
   @Listen('slideDidLoad')
-  slideDidLoad() {
+  async slideDidLoad() {
     this.length++;
+
+    await this.emitSlidesDidLoad();
+  }
+
+  private emitSlidesDidLoad(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const definedSlides: HTMLCollection = this.el.children;
+      const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
+
+      if (definedSlides && loadedSlides && loadedSlides.length === definedSlides.length && definedSlides.length === this.length) {
+        const orderedSlidesTagNames: string[] = Array.from(loadedSlides).map((slide: HTMLElement) => { return slide.tagName});
+        this.slidesDidLoad.emit(orderedSlidesTagNames);
+      }
+
+      resolve();
+    });
   }
 
   @Method()

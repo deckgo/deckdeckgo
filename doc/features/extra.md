@@ -37,6 +37,7 @@ await deck.print();
 
 | Event                     | Emitted value | Description |
 | -------------------------- |:-----------------:|:-----------------:|
+| slidesDidLoad | string[] | Emitted when the deck and all slides have loaded. Emit the an ordered list of all the tag names of the slides. |
 | slideNextDidChange | number | Emitted when the next slide has started. Emit the index of the new active slide. |
 | slidePrevDidChange | number | Emitted when the previous slide has ended. Emit the index of the new active slide. |
 | slideToChange | number | Emitted when a specific slide as selected. Emit the index of the new selected slide. |
