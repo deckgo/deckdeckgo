@@ -37,6 +37,19 @@ This component offers the following options which could be set using attributes:
 | alt | string |  | And alt information could be provided for accessibility reason. |
 | fullscreen | number | false | If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen. |
 
+### Theming
+
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |:-----------------:|:-----------------:|
+| --width | | The width of the gif |
+| --height | | The height of the gif |
+| --background | | The background of the `header` and `footer` over the gif |
+| --color | | The color of the `header` and `footer` over the gif|
+| --padding | | The padding of the `header` and `footer` over the gif |
+| --zIndex | 2 | The z-index of the slide |
+
 ### Note
 
 Of course, as other images added to a presentation build with [DeckDeckGo], gifs are lazy loaded too. 

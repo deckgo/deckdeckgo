@@ -45,7 +45,7 @@ div.deckgo-gif {
     }
 
     ::slotted([slot="header"]), ::slotted([slot="footer"]) {
-      z-index: 1;
+      z-index: var(--zIndex, 2);
     }
   }
 }

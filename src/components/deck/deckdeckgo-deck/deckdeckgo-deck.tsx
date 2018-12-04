@@ -253,16 +253,36 @@ export class DeckdeckgoDeck {
   }
 
   private emitSlidesDidLoad(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       const definedSlides: HTMLCollection = this.el.children;
       const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
 
-      if (definedSlides && loadedSlides && loadedSlides.length === definedSlides.length && definedSlides.length === this.length) {
-        const orderedSlidesTagNames: string[] = Array.from(loadedSlides).map((slide: HTMLElement) => { return slide.tagName});
+      const definedSlidesLength: number = await this.countDefinedSlides(definedSlides);
+
+      if (definedSlides && loadedSlides && loadedSlides.length === definedSlidesLength && definedSlidesLength === this.length) {
+        const orderedSlidesTagNames: string[] = Array.from(loadedSlides).map((slide: HTMLElement) => {
+          return slide.tagName
+        });
         this.slidesDidLoad.emit(orderedSlidesTagNames);
       }
 
       resolve();
+    });
+  }
+
+  // The last child might be a background and note a slides
+  private countDefinedSlides(definedSlides: HTMLCollection): Promise<number> {
+    return new Promise<number>((resolve) => {
+      if (!definedSlides || definedSlides.length <= 0) {
+        resolve(0);
+        return;
+      }
+
+      const slides: Element[] = Array.from(definedSlides).filter((slide: Element) => {
+        return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1
+      });
+
+      resolve(slides ? slides.length : 0);
     });
   }
 
@@ -443,6 +463,7 @@ export class DeckdeckgoDeck {
     return [
       <div class="deckgo-deck">
         <slot/>
+        <slot name="background"></slot>
       </div>,
       <div class="deckgo-pager">{this.pager ? <deckgo-pager active-index={this.activeIndex} length={this.length}
                                                             percentage={this.pagerPercentage}></deckgo-pager> : ''}</div>

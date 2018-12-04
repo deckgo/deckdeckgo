@@ -24,6 +24,10 @@ div.deckgo-pager {
   left: 0;
 }
 
+::slotted([slot="background"]) {
+  pointer-events: none;
+}
+
 @media print {
   div.deckgo-deck {
     display: initial;
