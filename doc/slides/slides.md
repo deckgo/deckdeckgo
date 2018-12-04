@@ -556,7 +556,7 @@ The following theming options will affect this component if set on its host or p
 
 ## Background
 
-Beside slides and templates, a [DeckDeckGo] deck could also contains a customized element `background` which could be injected using a dedicated `slot`. This element inherit the length of the all presentation. This option is handy for example in case you would like to have a background which would evolve while you where presenting your slides.
+Beside slides and templates, a [DeckDeckGo] deck could also contains a customized element `background` which could be injected using a dedicated `slot`. This element inherit the length of the all presentation. This option is handy for example in case you would like to have a background which follows your presentation.
 
 ### Example
 
