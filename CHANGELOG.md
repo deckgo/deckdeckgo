@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.10"></a>
+# [1.0.0-beta.10](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2018-11-04)
+
+### Features
+
+* emit an event with descriptions of all slides when the all deck and slides are loaded ([#20](https://github.com/fluster/deckdeckgo/issues/20))
+* add a new extra slot to the deck for an extra background layer ([#21](https://github.com/fluster/deckdeckgo/issues/21))
+
 <a name="1.0.0-beta.9"></a>
 # [1.0.0-beta.9](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2018-11-02)
 
