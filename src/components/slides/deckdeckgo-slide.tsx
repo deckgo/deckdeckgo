@@ -4,6 +4,8 @@ import {DeckdeckgoExtraUtils} from '../extra/deckdeckgo-extra';
 export interface DeckdeckgoSlide {
   beforeSwipe(_swipeLeft: boolean): Promise<boolean>;
 
+  afterSwipe(): Promise<void>;
+
   lazyLoadContent(): Promise<void>;
 }
 
@@ -83,6 +85,12 @@ export class DeckdeckgoSlideUtils {
       }
     });
   }
+
+  static afterSwipe(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  };
 
   // Source: http://detectmobilebrowsers.com
   static isMobile(): boolean {

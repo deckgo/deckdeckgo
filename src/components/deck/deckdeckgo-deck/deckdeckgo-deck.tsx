@@ -163,7 +163,6 @@ export class DeckdeckgoDeck {
         return;
       }
 
-
       const couldSwipeLeft: boolean = deltaX.swipeLeft && this.activeIndex < this.length - 1;
       const couldSwipeRight: boolean = !deltaX.swipeLeft && this.activeIndex > 0;
 
@@ -340,7 +339,7 @@ export class DeckdeckgoDeck {
     if (!slideAnimation) {
       couldSwipe = true;
     } else {
-      couldSwipe = await this.couldSwipe(swipeLeft);
+      couldSwipe = await this.beforeSwipe(swipeLeft);
     }
 
     // We might want first to show hide stuffs in the slide before swiping
@@ -352,10 +351,12 @@ export class DeckdeckgoDeck {
       };
 
       await this.swipeSlide(deltaX, emitEvent);
+
+      await this.afterSwipe(swipeLeft);
     }
   }
 
-  private couldSwipe(swipeLeft: boolean): Promise<boolean> {
+  private beforeSwipe(swipeLeft: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
 
@@ -365,6 +366,27 @@ export class DeckdeckgoDeck {
       } else {
         const result: boolean = await (slide as any).beforeSwipe(swipeLeft);
         resolve(result);
+      }
+    });
+  }
+
+  private afterSwipe(swipeLeft: boolean): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const indexPreviousSlide: number = swipeLeft ? this.activeIndex - 1 : this.activeIndex + 1;
+
+      if (isNaN(indexPreviousSlide) || indexPreviousSlide < 0 || indexPreviousSlide > this.length) {
+        resolve();
+        return;
+      }
+
+      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (indexPreviousSlide + 1) + ')');
+
+      if (!slide) {
+        // Might be a swipe after the first or last slide
+        resolve();
+      } else {
+        await (slide as any).afterSwipe();
+        resolve();
       }
     });
   }

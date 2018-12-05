@@ -43,6 +43,15 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   }
 
   @Method()
+  afterSwipe(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      // Stop video after swipe to prev or next slide
+      await this.playPauseVideo(false);
+      resolve();
+    });
+  }
+
+  @Method()
   lazyLoadContent(): Promise<void> {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }

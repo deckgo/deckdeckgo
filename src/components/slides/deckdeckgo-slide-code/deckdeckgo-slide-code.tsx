@@ -105,6 +105,11 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     });
   }
 
+  @Method()
+  afterSwipe(): Promise<void> {
+    return DeckdeckgoSlideUtils.afterSwipe();
+  }
+
   // DeckDeckGo
   private scrollToNext(swipeLeft: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {

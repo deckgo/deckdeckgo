@@ -31,6 +31,11 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   }
 
   @Method()
+  afterSwipe(): Promise<void> {
+    return DeckdeckgoSlideUtils.afterSwipe();
+  }
+
+  @Method()
   lazyLoadContent(): Promise<void> {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
