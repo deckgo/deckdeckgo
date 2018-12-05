@@ -352,6 +352,24 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-start | 32px | Padding left of the all slide |
 | --zIndex | 1 | The z-index of the slide |
 
+#### Methods
+
+The slide "Youtube" offers extra methods to play and pause the Youtube video clip. These methods are notably used by the [DeckDecGo]'s remote control.
+
+##### Play the video
+
+```
+const slide = deck.getElementsByTagName('deckgo-slide-youtube');
+await slide.play();
+```
+
+##### Pause the video
+
+```
+const slide = deck.getElementsByTagName('deckgo-slide-youtube');
+await slide.pause();
+```
+
 ### Slide: Code
 
 The "Code" slide is a the slide to use if you would like to showcase code during your talk.

@@ -69,6 +69,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
       }
 
       const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
+
       if (iframe) {
         resolve();
         return;
@@ -110,11 +111,40 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
     const videoId: string = url.searchParams.get('v');
     if (videoId) {
       // In such a case return a link which could be embedded
-      return 'https://www.youtube.com/embed/' + videoId;
+      return 'https://www.youtube.com/embed/' + videoId + '?enablejsapi=1';
     } else {
       // Otherwise we try the provided url
       return this.src;
     }
+  }
+
+  @Method()
+  play(): Promise<void> {
+    return this.playPauseVideo(true);
+  }
+
+  @Method()
+  pause(): Promise<void> {
+    return this.playPauseVideo(false);
+  }
+
+  private playPauseVideo(play: boolean): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
+
+      if (!iframe) {
+        resolve();
+        return;
+      }
+
+      iframe.contentWindow.postMessage(JSON.stringify({
+        event: 'command',
+        func: play ? 'playVideo' : 'pauseVideo',
+        args: ''
+      }), '*');
+
+      resolve();
+    })
   }
 
   render() {

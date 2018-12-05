@@ -47,6 +47,35 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
 
+  @Method()
+  async play() {
+    await this.playPauseVideo(true);
+  }
+
+  @Method()
+  async pause() {
+    await this.playPauseVideo(false);
+  }
+
+  private playPauseVideo(play: boolean): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const element: HTMLDeckgoYoutubeElement = this.el.shadowRoot.querySelector('deckgo-youtube');
+
+      if (!element) {
+        resolve();
+        return;
+      }
+
+      if (play) {
+        await element.play();
+      } else {
+        await element.pause();
+      }
+
+      resolve();
+    })
+  }
+
   private initFrameTitle(): Promise<string> {
     return new Promise<string>((resolve) => {
       const title: HTMLElement = this.el.querySelector('[slot=\'title\']');

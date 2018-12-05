@@ -10,7 +10,7 @@
 </head>
 <body style="margin: 0;">
 
-<deckgo-deck>
+<deckgo-deck id="slider">
   <deckgo-slide-title>
     <h1 slot="title">DeckDeckGo</h1>
     <p slot="content">
@@ -167,9 +167,34 @@ public static void main(String args[]) {
       elem[0].doPrint();
     }
   }
+
+  function playVideo() {
+    return new Promise(async (resolve) => {
+      const deck = document.getElementById('slider');
+
+      if (!deck) {
+        resolve();
+        return;
+      }
+
+      const index = await deck.getActiveIndex();
+
+      const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+      if (!youtubeSlideElement || youtubeSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase()) {
+        resolve();
+        return;
+      }
+
+      await youtubeSlideElement.play();
+
+      resolve();
+    });
+  }
 </script>
 
 <div style="position: fixed; bottom: 0; right: 0;">
+  <button onclick="playVideo()">Play video</button>
   <button onclick="slidePrev()">Prev</button>
   <button onclick="slideNext()">Next</button>
   <button onclick="slideTo()">Slide to</button>

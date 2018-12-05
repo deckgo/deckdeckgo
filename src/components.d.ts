@@ -70,6 +70,8 @@ export namespace Components {
     'frameTitle': string;
     'height': number;
     'lazyLoadContent': () => Promise<void>;
+    'pause': () => Promise<void>;
+    'play': () => Promise<void>;
     'src': string;
     'updateIFrame': (width: number, height: number) => Promise<void>;
     'width': number;
@@ -177,6 +179,8 @@ export namespace Components {
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'height': number;
     'lazyLoadContent': () => Promise<void>;
+    'pause': () => Promise<void>;
+    'play': () => Promise<void>;
     'src': string;
     'width': number;
   }
