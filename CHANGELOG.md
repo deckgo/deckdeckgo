@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.11"></a>
+# [1.0.0-beta.11](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2018-12-05)
+
+### Features
+
+* add methods to start and pause video when using the Youtube template ([#22](https://github.com/fluster/deckdeckgo/issues/22))
+
 <a name="1.0.0-beta.10"></a>
 # [1.0.0-beta.10](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2018-12-04)
 
