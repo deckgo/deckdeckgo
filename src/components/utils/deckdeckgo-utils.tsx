@@ -46,7 +46,7 @@ export class DeckdeckgoUtils {
   }
 
   private static getAllImages(el: HTMLElement): HTMLElement[] {
-    const allSlotedImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] > img');
+    const allSlotedImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] img');
     const allShadowImages: NodeListOf<HTMLElement> = el.shadowRoot.querySelectorAll('img');
 
     return Array.from(allSlotedImages).concat(Array.from(allShadowImages));
