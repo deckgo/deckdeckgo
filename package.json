@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo",
-  "version": "1.0.0-beta.11",
+  "version": "1.0.0-beta.12",
   "description": "Add a lightweight presentation to your web project using HTML and Web Components",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",

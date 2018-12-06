@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.12"></a>
+# [1.0.0-beta.12](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2018-12-06)
+
+### Fix
+
+* lazy load all slotted images not just the direct descendent ([#23](https://github.com/fluster/deckdeckgo/issues/23))
+
 <a name="1.0.0-beta.11"></a>
 # [1.0.0-beta.11](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2018-12-05)
 
