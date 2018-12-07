@@ -258,6 +258,10 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 
 <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-gif-layout.gif" width="450px">
 
+#### Note
+
+The slide Gif is useful for Gifs but could be use for any images too, in case you would like for example to display an image fullscreen
+
 #### Usage
 
 The "Gif" slide's Web Component could be integrated using the tag `<deckgo-slide-gif/>`.
