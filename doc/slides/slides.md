@@ -215,7 +215,7 @@ Both slots `title`, `start` and `end` are optional. Without providing one of the
 
 The `start` slot is the content of the left pane respectively the slot `end` is the content of the right pane.
 
-Note: The slot `title` is per default hidden. 
+Note: The slot `title` is per default hidden even if you provide it. See attributes below if you wish to display it. 
 
 #### Attributes
 
@@ -249,7 +249,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
 | --slide-split-align | inherit | Modify for example to center if you want to align the content in the middle |
 | --slide-split-text-align | inherit | Modify for example to center if you want to align the text in the middle |
-| --slide-split-title-display | none | Modify this attribute if you wish to display a title |
+| --slide-split-title-display | none | The `slot` title is per default hidden even if you provide it. If you wish to displays it, modify this attribute |
 | --zIndex | 1 | The z-index of the slide |
 
 ### Slide: Gif
