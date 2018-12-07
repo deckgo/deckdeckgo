@@ -211,9 +211,11 @@ The "Split" slide's Web Component could be integrated using the tag `<deckgo-sli
 
 ##### Slots
 
-Both slots `title` and `content` are optional. Without providing one of them, the page will remain empty.
+Both slots `title`, `start` and `end` are optional. Without providing one of them, the page will remain empty.
 
-Note: The slot `title` is per default hidden.
+The `start` slot is the content of the left pane respectively the slot `end` is the content of the right pane.
+
+Note: The slot `title` is per default hidden. 
 
 #### Attributes
 
