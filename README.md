@@ -19,8 +19,7 @@ Create a lightweight presentation using HTML and Web Components.
   - [Extra features](#extra-features)
   - [Lazy loading](#lazy-loading)
   - [Theming](#theming)
-  - [Talks](#talks)
-    - [Send me your talks](#send-me-your-talks)
+  - [Send me your slides](#send-me-your-slides)
   - [Backstory](#backstory)
   - [License](#license)
 
@@ -117,18 +116,9 @@ In order to lazy load the images of your presentation, provide their url using t
 
 *Note: If you would miss or need further theming options, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more theming flexibility and options*
 
-## Talks
+### Send me your slides
 
-A collection of talks where [DeckDeckGo] was used:
-
-| Title                      | Event   | Author and repo   | Available online          |
-| -------------------------- |:-----------------:|:-----------------:| ---------------:|
-| Ionic v4, web components, shadow dom and beyond | 2018/10/16 [Pantalks](https://www.meetup.com/fr-FR/Pantalks-tech-non-tech-talks-Panter-AG-Zurich/events/255430094/), Zürich | [Peterpeterparker](https://github.com/peterpeterparker/ionicv4-and-beyond) |  |
-| Ionic v4 and web components | 2018/10/26 [Web Zürich October](https://www.meetup.com/fr-FR/Web-Zurich/events/255699446), Zürich | [Peterpeterparker](https://github.com/peterpeterparker/webzueri) |  |
-
-### Send me your talks
-
-If you would publish online a talk you would have built with [DeckDeckGo], reach me out, I would be super duper happy to list these ❤️
+If you would publish online a presentation or talk you would have built with [DeckDeckGo], reach me out, I would be super duper happy to add it to the [list of talks and presentations](doc/talks/talks.md) ❤️
 
 ## Backstory
 
