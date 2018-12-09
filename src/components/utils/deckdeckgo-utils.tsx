@@ -5,8 +5,21 @@ export class DeckdeckgoUtils {
   }
 
   static async lazyLoadImages(el: HTMLElement): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       const images: HTMLElement[] = this.getAllImages(el);
+
+      await this.lazyLoadSelectedImages(images);
+
+      resolve();
+    });
+  };
+
+  static async lazyLoadSelectedImages(images: HTMLElement[]): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!images) {
+        resolve();
+        return;
+      }
 
       images.forEach((image: HTMLElement) => {
         if (image.getAttribute('data-src')) {

@@ -47,8 +47,9 @@ export class DeckdeckgoDeck {
 
     const lazyLoadContentFirstSlide = this.lazyLoadContent(0);
     const lazyLoadContentSecondSlide = this.lazyLoadContent(1);
+    const lazyLoadImages = this.lazyBackgroungImages();
 
-    await Promise.all([lazyLoadContentFirstSlide, lazyLoadContentSecondSlide]);
+    await Promise.all([lazyLoadContentFirstSlide, lazyLoadContentSecondSlide, lazyLoadImages]);
   }
 
   private initWindowResize() {
@@ -398,6 +399,20 @@ export class DeckdeckgoDeck {
       if (slide) {
         await (slide as any).lazyLoadContent();
       }
+
+      resolve();
+    });
+  }
+
+  // Lazy load images from slot=background
+  private lazyBackgroungImages(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const allSlotedImages: NodeListOf<HTMLElement> = this.el.querySelectorAll('img[slot=\'background\']');
+      const allShadowImages: NodeListOf<HTMLElement> = this.el.querySelectorAll('[slot=\'background\'] img');
+
+      const images: HTMLElement[] = Array.from(allSlotedImages).concat(Array.from(allShadowImages));
+
+      await DeckdeckgoUtils.lazyLoadSelectedImages(images);
 
       resolve();
     });
