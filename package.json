@@ -21,13 +21,13 @@
     "prismjs": "^1.15.0"
   },
   "devDependencies": {
-    "@stencil/core": "^0.15.2",
+    "@stencil/core": "^0.16.1",
     "@stencil/dev-server": "0.0.18",
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
     "@stencil/utils": "0.0.5",
     "@types/prismjs": "^1.9.0",
-    "autoprefixer": "^9.3.1"
+    "autoprefixer": "^9.4.2"
   },
   "repository": {
     "type": "git",
