@@ -1,3 +1,18 @@
+<a name="1.0.0-beta.13"></a>
+# [1.0.0-beta.13](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2018-12-13)
+
+### Features
+
+* lazy load images in slot="background" too ([#26](https://github.com/fluster/deckdeckgo/issues/26))
+
+### Fix
+
+* lazy loaded images with parent didn't inherited the right visibility ([#30](https://github.com/fluster/deckdeckgo/issues/30))
+
+### Libs
+
+* update Stencil ([e597a7b](https://github.com/fluster/deckdeckgo/commit/e597a7b9343aa11a58a4203d1a14753af6920c75))
+
 <a name="1.0.0-beta.12"></a>
 # [1.0.0-beta.12](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2018-12-06)
 
