@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.14"></a>
+# [1.0.0-beta.14](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2018-12-13)
+
+### Features
+
+* don't display title on gif slide if fullscreen ([#31](https://github.com/fluster/deckdeckgo/issues/31))
+
 <a name="1.0.0-beta.13"></a>
 # [1.0.0-beta.13](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2018-12-13)
 
