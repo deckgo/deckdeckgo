@@ -28,7 +28,7 @@ export class DeckdeckgoUtils {
 
           // If image is part of a reveal group, let it be revealed with the reveal feature
           if (!image.classList.contains('deckgo-reveal')) {
-            image.style.setProperty('visibility', 'initial');
+            image.style.setProperty('visibility', 'inherit');
           }
         }
 
