@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.15"></a>
+# [1.0.0-beta.15](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.14...v1.0.0-beta.15) (2018-12-13)
+
+### Fix
+
+* fix list items and reveal feature ([#32](https://github.com/fluster/deckdeckgo/issues/32))
+
 <a name="1.0.0-beta.14"></a>
 # [1.0.0-beta.14](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2018-12-13)
 
