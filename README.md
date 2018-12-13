@@ -15,7 +15,8 @@ Create a lightweight presentation using Web Components.
   - [Installing DeckDeckGo in any projects](#installing-deckdeckgo-in-any-projects)
   - [Editing](#editing)
     - [Detailed documentation](doc/slides/slides.md)
-    - [Markdown](doc/markdown/markdown.md)
+    - [Extra components](#extra-components)
+    - [Markdown](#markdown)
   - [Navigation](#navigation)
   - [Extra features](#extra-features)
   - [Lazy loading](#lazy-loading)
@@ -89,11 +90,13 @@ The deck should be declared using the tag `<deckgo-deck/>` and each slide should
 
 The 👉 [extended documentation](doc/slides/slides.md) 👈 displays all templates and options available for each slides.
 
+### Extra components
+
+[DeckDeckGo] also offers a couple of components which could be used in almost every templates, these are documented in a separate [chapter](doc/components/components.md) of the documentation. 
+
 ### Markdown
 
 Per default, [DeckDeckGo]'s presentations are edited using HTML and are Web Components, that's why the documentation and examples are provided in HTML. But if you are using the [starter kit](https://github.com/fluster/deckdeckgo-starter) and are editing your talk with Markdown, you could have a look to the [Markdown documentation](doc/markdown/markdown.md) to get some examples.
-
-[DeckDeckGo] also offers a couple of components which could be used in almost every templates, these are documented in a separate [chapter](doc/components/components.md) of the documentation. 
 
 ## Navigation
 
