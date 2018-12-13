@@ -1,6 +1,6 @@
 # DeckDeckGo
 
-Create a lightweight presentation using HTML and Web Components.
+Create a lightweight presentation using Web Components.
 
 [DeckDeckGo] is build with [Stencil](https://stenciljs.com) and could be use in any modern framework or even without any.
 
@@ -15,6 +15,7 @@ Create a lightweight presentation using HTML and Web Components.
   - [Installing DeckDeckGo in any projects](#installing-deckdeckgo-in-any-projects)
   - [Editing](#editing)
     - [Detailed documentation](doc/slides/slides.md)
+    - [Markdown](doc/markdown/markdown.md)
   - [Navigation](#navigation)
   - [Extra features](#extra-features)
   - [Lazy loading](#lazy-loading)
@@ -25,7 +26,7 @@ Create a lightweight presentation using HTML and Web Components.
 
 ## Features
 
-* ✏️ Create **without effort** your presentation using HTML and CSS
+* ✏️ Create **without effort** your presentation using Web Components
 
 * 📰 Use predefined **templates**
 
@@ -59,7 +60,7 @@ To get started and **to create your presentation**, run the following command an
 npm init deckdeckgo
 ```
 
-Once your presentation created, go to your new project's folder and start editing `src/index.html` to prepare your slides and content for your talk 😉
+Once your presentation created, go to your new project's folder and start editing your slides and content for your talk 😉
 
 ## Installing DeckDeckGo in any projects
 
@@ -87,6 +88,10 @@ The deck should be declared using the tag `<deckgo-deck/>` and each slide should
 ```
 
 The 👉 [extended documentation](doc/slides/slides.md) 👈 displays all templates and options available for each slides.
+
+### Markdown
+
+Per default, [DeckDeckGo]'s presentations are edited using HTML and are Web Components, that's why the documentation and examples are provided in HTML. But if you are using the [starter kit](https://github.com/fluster/deckdeckgo-starter) and are editing your talk with Markdown, you could have a look to the [Markdown documentation](doc/markdown/markdown.md) to get some examples.
 
 [DeckDeckGo] also offers a couple of components which could be used in almost every templates, these are documented in a separate [chapter](doc/components/components.md) of the documentation. 
 
