@@ -79,7 +79,8 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
   hostData() {
     return {
       class: {
-        'deckgo-slide-container': true
+        'deckgo-slide-container': true,
+        'deckgo-slide-container-fullscreen': this.fullscreen
       }
     }
   }

@@ -1,5 +1,11 @@
 @import "../deckdeckgo-slide";
 
+:host(.deckgo-slide-container-fullscreen) {
+  ::slotted([slot="title"]) {
+    display: none;
+  }
+}
+
 div.deckgo-slide {
   flex-direction: column;
   align-items: flex-start;
