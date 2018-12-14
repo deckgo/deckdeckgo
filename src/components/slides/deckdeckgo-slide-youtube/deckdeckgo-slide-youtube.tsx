@@ -26,13 +26,13 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
 
-    this.slideDidLoad.emit();
-
     this.initWindowResize();
 
     await this.initFrameTitle();
 
     await this.initSize();
+
+    this.slideDidLoad.emit();
   }
 
   @Method()
