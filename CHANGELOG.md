@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.16"></a>
+# [1.0.0-beta.16](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.15...v1.0.0-beta.16) (2018-12-14)
+
+### Fix
+
+* lazy load first slides content when all slides added ([#33](https://github.com/fluster/deckdeckgo/issues/33))
+
 <a name="1.0.0-beta.15"></a>
 # [1.0.0-beta.15](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.14...v1.0.0-beta.15) (2018-12-13)
 
