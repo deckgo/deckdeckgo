@@ -45,11 +45,7 @@ export class DeckdeckgoDeck {
     this.initWindowResize();
     this.initKeyboardAssist();
 
-    const lazyLoadContentFirstSlide = this.lazyLoadContent(0);
-    const lazyLoadContentSecondSlide = this.lazyLoadContent(1);
-    const lazyLoadImages = this.lazyBackgroungImages();
-
-    await Promise.all([lazyLoadContentFirstSlide, lazyLoadContentSecondSlide, lazyLoadImages]);
+    await this.lazyBackgroungImages();
   }
 
   private initWindowResize() {
@@ -259,12 +255,26 @@ export class DeckdeckgoDeck {
 
       const definedSlidesLength: number = await this.countDefinedSlides(definedSlides);
 
+      // Are all slides loaded?
       if (definedSlides && loadedSlides && loadedSlides.length === definedSlidesLength && definedSlidesLength === this.length) {
         const orderedSlidesTagNames: string[] = Array.from(loadedSlides).map((slide: HTMLElement) => {
           return slide.tagName
         });
         this.slidesDidLoad.emit(orderedSlidesTagNames);
+
+        await this.lazyLoadFirstSlides();
       }
+
+      resolve();
+    });
+  }
+
+  private lazyLoadFirstSlides(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const lazyLoadContentFirstSlide = this.lazyLoadContent(0);
+      const lazyLoadContentSecondSlide = this.lazyLoadContent(1);
+
+      await Promise.all([lazyLoadContentFirstSlide, lazyLoadContentSecondSlide]);
 
       resolve();
     });
