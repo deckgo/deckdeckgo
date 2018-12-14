@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.17"></a>
+# [1.0.0-beta.17](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.16...v1.0.0-beta.17) (2018-12-14)
+
+### Fix
+
+* emit Youtube slide loaded only after width/height of the video have been calculated ([#33](https://github.com/fluster/deckdeckgo/issues/33))
+
 <a name="1.0.0-beta.16"></a>
 # [1.0.0-beta.16](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.15...v1.0.0-beta.16) (2018-12-14)
 
