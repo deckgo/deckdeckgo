@@ -107,6 +107,21 @@ export namespace Components {
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
   }
 
+  interface DeckgoSlideChart {
+    'afterSwipe': () => Promise<void>;
+    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'height': number;
+    'lazyLoadContent': () => Promise<void>;
+    'src': string;
+    'width': number;
+  }
+  interface DeckgoSlideChartAttributes extends StencilHTMLAttributes {
+    'height'?: number;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'src'?: string;
+    'width'?: number;
+  }
+
   interface DeckgoSlideCode {
     'afterSwipe': () => Promise<void>;
     'anchor': string;
@@ -207,6 +222,7 @@ declare global {
     'DeckgoYoutube': Components.DeckgoYoutube;
     'DeckgoPager': Components.DeckgoPager;
     'DeckgoSlideAuthor': Components.DeckgoSlideAuthor;
+    'DeckgoSlideChart': Components.DeckgoSlideChart;
     'DeckgoSlideCode': Components.DeckgoSlideCode;
     'DeckgoSlideContent': Components.DeckgoSlideContent;
     'DeckgoSlideGif': Components.DeckgoSlideGif;
@@ -222,6 +238,7 @@ declare global {
     'deckgo-youtube': Components.DeckgoYoutubeAttributes;
     'deckgo-pager': Components.DeckgoPagerAttributes;
     'deckgo-slide-author': Components.DeckgoSlideAuthorAttributes;
+    'deckgo-slide-chart': Components.DeckgoSlideChartAttributes;
     'deckgo-slide-code': Components.DeckgoSlideCodeAttributes;
     'deckgo-slide-content': Components.DeckgoSlideContentAttributes;
     'deckgo-slide-gif': Components.DeckgoSlideGifAttributes;
@@ -267,6 +284,12 @@ declare global {
     new (): HTMLDeckgoSlideAuthorElement;
   };
 
+  interface HTMLDeckgoSlideChartElement extends Components.DeckgoSlideChart, HTMLStencilElement {}
+  var HTMLDeckgoSlideChartElement: {
+    prototype: HTMLDeckgoSlideChartElement;
+    new (): HTMLDeckgoSlideChartElement;
+  };
+
   interface HTMLDeckgoSlideCodeElement extends Components.DeckgoSlideCode, HTMLStencilElement {}
   var HTMLDeckgoSlideCodeElement: {
     prototype: HTMLDeckgoSlideCodeElement;
@@ -310,6 +333,7 @@ declare global {
     'deckgo-youtube': HTMLDeckgoYoutubeElement
     'deckgo-pager': HTMLDeckgoPagerElement
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement
+    'deckgo-slide-chart': HTMLDeckgoSlideChartElement
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement
     'deckgo-slide-content': HTMLDeckgoSlideContentElement
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement
@@ -325,6 +349,7 @@ declare global {
     'deckgo-youtube': HTMLDeckgoYoutubeElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
+    'deckgo-slide-chart': HTMLDeckgoSlideChartElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
     'deckgo-slide-content': HTMLDeckgoSlideContentElement;
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
