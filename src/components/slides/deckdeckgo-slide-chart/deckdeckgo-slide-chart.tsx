@@ -80,14 +80,14 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
     return new Promise<void>((resolve) => {
       // If width and height, use them otherwise full size
       if (this.width > 0 && this.height > 0) {
-        this.chartWidth = this.width;
-        this.chartHeight = this.height;
+        this.chartWidth = this.width - this.marginLeft - this.marginRight;
+        this.chartHeight = this.height - this.marginTop - this.marginBottom;
       } else {
         const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-chart-container');
 
         if (container) {
-          this.chartWidth = container.clientWidth;
-          this.chartHeight = container.clientHeight;
+          this.chartWidth = container.clientWidth - this.marginLeft - this.marginRight;
+          this.chartHeight = container.clientHeight - this.marginTop - this.marginBottom;
         }
       }
 
