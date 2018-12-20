@@ -11,6 +11,7 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
   - [Slide: Content](#slide-content)
   - [Slide: Split](#slide-split)
   - [Slide: Gif](#slide-gif)
+  - [Slide: Chart](#slide-chart)
   - [Slide: Youtube](#slide-youtube)
   - [Slide: Code](#slide-code)
   - [Slide: Author](#slide-author)
@@ -35,6 +36,10 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 * [Gif](#slide-gif)
 
 <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-gif-layout.gif" width="200px">
+
+* [Chart](#slide-chart)
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-layout.gif" width="200px">
 
 * [Youtube](#slide-youtube)
 
@@ -307,6 +312,65 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
 | --zIndex | 1 | The z-index of the slide |
+
+### Slide: Chart
+
+The "Chart" slide let you draw easily charts in your presentation.
+
+#### Layout
+
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-layout.png" width="450px">
+
+#### Usage
+
+The "Chart" slide's Web Component could be integrated using the tag `<deckgo-slide-chart/>`.
+
+```
+<deckgo-slide-chart src="./assets/csv/data-pie-chart.csv">
+    <h1 slot="title">My Pie chart</h1>
+</deckgo-slide-chart>
+```
+
+##### Slots
+
+The slot `title` is optional.
+
+##### Chart components
+
+The slide "Chart" relies on the charts components `<deckgo-pie-chart/>` and `<deckgo-line-chart/>` which are described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+
+##### Installation
+
+**Important note**: The [DeckDeckGo] charts components are provided in separate extra library. If you wish to add charts to your presentation, you will need to install this extra component from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo). See the related documentation from its [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
+
+The reasons behind are the following:
+
+1. If you don't use charts, you will not have to install unnecessary dependencies
+2. Cherry on the cake, the [DeckDeckGo] charts Web Component could be use in [DeckDeckGo] as in any other web projects
+
+#### Attributes
+
+This slide component offers the exact same attributes as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
+
+#### Theming
+
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |:-----------------:|:-----------------:|
+| --background |  |  |
+| --color |  |  |
+| --slide-padding-top | 16px | Padding top of the all slide |
+| --slide-padding-end | 32px | Padding right of the all slide |
+| --slide-padding-bottom | 16px | Padding bottom of the all slide |
+| --slide-padding-start | 32px | Padding left of the all slide |
+| --zIndex | 1 | The z-index of the slide |
+| --slide-chart-margin-top | 32px | Margin top of the chart inside its container |
+| --slide-chart-margin-end | 96px | Margin right of the chart inside its container |
+| --slide-chart-margin-bottom | 32px | Margin bottom of the chart inside its container |
+| --slide-chart-margin-start | 32px | Margin left of the chart inside its container |
+
+Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
 
 ### Slide: Youtube
 
