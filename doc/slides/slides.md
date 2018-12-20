@@ -337,44 +337,13 @@ The "Chart" slide's Web Component could be integrated using the tag `<deckgo-sli
 
 The slot `title` is optional.
 
-##### Chart components
+#### Chart components
 
 The slide "Chart" relies on the charts components `<deckgo-pie-chart/>` and `<deckgo-line-chart/>` which are described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
 
-##### Installation
+#### Installation
 
-**Important note**: The [DeckDeckGo] charts components are provided in separate extra library. If you wish to add charts to your presentation, you will need to install and integrate this extra component from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo) as described below or in its [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
-
-###### 1. Installation guide
-
-From a CDN:
-
-```
-<script src="https://unpkg.com/deckdeckgo-charts@latest/dist/deckdeckgo-charts.js"></script>
-```
-
-From NPM:
-
-```
-npm install deckdeckgo-charts
-```
-
-###### 2. Integration
-
-Once installed, if you use the [DeckDeckGo] starter kit, you would need to integrate, respectively load, the chart components as the following in your `src/index.js`:
-
-```
-import { defineCustomElements as deckDeckGoChartsElements } from 'deckdeckgo-charts/dist/loader';
-
-await deckDeckGoChartsElements(window);
-``` 
-
-###### Side notes
-
-The reasons behind are the following:
-
-1. If you don't use charts, you will not have to install unnecessary dependencies
-2. Cherry on the cake, the [DeckDeckGo] charts Web Component could be use in [DeckDeckGo] as in any other web projects
+The [DeckDeckGo] charts components are provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add charts to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo) as described in its [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
 
 #### Attributes
 
