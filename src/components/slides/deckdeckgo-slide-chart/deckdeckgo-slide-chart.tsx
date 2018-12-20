@@ -104,7 +104,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   private onResizeContent = async () => {
     await this.initSize();
 
-    const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-pie-chart');
+    const element: HTMLElement = this.el.shadowRoot.querySelector(this.type === DeckdeckgoSlideChartType.LINE ? 'deckgo-line-chart' : 'deckgo-pie-chart');
 
     if (element) {
       await (element as any).draw(this.chartWidth, this.chartHeight);
