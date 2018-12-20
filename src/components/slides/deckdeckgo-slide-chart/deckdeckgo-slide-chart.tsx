@@ -3,6 +3,11 @@ import {Component, Element, Event, EventEmitter, Method, Prop, State} from '@ste
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 
+enum DeckdeckgoSlideChartType {
+  LINE = 'line',
+  PIE = 'pie'
+}
+
 @Component({
   tag: 'deckgo-slide-chart',
   styleUrl: 'deckdeckgo-slide-chart.scss',
@@ -15,11 +20,19 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Event() slideDidLoad: EventEmitter<void>;
 
   @Prop() src: string;
+  @Prop() separator: string = ';';
+
   @Prop() width: number;
   @Prop() height: number;
 
   @State() chartWidth: number;
   @State() chartHeight: number;
+
+  @Prop() type: string = DeckdeckgoSlideChartType.PIE;
+
+  // Pie
+  @Prop() innerRadius: number = 0;
+  @Prop() range: string[];
 
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
@@ -87,9 +100,18 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
     return <div class="deckgo-slide">
       <slot name="title"></slot>
       <div class="deckgo-chart-container">
-        <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight}></deckgo-pie-chart>
+        {this.renderChart()}
       </div>
     </div>
+  }
+
+  private renderChart() {
+    if (this.type === DeckdeckgoSlideChartType.LINE) {
+      return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}></deckgo-line-chart>
+    } else {
+      return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
+                               inner-radius={this.innerRadius} ranger={this.range}></deckgo-pie-chart>
+    }
   }
 
   hostData() {

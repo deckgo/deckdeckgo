@@ -111,14 +111,22 @@ export namespace Components {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
     'height': number;
+    'innerRadius': number;
     'lazyLoadContent': () => Promise<void>;
+    'range': string[];
+    'separator': string;
     'src': string;
+    'type': string;
     'width': number;
   }
   interface DeckgoSlideChartAttributes extends StencilHTMLAttributes {
     'height'?: number;
+    'innerRadius'?: number;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'range'?: string[];
+    'separator'?: string;
     'src'?: string;
+    'type'?: string;
     'width'?: number;
   }
 
