@@ -39,7 +39,7 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 
 * [Chart](#slide-chart)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-layout.gif" width="200px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-layout.png" width="200px">
 
 * [Youtube](#slide-youtube)
 
