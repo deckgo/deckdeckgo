@@ -5,6 +5,7 @@
 ## Table of contents
 
 - [Gif](#gif)
+- [Chart](#chart)
 - [Youtube](#youtube)
 - [Social](#social)
 
@@ -53,6 +54,14 @@ The following theming options will affect this component if set on its host or p
 ### Note
 
 Of course, as other images added to a presentation build with [DeckDeckGo], gifs are lazy loaded too. 
+
+## Chart
+
+The "Chart" component is an extra component which let you draw charts easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
+
+### Installation
+
+**Important note**: The [DeckDeckGo] charts components are provided in separate extra library. If you wish to add charts to your presentation, you will need to install this extra component from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo). See its related [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
 
 ## Youtube
 

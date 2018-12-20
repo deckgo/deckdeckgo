@@ -343,7 +343,7 @@ The slide "Chart" relies on the charts components `<deckgo-pie-chart/>` and `<de
 
 ##### Installation
 
-**Important note**: The [DeckDeckGo] charts components are provided in separate extra library. If you wish to add charts to your presentation, you will need to install this extra component from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo). See the related documentation from its [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
+**Important note**: The [DeckDeckGo] charts components are provided in separate extra library. If you wish to add charts to your presentation, you will need to install this extra component from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo). See its related [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
 
 From a CDN:
 
