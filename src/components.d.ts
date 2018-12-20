@@ -109,25 +109,45 @@ export namespace Components {
 
   interface DeckgoSlideChart {
     'afterSwipe': () => Promise<void>;
+    'area': boolean;
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'datePattern': string;
+    'grid': boolean;
     'height': number;
     'innerRadius': number;
     'lazyLoadContent': () => Promise<void>;
+    'marginBottom': number;
+    'marginLeft': number;
+    'marginRight': number;
+    'marginTop': number;
     'range': string[];
     'separator': string;
+    'smooth': boolean;
     'src': string;
+    'ticks': number;
     'type': string;
     'width': number;
+    'yAxisDomain': string;
   }
   interface DeckgoSlideChartAttributes extends StencilHTMLAttributes {
+    'area'?: boolean;
+    'datePattern'?: string;
+    'grid'?: boolean;
     'height'?: number;
     'innerRadius'?: number;
+    'marginBottom'?: number;
+    'marginLeft'?: number;
+    'marginRight'?: number;
+    'marginTop'?: number;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'range'?: string[];
     'separator'?: string;
+    'smooth'?: boolean;
     'src'?: string;
+    'ticks'?: number;
     'type'?: string;
     'width'?: number;
+    'yAxisDomain'?: string;
   }
 
   interface DeckgoSlideCode {

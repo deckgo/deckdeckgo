@@ -34,6 +34,21 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Prop() innerRadius: number = 0;
   @Prop() range: string[];
 
+  // Line
+  @Prop() datePattern: string = 'yyyy-MM-dd';
+
+  @Prop() marginTop: number = 32;
+  @Prop() marginBottom: number = 32;
+  @Prop() marginLeft: number = 32;
+  @Prop() marginRight: number = 32;
+
+  @Prop() yAxisDomain: string = 'max';
+
+  @Prop() smooth: boolean = true;
+  @Prop() area: boolean = true;
+  @Prop() ticks: number;
+  @Prop() grid: boolean = false;
+
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
 
@@ -107,7 +122,10 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   private renderChart() {
     if (this.type === DeckdeckgoSlideChartType.LINE) {
-      return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}></deckgo-line-chart>
+      return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
+                                date-pattern={this.datePattern} y-axis-domain={this.yAxisDomain}
+                                margin-top={this.marginTop} margin-bottom={this.marginBottom} margin-right={this.marginRight} margin-left={this.marginLeft}
+                                smooth={this.smooth} area={this.area} ticks={this.ticks} grid={this.grid}></deckgo-line-chart>
     } else {
       return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
                                inner-radius={this.innerRadius} ranger={this.range}></deckgo-pie-chart>
