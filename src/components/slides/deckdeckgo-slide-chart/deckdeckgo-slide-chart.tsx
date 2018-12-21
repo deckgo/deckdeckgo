@@ -5,7 +5,8 @@ import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 
 enum DeckdeckgoSlideChartType {
   LINE = 'line',
-  PIE = 'pie'
+  PIE = 'pie',
+  BAR = 'bar'
 }
 
 @Component({
@@ -122,10 +123,17 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   private renderChart() {
     if (this.type === DeckdeckgoSlideChartType.LINE) {
-      return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
+      return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+                                separator={this.separator}
                                 date-pattern={this.datePattern} y-axis-domain={this.yAxisDomain}
-                                margin-top={this.marginTop} margin-bottom={this.marginBottom} margin-right={this.marginRight} margin-left={this.marginLeft}
-                                smooth={this.smooth} area={this.area} ticks={this.ticks} grid={this.grid}></deckgo-line-chart>
+                                margin-top={this.marginTop} margin-bottom={this.marginBottom}
+                                margin-right={this.marginRight} margin-left={this.marginLeft}
+                                smooth={this.smooth} area={this.area} ticks={this.ticks}
+                                grid={this.grid}></deckgo-line-chart>
+    } else if (this.type === DeckdeckgoSlideChartType.BAR) {
+      return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
+                                margin-top={this.marginTop} margin-bottom={this.marginBottom}
+                                margin-right={this.marginRight} margin-left={this.marginLeft}></deckgo-bar-chart>
     } else {
       return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
                                inner-radius={this.innerRadius} range={this.range}></deckgo-pie-chart>
