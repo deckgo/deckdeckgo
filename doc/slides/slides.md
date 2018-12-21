@@ -268,7 +268,7 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 
 #### Note
 
-The slide Gif is useful for Gifs but could be use for any images too, in case you would like for example to display an image fullscreen
+The slide Gif is useful for Gifs but could be use for any images too, in case you would like for example to display an image fullscreen.
 
 #### Usage
 
