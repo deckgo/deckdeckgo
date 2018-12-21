@@ -128,7 +128,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
                                 smooth={this.smooth} area={this.area} ticks={this.ticks} grid={this.grid}></deckgo-line-chart>
     } else {
       return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
-                               inner-radius={this.innerRadius} ranger={this.range}></deckgo-pie-chart>
+                               inner-radius={this.innerRadius} range={this.range}></deckgo-pie-chart>
     }
   }
 
