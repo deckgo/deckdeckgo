@@ -41,6 +41,7 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 
 <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-pie-layout.png" width="200px">
 <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-line-layout.png" width="200px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-bar-layout.png" width="200px">
 
 * [Youtube](#slide-youtube)
 
@@ -322,6 +323,7 @@ The "Chart" slide let you draw easily charts in your presentation.
 
 <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-pie-layout.png" width="450px">
 <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-line-layout.png" width="450px">
+<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-bar-layout.png" width="450px">
 
 #### Usage
 
@@ -339,7 +341,7 @@ The slot `title` is optional.
 
 #### Chart components
 
-The slide "Chart" relies on the charts components `<deckgo-pie-chart/>` and `<deckgo-line-chart/>` which are described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+The slide "Chart" relies on the charts components `<deckgo-pie-chart/>`, `<deckgo-line-chart/>` and  `<deckgo-bar-chart/>` which are described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
 
 #### Installation
 
@@ -351,7 +353,7 @@ This component offers the following options which could be set using attributes:
 
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |:-----------------:|:-----------------:|:-----------------:|
-| type | string | pie | The type of the chart, `pie` or `line` |
+| type | string | pie | The type of the chart, `pie`, `line` or `bar` |
 
 Furthermore, this slide component offers the same attributes as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
 
