@@ -1,6 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, Watch} from '@stencil/core';
-
-import Prism from 'prismjs';
+import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
@@ -31,8 +29,6 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Prop() language: string = 'javascript';
 
-  private anchorOffsetTop: number = 0;
-
   private startX: number = null;
   private action: DeckdeckgoSlideCodeAction = null;
 
@@ -41,55 +37,21 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
     this.slideDidLoad.emit();
 
-    await this.loadLanguage();
-
-    await this.fetchCode();
-
-    await this.parseSlottedCode();
+    await this.moveSlots();
   }
 
-  @Watch('language')
-  loadLanguage(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!document || this.language === 'javascript') {
-        resolve();
-        return;
+  private moveSlots(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const code: HTMLElement = this.el.querySelector('[slot=\'code\']');
+
+      const codeComponent = this.el.shadowRoot.querySelector('deckgo-code');
+
+      if (codeComponent && code) {
+        codeComponent.appendChild(code);
       }
-
-      const scripts = document.querySelector('[deckdeckgo-prims=\'' + this.language + '\']');
-
-      if (scripts) {
-        // Already loaded
-        await this.parseSlottedCode();
-        resolve();
-        return;
-      }
-
-      const script = document.createElement('script');
-
-      script.onload = async () => {
-        await this.parseSlottedCode();
-      };
-
-      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + this.language + '.js';
-      script.setAttribute('deckdeckgo-prims', this.language);
-      script.defer = true;
-
-      document.head.appendChild(script);
 
       resolve();
     });
-  }
-
-  private parseSlottedCode(): Promise<void> {
-    const code: HTMLElement = this.el.querySelector('[slot=\'code\']');
-    if (code) {
-      return this.parseCode(code.innerHTML);
-    } else {
-      return new Promise<void>((resolve) => {
-        resolve();
-      });
-    }
   }
 
   @Method()
@@ -110,52 +72,24 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return DeckdeckgoSlideUtils.afterSwipe();
   }
 
-  // DeckDeckGo
   private scrollToNext(swipeLeft: boolean): Promise<boolean> {
-    return new Promise<boolean>(async (resolve) => {
-      const elements: NodeListOf<HTMLElement> = this.el.shadowRoot.querySelectorAll('span.deckgo-code-anchor');
+    const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-code');
 
-      let couldSwipe: boolean = true;
-
-      if (elements) {
-        const elementsArray: HTMLElement[] = swipeLeft ? Array.from(elements) : Array.from(elements).reverse();
-
-        const anchor: HTMLElement = elementsArray.find((element: HTMLElement) => {
-          return swipeLeft ? element.offsetTop > this.anchorOffsetTop : element.offsetTop < this.anchorOffsetTop;
-        });
-
-        if (anchor) {
-          anchor.scrollIntoView({block: 'start', behavior: 'smooth'});
-          couldSwipe = false;
-          this.anchorOffsetTop = anchor.offsetTop;
-
-          await this.zoomCode(this.hasLineZoom(anchor.textContent));
-        } else if (!swipeLeft) {
-          const elementCode: HTMLElement = this.el.shadowRoot.querySelector('code');
-
-          if (elementCode && elementCode.firstElementChild) {
-            elementCode.firstElementChild.scrollIntoView({block: 'center', behavior: 'smooth'});
-            this.anchorOffsetTop = 0;
-          }
-        }
-      } else {
-        this.anchorOffsetTop = 0;
-      }
-
-      if (this.anchorOffsetTop === 0) {
-        await this.zoomCode(false);
-      }
-
-      resolve(couldSwipe);
-    });
+    if (element) {
+      return (element as any).scrollToNext(swipeLeft);
+    } else {
+      return new Promise<boolean>((resolve) => {
+        resolve(true);
+      });
+    }
   }
 
   private zoomCode(zoom: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
+    return new Promise<void>(async (resolve) => {
+      const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-code');
 
-      if (container) {
-        container.style.setProperty('--zoom-code', zoom ? '1.3' : '1');
+      if (element) {
+        await (element as any).zoomCode(zoom);
       }
 
       const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
@@ -170,94 +104,6 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   @Method()
   lazyLoadContent(): Promise<void> {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
-  }
-
-  // DeckDeckGoZoom
-  async fetchCode() {
-    if (!this.src) {
-      return;
-    }
-
-    let fetchedCode: string;
-    try {
-      const response: Response = await fetch(this.src);
-      fetchedCode = await response.text();
-
-      await this.parseCode(fetchedCode);
-    } catch (e) {
-      // Prism might not be able to parse the code for the selected language
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
-
-      if (container && fetchedCode) {
-        container.children[0].innerHTML = fetchedCode;
-      }
-    }
-  }
-
-  private parseCode(code: string): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
-
-      if (container) {
-        try {
-          const highlightedCode: string = Prism.highlight(code, Prism.languages[this.language]);
-
-          container.children[0].innerHTML = highlightedCode;
-
-          await this.addAnchors();
-        } catch (err) {
-          // The highlighting might fail if the language is not yet defined
-        }
-      }
-
-      resolve();
-    });
-  }
-
-  private addAnchors(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = this.el.shadowRoot.querySelectorAll('span.comment');
-
-      if (elements) {
-        const elementsArray: HTMLElement[] = Array.from(elements);
-
-        const anchors: HTMLElement[] = elementsArray.filter((element: HTMLElement) => {
-          return this.hasLineAnchor(element.innerHTML);
-        });
-
-        if (anchors) {
-          anchors.forEach((anchor: HTMLElement) => {
-            anchor.classList.add('deckgo-code-anchor');
-
-            if (this.hideAnchor) {
-              anchor.classList.add('deckgo-code-anchor-hidden');
-            }
-          });
-        }
-      }
-
-      resolve();
-    });
-  }
-
-  private hasLineAnchor(line: string): boolean {
-    return line && this.anchor &&
-      line.indexOf('@Prop') === -1 &&
-      line.split(' ').join('').indexOf(this.anchor.split(' ').join('')) > -1;
-  }
-
-  // DeckDeckGo
-  render() {
-    return <div class="deckgo-slide"
-                onTouchStart={(event: TouchEvent) => this.touchScrollStart(event)}
-                onTouchMove={(event: TouchEvent) => this.touchScrollMove(event)}
-                onTouchEnd={() => this.touchScrollEnd()}>
-      <slot name="title"></slot>
-      <div class="deckgo-code-container" onScroll={() => this.emitScrolling()}>
-        <code></code>
-      </div>
-      <slot name="code"></slot>
-    </div>;
   }
 
   private touchScrollStart(event: TouchEvent) {
@@ -291,12 +137,12 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   }
 
   private lockScroll() {
-    const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
+    const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-code-container');
     container.style.setProperty('overflow-y', 'hidden');
   }
 
   private unlockScroll() {
-    const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-code-container');
+    const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-code-container');
     container.style.removeProperty('overflow-y');
   }
 
@@ -306,10 +152,18 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     }
   }
 
-  private hasLineZoom(line: string): boolean {
-    return line && this.anchorZoom &&
-      line.indexOf('@Prop') === -1 &&
-      line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1;
+  // DeckDeckGo
+  render() {
+    return <div class="deckgo-slide"
+                onTouchStart={(event: TouchEvent) => this.touchScrollStart(event)}
+                onTouchMove={(event: TouchEvent) => this.touchScrollMove(event)}
+                onTouchEnd={() => this.touchScrollEnd()}>
+      <slot name="title"></slot>
+      <div class="deckgo-slide-code-container" onScroll={() => this.emitScrolling()}>
+        <deckgo-code src={this.src} anchor={this.anchor} anchorZoom={this.anchorZoom} hideAnchor={this.hideAnchor} language={this.language}></deckgo-code>
+      </div>
+      <slot name="code"></slot>
+    </div>;
   }
 
   // DeckDeckGoZoom

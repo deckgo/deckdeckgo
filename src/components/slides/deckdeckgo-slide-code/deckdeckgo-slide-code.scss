@@ -1,5 +1,3 @@
-@import "~prismjs/themes/prism.css";
-
 @import "../deckdeckgo-slide";
 
 div.deckgo-slide {
@@ -8,54 +6,17 @@ div.deckgo-slide {
   justify-content: flex-start;
 }
 
-div.deckgo-code-container {
+div.deckgo-slide-code-container {
   overflow-y: auto;
   width: 100%;
-
-  color: var(--code-color, inherit);
-
-  margin-bottom: var(--code-margin-bottom, 64px);
-
-  transform-origin: bottom left;
-  transition: all .2s ease-in-out;
-  transform: scale(var(--zoom-code, 1));
-
-  code {
-    white-space: pre-wrap;
-    overflow-y: scroll;
-
-    font-size: var(--code-font-size);
-    font-family: var(--code-font-family);
-
-    div:empty {
-      min-height: 1rem;
-    }
-
-    span.deckgo-code-anchor-hidden {
-      visibility: hidden;
-    }
-  }
 }
 
 ::slotted([slot="title"]) {
   transition: opacity 0.5s ease-in;
 }
 
-::slotted([slot="code"]) {
-  display: none;
-}
-
 @media print {
   div.deckgo-slide {
     height: 100%;
-  }
-}
-
-/* Prism style override */
-div.deckgo-code-container {
-  code {
-    .language-css .token.string, .style .token.string, .token.entity, .token.operator, .token.url {
-      background: inherit;
-    }
   }
 }

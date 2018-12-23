@@ -17,16 +17,13 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
-  "dependencies": {
-    "prismjs": "^1.15.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@stencil/core": "^0.16.1",
     "@stencil/dev-server": "0.0.18",
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
     "@stencil/utils": "0.0.5",
-    "@types/prismjs": "^1.9.0",
     "autoprefixer": "^9.4.2"
   },
   "repository": {
