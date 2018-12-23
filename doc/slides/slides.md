@@ -345,7 +345,7 @@ The slide "Chart" relies on the charts components `<deckgo-pie-chart/>`, `<deckg
 
 #### Installation
 
-The [DeckDeckGo] charts components are provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] chart to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo) as described in its [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
+The [DeckDeckGo] charts components are provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] chart to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-charts) as described in its [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
 
 #### Attributes
 
@@ -487,23 +487,23 @@ You could provide a file URI to the code you want to display or provide it with 
 
 The slots `title` and `code` are optional.
 
+#### Code components
+
+The slide "Code" relies on the code component `<deckgo-code/>` which is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+
+#### Installation
+
+The [DeckDeckGo] code component is provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] code to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-code) as described in its [installation guide](https://github.com/fluster/deckdeckgo-code#getting-started).
+
 #### Attributes
 
-The attribute `src` is for this component mandatory. Other attributes are optional.
-
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
-| src | string | | The web url to the source code you would like to showcase |
-| anchor | string | // DeckDeckGo | The anchor identifier which will be use to scroll through your code when navigating using `slideNext()` or `slidePrev()` (see [documention](/doc/features/navigation.md)) |
-| anchor-zoom | string | // DeckDeckGoZoom | The anchor identifier which will be use to zoom inside your code when navigating using `slideNext()` or `slidePrev()` (see [documention](/doc/features/navigation.md)) |
-| hide-anchor | boolean | true | Set this attribute to `false` in case you would like to actually display the anchor value too |
-| language | string | javascript | Define the language to be used for the syntax highlighting. The list of [supported languages](https://prismjs.com/#languages-list) is defined by [Prism.js](https://prismjs.com/#languages-list) |
+At least `src` or the `slot` code should be provided in order to render code in this template. It offers the same attributes as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-code) for the details.
 
 ##### Example with file URI
 
 ```
 <deckgo-deck>
-  <deckgo-slide-code hide-anchor="fals" src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+  <deckgo-slide-code hide-anchor="false" src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
     <h1 slot="title">Code</h1>
   </deckgo-slide-code>
 </deckgo-deck>
@@ -541,24 +541,12 @@ The following theming options will affect this component if set on its host or p
 | -------------------------- |:-----------------:|:-----------------:|
 | --background |  |  |
 | --color |  |  |
-| --code-color |  | The color of the displayed code |
-| --code-font-size |  | The size of the font for the code |
-| --code-font-family |  | The family of the font for the code |
 | --slide-padding-top | 16px | Padding top of the all slide |
 | --slide-padding-end | 32px | Padding right of the all slide |
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
-| --code-margin-bottom | 64px | Padding bottom of the code scroller |
-| --zoom-code | 1 | If you wish to manually zoom the code |
-| --zIndex | 1 | The z-index of the slide |
 
-#### Syntax highlighting
-
-The library [Prism.js](https://prismjs.com) from [James DiGioia](https://github.com/mAAdhaTTah) is use for the syntax highlighting.
-
-##### Note regarding highlight extra languages
-
-No extra [Prism.js](https://prismjs.com) languages than the default one are bundled in the [DeckDeckGo] Web Component. If you would specify another `language` (see above list of attributes) the component will inject and load the required extra scripts from [unpkg](https://unpkg.com) at runtime. 
+Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] code Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-code) for the details.
 
 ### Slide: Author
 
