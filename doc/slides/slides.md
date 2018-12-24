@@ -489,11 +489,11 @@ The slots `title` and `code` are optional.
 
 #### Code components
 
-The slide "Code" relies on the code component `<deckgo-code/>` which is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+The slide "Code" relies on the code component `<deckgo-highlight-code/>` which is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
 
 #### Installation
 
-The [DeckDeckGo] code component is provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] code to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-code) as described in its [installation guide](https://github.com/fluster/deckdeckgo-code#getting-started).
+The [DeckDeckGo] - Hightlight code component is provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] code to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-highlight-code) as described in its [installation guide](https://github.com/fluster/deckdeckgo-highlight-code#getting-started).
 
 #### Attributes
 
@@ -546,7 +546,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
 
-Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] code Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-code) for the details.
+Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - Highlight code Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-highlight-code) for the details.
 
 ### Slide: Author
 

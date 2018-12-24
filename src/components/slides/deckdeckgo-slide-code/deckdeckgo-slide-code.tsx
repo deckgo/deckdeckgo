@@ -44,7 +44,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return new Promise<void>((resolve) => {
       const code: HTMLElement = this.el.querySelector('[slot=\'code\']');
 
-      const codeComponent = this.el.shadowRoot.querySelector('deckgo-code');
+      const codeComponent = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
       if (codeComponent && code) {
         codeComponent.appendChild(code);
@@ -73,7 +73,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   }
 
   private scrollToNext(swipeLeft: boolean): Promise<boolean> {
-    const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-code');
+    const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
     if (element) {
       return (element as any).scrollToNext(swipeLeft);
@@ -86,7 +86,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   private zoomCode(zoom: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-code');
+      const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
       if (element) {
         await (element as any).zoomCode(zoom);
@@ -160,7 +160,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
                 onTouchEnd={() => this.touchScrollEnd()}>
       <slot name="title"></slot>
       <div class="deckgo-slide-code-container" onScroll={() => this.emitScrolling()}>
-        <deckgo-code src={this.src} anchor={this.anchor} anchorZoom={this.anchorZoom} hideAnchor={this.hideAnchor} language={this.language}></deckgo-code>
+        <deckgo-highlight-code src={this.src} anchor={this.anchor} anchorZoom={this.anchorZoom} hideAnchor={this.hideAnchor} language={this.language}></deckgo-highlight-code>
       </div>
       <slot name="code"></slot>
     </div>;
