@@ -198,6 +198,17 @@ export namespace Components {
     'src'?: string;
   }
 
+  interface DeckgoSlideQrcode {
+    'afterSwipe': () => Promise<void>;
+    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'content': string;
+    'lazyLoadContent': () => Promise<void>;
+  }
+  interface DeckgoSlideQrcodeAttributes extends StencilHTMLAttributes {
+    'content'?: string;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+  }
+
   interface DeckgoSlideSplit {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
@@ -254,6 +265,7 @@ declare global {
     'DeckgoSlideCode': Components.DeckgoSlideCode;
     'DeckgoSlideContent': Components.DeckgoSlideContent;
     'DeckgoSlideGif': Components.DeckgoSlideGif;
+    'DeckgoSlideQrcode': Components.DeckgoSlideQrcode;
     'DeckgoSlideSplit': Components.DeckgoSlideSplit;
     'DeckgoSlideTitle': Components.DeckgoSlideTitle;
     'DeckgoSlideYoutube': Components.DeckgoSlideYoutube;
@@ -270,6 +282,7 @@ declare global {
     'deckgo-slide-code': Components.DeckgoSlideCodeAttributes;
     'deckgo-slide-content': Components.DeckgoSlideContentAttributes;
     'deckgo-slide-gif': Components.DeckgoSlideGifAttributes;
+    'deckgo-slide-qrcode': Components.DeckgoSlideQrcodeAttributes;
     'deckgo-slide-split': Components.DeckgoSlideSplitAttributes;
     'deckgo-slide-title': Components.DeckgoSlideTitleAttributes;
     'deckgo-slide-youtube': Components.DeckgoSlideYoutubeAttributes;
@@ -336,6 +349,12 @@ declare global {
     new (): HTMLDeckgoSlideGifElement;
   };
 
+  interface HTMLDeckgoSlideQrcodeElement extends Components.DeckgoSlideQrcode, HTMLStencilElement {}
+  var HTMLDeckgoSlideQrcodeElement: {
+    prototype: HTMLDeckgoSlideQrcodeElement;
+    new (): HTMLDeckgoSlideQrcodeElement;
+  };
+
   interface HTMLDeckgoSlideSplitElement extends Components.DeckgoSlideSplit, HTMLStencilElement {}
   var HTMLDeckgoSlideSplitElement: {
     prototype: HTMLDeckgoSlideSplitElement;
@@ -365,6 +384,7 @@ declare global {
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement
     'deckgo-slide-content': HTMLDeckgoSlideContentElement
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement
+    'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement
     'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement
@@ -381,6 +401,7 @@ declare global {
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
     'deckgo-slide-content': HTMLDeckgoSlideContentElement;
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
+    'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement;
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement;
     'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement;
