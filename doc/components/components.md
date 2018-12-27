@@ -4,11 +4,16 @@
 
 ## Table of contents
 
-- [Gif](#gif)
 - [Chart](#chart)
+- [Gif](#gif)
 - [Highlight Code](#highlight-code)
-- [Youtube](#youtube)
+- [QR Code](#qr-code)
 - [Social](#social)
+- [Youtube](#youtube)
+
+## Chart
+
+The "Chart" component is an extra component which let you draw charts easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
 
 ## Gif
 
@@ -56,41 +61,13 @@ The following theming options will affect this component if set on its host or p
 
 Of course, as other images added to a presentation build with [DeckDeckGo], gifs are lazy loaded too. 
 
-## Chart
-
-The "Chart" component is an extra component which let you draw charts easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
-
 ## Highlight Code
 
 The "Highlight Code" component is an extra component which let you highlight code easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-highlight-code) for the details.
 
-## Youtube
+## QR Code
 
-The "Youtube" component allows you to easily add a [Youtube](https://youtube.com) video in almost any slide of your presentation.
-
-### Usage
-
-The "Youtube" slide's Web Component could be integrated using the tag `<deckgo-youtube/>`.
-
-```
-<deckgo-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
-</deckgo-youtube>
-```
-
-#### Slots
-
-No slots are available for this component.
-
-### Attributes
-
-This component offers the following options which could be set using attributes:
-
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
-| src | string |  | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
-| width | number |  | The width of the video player. |
-| height | number |  | The height of the video player. |
-| frame-title | string |  | A title for the frame, could be use for accessibility reason. | 
+The "QR Code" component is an extra component which let you add QR code in your slides, useful for example to display links and url and if you wish your audience to easily access them. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-qr-code) for the details.
 
 ## Social
 
@@ -140,5 +117,33 @@ With for example `ion-icon`:
 <deckgo-social twitter="daviddalbusco"><ion-icon slot="icon" name="logo-twitter"></ion-icon> Twitter</deckgo-social>
 <deckgo-social github="fluster/deckdeckgo"><ion-icon slot="icon" name="logo-github"></ion-icon> DeckDeckGo on Github</deckgo-social>
 ```
+
+## Youtube
+
+The "Youtube" component allows you to easily add a [Youtube](https://youtube.com) video in almost any slide of your presentation.
+
+### Usage
+
+The "Youtube" slide's Web Component could be integrated using the tag `<deckgo-youtube/>`.
+
+```
+<deckgo-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
+</deckgo-youtube>
+```
+
+#### Slots
+
+No slots are available for this component.
+
+### Attributes
+
+This component offers the following options which could be set using attributes:
+
+| Attribute                      | Type   | Default   | Description   |
+| -------------------------- |:-----------------:|:-----------------:|:-----------------:|
+| src | string |  | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
+| width | number |  | The width of the video player. |
+| height | number |  | The height of the video player. |
+| frame-title | string |  | A title for the frame, could be use for accessibility reason. | 
 
 [DeckDeckGo]: https://deckdeckgo.com
