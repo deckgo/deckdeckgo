@@ -11,7 +11,7 @@ div.deckgo-slide-qrcode {
   width: 100%;
 
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row;
 
   align-items: var(--slide-qrcode-align, center);
   text-align: var(--slide-qrcode-text-align, center);
