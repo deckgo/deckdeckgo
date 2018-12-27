@@ -21,8 +21,6 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
 
     this.initWindowResize();
 
-    await this.initQRCodeSize();
-
     this.slideDidLoad.emit();
   }
 
@@ -75,7 +73,15 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+    return new Promise<void>(async (resolve) => {
+      const promises = [];
+      promises.push(DeckdeckgoSlideUtils.lazyLoadContent(this.el));
+      promises.push(this.initQRCodeSize());
+
+      await Promise.all(promises);
+
+      resolve();
+    });
   }
 
   render() {
