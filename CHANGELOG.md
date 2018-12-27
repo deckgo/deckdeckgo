@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.20"></a>
+# [1.0.0-beta.20](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.19...v1.0.0-beta.20) (2018-12-27)
+
+### Features
+
+* add a new template to generate easily QR code ([#36](https://github.com/fluster/deckdeckgo/issues/36))
+
+### Breaking Changes
+
+* the code template as been slitted with a separate component. if you already use this code template, you will need to install the new `<deckgo-highlight-code/>` Web Component in your presentation ([#35](https://github.com/fluster/deckdeckgo/issues/35))
+
 <a name="1.0.0-beta.19"></a>
 # [1.0.0-beta.19](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.18...v1.0.0-beta.19) (2018-12-22)
 
