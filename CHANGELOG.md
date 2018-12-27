@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.21"></a>
+# [1.0.0-beta.21](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.20...v1.0.0-beta.21) (2018-12-27)
+
+### Fix
+
+* improve new QR Code slide flex alignment ([775ab22](https://github.com/fluster/deckdeckgo/commit/775ab22a745975920bbe9ac4ec15ffe041ccf337))
+
 <a name="1.0.0-beta.20"></a>
 # [1.0.0-beta.20](https://github.com/fluster/deckdeckgo/compare/v1.0.0-beta.19...v1.0.0-beta.20) (2018-12-27)
 
