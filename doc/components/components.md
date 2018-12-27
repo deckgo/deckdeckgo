@@ -60,17 +60,9 @@ Of course, as other images added to a presentation build with [DeckDeckGo], gifs
 
 The "Chart" component is an extra component which let you draw charts easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
 
-### Note
-
-The [DeckDeckGo] charts components are provided in separate extra library. If you don't use the starter kit and wish to add charts to your presentation, you will need to install this extra component from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-charts). See its related [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
-
 ## Highlight Code
 
 The "Highlight Code" component is an extra component which let you highlight code easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-highlight-code) for the details.
-
-### Note
-
-The [DeckDeckGo] - Highlight code component is provided in separate extra library. If you don't use the starter kit and wish to add it to your presentation, you will need to install this extra component from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-highlight-code). See its related [installation guide](https://github.com/fluster/deckdeckgo-highlight-code#getting-started).
 
 ## Youtube
 
