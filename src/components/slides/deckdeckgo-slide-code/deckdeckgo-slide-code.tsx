@@ -163,6 +163,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
         <deckgo-highlight-code src={this.src} anchor={this.anchor} anchorZoom={this.anchorZoom} hideAnchor={this.hideAnchor} language={this.language}></deckgo-highlight-code>
       </div>
       <slot name="code"></slot>
+      <slot name="notes"></slot>
     </div>;
   }
 

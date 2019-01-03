@@ -34,7 +34,7 @@ export class DeckdeckgoDeck {
   @State()
   private length: number = 0;
 
-  @Event() slidesDidLoad: EventEmitter<string[]>;
+  @Event() slidesDidLoad: EventEmitter<DeckdeckgoSlideDefinition[]>;
   @Event() slideNextDidChange: EventEmitter<number>;
   @Event() slidePrevDidChange: EventEmitter<number>;
   @Event() slideToChange: EventEmitter<number>;
@@ -257,9 +257,17 @@ export class DeckdeckgoDeck {
 
       // Are all slides loaded?
       if (definedSlides && loadedSlides && loadedSlides.length === definedSlidesLength && definedSlidesLength === this.length) {
-        const orderedSlidesTagNames: string[] = Array.from(loadedSlides).map((slide: HTMLElement) => {
-          return slide.tagName
+        const orderedSlidesTagNames: DeckdeckgoSlideDefinition[] = [];
+
+        Array.from(loadedSlides).forEach((slide: HTMLElement) => {
+          const notes: HTMLElement = slide.querySelector('[slot=\'notes\']');
+
+          orderedSlidesTagNames.push({
+            name: slide.tagName,
+            notes: notes ? notes.innerHTML : null
+          });
         });
+
         this.slidesDidLoad.emit(orderedSlidesTagNames);
 
         await this.lazyLoadFirstSlides();

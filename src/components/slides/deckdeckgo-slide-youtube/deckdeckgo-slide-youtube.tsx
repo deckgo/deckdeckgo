@@ -138,6 +138,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
       <div class="deckgo-youtube-container">
         {this.renderVideo()}
       </div>
+      <slot name="notes"></slot>
     </div>
   }
 

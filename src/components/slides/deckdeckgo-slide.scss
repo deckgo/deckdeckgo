@@ -29,6 +29,10 @@ div.deckgo-slide {
   padding-inline-start: var(--slide-padding-start, 32px);
 }
 
+::slotted([slot="notes"]) {
+  display: none;
+}
+
 @media print {
   div.deckgo-slide {
     padding: 0;

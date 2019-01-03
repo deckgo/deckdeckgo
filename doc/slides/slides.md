@@ -91,6 +91,19 @@ The "Title" slide's Web Component could be integrated using the tag `<deckgo-sli
 
 Both slots `title` and `content` are optional. Without providing one of them, the page will remain empty.
 
+##### Notes
+
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+
+```
+<deckgo-deck>
+  <deckgo-slide-title>
+    <h1 slot="title">My presentation title</h1>
+    <div slot="notes">A note regarding this particular slide</div>
+  </deckgo-slide-title>
+</deckgo-deck>
+``` 
+
 #### Attributes
 
 This component offers the following options which could be set using attributes:
@@ -157,6 +170,10 @@ The "Content" slide's Web Component could be integrated using the tag `<deckgo-s
 ##### Slots
 
 Both slots `title` and `content` are optional. Without providing one of them, the page will remain empty.
+
+##### Notes
+
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
 
 #### Attributes
 
@@ -229,6 +246,10 @@ The `start` slot is the content of the left pane respectively the slot `end` is 
 
 Note: The slot `title` is per default hidden even if you provide it. See attributes below if you wish to display it. 
 
+##### Notes
+
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+
 #### Attributes
 
 This component offers the following options which could be set using attributes:
@@ -272,7 +293,7 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 
 <img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-gif-layout.gif" width="450px">
 
-#### Note
+#### For images too
 
 The slide Gif is useful for Gifs but could be use for any images too, in case you would like for example to display an image fullscreen.
 
@@ -291,6 +312,10 @@ The "Gif" slide's Web Component could be integrated using the tag `<deckgo-slide
 #### Slots
 
 The slots `title`, `header` and `footer` are both optional. `header` and `footer` would be displayed over the gif.
+
+##### Notes
+
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
 
 #### Gif component
 
@@ -343,6 +368,10 @@ The "Chart" slide's Web Component could be integrated using the tag `<deckgo-sli
 ##### Slots
 
 The slot `title` is optional.
+
+##### Notes
+
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
 
 #### Chart components
 
@@ -403,6 +432,10 @@ The "Youtube" slide's Web Component could be integrated using the tag `<deckgo-s
 ##### Slots
 
 The slot `title` is optional.
+
+##### Notes
+
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
 
 ##### Youtube component
 
@@ -491,6 +524,10 @@ You could provide a file URI to the code you want to display or provide it with 
 ##### Slots
 
 The slots `title` and `code` are optional.
+
+##### Notes
+
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
 
 #### Code components
 
@@ -587,6 +624,10 @@ Notes:
 * The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be use for the navigation modal
 
 * You could provide up to six `social-link` slots. Each of these could be your custom code or you could use the component `<deckgo-social/>` to easily provide a link to an external URI.
+
+##### Notes
+
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
 
 ##### Social components
 
@@ -703,6 +744,10 @@ The "QR code" slide's Web Component could be integrated using the tag `<deckgo-s
 ##### Slots
 
 The slots `title` and `content` are optional.
+
+##### Notes
+
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
 
 #### Code components
 

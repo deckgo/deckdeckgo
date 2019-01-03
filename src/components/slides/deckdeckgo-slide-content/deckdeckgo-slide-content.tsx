@@ -46,6 +46,7 @@ export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
     return <div class="deckgo-slide">
       <slot name="title"></slot>
       <slot name="content"></slot>
+      <slot name="notes"></slot>
     </div>;
   }
 
