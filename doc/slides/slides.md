@@ -93,7 +93,7 @@ Both slots `title` and `content` are optional. Without providing one of them, th
 
 ##### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
 
 ```
 <deckgo-deck>
@@ -102,7 +102,18 @@ Optionally a slot `notes` could be use to add some notes regarding the particula
     <div slot="notes">A note regarding this particular slide</div>
   </deckgo-slide-title>
 </deckgo-deck>
-``` 
+```
+
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
+
+```
+<deckgo-deck>
+  <deckgo-slide-title>
+    <h1 slot="title">My presentation title</h1>
+    <div slot="notes" show>A note displayed in the presentation within a modal accessible for anyone</div>
+  </deckgo-slide-title>
+</deckgo-deck>
+```
 
 #### Attributes
 
@@ -173,7 +184,9 @@ Both slots `title` and `content` are optional. Without providing one of them, th
 
 ##### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
+
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
 
 #### Attributes
 
@@ -248,7 +261,9 @@ Note: The slot `title` is per default hidden even if you provide it. See attribu
 
 ##### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
+
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
 
 #### Attributes
 
@@ -315,7 +330,9 @@ The slots `title`, `header` and `footer` are both optional. `header` and `footer
 
 ##### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
+
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
 
 #### Gif component
 
@@ -371,7 +388,9 @@ The slot `title` is optional.
 
 ##### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
+
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
 
 #### Chart components
 
@@ -435,7 +454,9 @@ The slot `title` is optional.
 
 ##### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
+
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
 
 ##### Youtube component
 
@@ -527,7 +548,9 @@ The slots `title` and `code` are optional.
 
 ##### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
+
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
 
 #### Code components
 
@@ -627,7 +650,9 @@ Notes:
 
 ##### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
+
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
 
 ##### Social components
 
@@ -747,7 +772,9 @@ The slots `title` and `content` are optional.
 
 ##### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will `not` be displayed in the presentation but `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
+
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
 
 #### Code components
 
