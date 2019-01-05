@@ -41,6 +41,10 @@ export class DeckdeckgoDeck {
   @Event() slideDrag: EventEmitter<number>;
   @Event() slideWillChange: EventEmitter<number>;
 
+  private fullscreen: boolean = false;
+  private cursorHidden: boolean = false;
+  private idleMouseTimer: number;
+
   async componentDidLoad() {
     this.initWindowResize();
     this.initKeyboardAssist();
@@ -121,6 +125,7 @@ export class DeckdeckgoDeck {
   }
 
   private async move(e: Event) {
+    await this.clearMouseCursorTimer(true);
 
     if (this.blockSlide) {
       return;
@@ -465,7 +470,7 @@ export class DeckdeckgoDeck {
 
   @Method()
   toggleFullScreen(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       const doc = window.document;
       const docEl = doc.documentElement;
 
@@ -477,9 +482,69 @@ export class DeckdeckgoDeck {
       // @ts-ignore
       if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
         requestFullScreen.call(docEl);
+
+        this.fullscreen = true;
+        this.hideMouseCursorWithDelay();
       } else {
         cancelFullScreen.call(doc);
+
+        await this.clearMouseCursorTimer(false);
+        this.fullscreen = false;
       }
+
+      resolve();
+    });
+  }
+
+  private async clearMouseCursorTimer(hideWithDelay: boolean) {
+    if (!this.fullscreen) {
+      return;
+    }
+
+    if (this.idleMouseTimer > 0) {
+      clearTimeout(this.idleMouseTimer);
+    }
+
+    await this.showHideMouseCursor(true);
+
+    if (hideWithDelay) {
+      this.hideMouseCursorWithDelay();
+    }
+  }
+
+  private hideMouseCursorWithDelay() {
+    if (!this.fullscreen) {
+      return;
+    }
+
+    this.idleMouseTimer = setTimeout(async () => {
+      await this.showHideMouseCursor(false);
+    }, 4000);
+  }
+
+  private showHideMouseCursor(show: boolean): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.fullscreen) {
+        resolve();
+        return;
+      }
+
+      if (!this.cursorHidden && show) {
+        // Cursor already displayed, we don't want to touch the style multiple times if not needed
+        resolve();
+        return;
+      }
+
+      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
+
+      if (!slider) {
+        resolve();
+        return;
+      }
+
+      slider.style.setProperty('cursor', show ? 'initial' : 'none');
+
+      this.cursorHidden = !show;
 
       resolve();
     });
