@@ -100,6 +100,8 @@ Optionally a slot `notes` could be use to add some notes regarding the particula
   <deckgo-slide-title>
     <h1 slot="title">My presentation title</h1>
     <div slot="notes">A note regarding this particular slide</div>
+    
+And another note on a new line about it too.
   </deckgo-slide-title>
 </deckgo-deck>
 ```
