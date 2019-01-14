@@ -24,41 +24,41 @@ Some templates offer extra features as for example the slide [Code](#slide-code)
 
 * [Title](#slide-title)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-layout.png" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-layout.png" width="200px">
 
 * [Content](#slide-content)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-content-layout.png" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-content-layout.png" width="200px">
 
 * [Split](#slide-split)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="200px">
 
 * [Gif](#slide-gif)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-gif-layout.gif" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-gif-layout.gif" width="200px">
 
 * [Chart](#slide-chart)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-pie-layout.png" width="200px">
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-line-layout.png" width="200px">
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-bar-layout.png" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-pie-layout.png" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-line-layout.png" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-bar-layout.png" width="200px">
 
 * [Youtube](#slide-youtube)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-youtube-layout.png" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-youtube-layout.png" width="200px">
 
 * [Code](#slide-code)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-code-layout.gif" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-code-layout.gif" width="200px">
 
 * [Author](#slide-author)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-author-layout.png" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-author-layout.png" width="200px">
 
 * [QR Code](#slide-qr-code)
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-qrcode-layout.png" width="200px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-qrcode-layout.png" width="200px">
 
 *Note: If you would miss or need further templates, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more options*
 
@@ -70,7 +70,7 @@ This slide could be for example use for the very first and last slide of your pr
 
 #### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-layout.png" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-title-layout.png" width="450px">
 
 #### Usage
 
@@ -163,7 +163,7 @@ This slide could be for example use for the every slides of your presentation wh
 
 #### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-content-layout.png" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-content-layout.png" width="450px">
 
 #### Usage
 
@@ -233,7 +233,7 @@ The "Split" slide is a simple slide which display two panes on the page.
 
 #### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-split-layout.png" width="450px">
 
 #### Usage
 
@@ -308,7 +308,7 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 
 #### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-gif-layout.gif" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-gif-layout.gif" width="450px">
 
 #### For images too
 
@@ -338,7 +338,7 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 #### Gif component
 
-The slide "Gif" relies on the component `<deckgo-gif/>` which is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+The slide "Gif" relies on the component `<deckgo-gif/>` which is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
 
 #### Attributes
 
@@ -370,9 +370,9 @@ The "Chart" slide let you draw easily charts in your presentation.
 
 #### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-pie-layout.png" width="450px">
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-line-layout.png" width="450px">
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-bar-layout.png" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-pie-layout.png" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-line-layout.png" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-chart-bar-layout.png" width="450px">
 
 #### Usage
 
@@ -396,11 +396,11 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 #### Chart components
 
-The slide "Chart" relies on the charts components `<deckgo-pie-chart/>`, `<deckgo-line-chart/>` and  `<deckgo-bar-chart/>` which are described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+The slide "Chart" relies on the charts components `<deckgo-pie-chart/>`, `<deckgo-line-chart/>` and  `<deckgo-bar-chart/>` which are described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
 
 #### Installation
 
-The [DeckDeckGo] charts components are provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] chart to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-charts) as described in its [installation guide](https://github.com/fluster/deckdeckgo-charts#getting-started).
+The [DeckDeckGo] charts components are provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] chart to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-charts) as described in its [installation guide](https://github.com/deckgo/deckdeckgo-charts#getting-started).
 
 #### Attributes
 
@@ -410,7 +410,7 @@ This component offers the following options which could be set using attributes:
 | -------------------------- |:-----------------:|:-----------------:|:-----------------:|
 | type | string | pie | The type of the chart, `pie`, `line` or `bar` |
 
-Furthermore, this slide component offers the same attributes as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
+Furthermore, this slide component offers the same attributes as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-charts) for the details.
 
 #### Theming
 
@@ -430,7 +430,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-chart-margin-bottom | 32px | Margin bottom of the chart inside its container |
 | --slide-chart-margin-start | 32px | Margin left of the chart inside its container |
 
-Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
+Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-charts) for the details.
 
 ### Slide: Youtube
 
@@ -438,7 +438,7 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
 
 #### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-youtube-layout.png" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-youtube-layout.png" width="450px">
 
 #### Usage
 
@@ -462,7 +462,7 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 ##### Youtube component
 
-The slide "Youtube" relies on the component `<deckgo-youtube/>` which is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+The slide "Youtube" relies on the component `<deckgo-youtube/>` which is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
 
 #### Attributes
 
@@ -512,7 +512,7 @@ The "Code" slide is a the slide to use if you would like to showcase code during
 
 #### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-code-layout.gif" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-code-layout.gif" width="450px">
 
 #### Usage
 
@@ -556,15 +556,15 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 #### Code components
 
-The slide "Code" relies on the code component `<deckgo-highlight-code/>` which is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+The slide "Code" relies on the code component `<deckgo-highlight-code/>` which is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
 
 #### Installation
 
-The [DeckDeckGo] - Hightlight code component is provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] code to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-highlight-code) as described in its [installation guide](https://github.com/fluster/deckdeckgo-highlight-code#getting-started).
+The [DeckDeckGo] - Hightlight code component is provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] code to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-highlight-code) as described in its [installation guide](https://github.com/deckgo/deckdeckgo-highlight-code#getting-started).
 
 #### Attributes
 
-At least `src` or the `slot` code should be provided in order to render code in this template. It offers the same attributes as the [DeckDeckGo] code Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-highlight-code) for the details.
+At least `src` or the `slot` code should be provided in order to render code in this template. It offers the same attributes as the [DeckDeckGo] code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-highlight-code) for the details.
 
 ##### Example with file URI
 
@@ -613,7 +613,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
 
-Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - Highlight code Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-highlight-code) for the details.
+Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - Highlight code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-highlight-code) for the details.
 
 ### Slide: Author
 
@@ -621,7 +621,7 @@ The "Author" slide let you introduce the author of the presentation.
 
 #### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-author-layout.png" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-author-layout.png" width="450px">
 
 #### Usage
 
@@ -658,7 +658,7 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 ##### Social components
 
-The details of the component `<deckgo-social/>` is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+The details of the component `<deckgo-social/>` is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
 
 #### Attributes
 
@@ -751,7 +751,7 @@ The "QR code" slide is an handy slide in case you would like to display a QR cod
 
 #### Layout
 
-<img src="https://github.com/fluster/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-qrcode-layout.png" width="450px">
+<img src="https://github.com/deckgo/deckdeckgo/blob/master/doc/slides/deckdeckgo-slide-qrcode-layout.png" width="450px">
 
 #### Usage
 
@@ -780,15 +780,15 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 #### Code components
 
-The slide "QR Code" relies on the code component `<deckgo-qrcode/>` which is described in the components [documentation](https://github.com/fluster/deckdeckgo/blob/master/doc/components/components.md).
+The slide "QR Code" relies on the code component `<deckgo-qrcode/>` which is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
 
 #### Installation
 
-The [DeckDeckGo] - QR Code component is provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] QR code to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-qrcode) as described in its [installation guide](https://github.com/fluster/deckdeckgo-qrcode#getting-started).
+The [DeckDeckGo] - QR Code component is provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] QR code to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-qrcode) as described in its [installation guide](https://github.com/deckgo/deckdeckgo-qrcode#getting-started).
 
 #### Attributes
 
-The attribute `content` should be provided in order to render a QR code in this template. It offers the same attributes as the [DeckDeckGo] QR code Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-qrcode) for the details.
+The attribute `content` should be provided in order to render a QR code in this template. It offers the same attributes as the [DeckDeckGo] QR code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-qrcode) for the details.
 
 ##### Example without any slots
 
@@ -816,7 +816,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-qrcode-background | | QR code column's background |
 | --slide-qrcode-title-display | inherit | If you wish to hide the slot="title" |
 
-Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - QR code Web Component, see its [documentation](https://github.com/fluster/deckdeckgo-qrcode) for the details.
+Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - QR code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-qrcode) for the details.
 
 
 [DeckDeckGo]: https://deckdeckgo.com

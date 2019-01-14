@@ -41,7 +41,7 @@ Create a lightweight presentation using Web Components.
 
 ### Starter kit extra features
 
-[DeckDeckGo] offers also a [starter kit](https://github.com/fluster/deckdeckgo-starter) kit which lets you additionally:
+[DeckDeckGo] offers also a [starter kit](https://github.com/deckgo/deckdeckgo-starter) kit which lets you additionally:
 
 * 🚀 Publish your presentation as a **Progressive Web App** with a **offline** support
 
@@ -53,7 +53,7 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with its [Progressive Web App](ht
 
 ## Getting Started
 
-[DeckDeckGo] provides a [CLI](https://github.com/fluster/create-deckdeckgo) and a [starter kit](https://github.com/fluster/deckdeckgo-starter).
+[DeckDeckGo] provides a [CLI](https://github.com/deckgo/create-deckdeckgo) and a [starter kit](https://github.com/deckgo/deckdeckgo-starter).
 
 To get started and **to create your presentation**, run the following command and follow the prompt:
 
@@ -96,7 +96,7 @@ The 👉 [extended documentation](doc/slides/slides.md) 👈 displays all templa
 
 ### Markdown
 
-Per default, [DeckDeckGo]'s presentations are edited using HTML and are Web Components, that's why the documentation and examples are provided in HTML. But if you are using the [starter kit](https://github.com/fluster/deckdeckgo-starter) and are editing your talk with Markdown, you could have a look to the [Markdown documentation](doc/markdown/markdown.md) to get some examples.
+Per default, [DeckDeckGo]'s presentations are edited using HTML and are Web Components, that's why the documentation and examples are provided in HTML. But if you are using the [starter kit](https://github.com/deckgo/deckdeckgo-starter) and are editing your talk with Markdown, you could have a look to the [Markdown documentation](doc/markdown/markdown.md) to get some examples.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # DeckDeckGo - Markdown
 
-This documentation has for goal to introduce you briefly on how is it working out if you are using the [starter kit](https://github.com/fluster/deckdeckgo-starter) and are editing your talk with Markdown.
+This documentation has for goal to introduce you briefly on how is it working out if you are using the [starter kit](https://github.com/deckgo/deckdeckgo-starter) and are editing your talk with Markdown.
 
 ## Table of contents
 
@@ -13,7 +13,7 @@ This documentation has for goal to introduce you briefly on how is it working ou
 
 It's pretty simple, the goal of the editing with Markdown is to offer the same abilities as if you would have while editing your talk with HTML.
 
-When you edit your talk with Markdown, furthermore than the set of common supported tags, the [DeckDeckGo Webpack Markdown Plugin](https://github.com/fluster/deckdeckgo-webpack-markdown-plugin) extend these by adding the support of the different [DeckDeckGo] slides as documented in the 👉 [extended documentation](doc/slides/slides.md) 👈.
+When you edit your talk with Markdown, furthermore than the set of common supported tags, the [DeckDeckGo Webpack Markdown Plugin](https://github.com/deckgo/deckdeckgo-webpack-markdown-plugin) extend these by adding the support of the different [DeckDeckGo] slides as documented in the 👉 [extended documentation](doc/slides/slides.md) 👈.
 
 Your Markdown code will, through the help of the plugin, be compiled and injected in the `index.html` distribution file at build time. Doing so, your [DeckDeckGo] presentation will remain SEO friendly even without server side rendering. 
 

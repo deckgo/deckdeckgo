@@ -13,7 +13,7 @@
 
 ## Chart
 
-The "Chart" component is an extra component which let you draw charts easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-charts) for the details.
+The "Chart" component is an extra component which let you draw charts easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/deckgo/deckdeckgo-charts) for the details.
 
 ## Gif
 
@@ -63,11 +63,11 @@ Of course, as other images added to a presentation build with [DeckDeckGo], gifs
 
 ## Highlight Code
 
-The "Highlight Code" component is an extra component which let you highlight code easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-highlight-code) for the details.
+The "Highlight Code" component is an extra component which let you highlight code easily. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/deckgo/deckdeckgo-highlight-code) for the details.
 
 ## QR Code
 
-The "QR Code" component is an extra component which let you add QR code in your slides, useful for example to display links and url and if you wish your audience to easily access them. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/fluster/deckdeckgo-qr-code) for the details.
+The "QR Code" component is an extra component which let you add QR code in your slides, useful for example to display links and url and if you wish your audience to easily access them. This Web Component could be use in [DeckDeckGo] or in any other web projects. See its [documentation](https://github.com/deckgo/deckdeckgo-qr-code) for the details.
 
 ## Social
 
