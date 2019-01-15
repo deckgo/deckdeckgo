@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.22"></a>
+# [1.0.0-beta.22](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.21...v1.0.0-beta.22) (2019-01-15)
+
+### Features
+
+* notes for the editor and for the audience ([#37](https://github.com/deckgo/deckdeckgo/issues/37))
+* in full screen mode, hide mouse cursor after a delay if not moved ([#39](https://github.com/deckgo/deckdeckgo/issues/39))
+
 <a name="1.0.0-beta.21"></a>
 # [1.0.0-beta.21](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.20...v1.0.0-beta.21) (2018-12-27)
 
