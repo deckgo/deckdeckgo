@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.22-1"></a>
+# [1.0.0-beta.22-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.22...v1.0.0-beta.22-1) (2019-01-15)
+
+### Features
+
+* weaker emitter type for build compatibility of the remote control pwa ([915e225](https://github.com/deckgo/deckdeckgo/commit/915e225726f1381584ee0db1d00617dd01dda8cc))
+
 <a name="1.0.0-beta.22"></a>
 # [1.0.0-beta.22](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.21...v1.0.0-beta.22) (2019-01-15)
 
