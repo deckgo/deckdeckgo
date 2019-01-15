@@ -8,6 +8,11 @@ interface DeltaX {
   deltaX: number;
 }
 
+interface DeckdeckgoSlideDefinition {
+  name: string;
+  notes?: string;
+}
+
 @Component({
   tag: 'deckgo-deck',
   styleUrl: 'deckdeckgo-deck.scss',
@@ -34,7 +39,7 @@ export class DeckdeckgoDeck {
   @State()
   private length: number = 0;
 
-  @Event() slidesDidLoad: EventEmitter<DeckdeckgoSlideDefinition[]>;
+  @Event() slidesDidLoad: EventEmitter;
   @Event() slideNextDidChange: EventEmitter<number>;
   @Event() slidePrevDidChange: EventEmitter<number>;
   @Event() slideToChange: EventEmitter<number>;

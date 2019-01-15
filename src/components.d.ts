@@ -33,7 +33,7 @@ export namespace Components {
     'onSlidePrevDidChange'?: (event: CustomEvent<number>) => void;
     'onSlideToChange'?: (event: CustomEvent<number>) => void;
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
-    'onSlidesDidLoad'?: (event: CustomEvent<DeckdeckgoSlideDefinition[]>) => void;
+    'onSlidesDidLoad'?: (event: CustomEvent) => void;
     'pager'?: boolean;
     'pagerPercentage'?: boolean;
   }
