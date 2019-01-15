@@ -8,12 +8,13 @@ This documentation has for goal to introduce you briefly on how is it working ou
 - [Editing](#editing)
     - [Example](#example)
     - [Attributes](#attributes)
+    - [Notes](#notes)
 
 ## Introduction
 
 It's pretty simple, the goal of the editing with Markdown is to offer the same abilities as if you would have while editing your talk with HTML.
 
-When you edit your talk with Markdown, furthermore than the set of common supported tags, the [DeckDeckGo Webpack Markdown Plugin](https://github.com/deckgo/deckdeckgo-webpack-markdown-plugin) extend these by adding the support of the different [DeckDeckGo] slides as documented in the 👉 [extended documentation](doc/slides/slides.md) 👈.
+When you edit your talk with Markdown, furthermore than the set of common supported tags, the [DeckDeckGo Webpack Markdown Plugin](https://github.com/deckgo/deckdeckgo-webpack-plugins) extend these by adding the support of the different [DeckDeckGo] slides as documented in the 👉 [extended documentation](doc/slides/slides.md) 👈.
 
 Your Markdown code will, through the help of the plugin, be compiled and injected in the `index.html` distribution file at build time. Doing so, your [DeckDeckGo] presentation will remain SEO friendly even without server side rendering. 
 
@@ -25,7 +26,7 @@ Furthermore the plugin takes care of injecting the content you would provide in 
 
 ### Example
 
-The following `</deckgo-slide-title>` slide:
+The following `<deckgo-slide-title/>` slide:
 
 ```
 --- title
@@ -39,9 +40,9 @@ would be parsed into:
 ```
 <deckgo-slide-title>
   <h1 slot="title">My presentation title</h1>
-  <p slot="content">
-    Hello World 🚀
-  </p>
+  <div slot="content">
+    <p>Hello World 🚀</p>
+  </div>
 </deckgo-slide-title>
 ```
 
@@ -49,7 +50,7 @@ would be parsed into:
 
 As some templates needs attributes, you would also be able to specify them in Markdown.
 
-For example the `</deckgo-slide-gif>` slide:
+For example the `<deckgo-slide-gif/>` slide:
 
 ```
 --- gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen="true"
@@ -69,5 +70,41 @@ would be parsed into:
   <h2 slot="footer">It's a cool gif</h2>
 </deckgo-slide-gif>
 ```
+
+### Notes
+
+To add some notes to a particular slide, use the separator `***` and write down your notes afterwards.
+
+Optionally, if you wish to display your notes in your deck, you could also use the attribute `show`.
+
+```
+--- title
+# My presentation title
+
+Hello World 🚀
+
+***
+
+I should not forget to think about that during my talk
+
+...and say hello to mum
+```
+
+would be parsed into:
+
+```
+<deckgo-slide-title>
+  <h1 slot="title">My presentation title</h1>
+  <div slot="content">
+    <p>Hello World 🚀</p>
+  </div>
+  <div slot="notes">
+    I should not forget to think about that during my talk
+    
+    ...and say hello to mum
+  </div>
+</deckgo-slide-title>
+```
+
 
 [DeckDeckGo]: https://deckdeckgo.com
