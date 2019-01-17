@@ -16,6 +16,10 @@ div.deckgo-deck {
   ::-webkit-scrollbar {
     display: none;
   }
+
+  &.deckgo-deck-rtl {
+    direction: rtl;
+  }
 }
 
 div.deckgo-pager {

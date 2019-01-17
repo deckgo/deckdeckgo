@@ -8,7 +8,7 @@
   <script src="/build/deckdeckgo.js"></script>
 
 </head>
-<body style="margin: 0;">
+<body style="margin: 0; overflow: hidden;">
 
 <deckgo-deck id="slider">
   <deckgo-slide-title>
@@ -51,7 +51,7 @@
   </deckgo-slide-youtube>
 
   <deckgo-slide-content reveal="true">
-    <h1 slot="title">DeckDeckGo</h1>
+    <h1 slot="title">DeckDeckGo - Reveal</h1>
     <div slot="content">
       <ul>
         <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
@@ -202,7 +202,7 @@ public static void main(String args[]) {
   }
 </script>
 
-<div style="position: fixed; bottom: 0; right: 0;">
+<div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
   <button onclick="playVideo()">Play video</button>
   <button onclick="slidePrev()">Prev</button>
   <button onclick="slideNext()">Next</button>

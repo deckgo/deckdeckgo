@@ -27,6 +27,9 @@ export class DeckdeckgoDeck {
   @Prop() pager: boolean = true;
   @Prop() pagerPercentage: boolean = true;
 
+  @State()
+  private rtl: boolean = false;
+
   private startX: number = null;
   private deckTranslateX: number = 0;
   private autoSwipeRatio: number = 10;
@@ -50,11 +53,26 @@ export class DeckdeckgoDeck {
   private cursorHidden: boolean = false;
   private idleMouseTimer: number;
 
+  async componentWillLoad() {
+    await this.initRtl();
+  }
+
   async componentDidLoad() {
     this.initWindowResize();
     this.initKeyboardAssist();
 
     await this.lazyBackgroungImages();
+  }
+
+  private initRtl(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (document && document.documentElement) {
+        const htmlDir: string = document.documentElement.getAttribute('dir');
+        this.rtl = htmlDir && htmlDir === 'rtl';
+      }
+
+      resolve();
+    });
   }
 
   private initWindowResize() {
@@ -74,10 +92,10 @@ export class DeckdeckgoDeck {
 
         if (e.key === 'ArrowLeft') {
           e.preventDefault();
-          await this.slidePrev();
+          await this.slideNextPrev(false, false, false);
         } else if (e.key === 'ArrowRight') {
           e.preventDefault();
-          await this.slideNext();
+          await this.slideNextPrev(true, false, false);
         }
       });
     }
@@ -142,7 +160,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    let transformX: number = deltaX.swipeLeft ? this.deckTranslateX - deltaX.deltaX : this.deckTranslateX + deltaX.deltaX;
+    const transformX: number = deltaX.swipeLeft ? this.deckTranslateX - deltaX.deltaX : this.deckTranslateX + deltaX.deltaX;
 
     deltaX.slider.style.setProperty('--transformX', transformX + 'px');
     deltaX.slider.style.setProperty('--transformXDuration', '0ms');
@@ -170,15 +188,20 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      const couldSwipeLeft: boolean = deltaX.swipeLeft && this.activeIndex < this.length - 1;
-      const couldSwipeRight: boolean = !deltaX.swipeLeft && this.activeIndex > 0;
+      let couldSwipeLeft: boolean = deltaX.swipeLeft && this.activeIndex < this.length - 1;
+      let couldSwipeRight: boolean = !deltaX.swipeLeft && this.activeIndex > 0;
+
+      if (this.rtl) {
+        couldSwipeLeft = deltaX.swipeLeft && this.activeIndex > 0;
+        couldSwipeRight = !deltaX.swipeLeft && this.activeIndex < this.length - 1;
+      }
 
       if (couldSwipeLeft || couldSwipeRight) {
         const windowWidth: number = window.innerWidth;
         if (deltaX.deltaX > (windowWidth / this.autoSwipeRatio)) {
           this.deckTranslateX = deltaX.swipeLeft ? this.deckTranslateX - windowWidth : this.deckTranslateX + windowWidth;
 
-          if (deltaX.swipeLeft) {
+          if ((deltaX.swipeLeft && !this.rtl) || (!deltaX.swipeLeft && this.rtl)) {
             this.activeIndex++;
 
             if (emitEvent) {
@@ -348,12 +371,12 @@ export class DeckdeckgoDeck {
 
   @Method()
   async slideNext(slideAnimation?: boolean, emitEvent?: boolean) {
-    await this.slideNextPrev(true, slideAnimation, emitEvent);
+    await this.slideNextPrev(!this.rtl, slideAnimation, emitEvent);
   }
 
   @Method()
   async slidePrev(slideAnimation?: boolean, emitEvent?: boolean) {
-    await this.slideNextPrev(false, slideAnimation, emitEvent);
+    await this.slideNextPrev(this.rtl, slideAnimation, emitEvent);
   }
 
   private async slideNextPrev(swipeLeft: boolean, slideAnimation: boolean = true, emitEvent?: boolean) {
@@ -585,8 +608,14 @@ export class DeckdeckgoDeck {
   /* END: Full screen */
 
   render() {
+
+    let deckStyleClass: string = 'deckgo-deck';
+    if (this.rtl) {
+      deckStyleClass += ' deckgo-deck-rtl';
+    }
+
     return [
-      <div class="deckgo-deck">
+      <div class={deckStyleClass}>
         <slot/>
         <slot name="background"></slot>
       </div>,
