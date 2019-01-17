@@ -2,7 +2,7 @@ import {DeckdeckgoUtils} from '../utils/deckdeckgo-utils';
 import {DeckdeckgoExtraUtils} from '../extra/deckdeckgo-extra';
 
 export interface DeckdeckgoSlide {
-  beforeSwipe(_swipeLeft: boolean): Promise<boolean>;
+  beforeSwipe(_enter: boolean): Promise<boolean>;
 
   afterSwipe(): Promise<void>;
 
@@ -75,10 +75,10 @@ export class DeckdeckgoSlideUtils {
     });
   }
 
-  static beforeSwipe(el: HTMLElement, swipeLeft: boolean, reveal: boolean): Promise<boolean> {
+  static beforeSwipe(el: HTMLElement, enter: boolean, reveal: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       if (reveal) {
-        const couldSwipe: boolean = swipeLeft ? await this.showRevealElement(el) : await this.hideRevealElement(el);
+        const couldSwipe: boolean = enter ? await this.showRevealElement(el) : await this.hideRevealElement(el);
         resolve(couldSwipe);
       } else {
         resolve(true);

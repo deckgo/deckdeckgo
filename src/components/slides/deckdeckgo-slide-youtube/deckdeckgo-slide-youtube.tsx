@@ -36,7 +36,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(_swipeLeft: boolean): Promise<boolean> {
+  beforeSwipe(_enter: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       resolve(true)
     });

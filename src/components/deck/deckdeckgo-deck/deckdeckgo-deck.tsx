@@ -92,10 +92,10 @@ export class DeckdeckgoDeck {
 
         if (e.key === 'ArrowLeft') {
           e.preventDefault();
-          await this.slideNextPrev(false, false, false);
+          await this.slideNextPrev(false, true);
         } else if (e.key === 'ArrowRight') {
           e.preventDefault();
-          await this.slideNextPrev(true, false, false);
+          await this.slideNextPrev(true, true);
         }
       });
     }
@@ -201,7 +201,7 @@ export class DeckdeckgoDeck {
         if (deltaX.deltaX > (windowWidth / this.autoSwipeRatio)) {
           this.deckTranslateX = deltaX.swipeLeft ? this.deckTranslateX - windowWidth : this.deckTranslateX + windowWidth;
 
-          if ((deltaX.swipeLeft && !this.rtl) || (!deltaX.swipeLeft && this.rtl)) {
+          if (this.isNextChange(deltaX.swipeLeft)) {
             this.activeIndex++;
 
             if (emitEvent) {
@@ -224,6 +224,10 @@ export class DeckdeckgoDeck {
 
       resolve();
     });
+  }
+
+  private isNextChange(swipeLeft: boolean): boolean {
+    return (swipeLeft && !this.rtl) || (!swipeLeft && this.rtl);
   }
 
   private doSwipeSlide(slider: HTMLElement, speed?: number | undefined): Promise<void> {
@@ -391,7 +395,7 @@ export class DeckdeckgoDeck {
     if (!slideAnimation) {
       couldSwipe = true;
     } else {
-      couldSwipe = await this.beforeSwipe(swipeLeft);
+      couldSwipe = await this.beforeSwipe(this.isNextChange(swipeLeft));
     }
 
     // We might want first to show hide stuffs in the slide before swiping

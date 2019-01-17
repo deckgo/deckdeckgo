@@ -28,8 +28,8 @@ export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(_swipeLeft: boolean): Promise<boolean> {
-    return DeckdeckgoSlideUtils.beforeSwipe(this.el, _swipeLeft, this.reveal);
+  beforeSwipe(enter: boolean): Promise<boolean> {
+    return DeckdeckgoSlideUtils.beforeSwipe(this.el, enter, this.reveal);
   }
 
   @Method()
