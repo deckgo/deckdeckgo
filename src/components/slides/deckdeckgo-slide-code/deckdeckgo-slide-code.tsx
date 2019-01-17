@@ -72,11 +72,11 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return DeckdeckgoSlideUtils.afterSwipe();
   }
 
-  private scrollToNext(swipeLeft: boolean): Promise<boolean> {
+  private scrollToNext(enter: boolean): Promise<boolean> {
     const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
-    if (element) {
-      return (element as any).scrollToNext(swipeLeft);
+    if (element && element.hasOwnProperty('scrollToNext')) {
+      return (element as any).scrollToNext(enter);
     } else {
       return new Promise<boolean>((resolve) => {
         resolve(true);
@@ -88,7 +88,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return new Promise<void>(async (resolve) => {
       const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
-      if (element) {
+      if (element && element.hasOwnProperty('zoomCode')) {
         await (element as any).zoomCode(zoom);
       }
 

@@ -9,6 +9,10 @@ div.deckgo-slide {
 div.deckgo-slide-code-container {
   overflow-y: auto;
   width: 100%;
+
+  deckgo-highlight-code {
+    direction: ltr;
+  }
 }
 
 ::slotted([slot="title"]) {
