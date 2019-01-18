@@ -7,12 +7,14 @@ div.deckgo-slide {
 }
 
 div.deckgo-chart-container {
-  margin: var(--slide-chart-margin-top, 32px) var(--slide-chart-margin-end, 96px) var(--slide-chart-margin-bottom, 32px) var(--slide-chart-margin-start, 32px);
+  margin: var(--slide-chart-margin-top, 32px) var(--slide-chart-margin-end, 32px) var(--slide-chart-margin-bottom, 32px) var(--slide-chart-margin-start, 32px);
 
-  width: calc(100vw - var(--slide-chart-margin-end, 96px) - var(--slide-chart-margin-start, 32px));
+  width: calc(100vw - var(--slide-chart-margin-end, 32px) - var(--slide-chart-margin-start, 32px));
   height: calc(100vw - var(--slide-chart-margin-top, 32px) - var(--slide-chart-margin-bottom, 32px));
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  align-self: center;
 }
