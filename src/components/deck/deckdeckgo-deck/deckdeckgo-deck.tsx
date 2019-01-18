@@ -612,14 +612,8 @@ export class DeckdeckgoDeck {
   /* END: Full screen */
 
   render() {
-
-    let deckStyleClass: string = 'deckgo-deck';
-    if (this.rtl) {
-      deckStyleClass += ' deckgo-deck-rtl';
-    }
-
     return [
-      <div class={deckStyleClass}>
+      <div class="deckgo-deck">
         <slot/>
         <slot name="background"></slot>
       </div>,
