@@ -53,7 +53,13 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+    return new Promise<void>(async (resolve) => {
+      await DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+
+      await this.resizeContent();
+
+      resolve();
+    });
   }
 
   @Method()
@@ -125,12 +131,16 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   private onResizeContent = async () => {
     await this.initSize();
 
+    await this.resizeContent();
+  };
+
+  private async resizeContent() {
     const element: HTMLDeckgoYoutubeElement = this.el.shadowRoot.querySelector('deckgo-youtube');
 
     if (element) {
       await element.updateIFrame(this.videoWidth, this.videoHeight);
     }
-  };
+  }
 
   render() {
     return <div class="deckgo-slide">
@@ -143,11 +153,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   }
 
   private renderVideo() {
-    if (!this.videoWidth || !this.videoHeight) {
-      return undefined;
-    } else {
-      return <deckgo-youtube src={this.src} width={this.videoWidth} height={this.videoHeight} frame-title={this.frameTitle}></deckgo-youtube>
-    }
+    return <deckgo-youtube src={this.src} width={this.videoWidth} height={this.videoHeight} frame-title={this.frameTitle}></deckgo-youtube>
   }
 
   hostData() {
