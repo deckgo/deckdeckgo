@@ -485,7 +485,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    this.deckTranslateX = index * -1 * window.innerWidth;
+    this.deckTranslateX = index * window.innerWidth * (this.rtl ? 1 :  -1);
     this.activeIndex = index;
 
     await this.lazyLoadContent(this.activeIndex);
