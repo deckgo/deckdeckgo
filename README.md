@@ -124,7 +124,23 @@ In order to lazy load the images of your presentation, provide their url using t
 
 *Note: If you would miss or need further theming options, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more theming flexibility and options*
 
-### Send me your slides
+### RTL Support
+
+[DeckDeckGo] offers full LTR and RTL support. The deck inherits its parent text direction.
+
+Commonly, if you wish to use RTL for your all page respectively presentation, you could set the attribute `dir` of the root `html` tag to `rtl`.    
+
+```
+<!DOCTYPE html>
+<html dir="rtl">
+<body>
+  <deckgo-deck>
+  </deckgo-deck>
+</body>
+</html>  
+```
+
+## Send me your slides
 
 If you would publish online a presentation or talk you would have built with [DeckDeckGo], reach me out, I would be super duper happy to add it to the [list of talks and presentations](doc/talks/talks.md) ❤️
 
