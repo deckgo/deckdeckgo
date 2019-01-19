@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, State} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
@@ -19,7 +19,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Event() scrolling: EventEmitter<void>;
+  @Event() scrolling: EventEmitter<boolean>;
 
   @Prop() src: string;
 
@@ -29,8 +29,14 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Prop() language: string = 'javascript';
 
-  private startX: number = null;
-  private action: DeckdeckgoSlideCodeAction = null;
+  @State()
+  private mobile: boolean = false;
+
+  private action: DeckdeckgoSlideCodeAction = DeckdeckgoSlideCodeAction.SWIPE;
+
+  componentWillLoad() {
+    this.mobile = DeckdeckgoSlideUtils.isMobile();
+  }
 
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
@@ -75,7 +81,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private scrollToNext(swipeLeft: boolean): Promise<boolean> {
     const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
-    if (element) {
+    if (element && element.hasOwnProperty('scrollToNext')) {
       return (element as any).scrollToNext(swipeLeft);
     } else {
       return new Promise<boolean>((resolve) => {
@@ -88,7 +94,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return new Promise<void>(async (resolve) => {
       const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
-      if (element) {
+      if (element && element.hasOwnProperty('zoomCode')) {
         await (element as any).zoomCode(zoom);
       }
 
@@ -106,34 +112,26 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
 
-  private touchScrollStart(event: TouchEvent) {
-    this.startX = DeckdeckgoUtils.unifyEvent(event).clientX;
-  }
+  private switchAction(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.mobile) {
+        // Scrolling is allowed on not mobile devices
+        resolve();
+        return;
+      }
 
-  private touchScrollMove(event: TouchEvent) {
-    if (this.action) {
-      return;
-    }
+      this.action = this.action === DeckdeckgoSlideCodeAction.SWIPE ? DeckdeckgoSlideCodeAction.SCROLL : DeckdeckgoSlideCodeAction.SWIPE;
 
-    const currentX: number = DeckdeckgoUtils.unifyEvent(event).clientX;
+      this.scrolling.emit(this.action === DeckdeckgoSlideCodeAction.SCROLL);
 
-    const swipeLeft: boolean = this.startX > currentX;
-    const swipeRight: boolean = this.startX < currentX;
+      if (this.action === DeckdeckgoSlideCodeAction.SCROLL) {
+        this.unlockScroll();
+      } else {
+        this.lockScroll();
+      }
 
-    this.action = swipeLeft || swipeRight ? DeckdeckgoSlideCodeAction.SWIPE : DeckdeckgoSlideCodeAction.SCROLL;
-
-    if (!swipeLeft && !swipeRight) {
-      this.scrolling.emit();
-      this.unlockScroll();
-    } else {
-      this.lockScroll();
-    }
-  }
-
-  private touchScrollEnd() {
-    this.action = null;
-
-    this.unlockScroll();
+      resolve();
+    });
   }
 
   private lockScroll() {
@@ -143,23 +141,21 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   private unlockScroll() {
     const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-code-container');
-    container.style.removeProperty('overflow-y');
-  }
-
-  private emitScrolling() {
-    if (this.action === DeckdeckgoSlideCodeAction.SCROLL) {
-      this.scrolling.emit();
-    }
+    container.style.setProperty('overflow-y', 'auto');
   }
 
   // DeckDeckGo
   render() {
+
+    let containerStyle: string = 'deckgo-slide-code-container';
+    if (this.mobile) {
+      containerStyle += ' deckgo-slide-code-container-mobile';
+    }
+
     return <div class="deckgo-slide"
-                onTouchStart={(event: TouchEvent) => this.touchScrollStart(event)}
-                onTouchMove={(event: TouchEvent) => this.touchScrollMove(event)}
-                onTouchEnd={() => this.touchScrollEnd()}>
+                onClick={() => this.switchAction()}>
       <slot name="title"></slot>
-      <div class="deckgo-slide-code-container" onScroll={() => this.emitScrolling()}>
+      <div class={containerStyle}>
         <deckgo-highlight-code src={this.src} anchor={this.anchor} anchorZoom={this.anchorZoom} hideAnchor={this.hideAnchor} language={this.language}></deckgo-highlight-code>
       </div>
       <slot name="code"></slot>

@@ -121,8 +121,8 @@ export class DeckdeckgoDeck {
   }
 
   @Listen('scrolling')
-  scrolling() {
-    this.blockSlide = true;
+  scrolling($event: CustomEvent) {
+    this.blockSlide = $event ? $event.detail : false;
   }
 
   private start(e: Event) {
@@ -152,7 +152,6 @@ export class DeckdeckgoDeck {
 
   private async stop(e: Event) {
     if (this.blockSlide) {
-      this.blockSlide = false;
       return;
     }
 

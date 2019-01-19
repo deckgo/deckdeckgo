@@ -7,8 +7,12 @@ div.deckgo-slide {
 }
 
 div.deckgo-slide-code-container {
-  overflow-y: auto;
   width: 100%;
+  overflow-y: auto;
+
+  &.deckgo-slide-code-container-mobile {
+    overflow-y: hidden;
+  }
 }
 
 ::slotted([slot="title"]) {
