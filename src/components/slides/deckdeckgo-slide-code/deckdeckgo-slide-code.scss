@@ -10,6 +10,8 @@ div.deckgo-slide-code-container {
   width: 100%;
   overflow-y: auto;
 
+  scroll-behavior: smooth;
+
   &.deckgo-slide-code-container-mobile {
     overflow-y: hidden;
   }

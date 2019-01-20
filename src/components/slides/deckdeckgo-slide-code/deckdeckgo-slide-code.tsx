@@ -81,8 +81,25 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private scrollToNext(enter: boolean): Promise<boolean> {
     const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
-    if (element && element.hasOwnProperty('scrollToNext')) {
-      return (element as any).scrollToNext(enter);
+    if (element && element.hasOwnProperty('findNextAnchor')) {
+      return new Promise<boolean>(async (resolve) => {
+        const nextAnchor: any = await (element as any).findNextAnchor(enter);
+
+        const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-code-container');
+
+        if (nextAnchor && container) {
+          const previousScrollTop: number = container.scrollTop;
+          container.scrollTop = nextAnchor.offsetTop;
+
+          if (element.hasOwnProperty('zoomCode')) {
+            await (element as any).zoomCode(nextAnchor.hasLineZoom);
+          }
+
+          resolve(nextAnchor.offsetTop === 0 && previousScrollTop === 0);
+        } else {
+          resolve(true);
+        }
+      });
     } else {
       return new Promise<boolean>((resolve) => {
         resolve(true);
