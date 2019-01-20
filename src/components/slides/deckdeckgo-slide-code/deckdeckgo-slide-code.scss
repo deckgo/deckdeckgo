@@ -4,6 +4,8 @@ div.deckgo-slide {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+
+  position: relative;
 }
 
 div.deckgo-slide-code-container {
@@ -19,6 +21,31 @@ div.deckgo-slide-code-container {
 
 ::slotted([slot="title"]) {
   transition: opacity 0.5s ease-in;
+}
+
+
+::slotted([slot="info"]) {
+  display: none;
+
+  pointer-events: none;
+}
+
+::slotted([slot="info"].deckgo-show-info) {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  background: var(--deckgo-show-info-background);
+
+  pointer-events: initial;
 }
 
 @media print {

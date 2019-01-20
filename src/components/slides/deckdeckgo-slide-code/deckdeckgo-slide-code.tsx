@@ -44,6 +44,8 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     this.slideDidLoad.emit();
 
     await this.moveSlots();
+
+    await this.showInfo();
   }
 
   private moveSlots(): Promise<void> {
@@ -57,6 +59,40 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
       }
 
       resolve();
+    });
+  }
+
+  private showInfo(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      // Only on mobile devices
+      if (DeckdeckgoUtils.isMobile()) {
+        const info: HTMLElement = this.el.querySelector('[slot=\'info\']');
+
+        if (info) {
+          info.classList.add('deckgo-show-info');
+        }
+      }
+
+      resolve();
+    });
+  }
+
+  private hideInfo(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      // Only on mobile devices
+      if (DeckdeckgoUtils.isMobile()) {
+        const info: HTMLElement = this.el.querySelector('[slot=\'info\']');
+
+        if (info && info.classList.contains('deckgo-show-info')) {
+          info.classList.remove('deckgo-show-info');
+          info.style.setProperty('pointer-events', 'none');
+
+          resolve(true);
+          return;
+        }
+      }
+
+      resolve(false);
     });
   }
 
@@ -130,9 +166,16 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   }
 
   private switchAction(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (!this.mobile) {
         // Scrolling is allowed on not mobile devices
+        resolve();
+        return;
+      }
+
+      const infoRemoved: boolean = await this.hideInfo();
+      if (infoRemoved) {
+        // On the first click, we just want to hide the info
         resolve();
         return;
       }
@@ -176,6 +219,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
         <deckgo-highlight-code src={this.src} anchor={this.anchor} anchorZoom={this.anchorZoom} hideAnchor={this.hideAnchor} language={this.language}></deckgo-highlight-code>
       </div>
       <slot name="code"></slot>
+      <slot name="info"></slot>
       <slot name="notes"></slot>
     </div>;
   }
