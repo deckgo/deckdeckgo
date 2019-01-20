@@ -1,3 +1,16 @@
+<a name="1.0.0-beta.23"></a>
+# [1.0.0-beta.23](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.22-1...v1.0.0-beta.23) (2019-01-20)
+
+### Features
+
+* RTL support ([#40](https://github.com/deckgo/deckdeckgo/issues/40))
+* improve code vertical scrolling ([#41](https://github.com/deckgo/deckdeckgo/issues/41))
+* expose new util method `isMobile()` ([fe1239c](https://github.com/deckgo/deckdeckgo/commit/fe1239c57503e4b669429883bd6d23c0b4a0b00f))
+
+### Fix
+
+* slide youtube, video might be not lazy rendered ([#42](https://github.com/deckgo/deckdeckgo/issues/42))
+
 <a name="1.0.0-beta.22-1"></a>
 # [1.0.0-beta.22-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.22...v1.0.0-beta.22-1) (2019-01-15)
 
