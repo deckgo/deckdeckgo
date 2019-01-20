@@ -7,6 +7,7 @@ The [DeckDeckGo] deck expose a couple of extra features which could be added to 
 - [Extra features](#extra-features)
   - [Toggle on/off the full screen mode](#toggle-onoff-the-full-screen-mode)
   - [Print the presentation](#print-the-presentation)
+  - [Mobile](#mobile)
 - [Extra events](#extra-events)
 
 ## Extra features
@@ -29,6 +30,14 @@ await deck.toggleFullScreen();
 
 ```
 await deck.print();
+```
+
+### Mobile
+
+A util method to know if the current presentation is browsed on a mobile device or not.
+
+```
+await deck.isMobile(); // resolve a boolean
 ```
 
 ## Extra events

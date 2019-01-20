@@ -18,6 +18,7 @@ export namespace Components {
     'getLength': () => Promise<number>;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;
+    'isMobile': () => Promise<boolean>;
     'keyboard': boolean;
     'pager': boolean;
     'pagerPercentage': boolean;
@@ -96,7 +97,7 @@ export namespace Components {
 
   interface DeckgoSlideAuthor {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
     'imgAlt': string;
     'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
@@ -110,7 +111,7 @@ export namespace Components {
   interface DeckgoSlideChart {
     'afterSwipe': () => Promise<void>;
     'area': boolean;
-    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
     'datePattern': string;
     'grid': boolean;
     'height': number;
@@ -154,7 +155,7 @@ export namespace Components {
     'afterSwipe': () => Promise<void>;
     'anchor': string;
     'anchorZoom': string;
-    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
     'hideAnchor': boolean;
     'language': string;
     'lazyLoadContent': () => Promise<void>;
@@ -172,7 +173,7 @@ export namespace Components {
 
   interface DeckgoSlideContent {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean) => Promise<boolean>;
     'lazyLoadContent': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
@@ -186,7 +187,7 @@ export namespace Components {
   interface DeckgoSlideGif {
     'afterSwipe': () => Promise<void>;
     'alt': string;
-    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
     'fullscreen': boolean;
     'lazyLoadContent': () => Promise<void>;
     'src': string;
@@ -200,7 +201,7 @@ export namespace Components {
 
   interface DeckgoSlideQrcode {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
     'content': string;
     'lazyLoadContent': () => Promise<void>;
   }
@@ -211,7 +212,7 @@ export namespace Components {
 
   interface DeckgoSlideSplit {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean) => Promise<boolean>;
     'lazyLoadContent': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
@@ -224,7 +225,7 @@ export namespace Components {
 
   interface DeckgoSlideTitle {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean) => Promise<boolean>;
     'lazyLoadContent': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
@@ -237,7 +238,7 @@ export namespace Components {
 
   interface DeckgoSlideYoutube {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_swipeLeft: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
     'height': number;
     'lazyLoadContent': () => Promise<void>;
     'pause': () => Promise<void>;

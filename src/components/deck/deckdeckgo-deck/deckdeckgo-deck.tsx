@@ -27,6 +27,9 @@ export class DeckdeckgoDeck {
   @Prop() pager: boolean = true;
   @Prop() pagerPercentage: boolean = true;
 
+  @State()
+  private rtl: boolean = false;
+
   private startX: number = null;
   private deckTranslateX: number = 0;
   private autoSwipeRatio: number = 10;
@@ -50,11 +53,26 @@ export class DeckdeckgoDeck {
   private cursorHidden: boolean = false;
   private idleMouseTimer: number;
 
+  async componentWillLoad() {
+    await this.initRtl();
+  }
+
   async componentDidLoad() {
     this.initWindowResize();
     this.initKeyboardAssist();
 
     await this.lazyBackgroungImages();
+  }
+
+  private initRtl(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (document && document.documentElement) {
+        const htmlDir: string = document.documentElement.getAttribute('dir');
+        this.rtl = htmlDir && htmlDir === 'rtl';
+      }
+
+      resolve();
+    });
   }
 
   private initWindowResize() {
@@ -74,10 +92,10 @@ export class DeckdeckgoDeck {
 
         if (e.key === 'ArrowLeft') {
           e.preventDefault();
-          await this.slidePrev();
+          await this.slideNextPrev(false, true);
         } else if (e.key === 'ArrowRight') {
           e.preventDefault();
-          await this.slideNext();
+          await this.slideNextPrev(true, true);
         }
       });
     }
@@ -142,7 +160,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    let transformX: number = deltaX.swipeLeft ? this.deckTranslateX - deltaX.deltaX : this.deckTranslateX + deltaX.deltaX;
+    const transformX: number = deltaX.swipeLeft ? this.deckTranslateX - deltaX.deltaX : this.deckTranslateX + deltaX.deltaX;
 
     deltaX.slider.style.setProperty('--transformX', transformX + 'px');
     deltaX.slider.style.setProperty('--transformXDuration', '0ms');
@@ -169,15 +187,20 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      const couldSwipeLeft: boolean = deltaX.swipeLeft && this.activeIndex < this.length - 1;
-      const couldSwipeRight: boolean = !deltaX.swipeLeft && this.activeIndex > 0;
+      let couldSwipeLeft: boolean = deltaX.swipeLeft && this.activeIndex < this.length - 1;
+      let couldSwipeRight: boolean = !deltaX.swipeLeft && this.activeIndex > 0;
+
+      if (this.rtl) {
+        couldSwipeLeft = deltaX.swipeLeft && this.activeIndex > 0;
+        couldSwipeRight = !deltaX.swipeLeft && this.activeIndex < this.length - 1;
+      }
 
       if (couldSwipeLeft || couldSwipeRight) {
         const windowWidth: number = window.innerWidth;
         if (deltaX.deltaX > (windowWidth / this.autoSwipeRatio)) {
           this.deckTranslateX = deltaX.swipeLeft ? this.deckTranslateX - windowWidth : this.deckTranslateX + windowWidth;
 
-          if (deltaX.swipeLeft) {
+          if (this.isNextChange(deltaX.swipeLeft)) {
             this.activeIndex++;
 
             if (emitEvent) {
@@ -200,6 +223,10 @@ export class DeckdeckgoDeck {
 
       resolve();
     });
+  }
+
+  private isNextChange(swipeLeft: boolean): boolean {
+    return (swipeLeft && !this.rtl) || (!swipeLeft && this.rtl);
   }
 
   private doSwipeSlide(slider: HTMLElement, speed?: number | undefined): Promise<void> {
@@ -347,12 +374,12 @@ export class DeckdeckgoDeck {
 
   @Method()
   async slideNext(slideAnimation?: boolean, emitEvent?: boolean) {
-    await this.slideNextPrev(true, slideAnimation, emitEvent);
+    await this.slideNextPrev(!this.rtl, slideAnimation, emitEvent);
   }
 
   @Method()
   async slidePrev(slideAnimation?: boolean, emitEvent?: boolean) {
-    await this.slideNextPrev(false, slideAnimation, emitEvent);
+    await this.slideNextPrev(this.rtl, slideAnimation, emitEvent);
   }
 
   private async slideNextPrev(swipeLeft: boolean, slideAnimation: boolean = true, emitEvent?: boolean) {
@@ -367,7 +394,7 @@ export class DeckdeckgoDeck {
     if (!slideAnimation) {
       couldSwipe = true;
     } else {
-      couldSwipe = await this.beforeSwipe(swipeLeft);
+      couldSwipe = await this.beforeSwipe(this.isNextChange(swipeLeft));
     }
 
     // We might want first to show hide stuffs in the slide before swiping
@@ -384,7 +411,7 @@ export class DeckdeckgoDeck {
     }
   }
 
-  private beforeSwipe(swipeLeft: boolean): Promise<boolean> {
+  private beforeSwipe(enter: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
 
@@ -392,7 +419,7 @@ export class DeckdeckgoDeck {
         // If we find no slide, we are cool something went wrong but the talk/show must go on
         resolve(true);
       } else {
-        const result: boolean = await (slide as any).beforeSwipe(swipeLeft);
+        const result: boolean = await (slide as any).beforeSwipe(enter);
         resolve(result);
       }
     });
@@ -457,7 +484,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    this.deckTranslateX = index * -1 * window.innerWidth;
+    this.deckTranslateX = index * window.innerWidth * (this.rtl ? 1 : -1);
     this.activeIndex = index;
 
     await this.lazyLoadContent(this.activeIndex);
@@ -556,7 +583,7 @@ export class DeckdeckgoDeck {
 
   /* END: Full screen */
 
-  /* BEGIN: Full screen */
+  /* BEGIN: Utils */
 
   @Method()
   doPrint(): Promise<void> {
@@ -581,7 +608,14 @@ export class DeckdeckgoDeck {
     return Promise.all(promises);
   }
 
-  /* END: Full screen */
+  @Method()
+  isMobile(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      resolve(DeckdeckgoUtils.isMobile());
+    });
+  }
+
+  /* END: Utils */
 
   render() {
     return [
