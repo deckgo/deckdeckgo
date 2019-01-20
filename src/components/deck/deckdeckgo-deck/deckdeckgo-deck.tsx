@@ -484,7 +484,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    this.deckTranslateX = index * window.innerWidth * (this.rtl ? 1 :  -1);
+    this.deckTranslateX = index * window.innerWidth * (this.rtl ? 1 : -1);
     this.activeIndex = index;
 
     await this.lazyLoadContent(this.activeIndex);
@@ -583,7 +583,7 @@ export class DeckdeckgoDeck {
 
   /* END: Full screen */
 
-  /* BEGIN: Full screen */
+  /* BEGIN: Utils */
 
   @Method()
   doPrint(): Promise<void> {
@@ -608,7 +608,14 @@ export class DeckdeckgoDeck {
     return Promise.all(promises);
   }
 
-  /* END: Full screen */
+  @Method()
+  isMobile(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      resolve(DeckdeckgoUtils.isMobile());
+    });
+  }
+
+  /* END: Utils */
 
   render() {
     return [

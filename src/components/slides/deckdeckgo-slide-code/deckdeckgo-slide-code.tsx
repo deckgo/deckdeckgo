@@ -35,7 +35,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private action: DeckdeckgoSlideCodeAction = DeckdeckgoSlideCodeAction.SWIPE;
 
   componentWillLoad() {
-    this.mobile = DeckdeckgoSlideUtils.isMobile();
+    this.mobile = DeckdeckgoUtils.isMobile();
   }
 
   async componentDidLoad() {

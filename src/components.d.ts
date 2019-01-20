@@ -18,6 +18,7 @@ export namespace Components {
     'getLength': () => Promise<number>;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;
+    'isMobile': () => Promise<boolean>;
     'keyboard': boolean;
     'pager': boolean;
     'pagerPercentage': boolean;
