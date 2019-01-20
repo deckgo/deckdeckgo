@@ -13,10 +13,6 @@ div.deckgo-slide-code-container {
   &.deckgo-slide-code-container-mobile {
     overflow-y: hidden;
   }
-
-  deckgo-highlight-code {
-    direction: ltr;
-  }
 }
 
 ::slotted([slot="title"]) {

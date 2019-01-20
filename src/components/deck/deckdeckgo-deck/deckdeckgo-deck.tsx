@@ -411,7 +411,7 @@ export class DeckdeckgoDeck {
     }
   }
 
-  private beforeSwipe(swipeLeft: boolean): Promise<boolean> {
+  private beforeSwipe(enter: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
 
@@ -419,7 +419,7 @@ export class DeckdeckgoDeck {
         // If we find no slide, we are cool something went wrong but the talk/show must go on
         resolve(true);
       } else {
-        const result: boolean = await (slide as any).beforeSwipe(swipeLeft);
+        const result: boolean = await (slide as any).beforeSwipe(enter);
         resolve(result);
       }
     });
