@@ -1,16 +1,13 @@
 import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter} from '@stencil/core';
 
+import {DeckdeckgoSlideDefinition} from 'deckdeckgo-types';
+
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 
 interface DeltaX {
   slider: HTMLElement
   swipeLeft: boolean;
   deltaX: number;
-}
-
-interface DeckdeckgoSlideDefinition {
-  name: string;
-  notes?: string;
 }
 
 @Component({

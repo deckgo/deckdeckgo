@@ -24,7 +24,8 @@
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
     "@stencil/utils": "0.0.5",
-    "autoprefixer": "^9.4.2"
+    "autoprefixer": "^9.4.2",
+    "deckdeckgo-types": "^1.0.0-alpha.5"
   },
   "repository": {
     "type": "git",
