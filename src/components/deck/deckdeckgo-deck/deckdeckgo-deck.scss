@@ -33,4 +33,8 @@ div.deckgo-pager {
     display: initial;
     position: initial;
   }
+
+  ::slotted([slot="background"]) {
+    display: none;
+  }
 }
