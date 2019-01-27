@@ -36,5 +36,7 @@ div.deckgo-slide {
 @media print {
   div.deckgo-slide {
     padding: 0;
+    page-break-after: always;
+    height: 100vh;
   }
 }
