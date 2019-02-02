@@ -19,13 +19,13 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "^0.16.1",
+    "@stencil/core": "^0.17.1",
     "@stencil/dev-server": "0.0.18",
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
     "@stencil/utils": "0.0.5",
-    "autoprefixer": "^9.4.2",
-    "deckdeckgo-types": "^1.0.0-alpha.5"
+    "autoprefixer": "^9.4.7",
+    "deckdeckgo-types": "^1.0.0-alpha.7"
   },
   "repository": {
     "type": "git",
