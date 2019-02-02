@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.24"></a>
+# [1.0.0-beta.24](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.23...v1.0.0-beta.24) (2019-02-02)
+
+### Lib
+
+* update Stencil v0.17.1 ([b90339f](https://github.com/deckgo/deckdeckgo/commit/b90339fc842ad935dd89acd1cb41e055cb21bc7d))
+
 <a name="1.0.0-beta.23"></a>
 # [1.0.0-beta.23](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.22-1...v1.0.0-beta.23) (2019-01-20)
 
