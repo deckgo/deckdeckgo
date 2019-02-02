@@ -1,6 +1,11 @@
 <a name="1.0.0-beta.24"></a>
 # [1.0.0-beta.24](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.23...v1.0.0-beta.24) (2019-02-02)
 
+### Features
+
+* print one slide per page ([916768e](https://github.com/deckgo/deckdeckgo/commit/916768e96625bdda76922cf39efbb5b4573a41a0))
+* don't print background slot ([e3ffd2a](https://github.com/deckgo/deckdeckgo/commit/e3ffd2aa0035ccdbcfa7f6107733bcb6896a2f03))
+
 ### Lib
 
 * update Stencil v0.17.1 ([b90339f](https://github.com/deckgo/deckdeckgo/commit/b90339fc842ad935dd89acd1cb41e055cb21bc7d))
