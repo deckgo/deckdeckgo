@@ -63,6 +63,20 @@ div.deckgo-slide-author {
   }
 }
 
+@media screen and (max-width: 768px) {
+  div.deckgo-slide-author {
+    &.deckgo-slide-author-start {
+      padding-right: var(--slide-author-padding-end, 0);
+    }
+
+    &.deckgo-slide-author-end {
+      div.deckgo-slide-author-social {
+        grid-template-columns: 100%;
+      }
+    }
+  }
+}
+
 ::slotted([slot="title"]) {
   display: none;
 }
