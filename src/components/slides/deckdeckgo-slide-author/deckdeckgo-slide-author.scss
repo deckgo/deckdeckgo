@@ -15,7 +15,7 @@ div.deckgo-slide-author {
   align-items: var(--slide-author-align, inherit);
   text-align: var(--slide-author-text-align, inherit);
 
-  padding: var(--slide-author-padding-top, 16px) var(--slide-author-padding-end, 32px) var(--slide-author-padding-bottom, 16px) var(--slide-author-padding-start, 32px);
+  padding: var(--slide-author-padding-top, var(--slide-padding-top-default)) var(--slide-author-padding-end, var(--slide-padding-end-default)) var(--slide-author-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-author-padding-start, var(--slide-padding-start-default));
 
   &.deckgo-slide-author-start {
     background: var(--slide-author-background-start);
@@ -42,7 +42,7 @@ div.deckgo-slide-author {
       grid-template-columns: 50% 50%;
       grid-gap: 10px;
 
-      padding-top: var(--slide-author-social-padding-top, 32px);
+      padding-top: var(--slide-author-social-padding-top, var(--slide-padding-top-default));
     }
   }
 }

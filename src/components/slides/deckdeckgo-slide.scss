@@ -3,16 +3,28 @@
   color: var(--color);
   height: 100%;
   z-index: var(--zIndex, 1);
+
+  --slide-padding-top-default: 64px;
+  --slide-padding-end-default: 64px;
+  --slide-padding-bottom-default: 64px;
+  --slide-padding-start-default: 64px;
+
+  @media screen and (max-width: 1024px) {
+    --slide-padding-top-default: 16px;
+    --slide-padding-end-default: 32px;
+    --slide-padding-bottom-default: 16px;
+    --slide-padding-start-default: 32px;
+  }
 }
 
 div.deckgo-slide {
 
   display: flex;
 
-  padding: var(--slide-padding-top, 16px) var(--slide-padding-end, 32px) var(--slide-padding-bottom, 16px) var(--slide-padding-start, 32px);
+  padding: var(--slide-padding-top, var(--slide-padding-top-default)) var(--slide-padding-end, var(--slide-padding-end-default)) var(--slide-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-padding-start,var(--slide-padding-start-default));
 
-  width: calc(100vw - var(--slide-padding-start, 32px) - var(--slide-padding-end, 32px));
-  height: calc(100% - var(--slide-padding-top, 16px) - var(--slide-padding-bottom, 16px));
+  width: calc(100vw - var(--slide-padding-start, var(--slide-padding-start-default)) - var(--slide-padding-end, var(--slide-padding-end-default)));
+  height: calc(100% - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default)));
 
   // Don't allow text selection
   -webkit-touch-callout: none; /* iOS Safari */
@@ -26,7 +38,7 @@ div.deckgo-slide {
 }
 
 ::slotted(ul), ::slotted(ol) {
-  padding-inline-start: var(--slide-padding-start, 32px);
+  padding-inline-start: var(--slide-padding-start, var(--slide-padding-start-default));
 }
 
 ::slotted([slot="notes"]) {
