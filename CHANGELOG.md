@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.25"></a>
+# [1.0.0-beta.25](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.24...v1.0.0-beta.25) (2019-02-03)
+
+### Features
+
+* more padding on screen larger than 1024px ([#49](https://github.com/deckgo/deckdeckgo/issues/49))
+
+### Fix
+
+* RTL pager position ([#48](https://github.com/deckgo/deckdeckgo/issues/48))
+
 <a name="1.0.0-beta.24"></a>
 # [1.0.0-beta.24](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.23...v1.0.0-beta.24) (2019-02-02)
 
