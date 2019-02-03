@@ -51,7 +51,7 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
         const qrCode: HTMLElement = container.querySelector('deckgo-qrcode');
 
         if (qrCode) {
-          qrCode.style.setProperty('--deckgo-qrcode-size', (width > height ? height : width) + 'px');
+          qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? (height + 'px') : ('calc('  + width + 'px - 32px)'));
         }
       }
 
