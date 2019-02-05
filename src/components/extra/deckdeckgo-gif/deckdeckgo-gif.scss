@@ -34,7 +34,7 @@ div.deckgo-gif {
     width: var(--slide-width);
     height: var(--slide-height);
 
-    --width: 100vw;
+    --width: var(--slide-width);
     overflow: hidden;
 
     img {
