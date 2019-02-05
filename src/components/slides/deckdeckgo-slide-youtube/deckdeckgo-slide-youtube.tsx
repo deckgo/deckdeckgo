@@ -56,6 +56,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
     return new Promise<void>(async (resolve) => {
       await DeckdeckgoSlideUtils.lazyLoadContent(this.el);
 
+      await this.initSize();
       await this.resizeContent();
 
       resolve();

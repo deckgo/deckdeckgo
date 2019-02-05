@@ -14,6 +14,7 @@ export namespace Components {
 
   interface DeckgoDeck {
     'doPrint': () => Promise<void>;
+    'embedded': boolean;
     'getActiveIndex': () => Promise<number>;
     'getLength': () => Promise<number>;
     'isBeginning': () => Promise<boolean>;
@@ -28,6 +29,7 @@ export namespace Components {
     'toggleFullScreen': () => Promise<void>;
   }
   interface DeckgoDeckAttributes extends StencilHTMLAttributes {
+    'embedded'?: boolean;
     'keyboard'?: boolean;
     'onSlideDrag'?: (event: CustomEvent<number>) => void;
     'onSlideNextDidChange'?: (event: CustomEvent<number>) => void;

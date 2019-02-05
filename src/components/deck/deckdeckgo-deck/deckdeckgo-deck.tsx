@@ -24,6 +24,8 @@ export class DeckdeckgoDeck {
   @Prop() pager: boolean = true;
   @Prop() pagerPercentage: boolean = true;
 
+  @Prop() embedded: boolean = false;
+
   @State()
   private rtl: boolean = false;
 
@@ -55,6 +57,8 @@ export class DeckdeckgoDeck {
   }
 
   async componentDidLoad() {
+    await this.initEmbeddedSlideWidth();
+
     this.initWindowResize();
     this.initKeyboardAssist();
 
@@ -75,9 +79,36 @@ export class DeckdeckgoDeck {
   private initWindowResize() {
     if (window) {
       window.addEventListener('resize', DeckdeckgoUtils.debounce(async () => {
+        await this.initEmbeddedSlideWidth();
         await this.slideTo(this.activeIndex);
       }, 100));
     }
+  }
+
+  private initEmbeddedSlideWidth(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.embedded) {
+        resolve();
+        return;
+      }
+
+      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
+
+      if (!slider || !slider.offsetParent) {
+        resolve();
+        return;
+      }
+
+      if (slider.offsetParent.clientWidth > 0) {
+        slider.style.setProperty('--slide-width', '' + slider.offsetParent.clientWidth + 'px');
+      }
+
+      if (slider.offsetParent.clientHeight) {
+        slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
+      }
+
+      resolve();
+    });
   }
 
   private initKeyboardAssist() {
@@ -193,9 +224,10 @@ export class DeckdeckgoDeck {
       }
 
       if (couldSwipeLeft || couldSwipeRight) {
-        const windowWidth: number = window.innerWidth;
-        if (deltaX.deltaX > (windowWidth / this.autoSwipeRatio)) {
-          this.deckTranslateX = deltaX.swipeLeft ? this.deckTranslateX - windowWidth : this.deckTranslateX + windowWidth;
+        const sliderWidth: number = await this.getSliderWidth();
+
+        if (deltaX.deltaX > (sliderWidth / this.autoSwipeRatio)) {
+          this.deckTranslateX = deltaX.swipeLeft ? this.deckTranslateX - sliderWidth : this.deckTranslateX + sliderWidth;
 
           if (this.isNextChange(deltaX.swipeLeft)) {
             this.activeIndex++;
@@ -219,6 +251,24 @@ export class DeckdeckgoDeck {
       await this.lazyLoadContent(this.activeIndex + 1);
 
       resolve();
+    });
+  }
+
+  private getSliderWidth(): Promise<number> {
+    return new Promise<number>((resolve) => {
+      if (!this.embedded) {
+        resolve(window.innerWidth);
+        return;
+      }
+
+      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
+
+      if (!slider || !slider.offsetParent || slider.offsetParent.clientWidth <= 0) {
+        resolve(window.innerWidth);
+        return;
+      }
+
+      resolve(slider.offsetParent.clientWidth);
     });
   }
 

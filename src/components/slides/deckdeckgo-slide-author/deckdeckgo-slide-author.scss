@@ -4,7 +4,7 @@ div.deckgo-slide {
   flex-flow: row;
 
   padding: 0;
-  width: 100vw;
+  width: var(--slide-width);
 }
 
 div.deckgo-slide-author {

@@ -7,15 +7,15 @@ div.deckgo-slide {
 }
 
 div.deckgo-youtube-container {
-  width: calc(100vw - var(--slide-padding-end, 64px) - var(--slide-padding-start, 64px));
-  height: calc(((100vw - var(--slide-padding-end, 64px) - var(--slide-padding-start, 64px)) * 9) / 16);
+  width: calc(var(--slide-width) - var(--slide-padding-end, 64px) - var(--slide-padding-start, 64px));
+  height: calc(((var(--slide-height) - var(--slide-padding-end, 64px) - var(--slide-padding-start, 64px)) * 9) / 16);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   @media screen and (max-width: 1024px) {
-    width: calc(100vw - var(--slide-padding-end, 32px) - var(--slide-padding-start, 32px));
-    height: calc(((100vw - var(--slide-padding-end, 32px) - var(--slide-padding-start, 32px)) * 9) / 16);
+    width: calc(var(--slide-width) - var(--slide-padding-end, 32px) - var(--slide-padding-start, 32px));
+    height: calc(((var(--slide-height) - var(--slide-padding-end, 32px) - var(--slide-padding-start, 32px)) * 9) / 16);
   }
 }

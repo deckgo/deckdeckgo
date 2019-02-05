@@ -2,6 +2,7 @@
   background: var(--background);
   color: var(--color);
   height: 100%;
+
   z-index: var(--zIndex, 1);
 
   --slide-padding-top-default: 64px;
@@ -23,8 +24,8 @@ div.deckgo-slide {
 
   padding: var(--slide-padding-top, var(--slide-padding-top-default)) var(--slide-padding-end, var(--slide-padding-end-default)) var(--slide-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-padding-start,var(--slide-padding-start-default));
 
-  width: calc(100vw - var(--slide-padding-start, var(--slide-padding-start-default)) - var(--slide-padding-end, var(--slide-padding-end-default)));
-  height: calc(100% - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default)));
+  width: calc(var(--slide-width) - var(--slide-padding-start, var(--slide-padding-start-default)) - var(--slide-padding-end, var(--slide-padding-end-default)));
+  height: calc(var(--slide-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default)));
 
   // Don't allow text selection
   -webkit-touch-callout: none; /* iOS Safari */

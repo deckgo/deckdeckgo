@@ -16,6 +16,9 @@ div.deckgo-deck {
   ::-webkit-scrollbar {
     display: none;
   }
+
+  --slide-width: 100vw;
+  --slide-height: 100vh;
 }
 
 div.deckgo-pager {
