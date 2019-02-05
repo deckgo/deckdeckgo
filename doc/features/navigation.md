@@ -18,6 +18,7 @@ Furthermore than the default swiping, the [DeckDeckGo] deck expose the following
 - [Pager](#pager)
   - [Show or hide](#show-or-hide)
   - [Customization](#customization)
+- [Size]
 
 ## Navigation
 
@@ -138,5 +139,24 @@ The following style options are available to style the pager:
 | --pager-stroke-inner-width | 1.8 |
 | --pager-position-left | |
 | --pager-position-right | |
+
+## Size
+
+Per default, the [DeckDeckGo] deck will use the all `window` size respectively width and height.
+
+However, it is possible to include or use [DeckDeckGo] in any container, for that purpose you would only need to set the attriuted `embedded` to `true`.
+
+```
+<div style="width: 500px; height: 400px;">
+  <deckgo-deck embedded="true">
+    <deckgo-slide-title>
+      <h1 slot="title">My presentation title</h1>
+      <p slot="content">
+        Hello World 🚀
+      </p>
+    </deckgo-slide-title>
+  </deckgo-deck>
+</div>
+```
 
 [DeckDeckGo]: https://deckdeckgo.com
