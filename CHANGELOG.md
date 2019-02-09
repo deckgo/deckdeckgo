@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.26"></a>
+# [1.0.0-beta.26](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.25...v1.0.0-beta.26) (2019-02-09)
+
+### Features
+
+* include DeckDeckGo in any container ([#50](https://github.com/deckgo/deckdeckgo/issues/50))
+
 <a name="1.0.0-beta.25"></a>
 # [1.0.0-beta.25](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.24...v1.0.0-beta.25) (2019-02-03)
 
