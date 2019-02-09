@@ -18,7 +18,7 @@ Furthermore than the default swiping, the [DeckDeckGo] deck expose the following
 - [Pager](#pager)
   - [Show or hide](#show-or-hide)
   - [Customization](#customization)
-- [Size]
+- [Size](#size)
 
 ## Navigation
 
