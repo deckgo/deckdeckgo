@@ -6,14 +6,14 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](http
 
 ## Table of contents
 
-- [DeckDeckGo](#deckdeckgo)
+- [Core](#core)
 - [Getting Started](#getting-started)
 - [Example](#example)
 - [Standalone](#standalone)
 - [Develop](#develop)
 - [License](#license)
 
-## DeckDeckGo
+## Core
 
 This component is the core of [DeckDeckGo].
 
