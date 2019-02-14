@@ -246,6 +246,7 @@ export namespace Components {
     'pause': () => Promise<void>;
     'play': () => Promise<void>;
     'src': string;
+    'toggle': () => Promise<void>;
     'width': number;
   }
   interface DeckgoSlideYoutubeAttributes extends StencilHTMLAttributes {

@@ -21,6 +21,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   @State() videoWidth: number;
   @State() videoHeight: number;
 
+  @State() isPlaying = false;
   @State() frameTitle: string;
 
   async componentDidLoad() {
@@ -73,7 +74,17 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
     await this.playPauseVideo(false);
   }
 
-  private playPauseVideo(play: boolean): Promise<void> {
+  @Method()
+  async toggle() {
+    await this.playPauseVideo();
+  }
+
+  private playPauseVideo(play?: boolean): Promise<void> {
+    if (typeof play === 'undefined') {
+      play = !this.isPlaying;
+    }
+    this.isPlaying = play;
+
     return new Promise<void>(async (resolve) => {
       const element: HTMLDeckgoYoutubeElement = this.el.shadowRoot.querySelector('deckgo-youtube');
 
