@@ -16,6 +16,7 @@
   fill: none;
   stroke-width: var(--pager-stroke-inner-width, 1.8);
   stroke-linecap: round;
+  transition: stroke-dasharray 500ms cubic-bezier(0.23, 1, 0.320, 1);
 }
 
 .deckgo-pager-percentage {
