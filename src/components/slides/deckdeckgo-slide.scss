@@ -10,6 +10,9 @@
   --slide-padding-bottom-default: 64px;
   --slide-padding-start-default: 64px;
 
+  --slide-reveal-transform: translateX(-4px);
+  --slide-reveal-duration: 200ms;
+
   @media screen and (max-width: 1024px) {
     --slide-padding-top-default: 16px;
     --slide-padding-end-default: 32px;

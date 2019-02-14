@@ -26,7 +26,12 @@ export class DeckdeckgoSlideUtils {
       } else {
         Array.from(elements).forEach((element: HTMLElement) => {
           element.style.setProperty('visibility', 'hidden');
+          element.style.setProperty('transform', 'var(--slide-reveal-transform)');
+          element.style.setProperty('opacity', '0');
+
           element.classList.add('deckgo-reveal');
+          element.style.setProperty('transition', 'all var(--slide-reveal-duration) cubic-bezier(0.23, 1, 0.320, 1)');
+
         });
       }
     });
@@ -45,6 +50,8 @@ export class DeckdeckgoSlideUtils {
 
         if (nextElement) {
           nextElement.style.setProperty('visibility', 'initial');
+          nextElement.style.setProperty('opacity', '1');
+          nextElement.style.setProperty('transform', 'none');
           couldSwipe = false;
         }
       }
@@ -67,6 +74,8 @@ export class DeckdeckgoSlideUtils {
 
         if (nextElement) {
           nextElement.style.setProperty('visibility', 'hidden');
+          nextElement.style.setProperty('transform', 'var(--slide-reveal-transform)');
+          nextElement.style.setProperty('opacity', '0');
           couldSwipe = false;
         }
       }
