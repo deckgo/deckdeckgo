@@ -81,6 +81,9 @@ export class DeckdeckgoDeck {
       window.addEventListener('resize', DeckdeckgoUtils.debounce(async () => {
         await this.initEmbeddedSlideWidth();
         await this.slideTo(this.activeIndex);
+
+        const toggleFullscreen: boolean = DeckdeckgoUtils.isFullscreen();
+        await this.hideOrClearMouseCursorTimer(toggleFullscreen);
       }, 100));
     }
   }
@@ -560,18 +563,22 @@ export class DeckdeckgoDeck {
       // @ts-ignore
       if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
         requestFullScreen.call(docEl);
-
-        this.fullscreen = true;
-        this.hideMouseCursorWithDelay();
       } else {
         cancelFullScreen.call(doc);
-
-        await this.clearMouseCursorTimer(false);
-        this.fullscreen = false;
       }
 
       resolve();
     });
+  }
+
+  private async hideOrClearMouseCursorTimer(toggleFullscreen: boolean) {
+    if (toggleFullscreen) {
+      this.fullscreen = true;
+      this.hideMouseCursorWithDelay();
+    } else {
+      await this.clearMouseCursorTimer(false);
+      this.fullscreen = false;
+    }
   }
 
   private async clearMouseCursorTimer(hideWithDelay: boolean) {
