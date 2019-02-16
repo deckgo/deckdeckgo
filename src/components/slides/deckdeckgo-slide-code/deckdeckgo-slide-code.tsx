@@ -221,6 +221,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
       <slot name="code"></slot>
       <slot name="info"></slot>
       <slot name="notes"></slot>
+      <slot name="actions"></slot>
     </div>;
   }
 

@@ -32,6 +32,10 @@ div.deckgo-pager {
   pointer-events: none;
 }
 
+::slotted([slot="actions"]) {
+  display: none;
+}
+
 @media print {
   div.deckgo-deck {
     display: initial;

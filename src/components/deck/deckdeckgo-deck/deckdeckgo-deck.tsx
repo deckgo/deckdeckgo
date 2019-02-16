@@ -84,6 +84,7 @@ export class DeckdeckgoDeck {
 
         const toggleFullscreen: boolean = DeckdeckgoUtils.isFullscreen();
         await this.hideOrClearMouseCursorTimer(toggleFullscreen);
+        await this.showHideActionsSlot(toggleFullscreen);
       }, 100));
     }
   }
@@ -339,7 +340,8 @@ export class DeckdeckgoDeck {
       const definedSlides: HTMLCollection = this.el.children;
       const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
 
-      const definedSlidesLength: number = await this.countDefinedSlides(definedSlides);
+      const filteredSlides: Element[] = await this.filterSlides(definedSlides);
+      const definedSlidesLength: number = filteredSlides ? filteredSlides.length : 0;
 
       // Are all slides loaded?
       if (definedSlides && loadedSlides && loadedSlides.length === definedSlidesLength && definedSlidesLength === this.length) {
@@ -357,6 +359,8 @@ export class DeckdeckgoDeck {
         this.slidesDidLoad.emit(orderedSlidesTagNames);
 
         await this.lazyLoadFirstSlides();
+
+        await this.cloneActionsSlot(filteredSlides);
       }
 
       resolve();
@@ -374,11 +378,30 @@ export class DeckdeckgoDeck {
     });
   }
 
-  // The last child might be a background and note a slides
-  private countDefinedSlides(definedSlides: HTMLCollection): Promise<number> {
-    return new Promise<number>((resolve) => {
+  private cloneActionsSlot(slides: Element[]): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!slides || slides.length <= 0) {
+        resolve();
+        return;
+      }
+
+      const actions: HTMLElement = this.el.querySelector('[slot=\'actions\']');
+
+      if (actions) {
+        slides.forEach((slide: Element) => {
+          slide.appendChild(actions.cloneNode(true));
+        });
+      }
+
+      resolve();
+    });
+  }
+
+  // The last children might be slots (background, note or action)
+  private filterSlides(definedSlides: HTMLCollection): Promise<Element[]> {
+    return new Promise<Element[]>((resolve) => {
       if (!definedSlides || definedSlides.length <= 0) {
-        resolve(0);
+        resolve(null);
         return;
       }
 
@@ -386,7 +409,7 @@ export class DeckdeckgoDeck {
         return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1
       });
 
-      resolve(slides ? slides.length : 0);
+      resolve(slides);
     });
   }
 
@@ -635,6 +658,23 @@ export class DeckdeckgoDeck {
     });
   }
 
+  private showHideActionsSlot(toggleFullscreen: boolean): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
+
+      if (!slider) {
+        resolve();
+        return;
+      }
+
+      if (toggleFullscreen) {
+        slider.style.setProperty('--slide-actions-display', 'none');
+      } else {
+        slider.style.removeProperty('--slide-actions-display');
+      }
+    });
+  }
+
   /* END: Full screen */
 
   /* BEGIN: Utils */
@@ -675,6 +715,7 @@ export class DeckdeckgoDeck {
     return [
       <div class="deckgo-deck">
         <slot/>
+        <slot name="actions"></slot>
         <slot name="background"></slot>
       </div>,
       <div class="deckgo-pager">{this.pager ? <deckgo-pager active-index={this.activeIndex} length={this.length}

@@ -119,6 +119,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
         {this.renderChart()}
       </div>
       <slot name="notes"></slot>
+      <slot name="actions"></slot>
     </div>
   }
 

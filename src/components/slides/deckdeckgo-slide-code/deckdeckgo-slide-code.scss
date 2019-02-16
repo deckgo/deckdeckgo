@@ -44,6 +44,7 @@ div.deckgo-slide-code-container {
   flex-direction: column;
 
   background: var(--deckgo-show-info-background);
+  z-index: var(--deckgo-show-info-zindex, 1);
 
   pointer-events: initial;
 }

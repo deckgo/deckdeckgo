@@ -58,6 +58,7 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
         </div>
       </div>
       <slot name="notes"></slot>
+      <slot name="actions"></slot>
     </div>;
   }
 

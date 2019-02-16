@@ -48,6 +48,7 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
       <div class="deckgo-slide-split deckgo-slide-split-start"><slot name="start"></slot></div>
       <div class="deckgo-slide-split deckgo-slide-split-end"><slot name="end"></slot></div>
       <slot name="notes"></slot>
+      <slot name="actions"></slot>
     </div>;
   }
 
