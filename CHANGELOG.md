@@ -1,3 +1,17 @@
+<a name="1.0.0-beta.27"></a>
+# [1.0.0-beta.27](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.26...v1.0.0-beta.27) (2019-02-17)
+
+### Features
+
+* clone background for company or branding ([#25](https://github.com/deckgo/deckdeckgo/issues/25))
+* add "actions" slot ([#54](https://github.com/deckgo/deckdeckgo/issues/54))
+* add youtube `toggle` method ([#51](https://github.com/deckgo/deckdeckgo/pull/51))
+* improve pager and reveal transitions ([#52](https://github.com/deckgo/deckdeckgo/pull/52))
+
+### Fix
+
+* `clearMouseCursorTimer` is not called if fullscreen is escaped through the keyboard bug ([#53](https://github.com/deckgo/deckdeckgo/issues/53))
+
 <a name="1.0.0-beta.26"></a>
 # [1.0.0-beta.26](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.25...v1.0.0-beta.26) (2019-02-09)
 
