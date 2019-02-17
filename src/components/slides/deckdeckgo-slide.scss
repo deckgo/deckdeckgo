@@ -65,4 +65,8 @@ div.deckgo-slide {
     page-break-after: always;
     height: 100vh;
   }
+
+  ::slotted([slot="actions"]) {
+    display: none;
+  }
 }
