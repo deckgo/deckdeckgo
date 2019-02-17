@@ -93,6 +93,7 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
       </div>
       <slot name="notes"></slot>
       <slot name="actions"></slot>
+      <slot name="background"></slot>
     </div>;
   }
 

@@ -13,6 +13,7 @@ import '@stencil/core';
 export namespace Components {
 
   interface DeckgoDeck {
+    'cloneBackground': boolean;
     'doPrint': () => Promise<void>;
     'embedded': boolean;
     'getActiveIndex': () => Promise<number>;
@@ -29,6 +30,7 @@ export namespace Components {
     'toggleFullScreen': () => Promise<void>;
   }
   interface DeckgoDeckAttributes extends StencilHTMLAttributes {
+    'cloneBackground'?: boolean;
     'embedded'?: boolean;
     'keyboard'?: boolean;
     'onSlideDrag'?: (event: CustomEvent<number>) => void;

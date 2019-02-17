@@ -26,6 +26,8 @@ export class DeckdeckgoDeck {
 
   @Prop() embedded: boolean = false;
 
+  @Prop() cloneBackground: boolean = true;
+
   @State()
   private rtl: boolean = false;
 
@@ -61,8 +63,6 @@ export class DeckdeckgoDeck {
 
     this.initWindowResize();
     this.initKeyboardAssist();
-
-    await this.lazyBackgroungImages();
   }
 
   private initRtl(): Promise<void> {
@@ -358,9 +358,12 @@ export class DeckdeckgoDeck {
 
         this.slidesDidLoad.emit(orderedSlidesTagNames);
 
-        await this.lazyLoadFirstSlides();
+        const promises: Promise<void>[] = [];
+        promises.push(this.lazyLoadFirstSlides());
+        promises.push(this.cloneSlots(filteredSlides, 'actions'));
+        promises.push(this.loadBackground(filteredSlides));
 
-        await this.cloneActionsSlot(filteredSlides);
+        await Promise.all(promises);
       }
 
       resolve();
@@ -378,18 +381,59 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private cloneActionsSlot(slides: Element[]): Promise<void> {
+  private loadBackground(slides: Element[]): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+
+      const background: HTMLElement = this.el.querySelector('[slot=\'background\']');
+
+      if (!background) {
+        resolve();
+        return;
+      }
+
+      await this.lazyBackgroungImages();
+
+      if (this.cloneBackground) {
+        await this.cloneSlots(slides, 'background');
+      }
+
+      await this.showHideBackgroundSlot();
+
+      resolve();
+    });
+  }
+
+  private showHideBackgroundSlot(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
+
+      if (!slider) {
+        resolve();
+        return;
+      }
+
+      if (this.cloneBackground) {
+        slider.style.setProperty('--background-display', 'none');
+      } else {
+        slider.style.removeProperty('--background-display');
+      }
+
+      resolve();
+    });
+  }
+
+  private cloneSlots(slides: Element[], slotName: string): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!slides || slides.length <= 0) {
         resolve();
         return;
       }
 
-      const actions: HTMLElement = this.el.querySelector('[slot=\'actions\']');
+      const slotElement: HTMLElement = this.el.querySelector('[slot=\'' + slotName + '\']');
 
-      if (actions) {
+      if (slotElement) {
         slides.forEach((slide: Element) => {
-          slide.appendChild(actions.cloneNode(true));
+          slide.appendChild(slotElement.cloneNode(true));
         });
       }
 

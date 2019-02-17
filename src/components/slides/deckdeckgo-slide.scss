@@ -59,6 +59,19 @@ div.deckgo-slide {
   display: var(--slide-actions-display);
 }
 
+::slotted([slot="background"]) {
+  position: var(--slide-background-position, absolute);
+  top: var(--slide-background-top, 0);
+  right: var(--slide-background-end);
+  left: var(--slide-background-start, 0);
+
+  pointer-events: none;
+  z-index: -1;
+
+  width: var(--slide-background-width);
+  height: var(--slide-background-height);
+}
+
 @media print {
   div.deckgo-slide {
     padding: 0;
@@ -68,5 +81,9 @@ div.deckgo-slide {
 
   ::slotted([slot="actions"]) {
     display: none;
+  }
+
+  ::slotted([slot="background"]) {
+    display: var(--slide-background-print-display, none);
   }
 }

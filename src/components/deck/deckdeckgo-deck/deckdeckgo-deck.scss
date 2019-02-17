@@ -29,6 +29,7 @@ div.deckgo-pager {
 }
 
 ::slotted([slot="background"]) {
+  display: var(--background-display);
   pointer-events: none;
 }
 

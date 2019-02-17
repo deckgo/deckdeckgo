@@ -74,6 +74,7 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
         <slot name="footer"></slot>
         <slot name="notes"></slot>
         <slot name="actions"></slot>
+        <slot name="background"></slot>
       </div>
     </div>
   }
