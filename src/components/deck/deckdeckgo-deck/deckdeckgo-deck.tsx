@@ -251,7 +251,7 @@ export class DeckdeckgoDeck {
 
       await this.doSwipeSlide(deltaX.slider);
 
-      // We want to lazy load the next slide images in the background
+      // We want to lazy load the next slide images
       await this.lazyLoadContent(this.activeIndex + 1);
 
       resolve();
