@@ -534,10 +534,10 @@ export class DeckdeckgoDeck {
   // Lazy load images from slot=background
   private lazyBackgroungImages(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const allSlotedImages: NodeListOf<HTMLElement> = this.el.querySelectorAll('img[slot=\'background\']');
+      const allSlottedImages: NodeListOf<HTMLElement> = this.el.querySelectorAll('img[slot=\'background\']');
       const allShadowImages: NodeListOf<HTMLElement> = this.el.querySelectorAll('[slot=\'background\'] img');
 
-      const images: HTMLElement[] = Array.from(allSlotedImages).concat(Array.from(allShadowImages));
+      const images: HTMLElement[] = Array.from(allSlottedImages).concat(Array.from(allShadowImages));
 
       await DeckdeckgoUtils.lazyLoadSelectedImages(images);
 
