@@ -349,9 +349,11 @@ export class DeckdeckgoDeck {
 
         Array.from(loadedSlides).forEach((slide: HTMLElement) => {
           const notes: HTMLElement = slide.querySelector('[slot=\'notes\']');
+          const title: HTMLElement = slide.querySelector('[slot=\'title\']');
 
           orderedSlidesTagNames.push({
             name: slide.tagName,
+            title: title ? title.innerHTML : null,
             notes: notes ? notes.innerHTML : null
           });
         });
