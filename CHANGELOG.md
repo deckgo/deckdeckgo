@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.28"></a>
+# [1.0.0-beta.28](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.27...v1.0.0-beta.28) (2019-02-26)
+
+### Features
+
+* on load, emit slides' titles ([8cc779e](https://github.com/deckgo/deckdeckgo/commit/8cc779e4da78354167462b9cc3e10da96efd52ee))
+
 <a name="1.0.0-beta.27"></a>
 # [1.0.0-beta.27](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.26...v1.0.0-beta.27) (2019-02-17)
 
