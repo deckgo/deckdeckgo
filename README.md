@@ -8,7 +8,6 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](http
 
 - [Getting Started](#getting-started)
 - [Example](#example)
-- [License](#license)
  
 ## Getting Started
 
@@ -17,9 +16,5 @@ Start you new presentation by following the quick  👉 [Getting Started guide](
 ## Example
    
 The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full featured presentation developed with [DeckDeckGo].
-
-## License
-
-MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](nicolas@nmattia.com)
 
 [DeckDeckGo]: https://deckdeckgo.com

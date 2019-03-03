@@ -22,6 +22,6 @@ npm run start
 
 ## License
 
-MIT © DeckDeckGo team
+MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](nicolas@nmattia.com)
 
 [DeckDeckGo]: https://deckdeckgo.com
