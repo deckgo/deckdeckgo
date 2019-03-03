@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>DeckDeckGo - Charts</title>
+
+  <script src="/build/deckdeckgo-charts.js"></script>
+
+  <style>
+    body {
+      background: white;
+    }
+  </style>
+
+</head>
+<body>
+
+  <deckgo-pie-chart width="500" height="400" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv"></deckgo-pie-chart>
+
+  <deckgo-pie-chart width="500" height="400" inner-radius="100" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart-single-column.csv"></deckgo-pie-chart>
+
+  <deckgo-line-chart width="500" height="400" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                     src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-to-compare.csv"></deckgo-line-chart>
+
+  <deckgo-line-chart width="500" height="400" smooth="false" ticks="5" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart.csv" date-pattern="dd.MM.yyyy"></deckgo-line-chart>
+
+  <deckgo-line-chart width="500" height="400" area="false" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-no-dates.csv" style="--deckgo-chart-fill-color: none; --deckgo-chart-stroke: #3880ff; --deckgo-chart-compare-fill-color: none; --deckgo-chart-compare-fill-opacity: 1; --deckgo-chart-compare-stroke: #7044ff; --deckgo-chart-compare-stroke-width: 3px"></deckgo-line-chart>
+
+  <deckgo-line-chart width="500" height="400" smooth="false" area="false" grid="true" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-no-dates.csv" style="--deckgo-chart-fill-color: none; --deckgo-chart-stroke: #3880ff; --deckgo-chart-compare-fill-color: none; --deckgo-chart-compare-fill-opacity: 1; --deckgo-chart-compare-stroke: #7044ff; --deckgo-chart-compare-stroke-width: 3px"></deckgo-line-chart>
+
+  <deckgo-bar-chart id="test" width="500" height="400" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-bar-chart-to-compare.csv" style="--deckgo-chart-fill-color-bar1: #3880ff; --deckgo-chart-fill-color-bar2: #0cd1e8; --deckgo-chart-fill-color-bar3: #7044ff;"></deckgo-bar-chart>
+
+  <deckgo-bar-chart width="500" height="400" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv" style="--deckgo-chart-fill-color-bar1: #3880ff;"></deckgo-bar-chart>
+
+  <script type="text/javascript">
+    function draw() {
+      const elem = document.getElementsByTagName('deckgo-pie-chart');
+      if (elem && elem.length > 0) {
+        elem[0].width = 200;
+        elem[0].height = 200;
+        elem[0].range = ['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00'];
+        elem[0].stroke = "#ffffff";
+        elem[0].draw();
+      }
+    }
+    </script>
+
+  <div style="position: fixed; bottom: 0; right: 0;">
+    <button onclick="draw()">Draw</button>
+  </div>
+</body>
+</html>

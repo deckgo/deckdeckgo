@@ -1,0 +1,11 @@
+text {
+  fill: var(--deckgo-chart-text-color);
+  display: var(--deckgo-chart-text-display);
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: var(--deckgo-chart-axis-color, black);
+  shape-rendering: crispEdges;
+}
