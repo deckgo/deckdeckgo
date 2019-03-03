@@ -45,6 +45,7 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | ------- | ------- | ------- |:-----:|
 | **Backend** | | | [`README.md`](backend/README.md)
 | **CLI** | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo) | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg)](https://www.npmjs.com/package/create-deckdeckgo) | [`README.md`](cli/README.md)
+| **Infrastructure** | | | [`README.md`](infra/README.md)
 | **Starter kit** | | | [`Repo`](http://github.com/deckgo/deckdeckgo-starter/README.md)
 | **Webpack plugins** | [`deckdeckgo-webpack-plugins`](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [![version](https://img.shields.io/npm/v/deckdeckgo-webpack-plugins/latest.svg)](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [`README.md`](webpack/README.md)
 
