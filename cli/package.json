@@ -1,0 +1,59 @@
+{
+  "name": "create-deckdeckgo",
+  "version": "1.0.0-beta.11",
+  "description": "Quickly create a new DeckDeckGo presentation: npm init deckdeckgo",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build.tsc": "tsc",
+    "build.bundle": "rollup -c",
+    "minify": "terser --compress --mangle --toplevel --output dist/index.js -- dist/index.js",
+    "build": "npm run build.tsc && npm run build.bundle && npm run minify",
+    "build.dev": "npm run build.tsc && npm run build.bundle",
+    "dev": "npm run build.dev && npm start",
+    "version": "npm build"
+  },
+  "files": [
+    "dist/index.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "bin": {
+    "create-stencil": "dist/index.js"
+  },
+  "devDependencies": {
+    "@types/cli-spinner": "^0.2.0",
+    "@types/inquirer": "0.0.43",
+    "@types/yauzl": "^2.9.1",
+    "rollup": "^1.1.2",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "terser": "^3.16.1",
+    "tslint": "^5.12.1",
+    "tslint-ionic-rules": "0.0.21",
+    "typescript": "^3.3.3"
+  },
+  "author": "David Dal Busco",
+  "license": "MIT",
+  "keywords": [
+    "ionic",
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk",
+    "cli"
+  ],
+  "dependencies": {
+    "cli-spinner": "^0.2.8",
+    "colorette": "^1.0.7",
+    "inquirer": "^6.2.2",
+    "replace": "^1.0.1",
+    "yauzl": "^2.10.0"
+  }
+}
