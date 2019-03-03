@@ -1,0 +1,109 @@
+@import "~prismjs/themes/prism.css";
+
+div.deckgo-highlight-code-container {
+  color: var(--deckgo-highlight-code-color, inherit);
+  background: var(--deckgo-highlight-code-background);
+  padding: var(--deckgo-highlight-code-padding);
+  border-radius: var(--deckgo-highlight-code-border-radius);
+
+  margin: var(--deckgo-highlight-code-margin, 0 0 64px);
+
+  transform-origin: bottom left;
+  transition: all .2s ease-in-out;
+  transform: scale(var(--deckgo-highlight-code-zoom, 1));
+
+  direction: var(--deckgo-highlight-code-direction, ltr);
+  text-align: var(--deckgo-highlight-code-text-align, start);
+
+  code {
+    overflow-y: scroll;
+
+    white-space: pre-wrap;
+
+    font-size: var(--deckgo-highlight-code-font-size);
+    font-family: var(--deckgo-highlight-code-font-family, monospace);
+
+    div:empty {
+      min-height: 1rem;
+    }
+
+    span.deckgo-highlight-code-anchor-hidden {
+      visibility: hidden;
+    }
+
+    span.deckgo-highlight-code-line {
+      background: var(--deckgo-highlight-code-line-background);
+      padding: var(--deckgo-highlight-code-line-padding);
+      border-top: var(--deckgo-highlight-code-line-border-top);
+      border-bottom: var(--deckgo-highlight-code-line-border-bottom);
+    }
+
+    /* Prism style override */
+    .language-css .token.string:not(.deckgo-highlight-code-line),
+    .style .token.string:not(.deckgo-highlight-code-line),
+    .token.entity:not(.deckgo-highlight-code-line),
+    .token.operator:not(.deckgo-highlight-code-line),
+    .token.url:not(.deckgo-highlight-code-line) {
+      background: inherit;
+    }
+
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+      color: var(--deckgo-highlight-code-token-comment, slategray);
+    }
+
+    .token.punctuation {
+      color: var(--deckgo-highlight-code-token-punctuation, #999);
+    }
+
+    .token.property,
+    .token.tag,
+    .token.boolean,
+    .token.number,
+    .token.constant,
+    .token.symbol,
+    .token.deleted {
+      color: var(--deckgo-highlight-code-token-property, #905);
+    }
+
+    .token.selector,
+    .token.attr-name,
+    .token.string,
+    .token.char,
+    .token.builtin,
+    .token.inserted {
+      color: var(--deckgo-highlight-code-token-selector, #690);
+    }
+
+    .token.operator,
+    .token.entity,
+    .token.url,
+    .language-css .token.string,
+    .style .token.string {
+      color: var(--deckgo-highlight-code-token-operator, #9a6e3a);
+    }
+
+    .token.atrule,
+    .token.attr-value,
+    .token.keyword {
+      color: var(--deckgo-highlight-code-token-atrule, #07a);
+    }
+
+    .token.function,
+    .token.class-name {
+      color: var(--deckgo-highlight-code-token-function, #DD4A68);
+    }
+
+    .token.regex,
+    .token.important,
+    .token.variable {
+      color: var(--deckgo-highlight-code-token-regex, #e90);
+    }
+  }
+}
+
+::slotted([slot="code"]) {
+  display: none;
+}

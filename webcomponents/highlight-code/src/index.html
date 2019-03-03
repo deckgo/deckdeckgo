@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>DeckDeckGo - Highlight Code</title>
+
+  <script src="/build/deckdeckgo-highlight-code.js"></script>
+
+</head>
+<body>
+
+<h1>From src:</h1>
+
+<deckgo-highlight-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx">
+</deckgo-highlight-code>
+
+<h1>Typescript</h1>
+
+<deckgo-highlight-code language="typescript" highlight-lines="1,1" style="--deckgo-highlight-code-line-background: lightgrey;">
+  <code slot="code">@Method()
+isMobile(): Promise&lt;boolean> {
+  return new Promise&lt;boolean>((resolve) => {
+    resolve(DeckdeckgoUtils.isMobile());
+  });
+}</code>
+</deckgo-highlight-code>
+
+<h1>Plain code and java language:</h1>
+
+<deckgo-highlight-code language="java" highlight-lines="3,5 7,8" style="--deckgo-highlight-code-line-background: red;">
+  <code slot="code">interface NumericTest {
+    boolean computeTest(int n);
+    }
+
+    public static void main(String args[]) {
+    NumericTest isEven = (n) -> (n % 2) == 0;
+    NumericTest isNegative = (n) -> (n < 0);
+
+    // Output: false
+    System.out.println(isEven.computeTest(5));
+
+    // Output: true
+    System.out.println(isNegative.computeTest(-5));
+    }</code>
+</deckgo-highlight-code>
+
+<deckgo-highlight-code language="bash">
+  <code slot="code">npm init deckdeckgo</code>
+</deckgo-highlight-code>
+
+<deckgo-highlight-code language="bash">
+  <code slot="code">Cool, let's kick start a new DeckDeckGo presentation
+
+    ? What's your project name (will be use to create a new folder)? (deckdeckgo)
+    ? What's your presentation name (max. 45 characters, will be use for meta tags and manifest information)? (DeckDeckGo)
+    ? What's your presentation about (its description)? (Create a lightweight presentation using Web Components 🚀)
+    ? What's your name (will be use for the author meta information)? (David)
+    ? What method do you want to use to edit your presentation? (Use arrow keys)
+    ❯ HTML
+    Markdown</code>
+</deckgo-highlight-code>
+
+</body>
+</html>
