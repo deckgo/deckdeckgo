@@ -31,3 +31,8 @@ lib/
 .firebase/
 firebase.json
 .firebaserc
+
+.terraform
+
+*.tfstate
+*.tfstate.backup

@@ -1,0 +1,7 @@
+name: deckdeckgo-handler
+
+dependencies:
+    - base
+
+executable:
+    main: Main.hs
