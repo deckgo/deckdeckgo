@@ -25,3 +25,7 @@ UserInterfaceState.xcuserstate
 .env
 
 .deckgo
+
+.firebase
+firebase.json
+.firebaserc
