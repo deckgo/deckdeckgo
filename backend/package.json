@@ -1,0 +1,24 @@
+{
+  "name": "deckdeckgo-backend",
+  "version": "1.0.0-alpha.2",
+  "description": "Present and interact with your DeckDeckGo's PWA presentation",
+  "homepage": "https://deckdeckgo.com",
+  "scripts": {
+    "start": "node ./src/app"
+  },
+  "author": {
+    "name": "David Dal Busco",
+    "email": "david.dalbusco@outlook.com",
+    "web": "https://fluster.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo-backend.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "internal-ip": "^4.1.0",
+    "socket.io": "^2.2.0"
+  }
+}
