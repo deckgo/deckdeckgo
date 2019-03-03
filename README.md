@@ -26,7 +26,7 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | ------- | ------- |:-----:|
 | **Documentation** | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Remote control** | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
-| **Website** | [https://deckdeckgo.com](https://deckdeckgo.com) | [`README.md`](http://github.com/deckgo/deckdeckgo-website/README.md)
+| **Website** | [https://deckdeckgo.com](https://deckdeckgo.com) | [`Repo`](http://github.com/deckgo/deckdeckgo-website/README.md)
 
 ## Web Components
 
@@ -45,7 +45,7 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | ------- | ------- | ------- |:-----:|
 | **Backend** | | | [`README.md`](backend/README.md)
 | **CLI** | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo) | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg)](https://www.npmjs.com/package/create-deckdeckgo) | [`README.md`](cli/README.md)
-| **Starter kit** | | | [`README.md`](http://github.com/deckgo/deckdeckgo-starter/README.md)
+| **Starter kit** | | | [`Repo`](http://github.com/deckgo/deckdeckgo-starter/README.md)
 | **Webpack plugins** | [`deckdeckgo-webpack-plugins`](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [![version](https://img.shields.io/npm/v/deckdeckgo-webpack-plugins/latest.svg)](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [`README.md`](webpack/README.md)
 
 [DeckDeckGo]: https://deckdeckgo.com
