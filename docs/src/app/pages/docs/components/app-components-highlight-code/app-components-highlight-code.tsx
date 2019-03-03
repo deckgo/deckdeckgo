@@ -138,6 +138,11 @@ export class AppComponentsHighlightCode {
 </tr>
 </thead>
 <tbody><tr>
+<td>--deckgo-highlight-code-display</td>
+<td>block</td>
+<td>The display property of the code</td>
+</tr>
+<tr>
 <td>--deckgo-highlight-code-color</td>
 <td>inherit</td>
 <td>The color of the displayed code</td>

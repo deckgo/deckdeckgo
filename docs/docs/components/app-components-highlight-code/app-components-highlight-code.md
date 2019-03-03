@@ -78,6 +78,7 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 
 | CSS4 variable                      | Default | Note |
 | -------------------------- |-----------------|-----------------|
+| --deckgo-highlight-code-display | block | The display property of the code |
 | --deckgo-highlight-code-color | inherit | The color of the displayed code |
 | --deckgo-highlight-code-background |  | The background of the displayed code |
 | --deckgo-highlight-code-padding |  | The padding of the displayed code |
