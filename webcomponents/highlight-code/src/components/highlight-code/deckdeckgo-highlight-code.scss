@@ -23,6 +23,8 @@ div.deckgo-highlight-code-container {
     font-size: var(--deckgo-highlight-code-font-size);
     font-family: var(--deckgo-highlight-code-font-family, monospace);
 
+    display: var(--deckgo-highlight-code-display, block);
+
     div:empty {
       min-height: 1rem;
     }
