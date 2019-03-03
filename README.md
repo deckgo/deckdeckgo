@@ -26,6 +26,7 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | ------- | ------- |:-----:|
 | **Documentation** | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Remote control** | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
+| **Studio (landing page)** | [https://studio.deckdeckgo.com](https://studio.deckdeckgo.com) | [`Repo`](http://github.com/deckgo/deckdeckgo-studio-landing/README.md)
 | **Website** | [https://deckdeckgo.com](https://deckdeckgo.com) | [`Repo`](http://github.com/deckgo/deckdeckgo-website/README.md)
 
 ## Web Components
