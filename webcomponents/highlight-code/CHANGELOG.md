@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.12"></a>
+# [1.0.0-alpha.12](https://github.com/deckgo/deckdeckgo-highlight-code/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2019-03-03)
+
+### Features
+
+* style: add a variable for the display of the shadowed code element ([e00a3ea](https://github.com/deckgo/deckdeckgo/commit/e00a3ea170330de867cfedcdd0390c56988ae2f7))
+
 <a name="1.0.0-alpha.11"></a>
 # [1.0.0-alpha.11](https://github.com/deckgo/deckdeckgo-highlight-code/compare/v1.0.0-alpha.10...v1.0.0-alpha.11) (2019-02-11)
 
