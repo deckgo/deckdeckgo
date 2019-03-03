@@ -1,0 +1,33 @@
+:host {
+  position: relative;
+  display: var(--deckgo-qrcode-container-display, inline-block);
+}
+
+div.deckgo-qrcode-container {
+  display: var(--deckgo-qrcode-container-display, inline-block);
+
+  svg {
+    width: var(--deckgo-qrcode-size);
+    height: var(--deckgo-qrcode-size);
+
+    stroke: var(--deckgo-qrcode-border-stroke);
+
+    rect {
+      fill: var(--deckgo-qrcode-background-fill, transparent);
+    }
+
+    path {
+      fill: var(--deckgo-qrcode-color-fill);
+    }
+  }
+}
+
+::slotted([slot="logo"]) {
+  width: calc(var(--deckgo-qrcode-size, 100%) / var(--deckgo-qrcode-logo-ratio-size, 3));
+  height: calc(var(--deckgo-qrcode-size, 100%) / var(--deckgo-qrcode-logo-ratio-size, 3));
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
