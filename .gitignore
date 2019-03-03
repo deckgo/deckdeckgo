@@ -24,8 +24,10 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 .env
 
-.deckgo
+.deckgo/
 
-.firebase
+lib/
+
+.firebase/
 firebase.json
 .firebaserc

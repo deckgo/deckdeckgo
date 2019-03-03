@@ -1,0 +1,46 @@
+{
+  "name": "deckdeckgo-webpack-plugins",
+  "version": "1.0.0-alpha.6",
+  "author": "David Dal Busco",
+  "description": "A collection of Webpack plugins to create a DeckDeckGo presentation",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo-webpack-plugins.git"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "devDependencies": {
+    "@types/node": "^10.12.12",
+    "typescript": "^3.1.6"
+  },
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc"
+  },
+  "files": [
+    "lib",
+    "README.md"
+  ],
+  "dependencies": {
+    "colorette": "^1.0.7",
+    "jsdom": "^13.1.0",
+    "remarkable": "^1.7.1"
+  },
+  "keywords": [
+    "webpack",
+    "webpack4",
+    "webpack-plugin",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk",
+    "markdown",
+    "markdown-parser",
+    "markdown-to-html"
+  ]
+}
