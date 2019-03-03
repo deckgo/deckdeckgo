@@ -40,17 +40,12 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | **Remote** | [`deckdeckgo-remote`](https://www.npmjs.com/package/deckdeckgo-remote) | [![version](https://img.shields.io/npm/v/deckdeckgo-remote/latest.svg)](https://www.npmjs.com/package/deckdeckgo-remote) | [`README.md`](webcomponents/remote/README.md)
 | **Types** | [`deckdeckgo-types`](https://www.npmjs.com/package/deckdeckgo-types) | [![version](https://img.shields.io/npm/v/deckdeckgo-types/latest.svg)](https://www.npmjs.com/package/deckdeckgo-types) | [`README.md`](webcomponents/types/README.md)
 
-## Starter kit
-
-| Project | Links |
-| ------- |:-----:|
-| **Starter kit** | [`README.md`](http://github.com/deckgo/deckdeckgo-starter/README.md)
-
 ## Others
 | Project | Package | Version | Links |
 | ------- | ------- | ------- |:-----:|
-| **Backend** | [`deckdeckgo-backend`](https://www.npmjs.com/package/deckdeckgo-backend) | [![version](https://img.shields.io/npm/v/deckdeckgo-backend/latest.svg)](https://www.npmjs.com/package/deckdeckgo-backend) | [`README.md`](backend/README.md)
+| **Backend** | | | [`README.md`](backend/README.md)
 | **CLI** | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo) | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg)](https://www.npmjs.com/package/create-deckdeckgo) | [`README.md`](cli/README.md)
+| **Starter kit** | | | [`README.md`](http://github.com/deckgo/deckdeckgo-starter/README.md)
 | **Webpack plugins** | [`deckdeckgo-webpack-plugins`](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [![version](https://img.shields.io/npm/v/deckdeckgo-webpack-plugins/latest.svg)](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [`README.md`](webpack/README.md)
 
 [DeckDeckGo]: https://deckdeckgo.com
