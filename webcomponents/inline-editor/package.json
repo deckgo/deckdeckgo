@@ -1,0 +1,55 @@
+{
+  "name": "deckdeckgo-inline-editor",
+  "version": "1.0.0-apha.0",
+  "description": "An inline floating WYSIWYG HTML Editor Web Component",
+  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
+  "unpkg": "dist/ionic.js",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@stencil/core": "~0.18.1-0",
+    "@stencil/postcss": "^0.1.0",
+    "@stencil/sass": "^0.1.1",
+    "autoprefixer": "^9.4.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo-inline-editor.git"
+  },
+  "author": "David Dal Busco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo-inline-editor"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk",
+    "contenteditable",
+    "editor",
+    "wysiwyg",
+    "rich-text",
+    "rich-text-editor",
+    "wysiwyg-html-editor"
+  ]
+}

@@ -19,8 +19,8 @@ To get started with this Web Component, have a look to its [documentation](https
 To develop and run this Web Component locally, proceed as following:
 
 ```
-git clone https://github.com/deckgo/deckdeckgo-qrcode
-cd deckdeckgo/webcomponents/deckdeckgo-qrcode
+git clone https://github.com/deckgo/deckdeckgo
+cd deckdeckgo/webcomponents/qrcode
 npm install
 npm run start
 ```

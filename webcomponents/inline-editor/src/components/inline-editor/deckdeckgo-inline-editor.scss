@@ -1,0 +1,25 @@
+div.deckgo-tools {
+  position: absolute;
+  visibility: hidden;
+
+  pointer-events: none;
+
+  width: 100px;
+  height: 100px;
+
+  background: #3880ff;
+  border-radius: 8px;
+
+  z-index: var(--deckgo-inline-editor-tools-zindex, 1);
+
+  button {
+    pointer-events: initial;
+    cursor: pointer;
+  }
+
+  &.deckgo-tools-activated {
+    transition: top 75ms ease-out, left 75ms ease-out;
+    animation: pop-upwards 180ms forwards linear;
+    visibility: visible;
+  }
+}
