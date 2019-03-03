@@ -1,0 +1,15 @@
+app-introduction {
+  deckgo-highlight-code {
+    --deckgo-highlight-code-token-selector:  black;
+    --deckgo-highlight-code-token-property:  black;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  app-introduction {
+    deckgo-highlight-code {
+      --deckgo-highlight-code-token-selector:  white;
+      --deckgo-highlight-code-token-property:  white;
+    }
+  }
+}

@@ -1,0 +1,34 @@
+deckgo-highlight-code {
+  font-size: var(--font-size-normal);
+
+  --deckgo-highlight-code-margin: 32px 0 32px;
+
+  --deckgo-highlight-code-margin-bottom: 0;
+  --deckgo-highlight-code-padding: 16px;
+  --deckgo-highlight-code-border-radius: 8px;
+  --deckgo-highlight-code-background: var(--ion-color-light);
+  --deckgo-highlight-code-color: inherit;
+}
+
+deckgo-highlight-code, deckgo-deck {
+  --deckgo-highlight-code-token-atrule: var(--ion-color-dark);
+  --deckgo-highlight-code-token-function: var(--ion-color-primary);
+  --deckgo-highlight-code-token-selector:  var(--ion-color-primary);
+  --deckgo-highlight-code-token-property:  var(--ion-color-primary);
+}
+
+@media screen and (max-width: 720px) {
+  deckgo-highlight-code {
+    font-size: var(--font-size-small);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  deckgo-highlight-code {
+    --deckgo-highlight-code-background: var(--ion-color-dark);
+  }
+
+  deckgo-highlight-code, deckgo-deck {
+    --deckgo-highlight-code-token-atrule: var(--ion-color-light);
+  }
+}

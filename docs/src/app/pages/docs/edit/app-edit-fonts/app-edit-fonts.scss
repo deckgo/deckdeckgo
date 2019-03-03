@@ -1,0 +1,17 @@
+app-edit-fonts {
+  deckgo-highlight-code {
+    --deckgo-highlight-code-token-selector:  black;
+    --deckgo-highlight-code-token-property:  black;
+    --deckgo-highlight-code-token-function: black;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  app-edit-fonts {
+    deckgo-highlight-code {
+      --deckgo-highlight-code-token-selector:  white;
+      --deckgo-highlight-code-token-property:  white;
+      --deckgo-highlight-code-token-function: white;
+    }
+  }
+}
