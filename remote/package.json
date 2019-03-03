@@ -1,0 +1,54 @@
+{
+  "name": "deckdeckgo-app",
+  "version": "1.0.0-alpha.7",
+  "author": "David Dal Busco",
+  "description": "Present and interact with your lightweight DeckDeckGo's presentation",
+  "license": "AGPL-3.0-or-later",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --watch --serve",
+    "dev": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watch"
+  },
+  "dependencies": {
+    "@ionic/core": "^4.0.2",
+    "date-fns": "^2.0.0-alpha.26",
+    "deckdeckgo": "^1.0.0-beta.28",
+    "idb-keyval": "^3.1.0",
+    "rxjs": "^6.4.0",
+    "socket.io-client": "^2.2.0"
+  },
+  "devDependencies": {
+    "@stencil/core": "^0.18.0",
+    "@stencil/postcss": "^0.1.0",
+    "@stencil/sass": "^0.1.1",
+    "@types/socket.io-client": "^1.4.32",
+    "@types/w3c-generic-sensor": "^1.0.2",
+    "@types/w3c-permissions": "^1.0.1",
+    "@types/webrtc": "0.0.24",
+    "autoprefixer": "^9.4.7",
+    "deckdeckgo-types": "^1.0.0-alpha.8",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "workbox-build": "3.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo-app.git"
+  },
+  "keywords": [
+    "ionic",
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk"
+  ]
+}

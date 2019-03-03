@@ -1,0 +1,18 @@
+div.social-links {
+  padding-top: 32px;
+  padding-bottom: 32px;
+
+  a {
+    font-size: 3rem;
+
+    &:not(last-child) {
+      padding-right: 8px;
+    }
+  }
+}
+
+div.github-links {
+  ion-badge {
+    margin: 4px;
+  }
+}

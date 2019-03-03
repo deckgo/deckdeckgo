@@ -1,0 +1,38 @@
+# DeckDeckGo - App
+
+This project is the remote control of [DeckDeckGo] which let you interact with and present your PWA presentation.
+
+This Progressive Web App is build with the [Ionic PWA Toolkit](https://ionicframework.com/pwa/toolkit).
+
+## Table of contents
+
+- [Features](#Features)
+- [Getting Started](#getting-started)
+- [License](#license)
+
+## Features
+
+Better than a description, the [DeckDeckGo] website implement a deck and receiver to let you interact with this application, just try by yourself:
+
+1. Open the [DeckDeckGo] website 👉 [https://deckdeckgo.com](https://deckdeckgo.com)
+2. Start this Progressive Web App 👉 [https://deckdeckgo.app](https://deckdeckgo.app)
+3. Have fun 🎉 
+
+## Getting Started
+
+If you wish to run this application locally, proceed as following:
+
+```
+git clone https://github.com/deckgo/deckdeckgo-app
+cd deckdeckgo-app
+npm install
+npm run start
+```
+
+## License
+
+This application, respectively this remote control of [DeckDeckGo], is released under the GNU Affero General Public License. Copyright [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](nicolas@nmattia.com), Zürich, Switzerland. See COPYING for more details.
+
+[DeckDeckGo] is developed by [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](nicolas@nmattia.com).
+
+[DeckDeckGo]: https://deckdeckgo.com

@@ -1,0 +1,74 @@
+app-remote {
+  deckgo-deck {
+    --zIndex: 1;
+    --background: transparent;
+
+    --slide-padding-top: 16px;
+    --slide-padding-bottom: 16px;
+  }
+
+  ion-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  deckgo-slide-title {
+
+    div[slot="content"] {
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      border: 1px dotted var(--ion-color-light-shade);
+      border-radius: 10px;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, .12);
+
+      position: relative;
+
+      div.floating-slide-title, div.floating-slide-timer {
+        position: absolute;
+        top: 4px;
+      }
+
+      div.floating-slide-title {
+        left: 4px;
+      }
+
+      div.floating-slide-timer {
+        right: 4px;
+      }
+
+      ion-icon {
+        font-size: 4rem;
+        color: var(--ion-color-light);
+      }
+
+      p.notes {
+        max-height: 80%;
+        color: var(--ion-color-dark);
+        overflow: hidden;
+        white-space: pre-wrap;
+        text-align: initial;
+
+        position: absolute;
+        top: 32px;
+        left: 0;
+
+        z-index: 1;
+      }
+    }
+
+    --color: var(--ion-color-light-shade);
+
+    --slide-padding-end: 16px;
+    --slide-padding-start: 16px;
+  }
+
+  a.link-to-modal {
+    color: inherit;
+    cursor: pointer;
+  }
+}
