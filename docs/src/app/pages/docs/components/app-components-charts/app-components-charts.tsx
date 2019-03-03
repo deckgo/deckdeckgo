@@ -94,35 +94,35 @@ export class AppComponentsCharts {
 <deckgo-highlight-code language="javascript">
       <code slot="code">git clone https:&#47;&#47;github.com&#47;deckgo&#47;deckdeckgo-charts{'\n'}cd deckdeckgo-charts{'\n'}npm install{'\n'}npm run start</code>
     </deckgo-highlight-code><h3 id="app-components-charts-pie">Pie</h3>
-<p><deckgo-pie-chart width={500} height={400} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv"></deckgo-pie-chart></p>
+<p><deckgo-pie-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"></deckgo-pie-chart></p>
 <h3 id="app-components-charts-donut">Donut</h3>
-<p><deckgo-pie-chart width={500} height={400} inner-radius={100} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart-single-column.csv"></deckgo-pie-chart></p>
+<p><deckgo-pie-chart width={500} height={400} inner-radius={100} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart-single-column.csv"></deckgo-pie-chart></p>
 <h3 id="app-components-charts-compare-two-graphs">Compare two graphs</h3>
-<p><deckgo-line-chart width={500} height={400} y-axis-domain="extent" date-pattern="dd.MM.yyyy" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-to-compare.csv"></deckgo-line-chart></p>
+<p><deckgo-line-chart width={500} height={400} y-axis-domain="extent" date-pattern="dd.MM.yyyy" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv"></deckgo-line-chart></p>
 <h3 id="app-components-charts-line-and-area">Line and area</h3>
-<p><deckgo-line-chart width={500} height={400} smooth={false} ticks={5} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart.csv" date-pattern="dd.MM.yyyy"></deckgo-line-chart></p>
+<p><deckgo-line-chart width={500} height={400} smooth={false} ticks={5} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv" date-pattern="dd.MM.yyyy"></deckgo-line-chart></p>
 <h3 id="app-components-charts-compare-two-lines-and-smoothing-effect">Compare two lines and smoothing effect</h3>
 <div>
-  <deckgo-line-chart width={500} height={400} area={false} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-no-dates.csv"
+  <deckgo-line-chart width={500} height={400} area={false} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
                     style={{'--deckgo-chart-fill-color': 'none', '--deckgo-chart-stroke': 'var(--ion-color-primary)', '--deckgo-chart-compare-fill-color': 'none', '--deckgo-chart-compare-fill-opacity': '1', '--deckgo-chart-compare-stroke': 'var(--ion-color-secondary)', '--deckgo-chart-compare-stroke-width': '3px'}}></deckgo-line-chart>
 </div>
 
 <h3 id="app-components-charts-compare-two-lines-and-display-a-grid">Compare two lines and display a grid</h3>
 <div>
-  <deckgo-line-chart width={500} height={400} smooth={false} area={false} grid={true} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-no-dates.csv"
+  <deckgo-line-chart width={500} height={400} smooth={false} area={false} grid={true} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
                     style={{'--deckgo-chart-fill-color': 'none', '--deckgo-chart-stroke': 'var(--ion-color-primary)', '--deckgo-chart-compare-fill-color': 'none', '--deckgo-chart-compare-fill-opacity': '1', '--deckgo-chart-compare-stroke': 'var(--ion-color-secondary)', '--deckgo-chart-compare-stroke-width': '3px'}}></deckgo-line-chart>
 </div>
 
 
 <h3 id="app-components-charts-bar">Bar</h3>
 <div>
-  <deckgo-bar-chart width={500} height={400} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-bar-chart-to-compare.csv"
+  <deckgo-bar-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
                     style={{'--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-bar2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-bar3': 'var(--ion-color-tertiary)'}}></deckgo-bar-chart>
 </div>
 
 <h3 id="app-components-charts-compare-multiple-bars">Compare multiple bars</h3>
 <div>
-  <deckgo-bar-chart width={500} height={400} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv" 
+  <deckgo-bar-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv" 
                     style={{'--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)'}}></deckgo-bar-chart>
 </div>
 
@@ -249,7 +249,7 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h4 id="app-components-charts-examples">Examples</h4>
 <p>You could find other examples of pie charts in the <a href="https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-pie-chart width=&#123;500&#125; height=&#123;400&#125; src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;fluster&#47;deckdeckgo-charts&#47;master&#47;showcase&#47;data-pie-chart.csv&quot;&gt;&lt;&#47;deckgo-pie-chart&gt;</code>
+      <code slot="code">&lt;deckgo-pie-chart width=&#123;500&#125; height=&#123;400&#125; src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;&gt;&lt;&#47;deckgo-pie-chart&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-charts-line-usage">Line usage</h3>
 <p>The <code>&lt;deckgo-line-chart/&gt;</code> Web Component draw a line chart.</p>
 <h4 id="app-components-charts-csv-1">CSV</h4>
@@ -480,7 +480,7 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h4 id="app-components-charts-examples-1">Examples</h4>
 <p>You could find other examples of line charts in the <a href="https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-line-chart width=&#123;500&#125; height=&#123;400&#125; date-pattern=&quot;dd.MM.yyyy&quot; src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;fluster&#47;deckdeckgo-charts&#47;master&#47;showcase&#47;data-line-chart.csv&quot;&gt;&lt;&#47;deckgo-line-chart&gt;</code>
+      <code slot="code">&lt;deckgo-line-chart width=&#123;500&#125; height=&#123;400&#125; date-pattern=&quot;dd.MM.yyyy&quot; src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-line-chart.csv&quot;&gt;&lt;&#47;deckgo-line-chart&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-charts-bar-usage">Bar usage</h3>
 <p>The <code>&lt;deckgo-bar-chart/&gt;</code> Web Component draw a Bar chart.</p>
 <h4 id="app-components-charts-csv-2">CSV</h4>
@@ -630,7 +630,7 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h4 id="app-components-charts-examples-2">Examples</h4>
 <p>You could find other examples of bar charts in the <a href="https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-bar-chart width=&#123;500&#125; {'\n'}                  height=&#123;400&#125;{'\n'}                   src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;fluster&#47;deckdeckgo-charts&#47;master&#47;showcase&#47;data-pie-chart.csv&quot;{'\n'}                   style=&quot;--deckgo-chart-fill-color-bar1: #3880ff;&quot;&gt;{'\n'}&lt;&#47;deckgo-bar-chart&gt;</code>
+      <code slot="code">&lt;deckgo-bar-chart width=&#123;500&#125; {'\n'}                  height=&#123;400&#125;{'\n'}                   src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;{'\n'}                   style=&quot;--deckgo-chart-fill-color-bar1: #3880ff;&quot;&gt;{'\n'}&lt;&#47;deckgo-bar-chart&gt;</code>
     </deckgo-highlight-code></main>
 
         <app-footer></app-footer>

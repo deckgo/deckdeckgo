@@ -8,11 +8,11 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'ionicons';
 import 'deckdeckgo';
-import 'deckdeckgo-highlight-code';
 import 'deckdeckgo-charts';
+import 'deckdeckgo-highlight-code';
 import 'deckdeckgo-qrcode';
+import 'ionicons';
 
 
 export namespace Components {
