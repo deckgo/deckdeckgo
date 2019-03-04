@@ -62,6 +62,10 @@ div.deckgo-tools {
     &.active {
       color: var(--deckgo-inline-editor-button-color-active, #ffce00);
     }
+
+    &[disabled] {
+      color: var(--deckgo-inline-editor-button-color-disabled, #4c8dff);
+    }
   }
 
   &.deckgo-tools-activated {

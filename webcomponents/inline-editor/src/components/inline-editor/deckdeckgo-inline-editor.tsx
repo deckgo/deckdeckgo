@@ -361,15 +361,15 @@ export class DeckdeckgoInlineEditor {
 
   render() {
     return (<div class={this.toolsActivated ? "deckgo-tools deckgo-tools-activated" : "deckgo-tools"}>
-      <button onClick={(e: UIEvent) => this.styleBold(e)} class={this.bold ? "bold active" : "bold"}>B</button>
-      <button onClick={(e: UIEvent) => this.styleItalic(e)} class={this.italic ? "italic active" : "italic"}>I</button>
-      <button onClick={(e: UIEvent) => this.styleUnderline(e)} class={this.underline ? "underline active" : "underline"}>U</button>
+      <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.type !== undefined && this.type !== ContentType.P} class={this.bold ? "bold active" : "bold"}>B</button>
+      <button onClick={(e: UIEvent) => this.styleItalic(e)} disabled={this.type !== undefined && this.type !== ContentType.P} class={this.italic ? "italic active" : "italic"}>I</button>
+      <button onClick={(e: UIEvent) => this.styleUnderline(e)} disabled={this.type !== undefined && this.type !== ContentType.P} class={this.underline ? "underline active" : "underline"}>U</button>
 
       <div class="separator"></div>
 
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)} class={this.type === ContentType.H1 ? "h1 active" : "h1"}>T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)} class={this.type === ContentType.H2 ? "h2 active" : "h2"}>T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)} class={this.type === ContentType.H3 ? "h3 active" : "h3"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)} disabled={this.bold || this.italic || this.underline} class={this.type === ContentType.H1 ? "h1 active" : "h1"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)} disabled={this.bold || this.italic || this.underline} class={this.type === ContentType.H2 ? "h2 active" : "h2"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)} disabled={this.bold || this.italic || this.underline} class={this.type === ContentType.H3 ? "h3 active" : "h3"}>T</button>
     </div>);
   }
 
