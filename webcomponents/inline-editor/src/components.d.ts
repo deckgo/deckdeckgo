@@ -13,11 +13,9 @@ import '@stencil/core';
 export namespace Components {
 
   interface DeckgoInlineEditor {
-    'initType': string;
     'toolbarOffsetHeight': number;
   }
   interface DeckgoInlineEditorAttributes extends StencilHTMLAttributes {
-    'initType'?: string;
     'toolbarOffsetHeight'?: number;
   }
 }

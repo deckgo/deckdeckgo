@@ -9,7 +9,6 @@
 
 | Property              | Attribute               | Description | Type     | Default     |
 | --------------------- | ----------------------- | ----------- | -------- | ----------- |
-| `initType`            | `init-type`             |             | `string` | `undefined` |
 | `toolbarOffsetHeight` | `toolbar-offset-height` |             | `number` | `undefined` |
 
 

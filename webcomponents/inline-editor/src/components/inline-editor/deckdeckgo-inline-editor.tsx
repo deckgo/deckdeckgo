@@ -1,4 +1,4 @@
-import {Component, Element, Prop, State, Listen} from '@stencil/core';
+import {Component, Element, Listen, Prop, State} from '@stencil/core';
 
 import {ContentType} from '../../types/inline-editor/deckdeckgo-inline-editor-types';
 
@@ -11,11 +11,8 @@ export class DeckdeckgoInlineEditor {
 
   @Element() el: HTMLElement;
 
-  @Prop()
-  initType: string;
-
   @State()
-  private type: ContentType = ContentType.P;
+  private type: ContentType;
 
   @Prop()
   toolbarOffsetHeight: number;
@@ -24,12 +21,6 @@ export class DeckdeckgoInlineEditor {
   private toolsActivated: boolean = false;
 
   private selection: Selection = null;
-
-  componentWillLoad() {
-    if (this.initType) {
-      this.type = ContentType[this.initType.toUpperCase()];
-    }
-  }
 
   @Listen('document:mouseup', {passive: true})
   async mouseup($event: MouseEvent) {
@@ -64,7 +55,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      this.toolsActivated = selection && selection.toString() && selection.toString().length > 0;
+      this.toolsActivated = await this.activateToolbar(selection);
 
       if (this.toolsActivated) {
         this.selection = selection;
@@ -83,6 +74,45 @@ export class DeckdeckgoInlineEditor {
           tools.style.left = '' + (left) + 'px';
         }
       }
+
+      resolve();
+    });
+  }
+
+  private activateToolbar(selection: Selection): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+      const tools: boolean = selection && selection.toString() && selection.toString().length > 0;
+
+      if (tools) {
+        await this.initContentType(selection);
+      }
+
+      resolve(tools);
+    });
+  }
+
+  private initContentType(selection: Selection): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+
+      console.log('here');
+
+      if (!selection || selection.rangeCount <= 0) {
+        resolve();
+        return;
+      }
+
+      const range: Range = selection.getRangeAt(0);
+
+      const content: Node = range.commonAncestorContainer ? range.commonAncestorContainer : this.selection.anchorNode;
+
+      if (!content) {
+        resolve();
+        return;
+      }
+
+      const container: HTMLElement = await this.getContainer(content);
+
+      this.type = ContentType[container.nodeName.toUpperCase()];
 
       resolve();
     });
@@ -134,7 +164,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (!this.selection || !this.selection.anchorNode || this.selection.rangeCount <= 0) {
+      if (!this.selection || this.selection.rangeCount <= 0) {
         resolve();
         return;
       }
@@ -149,6 +179,9 @@ export class DeckdeckgoInlineEditor {
       }
 
       const container: HTMLElement = await this.getContainer(content);
+
+      // If click again, default is a paragraph
+      type = this.type === type ? ContentType.P : type;
 
       if (this.type !== type) {
         const element: HTMLElement = document.createElement(type.toString());
@@ -203,6 +236,7 @@ export class DeckdeckgoInlineEditor {
 
     this.toolsActivated = false;
     this.selection = null;
+    this.type = null;
   }
 
   private bold(e: UIEvent): Promise<void> {
@@ -255,6 +289,9 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  // TODO: button unclick
+  // TODO: link
+
   render() {
     return (<div class={this.toolsActivated ? "deckgo-tools deckgo-tools-activated" : "deckgo-tools"}>
       <button onClick={(e: UIEvent) => this.bold(e)} class="bold">B</button>
@@ -263,9 +300,9 @@ export class DeckdeckgoInlineEditor {
 
       <div class="separator"></div>
 
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)} class="h1">T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)} class="h2">T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)} class="h3">T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)} class={this.type === ContentType.H1 ? "h1 active" : "h1"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)} class={this.type === ContentType.H2 ? "h2 active" : "h2"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)} class={this.type === ContentType.H3 ? "h3 active" : "h3"}>T</button>
     </div>);
   }
 

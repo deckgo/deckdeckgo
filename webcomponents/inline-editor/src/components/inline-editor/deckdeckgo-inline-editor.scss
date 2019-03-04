@@ -36,7 +36,7 @@ div.deckgo-tools {
     border: 0;
     color: #fff;
 
-    transition: .1s background-color, .1s border-color, .1s color, .1s fill;
+    transition: .1s background-color, .1s border-color, .1s fill;
 
     background: rgba(0, 0, 0, 0);
 
@@ -57,6 +57,11 @@ div.deckgo-tools {
 
     &.h3 {
       font-size: var(--deckgo-inline-editor-button-font-size-h3, 1rem);
+    }
+
+    &.active {
+      font-weight: var(--deckgo-inline-editor-button-font-weight-active, 900);
+      color: var(--deckgo-inline-editor-button-color-active, #222428);
     }
   }
 
