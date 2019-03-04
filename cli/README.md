@@ -10,6 +10,6 @@ This CLI reuse many features of the [Stencil CLI](https://github.com/ionic-team/
 
 ## License
 
-MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](nicolas@nmattia.com)
+MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
 
 [DeckDeckGo]: https://deckdeckgo.com
