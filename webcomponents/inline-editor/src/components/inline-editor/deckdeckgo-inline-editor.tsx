@@ -14,6 +14,15 @@ export class DeckdeckgoInlineEditor {
   @State()
   private type: ContentType;
 
+  @State()
+  private bold: boolean = false;
+
+  @State()
+  private italic: boolean = false;
+
+  @State()
+  private underline: boolean = false;
+
   @Prop()
   toolbarOffsetHeight: number;
 
@@ -84,7 +93,12 @@ export class DeckdeckgoInlineEditor {
       const tools: boolean = selection && selection.toString() && selection.toString().length > 0;
 
       if (tools) {
-        await this.initContentType(selection);
+        const promises = [];
+
+        promises.push(this.initContentType(selection));
+        promises.push(this.initStyle(selection));
+
+        await Promise.all(promises);
       }
 
       resolve(tools);
@@ -93,9 +107,6 @@ export class DeckdeckgoInlineEditor {
 
   private initContentType(selection: Selection): Promise<void> {
     return new Promise<void>(async (resolve) => {
-
-      console.log('here');
-
       if (!selection || selection.rangeCount <= 0) {
         resolve();
         return;
@@ -115,6 +126,57 @@ export class DeckdeckgoInlineEditor {
       this.type = ContentType[container.nodeName.toUpperCase()];
 
       resolve();
+    });
+  }
+
+
+  private initStyle(selection: Selection): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!selection || selection.rangeCount <= 0) {
+        resolve();
+        return;
+      }
+
+      const range: Range = selection.getRangeAt(0);
+
+      const content: Node = range.commonAncestorContainer ? range.commonAncestorContainer : this.selection.anchorNode;
+
+      if (content && content.parentElement) {
+        this.bold = false;
+        this.italic = false;
+        this.underline = false;
+
+        await this.findStyle(content.parentElement);
+      }
+
+      resolve();
+    });
+  }
+
+  // TODO: Find a clever way to detect to root container
+  // We iterate until we find the root container to detect if bold, underline or italic are active
+  private findStyle(node: Node): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!node) {
+        resolve();
+        return;
+      }
+
+      if (ContentType[node.nodeName.toUpperCase()]) {
+        resolve();
+      } else {
+        if (node.nodeName.toUpperCase() === 'B') {
+          this.bold = true;
+        } else if (node.nodeName.toUpperCase() === 'I') {
+          this.italic = true;
+        } else if (node.nodeName.toUpperCase() === 'U') {
+          this.underline = true;
+        }
+
+        await this.findStyle(node.parentNode);
+
+        resolve();
+      }
     });
   }
 
@@ -239,31 +301,37 @@ export class DeckdeckgoInlineEditor {
     this.type = null;
   }
 
-  private bold(e: UIEvent): Promise<void> {
+  private styleBold(e: UIEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
       await this.applyStyle('bold');
 
+      this.bold = !this.bold;
+
       resolve();
     });
   }
 
-  private italic(e: UIEvent): Promise<void> {
+  private styleItalic(e: UIEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
       await this.applyStyle('italic');
 
+      this.italic = !this.italic;
+
       resolve();
     });
   }
 
-  private underline(e: UIEvent): Promise<void> {
+  private styleUnderline(e: UIEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
       await this.applyStyle('underline');
+
+      this.underline = !this.underline;
 
       resolve();
     });
@@ -289,14 +357,13 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  // TODO: button unclick
   // TODO: link
 
   render() {
     return (<div class={this.toolsActivated ? "deckgo-tools deckgo-tools-activated" : "deckgo-tools"}>
-      <button onClick={(e: UIEvent) => this.bold(e)} class="bold">B</button>
-      <button onClick={(e: UIEvent) => this.italic(e)} class="italic">I</button>
-      <button onClick={(e: UIEvent) => this.underline(e)} class="underline">U</button>
+      <button onClick={(e: UIEvent) => this.styleBold(e)} class={this.bold ? "bold active" : "bold"}>B</button>
+      <button onClick={(e: UIEvent) => this.styleItalic(e)} class={this.italic ? "italic active" : "italic"}>I</button>
+      <button onClick={(e: UIEvent) => this.styleUnderline(e)} class={this.underline ? "underline active" : "underline"}>U</button>
 
       <div class="separator"></div>
 

@@ -60,8 +60,7 @@ div.deckgo-tools {
     }
 
     &.active {
-      font-weight: var(--deckgo-inline-editor-button-font-weight-active, 900);
-      color: var(--deckgo-inline-editor-button-color-active, #222428);
+      color: var(--deckgo-inline-editor-button-color-active, #ffce00);
     }
   }
 
