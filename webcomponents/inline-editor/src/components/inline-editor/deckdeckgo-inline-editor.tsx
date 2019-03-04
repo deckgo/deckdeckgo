@@ -257,12 +257,15 @@ export class DeckdeckgoInlineEditor {
 
   render() {
     return (<div class={this.toolsActivated ? "deckgo-tools deckgo-tools-activated" : "deckgo-tools"}>
-      <button onClick={(e: UIEvent) => this.bold(e)}>Bold</button>
-      <button onClick={(e: UIEvent) => this.italic(e)}>Italic</button>
-      <button onClick={(e: UIEvent) => this.underline(e)}>Underline</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)}>H1</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)}>H2</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)}>H3</button>
+      <button onClick={(e: UIEvent) => this.bold(e)} class="bold">B</button>
+      <button onClick={(e: UIEvent) => this.italic(e)} class="italic">I</button>
+      <button onClick={(e: UIEvent) => this.underline(e)} class="underline">U</button>
+
+      <div class="separator"></div>
+
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)} class="h1">T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)} class="h2">T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)} class="h3">T</button>
     </div>);
   }
 
