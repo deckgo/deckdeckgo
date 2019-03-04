@@ -4,13 +4,13 @@ div.deckgo-tools {
 
   pointer-events: none;
 
-  background-image: linear-gradient(to bottom, rgba(56, 128, 255, .99), #3171e0);
+  background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-background-top, rgba(56, 128, 255, .99)), var(--deckgo-inline-editor-background-bottom, #3171e0));
   background-repeat: repeat-x;
 
-  border-radius: 8px;
-  padding: 0 8px;
+  border-radius: var(--deckgo-inline-editor-border-radius, 8px);
+  padding: var(--deckgo-inline-editor-padding, 0 8px);
 
-  z-index: var(--deckgo-inline-editor-tools-zindex, 1);
+  z-index: var(--deckgo-inline-editor-zindex, 1);
 
   div.separator {
     display: inline-block;
@@ -18,7 +18,7 @@ div.deckgo-tools {
     width: 1px;
     margin: 0 6px;
     height: 24px;
-    background: rgba(255,255,255,.2);
+    background: var(--deckgo-inline-editor-separator-background, rgba(255, 255, 255, .2));
   }
 
   button {
@@ -36,11 +36,12 @@ div.deckgo-tools {
     border: 0;
     color: #fff;
 
-    transition: .1s background-color,.1s border-color,.1s color,.1s fill;
+    transition: .1s background-color, .1s border-color, .1s color, .1s fill;
 
-    background: rgba(0,0,0,0);
+    background: rgba(0, 0, 0, 0);
 
-    font-size: 1.4rem;
+    font-size: var(--deckgo-inline-editor-button-font-size, 1.4rem);
+    font-family: var(--deckgo-inline-editor-button-font-family, inherit);
 
     &.italic {
       font-style: italic;
@@ -51,11 +52,11 @@ div.deckgo-tools {
     }
 
     &.h2 {
-      font-size: 1.2rem;
+      font-size: var(--deckgo-inline-editor-button-font-size-h2, 1.2rem);
     }
 
     &.h3 {
-      font-size: 1rem;
+      font-size: var(--deckgo-inline-editor-button-font-size-h3, 1rem);
     }
   }
 
