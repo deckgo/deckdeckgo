@@ -1,6 +1,7 @@
 import {Component, Element, Prop, State, Listen} from '@stencil/core';
 
 import {ContentType} from '../../types/inline-editor/deckdeckgo-inline-editor-types';
+import {InnerType} from '../../types/inline-editor/deckdeckgo-inline-editor-inner-types';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -149,8 +150,8 @@ export class DeckdeckgoInlineEditor {
       }
 
       // TODO: Find a clever way to detect to root container
-      // In case a part of the container has been set to bold, italic etc.
-      if (content.parentElement.nodeName.toLowerCase() === 'span' || content.parentElement.nodeName.toLowerCase() === 'b') {
+      // In case an inner part of the container has been set to bold, italic etc. we get the parent which should be the container
+      if (InnerType[content.parentElement.nodeName.toUpperCase()]) {
         content = content.parentElement;
       }
 
@@ -196,7 +197,25 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      if (!this.selection || this.selection.rangeCount <= 0) {
+      await this.applyStyle('bold');
+
+      resolve();
+    });
+  }
+
+  private italic(e: UIEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      e.stopPropagation();
+
+      await this.applyStyle('italic');
+
+      resolve();
+    });
+  }
+
+  private applyStyle(style: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!this.selection || this.selection.rangeCount <= 0 || !document) {
         resolve();
         return;
       }
@@ -208,17 +227,16 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      document.execCommand('bold');
+      document.execCommand(style);
 
       resolve();
     });
   }
 
-  // TODO: italic with em
-
   render() {
     return (<div class={this.toolsActivated ? "deckgo-tools deckgo-tools-activated" : "deckgo-tools"}>
       <button onClick={(e: UIEvent) => this.bold(e)}>Bold</button>
+      <button onClick={(e: UIEvent) => this.italic(e)}>Italic</button>
       <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)}>H1</button>
       <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)}>H2</button>
       <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)}>H3</button>
