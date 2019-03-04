@@ -1,7 +1,6 @@
 import {Component, Element, Prop, State, Listen} from '@stencil/core';
 
 import {ContentType} from '../../types/inline-editor/deckdeckgo-inline-editor-types';
-import {InnerType} from '../../types/inline-editor/deckdeckgo-inline-editor-inner-types';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -144,18 +143,12 @@ export class DeckdeckgoInlineEditor {
 
       let content: Node = range.commonAncestorContainer ? range.commonAncestorContainer : this.selection.anchorNode;
 
-      if (!content || !content.parentElement) {
+      if (!content) {
         resolve();
         return;
       }
 
-      // TODO: Find a clever way to detect to root container
-      // In case an inner part of the container has been set to bold, italic etc. we get the parent which should be the container
-      if (InnerType[content.parentElement.nodeName.toUpperCase()]) {
-        content = content.parentElement;
-      }
-
-      const container: HTMLElement = content.parentElement;
+      const container: HTMLElement = await this.getContainer(content);
 
       if (this.type !== type) {
         const element: HTMLElement = document.createElement(type.toString());
@@ -181,6 +174,25 @@ export class DeckdeckgoInlineEditor {
       await this.reset(true);
 
       resolve();
+    });
+  }
+
+  // TODO: Find a clever way to detect to root container
+  // We iterate until we find the root container which should be one of the supported content type
+  private getContainer(presumedTopLevelNode: Node): Promise<HTMLElement> {
+    return new Promise<HTMLElement>(async (resolve) => {
+      if (!presumedTopLevelNode) {
+        resolve(null);
+        return;
+      }
+
+      if (ContentType[presumedTopLevelNode.nodeName.toUpperCase()]) {
+        resolve(presumedTopLevelNode as HTMLElement);
+      } else {
+        const parentElement: HTMLElement = await this.getContainer(presumedTopLevelNode.parentNode);
+
+        resolve(parentElement);
+      }
     });
   }
 
@@ -213,6 +225,16 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private underline(e: UIEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      e.stopPropagation();
+
+      await this.applyStyle('underline');
+
+      resolve();
+    });
+  }
+
   private applyStyle(style: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selection || this.selection.rangeCount <= 0 || !document) {
@@ -237,6 +259,7 @@ export class DeckdeckgoInlineEditor {
     return (<div class={this.toolsActivated ? "deckgo-tools deckgo-tools-activated" : "deckgo-tools"}>
       <button onClick={(e: UIEvent) => this.bold(e)}>Bold</button>
       <button onClick={(e: UIEvent) => this.italic(e)}>Italic</button>
+      <button onClick={(e: UIEvent) => this.underline(e)}>Underline</button>
       <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)}>H1</button>
       <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)}>H2</button>
       <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)}>H3</button>
