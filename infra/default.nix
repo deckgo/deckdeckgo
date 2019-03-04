@@ -11,5 +11,4 @@ rec
   '';
 
   main = pkgs.haskellPackagesStatic.deckdeckgo-handler;
-
 }

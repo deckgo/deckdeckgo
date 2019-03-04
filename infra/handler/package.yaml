@@ -1,7 +1,15 @@
 name: deckdeckgo-handler
 
 dependencies:
+    - aeson
     - base
+    - bytestring
+    - servant
+    - servant-server
+    - wai
+
+ghc-options:
+    - -Wall
 
 executable:
     main: Main.hs

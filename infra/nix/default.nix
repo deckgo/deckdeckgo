@@ -9,8 +9,8 @@ with rec
 
   normalHaskellPackages = pkgsStatic.pkgsMusl.haskellPackages.override
     { overrides = self: super: super //
-      { deckdeckgo-handler = super.callCabal2nix "handler"
-          (pkgs.lib.cleanSource ../handler) {};
+      { deckdeckgo-handler = pkgsStatic.pkgsMusl.haskell.lib.failOnAllWarnings
+          (super.callCabal2nix "handler" (pkgs.lib.cleanSource ../handler) {});
       };
     };
 
