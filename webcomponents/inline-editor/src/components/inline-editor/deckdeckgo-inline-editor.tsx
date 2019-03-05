@@ -33,6 +33,7 @@ export class DeckdeckgoInlineEditor {
   private toolsActivated: boolean = false;
 
   private selection: Selection = null;
+  private anchorEvent: MouseEvent | TouchEvent;
 
   componentDidLoad() {
     if (!this.mobile) {
@@ -42,29 +43,17 @@ export class DeckdeckgoInlineEditor {
 
   @Listen('document:mousedown', {passive: true})
   async mousedown($event: MouseEvent) {
-    if (this.skipResetOnStart($event)) {
-      return;
-    }
-
-    if (!this.toolsActivated) {
-      return;
-    }
-
-    await this.reset(true);
+    this.anchorEvent = $event;
   }
 
-  private skipResetOnStart($event: MouseEvent | TouchEvent): boolean {
-    return this.toolsActivated && $event && $event.target && ($event.target as Node).nodeName.toLowerCase() === 'deckgo-inline-editor';
+  @Listen('document:touchstart', {passive: true})
+  async touchstart($event: MouseEvent) {
+    this.anchorEvent = $event;
   }
 
-  @Listen('document:mouseup', {passive: true})
-  async mouseup($event: MouseEvent) {
-    await this.displayTools($event);
-  }
-
-  @Listen('document:touchend', {passive: true})
-  async touchend($event: TouchEvent) {
-    await this.displayTools($event);
+  @Listen('document:selectionchange', {passive: true})
+  async selectionchange(_$event: Event) {
+    await this.displayTools();
   }
 
   @Listen('document:keydown', {passive: true})
@@ -74,9 +63,15 @@ export class DeckdeckgoInlineEditor {
     }
   }
 
-  private displayTools($event: MouseEvent | TouchEvent): Promise<void> {
+  private displayTools(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const selection: Selection = await this.getSelection();
+
+      if (!this.anchorEvent) {
+        await this.reset(false);
+        resolve();
+        return;
+      }
 
       if (!selection || selection.toString().length <= 0) {
         await this.reset(false);
@@ -98,8 +93,8 @@ export class DeckdeckgoInlineEditor {
         const tools: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-tools');
 
         if (tools && selection.rangeCount > 0) {
-          let top: number = this.unifyEvent($event).clientY;
-          let left: number = this.unifyEvent($event).clientX;
+          let top: number = this.unifyEvent(this.anchorEvent).clientY;
+          let left: number = this.unifyEvent(this.anchorEvent).clientX;
 
           if (this.toolbarOffsetHeight > 0) {
             top = top - this.toolbarOffsetHeight;
@@ -397,6 +392,7 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  // TODO: Detect iPad
   // TODO: link
 
   render() {
