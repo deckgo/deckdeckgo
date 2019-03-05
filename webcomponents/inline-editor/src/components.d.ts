@@ -13,9 +13,11 @@ import '@stencil/core';
 export namespace Components {
 
   interface DeckgoInlineEditor {
+    'mobile': boolean;
     'toolbarOffsetHeight': number;
   }
   interface DeckgoInlineEditorAttributes extends StencilHTMLAttributes {
+    'mobile'?: boolean;
     'toolbarOffsetHeight'?: number;
   }
 }

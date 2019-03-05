@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property              | Attribute               | Description | Type     | Default     |
-| --------------------- | ----------------------- | ----------- | -------- | ----------- |
-| `toolbarOffsetHeight` | `toolbar-offset-height` |             | `number` | `undefined` |
+| Property              | Attribute               | Description | Type      | Default     |
+| --------------------- | ----------------------- | ----------- | --------- | ----------- |
+| `mobile`              | `mobile`                |             | `boolean` | `false`     |
+| `toolbarOffsetHeight` | `toolbar-offset-height` |             | `number`  | `undefined` |
 
 
 ----------------------------------------------
