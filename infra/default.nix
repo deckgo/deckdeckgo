@@ -11,4 +11,26 @@ rec
   '';
 
   main = pkgs.haskellPackagesStatic.deckdeckgo-handler;
+
+  test = pkgs.runCommand "foo" { buildInputs = [ pkgs.unzip pkgs.nodejs ]; }
+    ''
+      cd $(mktemp -d)
+      unzip ${function}/function.zip
+      node ${testMain}
+      touch $out
+    '';
+
+  testMain = pkgs.writeText "main.js"
+      ''
+        'use strict'
+
+        var m = require(process.cwd() + '/main.js');
+
+        const request = {foo: "bar"};
+        m.handler(request, null, (foo, resp) => {
+          if(resp.statusCode != 200) {
+            throw "Expected status code to be 200!!!";
+          }
+        });
+        '';
 }
