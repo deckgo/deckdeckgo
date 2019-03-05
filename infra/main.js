@@ -9,6 +9,7 @@ exports.handler = function(event, context, callback) {
         });
 
     }
+
     catch(error) {
         var response = {
             statusCode: 500,

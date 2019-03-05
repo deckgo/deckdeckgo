@@ -35,9 +35,11 @@ api = Proxy
 --
 -------------------------------------------------------------------------------
 
+-- https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-api-gateway-request
 decodeRequest :: BS.ByteString -> Maybe Wai.Request
 decodeRequest _ = pure Wai.defaultRequest
 
+-- https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-api-gateway-response
 encodeResponse :: Wai.Response -> BS.ByteString
 encodeResponse _ = BL.toStrict $ Aeson.encode $
     Aeson.object
