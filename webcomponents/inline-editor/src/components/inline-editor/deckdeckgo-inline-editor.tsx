@@ -23,6 +23,9 @@ export class DeckdeckgoInlineEditor {
   @State()
   private underline: boolean = false;
 
+  @State()
+  private styledElements: boolean = false;
+
   @Prop({mutable: true})
   mobile: boolean = false;
 
@@ -172,11 +175,20 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      const range: Range = selection.getRangeAt(0);
+      const content: Node = selection.anchorNode;
 
-      const content: Node = range.commonAncestorContainer ? range.commonAncestorContainer : this.selection.anchorNode;
+      if (!content) {
+        resolve();
+        return;
+      }
 
-      if (content && content.parentElement) {
+      if (ContentType[content.nodeName.toUpperCase()]) {
+        this.bold = false;
+        this.italic = false;
+        this.underline = false;
+
+        await this.findStyle(content);
+      } else if (content.parentElement) {
         this.bold = false;
         this.italic = false;
         this.underline = false;
@@ -197,7 +209,15 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
+      // Just in case
+      if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
+        resolve();
+        return;
+      }
+
       if (ContentType[node.nodeName.toUpperCase()]) {
+        const children: HTMLCollection = (node as HTMLElement).children;
+        this.styledElements = children && children.length > 0;
         resolve();
       } else {
         if (node.nodeName.toUpperCase() === 'B') {
@@ -207,6 +227,14 @@ export class DeckdeckgoInlineEditor {
         } else if (node.nodeName.toUpperCase() === 'U') {
           this.underline = true;
         }
+
+        const boldChildren: HTMLCollection = (node as HTMLElement).getElementsByTagName('b');
+        const italicChildren: HTMLCollection = (node as HTMLElement).getElementsByTagName('i');
+        const underlineChildren: HTMLCollection = (node as HTMLElement).getElementsByTagName('u');
+
+        this.bold = this.bold || (boldChildren && boldChildren.length > 0);
+        this.italic = this.italic || (italicChildren && italicChildren.length > 0);
+        this.underline = this.underline || (underlineChildren && underlineChildren.length > 0);
 
         await this.findStyle(node.parentNode);
 
@@ -342,7 +370,7 @@ export class DeckdeckgoInlineEditor {
 
       await this.applyStyle('bold');
 
-      this.bold = !this.bold;
+      await this.initStyle(this.selection);
 
       resolve();
     });
@@ -354,7 +382,7 @@ export class DeckdeckgoInlineEditor {
 
       await this.applyStyle('italic');
 
-      this.italic = !this.italic;
+      await this.initStyle(this.selection);
 
       resolve();
     });
@@ -366,7 +394,7 @@ export class DeckdeckgoInlineEditor {
 
       await this.applyStyle('underline');
 
-      this.underline = !this.underline;
+      await this.initStyle(this.selection);
 
       resolve();
     });
@@ -405,9 +433,9 @@ export class DeckdeckgoInlineEditor {
 
       <div class="separator"></div>
 
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)} disabled={this.bold || this.italic || this.underline} class={this.type === ContentType.H1 ? "h1 active" : "h1"}>T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)} disabled={this.bold || this.italic || this.underline} class={this.type === ContentType.H2 ? "h2 active" : "h2"}>T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)} disabled={this.bold || this.italic || this.underline} class={this.type === ContentType.H3 ? "h3 active" : "h3"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === ContentType.H1 ? "h1 active" : "h1"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === ContentType.H2 ? "h2 active" : "h2"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === ContentType.H3 ? "h3 active" : "h3"}>T</button>
     </div>);
   }
 
