@@ -40,6 +40,23 @@ export class DeckdeckgoInlineEditor {
     }
   }
 
+  @Listen('document:mousedown', {passive: true})
+  async mousedown($event: MouseEvent) {
+    if (this.skipResetOnStart($event)) {
+      return;
+    }
+
+    if (!this.toolsActivated) {
+      return;
+    }
+
+    await this.reset(true);
+  }
+
+  private skipResetOnStart($event: MouseEvent | TouchEvent): boolean {
+    return this.toolsActivated && $event && $event.target && ($event.target as Node).nodeName.toLowerCase() === 'deckgo-inline-editor';
+  }
+
   @Listen('document:mouseup', {passive: true})
   async mouseup($event: MouseEvent) {
     await this.displayTools($event);
