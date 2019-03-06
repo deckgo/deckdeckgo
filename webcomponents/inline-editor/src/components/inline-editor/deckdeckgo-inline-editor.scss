@@ -38,6 +38,16 @@ div.deckgo-tools {
     }
   }
 
+  &.deckgo-tools-sticky, &.deckgo-tools-mobile.deckgo-tools-sticky {
+    position: fixed;
+
+    bottom: var(--deckgo-inline-editor-sticky-bottom, 0);
+    left: 0;
+
+    width: 100%;
+    border-radius: 0;
+  }
+
   div.separator {
     display: inline-block;
     vertical-align: middle;

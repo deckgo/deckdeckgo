@@ -33,6 +33,9 @@ export class DeckdeckgoInlineEditor {
   @Prop()
   toolbarOffsetHeight: number;
 
+  @Prop()
+  sticky: boolean = false;
+
   @State()
   private toolsActivated: boolean = false;
 
@@ -94,29 +97,42 @@ export class DeckdeckgoInlineEditor {
       if (this.toolsActivated) {
         this.selection = selection;
 
-        const tools: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-tools');
+        await this.setToolbarAnchorPosition(selection);
+      }
 
-        if (tools && selection.rangeCount > 0) {
-          let top: number = this.unifyEvent(this.anchorEvent).clientY;
-          let left: number = this.unifyEvent(this.anchorEvent).clientX;
+      resolve();
+    });
+  }
 
-          if (this.toolbarOffsetHeight > 0) {
-            top = top - this.toolbarOffsetHeight;
-          }
+  private setToolbarAnchorPosition(selection: Selection): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (this.sticky) {
+        resolve();
+        return;
+      }
 
-          if (this.mobile) {
-            top = top + 40;
-          }
+      const tools: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-tools');
 
-          const innerWidth: number = DeckdeckgoInlineEditorUtils.isIOS() ? screen.width : window.innerWidth;
+      if (tools && selection.rangeCount > 0) {
+        let top: number = this.unifyEvent(this.anchorEvent).clientY;
+        let left: number = this.unifyEvent(this.anchorEvent).clientX;
 
-          if (innerWidth > 0 && left > innerWidth - 250) {
-            left = innerWidth - 250;
-          }
-
-          tools.style.top = '' + (top) + 'px';
-          tools.style.left = '' + (left) + 'px';
+        if (this.toolbarOffsetHeight > 0) {
+          top = top - this.toolbarOffsetHeight;
         }
+
+        if (this.mobile) {
+          top = top + 40;
+        }
+
+        const innerWidth: number = DeckdeckgoInlineEditorUtils.isIOS() ? screen.width : window.innerWidth;
+
+        if (innerWidth > 0 && left > innerWidth - 250) {
+          left = innerWidth - 250;
+        }
+
+        tools.style.top = '' + (top) + 'px';
+        tools.style.left = '' + (left) + 'px';
       }
 
       resolve();
@@ -408,11 +424,14 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  // TODO: Detect iPad
   // TODO: link
 
   render() {
-    const classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
+    let classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
+
+    if (this.sticky) {
+      classNames += ' deckgo-tools-sticky';
+    }
 
     return (<div class={classNames}>
       <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.bold ? "bold active" : "bold"}>B</button>

@@ -10,6 +10,7 @@
 | Property              | Attribute               | Description | Type      | Default     |
 | --------------------- | ----------------------- | ----------- | --------- | ----------- |
 | `mobile`              | `mobile`                |             | `boolean` | `false`     |
+| `sticky`              | `sticky`                |             | `boolean` | `false`     |
 | `toolbarOffsetHeight` | `toolbar-offset-height` |             | `number`  | `undefined` |
 
 
