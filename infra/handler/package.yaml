@@ -8,6 +8,9 @@ dependencies:
     - servant-server
     - wai
     - deckdeckgo-handler-api
+    - text
+    - http-types
+    - unordered-containers
 
 ghc-options:
     - -Wall
