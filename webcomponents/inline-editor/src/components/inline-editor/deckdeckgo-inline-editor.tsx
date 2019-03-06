@@ -187,7 +187,10 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (DeckdeckgoInlineEditorTag[content.nodeName.toUpperCase()]) {
+      // It happens on mobile devices
+      const parentDiv: boolean = content.parentElement && content.parentElement.nodeName && content.parentElement.nodeName.toLowerCase() === 'div';
+
+      if (DeckdeckgoInlineEditorTag[content.nodeName.toUpperCase()] || parentDiv) {
         this.bold = false;
         this.italic = false;
         this.underline = false;
@@ -215,7 +218,7 @@ export class DeckdeckgoInlineEditor {
       }
 
       // Just in case
-      if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
+      if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY' || node.nodeName.toUpperCase() === 'DIV') {
         resolve();
         return;
       }

@@ -31,6 +31,11 @@ export class DeckdeckgoInlineEditorUtils {
         return;
       }
 
+      if (!element.hasChildNodes()) {
+        resolve(false);
+        return;
+      }
+
       // Sometimes it generates font-style: italic;
       result = element.style.fontStyle === 'italic';
       if (result) {
@@ -38,7 +43,7 @@ export class DeckdeckgoInlineEditorUtils {
         return;
       }
 
-      const children: HTMLCollection = element.getElementsByTagName('span');
+      const children: HTMLCollection = element.children;
       if (children && children.length > 0) {
         const selectedChild: Element = Array.from(children).find((child: HTMLElement) => {
           return child.style.fontStyle === 'italic';
@@ -63,6 +68,11 @@ export class DeckdeckgoInlineEditorUtils {
         return;
       }
 
+      if (!element.hasChildNodes()) {
+        resolve(false);
+        return;
+      }
+
       // Sometimes it generates text-decoration-line: underline; too
       result = (element.style as any).textDecorationLine === 'underline';
       if (result) {
@@ -70,7 +80,7 @@ export class DeckdeckgoInlineEditorUtils {
         return;
       }
 
-      const children: HTMLCollection = element.getElementsByTagName('span');
+      const children: HTMLCollection = element.children;
       if (children && children.length > 0) {
         const selectedChild: Element = Array.from(children).find((child: HTMLElement) => {
           return (child.style as any).textDecorationLine === 'underline';
@@ -98,8 +108,12 @@ export class DeckdeckgoInlineEditorUtils {
         return;
       }
 
-      const children: HTMLCollection = element.getElementsByTagName(tagName);
-      resolve(children && children.length > 0);
+      if (element.hasChildNodes()) {
+        const children: HTMLCollection = element.getElementsByTagName(tagName);
+        resolve(children && children.length > 0);
+      } else {
+        resolve(false);
+      }
     });
   }
 
