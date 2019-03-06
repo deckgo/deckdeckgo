@@ -1,5 +1,5 @@
 <a name="1.0.0-alpha.12"></a>
-# [1.0.0-alpha.12](https://github.com/deckgo/deckdeckgo-highlight-code/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2019-03-03)
+# 1.0.0-alpha.12 (2019-03-03)
 
 ### Features
 
