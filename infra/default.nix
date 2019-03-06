@@ -1,7 +1,6 @@
 with { pkgs = import ./nix {}; };
 
 # TODO:
-#  - write (non-static) servant client using API lib
 #  - write Aeson request decoder
 #  - write Aeson response decoder
 #  - write JS request encoder
