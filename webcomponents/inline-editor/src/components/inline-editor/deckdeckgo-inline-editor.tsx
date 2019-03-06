@@ -1,6 +1,7 @@
 import {Component, Element, Listen, Prop, State} from '@stencil/core';
 
-import {ContentType} from '../../types/inline-editor/deckdeckgo-inline-editor-types';
+import {DeckdeckgoInlineEditorTag} from '../../types/inline-editor/deckdeckgo-inline-editor-tag';
+import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -12,7 +13,7 @@ export class DeckdeckgoInlineEditor {
   @Element() el: HTMLElement;
 
   @State()
-  private type: ContentType;
+  private type: DeckdeckgoInlineEditorTag;
 
   @State()
   private bold: boolean = false;
@@ -161,7 +162,7 @@ export class DeckdeckgoInlineEditor {
 
       const container: HTMLElement = await this.getContainer(content);
 
-      this.type = ContentType[container.nodeName.toUpperCase()];
+      this.type = DeckdeckgoInlineEditorTag[container.nodeName.toUpperCase()];
 
       resolve();
     });
@@ -182,7 +183,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (ContentType[content.nodeName.toUpperCase()]) {
+      if (DeckdeckgoInlineEditorTag[content.nodeName.toUpperCase()]) {
         this.bold = false;
         this.italic = false;
         this.underline = false;
@@ -215,26 +216,14 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (ContentType[node.nodeName.toUpperCase()]) {
+      if (DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()]) {
         const children: HTMLCollection = (node as HTMLElement).children;
         this.styledElements = children && children.length > 0;
         resolve();
       } else {
-        if (node.nodeName.toUpperCase() === 'B') {
-          this.bold = true;
-        } else if (node.nodeName.toUpperCase() === 'I') {
-          this.italic = true;
-        } else if (node.nodeName.toUpperCase() === 'U') {
-          this.underline = true;
-        }
-
-        const boldChildren: HTMLCollection = (node as HTMLElement).getElementsByTagName('b');
-        const italicChildren: HTMLCollection = (node as HTMLElement).getElementsByTagName('i');
-        const underlineChildren: HTMLCollection = (node as HTMLElement).getElementsByTagName('u');
-
-        this.bold = this.bold || (boldChildren && boldChildren.length > 0);
-        this.italic = this.italic || (italicChildren && italicChildren.length > 0);
-        this.underline = this.underline || (underlineChildren && underlineChildren.length > 0);
+        this.bold = await DeckdeckgoInlineEditorUtils.isBold((node as HTMLElement));
+        this.italic = await DeckdeckgoInlineEditorUtils.isItalic((node as HTMLElement));
+        this.underline = await DeckdeckgoInlineEditorUtils.isUnderline((node as HTMLElement));
 
         await this.findStyle(node.parentNode);
 
@@ -280,7 +269,7 @@ export class DeckdeckgoInlineEditor {
     return e.changedTouches ? e.changedTouches[0] : e;
   }
 
-  private toggle(e: UIEvent, type: ContentType): Promise<void> {
+  private toggle(e: UIEvent, type: DeckdeckgoInlineEditorTag): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
@@ -306,7 +295,7 @@ export class DeckdeckgoInlineEditor {
       const container: HTMLElement = await this.getContainer(content);
 
       // If click again, default is a paragraph
-      type = this.type === type ? ContentType.P : type;
+      type = this.type === type ? DeckdeckgoInlineEditorTag.P : type;
 
       if (this.type !== type) {
         const element: HTMLElement = document.createElement(type.toString());
@@ -344,7 +333,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (ContentType[presumedTopLevelNode.nodeName.toUpperCase()]) {
+      if (DeckdeckgoInlineEditorTag[presumedTopLevelNode.nodeName.toUpperCase()]) {
         resolve(presumedTopLevelNode as HTMLElement);
       } else {
         const parentElement: HTMLElement = await this.getContainer(presumedTopLevelNode.parentNode);
@@ -427,15 +416,15 @@ export class DeckdeckgoInlineEditor {
     const classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
 
     return (<div class={classNames}>
-      <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.type !== undefined && this.type !== ContentType.P} class={this.bold ? "bold active" : "bold"}>B</button>
-      <button onClick={(e: UIEvent) => this.styleItalic(e)} disabled={this.type !== undefined && this.type !== ContentType.P} class={this.italic ? "italic active" : "italic"}>I</button>
-      <button onClick={(e: UIEvent) => this.styleUnderline(e)} disabled={this.type !== undefined && this.type !== ContentType.P} class={this.underline ? "underline active" : "underline"}>U</button>
+      <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.bold ? "bold active" : "bold"}>B</button>
+      <button onClick={(e: UIEvent) => this.styleItalic(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.italic ? "italic active" : "italic"}>I</button>
+      <button onClick={(e: UIEvent) => this.styleUnderline(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.underline ? "underline active" : "underline"}>U</button>
 
       <div class="separator"></div>
 
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H1)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === ContentType.H1 ? "h1 active" : "h1"}>T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H2)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === ContentType.H2 ? "h2 active" : "h2"}>T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, ContentType.H3)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === ContentType.H3 ? "h3 active" : "h3"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H1)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H1 ? "h1 active" : "h1"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H2)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H2 ? "h2 active" : "h2"}>T</button>
+      <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H3)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H3 ? "h3 active" : "h3"}>T</button>
     </div>);
   }
 

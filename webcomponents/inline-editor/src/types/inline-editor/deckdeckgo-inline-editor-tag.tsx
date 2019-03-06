@@ -1,4 +1,4 @@
-export enum ContentType {
+export enum DeckdeckgoInlineEditorTag {
   P = 'p',
   H1 = 'h1',
   H2 = 'h2',
