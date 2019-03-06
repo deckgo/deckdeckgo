@@ -1,13 +1,13 @@
-name: deckdeckgo-handler
+name: deckdeckgo-handler-client
 
 dependencies:
     - aeson
     - base
     - bytestring
     - servant
-    - servant-server
-    - wai
+    - servant-client
     - deckdeckgo-handler-api
+    - http-client
 
 ghc-options:
     - -Wall

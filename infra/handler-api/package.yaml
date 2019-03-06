@@ -1,4 +1,4 @@
-name: deckdeckgo-handler
+name: deckdeckgo-handler-api
 
 dependencies:
     - aeson
@@ -7,10 +7,9 @@ dependencies:
     - servant
     - servant-server
     - wai
-    - deckdeckgo-handler-api
 
 ghc-options:
     - -Wall
 
-executable:
-    main: Main.hs
+library:
+    source-dirs: .
