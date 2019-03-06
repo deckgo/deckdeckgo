@@ -42,6 +42,9 @@ export class DeckdeckgoInlineEditor {
   private selection: Selection = null;
   private anchorEvent: MouseEvent | TouchEvent;
 
+  @State()
+  private link: boolean = false;
+
   componentDidLoad() {
     if (!this.mobile) {
       this.mobile = DeckdeckgoInlineEditorUtils.isMobile();
@@ -60,13 +63,23 @@ export class DeckdeckgoInlineEditor {
 
   @Listen('document:selectionchange', {passive: true})
   async selectionchange(_$event: Event) {
+    if (this.link && document && document.activeElement && document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor') {
+      return;
+    }
+
     await this.displayTools();
   }
 
   @Listen('document:keydown', {passive: true})
   async keydown($event: KeyboardEvent) {
-    if ($event && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
+    if (!$event) {
+      return;
+    }
+
+    if (!this.link && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
       await this.reset(false);
+    } else if (this.link && $event.key.toLowerCase() === 'enter') {
+      // TODO: create link
     }
   }
 
@@ -366,6 +379,8 @@ export class DeckdeckgoInlineEditor {
     this.toolsActivated = false;
     this.selection = null;
     this.type = null;
+
+    this.link = false;
   }
 
   private styleBold(e: UIEvent): Promise<void> {
@@ -424,7 +439,13 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  // TODO: link
+  private openLink(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      this.link = true;
+
+      resolve();
+    });
+  }
 
   render() {
     let classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
@@ -433,17 +454,31 @@ export class DeckdeckgoInlineEditor {
       classNames += ' deckgo-tools-sticky';
     }
 
-    return (<div class={classNames}>
-      <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.bold ? "bold active" : "bold"}>B</button>
-      <button onClick={(e: UIEvent) => this.styleItalic(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.italic ? "italic active" : "italic"}>I</button>
-      <button onClick={(e: UIEvent) => this.styleUnderline(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.underline ? "underline active" : "underline"}>U</button>
+    if (this.link) {
+      return (
+        <div class={classNames}>
+          <div class="link">
+            <input autofocus></input>
+          </div>
+        </div>
+      );
+    } else {
+      return (<div class={classNames}>
+        <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.bold ? "bold active" : "bold"}>B</button>
+        <button onClick={(e: UIEvent) => this.styleItalic(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.italic ? "italic active" : "italic"}>I</button>
+        <button onClick={(e: UIEvent) => this.styleUnderline(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.underline ? "underline active" : "underline"}>U</button>
 
-      <div class="separator"></div>
+        <div class="separator"></div>
 
-      <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H1)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H1 ? "h1 active" : "h1"}>T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H2)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H2 ? "h2 active" : "h2"}>T</button>
-      <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H3)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H3 ? "h3 active" : "h3"}>T</button>
-    </div>);
+        <button onClick={() => {this.openLink()}} class="link">A</button>
+
+        <div class="separator"></div>
+
+        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H1)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H1 ? "h1 active" : "h1"}>T</button>
+        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H2)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H2 ? "h2 active" : "h2"}>T</button>
+        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H3)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H3 ? "h3 active" : "h3"}>T</button>
+      </div>);
+    }
   }
 
 }

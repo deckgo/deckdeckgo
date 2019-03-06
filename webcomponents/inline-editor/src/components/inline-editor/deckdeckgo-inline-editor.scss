@@ -16,6 +16,8 @@ div.deckgo-tools {
   justify-content: center;
   align-items: center;
 
+  width: 270px;
+
   &.deckgo-tools-mobile {
     box-shadow: var(--deckgo-inline-editor-mobile-box-shadow, 0 0px 1px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.15));
     background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-mobile-background-top, white), var(--deckgo-inline-editor-mobile-background-bottom, white));
@@ -101,6 +103,17 @@ div.deckgo-tools {
 
     &[disabled] {
       color: var(--deckgo-inline-editor-button-color-disabled, #4c8dff);
+    }
+  }
+
+  div.link {
+    animation: pop-upwards 180ms forwards linear;
+
+    height: 44px;
+    line-height: 44px;
+
+    input {
+      pointer-events: visible;
     }
   }
 
