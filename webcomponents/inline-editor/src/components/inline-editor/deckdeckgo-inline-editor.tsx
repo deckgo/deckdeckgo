@@ -108,6 +108,10 @@ export class DeckdeckgoInlineEditor {
             top = top + 40;
           }
 
+          if (window && window.innerWidth > 0 && left > window.innerWidth - 250) {
+            left = window.innerWidth - 250;
+          }
+
           tools.style.top = '' + (top) + 'px';
           tools.style.left = '' + (left) + 'px';
         }
