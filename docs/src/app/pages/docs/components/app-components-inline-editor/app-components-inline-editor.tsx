@@ -48,11 +48,11 @@ export class AppComponentsInlineEditor {
 </ul>
 <h2 id="app-components-inline-editor-showcase">Showcase</h2>
 <div>
-  <h1 style={{color: '#3880ff'}}>DeckDeckGo (editable title)</h1>
+  <h1 style={{color: '#3880ff'}} contenteditable>DeckDeckGo (editable title)</h1>
 
-  <h2 style={{color: '#3880ff'}}>The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
+  <h2 style={{color: '#3880ff'}} contenteditable>The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
 
-  <p style={{color: '#3880ff'}}>Edit anywhere, display everywhere (editable paragraph)</p>
+  <p style={{color: '#3880ff'}} contenteditable>Edit anywhere, display everywhere (editable paragraph)</p>
 </div>
 
 <p><deckgo-inline-editor sticky-desktop="true" sticky-mobile="true"></deckgo-inline-editor></p>
