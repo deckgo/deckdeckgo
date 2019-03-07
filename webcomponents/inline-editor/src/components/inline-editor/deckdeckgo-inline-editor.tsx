@@ -530,7 +530,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      content.parentElement.appendChild(document.createTextNode(content.textContent));
+      content.parentElement.insertBefore(document.createTextNode(content.textContent), content);
       content.parentElement.removeChild(content);
 
       resolve();
