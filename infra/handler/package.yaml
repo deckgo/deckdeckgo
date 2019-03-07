@@ -11,6 +11,9 @@ dependencies:
     - text
     - http-types
     - unordered-containers
+    - case-insensitive
+    - iproute
+    - network
 
 ghc-options:
     - -Wall
