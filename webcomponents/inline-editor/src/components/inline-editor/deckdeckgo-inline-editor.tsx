@@ -162,11 +162,11 @@ export class DeckdeckgoInlineEditor {
         let left: number = this.unifyEvent(this.anchorEvent).clientX;
 
         if (this.toolbarOffsetStart > 0 || this.toolbarOffsetStart < 0) {
-          left = left - this.toolbarOffsetStart;
+          left = left + this.toolbarOffsetStart;
         }
 
-        if (this.toolbarOffsetTop > 0) {
-          top = top - this.toolbarOffsetTop;
+        if (this.toolbarOffsetTop > 0 || this.toolbarOffsetTop < 0) {
+          top = top + this.toolbarOffsetTop;
         }
 
         if (this.mobile) {
