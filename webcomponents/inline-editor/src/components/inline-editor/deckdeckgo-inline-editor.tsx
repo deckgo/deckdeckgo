@@ -43,7 +43,10 @@ export class DeckdeckgoInlineEditor {
   toolbarOffsetHeight: number;
 
   @Prop()
-  sticky: boolean = false;
+  stickyDesktop: boolean = false;
+
+  @Prop()
+  stickyMobile: boolean = false;
 
   @State()
   private toolsActivated: boolean = false;
@@ -144,7 +147,7 @@ export class DeckdeckgoInlineEditor {
 
   private setToolbarAnchorPosition(selection: Selection): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (this.sticky) {
+      if (this.isSticky()) {
         resolve();
         return;
       }
@@ -627,10 +630,17 @@ export class DeckdeckgoInlineEditor {
     this.linkUrl = ($event.target as InputTargetEvent).value;
   }
 
+  private isSticky(): boolean {
+    const mobile: boolean = DeckdeckgoInlineEditorUtils.isMobile();
+
+    return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile);
+  }
+
+
   render() {
     let classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
 
-    if (this.sticky) {
+    if (this.isSticky()) {
       classNames += ' deckgo-tools-sticky';
     }
 

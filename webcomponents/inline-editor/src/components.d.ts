@@ -14,12 +14,14 @@ export namespace Components {
 
   interface DeckgoInlineEditor {
     'mobile': boolean;
-    'sticky': boolean;
+    'stickyDesktop': boolean;
+    'stickyMobile': boolean;
     'toolbarOffsetHeight': number;
   }
   interface DeckgoInlineEditorAttributes extends StencilHTMLAttributes {
     'mobile'?: boolean;
-    'sticky'?: boolean;
+    'stickyDesktop'?: boolean;
+    'stickyMobile'?: boolean;
     'toolbarOffsetHeight'?: number;
   }
 }
