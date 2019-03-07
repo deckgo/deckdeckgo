@@ -24,7 +24,7 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
   <p style={{color: '#3880ff'}}>Edit anywhere, display everywhere (editable paragraph)</p>
 </div>
 
-<deckgo-inline-editor sticky-desktop="false" sticky-mobile="true"></deckgo-inline-editor>
+<deckgo-inline-editor sticky-desktop="true" sticky-mobile="true"></deckgo-inline-editor>
 
 ## Getting started
 

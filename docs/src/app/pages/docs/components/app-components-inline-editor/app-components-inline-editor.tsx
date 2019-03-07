@@ -55,7 +55,7 @@ export class AppComponentsInlineEditor {
   <p style={{color: '#3880ff'}}>Edit anywhere, display everywhere (editable paragraph)</p>
 </div>
 
-<p><deckgo-inline-editor sticky-desktop="false" sticky-mobile="true"></deckgo-inline-editor></p>
+<p><deckgo-inline-editor sticky-desktop="true" sticky-mobile="true"></deckgo-inline-editor></p>
 <h2 id="app-components-inline-editor-getting-started">Getting started</h2>
 <p>This Web Component is an inline WYSIWYG HTML Editor, It creates a floating editor bar or a sticky footer bar that shows up when you select a piece of text of your page.</p>
 <p>To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/deckdeckgo-qrcode">npm</a>.</p>
@@ -105,9 +105,16 @@ export class AppComponentsInlineEditor {
 <td><code>false</code></td>
 </tr>
 <tr>
-<td><code>toolbarOffsetHeight</code></td>
-<td><code>toolbar-offset-height</code></td>
-<td>An offset for the toolbar when not sticky</td>
+<td><code>toolbarOffsetStart</code></td>
+<td><code>toolbar-offset-start</code></td>
+<td>A left offset for the toolbar when not sticky</td>
+<td><code>number</code></td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><code>toolbarOffsetTop</code></td>
+<td><code>toolbar-offset-top</code></td>
+<td>A top offset for the toolbar when not sticky</td>
 <td><code>number</code></td>
 <td><code>undefined</code></td>
 </tr>
