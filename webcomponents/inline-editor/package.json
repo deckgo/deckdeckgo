@@ -1,7 +1,7 @@
 {
   "name": "deckdeckgo-inline-editor",
-  "version": "1.0.0-apha.0",
-  "description": "An inline floating WYSIWYG HTML Editor Web Component",
+  "version": "1.0.0-alpha.1",
+  "description": "A WYSIWYG HTML Inline Editor Web Component",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
   "unpkg": "dist/ionic.js",

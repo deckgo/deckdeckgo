@@ -1,4 +1,4 @@
-# DeckDeckGo - Inline floating WYSIWYG HTML Editor
+# DeckDeckGo - WYSIWYG HTML Inline Editor Web Component
 
 This Web Component is an inline WYSIWYG HTML Editor developed for the project [DeckDeckGo].
 
