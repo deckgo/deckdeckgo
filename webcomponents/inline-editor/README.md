@@ -2,7 +2,7 @@
 
 This Web Component is an inline WYSIWYG HTML Editor developed for the project [DeckDeckGo].
 
-It creates a floating editor bar that shows up when you select a piece of text of your page.
+It creates a floating editor bar or a sticky footer bar that shows up when you select a piece of text of your page.
 
 ## Table of contents
 
