@@ -633,7 +633,8 @@ export class DeckdeckgoInlineEditor {
   private isSticky(): boolean {
     const mobile: boolean = DeckdeckgoInlineEditorUtils.isMobile();
 
-    return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile);
+    // On iOS, when the keyboard opens, it doesn't resize the window/viewport, therefore be my guest to set the toolbar as sticky footer without any other requirements
+    return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile && !DeckdeckgoInlineEditorUtils.isIOS());
   }
 
 
