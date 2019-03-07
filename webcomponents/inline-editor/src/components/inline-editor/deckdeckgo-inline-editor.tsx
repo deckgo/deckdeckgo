@@ -8,6 +8,10 @@ interface AnchorLink {
   text: string;
 }
 
+interface InputTargetEvent extends EventTarget {
+  value: string;
+}
+
 @Component({
   tag: 'deckgo-inline-editor',
   styleUrl: 'deckdeckgo-inline-editor.scss',
@@ -51,6 +55,8 @@ export class DeckdeckgoInlineEditor {
 
   @State()
   private link: boolean = false;
+
+  private linkUrl: string;
 
   componentDidLoad() {
     if (!this.mobile) {
@@ -475,6 +481,11 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
+      if (!this.linkUrl || this.linkUrl.length <= 0) {
+        resolve();
+        return;
+      }
+
       let container: Node = this.anchorLink.range.commonAncestorContainer ? this.anchorLink.range.commonAncestorContainer : this.selection.anchorNode;
 
       if (!container) {
@@ -533,10 +544,14 @@ export class DeckdeckgoInlineEditor {
       const linkText: Text = document.createTextNode(this.anchorLink.text);
       a.appendChild(linkText);
       a.title = this.anchorLink.text;
-      a.href = "https://google.com";
+      a.href = this.linkUrl;
 
       resolve(a);
     });
+  }
+
+  private handleLinkInput($event: UIEvent) {
+    this.linkUrl = ($event.target as InputTargetEvent).value;
   }
 
   render() {
@@ -550,7 +565,7 @@ export class DeckdeckgoInlineEditor {
       return (
         <div class={classNames}>
           <div class="link">
-            <input autofocus placeholder="Add a link..."></input>
+            <input autofocus placeholder="Add a link..." onInput={($event: UIEvent) => this.handleLinkInput($event)}></input>
           </div>
         </div>
       );

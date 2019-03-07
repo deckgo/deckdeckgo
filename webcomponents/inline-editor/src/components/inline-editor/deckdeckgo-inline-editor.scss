@@ -72,7 +72,7 @@ div.deckgo-tools {
     vertical-align: middle;
 
     border: 0;
-    color: #fff;
+    color: var(--deckgo-inline-editor-button-color, #fff);
 
     transition: .1s background-color, .1s border-color, .1s fill;
 
@@ -118,13 +118,13 @@ div.deckgo-tools {
       background: rgba(0,0,0,0);
       width: 97%;
       height: 100%;
-      color: #fff;
+      color: var(--deckgo-inline-editor-link-color, #fff);
       border: none;
       outline: 0;
       font-size: 16px;
 
       &::placeholder {
-        color: white;
+        color: var(--deckgo-inline-editor-link-placeholder-color, #fff);
       }
     }
   }
