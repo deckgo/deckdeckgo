@@ -59,6 +59,9 @@ export namespace Components {
   interface AppComponentsHighlightCode {}
   interface AppComponentsHighlightCodeAttributes extends StencilHTMLAttributes {}
 
+  interface AppComponentsInlineEditor {}
+  interface AppComponentsInlineEditorAttributes extends StencilHTMLAttributes {}
+
   interface AppComponentsQrcode {}
   interface AppComponentsQrcodeAttributes extends StencilHTMLAttributes {}
 
@@ -177,6 +180,7 @@ declare global {
     'AppComponentsCharts': Components.AppComponentsCharts;
     'AppComponentsGif': Components.AppComponentsGif;
     'AppComponentsHighlightCode': Components.AppComponentsHighlightCode;
+    'AppComponentsInlineEditor': Components.AppComponentsInlineEditor;
     'AppComponentsQrcode': Components.AppComponentsQrcode;
     'AppComponentsSocial': Components.AppComponentsSocial;
     'AppComponentsYoutube': Components.AppComponentsYoutube;
@@ -225,6 +229,7 @@ declare global {
     'app-components-charts': Components.AppComponentsChartsAttributes;
     'app-components-gif': Components.AppComponentsGifAttributes;
     'app-components-highlight-code': Components.AppComponentsHighlightCodeAttributes;
+    'app-components-inline-editor': Components.AppComponentsInlineEditorAttributes;
     'app-components-qrcode': Components.AppComponentsQrcodeAttributes;
     'app-components-social': Components.AppComponentsSocialAttributes;
     'app-components-youtube': Components.AppComponentsYoutubeAttributes;
@@ -321,6 +326,12 @@ declare global {
   var HTMLAppComponentsHighlightCodeElement: {
     prototype: HTMLAppComponentsHighlightCodeElement;
     new (): HTMLAppComponentsHighlightCodeElement;
+  };
+
+  interface HTMLAppComponentsInlineEditorElement extends Components.AppComponentsInlineEditor, HTMLStencilElement {}
+  var HTMLAppComponentsInlineEditorElement: {
+    prototype: HTMLAppComponentsInlineEditorElement;
+    new (): HTMLAppComponentsInlineEditorElement;
   };
 
   interface HTMLAppComponentsQrcodeElement extends Components.AppComponentsQrcode, HTMLStencilElement {}
@@ -544,6 +555,7 @@ declare global {
     'app-components-charts': HTMLAppComponentsChartsElement
     'app-components-gif': HTMLAppComponentsGifElement
     'app-components-highlight-code': HTMLAppComponentsHighlightCodeElement
+    'app-components-inline-editor': HTMLAppComponentsInlineEditorElement
     'app-components-qrcode': HTMLAppComponentsQrcodeElement
     'app-components-social': HTMLAppComponentsSocialElement
     'app-components-youtube': HTMLAppComponentsYoutubeElement
@@ -592,6 +604,7 @@ declare global {
     'app-components-charts': HTMLAppComponentsChartsElement;
     'app-components-gif': HTMLAppComponentsGifElement;
     'app-components-highlight-code': HTMLAppComponentsHighlightCodeElement;
+    'app-components-inline-editor': HTMLAppComponentsInlineEditorElement;
     'app-components-qrcode': HTMLAppComponentsQrcodeElement;
     'app-components-social': HTMLAppComponentsSocialElement;
     'app-components-youtube': HTMLAppComponentsYoutubeElement;
