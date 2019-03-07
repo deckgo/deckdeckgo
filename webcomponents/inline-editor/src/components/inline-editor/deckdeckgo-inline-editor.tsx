@@ -56,6 +56,9 @@ export class DeckdeckgoInlineEditor {
   @State()
   private link: boolean = false;
 
+  @State()
+  private linkInput: boolean = false;
+
   private linkUrl: string;
 
   componentDidLoad() {
@@ -76,7 +79,7 @@ export class DeckdeckgoInlineEditor {
 
   @Listen('document:selectionchange', {passive: true})
   async selectionchange(_$event: Event) {
-    if (this.link && document && document.activeElement && document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor') {
+    if (this.linkInput && document && document.activeElement && document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor') {
       return;
     }
 
@@ -89,10 +92,11 @@ export class DeckdeckgoInlineEditor {
       return;
     }
 
-    if (!this.link && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
+    if (!this.linkInput && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
       await this.reset(false);
-    } else if (this.link && $event.key.toLowerCase() === 'enter') {
-      await this.toggleLink();
+    } else if (this.linkInput && $event.key.toLowerCase() === 'enter') {
+      await this.createLink();
+      await this.reset(true);
     }
   }
 
@@ -182,6 +186,7 @@ export class DeckdeckgoInlineEditor {
 
         promises.push(this.initContentType(selection));
         promises.push(this.initStyle(selection));
+        promises.push(this.initLink(selection));
 
         await Promise.all(promises);
       }
@@ -278,6 +283,30 @@ export class DeckdeckgoInlineEditor {
 
         resolve();
       }
+    });
+  }
+
+  private initLink(selection: Selection): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!selection) {
+        resolve();
+        return;
+      }
+
+      let content: Node = selection.anchorNode;
+
+      if (!content) {
+        resolve();
+        return;
+      }
+
+      if (content.nodeType === 3) {
+        content = content.parentElement;
+      }
+
+      this.link = content.nodeName && content.nodeName.toLowerCase() === 'a';
+
+      resolve();
     });
   }
 
@@ -401,8 +430,9 @@ export class DeckdeckgoInlineEditor {
     this.selection = null;
     this.type = null;
 
-    this.link = false;
+    this.linkInput = false;
     this.anchorLink = null;
+    this.link = false;
   }
 
   private styleBold(e: UIEvent): Promise<void> {
@@ -461,15 +491,58 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private openLink(): Promise<void> {
+  private toggleLink(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      this.link = true;
+      if (this.link) {
+        await this.removeLink();
+        await this.reset(true);
+      } else {
+        await this.openLink();
+      }
 
       resolve();
     });
   }
 
-  private toggleLink(): Promise<void> {
+  private removeLink(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.selection) {
+        resolve();
+        return;
+      }
+
+      let content: Node = this.selection.anchorNode;
+
+      if (!content || !content.parentElement) {
+        resolve();
+        return;
+      }
+
+      if (content.nodeType === 3) {
+        content = content.parentElement;
+      }
+
+      if (!content.nodeName && content.nodeName.toLowerCase() !== 'a') {
+        resolve();
+        return;
+      }
+
+      content.parentElement.appendChild(document.createTextNode(content.textContent));
+      content.parentElement.removeChild(content);
+
+      resolve();
+    });
+  }
+
+  private openLink(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      this.linkInput = true;
+
+      resolve();
+    });
+  }
+
+  private createLink(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!document) {
         resolve();
@@ -517,7 +590,7 @@ export class DeckdeckgoInlineEditor {
           target.parentElement.appendChild(document.createTextNode(textBefore));
         }
 
-        const a: HTMLAnchorElement = await this.createLink();
+        const a: HTMLAnchorElement = await this.createLinkElement();
         target.parentElement.appendChild(a);
 
         if (textAfter) {
@@ -527,18 +600,18 @@ export class DeckdeckgoInlineEditor {
         target.parentElement.removeChild(target);
 
       } else {
-        const a: HTMLAnchorElement = await this.createLink();
+        const a: HTMLAnchorElement = await this.createLinkElement();
 
         target.parentElement.replaceChild(a, target);
       }
 
-      this.link = false;
+      this.linkInput = false;
 
       resolve();
     });
   }
 
-  private createLink(): Promise<HTMLAnchorElement> {
+  private createLinkElement(): Promise<HTMLAnchorElement> {
     return new Promise<HTMLAnchorElement>((resolve) => {
       const a: HTMLAnchorElement = document.createElement('a');
       const linkText: Text = document.createTextNode(this.anchorLink.text);
@@ -561,7 +634,7 @@ export class DeckdeckgoInlineEditor {
       classNames += ' deckgo-tools-sticky';
     }
 
-    if (this.link) {
+    if (this.linkInput) {
       return (
         <div class={classNames}>
           <div class="link">
@@ -586,10 +659,7 @@ export class DeckdeckgoInlineEditor {
 
         <div class="separator"></div>
 
-        <button onClick={() => {
-          this.openLink()
-        }} class="link">A
-        </button>
+        <button onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>A</button>
 
         <div class="separator"></div>
 
