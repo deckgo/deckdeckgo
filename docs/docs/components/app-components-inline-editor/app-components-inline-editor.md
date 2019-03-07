@@ -64,7 +64,8 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | `mobile`              | `mobile`                | The mobile mode is automatically recognize, but just it case you would like to "force" it            | `boolean` | `false` or `true` according the device    |
 | `stickyDesktop`       | `sticky-desktop`        | Use a sticky footer toolbar on desktop            | `boolean` | `false`     |
 | `stickyMobile`        | `sticky-mobile`         | Use a sticky footer toolbar on mobile. Note: except iOS, feel free to send a PR if you know how to handle this with the software keyboard            | `boolean` | `false`     |
-| `toolbarOffsetHeight` | `toolbar-offset-height` | An offset for the toolbar when not sticky            | `number`  | `undefined` |
+| `toolbarOffsetStart` | `toolbar-offset-start` | A left offset for the toolbar when not sticky            | `number`  | `undefined` |
+| `toolbarOffsetTop`   | `toolbar-offset-top`   | A top offset for the toolbar when not sticky            | `number`  | `undefined` |
 
 ### Styling
 
