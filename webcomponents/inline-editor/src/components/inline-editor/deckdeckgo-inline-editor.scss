@@ -4,22 +4,144 @@ div.deckgo-tools {
 
   pointer-events: none;
 
-  width: 100px;
-  height: 100px;
+  background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-background-top, rgba(56, 128, 255, .99)), var(--deckgo-inline-editor-background-bottom, #3171e0));
+  background-repeat: repeat-x;
 
-  background: #3880ff;
-  border-radius: 8px;
+  border-radius: var(--deckgo-inline-editor-border-radius, 8px);
+  padding: var(--deckgo-inline-editor-padding, 0 8px);
 
-  z-index: var(--deckgo-inline-editor-tools-zindex, 1);
+  z-index: var(--deckgo-inline-editor-zindex, 1);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 270px;
+
+  &.deckgo-tools-sticky, &.deckgo-tools-mobile.deckgo-tools-sticky {
+    position: fixed;
+
+    bottom: var(--deckgo-inline-editor-sticky-bottom, 0);
+    left: 0;
+
+    width: 100%;
+    border-radius: 0;
+  }
+
+  div.separator {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1px;
+    margin: 0 6px;
+    height: 24px;
+    background: var(--deckgo-inline-editor-separator-background, rgba(255, 255, 255, .2));
+  }
 
   button {
     pointer-events: initial;
     cursor: pointer;
+
+    margin: 0 4px;
+
+    height: 44px;
+    line-height: 44px;
+
+    display: inline-block;
+    vertical-align: middle;
+
+    border: 0;
+    color: var(--deckgo-inline-editor-button-color, #fff);
+
+    transition: .1s background-color, .1s border-color, .1s fill;
+
+    background: rgba(0, 0, 0, 0);
+
+    font-size: var(--deckgo-inline-editor-button-font-size, 1.4rem);
+    font-family: var(--deckgo-inline-editor-button-font-family, inherit);
+
+    &.italic {
+      font-style: italic;
+    }
+
+    &.underline {
+      text-decoration: underline;
+    }
+
+    &.h2 {
+      font-size: var(--deckgo-inline-editor-button-font-size-h2, 1.2rem);
+    }
+
+    &.h3 {
+      font-size: var(--deckgo-inline-editor-button-font-size-h3, 1rem);
+    }
+
+    &.active {
+      color: var(--deckgo-inline-editor-button-color-active, #ffce00);
+    }
+
+    &[disabled] {
+      color: var(--deckgo-inline-editor-button-color-disabled, #4c8dff);
+    }
+  }
+
+  div.link {
+    width: 100%;
+
+    height: 44px;
+    line-height: 44px;
+
+    input {
+      pointer-events: visible;
+
+      background: rgba(0,0,0,0);
+      width: 97%;
+      height: 100%;
+      color: var(--deckgo-inline-editor-link-color, #fff);
+      border: none;
+      outline: 0;
+      font-size: 16px;
+
+      &::placeholder {
+        color: var(--deckgo-inline-editor-link-placeholder-color, #fff);
+      }
+    }
   }
 
   &.deckgo-tools-activated {
     transition: top 75ms ease-out, left 75ms ease-out;
     animation: pop-upwards 180ms forwards linear;
     visibility: visible;
+  }
+
+  &.deckgo-tools-mobile {
+    box-shadow: var(--deckgo-inline-editor-mobile-box-shadow, 0 0px 1px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.15));
+    background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-mobile-background-top, #fff), var(--deckgo-inline-editor-mobile-background-bottom, #fff));
+
+    button {
+      color: inherit;
+      padding: 0 4px;
+
+      &.active {
+        color: var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
+      }
+
+      &[disabled] {
+        color: var(--deckgo-inline-editor-button-mobile-color-disabled, #f4f5f8);
+      }
+    }
+
+    div.separator {
+      background: var(--deckgo-inline-editor-separator-mobile-background, #f4f5f8);
+    }
+
+    div.link {
+      input {
+        color: var(--deckgo-inline-editor-link-mobile-color, inherit);
+
+        &::placeholder {
+          color: var(--deckgo-inline-editor-link-mobile-placeholder-color, inherit);
+        }
+      }
+    }
   }
 }

@@ -13,12 +13,18 @@ import '@stencil/core';
 export namespace Components {
 
   interface DeckgoInlineEditor {
-    'initType': string;
-    'toolbarOffsetHeight': number;
+    'mobile': boolean;
+    'stickyDesktop': boolean;
+    'stickyMobile': boolean;
+    'toolbarOffsetStart': number;
+    'toolbarOffsetTop': number;
   }
   interface DeckgoInlineEditorAttributes extends StencilHTMLAttributes {
-    'initType'?: string;
-    'toolbarOffsetHeight'?: number;
+    'mobile'?: boolean;
+    'stickyDesktop'?: boolean;
+    'stickyMobile'?: boolean;
+    'toolbarOffsetStart'?: number;
+    'toolbarOffsetTop'?: number;
   }
 }
 

@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.30"></a>
+# [1.0.0-beta.30](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.29...v1.0.0-beta.30) (2019-03-07)
+
+### Web Components
+
+* inline editor: v1.0.0-alpha.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+
+### Others
+
+* docs: v1.0.0-alpha.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 <a name="1.0.0-beta.29"></a>
 # [1.0.0-beta.29](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.28...v1.0.0-beta.29) (2019-03-03)
 

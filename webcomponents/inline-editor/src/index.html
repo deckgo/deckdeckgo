@@ -10,19 +10,17 @@
 </head>
 <body>
 
-  <h1 contenteditable style="width: 100%; border: 1px dashed black"></h1>
+  <p contenteditable>Environment variables with StencilJS</p>
 
-  <h2 contenteditable style="width: 100%; border: 1px dashed black"></h2>
+  <div><p contenteditable>I noticed that the question regarding how to handle environment variables in Stencil’s projects or projects created with the Ionic PWA toolkit often pops up 🤔</p></div>
 
-  <p contenteditable>asdkjnasdjk ajkdasnads</p>
+  <p contenteditable>As I have implemented a solution to handle such parameters in the remote control of my project DeckDeckGo, the Progressive Web App alternative for simple presentations, I thought about sharing my small implementation in this new article.</p>
 
-  <div>
-    <p contenteditable>sldkdaskln</p>
+  <h3 contenteditable>Credits</h3>
 
-    <p contenteditable>saldnaksjdna</p>
-  </div>
+  <p contenteditable>The following solution was inspired by the one developed in the Ionic core project. One of the entry point for me was discovering the method setupConfig in their source code. Therefore kudos to the awesome <a href="https://ionicframework.com">Ionic</a> team ❤️</p>
 
-  <deckgo-inline-editor></deckgo-inline-editor>
+  <deckgo-inline-editor sticky-desktop="false" sticky-mobile="true"></deckgo-inline-editor>
 
 </body>
 </html>
