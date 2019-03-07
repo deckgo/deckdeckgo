@@ -14,6 +14,7 @@ dependencies:
     - case-insensitive
     - iproute
     - network
+    - vault
 
 ghc-options:
     - -Wall

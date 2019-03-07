@@ -4,7 +4,7 @@ exports.handler = function(event, context, callback) {
 
     try {
         var execFile = require('child_process').execFile;
-        execFile('./main_hs', {input: "hello"}, (error, stdout, stderr) => {
+        execFile('./main_hs', {input: JSON.stringify(event)}, (error, stdout, stderr) => {
             callback(null, JSON.parse(stdout))
         });
 
