@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.4"></a>
+# 1.0.0-alpha.4 (2019-03-07)
+
+### Features
+
+* add new component `WYSIWYG inline editor`
+
 <a name="1.0.0-alpha.3"></a>
 # [1.0.0-alpha.3](https://github.com/deckgo/deckdeckgo-docs/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2019-02-17)
 
