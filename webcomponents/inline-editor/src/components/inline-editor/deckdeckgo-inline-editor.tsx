@@ -3,6 +3,11 @@ import {Component, Element, Listen, Prop, State} from '@stencil/core';
 import {DeckdeckgoInlineEditorTag} from '../../types/inline-editor/deckdeckgo-inline-editor-tag';
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
+interface AnchorLink {
+  range: Range;
+  text: string;
+}
+
 @Component({
   tag: 'deckgo-inline-editor',
   styleUrl: 'deckdeckgo-inline-editor.scss',
@@ -40,6 +45,8 @@ export class DeckdeckgoInlineEditor {
   private toolsActivated: boolean = false;
 
   private selection: Selection = null;
+
+  private anchorLink: AnchorLink = null;
   private anchorEvent: MouseEvent | TouchEvent;
 
   @State()
@@ -79,7 +86,7 @@ export class DeckdeckgoInlineEditor {
     if (!this.link && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
       await this.reset(false);
     } else if (this.link && $event.key.toLowerCase() === 'enter') {
-      // TODO: create link
+      await this.toggleLink();
     }
   }
 
@@ -109,6 +116,14 @@ export class DeckdeckgoInlineEditor {
 
       if (this.toolsActivated) {
         this.selection = selection;
+
+        if (selection.rangeCount > 0) {
+          const range: Range = selection.getRangeAt(0);
+          this.anchorLink = {
+            range: range,
+            text: selection.toString()
+          };
+        }
 
         await this.setToolbarAnchorPosition(selection);
       }
@@ -329,7 +344,7 @@ export class DeckdeckgoInlineEditor {
         const element: HTMLElement = document.createElement(type.toString());
 
         if (container.attributes && container.attributes.length) {
-          for (let i: number = 0; i<container.attributes.length; i++) {
+          for (let i: number = 0; i < container.attributes.length; i++) {
             element.setAttribute(container.attributes[i].name, container.attributes[i].value);
           }
         }
@@ -381,6 +396,7 @@ export class DeckdeckgoInlineEditor {
     this.type = null;
 
     this.link = false;
+    this.anchorLink = null;
   }
 
   private styleBold(e: UIEvent): Promise<void> {
@@ -447,6 +463,82 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private toggleLink(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!document) {
+        resolve();
+        return;
+      }
+
+      if (!this.anchorLink) {
+        resolve();
+        return;
+      }
+
+      let container: Node = this.anchorLink.range.commonAncestorContainer ? this.anchorLink.range.commonAncestorContainer : this.selection.anchorNode;
+
+      if (!container) {
+        resolve();
+        return;
+      }
+
+      // If node text
+      if (container.nodeType === 3) {
+        container = container.parentElement;
+      }
+
+      const target: Node = Array.from(container.childNodes).find((node: Node) => {
+        return node.textContent && node.textContent.trim().indexOf(this.anchorLink.text) > -1;
+      });
+
+      if (!target) {
+        resolve();
+        return;
+      }
+
+      if (target.nodeType === 3) {
+        const index: number = target.textContent.indexOf(this.anchorLink.text);
+
+        const textBefore: string = index > -1 ? target.textContent.substr(0, index) : null;
+        const textAfter: string = (index + this.anchorLink.text.length) > -1 ? target.textContent.substr((index + this.anchorLink.text.length)) : null;
+
+        if (textBefore) {
+          target.parentElement.appendChild(document.createTextNode(textBefore));
+        }
+
+        const a: HTMLAnchorElement = await this.createLink();
+        target.parentElement.appendChild(a);
+
+        if (textAfter) {
+          target.parentElement.appendChild(document.createTextNode(textAfter));
+        }
+
+        target.parentElement.removeChild(target);
+
+      } else {
+        const a: HTMLAnchorElement = await this.createLink();
+
+        target.parentElement.replaceChild(a, target);
+      }
+
+      this.link = false;
+
+      resolve();
+    });
+  }
+
+  private createLink(): Promise<HTMLAnchorElement> {
+    return new Promise<HTMLAnchorElement>((resolve) => {
+      const a: HTMLAnchorElement = document.createElement('a');
+      const linkText: Text = document.createTextNode(this.anchorLink.text);
+      a.appendChild(linkText);
+      a.title = this.anchorLink.text;
+      a.href = "https://google.com";
+
+      resolve(a);
+    });
+  }
+
   render() {
     let classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
 
@@ -458,25 +550,46 @@ export class DeckdeckgoInlineEditor {
       return (
         <div class={classNames}>
           <div class="link">
-            <input autofocus></input>
+            <input autofocus placeholder="Add a link..."></input>
           </div>
         </div>
       );
     } else {
       return (<div class={classNames}>
-        <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.bold ? "bold active" : "bold"}>B</button>
-        <button onClick={(e: UIEvent) => this.styleItalic(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.italic ? "italic active" : "italic"}>I</button>
-        <button onClick={(e: UIEvent) => this.styleUnderline(e)} disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P} class={this.underline ? "underline active" : "underline"}>U</button>
+        <button onClick={(e: UIEvent) => this.styleBold(e)}
+                disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P}
+                class={this.bold ? "bold active" : "bold"}>B
+        </button>
+        <button onClick={(e: UIEvent) => this.styleItalic(e)}
+                disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P}
+                class={this.italic ? "italic active" : "italic"}>I
+        </button>
+        <button onClick={(e: UIEvent) => this.styleUnderline(e)}
+                disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P}
+                class={this.underline ? "underline active" : "underline"}>U
+        </button>
 
         <div class="separator"></div>
 
-        <button onClick={() => {this.openLink()}} class="link">A</button>
+        <button onClick={() => {
+          this.openLink()
+        }} class="link">A
+        </button>
 
         <div class="separator"></div>
 
-        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H1)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H1 ? "h1 active" : "h1"}>T</button>
-        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H2)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H2 ? "h2 active" : "h2"}>T</button>
-        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H3)} disabled={this.bold || this.italic || this.underline || this.styledElements} class={this.type === DeckdeckgoInlineEditorTag.H3 ? "h3 active" : "h3"}>T</button>
+        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H1)}
+                disabled={this.bold || this.italic || this.underline || this.styledElements}
+                class={this.type === DeckdeckgoInlineEditorTag.H1 ? "h1 active" : "h1"}>T
+        </button>
+        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H2)}
+                disabled={this.bold || this.italic || this.underline || this.styledElements}
+                class={this.type === DeckdeckgoInlineEditorTag.H2 ? "h2 active" : "h2"}>T
+        </button>
+        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H3)}
+                disabled={this.bold || this.italic || this.underline || this.styledElements}
+                class={this.type === DeckdeckgoInlineEditorTag.H3 ? "h3 active" : "h3"}>T
+        </button>
       </div>);
     }
   }
