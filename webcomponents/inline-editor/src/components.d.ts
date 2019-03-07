@@ -16,13 +16,15 @@ export namespace Components {
     'mobile': boolean;
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
-    'toolbarOffsetHeight': number;
+    'toolbarOffsetStart': number;
+    'toolbarOffsetTop': number;
   }
   interface DeckgoInlineEditorAttributes extends StencilHTMLAttributes {
     'mobile'?: boolean;
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;
-    'toolbarOffsetHeight'?: number;
+    'toolbarOffsetStart'?: number;
+    'toolbarOffsetTop'?: number;
   }
 }
 

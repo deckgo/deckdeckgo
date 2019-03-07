@@ -40,7 +40,10 @@ export class DeckdeckgoInlineEditor {
   mobile: boolean = false;
 
   @Prop()
-  toolbarOffsetHeight: number;
+  toolbarOffsetTop: number;
+
+  @Prop()
+  toolbarOffsetStart: number;
 
   @Prop()
   stickyDesktop: boolean = false;
@@ -158,8 +161,12 @@ export class DeckdeckgoInlineEditor {
         let top: number = this.unifyEvent(this.anchorEvent).clientY;
         let left: number = this.unifyEvent(this.anchorEvent).clientX;
 
-        if (this.toolbarOffsetHeight > 0) {
-          top = top - this.toolbarOffsetHeight;
+        if (this.toolbarOffsetStart > 0 || this.toolbarOffsetStart < 0) {
+          left = left - this.toolbarOffsetStart;
+        }
+
+        if (this.toolbarOffsetTop > 0) {
+          top = top - this.toolbarOffsetTop;
         }
 
         if (this.mobile) {
