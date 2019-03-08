@@ -1,38 +1,42 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE MonadFailDesugaring #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TypeOperators #-}
 
-import qualified API
 import Control.Concurrent.MVar
-import Control.Monad
-import Network.Wai (Application)
-import qualified Network.Socket as Socket
 import Data.Aeson ((.:), (.:?), (.!=))
-import qualified Data.Vault.Lazy as Vault
-import qualified Data.IP as IP
 import Data.Bifunctor
-import qualified Data.CaseInsensitive as CI
+import Data.Function (fix)
+import Network.Wai (Application)
+import System.Directory (renameFile)
+import System.IO
+import System.IO.Unsafe
+import System.Timeout
+import Data.IORef
+import Text.Read (readMaybe)
+import qualified Data.Binary.Builder as Binary
+import qualified API
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Internal as Aeson
-import qualified Data.HashMap.Strict as HMap
-import Text.Read (readMaybe)
 import qualified Data.Aeson.Parser as Aeson
 import qualified Data.Aeson.Parser.Internal as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BL
+import qualified Data.CaseInsensitive as CI
+import qualified Data.HashMap.Strict as HMap
+import qualified Data.IP as IP
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
+import qualified Data.Vault.Lazy as Vault
+import qualified Network.HTTP.Types as H
+import qualified Network.Socket as Socket
 import qualified Network.Wai as Wai
 import qualified Network.Wai.Internal as Wai
-import qualified Network.HTTP.Types as H
 import qualified Servant as Servant
-import System.IO.Unsafe
-import System.Timeout
-import System.IO
-import System.Directory (renameFile)
 import qualified System.IO.Temp as Temp
 
 main :: IO ()
@@ -66,6 +70,8 @@ parseRequest = Aeson.withObject "request" $ \obj -> do
     -- "queryStringParameters": {
     --    "name": "me"
     --  },
+    -- XXX: default to empty object for the query params as Lambda doesn't set
+    -- 'queryStringParameters' if there are no query parameters
     queryParams <- obj .:? "queryStringParameters" .!= Aeson.Object HMap.empty >>=
       Aeson.withObject "queryParams" (
         fmap
@@ -135,6 +141,8 @@ parseRequest = Aeson.withObject "request" $ \obj -> do
     pathInfo <- pure $ H.decodePathSegments path
     queryString <- pure $ H.parseQuery rawQueryString
 
+    -- XXX: default to empty body as Lambda doesn't always set one (e.g. GET
+    -- requests)
     requestBodyRaw <- obj .:? "body" .!= Aeson.String "" >>=
       Aeson.withText "body" (pure . T.encodeUtf8)
     (requestBody, requestBodyLength) <- pure
@@ -150,41 +158,68 @@ parseRequest = Aeson.withObject "request" $ \obj -> do
 
     pure $ Wai.Request {..}
 
-
 originalRequestKey :: Vault.Key Aeson.Object
 originalRequestKey = unsafePerformIO Vault.newKey
 {-# NOINLINE originalRequestKey #-}
 
 -- https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-api-gateway-response
-encodeResponse :: Wai.Response -> BS.ByteString
-encodeResponse _ = BL.toStrict $ Aeson.encode $
-    Aeson.object
-      [ ("statusCode", "200")
-      , ("headers", Aeson.object
-          [ ("Content-Type", "text/html; charset=utf-8") ]
-        )
-      , ("body", "<h1>Hello from Servant!</h1>")
+encodeResponse :: Wai.Response -> IO BS.ByteString
+encodeResponse resp = do
+    respObj <- toJSONResponse resp
+    pure $ BL.toStrict $ Aeson.encode $ Aeson.Object respObj
+
+toJSONResponse :: Wai.Response -> IO Aeson.Object
+toJSONResponse (Wai.responseToStream -> (st,hdrs,mkBody)) = do
+    body <- mkBody drainBody
+    pure $ HMap.fromList
+      [ ("statusCode", Aeson.Number (fromIntegral (H.statusCode st)))
+      , ("headers", Aeson.toJSON $ HMap.fromList $
+          (bimap T.decodeUtf8 T.decodeUtf8 . first CI.original) <$> hdrs)
+      , ("body", Aeson.String (T.decodeUtf8 body))
       ]
+  where
+    drainBody :: Wai.StreamingBody -> IO BS.ByteString
+    drainBody body = do
+      ioref <- newIORef Binary.empty
+      body
+        (\b -> atomicModifyIORef ioref (\b' -> (b <> b', ())))
+        (pure ())
+      BL.toStrict . Binary.toLazyByteString <$> readIORef ioref
 
 run :: Application -> IO ()
-run app = forever $
-    -- TODO: getLine throws an exception if stdin is EOF
-    BS.getLine >>= \bs -> do
+run app = xif BS.empty $ \loop leftover ->
+    -- XXX: we don't use getLine because it errors out on EOF; here we deal
+    -- with this explicitly
+    BS.hGetSome stdin 1024 >>= \bs ->
       if BS.null bs
-      then putStrLn "No input!"
-      else case decodeInput bs of
-        Left err -> putStrLn $ "Cannot decode! " <> show err
-        Right (fp, req) -> do
-          mvar <- newEmptyMVar
-          mresp <- timeout 1000000 $ app req $ \resp -> do
-            putMVar mvar resp
-            pure Wai.ResponseReceived
-          case mresp of
-            Nothing -> putStrLn "Didn't get a response in time!"
-            Just Wai.ResponseReceived -> do
-              resp <- takeMVar mvar
-              putStrLn $ "Writing to " <> fp
-              Temp.withSystemTempFile "temp-response" $ \tmpFp h -> do
-                hClose h
-                BS.writeFile tmpFp (encodeResponse resp)
-                renameFile tmpFp fp
+      then putStrLn "Reached EOF! Good bye :)"
+      else case second BS8.uncons $ BS8.break (== '\n') (leftover <> bs) of
+        (_tmpLine, Nothing) -> loop (leftover <> bs)
+        (line, Just ('\n', rest)) -> do
+          handle line
+          loop rest
+        -- TODO: proper error message here
+        (_tmpLine, Just{}) -> error "Something terrible happened"
+  where
+    handle = handleRequest app
+
+handleRequest :: Application -> BS.ByteString -> IO ()
+handleRequest app bs = case decodeInput bs of
+    Left err -> putStrLn $ "Cannot decode! " <> show err
+    Right (fp, req) -> do
+      mvar <- newEmptyMVar
+      mresp <- timeout 1000000 $ app req $ \resp -> do
+        putMVar mvar resp
+        pure Wai.ResponseReceived
+      case mresp of
+        Nothing -> putStrLn "Didn't get a response in time!"
+        Just Wai.ResponseReceived -> do
+          resp <- takeMVar mvar
+          putStrLn $ "Writing to " <> fp
+          Temp.withSystemTempFile "temp-response" $ \tmpFp h -> do
+            hClose h
+            BS.writeFile tmpFp =<< encodeResponse resp
+            renameFile tmpFp fp
+
+xif :: b -> ((b -> c) -> b -> c) -> c
+xif = flip fix

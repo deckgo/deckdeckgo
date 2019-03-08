@@ -3,6 +3,7 @@ name: deckdeckgo-handler
 dependencies:
     - aeson
     - base
+    - binary
     - bytestring
     - case-insensitive
     - deckdeckgo-handler-api
