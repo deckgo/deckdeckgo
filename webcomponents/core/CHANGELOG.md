@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.29"></a>
+# 1.0.0-beta.29 (2019-03-08)
+
+### Templates
+
+* add a slot `content` on the Youtube slide ([#56](https://github.com/deckgo/deckdeckgo/issues/56))
+
+### Fix
+
+* slide width on Android devices ([#69](https://github.com/deckgo/deckdeckgo/issues/69))
+
 <a name="1.0.0-beta.28"></a>
 # [1.0.0-beta.28](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.27...v1.0.0-beta.28) (2019-02-26)
 
