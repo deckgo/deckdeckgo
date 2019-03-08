@@ -62,7 +62,7 @@ export class AppSlideYoutube {
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-slide-youtube src=&quot;https:&#47;&#47;www.youtube.com&#47;watch?v=oUOjJIfPIjw&quot;&gt;{'\n'}  &lt;h1 slot=&quot;title&quot;&gt;A 16&#47;9 video&lt;&#47;h1&gt;{'\n'}&lt;&#47;deckgo-slide-youtube&gt;</code>
     </deckgo-highlight-code><h3 id="app-slide-youtube-slots">Slots</h3>
-<p>The slot <code>title</code> is optional.</p>
+<p>The slot <code>title</code> and <code>content</code> are optional. The slot <code>content</code> is displayed before the video.</p>
 <h3 id="app-slide-youtube-notes">Notes</h3>
 <p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
 <p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
