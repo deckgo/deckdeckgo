@@ -1,7 +1,6 @@
 with { pkgs = import ./nix {}; };
 
 # TODO:
-#  - write Aeson response encoder
 #  - plug DynamoDBLocal in tests
 #       -> https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html
 
