@@ -1,14 +1,9 @@
 with { pkgs = import ./nix {}; };
 
 # TODO:
-#  - write Aeson request decoder
-#  - write Aeson response decoder
-#  - write JS request encoder
-#  - write JS response decoder
-#  - run node server to forward requests to 'handler'
+#  - write Aeson response encoder
 #  - plug DynamoDBLocal in tests
 #       -> https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html
-#  - write async request handler in JS with file dump for response
 
 rec
 { function = pkgs.runCommand "build-function" {}
