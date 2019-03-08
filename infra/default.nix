@@ -39,10 +39,13 @@ rec
         var m = require(process.cwd() + '/main.js');
 
         const request = {foo: "bar"};
+        console.log("Sending request");
         m.handler(request, null, (foo, resp) => {
+          console.log("Got response");
           if(resp.statusCode != 200) {
             throw "Expected status code to be 200!!!";
           }
+          process.exit(0);
         });
         '';
 }

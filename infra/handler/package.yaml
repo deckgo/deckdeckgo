@@ -4,17 +4,19 @@ dependencies:
     - aeson
     - base
     - bytestring
-    - servant
-    - servant-server
-    - wai
-    - deckdeckgo-handler-api
-    - text
-    - http-types
-    - unordered-containers
     - case-insensitive
+    - deckdeckgo-handler-api
+    - directory
+    - http-types
     - iproute
     - network
+    - servant
+    - servant-server
+    - temporary
+    - text
+    - unordered-containers
     - vault
+    - wai
 
 ghc-options:
     - -Wall

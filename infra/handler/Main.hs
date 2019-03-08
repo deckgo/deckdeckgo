@@ -6,14 +6,16 @@
 
 import qualified API
 import Control.Concurrent.MVar
+import Control.Monad
 import Network.Wai (Application)
 import qualified Network.Socket as Socket
-import Data.Aeson ((.:))
+import Data.Aeson ((.:), (.:?), (.!=))
 import qualified Data.Vault.Lazy as Vault
 import qualified Data.IP as IP
 import Data.Bifunctor
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Aeson as Aeson
+import qualified Data.Aeson.Internal as Aeson
 import qualified Data.HashMap.Strict as HMap
 import Text.Read (readMaybe)
 import qualified Data.Aeson.Parser as Aeson
@@ -28,20 +30,31 @@ import qualified Network.Wai.Internal as Wai
 import qualified Network.HTTP.Types as H
 import qualified Servant as Servant
 import System.IO.Unsafe
+import System.Timeout
+import System.IO
+import System.Directory (renameFile)
+import qualified System.IO.Temp as Temp
 
 main :: IO ()
-main = run $ Servant.serve API.api server
+main = do
+  hSetBuffering stdin LineBuffering
+  hSetBuffering stdout LineBuffering
+  run $ Servant.serve API.api server
 
 server :: Servant.Server API.API
 server = pure []
 
+decodeInput :: BS.ByteString -> Either (Aeson.JSONPath, String) (FilePath, Wai.Request)
+decodeInput = Aeson.eitherDecodeStrictWith Aeson.jsonEOF $ Aeson.iparse $
+    Aeson.withObject "input" $ \obj ->
+      (,) <$>
+        obj .: "responseFile" <*>
+        (obj .: "request" >>= parseRequest)
+
 -- https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-api-gateway-request
 -- https://www.stackage.org/haddock/lts-13.10/wai-3.2.2/src/Network.Wai.Internal.html#Request
-decodeRequest :: BS.ByteString -> Maybe Wai.Request
-decodeRequest = Aeson.decodeStrictWith Aeson.jsonEOF parseRequest
-
-parseRequest :: Aeson.Value -> Aeson.Result Wai.Request
-parseRequest = Aeson.parse $ Aeson.withObject "request" $ \obj -> do
+parseRequest :: Aeson.Value -> Aeson.Parser Wai.Request
+parseRequest = Aeson.withObject "request" $ \obj -> do
 
     -- "httpMethod": "GET"
     requestMethod <- obj .: "httpMethod" >>=
@@ -53,7 +66,7 @@ parseRequest = Aeson.parse $ Aeson.withObject "request" $ \obj -> do
     -- "queryStringParameters": {
     --    "name": "me"
     --  },
-    queryParams <- obj .: "queryStringParameters" >>=
+    queryParams <- obj .:? "queryStringParameters" .!= Aeson.Object HMap.empty >>=
       Aeson.withObject "queryParams" (
         fmap
           (fmap (first T.encodeUtf8) . HMap.toList ) .
@@ -122,7 +135,7 @@ parseRequest = Aeson.parse $ Aeson.withObject "request" $ \obj -> do
     pathInfo <- pure $ H.decodePathSegments path
     queryString <- pure $ H.parseQuery rawQueryString
 
-    requestBodyRaw <- obj .: "body" >>=
+    requestBodyRaw <- obj .:? "body" .!= Aeson.String "" >>=
       Aeson.withText "body" (pure . T.encodeUtf8)
     (requestBody, requestBodyLength) <- pure
       ( pure requestBodyRaw
@@ -154,17 +167,24 @@ encodeResponse _ = BL.toStrict $ Aeson.encode $
       ]
 
 run :: Application -> IO ()
-run app = let loop = pure () in -- fix $ \loop ->
-    BS.getLine >>= \bs ->
+run app = forever $
+    -- TODO: getLine throws an exception if stdin is EOF
+    BS.getLine >>= \bs -> do
       if BS.null bs
-      then pure ()
-      else case decodeRequest bs of
-        Nothing -> pure () -- woopsies!
-        Just req -> do
+      then putStrLn "No input!"
+      else case decodeInput bs of
+        Left err -> putStrLn $ "Cannot decode! " <> show err
+        Right (fp, req) -> do
           mvar <- newEmptyMVar
-          Wai.ResponseReceived <- app req $ \resp -> do
+          mresp <- timeout 1000000 $ app req $ \resp -> do
             putMVar mvar resp
             pure Wai.ResponseReceived
-          resp <- takeMVar mvar
-          BS.putStr (encodeResponse resp)
-          loop
+          case mresp of
+            Nothing -> putStrLn "Didn't get a response in time!"
+            Just Wai.ResponseReceived -> do
+              resp <- takeMVar mvar
+              putStrLn $ "Writing to " <> fp
+              Temp.withSystemTempFile "temp-response" $ \tmpFp h -> do
+                hClose h
+                BS.writeFile tmpFp (encodeResponse resp)
+                renameFile tmpFp fp
