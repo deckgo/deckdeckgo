@@ -8,8 +8,8 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'deckdeckgo';
 import 'ionicons';
+import 'deckdeckgo';
 import {
   DeckdeckgoSlideDefinition,
 } from 'deckdeckgo-types';

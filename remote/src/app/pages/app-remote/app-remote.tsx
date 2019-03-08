@@ -68,6 +68,7 @@ export class AppRemote {
             if (event.emitter === DeckdeckgoEventEmitter.DECK) {
                 if (event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
                     await this.initSlides((event as DeckdeckgoEventSlides));
+                    await this.slidePickerTo(0);
                 } else if (event.type === DeckdeckgoEventType.NEXT_SLIDE) {
                     await this.animateNextSlide();
                 } else if (event.type === DeckdeckgoEventType.PREV_SLIDE) {
