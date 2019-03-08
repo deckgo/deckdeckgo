@@ -37,7 +37,7 @@ The "Youtube" slide's Web Component could be integrated using the tag `<deckgo-s
 
 ### Slots
 
-The slot `title` is optional.
+The slot `title` and `content` are optional. The slot `content` is displayed before respectively above the video.
 
 ### Notes
 
