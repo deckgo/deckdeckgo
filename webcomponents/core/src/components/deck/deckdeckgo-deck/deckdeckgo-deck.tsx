@@ -59,7 +59,7 @@ export class DeckdeckgoDeck {
   }
 
   async componentDidLoad() {
-    await this.initEmbeddedSlideWidth();
+    await this.initSlideWidth();
 
     this.initWindowResize();
     this.initKeyboardAssist();
@@ -79,7 +79,7 @@ export class DeckdeckgoDeck {
   private initWindowResize() {
     if (window) {
       window.addEventListener('resize', DeckdeckgoUtils.debounce(async () => {
-        await this.initEmbeddedSlideWidth();
+        await this.initSlideWidth();
         await this.slideTo(this.activeIndex);
 
         const toggleFullscreen: boolean = DeckdeckgoUtils.isFullscreen();
@@ -89,26 +89,57 @@ export class DeckdeckgoDeck {
     }
   }
 
-  private initEmbeddedSlideWidth(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.embedded) {
-        resolve();
-        return;
-      }
-
+  private initSlideWidth(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
       const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
-      if (!slider || !slider.offsetParent) {
+      if (!slider) {
         resolve();
         return;
       }
 
-      if (slider.offsetParent.clientWidth > 0) {
-        slider.style.setProperty('--slide-width', '' + slider.offsetParent.clientWidth + 'px');
+      if (!this.embedded) {
+        await this.initSlideWidthStandard(slider);
+      } else {
+        await this.initSlideWidthEmbedded(slider);
       }
 
-      if (slider.offsetParent.clientHeight) {
-        slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
+      resolve();
+    });
+  }
+
+  private initSlideWidthStandard(slider: HTMLElement): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!window || !screen) {
+        resolve();
+        return;
+      }
+
+      if (DeckdeckgoUtils.isIOS()) {
+        slider.style.setProperty('--slide-width', '' + screen.width + 'px');
+      } else {
+        slider.style.setProperty('--slide-width', '' + window.innerWidth + 'px');
+      }
+
+      resolve();
+    });
+  }
+
+  private initSlideWidthEmbedded(slider: HTMLElement): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!slider.offsetParent) {
+        resolve();
+        return;
+      }
+
+      if (slider.offsetParent) {
+        if (slider.offsetParent.clientWidth > 0) {
+          slider.style.setProperty('--slide-width', '' + slider.offsetParent.clientWidth + 'px');
+        }
+
+        if (slider.offsetParent.clientHeight) {
+          slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
+        }
       }
 
       resolve();
