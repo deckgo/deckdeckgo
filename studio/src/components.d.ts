@@ -13,30 +13,40 @@ import 'ionicons';
 
 export namespace Components {
 
-  interface AppHome {}
-  interface AppHomeAttributes extends StencilHTMLAttributes {}
-
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
+
+  interface AppLogo {}
+  interface AppLogoAttributes extends StencilHTMLAttributes {}
+
+  interface AppNavigation {
+    'logo': boolean;
+    'menuToggle': boolean;
+  }
+  interface AppNavigationAttributes extends StencilHTMLAttributes {
+    'logo'?: boolean;
+    'menuToggle'?: boolean;
+  }
+
+  interface AppHome {}
+  interface AppHomeAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'AppHome': Components.AppHome;
     'AppRoot': Components.AppRoot;
+    'AppLogo': Components.AppLogo;
+    'AppNavigation': Components.AppNavigation;
+    'AppHome': Components.AppHome;
   }
 
   interface StencilIntrinsicElements {
-    'app-home': Components.AppHomeAttributes;
     'app-root': Components.AppRootAttributes;
+    'app-logo': Components.AppLogoAttributes;
+    'app-navigation': Components.AppNavigationAttributes;
+    'app-home': Components.AppHomeAttributes;
   }
 
-
-  interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
-  var HTMLAppHomeElement: {
-    prototype: HTMLAppHomeElement;
-    new (): HTMLAppHomeElement;
-  };
 
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
   var HTMLAppRootElement: {
@@ -44,14 +54,36 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
+  interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
+  var HTMLAppLogoElement: {
+    prototype: HTMLAppLogoElement;
+    new (): HTMLAppLogoElement;
+  };
+
+  interface HTMLAppNavigationElement extends Components.AppNavigation, HTMLStencilElement {}
+  var HTMLAppNavigationElement: {
+    prototype: HTMLAppNavigationElement;
+    new (): HTMLAppNavigationElement;
+  };
+
+  interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
+  var HTMLAppHomeElement: {
+    prototype: HTMLAppHomeElement;
+    new (): HTMLAppHomeElement;
+  };
+
   interface HTMLElementTagNameMap {
-    'app-home': HTMLAppHomeElement
     'app-root': HTMLAppRootElement
+    'app-logo': HTMLAppLogoElement
+    'app-navigation': HTMLAppNavigationElement
+    'app-home': HTMLAppHomeElement
   }
 
   interface ElementTagNameMap {
-    'app-home': HTMLAppHomeElement;
     'app-root': HTMLAppRootElement;
+    'app-logo': HTMLAppLogoElement;
+    'app-navigation': HTMLAppNavigationElement;
+    'app-home': HTMLAppHomeElement;
   }
 
 

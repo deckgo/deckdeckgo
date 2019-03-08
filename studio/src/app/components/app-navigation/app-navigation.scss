@@ -1,0 +1,34 @@
+app-navigation {
+  a {
+    color: inherit;
+  }
+
+  div[slot="end"] {
+    z-index: 2;
+
+    ion-button {
+      --color: black;
+      --color-activated: black;
+      --background-activated: transparent;
+      --background: transparent;
+      --box-shadow: none;
+    }
+  }
+
+  @media screen and (min-width: 540px) {
+    div[slot="end"] {
+      ion-button {
+        display: none;
+      }
+    }
+  }
+
+  @media screen and (max-width: 540px) {
+    div[slot="end"] {
+      div.links {
+        display: none;
+      }
+    }
+  }
+
+}

@@ -29,3 +29,9 @@
   More info about color theming using Ionic:
   https://beta.ionicframework.com/docs/theming/color-generator
 */
+
+@import "theme/variables";
+@import "theme/fonts";
+@import "theme/theme";
+@import "theme/toolbar";
+@import "theme/menu";
