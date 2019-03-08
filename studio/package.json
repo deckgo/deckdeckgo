@@ -1,0 +1,42 @@
+{
+  "name": "deckdeckgo-studio",
+  "version": "1.0.0-alpha.0",
+  "author": "David Dal Busco",
+  "description": "Develop your presentation with DeckDeckGo",
+  "license": "AGPL-3.0-or-later",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watch"
+  },
+  "dependencies": {
+    "@ionic/core": "4.1.1"
+  },
+  "devDependencies": {
+    "@stencil/core": "0.18.0",
+    "@stencil/postcss": "^0.1.0",
+    "@stencil/sass": "^0.1.1",
+    "autoprefixer": "^9.4.7",
+    "workbox-build": "3.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo.git"
+  },
+  "keywords": [
+    "ionic",
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk"
+  ]
+}
