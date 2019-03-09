@@ -9,6 +9,7 @@ import '@stencil/core';
 
 import '@ionic/core';
 import 'ionicons';
+import 'deckdeckgo';
 
 
 export namespace Components {
