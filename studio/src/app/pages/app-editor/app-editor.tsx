@@ -80,7 +80,8 @@ export class AppEditor {
                         </ion-button>
                     </ion-buttons>
                 </ion-toolbar>
-            </ion-footer>
+            </ion-footer>,
+            <deckgo-inline-editor></deckgo-inline-editor>
         ];
     }
 

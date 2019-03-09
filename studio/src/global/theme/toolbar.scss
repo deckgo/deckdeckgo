@@ -10,6 +10,7 @@ ion-header {
 
 ion-footer {
   ion-toolbar {
+    --ion-toolbar-border-color: transparent;
     --ion-toolbar-background: var(--ion-color-light);
   }
 
