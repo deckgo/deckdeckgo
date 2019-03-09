@@ -1,17 +1,24 @@
 app-editor {
   main {
     position: relative;
+
     width: 100%;
+    max-width: 720px;
     height: 100%;
 
-    margin-left: 64px;
-    margin-right: 64px;
+    margin: auto;
 
     overflow: hidden;
 
     deckgo-deck {
       --background: white;
       --padding-end: 64px;
+    }
+  }
+
+  @media screen and (min-width: 1140px) {
+    main {
+      max-width: 960px;
     }
   }
 }

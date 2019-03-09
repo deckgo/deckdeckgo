@@ -22,7 +22,7 @@ export class AppEditor {
 
         const title = <h1 slot="title" contenteditable>Click to add title</h1>;
 
-        const content = <p slot="content" contenteditable>Click to add content</p>;
+        const content = <h2 slot="content" contenteditable>Click to add content</h2>;
 
         const slide: any = <deckgo-slide-title>
             {title}
