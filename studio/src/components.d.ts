@@ -29,11 +29,15 @@ export namespace Components {
   interface AppNavigation {
     'logo': boolean;
     'menuToggle': boolean;
+    'presentation': boolean;
+    'publish': boolean;
     'user': boolean;
   }
   interface AppNavigationAttributes extends StencilHTMLAttributes {
     'logo'?: boolean;
     'menuToggle'?: boolean;
+    'presentation'?: boolean;
+    'publish'?: boolean;
     'user'?: boolean;
   }
 

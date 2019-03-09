@@ -11,7 +11,11 @@ export class AppNavigation {
 
   @Prop() logo: boolean = false;
   @Prop() menuToggle: boolean = true;
+
   @Prop() user: boolean = true;
+
+  @Prop() presentation: boolean = false;
+  @Prop() publish: boolean = false;
 
   render() {
     return (<ion-header>
@@ -27,10 +31,10 @@ export class AppNavigation {
   private renderLogo() {
     if (this.logo) {
       return <ion-title slot="start">
-        <a href="/">
+        <ion-anchor href="/" routerDirection="forward">
           <app-logo></app-logo>
           <span>DeckDeckGo</span>
-        </a>
+        </ion-anchor>
       </ion-title>;
     } else {
       return null;
@@ -54,15 +58,33 @@ export class AppNavigation {
   private renderUser() {
     if (this.user) {
       return <div slot="end">
-        <ion-button color="primary" shape="round" href="/editor" routerDirection="forward">
-          <ion-icon name="add" slot="start"></ion-icon>
-          <ion-label text-uppercase>Write a presentation</ion-label>
-        </ion-button>
+        {this.renderPresentationButton()}
+        {this.renderPublishButton()}
 
         <a padding-start padding-end>
           <app-avatar></app-avatar>
         </a>
       </div>;
+    } else {
+      return null;
+    }
+  }
+
+  private renderPresentationButton() {
+    if (this.presentation) {
+      return <ion-button color="primary" shape="round" href="/editor" routerDirection="forward">
+          <ion-label text-uppercase>Write a presentation</ion-label>
+        </ion-button>;
+    } else {
+      return null;
+    }
+  }
+
+  private renderPublishButton() {
+    if (this.publish) {
+      return <ion-button color="tertiary" shape="round" href="/editor" routerDirection="forward">
+        <ion-label text-uppercase>Ready to publish?</ion-label>
+      </ion-button>;
     } else {
       return null;
     }

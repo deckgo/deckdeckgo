@@ -8,7 +8,7 @@ export class AppEditor {
 
     render() {
         return [
-            <app-navigation></app-navigation>,
+            <app-navigation publish={true}></app-navigation>,
             <ion-content padding>
 
                 <main>

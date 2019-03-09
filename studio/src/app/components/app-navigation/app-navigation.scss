@@ -1,6 +1,6 @@
 app-navigation {
-  a {
-    color: inherit;
+  ion-anchor {
+    --color: inherit;
   }
 
   div[slot="end"] {
