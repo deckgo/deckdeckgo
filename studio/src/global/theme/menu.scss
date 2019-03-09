@@ -29,11 +29,21 @@ ion-split-pane {
             --color: white;
 
             --background-activated: var(--ion-color-primary);
+
+            ion-icon {
+              color: white;
+            }
           }
         }
 
         app-menu-footer {
           --deckgo-menu-footer-color: white;
+        }
+
+        ion-button {
+          --background: white;
+          --color: var(--ion-color-dark);
+          --color-activated: var(--ion-color-dark);
         }
       }
     }

@@ -23,7 +23,7 @@ export class AppRoot {
                                 <ion-list>
                                     <ion-item>
                                         <app-avatar slot="start"></app-avatar>
-                                        <ion-label>David</ion-label>
+                                        <ion-label>David Dal Busco</ion-label>
                                     </ion-item>
 
                                     <ion-item-divider>
