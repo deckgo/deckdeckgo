@@ -64,8 +64,6 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | `mobile`              | `mobile`                | The mobile mode is automatically recognize, but just it case you would like to "force" it            | `boolean` | `false` or `true` according the device    |
 | `stickyDesktop`       | `sticky-desktop`        | Use a sticky footer toolbar on desktop            | `boolean` | `false`     |
 | `stickyMobile`        | `sticky-mobile`         | Use a sticky footer toolbar on mobile. Note: except iOS, feel free to send a PR if you know how to handle this with the software keyboard            | `boolean` | `false`     |
-| `toolbarOffsetStart` | `toolbar-offset-start` | A left offset for the toolbar when not sticky            | `number`  | `undefined` |
-| `toolbarOffsetTop`   | `toolbar-offset-top`   | A top offset for the toolbar when not sticky            | `number`  | `undefined` |
 
 ### Styling
 
@@ -78,6 +76,7 @@ The `<deckgo-inline-editor/>` could be styled using the following CSS4 variables
 | --deckgo-inline-editor-border-radius | 8px | The border radius of the toolbar |
 | --deckgo-inline-editor-padding | 0 8px | The padding of the toolbar |
 | --deckgo-inline-editor-zindex | 1 | The z-Index of the toolbar |
+| --deckgo-inline-editor-transform | | The transform property of the toolbar, useful for example if your viewport contains a split menu pane |
 | --deckgo-inline-editor-sticky-bottom | 0 | The bottom attribute of the sticky toolbar |
 | --deckgo-inline-editor-separator-background | rgba(255, 255, 255, .2) | The color of the separator |
 | --deckgo-inline-editor-button-color | #fff | The buttons color |

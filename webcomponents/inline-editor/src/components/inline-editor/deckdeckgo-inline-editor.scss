@@ -18,6 +18,8 @@ div.deckgo-tools {
 
   width: 270px;
 
+  transform: var(--deckgo-inline-editor-transform);
+
   &.deckgo-tools-sticky, &.deckgo-tools-mobile.deckgo-tools-sticky {
     position: fixed;
 

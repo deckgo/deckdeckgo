@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@ionic/core": "4.1.1",
-    "deckdeckgo": "^1.0.0-beta.29",
-    "deckdeckgo-inline-editor": "^1.0.0-alpha.3"
+    "deckdeckgo": "file:../webcomponents/core",
+    "deckdeckgo-inline-editor": "file:../webcomponents/inline-editor"
   },
   "devDependencies": {
     "@stencil/core": "0.18.0",

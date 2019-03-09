@@ -104,20 +104,6 @@ export class AppComponentsInlineEditor {
 <td><code>boolean</code></td>
 <td><code>false</code></td>
 </tr>
-<tr>
-<td><code>toolbarOffsetStart</code></td>
-<td><code>toolbar-offset-start</code></td>
-<td>A left offset for the toolbar when not sticky</td>
-<td><code>number</code></td>
-<td><code>undefined</code></td>
-</tr>
-<tr>
-<td><code>toolbarOffsetTop</code></td>
-<td><code>toolbar-offset-top</code></td>
-<td>A top offset for the toolbar when not sticky</td>
-<td><code>number</code></td>
-<td><code>undefined</code></td>
-</tr>
 </tbody></table>
 <h3 id="app-components-inline-editor-styling">Styling</h3>
 <p>The <code>&lt;deckgo-inline-editor/&gt;</code> could be styled using the following CSS4 variables which would only applies on the type <code>&lt;svg/&gt;</code>:</p>
@@ -153,6 +139,11 @@ export class AppComponentsInlineEditor {
 <td>--deckgo-inline-editor-zindex</td>
 <td>1</td>
 <td>The z-Index of the toolbar</td>
+</tr>
+<tr>
+<td>--deckgo-inline-editor-transform</td>
+<td></td>
+<td>The transform property of the toolbar, useful for example if your viewport contains a split menu pane</td>
 </tr>
 <tr>
 <td>--deckgo-inline-editor-sticky-bottom</td>

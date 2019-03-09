@@ -16,6 +16,13 @@ app-editor {
     }
   }
 
+
+  @media screen and (min-width: 992px) {
+    deckgo-inline-editor {
+      --deckgo-inline-editor-transform: translate(-270px, 0);
+    }
+  }
+
   @media screen and (min-width: 1140px) {
     main {
       max-width: 960px;
