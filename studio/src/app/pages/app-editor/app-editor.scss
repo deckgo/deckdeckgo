@@ -13,9 +13,10 @@ app-editor {
     deckgo-deck {
       --background: white;
       --padding-end: 64px;
+
+      --slide-user-select: auto;
     }
   }
-
 
   @media screen and (min-width: 992px) {
     deckgo-inline-editor {

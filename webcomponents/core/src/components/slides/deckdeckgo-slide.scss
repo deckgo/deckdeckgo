@@ -33,12 +33,13 @@ div.deckgo-slide {
   height: calc(var(--slide-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default)));
 
   // Don't allow text selection
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none;
+  -webkit-touch-callout: var(--slide-user-select, none); /* iOS Safari */
+  -webkit-user-select: var(--slide-user-select, none); /* Safari */
+  -khtml-user-select: var(--slide-user-select, none); /* Konqueror HTML */
+  -moz-user-select: var(--slide-user-select, none); /* Firefox */
+  -ms-user-select: var(--slide-user-select, none); /* Internet Explorer/Edge */
+  user-select: var(--slide-user-select, none);
+
   user-drag: none;
   -webkit-user-drag: none;
 }
