@@ -13,6 +13,7 @@ export class AppRoot {
             <ion-app>
                 <ion-router useHash={false}>
                     <ion-route url="/" component="app-home"/>
+                    <ion-route url="/editor" component="app-editor"/>
                 </ion-router>
 
                 <ion-split-pane when="lg">
@@ -28,18 +29,18 @@ export class AppRoot {
 
                                     <ion-item-divider>
                                         <ion-label>Presentations</ion-label>
-                                        <ion-button size="small" slot="end" shape="round" margin-end>
+                                        <ion-button size="small" slot="end" shape="round" margin-end href="/editor" routerDirection="forward">
                                             <ion-icon name="add" slot="start"></ion-icon>
                                             <ion-label>New</ion-label>
                                         </ion-button>
                                     </ion-item-divider>
 
-                                    <ion-item href="/" routerDirection="forward">
+                                    <ion-item href="/editor" routerDirection="forward">
                                         <ion-icon name="book" slot="start"></ion-icon>
                                         <ion-label>Presentation A</ion-label>
                                     </ion-item>
 
-                                    <ion-item href="/" routerDirection="forward">
+                                    <ion-item href="/editor" routerDirection="forward">
                                         <ion-icon name="book" slot="start"></ion-icon>
                                         <ion-label>Presentation B</ion-label>
                                     </ion-item>

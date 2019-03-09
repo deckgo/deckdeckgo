@@ -40,6 +40,9 @@ export namespace Components {
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
+  interface AppEditor {}
+  interface AppEditorAttributes extends StencilHTMLAttributes {}
+
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 }
@@ -52,6 +55,7 @@ declare global {
     'AppLogo': Components.AppLogo;
     'AppNavigation': Components.AppNavigation;
     'AppPopular': Components.AppPopular;
+    'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
   }
 
@@ -62,6 +66,7 @@ declare global {
     'app-logo': Components.AppLogoAttributes;
     'app-navigation': Components.AppNavigationAttributes;
     'app-popular': Components.AppPopularAttributes;
+    'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
   }
 
@@ -102,6 +107,12 @@ declare global {
     new (): HTMLAppPopularElement;
   };
 
+  interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
+  var HTMLAppEditorElement: {
+    prototype: HTMLAppEditorElement;
+    new (): HTMLAppEditorElement;
+  };
+
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
   var HTMLAppHomeElement: {
     prototype: HTMLAppHomeElement;
@@ -115,6 +126,7 @@ declare global {
     'app-logo': HTMLAppLogoElement
     'app-navigation': HTMLAppNavigationElement
     'app-popular': HTMLAppPopularElement
+    'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
   }
 
@@ -125,6 +137,7 @@ declare global {
     'app-logo': HTMLAppLogoElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-popular': HTMLAppPopularElement;
+    'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
   }
 

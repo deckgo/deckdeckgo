@@ -54,7 +54,7 @@ export class AppNavigation {
   private renderUser() {
     if (this.user) {
       return <div slot="end">
-        <ion-button color="primary" shape="round">
+        <ion-button color="primary" shape="round" href="/editor" routerDirection="forward">
           <ion-icon name="add" slot="start"></ion-icon>
           <ion-label text-uppercase>Write a presentation</ion-label>
         </ion-button>
