@@ -16,17 +16,28 @@ export namespace Components {
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
+  interface AppAvatar {}
+  interface AppAvatarAttributes extends StencilHTMLAttributes {}
+
+  interface AppFeed {}
+  interface AppFeedAttributes extends StencilHTMLAttributes {}
+
   interface AppLogo {}
   interface AppLogoAttributes extends StencilHTMLAttributes {}
 
   interface AppNavigation {
     'logo': boolean;
     'menuToggle': boolean;
+    'user': boolean;
   }
   interface AppNavigationAttributes extends StencilHTMLAttributes {
     'logo'?: boolean;
     'menuToggle'?: boolean;
+    'user'?: boolean;
   }
+
+  interface AppPopular {}
+  interface AppPopularAttributes extends StencilHTMLAttributes {}
 
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
@@ -35,15 +46,21 @@ export namespace Components {
 declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
+    'AppAvatar': Components.AppAvatar;
+    'AppFeed': Components.AppFeed;
     'AppLogo': Components.AppLogo;
     'AppNavigation': Components.AppNavigation;
+    'AppPopular': Components.AppPopular;
     'AppHome': Components.AppHome;
   }
 
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
+    'app-avatar': Components.AppAvatarAttributes;
+    'app-feed': Components.AppFeedAttributes;
     'app-logo': Components.AppLogoAttributes;
     'app-navigation': Components.AppNavigationAttributes;
+    'app-popular': Components.AppPopularAttributes;
     'app-home': Components.AppHomeAttributes;
   }
 
@@ -52,6 +69,18 @@ declare global {
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
     new (): HTMLAppRootElement;
+  };
+
+  interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {}
+  var HTMLAppAvatarElement: {
+    prototype: HTMLAppAvatarElement;
+    new (): HTMLAppAvatarElement;
+  };
+
+  interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
+  var HTMLAppFeedElement: {
+    prototype: HTMLAppFeedElement;
+    new (): HTMLAppFeedElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
@@ -66,6 +95,12 @@ declare global {
     new (): HTMLAppNavigationElement;
   };
 
+  interface HTMLAppPopularElement extends Components.AppPopular, HTMLStencilElement {}
+  var HTMLAppPopularElement: {
+    prototype: HTMLAppPopularElement;
+    new (): HTMLAppPopularElement;
+  };
+
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
   var HTMLAppHomeElement: {
     prototype: HTMLAppHomeElement;
@@ -74,15 +109,21 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
+    'app-avatar': HTMLAppAvatarElement
+    'app-feed': HTMLAppFeedElement
     'app-logo': HTMLAppLogoElement
     'app-navigation': HTMLAppNavigationElement
+    'app-popular': HTMLAppPopularElement
     'app-home': HTMLAppHomeElement
   }
 
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
+    'app-avatar': HTMLAppAvatarElement;
+    'app-feed': HTMLAppFeedElement;
     'app-logo': HTMLAppLogoElement;
     'app-navigation': HTMLAppNavigationElement;
+    'app-popular': HTMLAppPopularElement;
     'app-home': HTMLAppHomeElement;
   }
 

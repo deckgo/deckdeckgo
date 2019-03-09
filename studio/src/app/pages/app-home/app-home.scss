@@ -1,0 +1,16 @@
+app-home {
+  main {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, var(--page-width, 720px)) 1fr;
+
+    app-feed {
+      grid-column: 2;
+    }
+
+    @media (max-width: 1160px) {
+      app-popular {
+        display: none;
+      }
+    }
+  }
+}

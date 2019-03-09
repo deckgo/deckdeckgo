@@ -11,12 +11,14 @@ export class AppNavigation {
 
   @Prop() logo: boolean = false;
   @Prop() menuToggle: boolean = true;
+  @Prop() user: boolean = true;
 
   render() {
     return (<ion-header>
           <ion-toolbar>
             {this.renderLogo()}
             {this.renderMenuToggle()}
+            {this.renderUser()}
           </ion-toolbar>
         </ion-header>
     );
@@ -44,6 +46,23 @@ export class AppNavigation {
           </ion-button>
         </ion-menu-toggle>
       </ion-buttons>;
+    } else {
+      return null;
+    }
+  }
+
+  private renderUser() {
+    if (this.user) {
+      return <div slot="end">
+        <ion-button color="primary" shape="round">
+          <ion-icon name="add" slot="start"></ion-icon>
+          <ion-label text-uppercase>Write a presentation</ion-label>
+        </ion-button>
+
+        <a padding-start padding-end>
+          <app-avatar></app-avatar>
+        </a>
+      </div>;
     } else {
       return null;
     }

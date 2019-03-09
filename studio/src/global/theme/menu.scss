@@ -75,16 +75,20 @@ ion-split-pane {
           --color: var(--ion-color-dark);
           font-size: var(--font-size-small);
           font-weight: bold;
+          --padding-top: 32px;
 
           &:not(:first-of-type) {
             margin-top: 8px;
           }
         }
 
+        ion-item-divider + ion-item {
+          margin-top: 16px;
+        }
+
         ion-item {
           --border-color: transparent;
           --color: var(--ion-color-medium);
-          --padding-start: 32px;
           --min-height: inherit;
           font-size: var(--font-size-small);
           height: inherit;
@@ -92,6 +96,14 @@ ion-split-pane {
           ion-label {
             margin-top: 6px;
             margin-bottom: 6px;
+          }
+
+          ion-icon {
+            margin: 8px 8px 8px 0;
+          }
+
+          app-avatar {
+            margin: 0 8px 0 0;
           }
         }
       }

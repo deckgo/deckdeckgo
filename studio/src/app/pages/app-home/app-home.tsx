@@ -11,7 +11,11 @@ export class AppHome {
       <app-navigation></app-navigation>,
       <ion-content padding>
 
-        <h1>Hello World, I'm DeckDeckGo Studio</h1>
+        <main>
+          <app-feed></app-feed>
+
+          <app-popular></app-popular>
+        </main>
 
       </ion-content>
     ];

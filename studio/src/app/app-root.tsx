@@ -17,12 +17,31 @@ export class AppRoot {
 
                 <ion-split-pane when="lg">
                     <ion-menu side="start" type="push" swipeGesture={false}>
-                        <app-navigation logo={true} menuToggle={false}></app-navigation>
+                        <app-navigation logo={true} menuToggle={false} user={false}></app-navigation>
                         <ion-content>
                             <ion-menu-toggle autoHide={false}>
                                 <ion-list>
+                                    <ion-item>
+                                        <app-avatar slot="start"></app-avatar>
+                                        <ion-label>David</ion-label>
+                                    </ion-item>
+
+                                    <ion-item-divider>
+                                        <ion-label>Presentations</ion-label>
+                                        <ion-button size="small" slot="end" shape="round" margin-end>
+                                            <ion-icon name="add" slot="start"></ion-icon>
+                                            <ion-label>New</ion-label>
+                                        </ion-button>
+                                    </ion-item-divider>
+
                                     <ion-item href="/" routerDirection="forward">
-                                        <ion-label>Home</ion-label>
+                                        <ion-icon name="book" slot="start"></ion-icon>
+                                        <ion-label>Presentation A</ion-label>
+                                    </ion-item>
+
+                                    <ion-item href="/" routerDirection="forward">
+                                        <ion-icon name="book" slot="start"></ion-icon>
+                                        <ion-label>Presentation B</ion-label>
                                     </ion-item>
                                 </ion-list>
                             </ion-menu-toggle>
