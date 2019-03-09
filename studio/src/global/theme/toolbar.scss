@@ -7,3 +7,14 @@ ion-header {
     background-image: none;
   }
 }
+
+ion-footer {
+  ion-toolbar {
+    --ion-toolbar-background: var(--ion-color-light);
+  }
+
+  &[class*="footer"]::before {
+    background-image: none;
+  }
+}
+
