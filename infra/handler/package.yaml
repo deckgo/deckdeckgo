@@ -4,11 +4,11 @@ copyright: (c) 2019 David Dal Busco and Nicolas Mattia
 license: AGPL-3
 
 dependencies:
-    - wai-lambda
+    - aeson
     - base
-    - deckdeckgo-handler-api
     - servant
     - servant-server
+    - wai-lambda
 
 ghc-options:
     - -Wall

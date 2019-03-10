@@ -22,8 +22,6 @@ with rec
 
       super //
         mkPackage "deckdeckgo-handler" ../handler //
-        mkPackage "deckdeckgo-handler-api" ../handler-api //
-        mkPackage "deckdeckgo-handler-client" ../handler-client //
         mkPackage "wai-lambda" ../wai-lambda ;
 
     };

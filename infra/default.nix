@@ -15,7 +15,5 @@ rec
   '';
 
   handler = pkgs.haskellPackagesStatic.deckdeckgo-handler;
-  handler-client = pkgs.haskellPackages.deckdeckgo-handler-client;
-  handler-api = pkgs.haskellPackages.deckdeckgo-handler-api;
   wai-lambda = pkgs.haskellPackages.wai-lambda;
 }
