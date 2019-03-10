@@ -147,6 +147,10 @@ ion-split-pane {
 
           ion-item {
             --color: var(--ion-color-light);
+
+            ion-icon {
+              color: white;
+            }
           }
         }
       }

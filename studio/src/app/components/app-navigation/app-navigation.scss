@@ -19,12 +19,12 @@ ion-split-pane {
       ion-button {
         &.presentation {
           --background: white;
-          --color: inherit;
+          --color: #000;
         }
 
         &.publish {
           --background: white;
-          --color: inherit;
+          --color: #000;
         }
       }
   }
