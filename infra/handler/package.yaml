@@ -1,24 +1,14 @@
 name: deckdeckgo-handler
+maintainer: Nicolas Mattia <nicolas@nmattia.com>
+copyright: (c) 2019 David Dal Busco and Nicolas Mattia
+license: AGPL-3
 
 dependencies:
-    - aeson
+    - wai-lambda
     - base
-    - binary
-    - bytestring
-    - case-insensitive
     - deckdeckgo-handler-api
-    - directory
-    - http-types
-    - iproute
-    - network
     - servant
     - servant-server
-    - temporary
-    - text
-    - unordered-containers
-    - vault
-    - wai
-    - unliftio
 
 ghc-options:
     - -Wall
