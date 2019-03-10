@@ -54,7 +54,7 @@ export class AppSlideAdd {
         </div>,
         <div class="swipe"  custom-tappable onClick={() => this.updateSwipeSlide()}>
             <ion-checkbox checked={this.swipeSlide}></ion-checkbox>
-            <ion-label>Swipe automatically to new slide</ion-label>
+            <ion-label>Swipe to new slide</ion-label>
         </div>];
     }
 
