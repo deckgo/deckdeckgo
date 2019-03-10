@@ -18,6 +18,7 @@ dependencies:
     - unordered-containers
     - vault
     - wai
+    - unliftio
 
 ghc-options:
     - -Wall

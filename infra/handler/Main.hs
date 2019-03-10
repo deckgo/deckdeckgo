@@ -5,16 +5,15 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TypeOperators #-}
 
-import Control.Concurrent.MVar
+import Control.Concurrent (forkIO)
+import Control.Monad
 import Data.Aeson ((.:), (.:?), (.!=))
 import Data.Bifunctor
 import Data.Function (fix)
 import Network.Wai (Application)
 import System.Directory (renameFile)
-import System.IO
 import System.IO.Unsafe
-import System.Timeout
-import Data.IORef
+import UnliftIO
 import Text.Read (readMaybe)
 import qualified Data.Binary.Builder as Binary
 import qualified API
@@ -48,6 +47,12 @@ main = do
 server :: Servant.Server API.API
 server = pure []
 
+-- | Decode a 'ByteString' into (1) a Wai 'Request' and (2) a filepath where
+-- the response should be written.
+-- The argument is JSON document with two fields:
+--  * @request@: the API Gateway request (see 'parseRequest')
+--  * @reqsponseFile@: Where to write the API Gateway response (see
+--      'toJSONResponse')
 decodeInput :: BS.ByteString -> Either (Aeson.JSONPath, String) (FilePath, Wai.Request)
 decodeInput = Aeson.eitherDecodeStrictWith Aeson.jsonEOF $ Aeson.iparse $
     Aeson.withObject "input" $ \obj ->
@@ -55,8 +60,10 @@ decodeInput = Aeson.eitherDecodeStrictWith Aeson.jsonEOF $ Aeson.iparse $
         obj .: "responseFile" <*>
         (obj .: "request" >>= parseRequest)
 
+-- | Parser for a 'Wai.Request'.
+--
+-- The input is an AWS API Gateway request event:
 -- https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-api-gateway-request
--- https://www.stackage.org/haddock/lts-13.10/wai-3.2.2/src/Network.Wai.Internal.html#Request
 parseRequest :: Aeson.Value -> Aeson.Parser Wai.Request
 parseRequest = Aeson.withObject "request" $ \obj -> do
 
@@ -162,21 +169,11 @@ originalRequestKey :: Vault.Key Aeson.Object
 originalRequestKey = unsafePerformIO Vault.newKey
 {-# NOINLINE originalRequestKey #-}
 
--- https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-api-gateway-response
-encodeResponse :: Wai.Response -> IO BS.ByteString
-encodeResponse resp = do
-    respObj <- toJSONResponse resp
-    pure $ BL.toStrict $ Aeson.encode $ Aeson.Object respObj
-
-toJSONResponse :: Wai.Response -> IO Aeson.Object
-toJSONResponse (Wai.responseToStream -> (st,hdrs,mkBody)) = do
+-- | Read the status, headers and body of a 'Wai.Response'.
+readResponse :: Wai.Response -> IO (H.Status, H.ResponseHeaders, BS.ByteString)
+readResponse (Wai.responseToStream -> (st, hdrs, mkBody)) = do
     body <- mkBody drainBody
-    pure $ HMap.fromList
-      [ ("statusCode", Aeson.Number (fromIntegral (H.statusCode st)))
-      , ("headers", Aeson.toJSON $ HMap.fromList $
-          (bimap T.decodeUtf8 T.decodeUtf8 . first CI.original) <$> hdrs)
-      , ("body", Aeson.String (T.decodeUtf8 body))
-      ]
+    pure (st, hdrs, body)
   where
     drainBody :: Wai.StreamingBody -> IO BS.ByteString
     drainBody body = do
@@ -186,40 +183,103 @@ toJSONResponse (Wai.responseToStream -> (st,hdrs,mkBody)) = do
         (pure ())
       BL.toStrict . Binary.toLazyByteString <$> readIORef ioref
 
+-- | Make an API Gateway response from status, headers and body.
+-- https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-api-gateway-response
+toJSONResponse :: H.Status -> H.ResponseHeaders -> BS.ByteString -> Aeson.Object
+toJSONResponse st hdrs body = HMap.fromList
+    [ ("statusCode", Aeson.Number (fromIntegral (H.statusCode st)))
+    , ("headers", Aeson.toJSON $ HMap.fromList $
+        (bimap T.decodeUtf8 T.decodeUtf8 . first CI.original) <$> hdrs)
+    , ("body", Aeson.String (T.decodeUtf8 body))
+    ]
+
+-- | Run an 'Application'.
+--
+-- Continuously reads requests from @stdin@. Each line should be a a JSON
+-- document as described in 'decodeInput'.
+--
+-- All requests will be timed out after @1s@ (one second). If any exception is
+-- thrown while processing the request this will return an @HTTP 500 Internal
+-- Server Error@.
+--
+-- If you need more control use 'handleRequest' directly.
 run :: Application -> IO ()
 run app = xif BS.empty $ \loop leftover ->
     -- XXX: we don't use getLine because it errors out on EOF; here we deal
     -- with this explicitly
-    BS.hGetSome stdin 1024 >>= \bs ->
+    BS.hGetSome stdin 4096 >>= \bs ->
       if BS.null bs
-      then putStrLn "Reached EOF! Good bye :)"
+      then pure () -- EOF was reached
       else case second BS8.uncons $ BS8.break (== '\n') (leftover <> bs) of
         (_tmpLine, Nothing) -> loop (leftover <> bs)
         (line, Just ('\n', rest)) -> do
-          handle line
+          void $ forkIO $ handleRequest app 1000000 line
           loop rest
-        -- TODO: proper error message here
-        (_tmpLine, Just{}) -> error "Something terrible happened"
-  where
-    handle = handleRequest app
+        -- This happens if 'break' found a newline character but 'uncons'
+        -- returned something different
+        (_tmpLine, Just{}) -> throwIO $ userError $
+          "wai-lambda: The impossible happened: was expecting newline"
 
-handleRequest :: Application -> BS.ByteString -> IO ()
-handleRequest app bs = case decodeInput bs of
-    Left err -> putStrLn $ "Cannot decode! " <> show err
+-- | Run the 'Request' through the 'Application'.
+--
+-- This function is completely dependent on the 'Application. Any exception
+-- thrown by the 'Application' will be rethrown here. No timeout is
+-- implemented: if the 'Application' never provides a 'Response' then
+-- 'processRequest' won't return.
+processRequest :: Application -> Wai.Request -> IO Wai.Response
+processRequest app req = do
+    mvar <- newEmptyMVar
+    Wai.ResponseReceived <- app req $ \resp -> do
+      putMVar mvar resp
+      pure Wai.ResponseReceived
+    takeMVar mvar
+
+-- | Parse and handle the request.
+--
+-- * Returns 504 if no response is available after the specified timeout.
+-- * Returns 500 if an exception occurs while processing the request.
+handleRequest
+  :: Application
+  -> Int  -- ^ Timeout in microseconds
+  -> BS.ByteString -- ^ The request (see 'decodeInput')
+  -> IO ()
+handleRequest app tout bs = case decodeInput bs of
+    Left err -> do
+      -- The request couldn't be parsed. There isn't much we can do since we
+      -- don't even know where to put the response.
+      let msg = unlines
+            [ "Cannot decode request " <> show err
+            , "Request was: " <> show bs
+            ]
+      putStrLn msg
+      throwIO $ userError msg
     Right (fp, req) -> do
-      mvar <- newEmptyMVar
-      mresp <- timeout 1000000 $ app req $ \resp -> do
-        putMVar mvar resp
-        pure Wai.ResponseReceived
-      case mresp of
-        Nothing -> putStrLn "Didn't get a response in time!"
-        Just Wai.ResponseReceived -> do
-          resp <- takeMVar mvar
-          putStrLn $ "Writing to " <> fp
-          Temp.withSystemTempFile "temp-response" $ \tmpFp h -> do
-            hClose h
-            BS.writeFile tmpFp =<< encodeResponse resp
-            renameFile tmpFp fp
+      mresp <- timeout tout $ tryAny $ processRequest app req
+      resp <- case mresp of
+        Just (Right r) -> do
+          (st, hdrs, body) <- readResponse r
+          pure $ toJSONResponse st hdrs body
+        Just (Left e) -> do
+          putStrLn $
+            "Could not process request: " <> show bs <>
+            " error: " <> show e
+          pure $ toJSONResponse H.status500 [] "Internal Server Error"
+        Nothing -> do
+          putStrLn $ "Timeout processing request: " <> show bs
+          pure $ toJSONResponse H.status504 [] "Timeout"
 
+      writeFileAtomic fp $ BL.toStrict $ Aeson.encode $ Aeson.Object resp
+
+-- | Atomically write the 'ByteString' to the file.
+--
+-- Uses @rename(2)@.
+writeFileAtomic :: FilePath -> BS.ByteString -> IO ()
+writeFileAtomic fp bs =
+    Temp.withSystemTempFile "temp-response" $ \tmpFp h -> do
+      hClose h
+      BS.writeFile tmpFp bs
+      renameFile tmpFp fp
+
+-- | @flip fix@
 xif :: b -> ((b -> c) -> b -> c) -> c
 xif = flip fix
