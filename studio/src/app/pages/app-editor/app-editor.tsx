@@ -1,5 +1,8 @@
-import {Component, State, Element, Prop} from '@stencil/core';
+import {Component, Element, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
+
+import {DeckdeckgoStudioUtils} from '../../utils/deckdeckgo-studio-utils';
+import {DeckdeckgoSlideTemplate} from '../../utils/deckdeckgo-slide-template';
 
 @Component({
     tag: 'app-editor',
@@ -15,36 +18,31 @@ export class AppEditor {
     @State()
     private slides: any[] = [];
 
-    private DEFAULT_TITLE: string = 'Click to add title';
-    private DEFAULT_CONTENT: string = 'Click to add content';
-
-    componentDidLoad() {
-        this.addSlide();
+    async componentDidLoad() {
+        await this.initSlide();
     }
 
-    private addSlide() {
-        if (!document) {
-            return;
-        }
+    private initSlide(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!document) {
+                resolve();
+                return;
+            }
 
-        const title = <h1 slot="title" class="untouched" contenteditable
-                          onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
-                          onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
-            {this.DEFAULT_TITLE}
-        </h1>;
+            const slide: any = await DeckdeckgoStudioUtils.createSlide(DeckdeckgoSlideTemplate.TITLE);
 
-        const content = <p slot="content" class="untouched" contenteditable
-                           onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
-                           onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
-            {this.DEFAULT_CONTENT}
-        </p>;
+            await this.concatSlide(slide);
 
-        const slide: any = <deckgo-slide-title>
-            {title}
-            {content}
-        </deckgo-slide-title>;
+            resolve();
+        });
+    }
 
-        this.slides = [...this.slides, slide];
+    private concatSlide(slide: any): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.slides = [...this.slides, slide];
+
+            resolve();
+        });
     }
 
     private async animatePrevNextSlide(next: boolean) {
@@ -69,49 +67,6 @@ export class AppEditor {
         }
 
         await (deck as any).slideTo(index, speed);
-    }
-
-    private touchOnFocus($event: FocusEvent): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!$event) {
-                resolve();
-                return;
-            }
-
-            if ($event.target && $event.target instanceof HTMLElement) {
-                const element: HTMLElement = $event.target as HTMLElement;
-
-                if (element.classList && element.classList.contains('untouched')) {
-                    if (element.firstChild) {
-                        element.removeChild(element.firstChild);
-                    }
-
-                    element.classList.remove('untouched');
-                }
-            }
-
-            resolve();
-        });
-    }
-
-    private unTouchOnBlur($event: FocusEvent): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!$event || !document) {
-                resolve();
-                return;
-            }
-
-            if ($event.target && $event.target instanceof HTMLElement) {
-                const element: HTMLElement = $event.target as HTMLElement;
-
-                if (element.classList && !element.classList.contains('untouched') && !element.firstChild) {
-                    element.appendChild(document.createTextNode(element.nodeName && element.nodeName.toLowerCase() === 'h1' ? this.DEFAULT_TITLE : this.DEFAULT_CONTENT));
-                    element.classList.add('untouched');
-                }
-            }
-
-            resolve();
-        });
     }
 
     private async openSlideNavigate() {
@@ -163,6 +118,12 @@ export class AppEditor {
             cssClass: 'app-slide-add'
         });
 
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                await this.concatSlide(detail.data);
+            }
+        });
+
         await popover.present();
     }
 
@@ -193,7 +154,8 @@ export class AppEditor {
                     </ion-buttons>
 
                     <ion-buttons slot="end">
-                        <ion-button onClick={(e: UIEvent) => this.openSlideAdd(e)} color="primary" shape="round" size="small">
+                        <ion-button onClick={(e: UIEvent) => this.openSlideAdd(e)} color="primary" shape="round"
+                                    size="small">
                             <ion-label>Add slide</ion-label>
                         </ion-button>
                     </ion-buttons>
