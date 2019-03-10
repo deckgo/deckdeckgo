@@ -14,7 +14,7 @@ app-editor {
       --background: white;
       --padding-end: 64px;
 
-      --slide-user-select: auto;
+      --slide-user-select: all;
 
       h1, h2, h3, p {
         width: 100%;
@@ -36,6 +36,10 @@ app-editor {
         min-height: calc(var(--font-size-normal) + 4px);
       }
     }
+  }
+
+  deckgo-inline-editor {
+    --deckgo-inline-editor-button-mobile-color: var(--ion-color-dark);
   }
 
   @media screen and (min-width: 992px) {

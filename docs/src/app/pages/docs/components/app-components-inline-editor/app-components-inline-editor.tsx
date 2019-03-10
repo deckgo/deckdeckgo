@@ -221,6 +221,11 @@ export class AppComponentsInlineEditor {
 <td>**</td>
 </tr>
 <tr>
+<td>--deckgo-inline-editor-button-mobile-color</td>
+<td>inherit</td>
+<td>**</td>
+</tr>
+<tr>
 <td>--deckgo-inline-editor-mobile-background-bottom</td>
 <td>#fff</td>
 <td>**</td>

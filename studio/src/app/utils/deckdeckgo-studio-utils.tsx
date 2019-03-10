@@ -32,13 +32,13 @@ export class DeckdeckgoStudioUtils {
             }
 
             const title = <h1 slot="title" class="untouched" contenteditable
-                              onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
+                              onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                               onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_TITLE}
             </h1>;
 
             const content = <p slot="content" class="untouched" contenteditable
-                               onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
+                               onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                                onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_CONTENT}
             </p>;
@@ -60,13 +60,13 @@ export class DeckdeckgoStudioUtils {
             }
 
             const title = <h1 slot="title" class="untouched" contenteditable
-                              onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
+                              onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                               onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_TITLE}
             </h1>;
 
             const content = <p slot="content" class="untouched" contenteditable
-                               onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
+                               onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                                onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_CONTENT}
             </p>;
@@ -88,19 +88,19 @@ export class DeckdeckgoStudioUtils {
             }
 
             const title = <h1 slot="title" class="untouched" contenteditable
-                              onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
+                              onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                               onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_TITLE}
             </h1>;
 
             const start = <p slot="start" class="untouched" contenteditable
-                             onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
+                             onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                              onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_CONTENT}
             </p>;
 
             const end = <p slot="end" class="untouched" contenteditable
-                           onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
+                           onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                            onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_CONTENT}
             </p>;
@@ -115,7 +115,7 @@ export class DeckdeckgoStudioUtils {
         });
     }
 
-    private static touchOnFocus($event: FocusEvent): Promise<void> {
+    private static touchOnMouseDown($event: MouseEvent): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!$event) {
                 resolve();
@@ -131,6 +131,8 @@ export class DeckdeckgoStudioUtils {
                     }
 
                     element.classList.remove('untouched');
+
+                    element.focus();
                 }
             }
 

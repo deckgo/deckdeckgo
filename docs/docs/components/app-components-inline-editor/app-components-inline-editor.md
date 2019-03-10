@@ -95,6 +95,7 @@ Furthermore, the following variables are also available but only have an effects
 | -------------------------- |-----------------|-----------------|
 | --deckgo-inline-editor-mobile-box-shadow | 0 0px 1px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.15) | A box shadow for the toolbar |
 | --deckgo-inline-editor-mobile-background-top | #fff | ** |
+| --deckgo-inline-editor-button-mobile-color | inherit | ** |
 | --deckgo-inline-editor-mobile-background-bottom | #fff | ** |
 | --deckgo-inline-editor-button-mobile-color-active | #3880ff | ** |
 | --deckgo-inline-editor-button-mobile-color-disabled | #f4f5f8 | ** |
