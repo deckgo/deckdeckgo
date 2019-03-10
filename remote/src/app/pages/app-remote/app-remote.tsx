@@ -257,7 +257,7 @@ export class AppRemote {
     private async slideTo(index: number, speed?: number | undefined) {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
-        if (!deck || !index) {
+        if (!deck) {
             return;
         }
 

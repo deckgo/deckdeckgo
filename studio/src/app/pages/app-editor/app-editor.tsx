@@ -1,4 +1,5 @@
-import {Component, State, Element} from '@stencil/core';
+import {Component, State, Element, Prop} from '@stencil/core';
+import {OverlayEventDetail} from '@ionic/core';
 
 @Component({
     tag: 'app-editor',
@@ -7,6 +8,8 @@ import {Component, State, Element} from '@stencil/core';
 export class AppEditor {
 
     @Element() el: HTMLElement;
+
+    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
 
     @State()
     private slides: any[] = [];
@@ -57,6 +60,16 @@ export class AppEditor {
         }
     }
 
+    private async slideTo(index: number, speed?: number | undefined) {
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        await (deck as any).slideTo(index, speed);
+    }
+
     private touchOnFocus($event: FocusEvent): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!$event) {
@@ -100,7 +113,46 @@ export class AppEditor {
         });
     }
 
-    // TODO: SlideTo
+    private async openSlidePicker() {
+        const slidesTitle: string[] = await this.getSlidesTitle();
+
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-slide-picker',
+            componentProps: {
+                slides: slidesTitle
+            }
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data >= 0) {
+                await this.slideTo(detail.data);
+            }
+        });
+
+        await modal.present();
+    }
+
+    private getSlidesTitle(): Promise<string[]> {
+        return new Promise<string[]>((resolve) => {
+            const results: string[] = [];
+
+            const slides: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-deck > *');
+
+            if (slides) {
+                for (const slide of Array.from(slides)) {
+                    if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
+                        const title = slide.querySelector('[slot="title"]');
+
+                        if (title) {
+                            results.push(title.innerHTML);
+                        }
+                    }
+                }
+            }
+
+            resolve(results);
+        });
+    }
 
     render() {
         return [
@@ -123,7 +175,7 @@ export class AppEditor {
                             <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
                         </ion-button>
 
-                        <ion-button onClick={() => this.addSlide()} color="primary">
+                        <ion-button onClick={() => this.openSlidePicker()} color="primary">
                             <ion-icon slot="icon-only" name="bookmark"></ion-icon>
                         </ion-button>
                     </ion-buttons>

@@ -45,6 +45,13 @@ export namespace Components {
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
+  interface AppSlidePicker {
+    'slides': string[];
+  }
+  interface AppSlidePickerAttributes extends StencilHTMLAttributes {
+    'slides'?: string[];
+  }
+
   interface AppEditor {}
   interface AppEditorAttributes extends StencilHTMLAttributes {}
 
@@ -60,6 +67,7 @@ declare global {
     'AppLogo': Components.AppLogo;
     'AppNavigation': Components.AppNavigation;
     'AppPopular': Components.AppPopular;
+    'AppSlidePicker': Components.AppSlidePicker;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
   }
@@ -71,6 +79,7 @@ declare global {
     'app-logo': Components.AppLogoAttributes;
     'app-navigation': Components.AppNavigationAttributes;
     'app-popular': Components.AppPopularAttributes;
+    'app-slide-picker': Components.AppSlidePickerAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
   }
@@ -112,6 +121,12 @@ declare global {
     new (): HTMLAppPopularElement;
   };
 
+  interface HTMLAppSlidePickerElement extends Components.AppSlidePicker, HTMLStencilElement {}
+  var HTMLAppSlidePickerElement: {
+    prototype: HTMLAppSlidePickerElement;
+    new (): HTMLAppSlidePickerElement;
+  };
+
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
   var HTMLAppEditorElement: {
     prototype: HTMLAppEditorElement;
@@ -131,6 +146,7 @@ declare global {
     'app-logo': HTMLAppLogoElement
     'app-navigation': HTMLAppNavigationElement
     'app-popular': HTMLAppPopularElement
+    'app-slide-picker': HTMLAppSlidePickerElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
   }
@@ -142,6 +158,7 @@ declare global {
     'app-logo': HTMLAppLogoElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-popular': HTMLAppPopularElement;
+    'app-slide-picker': HTMLAppSlidePickerElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
   }

@@ -634,7 +634,9 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    this.deckTranslateX = index * window.innerWidth * (this.rtl ? 1 : -1);
+    const slideWidth: number = this.length > 0 && slider.offsetWidth > 0 ? (slider.offsetWidth / this.length) : window.innerWidth;
+
+    this.deckTranslateX = index * slideWidth * (this.rtl ? 1 : -1);
     this.activeIndex = index;
 
     await this.lazyLoadContent(this.activeIndex);
