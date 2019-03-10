@@ -23,8 +23,8 @@ ion-split-pane {
         }
 
         &.publish {
-          --background: var(--ion-color-secondary);
-          --color: white;
+          --background: white;
+          --color: inherit;
         }
       }
   }
