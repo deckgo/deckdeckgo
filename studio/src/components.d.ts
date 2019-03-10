@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
 
 
 export namespace Components {
@@ -45,10 +45,10 @@ export namespace Components {
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
-  interface AppSlidePicker {
+  interface AppSlideNavigate {
     'slides': string[];
   }
-  interface AppSlidePickerAttributes extends StencilHTMLAttributes {
+  interface AppSlideNavigateAttributes extends StencilHTMLAttributes {
     'slides'?: string[];
   }
 
@@ -67,7 +67,7 @@ declare global {
     'AppLogo': Components.AppLogo;
     'AppNavigation': Components.AppNavigation;
     'AppPopular': Components.AppPopular;
-    'AppSlidePicker': Components.AppSlidePicker;
+    'AppSlideNavigate': Components.AppSlideNavigate;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
   }
@@ -79,7 +79,7 @@ declare global {
     'app-logo': Components.AppLogoAttributes;
     'app-navigation': Components.AppNavigationAttributes;
     'app-popular': Components.AppPopularAttributes;
-    'app-slide-picker': Components.AppSlidePickerAttributes;
+    'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
   }
@@ -121,10 +121,10 @@ declare global {
     new (): HTMLAppPopularElement;
   };
 
-  interface HTMLAppSlidePickerElement extends Components.AppSlidePicker, HTMLStencilElement {}
-  var HTMLAppSlidePickerElement: {
-    prototype: HTMLAppSlidePickerElement;
-    new (): HTMLAppSlidePickerElement;
+  interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {}
+  var HTMLAppSlideNavigateElement: {
+    prototype: HTMLAppSlideNavigateElement;
+    new (): HTMLAppSlideNavigateElement;
   };
 
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
@@ -146,7 +146,7 @@ declare global {
     'app-logo': HTMLAppLogoElement
     'app-navigation': HTMLAppNavigationElement
     'app-popular': HTMLAppPopularElement
-    'app-slide-picker': HTMLAppSlidePickerElement
+    'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
   }
@@ -158,7 +158,7 @@ declare global {
     'app-logo': HTMLAppLogoElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-popular': HTMLAppPopularElement;
-    'app-slide-picker': HTMLAppSlidePickerElement;
+    'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
   }
