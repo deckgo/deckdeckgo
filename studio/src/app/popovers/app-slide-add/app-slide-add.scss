@@ -64,4 +64,16 @@ app-slide-add {
     }
   }
 
+  div.swipe {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 4px 16px 8px;
+
+    ion-label {
+      padding-left: 8px;
+      font-size: var(--font-size-small);
+    }
+  }
+
 }

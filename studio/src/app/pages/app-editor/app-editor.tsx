@@ -69,6 +69,18 @@ export class AppEditor {
         await (deck as any).slideTo(index, speed);
     }
 
+    private async slideToLastSlide() {
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        if (deck.hasChildNodes()) {
+            await this.slideTo(deck.children.length);
+        }
+    }
+
     private async openSlideNavigate() {
         const slidesTitle: string[] = await this.getSlidesTitle();
 
@@ -119,8 +131,12 @@ export class AppEditor {
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail.data) {
-                await this.concatSlide(detail.data);
+            if (detail.data && detail.data.slide) {
+                await this.concatSlide(detail.data.slide);
+
+                if (detail.data.swipe) {
+                    await this.slideToLastSlide();
+                }
             }
         });
 
@@ -149,7 +165,7 @@ export class AppEditor {
                         </ion-button>
 
                         <ion-button onClick={() => this.openSlideNavigate()} color="primary">
-                            <ion-icon slot="icon-only" name="bookmark"></ion-icon>
+                            <ion-icon slot="icon-only" ios="ios-list" md="ios-list"></ion-icon>
                         </ion-button>
                     </ion-buttons>
 
