@@ -11,7 +11,10 @@ export class AppEditor {
     @State()
     private slides: any[] = [];
 
-    componentWillLoad() {
+    private DEFAULT_TITLE: string = 'Click to add title';
+    private DEFAULT_CONTENT: string = 'Click to add content';
+
+    componentDidLoad() {
         this.addSlide();
     }
 
@@ -20,9 +23,17 @@ export class AppEditor {
             return;
         }
 
-        const title = <h1 slot="title" contenteditable>Click to add title</h1>;
+        const title = <h1 slot="title" class="untouched" contenteditable
+                          onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
+                          onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
+            {this.DEFAULT_TITLE}
+        </h1>;
 
-        const content = <h2 slot="content" contenteditable>Click to add content</h2>;
+        const content = <p slot="content" class="untouched" contenteditable
+                           onFocus={($event: FocusEvent) => this.touchOnFocus($event)}
+                           onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
+            {this.DEFAULT_CONTENT}
+        </p>;
 
         const slide: any = <deckgo-slide-title>
             {title}
@@ -44,6 +55,49 @@ export class AppEditor {
         } else {
             await (deck as any).slidePrev(false, false);
         }
+    }
+
+    private touchOnFocus($event: FocusEvent): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!$event) {
+                resolve();
+                return;
+            }
+
+            if ($event.target && $event.target instanceof HTMLElement) {
+                const element: HTMLElement = $event.target as HTMLElement;
+
+                if (element.classList && element.classList.contains('untouched')) {
+                    if (element.firstChild) {
+                        element.removeChild(element.firstChild);
+                    }
+
+                    element.classList.remove('untouched');
+                }
+            }
+
+            resolve();
+        });
+    }
+
+    private unTouchOnBlur($event: FocusEvent): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!$event || !document) {
+                resolve();
+                return;
+            }
+
+            if ($event.target && $event.target instanceof HTMLElement) {
+                const element: HTMLElement = $event.target as HTMLElement;
+
+                if (element.classList && !element.classList.contains('untouched') && !element.firstChild) {
+                    element.appendChild(document.createTextNode(element.nodeName && element.nodeName.toLowerCase() === 'h1' ? this.DEFAULT_TITLE : this.DEFAULT_CONTENT));
+                    element.classList.add('untouched');
+                }
+            }
+
+            resolve();
+        });
     }
 
     // TODO: SlideTo

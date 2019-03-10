@@ -15,6 +15,26 @@ app-editor {
       --padding-end: 64px;
 
       --slide-user-select: auto;
+
+      h1, h2, h3, p {
+        width: 100%;
+      }
+
+      h1 {
+        min-height: calc(var(--font-size-h1) + 4px);
+      }
+
+      h2 {
+        min-height: calc(var(--font-size-h2) + 4px);
+      }
+
+      h3 {
+        min-height: calc(var(--font-size-h3) + 4px);
+      }
+
+      p {
+        min-height: calc(var(--font-size-normal) + 4px);
+      }
     }
   }
 
