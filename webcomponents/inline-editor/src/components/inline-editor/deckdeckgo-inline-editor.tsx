@@ -209,6 +209,11 @@ export class DeckdeckgoInlineEditor {
 
       const container: HTMLElement = await this.getContainer(content);
 
+      if (!container || !container.nodeName) {
+        resolve();
+        return;
+      }
+
       this.type = DeckdeckgoInlineEditorTag[container.nodeName.toUpperCase()];
 
       resolve();
