@@ -5,8 +5,6 @@ ion-split-pane {
       --background: var(--ion-color-primary);
       --ion-background-color: var(--ion-color-primary);
 
-      --deckgo-logo-url: url('/assets/img/deckdeckgo-logo-invert.svg');
-
       ion-item-divider {
         background: var(--ion-color-primary);
       }
@@ -78,7 +76,13 @@ ion-split-pane {
   ion-menu {
     --border: 0px;
 
+    ion-header {
+      --border: 0px;
+    }
+
     ion-content {
+      border-right: 1px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+
       ion-list {
         ion-item-divider {
           border: 0;
@@ -117,14 +121,6 @@ ion-split-pane {
           }
         }
       }
-    }
-  }
-
-  ion-header {
-    ion-title {
-      --deckgo-logo-vertical-align: bottom;
-      --deckgo-logo-margin-end: 6px;
-      --deckgo-logo-size: 20px
     }
   }
 }

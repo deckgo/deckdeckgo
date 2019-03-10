@@ -1,6 +1,6 @@
 app-navigation {
   ion-anchor {
-    --color: inherit;
+    --color: white;
   }
 
   div[slot="end"] {
@@ -11,4 +11,37 @@ app-navigation {
     align-items: center;
   }
 
+}
+
+ion-split-pane {
+
+  app-navigation {
+      ion-button {
+        &.presentation {
+          --background: white;
+          --color: inherit;
+        }
+
+        &.publish {
+          --background: var(--ion-color-secondary);
+          --color: white;
+        }
+      }
+  }
+
+  &:not(.split-pane-visible) {
+    app-navigation {
+      ion-button {
+        &.presentation {
+          --background: var(--ion-color-primary);
+          --color: white;
+        }
+
+        &.publish {
+          --background: var(--ion-color-tertiary);
+          --color: white;
+        }
+      }
+    }
+  }
 }

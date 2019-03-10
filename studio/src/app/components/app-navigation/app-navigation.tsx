@@ -72,7 +72,7 @@ export class AppNavigation {
 
   private renderPresentationButton() {
     if (this.presentation) {
-      return <ion-button color="primary" shape="round" href="/editor" routerDirection="forward">
+      return <ion-button class="presentation" shape="round" href="/editor" routerDirection="forward">
           <ion-label text-uppercase>Write a presentation</ion-label>
         </ion-button>;
     } else {
@@ -82,7 +82,7 @@ export class AppNavigation {
 
   private renderPublishButton() {
     if (this.publish) {
-      return <ion-button color="tertiary" shape="round" href="/editor" routerDirection="forward">
+      return <ion-button class="publish" shape="round" href="/editor" routerDirection="forward">
         <ion-label text-uppercase>Ready to publish?</ion-label>
       </ion-button>;
     } else {
