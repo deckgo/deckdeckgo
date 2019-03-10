@@ -1,10 +1,10 @@
 import {Component, Listen, Element, Prop} from '@stencil/core';
 
 @Component({
-    tag: 'app-slide-picker',
-    styleUrl: 'app-slide-picker.scss'
+    tag: 'app-slide-navigate',
+    styleUrl: 'app-slide-navigate.scss'
 })
-export class AppRemoteSettings {
+export class AppSlideNavigate {
 
     @Element() el: HTMLElement;
 

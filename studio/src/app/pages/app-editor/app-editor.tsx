@@ -117,7 +117,7 @@ export class AppEditor {
         const slidesTitle: string[] = await this.getSlidesTitle();
 
         const modal: HTMLIonModalElement = await this.modalController.create({
-            component: 'app-slide-picker',
+            component: 'app-slide-navigate',
             componentProps: {
                 slides: slidesTitle
             }
