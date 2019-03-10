@@ -1,0 +1,67 @@
+app-slide-add {
+  div.container {
+    display: flex;
+
+    div.item {
+      border-radius: 8px;
+      border: 1px solid var(--ion-color-primary);
+      margin: 8px;
+      width: 5rem;
+      height: 4rem;
+    }
+
+    deckgo-slide-title, deckgo-slide-content, deckgo-slide-split {
+      --slide-padding-start: 4px;
+      --slide-padding-bottom: 4px;
+    }
+
+    deckgo-slide-title {
+      --slide-padding-top: 4px;
+      --slide-padding-end: 4px;
+    }
+
+    deckgo-slide-content {
+      --slide-padding-top: 4px;
+      --slide-padding-start: 2px;
+      --slide-padding-end: 6px;
+    }
+
+    deckgo-slide-split {
+      --slide-split-title-display: visible;
+      --slide-split-padding-slide: 4px;
+      --slide-split-padding-top: 4px;
+      --slide-split-padding-start: 4px;
+      --slide-split-padding-end: 4px;
+      --slide-split-padding-bottom: 4px;
+    }
+
+    h1, p {
+      width: 100%;
+      border-radius: 4px;
+      margin: 2px;
+      padding: 2px;
+    }
+
+    h1 {
+      font-size: var(--font-size-small);
+      border: 1px dashed var(--ion-color-tertiary);
+    }
+
+    p {
+      font-size: var(--font-size-very-small);
+      border: 1px dashed var(--ion-color-tertiary);
+      min-height: 28px;
+    }
+
+    deckgo-slide-split {
+      p {
+        max-width: 26px;
+        margin: 0;
+        max-height: 22px;
+        overflow: hidden;
+        font-size: 0.2rem;
+      }
+    }
+  }
+
+}

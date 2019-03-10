@@ -3,7 +3,7 @@
 div.deckgo-slide {
   flex-flow: row wrap;
 
-  padding: 0;
+  padding: var(--slide-split-padding-slide, 0);
   width: var(--slide-width);
 }
 

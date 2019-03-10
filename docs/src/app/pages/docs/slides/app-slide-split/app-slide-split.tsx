@@ -133,6 +133,11 @@ export class AppSlideContent {
 <td>Right split pane color</td>
 </tr>
 <tr>
+<td>--slide-split-padding-slide</td>
+<td>0</td>
+<td>The overall padding of the slide split</td>
+</tr>
+<tr>
 <td>--slide-split-padding-top</td>
 <td>16px</td>
 <td>Padding top of a slide split pane</td>

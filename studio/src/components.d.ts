@@ -57,6 +57,9 @@ export namespace Components {
 
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
+
+  interface AppSlideAdd {}
+  interface AppSlideAddAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
@@ -70,6 +73,7 @@ declare global {
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
+    'AppSlideAdd': Components.AppSlideAdd;
   }
 
   interface StencilIntrinsicElements {
@@ -82,6 +86,7 @@ declare global {
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
+    'app-slide-add': Components.AppSlideAddAttributes;
   }
 
 
@@ -139,6 +144,12 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
+  interface HTMLAppSlideAddElement extends Components.AppSlideAdd, HTMLStencilElement {}
+  var HTMLAppSlideAddElement: {
+    prototype: HTMLAppSlideAddElement;
+    new (): HTMLAppSlideAddElement;
+  };
+
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
@@ -149,6 +160,7 @@ declare global {
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
+    'app-slide-add': HTMLAppSlideAddElement
   }
 
   interface ElementTagNameMap {
@@ -161,6 +173,7 @@ declare global {
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
+    'app-slide-add': HTMLAppSlideAddElement;
   }
 
 

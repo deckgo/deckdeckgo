@@ -10,6 +10,7 @@ export class AppEditor {
     @Element() el: HTMLElement;
 
     @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
+    @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
     @State()
     private slides: any[] = [];
@@ -113,7 +114,7 @@ export class AppEditor {
         });
     }
 
-    private async openSlidePicker() {
+    private async openSlideNavigate() {
         const slidesTitle: string[] = await this.getSlidesTitle();
 
         const modal: HTMLIonModalElement = await this.modalController.create({
@@ -154,6 +155,17 @@ export class AppEditor {
         });
     }
 
+    private async openSlideAdd($event: UIEvent) {
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-slide-add',
+            event: $event,
+            mode: 'ios',
+            cssClass: 'app-slide-add'
+        });
+
+        await popover.present();
+    }
+
     render() {
         return [
             <app-navigation publish={true}></app-navigation>,
@@ -175,13 +187,13 @@ export class AppEditor {
                             <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
                         </ion-button>
 
-                        <ion-button onClick={() => this.openSlidePicker()} color="primary">
+                        <ion-button onClick={() => this.openSlideNavigate()} color="primary">
                             <ion-icon slot="icon-only" name="bookmark"></ion-icon>
                         </ion-button>
                     </ion-buttons>
 
                     <ion-buttons slot="end">
-                        <ion-button onClick={() => this.addSlide()} color="primary" shape="round" size="small">
+                        <ion-button onClick={(e: UIEvent) => this.openSlideAdd(e)} color="primary" shape="round" size="small">
                             <ion-label>Add slide</ion-label>
                         </ion-button>
                     </ion-buttons>
