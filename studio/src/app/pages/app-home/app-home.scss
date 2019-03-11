@@ -1,13 +1,16 @@
 app-home {
   main {
     display: grid;
-    grid-template-columns: 1fr minmax(0, var(--page-width, 720px)) 1fr;
+    grid-template-columns: 2.5fr 1fr;
+    justify-items: center;
 
     app-feed {
-      grid-column: 2;
+      max-width: 720px;
     }
 
-    @media (max-width: 1160px) {
+    @media (max-width: 1200px) {
+      grid-template-columns: 1fr;
+
       app-popular {
         display: none;
       }
