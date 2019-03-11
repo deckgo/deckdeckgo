@@ -18,7 +18,7 @@ export class AppEditor {
     @State()
     private slides: any[] = [];
 
-    async componentDidLoad() {
+    async componentWillLoad() {
         await this.initSlide();
     }
 
@@ -149,7 +149,7 @@ export class AppEditor {
             <ion-content padding>
                 <main>
                     <deckgo-deck embedded={true}>
-                        {this.renderSlides()}
+                        {this.slides}
                     </deckgo-deck>
                 </main>
             </ion-content>,
@@ -179,13 +179,5 @@ export class AppEditor {
             </ion-footer>,
             <deckgo-inline-editor></deckgo-inline-editor>
         ];
-    }
-
-    private renderSlides() {
-        return (
-            this.slides.map((slide: any) => {
-                return slide
-            })
-        );
     }
 }
