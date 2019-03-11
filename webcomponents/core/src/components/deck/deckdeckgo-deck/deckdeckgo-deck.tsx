@@ -59,7 +59,7 @@ export class DeckdeckgoDeck {
   }
 
   async componentDidLoad() {
-    await this.initSlideWidth();
+    await this.initSlideSize();
 
     this.initWindowResize();
     this.initKeyboardAssist();
@@ -79,7 +79,7 @@ export class DeckdeckgoDeck {
   private initWindowResize() {
     if (window) {
       window.addEventListener('resize', DeckdeckgoUtils.debounce(async () => {
-        await this.initSlideWidth();
+        await this.initSlideSize();
         await this.slideTo(this.activeIndex);
 
         const toggleFullscreen: boolean = DeckdeckgoUtils.isFullscreen();
@@ -89,7 +89,7 @@ export class DeckdeckgoDeck {
     }
   }
 
-  private initSlideWidth(): Promise<void> {
+  private initSlideSize(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
@@ -99,16 +99,16 @@ export class DeckdeckgoDeck {
       }
 
       if (!this.embedded) {
-        await this.initSlideWidthStandard(slider);
+        await this.initSlideSizeStandard(slider);
       } else {
-        await this.initSlideWidthEmbedded(slider);
+        await this.initSlideSizeEmbedded(slider);
       }
 
       resolve();
     });
   }
 
-  private initSlideWidthStandard(slider: HTMLElement): Promise<void> {
+  private initSlideSizeStandard(slider: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!window || !screen) {
         resolve();
@@ -125,7 +125,7 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private initSlideWidthEmbedded(slider: HTMLElement): Promise<void> {
+  private initSlideSizeEmbedded(slider: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!slider.offsetParent) {
         resolve();
@@ -137,7 +137,7 @@ export class DeckdeckgoDeck {
           slider.style.setProperty('--slide-width', '' + slider.offsetParent.clientWidth + 'px');
         }
 
-        if (slider.offsetParent.clientHeight) {
+        if (slider.offsetParent.clientHeight > 0) {
           slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
         }
       }
