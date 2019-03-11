@@ -18,6 +18,7 @@ export namespace Components {
     'embedded': boolean;
     'getActiveIndex': () => Promise<number>;
     'getLength': () => Promise<number>;
+    'initSlideSize': () => Promise<void>;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;
     'isMobile': () => Promise<boolean>;

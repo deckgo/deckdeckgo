@@ -89,7 +89,8 @@ export class DeckdeckgoDeck {
     }
   }
 
-  private initSlideSize(): Promise<void> {
+  @Method()
+  initSlideSize(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 

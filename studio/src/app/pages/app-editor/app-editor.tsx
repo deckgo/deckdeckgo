@@ -22,6 +22,24 @@ export class AppEditor {
         await this.initSlide();
     }
 
+    async componentDidLoad() {
+        await this.initSlideSize();
+    }
+
+    private initSlideSize(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                return;
+            }
+
+            await (deck as any).initSlideSize();
+
+            resolve();
+        });
+    }
+
     private initSlide(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!document) {
