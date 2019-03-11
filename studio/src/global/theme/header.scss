@@ -22,3 +22,9 @@ ion-header {
     --deckgo-logo-size: 20px
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  ion-split-pane {
+    --ion-toolbar-background: var(--ion-tab-bar-background);
+  }
+}
