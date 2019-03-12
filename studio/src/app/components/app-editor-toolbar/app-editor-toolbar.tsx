@@ -22,7 +22,7 @@ export class AppEditorToolbar {
     }
 
     @Listen('document:elementUnTouched')
-    async onElementUnTouched() {
+    async onElementUnTouched(_$event: CustomEvent) {
         await this.hideToolbar();
     }
 
@@ -76,7 +76,7 @@ export class AppEditorToolbar {
 
     render() {
         return <div class={this.activated ? "editor-toolbar activated" : "editor-toolbar"}>
-            <a onClick={() => this.deleteElement()}>
+            <a onClick={() => this.deleteElement()} onMouseDown={(e: UIEvent) => e.stopPropagation()}>
                 <ion-icon name="trash"></ion-icon>
             </a>
         </div>;

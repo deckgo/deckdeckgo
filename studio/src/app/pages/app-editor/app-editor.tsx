@@ -161,10 +161,23 @@ export class AppEditor {
         await popover.present();
     }
 
+    hideEditorToolbar(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const content: HTMLIonContentElement = this.el.querySelector('ion-content');
+
+            if (!content) {
+                resolve();
+                return;
+            }
+
+            await DeckdeckgoStudioUtils.dispatchEventTouch('elementUnTouched', content, false);
+        });
+    }
+
     render() {
         return [
-            <app-navigation publish={true}></app-navigation>,
-            <ion-content padding>
+            <app-navigation publish={true} onMouseDown={() => this.hideEditorToolbar()}></app-navigation>,
+            <ion-content padding onMouseDown={() => this.hideEditorToolbar()}>
                 <main>
                     <deckgo-deck embedded={true}>
                         {this.slides}
@@ -172,7 +185,7 @@ export class AppEditor {
                     <app-editor-toolbar></app-editor-toolbar>
                 </main>
             </ion-content>,
-            <ion-footer>
+            <ion-footer onMouseDown={() => this.hideEditorToolbar()}>
                 <ion-toolbar>
                     <ion-buttons slot="start">
                         <ion-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
