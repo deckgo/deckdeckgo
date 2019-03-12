@@ -21,6 +21,9 @@ export namespace Components {
   interface AppAvatar {}
   interface AppAvatarAttributes extends StencilHTMLAttributes {}
 
+  interface AppEditorToolbar {}
+  interface AppEditorToolbarAttributes extends StencilHTMLAttributes {}
+
   interface AppFeed {}
   interface AppFeedAttributes extends StencilHTMLAttributes {}
 
@@ -66,6 +69,7 @@ declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
     'AppAvatar': Components.AppAvatar;
+    'AppEditorToolbar': Components.AppEditorToolbar;
     'AppFeed': Components.AppFeed;
     'AppLogo': Components.AppLogo;
     'AppNavigation': Components.AppNavigation;
@@ -79,6 +83,7 @@ declare global {
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
     'app-avatar': Components.AppAvatarAttributes;
+    'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-logo': Components.AppLogoAttributes;
     'app-navigation': Components.AppNavigationAttributes;
@@ -100,6 +105,12 @@ declare global {
   var HTMLAppAvatarElement: {
     prototype: HTMLAppAvatarElement;
     new (): HTMLAppAvatarElement;
+  };
+
+  interface HTMLAppEditorToolbarElement extends Components.AppEditorToolbar, HTMLStencilElement {}
+  var HTMLAppEditorToolbarElement: {
+    prototype: HTMLAppEditorToolbarElement;
+    new (): HTMLAppEditorToolbarElement;
   };
 
   interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
@@ -153,6 +164,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
+    'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-feed': HTMLAppFeedElement
     'app-logo': HTMLAppLogoElement
     'app-navigation': HTMLAppNavigationElement
@@ -166,6 +178,7 @@ declare global {
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
     'app-avatar': HTMLAppAvatarElement;
+    'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-feed': HTMLAppFeedElement;
     'app-logo': HTMLAppLogoElement;
     'app-navigation': HTMLAppNavigationElement;

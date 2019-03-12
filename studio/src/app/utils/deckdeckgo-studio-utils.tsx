@@ -5,7 +5,7 @@ export class DeckdeckgoStudioUtils {
     static DEFAULT_TITLE: string = 'Click to add title';
     static DEFAULT_CONTENT: string = 'Click to add content';
 
-    static createSlide(template : DeckdeckgoSlideTemplate): Promise<any> {
+    static createSlide(template: DeckdeckgoSlideTemplate): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!document) {
                 resolve(null);
@@ -31,13 +31,13 @@ export class DeckdeckgoStudioUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="untouched" contenteditable
+            const title = <h1 slot="title" class="deckgo-untouched" contenteditable
                               onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                               onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_TITLE}
             </h1>;
 
-            const content = <p slot="content" class="untouched" contenteditable
+            const content = <p slot="content" class="deckgo-untouched" contenteditable
                                onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                                onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_CONTENT}
@@ -59,13 +59,13 @@ export class DeckdeckgoStudioUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="untouched" contenteditable
+            const title = <h1 slot="title" class="deckgo-untouched" contenteditable
                               onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                               onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_TITLE}
             </h1>;
 
-            const content = <p slot="content" class="untouched" contenteditable
+            const content = <p slot="content" class="deckgo-untouched" contenteditable
                                onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                                onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_CONTENT}
@@ -87,19 +87,19 @@ export class DeckdeckgoStudioUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="untouched" contenteditable
+            const title = <h1 slot="title" class="deckgo-untouched" contenteditable
                               onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                               onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_TITLE}
             </h1>;
 
-            const start = <p slot="start" class="untouched" contenteditable
+            const start = <p slot="start" class="deckgo-untouched" contenteditable
                              onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                              onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_CONTENT}
             </p>;
 
-            const end = <p slot="end" class="untouched" contenteditable
+            const end = <p slot="end" class="deckgo-untouched" contenteditable
                            onMouseDown={($event: MouseEvent) => this.touchOnMouseDown($event)}
                            onBlur={($event: FocusEvent) => this.unTouchOnBlur($event)}>
                 {this.DEFAULT_CONTENT}
@@ -116,7 +116,7 @@ export class DeckdeckgoStudioUtils {
     }
 
     private static touchOnMouseDown($event: MouseEvent): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             if (!$event) {
                 resolve();
                 return;
@@ -125,15 +125,17 @@ export class DeckdeckgoStudioUtils {
             if ($event.target && $event.target instanceof HTMLElement) {
                 const element: HTMLElement = $event.target as HTMLElement;
 
-                if (element.classList && element.classList.contains('untouched')) {
+                if (element.classList && element.classList.contains('deckgo-untouched')) {
                     if (element.firstChild) {
                         element.removeChild(element.firstChild);
                     }
 
-                    element.classList.remove('untouched');
+                    element.classList.remove('deckgo-untouched');
 
                     element.focus();
                 }
+
+                await this.dispatchEventTouch('elementTouched', element);
             }
 
             resolve();
@@ -141,7 +143,7 @@ export class DeckdeckgoStudioUtils {
     }
 
     private static unTouchOnBlur($event: FocusEvent): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             if (!$event || !document) {
                 resolve();
                 return;
@@ -150,13 +152,46 @@ export class DeckdeckgoStudioUtils {
             if ($event.target && $event.target instanceof HTMLElement) {
                 const element: HTMLElement = $event.target as HTMLElement;
 
-                if (element.classList && !element.classList.contains('untouched') && !element.firstChild) {
+                if (element.classList && !element.classList.contains('deckgo-untouched') && !element.firstChild) {
                     element.appendChild(document.createTextNode(element.nodeName && element.nodeName.toLowerCase() === 'h1' ? DeckdeckgoStudioUtils.DEFAULT_TITLE : DeckdeckgoStudioUtils.DEFAULT_CONTENT));
-                    element.classList.add('untouched');
+                    element.classList.add('deckgo-untouched');
                 }
             }
 
             resolve();
+        });
+    }
+
+    private static dispatchEventTouch(eventName: string, element?: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slot: HTMLElement = element ? await this.findSlottedElement(element) : null;
+
+            const $event: CustomEvent = new CustomEvent(eventName, {
+                bubbles: true,
+                detail: slot
+            });
+
+            element.dispatchEvent($event);
+
+            resolve();
+        });
+    }
+
+    private static findSlottedElement(element: HTMLElement): Promise<HTMLElement> {
+        return new Promise<HTMLElement>(async (resolve) => {
+            if (!element || !element.parentElement) {
+                resolve(element);
+                return;
+            }
+
+            if (element.getAttribute('slot')) {
+                resolve(element);
+                return;
+            }
+
+            const result: HTMLElement = await this.findSlottedElement(element.parentElement);
+
+            resolve(result);
         });
     }
 

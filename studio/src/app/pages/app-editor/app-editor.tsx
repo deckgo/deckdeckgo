@@ -169,6 +169,7 @@ export class AppEditor {
                     <deckgo-deck embedded={true}>
                         {this.slides}
                     </deckgo-deck>
+                    <app-editor-toolbar></app-editor-toolbar>
                 </main>
             </ion-content>,
             <ion-footer>

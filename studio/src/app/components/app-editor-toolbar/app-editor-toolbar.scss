@@ -1,0 +1,17 @@
+div.editor-toolbar {
+  display: none;
+  position: absolute;
+
+  &.activated {
+    display: inherit;
+  }
+
+  a {
+    cursor: pointer;
+
+    ion-icon {
+      font-size: 1.5rem;
+      color: var(--ion-color-primary);
+    }
+  }
+}
