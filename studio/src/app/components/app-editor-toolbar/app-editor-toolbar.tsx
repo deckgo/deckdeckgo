@@ -26,6 +26,13 @@ export class AppEditorToolbar {
         await this.hideToolbar();
     }
 
+    @Listen('window:blur')
+    async onWindowBlur(_$event) {
+        if (document && !document.hasFocus()) {
+            await this.hideToolbar();
+        }
+    }
+
     private displayToolbar(element: HTMLElement): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!element) {
