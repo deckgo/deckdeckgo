@@ -1,4 +1,4 @@
-import {Component, Element, Listen, State} from '@stencil/core';
+import {Component, Element, Listen, Method, State} from '@stencil/core';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -10,6 +10,9 @@ export class AppEditorToolbar {
     @Element() el: HTMLElement;
 
     @State()
+    private displayed: boolean = false;
+
+    @State()
     private activated: boolean = false;
 
     private selectedElement: HTMLElement;
@@ -19,11 +22,6 @@ export class AppEditorToolbar {
         if ($event) {
             await this.displayToolbar($event.detail);
         }
-    }
-
-    @Listen('document:elementUnTouched')
-    async onElementUnTouched(_$event: CustomEvent) {
-        await this.hideToolbar();
     }
 
     @Listen('window:blur')
@@ -47,20 +45,29 @@ export class AppEditorToolbar {
                 return;
             }
 
-            toolbar.style.top = '' + (element.offsetTop - 30) + 'px';
-            toolbar.style.left = '' + (element.offsetLeft + element.offsetWidth - 20) + 'px';
+            const style: CSSStyleDeclaration = window.getComputedStyle(element);
+            const marginTop: number = parseInt(style.marginTop, 0);
 
-            this.activated = true;
+            const center: number = (element.offsetHeight / 2) + marginTop;
+
+            toolbar.style.top = '' + (element.offsetTop + center) + 'px';
+            toolbar.style.left = '' + element.offsetLeft + 'px';
+
+            this.displayed = true;
             this.selectedElement = element;
 
             resolve();
         });
     }
 
-    private hideToolbar(): Promise<void> {
+    @Method()
+    hideToolbar(): Promise<void> {
         return new Promise<void>((resolve) => {
-            this.activated = false;
+            this.displayed = false;
             this.selectedElement = null;
+
+            this.displayed = false;
+            this.activated = false;
 
             resolve();
         });
@@ -82,11 +89,22 @@ export class AppEditorToolbar {
     }
 
     render() {
-        return <div class={this.activated ? "editor-toolbar activated" : "editor-toolbar"}>
-            <a onClick={() => this.deleteElement()} onMouseDown={(e: UIEvent) => e.stopPropagation()}>
+        return <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
+            <a onClick={() => this.activated = !this.activated} class={this.activated ? "activated open-close" : "open-close"}>
+                <ion-icon ios="ios-add" md="ios-add"></ion-icon>
+            </a>
+            {this.renderActions()}
+        </div>;
+    }
+
+    private renderActions() {
+        if (this.activated) {
+            return <a onClick={() => this.deleteElement()} class={this.activated ? "activated trash" : "trash"}>
                 <ion-icon name="trash"></ion-icon>
             </a>
-        </div>;
+        } else {
+            return undefined;
+        }
     }
 
 }

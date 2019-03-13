@@ -21,7 +21,9 @@ export namespace Components {
   interface AppAvatar {}
   interface AppAvatarAttributes extends StencilHTMLAttributes {}
 
-  interface AppEditorToolbar {}
+  interface AppEditorToolbar {
+    'hideToolbar': () => Promise<void>;
+  }
   interface AppEditorToolbarAttributes extends StencilHTMLAttributes {}
 
   interface AppFeed {}

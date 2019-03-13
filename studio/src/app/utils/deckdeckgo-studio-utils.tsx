@@ -122,8 +122,6 @@ export class DeckdeckgoStudioUtils {
                 return;
             }
 
-            $event.stopPropagation();
-
             if ($event.target && $event.target instanceof HTMLElement) {
                 const element: HTMLElement = $event.target as HTMLElement;
 
@@ -137,7 +135,7 @@ export class DeckdeckgoStudioUtils {
                     element.focus();
                 }
 
-                await this.dispatchEventTouch('elementTouched', element, true);
+                await this.dispatchEventTouch('elementTouched', element);
             }
 
             resolve();
@@ -164,9 +162,9 @@ export class DeckdeckgoStudioUtils {
         });
     }
 
-    static dispatchEventTouch(eventName: string, element: HTMLElement, findSlottedElement: boolean): Promise<void> {
+    static dispatchEventTouch(eventName: string, element: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const slot: HTMLElement = findSlottedElement ? await this.findSlottedElement(element) : element;
+            const slot: HTMLElement = await this.findSlottedElement(element);
 
             const $event: CustomEvent = new CustomEvent(eventName, {
                 bubbles: true,
