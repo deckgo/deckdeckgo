@@ -80,7 +80,6 @@ The following theming options will affect this component if set on its host or p
 | --slide-split-color-start | | Left split pane color |
 | --slide-split-background-end | | Right split pane background |
 | --slide-split-color-end | | Right split pane color |
-| --slide-split-padding-slide | 0 | The overall padding of the slide split |
 | --slide-split-padding-top | 16px | Padding top of a slide split pane |
 | --slide-split-padding-end | 32px | Padding right of a slide split pane |
 | --slide-split-padding-bottom | 16px | Padding bottom of a slide split pane |

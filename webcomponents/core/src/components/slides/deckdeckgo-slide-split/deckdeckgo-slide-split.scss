@@ -3,14 +3,17 @@
 div.deckgo-slide {
   flex-flow: row wrap;
 
-  padding: var(--slide-split-padding-slide, 0);
+  padding: 0;
   width: var(--slide-width);
+  height: var(--slide-height);
 }
 
 div.deckgo-slide-split {
   flex: 1;
 
   height: 100%;
+
+  max-width: calc((var(--slide-width) - (2 * var(--slide-split-padding-end, var(--slide-padding-end-default))) - (2 * var(--slide-split-padding-start, var(--slide-padding-start-default)))) / 2);
 
   display: flex;
   align-items: var(--slide-split-align, inherit);

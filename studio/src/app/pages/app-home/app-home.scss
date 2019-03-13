@@ -9,7 +9,7 @@ app-home {
     }
 
     @media (max-width: 1200px) {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(100px, max-content);
 
       app-popular {
         display: none;

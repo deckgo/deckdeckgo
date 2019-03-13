@@ -105,7 +105,11 @@ export class DeckdeckgoStudioUtils {
                 {this.DEFAULT_CONTENT}
             </p>;
 
-            const slide: any = <deckgo-slide-split>
+            const style = {
+                '--slide-split-title-display': 'visible'
+            };
+            
+            const slide: any = <deckgo-slide-split style={style}>
                 {title}
                 {start}
                 {end}

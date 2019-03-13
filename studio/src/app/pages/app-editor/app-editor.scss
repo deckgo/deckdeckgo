@@ -19,6 +19,7 @@ app-editor {
       h1, h2, h3, p {
         width: 100%;
         color: initial;
+        overflow: hidden;
       }
 
       h1 {
@@ -35,6 +36,12 @@ app-editor {
 
       p {
         min-height: calc(var(--font-size-normal) + 4px);
+      }
+
+      deckgo-slide-split {
+        p {
+          height: 60%;
+        }
       }
     }
   }

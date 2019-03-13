@@ -28,7 +28,6 @@ app-slide-add {
 
     deckgo-slide-split {
       --slide-split-title-display: visible;
-      --slide-split-padding-slide: 4px;
       --slide-split-padding-top: 4px;
       --slide-split-padding-start: 4px;
       --slide-split-padding-end: 4px;
@@ -54,6 +53,11 @@ app-slide-add {
     }
 
     deckgo-slide-split {
+      h1 {
+        margin-left: 4px;
+        margin-right: 4px;
+      }
+
       p {
         max-width: 26px;
         margin: 0;
