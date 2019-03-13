@@ -18,6 +18,8 @@ export class AppEditor {
     @State()
     private slides: any[] = [];
 
+    private slideIndex: number = 0;
+
     async componentWillLoad() {
         await this.initSlide();
     }
@@ -170,7 +172,22 @@ export class AppEditor {
                 return;
             }
 
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                resolve();
+                return;
+            }
+
+            const deckIndex: number = await (deck as any).getActiveIndex();
+
+            if (deckIndex === this.slideIndex) {
+                resolve();
+                return;
+            }
+
             await toolbar.hideToolbar();
+            this.slideIndex = deckIndex;
 
             resolve();
         });
@@ -181,7 +198,10 @@ export class AppEditor {
             <app-navigation publish={true}></app-navigation>,
             <ion-content padding>
                 <main>
-                    <deckgo-deck embedded={true} onSlideWillChange={() => this.hideToolbar()}>
+                    <deckgo-deck embedded={true}
+                                 onSlideNextDidChange={() => this.hideToolbar()}
+                                 onSlidePrevDidChange={() => this.hideToolbar()}
+                                 onSlideToChange={() => this.hideToolbar()}>
                         {this.slides}
                     </deckgo-deck>
                 </main>
