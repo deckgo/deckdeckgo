@@ -15,19 +15,23 @@ export class AppEditorToolbar {
     @State()
     private activated: boolean = false;
 
+    @State()
+    private color: string;
+
     private selectedElement: HTMLElement;
+
+    async componentDidLoad() {
+        await this.colorPickerListener(true);
+    }
+
+    async componentDidUnload() {
+        await this.colorPickerListener(false);
+    }
 
     @Listen('document:elementTouched')
     async onElementTouched($event: CustomEvent) {
         if ($event) {
             await this.displayToolbar($event.detail);
-        }
-    }
-
-    @Listen('window:blur')
-    async onWindowBlur(_$event) {
-        if (document && !document.hasFocus()) {
-            await this.hideToolbar();
         }
     }
 
@@ -55,6 +59,18 @@ export class AppEditorToolbar {
 
             this.displayed = true;
             this.selectedElement = element;
+
+            const colorPicker = this.el.querySelector('input');
+
+            if (!colorPicker) {
+                resolve();
+                return;
+            }
+
+            colorPicker.style.top = '' + (element.offsetTop + center) + 'px';
+            colorPicker.style.left = '' + (element.offsetLeft + 68) + 'px';
+
+            this.color = style.color;
 
             resolve();
         });
@@ -88,20 +104,73 @@ export class AppEditorToolbar {
         });
     }
 
+    private colorPickerListener(bind: boolean): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const colorPicker = this.el.querySelector('input');
+
+            if (!colorPicker) {
+                resolve();
+                return;
+            }
+
+            if (bind) {
+                colorPicker.addEventListener('change', this.selectColor, false);
+            } else {
+                colorPicker.removeEventListener('change', this.selectColor, true);
+            }
+
+
+            resolve();
+        });
+    }
+
+    private openColorPicker(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const colorPicker = this.el.querySelector('input');
+
+            if (!colorPicker) {
+                resolve();
+                return;
+            }
+
+            colorPicker.click();
+
+            resolve();
+        });
+    }
+
+    private selectColor = async ($event) => {
+        this.color = $event.target.value;
+        this.selectedElement.style.color = $event.target.value;
+    };
+
     render() {
-        return <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
-            <a onClick={() => this.activated = !this.activated} class={this.activated ? "activated open-close" : "open-close"}>
-                <ion-icon ios="ios-add" md="ios-add"></ion-icon>
-            </a>
-            {this.renderActions()}
-        </div>;
+        return [
+            <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
+                <a onClick={() => this.activated = !this.activated}
+                   class={this.activated ? "activated open-close" : "open-close"}>
+                    <ion-icon ios="ios-add" md="ios-add"></ion-icon>
+                </a>
+                {this.renderActions()}
+            </div>,
+            <input type="color" name="color-picker" value={this.color}></input>
+        ];
     }
 
     private renderActions() {
         if (this.activated) {
-            return <a onClick={() => this.deleteElement()} class={this.activated ? "activated trash" : "trash"}>
+
+            const style = {
+                'border-bottom': '2px solid ' + this.color
+            };
+
+            return [<a onClick={() => this.deleteElement()} class={this.activated ? "activated trash" : "trash"}>
                 <ion-icon name="trash"></ion-icon>
-            </a>
+            </a>,
+                <a onClick={() => this.openColorPicker()} class={this.activated ? "activated" : undefined}>
+                    <ion-label style={style}>A</ion-label>
+                </a>
+            ]
         } else {
             return undefined;
         }

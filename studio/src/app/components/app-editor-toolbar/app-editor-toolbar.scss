@@ -1,63 +1,73 @@
-div.editor-toolbar {
-  display: none;
-  position: absolute;
-
-  &.displayed {
-    display: flex;
+app-editor-toolbar {
+  div.editor-toolbar, input {
+    position: absolute;
   }
 
-  transform: translate(-8px, -50%);
+  div.editor-toolbar {
+    display: none;
 
-  a {
-    cursor: pointer;
+    &.displayed {
+      display: flex;
+    }
 
-    border-radius: 50%;
-    border: 1px solid var(--ion-color-primary);
+    transform: translate(-8px, -50%);
 
-    width: 2rem;
-    height: 2rem;
+    a {
+      cursor: pointer;
 
-    margin: 0 4px;
+      border-radius: 50%;
+      border: 1px solid var(--ion-color-primary);
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+      width: 2rem;
+      height: 2rem;
 
-    background: white;
+      margin: 0 4px;
 
-    -webkit-transition-duration: 0.2s;
-    -moz-transition-duration: 0.2s;
-    -o-transition-duration: 0.2s;
-    transition-duration: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    -webkit-transition-property: -webkit-transform;
-    -moz-transition-property: -moz-transform;
-    -o-transition-property: -o-transform;
-    transition-property: transform;
+      background: white;
 
-    &.activated {
-      &.open-close {
-        transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
+      -webkit-transition-duration: 0.2s;
+      -moz-transition-duration: 0.2s;
+      -o-transition-duration: 0.2s;
+      transition-duration: 0.2s;
+
+      -webkit-transition-property: -webkit-transform;
+      -moz-transition-property: -moz-transform;
+      -o-transition-property: -o-transform;
+      transition-property: transform;
+
+      &.activated {
+        &.open-close {
+          transform: rotate(45deg);
+          -webkit-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+        }
+
+        &.trash {
+          visibility: visible;
+        }
       }
 
       &.trash {
-        visibility: visible;
-      }
-    }
+        visibility: hidden;
 
-    &.trash {
-      visibility: hidden;
+        ion-icon {
+          font-size: 1.2rem;
+        }
+      }
 
       ion-icon {
-        font-size: 1.2rem;
+        font-size: 2rem;
+        color: var(--ion-color-primary);
       }
     }
+  }
 
-    ion-icon {
-      font-size: 2rem;
-      color: var(--ion-color-primary);
-    }
+  input {
+    visibility: hidden;
+    z-index: -1;
   }
 }
