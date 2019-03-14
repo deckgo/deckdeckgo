@@ -10,7 +10,7 @@ app-editor-toolbar {
       display: flex;
     }
 
-    transform: translate(-8px, -50%);
+    transform: translate(calc(-50% - 2px), 0);
 
     a {
       cursor: pointer;

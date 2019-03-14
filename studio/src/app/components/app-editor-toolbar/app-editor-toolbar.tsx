@@ -38,17 +38,8 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if ($event.target && $event.target instanceof HTMLElement) {
-                const element: HTMLElement = $event.target as HTMLElement;
-
-                if (element.nodeName) {
-                    if (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                        await this.unSelect();
-                    } else {
-                        await this.select($event);
-                    }
-                }
-            }
+            await this.unSelect();
+            await this.select($event);
 
             resolve(null);
         });
@@ -128,9 +119,7 @@ export class AppEditorToolbar {
             const style: CSSStyleDeclaration = window.getComputedStyle(element);
             const marginTop: number = parseInt(style.marginTop, 0);
 
-            const center: number = (element.offsetHeight / 2) + marginTop;
-
-            toolbar.style.top = '' + (element.offsetTop + center) + 'px';
+            toolbar.style.top = '' + (element.offsetTop + marginTop) + 'px';
             toolbar.style.left = '' + element.offsetLeft + 'px';
 
             this.displayed = true;
@@ -143,7 +132,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            colorPicker.style.top = '' + (element.offsetTop + center) + 'px';
+            colorPicker.style.top = '' + (element.offsetTop + marginTop) + 'px';
             colorPicker.style.left = '' + (element.offsetLeft + 68) + 'px';
 
             this.color = style.color;
