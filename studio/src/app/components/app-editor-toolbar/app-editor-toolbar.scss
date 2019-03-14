@@ -10,8 +10,6 @@ app-editor-toolbar {
       display: flex;
     }
 
-    transform: translate(calc(-50% - 2px), 0);
-
     a {
       cursor: pointer;
 
@@ -21,7 +19,7 @@ app-editor-toolbar {
       width: 2rem;
       height: 2rem;
 
-      margin: 0 4px;
+      margin: 4px;
 
       display: flex;
       align-items: center;
@@ -29,31 +27,7 @@ app-editor-toolbar {
 
       background: white;
 
-      -webkit-transition-duration: 0.2s;
-      -moz-transition-duration: 0.2s;
-      -o-transition-duration: 0.2s;
-      transition-duration: 0.2s;
-
-      -webkit-transition-property: -webkit-transform;
-      -moz-transition-property: -moz-transform;
-      -o-transition-property: -o-transform;
-      transition-property: transform;
-
-      &.activated {
-        &.open-close {
-          transform: rotate(45deg);
-          -webkit-transform: rotate(45deg);
-          -ms-transform: rotate(45deg);
-        }
-
-        &.trash {
-          visibility: visible;
-        }
-      }
-
       &.trash {
-        visibility: hidden;
-
         ion-icon {
           font-size: 1.2rem;
         }

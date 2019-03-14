@@ -15,9 +15,6 @@ export class AppEditorToolbar {
     private displayed: boolean = false;
 
     @State()
-    private activated: boolean = false;
-
-    @State()
     private color: string;
 
     private selectedElement: HTMLElement;
@@ -91,6 +88,11 @@ export class AppEditorToolbar {
                 return;
             }
 
+            if (this.isElementSlideOrDeck(element)) {
+                resolve(element);
+                return;
+            }
+
             if (element.getAttribute('slot')) {
                 resolve(element);
                 return;
@@ -102,8 +104,12 @@ export class AppEditorToolbar {
         });
     }
 
+    private isElementSlideOrDeck(element: HTMLElement): boolean {
+        return element && element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1)
+    }
+
     private displayToolbar(element: HTMLElement): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             if (!element) {
                 resolve();
                 return;
@@ -116,11 +122,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const style: CSSStyleDeclaration = window.getComputedStyle(element);
-            const marginTop: number = parseInt(style.marginTop, 0);
-
-            toolbar.style.top = '' + (element.offsetTop + marginTop) + 'px';
-            toolbar.style.left = '' + element.offsetLeft + 'px';
+            await this.setElementPosition(element, toolbar);
 
             this.displayed = true;
             this.selectedElement = element;
@@ -132,10 +134,35 @@ export class AppEditorToolbar {
                 return;
             }
 
-            colorPicker.style.top = '' + (element.offsetTop + marginTop) + 'px';
-            colorPicker.style.left = '' + (element.offsetLeft + 68) + 'px';
+            await this.setElementPosition(element, colorPicker);
 
+            const style: CSSStyleDeclaration = window.getComputedStyle(element);
             this.color = style.color;
+
+            resolve();
+        });
+    }
+
+    private setElementPosition(src: HTMLElement, applyTo: HTMLElement): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const deckOrSlide: boolean = this.isElementSlideOrDeck(src);
+
+            const top: number = src.offsetTop > 0 ? src.offsetTop : 0;
+            const left: number = src.offsetLeft > 0 ? src.offsetLeft : 0;
+
+            if (window.innerWidth < 1024 || screen.width < 1024) {
+                applyTo.style.top = '' + (top > 50 ? top - 42 : 0) + 'px';
+            } else {
+                applyTo.style.top = '' + top + 'px';
+            }
+
+            if (deckOrSlide) {
+                applyTo.style.left = '0px';
+                applyTo.style.transform = 'translate(0,0)';
+            } else {
+                applyTo.style.left = '0' + left + 'px';
+                applyTo.style.transform = left > 50 && top > 50 ? 'translate(0, -2.7rem)' : 'translate(0,0)';
+            }
 
             resolve();
         });
@@ -148,7 +175,6 @@ export class AppEditorToolbar {
             this.selectedElement = null;
 
             this.displayed = false;
-            this.activated = false;
 
             resolve();
         });
@@ -212,10 +238,6 @@ export class AppEditorToolbar {
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
-                <a onClick={() => this.activated = !this.activated}
-                   class={this.activated ? "activated open-close" : "open-close"}>
-                    <ion-icon ios="ios-add" md="ios-add"></ion-icon>
-                </a>
                 {this.renderActions()}
             </div>,
             <input type="color" name="color-picker" value={this.color}></input>
@@ -223,22 +245,17 @@ export class AppEditorToolbar {
     }
 
     private renderActions() {
-        if (this.activated) {
+        const style = {
+            'border-bottom': '2px solid ' + this.color
+        };
 
-            const style = {
-                'border-bottom': '2px solid ' + this.color
-            };
-
-            return [<a onClick={() => this.deleteElement()} class={this.activated ? "activated trash" : "trash"}>
-                <ion-icon name="trash"></ion-icon>
-            </a>,
-                <a onClick={() => this.openColorPicker()} class={this.activated ? "activated" : undefined}>
-                    <ion-label style={style}>A</ion-label>
-                </a>
-            ]
-        } else {
-            return undefined;
-        }
+        return [<a onClick={() => this.deleteElement()} class="trash">
+            <ion-icon name="trash"></ion-icon>
+        </a>,
+            <a onClick={() => this.openColorPicker()}>
+                <ion-label style={style}>A</ion-label>
+            </a>
+        ]
     }
 
 }

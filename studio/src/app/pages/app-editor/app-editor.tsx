@@ -221,8 +221,8 @@ export class AppEditor {
                                  onSlideToChange={() => this.hideToolbar()}>
                         {this.slides}
                     </deckgo-deck>
+                    <app-editor-toolbar></app-editor-toolbar>
                 </main>
-                <app-editor-toolbar></app-editor-toolbar>
             </ion-content>,
             <ion-footer>
                 <ion-toolbar>
