@@ -1,7 +1,7 @@
 import {Component, Element, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
-import {DeckdeckgoStudioUtils} from '../../utils/deckdeckgo-studio-utils';
+import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
 import {DeckdeckgoSlideTemplate} from '../../utils/deckdeckgo-slide-template';
 
 @Component({
@@ -49,7 +49,7 @@ export class AppEditor {
                 return;
             }
 
-            const slide: any = await DeckdeckgoStudioUtils.createSlide(DeckdeckgoSlideTemplate.TITLE);
+            const slide: any = await DeckdeckgoStudioCreateSlide.createSlide(DeckdeckgoSlideTemplate.TITLE);
 
             await this.concatSlide(slide);
 
@@ -193,12 +193,29 @@ export class AppEditor {
         });
     }
 
+    private deckTouched($event: MouseEvent | TouchEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+
+            if (!toolbar) {
+                resolve();
+                return;
+            }
+
+            await toolbar.touch($event);
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <app-navigation publish={true}></app-navigation>,
             <ion-content padding>
                 <main>
                     <deckgo-deck embedded={true}
+                                 onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
+                                 onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}
                                  onSlidePrevDidChange={() => this.hideToolbar()}
                                  onSlideToChange={() => this.hideToolbar()}>

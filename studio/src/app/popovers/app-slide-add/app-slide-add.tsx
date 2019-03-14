@@ -1,7 +1,7 @@
 import {Component, Element, State} from '@stencil/core';
 
 import {DeckdeckgoSlideTemplate} from '../../utils/deckdeckgo-slide-template';
-import {DeckdeckgoStudioUtils} from '../../utils/deckdeckgo-studio-utils';
+import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
 
 @Component({
     tag: 'app-slide-add',
@@ -15,7 +15,7 @@ export class AppSlideAdd {
     private swipeSlide: boolean = true;
 
     private async addSlide(template: DeckdeckgoSlideTemplate) {
-        const slide: any = await DeckdeckgoStudioUtils.createSlide(template);
+        const slide: any = await DeckdeckgoStudioCreateSlide.createSlide(template);
         await this.closePopover(slide);
     }
 

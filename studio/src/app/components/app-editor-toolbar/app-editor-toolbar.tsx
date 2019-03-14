@@ -1,4 +1,6 @@
-import {Component, Element, Listen, Method, State} from '@stencil/core';
+import {Component, Element, Method, State} from '@stencil/core';
+
+import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -28,11 +30,85 @@ export class AppEditorToolbar {
         await this.colorPickerListener(false);
     }
 
-    @Listen('document:elementTouched')
-    async onElementTouched($event: CustomEvent) {
-        if ($event) {
-            await this.displayToolbar($event.detail);
-        }
+    @Method()
+    touch($event: MouseEvent | TouchEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!$event) {
+                resolve();
+                return;
+            }
+
+            if ($event.target && $event.target instanceof HTMLElement) {
+                const element: HTMLElement = $event.target as HTMLElement;
+
+                if (element.nodeName) {
+                    if (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
+                        await this.unSelect();
+                    } else {
+                        await this.select($event);
+                    }
+                }
+            }
+
+            resolve(null);
+        });
+    }
+
+    private select($event: MouseEvent | TouchEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if ($event.target && $event.target instanceof HTMLElement) {
+                const element: HTMLElement = $event.target as HTMLElement;
+
+                const slot: HTMLElement = await this.findSlottedElement(element);
+
+                if (slot.classList && slot.classList.contains('deckgo-untouched')) {
+                    if (slot.firstChild) {
+                        slot.removeChild(slot.firstChild);
+                    }
+
+                    slot.classList.remove('deckgo-untouched');
+
+                    slot.focus();
+                }
+
+                await this.displayToolbar(slot);
+            }
+
+            resolve();
+        });
+    }
+
+    private unSelect(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (this.selectedElement) {
+                if (this.selectedElement.classList && !this.selectedElement.classList.contains('deckgo-untouched') && !this.selectedElement.firstChild) {
+                    this.selectedElement.appendChild(document.createTextNode(this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase() === 'h1' ? DeckdeckgoStudioCreateSlide.DEFAULT_TITLE : DeckdeckgoStudioCreateSlide.DEFAULT_CONTENT));
+                    this.selectedElement.classList.add('deckgo-untouched');
+                }
+
+                await this.hideToolbar();
+            }
+
+            resolve();
+        });
+    }
+
+    private findSlottedElement(element: HTMLElement): Promise<HTMLElement> {
+        return new Promise<HTMLElement>(async (resolve) => {
+            if (!element || !element.parentElement) {
+                resolve(element);
+                return;
+            }
+
+            if (element.getAttribute('slot')) {
+                resolve(element);
+                return;
+            }
+
+            const result: HTMLElement = await this.findSlottedElement(element.parentElement);
+
+            resolve(result);
+        });
     }
 
     private displayToolbar(element: HTMLElement): Promise<void> {
