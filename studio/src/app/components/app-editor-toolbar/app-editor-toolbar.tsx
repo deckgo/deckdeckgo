@@ -355,8 +355,6 @@ export class AppEditorToolbar {
             'border-bottom': '2px solid ' + this.color
         };
 
-        console.log('1', this.background);
-
         const styleBackground = {
             'border-bottom': '2px solid ' + this.background
         };
