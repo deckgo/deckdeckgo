@@ -168,7 +168,11 @@ export class AppEditorToolbar {
             this.displayed = true;
             this.selectedElement = element;
 
-            const colorPicker = this.el.querySelector('input');
+            const style: CSSStyleDeclaration = window.getComputedStyle(element);
+            this.color = style.color;
+            this.background = style.backgroundColor;
+
+            const colorPicker: HTMLElement = this.el.querySelector('input[name=\'color-picker\']');
 
             if (!colorPicker) {
                 resolve();
@@ -177,9 +181,14 @@ export class AppEditorToolbar {
 
             await this.setElementPosition(element, colorPicker, 38);
 
-            const style: CSSStyleDeclaration = window.getComputedStyle(element);
-            this.color = style.color;
-            this.background = style.backgroundColor;
+            const backgroundPicker: HTMLElement = this.el.querySelector('input[name=\'background-picker\']');
+
+            if (!backgroundPicker) {
+                resolve();
+                return;
+            }
+
+            await this.setElementPosition(element, backgroundPicker, 78);
 
             resolve();
         });
