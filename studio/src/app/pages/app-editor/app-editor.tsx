@@ -1,4 +1,4 @@
-import {Component, Element, Prop, State} from '@stencil/core';
+import {Component, Element, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
@@ -203,6 +203,26 @@ export class AppEditor {
             }
 
             await toolbar.touch($event);
+
+            resolve();
+        });
+    }
+
+    @Listen('blockSlide')
+    async onBlockSlide($event: CustomEvent) {
+        await this.blockSlide($event.detail);
+    }
+
+    private blockSlide(blockState: boolean): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                resolve();
+                return;
+            }
+
+            await (deck as any).blockSlide(blockState);
 
             resolve();
         });

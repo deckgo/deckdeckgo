@@ -1,4 +1,4 @@
-import {Component, Element, Method, State} from '@stencil/core';
+import {Component, Element, Method, State, Event, EventEmitter} from '@stencil/core';
 
 import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
 
@@ -18,6 +18,8 @@ export class AppEditorToolbar {
     private color: string;
 
     private selectedElement: HTMLElement;
+
+    @Event() private blockSlide: EventEmitter<boolean>;
 
     async componentDidLoad() {
         await this.colorPickerListener(true);
@@ -74,19 +76,27 @@ export class AppEditorToolbar {
 
     private select(element: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const slot: HTMLElement = await this.findSlottedElement(element);
+            const selected: HTMLElement = await this.findSelectedElement(element);
 
-            if (slot.classList && slot.classList.contains('deckgo-untouched')) {
-                if (slot.firstChild) {
-                    slot.removeChild(slot.firstChild);
-                }
-
-                slot.classList.remove('deckgo-untouched');
-
-                slot.focus();
+            if (!selected) {
+                this.blockSlide.emit(false);
+                resolve();
+                return;
             }
 
-            await this.displayToolbar(slot);
+            if (selected.classList && selected.classList.contains('deckgo-untouched')) {
+                if (selected.firstChild) {
+                    selected.removeChild(selected.firstChild);
+                }
+
+                selected.classList.remove('deckgo-untouched');
+            }
+
+            selected.focus();
+
+            await this.displayToolbar(selected);
+
+            this.blockSlide.emit(!this.isElementSlideOrDeck(selected));
 
             resolve();
         });
@@ -107,7 +117,7 @@ export class AppEditorToolbar {
         });
     }
 
-    private findSlottedElement(element: HTMLElement): Promise<HTMLElement> {
+    private findSelectedElement(element: HTMLElement): Promise<HTMLElement> {
         return new Promise<HTMLElement>(async (resolve) => {
             if (!element || !element.parentElement) {
                 resolve(element);
@@ -124,7 +134,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const result: HTMLElement = await this.findSlottedElement(element.parentElement);
+            const result: HTMLElement = await this.findSelectedElement(element.parentElement);
 
             resolve(result);
         });

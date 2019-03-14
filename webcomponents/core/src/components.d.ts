@@ -13,6 +13,7 @@ import '@stencil/core';
 export namespace Components {
 
   interface DeckgoDeck {
+    'blockSlide': (block: boolean) => Promise<void>;
     'cloneBackground': boolean;
     'doPrint': () => Promise<void>;
     'embedded': boolean;

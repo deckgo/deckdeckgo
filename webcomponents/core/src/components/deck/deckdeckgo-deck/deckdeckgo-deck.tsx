@@ -35,7 +35,7 @@ export class DeckdeckgoDeck {
   private deckTranslateX: number = 0;
   private autoSwipeRatio: number = 10;
 
-  private blockSlide: boolean = false;
+  private block: boolean = false;
 
   @State()
   private activeIndex: number = 0;
@@ -204,7 +204,7 @@ export class DeckdeckgoDeck {
 
   @Listen('scrolling')
   scrolling($event: CustomEvent) {
-    this.blockSlide = $event ? $event.detail : false;
+    this.block = $event ? $event.detail : false;
   }
 
   private start(e: Event) {
@@ -214,7 +214,7 @@ export class DeckdeckgoDeck {
   private async move(e: Event) {
     await this.clearMouseCursorTimer(true);
 
-    if (this.blockSlide) {
+    if (this.block) {
       return;
     }
 
@@ -233,7 +233,7 @@ export class DeckdeckgoDeck {
   }
 
   private async stop(e: Event) {
-    if (this.blockSlide) {
+    if (this.block) {
       return;
     }
 
@@ -646,6 +646,11 @@ export class DeckdeckgoDeck {
     if (emitEvent) {
       this.slideToChange.emit(index);
     }
+  }
+
+  @Method()
+  async blockSlide(block: boolean) {
+    this.block = block;
   }
 
   /* END: Manual sliding */

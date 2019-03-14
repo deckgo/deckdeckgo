@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
 
 
 export namespace Components {
@@ -25,7 +25,9 @@ export namespace Components {
     'hideToolbar': () => Promise<void>;
     'touch': ($event: MouseEvent | TouchEvent) => Promise<void>;
   }
-  interface AppEditorToolbarAttributes extends StencilHTMLAttributes {}
+  interface AppEditorToolbarAttributes extends StencilHTMLAttributes {
+    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+  }
 
   interface AppFeed {}
   interface AppFeedAttributes extends StencilHTMLAttributes {}
