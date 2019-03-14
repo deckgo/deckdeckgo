@@ -40,9 +40,9 @@ import qualified System.IO.Temp as Temp
 -- Continuously reads requests from @stdin@. Each line should be a a JSON
 -- document as described in 'decodeInput'.
 --
--- All requests will be timed out after @1s@ (one second). If any exception is
--- thrown while processing the request this will return an @HTTP 500 Internal
--- Server Error@.
+-- All requests will be timed out after @3s@ (three seconds). If any exception
+-- is thrown while processing the request this will return an @HTTP 500
+-- Internal Server Error@.
 --
 -- If you need more control use 'handleRequest' directly.
 run :: Application -> IO ()
@@ -55,12 +55,17 @@ run app = xif BS.empty $ \loop leftover ->
       else case second BS8.uncons $ BS8.break (== '\n') (leftover <> bs) of
         (_tmpLine, Nothing) -> loop (leftover <> bs)
         (line, Just ('\n', rest)) -> do
-          void $ forkIO $ handleRequest app 1000000 line
+          void $ forkIO $ handleRequest app defaultTimeout line
           loop rest
         -- This happens if 'break' found a newline character but 'uncons'
         -- returned something different
         (_tmpLine, Just{}) -> throwIO $ userError $
           "wai-lambda: The impossible happened: was expecting newline"
+
+
+-- | Default request timeout. 3 seconds.
+defaultTimeout :: Int
+defaultTimeout = 3 * 1000 * 1000
 
 -------------------------------------------------------------------------------
 -- Request handling
