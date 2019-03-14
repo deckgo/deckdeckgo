@@ -267,8 +267,17 @@ export class AppEditorToolbar {
     }
 
     private selectColor = async ($event) => {
+        if (!this.selectedElement) {
+            return;
+        }
+
         this.color = $event.target.value;
-        this.selectedElement.style.color = $event.target.value;
+
+        if (this.isElementSlideOrDeck(this.selectedElement)) {
+            this.selectedElement.style.setProperty('--color', $event.target.value);
+        } else {
+            this.selectedElement.style.color = $event.target.value;
+        }
     };
 
     render() {
