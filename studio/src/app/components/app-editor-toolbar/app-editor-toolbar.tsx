@@ -21,10 +21,33 @@ export class AppEditorToolbar {
 
     async componentDidLoad() {
         await this.colorPickerListener(true);
+
+        this.initWindowResize();
     }
 
     async componentDidUnload() {
         await this.colorPickerListener(false);
+    }
+
+    private initWindowResize() {
+        if (window) {
+            window.addEventListener('resize', this.debounce(async () => {
+                if (this.selectedElement) {
+                    await this.select(this.selectedElement);
+                }
+            }, 100));
+        }
+    }
+
+    private debounce(func: Function, timeout?: number) {
+        let timer: number;
+        return (event) => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+
+            timer = setTimeout(func, timeout > 0 ? timeout : 300, event);
+        };
     }
 
     @Method()
@@ -35,32 +58,35 @@ export class AppEditorToolbar {
                 return;
             }
 
+            if (!$event.target || !($event.target instanceof HTMLElement)) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = $event.target as HTMLElement;
+
             await this.unSelect();
-            await this.select($event);
+            await this.select(element);
 
             resolve(null);
         });
     }
 
-    private select($event: MouseEvent | TouchEvent): Promise<void> {
+    private select(element: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if ($event.target && $event.target instanceof HTMLElement) {
-                const element: HTMLElement = $event.target as HTMLElement;
+            const slot: HTMLElement = await this.findSlottedElement(element);
 
-                const slot: HTMLElement = await this.findSlottedElement(element);
-
-                if (slot.classList && slot.classList.contains('deckgo-untouched')) {
-                    if (slot.firstChild) {
-                        slot.removeChild(slot.firstChild);
-                    }
-
-                    slot.classList.remove('deckgo-untouched');
-
-                    slot.focus();
+            if (slot.classList && slot.classList.contains('deckgo-untouched')) {
+                if (slot.firstChild) {
+                    slot.removeChild(slot.firstChild);
                 }
 
-                await this.displayToolbar(slot);
+                slot.classList.remove('deckgo-untouched');
+
+                slot.focus();
             }
+
+            await this.displayToolbar(slot);
 
             resolve();
         });
