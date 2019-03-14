@@ -27,14 +27,8 @@ app-editor-toolbar {
 
       background: white;
 
-      &.trash {
-        ion-icon {
-          font-size: 1.2rem;
-        }
-      }
-
       ion-icon {
-        font-size: 2rem;
+        font-size: 1.2rem;
         color: var(--ion-color-primary);
       }
     }

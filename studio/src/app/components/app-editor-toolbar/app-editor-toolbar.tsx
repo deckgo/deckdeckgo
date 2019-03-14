@@ -17,18 +17,23 @@ export class AppEditorToolbar {
     @State()
     private color: string;
 
+    @State()
+    private background: string;
+
     private selectedElement: HTMLElement;
 
     @Event() private blockSlide: EventEmitter<boolean>;
 
     async componentDidLoad() {
         await this.colorPickerListener(true);
+        await this.backgroundPickerListener(true);
 
         this.initWindowResize();
     }
 
     async componentDidUnload() {
         await this.colorPickerListener(false);
+        await this.backgroundPickerListener(false);
     }
 
     private initWindowResize() {
@@ -158,7 +163,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            await this.setElementPosition(element, toolbar);
+            await this.setElementPosition(element, toolbar, 0);
 
             this.displayed = true;
             this.selectedElement = element;
@@ -170,16 +175,17 @@ export class AppEditorToolbar {
                 return;
             }
 
-            await this.setElementPosition(element, colorPicker);
+            await this.setElementPosition(element, colorPicker, 38);
 
             const style: CSSStyleDeclaration = window.getComputedStyle(element);
             this.color = style.color;
+            this.background = style.backgroundColor;
 
             resolve();
         });
     }
 
-    private setElementPosition(src: HTMLElement, applyTo: HTMLElement): Promise<void> {
+    private setElementPosition(src: HTMLElement, applyTo: HTMLElement, offsetWidth: number): Promise<void> {
         return new Promise<void>((resolve) => {
             const deckOrSlide: boolean = this.isElementSlideOrDeck(src);
 
@@ -193,10 +199,10 @@ export class AppEditorToolbar {
             }
 
             if (deckOrSlide) {
-                applyTo.style.left = '0px';
+                applyTo.style.left = '' + (0 + offsetWidth) + 'px';
                 applyTo.style.transform = 'translate(0,0)';
             } else {
-                applyTo.style.left = '0' + left + 'px';
+                applyTo.style.left = '' + (left + offsetWidth) + 'px';
                 applyTo.style.transform = left > 50 && top > 50 ? 'translate(0, -2.7rem)' : 'translate(0,0)';
             }
 
@@ -231,9 +237,11 @@ export class AppEditorToolbar {
         });
     }
 
+    // Color
+
     private colorPickerListener(bind: boolean): Promise<void> {
         return new Promise<void>((resolve) => {
-            const colorPicker = this.el.querySelector('input');
+            const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
 
             if (!colorPicker) {
                 resolve();
@@ -253,7 +261,7 @@ export class AppEditorToolbar {
 
     private openColorPicker(): Promise<void> {
         return new Promise<void>((resolve) => {
-            const colorPicker = this.el.querySelector('input');
+            const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
 
             if (!colorPicker) {
                 resolve();
@@ -280,25 +288,87 @@ export class AppEditorToolbar {
         }
     };
 
+
+    // Background
+
+    private backgroundPickerListener(bind: boolean): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
+
+            if (!backgroundPicker) {
+                resolve();
+                return;
+            }
+
+            if (bind) {
+                backgroundPicker.addEventListener('change', this.selectBackground, false);
+            } else {
+                backgroundPicker.removeEventListener('change', this.selectBackground, true);
+            }
+
+
+            resolve();
+        });
+    }
+
+    private openBackgroundPicker(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
+
+            if (!backgroundPicker) {
+                resolve();
+                return;
+            }
+
+            backgroundPicker.click();
+
+            resolve();
+        });
+    }
+
+    private selectBackground = async ($event) => {
+        if (!this.selectedElement) {
+            return;
+        }
+
+        this.background = $event.target.value;
+
+        if (this.isElementSlideOrDeck(this.selectedElement)) {
+            this.selectedElement.style.setProperty('--background', $event.target.value);
+        } else {
+            this.selectedElement.style.background = $event.target.value;
+        }
+    };
+
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderActions()}
             </div>,
-            <input type="color" name="color-picker" value={this.color}></input>
+            <input type="color" name="color-picker" value={this.color}></input>,
+            <input type="color" name="background-picker" value={this.background}></input>
         ];
     }
 
     private renderActions() {
-        const style = {
+        const styleColor = {
             'border-bottom': '2px solid ' + this.color
         };
 
-        return [<a onClick={() => this.deleteElement()} class="trash">
+        console.log('1', this.background);
+
+        const styleBackground = {
+            'border-bottom': '2px solid ' + this.background
+        };
+
+        return [<a onClick={() => this.deleteElement()}>
             <ion-icon name="trash"></ion-icon>
         </a>,
             <a onClick={() => this.openColorPicker()}>
-                <ion-label style={style}>A</ion-label>
+                <ion-label style={styleColor}>A</ion-label>
+            </a>,
+            <a onClick={() => this.openBackgroundPicker()}>
+                <ion-label style={styleBackground}>Bg</ion-label>
             </a>
         ]
     }
