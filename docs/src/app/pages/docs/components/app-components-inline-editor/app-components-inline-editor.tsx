@@ -117,13 +117,18 @@ export class AppComponentsInlineEditor {
 </thead>
 <tbody><tr>
 <td>--deckgo-inline-editor-background-top</td>
-<td>rgba(56, 128, 255, .99)</td>
+<td>white</td>
 <td>The top background of the toolbar (linear gradient)</td>
 </tr>
 <tr>
 <td>--deckgo-inline-editor-background-bottom</td>
-<td>#3171e0</td>
+<td>white</td>
 <td>The bottom background of the toolbar (linear gradient)</td>
+</tr>
+<tr>
+<td>--deckgo-inline-editor-border</td>
+<td>1px solid #3880ff</td>
+<td>The border of the toolbar</td>
 </tr>
 <tr>
 <td>--deckgo-inline-editor-border-radius</td>
@@ -157,7 +162,7 @@ export class AppComponentsInlineEditor {
 </tr>
 <tr>
 <td>--deckgo-inline-editor-button-color</td>
-<td>#fff</td>
+<td>#3880ff</td>
 <td>The buttons color</td>
 </tr>
 <tr>
@@ -172,22 +177,22 @@ export class AppComponentsInlineEditor {
 </tr>
 <tr>
 <td>--deckgo-inline-editor-button-color-active</td>
-<td>#ffce00</td>
+<td>black</td>
 <td>The color of the buttons when active</td>
 </tr>
 <tr>
 <td>--deckgo-inline-editor-button-color-disabled</td>
-<td>#4c8dff</td>
+<td>#f4f5f8</td>
 <td>The color of the buttons when disabled</td>
 </tr>
 <tr>
 <td>--deckgo-inline-editor-link-color</td>
-<td>#fff</td>
+<td>#3880ff</td>
 <td>The color of the input field for the url</td>
 </tr>
 <tr>
 <td>--deckgo-inline-editor-link-placeholder-color</td>
-<td>#fff</td>
+<td>#3880ff</td>
 <td>Ther color of the placeholder of the input field for the url</td>
 </tr>
 </tbody></table>
@@ -211,8 +216,13 @@ export class AppComponentsInlineEditor {
 <td>**</td>
 </tr>
 <tr>
+<td>--deckgo-inline-editor-mobile-border</td>
+<td>0</td>
+<td>**</td>
+</tr>
+<tr>
 <td>--deckgo-inline-editor-button-mobile-color</td>
-<td>inherit</td>
+<td>black</td>
 <td>**</td>
 </tr>
 <tr>
@@ -247,7 +257,11 @@ export class AppComponentsInlineEditor {
 </tr>
 </tbody></table>
 <p>** like above but for mobile</p>
-<h3 id="app-components-inline-editor-examples">Examples</h3>
+<h3 id="app-components-inline-editor-slot">Slot</h3>
+<p>The icon for the link action should be provided using a dedicated slot name <code>link</code></p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">&lt;deckgo-inline-editor&gt;{'\n'}  &lt;span slot=&quot;link&quot;&gt;L&lt;&#47;span&gt;{'\n'}&lt;&#47;deckgo-inline-editor&gt;</code>
+    </deckgo-highlight-code><h3 id="app-components-inline-editor-examples">Examples</h3>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;p contenteditable&gt;This text will be editable&lt;&#47;p&gt;{'\n'}{'\n'}&lt;h1 contenteditable&gt;This title too&lt;&#47;h1&gt;{'\n'}{'\n'}&lt;deckgo-inline-editor&gt;&lt;&#47;deckgo-inline-editor&gt;</code>
     </deckgo-highlight-code></main>

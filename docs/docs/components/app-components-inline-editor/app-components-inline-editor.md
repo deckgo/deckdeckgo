@@ -71,21 +71,22 @@ The `<deckgo-inline-editor/>` could be styled using the following CSS4 variables
 
 | CSS4 variable                      | Default | Note |
 | -------------------------- |-----------------|-----------------|
-| --deckgo-inline-editor-background-top | rgba(56, 128, 255, .99) | The top background of the toolbar (linear gradient) |
-| --deckgo-inline-editor-background-bottom | #3171e0 | The bottom background of the toolbar (linear gradient) |
+| --deckgo-inline-editor-background-top | white | The top background of the toolbar (linear gradient) |
+| --deckgo-inline-editor-background-bottom | white | The bottom background of the toolbar (linear gradient) |
+| --deckgo-inline-editor-border | 1px solid #3880ff | The border of the toolbar | 
 | --deckgo-inline-editor-border-radius | 8px | The border radius of the toolbar |
 | --deckgo-inline-editor-padding | 0 8px | The padding of the toolbar |
 | --deckgo-inline-editor-zindex | 1 | The z-Index of the toolbar |
 | --deckgo-inline-editor-transform | | The transform property of the toolbar, useful for example if your viewport contains a split menu pane |
 | --deckgo-inline-editor-sticky-bottom | 0 | The bottom attribute of the sticky toolbar |
 | --deckgo-inline-editor-separator-background | rgba(255, 255, 255, .2) | The color of the separator |
-| --deckgo-inline-editor-button-color | #fff | The buttons color |
+| --deckgo-inline-editor-button-color | #3880ff | The buttons color |
 | --deckgo-inline-editor-button-font-size | 1.4rem | The buttons font size |
 | --deckgo-inline-editor-button-font-family | inherit | The buttons font family |
-| --deckgo-inline-editor-button-color-active | #ffce00 | The color of the buttons when active |
-| --deckgo-inline-editor-button-color-disabled | #4c8dff | The color of the buttons when disabled  |
-| --deckgo-inline-editor-link-color | #fff | The color of the input field for the url |
-| --deckgo-inline-editor-link-placeholder-color | #fff | Ther color of the placeholder of the input field for the url |
+| --deckgo-inline-editor-button-color-active | black | The color of the buttons when active |
+| --deckgo-inline-editor-button-color-disabled | #f4f5f8 | The color of the buttons when disabled  |
+| --deckgo-inline-editor-link-color | #3880ff | The color of the input field for the url |
+| --deckgo-inline-editor-link-placeholder-color | #3880ff | Ther color of the placeholder of the input field for the url |
 
 Furthermore, the following variables are also available but only have an effects on mobile devices:
 
@@ -93,7 +94,8 @@ Furthermore, the following variables are also available but only have an effects
 | -------------------------- |-----------------|-----------------|
 | --deckgo-inline-editor-mobile-box-shadow | 0 0px 1px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.15) | A box shadow for the toolbar |
 | --deckgo-inline-editor-mobile-background-top | #fff | ** |
-| --deckgo-inline-editor-button-mobile-color | inherit | ** |
+| --deckgo-inline-editor-mobile-border | 0 | ** |
+| --deckgo-inline-editor-button-mobile-color | black | ** |
 | --deckgo-inline-editor-mobile-background-bottom | #fff | ** |
 | --deckgo-inline-editor-button-mobile-color-active | #3880ff | ** |
 | --deckgo-inline-editor-button-mobile-color-disabled | #f4f5f8 | ** |
@@ -102,6 +104,16 @@ Furthermore, the following variables are also available but only have an effects
 | --deckgo-inline-editor-link-mobile-placeholder-color | inherit | ** |
 
 ** like above but for mobile
+
+### Slot
+
+The icon for the link action should be provided using a dedicated slot name `link`
+
+```
+<deckgo-inline-editor>
+  <span slot="link">L</span>
+</deckgo-inline-editor>
+```
 
 ### Examples
 
