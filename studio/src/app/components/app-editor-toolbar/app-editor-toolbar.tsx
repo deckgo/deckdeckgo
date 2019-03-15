@@ -419,6 +419,7 @@ export class AppEditorToolbar {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderActions()}
+                {this.renderSlotType()}
             </div>,
             <input type="color" name="color-picker" value={this.color}></input>,
             <input type="color" name="background-picker" value={this.background}></input>
@@ -442,11 +443,18 @@ export class AppEditorToolbar {
             </a>,
             <a onClick={() => this.openBackgroundPicker()}>
                 <ion-label style={styleBackground}>Bg</ion-label>
-            </a>,
-            <a onClick={(e: UIEvent) => this.openSlotType(e)} class={this.deckOrSlide ? "disabled" : ""}>
-                <ion-label>T</ion-label>
             </a>
         ]
+    }
+
+    private renderSlotType() {
+        if (this.deckOrSlide) {
+            return undefined;
+        } else {
+            return <a onClick={(e: UIEvent) => this.openSlotType(e)}>
+                <ion-label>T</ion-label>
+            </a>
+        }
     }
 
 }

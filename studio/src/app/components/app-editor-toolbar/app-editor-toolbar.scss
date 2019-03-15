@@ -34,12 +34,6 @@ app-editor-toolbar {
         font-size: 1.2rem;
         color: var(--ion-color-primary);
       }
-
-      &.disabled {
-        pointer-events: none;
-        border: 1px solid var(--ion-color-light);
-        color: var(--ion-color-light);
-      }
     }
   }
 
