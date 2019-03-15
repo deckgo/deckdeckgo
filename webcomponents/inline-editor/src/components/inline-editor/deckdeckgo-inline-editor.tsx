@@ -660,7 +660,7 @@ export class DeckdeckgoInlineEditor {
 
         <div class="separator"></div>,
 
-        <button onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>A</button>
+        <button onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>L</button>
       ];
     }
   }
