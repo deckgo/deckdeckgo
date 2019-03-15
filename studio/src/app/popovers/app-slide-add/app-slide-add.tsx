@@ -1,4 +1,4 @@
-import {Component, Element, State} from '@stencil/core';
+import {Component, Element} from '@stencil/core';
 
 import {DeckdeckgoSlideTemplate} from '../../utils/deckdeckgo-slide-template';
 import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
@@ -11,9 +11,6 @@ export class AppSlideAdd {
 
     @Element() el: HTMLElement;
 
-    @State()
-    private swipeSlide: boolean = true;
-
     private async addSlide(template: DeckdeckgoSlideTemplate) {
         const slide: any = await DeckdeckgoStudioCreateSlide.createSlide(template);
         await this.closePopover(slide);
@@ -21,17 +18,12 @@ export class AppSlideAdd {
 
     async closePopover(slide: any) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
-            slide: slide,
-            swipe: this.swipeSlide
+            slide: slide
         });
     }
 
-    private updateSwipeSlide() {
-        this.swipeSlide = !this.swipeSlide;
-    }
-
     render() {
-        return [<div class="container">
+        return <div class="container">
             <div class="item" custom-tappable onClick={() => this.addSlide(DeckdeckgoSlideTemplate.TITLE)}>
                 <deckgo-slide-title>
                     <h1 slot="title">Title</h1>
@@ -51,11 +43,7 @@ export class AppSlideAdd {
                     <p slot="end">Content</p>
                 </deckgo-slide-split>
             </div>
-        </div>,
-        <div class="swipe"  custom-tappable onClick={() => this.updateSwipeSlide()}>
-            <ion-checkbox checked={this.swipeSlide}></ion-checkbox>
-            <ion-label>Swipe to new slide</ion-label>
-        </div>];
+        </div>;
     }
 
 }

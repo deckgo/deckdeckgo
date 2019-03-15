@@ -151,12 +151,10 @@ export class AppEditor {
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail.data && detail.data.slide) {
+            if (detail.data.slide) {
                 await this.concatSlide(detail.data.slide);
 
-                if (detail.data.swipe) {
-                    await this.slideToLastSlide();
-                }
+                await this.slideToLastSlide();
             }
         });
 
