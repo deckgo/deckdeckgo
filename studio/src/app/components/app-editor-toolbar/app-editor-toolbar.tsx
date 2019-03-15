@@ -1,6 +1,8 @@
-import {Component, Element, Method, State, Event, EventEmitter} from '@stencil/core';
+import {Component, Element, Method, State, Event, EventEmitter, Prop} from '@stencil/core';
 
 import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
+import {OverlayEventDetail} from '@ionic/core';
+import {DeckdeckgoSlotType} from '../../utils/deckdeckgo-slot-type';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -8,6 +10,8 @@ import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-
     shadow: false
 })
 export class AppEditorToolbar {
+
+    @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
     @Element() el: HTMLElement;
 
@@ -21,6 +25,7 @@ export class AppEditorToolbar {
     private background: string;
 
     private selectedElement: HTMLElement;
+    private deckOrSlide: boolean = false;
 
     @Event() private blockSlide: EventEmitter<boolean>;
 
@@ -166,7 +171,7 @@ export class AppEditorToolbar {
             await this.setElementPosition(element, toolbar, 0);
 
             this.displayed = true;
-            this.selectedElement = element;
+            await this.initSelectedElement(element);
 
             const style: CSSStyleDeclaration = window.getComputedStyle(element);
             this.color = style.color;
@@ -221,9 +226,9 @@ export class AppEditorToolbar {
 
     @Method()
     hideToolbar(): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             this.displayed = false;
-            this.selectedElement = null;
+            await this.initSelectedElement(null);
 
             this.displayed = false;
 
@@ -349,6 +354,68 @@ export class AppEditorToolbar {
         }
     };
 
+    private async openSlotType($event: UIEvent) {
+        if (this.deckOrSlide) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-slot-type',
+            componentProps: {
+                selectedElement: this.selectedElement
+            },
+            event: $event,
+            mode: 'ios'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data && detail.data.type) {
+                await this.toggleSlotType(detail.data.type);
+            }
+        });
+
+        await popover.present();
+    }
+
+    private toggleSlotType(type: DeckdeckgoSlotType): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = document.createElement(type.toString());
+
+            if (this.selectedElement.attributes && this.selectedElement.attributes.length) {
+                for (let i: number = 0; i < this.selectedElement.attributes.length; i++) {
+                    element.setAttribute(this.selectedElement.attributes[i].name, this.selectedElement.attributes[i].value);
+                }
+            }
+
+            if (this.selectedElement.childNodes && this.selectedElement.childNodes.length > 0) {
+                const elements: HTMLElement[] = Array.prototype.slice.call(this.selectedElement.childNodes);
+                elements.forEach((e: HTMLElement) => {
+                    element.appendChild(e);
+                });
+            }
+
+            this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
+
+            await this.initSelectedElement(element);
+
+            resolve();
+        });
+    }
+
+    private initSelectedElement(element: HTMLElement): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.selectedElement = element;
+            this.deckOrSlide = this.isElementSlideOrDeck(element);
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
@@ -369,13 +436,16 @@ export class AppEditorToolbar {
         };
 
         return [<a onClick={() => this.deleteElement()}>
-            <ion-icon name="trash"></ion-icon>
-        </a>,
+                <ion-icon name="trash"></ion-icon>
+            </a>,
             <a onClick={() => this.openColorPicker()}>
                 <ion-label style={styleColor}>A</ion-label>
             </a>,
             <a onClick={() => this.openBackgroundPicker()}>
                 <ion-label style={styleBackground}>Bg</ion-label>
+            </a>,
+            <a onClick={(e: UIEvent) => this.openSlotType(e)} class={this.deckOrSlide ? "disabled" : ""}>
+                <ion-label>T</ion-label>
             </a>
         ]
     }

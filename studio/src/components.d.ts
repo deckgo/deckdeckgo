@@ -68,6 +68,13 @@ export namespace Components {
 
   interface AppSlideAdd {}
   interface AppSlideAddAttributes extends StencilHTMLAttributes {}
+
+  interface AppSlotType {
+    'selectedElement': HTMLElement;
+  }
+  interface AppSlotTypeAttributes extends StencilHTMLAttributes {
+    'selectedElement'?: HTMLElement;
+  }
 }
 
 declare global {
@@ -83,6 +90,7 @@ declare global {
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
     'AppSlideAdd': Components.AppSlideAdd;
+    'AppSlotType': Components.AppSlotType;
   }
 
   interface StencilIntrinsicElements {
@@ -97,6 +105,7 @@ declare global {
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-slide-add': Components.AppSlideAddAttributes;
+    'app-slot-type': Components.AppSlotTypeAttributes;
   }
 
 
@@ -166,6 +175,12 @@ declare global {
     new (): HTMLAppSlideAddElement;
   };
 
+  interface HTMLAppSlotTypeElement extends Components.AppSlotType, HTMLStencilElement {}
+  var HTMLAppSlotTypeElement: {
+    prototype: HTMLAppSlotTypeElement;
+    new (): HTMLAppSlotTypeElement;
+  };
+
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
@@ -178,6 +193,7 @@ declare global {
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
     'app-slide-add': HTMLAppSlideAddElement
+    'app-slot-type': HTMLAppSlotTypeElement
   }
 
   interface ElementTagNameMap {
@@ -192,6 +208,7 @@ declare global {
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
     'app-slide-add': HTMLAppSlideAddElement;
+    'app-slot-type': HTMLAppSlotTypeElement;
   }
 
 

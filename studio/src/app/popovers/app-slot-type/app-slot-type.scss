@@ -1,0 +1,14 @@
+app-slot-type {
+  a {
+    color: inherit;
+    cursor: pointer;
+
+    &.current {
+      color: var(--ion-color-primary);
+    }
+
+    &:hover {
+      color: var(--ion-color-tertiary);
+    }
+  }
+}
