@@ -17,7 +17,7 @@ export class AppRoot {
                 </ion-router>
 
                 <ion-split-pane when="lg">
-                    <ion-menu side="start" type="push" swipeGesture={false}>
+                    <ion-menu id="ion-menu" side="start" type="push" swipeGesture={false}>
                         <app-navigation logo={true} menuToggle={false} user={false}></app-navigation>
                         <ion-content>
                             <ion-menu-toggle autoHide={false}>

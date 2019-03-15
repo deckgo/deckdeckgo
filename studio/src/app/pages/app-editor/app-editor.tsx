@@ -246,6 +246,21 @@ export class AppEditor {
         });
     }
 
+    private toggleFullScreen(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                resolve();
+                return;
+            }
+
+            await (deck as any).toggleFullScreen();
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <app-navigation publish={true}></app-navigation>,
@@ -275,6 +290,10 @@ export class AppEditor {
 
                         <ion-button onClick={() => this.openSlideNavigate()} color="primary">
                             <ion-icon slot="icon-only" ios="ios-list" md="ios-list"></ion-icon>
+                        </ion-button>
+
+                        <ion-button onClick={() => this.toggleFullScreen()} color="primary">
+                            <ion-icon slot="icon-only" name="expand"></ion-icon>
                         </ion-button>
                     </ion-buttons>
 
