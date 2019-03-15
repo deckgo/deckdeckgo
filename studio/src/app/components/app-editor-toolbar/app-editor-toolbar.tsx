@@ -302,7 +302,6 @@ export class AppEditorToolbar {
         }
     };
 
-
     // Background
 
     private backgroundPickerListener(bind: boolean): Promise<void> {

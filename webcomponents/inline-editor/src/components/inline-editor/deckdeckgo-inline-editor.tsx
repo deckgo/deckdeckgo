@@ -31,6 +31,9 @@ export class DeckdeckgoInlineEditor {
   private underline: boolean = false;
 
   @State()
+  private color: string;
+
+  @State()
   private disableBold: boolean = false;
 
   @Prop({mutable: true})
@@ -58,10 +61,16 @@ export class DeckdeckgoInlineEditor {
 
   private linkUrl: string;
 
-  componentDidLoad() {
+  async componentDidLoad() {
+    await this.colorPickerListener(true);
+
     if (!this.mobile) {
       this.mobile = DeckdeckgoInlineEditorUtils.isMobile();
     }
+  }
+
+  async componentDidUnload() {
+    await this.colorPickerListener(false);
   }
 
   @Listen('document:mousedown', {passive: true})
@@ -239,6 +248,13 @@ export class DeckdeckgoInlineEditor {
 
       if (DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()]) {
         this.disableBold = DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()] !== DeckdeckgoInlineEditorTag.P;
+
+        const style: CSSStyleDeclaration = window.getComputedStyle(node as HTMLElement);
+
+        // TODO
+        console.log(style.color, (node as HTMLElement).style.color);
+        this.color = style.color;
+
         resolve();
       } else {
         this.bold = await DeckdeckgoInlineEditorUtils.isBold((node as HTMLElement));
@@ -525,6 +541,64 @@ export class DeckdeckgoInlineEditor {
     return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile && !DeckdeckgoInlineEditorUtils.isIOS());
   }
 
+  // Color picker
+
+  private colorPickerListener(bind: boolean): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
+
+      if (!colorPicker) {
+        resolve();
+        return;
+      }
+
+      if (bind) {
+        colorPicker.addEventListener('change', this.selectColor, false);
+      } else {
+        colorPicker.removeEventListener('change', this.selectColor, true);
+      }
+
+
+      resolve();
+    });
+  }
+
+  private selectColor = async ($event) => {
+    if (!this.selection) {
+      return;
+    }
+
+    this.color = $event.target.value;
+
+    if (!this.selection || this.selection.rangeCount <= 0 || !document) {
+      return;
+    }
+
+    const text: string = this.selection.toString();
+
+    if (!text || text.length <= 0) {
+      return;
+    }
+
+    document.execCommand('foreColor', false, this.color);
+  };
+
+  private openColorPicker(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
+
+      if (!colorPicker) {
+        resolve();
+        return;
+      }
+
+      colorPicker.click();
+
+      this.toolsActivated = false;
+
+      resolve();
+    });
+  }
 
   render() {
     let classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
@@ -533,31 +607,43 @@ export class DeckdeckgoInlineEditor {
       classNames += ' deckgo-tools-sticky';
     }
 
+    return <div class={classNames}>
+      {this.renderActions()}
+      <input type="color" name="color-picker" value={this.color}></input>
+    </div>;
+  }
+
+  private renderActions() {
     if (this.linkInput) {
       return (
-        <div class={classNames}>
-          <div class="link">
-            <input autofocus placeholder="Add a link..." onInput={($event: UIEvent) => this.handleLinkInput($event)}></input>
-          </div>
+        <div class="link">
+          <input autofocus placeholder="Add a link..." onInput={($event: UIEvent) => this.handleLinkInput($event)}></input>
         </div>
       );
     } else {
-      return (<div class={classNames}>
+      const styleColor = {
+        'border-bottom': '2px solid ' + this.color
+      };
+
+      return [
         <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disableBold}
                 class={this.bold ? "bold active" : "bold"}>B
-        </button>
+        </button>,
         <button onClick={(e: UIEvent) => this.styleItalic(e)}
                 class={this.italic ? "italic active" : "italic"}>I
-        </button>
+        </button>,
         <button onClick={(e: UIEvent) => this.styleUnderline(e)}
-                class={this.underline ? "underline active" : "underline"}>U
-        </button>
+                class={this.underline ? "underline active" : "underline"}>
+            <span>U</span>
+        </button>,
+        <button onClick={() => this.openColorPicker()}>
+            <span style={styleColor}>A</span>
+        </button>,
 
-        <div class="separator"></div>
+        <div class="separator"></div>,
 
         <button onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>A</button>
-      </div>);
+      ];
     }
   }
-
 }
