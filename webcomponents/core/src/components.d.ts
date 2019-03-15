@@ -15,6 +15,7 @@ export namespace Components {
   interface DeckgoDeck {
     'blockSlide': (block: boolean) => Promise<void>;
     'cloneBackground': boolean;
+    'deleteActiveSlide': () => Promise<void>;
     'doPrint': () => Promise<void>;
     'embedded': boolean;
     'getActiveIndex': () => Promise<number>;

@@ -50,6 +50,7 @@ export class AppDeckNavigation {
 <li><a href="#app-deck-navigation-get-the-index-of-the-current-slide">Get the index of the current slide</a></li>
 <li><a href="#app-deck-navigation-get-the-length-of-the-deck">Get the length of the deck</a></li>
 <li><a href="#app-deck-navigation-block-or-unblock-the-slide">Block or unblock the slide</a></li>
+<li><a href="#app-deck-navigation-delete-the-active-slide">Delete the active slide</a></li>
 </ul>
 <h2 id="app-deck-navigation-introduction">Introduction</h2>
 <p>In the following examples we are accessing the features available on the deck element <code>&lt;deckgo-deck&gt;</code>.</p>
@@ -161,6 +162,9 @@ export class AppDeckNavigation {
     </deckgo-highlight-code><h2 id="app-deck-navigation-block-or-unblock-the-slide">Block or unblock the slide</h2>
 <deckgo-highlight-code language="javascript">
       <code slot="code">await deck.blockSlide(block: boolean);</code>
+    </deckgo-highlight-code><h3 id="app-deck-navigation-delete-the-active-slide">Delete the active slide</h3>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">await deck.deleteActiveSlide();</code>
     </deckgo-highlight-code></main>
 
         <app-footer></app-footer>

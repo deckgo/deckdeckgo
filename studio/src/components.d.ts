@@ -27,6 +27,7 @@ export namespace Components {
   }
   interface AppEditorToolbarAttributes extends StencilHTMLAttributes {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onDeleteSlide'?: (event: CustomEvent<void>) => void;
   }
 
   interface AppFeed {}

@@ -362,9 +362,13 @@ export class DeckdeckgoDeck {
 
   @Listen('slideDidLoad')
   async slideDidLoad() {
-    this.length++;
+    this.updateLength();
 
     await this.emitSlidesDidLoad();
+  }
+
+  private updateLength() {
+    this.length = this.el.children ? this.el.children.length : 0;
   }
 
   private emitSlidesDidLoad(): Promise<void> {
@@ -645,6 +649,30 @@ export class DeckdeckgoDeck {
 
     if (emitEvent) {
       this.slideToChange.emit(index);
+    }
+  }
+
+  @Method()
+  async deleteActiveSlide() {
+    if (this.activeIndex > this.length || this.activeIndex < 0) {
+      return;
+    }
+
+    const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
+
+    if (!slide) {
+      return;
+    }
+
+    slide.parentElement.removeChild(slide);
+
+    this.activeIndex = this.activeIndex > 0 ? this.activeIndex - 1 : 0;
+    this.length = this.length > 0 ? this.length - 1 : 0;
+
+    // TODO: If once needed, emit the deletion of the slide for the remote control
+
+    if (this.length > 0) {
+      await this.slideTo(this.activeIndex, 0);
     }
   }
 

@@ -29,6 +29,8 @@ export class AppEditorToolbar {
 
     @Event() private blockSlide: EventEmitter<boolean>;
 
+    @Event() private deleteSlide: EventEmitter<void>;
+
     async componentDidLoad() {
         await this.colorPickerListener(true);
         await this.backgroundPickerListener(true);
@@ -243,7 +245,11 @@ export class AppEditorToolbar {
                 return;
             }
 
-            this.selectedElement.parentElement.removeChild(this.selectedElement);
+            if (this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
+                this.deleteSlide.emit();
+            } else {
+                this.selectedElement.parentElement.removeChild(this.selectedElement);
+            }
 
             await this.hideToolbar();
 

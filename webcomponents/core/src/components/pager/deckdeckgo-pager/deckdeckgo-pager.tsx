@@ -19,7 +19,7 @@ export class DeckdeckgoPager {
   @Watch('length')
   @Watch('activeIndex')
   calculateProgression() {
-    this.progression = Math.round(((this.activeIndex + 1) / this.length) * 100);
+    this.progression = this.length > 0 ? Math.round(((this.activeIndex + 1) / this.length) * 100) : 0;
   }
 
   // Nice circular percentage chart from the article of Sergio Pedercini
