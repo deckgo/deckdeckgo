@@ -217,12 +217,14 @@ export class DeckdeckgoInlineEditor {
         this.bold = false;
         this.italic = false;
         this.underline = false;
+        this.color = null;
 
         await this.findStyle(content);
       } else if (content.parentElement) {
         this.bold = false;
         this.italic = false;
         this.underline = false;
+        this.color = null;
 
         await this.findStyle(content.parentElement);
       }
@@ -249,11 +251,7 @@ export class DeckdeckgoInlineEditor {
       if (DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()]) {
         this.disableBold = DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()] !== DeckdeckgoInlineEditorTag.P;
 
-        const style: CSSStyleDeclaration = window.getComputedStyle(node as HTMLElement);
-
-        // TODO
-        console.log(style.color, (node as HTMLElement).style.color);
-        this.color = style.color;
+        await this.findColor(node);
 
         resolve();
       } else {
@@ -261,10 +259,29 @@ export class DeckdeckgoInlineEditor {
         this.italic = await DeckdeckgoInlineEditorUtils.isItalic((node as HTMLElement));
         this.underline = await DeckdeckgoInlineEditorUtils.isUnderline((node as HTMLElement));
 
+        await this.findColor(node);
+
         await this.findStyle(node.parentNode);
 
         resolve();
       }
+    });
+  }
+
+  private findColor(node: Node): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (this.color && this.color !== '') {
+        resolve();
+        return;
+      }
+
+      if ((node as HTMLElement).style.color) {
+        this.color = (node as HTMLElement).style.color;
+      } else if (node instanceof HTMLFontElement && (node as HTMLFontElement).color) {
+        this.color = (node as HTMLFontElement).color;
+      }
+
+      resolve();
     });
   }
 
@@ -621,9 +638,7 @@ export class DeckdeckgoInlineEditor {
         </div>
       );
     } else {
-      const styleColor = {
-        'border-bottom': '2px solid ' + this.color
-      };
+      const styleColor = this.color ? {'border-bottom': '2px solid ' + this.color} : {};
 
       return [
         <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disableBold}
@@ -636,7 +651,10 @@ export class DeckdeckgoInlineEditor {
                 class={this.underline ? "underline active" : "underline"}>
             <span>U</span>
         </button>,
-        <button onClick={() => this.openColorPicker()}>
+
+        <div class="separator"></div>,
+
+        <button onClick={() => this.openColorPicker()} class="color">
             <span style={styleColor}>A</span>
         </button>,
 

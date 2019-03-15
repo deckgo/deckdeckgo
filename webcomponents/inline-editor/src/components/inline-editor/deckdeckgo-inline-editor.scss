@@ -58,7 +58,7 @@ div.deckgo-tools {
 
     transition: .1s background-color, .1s border-color, .1s fill;
 
-    background: rgba(0, 0, 0, 0);
+    background: transparent;
 
     font-size: var(--deckgo-inline-editor-button-font-size, 1.4rem);
     font-family: var(--deckgo-inline-editor-button-font-family, inherit);
@@ -86,6 +86,12 @@ div.deckgo-tools {
     &[disabled] {
       color: var(--deckgo-inline-editor-button-color-disabled, #4c8dff);
     }
+
+    &.color {
+      span {
+        border-bottom: 2px solid var(--deckgo-inline-editor-button-color, #fff);
+      }
+    }
   }
 
   input {
@@ -105,7 +111,7 @@ div.deckgo-tools {
     input {
       pointer-events: visible;
 
-      background: rgba(0,0,0,0);
+      background: transparent;
       width: 97%;
       height: 100%;
       color: var(--deckgo-inline-editor-link-color, #fff);
