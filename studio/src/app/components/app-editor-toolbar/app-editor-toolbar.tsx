@@ -1,4 +1,4 @@
-import {Component, Element, Method, State, Event, EventEmitter, Prop} from '@stencil/core';
+import {Component, Element, Method, State, Event, EventEmitter, Prop, Listen} from '@stencil/core';
 
 import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
 import {OverlayEventDetail} from '@ionic/core';
@@ -62,6 +62,15 @@ export class AppEditorToolbar {
 
             timer = setTimeout(func, timeout > 0 ? timeout : 300, event);
         };
+    }
+
+    @Listen('document:mouseInactivity')
+    inactivity($event: CustomEvent) {
+        this.displayed = $event.detail;
+
+        if (this.selectedElement) {
+            this.selectedElement.blur();
+        }
     }
 
     @Method()

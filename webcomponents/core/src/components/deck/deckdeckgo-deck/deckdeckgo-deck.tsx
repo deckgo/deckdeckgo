@@ -54,6 +54,8 @@ export class DeckdeckgoDeck {
   private cursorHidden: boolean = false;
   private idleMouseTimer: number;
 
+  @Event() mouseInactivity: EventEmitter<boolean>;
+
   async componentWillLoad() {
     await this.initRtl();
   }
@@ -764,6 +766,7 @@ export class DeckdeckgoDeck {
       }
 
       slider.style.setProperty('cursor', show ? 'initial' : 'none');
+      this.mouseInactivity.emit(show);
 
       this.cursorHidden = !show;
 

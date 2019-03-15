@@ -36,6 +36,7 @@ export namespace Components {
     'cloneBackground'?: boolean;
     'embedded'?: boolean;
     'keyboard'?: boolean;
+    'onMouseInactivity'?: (event: CustomEvent<boolean>) => void;
     'onSlideDrag'?: (event: CustomEvent<number>) => void;
     'onSlideNextDidChange'?: (event: CustomEvent<number>) => void;
     'onSlidePrevDidChange'?: (event: CustomEvent<number>) => void;
