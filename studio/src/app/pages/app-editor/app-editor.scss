@@ -58,6 +58,10 @@ app-editor {
 
   deckgo-inline-editor {
     --deckgo-inline-editor-button-mobile-color: var(--ion-color-dark);
+
+    ion-icon[slot="link"] {
+      padding-top: 10px;
+    }
   }
 
   @media screen and (min-width: 992px) {

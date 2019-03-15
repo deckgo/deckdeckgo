@@ -71,7 +71,7 @@ div.deckgo-tools {
     &.underline {
       &.active {
         span {
-          border-bottom: 2px solid var(--deckgo-inline-editor-button-color-active, #7044ff);
+          border-bottom: 2px solid var(--deckgo-inline-editor-button-color-active, black);
         }
       }
 
@@ -81,7 +81,7 @@ div.deckgo-tools {
     }
 
     &.active {
-      color: var(--deckgo-inline-editor-button-color-active, #7044ff);
+      color: var(--deckgo-inline-editor-button-color-active, black);
     }
 
     &[disabled] {

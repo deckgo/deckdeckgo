@@ -268,7 +268,9 @@ export class AppEditor {
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
-            <deckgo-inline-editor></deckgo-inline-editor>
+            <deckgo-inline-editor>
+                <ion-icon ios="ios-link" md="ios-link" slot="link"></ion-icon>
+            </deckgo-inline-editor>
         ];
     }
 }
