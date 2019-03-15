@@ -136,12 +136,26 @@ div.deckgo-tools {
     box-shadow: var(--deckgo-inline-editor-mobile-box-shadow, 0 0px 1px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.15));
     background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-mobile-background-top, #fff), var(--deckgo-inline-editor-mobile-background-bottom, #fff));
 
+    border: var(--deckgo-inline-editor-mobile-border, 0);
+
     button {
-      color: var(--deckgo-inline-editor-button-mobile-color, inherit);
+      color: var(--deckgo-inline-editor-button-mobile-color, black);
       padding: 0 4px;
 
       &.active {
         color: var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
+      }
+
+      &.underline {
+        &.active {
+          span {
+            border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
+          }
+        }
+
+        span {
+          border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color, black);
+        }
       }
 
       &[disabled] {
