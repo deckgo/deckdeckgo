@@ -24,6 +24,14 @@
 
   main {
     max-width: 100%;
+
+    &.idle {
+      deckgo-deck {
+        h1, h2, h3, p {
+          border: 1px solid transparent;
+        }
+      }
+    }
   }
 }
 

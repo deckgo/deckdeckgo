@@ -20,6 +20,9 @@ export class AppEditor {
 
     private slideIndex: number = 0;
 
+    @State()
+    private displaying: boolean = false;
+
     async componentWillLoad() {
         await this.initSlide();
     }
@@ -63,6 +66,11 @@ export class AppEditor {
 
             resolve();
         });
+    }
+
+    @Listen('document:mouseInactivity')
+    inactivity($event: CustomEvent) {
+        this.displaying = !$event.detail;
     }
 
     private async animatePrevNextSlide(next: boolean) {
@@ -265,7 +273,7 @@ export class AppEditor {
         return [
             <app-navigation publish={true}></app-navigation>,
             <ion-content padding>
-                <main>
+                <main class={this.displaying ? 'idle' : undefined}>
                     <deckgo-deck embedded={true}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
