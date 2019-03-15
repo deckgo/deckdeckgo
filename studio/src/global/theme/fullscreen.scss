@@ -7,10 +7,6 @@
     display: none;
   }
 
-  ion-footer {
-    display: none;
-  }
-
   ion-content {
     --padding-start: 0;
     --padding-end: 0;
@@ -20,6 +16,10 @@
 
   ion-split-pane.split-pane-visible ion-content {
     --padding-top: 0;
+  }
+
+  ion-footer.idle {
+    display: none;
   }
 
   main {

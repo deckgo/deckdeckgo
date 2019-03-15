@@ -285,7 +285,7 @@ export class AppEditor {
                     <app-editor-toolbar></app-editor-toolbar>
                 </main>
             </ion-content>,
-            <ion-footer>
+            <ion-footer class={this.displaying ? 'idle' : undefined}>
                 <ion-toolbar>
                     <ion-buttons slot="start">
                         <ion-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
