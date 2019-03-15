@@ -22,9 +22,6 @@ export class DeckdeckgoInlineEditor {
   @Element() el: HTMLElement;
 
   @State()
-  private type: DeckdeckgoInlineEditorTag;
-
-  @State()
   private bold: boolean = false;
 
   @State()
@@ -34,7 +31,7 @@ export class DeckdeckgoInlineEditor {
   private underline: boolean = false;
 
   @State()
-  private styledElements: boolean = false;
+  private disableBold: boolean = false;
 
   @Prop({mutable: true})
   mobile: boolean = false;
@@ -180,7 +177,6 @@ export class DeckdeckgoInlineEditor {
       if (tools) {
         const promises = [];
 
-        promises.push(this.initContentType(selection));
         promises.push(this.initStyle(selection));
         promises.push(this.initLink(selection));
 
@@ -190,36 +186,6 @@ export class DeckdeckgoInlineEditor {
       resolve(tools);
     });
   }
-
-  private initContentType(selection: Selection): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!selection || selection.rangeCount <= 0) {
-        resolve();
-        return;
-      }
-
-      const range: Range = selection.getRangeAt(0);
-
-      const content: Node = range.commonAncestorContainer ? range.commonAncestorContainer : this.selection.anchorNode;
-
-      if (!content) {
-        resolve();
-        return;
-      }
-
-      const container: HTMLElement = await this.getContainer(content);
-
-      if (!container || !container.nodeName) {
-        resolve();
-        return;
-      }
-
-      this.type = DeckdeckgoInlineEditorTag[container.nodeName.toUpperCase()];
-
-      resolve();
-    });
-  }
-
 
   private initStyle(selection: Selection): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -272,8 +238,7 @@ export class DeckdeckgoInlineEditor {
       }
 
       if (DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()]) {
-        const children: HTMLCollection = (node as HTMLElement).children;
-        this.styledElements = children && children.length > 0;
+        this.disableBold = DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()] !== DeckdeckgoInlineEditorTag.P;
         resolve();
       } else {
         this.bold = await DeckdeckgoInlineEditorUtils.isBold((node as HTMLElement));
@@ -348,80 +313,6 @@ export class DeckdeckgoInlineEditor {
     return e.changedTouches ? e.changedTouches[0] : e;
   }
 
-  private toggle(e: UIEvent, type: DeckdeckgoInlineEditorTag): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      if (!document) {
-        resolve();
-        return;
-      }
-
-      if (!this.selection || this.selection.rangeCount <= 0) {
-        resolve();
-        return;
-      }
-
-      const range: Range = this.selection.getRangeAt(0);
-
-      let content: Node = range.commonAncestorContainer ? range.commonAncestorContainer : this.selection.anchorNode;
-
-      if (!content) {
-        resolve();
-        return;
-      }
-
-      const container: HTMLElement = await this.getContainer(content);
-
-      // If click again, default is a paragraph
-      type = this.type === type ? DeckdeckgoInlineEditorTag.P : type;
-
-      if (this.type !== type) {
-        const element: HTMLElement = document.createElement(type.toString());
-
-        if (container.attributes && container.attributes.length) {
-          for (let i: number = 0; i < container.attributes.length; i++) {
-            element.setAttribute(container.attributes[i].name, container.attributes[i].value);
-          }
-        }
-
-        if (container.childNodes && container.childNodes.length > 0) {
-          const elements: HTMLElement[] = Array.prototype.slice.call(container.childNodes);
-          elements.forEach((e: HTMLElement) => {
-            element.appendChild(e);
-          })
-        }
-
-        container.parentElement.replaceChild(element, container);
-
-        this.type = type;
-      }
-
-      await this.reset(true);
-
-      resolve();
-    });
-  }
-
-  // TODO: Find a clever way to detect to root container
-  // We iterate until we find the root container which should be one of the supported content type
-  private getContainer(presumedTopLevelNode: Node): Promise<HTMLElement> {
-    return new Promise<HTMLElement>(async (resolve) => {
-      if (!presumedTopLevelNode) {
-        resolve(null);
-        return;
-      }
-
-      if (DeckdeckgoInlineEditorTag[presumedTopLevelNode.nodeName.toUpperCase()]) {
-        resolve(presumedTopLevelNode as HTMLElement);
-      } else {
-        const parentElement: HTMLElement = await this.getContainer(presumedTopLevelNode.parentNode);
-
-        resolve(parentElement);
-      }
-    });
-  }
-
   private async reset(clearSelection: boolean) {
     if (clearSelection) {
       await this.clearTheSelection();
@@ -429,7 +320,6 @@ export class DeckdeckgoInlineEditor {
 
     this.toolsActivated = false;
     this.selection = null;
-    this.type = null;
 
     this.linkInput = false;
     this.anchorLink = null;
@@ -653,37 +543,19 @@ export class DeckdeckgoInlineEditor {
       );
     } else {
       return (<div class={classNames}>
-        <button onClick={(e: UIEvent) => this.styleBold(e)}
-                disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P}
+        <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disableBold}
                 class={this.bold ? "bold active" : "bold"}>B
         </button>
         <button onClick={(e: UIEvent) => this.styleItalic(e)}
-                disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P}
                 class={this.italic ? "italic active" : "italic"}>I
         </button>
         <button onClick={(e: UIEvent) => this.styleUnderline(e)}
-                disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P}
                 class={this.underline ? "underline active" : "underline"}>U
         </button>
 
         <div class="separator"></div>
 
         <button onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>A</button>
-
-        <div class="separator"></div>
-
-        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H1)}
-                disabled={this.bold || this.italic || this.underline || this.styledElements}
-                class={this.type === DeckdeckgoInlineEditorTag.H1 ? "h1 active" : "h1"}>T
-        </button>
-        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H2)}
-                disabled={this.bold || this.italic || this.underline || this.styledElements}
-                class={this.type === DeckdeckgoInlineEditorTag.H2 ? "h2 active" : "h2"}>T
-        </button>
-        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H3)}
-                disabled={this.bold || this.italic || this.underline || this.styledElements}
-                class={this.type === DeckdeckgoInlineEditorTag.H3 ? "h3 active" : "h3"}>T
-        </button>
       </div>);
     }
   }

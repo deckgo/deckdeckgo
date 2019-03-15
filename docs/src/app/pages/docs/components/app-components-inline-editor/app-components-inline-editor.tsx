@@ -171,16 +171,6 @@ export class AppComponentsInlineEditor {
 <td>The buttons font family</td>
 </tr>
 <tr>
-<td>--deckgo-inline-editor-button-font-size-h2</td>
-<td>1.2rem</td>
-<td>The button h2 font size</td>
-</tr>
-<tr>
-<td>--deckgo-inline-editor-button-font-size-h3</td>
-<td>1rem</td>
-<td>The button h3 font size</td>
-</tr>
-<tr>
 <td>--deckgo-inline-editor-button-color-active</td>
 <td>#ffce00</td>
 <td>The color of the buttons when active</td>

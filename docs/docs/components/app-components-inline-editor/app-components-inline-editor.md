@@ -82,8 +82,6 @@ The `<deckgo-inline-editor/>` could be styled using the following CSS4 variables
 | --deckgo-inline-editor-button-color | #fff | The buttons color |
 | --deckgo-inline-editor-button-font-size | 1.4rem | The buttons font size |
 | --deckgo-inline-editor-button-font-family | inherit | The buttons font family |
-| --deckgo-inline-editor-button-font-size-h2 | 1.2rem | The button h2 font size |
-| --deckgo-inline-editor-button-font-size-h3 | 1rem | The button h3 font size |
 | --deckgo-inline-editor-button-color-active | #ffce00 | The color of the buttons when active |
 | --deckgo-inline-editor-button-color-disabled | #4c8dff | The color of the buttons when disabled  |
 | --deckgo-inline-editor-link-color | #fff | The color of the input field for the url |

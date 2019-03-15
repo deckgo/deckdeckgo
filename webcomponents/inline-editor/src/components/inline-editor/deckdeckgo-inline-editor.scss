@@ -69,14 +69,6 @@ div.deckgo-tools {
       text-decoration: underline;
     }
 
-    &.h2 {
-      font-size: var(--deckgo-inline-editor-button-font-size-h2, 1.2rem);
-    }
-
-    &.h3 {
-      font-size: var(--deckgo-inline-editor-button-font-size-h3, 1rem);
-    }
-
     &.active {
       color: var(--deckgo-inline-editor-button-color-active, #ffce00);
     }
