@@ -10,6 +10,7 @@ app-home {
 
     @media (max-width: 1200px) {
       grid-template-columns: minmax(100px, max-content);
+      justify-content: center;
 
       app-popular {
         display: none;
