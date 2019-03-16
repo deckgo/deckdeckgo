@@ -742,7 +742,7 @@ export class DeckdeckgoDeck {
 
     this.idleMouseTimer = setTimeout(async () => {
       await this.showHideMouseCursor(false);
-    }, 4000);
+    }, 2000);
   }
 
   private showHideMouseCursor(show: boolean): Promise<void> {
