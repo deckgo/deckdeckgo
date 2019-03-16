@@ -1,22 +1,22 @@
-import {DeckdeckgoSlideTemplate} from './deckdeckgo-slide-template';
+import {SlideTemplate} from '../models/slide-template';
 
 export class DeckdeckgoStudioCreateSlide {
 
     static DEFAULT_TITLE: string = 'Click to add title';
     static DEFAULT_CONTENT: string = 'Click to add content';
 
-    static createSlide(template: DeckdeckgoSlideTemplate): Promise<any> {
+    static createSlide(template: SlideTemplate): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!document) {
                 resolve(null);
                 return;
             }
 
-            if (template === DeckdeckgoSlideTemplate.TITLE) {
+            if (template === SlideTemplate.TITLE) {
                 resolve(await this.createSlideTitle());
-            } else if (template === DeckdeckgoSlideTemplate.CONTENT) {
+            } else if (template === SlideTemplate.CONTENT) {
                 resolve(await this.createSlideContent());
-            } else if (template === DeckdeckgoSlideTemplate.SPLIT) {
+            } else if (template === SlideTemplate.SPLIT) {
                 resolve(await this.createSlideSplit());
             } else {
                 resolve(null);
