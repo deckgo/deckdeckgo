@@ -1,0 +1,11 @@
+ion-footer {
+  ion-toolbar {
+    --ion-toolbar-border-color: transparent;
+    --ion-toolbar-background: var(--ion-color-light);
+  }
+
+  &[class*="footer"]::before {
+    background-image: none;
+  }
+}
+

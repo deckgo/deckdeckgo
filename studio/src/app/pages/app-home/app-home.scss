@@ -1,0 +1,20 @@
+app-home {
+  main {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    justify-items: center;
+
+    app-feed {
+      max-width: 720px;
+    }
+
+    @media (max-width: 1200px) {
+      grid-template-columns: minmax(100px, max-content);
+      justify-content: center;
+
+      app-popular {
+        display: none;
+      }
+    }
+  }
+}

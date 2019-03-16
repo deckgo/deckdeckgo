@@ -68,6 +68,11 @@ export class AppDeckEvents {
 <td>number</td>
 <td>Emitted before the active slide has changed. Emit the transformX value of the deck.</td>
 </tr>
+<tr>
+<td>mouseInactivity</td>
+<td>boolean</td>
+<td>Emitted when the mouse is idle and will be hidden.</td>
+</tr>
 </tbody></table>
 </main>
 

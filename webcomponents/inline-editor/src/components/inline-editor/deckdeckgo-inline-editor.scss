@@ -4,9 +4,10 @@ div.deckgo-tools {
 
   pointer-events: none;
 
-  background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-background-top, rgba(56, 128, 255, .99)), var(--deckgo-inline-editor-background-bottom, #3171e0));
+  background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-background-top, white), var(--deckgo-inline-editor-background-bottom, white));
   background-repeat: repeat-x;
 
+  border: var(--deckgo-inline-editor-border, 1px solid #3880ff);
   border-radius: var(--deckgo-inline-editor-border-radius, 8px);
   padding: var(--deckgo-inline-editor-padding, 0 8px);
 
@@ -16,7 +17,9 @@ div.deckgo-tools {
   justify-content: center;
   align-items: center;
 
-  width: 270px;
+  width: 210px;
+
+  transform: var(--deckgo-inline-editor-transform);
 
   &.deckgo-tools-sticky, &.deckgo-tools-mobile.deckgo-tools-sticky {
     position: fixed;
@@ -34,7 +37,7 @@ div.deckgo-tools {
     width: 1px;
     margin: 0 6px;
     height: 24px;
-    background: var(--deckgo-inline-editor-separator-background, rgba(255, 255, 255, .2));
+    background: var(--deckgo-inline-editor-separator-background, rgba(56, 128, 255, .2));
   }
 
   button {
@@ -46,15 +49,17 @@ div.deckgo-tools {
     height: 44px;
     line-height: 44px;
 
+    z-index: var(--deckgo-inline-editor-button-zindex, 2);
+
     display: inline-block;
     vertical-align: middle;
 
     border: 0;
-    color: var(--deckgo-inline-editor-button-color, #fff);
+    color: var(--deckgo-inline-editor-button-color, #3880ff);
 
     transition: .1s background-color, .1s border-color, .1s fill;
 
-    background: rgba(0, 0, 0, 0);
+    background: transparent;
 
     font-size: var(--deckgo-inline-editor-button-font-size, 1.4rem);
     font-family: var(--deckgo-inline-editor-button-font-family, inherit);
@@ -64,24 +69,36 @@ div.deckgo-tools {
     }
 
     &.underline {
-      text-decoration: underline;
-    }
+      &.active {
+        span {
+          border-bottom: 2px solid var(--deckgo-inline-editor-button-color-active, black);
+        }
+      }
 
-    &.h2 {
-      font-size: var(--deckgo-inline-editor-button-font-size-h2, 1.2rem);
-    }
-
-    &.h3 {
-      font-size: var(--deckgo-inline-editor-button-font-size-h3, 1rem);
+      span {
+        border-bottom: 2px solid var(--deckgo-inline-editor-button-color, #3880ff);
+      }
     }
 
     &.active {
-      color: var(--deckgo-inline-editor-button-color-active, #ffce00);
+      color: var(--deckgo-inline-editor-button-color-active, black);
     }
 
     &[disabled] {
-      color: var(--deckgo-inline-editor-button-color-disabled, #4c8dff);
+      color: var(--deckgo-inline-editor-button-color-disabled, #f4f5f8);
     }
+
+    &.color {
+      span {
+        border-bottom: 2px solid var(--deckgo-inline-editor-button-color, #3880ff);
+      }
+    }
+  }
+
+  input[name="color-picker"] {
+    position: absolute;
+    left: 144px;
+    visibility: hidden;
   }
 
   div.link {
@@ -90,19 +107,21 @@ div.deckgo-tools {
     height: 44px;
     line-height: 44px;
 
+    z-index: var(--deckgo-inline-editor-link-zindex, 2);
+
     input {
       pointer-events: visible;
 
-      background: rgba(0,0,0,0);
+      background: transparent;
       width: 97%;
       height: 100%;
-      color: var(--deckgo-inline-editor-link-color, #fff);
+      color: var(--deckgo-inline-editor-link-color, #3880ff);
       border: none;
       outline: 0;
       font-size: 16px;
 
       &::placeholder {
-        color: var(--deckgo-inline-editor-link-placeholder-color, #fff);
+        color: var(--deckgo-inline-editor-link-placeholder-color, #3880ff);
       }
     }
   }
@@ -117,12 +136,26 @@ div.deckgo-tools {
     box-shadow: var(--deckgo-inline-editor-mobile-box-shadow, 0 0px 1px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.15));
     background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-mobile-background-top, #fff), var(--deckgo-inline-editor-mobile-background-bottom, #fff));
 
+    border: var(--deckgo-inline-editor-mobile-border, 0);
+
     button {
-      color: inherit;
+      color: var(--deckgo-inline-editor-button-mobile-color, black);
       padding: 0 4px;
 
       &.active {
         color: var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
+      }
+
+      &.underline {
+        &.active {
+          span {
+            border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
+          }
+        }
+
+        span {
+          border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color, black);
+        }
       }
 
       &[disabled] {

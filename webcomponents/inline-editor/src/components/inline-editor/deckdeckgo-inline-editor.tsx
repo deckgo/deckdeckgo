@@ -22,9 +22,6 @@ export class DeckdeckgoInlineEditor {
   @Element() el: HTMLElement;
 
   @State()
-  private type: DeckdeckgoInlineEditorTag;
-
-  @State()
   private bold: boolean = false;
 
   @State()
@@ -34,16 +31,13 @@ export class DeckdeckgoInlineEditor {
   private underline: boolean = false;
 
   @State()
-  private styledElements: boolean = false;
+  private color: string;
+
+  @State()
+  private disableBold: boolean = false;
 
   @Prop({mutable: true})
   mobile: boolean = false;
-
-  @Prop()
-  toolbarOffsetTop: number;
-
-  @Prop()
-  toolbarOffsetStart: number;
 
   @Prop()
   stickyDesktop: boolean = false;
@@ -67,10 +61,16 @@ export class DeckdeckgoInlineEditor {
 
   private linkUrl: string;
 
-  componentDidLoad() {
+  async componentDidLoad() {
+    await this.colorPickerListener(true);
+
     if (!this.mobile) {
       this.mobile = DeckdeckgoInlineEditorUtils.isMobile();
     }
+  }
+
+  async componentDidUnload() {
+    await this.colorPickerListener(false);
   }
 
   @Listen('document:mousedown', {passive: true})
@@ -161,14 +161,6 @@ export class DeckdeckgoInlineEditor {
         let top: number = this.unifyEvent(this.anchorEvent).clientY;
         let left: number = this.unifyEvent(this.anchorEvent).clientX;
 
-        if (this.toolbarOffsetStart > 0 || this.toolbarOffsetStart < 0) {
-          left = left + this.toolbarOffsetStart;
-        }
-
-        if (this.toolbarOffsetTop > 0 || this.toolbarOffsetTop < 0) {
-          top = top + this.toolbarOffsetTop;
-        }
-
         if (this.mobile) {
           top = top + 40;
         }
@@ -194,7 +186,6 @@ export class DeckdeckgoInlineEditor {
       if (tools) {
         const promises = [];
 
-        promises.push(this.initContentType(selection));
         promises.push(this.initStyle(selection));
         promises.push(this.initLink(selection));
 
@@ -204,31 +195,6 @@ export class DeckdeckgoInlineEditor {
       resolve(tools);
     });
   }
-
-  private initContentType(selection: Selection): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!selection || selection.rangeCount <= 0) {
-        resolve();
-        return;
-      }
-
-      const range: Range = selection.getRangeAt(0);
-
-      const content: Node = range.commonAncestorContainer ? range.commonAncestorContainer : this.selection.anchorNode;
-
-      if (!content) {
-        resolve();
-        return;
-      }
-
-      const container: HTMLElement = await this.getContainer(content);
-
-      this.type = DeckdeckgoInlineEditorTag[container.nodeName.toUpperCase()];
-
-      resolve();
-    });
-  }
-
 
   private initStyle(selection: Selection): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -251,12 +217,14 @@ export class DeckdeckgoInlineEditor {
         this.bold = false;
         this.italic = false;
         this.underline = false;
+        this.color = null;
 
         await this.findStyle(content);
       } else if (content.parentElement) {
         this.bold = false;
         this.italic = false;
         this.underline = false;
+        this.color = null;
 
         await this.findStyle(content.parentElement);
       }
@@ -281,18 +249,39 @@ export class DeckdeckgoInlineEditor {
       }
 
       if (DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()]) {
-        const children: HTMLCollection = (node as HTMLElement).children;
-        this.styledElements = children && children.length > 0;
+        this.disableBold = DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()] !== DeckdeckgoInlineEditorTag.P;
+
+        await this.findColor(node);
+
         resolve();
       } else {
         this.bold = await DeckdeckgoInlineEditorUtils.isBold((node as HTMLElement));
         this.italic = await DeckdeckgoInlineEditorUtils.isItalic((node as HTMLElement));
         this.underline = await DeckdeckgoInlineEditorUtils.isUnderline((node as HTMLElement));
 
+        await this.findColor(node);
+
         await this.findStyle(node.parentNode);
 
         resolve();
       }
+    });
+  }
+
+  private findColor(node: Node): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (this.color && this.color !== '') {
+        resolve();
+        return;
+      }
+
+      if ((node as HTMLElement).style.color) {
+        this.color = (node as HTMLElement).style.color;
+      } else if (node instanceof HTMLFontElement && (node as HTMLFontElement).color) {
+        this.color = (node as HTMLFontElement).color;
+      }
+
+      resolve();
     });
   }
 
@@ -357,80 +346,6 @@ export class DeckdeckgoInlineEditor {
     return e.changedTouches ? e.changedTouches[0] : e;
   }
 
-  private toggle(e: UIEvent, type: DeckdeckgoInlineEditorTag): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      if (!document) {
-        resolve();
-        return;
-      }
-
-      if (!this.selection || this.selection.rangeCount <= 0) {
-        resolve();
-        return;
-      }
-
-      const range: Range = this.selection.getRangeAt(0);
-
-      let content: Node = range.commonAncestorContainer ? range.commonAncestorContainer : this.selection.anchorNode;
-
-      if (!content) {
-        resolve();
-        return;
-      }
-
-      const container: HTMLElement = await this.getContainer(content);
-
-      // If click again, default is a paragraph
-      type = this.type === type ? DeckdeckgoInlineEditorTag.P : type;
-
-      if (this.type !== type) {
-        const element: HTMLElement = document.createElement(type.toString());
-
-        if (container.attributes && container.attributes.length) {
-          for (let i: number = 0; i < container.attributes.length; i++) {
-            element.setAttribute(container.attributes[i].name, container.attributes[i].value);
-          }
-        }
-
-        if (container.childNodes && container.childNodes.length > 0) {
-          const elements: HTMLElement[] = Array.prototype.slice.call(container.childNodes);
-          elements.forEach((e: HTMLElement) => {
-            element.appendChild(e);
-          })
-        }
-
-        container.parentElement.replaceChild(element, container);
-
-        this.type = type;
-      }
-
-      await this.reset(true);
-
-      resolve();
-    });
-  }
-
-  // TODO: Find a clever way to detect to root container
-  // We iterate until we find the root container which should be one of the supported content type
-  private getContainer(presumedTopLevelNode: Node): Promise<HTMLElement> {
-    return new Promise<HTMLElement>(async (resolve) => {
-      if (!presumedTopLevelNode) {
-        resolve(null);
-        return;
-      }
-
-      if (DeckdeckgoInlineEditorTag[presumedTopLevelNode.nodeName.toUpperCase()]) {
-        resolve(presumedTopLevelNode as HTMLElement);
-      } else {
-        const parentElement: HTMLElement = await this.getContainer(presumedTopLevelNode.parentNode);
-
-        resolve(parentElement);
-      }
-    });
-  }
-
   private async reset(clearSelection: boolean) {
     if (clearSelection) {
       await this.clearTheSelection();
@@ -438,7 +353,6 @@ export class DeckdeckgoInlineEditor {
 
     this.toolsActivated = false;
     this.selection = null;
-    this.type = null;
 
     this.linkInput = false;
     this.anchorLink = null;
@@ -644,6 +558,64 @@ export class DeckdeckgoInlineEditor {
     return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile && !DeckdeckgoInlineEditorUtils.isIOS());
   }
 
+  // Color picker
+
+  private colorPickerListener(bind: boolean): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
+
+      if (!colorPicker) {
+        resolve();
+        return;
+      }
+
+      if (bind) {
+        colorPicker.addEventListener('change', this.selectColor, false);
+      } else {
+        colorPicker.removeEventListener('change', this.selectColor, true);
+      }
+
+
+      resolve();
+    });
+  }
+
+  private selectColor = async ($event) => {
+    if (!this.selection) {
+      return;
+    }
+
+    this.color = $event.target.value;
+
+    if (!this.selection || this.selection.rangeCount <= 0 || !document) {
+      return;
+    }
+
+    const text: string = this.selection.toString();
+
+    if (!text || text.length <= 0) {
+      return;
+    }
+
+    document.execCommand('foreColor', false, this.color);
+  };
+
+  private openColorPicker(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
+
+      if (!colorPicker) {
+        resolve();
+        return;
+      }
+
+      colorPicker.click();
+
+      this.toolsActivated = false;
+
+      resolve();
+    });
+  }
 
   render() {
     let classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
@@ -652,49 +624,46 @@ export class DeckdeckgoInlineEditor {
       classNames += ' deckgo-tools-sticky';
     }
 
+    return <div class={classNames}>
+      {this.renderActions()}
+      <input type="color" name="color-picker" value={this.color}></input>
+    </div>;
+  }
+
+  private renderActions() {
     if (this.linkInput) {
       return (
-        <div class={classNames}>
-          <div class="link">
-            <input autofocus placeholder="Add a link..." onInput={($event: UIEvent) => this.handleLinkInput($event)}></input>
-          </div>
+        <div class="link">
+          <input autofocus placeholder="Add a link..." onInput={($event: UIEvent) => this.handleLinkInput($event)}></input>
         </div>
       );
     } else {
-      return (<div class={classNames}>
-        <button onClick={(e: UIEvent) => this.styleBold(e)}
-                disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P}
+      const styleColor = this.color ? {'border-bottom': '2px solid ' + this.color} : {};
+
+      return [
+        <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disableBold}
                 class={this.bold ? "bold active" : "bold"}>B
-        </button>
+        </button>,
         <button onClick={(e: UIEvent) => this.styleItalic(e)}
-                disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P}
                 class={this.italic ? "italic active" : "italic"}>I
-        </button>
+        </button>,
         <button onClick={(e: UIEvent) => this.styleUnderline(e)}
-                disabled={this.type !== undefined && this.type !== DeckdeckgoInlineEditorTag.P}
-                class={this.underline ? "underline active" : "underline"}>U
-        </button>
+                class={this.underline ? "underline active" : "underline"}>
+            <span>U</span>
+        </button>,
 
-        <div class="separator"></div>
+        <div class="separator"></div>,
 
-        <button onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>A</button>
+        <button onClick={() => this.openColorPicker()} class="color">
+            <span style={styleColor}>A</span>
+        </button>,
 
-        <div class="separator"></div>
+        <div class="separator"></div>,
 
-        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H1)}
-                disabled={this.bold || this.italic || this.underline || this.styledElements}
-                class={this.type === DeckdeckgoInlineEditorTag.H1 ? "h1 active" : "h1"}>T
+        <button onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>
+          <slot name="link"></slot>
         </button>
-        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H2)}
-                disabled={this.bold || this.italic || this.underline || this.styledElements}
-                class={this.type === DeckdeckgoInlineEditorTag.H2 ? "h2 active" : "h2"}>T
-        </button>
-        <button onClick={(e: UIEvent) => this.toggle(e, DeckdeckgoInlineEditorTag.H3)}
-                disabled={this.bold || this.italic || this.underline || this.styledElements}
-                class={this.type === DeckdeckgoInlineEditorTag.H3 ? "h3 active" : "h3"}>T
-        </button>
-      </div>);
+      ];
     }
   }
-
 }

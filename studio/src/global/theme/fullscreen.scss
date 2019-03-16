@@ -1,0 +1,54 @@
+@mixin fullscreen() {
+  &:-moz-full-screen {
+    @content;
+  }
+
+  &:-webkit-full-screen {
+    @content;
+  }
+
+  &:-ms-fullscreen {
+    @content;
+  }
+
+  &:fullscreen {
+    @content;
+  }
+}
+
+@include fullscreen() {
+  #ion-menu {
+    display: none;
+  }
+
+  app-navigation {
+    display: none;
+  }
+
+  ion-content {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+  }
+
+  ion-split-pane.split-pane-visible ion-content {
+    --padding-top: 0;
+  }
+
+  ion-footer.idle {
+    display: none;
+  }
+
+  main {
+    max-width: 100%;
+
+    &.idle {
+      deckgo-deck {
+        h1, h2, h3, p {
+          border: 1px solid transparent;
+        }
+      }
+    }
+  }
+}

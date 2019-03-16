@@ -1,0 +1,12 @@
+app-slide-picker {
+  ion-list {
+
+    ion-list-header {
+      font-size: var(--font-size-h1);
+    }
+
+    ion-item {
+      --border-color: inherit;
+    }
+  }
+}

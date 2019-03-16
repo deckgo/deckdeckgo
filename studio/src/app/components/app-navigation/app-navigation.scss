@@ -1,0 +1,47 @@
+app-navigation {
+  ion-anchor {
+    --color: white;
+  }
+
+  div[slot="end"] {
+    z-index: 2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+}
+
+ion-split-pane {
+
+  app-navigation {
+      ion-button {
+        &.presentation {
+          --background: white;
+          --color: #000;
+        }
+
+        &.publish {
+          --background: white;
+          --color: #000;
+        }
+      }
+  }
+
+  &:not(.split-pane-visible) {
+    app-navigation {
+      ion-button {
+        &.presentation {
+          --background: var(--ion-color-primary);
+          --color: white;
+        }
+
+        &.publish {
+          --background: var(--ion-color-tertiary);
+          --color: white;
+        }
+      }
+    }
+  }
+}

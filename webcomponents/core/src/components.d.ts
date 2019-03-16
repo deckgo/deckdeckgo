@@ -13,11 +13,14 @@ import '@stencil/core';
 export namespace Components {
 
   interface DeckgoDeck {
+    'blockSlide': (block: boolean) => Promise<void>;
     'cloneBackground': boolean;
+    'deleteActiveSlide': () => Promise<void>;
     'doPrint': () => Promise<void>;
     'embedded': boolean;
     'getActiveIndex': () => Promise<number>;
     'getLength': () => Promise<number>;
+    'initSlideSize': () => Promise<void>;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;
     'isMobile': () => Promise<boolean>;
@@ -28,11 +31,13 @@ export namespace Components {
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
     'toggleFullScreen': () => Promise<void>;
+    'toggleKeyboardAssist': (state: boolean) => void;
   }
   interface DeckgoDeckAttributes extends StencilHTMLAttributes {
     'cloneBackground'?: boolean;
     'embedded'?: boolean;
     'keyboard'?: boolean;
+    'onMouseInactivity'?: (event: CustomEvent<boolean>) => void;
     'onSlideDrag'?: (event: CustomEvent<number>) => void;
     'onSlideNextDidChange'?: (event: CustomEvent<number>) => void;
     'onSlidePrevDidChange'?: (event: CustomEvent<number>) => void;

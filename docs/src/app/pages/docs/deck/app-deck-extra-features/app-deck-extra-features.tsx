@@ -35,6 +35,7 @@ export class AppDeckExtraFeatures {
 <li><a href="#app-deck-extra-features-toggle-onoff-the-full-screen-mode">Toggle on/off the full screen mode</a></li>
 <li><a href="#app-deck-extra-features-print-the-presentation">Print the presentation</a></li>
 <li><a href="#app-deck-extra-features-mobile">Mobile</a></li>
+<li><a href="#app-deck-extra-features-init-slide-size">initSlideSize</a></li>
 </ul>
 <h2 id="app-deck-extra-features-toggle-onoff-the-full-screen-mode">Toggle on/off the full screen mode</h2>
 <deckgo-highlight-code language="javascript">
@@ -46,6 +47,10 @@ export class AppDeckExtraFeatures {
 <p>A util method to know if the current presentation is browsed on a mobile device or not.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">await deck.isMobile(); &#47;&#47; resolve a boolean</code>
+    </deckgo-highlight-code><h2 id="app-deck-extra-features-init-slide-size">Init slide size</h2>
+<p>In case you would like to recalculate the slides&#39; size (width and height)</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">await deck.initSlideSize();</code>
     </deckgo-highlight-code></main>
 
         <app-footer></app-footer>

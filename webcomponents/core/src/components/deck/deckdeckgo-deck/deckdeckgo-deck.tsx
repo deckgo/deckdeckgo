@@ -35,7 +35,7 @@ export class DeckdeckgoDeck {
   private deckTranslateX: number = 0;
   private autoSwipeRatio: number = 10;
 
-  private blockSlide: boolean = false;
+  private block: boolean = false;
 
   @State()
   private activeIndex: number = 0;
@@ -54,12 +54,14 @@ export class DeckdeckgoDeck {
   private cursorHidden: boolean = false;
   private idleMouseTimer: number;
 
+  @Event() mouseInactivity: EventEmitter<boolean>;
+
   async componentWillLoad() {
     await this.initRtl();
   }
 
   async componentDidLoad() {
-    await this.initSlideWidth();
+    await this.initSlideSize();
 
     this.initWindowResize();
     this.initKeyboardAssist();
@@ -79,7 +81,7 @@ export class DeckdeckgoDeck {
   private initWindowResize() {
     if (window) {
       window.addEventListener('resize', DeckdeckgoUtils.debounce(async () => {
-        await this.initSlideWidth();
+        await this.initSlideSize();
         await this.slideTo(this.activeIndex);
 
         const toggleFullscreen: boolean = DeckdeckgoUtils.isFullscreen();
@@ -89,7 +91,8 @@ export class DeckdeckgoDeck {
     }
   }
 
-  private initSlideWidth(): Promise<void> {
+  @Method()
+  initSlideSize(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
@@ -99,16 +102,16 @@ export class DeckdeckgoDeck {
       }
 
       if (!this.embedded) {
-        await this.initSlideWidthStandard(slider);
+        await this.initSlideSizeStandard(slider);
       } else {
-        await this.initSlideWidthEmbedded(slider);
+        await this.initSlideSizeEmbedded(slider);
       }
 
       resolve();
     });
   }
 
-  private initSlideWidthStandard(slider: HTMLElement): Promise<void> {
+  private initSlideSizeStandard(slider: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!window || !screen) {
         resolve();
@@ -125,7 +128,7 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private initSlideWidthEmbedded(slider: HTMLElement): Promise<void> {
+  private initSlideSizeEmbedded(slider: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!slider.offsetParent) {
         resolve();
@@ -137,7 +140,7 @@ export class DeckdeckgoDeck {
           slider.style.setProperty('--slide-width', '' + slider.offsetParent.clientWidth + 'px');
         }
 
-        if (slider.offsetParent.clientHeight) {
+        if (slider.offsetParent.clientHeight > 0) {
           slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
         }
       }
@@ -147,22 +150,40 @@ export class DeckdeckgoDeck {
   }
 
   private initKeyboardAssist() {
-    if (this.keyboard) {
-      document.addEventListener('keydown', async (e) => {
-        if (e.defaultPrevented) {
-          return;
-        }
-
-        if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          await this.slideNextPrev(false, true);
-        } else if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          await this.slideNextPrev(true, true);
-        }
-      });
+    if (document && this.keyboard) {
+      document.addEventListener('keydown', this.keyboardAssist,{passive: true});
     }
   }
+
+  @Method()
+  toggleKeyboardAssist(state: boolean) {
+    if (!document) {
+      return;
+    }
+
+    if (!this.keyboard) {
+      return;
+    }
+
+    if (state) {
+      document.addEventListener('keydown', this.keyboardAssist,{passive: true});
+    } else {
+      // @ts-ignore
+      document.removeEventListener('keydown', this.keyboardAssist, {passive: true});
+    }
+  }
+
+  private keyboardAssist = async ($event: KeyboardEvent) => {
+    if ($event.defaultPrevented) {
+      return;
+    }
+
+    if ($event.key === 'ArrowLeft') {
+      await this.slideNextPrev(false, true);
+    } else if ($event.key === 'ArrowRight') {
+      await this.slideNextPrev(true, true);
+    }
+  };
 
   /* BEGIN: Handle swipe */
 
@@ -203,7 +224,12 @@ export class DeckdeckgoDeck {
 
   @Listen('scrolling')
   scrolling($event: CustomEvent) {
-    this.blockSlide = $event ? $event.detail : false;
+    this.block = $event ? $event.detail : false;
+  }
+
+  @Listen('keypress')
+  async keypress() {
+    await this.clearMouseCursorTimer(true);
   }
 
   private start(e: Event) {
@@ -213,7 +239,7 @@ export class DeckdeckgoDeck {
   private async move(e: Event) {
     await this.clearMouseCursorTimer(true);
 
-    if (this.blockSlide) {
+    if (this.block) {
       return;
     }
 
@@ -232,7 +258,7 @@ export class DeckdeckgoDeck {
   }
 
   private async stop(e: Event) {
-    if (this.blockSlide) {
+    if (this.block) {
       return;
     }
 
@@ -361,9 +387,13 @@ export class DeckdeckgoDeck {
 
   @Listen('slideDidLoad')
   async slideDidLoad() {
-    this.length++;
+    this.updateLength();
 
     await this.emitSlidesDidLoad();
+  }
+
+  private updateLength() {
+    this.length = this.el.children ? this.el.children.length : 0;
   }
 
   private emitSlidesDidLoad(): Promise<void> {
@@ -634,7 +664,9 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    this.deckTranslateX = index * window.innerWidth * (this.rtl ? 1 : -1);
+    const slideWidth: number = this.length > 0 && slider.offsetWidth > 0 ? (slider.offsetWidth / this.length) : window.innerWidth;
+
+    this.deckTranslateX = index * slideWidth * (this.rtl ? 1 : -1);
     this.activeIndex = index;
 
     await this.lazyLoadContent(this.activeIndex);
@@ -643,6 +675,35 @@ export class DeckdeckgoDeck {
     if (emitEvent) {
       this.slideToChange.emit(index);
     }
+  }
+
+  @Method()
+  async deleteActiveSlide() {
+    if (this.activeIndex > this.length || this.activeIndex < 0) {
+      return;
+    }
+
+    const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
+
+    if (!slide) {
+      return;
+    }
+
+    slide.parentElement.removeChild(slide);
+
+    this.activeIndex = this.activeIndex > 0 ? this.activeIndex - 1 : 0;
+    this.length = this.length > 0 ? this.length - 1 : 0;
+
+    // TODO: If once needed, emit the deletion of the slide for the remote control
+
+    if (this.length > 0) {
+      await this.slideTo(this.activeIndex, 0);
+    }
+  }
+
+  @Method()
+  async blockSlide(block: boolean) {
+    this.block = block;
   }
 
   /* END: Manual sliding */
@@ -704,7 +765,7 @@ export class DeckdeckgoDeck {
 
     this.idleMouseTimer = setTimeout(async () => {
       await this.showHideMouseCursor(false);
-    }, 4000);
+    }, 2000);
   }
 
   private showHideMouseCursor(show: boolean): Promise<void> {
@@ -728,6 +789,7 @@ export class DeckdeckgoDeck {
       }
 
       slider.style.setProperty('cursor', show ? 'initial' : 'none');
+      this.mouseInactivity.emit(show);
 
       this.cursorHidden = !show;
 

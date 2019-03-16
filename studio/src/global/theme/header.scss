@@ -1,0 +1,30 @@
+ion-split-pane {
+
+  --ion-toolbar-background: var(--ion-color-primary);
+  color: white;
+
+  &:not(.split-pane-visible) {
+    --ion-toolbar-background: transparent;
+  }
+}
+
+
+ion-header {
+  &[class*="header"]::after {
+    background-image: none;
+  }
+}
+
+ion-header {
+  ion-title {
+    --deckgo-logo-vertical-align: bottom;
+    --deckgo-logo-margin-end: 6px;
+    --deckgo-logo-size: 20px
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-split-pane {
+    --ion-toolbar-background: var(--ion-tab-bar-background);
+  }
+}

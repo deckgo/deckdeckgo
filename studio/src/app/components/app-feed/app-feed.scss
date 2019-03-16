@@ -1,0 +1,72 @@
+app-feed {
+  ion-card[class*="sc-ion-card"] {
+    --background: white;
+
+    ion-card-content:not(.first-card) {
+      display: flex;
+      align-items: stretch;
+      flex: 1 1 auto;
+      width: 100%;
+
+      div {
+        &.preview {
+          width: 15rem;
+          min-width: 8rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+
+    @media screen and (max-width: 720px) {
+      ion-card-content {
+        ion-card-subtitle {
+          display: none;
+        }
+      }
+    }
+
+    div.deck-container {
+      width: 100%;
+      height: 250px;
+      position: relative;
+      overflow: hidden;
+
+      deckgo-deck {
+        --font-size-h1: 18px;
+
+        --slide-padding-top: 16px;
+        --slide-padding-end: 16px;
+        --slide-padding-bottom: 16px;
+        --slide-padding-start: 16px;
+
+        --slide-split-padding-top: 16px;
+        --slide-split-padding-end: 16px;
+        --slide-split-padding-bottom: 16px;
+        --slide-split-padding-start: 16px;
+
+        --slide-split-title-display: block;
+        --slide-split-title-padding-top: 4px;
+        --slide-split-title-padding-end: 16px;
+        --slide-split-title-padding-bottom: 4px;
+        --slide-split-title-padding-start: 16px;
+
+        --slide-chart-margin-top: 4px;
+        --slide-chart-margin-start: 4px;
+        --slide-chart-margin-end: 4px;
+        --slide-chart-margin-bottom: 4px;
+        --deckgo-chart-text-display: none;
+
+        --slide-author-padding-top: 4px;
+        --slide-author-padding-end: 4px;
+        --slide-author-padding-start: 4px;
+        --slide-author-padding-bottom: 4px;
+      }
+    }
+
+    hr.deck-divider {
+      border-bottom: 1px solid rgba(0, 0, 0, .15);
+    }
+  }
+}

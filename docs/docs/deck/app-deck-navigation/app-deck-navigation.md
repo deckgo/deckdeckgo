@@ -15,6 +15,8 @@ However, if you wish to know more about the different options or are using the c
 - [Is the deck at the end](#app-deck-navigation-is-the-deck-at-the-end)
 - [Get the index of the current slide](#app-deck-navigation-get-the-index-of-the-current-slide)
 - [Get the length of the deck](#app-deck-navigation-get-the-length-of-the-deck)
+- [Block or unblock the slide](#app-deck-navigation-block-or-unblock-the-slide)
+- [Delete the active slide](#app-deck-navigation-delete-the-active-slide)
 
 ## Introduction
 
@@ -100,6 +102,18 @@ await deck.getActiveIndex(); // resolve a number
 
 ```
 await deck.getLength(); // resolve a number
+```
+
+## Block or unblock the slide
+
+```
+await deck.blockSlide(block: boolean);
+```
+
+### Delete the active slide
+
+```
+await deck.deleteActiveSlide();
 ```
 
 [DeckDeckGo]: https://deckdeckgo.com

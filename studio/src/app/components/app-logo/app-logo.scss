@@ -1,0 +1,18 @@
+div {
+  color: transparent;
+
+  vertical-align: var(--deckgo-logo-vertical-align);
+  margin-right: var(--deckgo-logo-margin-end);
+
+  background-color: transparent;
+  background-image: var(--deckgo-logo-url, url('/assets/img/deckdeckgo-logo-round.svg'));
+  background-repeat: no-repeat;
+
+  width: var(--deckgo-logo-size);
+  height: var(--deckgo-logo-size);
+
+  border-radius: 50%;
+  border: 1px solid white;
+
+  display: inline-block;
+}

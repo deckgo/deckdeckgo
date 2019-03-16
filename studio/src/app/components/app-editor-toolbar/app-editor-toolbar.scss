@@ -1,0 +1,44 @@
+app-editor-toolbar {
+  div.editor-toolbar, input {
+    position: absolute;
+  }
+
+  div.editor-toolbar {
+    display: none;
+
+    &.displayed {
+      display: flex;
+    }
+
+    justify-content: center;
+    align-items: center;
+
+    a {
+      cursor: pointer;
+
+      border-radius: 50%;
+      border: 1px solid var(--ion-color-primary);
+
+      width: 2rem;
+      height: 2rem;
+
+      margin: 4px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: white;
+
+      ion-icon {
+        font-size: 1.2rem;
+        color: var(--ion-color-primary);
+      }
+    }
+  }
+
+  input {
+    visibility: hidden;
+    z-index: -1;
+  }
+}
