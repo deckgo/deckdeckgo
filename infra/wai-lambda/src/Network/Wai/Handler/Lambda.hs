@@ -1,4 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ViewPatterns #-}
 
@@ -40,7 +41,7 @@ import qualified System.IO.Temp as Temp
 -- Continuously reads requests from @stdin@. Each line should be a a JSON
 -- document as described in 'decodeInput'.
 --
--- All requests will be timed out after @3s@ (three seconds). If any exception
+-- All requests will be timed out after 2 seconds. If any exception
 -- is thrown while processing the request this will return an @HTTP 500
 -- Internal Server Error@.
 --
@@ -63,9 +64,9 @@ run app = xif BS.empty $ \loop leftover ->
           "wai-lambda: The impossible happened: was expecting newline"
 
 
--- | Default request timeout. 3 seconds.
+-- | Default request timeout. 2 seconds.
 defaultTimeout :: Int
-defaultTimeout = 3 * 1000 * 1000
+defaultTimeout = 2 * 1000 * 1000
 
 -------------------------------------------------------------------------------
 -- Request handling
@@ -91,7 +92,8 @@ handleRequest app tout bs = case decodeInput bs of
             ]
       putStrLn msg
       throwIO $ userError msg
-    Right (fp, req) -> do
+    Right (fp, mkReq) -> do
+      req <- mkReq
       mresp <- timeout tout $ tryAny $ processRequest app req
       resp <- case mresp of
         Just (Right r) -> do
@@ -132,7 +134,7 @@ processRequest app req = do
 --  * @request@: the API Gateway request (see 'parseRequest')
 --  * @reqsponseFile@: Where to write the API Gateway response (see
 --      'toJSONResponse')
-decodeInput :: BS.ByteString -> Either (Aeson.JSONPath, String) (FilePath, Wai.Request)
+decodeInput :: BS.ByteString -> Either (Aeson.JSONPath, String) (FilePath, IO Wai.Request)
 decodeInput = Aeson.eitherDecodeStrictWith Aeson.jsonEOF $ Aeson.iparse $
     Aeson.withObject "input" $ \obj ->
       (,) <$>
@@ -143,7 +145,7 @@ decodeInput = Aeson.eitherDecodeStrictWith Aeson.jsonEOF $ Aeson.iparse $
 --
 -- The input is an AWS API Gateway request event:
 -- https://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-api-gateway-request
-parseRequest :: Aeson.Value -> Aeson.Parser Wai.Request
+parseRequest :: Aeson.Value -> Aeson.Parser (IO Wai.Request)
 parseRequest = Aeson.withObject "request" $ \obj -> do
 
     -- "httpMethod": "GET"
@@ -231,9 +233,8 @@ parseRequest = Aeson.withObject "request" $ \obj -> do
     -- requests)
     requestBodyRaw <- obj .:? "body" .!= Aeson.String "" >>=
       Aeson.withText "body" (pure . T.encodeUtf8)
-    (requestBody, requestBodyLength) <- pure
-      ( pure requestBodyRaw
-      , Wai.KnownLength $ fromIntegral $ BS.length requestBodyRaw)
+    requestBodyLength <- pure $
+      Wai.KnownLength $ fromIntegral $ BS.length requestBodyRaw
 
     vault <- pure $ Vault.insert originalRequestKey obj Vault.empty
 
@@ -242,7 +243,13 @@ parseRequest = Aeson.withObject "request" $ \obj -> do
     requestHeaderReferer <- pure $ lookup "referer" requestHeaders
     requestHeaderUserAgent <- pure $ lookup "User-Agent" requestHeaders
 
-    pure $ Wai.Request {..}
+    pure $ do
+      requestBodyMVar <- newMVar requestBodyRaw
+      let requestBody = do
+            tryTakeMVar requestBodyMVar >>= \case
+              Just bs -> pure bs
+              Nothing -> pure BS.empty
+      pure $ Wai.Request {..}
 
 originalRequestKey :: Vault.Key Aeson.Object
 originalRequestKey = unsafePerformIO Vault.newKey
