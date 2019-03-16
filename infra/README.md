@@ -26,9 +26,6 @@ available. Running `terraform apply` will package everything needed by the
 lambda function and upload it to AWS. **NOTE**: if you are deploying from a new
 machine you may need to run `terraform init`.
 
-## License
-
-MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
 
 [DeckDeckGo]: https://deckdeckgo.com
 [Terraform]: https://www.terraform.io/

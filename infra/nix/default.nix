@@ -7,12 +7,29 @@ with rec
     (import "${sources.static-haskell-nix}/survey"
       { overlays = [ ] ; normalPkgs = import sources.nixpkgs {}; }).pkgs;
 
-  normalHaskellPackages = pkgsStatic.pkgsMusl.haskellPackages.override
-    { overrides = self: super: super //
-      { deckdeckgo-handler = super.callCabal2nix "handler"
-          (pkgs.lib.cleanSource ../handler) {};
-      };
+  haskellOverride = pkgs':
+    { overrides = self: super:
+      with
+        { mkPackage = name: path:
+            { "${name}" =
+              pkgs'.haskell.lib.disableLibraryProfiling (
+              pkgs'.haskell.lib.disableExecutableProfiling (
+              pkgs'.haskell.lib.failOnAllWarnings (
+                super.callCabal2nix name (pkgs'.lib.cleanSource path) {}
+              )));
+            };
+        };
+
+      super //
+        mkPackage "deckdeckgo-handler" ../handler //
+        mkPackage "wai-lambda" ../wai-lambda ;
+
     };
+  normalHaskellPackages = pkgsStatic.pkgsMusl.haskellPackages.override
+    (haskellOverride pkgsStatic.pkgsMusl);
+
+  haskellPackages = pkgs.haskellPackages.override
+    (haskellOverride pkgs);
 
   haskellPackagesStatic =
     (import "${sources.static-haskell-nix}/survey"
@@ -21,6 +38,6 @@ with rec
 };
 
 pkgs //
-{ inherit haskellPackagesStatic sources;
+{ inherit haskellPackagesStatic haskellPackages sources;
   inherit (import sources.niv {}) niv;
 }

@@ -1,0 +1,28 @@
+name: wai-lambda
+version: 0.1.0.0
+maintainer: Nicolas Mattia <nicolas@nmattia.com>
+copyright: (c) 2019 David Dal Busco and Nicolas Mattia
+license: MIT
+
+library:
+    source-dirs: ./src
+
+dependencies:
+    - aeson
+    - base
+    - binary
+    - bytestring
+    - case-insensitive
+    - directory
+    - http-types
+    - iproute
+    - network
+    - temporary
+    - text
+    - unliftio
+    - unordered-containers
+    - vault
+    - wai
+
+ghc-options:
+    - -Wall
