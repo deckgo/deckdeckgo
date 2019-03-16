@@ -209,6 +209,11 @@ export class DeckdeckgoDeck {
     this.block = $event ? $event.detail : false;
   }
 
+  @Listen('keypress')
+  async keypress() {
+    await this.clearMouseCursorTimer(true);
+  }
+
   private start(e: Event) {
     this.startX = DeckdeckgoUtils.unifyEvent(e).clientX;
   }
