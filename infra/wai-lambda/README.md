@@ -108,7 +108,9 @@ nix.
 ## Deploy
 
 
+## License
 
+MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
 
 [wai]: https://www.stackage.org/package/wai
 [spock]: https://www.spock.li/
