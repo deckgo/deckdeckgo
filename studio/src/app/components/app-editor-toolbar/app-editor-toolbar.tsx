@@ -65,12 +65,10 @@ export class AppEditorToolbar {
     }
 
     @Listen('document:mouseInactivity')
-    inactivity($event: CustomEvent) {
+    async inactivity($event: CustomEvent) {
         this.displayed = $event.detail;
 
-        if (this.selectedElement) {
-            this.selectedElement.blur();
-        }
+        await this.blurSelectedElement();
     }
 
     @Method()
@@ -80,6 +78,17 @@ export class AppEditorToolbar {
             await this.select(element);
 
             resolve(null);
+        });
+    }
+
+    @Method()
+    blurSelectedElement(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (this.selectedElement) {
+                this.selectedElement.blur();
+            }
+
+            resolve();
         });
     }
 
@@ -111,7 +120,8 @@ export class AppEditorToolbar {
         });
     }
 
-    private unSelect(): Promise<void> {
+    @Method()
+    unSelect(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (this.selectedElement) {
                 if (this.selectedElement.classList && !this.selectedElement.classList.contains('deckgo-untouched') && !this.selectedElement.firstChild) {

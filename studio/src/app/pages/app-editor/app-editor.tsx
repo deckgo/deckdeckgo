@@ -74,9 +74,16 @@ export class AppEditor {
     }
 
     @Listen('keyup')
-    async onKeydown(e: KeyboardEvent) {
+    async onKeyup(e: KeyboardEvent) {
         if (e && e.key === 'Tab' && document && document.activeElement && document.activeElement instanceof HTMLElement) {
             await this.touchToolbar(document.activeElement);
+        }
+    }
+
+    @Listen('document:keydown')
+    async onKeydown(e: KeyboardEvent) {
+        if (e && e.key === 'Escape') {
+            await this.selectDeck();
         }
     }
 
@@ -221,6 +228,21 @@ export class AppEditor {
             const element: HTMLElement = $event.target as HTMLElement;
 
             await this.touchToolbar(element);
+
+            resolve();
+        });
+    }
+
+    private selectDeck(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+
+            if (toolbar) {
+                await toolbar.blurSelectedElement();
+                await toolbar.unSelect();
+            }
+
+            await this.blockSlide(false);
 
             resolve();
         });
