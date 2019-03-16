@@ -256,6 +256,7 @@ export class AppEditor {
             }
 
             await (deck as any).blockSlide(blockState);
+            await (deck as any).toggleKeyboardAssist(!blockState);
 
             resolve();
         });

@@ -150,22 +150,40 @@ export class DeckdeckgoDeck {
   }
 
   private initKeyboardAssist() {
-    if (this.keyboard) {
-      document.addEventListener('keydown', async (e: KeyboardEvent) => {
-        if (e.defaultPrevented) {
-          return;
-        }
-
-        if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          await this.slideNextPrev(false, true);
-        } else if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          await this.slideNextPrev(true, true);
-        }
-      });
+    if (document && this.keyboard) {
+      document.addEventListener('keydown', this.keyboardAssist,{passive: true});
     }
   }
+
+  @Method()
+  toggleKeyboardAssist(state: boolean) {
+    if (!document) {
+      return;
+    }
+
+    if (!this.keyboard) {
+      return;
+    }
+
+    if (state) {
+      document.addEventListener('keydown', this.keyboardAssist,{passive: true});
+    } else {
+      // @ts-ignore
+      document.removeEventListener('keydown', this.keyboardAssist, {passive: true});
+    }
+  }
+
+  private keyboardAssist = async ($event: KeyboardEvent) => {
+    if ($event.defaultPrevented) {
+      return;
+    }
+
+    if ($event.key === 'ArrowLeft') {
+      await this.slideNextPrev(false, true);
+    } else if ($event.key === 'ArrowRight') {
+      await this.slideNextPrev(true, true);
+    }
+  };
 
   /* BEGIN: Handle swipe */
 

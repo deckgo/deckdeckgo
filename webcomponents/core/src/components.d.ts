@@ -31,6 +31,7 @@ export namespace Components {
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
     'toggleFullScreen': () => Promise<void>;
+    'toggleKeyboardAssist': (state: boolean) => void;
   }
   interface DeckgoDeckAttributes extends StencilHTMLAttributes {
     'cloneBackground'?: boolean;
