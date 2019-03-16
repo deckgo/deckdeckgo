@@ -151,7 +151,7 @@ export class DeckdeckgoDeck {
 
   private initKeyboardAssist() {
     if (this.keyboard) {
-      document.addEventListener('keydown', async (e) => {
+      document.addEventListener('keydown', async (e: KeyboardEvent) => {
         if (e.defaultPrevented) {
           return;
         }

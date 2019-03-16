@@ -73,6 +73,13 @@ export class AppEditor {
         this.displaying = !$event.detail;
     }
 
+    @Listen('keyup')
+    async onKeydown(e: KeyboardEvent) {
+        if (e && e.key === 'Tab' && document && document.activeElement && document.activeElement instanceof HTMLElement) {
+            await this.touchToolbar(document.activeElement);
+        }
+    }
+
     private async animatePrevNextSlide(next: boolean) {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
@@ -201,6 +208,26 @@ export class AppEditor {
 
     private deckTouched($event: MouseEvent | TouchEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
+            if (!$event) {
+                resolve();
+                return;
+            }
+
+            if (!$event.target || !($event.target instanceof HTMLElement)) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = $event.target as HTMLElement;
+
+            await this.touchToolbar(element);
+
+            resolve();
+        });
+    }
+
+    private touchToolbar(element: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
             const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
 
             if (!toolbar) {
@@ -208,7 +235,7 @@ export class AppEditor {
                 return;
             }
 
-            await toolbar.touch($event);
+            await toolbar.touch(element);
 
             resolve();
         });

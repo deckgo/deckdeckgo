@@ -74,20 +74,8 @@ export class AppEditorToolbar {
     }
 
     @Method()
-    touch($event: MouseEvent | TouchEvent): Promise<void> {
+    touch(element: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!$event) {
-                resolve();
-                return;
-            }
-
-            if (!$event.target || !($event.target instanceof HTMLElement)) {
-                resolve();
-                return;
-            }
-
-            const element: HTMLElement = $event.target as HTMLElement;
-
             await this.unSelect();
             await this.select(element);
 
