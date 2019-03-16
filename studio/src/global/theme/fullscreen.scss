@@ -1,4 +1,22 @@
-:fullscreen {
+@mixin fullscreen() {
+  &:-moz-full-screen {
+    @content;
+  }
+
+  &:-webkit-full-screen {
+    @content;
+  }
+
+  &:-ms-fullscreen {
+    @content;
+  }
+
+  &:fullscreen {
+    @content;
+  }
+}
+
+@include fullscreen() {
   #ion-menu {
     display: none;
   }
@@ -34,10 +52,3 @@
     }
   }
 }
-
-:-webkit-full-screen {}
-
-:-ms-fullscreen {}
-
-:-moz-full-screen {}
-
