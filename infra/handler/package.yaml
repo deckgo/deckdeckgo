@@ -5,9 +5,16 @@ license: AGPL-3
 
 dependencies:
     - aeson
+    - amazonka
+    - amazonka-dynamodb
     - base
+    - lens
+    - random
     - servant
     - servant-server
+    - text
+    - unliftio
+    - unordered-containers
     - wai-lambda
 
 ghc-options:
