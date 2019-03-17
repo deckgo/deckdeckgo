@@ -79,6 +79,9 @@ export namespace Components {
   interface AppPrivacy {}
   interface AppPrivacyAttributes extends StencilHTMLAttributes {}
 
+  interface AppTerms {}
+  interface AppTermsAttributes extends StencilHTMLAttributes {}
+
   interface AppEditor {}
   interface AppEditorAttributes extends StencilHTMLAttributes {}
 
@@ -110,6 +113,7 @@ declare global {
     'AppAbout': Components.AppAbout;
     'AppOpensource': Components.AppOpensource;
     'AppPrivacy': Components.AppPrivacy;
+    'AppTerms': Components.AppTerms;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
     'AppSlideAdd': Components.AppSlideAdd;
@@ -129,6 +133,7 @@ declare global {
     'app-about': Components.AppAboutAttributes;
     'app-opensource': Components.AppOpensourceAttributes;
     'app-privacy': Components.AppPrivacyAttributes;
+    'app-terms': Components.AppTermsAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-slide-add': Components.AppSlideAddAttributes;
@@ -208,6 +213,12 @@ declare global {
     new (): HTMLAppPrivacyElement;
   };
 
+  interface HTMLAppTermsElement extends Components.AppTerms, HTMLStencilElement {}
+  var HTMLAppTermsElement: {
+    prototype: HTMLAppTermsElement;
+    new (): HTMLAppTermsElement;
+  };
+
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
   var HTMLAppEditorElement: {
     prototype: HTMLAppEditorElement;
@@ -245,6 +256,7 @@ declare global {
     'app-about': HTMLAppAboutElement
     'app-opensource': HTMLAppOpensourceElement
     'app-privacy': HTMLAppPrivacyElement
+    'app-terms': HTMLAppTermsElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
     'app-slide-add': HTMLAppSlideAddElement
@@ -264,6 +276,7 @@ declare global {
     'app-about': HTMLAppAboutElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-privacy': HTMLAppPrivacyElement;
+    'app-terms': HTMLAppTermsElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
     'app-slide-add': HTMLAppSlideAddElement;

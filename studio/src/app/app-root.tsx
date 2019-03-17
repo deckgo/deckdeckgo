@@ -18,6 +18,7 @@ export class AppRoot {
                     <ion-route url="/about" component="app-about"/>
                     <ion-route url="/opensource" component="app-opensource"/>
                     <ion-route url="/privacy" component="app-privacy"/>
+                    <ion-route url="/terms" component="app-terms"/>
                 </ion-router>
 
                 <ion-split-pane when="lg">
