@@ -12,6 +12,7 @@ let child = null;
 function getHaskellProcess() {
 
     if (child == null) {
+
         child = execFile(path.join(process.env['LAMBDA_TASK_ROOT'],'main_hs'));
 
         console.log('Exec-ed child');
