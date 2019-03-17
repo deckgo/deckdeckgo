@@ -22,7 +22,7 @@ export class SlideService {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
-                const rawResponse: Response = await fetch(apiUrl + '/decks', {
+                const rawResponse: Response = await fetch(apiUrl + '/slides', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
