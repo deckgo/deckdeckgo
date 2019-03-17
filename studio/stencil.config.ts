@@ -6,6 +6,7 @@ import autoprefixer from 'autoprefixer';
 
 let globalScript: string = 'src/global/app.ts';
 
+// @ts-ignore
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
 if (dev) {
     globalScript = 'src/global/app-dev.ts';
