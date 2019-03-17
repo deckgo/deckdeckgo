@@ -73,6 +73,9 @@ export namespace Components {
   interface AppAbout {}
   interface AppAboutAttributes extends StencilHTMLAttributes {}
 
+  interface AppOpensource {}
+  interface AppOpensourceAttributes extends StencilHTMLAttributes {}
+
   interface AppEditor {}
   interface AppEditorAttributes extends StencilHTMLAttributes {}
 
@@ -102,6 +105,7 @@ declare global {
     'AppPopular': Components.AppPopular;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
+    'AppOpensource': Components.AppOpensource;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
     'AppSlideAdd': Components.AppSlideAdd;
@@ -119,6 +123,7 @@ declare global {
     'app-popular': Components.AppPopularAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
+    'app-opensource': Components.AppOpensourceAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-slide-add': Components.AppSlideAddAttributes;
@@ -186,6 +191,12 @@ declare global {
     new (): HTMLAppAboutElement;
   };
 
+  interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
+  var HTMLAppOpensourceElement: {
+    prototype: HTMLAppOpensourceElement;
+    new (): HTMLAppOpensourceElement;
+  };
+
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
   var HTMLAppEditorElement: {
     prototype: HTMLAppEditorElement;
@@ -221,6 +232,7 @@ declare global {
     'app-popular': HTMLAppPopularElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
+    'app-opensource': HTMLAppOpensourceElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
     'app-slide-add': HTMLAppSlideAddElement
@@ -238,6 +250,7 @@ declare global {
     'app-popular': HTMLAppPopularElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
+    'app-opensource': HTMLAppOpensourceElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
     'app-slide-add': HTMLAppSlideAddElement;

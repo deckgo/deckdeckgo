@@ -16,6 +16,7 @@ export class AppRoot {
                     <ion-route url="/editor" component="app-editor"/>
 
                     <ion-route url="/about" component="app-about"/>
+                    <ion-route url="/opensource" component="app-opensource"/>
                 </ion-router>
 
                 <ion-split-pane when="lg">
