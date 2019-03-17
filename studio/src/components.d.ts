@@ -76,6 +76,9 @@ export namespace Components {
   interface AppOpensource {}
   interface AppOpensourceAttributes extends StencilHTMLAttributes {}
 
+  interface AppPrivacy {}
+  interface AppPrivacyAttributes extends StencilHTMLAttributes {}
+
   interface AppEditor {}
   interface AppEditorAttributes extends StencilHTMLAttributes {}
 
@@ -106,6 +109,7 @@ declare global {
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
     'AppOpensource': Components.AppOpensource;
+    'AppPrivacy': Components.AppPrivacy;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
     'AppSlideAdd': Components.AppSlideAdd;
@@ -124,6 +128,7 @@ declare global {
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
     'app-opensource': Components.AppOpensourceAttributes;
+    'app-privacy': Components.AppPrivacyAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-slide-add': Components.AppSlideAddAttributes;
@@ -197,6 +202,12 @@ declare global {
     new (): HTMLAppOpensourceElement;
   };
 
+  interface HTMLAppPrivacyElement extends Components.AppPrivacy, HTMLStencilElement {}
+  var HTMLAppPrivacyElement: {
+    prototype: HTMLAppPrivacyElement;
+    new (): HTMLAppPrivacyElement;
+  };
+
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
   var HTMLAppEditorElement: {
     prototype: HTMLAppEditorElement;
@@ -233,6 +244,7 @@ declare global {
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
     'app-opensource': HTMLAppOpensourceElement
+    'app-privacy': HTMLAppPrivacyElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
     'app-slide-add': HTMLAppSlideAddElement
@@ -251,6 +263,7 @@ declare global {
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
     'app-opensource': HTMLAppOpensourceElement;
+    'app-privacy': HTMLAppPrivacyElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
     'app-slide-add': HTMLAppSlideAddElement;
