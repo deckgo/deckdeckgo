@@ -1,5 +1,7 @@
 import {Slide} from '../../models/slide';
 
+import {EnvironmentConfigService} from '../environment/environment-config.service';
+
 export class SlideService {
 
     private static instance: SlideService;
@@ -18,7 +20,9 @@ export class SlideService {
     post(slide: Slide): Promise<Slide> {
         return new Promise<Slide>(async (resolve, reject) => {
             try {
-                const rawResponse: Response = await fetch('url', {
+                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                const rawResponse: Response = await fetch(apiUrl + '/decks', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
