@@ -1,26 +1,15 @@
-provider "aws" {
-  region = "us-east-1"
+resource "aws_lambda_function" "api" {
+  function_name    = "deckdeckgo-handler-lambda"
+  filename         = "${data.external.build-function.result.build_function_zip_path}"
+  handler          = "main.handler"
+  runtime          = "nodejs8.10"
+
+  role             = "${aws_iam_role.iam_for_lambda.arn}"
+
 }
 
-resource "aws_lambda_function" "example" {
-  function_name = "ServerlessExample"
-
-  # The lambda function
-  filename = "${data.external.build-function.result.build_function_zip_path}"
-
-  # "main" is the filename within the zip file (main.js) and "handler"
-  # is the name of the property under which the handler function was
-  # exported in that file.
-  handler = "main.handler"
-  runtime = "nodejs8.10"
-
-  role = "${aws_iam_role.lambda_exec.arn}"
-}
-
-# IAM role which dictates what other AWS services the Lambda function
-# may access.
-resource "aws_iam_role" "lambda_exec" {
-  name = "serverless_example_lambda"
+resource "aws_iam_role" "iam_for_lambda" {
+  name = "deckdeckgo-handler-lambda-iam"
 
   assume_role_policy = <<EOF
 {
@@ -39,25 +28,52 @@ resource "aws_iam_role" "lambda_exec" {
 EOF
 }
 
-data "external" "build-function" {
 
+data "external" "build-function" {
   program = [
     "${path.module}/script/build-function"
     ]
+}
+
+data "aws_iam_policy_document" "policy_for_lambda" {
+
+  # Give access to CloudWatch
+  statement {
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    resources = ["${aws_cloudwatch_log_group.lambda-api.arn}"]
+  }
+
+  # Give access to DynamoDB
+  statement {
+    actions = [
+      "dynamodb:BatchGetItem",
+      "dynamodb:GetItem",
+      "dynamodb:Query",
+      "dynamodb:Scan",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:PutItem",
+      "dynamodb:UpdateItem",
+    ]
+
+    resources = [
+      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table.arn}",
+      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-slides.arn}",
+    ]
+  }
 
 }
 
-resource "aws_lambda_permission" "apigw" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.example.arn}"
-  principal     = "apigateway.amazonaws.com"
-
-  # The /*/* portion grants access from any method on any resource
-  # within the API Gateway "REST API".
-  source_arn = "${aws_api_gateway_deployment.example.execution_arn}/*/*"
+resource "aws_iam_role_policy" "policy_for_lambda" {
+  name   = "deckdeckgo-handler-lambda-policy"
+  role   = "${aws_iam_role.iam_for_lambda.id}"
+  policy = "${data.aws_iam_policy_document.policy_for_lambda.json}"
 }
 
-output "function_zip" {
-  value = "${data.external.build-function.result.build_function_zip_path}"
+resource "aws_cloudwatch_log_group" "lambda-api" {
+  name              = "/aws/lambda/${aws_lambda_function.api.function_name}"
+  retention_in_days = "7"
 }
