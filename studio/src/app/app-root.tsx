@@ -25,7 +25,7 @@ export class AppRoot {
                             <ion-menu-toggle autoHide={false}>
                                 <ion-list>
                                     <ion-item class="user">
-                                        <app-avatar slot="start"></app-avatar>
+                                        <app-avatar slot="start" src="https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg"></app-avatar>
                                         <ion-label>David Dal Busco</ion-label>
                                     </ion-item>
 

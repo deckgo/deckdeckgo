@@ -64,7 +64,7 @@ export class AppNavigation {
         {this.renderPublishButton()}
 
         <a padding-start padding-end>
-          <app-avatar></app-avatar>
+          <app-avatar src="https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg"></app-avatar>
         </a>
       </div>;
     } else {

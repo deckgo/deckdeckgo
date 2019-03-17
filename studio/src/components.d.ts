@@ -18,8 +18,12 @@ export namespace Components {
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
-  interface AppAvatar {}
-  interface AppAvatarAttributes extends StencilHTMLAttributes {}
+  interface AppAvatar {
+    'src': string;
+  }
+  interface AppAvatarAttributes extends StencilHTMLAttributes {
+    'src'?: string;
+  }
 
   interface AppEditorToolbar {
     'blurSelectedElement': () => Promise<void>;
