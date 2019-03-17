@@ -18,7 +18,7 @@ export class SlideService {
     post(slide: Slide): Promise<Slide> {
         return new Promise<Slide>(async (resolve, reject) => {
             try {
-                const rawResponse: Response = await fetch('https://3jxmp7rfjl.execute-api.us-east-1.amazonaws.com/test/decks', {
+                const rawResponse: Response = await fetch('url', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
