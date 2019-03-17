@@ -1,4 +1,4 @@
 ion-avatar {
-  width: 2rem;
-  height: 2rem;
+  width: var(--deckgo-avatar-size, 2rem);
+  height: var(--deckgo-avatar-size, 2rem);
 }

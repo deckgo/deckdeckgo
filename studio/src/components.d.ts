@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
+import 'ionicons';
 
 
 export namespace Components {
@@ -18,8 +18,12 @@ export namespace Components {
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
-  interface AppAvatar {}
-  interface AppAvatarAttributes extends StencilHTMLAttributes {}
+  interface AppAvatar {
+    'src': string;
+  }
+  interface AppAvatarAttributes extends StencilHTMLAttributes {
+    'src'?: string;
+  }
 
   interface AppEditorToolbar {
     'blurSelectedElement': () => Promise<void>;
@@ -34,6 +38,9 @@ export namespace Components {
 
   interface AppFeed {}
   interface AppFeedAttributes extends StencilHTMLAttributes {}
+
+  interface AppFooter {}
+  interface AppFooterAttributes extends StencilHTMLAttributes {}
 
   interface AppLogo {}
   interface AppLogoAttributes extends StencilHTMLAttributes {}
@@ -63,6 +70,21 @@ export namespace Components {
     'slides'?: string[];
   }
 
+  interface AppAbout {}
+  interface AppAboutAttributes extends StencilHTMLAttributes {}
+
+  interface AppContact {}
+  interface AppContactAttributes extends StencilHTMLAttributes {}
+
+  interface AppOpensource {}
+  interface AppOpensourceAttributes extends StencilHTMLAttributes {}
+
+  interface AppPrivacy {}
+  interface AppPrivacyAttributes extends StencilHTMLAttributes {}
+
+  interface AppTerms {}
+  interface AppTermsAttributes extends StencilHTMLAttributes {}
+
   interface AppEditor {}
   interface AppEditorAttributes extends StencilHTMLAttributes {}
 
@@ -86,10 +108,16 @@ declare global {
     'AppAvatar': Components.AppAvatar;
     'AppEditorToolbar': Components.AppEditorToolbar;
     'AppFeed': Components.AppFeed;
+    'AppFooter': Components.AppFooter;
     'AppLogo': Components.AppLogo;
     'AppNavigation': Components.AppNavigation;
     'AppPopular': Components.AppPopular;
     'AppSlideNavigate': Components.AppSlideNavigate;
+    'AppAbout': Components.AppAbout;
+    'AppContact': Components.AppContact;
+    'AppOpensource': Components.AppOpensource;
+    'AppPrivacy': Components.AppPrivacy;
+    'AppTerms': Components.AppTerms;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
     'AppSlideAdd': Components.AppSlideAdd;
@@ -101,10 +129,16 @@ declare global {
     'app-avatar': Components.AppAvatarAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-feed': Components.AppFeedAttributes;
+    'app-footer': Components.AppFooterAttributes;
     'app-logo': Components.AppLogoAttributes;
     'app-navigation': Components.AppNavigationAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
+    'app-about': Components.AppAboutAttributes;
+    'app-contact': Components.AppContactAttributes;
+    'app-opensource': Components.AppOpensourceAttributes;
+    'app-privacy': Components.AppPrivacyAttributes;
+    'app-terms': Components.AppTermsAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-slide-add': Components.AppSlideAddAttributes;
@@ -136,6 +170,12 @@ declare global {
     new (): HTMLAppFeedElement;
   };
 
+  interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
+  var HTMLAppFooterElement: {
+    prototype: HTMLAppFooterElement;
+    new (): HTMLAppFooterElement;
+  };
+
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
   var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
@@ -158,6 +198,36 @@ declare global {
   var HTMLAppSlideNavigateElement: {
     prototype: HTMLAppSlideNavigateElement;
     new (): HTMLAppSlideNavigateElement;
+  };
+
+  interface HTMLAppAboutElement extends Components.AppAbout, HTMLStencilElement {}
+  var HTMLAppAboutElement: {
+    prototype: HTMLAppAboutElement;
+    new (): HTMLAppAboutElement;
+  };
+
+  interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {}
+  var HTMLAppContactElement: {
+    prototype: HTMLAppContactElement;
+    new (): HTMLAppContactElement;
+  };
+
+  interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
+  var HTMLAppOpensourceElement: {
+    prototype: HTMLAppOpensourceElement;
+    new (): HTMLAppOpensourceElement;
+  };
+
+  interface HTMLAppPrivacyElement extends Components.AppPrivacy, HTMLStencilElement {}
+  var HTMLAppPrivacyElement: {
+    prototype: HTMLAppPrivacyElement;
+    new (): HTMLAppPrivacyElement;
+  };
+
+  interface HTMLAppTermsElement extends Components.AppTerms, HTMLStencilElement {}
+  var HTMLAppTermsElement: {
+    prototype: HTMLAppTermsElement;
+    new (): HTMLAppTermsElement;
   };
 
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
@@ -189,10 +259,16 @@ declare global {
     'app-avatar': HTMLAppAvatarElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-feed': HTMLAppFeedElement
+    'app-footer': HTMLAppFooterElement
     'app-logo': HTMLAppLogoElement
     'app-navigation': HTMLAppNavigationElement
     'app-popular': HTMLAppPopularElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
+    'app-about': HTMLAppAboutElement
+    'app-contact': HTMLAppContactElement
+    'app-opensource': HTMLAppOpensourceElement
+    'app-privacy': HTMLAppPrivacyElement
+    'app-terms': HTMLAppTermsElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
     'app-slide-add': HTMLAppSlideAddElement
@@ -204,10 +280,16 @@ declare global {
     'app-avatar': HTMLAppAvatarElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-feed': HTMLAppFeedElement;
+    'app-footer': HTMLAppFooterElement;
     'app-logo': HTMLAppLogoElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-popular': HTMLAppPopularElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
+    'app-about': HTMLAppAboutElement;
+    'app-contact': HTMLAppContactElement;
+    'app-opensource': HTMLAppOpensourceElement;
+    'app-privacy': HTMLAppPrivacyElement;
+    'app-terms': HTMLAppTermsElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
     'app-slide-add': HTMLAppSlideAddElement;

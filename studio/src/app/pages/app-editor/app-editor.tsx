@@ -1,8 +1,10 @@
 import {Component, Element, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
+import {SlideTemplate} from '../../models/slide-template';
 import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
-import {DeckdeckgoSlideTemplate} from '../../utils/deckdeckgo-slide-template';
+
+import {EditorHelper} from '../../helpers/editor/editor.helper';
 
 @Component({
     tag: 'app-editor',
@@ -23,12 +25,23 @@ export class AppEditor {
     @State()
     private displaying: boolean = false;
 
+    private editorHelper: EditorHelper = new EditorHelper();
+
+    constructor() {
+    }
+
     async componentWillLoad() {
+        this.editorHelper.init(this.el);
+
         await this.initSlide();
     }
 
     async componentDidLoad() {
         await this.initSlideSize();
+    }
+
+    componentDidUnload() {
+        this.editorHelper.destroy();
     }
 
     private initSlideSize(): Promise<void> {
@@ -52,7 +65,7 @@ export class AppEditor {
                 return;
             }
 
-            const slide: any = await DeckdeckgoStudioCreateSlide.createSlide(DeckdeckgoSlideTemplate.TITLE);
+            const slide: any = await DeckdeckgoStudioCreateSlide.createSlide(SlideTemplate.TITLE);
 
             await this.concatSlide(slide);
 

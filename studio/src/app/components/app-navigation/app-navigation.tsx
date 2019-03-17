@@ -32,8 +32,10 @@ export class AppNavigation {
     if (this.logo) {
       return <ion-title slot="start">
         <ion-anchor href="/" routerDirection="forward">
-          <app-logo></app-logo>
-          <span>DeckDeckGo</span>
+          <div>
+            <app-logo></app-logo>
+            <span text-uppercase>DeckDeckGo</span>
+          </div>
         </ion-anchor>
       </ion-title>;
     } else {
@@ -62,7 +64,7 @@ export class AppNavigation {
         {this.renderPublishButton()}
 
         <a padding-start padding-end>
-          <app-avatar></app-avatar>
+          <app-avatar src="https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg"></app-avatar>
         </a>
       </div>;
     } else {

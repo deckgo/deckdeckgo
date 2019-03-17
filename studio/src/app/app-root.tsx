@@ -14,6 +14,12 @@ export class AppRoot {
                 <ion-router useHash={false}>
                     <ion-route url="/" component="app-home"/>
                     <ion-route url="/editor" component="app-editor"/>
+
+                    <ion-route url="/about" component="app-about"/>
+                    <ion-route url="/opensource" component="app-opensource"/>
+                    <ion-route url="/privacy" component="app-privacy"/>
+                    <ion-route url="/terms" component="app-terms"/>
+                    <ion-route url="/contact" component="app-contact"/>
                 </ion-router>
 
                 <ion-split-pane when="lg">
@@ -22,15 +28,15 @@ export class AppRoot {
                         <ion-content>
                             <ion-menu-toggle autoHide={false}>
                                 <ion-list>
-                                    <ion-item>
-                                        <app-avatar slot="start"></app-avatar>
+                                    <ion-item class="user">
+                                        <app-avatar slot="start" src="https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg"></app-avatar>
                                         <ion-label>David Dal Busco</ion-label>
                                     </ion-item>
 
                                     <ion-item-divider>
                                         <ion-label>Presentations</ion-label>
                                         <ion-button size="small" slot="end" shape="round" margin-end href="/editor" routerDirection="forward">
-                                            <ion-icon name="add" slot="start"></ion-icon>
+                                            <ion-icon name="book" slot="start"></ion-icon>
                                             <ion-label>New</ion-label>
                                         </ion-button>
                                     </ion-item-divider>
@@ -45,6 +51,8 @@ export class AppRoot {
                                         <ion-label>Presentation B</ion-label>
                                     </ion-item>
                                 </ion-list>
+
+                                <app-footer></app-footer>
                             </ion-menu-toggle>
                         </ion-content>
                     </ion-menu>

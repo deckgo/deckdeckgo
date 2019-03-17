@@ -1,6 +1,15 @@
 app-navigation {
   ion-anchor {
     --color: white;
+
+    &:hover, &:active {
+      color: white;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+    }
   }
 
   div[slot="end"] {
@@ -17,14 +26,10 @@ ion-split-pane {
 
   app-navigation {
       ion-button {
-        &.presentation {
+        &.presentation, &.publish {
           --background: white;
           --color: #000;
-        }
-
-        &.publish {
-          --background: white;
-          --color: #000;
+          --color-activated: var(--ion-color-tertiary);
         }
       }
   }
@@ -32,14 +37,10 @@ ion-split-pane {
   &:not(.split-pane-visible) {
     app-navigation {
       ion-button {
-        &.presentation {
-          --background: var(--ion-color-primary);
-          --color: white;
-        }
-
-        &.publish {
+        &.presentation, &.publish {
           --background: var(--ion-color-tertiary);
           --color: white;
+          --color-activated: var(--ion-color-secondary);
         }
       }
     }

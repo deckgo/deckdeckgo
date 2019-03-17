@@ -1,4 +1,4 @@
-import {Component} from '@stencil/core';
+import {Component, Prop} from '@stencil/core';
 
 
 @Component({
@@ -8,9 +8,11 @@ import {Component} from '@stencil/core';
 })
 export class AppAvatar {
 
+    @Prop() src: string;
+
     render() {
         return <ion-avatar>
-            <img src="https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg"/>
+            <img src={this.src}/>
         </ion-avatar>
     }
 

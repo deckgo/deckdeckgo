@@ -4,6 +4,10 @@ ul {
   padding: 0;
 }
 
-a {
+a, ion-anchor {
   text-decoration: none;
+
+  &:hover, &:active {
+    color: var(--ion-color-tertiary);
+  }
 }
