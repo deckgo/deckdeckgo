@@ -4,6 +4,8 @@ import {OverlayEventDetail} from '@ionic/core';
 import {SlideTemplate} from '../../models/slide-template';
 import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
 
+import {EditorHelper} from '../../helpers/editor/editor.helper';
+
 @Component({
     tag: 'app-editor',
     styleUrl: 'app-editor.scss'
@@ -23,12 +25,23 @@ export class AppEditor {
     @State()
     private displaying: boolean = false;
 
+    private editorHelper: EditorHelper = new EditorHelper();
+
+    constructor() {
+    }
+
     async componentWillLoad() {
+        this.editorHelper.init(this.el);
+
         await this.initSlide();
     }
 
     async componentDidLoad() {
         await this.initSlideSize();
+    }
+
+    componentDidUnload() {
+        this.editorHelper.destroy();
     }
 
     private initSlideSize(): Promise<void> {

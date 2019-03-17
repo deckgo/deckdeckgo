@@ -15,10 +15,10 @@ export class SlideService {
         return SlideService.instance;
     }
 
-    post(slide: Slide): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
+    post(slide: Slide): Promise<Slide> {
+        return new Promise<Slide>(async (resolve, reject) => {
             try {
-                const rawResponse: Response = await fetch('/somewhere', {
+                const rawResponse: Response = await fetch('https://3jxmp7rfjl.execute-api.us-east-1.amazonaws.com/test/decks', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -27,11 +27,11 @@ export class SlideService {
                     body: JSON.stringify(slide)
                 });
 
-                const postedSlide: Slide = await rawResponse.json();
+                const persistedSlide: Slide = await rawResponse.json();
 
-                console.log(postedSlide);
+                console.log(persistedSlide);
 
-                resolve();
+                resolve(persistedSlide);
             } catch (err) {
                 reject(err);
             }
