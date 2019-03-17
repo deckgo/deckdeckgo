@@ -14,6 +14,8 @@ export class AppRoot {
                 <ion-router useHash={false}>
                     <ion-route url="/" component="app-home"/>
                     <ion-route url="/editor" component="app-editor"/>
+
+                    <ion-route url="/about" component="app-about"/>
                 </ion-router>
 
                 <ion-split-pane when="lg">
@@ -45,6 +47,8 @@ export class AppRoot {
                                         <ion-label>Presentation B</ion-label>
                                     </ion-item>
                                 </ion-list>
+
+                                <app-footer></app-footer>
                             </ion-menu-toggle>
                         </ion-content>
                     </ion-menu>

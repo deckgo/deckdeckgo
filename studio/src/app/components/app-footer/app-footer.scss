@@ -1,0 +1,36 @@
+app-footer {
+  div {
+    display: flex;
+    flex-wrap: wrap;
+
+    font-size: var(--font-size-small);
+
+    ion-anchor {
+      padding: 4px;
+    }
+  }
+
+  hr {
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    padding-top: 40px;
+  }
+}
+
+
+
+ion-split-pane {
+
+  &:not(.split-pane-visible) {
+    app-footer {
+      div {
+        ion-anchor {
+          color: white;
+
+          &:hover, &.active {
+            color: var(--ion-color-secondary);
+          }
+        }
+      }
+    }
+  }
+}

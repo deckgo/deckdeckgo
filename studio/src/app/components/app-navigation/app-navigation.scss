@@ -2,6 +2,10 @@ app-navigation {
   ion-anchor {
     --color: white;
 
+    &:hover, &:active {
+      color: white;
+    }
+
     div {
       display: flex;
       align-items: center;
