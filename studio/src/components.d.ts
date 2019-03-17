@@ -73,6 +73,9 @@ export namespace Components {
   interface AppAbout {}
   interface AppAboutAttributes extends StencilHTMLAttributes {}
 
+  interface AppContact {}
+  interface AppContactAttributes extends StencilHTMLAttributes {}
+
   interface AppOpensource {}
   interface AppOpensourceAttributes extends StencilHTMLAttributes {}
 
@@ -111,6 +114,7 @@ declare global {
     'AppPopular': Components.AppPopular;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
+    'AppContact': Components.AppContact;
     'AppOpensource': Components.AppOpensource;
     'AppPrivacy': Components.AppPrivacy;
     'AppTerms': Components.AppTerms;
@@ -131,6 +135,7 @@ declare global {
     'app-popular': Components.AppPopularAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
+    'app-contact': Components.AppContactAttributes;
     'app-opensource': Components.AppOpensourceAttributes;
     'app-privacy': Components.AppPrivacyAttributes;
     'app-terms': Components.AppTermsAttributes;
@@ -201,6 +206,12 @@ declare global {
     new (): HTMLAppAboutElement;
   };
 
+  interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {}
+  var HTMLAppContactElement: {
+    prototype: HTMLAppContactElement;
+    new (): HTMLAppContactElement;
+  };
+
   interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
   var HTMLAppOpensourceElement: {
     prototype: HTMLAppOpensourceElement;
@@ -254,6 +265,7 @@ declare global {
     'app-popular': HTMLAppPopularElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
+    'app-contact': HTMLAppContactElement
     'app-opensource': HTMLAppOpensourceElement
     'app-privacy': HTMLAppPrivacyElement
     'app-terms': HTMLAppTermsElement
@@ -274,6 +286,7 @@ declare global {
     'app-popular': HTMLAppPopularElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
+    'app-contact': HTMLAppContactElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-privacy': HTMLAppPrivacyElement;
     'app-terms': HTMLAppTermsElement;
