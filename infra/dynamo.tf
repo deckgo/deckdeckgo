@@ -21,10 +21,3 @@ resource "aws_dynamodb_table" "deckdeckgo-test-dynamodb-table-slides" {
   }
 
 }
-
-
-output "dynamo-decks-arn" {
-
-  value = "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table.arn}"
-
-}
