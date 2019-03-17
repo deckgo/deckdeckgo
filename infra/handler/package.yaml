@@ -15,6 +15,7 @@ dependencies:
     - text
     - unliftio
     - unordered-containers
+    - wai-cors
     - wai-lambda
 
 ghc-options:

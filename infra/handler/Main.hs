@@ -21,6 +21,7 @@ import qualified Data.Aeson as Aeson
 import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.Wai.Handler.Lambda as Lambda
+import qualified Network.Wai.Middleware.Cors as Cors
 import qualified Servant as Servant
 import qualified System.Random as Random
 
@@ -99,7 +100,7 @@ main = do
   env <- Aws.newEnv Aws.Discover
 
   liftIO $ putStrLn "Booted!"
-  Lambda.run $ Servant.serve api (server env)
+  Lambda.run $ Cors.simpleCors $ Servant.serve api (server env)
 
 server :: Aws.Env -> Servant.Server API
 server env = serveDecks :<|> serveSlides

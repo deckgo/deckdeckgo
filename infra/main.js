@@ -85,7 +85,7 @@ exports.handler = function(event, context, callback) {
 
                 // Parse the response from the Haskell process
                 const response = JSON.parse(fs.readFileSync(responseFile, 'utf8'));
-                console.log("Parsed response");
+                console.log("Parsed response: " + JSON.stringify(response));
 
                 // Clean up the directory and finally reply
                 console.log("cleaning up");
