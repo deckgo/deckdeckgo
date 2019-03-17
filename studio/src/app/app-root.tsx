@@ -22,7 +22,7 @@ export class AppRoot {
                         <ion-content>
                             <ion-menu-toggle autoHide={false}>
                                 <ion-list>
-                                    <ion-item>
+                                    <ion-item class="user">
                                         <app-avatar slot="start"></app-avatar>
                                         <ion-label>David Dal Busco</ion-label>
                                     </ion-item>
@@ -30,7 +30,7 @@ export class AppRoot {
                                     <ion-item-divider>
                                         <ion-label>Presentations</ion-label>
                                         <ion-button size="small" slot="end" shape="round" margin-end href="/editor" routerDirection="forward">
-                                            <ion-icon name="add" slot="start"></ion-icon>
+                                            <ion-icon name="book" slot="start"></ion-icon>
                                             <ion-label>New</ion-label>
                                         </ion-button>
                                     </ion-item-divider>

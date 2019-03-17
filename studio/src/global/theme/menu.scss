@@ -31,6 +31,10 @@ ion-split-pane {
             ion-icon {
               color: white;
             }
+
+            &.user {
+              display: none;
+            }
           }
         }
 

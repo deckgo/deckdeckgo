@@ -32,8 +32,10 @@ export class AppNavigation {
     if (this.logo) {
       return <ion-title slot="start">
         <ion-anchor href="/" routerDirection="forward">
-          <app-logo></app-logo>
-          <span>DeckDeckGo</span>
+          <div>
+            <app-logo></app-logo>
+            <span text-uppercase>DeckDeckGo</span>
+          </div>
         </ion-anchor>
       </ion-title>;
     } else {
