@@ -32,7 +32,7 @@ export class EditorHelper {
         this.el.addEventListener('slideDidChange', this.onSlideChange, false);
         this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
 
-        this.subscription = this.updateSlideSubject.pipe(debounceTime(2000)).subscribe(async (element: HTMLElement) => {
+        this.subscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
             await this.updateSlide(element);
         });
     }
