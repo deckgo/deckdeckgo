@@ -8,6 +8,7 @@ import {Deck} from '../../models/deck';
 import {SlideService} from '../../services/slide/slide.service';
 import {DeckService} from '../../services/deck/deck.service';
 import {ErrorService} from '../../services/error/error.service';
+import {DeckBusyService} from '../../services/deck/deck-busy.service';
 
 export class EditorHelper {
 
@@ -17,6 +18,7 @@ export class EditorHelper {
     private deckService: DeckService;
 
     private errorService: ErrorService;
+    private deckBusyService: DeckBusyService;
 
     private deck: Deck;
 
@@ -28,6 +30,7 @@ export class EditorHelper {
         this.deckService = DeckService.getInstance();
 
         this.errorService = ErrorService.getInstance();
+        this.deckBusyService = DeckBusyService.getInstance();
     }
 
     init(el: HTMLElement) {
@@ -104,6 +107,8 @@ export class EditorHelper {
                     return;
                 }
 
+                this.deckBusyService.busy(true);
+
                 const persistedSlide: Slide = await this.slideService.post({
                     slide_template: SlideTemplate.TITLE,
                     slide_content: slide.innerHTML
@@ -115,9 +120,12 @@ export class EditorHelper {
                     await this.createOrUpdateDeck(persistedSlide);
                 }
 
+                this.deckBusyService.busy(false);
+
                 resolve();
             } catch (err) {
                 this.errorService.error(err);
+                this.deckBusyService.busy(false);
                 resolve();
             }
         });
@@ -174,9 +182,12 @@ export class EditorHelper {
                     slide_content: slide.innerHTML
                 });
 
+                this.deckBusyService.busy(false);
+
                 resolve();
             } catch (err) {
                 this.errorService.error(err);
+                this.deckBusyService.busy(false);
                 resolve();
             }
         });
@@ -200,9 +211,12 @@ export class EditorHelper {
 
                 await this.deleteSlideElement();
 
+                this.deckBusyService.busy(false);
+
                 resolve();
             } catch (err) {
                 this.errorService.error(err);
+                this.deckBusyService.busy(false);
                 resolve();
             }
         });
@@ -222,5 +236,4 @@ export class EditorHelper {
             resolve();
         });
     }
-
 }

@@ -1,8 +1,12 @@
 import {Component, Element, Method, State, Event, EventEmitter, Prop, Listen} from '@stencil/core';
+import {OverlayEventDetail} from '@ionic/core';
+
+import {Subscription} from 'rxjs';
 
 import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
-import {OverlayEventDetail} from '@ionic/core';
 import {DeckdeckgoSlotType} from '../../utils/deckdeckgo-slot-type';
+
+import {DeckBusyService} from '../../services/deck/deck-busy.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -33,6 +37,22 @@ export class AppEditorToolbar {
 
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
 
+    private subscription: Subscription;
+    private deckBusyService: DeckBusyService;
+
+    @State()
+    private deckBusy: boolean = false;
+
+    constructor() {
+        this.deckBusyService = DeckBusyService.getInstance();
+    }
+
+    async componentWillLoad() {
+        this.subscription = this.deckBusyService.watch().subscribe((busy: boolean) => {
+            this.deckBusy = busy;
+        });
+    }
+
     async componentDidLoad() {
         await this.colorPickerListener(true);
         await this.backgroundPickerListener(true);
@@ -43,6 +63,10 @@ export class AppEditorToolbar {
     async componentDidUnload() {
         await this.colorPickerListener(false);
         await this.backgroundPickerListener(false);
+
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     private initWindowResize() {
@@ -253,6 +277,13 @@ export class AppEditorToolbar {
                 resolve();
                 return;
             }
+
+            if (this.deckBusy && this.isElementSlideOrDeck(this.selectedElement)) {
+                resolve();
+                return;
+            }
+
+            this.deckBusyService.busy(true);
 
             if (this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
                 this.slideDelete.emit(this.selectedElement);
@@ -471,7 +502,9 @@ export class AppEditorToolbar {
             'border-bottom': '2px solid ' + this.background
         };
 
-        return [<a onClick={() => this.deleteElement()}>
+        const busy: boolean = this.deckBusy && this.isElementSlideOrDeck(this.selectedElement);
+
+        return [<a onClick={() => this.deleteElement()} class={busy ? "disabled" : undefined}>
                 <ion-icon name="trash"></ion-icon>
             </a>,
             <a onClick={() => this.openColorPicker()}>
