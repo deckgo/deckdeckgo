@@ -39,6 +39,11 @@ export class DeckService {
                     body: JSON.stringify(deck)
                 });
 
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while creating or updating the deck');
+                    return;
+                }
+
                 const persistedDeck: Deck = await rawResponse.json();
 
                 resolve(persistedDeck);

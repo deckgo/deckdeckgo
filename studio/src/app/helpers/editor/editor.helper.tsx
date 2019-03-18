@@ -7,6 +7,7 @@ import {Deck} from '../../models/deck';
 
 import {SlideService} from '../../services/slide/slide.service';
 import {DeckService} from '../../services/deck/deck.service';
+import {ErrorService} from '../../services/error/error.service';
 
 export class EditorHelper {
 
@@ -14,6 +15,8 @@ export class EditorHelper {
 
     private slideService: SlideService;
     private deckService: DeckService;
+
+    private errorService: ErrorService;
 
     private deck: Deck;
 
@@ -23,6 +26,8 @@ export class EditorHelper {
     constructor() {
         this.slideService = SlideService.getInstance();
         this.deckService = DeckService.getInstance();
+
+        this.errorService = ErrorService.getInstance();
     }
 
     init(el: HTMLElement) {
@@ -102,8 +107,7 @@ export class EditorHelper {
 
                 resolve();
             } catch (err) {
-                // TODO do something with the error
-                console.error(err);
+                this.errorService.error(err);
                 resolve();
             }
         });
@@ -149,8 +153,7 @@ export class EditorHelper {
                 }
 
                 if (!slide.getAttribute('slide_id')) {
-                    // TODO do something with the error
-                    console.error('slide_id is empty');
+                    this.errorService.error('Slide is not defined');
                     resolve();
                     return;
                 }
@@ -163,8 +166,7 @@ export class EditorHelper {
 
                 resolve();
             } catch (err) {
-                // TODO do something with the error
-                console.error(err);
+                this.errorService.error(err);
                 resolve();
             }
         });

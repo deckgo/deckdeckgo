@@ -39,6 +39,11 @@ export class SlideService {
                     body: JSON.stringify(slide)
                 });
 
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while creating or updating the slide');
+                    return;
+                }
+
                 const persistedSlide: Slide = await rawResponse.json();
 
                 resolve(persistedSlide);
