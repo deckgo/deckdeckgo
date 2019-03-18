@@ -133,8 +133,6 @@ export class EditorHelper {
                     this.deck = await this.deckService.post(this.deck);
                 }
 
-                console.log(this.deck);
-
                 resolve();
             } catch (err) {
                 reject(err);
@@ -157,15 +155,11 @@ export class EditorHelper {
                     return;
                 }
 
-                const persistedSlide: Slide = await this.slideService.put({
+                await this.slideService.put({
                     slide_id: slide.getAttribute('slide_id'),
                     slide_template: SlideTemplate.TITLE,
                     slide_content: slide.innerHTML
                 });
-
-                if (persistedSlide && persistedSlide.slide_id) {
-                    console.log('slide updated', persistedSlide.slide_id);
-                }
 
                 resolve();
             } catch (err) {

@@ -41,8 +41,6 @@ export class DeckService {
 
                 const persistedDeck: Deck = await rawResponse.json();
 
-                console.log(persistedDeck);
-
                 resolve(persistedDeck);
             } catch (err) {
                 reject(err);

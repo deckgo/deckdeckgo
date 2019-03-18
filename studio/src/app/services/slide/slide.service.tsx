@@ -41,8 +41,6 @@ export class SlideService {
 
                 const persistedSlide: Slide = await rawResponse.json();
 
-                console.log(persistedSlide);
-
                 resolve(persistedSlide);
             } catch (err) {
                 reject(err);
