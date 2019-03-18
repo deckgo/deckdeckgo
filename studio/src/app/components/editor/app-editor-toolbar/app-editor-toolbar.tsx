@@ -3,10 +3,10 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
-import {DeckdeckgoSlotType} from '../../utils/deckdeckgo-slot-type';
+import {DeckdeckgoStudioCreateSlide} from '../../../utils/deckdeckgo-studio-create-slide';
+import {DeckdeckgoSlotType} from '../../../utils/deckdeckgo-slot-type';
 
-import {DeckBusyService} from '../../services/deck/deck-busy.service';
+import {DeckBusyService} from '../../../services/deck/deck-busy.service';
 
 @Component({
     tag: 'app-editor-toolbar',
