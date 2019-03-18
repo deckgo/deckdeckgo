@@ -18,12 +18,20 @@ export class SlideService {
     }
 
     post(slide: Slide): Promise<Slide> {
+        return this.postOrPut(slide, '/slides', 'POST');
+    }
+
+    put(slide: Slide): Promise<Slide> {
+        return this.postOrPut(slide, '/slides/' + slide.slide_id,'PUT');
+    }
+
+    private postOrPut(slide: Slide, context: string, method: string): Promise<Slide> {
         return new Promise<Slide>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
-                const rawResponse: Response = await fetch(apiUrl + '/slides', {
-                    method: 'POST',
+                const rawResponse: Response = await fetch(apiUrl + context, {
+                    method: method,
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'

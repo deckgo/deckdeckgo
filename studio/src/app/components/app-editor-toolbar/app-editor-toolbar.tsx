@@ -31,6 +31,8 @@ export class AppEditorToolbar {
 
     @Event() private deleteSlide: EventEmitter<void>;
 
+    @Event() private slideDidChange: EventEmitter<HTMLElement>;
+
     async componentDidLoad() {
         await this.colorPickerListener(true);
         await this.backgroundPickerListener(true);
@@ -313,6 +315,8 @@ export class AppEditorToolbar {
         } else {
             this.selectedElement.style.color = $event.target.value;
         }
+
+        await this.emitSlideChange();
     };
 
     // Background
@@ -364,6 +368,8 @@ export class AppEditorToolbar {
         } else {
             this.selectedElement.style.background = $event.target.value;
         }
+
+        await this.emitSlideChange();
     };
 
     private async openSlotType($event: UIEvent) {
@@ -414,6 +420,22 @@ export class AppEditorToolbar {
             this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
 
             await this.initSelectedElement(element);
+
+            await this.emitSlideChange();
+
+            resolve();
+        });
+    }
+
+    private emitSlideChange(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement) {
+                resolve();
+                return;
+            }
+
+            // Parent is the slide container
+            this.slideDidChange.emit(this.selectedElement.parentElement);
 
             resolve();
         });

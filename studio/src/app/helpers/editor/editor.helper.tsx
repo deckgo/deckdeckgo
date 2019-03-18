@@ -22,10 +22,14 @@ export class EditorHelper {
     init(el: HTMLElement) {
         this.el = el;
 
+        this.el.addEventListener('input', this.onSlideInputChange, false);
+        this.el.addEventListener('slideDidChange', this.onSlideChange, false);
         this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
     }
 
     destroy() {
+        this.el.removeEventListener('input', this.onSlideInputChange, true);
+        this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
     }
 
@@ -33,6 +37,30 @@ export class EditorHelper {
         if ($event && $event.target && $event.target instanceof HTMLElement) {
             await this.createSlide($event.target);
         }
+    };
+
+    private onSlideChange = async ($event: CustomEvent) => {
+        if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
+            return;
+        }
+
+        console.log('slideDidChange', $event.detail);
+
+        await this.updateSlide($event.detail);
+    };
+
+    private onSlideInputChange = async ($event: Event) => {
+        if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
+            return;
+        }
+
+        const parent: HTMLElement = ($event.target as HTMLElement).parentElement;
+
+        if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
+            return;
+        }
+
+        await this.updateSlide(parent);
     };
 
     private createSlide(slide: HTMLElement): Promise<void> {
@@ -59,6 +87,8 @@ export class EditorHelper {
 
                     await this.createOrUpdateDeck(persistedSlide);
                 }
+
+                resolve();
             } catch (err) {
                 // TODO do something with the error
                 console.error(err);
@@ -96,6 +126,40 @@ export class EditorHelper {
                 resolve();
             } catch (err) {
                 reject(err);
+            }
+        });
+    }
+
+    private updateSlide(slide: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            try {
+                if (!slide) {
+                    resolve();
+                    return;
+                }
+
+                if (!slide.getAttribute('slide_id')) {
+                    // TODO do something with the error
+                    console.error('slide_id is empty');
+                    resolve();
+                    return;
+                }
+
+                const persistedSlide: Slide = await this.slideService.put({
+                    slide_id: slide.getAttribute('slide_id'),
+                    slide_template: SlideTemplate.TITLE,
+                    slide_content: slide.innerHTML
+                });
+
+                if (persistedSlide && persistedSlide.slide_id) {
+                    console.log('slide updated', persistedSlide.slide_id);
+                }
+
+                resolve();
+            } catch (err) {
+                // TODO do something with the error
+                console.error(err);
+                resolve();
             }
         });
     }
