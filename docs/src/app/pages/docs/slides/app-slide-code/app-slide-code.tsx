@@ -53,7 +53,7 @@ export class AppSlideCode {
 <h2 id="app-slide-code-layout">Layout</h2>
 <div class="container" margin>
   <deckgo-deck embedded={true} pager={false}>
-    <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+    <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
           <h1 slot="title">slot="title"</h1>
         </deckgo-slide-code>
   </deckgo-deck>

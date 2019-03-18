@@ -21,7 +21,7 @@ The "Code" slide is a the slide to use if you would like to showcase code during
 
 <div class="container" margin>
   <deckgo-deck embedded={true} pager={false}>
-    <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+    <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
           <h1 slot="title">slot="title"</h1>
         </deckgo-slide-code>
   </deckgo-deck>
