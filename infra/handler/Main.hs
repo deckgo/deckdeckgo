@@ -32,14 +32,14 @@ import qualified System.Random as Random
 data WithId id a = WithId id a
 
 newtype DeckId = DeckId { unDeckId :: T.Text }
-  deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData)
 
 data Deck = Deck
   { deckSlides :: [SlideId]
   }
 
 newtype SlideId = SlideId { unSlideId :: T.Text }
-  deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData)
 
 data Slide = Slide
   { slideContent :: T.Text
@@ -78,11 +78,13 @@ type API =
 
 type DecksAPI =
     Get '[JSON] [WithId DeckId Deck] :<|>
-    ReqBody '[JSON] Deck :> Post '[JSON] (WithId DeckId Deck)
+    ReqBody '[JSON] Deck :> Post '[JSON] (WithId DeckId Deck) :<|>
+    Capture "deck_id" DeckId :> ReqBody '[JSON] Deck :> Put '[JSON] (WithId DeckId Deck)
 
 type SlidesAPI =
     Get '[JSON] [WithId SlideId Slide] :<|>
-    ReqBody '[JSON] Slide :> Post '[JSON] (WithId SlideId Slide)
+    ReqBody '[JSON] Slide :> Post '[JSON] (WithId SlideId Slide) :<|>
+    Capture "slide_id" SlideId :> ReqBody '[JSON] Slide :> Put '[JSON] (WithId SlideId Slide)
 
 api :: Proxy API
 api = Proxy
@@ -105,8 +107,8 @@ main = do
 server :: Aws.Env -> Servant.Server API
 server env = serveDecks :<|> serveSlides
   where
-    serveDecks = decksGet env :<|> decksPost env
-    serveSlides = slidesGet env :<|> slidesPost env
+    serveDecks = decksGet env :<|> decksPost env :<|> decksPut env
+    serveSlides = slidesGet env :<|> slidesPost env :<|> slidesPut env
 
 decksGet :: Aws.Env -> Servant.Handler [WithId DeckId Deck]
 decksGet env = do
@@ -125,6 +127,20 @@ decksPost env deck = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.putItem "Decks" &
         DynamoDB.piItem .~ deckToItem deckId deck
+
+    case res of
+      Right x -> liftIO $ print x
+      Left e -> liftIO $ print e
+
+    pure $ WithId deckId deck
+
+decksPut :: Aws.Env -> DeckId -> Deck -> Servant.Handler (WithId DeckId Deck)
+decksPut env deckId deck = do
+
+    res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Decks" &
+        DynamoDB.uiUpdateExpression .~ Just "DeckSlides = :DeckSlides" &
+        DynamoDB.uiExpressionAttributeValues .~ deckToItem deckId deck &
+        DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew
 
     case res of
       Right x -> liftIO $ print x
@@ -157,6 +173,21 @@ slidesPost env slide = do
     res <- runAWS env $
       Aws.send $ DynamoDB.putItem "Slides" &
         DynamoDB.piItem .~ slideToItem slideId slide
+
+    case res of
+      Right x -> liftIO $ print x
+      Left e -> liftIO $ print e
+
+    pure $ WithId slideId slide
+
+slidesPut :: Aws.Env -> SlideId -> Slide -> Servant.Handler (WithId SlideId Slide)
+slidesPut env slideId slide = do
+
+    res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Slides" &
+        DynamoDB.uiUpdateExpression .~ Just
+          "SlideContent = :SlideContent, SlideTemplate = :SlideTemplate, SlideAttributes = :SlideAttributes" &
+        DynamoDB.uiExpressionAttributeValues .~ slideToItem slideId slide &
+        DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew
 
     case res of
       Right x -> liftIO $ print x
