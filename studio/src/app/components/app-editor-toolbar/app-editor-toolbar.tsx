@@ -29,6 +29,8 @@ export class AppEditorToolbar {
     private background: string;
 
     private selectedElement: HTMLElement;
+
+    @State()
     private deckOrSlide: boolean = false;
 
     @Event() private blockSlide: EventEmitter<boolean>;
@@ -128,6 +130,8 @@ export class AppEditorToolbar {
                 return;
             }
 
+            await this.initSelectedElement(selected);
+
             if (selected.classList && selected.classList.contains('deckgo-untouched')) {
                 if (selected.firstChild) {
                     selected.removeChild(selected.firstChild);
@@ -140,7 +144,7 @@ export class AppEditorToolbar {
 
             await this.displayToolbar(selected);
 
-            this.blockSlide.emit(!this.isElementSlideOrDeck(selected));
+            this.blockSlide.emit(!this.deckOrSlide);
 
             resolve();
         });
@@ -206,7 +210,6 @@ export class AppEditorToolbar {
             await this.setElementPosition(element, toolbar, 0);
 
             this.displayed = true;
-            await this.initSelectedElement(element);
 
             const style: CSSStyleDeclaration = window.getComputedStyle(element);
             this.color = style.color;
@@ -236,8 +239,6 @@ export class AppEditorToolbar {
 
     private setElementPosition(src: HTMLElement, applyTo: HTMLElement, offsetWidth: number): Promise<void> {
         return new Promise<void>((resolve) => {
-            const deckOrSlide: boolean = this.isElementSlideOrDeck(src);
-
             const top: number = src.offsetTop > 0 ? src.offsetTop : 0;
             const left: number = src.offsetLeft > 0 ? src.offsetLeft : 0;
 
@@ -247,7 +248,7 @@ export class AppEditorToolbar {
                 applyTo.style.top = '' + top + 'px';
             }
 
-            if (deckOrSlide) {
+            if (this.deckOrSlide) {
                 applyTo.style.left = '' + (0 + offsetWidth) + 'px';
                 applyTo.style.transform = 'translate(0,0)';
             } else {
@@ -278,7 +279,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if (this.deckBusy && this.isElementSlideOrDeck(this.selectedElement)) {
+            if (this.deckBusy && this.deckOrSlide) {
                 resolve();
                 return;
             }
@@ -342,7 +343,7 @@ export class AppEditorToolbar {
 
         this.color = $event.target.value;
 
-        if (this.isElementSlideOrDeck(this.selectedElement)) {
+        if (this.deckOrSlide) {
             this.selectedElement.style.setProperty('--color', $event.target.value);
         } else {
             this.selectedElement.style.color = $event.target.value;
@@ -395,7 +396,7 @@ export class AppEditorToolbar {
 
         this.background = $event.target.value;
 
-        if (this.isElementSlideOrDeck(this.selectedElement)) {
+        if (this.deckOrSlide) {
             this.selectedElement.style.setProperty('--background', $event.target.value);
         } else {
             this.selectedElement.style.background = $event.target.value;
@@ -466,8 +467,8 @@ export class AppEditorToolbar {
                 return;
             }
 
-            // Parent is the slide container
-            this.slideDidChange.emit(this.selectedElement.parentElement);
+            // If not deck or slide, then parent is the container slide
+            this.slideDidChange.emit(this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
 
             resolve();
         });
@@ -502,9 +503,7 @@ export class AppEditorToolbar {
             'border-bottom': '2px solid ' + this.background
         };
 
-        const busy: boolean = this.deckBusy && this.isElementSlideOrDeck(this.selectedElement);
-
-        return [<a onClick={() => this.deleteElement()} class={busy ? "disabled" : undefined}>
+        return [<a onClick={() => this.deleteElement()} class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
                 <ion-icon name="trash"></ion-icon>
             </a>,
             <a onClick={() => this.openColorPicker()}>
