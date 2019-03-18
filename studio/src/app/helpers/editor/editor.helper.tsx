@@ -1,3 +1,6 @@
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+
 import {SlideTemplate} from '../../models/slide-template';
 import {Slide} from '../../models/slide';
 import {Deck} from '../../models/deck';
@@ -14,6 +17,9 @@ export class EditorHelper {
 
     private deck: Deck;
 
+    private subscription: Subscription;
+    private updateSlideSubject: Subject<HTMLElement> = new Subject();
+
     constructor() {
         this.slideService = SlideService.getInstance();
         this.deckService = DeckService.getInstance();
@@ -25,12 +31,20 @@ export class EditorHelper {
         this.el.addEventListener('input', this.onSlideInputChange, false);
         this.el.addEventListener('slideDidChange', this.onSlideChange, false);
         this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
+
+        this.subscription = this.updateSlideSubject.pipe(debounceTime(2000)).subscribe(async (element: HTMLElement) => {
+            await this.updateSlide(element);
+        });
     }
 
     destroy() {
         this.el.removeEventListener('input', this.onSlideInputChange, true);
         this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
+
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     private onSlideDidLoad = async ($event: CustomEvent) => {
@@ -44,9 +58,7 @@ export class EditorHelper {
             return;
         }
 
-        console.log('slideDidChange', $event.detail);
-
-        await this.updateSlide($event.detail);
+        this.updateSlideSubject.next($event.detail);
     };
 
     private onSlideInputChange = async ($event: Event) => {
@@ -60,7 +72,7 @@ export class EditorHelper {
             return;
         }
 
-        await this.updateSlide(parent);
+        this.updateSlideSubject.next(parent);
     };
 
     private createSlide(slide: HTMLElement): Promise<void> {
