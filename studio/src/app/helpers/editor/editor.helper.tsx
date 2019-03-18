@@ -26,7 +26,7 @@ export class EditorHelper {
     }
 
     destroy() {
-        this.el.removeEventListener('change', this.onSlideDidLoad, true);
+        this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
     }
 
     private onSlideDidLoad = async ($event: CustomEvent) => {
