@@ -4,10 +4,10 @@ import {SlideTemplate} from '../../models/slide-template';
 import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
 
 @Component({
-    tag: 'app-slide-add',
-    styleUrl: 'app-slide-add.scss'
+    tag: 'app-slide-type',
+    styleUrl: 'app-slide-type.scss'
 })
-export class AppSlideAdd {
+export class AppSlideType {
 
     @Element() el: HTMLElement;
 

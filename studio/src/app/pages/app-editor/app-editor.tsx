@@ -179,10 +179,10 @@ export class AppEditor {
 
     private async openSlideAdd($event: UIEvent) {
         const popover: HTMLIonPopoverElement = await this.popoverController.create({
-            component: 'app-slide-add',
+            component: 'app-slide-type',
             event: $event,
             mode: 'ios',
-            cssClass: 'app-slide-add'
+            cssClass: 'app-slide-type'
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
