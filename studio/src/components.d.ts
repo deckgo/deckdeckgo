@@ -28,24 +28,6 @@ export namespace Components {
     'src'?: string;
   }
 
-  interface AppEditorToolbar {
-    'blurSelectedElement': () => Promise<void>;
-    'hideToolbar': () => Promise<void>;
-    'touch': (element: HTMLElement) => Promise<void>;
-    'unSelect': () => Promise<void>;
-  }
-  interface AppEditorToolbarAttributes extends StencilHTMLAttributes {
-    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
-    'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
-    'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-  }
-
-  interface AppFeed {}
-  interface AppFeedAttributes extends StencilHTMLAttributes {}
-
-  interface AppFooter {}
-  interface AppFooterAttributes extends StencilHTMLAttributes {}
-
   interface AppLogo {}
   interface AppLogoAttributes extends StencilHTMLAttributes {}
 
@@ -63,6 +45,29 @@ export namespace Components {
     'publish'?: boolean;
     'user'?: boolean;
   }
+
+  interface AppAddSlideAction {}
+  interface AppAddSlideActionAttributes extends StencilHTMLAttributes {
+    'onActionOpenSlideAdd'?: (event: CustomEvent<UIEvent>) => void;
+  }
+
+  interface AppEditorToolbar {
+    'blurSelectedElement': () => Promise<void>;
+    'hideToolbar': () => Promise<void>;
+    'touch': (element: HTMLElement) => Promise<void>;
+    'unSelect': () => Promise<void>;
+  }
+  interface AppEditorToolbarAttributes extends StencilHTMLAttributes {
+    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
+    'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+  }
+
+  interface AppFeed {}
+  interface AppFeedAttributes extends StencilHTMLAttributes {}
+
+  interface AppFooter {}
+  interface AppFooterAttributes extends StencilHTMLAttributes {}
 
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
@@ -95,8 +100,8 @@ export namespace Components {
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
-  interface AppSlideAdd {}
-  interface AppSlideAddAttributes extends StencilHTMLAttributes {}
+  interface AppSlideType {}
+  interface AppSlideTypeAttributes extends StencilHTMLAttributes {}
 
   interface AppSlotType {
     'selectedElement': HTMLElement;
@@ -110,11 +115,12 @@ declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
     'AppAvatar': Components.AppAvatar;
+    'AppLogo': Components.AppLogo;
+    'AppNavigation': Components.AppNavigation;
+    'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
     'AppFeed': Components.AppFeed;
     'AppFooter': Components.AppFooter;
-    'AppLogo': Components.AppLogo;
-    'AppNavigation': Components.AppNavigation;
     'AppPopular': Components.AppPopular;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
@@ -124,18 +130,19 @@ declare global {
     'AppTerms': Components.AppTerms;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
-    'AppSlideAdd': Components.AppSlideAdd;
+    'AppSlideType': Components.AppSlideType;
     'AppSlotType': Components.AppSlotType;
   }
 
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
     'app-avatar': Components.AppAvatarAttributes;
+    'app-logo': Components.AppLogoAttributes;
+    'app-navigation': Components.AppNavigationAttributes;
+    'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-footer': Components.AppFooterAttributes;
-    'app-logo': Components.AppLogoAttributes;
-    'app-navigation': Components.AppNavigationAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
@@ -145,7 +152,7 @@ declare global {
     'app-terms': Components.AppTermsAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
-    'app-slide-add': Components.AppSlideAddAttributes;
+    'app-slide-type': Components.AppSlideTypeAttributes;
     'app-slot-type': Components.AppSlotTypeAttributes;
   }
 
@@ -160,6 +167,24 @@ declare global {
   var HTMLAppAvatarElement: {
     prototype: HTMLAppAvatarElement;
     new (): HTMLAppAvatarElement;
+  };
+
+  interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
+  var HTMLAppLogoElement: {
+    prototype: HTMLAppLogoElement;
+    new (): HTMLAppLogoElement;
+  };
+
+  interface HTMLAppNavigationElement extends Components.AppNavigation, HTMLStencilElement {}
+  var HTMLAppNavigationElement: {
+    prototype: HTMLAppNavigationElement;
+    new (): HTMLAppNavigationElement;
+  };
+
+  interface HTMLAppAddSlideActionElement extends Components.AppAddSlideAction, HTMLStencilElement {}
+  var HTMLAppAddSlideActionElement: {
+    prototype: HTMLAppAddSlideActionElement;
+    new (): HTMLAppAddSlideActionElement;
   };
 
   interface HTMLAppEditorToolbarElement extends Components.AppEditorToolbar, HTMLStencilElement {}
@@ -178,18 +203,6 @@ declare global {
   var HTMLAppFooterElement: {
     prototype: HTMLAppFooterElement;
     new (): HTMLAppFooterElement;
-  };
-
-  interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
-  var HTMLAppLogoElement: {
-    prototype: HTMLAppLogoElement;
-    new (): HTMLAppLogoElement;
-  };
-
-  interface HTMLAppNavigationElement extends Components.AppNavigation, HTMLStencilElement {}
-  var HTMLAppNavigationElement: {
-    prototype: HTMLAppNavigationElement;
-    new (): HTMLAppNavigationElement;
   };
 
   interface HTMLAppPopularElement extends Components.AppPopular, HTMLStencilElement {}
@@ -246,10 +259,10 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
-  interface HTMLAppSlideAddElement extends Components.AppSlideAdd, HTMLStencilElement {}
-  var HTMLAppSlideAddElement: {
-    prototype: HTMLAppSlideAddElement;
-    new (): HTMLAppSlideAddElement;
+  interface HTMLAppSlideTypeElement extends Components.AppSlideType, HTMLStencilElement {}
+  var HTMLAppSlideTypeElement: {
+    prototype: HTMLAppSlideTypeElement;
+    new (): HTMLAppSlideTypeElement;
   };
 
   interface HTMLAppSlotTypeElement extends Components.AppSlotType, HTMLStencilElement {}
@@ -261,11 +274,12 @@ declare global {
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
+    'app-logo': HTMLAppLogoElement
+    'app-navigation': HTMLAppNavigationElement
+    'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-feed': HTMLAppFeedElement
     'app-footer': HTMLAppFooterElement
-    'app-logo': HTMLAppLogoElement
-    'app-navigation': HTMLAppNavigationElement
     'app-popular': HTMLAppPopularElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
@@ -275,18 +289,19 @@ declare global {
     'app-terms': HTMLAppTermsElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
-    'app-slide-add': HTMLAppSlideAddElement
+    'app-slide-type': HTMLAppSlideTypeElement
     'app-slot-type': HTMLAppSlotTypeElement
   }
 
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
     'app-avatar': HTMLAppAvatarElement;
+    'app-logo': HTMLAppLogoElement;
+    'app-navigation': HTMLAppNavigationElement;
+    'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-feed': HTMLAppFeedElement;
     'app-footer': HTMLAppFooterElement;
-    'app-logo': HTMLAppLogoElement;
-    'app-navigation': HTMLAppNavigationElement;
     'app-popular': HTMLAppPopularElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
@@ -296,7 +311,7 @@ declare global {
     'app-terms': HTMLAppTermsElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
-    'app-slide-add': HTMLAppSlideAddElement;
+    'app-slide-type': HTMLAppSlideTypeElement;
     'app-slot-type': HTMLAppSlotTypeElement;
   }
 
