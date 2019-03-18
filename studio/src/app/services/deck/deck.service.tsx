@@ -18,14 +18,14 @@ export class DeckService {
     }
 
     post(deck: Deck): Promise<Deck> {
-        return this.postOrPut(deck, '/decks', 'POST');
+        return this.query(deck, '/decks', 'POST');
     }
 
     put(deck: Deck): Promise<Deck> {
-        return this.postOrPut(deck, '/decks/' + deck.deck_id, 'PUT');
+        return this.query(deck, '/decks/' + deck.deck_id, 'PUT');
     }
 
-    private postOrPut(deck: Deck, context: string, method: string): Promise<Deck> {
+    private query(deck: Deck, context: string, method: string): Promise<Deck> {
         return new Promise<Deck>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');

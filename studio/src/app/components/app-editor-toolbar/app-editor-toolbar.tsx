@@ -29,7 +29,7 @@ export class AppEditorToolbar {
 
     @Event() private blockSlide: EventEmitter<boolean>;
 
-    @Event() private deleteSlide: EventEmitter<void>;
+    @Event() private slideDelete: EventEmitter<HTMLElement>;
 
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
 
@@ -255,9 +255,10 @@ export class AppEditorToolbar {
             }
 
             if (this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                this.deleteSlide.emit();
+                this.slideDelete.emit(this.selectedElement);
             } else {
                 this.selectedElement.parentElement.removeChild(this.selectedElement);
+                await this.emitSlideChange();
             }
 
             await this.hideToolbar();

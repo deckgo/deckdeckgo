@@ -18,14 +18,39 @@ export class SlideService {
     }
 
     post(slide: Slide): Promise<Slide> {
-        return this.postOrPut(slide, '/slides', 'POST');
+        return this.query(slide, '/slides', 'POST');
     }
 
     put(slide: Slide): Promise<Slide> {
-        return this.postOrPut(slide, '/slides/' + slide.slide_id,'PUT');
+        return this.query(slide, '/slides/' + slide.slide_id,'PUT');
     }
 
-    private postOrPut(slide: Slide, context: string, method: string): Promise<Slide> {
+    delete(slide_id: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                const rawResponse: Response = await fetch(apiUrl + '/slides/' + slide_id, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while deleting the slide');
+                    return;
+                }
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    private query(slide: Slide, context: string, method: string): Promise<Slide> {
         return new Promise<Slide>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');

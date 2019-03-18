@@ -36,6 +36,7 @@ export class EditorHelper {
         this.el.addEventListener('input', this.onSlideInputChange, false);
         this.el.addEventListener('slideDidChange', this.onSlideChange, false);
         this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
+        this.el.addEventListener('slideDelete', this.onSlideDelete, false);
 
         this.subscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
             await this.updateSlide(element);
@@ -46,6 +47,7 @@ export class EditorHelper {
         this.el.removeEventListener('input', this.onSlideInputChange, true);
         this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
+        this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
 
         if (this.subscription) {
             this.subscription.unsubscribe();
@@ -59,7 +61,7 @@ export class EditorHelper {
     };
 
     private onSlideChange = async ($event: CustomEvent) => {
-        if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
+        if (!$event || !$event.detail) {
             return;
         }
 
@@ -78,6 +80,14 @@ export class EditorHelper {
         }
 
         this.updateSlideSubject.next(parent);
+    };
+
+    private onSlideDelete = async ($event: CustomEvent) => {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        await this.deleteSlide($event.detail);
     };
 
     private createSlide(slide: HTMLElement): Promise<void> {
@@ -169,6 +179,47 @@ export class EditorHelper {
                 this.errorService.error(err);
                 resolve();
             }
+        });
+    }
+
+    private deleteSlide(slide: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            try {
+                if (!slide) {
+                    resolve();
+                    return;
+                }
+
+                if (!slide.getAttribute('slide_id')) {
+                    this.errorService.error('Slide is not defined');
+                    resolve();
+                    return;
+                }
+
+                await this.slideService.delete(slide.getAttribute('slide_id'));
+
+                await this.deleteSlideElement();
+
+                resolve();
+            } catch (err) {
+                this.errorService.error(err);
+                resolve();
+            }
+        });
+    }
+
+    private deleteSlideElement(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                resolve();
+                return;
+            }
+
+            await (deck as any).deleteActiveSlide();
+
+            resolve();
         });
     }
 

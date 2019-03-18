@@ -297,26 +297,6 @@ export class AppEditor {
         });
     }
 
-    @Listen('deleteSlide')
-    async onDeleteSlide() {
-        await this.deleteSlide();
-    }
-
-    private deleteSlide(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-            if (!deck) {
-                resolve();
-                return;
-            }
-
-            await (deck as any).deleteActiveSlide();
-
-            resolve();
-        });
-    }
-
     private toggleFullScreen(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const deck: HTMLElement = this.el.querySelector('deckgo-deck');
