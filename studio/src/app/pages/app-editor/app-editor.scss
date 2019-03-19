@@ -18,7 +18,8 @@ app-editor {
     --deckgo-inline-editor-button-mobile-color: var(--ion-color-dark);
 
     ion-icon[slot="link"] {
-      padding-top: 10px;
+      padding-top: 12px;
+      font-size: 1.2rem;
     }
   }
 
