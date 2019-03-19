@@ -102,11 +102,17 @@ nix.
 
 ## Build
 
+_TODO_
 
-
+For inspiration on how to build fully static executables with Nix, see
+[DeckDeckGo](https://github.com/deckgo/deckdeckgo/tree/master/infra)
 
 ## Deploy
 
+_TODO_
+
+For inspiration on how to deploy with Terraform and Nix, see
+[DeckDeckGo](https://github.com/deckgo/deckdeckgo/tree/master/infra)
 
 ## License
 
