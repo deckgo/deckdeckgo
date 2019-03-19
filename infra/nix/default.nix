@@ -12,9 +12,10 @@ with rec
       with
         { mkPackage = name: path:
             { "${name}" =
-              pkgs'.haskell.lib.disableLibraryProfiling (
-              pkgs'.haskell.lib.disableExecutableProfiling (
-              pkgs'.haskell.lib.failOnAllWarnings (
+                with pkgs'.haskell.lib;
+                disableLibraryProfiling (
+                disableExecutableProfiling (
+                failOnAllWarnings (
                 super.callCabal2nix name (pkgs'.lib.cleanSource path) {}
               )));
             };
@@ -22,8 +23,10 @@ with rec
 
       super //
         mkPackage "deckdeckgo-handler" ../handler //
-        mkPackage "wai-lambda" ../wai-lambda ;
-
+        (
+        with { wai-lambda = pkgs'.callPackage ../wai-lambda/nix/packages.nix {}; };
+        mkPackage "wai-lambda" wai-lambda.wai-lambda-source
+        );
     };
   normalHaskellPackages = pkgsStatic.pkgsMusl.haskellPackages.override
     (haskellOverride pkgsStatic.pkgsMusl);
