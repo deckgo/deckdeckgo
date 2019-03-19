@@ -1,3 +1,6 @@
+@import "../../../global/theme/editor/editor-deck";
+@import "../../../global/theme/editor/editor-deck-fonts";
+
 app-editor {
   main {
     position: relative;
@@ -9,58 +12,14 @@ app-editor {
     margin: auto;
 
     overflow: hidden;
-
-    deckgo-deck {
-      --background: white;
-      --color: black;
-      --padding-end: 64px;
-
-      --slide-user-select: text;
-
-      h1, h2, h3, p {
-        width: 100%;
-        overflow: hidden;
-
-        border-radius: 2px;
-        border: 1px solid var(--ion-color-light);
-
-        padding: 8px;
-
-        &:focus {
-          outline: 0;
-          box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), .5);
-        }
-      }
-
-      h1 {
-        min-height: calc(var(--font-size-h1) + 4px);
-      }
-
-      h2 {
-        min-height: calc(var(--font-size-h2) + 4px);
-      }
-
-      h3 {
-        min-height: calc(var(--font-size-h3) + 4px);
-      }
-
-      p {
-        min-height: calc(var(--font-size-normal) + 4px);
-      }
-
-      deckgo-slide-split {
-        p {
-          height: fit-content;
-        }
-      }
-    }
   }
 
   deckgo-inline-editor {
     --deckgo-inline-editor-button-mobile-color: var(--ion-color-dark);
 
     ion-icon[slot="link"] {
-      padding-top: 10px;
+      padding-top: 12px;
+      font-size: 1.2rem;
     }
   }
 

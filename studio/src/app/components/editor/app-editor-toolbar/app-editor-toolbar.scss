@@ -16,6 +16,12 @@ app-editor-toolbar {
     a {
       cursor: pointer;
 
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+
       border-radius: 50%;
       border: 1px solid var(--ion-color-primary);
 
@@ -33,6 +39,15 @@ app-editor-toolbar {
       ion-icon {
         font-size: 1.2rem;
         color: var(--ion-color-primary);
+      }
+
+      &.disabled {
+        cursor: initial;
+        border: 1px solid var(--ion-color-light);
+
+        ion-icon {
+          color: var(--ion-color-light);
+        }
       }
     }
   }

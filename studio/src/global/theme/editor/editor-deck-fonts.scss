@@ -1,0 +1,64 @@
+// Synchro with https://github.com/deckgo/deckdeckgo-starter/blob/master/src/css/font.css
+
+deckgo-deck {
+  *, h3, h4, h5, h6 {
+    font-weight: 300;
+  }
+
+  a, strong {
+    font-weight: 500;
+  }
+
+  h1, h2 {
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: 3em;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  h3 {
+    font-size: 1.4em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    max-width: 100%
+  }
+
+  --code-font-size: 10px;
+  --code-font-family: Menlo, monospace;
+
+  --pager-text-size: 0.6rem;
+
+  ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
+    font-size: 1em;
+  }
+}
+
+// 1200 and not 992 because of menu
+@media(min-width: 1200px) {
+  deckgo-deck {
+    font-size: 32px;
+    --code-font-size: 24px;
+
+    ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
+      font-size: 32px;
+    }
+  }
+}
+
+@media(max-width: 768px) {
+  deckgo-deck {
+    h1 {
+      font-size: 2.4em;
+    }
+
+    h3 {
+      font-size: 1.2em;
+    }
+  }
+}

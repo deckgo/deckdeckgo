@@ -34,7 +34,7 @@ export class DeckdeckgoInlineEditor {
   private color: string;
 
   @State()
-  private disableBold: boolean = false;
+  private disabledTitle: boolean = false;
 
   @Prop({mutable: true})
   mobile: boolean = false;
@@ -249,7 +249,7 @@ export class DeckdeckgoInlineEditor {
       }
 
       if (DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()]) {
-        this.disableBold = DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()] !== DeckdeckgoInlineEditorTag.P;
+        this.disabledTitle = DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()] !== DeckdeckgoInlineEditorTag.P;
 
         await this.findColor(node);
 
@@ -641,7 +641,7 @@ export class DeckdeckgoInlineEditor {
       const styleColor = this.color ? {'border-bottom': '2px solid ' + this.color} : {};
 
       return [
-        <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disableBold}
+        <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disabledTitle}
                 class={this.bold ? "bold active" : "bold"}>B
         </button>,
         <button onClick={(e: UIEvent) => this.styleItalic(e)}
@@ -660,7 +660,9 @@ export class DeckdeckgoInlineEditor {
 
         <div class="separator"></div>,
 
-        <button onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>
+        <button
+          disabled={this.disabledTitle}
+          onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>
           <slot name="link"></slot>
         </button>
       ];

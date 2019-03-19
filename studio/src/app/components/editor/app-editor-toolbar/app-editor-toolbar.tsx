@@ -1,8 +1,12 @@
 import {Component, Element, Method, State, Event, EventEmitter, Prop, Listen} from '@stencil/core';
-
-import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
 import {OverlayEventDetail} from '@ionic/core';
-import {DeckdeckgoSlotType} from '../../utils/deckdeckgo-slot-type';
+
+import {Subscription} from 'rxjs';
+
+import {DeckdeckgoStudioCreateSlide} from '../../../utils/deckdeckgo-studio-create-slide';
+import {DeckdeckgoSlotType} from '../../../utils/deckdeckgo-slot-type';
+
+import {DeckBusyService} from '../../../services/deck/deck-busy.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -25,11 +29,33 @@ export class AppEditorToolbar {
     private background: string;
 
     private selectedElement: HTMLElement;
+
+    @State()
     private deckOrSlide: boolean = false;
+
+    private applyToAllDeck: boolean = false;
 
     @Event() private blockSlide: EventEmitter<boolean>;
 
-    @Event() private deleteSlide: EventEmitter<void>;
+    @Event() private slideDelete: EventEmitter<HTMLElement>;
+
+    @Event() private slideDidChange: EventEmitter<HTMLElement>;
+
+    private subscription: Subscription;
+    private deckBusyService: DeckBusyService;
+
+    @State()
+    private deckBusy: boolean = false;
+
+    constructor() {
+        this.deckBusyService = DeckBusyService.getInstance();
+    }
+
+    async componentWillLoad() {
+        this.subscription = this.deckBusyService.watch().subscribe((busy: boolean) => {
+            this.deckBusy = busy;
+        });
+    }
 
     async componentDidLoad() {
         await this.colorPickerListener(true);
@@ -41,6 +67,10 @@ export class AppEditorToolbar {
     async componentDidUnload() {
         await this.colorPickerListener(false);
         await this.backgroundPickerListener(false);
+
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     private initWindowResize() {
@@ -102,6 +132,8 @@ export class AppEditorToolbar {
                 return;
             }
 
+            await this.initSelectedElement(selected);
+
             if (selected.classList && selected.classList.contains('deckgo-untouched')) {
                 if (selected.firstChild) {
                     selected.removeChild(selected.firstChild);
@@ -114,7 +146,7 @@ export class AppEditorToolbar {
 
             await this.displayToolbar(selected);
 
-            this.blockSlide.emit(!this.isElementSlideOrDeck(selected));
+            this.blockSlide.emit(!this.deckOrSlide);
 
             resolve();
         });
@@ -180,7 +212,6 @@ export class AppEditorToolbar {
             await this.setElementPosition(element, toolbar, 0);
 
             this.displayed = true;
-            await this.initSelectedElement(element);
 
             const style: CSSStyleDeclaration = window.getComputedStyle(element);
             this.color = style.color;
@@ -210,8 +241,6 @@ export class AppEditorToolbar {
 
     private setElementPosition(src: HTMLElement, applyTo: HTMLElement, offsetWidth: number): Promise<void> {
         return new Promise<void>((resolve) => {
-            const deckOrSlide: boolean = this.isElementSlideOrDeck(src);
-
             const top: number = src.offsetTop > 0 ? src.offsetTop : 0;
             const left: number = src.offsetLeft > 0 ? src.offsetLeft : 0;
 
@@ -221,7 +250,7 @@ export class AppEditorToolbar {
                 applyTo.style.top = '' + top + 'px';
             }
 
-            if (deckOrSlide) {
+            if (this.deckOrSlide) {
                 applyTo.style.left = '' + (0 + offsetWidth) + 'px';
                 applyTo.style.transform = 'translate(0,0)';
             } else {
@@ -252,10 +281,18 @@ export class AppEditorToolbar {
                 return;
             }
 
+            if (this.deckBusy && this.deckOrSlide) {
+                resolve();
+                return;
+            }
+
+            this.deckBusyService.busy(true);
+
             if (this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                this.deleteSlide.emit();
+                this.slideDelete.emit(this.selectedElement);
             } else {
                 this.selectedElement.parentElement.removeChild(this.selectedElement);
+                await this.emitSlideChange();
             }
 
             await this.hideToolbar();
@@ -286,7 +323,7 @@ export class AppEditorToolbar {
         });
     }
 
-    private openColorPicker(): Promise<void> {
+    private openColorPicker = (): Promise<void> => {
         return new Promise<void>((resolve) => {
             const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
 
@@ -299,7 +336,7 @@ export class AppEditorToolbar {
 
             resolve();
         });
-    }
+    };
 
     private selectColor = async ($event) => {
         if (!this.selectedElement) {
@@ -308,11 +345,15 @@ export class AppEditorToolbar {
 
         this.color = $event.target.value;
 
-        if (this.isElementSlideOrDeck(this.selectedElement)) {
-            this.selectedElement.style.setProperty('--color', $event.target.value);
+        if (this.deckOrSlide) {
+            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
+
+            element.style.setProperty('--color', $event.target.value);
         } else {
             this.selectedElement.style.color = $event.target.value;
         }
+
+        await this.emitSlideChange();
     };
 
     // Background
@@ -337,7 +378,7 @@ export class AppEditorToolbar {
         });
     }
 
-    private openBackgroundPicker(): Promise<void> {
+    private openBackgroundPicker = (): Promise<void> => {
         return new Promise<void>((resolve) => {
             const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
 
@@ -350,7 +391,7 @@ export class AppEditorToolbar {
 
             resolve();
         });
-    }
+    };
 
     private selectBackground = async ($event) => {
         if (!this.selectedElement) {
@@ -359,11 +400,15 @@ export class AppEditorToolbar {
 
         this.background = $event.target.value;
 
-        if (this.isElementSlideOrDeck(this.selectedElement)) {
-            this.selectedElement.style.setProperty('--background', $event.target.value);
+        if (this.deckOrSlide) {
+            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
+
+            element.style.setProperty('--background', $event.target.value);
         } else {
             this.selectedElement.style.background = $event.target.value;
         }
+
+        await this.emitSlideChange();
     };
 
     private async openSlotType($event: UIEvent) {
@@ -415,6 +460,22 @@ export class AppEditorToolbar {
 
             await this.initSelectedElement(element);
 
+            await this.emitSlideChange();
+
+            resolve();
+        });
+    }
+
+    private emitSlideChange(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement) {
+                resolve();
+                return;
+            }
+
+            // If not deck or slide, then parent is the container slide
+            this.slideDidChange.emit(this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
+
             resolve();
         });
     }
@@ -426,6 +487,28 @@ export class AppEditorToolbar {
 
             resolve();
         });
+    }
+
+    private async openForDeckOrSlide($event: UIEvent, myFunction: Function) {
+        if (!this.deckOrSlide) {
+            myFunction();
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-deck-or-slide',
+            event: $event,
+            mode: 'ios'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                this.applyToAllDeck = detail.data.deck;
+                myFunction();
+            }
+        });
+
+        await popover.present();
     }
 
     render() {
@@ -448,13 +531,13 @@ export class AppEditorToolbar {
             'border-bottom': '2px solid ' + this.background
         };
 
-        return [<a onClick={() => this.deleteElement()}>
+        return [<a onClick={() => this.deleteElement()} class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
                 <ion-icon name="trash"></ion-icon>
             </a>,
-            <a onClick={() => this.openColorPicker()}>
+            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)}>
                 <ion-label style={styleColor}>A</ion-label>
             </a>,
-            <a onClick={() => this.openBackgroundPicker()}>
+            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)}>
                 <ion-label style={styleBackground}>Bg</ion-label>
             </a>
         ]

@@ -1,5 +1,9 @@
 import {Component, Prop} from '@stencil/core';
 
+import {Subscription} from 'rxjs';
+
+import {ErrorService} from './services/error/error.service';
+
 @Component({
     tag: 'app-root',
     styleUrl: 'app-root.scss'
@@ -7,6 +11,40 @@ import {Component, Prop} from '@stencil/core';
 export class AppRoot {
 
     @Prop({connect: 'ion-menu-controller'}) lazyMenuController!: HTMLIonMenuControllerElement;
+    @Prop({connect: 'ion-toast-controller'}) toastController: HTMLIonToastControllerElement;
+
+    private subscription: Subscription;
+
+    private errorService: ErrorService;
+
+    constructor() {
+        this.errorService = ErrorService.getInstance();
+    }
+
+    async componentDidLoad() {
+        this.subscription = this.errorService.watch().subscribe(async (error: string) => {
+            await this.toastError(error);
+        });
+    }
+
+    async componentDidUnload() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
+
+    private async toastError(error: string) {
+        const popover: HTMLIonToastElement = await this.toastController.create({
+            message: error,
+            showCloseButton: true,
+            position: 'top',
+            closeButtonText: 'Ok, sh*t happens',
+            color: 'danger',
+            duration: 6000
+        });
+
+        await popover.present();
+    }
 
     render() {
         return ([

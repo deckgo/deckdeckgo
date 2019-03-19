@@ -177,12 +177,17 @@ export class AppEditor {
         });
     }
 
-    private async openSlideAdd($event: UIEvent) {
+    @Listen('actionOpenSlideAdd')
+    async onActionOpenSlideAdd($event: CustomEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
         const popover: HTMLIonPopoverElement = await this.popoverController.create({
-            component: 'app-slide-add',
-            event: $event,
+            component: 'app-slide-type',
+            event: $event.detail,
             mode: 'ios',
-            cssClass: 'app-slide-add'
+            cssClass: 'app-slide-type'
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -297,26 +302,6 @@ export class AppEditor {
         });
     }
 
-    @Listen('deleteSlide')
-    async onDeleteSlide() {
-        await this.deleteSlide();
-    }
-
-    private deleteSlide(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-            if (!deck) {
-                resolve();
-                return;
-            }
-
-            await (deck as any).deleteActiveSlide();
-
-            resolve();
-        });
-    }
-
     private toggleFullScreen(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const deck: HTMLElement = this.el.querySelector('deckgo-deck');
@@ -369,10 +354,7 @@ export class AppEditor {
                     </ion-buttons>
 
                     <ion-buttons slot="end">
-                        <ion-button onClick={(e: UIEvent) => this.openSlideAdd(e)} color="primary" shape="round"
-                                    size="small">
-                            <ion-label>Add slide</ion-label>
-                        </ion-button>
+                        <app-add-slide-action></app-add-slide-action>
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,

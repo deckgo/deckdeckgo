@@ -18,19 +18,19 @@ export class DeckService {
     }
 
     post(deck: Deck): Promise<Deck> {
-        return this.postOrPut(deck, 'POST');
+        return this.query(deck, '/decks', 'POST');
     }
 
     put(deck: Deck): Promise<Deck> {
-        return this.postOrPut(deck, 'PUT');
+        return this.query(deck, '/decks/' + deck.deck_id, 'PUT');
     }
 
-    private postOrPut(deck: Deck, method: string): Promise<Deck> {
+    private query(deck: Deck, context: string, method: string): Promise<Deck> {
         return new Promise<Deck>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
-                const rawResponse: Response = await fetch(apiUrl + '/decks', {
+                const rawResponse: Response = await fetch(apiUrl + context, {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
@@ -39,9 +39,12 @@ export class DeckService {
                     body: JSON.stringify(deck)
                 });
 
-                const persistedDeck: Deck = await rawResponse.json();
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while creating or updating the deck');
+                    return;
+                }
 
-                console.log(persistedDeck);
+                const persistedDeck: Deck = await rawResponse.json();
 
                 resolve(persistedDeck);
             } catch (err) {
