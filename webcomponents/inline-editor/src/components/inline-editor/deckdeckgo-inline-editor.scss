@@ -64,6 +64,12 @@ div.deckgo-tools {
     font-size: var(--deckgo-inline-editor-button-font-size, 1.4rem);
     font-family: var(--deckgo-inline-editor-button-font-family, inherit);
 
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
     &.italic {
       font-style: italic;
     }

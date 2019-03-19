@@ -16,6 +16,12 @@ app-editor-toolbar {
     a {
       cursor: pointer;
 
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+
       border-radius: 50%;
       border: 1px solid var(--ion-color-primary);
 
