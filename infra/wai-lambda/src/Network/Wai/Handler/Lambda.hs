@@ -36,6 +36,14 @@ import qualified Network.Wai as Wai
 import qualified Network.Wai.Internal as Wai
 import qualified System.IO.Temp as Temp
 
+type RawResponse = (H.Status, H.ResponseHeaders, BS.ByteString)
+
+data Settings = Settings
+  { timeoutValue :: Int
+  , handleTimeout :: BS.ByteString -> IO RawResponse
+  , handleException :: BS.ByteString -> SomeException -> IO RawResponse
+  }
+
 -- | Run an 'Application'.
 --
 -- Continuously reads requests from @stdin@. Each line should be a a JSON
@@ -47,7 +55,10 @@ import qualified System.IO.Temp as Temp
 --
 -- If you need more control use 'handleRequest' directly.
 run :: Application -> IO ()
-run app = xif BS.empty $ \loop leftover ->
+run = runSettings defaultSettings
+
+runSettings :: Settings -> Application -> IO ()
+runSettings settings app = xif BS.empty $ \loop leftover ->
     -- XXX: we don't use getLine because it errors out on EOF; here we deal
     -- with this explicitly
     BS.hGetSome stdin 4096 >>= \bs ->
@@ -56,17 +67,53 @@ run app = xif BS.empty $ \loop leftover ->
       else case second BS8.uncons $ BS8.break (== '\n') (leftover <> bs) of
         (_tmpLine, Nothing) -> loop (leftover <> bs)
         (line, Just ('\n', rest)) -> do
-          void $ forkIO $ handleRequest app defaultTimeout line
+          void $ forkIO $ handleRequest settings app line
           loop rest
         -- This happens if 'break' found a newline character but 'uncons'
         -- returned something different
         (_tmpLine, Just{}) -> throwIO $ userError $
           "wai-lambda: The impossible happened: was expecting newline"
 
+setTimeoutSeconds :: Int -> Settings -> Settings
+setTimeoutSeconds tout settings = settings
+    { timeoutValue = tout * 1000 * 1000 }
+
+setHandleException
+  :: (BS.ByteString -> SomeException -> IO RawResponse)
+  -> Settings
+  -> Settings
+setHandleException handler settings = settings
+    { handleException = handler}
+
+setHandleTimeout
+  :: (BS.ByteString -> IO RawResponse)
+  -> Settings
+  -> Settings
+setHandleTimeout handler settings = settings
+    { handleTimeout = handler}
+
+defaultSettings :: Settings
+defaultSettings = Settings
+    { timeoutValue = defaultTimeoutValue
+    , handleTimeout = defaultHandleTimeout
+    , handleException = defaultHandleException
+    }
+
+defaultHandleException :: BS.ByteString -> SomeException -> IO RawResponse
+defaultHandleException bs e = do
+    putStrLn $
+      "Could not process request: " <> show bs <>
+      " error: " <> show e
+    pure (H.status500, [], "Internal Server Error")
 
 -- | Default request timeout. 2 seconds.
-defaultTimeout :: Int
-defaultTimeout = 2 * 1000 * 1000
+defaultTimeoutValue :: Int
+defaultTimeoutValue = 2 * 1000 * 1000
+
+defaultHandleTimeout :: BS.ByteString -> IO RawResponse
+defaultHandleTimeout bs = do
+    putStrLn $ "Timeout processing request: " <> show bs
+    pure (H.status504, [], "Timeout")
 
 -------------------------------------------------------------------------------
 -- Request handling
@@ -78,11 +125,11 @@ defaultTimeout = 2 * 1000 * 1000
 -- * Returns 500 if an exception occurs while processing the request.
 -- * Throws an exception if the input cannot be parsed.
 handleRequest
-  :: Application
-  -> Int  -- ^ Timeout in microseconds
+  :: Settings
+  -> Application
   -> BS.ByteString -- ^ The request (see 'decodeInput')
   -> IO ()
-handleRequest app tout bs = case decodeInput bs of
+handleRequest settings app bs = case decodeInput bs of
     Left err -> do
       -- The request couldn't be parsed. There isn't much we can do since we
       -- don't even know where to put the response.
@@ -94,19 +141,15 @@ handleRequest app tout bs = case decodeInput bs of
       throwIO $ userError msg
     Right (fp, mkReq) -> do
       req <- mkReq
-      mresp <- timeout tout $ tryAny $ processRequest app req
+      mresp <- timeout (timeoutValue settings) $ tryAny $ processRequest app req
       resp <- case mresp of
         Just (Right r) -> do
           (st, hdrs, body) <- readResponse r
           pure $ toJSONResponse st hdrs body
-        Just (Left e) -> do
-          putStrLn $
-            "Could not process request: " <> show bs <>
-            " error: " <> show e
-          pure $ toJSONResponse H.status500 [] "Internal Server Error"
-        Nothing -> do
-          putStrLn $ "Timeout processing request: " <> show bs
-          pure $ toJSONResponse H.status504 [] "Timeout"
+        Just (Left e) ->
+          uncurry3 toJSONResponse <$> handleException settings bs e
+        Nothing ->
+          uncurry3 toJSONResponse <$> handleTimeout settings bs
 
       writeFileAtomic fp $ BL.toStrict $ Aeson.encode $ Aeson.Object resp
 
@@ -256,7 +299,7 @@ originalRequestKey = unsafePerformIO Vault.newKey
 {-# NOINLINE originalRequestKey #-}
 
 -- | Read the status, headers and body of a 'Wai.Response'.
-readResponse :: Wai.Response -> IO (H.Status, H.ResponseHeaders, BS.ByteString)
+readResponse :: Wai.Response -> IO RawResponse
 readResponse (Wai.responseToStream -> (st, hdrs, mkBody)) = do
     body <- mkBody drainBody
     pure (st, hdrs, body)
@@ -296,3 +339,7 @@ writeFileAtomic fp bs =
 -- | @flip fix@
 xif :: b -> ((b -> c) -> b -> c) -> c
 xif = flip fix
+
+{-# INLINE uncurry3 #-}
+uncurry3 :: (a -> b -> c -> d) -> ((a, b, c) -> d)
+uncurry3 f ~(a,b,c) = f a b c
