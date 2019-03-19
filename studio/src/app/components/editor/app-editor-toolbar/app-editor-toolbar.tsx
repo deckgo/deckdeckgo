@@ -33,6 +33,8 @@ export class AppEditorToolbar {
     @State()
     private deckOrSlide: boolean = false;
 
+    private applyToAllDeck: boolean = false;
+
     @Event() private blockSlide: EventEmitter<boolean>;
 
     @Event() private slideDelete: EventEmitter<HTMLElement>;
@@ -321,7 +323,7 @@ export class AppEditorToolbar {
         });
     }
 
-    private openColorPicker(): Promise<void> {
+    private openColorPicker = (): Promise<void> => {
         return new Promise<void>((resolve) => {
             const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
 
@@ -334,7 +336,7 @@ export class AppEditorToolbar {
 
             resolve();
         });
-    }
+    };
 
     private selectColor = async ($event) => {
         if (!this.selectedElement) {
@@ -344,7 +346,9 @@ export class AppEditorToolbar {
         this.color = $event.target.value;
 
         if (this.deckOrSlide) {
-            this.selectedElement.style.setProperty('--color', $event.target.value);
+            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
+
+            element.style.setProperty('--color', $event.target.value);
         } else {
             this.selectedElement.style.color = $event.target.value;
         }
@@ -374,7 +378,7 @@ export class AppEditorToolbar {
         });
     }
 
-    private openBackgroundPicker(): Promise<void> {
+    private openBackgroundPicker = (): Promise<void> => {
         return new Promise<void>((resolve) => {
             const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
 
@@ -387,7 +391,7 @@ export class AppEditorToolbar {
 
             resolve();
         });
-    }
+    };
 
     private selectBackground = async ($event) => {
         if (!this.selectedElement) {
@@ -397,7 +401,9 @@ export class AppEditorToolbar {
         this.background = $event.target.value;
 
         if (this.deckOrSlide) {
-            this.selectedElement.style.setProperty('--background', $event.target.value);
+            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
+
+            element.style.setProperty('--background', $event.target.value);
         } else {
             this.selectedElement.style.background = $event.target.value;
         }
@@ -483,6 +489,28 @@ export class AppEditorToolbar {
         });
     }
 
+    private async openForDeckOrSlide($event: UIEvent, myFunction: Function) {
+        if (!this.deckOrSlide) {
+            myFunction();
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-deck-or-slide',
+            event: $event,
+            mode: 'ios'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                this.applyToAllDeck = detail.data.deck;
+                myFunction();
+            }
+        });
+
+        await popover.present();
+    }
+
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
@@ -506,10 +534,10 @@ export class AppEditorToolbar {
         return [<a onClick={() => this.deleteElement()} class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
                 <ion-icon name="trash"></ion-icon>
             </a>,
-            <a onClick={() => this.openColorPicker()}>
+            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)}>
                 <ion-label style={styleColor}>A</ion-label>
             </a>,
-            <a onClick={() => this.openBackgroundPicker()}>
+            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)}>
                 <ion-label style={styleBackground}>Bg</ion-label>
             </a>
         ]

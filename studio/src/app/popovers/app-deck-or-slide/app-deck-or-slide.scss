@@ -1,0 +1,10 @@
+app-deck-or-slide {
+  a {
+    color: inherit;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--ion-color-tertiary);
+    }
+  }
+}

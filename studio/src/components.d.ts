@@ -100,6 +100,9 @@ export namespace Components {
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
+  interface AppDeckOrSlide {}
+  interface AppDeckOrSlideAttributes extends StencilHTMLAttributes {}
+
   interface AppSlideType {}
   interface AppSlideTypeAttributes extends StencilHTMLAttributes {}
 
@@ -130,6 +133,7 @@ declare global {
     'AppTerms': Components.AppTerms;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
+    'AppDeckOrSlide': Components.AppDeckOrSlide;
     'AppSlideType': Components.AppSlideType;
     'AppSlotType': Components.AppSlotType;
   }
@@ -152,6 +156,7 @@ declare global {
     'app-terms': Components.AppTermsAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
+    'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
     'app-slot-type': Components.AppSlotTypeAttributes;
   }
@@ -259,6 +264,12 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
+  interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
+  var HTMLAppDeckOrSlideElement: {
+    prototype: HTMLAppDeckOrSlideElement;
+    new (): HTMLAppDeckOrSlideElement;
+  };
+
   interface HTMLAppSlideTypeElement extends Components.AppSlideType, HTMLStencilElement {}
   var HTMLAppSlideTypeElement: {
     prototype: HTMLAppSlideTypeElement;
@@ -289,6 +300,7 @@ declare global {
     'app-terms': HTMLAppTermsElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
+    'app-deck-or-slide': HTMLAppDeckOrSlideElement
     'app-slide-type': HTMLAppSlideTypeElement
     'app-slot-type': HTMLAppSlotTypeElement
   }
@@ -311,6 +323,7 @@ declare global {
     'app-terms': HTMLAppTermsElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
+    'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-slide-type': HTMLAppSlideTypeElement;
     'app-slot-type': HTMLAppSlotTypeElement;
   }
