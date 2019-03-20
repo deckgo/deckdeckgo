@@ -28,6 +28,9 @@ export namespace Components {
     'src'?: string;
   }
 
+  interface AppFooter {}
+  interface AppFooterAttributes extends StencilHTMLAttributes {}
+
   interface AppLogo {}
   interface AppLogoAttributes extends StencilHTMLAttributes {}
 
@@ -77,9 +80,6 @@ export namespace Components {
 
   interface AppFeed {}
   interface AppFeedAttributes extends StencilHTMLAttributes {}
-
-  interface AppFooter {}
-  interface AppFooterAttributes extends StencilHTMLAttributes {}
 
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
@@ -136,6 +136,7 @@ declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
     'AppAvatar': Components.AppAvatar;
+    'AppFooter': Components.AppFooter;
     'AppLogo': Components.AppLogo;
     'AppMenuUser': Components.AppMenuUser;
     'AppNavigationActions': Components.AppNavigationActions;
@@ -143,7 +144,6 @@ declare global {
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
     'AppFeed': Components.AppFeed;
-    'AppFooter': Components.AppFooter;
     'AppPopular': Components.AppPopular;
     'AppLogin': Components.AppLogin;
     'AppSlideNavigate': Components.AppSlideNavigate;
@@ -163,6 +163,7 @@ declare global {
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
     'app-avatar': Components.AppAvatarAttributes;
+    'app-footer': Components.AppFooterAttributes;
     'app-logo': Components.AppLogoAttributes;
     'app-menu-user': Components.AppMenuUserAttributes;
     'app-navigation-actions': Components.AppNavigationActionsAttributes;
@@ -170,7 +171,6 @@ declare global {
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-feed': Components.AppFeedAttributes;
-    'app-footer': Components.AppFooterAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-login': Components.AppLoginAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
@@ -198,6 +198,12 @@ declare global {
   var HTMLAppAvatarElement: {
     prototype: HTMLAppAvatarElement;
     new (): HTMLAppAvatarElement;
+  };
+
+  interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
+  var HTMLAppFooterElement: {
+    prototype: HTMLAppFooterElement;
+    new (): HTMLAppFooterElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
@@ -240,12 +246,6 @@ declare global {
   var HTMLAppFeedElement: {
     prototype: HTMLAppFeedElement;
     new (): HTMLAppFeedElement;
-  };
-
-  interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
-  var HTMLAppFooterElement: {
-    prototype: HTMLAppFooterElement;
-    new (): HTMLAppFooterElement;
   };
 
   interface HTMLAppPopularElement extends Components.AppPopular, HTMLStencilElement {}
@@ -335,6 +335,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
+    'app-footer': HTMLAppFooterElement
     'app-logo': HTMLAppLogoElement
     'app-menu-user': HTMLAppMenuUserElement
     'app-navigation-actions': HTMLAppNavigationActionsElement
@@ -342,7 +343,6 @@ declare global {
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-feed': HTMLAppFeedElement
-    'app-footer': HTMLAppFooterElement
     'app-popular': HTMLAppPopularElement
     'app-login': HTMLAppLoginElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
@@ -362,6 +362,7 @@ declare global {
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
     'app-avatar': HTMLAppAvatarElement;
+    'app-footer': HTMLAppFooterElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu-user': HTMLAppMenuUserElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
@@ -369,7 +370,6 @@ declare global {
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-feed': HTMLAppFeedElement;
-    'app-footer': HTMLAppFooterElement;
     'app-popular': HTMLAppPopularElement;
     'app-login': HTMLAppLoginElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;

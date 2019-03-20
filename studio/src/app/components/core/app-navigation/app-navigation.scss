@@ -1,4 +1,5 @@
 app-navigation {
+
   ion-anchor {
     --color: white;
 
@@ -9,6 +10,13 @@ app-navigation {
     div {
       display: flex;
       align-items: center;
+
+      margin-left: 8px;
+
+      app-logo {
+        margin-right: 4px;
+        padding: 4px;
+      }
     }
   }
 
