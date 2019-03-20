@@ -8,6 +8,7 @@ export interface EnvironmentFirebaseConfig {
 }
 
 export interface EnvironmentConfig {
+    appUrl: string;
     apiUrl: string;
     firebase: EnvironmentFirebaseConfig;
 }

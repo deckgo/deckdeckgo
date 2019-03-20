@@ -3,6 +3,8 @@ import {Component, Listen, Element} from '@stencil/core';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+
 import {DeckdeckgoUtils} from '../../../utils/deckdeckgo-utils';
 
 @Component({
@@ -38,11 +40,13 @@ export class AppLogin {
             'https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css'
         );
 
-        // TODO: clean
+        const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
 
-        var uiConfig = {
+        // TODO: Update users
+
+        const uiConfig = {
             signInFlow: 'redirect',
-            signInSuccessUrl: 'http://localhost:3333',
+            signInSuccessUrl: appUrl,
             signInOptions: [
                 // Leave the lines as is for the providers you want to offer your users.
                 firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -50,9 +54,9 @@ export class AppLogin {
             // tosUrl and privacyPolicyUrl accept either url string or a callback
             // function.
             // Terms of service url/callback.
-            tosUrl: 'http://localhost:3333/terms',
+            tosUrl: appUrl + '/terms',
             // Privacy policy url/callback.
-            privacyPolicyUrl: 'http://localhost:3333/privacy',
+            privacyPolicyUrl: appUrl + '/privacy',
             credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
             autoUpgradeAnonymousUsers: true,
             callbacks: {

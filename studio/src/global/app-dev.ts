@@ -6,6 +6,7 @@ import 'deckdeckgo-inline-editor';
 import {setupConfig} from '../app/services/environment/environment-config';
 
 setupConfig({
+    appUrl: 'http://localhost:3333',
     apiUrl: '<@API_URL@>',
     firebase: {
         apiKey: '<@FIREBASE_API_KEY@>',
