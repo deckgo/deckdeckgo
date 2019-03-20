@@ -8,6 +8,9 @@ import replace from 'rollup-plugin-replace';
 
 // @ts-ignore
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
+
+const globalScript: string = dev ? 'src/global/app-dev.ts' : 'src/global/app.ts';
+
 // @ts-ignore
 import devConfig from './config.dev.json';
 // @ts-ignore
@@ -20,7 +23,7 @@ export const config: Config = {
         type: 'www',
         serviceWorker: null
     }],
-    globalScript: 'src/global/app.ts',
+    globalScript: globalScript,
     globalStyle: 'src/global/app.scss',
     plugins: [
         replace({
