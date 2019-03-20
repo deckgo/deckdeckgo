@@ -31,6 +31,9 @@ export namespace Components {
   interface AppLogo {}
   interface AppLogoAttributes extends StencilHTMLAttributes {}
 
+  interface AppMenuUser {}
+  interface AppMenuUserAttributes extends StencilHTMLAttributes {}
+
   interface AppNavigationActions {
     'presentation': boolean;
     'publish': boolean;
@@ -134,6 +137,7 @@ declare global {
     'AppRoot': Components.AppRoot;
     'AppAvatar': Components.AppAvatar;
     'AppLogo': Components.AppLogo;
+    'AppMenuUser': Components.AppMenuUser;
     'AppNavigationActions': Components.AppNavigationActions;
     'AppNavigation': Components.AppNavigation;
     'AppAddSlideAction': Components.AppAddSlideAction;
@@ -160,6 +164,7 @@ declare global {
     'app-root': Components.AppRootAttributes;
     'app-avatar': Components.AppAvatarAttributes;
     'app-logo': Components.AppLogoAttributes;
+    'app-menu-user': Components.AppMenuUserAttributes;
     'app-navigation-actions': Components.AppNavigationActionsAttributes;
     'app-navigation': Components.AppNavigationAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
@@ -199,6 +204,12 @@ declare global {
   var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
     new (): HTMLAppLogoElement;
+  };
+
+  interface HTMLAppMenuUserElement extends Components.AppMenuUser, HTMLStencilElement {}
+  var HTMLAppMenuUserElement: {
+    prototype: HTMLAppMenuUserElement;
+    new (): HTMLAppMenuUserElement;
   };
 
   interface HTMLAppNavigationActionsElement extends Components.AppNavigationActions, HTMLStencilElement {}
@@ -325,6 +336,7 @@ declare global {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
     'app-logo': HTMLAppLogoElement
+    'app-menu-user': HTMLAppMenuUserElement
     'app-navigation-actions': HTMLAppNavigationActionsElement
     'app-navigation': HTMLAppNavigationElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
@@ -351,6 +363,7 @@ declare global {
     'app-root': HTMLAppRootElement;
     'app-avatar': HTMLAppAvatarElement;
     'app-logo': HTMLAppLogoElement;
+    'app-menu-user': HTMLAppMenuUserElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
