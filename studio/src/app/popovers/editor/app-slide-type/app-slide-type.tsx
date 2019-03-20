@@ -1,7 +1,7 @@
 import {Component, Element} from '@stencil/core';
 
-import {SlideTemplate} from '../../models/slide-template';
-import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
+import {SlideTemplate} from '../../../models/slide-template';
+import {DeckdeckgoStudioCreateSlide} from '../../../utils/deckdeckgo-studio-create-slide';
 
 @Component({
     tag: 'app-slide-type',

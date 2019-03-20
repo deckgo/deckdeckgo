@@ -1,6 +1,6 @@
 import {Component, Element, Prop, State} from '@stencil/core';
 
-import {DeckdeckgoSlotType} from '../../utils/deckdeckgo-slot-type';
+import {DeckdeckgoSlotType} from '../../../utils/deckdeckgo-slot-type';
 
 @Component({
     tag: 'app-slot-type',
