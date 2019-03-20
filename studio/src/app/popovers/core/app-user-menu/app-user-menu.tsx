@@ -16,7 +16,7 @@ export class AppUserMenu {
         this.authService = AuthService.getInstance();
     }
 
-    private async logout() {
+    private async signOut() {
         await this.authService.logout();
         await this.closePopover();
     }
@@ -27,7 +27,7 @@ export class AppUserMenu {
 
     render() {
         return <div padding>
-            <a onClick={() => this.logout()}><p>Logout</p></a>
+            <a onClick={() => this.signOut()}><p>Sign out</p></a>
         </div>
     }
 

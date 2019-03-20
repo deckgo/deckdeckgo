@@ -6,7 +6,9 @@ ion-split-pane {
         ion-list {
           ion-item {
             &.user {
-              display: none;
+              * {
+                display: none;
+              }
             }
           }
         }
@@ -18,8 +20,14 @@ ion-split-pane {
     ion-content {
       ion-list {
         ion-item {
+          --detail-icon-opacity: 0;
+
           &.user {
             min-height: 32px;
+          }
+
+          &.signout {
+            --padding-top: 40px;
           }
         }
       }

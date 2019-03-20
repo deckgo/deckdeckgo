@@ -73,7 +73,7 @@ export class AppNavigationActions {
             return undefined;
         } else {
             return <a padding-start padding-end class="signin" onClick={() => this.signIn()}>
-                <ion-label>Sign In</ion-label>
+                <ion-label>Sign in</ion-label>
             </a>;
         }
     }

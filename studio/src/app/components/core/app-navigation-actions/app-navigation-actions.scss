@@ -41,11 +41,7 @@ ion-split-pane {
       }
 
       a.signin {
-        color: #000;
-
-        &:hover, &:active {
-          color: var(--ion-color-tertiary);
-        }
+        display: none;
       }
     }
   }
