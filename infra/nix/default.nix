@@ -2,7 +2,7 @@
 with rec
 { sources = import ./sources.nix;
   pkgs = import sources.nixpkgs {};
-  wai-lambda = pkgs.callPackage ../wai-lambda/nix/packages.nix {};
+  wai-lambda = pkgs.callPackage "${sources.wai-lambda}/nix/packages.nix" {};
 
   pkgsStatic =
     (import "${sources.static-haskell-nix}/survey"
