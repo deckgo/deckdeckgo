@@ -2,6 +2,7 @@
 with rec
 { sources = import ./sources.nix;
   pkgs = import sources.nixpkgs {};
+  wai-lambda = pkgs.callPackage ../wai-lambda/nix/packages.nix {};
 
   pkgsStatic =
     (import "${sources.static-haskell-nix}/survey"
@@ -23,9 +24,7 @@ with rec
 
       super //
         mkPackage "deckdeckgo-handler" ../handler //
-        (
-        with { wai-lambda = pkgs'.callPackage ../wai-lambda/nix/packages.nix {}; };
-        mkPackage "wai-lambda" wai-lambda.wai-lambda-source
+        ( mkPackage "wai-lambda" wai-lambda.wai-lambda-source
         );
     };
   normalHaskellPackages = pkgsStatic.pkgsMusl.haskellPackages.override
@@ -41,6 +40,6 @@ with rec
 };
 
 pkgs //
-{ inherit haskellPackagesStatic haskellPackages sources;
+{ inherit haskellPackagesStatic haskellPackages sources wai-lambda;
   inherit (import sources.niv {}) niv;
 }
