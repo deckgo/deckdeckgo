@@ -1,7 +1,7 @@
-@import "../../../global/theme/editor/editor-deck";
-@import "../../../global/theme/editor/editor-deck-fonts";
-
 app-editor {
+  @import "../../../global/theme/editor/editor-deck";
+  @import "../../../global/theme/editor/editor-deck-fonts";
+
   main {
     position: relative;
 
