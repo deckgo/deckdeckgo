@@ -14,35 +14,6 @@ app-navigation {
 
   div[slot="end"] {
     z-index: 2;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
-}
-
-ion-split-pane {
-
-  app-navigation {
-      ion-button {
-        &.presentation, &.publish {
-          --background: white;
-          --color: #000;
-          --color-activated: var(--ion-color-tertiary);
-        }
-      }
-  }
-
-  &:not(.split-pane-visible) {
-    app-navigation {
-      ion-button {
-        &.presentation, &.publish {
-          --background: var(--ion-color-tertiary);
-          --color: white;
-          --color-activated: var(--ion-color-secondary);
-        }
-      }
-    }
-  }
 }

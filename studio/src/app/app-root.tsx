@@ -4,6 +4,8 @@ import {Subscription} from 'rxjs';
 
 import {ErrorService} from './services/error/error.service';
 
+import {AuthService} from './services/auth/auth.service';
+
 @Component({
     tag: 'app-root',
     styleUrl: 'app-root.scss'
@@ -17,8 +19,15 @@ export class AppRoot {
 
     private errorService: ErrorService;
 
+    private authService: AuthService;
+
     constructor() {
         this.errorService = ErrorService.getInstance();
+        this.authService = AuthService.getInstance();
+    }
+
+    async componentWillLoad() {
+        await this.authService.init();
     }
 
     async componentDidLoad() {

@@ -1,0 +1,52 @@
+app-navigation-actions {
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  a {
+    cursor: pointer;
+  }
+}
+
+ion-split-pane {
+
+  app-navigation-actions {
+    ion-button {
+      &.presentation, &.publish {
+        --background: white;
+        --color: #000;
+        --color-activated: var(--ion-color-tertiary);
+      }
+    }
+
+    a.signin {
+      color: white;
+
+      &:hover, &:active {
+        color: white;
+      }
+    }
+  }
+
+  &:not(.split-pane-visible) {
+    app-navigation-actions {
+      ion-button {
+        &.presentation, &.publish {
+          --background: var(--ion-color-tertiary);
+          --color: white;
+          --color-activated: var(--ion-color-secondary);
+        }
+      }
+
+      a.signin {
+        color: #000;
+
+        &:hover, &:active {
+          color: var(--ion-color-tertiary);
+        }
+      }
+    }
+  }
+}

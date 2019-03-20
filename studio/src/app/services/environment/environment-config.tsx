@@ -1,5 +1,15 @@
+export interface EnvironmentFirebaseConfig {
+    apiKey: string;
+    authDomain: string;
+    databaseURL: string;
+    storageBucket: string;
+    projectId: string;
+    messagingSenderId: string;
+}
+
 export interface EnvironmentConfig {
     apiUrl: string;
+    firebase: EnvironmentFirebaseConfig;
 }
 
 export function setupConfig(config: EnvironmentConfig) {
