@@ -2,7 +2,9 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import {User as FirebaseUser} from 'firebase';
 
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable, ReplaySubject} from 'rxjs';
+
+import {get, set, del} from 'idb-keyval';
 
 import {EnvironmentConfigService} from '../environment/environment-config.service';
 
@@ -10,7 +12,7 @@ import {User} from '../../models/user';
 
 export class AuthService {
 
-    private userSubject: BehaviorSubject<User> = new BehaviorSubject(null);
+    private userSubject: ReplaySubject<User> = new ReplaySubject(1);
 
     private static instance: AuthService;
 
@@ -26,22 +28,30 @@ export class AuthService {
     }
 
     init(): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
+            // We also save the user in the local storage to avoid a flickering in the GUI till Firebase as correctly fetched the user
+            const localUser: User = await get('deckdeckgo_user');
+            this.userSubject.next(localUser);
+
             firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
 
-            firebase.auth().onAuthStateChanged(async (user: FirebaseUser) => {
-                if (!user) {
+            firebase.auth().onAuthStateChanged(async (authUser: FirebaseUser) => {
+                if (!authUser) {
                     this.userSubject.next(null);
+                    await del('deckdeckgo_user');
                 } else {
-                    const tokenId: string = await user.getIdToken();
+                    const tokenId: string = await authUser.getIdToken();
 
-                    this.userSubject.next({
+                    const user: User = {
                         token: tokenId,
-                        name: user.displayName,
-                        email: user.email,
-                        email_verified: user.emailVerified,
-                        photo_url: user.photoURL
-                    });
+                        name: authUser.displayName,
+                        email: authUser.email,
+                        email_verified: authUser.emailVerified,
+                        photo_url: authUser.photoURL
+                    };
+
+                    this.userSubject.next(user);
+                    await set('deckdeckgo_user', user);
                 }
             });
 
@@ -50,6 +60,7 @@ export class AuthService {
     }
 
     async logout() {
+        await del('deckdeckgo_user');
         await firebase.auth().signOut();
     }
 
