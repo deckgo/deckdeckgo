@@ -2,7 +2,7 @@ import {Component, Element, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {SlideTemplate} from '../../models/slide-template';
-import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
+import {CreateSlideUtils} from '../../utils/create-slide-utils';
 
 import {EditorHelper} from '../../helpers/editor/editor.helper';
 
@@ -65,7 +65,7 @@ export class AppEditor {
                 return;
             }
 
-            const slide: any = await DeckdeckgoStudioCreateSlide.createSlide(SlideTemplate.TITLE);
+            const slide: any = await CreateSlideUtils.createSlide(SlideTemplate.TITLE);
 
             await this.concatSlide(slide);
 

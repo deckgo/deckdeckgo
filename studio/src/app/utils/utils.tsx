@@ -1,4 +1,4 @@
-export class DeckdeckgoUtils {
+export class Utils {
 
     static injectJS(id: string, src: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {

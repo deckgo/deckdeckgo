@@ -1,6 +1,6 @@
 import {Component, Element, Prop, State} from '@stencil/core';
 
-import {DeckdeckgoSlotType} from '../../../utils/deckdeckgo-slot-type';
+import {SlotType} from '../../../utils/slot-type';
 
 @Component({
     tag: 'app-slot-type',
@@ -14,15 +14,15 @@ export class AppSlideAdd {
     selectedElement: HTMLElement;
 
     @State()
-    private currentType: DeckdeckgoSlotType;
+    private currentType: SlotType;
 
     componentWillLoad() {
         if (this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName !== '') {
-            this.currentType = DeckdeckgoSlotType[this.selectedElement.nodeName];
+            this.currentType = SlotType[this.selectedElement.nodeName];
         }
     }
 
-    async closePopover(type: DeckdeckgoSlotType) {
+    async closePopover(type: SlotType) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
             type: type
         });
@@ -30,10 +30,10 @@ export class AppSlideAdd {
 
     render() {
         return <div padding>
-            <a onClick={() => this.closePopover(DeckdeckgoSlotType.H1)} class={this.currentType === DeckdeckgoSlotType.H1 ? "current" : ""}><h1>Title</h1></a>
-            <a onClick={() => this.closePopover(DeckdeckgoSlotType.H2)} class={this.currentType === DeckdeckgoSlotType.H2 ? "current" : ""}><h2>Title</h2></a>
-            <a onClick={() => this.closePopover(DeckdeckgoSlotType.H3)} class={this.currentType === DeckdeckgoSlotType.H3 ? "current" : ""}><h3>Title</h3></a>
-            <a onClick={() => this.closePopover(DeckdeckgoSlotType.P)} class={this.currentType === DeckdeckgoSlotType.P ? "current" : ""}><p>Paragraph</p></a>
+            <a onClick={() => this.closePopover(SlotType.H1)} class={this.currentType === SlotType.H1 ? "current" : ""}><h1>Title</h1></a>
+            <a onClick={() => this.closePopover(SlotType.H2)} class={this.currentType === SlotType.H2 ? "current" : ""}><h2>Title</h2></a>
+            <a onClick={() => this.closePopover(SlotType.H3)} class={this.currentType === SlotType.H3 ? "current" : ""}><h3>Title</h3></a>
+            <a onClick={() => this.closePopover(SlotType.P)} class={this.currentType === SlotType.P ? "current" : ""}><p>Paragraph</p></a>
         </div>
     }
 }

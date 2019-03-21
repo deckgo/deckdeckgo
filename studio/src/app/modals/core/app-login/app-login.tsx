@@ -5,7 +5,7 @@ import '@firebase/auth';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
-import {DeckdeckgoUtils} from '../../../utils/deckdeckgo-utils';
+import {Utils} from '../../../utils/utils';
 
 @Component({
     tag: 'app-login',
@@ -31,11 +31,11 @@ export class AppLogin {
     }
 
     async setupFirebaseUI() {
-        await DeckdeckgoUtils.injectJS(
+        await Utils.injectJS(
             'firebase-ui-script',
             'https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js'
         );
-        await DeckdeckgoUtils.injectCSS(
+        await Utils.injectCSS(
             'firebase-ui-css',
             'https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css'
         );

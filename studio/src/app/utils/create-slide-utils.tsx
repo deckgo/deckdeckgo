@@ -1,6 +1,6 @@
 import {SlideTemplate} from '../models/slide-template';
 
-export class DeckdeckgoStudioCreateSlide {
+export class CreateSlideUtils {
 
     static DEFAULT_TITLE: string = 'Click to add title';
     static DEFAULT_CONTENT: string = 'Click to add content';
