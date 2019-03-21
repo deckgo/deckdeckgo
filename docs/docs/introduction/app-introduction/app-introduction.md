@@ -6,7 +6,7 @@
 
 [DeckDeckGo] requires a recent LTS version of [NodeJS](https://nodejs.org) and npm. Make sure you've installed and/or updated Node before continuing.
 
-> Note that you will need to use npm 6 or higher
+> Note that you will need to use npm 10 or higher
 
 ## Starting a new presentation
 
