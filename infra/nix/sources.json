@@ -1,4 +1,15 @@
 {
+    "wai-lambda": {
+        "url": "https://github.com/deckgo/wai-lambda/archive/7f139047addff89e9d30e55b7eebb07c0e846456.tar.gz",
+        "owner": "deckgo",
+        "branch": "master",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "repo": "wai-lambda",
+        "type": "tarball",
+        "sha256": "0qqi6wlg8v35dkh6gh9mrj0kb9kpzrz2pc7k0dykk2ahcj6m22k6",
+        "description": "Haskell Webapps on AWS Lambda",
+        "rev": "7f139047addff89e9d30e55b7eebb07c0e846456"
+    },
     "nixpkgs": {
         "url": "https://github.com/NixOS/nixpkgs/archive/88ae8f7d55efa457c95187011eb410d097108445.tar.gz",
         "owner": "NixOS",
