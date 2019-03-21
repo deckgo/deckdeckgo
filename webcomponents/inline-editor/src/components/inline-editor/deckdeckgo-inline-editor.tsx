@@ -79,7 +79,7 @@ export class DeckdeckgoInlineEditor {
   async componentDidUnload() {
     await this.colorPickerListener(false);
 
-    await this.detachListener();
+    await this.detachListener(this.attachTo ? this.attachTo : document);
   }
 
   @Watch('attachTo')
@@ -88,7 +88,7 @@ export class DeckdeckgoInlineEditor {
       return;
     }
 
-    await this.detachListener();
+    await this.detachListener(document);
     await this.attachListener();
   }
 
@@ -105,14 +105,12 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private detachListener(): Promise<void> {
+  private detachListener(listenerElement: HTMLElement | Document): Promise<void> {
     return new Promise<void>((resolve) => {
-      const listenerElement: HTMLElement | Document = this.attachTo ? this.attachTo : document;
-
       if (listenerElement) {
-        listenerElement.removeEventListener('mousedown', this.mousedown, true);
-        listenerElement.removeEventListener('touchstart', this.touchstart, true);
-        listenerElement.removeEventListener('keydown', this.keydown, true);
+        listenerElement.removeEventListener('mousedown', this.mousedown);
+        listenerElement.removeEventListener('touchstart', this.touchstart);
+        listenerElement.removeEventListener('keydown', this.keydown);
       }
 
       resolve();
