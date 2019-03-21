@@ -110,12 +110,30 @@ export class AppLogin {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title text-uppercase>DeckDeckGo</ion-title>
+                    <ion-title text-uppercase>Welcome</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content padding>
+                {this.renderMsg()}
+
                 <div id="firebaseui-auth-container"></div>
+
+                <p text-center padding-start padding-end><small>Free and open source 🖖</small></p>
             </ion-content>
         ];
+    }
+
+    private renderMsg() {
+        if (this.anonymous) {
+            return [
+                <h1 text-center padding-start padding-end>Oh, hi! Good to have you.</h1>,
+                <p text-center padding>Continue as a guest for a sneak peek or sign in already to join the DeckDeckGo community.</p>
+            ]
+        } else {
+            return [
+                <h1 text-center padding-start padding-end>Oh, hi! Welcome back.</h1>,
+                <p text-center padding>Sign in to publish your presentation and to get soon a personalized feed of recommendations.</p>
+            ]
+        }
     }
 }
