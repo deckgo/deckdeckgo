@@ -1,6 +1,13 @@
 import {SlideTemplate} from '../models/slide-template';
 
-export class CreateSlideUtils {
+export enum SlotType {
+    P = 'p',
+    H1 = 'h1',
+    H2 = 'h2',
+    H3 = 'h3'
+}
+
+export class EditorUtils {
 
     static DEFAULT_TITLE: string = 'Click to add title';
     static DEFAULT_CONTENT: string = 'Click to add content';
