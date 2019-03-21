@@ -35,7 +35,7 @@ export class AppEditor {
     private authService: AuthService;
 
     @State()
-    private loggedIn: boolean = true;
+    private loggedIn: boolean = false;
 
     constructor() {
         this.authService = AuthService.getInstance();
@@ -49,6 +49,7 @@ export class AppEditor {
                 await this.signIn();
             } else {
                 await this.initSlide();
+                this.loggedIn = true;
             }
         });
     }
@@ -373,7 +374,7 @@ export class AppEditor {
     render() {
         if (!this.loggedIn) {
             return [
-                <app-navigation publish={true}></app-navigation>,
+                <app-navigation></app-navigation>,
                 <ion-content padding>
                     <main>
                         {this.renderSignInMsg()}
@@ -383,7 +384,7 @@ export class AppEditor {
         }
 
         return [
-            <app-navigation publish={true}></app-navigation>,
+            <app-navigation publish={this.loggedIn}></app-navigation>,
             <ion-content padding>
                 <main class={this.displaying ? 'idle' : undefined}>
                     <deckgo-deck embedded={true}
@@ -430,7 +431,7 @@ export class AppEditor {
 
     private renderSignInMsg() {
         if (!this.loggedIn) {
-            return <ion-button shape="round" class="get-started" onClick={() => this.signIn()}>Get started</ion-button>
+            return <ion-button shape="round" class="get-started" onClick={() => this.signIn()}>Write a presentation</ion-button>
         }
     }
 }
