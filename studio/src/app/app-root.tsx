@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs';
 
 import {ErrorService} from './services/error/error.service';
 
-import {AuthService} from './services/auth/auth.service';
+import {AuthService, LoginModalComponentProps} from './services/auth/auth.service';
 
 @Component({
     tag: 'app-root',
@@ -12,13 +12,14 @@ import {AuthService} from './services/auth/auth.service';
 })
 export class AppRoot {
 
+    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
     @Prop({connect: 'ion-menu-controller'}) lazyMenuController!: HTMLIonMenuControllerElement;
     @Prop({connect: 'ion-toast-controller'}) toastController: HTMLIonToastControllerElement;
 
-    private subscription: Subscription;
-
+    private errorSubscription: Subscription;
     private errorService: ErrorService;
 
+    private authSubscription: Subscription;
     private authService: AuthService;
 
     constructor() {
@@ -31,14 +32,26 @@ export class AppRoot {
     }
 
     async componentDidLoad() {
-        this.subscription = this.errorService.watch().subscribe(async (error: string) => {
+        this.errorSubscription = this.errorService.watch().subscribe(async (error: string) => {
             await this.toastError(error);
+        });
+
+        this.authSubscription = this.authService.watchModal().subscribe(async (componentProps: LoginModalComponentProps) => {
+            if (!componentProps) {
+                return;
+            }
+
+            await this.signIn(componentProps);
         });
     }
 
     async componentDidUnload() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.errorSubscription) {
+            this.errorSubscription.unsubscribe();
+        }
+
+        if (this.authSubscription) {
+            this.authSubscription.unsubscribe();
         }
     }
 
@@ -53,6 +66,18 @@ export class AppRoot {
         });
 
         await popover.present();
+    }
+
+    private async signIn(componentProps: LoginModalComponentProps) {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-login',
+            componentProps: {
+                anonymous: componentProps.anonymous,
+                context: componentProps.context
+            }
+        });
+
+        await modal.present();
     }
 
     render() {

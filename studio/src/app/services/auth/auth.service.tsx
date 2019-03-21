@@ -2,7 +2,7 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import {User as FirebaseUser} from 'firebase';
 
-import {Observable, ReplaySubject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 
 import {get, set, del} from 'idb-keyval';
 
@@ -10,9 +10,15 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 
 import {User} from '../../models/user';
 
+export interface LoginModalComponentProps {
+    anonymous: boolean,
+    context?: string
+}
+
 export class AuthService {
 
     private userSubject: ReplaySubject<User> = new ReplaySubject(1);
+    private modalSubject: BehaviorSubject<LoginModalComponentProps> = new BehaviorSubject(null);
 
     private static instance: AuthService;
 
@@ -66,5 +72,13 @@ export class AuthService {
 
     watch(): Observable<User> {
         return this.userSubject.asObservable();
+    }
+
+    watchModal(): Observable<LoginModalComponentProps> {
+        return this.modalSubject.asObservable();
+    }
+
+    openSignInModal(componentProps: LoginModalComponentProps) {
+        this.modalSubject.next(componentProps);
     }
 }

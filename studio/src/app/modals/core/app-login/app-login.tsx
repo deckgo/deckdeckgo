@@ -1,4 +1,4 @@
-import {Component, Listen, Element} from '@stencil/core';
+import {Component, Listen, Element, Prop} from '@stencil/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
@@ -14,6 +14,12 @@ import {Utils} from '../../../utils/utils';
 export class AppLogin {
 
     @Element() el: HTMLElement;
+
+    @Prop()
+    anonymous: boolean = false;
+
+    @Prop()
+    context: string;
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
@@ -41,16 +47,24 @@ export class AppLogin {
         );
 
         const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
+        const redirectUrl: string = appUrl + this.context;
 
         // TODO: Update users
 
+        const signInOptions = [
+            // Leave the lines as is for the providers you want to offer your users.
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ];
+
+        if (this.anonymous) {
+            signInOptions.push(firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID);
+        }
+
         const uiConfig = {
             signInFlow: 'redirect',
-            signInSuccessUrl: appUrl,
-            signInOptions: [
-                // Leave the lines as is for the providers you want to offer your users.
-                firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            ],
+            signInSuccessUrl: redirectUrl,
+            signInOptions: signInOptions,
             // tosUrl and privacyPolicyUrl accept either url string or a callback
             // function.
             // Terms of service url/callback.

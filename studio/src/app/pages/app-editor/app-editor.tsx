@@ -1,10 +1,15 @@
 import {Component, Element, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
+import {take} from 'rxjs/operators';
+
 import {SlideTemplate} from '../../models/slide-template';
 import {EditorUtils} from '../../utils/editor-utils';
 
+import {User} from '../../models/user';
+
 import {EditorHelper} from '../../helpers/editor/editor.helper';
+import {AuthService} from '../../services/auth/auth.service';
 
 @Component({
     tag: 'app-editor',
@@ -27,13 +32,25 @@ export class AppEditor {
 
     private editorHelper: EditorHelper = new EditorHelper();
 
+    private authService: AuthService;
+
     constructor() {
+        this.authService = AuthService.getInstance();
     }
 
     async componentWillLoad() {
         this.editorHelper.init(this.el);
 
-        await this.initSlide();
+        this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
+            if(!user) {
+                await this.authService.openSignInModal({
+                    anonymous: true,
+                    context: '/editor'
+                });
+            } else {
+                await this.initSlide();
+            }
+        });
     }
 
     async componentDidLoad() {
@@ -86,6 +103,8 @@ export class AppEditor {
                 resolve();
                 return;
             }
+
+
 
             const slide: any = await EditorUtils.createSlide(SlideTemplate.TITLE);
 

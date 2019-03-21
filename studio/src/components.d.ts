@@ -84,8 +84,14 @@ export namespace Components {
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
-  interface AppLogin {}
-  interface AppLoginAttributes extends StencilHTMLAttributes {}
+  interface AppLogin {
+    'anonymous': boolean;
+    'context': string;
+  }
+  interface AppLoginAttributes extends StencilHTMLAttributes {
+    'anonymous'?: boolean;
+    'context'?: string;
+  }
 
   interface AppSlideNavigate {
     'slides': string[];

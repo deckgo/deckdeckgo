@@ -13,7 +13,6 @@ import {AuthService} from '../../../services/auth/auth.service';
 })
 export class AppNavigationActions {
 
-    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
     @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
     @Prop() presentation: boolean = false;
@@ -52,11 +51,9 @@ export class AppNavigationActions {
     }
 
     private async signIn() {
-        const modal: HTMLIonModalElement = await this.modalController.create({
-            component: 'app-login'
+        this.authService.openSignInModal({
+            anonymous: false
         });
-
-        await modal.present();
     }
 
     render() {

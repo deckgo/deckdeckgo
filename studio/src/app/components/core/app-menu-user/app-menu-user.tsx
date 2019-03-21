@@ -1,4 +1,4 @@
-import {Component, Prop, State} from '@stencil/core';
+import {Component, State} from '@stencil/core';
 import {AuthService} from '../../../services/auth/auth.service';
 import {Subscription} from 'rxjs';
 import {User} from '../../../models/user';
@@ -10,8 +10,6 @@ import {User} from '../../../models/user';
     shadow: false
 })
 export class AppMenuUser {
-
-    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
 
     private authService: AuthService;
     private subscription: Subscription;
@@ -36,11 +34,9 @@ export class AppMenuUser {
     }
 
     private async signIn() {
-        const modal: HTMLIonModalElement = await this.modalController.create({
-            component: 'app-login'
+        this.authService.openSignInModal({
+            anonymous: false
         });
-
-        await modal.present();
     }
 
     private async signOut() {
