@@ -68,7 +68,7 @@ export class AppNavigationActions {
     private renderSignIn() {
         if (this.user) {
             return undefined;
-        } else {
+        } else if (this.presentation || this.publish) {
             return <a padding-start padding-end class="signin" onClick={() => this.signIn()}>
                 <ion-label>Sign in</ion-label>
             </a>;

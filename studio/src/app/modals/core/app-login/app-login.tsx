@@ -51,15 +51,14 @@ export class AppLogin {
 
         // TODO: Update users
 
-        const signInOptions = [
-            // Leave the lines as is for the providers you want to offer your users.
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-            firebase.auth.EmailAuthProvider.PROVIDER_ID
-        ];
+        const signInOptions = [];
 
         if (this.anonymous) {
             signInOptions.push(firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID);
         }
+
+        signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
+        signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
 
         const uiConfig = {
             signInFlow: 'redirect',
@@ -127,7 +126,7 @@ export class AppLogin {
         if (this.anonymous) {
             return [
                 <h1 text-center padding-start padding-end>Oh, hi! Good to have you.</h1>,
-                <p text-center padding>Continue as a guest for a sneak peek or sign in already to join the DeckDeckGo community.</p>
+                <p text-center padding>Continue as a <strong>guest</strong> for a sneak peek or <u>sign already in</u> to join the DeckDeckGo community.</p>
             ]
         } else {
             return [
