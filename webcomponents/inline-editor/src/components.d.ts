@@ -13,11 +13,13 @@ import '@stencil/core';
 export namespace Components {
 
   interface DeckgoInlineEditor {
+    'attachTo': HTMLElement;
     'mobile': boolean;
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
   }
   interface DeckgoInlineEditorAttributes extends StencilHTMLAttributes {
+    'attachTo'?: HTMLElement;
     'mobile'?: boolean;
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;

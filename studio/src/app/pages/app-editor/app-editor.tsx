@@ -38,6 +38,8 @@ export class AppEditor {
 
     async componentDidLoad() {
         await this.initSlideSize();
+
+        await this.updateInlineEditorListener();
     }
 
     componentDidUnload() {
@@ -53,6 +55,26 @@ export class AppEditor {
             }
 
             await (deck as any).initSlideSize();
+
+            resolve();
+        });
+    }
+
+    private updateInlineEditorListener(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                return;
+            }
+
+            const inlineEditor: HTMLElement = this.el.querySelector('deckgo-inline-editor');
+
+            if (!inlineEditor) {
+                return;
+            }
+
+            (inlineEditor as any).attachTo = deck;
 
             resolve();
         });
