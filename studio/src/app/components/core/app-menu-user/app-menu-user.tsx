@@ -1,5 +1,5 @@
 import {Component, State} from '@stencil/core';
-import {AuthService} from '../../../services/auth/auth.service';
+import {AuthService, LoginModalType} from '../../../services/auth/auth.service';
 import {Subscription} from 'rxjs';
 import {User} from '../../../models/user';
 
@@ -35,7 +35,7 @@ export class AppMenuUser {
 
     private async signIn() {
         this.authService.openSignInModal({
-            anonymous: false
+            type: LoginModalType.SIGNIN
         });
     }
 

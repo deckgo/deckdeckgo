@@ -1,4 +1,4 @@
-import {Component, Listen, Element, Prop} from '@stencil/core';
+import {Component, Element, Listen, Prop} from '@stencil/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
@@ -6,6 +6,7 @@ import '@firebase/auth';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
 import {Utils} from '../../../utils/utils';
+import {LoginModalType} from '../../../services/auth/auth.service';
 
 @Component({
     tag: 'app-login',
@@ -16,7 +17,7 @@ export class AppLogin {
     @Element() el: HTMLElement;
 
     @Prop()
-    anonymous: boolean = false;
+    type: LoginModalType = LoginModalType.SIGNIN;
 
     @Prop()
     context: string;
@@ -49,11 +50,9 @@ export class AppLogin {
         const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
         const redirectUrl: string = appUrl + this.context;
 
-        // TODO: Update users
-
         const signInOptions = [];
 
-        if (this.anonymous) {
+        if (this.type === LoginModalType.SIGNIN_WITH_ANONYMOUS) {
             signInOptions.push(firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID);
         }
 
@@ -87,7 +86,10 @@ export class AppLogin {
                     // user.
                     // ...
                     // Finish sign-in after data is copied.
-                    return firebase.auth().signInWithCredential(cred);
+
+                    // TODO: What to do, copy or not? merge or not merge?
+
+                    return firebase.auth().signInAndRetrieveDataWithCredential(cred);
                 }
             }
         };
@@ -117,16 +119,21 @@ export class AppLogin {
 
                 <div id="firebaseui-auth-container"></div>
 
-                <p text-center padding-start padding-end><small>Free and open source 🖖</small></p>
+                <p text-center padding-start padding-end><small>DeckDeckGo is free and open source 🖖</small></p>
             </ion-content>
         ];
     }
 
     private renderMsg() {
-        if (this.anonymous) {
+        if (this.type === LoginModalType.SIGNIN_WITH_ANONYMOUS) {
             return [
                 <h1 text-center padding-start padding-end>Oh, hi! Good to have you.</h1>,
                 <p text-center padding>Continue as a <strong>guest</strong> for a sneak peek or <u>sign already in</u> to join the DeckDeckGo community.</p>
+            ]
+        } if (this.type === LoginModalType.SIGNIN_MERGE_ANONYMOUS) {
+            return [
+                <h1 text-center padding-start padding-end>Cool, cool, cool.</h1>,
+                <p text-center padding>Do you liked that sneak peek? Sign in to extend your deck, to publish your presentation and to get soon a personalized feed of recommendations.</p>
             ]
         } else {
             return [

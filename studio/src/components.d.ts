@@ -8,12 +8,15 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
+import {
+  LoginModalType,
+} from './app/services/auth/auth.service';
 
 
 export namespace Components {
@@ -85,12 +88,12 @@ export namespace Components {
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
   interface AppLogin {
-    'anonymous': boolean;
     'context': string;
+    'type': LoginModalType;
   }
   interface AppLoginAttributes extends StencilHTMLAttributes {
-    'anonymous'?: boolean;
     'context'?: string;
+    'type'?: LoginModalType;
   }
 
   interface AppSlideNavigate {

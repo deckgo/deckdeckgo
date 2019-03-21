@@ -10,8 +10,14 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 
 import {User} from '../../models/user';
 
+export enum LoginModalType {
+    SIGNIN,
+    SIGNIN_WITH_ANONYMOUS,
+    SIGNIN_MERGE_ANONYMOUS
+}
+
 export interface LoginModalComponentProps {
-    anonymous: boolean,
+    type: LoginModalType,
     context?: string,
     onPresent?: Function
 }
@@ -51,6 +57,7 @@ export class AuthService {
 
                     const user: User = {
                         token: tokenId,
+                        anonymous: authUser.isAnonymous,
                         name: authUser.displayName,
                         email: authUser.email,
                         email_verified: authUser.emailVerified,

@@ -72,7 +72,7 @@ export class AppRoot {
         const modal: HTMLIonModalElement = await this.modalController.create({
             component: 'app-login',
             componentProps: {
-                anonymous: componentProps.anonymous,
+                type: componentProps.type,
                 context: componentProps.context
             }
         });

@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs';
 
 import {User} from '../../../models/user';
 
-import {AuthService} from '../../../services/auth/auth.service';
+import {AuthService, LoginModalType} from '../../../services/auth/auth.service';
 
 @Component({
     tag: 'app-navigation-actions',
@@ -52,7 +52,7 @@ export class AppNavigationActions {
 
     private async signIn() {
         this.authService.openSignInModal({
-            anonymous: false
+            type: LoginModalType.SIGNIN
         });
     }
 
@@ -97,7 +97,7 @@ export class AppNavigationActions {
 
     private renderPublishButton() {
         if (this.publish) {
-            return <ion-button class="publish" shape="round" href="/editor" routerDirection="forward" padding-end>
+            return <ion-button class="publish" shape="round" padding-end>
                 <ion-label text-uppercase>Ready to publish?</ion-label>
             </ion-button>;
         } else {
