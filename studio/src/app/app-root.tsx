@@ -78,6 +78,10 @@ export class AppRoot {
         });
 
         await modal.present();
+
+        if (componentProps.onPresent) {
+            componentProps.onPresent();
+        }
     }
 
     render() {

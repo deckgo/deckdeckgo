@@ -12,7 +12,8 @@ import {User} from '../../models/user';
 
 export interface LoginModalComponentProps {
     anonymous: boolean,
-    context?: string
+    context?: string,
+    onPresent?: Function
 }
 
 export class AuthService {

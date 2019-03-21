@@ -34,6 +34,9 @@ export class AppEditor {
 
     private authService: AuthService;
 
+    @State()
+    private loggedIn: boolean = true;
+
     constructor() {
         this.authService = AuthService.getInstance();
     }
@@ -43,15 +46,16 @@ export class AppEditor {
 
         this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
             if(!user) {
-                await this.authService.openSignInModal({
-                    anonymous: true,
-                    context: '/editor'
-                });
+                await this.signIn();
             } else {
                 await this.initSlide();
             }
         });
     }
+
+    private setNotLoggedIn = () => {
+        this.loggedIn = false;
+    };
 
     async componentDidLoad() {
         await this.initSlideSize();
@@ -358,7 +362,26 @@ export class AppEditor {
         });
     }
 
+    private async signIn() {
+        await this.authService.openSignInModal({
+            anonymous: true,
+            context: '/editor',
+            onPresent: this.setNotLoggedIn
+        });
+    }
+
     render() {
+        if (!this.loggedIn) {
+            return [
+                <app-navigation publish={true}></app-navigation>,
+                <ion-content padding>
+                    <main>
+                        {this.renderSignInMsg()}
+                    </main>
+                </ion-content>
+            ];
+        }
+
         return [
             <app-navigation publish={true}></app-navigation>,
             <ion-content padding>
@@ -403,5 +426,11 @@ export class AppEditor {
                 <ion-icon ios="ios-link" md="ios-link" slot="link"></ion-icon>
             </deckgo-inline-editor>
         ];
+    }
+
+    private renderSignInMsg() {
+        if (!this.loggedIn) {
+            return <ion-button shape="round" class="get-started" onClick={() => this.signIn()}>Get started</ion-button>
+        }
     }
 }
