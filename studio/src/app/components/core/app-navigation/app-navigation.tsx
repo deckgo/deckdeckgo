@@ -30,7 +30,7 @@ export class AppNavigation {
 
   private renderLogo() {
     if (this.logo) {
-      return <ion-anchor href="/" routerDirection="forward" slot="start">
+      return <ion-anchor onClick={() => this.closeMenu()} href="/" routerDirection="forward" slot="start">
         <div>
           <app-logo></app-logo>
           <span text-uppercase>DeckDeckGo</span>
@@ -39,6 +39,25 @@ export class AppNavigation {
     } else {
       return null;
     }
+  }
+
+  private closeMenu(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!document) {
+        return;
+      }
+
+      const element: HTMLIonMenuElement = document.querySelector('ion-menu');
+
+      if (!element) {
+        resolve();
+        return;
+      }
+
+      await element.close();
+
+      resolve();
+    });
   }
 
   private renderMenuToggle() {
