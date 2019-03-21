@@ -159,7 +159,13 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (!selection || selection.toString().length <= 0) {
+      if (this.attachTo && !this.attachTo.contains((this.anchorEvent.target as Node))) {
+        await this.reset(false);
+        resolve();
+        return;
+      }
+
+      if (!selection || !selection.toString() || selection.toString().trim().length <= 0) {
         await this.reset(false);
         resolve();
         return;

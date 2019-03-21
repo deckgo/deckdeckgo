@@ -1,3 +1,11 @@
+:host {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
 .deckgo-pager-circular-chart {
   height: var(--pager-size, 56px);
   width: var(--pager-size, 56px);
