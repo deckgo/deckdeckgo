@@ -38,14 +38,14 @@ let tests =
       touch $out
     '';
 
-  # Accessing 127.0.0.2 reroutes to 127.0.0.1
+  # Accessing 192.168.42.42 reroutes to 127.0.0.1
   test_addrMap =
     ''
       ${runPort 1234}
 
-      SRV_MAP="127.0.0.2:*:127.0.0.1:*" \
+      SRV_MAP="192.168.42.42:*:127.0.0.1:*" \
         LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so" \
-         curl 127.0.0.2:1234 | grep -q '1234'
+         curl 192.168.42.42:1234 | grep -q '1234'
 
       touch $out
     '';
