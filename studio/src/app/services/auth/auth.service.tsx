@@ -10,16 +10,16 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 
 import {User} from '../../models/user';
 
+import {ErrorService} from '../error/error.service';
+
 export enum LoginModalType {
     SIGNIN,
-    SIGNIN_WITH_ANONYMOUS,
     SIGNIN_MERGE_ANONYMOUS
 }
 
 export interface LoginModalComponentProps {
     type: LoginModalType,
-    context?: string,
-    onPresent?: Function
+    context?: string
 }
 
 export class AuthService {
@@ -27,10 +27,13 @@ export class AuthService {
     private userSubject: ReplaySubject<User> = new ReplaySubject(1);
     private modalSubject: BehaviorSubject<LoginModalComponentProps> = new BehaviorSubject(null);
 
+    private errorService: ErrorService;
+
     private static instance: AuthService;
 
     private constructor() {
         // Private constructor, singleton
+        this.errorService = ErrorService.getInstance();
     }
 
     static getInstance() {
@@ -76,6 +79,19 @@ export class AuthService {
     async logout() {
         await del('deckdeckgo_user');
         await firebase.auth().signOut();
+    }
+
+    signInAnonymous(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            try {
+                await firebase.auth().signInAnonymously();
+
+                resolve();
+            } catch (err) {
+                this.errorService.error(err.message);
+                resolve(err);
+            }
+        });
     }
 
     watch(): Observable<User> {

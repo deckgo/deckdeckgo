@@ -52,10 +52,6 @@ export class AppLogin {
 
         const signInOptions = [];
 
-        if (this.type === LoginModalType.SIGNIN_WITH_ANONYMOUS) {
-            signInOptions.push(firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID);
-        }
-
         signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
         signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
 
@@ -125,15 +121,10 @@ export class AppLogin {
     }
 
     private renderMsg() {
-        if (this.type === LoginModalType.SIGNIN_WITH_ANONYMOUS) {
+        if (this.type === LoginModalType.SIGNIN_MERGE_ANONYMOUS) {
             return [
                 <h1 text-center padding-start padding-end>Oh, hi! Good to have you.</h1>,
-                <p text-center padding>Continue as a <strong>guest</strong> for a sneak peek or <u>sign already in</u> to join the DeckDeckGo community.</p>
-            ]
-        } if (this.type === LoginModalType.SIGNIN_MERGE_ANONYMOUS) {
-            return [
-                <h1 text-center padding-start padding-end>Cool, cool, cool.</h1>,
-                <p text-center padding>Do you liked that sneak peek? Sign in to extend your deck, to publish your presentation and to get soon a personalized feed of recommendations.</p>
+                <p text-center padding>Sign in to extend your deck, to publish your presentation and to get soon a personalized feed of recommendations.</p>
             ]
         } else {
             return [
