@@ -54,7 +54,7 @@ export class AppMenuUser {
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
                 <ion-button size="small" slot="end" shape="round" margin-end href="/editor"
-                            routerDirection="forward">
+                            routerDirection="forward" class="new">
                     <ion-icon name="book" slot="start"></ion-icon>
                     <ion-label>New</ion-label>
                 </ion-button>
