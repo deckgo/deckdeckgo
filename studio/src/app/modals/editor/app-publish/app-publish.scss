@@ -1,0 +1,64 @@
+app-publish {
+  div.tags {
+    background: var(--ion-color-light);
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @media only screen and (min-height: 600px) and (min-width: 768px) {
+      flex-wrap: inherit;
+    }
+
+    min-height: 42px;
+
+    border-radius: 4px;
+    padding: 2px 4px;
+  }
+
+  input, div.chips {
+    font-size: var(--font-size-normal);
+  }
+
+  div.chips {
+    background: rgba(var(--ion-color-primary-rgb), 0.08);
+    color: var(--ion-color-primary-shade);
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    margin: 2px;
+
+    ion-icon {
+      padding: 4px 0;
+    }
+
+    ion-label {
+      padding: 0px 4px;
+      margin-bottom: 2px;
+
+      max-width: 70px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  input {
+    pointer-events: visible;
+
+    background: transparent;
+    color: var(--ion-color-primary);
+    border: none;
+    outline: 0;
+
+    margin: 8px;
+    padding-bottom: 1px;
+
+    &::placeholder {
+      color: var(--deckgo-inline-editor-link-placeholder-color, #3880ff);
+    }
+  }
+}

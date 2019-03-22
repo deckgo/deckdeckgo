@@ -1,4 +1,4 @@
-import {Component, Prop, State} from '@stencil/core';
+import {Component, Event, EventEmitter, Prop, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -23,6 +23,8 @@ export class AppNavigationActions {
 
     @State()
     private user: User;
+
+    @Event() private actionPublish: EventEmitter<void>;
 
     constructor() {
         this.authService = AuthService.getInstance();
@@ -97,7 +99,7 @@ export class AppNavigationActions {
 
     private renderPublishButton() {
         if (this.publish) {
-            return <ion-button class="publish" shape="round" padding-end>
+            return <ion-button class="publish" shape="round" onClick={() => this.actionPublish.emit()} padding-end>
                 <ion-label text-uppercase>Ready to publish?</ion-label>
             </ion-button>;
         } else {

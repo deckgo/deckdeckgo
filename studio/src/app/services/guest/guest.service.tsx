@@ -52,7 +52,7 @@ export class GuestService {
     couldPublish(slides: any[]): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             if (!slides || slides.length <= 0) {
-                resolve(true);
+                resolve(false);
                 return;
             }
 

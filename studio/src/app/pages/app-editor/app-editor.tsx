@@ -257,6 +257,31 @@ export class AppEditor {
         await popover.present();
     }
 
+    @Listen('actionPublish')
+    async onActionPublish() {
+        // No slides, no publish
+        if (!this.slides || this.slides.length <= 0) {
+            return;
+        }
+
+        const couldAddSlide: boolean = await this.guestService.couldPublish(this.slides);
+
+        if (!couldAddSlide) {
+            await this.signIn();
+            return;
+        }
+
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-publish'
+        });
+
+        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+            // TODO Publish or publish from the modal and do nothing here?
+        });
+
+        await modal.present();
+    }
+
     private hideToolbar(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');

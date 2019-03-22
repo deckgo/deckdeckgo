@@ -45,6 +45,7 @@ export namespace Components {
     'publish': boolean;
   }
   interface AppNavigationActionsAttributes extends StencilHTMLAttributes {
+    'onActionPublish'?: (event: CustomEvent<void>) => void;
     'presentation'?: boolean;
     'publish'?: boolean;
   }
@@ -95,6 +96,9 @@ export namespace Components {
     'context'?: string;
     'type'?: LoginModalType;
   }
+
+  interface AppPublish {}
+  interface AppPublishAttributes extends StencilHTMLAttributes {}
 
   interface AppSlideNavigate {
     'slides': string[];
@@ -155,6 +159,7 @@ declare global {
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
     'AppLogin': Components.AppLogin;
+    'AppPublish': Components.AppPublish;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
     'AppContact': Components.AppContact;
@@ -182,6 +187,7 @@ declare global {
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-login': Components.AppLoginAttributes;
+    'app-publish': Components.AppPublishAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
     'app-contact': Components.AppContactAttributes;
@@ -269,6 +275,12 @@ declare global {
     new (): HTMLAppLoginElement;
   };
 
+  interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {}
+  var HTMLAppPublishElement: {
+    prototype: HTMLAppPublishElement;
+    new (): HTMLAppPublishElement;
+  };
+
   interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {}
   var HTMLAppSlideNavigateElement: {
     prototype: HTMLAppSlideNavigateElement;
@@ -354,6 +366,7 @@ declare global {
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
     'app-login': HTMLAppLoginElement
+    'app-publish': HTMLAppPublishElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
     'app-contact': HTMLAppContactElement
@@ -381,6 +394,7 @@ declare global {
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
     'app-login': HTMLAppLoginElement;
+    'app-publish': HTMLAppPublishElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
     'app-contact': HTMLAppContactElement;
