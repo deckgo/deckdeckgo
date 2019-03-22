@@ -8,12 +8,15 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
+import {
+  LoginModalType,
+} from './app/services/auth/auth.service';
 
 
 export namespace Components {
@@ -28,8 +31,24 @@ export namespace Components {
     'src'?: string;
   }
 
+  interface AppFooter {}
+  interface AppFooterAttributes extends StencilHTMLAttributes {}
+
   interface AppLogo {}
   interface AppLogoAttributes extends StencilHTMLAttributes {}
+
+  interface AppMenuUser {}
+  interface AppMenuUserAttributes extends StencilHTMLAttributes {}
+
+  interface AppNavigationActions {
+    'presentation': boolean;
+    'publish': boolean;
+  }
+  interface AppNavigationActionsAttributes extends StencilHTMLAttributes {
+    'onActionPublish'?: (event: CustomEvent<void>) => void;
+    'presentation'?: boolean;
+    'publish'?: boolean;
+  }
 
   interface AppNavigation {
     'logo': boolean;
@@ -66,11 +85,20 @@ export namespace Components {
   interface AppFeed {}
   interface AppFeedAttributes extends StencilHTMLAttributes {}
 
-  interface AppFooter {}
-  interface AppFooterAttributes extends StencilHTMLAttributes {}
-
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
+
+  interface AppLogin {
+    'context': string;
+    'type': LoginModalType;
+  }
+  interface AppLoginAttributes extends StencilHTMLAttributes {
+    'context'?: string;
+    'type'?: LoginModalType;
+  }
+
+  interface AppPublish {}
+  interface AppPublishAttributes extends StencilHTMLAttributes {}
 
   interface AppSlideNavigate {
     'slides': string[];
@@ -100,6 +128,9 @@ export namespace Components {
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
+  interface AppUserMenu {}
+  interface AppUserMenuAttributes extends StencilHTMLAttributes {}
+
   interface AppDeckOrSlide {}
   interface AppDeckOrSlideAttributes extends StencilHTMLAttributes {}
 
@@ -118,13 +149,17 @@ declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
     'AppAvatar': Components.AppAvatar;
+    'AppFooter': Components.AppFooter;
     'AppLogo': Components.AppLogo;
+    'AppMenuUser': Components.AppMenuUser;
+    'AppNavigationActions': Components.AppNavigationActions;
     'AppNavigation': Components.AppNavigation;
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
     'AppFeed': Components.AppFeed;
-    'AppFooter': Components.AppFooter;
     'AppPopular': Components.AppPopular;
+    'AppLogin': Components.AppLogin;
+    'AppPublish': Components.AppPublish;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
     'AppContact': Components.AppContact;
@@ -133,6 +168,7 @@ declare global {
     'AppTerms': Components.AppTerms;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
+    'AppUserMenu': Components.AppUserMenu;
     'AppDeckOrSlide': Components.AppDeckOrSlide;
     'AppSlideType': Components.AppSlideType;
     'AppSlotType': Components.AppSlotType;
@@ -141,13 +177,17 @@ declare global {
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
     'app-avatar': Components.AppAvatarAttributes;
+    'app-footer': Components.AppFooterAttributes;
     'app-logo': Components.AppLogoAttributes;
+    'app-menu-user': Components.AppMenuUserAttributes;
+    'app-navigation-actions': Components.AppNavigationActionsAttributes;
     'app-navigation': Components.AppNavigationAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-feed': Components.AppFeedAttributes;
-    'app-footer': Components.AppFooterAttributes;
     'app-popular': Components.AppPopularAttributes;
+    'app-login': Components.AppLoginAttributes;
+    'app-publish': Components.AppPublishAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
     'app-contact': Components.AppContactAttributes;
@@ -156,6 +196,7 @@ declare global {
     'app-terms': Components.AppTermsAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
+    'app-user-menu': Components.AppUserMenuAttributes;
     'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
     'app-slot-type': Components.AppSlotTypeAttributes;
@@ -174,10 +215,28 @@ declare global {
     new (): HTMLAppAvatarElement;
   };
 
+  interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
+  var HTMLAppFooterElement: {
+    prototype: HTMLAppFooterElement;
+    new (): HTMLAppFooterElement;
+  };
+
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
   var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
     new (): HTMLAppLogoElement;
+  };
+
+  interface HTMLAppMenuUserElement extends Components.AppMenuUser, HTMLStencilElement {}
+  var HTMLAppMenuUserElement: {
+    prototype: HTMLAppMenuUserElement;
+    new (): HTMLAppMenuUserElement;
+  };
+
+  interface HTMLAppNavigationActionsElement extends Components.AppNavigationActions, HTMLStencilElement {}
+  var HTMLAppNavigationActionsElement: {
+    prototype: HTMLAppNavigationActionsElement;
+    new (): HTMLAppNavigationActionsElement;
   };
 
   interface HTMLAppNavigationElement extends Components.AppNavigation, HTMLStencilElement {}
@@ -204,16 +263,22 @@ declare global {
     new (): HTMLAppFeedElement;
   };
 
-  interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
-  var HTMLAppFooterElement: {
-    prototype: HTMLAppFooterElement;
-    new (): HTMLAppFooterElement;
-  };
-
   interface HTMLAppPopularElement extends Components.AppPopular, HTMLStencilElement {}
   var HTMLAppPopularElement: {
     prototype: HTMLAppPopularElement;
     new (): HTMLAppPopularElement;
+  };
+
+  interface HTMLAppLoginElement extends Components.AppLogin, HTMLStencilElement {}
+  var HTMLAppLoginElement: {
+    prototype: HTMLAppLoginElement;
+    new (): HTMLAppLoginElement;
+  };
+
+  interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {}
+  var HTMLAppPublishElement: {
+    prototype: HTMLAppPublishElement;
+    new (): HTMLAppPublishElement;
   };
 
   interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {}
@@ -264,6 +329,12 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
+  interface HTMLAppUserMenuElement extends Components.AppUserMenu, HTMLStencilElement {}
+  var HTMLAppUserMenuElement: {
+    prototype: HTMLAppUserMenuElement;
+    new (): HTMLAppUserMenuElement;
+  };
+
   interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
   var HTMLAppDeckOrSlideElement: {
     prototype: HTMLAppDeckOrSlideElement;
@@ -285,13 +356,17 @@ declare global {
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
+    'app-footer': HTMLAppFooterElement
     'app-logo': HTMLAppLogoElement
+    'app-menu-user': HTMLAppMenuUserElement
+    'app-navigation-actions': HTMLAppNavigationActionsElement
     'app-navigation': HTMLAppNavigationElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-feed': HTMLAppFeedElement
-    'app-footer': HTMLAppFooterElement
     'app-popular': HTMLAppPopularElement
+    'app-login': HTMLAppLoginElement
+    'app-publish': HTMLAppPublishElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
     'app-contact': HTMLAppContactElement
@@ -300,6 +375,7 @@ declare global {
     'app-terms': HTMLAppTermsElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
+    'app-user-menu': HTMLAppUserMenuElement
     'app-deck-or-slide': HTMLAppDeckOrSlideElement
     'app-slide-type': HTMLAppSlideTypeElement
     'app-slot-type': HTMLAppSlotTypeElement
@@ -308,13 +384,17 @@ declare global {
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
     'app-avatar': HTMLAppAvatarElement;
+    'app-footer': HTMLAppFooterElement;
     'app-logo': HTMLAppLogoElement;
+    'app-menu-user': HTMLAppMenuUserElement;
+    'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-feed': HTMLAppFeedElement;
-    'app-footer': HTMLAppFooterElement;
     'app-popular': HTMLAppPopularElement;
+    'app-login': HTMLAppLoginElement;
+    'app-publish': HTMLAppPublishElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
     'app-contact': HTMLAppContactElement;
@@ -323,6 +403,7 @@ declare global {
     'app-terms': HTMLAppTermsElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
+    'app-user-menu': HTMLAppUserMenuElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-slide-type': HTMLAppSlideTypeElement;
     'app-slot-type': HTMLAppSlotTypeElement;

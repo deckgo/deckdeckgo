@@ -1,10 +1,16 @@
 import {Component, Element, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
+import {take} from 'rxjs/operators';
+
 import {SlideTemplate} from '../../models/slide-template';
-import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
+import {EditorUtils} from '../../utils/editor-utils';
+
+import {User} from '../../models/user';
 
 import {EditorHelper} from '../../helpers/editor/editor.helper';
+import {AuthService, LoginModalType} from '../../services/auth/auth.service';
+import {GuestService} from '../../services/guest/guest.service';
 
 @Component({
     tag: 'app-editor',
@@ -27,17 +33,38 @@ export class AppEditor {
 
     private editorHelper: EditorHelper = new EditorHelper();
 
+    private authService: AuthService;
+    private guestService: GuestService;
+
+    @State()
+    private loggedIn: boolean = false;
+
     constructor() {
+        this.authService = AuthService.getInstance();
+        this.guestService = GuestService.getInstance();
     }
 
     async componentWillLoad() {
         this.editorHelper.init(this.el);
 
-        await this.initSlide();
+        this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
+            if(!user) {
+                await this.signInAnonymous();
+            } else {
+                await this.initSlide();
+                this.loggedIn = true;
+            }
+        });
     }
+
+    private setNotLoggedIn = () => {
+        this.loggedIn = false;
+    };
 
     async componentDidLoad() {
         await this.initSlideSize();
+
+        await this.updateInlineEditorListener();
     }
 
     componentDidUnload() {
@@ -58,6 +85,26 @@ export class AppEditor {
         });
     }
 
+    private updateInlineEditorListener(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                return;
+            }
+
+            const inlineEditor: HTMLElement = this.el.querySelector('deckgo-inline-editor');
+
+            if (!inlineEditor) {
+                return;
+            }
+
+            (inlineEditor as any).attachTo = deck;
+
+            resolve();
+        });
+    }
+
     private initSlide(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!document) {
@@ -65,7 +112,9 @@ export class AppEditor {
                 return;
             }
 
-            const slide: any = await DeckdeckgoStudioCreateSlide.createSlide(SlideTemplate.TITLE);
+
+
+            const slide: any = await EditorUtils.createSlide(SlideTemplate.TITLE);
 
             await this.concatSlide(slide);
 
@@ -183,6 +232,13 @@ export class AppEditor {
             return;
         }
 
+        const couldAddSlide: boolean = await this.guestService.couldAddSlide(this.slides);
+
+        if (!couldAddSlide) {
+            await this.signIn();
+            return;
+        }
+
         const popover: HTMLIonPopoverElement = await this.popoverController.create({
             component: 'app-slide-type',
             event: $event.detail,
@@ -199,6 +255,31 @@ export class AppEditor {
         });
 
         await popover.present();
+    }
+
+    @Listen('actionPublish')
+    async onActionPublish() {
+        // No slides, no publish
+        if (!this.slides || this.slides.length <= 0) {
+            return;
+        }
+
+        const couldAddSlide: boolean = await this.guestService.couldPublish(this.slides);
+
+        if (!couldAddSlide) {
+            await this.signIn();
+            return;
+        }
+
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-publish'
+        });
+
+        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+            // TODO Publish or publish from the modal and do nothing here?
+        });
+
+        await modal.present();
     }
 
     private hideToolbar(): Promise<void> {
@@ -317,9 +398,35 @@ export class AppEditor {
         });
     }
 
+    private async signIn() {
+        await this.authService.openSignInModal({
+            type: LoginModalType.SIGNIN_MERGE_ANONYMOUS,
+            context: '/editor'
+        });
+    }
+
+    private async signInAnonymous() {
+        await this.authService.openSignInModal({
+            type: LoginModalType.SIGNIN_WITH_ANONYMOUS,
+            context: '/editor',
+            onPresent: this.setNotLoggedIn
+        });
+    }
+
     render() {
+        if (!this.loggedIn) {
+            return [
+                <app-navigation></app-navigation>,
+                <ion-content padding>
+                    <main>
+                        {this.renderSignInMsg()}
+                    </main>
+                </ion-content>
+            ];
+        }
+
         return [
-            <app-navigation publish={true}></app-navigation>,
+            <app-navigation publish={this.loggedIn}></app-navigation>,
             <ion-content padding>
                 <main class={this.displaying ? 'idle' : undefined}>
                     <deckgo-deck embedded={true}
@@ -362,5 +469,11 @@ export class AppEditor {
                 <ion-icon ios="ios-link" md="ios-link" slot="link"></ion-icon>
             </deckgo-inline-editor>
         ];
+    }
+
+    private renderSignInMsg() {
+        if (!this.loggedIn) {
+            return <ion-button shape="round" class="get-started" onClick={() => this.signInAnonymous()}>Write a presentation</ion-button>
+        }
     }
 }

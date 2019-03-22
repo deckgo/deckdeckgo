@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Prop, State} from '@stencil/core';
+import {Component, Element, Listen, Prop, State, Watch} from '@stencil/core';
 
 import {DeckdeckgoInlineEditorTag} from '../../types/inline-editor/deckdeckgo-inline-editor-tag';
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
@@ -61,6 +61,13 @@ export class DeckdeckgoInlineEditor {
 
   private linkUrl: string;
 
+  @Prop()
+  attachTo: HTMLElement;
+
+  async componentWillLoad() {
+    await this.attachListener();
+  }
+
   async componentDidLoad() {
     await this.colorPickerListener(true);
 
@@ -71,29 +78,54 @@ export class DeckdeckgoInlineEditor {
 
   async componentDidUnload() {
     await this.colorPickerListener(false);
+
+    await this.detachListener(this.attachTo ? this.attachTo : document);
   }
 
-  @Listen('document:mousedown', {passive: true})
-  async mousedown($event: MouseEvent) {
-    this.anchorEvent = $event;
-  }
-
-  @Listen('document:touchstart', {passive: true})
-  async touchstart($event: MouseEvent) {
-    this.anchorEvent = $event;
-  }
-
-  @Listen('document:selectionchange', {passive: true})
-  async selectionchange(_$event: Event) {
-    if (this.linkInput && document && document.activeElement && document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor') {
+  @Watch('attachTo')
+  async onAttachTo() {
+    if (!this.attachTo) {
       return;
     }
 
-    await this.displayTools();
+    await this.detachListener(document);
+    await this.attachListener();
   }
 
-  @Listen('document:keydown', {passive: true})
-  async keydown($event: KeyboardEvent) {
+  private attachListener(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const listenerElement: HTMLElement | Document = this.attachTo ? this.attachTo : document;
+      if (listenerElement) {
+        listenerElement.addEventListener('mousedown', this.mousedown, {passive: true});
+        listenerElement.addEventListener('touchstart', this.touchstart, {passive: true});
+        listenerElement.addEventListener('keydown', this.keydown, {passive: true});
+      }
+
+      resolve();
+    });
+  }
+
+  private detachListener(listenerElement: HTMLElement | Document): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (listenerElement) {
+        listenerElement.removeEventListener('mousedown', this.mousedown);
+        listenerElement.removeEventListener('touchstart', this.touchstart);
+        listenerElement.removeEventListener('keydown', this.keydown);
+      }
+
+      resolve();
+    });
+  }
+
+  private mousedown = ($event: MouseEvent) => {
+    this.anchorEvent = $event;
+  };
+
+  private touchstart = ($event: MouseEvent) => {
+    this.anchorEvent = $event;
+  };
+
+  private keydown = async ($event: KeyboardEvent) => {
     if (!$event) {
       return;
     }
@@ -104,6 +136,15 @@ export class DeckdeckgoInlineEditor {
       await this.createLink();
       await this.reset(true);
     }
+  };
+
+  @Listen('document:selectionchange', {passive: true})
+  async selectionchange(_$event: Event) {
+    if (this.linkInput && document && document.activeElement && document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor') {
+      return;
+    }
+
+    await this.displayTools();
   }
 
   private displayTools(): Promise<void> {
@@ -116,7 +157,13 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (!selection || selection.toString().length <= 0) {
+      if (this.attachTo && !this.attachTo.contains((this.anchorEvent.target as Node))) {
+        await this.reset(false);
+        resolve();
+        return;
+      }
+
+      if (!selection || !selection.toString() || selection.toString().trim().length <= 0) {
         await this.reset(false);
         resolve();
         return;

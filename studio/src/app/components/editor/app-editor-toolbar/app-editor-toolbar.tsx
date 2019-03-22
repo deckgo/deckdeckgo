@@ -3,8 +3,7 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {DeckdeckgoStudioCreateSlide} from '../../../utils/deckdeckgo-studio-create-slide';
-import {DeckdeckgoSlotType} from '../../../utils/deckdeckgo-slot-type';
+import {EditorUtils, SlotType} from '../../../utils/editor-utils';
 
 import {DeckBusyService} from '../../../services/deck/deck-busy.service';
 
@@ -157,7 +156,7 @@ export class AppEditorToolbar {
         return new Promise<void>(async (resolve) => {
             if (this.selectedElement) {
                 if (this.selectedElement.classList && !this.selectedElement.classList.contains('deckgo-untouched') && !this.selectedElement.firstChild) {
-                    this.selectedElement.appendChild(document.createTextNode(this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase() === 'h1' ? DeckdeckgoStudioCreateSlide.DEFAULT_TITLE : DeckdeckgoStudioCreateSlide.DEFAULT_CONTENT));
+                    this.selectedElement.appendChild(document.createTextNode(this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase() === 'h1' ? EditorUtils.DEFAULT_TITLE : EditorUtils.DEFAULT_CONTENT));
                     this.selectedElement.classList.add('deckgo-untouched');
                 }
 
@@ -434,7 +433,7 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private toggleSlotType(type: DeckdeckgoSlotType): Promise<void> {
+    private toggleSlotType(type: SlotType): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
                 resolve();

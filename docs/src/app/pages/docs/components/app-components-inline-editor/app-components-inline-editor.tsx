@@ -104,6 +104,13 @@ export class AppComponentsInlineEditor {
 <td><code>boolean</code></td>
 <td><code>false</code></td>
 </tr>
+<tr>
+<td><code>attachTo</code></td>
+<td><code>attach-to</code></td>
+<td>Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document</td>
+<td><code>HTMLElement</code></td>
+<td></td>
+</tr>
 </tbody></table>
 <h3 id="app-components-inline-editor-styling">Styling</h3>
 <p>The <code>&lt;deckgo-inline-editor/&gt;</code> could be styled using the following CSS4 variables which would only applies on the type <code>&lt;svg/&gt;</code>:</p>

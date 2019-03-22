@@ -17,6 +17,8 @@
     "@ionic/core": "4.1.1",
     "deckdeckgo": "file:../webcomponents/core",
     "deckdeckgo-inline-editor": "file:../webcomponents/inline-editor",
+    "firebase": "^5.9.0",
+    "idb-keyval": "^3.1.0",
     "rxjs": "^6.4.0"
   },
   "devDependencies": {
@@ -24,6 +26,7 @@
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
     "autoprefixer": "^9.4.7",
+    "rollup-plugin-replace": "^2.1.1",
     "workbox-build": "3.4.1"
   },
   "repository": {

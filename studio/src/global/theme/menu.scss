@@ -31,10 +31,6 @@ ion-split-pane {
             ion-icon {
               color: white;
             }
-
-            &.user {
-              display: none;
-            }
           }
         }
 
@@ -55,10 +51,6 @@ ion-split-pane {
     ion-menu {
       ion-content {
         --padding-top: 40px;
-
-        @media screen and (min-width: 1200px) {
-          --padding-start: 32px;
-        }
 
         app-menu-footer {
           --deckgo-menu-footer-color: var(--ion-color-medium);

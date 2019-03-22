@@ -1,7 +1,7 @@
 // Synchro with https://github.com/deckgo/deckdeckgo-starter/blob/master/src/css/font.css
 
 deckgo-deck {
-  *, h3, h4, h5, h6 {
+  *:not(b), h3, h4, h5, h6 {
     font-weight: 300;
   }
 

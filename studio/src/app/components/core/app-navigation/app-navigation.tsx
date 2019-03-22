@@ -30,17 +30,34 @@ export class AppNavigation {
 
   private renderLogo() {
     if (this.logo) {
-      return <ion-title slot="start">
-        <ion-anchor href="/" routerDirection="forward">
-          <div>
-            <app-logo></app-logo>
-            <span text-uppercase>DeckDeckGo</span>
-          </div>
-        </ion-anchor>
-      </ion-title>;
+      return <ion-anchor onClick={() => this.closeMenu()} href="/" routerDirection="forward" slot="start">
+        <div>
+          <app-logo></app-logo>
+          <span text-uppercase>DeckDeckGo</span>
+        </div>
+      </ion-anchor>;
     } else {
       return null;
     }
+  }
+
+  private closeMenu(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!document) {
+        return;
+      }
+
+      const element: HTMLIonMenuElement = document.querySelector('ion-menu');
+
+      if (!element) {
+        resolve();
+        return;
+      }
+
+      await element.close();
+
+      resolve();
+    });
   }
 
   private renderMenuToggle() {
@@ -60,33 +77,8 @@ export class AppNavigation {
   private renderUser() {
     if (this.user) {
       return <div slot="end">
-        {this.renderPresentationButton()}
-        {this.renderPublishButton()}
-
-        <a padding-start padding-end>
-          <app-avatar src="https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg"></app-avatar>
-        </a>
+        <app-navigation-actions presentation={this.presentation} publish={this.publish}></app-navigation-actions>
       </div>;
-    } else {
-      return null;
-    }
-  }
-
-  private renderPresentationButton() {
-    if (this.presentation) {
-      return <ion-button class="presentation" shape="round" href="/editor" routerDirection="forward">
-          <ion-label text-uppercase>Write a presentation</ion-label>
-        </ion-button>;
-    } else {
-      return null;
-    }
-  }
-
-  private renderPublishButton() {
-    if (this.publish) {
-      return <ion-button class="publish" shape="round" href="/editor" routerDirection="forward">
-        <ion-label text-uppercase>Ready to publish?</ion-label>
-      </ion-button>;
     } else {
       return null;
     }

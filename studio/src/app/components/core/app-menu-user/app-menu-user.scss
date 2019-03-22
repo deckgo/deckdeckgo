@@ -1,0 +1,36 @@
+ion-split-pane {
+
+  &:not(.split-pane-visible) {
+    ion-menu {
+      ion-content {
+        ion-list {
+          ion-item {
+            &.user {
+              * {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  ion-menu {
+    ion-content {
+      ion-list {
+        ion-item {
+          --detail-icon-opacity: 0;
+
+          &.user {
+            min-height: 32px;
+          }
+
+          &.signout {
+            --padding-top: 40px;
+          }
+        }
+      }
+    }
+  }
+}

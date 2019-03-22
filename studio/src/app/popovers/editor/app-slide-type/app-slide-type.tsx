@@ -1,7 +1,7 @@
 import {Component, Element} from '@stencil/core';
 
-import {SlideTemplate} from '../../models/slide-template';
-import {DeckdeckgoStudioCreateSlide} from '../../utils/deckdeckgo-studio-create-slide';
+import {SlideTemplate} from '../../../models/slide-template';
+import {EditorUtils} from '../../../utils/editor-utils';
 
 @Component({
     tag: 'app-slide-type',
@@ -12,7 +12,7 @@ export class AppSlideType {
     @Element() el: HTMLElement;
 
     private async addSlide(template: SlideTemplate) {
-        const slide: any = await DeckdeckgoStudioCreateSlide.createSlide(template);
+        const slide: any = await EditorUtils.createSlide(template);
         await this.closePopover(slide);
     }
 
