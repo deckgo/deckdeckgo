@@ -4,6 +4,8 @@ import {Subscription} from 'rxjs';
 
 import {User} from '../../../models/user';
 
+import {Utils} from '../../../utils/utils';
+
 import {AuthService, LoginModalType} from '../../../services/auth/auth.service';
 
 @Component({
@@ -68,7 +70,7 @@ export class AppNavigationActions {
     }
 
     private renderSignIn() {
-        if (this.user) {
+        if (Utils.isLoggedIn(this.user)) {
             return undefined;
         } else if (this.presentation || this.publish) {
             return <a padding-start padding-end class="signin" onClick={() => this.signIn()}>
@@ -78,7 +80,7 @@ export class AppNavigationActions {
     }
 
     private renderLoggedIn() {
-        if (this.user && !this.user.anonymous) {
+        if (Utils.isLoggedIn(this.user)) {
             return <a padding-end onClick={(e: UIEvent) => this.openMenu(e)}>
                 <app-avatar src={this.user.photo_url}></app-avatar>
             </a>;
