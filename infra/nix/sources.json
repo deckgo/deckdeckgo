@@ -20,6 +20,24 @@
         "description": "Nixpkgs/NixOS branches that track the Nixpkgs/NixOS channels",
         "rev": "88ae8f7d55efa457c95187011eb410d097108445"
     },
+    "dynamodb": {
+        "url": "https://s3.eu-central-1.amazonaws.com/dynamodb-local-frankfurt/dynamodb_local_latest.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "type": "file",
+        "sha256": "0hrwxg4igyll40y7l1s0icg55g247fl8cjs4rrcpjf8d7m0bb09j"
+    },
+    "otherport": {
+        "homepage": "",
+        "url": "https://github.com/FiloSottile/otherport/archive/9d67c3619c457e5f663a789ee7fd29295cac7870.tar.gz",
+        "owner": "FiloSottile",
+        "branch": "master",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "repo": "otherport",
+        "type": "tarball",
+        "sha256": "0553mq6wxhd4zvq73r3b1cp3s52anld099bc4pw9ny4mb20hrhm3",
+        "description": "LD_PRELOAD hack to redirect connections to other ports",
+        "rev": "9d67c3619c457e5f663a789ee7fd29295cac7870"
+    },
     "static-haskell-nix": {
         "homepage": "",
         "url": "https://github.com/nh2/static-haskell-nix/archive/9781df8a48eade302d159ce63a7ab0c30247788c.tar.gz",
@@ -33,13 +51,14 @@
     },
     "niv": {
         "homepage": "https://github.com/nmattia/niv",
-        "url": "https://github.com/nmattia/niv/archive/7f72d723d00fcc3f177138acbfcf9d581beee9e1.tar.gz",
+        "url": "https://github.com/nmattia/niv/archive/c2698b0780b783880e0b1a520723948fe3b5c26a.tar.gz",
         "owner": "nmattia",
         "branch": "master",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "repo": "niv",
-        "sha256": "0177xhz55519xrak1fmv3gilbg8330lmbfkbizkc8zgp58skcmjw",
+        "type": "tarball",
+        "sha256": "0v68x0h9si6kjqg5fcjrgsbsf4x18m32a786yvjmrdkrki9qwmcq",
         "description": "Easy dependency management for Nix projects",
-        "rev": "7f72d723d00fcc3f177138acbfcf9d581beee9e1"
+        "rev": "c2698b0780b783880e0b1a520723948fe3b5c26a"
     }
 }

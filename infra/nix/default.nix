@@ -42,4 +42,8 @@ with rec
 pkgs //
 { inherit haskellPackagesStatic haskellPackages sources wai-lambda;
   inherit (import sources.niv {}) niv;
+  otherport = pkgs.stdenv.mkDerivation
+    { name = "otherport"; src = sources.otherport;
+      installPhase = "mkdir -p $out/lib && cp otherport.so $out/lib";
+    } ;
 }

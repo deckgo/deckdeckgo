@@ -8,6 +8,8 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TypeOperators #-}
 
+module DeckGo.Handler where
+
 import Control.Monad
 import Control.Lens hiding ((.=))
 import Data.Proxy
@@ -20,8 +22,7 @@ import Data.Aeson ((.=), (.:), (.!=), (.:?))
 import qualified Data.Aeson as Aeson
 import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
-import qualified Network.Wai.Handler.Lambda as Lambda
-import qualified Network.Wai.Middleware.Cors as Cors
+import qualified Network.Wai as Wai
 import qualified Servant as Servant
 import qualified System.Random as Random
 
@@ -32,14 +33,14 @@ import qualified System.Random as Random
 data WithId id a = WithId id a
 
 newtype DeckId = DeckId { unDeckId :: T.Text }
-  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData)
 
 data Deck = Deck
   { deckSlides :: [SlideId]
   }
 
 newtype SlideId = SlideId { unSlideId :: T.Text }
-  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData)
 
 data Slide = Slide
   { slideContent :: T.Text
@@ -51,6 +52,11 @@ instance Aeson.FromJSON Deck where
   parseJSON = Aeson.withObject "decK" $ \obj ->
     Deck <$> obj .: "deck_slides"
 
+instance Aeson.ToJSON Deck where
+  toJSON deck = Aeson.object
+    [ "deck_slides" .= deckSlides deck
+    ]
+
 instance Aeson.FromJSON Slide where
   parseJSON = Aeson.withObject "slide" $ \obj ->
     Slide <$>
@@ -58,11 +64,34 @@ instance Aeson.FromJSON Slide where
       obj .: "slide_template" <*>
       obj .:? "slide_attributes" .!= HMS.empty
 
+instance Aeson.ToJSON Slide where
+  toJSON slide = Aeson.object
+    [ "slide_template" .= slideTemplate slide
+    , "slide_attributes" .= slideAttributes slide
+    , "slide_content" .= slideContent slide
+    ]
+
+instance Aeson.FromJSON (WithId DeckId Deck) where
+  parseJSON = Aeson.withObject "WithId DeckId Deck" $ \o ->
+    WithId <$>
+      (DeckId <$> o .: "deck_id") <*>
+      (Deck <$> o .: "deck_slides")
+
 instance Aeson.ToJSON (WithId DeckId Deck) where
   toJSON (WithId deckId deck) = Aeson.object
     [ "deck_id" .= deckId
     , "deck_slides" .= deckSlides deck
     ]
+
+instance Aeson.FromJSON (WithId SlideId Slide) where
+  parseJSON = Aeson.withObject "WithId SlideId Slide" $ \o ->
+    WithId <$>
+      (SlideId <$> o .: "slide_id") <*>
+      (Slide <$>
+        o .: "slide_content" <*>
+        o .: "slide_template" <*>
+        o .: "slide_attributes"
+      )
 
 instance Aeson.ToJSON (WithId SlideId Slide) where
   toJSON (WithId slideId slide) = Aeson.object
@@ -93,16 +122,8 @@ api = Proxy
 -- SERVER
 ------------------------------------------------------------------------------
 
-main :: IO ()
-main = do
-  hSetBuffering stdin LineBuffering
-  hSetBuffering stdout LineBuffering
-
-  liftIO $ putStrLn "Booting..."
-  env <- Aws.newEnv Aws.Discover
-
-  liftIO $ putStrLn "Booted!"
-  Lambda.run $ Cors.simpleCors $ Servant.serve api (server env)
+application :: Aws.Env -> Wai.Application
+application env = Servant.serve api (server env)
 
 server :: Aws.Env -> Servant.Server API
 server env = serveDecks :<|> serveSlides

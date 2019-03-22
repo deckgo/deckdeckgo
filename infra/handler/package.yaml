@@ -15,11 +15,33 @@ dependencies:
     - text
     - unliftio
     - unordered-containers
+    - wai
     - wai-cors
     - wai-lambda
 
 ghc-options:
     - -Wall
 
-executable:
-    main: Main.hs
+library:
+    source-dirs: src
+
+executables:
+
+    # The AWS Lambda handler
+    handler:
+        main: app/Handler.hs
+        dependencies:
+            - deckdeckgo-handler
+
+    server:
+        main: app/Server.hs
+        dependencies:
+            - deckdeckgo-handler
+            - warp
+
+    test:
+        main: app/Test.hs
+        dependencies:
+            - deckdeckgo-handler
+            - http-client
+            - servant-client
