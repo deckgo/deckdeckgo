@@ -107,7 +107,7 @@ export class AppLogin {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title text-uppercase>Welcome</ion-title>
+                    <ion-title class="ion-text-uppercase">Welcome</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content padding>
@@ -115,7 +115,7 @@ export class AppLogin {
 
                 <div id="firebaseui-auth-container"></div>
 
-                <p text-center padding-start padding-end><small>DeckDeckGo is free and open source 🖖</small></p>
+                <p class="ion-text-center ion-padding-start ion-padding-end"><small>DeckDeckGo is free and open source 🖖</small></p>
             </ion-content>
         ];
     }
@@ -123,13 +123,13 @@ export class AppLogin {
     private renderMsg() {
         if (this.type === LoginModalType.SIGNIN_MERGE_ANONYMOUS) {
             return [
-                <h1 text-center padding-start padding-end>Oh, hi! Good to have you.</h1>,
-                <p text-center padding>Sign in to extend your deck, to publish your presentation and to get soon a personalized feed of recommendations.</p>
+                <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
+                <p class="ion-text-center ion-padding">Sign in to extend your deck, to publish your presentation and to get soon a personalized feed of recommendations.</p>
             ]
         } else {
             return [
-                <h1 text-center padding-start padding-end>Oh, hi! Welcome back.</h1>,
-                <p text-center padding>Sign in to publish your presentation and to get soon a personalized feed of recommendations.</p>
+                <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Welcome back.</h1>,
+                <p class="ion-text-center ion-padding">Sign in to publish your presentation and to get soon a personalized feed of recommendations.</p>
             ]
         }
     }

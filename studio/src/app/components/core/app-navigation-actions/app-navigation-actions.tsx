@@ -92,7 +92,7 @@ export class AppNavigationActions {
     private renderPresentationButton() {
         if (this.presentation) {
             return <ion-button class="presentation" shape="round" href="/editor" routerDirection="forward" padding-end>
-                <ion-label text-uppercase>Write a presentation</ion-label>
+                <ion-label class="ion-text-uppercase">Write a presentation</ion-label>
             </ion-button>;
         } else {
             return null;
@@ -102,7 +102,7 @@ export class AppNavigationActions {
     private renderPublishButton() {
         if (this.publish) {
             return <ion-button class="publish" shape="round" onClick={() => this.actionPublish.emit()} padding-end>
-                <ion-label text-uppercase>Ready to publish?</ion-label>
+                <ion-label class="ion-text-uppercase">Ready to publish?</ion-label>
             </ion-button>;
         } else {
             return null;

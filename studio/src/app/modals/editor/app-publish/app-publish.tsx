@@ -74,7 +74,7 @@ export class AppPublish {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title text-uppercase>Ready to publish?</ion-title>
+                    <ion-title class="ion-text-uppercase">Ready to publish?</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content padding>

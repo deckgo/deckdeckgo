@@ -18,7 +18,7 @@ export class AppAbout {
 
                     <p padding-top>DeckDeckGo aims to be the open source editor for PWA presentations. It's also an online community for sharing presentations, slides and talks about your interests and ideas. It has for goal to be simple and therefore hopefully to be usable by anyone.</p>
 
-                    <h1 text-center padding-top>Team</h1>
+                    <h1 class="ion-text-center ion-padding-top">Team</h1>
 
                     <div class="team">
                         <div>
@@ -48,7 +48,7 @@ export class AppAbout {
 
                             <h2>Nicolas Mattia</h2>
 
-                            <p text-center>Nicolas ... has a bio as soon as he'll send me a PR 😉</p>
+                            <p class="ion-text-center">Nicolas ... has a bio as soon as he'll send me a PR 😉</p>
 
                             <div class="social-links">
                                 <a href="https://github.com/nmattia">
