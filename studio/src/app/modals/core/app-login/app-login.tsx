@@ -48,7 +48,7 @@ export class AppLogin {
         );
 
         const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
-        const redirectUrl: string = appUrl + this.context;
+        const redirectUrl: string = appUrl + (this.context ? this.context : '');
 
         const signInOptions = [];
 

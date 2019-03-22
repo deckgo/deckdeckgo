@@ -64,7 +64,7 @@ export class AppMenuUser {
     }
 
     private renderUser() {
-        if (this.user) {
+        if (this.isLoggedIn()) {
             return <ion-item class="user">
                 <app-avatar slot="start" src={this.user.photo_url}></app-avatar>
                 <ion-label>{this.user.name}</ion-label>
@@ -75,7 +75,7 @@ export class AppMenuUser {
     }
 
     private renderPresentations() {
-        if (this.user) {
+        if (this.isLoggedIn()) {
             return [
                 <ion-item href="/editor" routerDirection="forward">
                     <ion-icon name="book" slot="start"></ion-icon>
@@ -95,7 +95,7 @@ export class AppMenuUser {
     }
 
     private renderSignOut() {
-        if (this.user) {
+        if (this.isLoggedIn()) {
             return <ion-item button class="signout" onClick={() => this.signOut()}>
                 <ion-icon name="log-out" slot="start"></ion-icon>
                 <ion-label>Sign out</ion-label>
@@ -103,6 +103,10 @@ export class AppMenuUser {
         } else {
             return undefined;
         }
+    }
+
+    private isLoggedIn(): boolean {
+        return this.user && !this.user.anonymous;
     }
 
 }

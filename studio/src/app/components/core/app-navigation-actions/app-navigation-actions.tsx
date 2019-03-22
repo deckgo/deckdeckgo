@@ -78,7 +78,7 @@ export class AppNavigationActions {
     }
 
     private renderLoggedIn() {
-        if (this.user) {
+        if (this.user && !this.user.anonymous) {
             return <a padding-end onClick={(e: UIEvent) => this.openMenu(e)}>
                 <app-avatar src={this.user.photo_url}></app-avatar>
             </a>;
