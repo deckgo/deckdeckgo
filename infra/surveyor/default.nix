@@ -4,7 +4,7 @@ with rec
 {
   runTest = test: pkgs.runCommand "test"
     { buildInputs = [ pkgs.netcat pkgs.curl pkgs.haskellPackages.wai-app-static ] ;}
-    test;
+    (test + "\n" + "touch $out");
 
   runPort = port:
     ''
@@ -41,8 +41,6 @@ let tests =
       SRV_MAP="*:80:*:1234" \
         LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so" \
          curl localhost | grep -q '1234'
-
-      touch $out
     '';
 
   # Accessing 192.168.42.42 reroutes to 127.0.0.1
@@ -53,8 +51,6 @@ let tests =
       SRV_MAP="192.168.42.42:*:127.0.0.1:*" \
         LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so" \
          curl 192.168.42.42:1234 | grep -q '1234'
-
-      touch $out
     '';
 
   # Accessing anything on port 1234 reroutes to 1235 and
@@ -70,10 +66,10 @@ let tests =
           curl localhost:1234 | grep -q '1235'
       LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so" \
           curl localhost:1235 | grep -q '1234'
-
-      touch $out
     '';
 
+  # Accessing www.example.com:80 reroutes to localhost:1234 and
+  # accessing does.not.exist reroutes to localhost:1235
   test_redirectHosts =
     ''
       ${runPort 1234}
@@ -88,8 +84,6 @@ let tests =
           curl www.example.com | grep -q '1234'
       LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so ${pkgs.libredirect}/lib/libredirect.so" \
           curl does.not.exist | grep -q '1235'
-
-      touch $out
     '';
 }; in
 
