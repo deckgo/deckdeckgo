@@ -22,6 +22,13 @@ with rec
     { text = builtins.toString port ;
       name = "someAPI";
     };
+
+
+  setHosts = hosts:
+    with rec
+    { mkHost = host: "${pkgs.lib.elemAt host 0} ${pkgs.lib.elemAt host 1}";
+      lines = map mkHost hosts;
+    }; pkgs.writeText "hosts" (pkgs.lib.concatStringsSep "\n" lines);
 };
 
 let tests =
@@ -63,6 +70,24 @@ let tests =
           curl localhost:1234 | grep -q '1235'
       LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so" \
           curl localhost:1235 | grep -q '1234'
+
+      touch $out
+    '';
+
+  test_redirectHosts =
+    ''
+      ${runPort 1234}
+      ${runPort 1235}
+
+      export SRV_MAP="0.0.0.42:80:127.0.0.1:1234 0.0.0.43:80:127.0.0.1:1235"
+      export NIX_REDIRECTS=/etc/hosts=${setHosts
+        [["0.0.0.42" "www.example.com"] ["0.0.0.43" "does.not.exist"]]}
+
+
+      LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so ${pkgs.libredirect}/lib/libredirect.so" \
+          curl www.example.com | grep -q '1234'
+      LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so ${pkgs.libredirect}/lib/libredirect.so" \
+          curl does.not.exist | grep -q '1235'
 
       touch $out
     '';
