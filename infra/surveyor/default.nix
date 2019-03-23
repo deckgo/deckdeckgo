@@ -14,8 +14,23 @@ with rec
     };
 
   runTest = test: pkgs.runCommand "test"
-    { buildInputs = [ pkgs.netcat pkgs.curl pkgs.haskellPackages.wai-app-static ] ;}
+    { buildInputs = [ pkgs.strace pkgs.netcat pkgs.curl pkgs.haskellPackages.wai-app-static pkgs.dnsmasq pkgs.dnsutils ] ;}
     (test + "\n" + "touch $out");
+
+  runDNS = hosts: port:
+    ''
+    trap 'echo $SRV_TEST_PIDS | xargs kill -9' EXIT
+    SRV_TEST_PIDS="''${SRV_TEST_PIDS:-""}"
+    NIX_REDIRECTS=/etc/hosts=${setHosts hosts} \
+      LD_PRELOAD="${pkgs.libredirect}/lib/libredirect.so" \
+      dnsmasq -p ${builtins.toString port} --log-facility=- &
+    SRV_TEST_PIDS="$SRV_TEST_PIDS $!"
+    echo $SRV_TEST_PIDS
+    while ! nc -z 127.0.0.1 ${builtins.toString port}; do
+      echo waiting for port ${builtins.toString port}
+      sleep 1
+    done
+    '';
 
   runPort = port:
     ''
@@ -23,6 +38,7 @@ with rec
     SRV_TEST_PIDS="''${SRV_TEST_PIDS:-""}"
     warp -d ${apiPort port} -p ${builtins.toString port} &
     SRV_TEST_PIDS="$SRV_TEST_PIDS $!"
+    echo $SRV_TEST_PIDS
     while ! nc -z 127.0.0.1 ${builtins.toString port}; do
       echo waiting for port ${builtins.toString port}
       sleep 1
@@ -95,6 +111,35 @@ let tests =
           curl www.example.com | grep -q '1234'
       LD_PRELOAD="${surveyor}/lib/surveyor.so ${pkgs.libredirect}/lib/libredirect.so" \
           curl does.not.exist | grep -q '1235'
+    '';
+
+  # Accessing www.example.com:80 reroutes to localhost:1234 through DNS server
+  test_redirectHostsDNS =
+    ''
+      ${runPort 1234}
+      #strace -f -e trace=network \
+      dnsmasq \
+        --address=/www.example.com/0.0.0.42 \
+        --address=/www.example.com/:: \
+        -p 8053 --no-ping --log-facility=- &
+      echo dnsmasq is $!
+
+      while ! nc -z 127.0.0.1 8053; do
+        echo waiting for dnsmasq
+        sleep 1
+      done
+
+      strace -f -e trace=network \
+        -E SRV_MAP="0.0.0.42:80:127.0.0.1:1234 127.0.0.1:53:127.0.0.1:8053" \
+        -E LD_PRELOAD="${surveyor}/lib/surveyor.so" \
+        nslookup www.example.com
+
+      exit 55
+
+      strace -f -e trace=network \
+        -E SRV_MAP="0.0.0.42:80:127.0.0.1:1234 127.0.0.1:53:127.0.0.1:8053" \
+        -E LD_PRELOAD="${surveyor}/lib/surveyor.so" \
+        curl -s www.example.com | grep -q '1234'
     '';
 }; in
 

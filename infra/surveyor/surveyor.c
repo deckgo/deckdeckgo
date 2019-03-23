@@ -12,6 +12,16 @@
 
 int (*super_connect)(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
+ssize_t (*super_sendto)(int sockfd, const void *buf, size_t len, int flags,
+               const struct sockaddr *dest_addr, socklen_t addrlen);
+
+ssize_t (*super_sendmsg)(int sockfd, const struct msghdr *msg, int flags);
+
+ssize_t (*super_recvfrom)(int sockfd, void *buf, size_t len, int flags,
+                 struct sockaddr *src_addr, socklen_t *addrlen);
+
+ssize_t (*super_recvmsg)(int sockfd, struct msghdr *msg, int flags);
+
 typedef struct
 {
     // Port to map from. If "0" or "*" is given, maps from all ports.
@@ -28,9 +38,30 @@ typedef struct
 
 } srv_mapping;
 
-
 srv_mapping *mappings;
 unsigned short n_mappings;
+
+
+// TODO: attribute hidden
+srv_mapping * srv_find_mapping(const struct sockaddr_in *addr_in)
+{
+    for (int i = 0; i < n_mappings; i ++)
+    {
+        if (mappings[i].addr_from == NULL ||
+            (*mappings[i].addr_from).s_addr == (addr_in->sin_addr).s_addr)
+        {
+            if(mappings[i].port_from == 0 ||
+                mappings[i].port_from == addr_in->sin_port)
+            {
+                fprintf(stderr, "WE HAVE A MATCH!!!!!!\n");
+                return mappings + i;
+            }
+        }
+    }
+
+    return NULL;
+}
+
 
 void _fini(void)
 {
@@ -172,6 +203,30 @@ void _init(void)
         fprintf(stderr, "dlsym(connect) failed: %s\n", err);
         exit(42);
     }
+
+    super_sendto = dlsym(RTLD_NEXT, "sendto");
+    if ((err = dlerror()) != NULL) {
+        fprintf(stderr, "dlsym(sendto) failed: %s\n", err);
+        exit(42);
+    }
+
+    super_sendmsg = dlsym(RTLD_NEXT, "sendmsg");
+    if ((err = dlerror()) != NULL) {
+        fprintf(stderr, "dlsym(sendmsg) failed: %s\n", err);
+        exit(42);
+    }
+
+    super_recvmsg = dlsym(RTLD_NEXT, "recvmsg");
+    if ((err = dlerror()) != NULL) {
+        fprintf(stderr, "dlsym(recvmsg) failed: %s\n", err);
+        exit(42);
+    }
+
+    super_recvfrom = dlsym(RTLD_NEXT, "recvfrom");
+    if ((err = dlerror()) != NULL) {
+        fprintf(stderr, "dlsym(recvfrom) failed: %s\n", err);
+        exit(42);
+    }
 }
 
 int connect(int sockfd, const struct sockaddr *dest_addr, socklen_t dest_len)
@@ -187,40 +242,23 @@ int connect(int sockfd, const struct sockaddr *dest_addr, socklen_t dest_len)
     static struct sockaddr_in *dest_addr_in;
     dest_addr_in = (struct sockaddr_in *)dest_addr;
 
-    bool found = false;
-    srv_mapping mapping;
+    srv_mapping * mapping = srv_find_mapping(dest_addr_in);
 
-    for (int i = 0; i < n_mappings; i ++)
-    {
-        mapping = mappings[i];
-        if (mapping.addr_from == NULL ||
-            (*mapping.addr_from).s_addr == (dest_addr_in->sin_addr).s_addr)
-        {
-            if(mapping.port_from == 0 ||
-                mapping.port_from == dest_addr_in->sin_port)
-            {
-                fprintf(stderr, "WE HAVE A MATCH!!!!!!\n");
-                found = true;
-                break;
-            }
-        }
-    }
-
-    if(found)
+    if(mapping)
     {
         static struct sockaddr_storage new_dest_addr;
         memcpy(&new_dest_addr, dest_addr, dest_len);
 
         static struct sockaddr_in *new_dest_addr_in;
         new_dest_addr_in = (struct sockaddr_in *)&new_dest_addr;
-        if(mapping.port_to != 0)
+        if(mapping->port_to != 0)
         {
-            new_dest_addr_in->sin_port = mapping.port_to;
+            new_dest_addr_in->sin_port = mapping->port_to;
         }
 
-        if(mapping.addr_to != NULL)
+        if(mapping->addr_to != NULL)
         {
-            new_dest_addr_in->sin_addr = *mapping.addr_to;
+            new_dest_addr_in->sin_addr = *mapping->addr_to;
         }
         return super_connect(sockfd, (struct sockaddr *)&new_dest_addr, dest_len);
 
@@ -229,4 +267,199 @@ int connect(int sockfd, const struct sockaddr *dest_addr, socklen_t dest_len)
         return super_connect(sockfd, dest_addr, dest_len);
 
     }
+}
+
+ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+               const struct sockaddr *dest_addr, socklen_t addrlen)
+{
+    fprintf(stderr, "Entering sendto(2)\n");
+
+    if (dest_addr->sa_family != AF_INET) {
+        fprintf(stderr, "No AF_INET, skipping\n");
+        return super_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+    }
+
+    static struct sockaddr_in *dest_addr_in;
+    dest_addr_in = (struct sockaddr_in *)dest_addr;
+
+    srv_mapping * mapping = srv_find_mapping(dest_addr_in);
+
+    if(mapping)
+    {
+        static struct sockaddr_storage new_dest_addr;
+        memcpy(&new_dest_addr, dest_addr, addrlen);
+
+        static struct sockaddr_in *new_dest_addr_in;
+        new_dest_addr_in = (struct sockaddr_in *)&new_dest_addr;
+        if(mapping->port_to != 0)
+        {
+            new_dest_addr_in->sin_port = mapping->port_to;
+        }
+
+        if(mapping->addr_to != NULL)
+        {
+            new_dest_addr_in->sin_addr = *mapping->addr_to;
+        }
+        return super_sendto(sockfd, buf, len, flags, (struct sockaddr *)&new_dest_addr, addrlen);
+
+    } else
+    {
+        return super_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+
+    }
+
+}
+
+ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+{
+    fprintf(stderr, "Entering sendmsg(2)\n");
+
+    if(msg->msg_name == NULL)
+    {
+        fprintf(stderr, "No msg_name, skipping\n");
+        return super_sendmsg(sockfd, msg, flags);
+
+    }
+
+    static struct sockaddr_in *dest_addr_in;
+    dest_addr_in = (struct sockaddr_in *)msg->msg_name;
+
+    if(dest_addr_in->sin_family != AF_INET)
+    {
+        fprintf(stderr, "No AF_INET, skipping\n");
+        return super_sendmsg(sockfd, msg, flags);
+    }
+
+    srv_mapping * mapping = srv_find_mapping(dest_addr_in);
+
+    if(mapping)
+    {
+
+        static struct sockaddr_storage new_dest_addr;
+        memcpy(&new_dest_addr, dest_addr_in, msg->msg_namelen);
+
+        static struct sockaddr_in *new_dest_addr_in;
+        new_dest_addr_in = (struct sockaddr_in *)&new_dest_addr;
+
+        if(mapping->port_to != 0)
+        {
+            new_dest_addr_in->sin_port = mapping->port_to;
+        }
+
+        if(mapping->addr_to != NULL)
+        {
+            new_dest_addr_in->sin_addr = *mapping->addr_to;
+        }
+
+        static struct msghdr new_msg;
+        memcpy(&new_msg, msg, sizeof(*msg));
+
+        new_msg.msg_name = (void*) new_dest_addr_in;
+
+        return super_sendmsg(sockfd, &new_msg, flags);
+
+
+    } else
+    {
+        return super_sendmsg(sockfd, msg, flags);
+    }
+}
+
+ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+                 struct sockaddr *src_addr, socklen_t *addrlen)
+{
+    fprintf(stderr, "Entering recvfrom(2)\n");
+
+    if (src_addr->sa_family != AF_INET) {
+        fprintf(stderr, "No AF_INET, skipping\n");
+        return super_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    }
+
+    static struct sockaddr_in *src_addr_in;
+    src_addr_in = (struct sockaddr_in *)src_addr;
+
+    srv_mapping * mapping = srv_find_mapping(src_addr_in);
+
+    if(mapping)
+    {
+
+        in_port_t old_port = src_addr_in->sin_port;
+        struct in_addr old_addr = src_addr_in->sin_addr;
+
+        if(mapping->port_to != 0)
+        {
+            src_addr_in->sin_port = mapping->port_to;
+        }
+
+        if(mapping->addr_to != NULL)
+        {
+            src_addr_in->sin_addr = *mapping->addr_to;
+        }
+
+        ssize_t res;
+        res = super_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+
+        src_addr_in->sin_port = old_port;
+        src_addr_in->sin_addr = old_addr;
+
+        return res;
+    } else
+    {
+        return super_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    }
+}
+
+ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+{
+    fprintf(stderr, "Entering recvmsg(2)\n");
+
+    if(msg->msg_name == NULL)
+    {
+        fprintf(stderr, "No msg_name, skipping\n");
+        return super_sendmsg(sockfd, msg, flags);
+    }
+
+
+    struct sockaddr_in *src_addr_in = msg->msg_name;
+
+    fprintf(stderr, "recvmsg: msg_namelen: %d\n", msg->msg_namelen);
+    fprintf(stderr, "recvmsg: AF_INET: %d vs %d\n", AF_INET, src_addr_in->sin_family);
+
+    if(src_addr_in->sin_family != AF_INET)
+    {
+        fprintf(stderr, "recvmsg: No AF_INET, skipping\n");
+        return super_recvmsg(sockfd, msg, flags);
+    }
+
+    srv_mapping * mapping = srv_find_mapping(src_addr_in);
+
+    if(mapping)
+    {
+        in_port_t old_port = src_addr_in->sin_port;
+        struct in_addr old_addr = src_addr_in->sin_addr;
+
+        if(mapping->port_to != 0)
+        {
+            src_addr_in->sin_port = mapping->port_to;
+        }
+
+        if(mapping->addr_to != NULL)
+        {
+            src_addr_in->sin_addr = *mapping->addr_to;
+        }
+
+        ssize_t res;
+        res = super_recvmsg(sockfd, msg, flags);
+
+        src_addr_in->sin_port = old_port;
+        src_addr_in->sin_addr = old_addr;
+
+        return res;
+
+
+    } else
+    {
+        return super_recvmsg(sockfd, msg, flags);
+    }
+
 }
