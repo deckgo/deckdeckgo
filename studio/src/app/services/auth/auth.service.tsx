@@ -2,7 +2,7 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import {User as FirebaseUser} from 'firebase';
 
-import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
+import {Observable, ReplaySubject, Subject} from 'rxjs';
 
 import {get, set, del} from 'idb-keyval';
 
@@ -20,7 +20,7 @@ export enum SignInType {
 export class AuthService {
 
     private userSubject: ReplaySubject<User> = new ReplaySubject(1);
-    private signInSubject: BehaviorSubject<SignInType> = new BehaviorSubject(null);
+    private signInSubject: Subject<SignInType> = new Subject();
 
     private errorService: ErrorService;
 
