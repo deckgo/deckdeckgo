@@ -1,7 +1,18 @@
-let pkgs = import ./nix {}; in
+{ pkgs ? import ./nix {} }:
 
 with rec
 {
+  surveyor-source = pkgs.lib.sourceByRegex ./.
+    [ "^Makefile$"
+      "^surveyor.c"
+    ];
+
+  surveyor = pkgs.stdenv.mkDerivation
+    { name = "surveyor";
+      src = surveyor-source;
+      preConfigure = ''makeFlags="$makeFlags PREFIX=$out"'';
+    };
+
   runTest = test: pkgs.runCommand "test"
     { buildInputs = [ pkgs.netcat pkgs.curl pkgs.haskellPackages.wai-app-static ] ;}
     (test + "\n" + "touch $out");
@@ -39,7 +50,7 @@ let tests =
       ${runPort 1234}
 
       SRV_MAP="*:80:*:1234" \
-        LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so" \
+        LD_PRELOAD="${surveyor}/lib/surveyor.so" \
          curl localhost | grep -q '1234'
     '';
 
@@ -49,7 +60,7 @@ let tests =
       ${runPort 1234}
 
       SRV_MAP="192.168.42.42:*:127.0.0.1:*" \
-        LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so" \
+        LD_PRELOAD="${surveyor}/lib/surveyor.so" \
          curl 192.168.42.42:1234 | grep -q '1234'
     '';
 
@@ -62,9 +73,9 @@ let tests =
 
       export SRV_MAP="*:1234:*:1235 *:1235:*:1234"
 
-      LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so" \
+      LD_PRELOAD="${surveyor}/lib/surveyor.so" \
           curl localhost:1234 | grep -q '1235'
-      LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so" \
+      LD_PRELOAD="${surveyor}/lib/surveyor.so" \
           curl localhost:1235 | grep -q '1234'
     '';
 
@@ -80,13 +91,12 @@ let tests =
         [["0.0.0.42" "www.example.com"] ["0.0.0.43" "does.not.exist"]]}
 
 
-      LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so ${pkgs.libredirect}/lib/libredirect.so" \
+      LD_PRELOAD="${surveyor}/lib/surveyor.so ${pkgs.libredirect}/lib/libredirect.so" \
           curl www.example.com | grep -q '1234'
-      LD_PRELOAD="${pkgs.surveyor}/lib/surveyor.so ${pkgs.libredirect}/lib/libredirect.so" \
+      LD_PRELOAD="${surveyor}/lib/surveyor.so ${pkgs.libredirect}/lib/libredirect.so" \
           curl does.not.exist | grep -q '1235'
     '';
 }; in
 
-{ inherit (pkgs) surveyor;
-  inherit test_portMap;
+{ inherit surveyor;
 } // (builtins.mapAttrs (k: v: runTest v) tests)

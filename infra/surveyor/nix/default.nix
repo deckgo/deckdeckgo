@@ -1,16 +1,4 @@
 { sources ? import ./sources.nix }:
-with
-  { overlay = _: pkgs:
-      { inherit (import sources.niv {}) niv;
-        surveyor = pkgs.stdenv.mkDerivation
-        { name = "surveyor";
-          src = pkgs.lib.sourceByRegex ../.
-            [ "^Makefile$"
-              "^surveyor.c"
-            ];
-          installPhase = "mkdir -p $out/lib && cp surveyor.so $out/lib";
-          } ;
-      };
-  };
+with { overlay = _: pkgs: { inherit (import sources.niv {}) niv; }; };
 import sources.nixpkgs
   { overlays = [ overlay ] ; config = {}; }
