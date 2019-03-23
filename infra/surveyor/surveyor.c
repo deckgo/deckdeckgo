@@ -97,7 +97,7 @@ void _init(void)
     {
         int res;
 
-        fprintf(stderr, "Parsing mapping %d \n", n_mappings);
+        fprintf(stderr, "Parsing mapping %d \n", i+1);
 
         pch = strtok(mappings_strs[i], ":");
         if(pch == NULL){ exit(43); }

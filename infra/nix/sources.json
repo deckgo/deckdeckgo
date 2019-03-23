@@ -26,18 +26,6 @@
         "type": "file",
         "sha256": "0hrwxg4igyll40y7l1s0icg55g247fl8cjs4rrcpjf8d7m0bb09j"
     },
-    "otherport": {
-        "homepage": "",
-        "url": "https://github.com/FiloSottile/otherport/archive/9d67c3619c457e5f663a789ee7fd29295cac7870.tar.gz",
-        "owner": "FiloSottile",
-        "branch": "master",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
-        "repo": "otherport",
-        "type": "tarball",
-        "sha256": "0553mq6wxhd4zvq73r3b1cp3s52anld099bc4pw9ny4mb20hrhm3",
-        "description": "LD_PRELOAD hack to redirect connections to other ports",
-        "rev": "9d67c3619c457e5f663a789ee7fd29295cac7870"
-    },
     "static-haskell-nix": {
         "homepage": "",
         "url": "https://github.com/nh2/static-haskell-nix/archive/9781df8a48eade302d159ce63a7ab0c30247788c.tar.gz",
