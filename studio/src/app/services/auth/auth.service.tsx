@@ -12,20 +12,15 @@ import {User} from '../../models/user';
 
 import {ErrorService} from '../error/error.service';
 
-export enum LoginModalType {
+export enum SignInType {
     SIGNIN,
     SIGNIN_MERGE_ANONYMOUS
-}
-
-export interface LoginModalComponentProps {
-    type: LoginModalType,
-    context?: string
 }
 
 export class AuthService {
 
     private userSubject: ReplaySubject<User> = new ReplaySubject(1);
-    private modalSubject: BehaviorSubject<LoginModalComponentProps> = new BehaviorSubject(null);
+    private signInSubject: BehaviorSubject<SignInType> = new BehaviorSubject(null);
 
     private errorService: ErrorService;
 
@@ -98,11 +93,11 @@ export class AuthService {
         return this.userSubject.asObservable();
     }
 
-    watchModal(): Observable<LoginModalComponentProps> {
-        return this.modalSubject.asObservable();
+    watchSignInNavigation(): Observable<SignInType> {
+        return this.signInSubject.asObservable();
     }
 
-    openSignInModal(componentProps: LoginModalComponentProps) {
-        this.modalSubject.next(componentProps);
+    navigateSignIn(componentProps: SignInType) {
+        this.signInSubject.next(componentProps);
     }
 }

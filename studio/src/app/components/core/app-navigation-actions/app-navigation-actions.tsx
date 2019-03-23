@@ -6,7 +6,7 @@ import {User} from '../../../models/user';
 
 import {Utils} from '../../../utils/utils';
 
-import {AuthService, LoginModalType} from '../../../services/auth/auth.service';
+import {AuthService, SignInType} from '../../../services/auth/auth.service';
 
 @Component({
     tag: 'app-navigation-actions',
@@ -17,6 +17,7 @@ export class AppNavigationActions {
 
     @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
+    @Prop() signIn: boolean = true;
     @Prop() presentation: boolean = false;
     @Prop() publish: boolean = false;
 
@@ -54,10 +55,8 @@ export class AppNavigationActions {
         await popover.present();
     }
 
-    private async signIn() {
-        this.authService.openSignInModal({
-            type: LoginModalType.SIGNIN
-        });
+    private async navigateSignIn() {
+        this.authService.navigateSignIn(SignInType.SIGNIN);
     }
 
     render() {
@@ -70,10 +69,10 @@ export class AppNavigationActions {
     }
 
     private renderSignIn() {
-        if (Utils.isLoggedIn(this.user)) {
+        if (Utils.isLoggedIn(this.user) || !this.signIn) {
             return undefined;
         } else if (this.presentation || this.publish) {
-            return <a padding-start padding-end class="signin" onClick={() => this.signIn()}>
+            return <a padding-start padding-end class="signin" onClick={() => this.navigateSignIn()}>
                 <ion-label>Sign in</ion-label>
             </a>;
         }

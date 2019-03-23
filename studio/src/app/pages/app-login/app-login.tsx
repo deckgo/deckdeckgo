@@ -1,12 +1,12 @@
-import {Component, Element, Listen, Prop} from '@stencil/core';
+import {Component, Element, Prop, Watch} from '@stencil/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {Utils} from '../../utils/utils';
 
-import {Utils} from '../../../utils/utils';
-import {LoginModalType} from '../../../services/auth/auth.service';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import {SignInType} from '../../services/auth/auth.service';
 
 @Component({
     tag: 'app-login',
@@ -17,26 +17,13 @@ export class AppLogin {
     @Element() el: HTMLElement;
 
     @Prop()
-    type: LoginModalType = LoginModalType.SIGNIN;
-
-    @Prop()
-    context: string;
+    type: SignInType = SignInType.SIGNIN;
 
     async componentDidLoad() {
-        history.pushState({modal: true}, null);
-
         await this.setupFirebaseUI();
     }
 
-    @Listen('window:popstate')
-    async handleHardwareBackbutton(_e: PopStateEvent) {
-        await this.closeModal();
-    }
-
-    async closeModal() {
-        await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
-    }
-
+    @Watch('type')
     async setupFirebaseUI() {
         await Utils.injectJS(
             'firebase-ui-script',
@@ -48,7 +35,11 @@ export class AppLogin {
         );
 
         const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
-        const redirectUrl: string = appUrl + (this.context ? this.context : '');
+        let redirectUrl: string = appUrl;
+
+        if (this.type && (this.type as SignInType) === SignInType.SIGNIN_MERGE_ANONYMOUS) {
+            redirectUrl += '/editor';
+        }
 
         const signInOptions = [];
 
@@ -93,35 +84,35 @@ export class AppLogin {
         window['firebase'] = firebase;
 
         // Initialize the FirebaseUI Widget using Firebase.
-        const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+        let ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+
+        if (firebaseui.auth.AuthUI.getInstance()) {
+            await firebaseui.auth.AuthUI.getInstance().delete();
+            ui = new firebaseui.auth.AuthUI(firebase.auth());
+        }
+
         // The start method will wait until the DOM is loaded.
-        ui.start('#firebaseui-auth-container', uiConfig);
+        ui.reset();
+        ui.start('#firebaseui-auth-container-' + this.type, uiConfig);
     }
 
     render() {
         return [
-            <ion-header>
-                <ion-toolbar color="primary">
-                    <ion-buttons slot="start">
-                        <ion-button onClick={() => this.closeModal()}>
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Welcome</ion-title>
-                </ion-toolbar>
-            </ion-header>,
+            <app-navigation></app-navigation>,
             <ion-content padding>
-                {this.renderMsg()}
+                <main padding>
+                    {this.renderMsg()}
 
-                <div id="firebaseui-auth-container"></div>
+                    <div id={'firebaseui-auth-container-' + this.type}></div>
 
-                <p class="ion-text-center ion-padding-start ion-padding-end"><small>DeckDeckGo is free and open source 🖖</small></p>
+                    <p class="ion-text-center ion-padding-start ion-padding-end"><small>DeckDeckGo is free and open source 🖖</small></p>
+                </main>
             </ion-content>
         ];
     }
 
     private renderMsg() {
-        if (this.type === LoginModalType.SIGNIN_MERGE_ANONYMOUS) {
+        if (this.type === SignInType.SIGNIN_MERGE_ANONYMOUS) {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
                 <p class="ion-text-center ion-padding">Sign in to extend your deck, to publish your presentation and to get soon a personalized feed of recommendations.</p>

@@ -6,7 +6,7 @@ import {User} from '../../../models/user';
 
 import {Utils} from '../../../utils/utils';
 
-import {AuthService, LoginModalType} from '../../../services/auth/auth.service';
+import {AuthService, SignInType} from '../../../services/auth/auth.service';
 
 @Component({
     tag: 'app-menu-user',
@@ -38,9 +38,7 @@ export class AppMenuUser {
     }
 
     private async signIn() {
-        this.authService.openSignInModal({
-            type: LoginModalType.SIGNIN
-        });
+        this.authService.navigateSignIn(SignInType.SIGNIN);
     }
 
     private async signOut() {

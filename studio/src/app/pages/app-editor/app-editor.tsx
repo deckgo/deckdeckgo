@@ -9,7 +9,7 @@ import {EditorUtils} from '../../utils/editor-utils';
 import {User} from '../../models/user';
 
 import {EditorHelper} from '../../helpers/editor/editor.helper';
-import {AuthService, LoginModalType} from '../../services/auth/auth.service';
+import {AuthService, SignInType} from '../../services/auth/auth.service';
 import {GuestService} from '../../services/guest/guest.service';
 
 @Component({
@@ -389,10 +389,7 @@ export class AppEditor {
     }
 
     private async signIn() {
-        await this.authService.openSignInModal({
-            type: LoginModalType.SIGNIN_MERGE_ANONYMOUS,
-            context: '/editor'
-        });
+        await this.authService.navigateSignIn(SignInType.SIGNIN_MERGE_ANONYMOUS);
     }
 
     render() {
