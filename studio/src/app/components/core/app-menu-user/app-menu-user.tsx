@@ -6,7 +6,8 @@ import {User} from '../../../models/user';
 
 import {Utils} from '../../../utils/utils';
 
-import {AuthService, SignInType} from '../../../services/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
+import {NavService} from '../../../services/nav/nav.service';
 
 @Component({
     tag: 'app-menu-user',
@@ -18,11 +19,14 @@ export class AppMenuUser {
     private authService: AuthService;
     private subscription: Subscription;
 
+    private navService: NavService;
+
     @State()
     private user: User;
 
     constructor() {
         this.authService = AuthService.getInstance();
+        this.navService = NavService.getInstance();
     }
 
     componentWillLoad() {
@@ -38,7 +42,7 @@ export class AppMenuUser {
     }
 
     private async signIn() {
-        this.authService.navigateSignIn(SignInType.SIGNIN);
+        this.navService.navigate('/login');
     }
 
     private async signOut() {

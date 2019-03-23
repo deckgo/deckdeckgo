@@ -6,7 +6,7 @@ import '@firebase/auth';
 import {Utils} from '../../utils/utils';
 
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import {SignInType} from '../../services/auth/auth.service';
+import {NavService} from '../../services/nav/nav.service';
 
 @Component({
     tag: 'app-login',
@@ -17,13 +17,19 @@ export class AppLogin {
     @Element() el: HTMLElement;
 
     @Prop()
-    type: SignInType = SignInType.SIGNIN;
+    redirect: string;
+
+    private navService: NavService;
+
+    constructor() {
+        this.navService = NavService.getInstance();
+    }
 
     async componentDidLoad() {
         await this.setupFirebaseUI();
     }
 
-    @Watch('type')
+    @Watch('redirect')
     async setupFirebaseUI() {
         await Utils.injectJS(
             'firebase-ui-script',
@@ -37,8 +43,8 @@ export class AppLogin {
         const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
         let redirectUrl: string = appUrl;
 
-        if (this.type && (this.type as SignInType) === SignInType.SIGNIN_MERGE_ANONYMOUS) {
-            redirectUrl += '/editor';
+        if (this.redirect) {
+            redirectUrl += '/' + this.redirect;
         }
 
         const signInOptions = [];
@@ -61,40 +67,47 @@ export class AppLogin {
             callbacks: {
                 // signInFailure callback must be provided to handle merge conflicts which
                 // occur when an existing credential is linked to an anonymous user.
-                signInFailure: (error) => {
-                    // For merge conflicts, the error.code will be
-                    // 'firebaseui/anonymous-upgrade-merge-conflict'.
-                    if (error.code != 'firebaseui/anonymous-upgrade-merge-conflict') {
-                        return Promise.resolve();
-                    }
-                    // The credential the user tried to sign in with.
-                    var cred = error.credential;
-                    // Copy data from anonymous user to permanent user and delete anonymous
-                    // user.
-                    // ...
-                    // Finish sign-in after data is copied.
-
-                    // TODO: What to do, copy or not? merge or not merge?
-
-                    return firebase.auth().signInAndRetrieveDataWithCredential(cred);
-                }
+                signInFailure: this.onSignInFailure
             }
         };
 
         window['firebase'] = firebase;
 
         // Initialize the FirebaseUI Widget using Firebase.
-        let ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+        const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
 
         if (firebaseui.auth.AuthUI.getInstance()) {
-            await firebaseui.auth.AuthUI.getInstance().delete();
-            ui = new firebaseui.auth.AuthUI(firebase.auth());
+            ui.reset();
         }
 
         // The start method will wait until the DOM is loaded.
-        ui.reset();
-        ui.start('#firebaseui-auth-container-' + this.type, uiConfig);
+        ui.start('#firebaseui-auth-container', uiConfig);
     }
+
+    onSignInFailure = (error): Promise<void> => {
+        return new Promise<void>(async (resolve) => {
+            // For merge conflicts, the error.code will be
+            // 'firebaseui/anonymous-upgrade-merge-conflict'.
+            if (error.code != 'firebaseui/anonymous-upgrade-merge-conflict') {
+                resolve();
+                return;
+            }
+            // The credential the user tried to sign in with.
+            const cred = error.credential;
+            // Copy data from anonymous user to permanent user and delete anonymous
+            // user.
+            // ...
+            // Finish sign-in after data is copied.
+
+            // TODO: What to do, copy or not? merge or not merge?
+
+            await firebase.auth().signInAndRetrieveDataWithCredential(cred);
+
+            await this.navService.navigate(this.redirect ? '/' + this.redirect : '/');
+
+            resolve();
+        });
+    };
 
     render() {
         return [
@@ -103,7 +116,7 @@ export class AppLogin {
                 <main padding>
                     {this.renderMsg()}
 
-                    <div id={'firebaseui-auth-container-' + this.type}></div>
+                    <div id="firebaseui-auth-container"></div>
 
                     <p class="ion-text-center ion-padding-start ion-padding-end"><small>DeckDeckGo is free and open source 🖖</small></p>
                 </main>
@@ -112,7 +125,7 @@ export class AppLogin {
     }
 
     private renderMsg() {
-        if (this.type === SignInType.SIGNIN_MERGE_ANONYMOUS) {
+        if (this.redirect === 'editor') {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
                 <p class="ion-text-center ion-padding">Sign in to extend your deck, to publish your presentation and to get soon a personalized feed of recommendations.</p>

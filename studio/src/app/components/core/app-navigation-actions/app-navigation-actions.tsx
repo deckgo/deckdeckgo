@@ -6,7 +6,8 @@ import {User} from '../../../models/user';
 
 import {Utils} from '../../../utils/utils';
 
-import {AuthService, SignInType} from '../../../services/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
+import {NavService} from '../../../services/nav/nav.service';
 
 @Component({
     tag: 'app-navigation-actions',
@@ -24,6 +25,8 @@ export class AppNavigationActions {
     private authService: AuthService;
     private subscription: Subscription;
 
+    private navService: NavService;
+
     @State()
     private user: User;
 
@@ -31,6 +34,7 @@ export class AppNavigationActions {
 
     constructor() {
         this.authService = AuthService.getInstance();
+        this.navService = NavService.getInstance();
     }
 
     componentWillLoad() {
@@ -56,7 +60,7 @@ export class AppNavigationActions {
     }
 
     private async navigateSignIn() {
-        this.authService.navigateSignIn(SignInType.SIGNIN);
+        this.navService.navigate('/login');
     }
 
     render() {

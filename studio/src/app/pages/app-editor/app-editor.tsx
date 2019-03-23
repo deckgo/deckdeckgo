@@ -9,8 +9,9 @@ import {EditorUtils} from '../../utils/editor-utils';
 import {User} from '../../models/user';
 
 import {EditorHelper} from '../../helpers/editor/editor.helper';
-import {AuthService, SignInType} from '../../services/auth/auth.service';
+import {AuthService} from '../../services/auth/auth.service';
 import {GuestService} from '../../services/guest/guest.service';
+import {NavService} from '../../services/nav/nav.service';
 
 @Component({
     tag: 'app-editor',
@@ -35,10 +36,12 @@ export class AppEditor {
 
     private authService: AuthService;
     private guestService: GuestService;
+    private navService: NavService;
 
     constructor() {
         this.authService = AuthService.getInstance();
         this.guestService = GuestService.getInstance();
+        this.navService = NavService.getInstance();
     }
 
     async componentWillLoad() {
@@ -389,7 +392,7 @@ export class AppEditor {
     }
 
     private async signIn() {
-        await this.authService.navigateSignIn(SignInType.SIGNIN_MERGE_ANONYMOUS);
+        this.navService.navigate('/login/editor');
     }
 
     render() {

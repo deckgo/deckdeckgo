@@ -3,7 +3,8 @@ import {Component, Element, Prop} from '@stencil/core';
 import {Subscription} from 'rxjs';
 
 import {ErrorService} from './services/error/error.service';
-import {AuthService, SignInType} from './services/auth/auth.service';
+import {AuthService} from './services/auth/auth.service';
+import {NavService} from './services/nav/nav.service';
 
 @Component({
     tag: 'app-root',
@@ -19,12 +20,15 @@ export class AppRoot {
     private errorSubscription: Subscription;
     private errorService: ErrorService;
 
-    private authSubscription: Subscription;
     private authService: AuthService;
+
+    private navSubscription: Subscription;
+    private navService: NavService;
 
     constructor() {
         this.errorService = ErrorService.getInstance();
         this.authService = AuthService.getInstance();
+        this.navService = NavService.getInstance();
     }
 
     async componentWillLoad() {
@@ -36,8 +40,8 @@ export class AppRoot {
             await this.toastError(error);
         });
 
-        this.authSubscription = this.authService.watchSignInNavigation().subscribe(async (signInType: SignInType) => {
-            await this.navigateSignIn(signInType);
+        this.navSubscription = this.navService.watch().subscribe(async (url: string) => {
+            await this.navigate(url);
         });
     }
 
@@ -46,8 +50,8 @@ export class AppRoot {
             this.errorSubscription.unsubscribe();
         }
 
-        if (this.authSubscription) {
-            this.authSubscription.unsubscribe();
+        if (this.navSubscription) {
+            this.navSubscription.unsubscribe();
         }
     }
 
@@ -64,14 +68,12 @@ export class AppRoot {
         await popover.present();
     }
 
-    private async navigateSignIn(signInType: SignInType) {
+    private async navigate(url: string) {
         const router: HTMLIonRouterElement = this.el.querySelector('ion-router');
 
         if (!router) {
             return;
         }
-
-        const url: string = '/login' + (signInType && (signInType as SignInType) !== SignInType.SIGNIN ? '/' + signInType : '');
 
         await router.push(url);
     }
@@ -85,7 +87,7 @@ export class AppRoot {
                     <ion-route url="/editor" component="app-editor"/>
 
                     <ion-route url="/login" component="app-login"/>
-                    <ion-route url="/login/:type" component="app-login"/>
+                    <ion-route url="/login/:redirect" component="app-login"/>
 
                     <ion-route url="/about" component="app-about"/>
                     <ion-route url="/opensource" component="app-opensource"/>

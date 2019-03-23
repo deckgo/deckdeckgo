@@ -14,9 +14,6 @@ import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
-import {
-  SignInType,
-} from './app/services/auth/auth.service';
 
 
 export namespace Components {
@@ -122,10 +119,10 @@ export namespace Components {
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
   interface AppLogin {
-    'type': SignInType;
+    'redirect': string;
   }
   interface AppLoginAttributes extends StencilHTMLAttributes {
-    'type'?: SignInType;
+    'redirect'?: string;
   }
 
   interface AppUserMenu {}

@@ -2,7 +2,7 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import {User as FirebaseUser} from 'firebase';
 
-import {Observable, ReplaySubject, Subject} from 'rxjs';
+import {Observable, ReplaySubject} from 'rxjs';
 
 import {get, set, del} from 'idb-keyval';
 
@@ -12,15 +12,9 @@ import {User} from '../../models/user';
 
 import {ErrorService} from '../error/error.service';
 
-export enum SignInType {
-    SIGNIN,
-    SIGNIN_MERGE_ANONYMOUS
-}
-
 export class AuthService {
 
     private userSubject: ReplaySubject<User> = new ReplaySubject(1);
-    private signInSubject: Subject<SignInType> = new Subject();
 
     private errorService: ErrorService;
 
@@ -62,6 +56,18 @@ export class AuthService {
                         photo_url: authUser.photoURL
                     };
 
+                    // Update anonymous user
+                    // Reference: https://github.com/firebase/firebaseui-web/issues/449
+                    if (!user.name && authUser.providerData && authUser.providerData.length > 0 && authUser.providerData[0].displayName) {
+                        user.name = authUser.providerData[0].displayName;
+                    }
+
+                    if (!user.photo_url && authUser.providerData && authUser.providerData.length > 0 && authUser.providerData[0].photoURL) {
+                        user.name = authUser.providerData[0].photoURL;
+                    }
+
+                    console.log(user);
+
                     this.userSubject.next(user);
                     await set('deckdeckgo_user', user);
                 }
@@ -91,13 +97,5 @@ export class AuthService {
 
     watch(): Observable<User> {
         return this.userSubject.asObservable();
-    }
-
-    watchSignInNavigation(): Observable<SignInType> {
-        return this.signInSubject.asObservable();
-    }
-
-    navigateSignIn(componentProps: SignInType) {
-        this.signInSubject.next(componentProps);
     }
 }
