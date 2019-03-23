@@ -63,10 +63,8 @@ export class AuthService {
                     }
 
                     if (!user.photo_url && authUser.providerData && authUser.providerData.length > 0 && authUser.providerData[0].photoURL) {
-                        user.name = authUser.providerData[0].photoURL;
+                        user.photo_url = authUser.providerData[0].photoURL;
                     }
-
-                    console.log(user);
 
                     this.userSubject.next(user);
                     await set('deckdeckgo_user', user);
