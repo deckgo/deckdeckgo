@@ -62,6 +62,26 @@ srv_mapping * srv_find_mapping(const struct sockaddr_in *addr_in)
     return NULL;
 }
 
+// TODO: attribute hidden
+srv_mapping * srv_find_mapping_to(const struct sockaddr_in *addr_in)
+{
+    for (int i = 0; i < n_mappings; i ++)
+    {
+        if (mappings[i].addr_to == NULL ||
+            (*mappings[i].addr_to).s_addr == (addr_in->sin_addr).s_addr)
+        {
+            if(mappings[i].port_to == 0 ||
+                mappings[i].port_to == addr_in->sin_port)
+            {
+                fprintf(stderr, "WE HAVE A MATCH!!!!!!\n");
+                return mappings + i;
+            }
+        }
+    }
+
+    return NULL;
+}
+
 
 void _fini(void)
 {
@@ -365,47 +385,69 @@ ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
     }
 }
 
+// TODO: this is still wrong
 ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
                  struct sockaddr *src_addr, socklen_t *addrlen)
 {
+    static struct sockaddr_in *src_addr_in;
+    src_addr_in = (struct sockaddr_in *)src_addr;
+
     fprintf(stderr, "Entering recvfrom(2)\n");
 
     if (src_addr->sa_family != AF_INET) {
         fprintf(stderr, "No AF_INET, skipping\n");
-        return super_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    } else
+    {
+        srv_mapping * mapping = srv_find_mapping(src_addr_in);
+        if(!mapping)
+        {
+            fprintf(stderr, "No mapping\n");
+        } else
+        {
+            fprintf(stderr, "Found mapping\n");
+
+            if(mapping->port_to != 0)
+            {
+                src_addr_in->sin_port = mapping->port_to;
+            }
+
+            if(mapping->addr_to != NULL)
+            {
+                src_addr_in->sin_addr = *mapping->addr_to;
+            }
+        }
     }
 
-    static struct sockaddr_in *src_addr_in;
-    src_addr_in = (struct sockaddr_in *)src_addr;
+    ssize_t res = super_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
 
-    srv_mapping * mapping = srv_find_mapping(src_addr_in);
-
-    if(mapping)
+    if(src_addr_in->sin_family != AF_INET)
     {
-
-        in_port_t old_port = src_addr_in->sin_port;
-        struct in_addr old_addr = src_addr_in->sin_addr;
-
-        if(mapping->port_to != 0)
-        {
-            src_addr_in->sin_port = mapping->port_to;
-        }
-
-        if(mapping->addr_to != NULL)
-        {
-            src_addr_in->sin_addr = *mapping->addr_to;
-        }
-
-        ssize_t res;
-        res = super_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
-
-        src_addr_in->sin_port = old_port;
-        src_addr_in->sin_addr = old_addr;
-
+        fprintf(stderr, "AFTER: recvfrom: No AF_INET, skipping\n");
         return res;
     } else
     {
-        return super_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+        fprintf(stderr, "AFTER: Found AF_INET\n");
+
+        srv_mapping * mapping = srv_find_mapping_to(src_addr_in);
+        if(!mapping)
+        {
+            fprintf(stderr, "AFTER: No mapping\n");
+            return res;
+        } else
+        {
+            fprintf(stderr, "AFTER: Found mapping\n");
+            if(mapping->port_from != 0)
+            {
+                fprintf(stderr, "AFTER: Setting port\n");
+                src_addr_in->sin_port = mapping->port_from;
+            }
+            if(mapping->addr_from != NULL)
+            {
+                fprintf(stderr, "AFTER: Setting addr\n");
+                src_addr_in->sin_addr = *mapping->addr_from;
+            }
+            return res;
+        }
     }
 }
 
@@ -416,50 +458,77 @@ ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
     if(msg->msg_name == NULL)
     {
         fprintf(stderr, "No msg_name, skipping\n");
-        return super_sendmsg(sockfd, msg, flags);
-    }
-
-
-    struct sockaddr_in *src_addr_in = msg->msg_name;
-
-    fprintf(stderr, "recvmsg: msg_namelen: %d\n", msg->msg_namelen);
-    fprintf(stderr, "recvmsg: AF_INET: %d vs %d\n", AF_INET, src_addr_in->sin_family);
-
-    if(src_addr_in->sin_family != AF_INET)
-    {
-        fprintf(stderr, "recvmsg: No AF_INET, skipping\n");
-        return super_recvmsg(sockfd, msg, flags);
-    }
-
-    srv_mapping * mapping = srv_find_mapping(src_addr_in);
-
-    if(mapping)
-    {
-        in_port_t old_port = src_addr_in->sin_port;
-        struct in_addr old_addr = src_addr_in->sin_addr;
-
-        if(mapping->port_to != 0)
-        {
-            src_addr_in->sin_port = mapping->port_to;
-        }
-
-        if(mapping->addr_to != NULL)
-        {
-            src_addr_in->sin_addr = *mapping->addr_to;
-        }
-
-        ssize_t res;
-        res = super_recvmsg(sockfd, msg, flags);
-
-        src_addr_in->sin_port = old_port;
-        src_addr_in->sin_addr = old_addr;
-
-        return res;
-
-
     } else
     {
-        return super_recvmsg(sockfd, msg, flags);
+        fprintf(stderr, "Found msg_name\n");
+        struct sockaddr_in *src_addr_in = msg->msg_name;
+
+        if(src_addr_in->sin_family != AF_INET)
+        {
+            fprintf(stderr, "recvmsg: No AF_INET, skipping\n");
+        } else
+        {
+            fprintf(stderr, "Found AF_INET\n");
+            srv_mapping * mapping = srv_find_mapping(src_addr_in);
+            if(!mapping)
+            {
+                fprintf(stderr, "No mapping\n");
+            } else
+            {
+                fprintf(stderr, "Found mapping\n");
+
+                if(mapping->port_to != 0)
+                {
+                    src_addr_in->sin_port = mapping->port_to;
+                }
+
+                if(mapping->addr_to != NULL)
+                {
+                    src_addr_in->sin_addr = *mapping->addr_to;
+                }
+            }
+        }
     }
 
+    ssize_t res = super_recvmsg(sockfd, msg, flags);
+
+    if(msg->msg_name == NULL)
+    {
+        fprintf(stderr, "AFTER: No msg_name, skipping\n");
+        return res;
+    } else
+    {
+        fprintf(stderr, "AFTER: Found msg_name\n");
+        struct sockaddr_in *src_addr_in = msg->msg_name;
+
+        if(src_addr_in->sin_family != AF_INET)
+        {
+            fprintf(stderr, "AFTER: recvmsg: No AF_INET, skipping\n");
+            return res;
+        } else
+        {
+            fprintf(stderr, "AFTER: Found AF_INET\n");
+
+            srv_mapping * mapping = srv_find_mapping_to(src_addr_in);
+            if(!mapping)
+            {
+                fprintf(stderr, "AFTER: No mapping\n");
+                return res;
+            } else
+            {
+                fprintf(stderr, "AFTER: Found mapping\n");
+                if(mapping->port_from != 0)
+                {
+                    fprintf(stderr, "AFTER: Setting port\n");
+                    src_addr_in->sin_port = mapping->port_from;
+                }
+                if(mapping->addr_from != NULL)
+                {
+                    fprintf(stderr, "AFTER: Setting addr\n");
+                    src_addr_in->sin_addr = *mapping->addr_from;
+                }
+                return res;
+            }
+        }
+    }
 }
