@@ -1,0 +1,56 @@
+app-signin {
+  main {
+    background: white;
+  }
+
+  strong {
+    text-decoration: underline;
+  }
+
+  form button {
+    &.firebaseui-idp-password, &.firebaseui-idp-password:hover {
+      background-color: var(--ion-color-primary);
+    }
+  }
+
+  .mdl-textfield--floating-label.is-focused .mdl-textfield__label {
+    color: var(--ion-color-medium);
+  }
+
+  .firebaseui-textfield.mdl-textfield .firebaseui-label::after {
+    background-color: var(--ion-color-primary);
+  }
+
+  .mdl-button--primary.mdl-button--primary {
+    color: var(--ion-color-primary);
+
+    &:hover, &:active {
+      background: transparent;
+    }
+  }
+
+  .mdl-button--raised.mdl-button--colored {
+    background: var(--ion-color-primary);
+
+    &:hover, &:active {
+      background: var(--ion-color-primary);
+    }
+  }
+
+  p.firebaseui-tos {
+    color: var(--ion-color-medium);
+  }
+
+  a.firebaseui-link {
+    text-decoration: none;
+    color: var(--ion-color-primary);
+  }
+
+  div.mdl-shadow--2dp {
+    box-shadow: none;
+
+    div.firebaseui-card-header {
+      display: none;
+    }
+  }
+}

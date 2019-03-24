@@ -1,10 +1,10 @@
-import {Component, Prop} from '@stencil/core';
+import {Component, Element, Prop} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
 import {ErrorService} from './services/error/error.service';
-
-import {AuthService, LoginModalComponentProps} from './services/auth/auth.service';
+import {AuthService} from './services/auth/auth.service';
+import {NavDirection, NavParams, NavService} from './services/nav/nav.service';
 
 @Component({
     tag: 'app-root',
@@ -12,19 +12,23 @@ import {AuthService, LoginModalComponentProps} from './services/auth/auth.servic
 })
 export class AppRoot {
 
-    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
+    @Element() el: HTMLElement;
+
     @Prop({connect: 'ion-menu-controller'}) lazyMenuController!: HTMLIonMenuControllerElement;
     @Prop({connect: 'ion-toast-controller'}) toastController: HTMLIonToastControllerElement;
 
     private errorSubscription: Subscription;
     private errorService: ErrorService;
 
-    private authSubscription: Subscription;
     private authService: AuthService;
+
+    private navSubscription: Subscription;
+    private navService: NavService;
 
     constructor() {
         this.errorService = ErrorService.getInstance();
         this.authService = AuthService.getInstance();
+        this.navService = NavService.getInstance();
     }
 
     async componentWillLoad() {
@@ -36,12 +40,8 @@ export class AppRoot {
             await this.toastError(error);
         });
 
-        this.authSubscription = this.authService.watchModal().subscribe(async (componentProps: LoginModalComponentProps) => {
-            if (!componentProps) {
-                return;
-            }
-
-            await this.signIn(componentProps);
+        this.navSubscription = this.navService.watch().subscribe(async (params: NavParams) => {
+            await this.navigate(params);
         });
     }
 
@@ -50,8 +50,8 @@ export class AppRoot {
             this.errorSubscription.unsubscribe();
         }
 
-        if (this.authSubscription) {
-            this.authSubscription.unsubscribe();
+        if (this.navSubscription) {
+            this.navSubscription.unsubscribe();
         }
     }
 
@@ -68,19 +68,21 @@ export class AppRoot {
         await popover.present();
     }
 
-    private async signIn(componentProps: LoginModalComponentProps) {
-        const modal: HTMLIonModalElement = await this.modalController.create({
-            component: 'app-login',
-            componentProps: {
-                type: componentProps.type,
-                context: componentProps.context
-            }
-        });
+    private async navigate(params: NavParams) {
+        if (!params) {
+            return;
+        }
 
-        await modal.present();
+        const router: HTMLIonRouterElement = this.el.querySelector('ion-router');
 
-        if (componentProps.onPresent) {
-            componentProps.onPresent();
+        if (!router) {
+            return;
+        }
+
+        if (params.direction === NavDirection.ROOT) {
+            window.location.assign(params.url);
+        } else {
+            await router.push(params.url);
         }
     }
 
@@ -89,7 +91,11 @@ export class AppRoot {
             <ion-app>
                 <ion-router useHash={false}>
                     <ion-route url="/" component="app-home"/>
+
                     <ion-route url="/editor" component="app-editor"/>
+
+                    <ion-route url="/signin" component="app-signin"/>
+                    <ion-route url="/signin/:redirect" component="app-signin"/>
 
                     <ion-route url="/about" component="app-about"/>
                     <ion-route url="/opensource" component="app-opensource"/>

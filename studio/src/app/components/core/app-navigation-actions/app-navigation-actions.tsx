@@ -4,7 +4,10 @@ import {Subscription} from 'rxjs';
 
 import {User} from '../../../models/user';
 
-import {AuthService, LoginModalType} from '../../../services/auth/auth.service';
+import {Utils} from '../../../utils/utils';
+
+import {AuthService} from '../../../services/auth/auth.service';
+import {NavDirection, NavService} from '../../../services/nav/nav.service';
 
 @Component({
     tag: 'app-navigation-actions',
@@ -15,11 +18,14 @@ export class AppNavigationActions {
 
     @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
+    @Prop() signIn: boolean = true;
     @Prop() presentation: boolean = false;
     @Prop() publish: boolean = false;
 
     private authService: AuthService;
     private subscription: Subscription;
+
+    private navService: NavService;
 
     @State()
     private user: User;
@@ -28,6 +34,7 @@ export class AppNavigationActions {
 
     constructor() {
         this.authService = AuthService.getInstance();
+        this.navService = NavService.getInstance();
     }
 
     componentWillLoad() {
@@ -52,9 +59,10 @@ export class AppNavigationActions {
         await popover.present();
     }
 
-    private async signIn() {
-        this.authService.openSignInModal({
-            type: LoginModalType.SIGNIN
+    private async navigateSignIn() {
+        this.navService.navigate({
+            url: '/signin',
+            direction: NavDirection.FORWARD
         });
     }
 
@@ -68,17 +76,17 @@ export class AppNavigationActions {
     }
 
     private renderSignIn() {
-        if (this.user) {
+        if (Utils.isLoggedIn(this.user) || !this.signIn) {
             return undefined;
         } else if (this.presentation || this.publish) {
-            return <a padding-start padding-end class="signin" onClick={() => this.signIn()}>
+            return <a padding-start padding-end class="signin" onClick={() => this.navigateSignIn()}>
                 <ion-label>Sign in</ion-label>
             </a>;
         }
     }
 
     private renderLoggedIn() {
-        if (this.user) {
+        if (Utils.isLoggedIn(this.user)) {
             return <a padding-end onClick={(e: UIEvent) => this.openMenu(e)}>
                 <app-avatar src={this.user.photo_url}></app-avatar>
             </a>;
@@ -90,7 +98,7 @@ export class AppNavigationActions {
     private renderPresentationButton() {
         if (this.presentation) {
             return <ion-button class="presentation" shape="round" href="/editor" routerDirection="forward" padding-end>
-                <ion-label text-uppercase>Write a presentation</ion-label>
+                <ion-label class="ion-text-uppercase">Write a presentation</ion-label>
             </ion-button>;
         } else {
             return null;
@@ -100,7 +108,7 @@ export class AppNavigationActions {
     private renderPublishButton() {
         if (this.publish) {
             return <ion-button class="publish" shape="round" onClick={() => this.actionPublish.emit()} padding-end>
-                <ion-label text-uppercase>Ready to publish?</ion-label>
+                <ion-label class="ion-text-uppercase">Ready to publish?</ion-label>
             </ion-button>;
         } else {
             return null;

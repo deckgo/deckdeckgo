@@ -11,6 +11,10 @@ ion-split-pane {
               }
             }
           }
+
+          ion-button.new {
+            --color: var(--ion-color-primary);
+          }
         }
       }
     }

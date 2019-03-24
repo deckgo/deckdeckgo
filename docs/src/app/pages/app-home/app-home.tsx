@@ -42,7 +42,7 @@ export class AppHome {
             </ul>
           </section>
 
-          <section class="cta" text-center padding>
+          <section class="cta ion-text-center ion-padding">
             <div class="cta__primary">
               <h2>Get started now 🔥</h2>
               <deckgo-highlight-code padding>

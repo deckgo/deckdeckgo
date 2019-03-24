@@ -1,8 +1,13 @@
 import {Component, State} from '@stencil/core';
-import {AuthService, LoginModalType} from '../../../services/auth/auth.service';
+
 import {Subscription} from 'rxjs';
+
 import {User} from '../../../models/user';
 
+import {Utils} from '../../../utils/utils';
+
+import {AuthService} from '../../../services/auth/auth.service';
+import {NavDirection, NavService} from '../../../services/nav/nav.service';
 
 @Component({
     tag: 'app-menu-user',
@@ -14,11 +19,14 @@ export class AppMenuUser {
     private authService: AuthService;
     private subscription: Subscription;
 
+    private navService: NavService;
+
     @State()
     private user: User;
 
     constructor() {
         this.authService = AuthService.getInstance();
+        this.navService = NavService.getInstance();
     }
 
     componentWillLoad() {
@@ -34,13 +42,19 @@ export class AppMenuUser {
     }
 
     private async signIn() {
-        this.authService.openSignInModal({
-            type: LoginModalType.SIGNIN
+        this.navService.navigate({
+            url: '/signin',
+            direction: NavDirection.FORWARD
         });
     }
 
     private async signOut() {
-        await this.authService.logout();
+        await this.authService.signOut();
+
+        this.navService.navigate({
+            url: '/',
+            direction: NavDirection.ROOT
+        });
     }
 
     render() {
@@ -50,7 +64,7 @@ export class AppMenuUser {
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
                 <ion-button size="small" slot="end" shape="round" margin-end href="/editor"
-                            routerDirection="forward">
+                            routerDirection="forward" class="new">
                     <ion-icon name="book" slot="start"></ion-icon>
                     <ion-label>New</ion-label>
                 </ion-button>
@@ -64,7 +78,7 @@ export class AppMenuUser {
     }
 
     private renderUser() {
-        if (this.user) {
+        if (Utils.isLoggedIn(this.user)) {
             return <ion-item class="user">
                 <app-avatar slot="start" src={this.user.photo_url}></app-avatar>
                 <ion-label>{this.user.name}</ion-label>
@@ -75,7 +89,7 @@ export class AppMenuUser {
     }
 
     private renderPresentations() {
-        if (this.user) {
+        if (Utils.isLoggedIn(this.user)) {
             return [
                 <ion-item href="/editor" routerDirection="forward">
                     <ion-icon name="book" slot="start"></ion-icon>
@@ -95,7 +109,7 @@ export class AppMenuUser {
     }
 
     private renderSignOut() {
-        if (this.user) {
+        if (Utils.isLoggedIn(this.user)) {
             return <ion-item button class="signout" onClick={() => this.signOut()}>
                 <ion-icon name="log-out" slot="start"></ion-icon>
                 <ion-label>Sign out</ion-label>

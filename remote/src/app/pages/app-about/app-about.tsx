@@ -10,7 +10,7 @@ export class AppAbout {
         return [
             <ion-header>
                 <ion-toolbar color="primary">
-                    <ion-title text-uppercase>DeckDeckGo</ion-title>
+                    <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
                 </ion-toolbar>
             </ion-header>,
 
@@ -29,7 +29,7 @@ export class AppAbout {
 
                 <p>DeckDeckGo is <strong>open source</strong> and its source code could be found on <a href="https://github.com/deckgo/deckdeckgo">Github <ion-icon name="logo-github"></ion-icon></a></p>
 
-                <div padding margin text-center class="social-links">
+                <div class="social-links ion-padding ion-margin ion-text-center">
                     <a href="https://deckdeckgo.com">
                         <ion-icon name="globe"></ion-icon>
                     </a>

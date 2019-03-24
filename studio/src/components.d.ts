@@ -14,9 +14,6 @@ import 'deckdeckgo-inline-editor';
 import {
   EventEmitter,
 } from '@stencil/core';
-import {
-  LoginModalType,
-} from './app/services/auth/auth.service';
 
 
 export namespace Components {
@@ -43,11 +40,13 @@ export namespace Components {
   interface AppNavigationActions {
     'presentation': boolean;
     'publish': boolean;
+    'signIn': boolean;
   }
   interface AppNavigationActionsAttributes extends StencilHTMLAttributes {
     'onActionPublish'?: (event: CustomEvent<void>) => void;
     'presentation'?: boolean;
     'publish'?: boolean;
+    'signIn'?: boolean;
   }
 
   interface AppNavigation {
@@ -88,15 +87,6 @@ export namespace Components {
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
-  interface AppLogin {
-    'context': string;
-    'type': LoginModalType;
-  }
-  interface AppLoginAttributes extends StencilHTMLAttributes {
-    'context'?: string;
-    'type'?: LoginModalType;
-  }
-
   interface AppPublish {}
   interface AppPublishAttributes extends StencilHTMLAttributes {}
 
@@ -128,6 +118,13 @@ export namespace Components {
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
+  interface AppSignin {
+    'redirect': string;
+  }
+  interface AppSigninAttributes extends StencilHTMLAttributes {
+    'redirect'?: string;
+  }
+
   interface AppUserMenu {}
   interface AppUserMenuAttributes extends StencilHTMLAttributes {}
 
@@ -158,7 +155,6 @@ declare global {
     'AppEditorToolbar': Components.AppEditorToolbar;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
-    'AppLogin': Components.AppLogin;
     'AppPublish': Components.AppPublish;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
@@ -168,6 +164,7 @@ declare global {
     'AppTerms': Components.AppTerms;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
+    'AppSignin': Components.AppSignin;
     'AppUserMenu': Components.AppUserMenu;
     'AppDeckOrSlide': Components.AppDeckOrSlide;
     'AppSlideType': Components.AppSlideType;
@@ -186,7 +183,6 @@ declare global {
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
-    'app-login': Components.AppLoginAttributes;
     'app-publish': Components.AppPublishAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
@@ -196,6 +192,7 @@ declare global {
     'app-terms': Components.AppTermsAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
+    'app-signin': Components.AppSigninAttributes;
     'app-user-menu': Components.AppUserMenuAttributes;
     'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
@@ -269,12 +266,6 @@ declare global {
     new (): HTMLAppPopularElement;
   };
 
-  interface HTMLAppLoginElement extends Components.AppLogin, HTMLStencilElement {}
-  var HTMLAppLoginElement: {
-    prototype: HTMLAppLoginElement;
-    new (): HTMLAppLoginElement;
-  };
-
   interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {}
   var HTMLAppPublishElement: {
     prototype: HTMLAppPublishElement;
@@ -329,6 +320,12 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
+  interface HTMLAppSigninElement extends Components.AppSignin, HTMLStencilElement {}
+  var HTMLAppSigninElement: {
+    prototype: HTMLAppSigninElement;
+    new (): HTMLAppSigninElement;
+  };
+
   interface HTMLAppUserMenuElement extends Components.AppUserMenu, HTMLStencilElement {}
   var HTMLAppUserMenuElement: {
     prototype: HTMLAppUserMenuElement;
@@ -365,7 +362,6 @@ declare global {
     'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
-    'app-login': HTMLAppLoginElement
     'app-publish': HTMLAppPublishElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
@@ -375,6 +371,7 @@ declare global {
     'app-terms': HTMLAppTermsElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
+    'app-signin': HTMLAppSigninElement
     'app-user-menu': HTMLAppUserMenuElement
     'app-deck-or-slide': HTMLAppDeckOrSlideElement
     'app-slide-type': HTMLAppSlideTypeElement
@@ -393,7 +390,6 @@ declare global {
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
-    'app-login': HTMLAppLoginElement;
     'app-publish': HTMLAppPublishElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
@@ -403,6 +399,7 @@ declare global {
     'app-terms': HTMLAppTermsElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
+    'app-signin': HTMLAppSigninElement;
     'app-user-menu': HTMLAppUserMenuElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-slide-type': HTMLAppSlideTypeElement;

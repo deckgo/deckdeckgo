@@ -2,7 +2,7 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import {User as FirebaseUser} from 'firebase';
 
-import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
+import {Observable, ReplaySubject} from 'rxjs';
 
 import {get, set, del} from 'idb-keyval';
 
@@ -10,27 +10,19 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 
 import {User} from '../../models/user';
 
-export enum LoginModalType {
-    SIGNIN,
-    SIGNIN_WITH_ANONYMOUS,
-    SIGNIN_MERGE_ANONYMOUS
-}
-
-export interface LoginModalComponentProps {
-    type: LoginModalType,
-    context?: string,
-    onPresent?: Function
-}
+import {ErrorService} from '../error/error.service';
 
 export class AuthService {
 
     private userSubject: ReplaySubject<User> = new ReplaySubject(1);
-    private modalSubject: BehaviorSubject<LoginModalComponentProps> = new BehaviorSubject(null);
+
+    private errorService: ErrorService;
 
     private static instance: AuthService;
 
     private constructor() {
         // Private constructor, singleton
+        this.errorService = ErrorService.getInstance();
     }
 
     static getInstance() {
@@ -64,6 +56,16 @@ export class AuthService {
                         photo_url: authUser.photoURL
                     };
 
+                    // Update anonymous user
+                    // Reference: https://github.com/firebase/firebaseui-web/issues/449
+                    if (!user.name && authUser.providerData && authUser.providerData.length > 0 && authUser.providerData[0].displayName) {
+                        user.name = authUser.providerData[0].displayName;
+                    }
+
+                    if (!user.photo_url && authUser.providerData && authUser.providerData.length > 0 && authUser.providerData[0].photoURL) {
+                        user.photo_url = authUser.providerData[0].photoURL;
+                    }
+
                     this.userSubject.next(user);
                     await set('deckdeckgo_user', user);
                 }
@@ -73,20 +75,25 @@ export class AuthService {
         });
     }
 
-    async logout() {
+    async signOut() {
         await del('deckdeckgo_user');
         await firebase.auth().signOut();
     }
 
+    signInAnonymous(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            try {
+                await firebase.auth().signInAnonymously();
+
+                resolve();
+            } catch (err) {
+                this.errorService.error(err.message);
+                resolve(err);
+            }
+        });
+    }
+
     watch(): Observable<User> {
         return this.userSubject.asObservable();
-    }
-
-    watchModal(): Observable<LoginModalComponentProps> {
-        return this.modalSubject.asObservable();
-    }
-
-    openSignInModal(componentProps: LoginModalComponentProps) {
-        this.modalSubject.next(componentProps);
     }
 }

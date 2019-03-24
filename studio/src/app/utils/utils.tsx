@@ -1,3 +1,5 @@
+import {User} from '../models/user';
+
 export class Utils {
 
     static injectJS(id: string, src: string): Promise<string> {
@@ -50,6 +52,10 @@ export class Utils {
             link.addEventListener('abort', () => reject('CSS loading aborted.'));
             document.head.appendChild(link);
         });
+    }
+
+    static isLoggedIn(user: User): boolean {
+        return user && !user.anonymous;
     }
 }
 

@@ -39,7 +39,7 @@ export class AppRemoteSettings {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title text-uppercase>DeckDeckGo</ion-title>
+                    <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content padding>

@@ -122,7 +122,7 @@ export class AppTimer {
         return [
             <ion-header>
                 <ion-toolbar color="primary">
-                    <ion-title text-uppercase>DeckDeckGo</ion-title>
+                    <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
                 </ion-toolbar>
             </ion-header>,
 

@@ -9,8 +9,9 @@ import {EditorUtils} from '../../utils/editor-utils';
 import {User} from '../../models/user';
 
 import {EditorHelper} from '../../helpers/editor/editor.helper';
-import {AuthService, LoginModalType} from '../../services/auth/auth.service';
+import {AuthService} from '../../services/auth/auth.service';
 import {GuestService} from '../../services/guest/guest.service';
+import {NavDirection, NavService} from '../../services/nav/nav.service';
 
 @Component({
     tag: 'app-editor',
@@ -35,13 +36,12 @@ export class AppEditor {
 
     private authService: AuthService;
     private guestService: GuestService;
-
-    @State()
-    private loggedIn: boolean = false;
+    private navService: NavService;
 
     constructor() {
         this.authService = AuthService.getInstance();
         this.guestService = GuestService.getInstance();
+        this.navService = NavService.getInstance();
     }
 
     async componentWillLoad() {
@@ -49,17 +49,12 @@ export class AppEditor {
 
         this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
             if(!user) {
-                await this.signInAnonymous();
-            } else {
-                await this.initSlide();
-                this.loggedIn = true;
+                await this.authService.signInAnonymous();
             }
+
+            await this.initSlide();
         });
     }
-
-    private setNotLoggedIn = () => {
-        this.loggedIn = false;
-    };
 
     async componentDidLoad() {
         await this.initSlideSize();
@@ -111,8 +106,6 @@ export class AppEditor {
                 resolve();
                 return;
             }
-
-
 
             const slide: any = await EditorUtils.createSlide(SlideTemplate.TITLE);
 
@@ -399,34 +392,15 @@ export class AppEditor {
     }
 
     private async signIn() {
-        await this.authService.openSignInModal({
-            type: LoginModalType.SIGNIN_MERGE_ANONYMOUS,
-            context: '/editor'
-        });
-    }
-
-    private async signInAnonymous() {
-        await this.authService.openSignInModal({
-            type: LoginModalType.SIGNIN_WITH_ANONYMOUS,
-            context: '/editor',
-            onPresent: this.setNotLoggedIn
+        this.navService.navigate({
+            url: '/signin/editor',
+            direction: NavDirection.FORWARD
         });
     }
 
     render() {
-        if (!this.loggedIn) {
-            return [
-                <app-navigation></app-navigation>,
-                <ion-content padding>
-                    <main>
-                        {this.renderSignInMsg()}
-                    </main>
-                </ion-content>
-            ];
-        }
-
         return [
-            <app-navigation publish={this.loggedIn}></app-navigation>,
+            <app-navigation publish={true}></app-navigation>,
             <ion-content padding>
                 <main class={this.displaying ? 'idle' : undefined}>
                     <deckgo-deck embedded={true}
@@ -469,11 +443,5 @@ export class AppEditor {
                 <ion-icon ios="ios-link" md="ios-link" slot="link"></ion-icon>
             </deckgo-inline-editor>
         ];
-    }
-
-    private renderSignInMsg() {
-        if (!this.loggedIn) {
-            return <ion-button shape="round" class="get-started" onClick={() => this.signInAnonymous()}>Write a presentation</ion-button>
-        }
     }
 }

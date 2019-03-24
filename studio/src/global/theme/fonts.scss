@@ -54,9 +54,10 @@ ol {
 p a,
 ul a,
 ol a,
-td a {
-  transition: border 0.3s;
+td a,
+ion-anchor {
   text-decoration: none;
+  transition: border 0.3s;
   border-bottom: 1px solid transparent;
   font-weight: 500;
 }
@@ -64,7 +65,8 @@ td a {
 p a:hover,
 ul a:hover,
 ol a:hover,
-td a:hover {
+td a:hover,
+ion-anchor:hover {
   border-bottom-color: var(--ion-color-primary);
 }
 

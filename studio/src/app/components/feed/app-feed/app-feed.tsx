@@ -36,7 +36,7 @@ export class AppFeed {
 
                 <ion-card-header margin-start margin-end>
                     <ion-card-title>Card Title</ion-card-title>
-                    <ion-card-subtitle text-uppercase>javascript typescript webcomponents</ion-card-subtitle>
+                    <ion-card-subtitle class="ion-text-uppercase">javascript typescript webcomponents</ion-card-subtitle>
                 </ion-card-header>
 
                 <ion-card-content class="first-card" margin-start margin-end>
@@ -56,7 +56,7 @@ export class AppFeed {
 
                         <ion-card-header>
                             <ion-card-title>Card Title</ion-card-title>
-                            <ion-card-subtitle text-uppercase>javascript typescript webcomponents</ion-card-subtitle>
+                            <ion-card-subtitle class="ion-text-uppercase">javascript typescript webcomponents</ion-card-subtitle>
                         </ion-card-header>
 
                         <p padding-start padding-end>Keep close to Nature's heart... and break clear away, once in
@@ -79,7 +79,7 @@ export class AppFeed {
 
                         <ion-card-header>
                             <ion-card-title>Card Title</ion-card-title>
-                            <ion-card-subtitle text-uppercase>javascript typescript webcomponents</ion-card-subtitle>
+                            <ion-card-subtitle class="ion-text-uppercase">javascript typescript webcomponents</ion-card-subtitle>
                         </ion-card-header>
 
                         <p padding-start padding-end>Keep close to Nature's heart... and break clear away, once in
@@ -102,7 +102,7 @@ export class AppFeed {
 
                         <ion-card-header>
                             <ion-card-title>Card Title</ion-card-title>
-                            <ion-card-subtitle text-uppercase>javascript typescript webcomponents</ion-card-subtitle>
+                            <ion-card-subtitle class="ion-text-uppercase">javascript typescript webcomponents</ion-card-subtitle>
                         </ion-card-header>
 
                         <p padding-start padding-end>Keep close to Nature's heart... and break clear away, once in
@@ -125,7 +125,7 @@ export class AppFeed {
 
                         <ion-card-header>
                             <ion-card-title>Card Title</ion-card-title>
-                            <ion-card-subtitle text-uppercase>javascript typescript webcomponents</ion-card-subtitle>
+                            <ion-card-subtitle class="ion-text-uppercase">javascript typescript webcomponents</ion-card-subtitle>
                         </ion-card-header>
 
                         <p padding-start padding-end>Keep close to Nature's heart... and break clear away, once in
@@ -148,7 +148,7 @@ export class AppFeed {
 
                         <ion-card-header>
                             <ion-card-title>Card Title</ion-card-title>
-                            <ion-card-subtitle text-uppercase>javascript typescript webcomponents</ion-card-subtitle>
+                            <ion-card-subtitle class="ion-text-uppercase">javascript typescript webcomponents</ion-card-subtitle>
                         </ion-card-header>
 
                         <p padding-start padding-end>Keep close to Nature's heart... and break clear away, once in
@@ -171,7 +171,7 @@ export class AppFeed {
 
                         <ion-card-header>
                             <ion-card-title>Card Title</ion-card-title>
-                            <ion-card-subtitle text-uppercase>javascript typescript webcomponents</ion-card-subtitle>
+                            <ion-card-subtitle class="ion-text-uppercase">javascript typescript webcomponents</ion-card-subtitle>
                         </ion-card-header>
 
                         <p padding-start padding-end>Keep close to Nature's heart... and break clear away, once in
@@ -194,7 +194,7 @@ export class AppFeed {
 
                         <ion-card-header>
                             <ion-card-title>Card Title</ion-card-title>
-                            <ion-card-subtitle text-uppercase>javascript typescript webcomponents</ion-card-subtitle>
+                            <ion-card-subtitle class="ion-text-uppercase">javascript typescript webcomponents</ion-card-subtitle>
                         </ion-card-header>
 
                         <p padding-start padding-end>Keep close to Nature's heart... and break clear away, once in
@@ -217,7 +217,7 @@ export class AppFeed {
 
                         <ion-card-header>
                             <ion-card-title>Card Title</ion-card-title>
-                            <ion-card-subtitle text-uppercase>javascript typescript webcomponents</ion-card-subtitle>
+                            <ion-card-subtitle class="ion-text-uppercase">javascript typescript webcomponents</ion-card-subtitle>
                         </ion-card-header>
 
                         <p padding-start padding-end>Keep close to Nature's heart... and break clear away, once in
