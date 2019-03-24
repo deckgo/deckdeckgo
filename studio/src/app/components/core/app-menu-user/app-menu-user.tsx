@@ -50,6 +50,11 @@ export class AppMenuUser {
 
     private async signOut() {
         await this.authService.logout();
+
+        this.navService.navigate({
+            url: '/',
+            direction: NavDirection.ROOT
+        });
     }
 
     render() {
