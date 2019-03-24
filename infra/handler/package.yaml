@@ -38,6 +38,9 @@ executables:
         dependencies:
             - deckdeckgo-handler
             - warp
+            - http-client
+            - http-client-tls
+            - lens
 
     test:
         main: app/Test.hs

@@ -9,6 +9,10 @@
 #include <netinet/in.h>
 
 // TODO: check atoi returns
+// TODO: Implement -DSILENT and -DDEBUG
+// TODO: Use proper return codes
+// TODO: don't fail if no SRV_MAP
+// TODO: Clean up logs
 
 int (*super_connect)(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
@@ -427,7 +431,6 @@ ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
     if(src_addr_in->sin_family != AF_INET)
     {
         fprintf(stderr, "AFTER: recvfrom: No AF_INET, skipping\n");
-        return res;
     } else
     {
         fprintf(stderr, "AFTER: Found AF_INET\n");
@@ -436,7 +439,6 @@ ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
         if(!mapping)
         {
             fprintf(stderr, "AFTER: No mapping\n");
-            return res;
         } else
         {
             fprintf(stderr, "AFTER: Found mapping\n");
@@ -450,9 +452,10 @@ ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
                 fprintf(stderr, "AFTER: Setting addr\n");
                 src_addr_in->sin_addr = *mapping->addr_from;
             }
-            return res;
         }
     }
+
+    return res;
 }
 
 ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
@@ -499,7 +502,6 @@ ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
     if(msg->msg_name == NULL)
     {
         fprintf(stderr, "AFTER: No msg_name, skipping\n");
-        return res;
     } else
     {
         fprintf(stderr, "AFTER: Found msg_name\n");
@@ -508,7 +510,6 @@ ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
         if(src_addr_in->sin_family != AF_INET)
         {
             fprintf(stderr, "AFTER: recvmsg: No AF_INET, skipping\n");
-            return res;
         } else
         {
             fprintf(stderr, "AFTER: Found AF_INET\n");
@@ -517,7 +518,6 @@ ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
             if(!mapping)
             {
                 fprintf(stderr, "AFTER: No mapping\n");
-                return res;
             } else
             {
                 fprintf(stderr, "AFTER: Found mapping\n");
@@ -531,8 +531,9 @@ ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
                     fprintf(stderr, "AFTER: Setting addr\n");
                     src_addr_in->sin_addr = *mapping->addr_from;
                 }
-                return res;
             }
         }
     }
+
+    return res;
 }

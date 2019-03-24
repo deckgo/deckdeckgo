@@ -117,11 +117,10 @@ let tests =
   test_redirectHostsDNS =
     ''
       ${runPort 1234}
+
       dnsmasq \
         --address=/www.example.com/0.0.0.42 \
-        --address=/www.example.com/:: \
-        -p 8053 --no-ping --log-facility=- &
-      echo dnsmasq is $!
+        -p 8053 &
 
       while ! nc -z 127.0.0.1 8053; do
         echo waiting for dnsmasq
@@ -131,7 +130,6 @@ let tests =
       SRV_MAP="0.0.0.42:80:127.0.0.1:1234 127.0.0.1:53:127.0.0.1:8053" \
         LD_PRELOAD="${surveyor}/lib/surveyor.so" \
         nslookup www.example.com | grep -q 'Address: 0.0.0.42'
-
 
       SRV_MAP="0.0.0.42:80:127.0.0.1:1234 127.0.0.1:53:127.0.0.1:8053" \
         LD_PRELOAD="${surveyor}/lib/surveyor.so" \
