@@ -385,7 +385,11 @@ ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
     }
 }
 
-// TODO: this is still wrong
+
+// TODO: warn about limitations: since all mappings are not 1 to 1 it's not
+// always possible to find a mapping "to", which is needed for recvfrom and
+// recvmsg.
+
 ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
                  struct sockaddr *src_addr, socklen_t *addrlen)
 {
