@@ -61,7 +61,7 @@ export class AppNavigationActions {
 
     private async navigateSignIn() {
         this.navService.navigate({
-            url: '/login',
+            url: '/signin',
             direction: NavDirection.FORWARD
         });
     }

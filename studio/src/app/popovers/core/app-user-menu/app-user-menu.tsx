@@ -20,7 +20,7 @@ export class AppUserMenu {
     }
 
     private async signOut() {
-        await this.authService.logout();
+        await this.authService.signOut();
         await this.closePopover();
 
         this.navService.navigate({

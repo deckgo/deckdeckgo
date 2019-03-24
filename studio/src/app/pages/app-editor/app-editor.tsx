@@ -393,7 +393,7 @@ export class AppEditor {
 
     private async signIn() {
         this.navService.navigate({
-            url: '/login/editor',
+            url: '/signin/editor',
             direction: NavDirection.FORWARD
         });
     }

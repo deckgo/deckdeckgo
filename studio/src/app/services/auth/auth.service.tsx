@@ -75,7 +75,7 @@ export class AuthService {
         });
     }
 
-    async logout() {
+    async signOut() {
         await del('deckdeckgo_user');
         await firebase.auth().signOut();
     }

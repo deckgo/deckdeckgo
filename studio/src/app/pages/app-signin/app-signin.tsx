@@ -11,10 +11,10 @@ import {EnvironmentConfigService} from '../../services/environment/environment-c
 import {NavDirection, NavService} from '../../services/nav/nav.service';
 
 @Component({
-    tag: 'app-login',
-    styleUrl: 'app-login.scss'
+    tag: 'app-signin',
+    styleUrl: 'app-signin.scss'
 })
-export class AppLogin {
+export class AppSignIn {
 
     @Element() el: HTMLElement;
 

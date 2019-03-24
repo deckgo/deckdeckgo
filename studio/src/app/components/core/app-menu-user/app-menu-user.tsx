@@ -43,13 +43,13 @@ export class AppMenuUser {
 
     private async signIn() {
         this.navService.navigate({
-            url: '/login',
+            url: '/signin',
             direction: NavDirection.FORWARD
         });
     }
 
     private async signOut() {
-        await this.authService.logout();
+        await this.authService.signOut();
 
         this.navService.navigate({
             url: '/',

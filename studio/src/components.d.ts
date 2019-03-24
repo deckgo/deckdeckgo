@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -118,10 +118,10 @@ export namespace Components {
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
-  interface AppLogin {
+  interface AppSignin {
     'redirect': string;
   }
-  interface AppLoginAttributes extends StencilHTMLAttributes {
+  interface AppSigninAttributes extends StencilHTMLAttributes {
     'redirect'?: string;
   }
 
@@ -164,7 +164,7 @@ declare global {
     'AppTerms': Components.AppTerms;
     'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
-    'AppLogin': Components.AppLogin;
+    'AppSignin': Components.AppSignin;
     'AppUserMenu': Components.AppUserMenu;
     'AppDeckOrSlide': Components.AppDeckOrSlide;
     'AppSlideType': Components.AppSlideType;
@@ -192,7 +192,7 @@ declare global {
     'app-terms': Components.AppTermsAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
-    'app-login': Components.AppLoginAttributes;
+    'app-signin': Components.AppSigninAttributes;
     'app-user-menu': Components.AppUserMenuAttributes;
     'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
@@ -320,10 +320,10 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
-  interface HTMLAppLoginElement extends Components.AppLogin, HTMLStencilElement {}
-  var HTMLAppLoginElement: {
-    prototype: HTMLAppLoginElement;
-    new (): HTMLAppLoginElement;
+  interface HTMLAppSigninElement extends Components.AppSignin, HTMLStencilElement {}
+  var HTMLAppSigninElement: {
+    prototype: HTMLAppSigninElement;
+    new (): HTMLAppSigninElement;
   };
 
   interface HTMLAppUserMenuElement extends Components.AppUserMenu, HTMLStencilElement {}
@@ -371,7 +371,7 @@ declare global {
     'app-terms': HTMLAppTermsElement
     'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
-    'app-login': HTMLAppLoginElement
+    'app-signin': HTMLAppSigninElement
     'app-user-menu': HTMLAppUserMenuElement
     'app-deck-or-slide': HTMLAppDeckOrSlideElement
     'app-slide-type': HTMLAppSlideTypeElement
@@ -399,7 +399,7 @@ declare global {
     'app-terms': HTMLAppTermsElement;
     'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
-    'app-login': HTMLAppLoginElement;
+    'app-signin': HTMLAppSigninElement;
     'app-user-menu': HTMLAppUserMenuElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-slide-type': HTMLAppSlideTypeElement;
