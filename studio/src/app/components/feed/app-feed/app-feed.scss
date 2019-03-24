@@ -1,32 +1,7 @@
 app-feed {
+  @import "../../../../global/theme/feed/feed-card";
+
   ion-card[class*="sc-ion-card"] {
-    --background: white;
-
-    ion-card-content:not(.first-card) {
-      display: flex;
-      align-items: stretch;
-      flex: 1 1 auto;
-      width: 100%;
-
-      div {
-        &.preview {
-          width: 15rem;
-          min-width: 8rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-      }
-    }
-
-    @media screen and (max-width: 720px) {
-      ion-card-content {
-        ion-card-subtitle {
-          display: none;
-        }
-      }
-    }
-
     div.deck-container {
       width: 100%;
       height: 250px;

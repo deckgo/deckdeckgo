@@ -1,4 +1,7 @@
 import {Component, Element, Listen, State} from '@stencil/core';
+import {User} from '../../../models/user';
+import {take} from 'rxjs/operators';
+import {AuthService} from '../../../services/auth/auth.service';
 
 interface InputTargetEvent extends EventTarget {
     value: string;
@@ -18,12 +21,25 @@ export class AppPublish {
     @State()
     private tagInput: string = null;
 
+    private authService: AuthService;
+
+    @State()
+    private user: User;
+
+    constructor() {
+        this.authService = AuthService.getInstance();
+    }
+
     async componentDidLoad() {
         history.pushState({modal: true}, null);
+
+        this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
+            this.user = user;
+        });
     }
 
     @Listen('window:popstate')
-    async handleHardwareBackbutton(_e: PopStateEvent) {
+    async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }
 
@@ -78,20 +94,35 @@ export class AppPublish {
                 </ion-toolbar>
             </ion-header>,
             <ion-content padding>
-                <p>Add or change <strong>tags</strong> (up to 5) so readers know what your presentation is about</p>
+                <p>Edit the preview of your presentation and add or change tags (up to 5) to make your presentation more inviting to readers</p>
 
-                <div class="tags">
-                    {this.renderTags()}
-                    {this.renderInputTags()}
-                </div>
+                <ion-card class="ion-no-margin">
+                    <ion-card-content>
+                        <div class="summary">
 
-                <p>Story Preview</p>
+                            <ion-card-header>
+                                <ion-card-title contenteditable class="ion-text-uppercase">Card Title</ion-card-title>
 
-                <div>
-                    Write a preview title
-                    Write a preview subtitle
-                    Include a high-quality image in your story to make it more inviting to readers.
-                </div>
+                                <ion-card-subtitle class="tags ion-text-lowercase">
+                                    {this.renderTags()}
+                                    {this.renderInputTags()}
+                                </ion-card-subtitle>
+                            </ion-card-header>
+
+                            <p padding-start padding-end contenteditable class="content">Keep close to Nature's heart... and break clear away, once in
+                                awhile,
+                                and climb a mountain or spend a week in the woods. Wash your spirit clean.
+                            </p>
+
+                            <p class="author" padding>
+                                <ion-label>{this.renderUser()} | Mars 9</ion-label>
+                            </p>
+                        </div>
+                        <div class="preview">
+                            <img src="./assets/img/deckdeckgo-logo.svg"/>
+                        </div>
+                    </ion-card-content>
+                </ion-card>
             </ion-content>
         ];
     }
@@ -117,6 +148,14 @@ export class AppPublish {
         if (this.tags && this.tags.length < 5) {
             return <input autofocus placeholder="Add a tag..." value={this.tagInput}
                           onInput={($event: UIEvent) => this.handleTagInput($event)}></input>
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderUser() {
+        if (this.user && this.user.name) {
+            return <span>{this.user.name}</span>
         } else {
             return undefined;
         }
