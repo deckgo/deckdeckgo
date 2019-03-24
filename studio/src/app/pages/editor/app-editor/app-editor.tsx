@@ -3,15 +3,15 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {take} from 'rxjs/operators';
 
-import {SlideTemplate} from '../../models/slide-template';
-import {EditorUtils} from '../../utils/editor-utils';
+import {SlideTemplate} from '../../../models/slide-template';
+import {EditorUtils} from '../../../utils/editor-utils';
 
-import {User} from '../../models/user';
+import {User} from '../../../models/user';
 
-import {EditorHelper} from '../../helpers/editor/editor.helper';
-import {AuthService} from '../../services/auth/auth.service';
-import {GuestService} from '../../services/guest/guest.service';
-import {NavDirection, NavService} from '../../services/nav/nav.service';
+import {EditorHelper} from '../../../helpers/editor/editor.helper';
+import {AuthService} from '../../../services/auth/auth.service';
+import {GuestService} from '../../../services/guest/guest.service';
+import {NavDirection, NavService} from '../../../services/nav/nav.service';
 
 @Component({
     tag: 'app-editor',

@@ -112,9 +112,6 @@ export namespace Components {
   interface AppTerms {}
   interface AppTermsAttributes extends StencilHTMLAttributes {}
 
-  interface AppEditor {}
-  interface AppEditorAttributes extends StencilHTMLAttributes {}
-
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
@@ -124,6 +121,9 @@ export namespace Components {
   interface AppSigninAttributes extends StencilHTMLAttributes {
     'redirect'?: string;
   }
+
+  interface AppEditor {}
+  interface AppEditorAttributes extends StencilHTMLAttributes {}
 
   interface AppUserMenu {}
   interface AppUserMenuAttributes extends StencilHTMLAttributes {}
@@ -162,9 +162,9 @@ declare global {
     'AppOpensource': Components.AppOpensource;
     'AppPrivacy': Components.AppPrivacy;
     'AppTerms': Components.AppTerms;
-    'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
     'AppSignin': Components.AppSignin;
+    'AppEditor': Components.AppEditor;
     'AppUserMenu': Components.AppUserMenu;
     'AppDeckOrSlide': Components.AppDeckOrSlide;
     'AppSlideType': Components.AppSlideType;
@@ -190,9 +190,9 @@ declare global {
     'app-opensource': Components.AppOpensourceAttributes;
     'app-privacy': Components.AppPrivacyAttributes;
     'app-terms': Components.AppTermsAttributes;
-    'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-signin': Components.AppSigninAttributes;
+    'app-editor': Components.AppEditorAttributes;
     'app-user-menu': Components.AppUserMenuAttributes;
     'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
@@ -308,12 +308,6 @@ declare global {
     new (): HTMLAppTermsElement;
   };
 
-  interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
-  var HTMLAppEditorElement: {
-    prototype: HTMLAppEditorElement;
-    new (): HTMLAppEditorElement;
-  };
-
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
   var HTMLAppHomeElement: {
     prototype: HTMLAppHomeElement;
@@ -324,6 +318,12 @@ declare global {
   var HTMLAppSigninElement: {
     prototype: HTMLAppSigninElement;
     new (): HTMLAppSigninElement;
+  };
+
+  interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
+  var HTMLAppEditorElement: {
+    prototype: HTMLAppEditorElement;
+    new (): HTMLAppEditorElement;
   };
 
   interface HTMLAppUserMenuElement extends Components.AppUserMenu, HTMLStencilElement {}
@@ -369,9 +369,9 @@ declare global {
     'app-opensource': HTMLAppOpensourceElement
     'app-privacy': HTMLAppPrivacyElement
     'app-terms': HTMLAppTermsElement
-    'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
     'app-signin': HTMLAppSigninElement
+    'app-editor': HTMLAppEditorElement
     'app-user-menu': HTMLAppUserMenuElement
     'app-deck-or-slide': HTMLAppDeckOrSlideElement
     'app-slide-type': HTMLAppSlideTypeElement
@@ -397,9 +397,9 @@ declare global {
     'app-opensource': HTMLAppOpensourceElement;
     'app-privacy': HTMLAppPrivacyElement;
     'app-terms': HTMLAppTermsElement;
-    'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
     'app-signin': HTMLAppSigninElement;
+    'app-editor': HTMLAppEditorElement;
     'app-user-menu': HTMLAppUserMenuElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-slide-type': HTMLAppSlideTypeElement;
