@@ -3,11 +3,12 @@ import {Component, Element, Prop, Watch} from '@stencil/core';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
-import {get, set, del} from 'idb-keyval';
+import {del, get, set} from 'idb-keyval';
 
 import {Utils} from '../../utils/utils';
 
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import {NavDirection, NavService} from '../../services/nav/nav.service';
 
 @Component({
     tag: 'app-login',
@@ -19,6 +20,12 @@ export class AppLogin {
 
     @Prop()
     redirect: string;
+
+    private navService: NavService;
+
+    constructor() {
+        this.navService = NavService.getInstance();
+    }
 
     async componentDidLoad() {
         await this.setupFirebaseUI();
@@ -126,7 +133,11 @@ export class AppLogin {
         await del('deckdeckgo_redirect');
 
         // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
-        window.location.assign(!redirectUrl || redirectUrl.trim() === '' ? '/' : '/' + redirectUrl);
+        this.navService.navigate({
+            url: !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl,
+            direction: NavDirection.ROOT
+        });
+
     }
 
     render() {

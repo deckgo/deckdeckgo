@@ -11,7 +11,7 @@ import {User} from '../../models/user';
 import {EditorHelper} from '../../helpers/editor/editor.helper';
 import {AuthService} from '../../services/auth/auth.service';
 import {GuestService} from '../../services/guest/guest.service';
-import {NavService} from '../../services/nav/nav.service';
+import {NavDirection, NavService} from '../../services/nav/nav.service';
 
 @Component({
     tag: 'app-editor',
@@ -392,7 +392,10 @@ export class AppEditor {
     }
 
     private async signIn() {
-        this.navService.navigate('/login/editor');
+        this.navService.navigate({
+            url: '/login/editor',
+            direction: NavDirection.FORWARD
+        });
     }
 
     render() {

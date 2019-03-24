@@ -7,7 +7,7 @@ import {User} from '../../../models/user';
 import {Utils} from '../../../utils/utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
-import {NavService} from '../../../services/nav/nav.service';
+import {NavDirection, NavService} from '../../../services/nav/nav.service';
 
 @Component({
     tag: 'app-menu-user',
@@ -42,7 +42,10 @@ export class AppMenuUser {
     }
 
     private async signIn() {
-        this.navService.navigate('/login');
+        this.navService.navigate({
+            url: '/login',
+            direction: NavDirection.FORWARD
+        });
     }
 
     private async signOut() {

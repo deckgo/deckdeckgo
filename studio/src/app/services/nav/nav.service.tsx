@@ -1,8 +1,18 @@
 import {Observable, Subject} from 'rxjs';
 
+export enum NavDirection {
+    FORWARD,
+    ROOT
+}
+
+export interface NavParams {
+    url: string;
+    direction: NavDirection
+}
+
 export class NavService {
 
-    private navSubject: Subject<string> = new Subject();
+    private navSubject: Subject<NavParams> = new Subject();
 
     private static instance: NavService;
 
@@ -17,11 +27,11 @@ export class NavService {
         return NavService.instance;
     }
 
-    watch(): Observable<string> {
+    watch(): Observable<NavParams> {
         return this.navSubject.asObservable();
     }
 
-    navigate(url: string) {
-        this.navSubject.next(url);
+    navigate(params: NavParams) {
+        this.navSubject.next(params);
     }
 }

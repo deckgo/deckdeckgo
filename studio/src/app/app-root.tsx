@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs';
 
 import {ErrorService} from './services/error/error.service';
 import {AuthService} from './services/auth/auth.service';
-import {NavService} from './services/nav/nav.service';
+import {NavDirection, NavParams, NavService} from './services/nav/nav.service';
 
 @Component({
     tag: 'app-root',
@@ -40,8 +40,8 @@ export class AppRoot {
             await this.toastError(error);
         });
 
-        this.navSubscription = this.navService.watch().subscribe(async (url: string) => {
-            await this.navigate(url);
+        this.navSubscription = this.navService.watch().subscribe(async (params: NavParams) => {
+            await this.navigate(params);
         });
     }
 
@@ -68,14 +68,22 @@ export class AppRoot {
         await popover.present();
     }
 
-    private async navigate(url: string) {
+    private async navigate(params: NavParams) {
+        if (!params) {
+            return;
+        }
+
         const router: HTMLIonRouterElement = this.el.querySelector('ion-router');
 
         if (!router) {
             return;
         }
 
-        await router.push(url);
+        if (params.direction === NavDirection.ROOT) {
+            window.location.assign(params.url);
+        } else {
+            await router.push(params.url);
+        }
     }
 
     render() {
