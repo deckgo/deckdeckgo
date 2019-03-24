@@ -3,10 +3,11 @@ import {Component, Element, Prop, Watch} from '@stencil/core';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
+import {get, set, del} from 'idb-keyval';
+
 import {Utils} from '../../utils/utils';
 
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import {NavService} from '../../services/nav/nav.service';
 
 @Component({
     tag: 'app-login',
@@ -19,17 +20,22 @@ export class AppLogin {
     @Prop()
     redirect: string;
 
-    private navService: NavService;
-
-    constructor() {
-        this.navService = NavService.getInstance();
-    }
-
     async componentDidLoad() {
         await this.setupFirebaseUI();
     }
 
+    async componentDidUnload() {
+        const ui = firebaseui.auth.AuthUI.getInstance();
+        if (ui) {
+            await ui.delete();
+        }
+    }
+
     @Watch('redirect')
+    async watchRedirect() {
+        await this.saveRedirect();
+    }
+
     async setupFirebaseUI() {
         await Utils.injectJS(
             'firebase-ui-script',
@@ -41,11 +47,6 @@ export class AppLogin {
         );
 
         const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
-        let redirectUrl: string = appUrl;
-
-        if (this.redirect) {
-            redirectUrl += '/' + this.redirect;
-        }
 
         const signInOptions = [];
 
@@ -54,7 +55,7 @@ export class AppLogin {
 
         const uiConfig = {
             signInFlow: 'redirect',
-            signInSuccessUrl: redirectUrl,
+            signInSuccessUrl: appUrl,
             signInOptions: signInOptions,
             // tosUrl and privacyPolicyUrl accept either url string or a callback
             // function.
@@ -65,6 +66,11 @@ export class AppLogin {
             credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
             autoUpgradeAnonymousUsers: true,
             callbacks: {
+                signInSuccessWithAuthResult: async (_authResult, _redirectUrl) => {
+                    await this.navigateRedirect();
+
+                    return true;
+                },
                 // signInFailure callback must be provided to handle merge conflicts which
                 // occur when an existing credential is linked to an anonymous user.
                 signInFailure: this.onSignInFailure
@@ -73,10 +79,11 @@ export class AppLogin {
 
         window['firebase'] = firebase;
 
-        // Initialize the FirebaseUI Widget using Firebase.
+        await this.saveRedirect();
+
         const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
 
-        if (firebaseui.auth.AuthUI.getInstance()) {
+        if (!ui.isPendingRedirect()) {
             ui.reset();
         }
 
@@ -103,11 +110,24 @@ export class AppLogin {
 
             await firebase.auth().signInAndRetrieveDataWithCredential(cred);
 
-            await this.navService.navigate(this.redirect ? '/' + this.redirect : '/');
+            await this.navigateRedirect();
 
             resolve();
         });
     };
+
+    private async saveRedirect() {
+        await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
+    }
+
+    private async navigateRedirect() {
+        const redirectUrl: string = await get('deckdeckgo_redirect');
+
+        await del('deckdeckgo_redirect');
+
+        // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
+        window.location.assign(!redirectUrl || redirectUrl.trim() === '' ? '/' : '/' + redirectUrl);
+    }
 
     render() {
         return [
