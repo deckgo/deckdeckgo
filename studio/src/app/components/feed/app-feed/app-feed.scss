@@ -1,7 +1,8 @@
 app-feed {
-  @import "../../../../global/theme/feed/feed-card";
 
   ion-card[class*="sc-ion-card"] {
+    --background: white;
+
     div.deck-container {
       width: 100%;
       height: 250px;

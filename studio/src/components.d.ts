@@ -81,14 +81,21 @@ export namespace Components {
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
 
-  interface AppFeedCard {}
-  interface AppFeedCardAttributes extends StencilHTMLAttributes {}
-
   interface AppFeed {}
   interface AppFeedAttributes extends StencilHTMLAttributes {}
 
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
+
+  interface AppFeedCardContent {
+    'firstCard': boolean;
+  }
+  interface AppFeedCardContentAttributes extends StencilHTMLAttributes {
+    'firstCard'?: boolean;
+  }
+
+  interface AppFeedCard {}
+  interface AppFeedCardAttributes extends StencilHTMLAttributes {}
 
   interface AppPublish {}
   interface AppPublishAttributes extends StencilHTMLAttributes {}
@@ -156,9 +163,10 @@ declare global {
     'AppNavigation': Components.AppNavigation;
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
-    'AppFeedCard': Components.AppFeedCard;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
+    'AppFeedCardContent': Components.AppFeedCardContent;
+    'AppFeedCard': Components.AppFeedCard;
     'AppPublish': Components.AppPublish;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
@@ -185,9 +193,10 @@ declare global {
     'app-navigation': Components.AppNavigationAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
-    'app-feed-card': Components.AppFeedCardAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
+    'app-feed-card-content': Components.AppFeedCardContentAttributes;
+    'app-feed-card': Components.AppFeedCardAttributes;
     'app-publish': Components.AppPublishAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
@@ -259,12 +268,6 @@ declare global {
     new (): HTMLAppEditorToolbarElement;
   };
 
-  interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
-  var HTMLAppFeedCardElement: {
-    prototype: HTMLAppFeedCardElement;
-    new (): HTMLAppFeedCardElement;
-  };
-
   interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
   var HTMLAppFeedElement: {
     prototype: HTMLAppFeedElement;
@@ -275,6 +278,18 @@ declare global {
   var HTMLAppPopularElement: {
     prototype: HTMLAppPopularElement;
     new (): HTMLAppPopularElement;
+  };
+
+  interface HTMLAppFeedCardContentElement extends Components.AppFeedCardContent, HTMLStencilElement {}
+  var HTMLAppFeedCardContentElement: {
+    prototype: HTMLAppFeedCardContentElement;
+    new (): HTMLAppFeedCardContentElement;
+  };
+
+  interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
+  var HTMLAppFeedCardElement: {
+    prototype: HTMLAppFeedCardElement;
+    new (): HTMLAppFeedCardElement;
   };
 
   interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {}
@@ -371,9 +386,10 @@ declare global {
     'app-navigation': HTMLAppNavigationElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
-    'app-feed-card': HTMLAppFeedCardElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
+    'app-feed-card-content': HTMLAppFeedCardContentElement
+    'app-feed-card': HTMLAppFeedCardElement
     'app-publish': HTMLAppPublishElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
@@ -400,9 +416,10 @@ declare global {
     'app-navigation': HTMLAppNavigationElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
-    'app-feed-card': HTMLAppFeedCardElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
+    'app-feed-card-content': HTMLAppFeedCardContentElement;
+    'app-feed-card': HTMLAppFeedCardElement;
     'app-publish': HTMLAppPublishElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
