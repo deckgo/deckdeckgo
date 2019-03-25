@@ -2,38 +2,4 @@ app-publish {
   ion-content {
     --background: var(--ion-color-light);
   }
-
-  @import "../../../../global/theme/feed/feed-card";
-
-  ion-card-subtitle.tags {
-    background: white;
-
-    @media only screen and (min-height: 600px) and (min-width: 768px) {
-      flex-wrap: inherit;
-    }
-
-    min-height: 42px;
-  }
-
-  input {
-    font-size: var(--font-size-normal);
-  }
-
-  input {
-    pointer-events: visible;
-
-    background: transparent;
-    color: var(--ion-color-primary);
-    border: none;
-    outline: 0;
-
-    padding-bottom: 1px;
-
-    max-width: 130px;
-    height: 40px;
-
-    &::placeholder {
-      color: var(--deckgo-inline-editor-link-placeholder-color, #3880ff);
-    }
-  }
 }

@@ -88,14 +88,28 @@ export namespace Components {
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
   interface AppFeedCardContent {
+    'author': string;
+    'editable': boolean;
     'firstCard': boolean;
+    'publication': Date;
   }
   interface AppFeedCardContentAttributes extends StencilHTMLAttributes {
+    'author'?: string;
+    'editable'?: boolean;
     'firstCard'?: boolean;
+    'publication'?: Date;
   }
 
-  interface AppFeedCard {}
-  interface AppFeedCardAttributes extends StencilHTMLAttributes {}
+  interface AppFeedCard {
+    'author': string;
+    'editable': boolean;
+    'publication': Date;
+  }
+  interface AppFeedCardAttributes extends StencilHTMLAttributes {
+    'author'?: string;
+    'editable'?: boolean;
+    'publication'?: Date;
+  }
 
   interface AppPublish {}
   interface AppPublishAttributes extends StencilHTMLAttributes {}

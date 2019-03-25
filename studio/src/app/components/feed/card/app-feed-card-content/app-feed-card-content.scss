@@ -64,6 +64,26 @@ app-feed-card-content {
         text-overflow: ellipsis;
       }
     }
+
+    input {
+      font-size: var(--font-size-normal);
+
+      pointer-events: visible;
+
+      background: transparent;
+      color: var(--ion-color-primary);
+      border: none;
+      outline: 0;
+
+      padding-bottom: 1px;
+
+      max-width: 130px;
+      height: 40px;
+
+      &::placeholder {
+        color: var(--deckgo-inline-editor-link-placeholder-color, #3880ff);
+      }
+    }
   }
 
   @media screen and (max-width: 720px) {
