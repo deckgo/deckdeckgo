@@ -4,14 +4,20 @@
 
 | Endpoint | Guard | Details | Frontend`*` | Backend`*` | Notes |
 |---|---|---|---|---|---|
-| login | X | [Link](#login) |   |   |   |
+| login |  | [Link](#login) |   |   |   |
 | logout | X | [Link](#logout)  |   |   |   |
 | decks | X | [Link](#decks) | POST PUT | POST PUT | Meta and guard still TODO |
 | slides | X | [Link](#slides) | POST PUT DELETE | POST | Furthermore than guard and missing routes, content should be saved outside the db |
-| publish | X |   |   |   |   |
-| feed |   |   |   |   |   |
+| tags | X | [Link](#tags) |   |   |   |
+| content | X | [Link](#content) |   |   | Images upload and save |
+| publish | X | [Link](#publish) |   |   |   |
+| feed |  | [Link](#feed) |   |   |   |
 
 `*`: already implemented in
+
+## Others TODO
+
+- replace CORS wildcard with proper `Access-Control-Allow-Origin`
 
 ### Login
 
@@ -82,11 +88,17 @@ export interface User {
 * Sample
 
 ```
+export interface MetaTag {
+    string;
+}
+
 export interface Meta {
     meta_id?: string;
     
     description?: string;
     author?: string;
+    
+    tags: MetaTag[];
     
     image_url?: string;
     
@@ -153,3 +165,53 @@ Notes:
 
 - basically the corresponding DeckDeckGo core Web Components are all `<deckgo-slide-xxxxxx/>` and their content
 - `SlideTemplate` and `SlideAttributes` will be extended in the future
+
+### Tags
+
+| <!-- -->    | <!-- -->    |
+|-------------|-------------|
+| Title | Tags |
+| Description | Return a list of matching meta tags in regards of the searchterm |
+| URL | /feed |
+| Method | GET |
+| Body | searchTerm |
+
+Notes:
+
+- filter and search case not sensitive and stuffs
+- the goal is to have only on time if possible for example "javascript" in the database
+
+### Content
+
+| <!-- -->    | <!-- -->    |
+|-------------|-------------|
+| Title | Content |
+| Description | To upload content to th s3, like images, we will need signedUrl. These will have to be generated from the backend. |
+| URL | /content |
+| Method | POST |
+| Body | fileName??? |
+
+### Publish
+
+| <!-- -->    | <!-- -->    |
+|-------------|-------------|
+| Title | Publish |
+| Description | Publish presentation should build the PWA presentation and unleash it on the web |
+| URL | /publish |
+| Method | POST |
+| Body | deck_id (?) |
+
+### Feed
+
+| <!-- -->    | <!-- -->    |
+|-------------|-------------|
+| Title | Feed |
+| Description | The feed returns decks and meta |
+| URL | /feed |
+| Method | GET |
+| Body | ??? |
+
+Notes:
+
+- At some point the feed will be optimized and specific pro users regarding his/her interested
+- Need pagination. The feed should for example be fetched for 10 presentations and then 100 pro 100
