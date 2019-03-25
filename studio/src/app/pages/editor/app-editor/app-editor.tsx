@@ -211,10 +211,24 @@ export class AppEditor {
             if (slides) {
                 for (const slide of Array.from(slides)) {
                     if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                        const title = slide.querySelector('[slot="title"]');
+                        const title: HTMLElement = slide.querySelector('[slot="title"]');
 
                         if (title) {
                             results.push(title.innerHTML);
+                        } else {
+                            const start: HTMLElement = slide.querySelector('[slot="start"]');
+
+                            if (start) {
+                                results.push(start.textContent);
+                            } else {
+                                const end: HTMLElement = slide.querySelector('[slot="end"]');
+
+                                if (end) {
+                                    results.push(end.textContent);
+                                } else {
+                                    results.push('');
+                                }
+                            }
                         }
                     }
                 }
