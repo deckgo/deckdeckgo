@@ -6,8 +6,8 @@
 |---|---|---|---|---|---|
 | login | X | [Link](#login) |   |   |   |
 | logout | X | [Link](#logout)  |   |   |   |
-| decks | X | [Link](#decks)  | POST PUT | POST PUT | Meta still TODO |
-| slides | X |   |   |   |   |
+| decks | X | [Link](#decks) | POST PUT | POST PUT | Meta and guard still TODO |
+| slides | X | [Link](#slides) | POST PUT DELETE | POST | Furthermore than guard and missing routes, content should be saved outside the db |
 | publish | X |   |   |   |   |
 | feed |   |   |   |   |   |
 
@@ -109,3 +109,47 @@ export interface Deck {
 Questions:
 
 - do we want to duplicate the author name (= user name) in the meta data? for performance reason maybe?
+
+Notes:
+
+- basically the corresponding DeckDeckGo core Web Component is `<deckgo-deck/>`
+
+### Slides
+
+| <!-- -->    | <!-- -->    |
+|-------------|-------------|
+| Title | Slides |
+| Description | The slides of the presentation |
+| URL | /slides |
+| Method | POST PUT DELETE |
+| Body | see sample |
+
+* Sample
+
+```
+export enum SlideTemplate {
+    TITLE = 'title',
+    CONTENT = 'content',
+    SPLIT = 'split'
+}
+
+export interface SlideAttributes {
+    style?: string;
+}
+
+export interface Deck {
+    slide_id?: string;
+    
+    slide_content?: string;
+    slide_template: SlideTemplate,
+    slide_attributes?: SlideAttributes;
+    
+    created_at: Date;
+    updated_at: Date;
+}
+```
+
+Notes:
+
+- basically the corresponding DeckDeckGo core Web Components are all `<deckgo-slide-xxxxxx/>` and their content
+- `SlideTemplate` and `SlideAttributes` will be extended in the future
