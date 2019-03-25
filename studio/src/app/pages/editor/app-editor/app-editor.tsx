@@ -298,8 +298,6 @@ export class AppEditor {
 
         const firstSlide: FirstSlideContent = await this.getFirstSlideContent();
 
-        console.log(firstSlide);
-
         const modal: HTMLIonModalElement = await this.modalController.create({
             component: 'app-publish',
             componentProps: {

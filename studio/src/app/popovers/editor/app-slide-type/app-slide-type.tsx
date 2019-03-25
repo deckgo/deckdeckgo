@@ -38,7 +38,6 @@ export class AppSlideType {
             </div>
             <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.SPLIT)}>
                 <deckgo-slide-split>
-                    <h1 slot="title">Title</h1>
                     <p slot="start">Content</p>
                     <p slot="end">Content</p>
                 </deckgo-slide-split>
