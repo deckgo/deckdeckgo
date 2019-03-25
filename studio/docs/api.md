@@ -211,6 +211,10 @@ Notes:
 | Method | GET |
 | Body | ??? |
 
+Notabene:
+
+- Right now with the current design we only need the content (deck and slides) of the first deck of the feed. The others are only displayed with their meta information. Maybe that could be an option of the route? with/without content? 
+
 Notes:
 
 - At some point the feed will be optimized and specific pro users regarding his/her interested
