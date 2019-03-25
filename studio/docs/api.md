@@ -9,7 +9,7 @@
 | decks | X | [Link](#decks) | POST PUT | POST PUT | Meta and guard still TODO |
 | slides | X | [Link](#slides) | POST PUT DELETE | POST | Furthermore than guard and missing routes, content should be saved outside the db |
 | tags | X | [Link](#tags) |   |   |   |
-| content | X | [Link](#content) |   |   | Images upload and save |
+| content | X | [Link](#content) |   |   | Images and other medias |
 | publish | X | [Link](#publish) |   |   |   |
 | feed |  | [Link](#feed) |   |   |   |
 
