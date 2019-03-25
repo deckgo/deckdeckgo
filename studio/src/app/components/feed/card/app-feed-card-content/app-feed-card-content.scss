@@ -7,8 +7,6 @@ app-feed-card-content {
     width: 100%;
 
     ion-card-title, ion-card-subtitle {
-      width: 380px;
-      max-width: 380px;
       white-space: nowrap;
       overflow: hidden;
     }
@@ -33,7 +31,6 @@ app-feed-card-content {
         align-items: center;
       }
     }
-
 
     input, div.chips {
       font-size: var(--font-size-normal);
@@ -86,9 +83,9 @@ app-feed-card-content {
     }
   }
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 540px) {
     ion-card-content {
-      ion-card-subtitle {
+      div.preview {
         display: none;
       }
     }
