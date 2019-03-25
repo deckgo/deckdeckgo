@@ -65,6 +65,12 @@ export class AppPublish {
                 <p>Edit the preview of your presentation and add or change tags (up to 5) to make your presentation more inviting to readers</p>
 
                 <app-feed-card editable={true} author={this.author} publication={this.today} caption={this.caption} description={this.description}></app-feed-card>
+
+                <div class="ion-padding ion-text-center">
+                    <ion-button shape="round" color="primary">
+                        <ion-label class="ion-text-uppercase">Publish now</ion-label>
+                    </ion-button>
+                </div>
             </ion-content>
         ];
     }
