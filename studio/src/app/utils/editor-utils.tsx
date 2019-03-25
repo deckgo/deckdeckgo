@@ -86,10 +86,6 @@ export class EditorUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="deckgo-untouched" contenteditable>
-                {this.DEFAULT_TITLE}
-            </h1>;
-
             const start = <p slot="start" class="deckgo-untouched" contenteditable>
                 {this.DEFAULT_CONTENT}
             </p>;
@@ -98,12 +94,7 @@ export class EditorUtils {
                 {this.DEFAULT_CONTENT}
             </p>;
 
-            const style = {
-                '--slide-split-title-display': 'visible'
-            };
-
-            const slide: any = <deckgo-slide-split style={style}>
-                {title}
+            const slide: any = <deckgo-slide-split>
                 {start}
                 {end}
             </deckgo-slide-split>;

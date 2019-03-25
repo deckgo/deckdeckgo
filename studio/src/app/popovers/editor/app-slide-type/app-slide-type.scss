@@ -27,7 +27,6 @@ app-slide-type {
     }
 
     deckgo-slide-split {
-      --slide-split-title-display: visible;
       --slide-split-padding-top: 4px;
       --slide-split-padding-start: 4px;
       --slide-split-padding-end: 4px;
@@ -53,15 +52,9 @@ app-slide-type {
     }
 
     deckgo-slide-split {
-      h1 {
-        margin-left: 4px;
-        margin-right: 4px;
-      }
-
       p {
-        max-width: 26px;
         margin: 0;
-        max-height: 22px;
+        height: 54px;
         overflow: hidden;
         font-size: 0.2rem;
       }

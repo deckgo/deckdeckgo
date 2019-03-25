@@ -5,10 +5,10 @@ import '@firebase/auth';
 
 import {del, get, set} from 'idb-keyval';
 
-import {Utils} from '../../utils/utils';
+import {Utils} from '../../../utils/utils';
 
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import {NavDirection, NavService} from '../../services/nav/nav.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {NavDirection, NavService} from '../../../services/nav/nav.service';
 
 @Component({
     tag: 'app-signin',

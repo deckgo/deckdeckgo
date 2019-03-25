@@ -1,8 +1,10 @@
-import {Component, Element, Listen, State} from '@stencil/core';
+import {Component, Element, Listen, Prop, State} from '@stencil/core';
 
-interface InputTargetEvent extends EventTarget {
-    value: string;
-}
+import {take} from 'rxjs/operators';
+
+import {User} from '../../../models/user';
+
+import {AuthService} from '../../../services/auth/auth.service';
 
 @Component({
     tag: 'app-publish',
@@ -12,57 +14,39 @@ export class AppPublish {
 
     @Element() el: HTMLElement;
 
-    @State()
-    private tags: string[] = [];
+    private authService: AuthService;
+
+    @Prop()
+    caption: string;
+
+    @Prop()
+    description: string;
 
     @State()
-    private tagInput: string = null;
+    private author: string;
+
+    @State()
+    private today: Date = new Date();
+
+    constructor() {
+        this.authService = AuthService.getInstance();
+    }
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
+
+        this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
+            this.author = user ? user.name : '';
+        });
     }
 
     @Listen('window:popstate')
-    async handleHardwareBackbutton(_e: PopStateEvent) {
+    async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }
 
     async closeModal() {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
-    }
-
-    private handleTagInput($event: UIEvent) {
-        const tag: string = ($event.target as InputTargetEvent).value;
-
-        if (tag && tag.trim().length > 0 && tag.charAt(tag.length - 1) === ' ' && this.tags && this.tags.indexOf(tag.trim()) === -1) {
-            this.tags = [...this.tags, tag.trim()];
-            this.tagInput = null;
-        }
-    }
-
-    private removeTag(tag: string): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!tag) {
-                resolve();
-                return;
-            }
-
-            if (!this.tags) {
-                resolve();
-                return;
-            }
-
-            const index: number = this.tags.findIndex((actualTag: string) => {
-                return tag === actualTag
-            });
-
-            if (index >= 0) {
-                this.tags.splice(index, 1);
-                this.tags = [...this.tags];
-            }
-
-            resolve();
-        });
     }
 
     render() {
@@ -78,48 +62,18 @@ export class AppPublish {
                 </ion-toolbar>
             </ion-header>,
             <ion-content padding>
-                <p>Add or change <strong>tags</strong> (up to 5) so readers know what your presentation is about</p>
+                <p>Edit the preview of your presentation and add or change tags (up to 5) to make your presentation more inviting to readers</p>
 
-                <div class="tags">
-                    {this.renderTags()}
-                    {this.renderInputTags()}
-                </div>
+                <app-feed-card editable={true} author={this.author} publication={this.today} caption={this.caption} description={this.description}></app-feed-card>
 
-                <p>Story Preview</p>
-
-                <div>
-                    Write a preview title
-                    Write a preview subtitle
-                    Include a high-quality image in your story to make it more inviting to readers.
+                <div class="ion-padding ion-text-center">
+                    <ion-button shape="round" color="primary">
+                        <ion-label class="ion-text-uppercase">Publish now</ion-label>
+                    </ion-button>
                 </div>
             </ion-content>
         ];
     }
 
-    private renderTags() {
-        if (!this.tags || this.tags.length <= 0) {
-            return undefined;
-        } else {
-            return (
-                this.tags.map((tag: string) => {
-                    return (
-                        <div class="chips">
-                            <ion-icon name="close" custom-tappable onClick={() => this.removeTag(tag)}></ion-icon>
-                            <ion-label>{tag}</ion-label>
-                        </div>
-                    )
-                })
-            );
-        }
-    }
-
-    private renderInputTags() {
-        if (this.tags && this.tags.length < 5) {
-            return <input autofocus placeholder="Add a tag..." value={this.tagInput}
-                          onInput={($event: UIEvent) => this.handleTagInput($event)}></input>
-        } else {
-            return undefined;
-        }
-    }
 
 }

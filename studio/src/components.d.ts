@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
+import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -87,8 +87,46 @@ export namespace Components {
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
-  interface AppPublish {}
-  interface AppPublishAttributes extends StencilHTMLAttributes {}
+  interface AppFeedCardContent {
+    'author': string;
+    'caption': string;
+    'description': string;
+    'editable': boolean;
+    'firstCard': boolean;
+    'publication': Date;
+  }
+  interface AppFeedCardContentAttributes extends StencilHTMLAttributes {
+    'author'?: string;
+    'caption'?: string;
+    'description'?: string;
+    'editable'?: boolean;
+    'firstCard'?: boolean;
+    'publication'?: Date;
+  }
+
+  interface AppFeedCard {
+    'author': string;
+    'caption': string;
+    'description': string;
+    'editable': boolean;
+    'publication': Date;
+  }
+  interface AppFeedCardAttributes extends StencilHTMLAttributes {
+    'author'?: string;
+    'caption'?: string;
+    'description'?: string;
+    'editable'?: boolean;
+    'publication'?: Date;
+  }
+
+  interface AppPublish {
+    'caption': string;
+    'description': string;
+  }
+  interface AppPublishAttributes extends StencilHTMLAttributes {
+    'caption'?: string;
+    'description'?: string;
+  }
 
   interface AppSlideNavigate {
     'slides': string[];
@@ -112,9 +150,6 @@ export namespace Components {
   interface AppTerms {}
   interface AppTermsAttributes extends StencilHTMLAttributes {}
 
-  interface AppEditor {}
-  interface AppEditorAttributes extends StencilHTMLAttributes {}
-
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
@@ -124,6 +159,9 @@ export namespace Components {
   interface AppSigninAttributes extends StencilHTMLAttributes {
     'redirect'?: string;
   }
+
+  interface AppEditor {}
+  interface AppEditorAttributes extends StencilHTMLAttributes {}
 
   interface AppUserMenu {}
   interface AppUserMenuAttributes extends StencilHTMLAttributes {}
@@ -155,6 +193,8 @@ declare global {
     'AppEditorToolbar': Components.AppEditorToolbar;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
+    'AppFeedCardContent': Components.AppFeedCardContent;
+    'AppFeedCard': Components.AppFeedCard;
     'AppPublish': Components.AppPublish;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
@@ -162,9 +202,9 @@ declare global {
     'AppOpensource': Components.AppOpensource;
     'AppPrivacy': Components.AppPrivacy;
     'AppTerms': Components.AppTerms;
-    'AppEditor': Components.AppEditor;
     'AppHome': Components.AppHome;
     'AppSignin': Components.AppSignin;
+    'AppEditor': Components.AppEditor;
     'AppUserMenu': Components.AppUserMenu;
     'AppDeckOrSlide': Components.AppDeckOrSlide;
     'AppSlideType': Components.AppSlideType;
@@ -183,6 +223,8 @@ declare global {
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
+    'app-feed-card-content': Components.AppFeedCardContentAttributes;
+    'app-feed-card': Components.AppFeedCardAttributes;
     'app-publish': Components.AppPublishAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
@@ -190,9 +232,9 @@ declare global {
     'app-opensource': Components.AppOpensourceAttributes;
     'app-privacy': Components.AppPrivacyAttributes;
     'app-terms': Components.AppTermsAttributes;
-    'app-editor': Components.AppEditorAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-signin': Components.AppSigninAttributes;
+    'app-editor': Components.AppEditorAttributes;
     'app-user-menu': Components.AppUserMenuAttributes;
     'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
@@ -266,6 +308,18 @@ declare global {
     new (): HTMLAppPopularElement;
   };
 
+  interface HTMLAppFeedCardContentElement extends Components.AppFeedCardContent, HTMLStencilElement {}
+  var HTMLAppFeedCardContentElement: {
+    prototype: HTMLAppFeedCardContentElement;
+    new (): HTMLAppFeedCardContentElement;
+  };
+
+  interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
+  var HTMLAppFeedCardElement: {
+    prototype: HTMLAppFeedCardElement;
+    new (): HTMLAppFeedCardElement;
+  };
+
   interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {}
   var HTMLAppPublishElement: {
     prototype: HTMLAppPublishElement;
@@ -308,12 +362,6 @@ declare global {
     new (): HTMLAppTermsElement;
   };
 
-  interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
-  var HTMLAppEditorElement: {
-    prototype: HTMLAppEditorElement;
-    new (): HTMLAppEditorElement;
-  };
-
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
   var HTMLAppHomeElement: {
     prototype: HTMLAppHomeElement;
@@ -324,6 +372,12 @@ declare global {
   var HTMLAppSigninElement: {
     prototype: HTMLAppSigninElement;
     new (): HTMLAppSigninElement;
+  };
+
+  interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
+  var HTMLAppEditorElement: {
+    prototype: HTMLAppEditorElement;
+    new (): HTMLAppEditorElement;
   };
 
   interface HTMLAppUserMenuElement extends Components.AppUserMenu, HTMLStencilElement {}
@@ -362,6 +416,8 @@ declare global {
     'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
+    'app-feed-card-content': HTMLAppFeedCardContentElement
+    'app-feed-card': HTMLAppFeedCardElement
     'app-publish': HTMLAppPublishElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
@@ -369,9 +425,9 @@ declare global {
     'app-opensource': HTMLAppOpensourceElement
     'app-privacy': HTMLAppPrivacyElement
     'app-terms': HTMLAppTermsElement
-    'app-editor': HTMLAppEditorElement
     'app-home': HTMLAppHomeElement
     'app-signin': HTMLAppSigninElement
+    'app-editor': HTMLAppEditorElement
     'app-user-menu': HTMLAppUserMenuElement
     'app-deck-or-slide': HTMLAppDeckOrSlideElement
     'app-slide-type': HTMLAppSlideTypeElement
@@ -390,6 +446,8 @@ declare global {
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
+    'app-feed-card-content': HTMLAppFeedCardContentElement;
+    'app-feed-card': HTMLAppFeedCardElement;
     'app-publish': HTMLAppPublishElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
@@ -397,9 +455,9 @@ declare global {
     'app-opensource': HTMLAppOpensourceElement;
     'app-privacy': HTMLAppPrivacyElement;
     'app-terms': HTMLAppTermsElement;
-    'app-editor': HTMLAppEditorElement;
     'app-home': HTMLAppHomeElement;
     'app-signin': HTMLAppSigninElement;
+    'app-editor': HTMLAppEditorElement;
     'app-user-menu': HTMLAppUserMenuElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-slide-type': HTMLAppSlideTypeElement;

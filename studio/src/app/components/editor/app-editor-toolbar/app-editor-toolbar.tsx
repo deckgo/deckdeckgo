@@ -403,6 +403,16 @@ export class AppEditorToolbar {
             const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
 
             element.style.setProperty('--background', $event.target.value);
+        } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
+            const element: HTMLElement = this.selectedElement.parentElement;
+
+            if (this.selectedElement.getAttribute('slot') === 'start') {
+                element.style.setProperty('--slide-split-background-start', $event.target.value);
+            } else if (this.selectedElement.getAttribute('slot') === 'end') {
+                element.style.setProperty('--slide-split-background-end', $event.target.value);
+            } else {
+                this.selectedElement.style.background = $event.target.value;
+            }
         } else {
             this.selectedElement.style.background = $event.target.value;
         }
