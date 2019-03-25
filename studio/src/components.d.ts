@@ -81,6 +81,9 @@ export namespace Components {
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
 
+  interface AppFeedCard {}
+  interface AppFeedCardAttributes extends StencilHTMLAttributes {}
+
   interface AppFeed {}
   interface AppFeedAttributes extends StencilHTMLAttributes {}
 
@@ -153,6 +156,7 @@ declare global {
     'AppNavigation': Components.AppNavigation;
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
+    'AppFeedCard': Components.AppFeedCard;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
     'AppPublish': Components.AppPublish;
@@ -181,6 +185,7 @@ declare global {
     'app-navigation': Components.AppNavigationAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
+    'app-feed-card': Components.AppFeedCardAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-publish': Components.AppPublishAttributes;
@@ -252,6 +257,12 @@ declare global {
   var HTMLAppEditorToolbarElement: {
     prototype: HTMLAppEditorToolbarElement;
     new (): HTMLAppEditorToolbarElement;
+  };
+
+  interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
+  var HTMLAppFeedCardElement: {
+    prototype: HTMLAppFeedCardElement;
+    new (): HTMLAppFeedCardElement;
   };
 
   interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
@@ -360,6 +371,7 @@ declare global {
     'app-navigation': HTMLAppNavigationElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
+    'app-feed-card': HTMLAppFeedCardElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
     'app-publish': HTMLAppPublishElement
@@ -388,6 +400,7 @@ declare global {
     'app-navigation': HTMLAppNavigationElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
+    'app-feed-card': HTMLAppFeedCardElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
     'app-publish': HTMLAppPublishElement;
