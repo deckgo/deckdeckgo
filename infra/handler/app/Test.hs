@@ -57,13 +57,33 @@ main = do
     Right slides ->
       if slides == [WithId slideId updatedSlide] then pure () else (error $ "Expected updated slides, got: " <> show slides)
 
+  runClientM (slidesDelete' slideId) clientEnv >>= \case
+    Left err -> error $ "Expected slide delete, got error: " <> show err
+    Right {} -> pure ()
+
+  runClientM slidesGet' clientEnv >>= \case
+    Left err -> error $ "Expected no slides, got error: " <> show err
+    Right slides ->
+      if slides == [] then pure () else (error $ "Expected no slides, got: " <> show slides)
+
+  runClientM (decksDelete' deckId) clientEnv >>= \case
+    Left err -> error $ "Expected deck delete, got error: " <> show err
+    Right {} -> pure ()
+
+  runClientM decksGet' clientEnv >>= \case
+    Left err -> error $ "Expected no decks, got error: " <> show err
+    Right decks ->
+      if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
+
 -- 'client' allows you to produce operations to query an API from a client.
 decksGet' :: ClientM [WithId DeckId Deck]
 decksPost' :: Deck -> ClientM (WithId DeckId Deck)
 decksPut' :: DeckId -> Deck -> ClientM (WithId DeckId Deck)
+decksDelete' :: DeckId -> ClientM ()
 slidesGet' :: ClientM [WithId SlideId Slide]
 slidesPost' :: Slide -> ClientM (WithId SlideId Slide)
 slidesPut' :: SlideId -> Slide -> ClientM (WithId SlideId Slide)
-((decksGet' :<|> decksPost' :<|> decksPut') :<|>
-  (slidesGet' :<|> slidesPost' :<|> slidesPut')
+slidesDelete' :: SlideId -> ClientM ()
+((decksGet' :<|> decksPost' :<|> decksPut' :<|> decksDelete') :<|>
+  (slidesGet' :<|> slidesPost' :<|> slidesPut' :<|> slidesDelete')
   ) = client api

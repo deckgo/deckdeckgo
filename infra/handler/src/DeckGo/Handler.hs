@@ -109,12 +109,14 @@ type API =
 type DecksAPI =
     Get '[JSON] [WithId DeckId Deck] :<|>
     ReqBody '[JSON] Deck :> Post '[JSON] (WithId DeckId Deck) :<|>
-    Capture "deck_id" DeckId :> ReqBody '[JSON] Deck :> Put '[JSON] (WithId DeckId Deck)
+    Capture "deck_id" DeckId :> ReqBody '[JSON] Deck :> Put '[JSON] (WithId DeckId Deck) :<|>
+    Capture "deck_id" DeckId :> Delete '[JSON] ()
 
 type SlidesAPI =
     Get '[JSON] [WithId SlideId Slide] :<|>
     ReqBody '[JSON] Slide :> Post '[JSON] (WithId SlideId Slide) :<|>
-    Capture "slide_id" SlideId :> ReqBody '[JSON] Slide :> Put '[JSON] (WithId SlideId Slide)
+    Capture "slide_id" SlideId :> ReqBody '[JSON] Slide :> Put '[JSON] (WithId SlideId Slide) :<|>
+    Capture "slide_id" SlideId :> Delete '[JSON] ()
 
 api :: Proxy API
 api = Proxy
@@ -129,8 +131,16 @@ application env = Servant.serve api (server env)
 server :: Aws.Env -> Servant.Server API
 server env = serveDecks :<|> serveSlides
   where
-    serveDecks = decksGet env :<|> decksPost env :<|> decksPut env
-    serveSlides = slidesGet env :<|> slidesPost env :<|> slidesPut env
+    serveDecks =
+      decksGet env :<|>
+      decksPost env :<|>
+      decksPut env :<|>
+      decksDelete env
+    serveSlides =
+      slidesGet env :<|>
+      slidesPost env :<|>
+      slidesPut env :<|>
+      slidesDelete env
 
 decksGet :: Aws.Env -> Servant.Handler [WithId DeckId Deck]
 decksGet env = do
@@ -179,6 +189,19 @@ decksPut env deckId deck = do
         Servant.throwError Servant.err500
 
     pure $ WithId deckId deck
+
+decksDelete :: Aws.Env -> DeckId -> Servant.Handler ()
+decksDelete env deckId = do
+
+    res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Decks" &
+        DynamoDB.diKey .~ HMS.singleton "DeckId"
+          (deckIdToAttributeValue deckId)
+
+    case res of
+      Right {} -> pure ()
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
 
 runAWS :: MonadIO m => Aws.Env -> Aws.AWS a -> m (Either SomeException a)
 runAWS env =
@@ -237,6 +260,19 @@ slidesPut env slideId slide = do
         Servant.throwError Servant.err500
 
     pure $ WithId slideId slide
+
+slidesDelete :: Aws.Env -> SlideId -> Servant.Handler ()
+slidesDelete env slideId = do
+
+    res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Slides" &
+        DynamoDB.diKey .~  HMS.singleton "SlideId"
+          (slideIdToAttributeValue slideId)
+
+    case res of
+      Right x -> liftIO $ print x
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
 
 randomString :: Int -> [Char] -> IO String
 randomString len allowedChars =
