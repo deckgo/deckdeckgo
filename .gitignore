@@ -36,6 +36,7 @@ firebase.json
 
 *.tfstate
 *.tfstate.backup
+*.tfstate.lock*
 
 result
 result-*
