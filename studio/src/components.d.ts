@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -89,12 +89,16 @@ export namespace Components {
 
   interface AppFeedCardContent {
     'author': string;
+    'caption': string;
+    'description': string;
     'editable': boolean;
     'firstCard': boolean;
     'publication': Date;
   }
   interface AppFeedCardContentAttributes extends StencilHTMLAttributes {
     'author'?: string;
+    'caption'?: string;
+    'description'?: string;
     'editable'?: boolean;
     'firstCard'?: boolean;
     'publication'?: Date;
@@ -102,17 +106,27 @@ export namespace Components {
 
   interface AppFeedCard {
     'author': string;
+    'caption': string;
+    'description': string;
     'editable': boolean;
     'publication': Date;
   }
   interface AppFeedCardAttributes extends StencilHTMLAttributes {
     'author'?: string;
+    'caption'?: string;
+    'description'?: string;
     'editable'?: boolean;
     'publication'?: Date;
   }
 
-  interface AppPublish {}
-  interface AppPublishAttributes extends StencilHTMLAttributes {}
+  interface AppPublish {
+    'caption': string;
+    'description': string;
+  }
+  interface AppPublishAttributes extends StencilHTMLAttributes {
+    'caption'?: string;
+    'description'?: string;
+  }
 
   interface AppSlideNavigate {
     'slides': string[];

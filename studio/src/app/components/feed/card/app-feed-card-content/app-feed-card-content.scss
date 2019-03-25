@@ -15,19 +15,25 @@ app-feed-card-content {
       flex-wrap: wrap;
     }
 
-    p.content {
-      color: black;
-      margin-top: 8px;
-      margin-bottom: 8px;
+    div.summary {
+      flex: 2;
+
+      p.content {
+        color: black;
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
     }
 
-    div {
-      &.preview {
-        width: 15rem;
-        min-width: 8rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    div.preview {
+      width: 12rem;
+      min-width: 8rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        max-width: 10rem;
       }
     }
 

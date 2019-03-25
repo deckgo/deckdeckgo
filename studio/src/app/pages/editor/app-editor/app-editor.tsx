@@ -13,6 +13,11 @@ import {AuthService} from '../../../services/auth/auth.service';
 import {GuestService} from '../../../services/guest/guest.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
 
+interface FirstSlideContent {
+    title: string;
+    content: string;
+}
+
 @Component({
     tag: 'app-editor',
     styleUrl: 'app-editor.scss'
@@ -219,6 +224,33 @@ export class AppEditor {
         });
     }
 
+    private getFirstSlideContent(): Promise<FirstSlideContent> {
+        return new Promise<FirstSlideContent>(async (resolve) => {
+            let title: string = '';
+            let content: string = '';
+
+            const slide: HTMLElement = this.el.querySelector('deckgo-deck > *:first-child');
+
+            if (slide && slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
+                const titleElement: HTMLElement = slide.querySelector('[slot="title"]');
+                const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
+
+                if (titleElement) {
+                    title = titleElement.textContent;
+                }
+
+                if (contentElement) {
+                    content = contentElement.textContent;
+                }
+            }
+
+            resolve({
+                title: title,
+                content: content
+            });
+        });
+    }
+
     @Listen('actionOpenSlideAdd')
     async onActionOpenSlideAdd($event: CustomEvent) {
         if (!$event || !$event.detail) {
@@ -264,8 +296,16 @@ export class AppEditor {
             return;
         }
 
+        const firstSlide: FirstSlideContent = await this.getFirstSlideContent();
+
+        console.log(firstSlide);
+
         const modal: HTMLIonModalElement = await this.modalController.create({
-            component: 'app-publish'
+            component: 'app-publish',
+            componentProps: {
+                caption: firstSlide.title,
+                description: firstSlide.content
+            }
         });
 
         modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {

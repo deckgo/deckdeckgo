@@ -31,6 +31,12 @@ export class AppFeedCardContent {
     @Prop()
     publication: Date;
 
+    @Prop()
+    caption: string;
+
+    @Prop()
+    description: string;
+
     @State()
     private formattedPublication: string;
 
@@ -87,8 +93,7 @@ export class AppFeedCardContent {
             <div class="summary">
 
                 <ion-card-header>
-                    <ion-card-title class="ion-text-uppercase" contentEditable={this.editable}>Card Title
-                    </ion-card-title>
+                    <ion-card-title class="ion-text-uppercase" contentEditable={this.editable}>{this.caption}</ion-card-title>
 
                     <ion-card-subtitle class="ion-text-lowercase">
                         {this.renderTags()}
@@ -96,11 +101,7 @@ export class AppFeedCardContent {
                     </ion-card-subtitle>
                 </ion-card-header>
 
-                <p padding-start padding-end class="content" contentEditable={this.editable}>Keep
-                    close to Nature's heart... and break clear away, once in
-                    awhile,
-                    and climb a mountain or spend a week in the woods. Wash your spirit clean.
-                </p>
+                <p padding-start padding-end class="content" contentEditable={this.editable}>{this.description}</p>
 
                 <p class="author" padding>
                     <ion-label>{this.author} | {this.formattedPublication}</ion-label>
