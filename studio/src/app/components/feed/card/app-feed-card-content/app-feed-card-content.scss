@@ -10,6 +10,10 @@ app-feed-card-content {
       overflow: hidden;
     }
 
+    ion-card-title {
+      font-size: var(--font-size-h1);
+    }
+
     ion-card-subtitle {
       display: flex;
       flex-wrap: wrap;
