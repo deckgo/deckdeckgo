@@ -1,6 +1,11 @@
 import {Component, Element, Listen, State} from '@stencil/core';
-import {User} from '../../../models/user';
+
 import {take} from 'rxjs/operators';
+
+import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
+
+import {User} from '../../../models/user';
+
 import {AuthService} from '../../../services/auth/auth.service';
 
 interface InputTargetEvent extends EventTarget {
@@ -26,8 +31,16 @@ export class AppPublish {
     @State()
     private user: User;
 
+    @State()
+    private today: string;
+
     constructor() {
         this.authService = AuthService.getInstance();
+    }
+
+    async componentWillLoad() {
+        const options: DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+        this.today = new Intl.DateTimeFormat('en-US', options).format(new Date());
     }
 
     async componentDidLoad() {
@@ -115,7 +128,7 @@ export class AppPublish {
                             </p>
 
                             <p class="author" padding>
-                                <ion-label>{this.renderUser()} | Mars 9</ion-label>
+                                <ion-label>{this.renderUser()} | {this.today}</ion-label>
                             </p>
                         </div>
                         <div class="preview">
