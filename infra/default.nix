@@ -55,7 +55,6 @@ rec
       echo "Running tests"
       ${handler}/bin/test
 
-
       touch $out
   '';
 }

@@ -1,6 +1,10 @@
 with
 { pkgs = import ./nix {};
 };
-pkgs.mkShell
-  { buildInputs = with pkgs; [ niv terraform awscli ];
-  }
+let
+  pkg = pkgs.haskellPackages.developPackage
+    { root = ./handler; };
+in
+   pkg.overrideAttrs(attr: {
+     buildInputs = with pkgs; [ niv terraform awscli ];
+   })

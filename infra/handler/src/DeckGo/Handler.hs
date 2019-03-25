@@ -14,8 +14,8 @@ import Control.Monad
 import Control.Lens hiding ((.=))
 import Data.Proxy
 import Servant.API
-import Data.Maybe
 import qualified Data.Text as T
+import qualified Data.Text.Encoding as T
 import qualified Data.HashMap.Strict as HMS
 import UnliftIO
 import Data.Aeson ((.=), (.:), (.!=), (.:?))
@@ -31,22 +31,23 @@ import qualified System.Random as Random
 ------------------------------------------------------------------------------
 
 data WithId id a = WithId id a
+  deriving (Show, Eq)
 
 newtype DeckId = DeckId { unDeckId :: T.Text }
-  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData, Show, Eq)
 
 data Deck = Deck
   { deckSlides :: [SlideId]
-  }
+  } deriving (Show, Eq)
 
 newtype SlideId = SlideId { unSlideId :: T.Text }
-  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData, Show, Eq)
 
 data Slide = Slide
   { slideContent :: T.Text
   , slideTemplate :: T.Text
   , slideAttributes :: HMS.HashMap T.Text T.Text
-  }
+  } deriving (Show, Eq)
 
 instance Aeson.FromJSON Deck where
   parseJSON = Aeson.withObject "decK" $ \obj ->
@@ -135,11 +136,15 @@ decksGet :: Aws.Env -> Servant.Handler [WithId DeckId Deck]
 decksGet env = do
     res <- runAWS env $ Aws.send $ DynamoDB.scan "Decks"
     case res of
-      Right scanResponse -> pure $ catMaybes $
-        scanResponse ^. DynamoDB.srsItems <&> itemToDeck
+      Right scanResponse ->
+        case sequence $ scanResponse ^. DynamoDB.srsItems <&> itemToDeck of
+          Nothing -> do
+            liftIO $ putStrLn $ "Could not parse response: " <> show scanResponse
+            Servant.throwError Servant.err500
+          Just ids -> pure ids
       Left e -> do
         liftIO $ print e
-        pure []
+        Servant.throwError Servant.err500
 
 decksPost :: Aws.Env -> Deck -> Servant.Handler (WithId DeckId Deck)
 decksPost env deck = do
@@ -150,8 +155,10 @@ decksPost env deck = do
         DynamoDB.piItem .~ deckToItem deckId deck
 
     case res of
-      Right x -> liftIO $ print x
-      Left e -> liftIO $ print e
+      Right {} -> pure ()
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
 
     pure $ WithId deckId deck
 
@@ -159,13 +166,17 @@ decksPut :: Aws.Env -> DeckId -> Deck -> Servant.Handler (WithId DeckId Deck)
 decksPut env deckId deck = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Decks" &
-        DynamoDB.uiUpdateExpression .~ Just "DeckSlides = :DeckSlides" &
-        DynamoDB.uiExpressionAttributeValues .~ deckToItem deckId deck &
-        DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew
+        DynamoDB.uiUpdateExpression .~ Just "SET DeckSlides = :s" &
+        DynamoDB.uiExpressionAttributeValues .~ deckToItem' deck &
+        DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
+        DynamoDB.uiKey .~ HMS.singleton "DeckId"
+          (deckIdToAttributeValue deckId)
 
     case res of
-      Right x -> liftIO $ print x
-      Left e -> liftIO $ print e
+      Right {} -> pure ()
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
 
     pure $ WithId deckId deck
 
@@ -181,11 +192,16 @@ slidesGet :: Aws.Env -> Servant.Handler [WithId SlideId Slide]
 slidesGet env = do
     res <- runAWS env $ Aws.send $ DynamoDB.scan "Slides"
     case res of
-      Right scanResponse -> pure $ catMaybes $
-        scanResponse ^. DynamoDB.srsItems <&> itemToSlide
+      Right scanResponse ->
+        case sequence $ scanResponse ^. DynamoDB.srsItems <&> itemToSlide of
+          Nothing -> do
+            liftIO $ putStrLn $ "Could not parse respose: " <> show scanResponse
+            Servant.throwError Servant.err500
+          Just ids -> pure ids
+
       Left e -> do
         liftIO $ print e
-        pure []
+        Servant.throwError Servant.err500
 
 slidesPost :: Aws.Env -> Slide -> Servant.Handler (WithId SlideId Slide)
 slidesPost env slide = do
@@ -196,8 +212,10 @@ slidesPost env slide = do
         DynamoDB.piItem .~ slideToItem slideId slide
 
     case res of
-      Right x -> liftIO $ print x
-      Left e -> liftIO $ print e
+      Right {} -> pure ()
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
 
     pure $ WithId slideId slide
 
@@ -206,13 +224,17 @@ slidesPut env slideId slide = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Slides" &
         DynamoDB.uiUpdateExpression .~ Just
-          "SlideContent = :SlideContent, SlideTemplate = :SlideTemplate, SlideAttributes = :SlideAttributes" &
-        DynamoDB.uiExpressionAttributeValues .~ slideToItem slideId slide &
-        DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew
+          "SET SlideContent = :c, SlideTemplate = :t, SlideAttributes = :a" &
+        DynamoDB.uiExpressionAttributeValues .~ slideToItem' slide &
+        DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
+        DynamoDB.uiKey .~  HMS.singleton "SlideId"
+          (slideIdToAttributeValue slideId)
 
     case res of
       Right x -> liftIO $ print x
-      Left e -> liftIO $ print e
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
 
     pure $ WithId slideId slide
 
@@ -228,60 +250,99 @@ randomText len allowedChars = T.pack <$> randomString len allowedChars
 newId :: IO T.Text
 newId = randomText 32 (['0' .. '9'] <> ['a' .. 'z'])
 
+deckIdToAttributeValue :: DeckId -> DynamoDB.AttributeValue
+deckIdToAttributeValue (DeckId deckId) =
+    DynamoDB.attributeValue & DynamoDB.avS .~ Just deckId
+
+deckIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe DeckId
+deckIdFromAttributeValue attr = DeckId <$> attr ^. DynamoDB.avS
+
+deckSlidesToAttributeValue :: [SlideId] -> DynamoDB.AttributeValue
+deckSlidesToAttributeValue deckSlides =
+    DynamoDB.attributeValue & DynamoDB.avL .~
+      (slideIdToAttributeValue <$> deckSlides)
+
+deckSlidesFromAttributeValue :: DynamoDB.AttributeValue -> Maybe [SlideId]
+deckSlidesFromAttributeValue attr =
+    traverse slideIdFromAttributeValue (attr ^. DynamoDB.avL)
+
+slideIdToAttributeValue :: SlideId -> DynamoDB.AttributeValue
+slideIdToAttributeValue (SlideId slideId) =
+    DynamoDB.attributeValue & DynamoDB.avS .~ Just slideId
+
+slideIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe SlideId
+slideIdFromAttributeValue attr = SlideId <$> attr ^. DynamoDB.avS
+
 deckToItem :: DeckId -> Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
 deckToItem deckId Deck{deckSlides} =
-    HMS.singleton "DeckId"
-      (DynamoDB.attributeValue & DynamoDB.avS .~ Just (unDeckId deckId)) <>
-    (if null deckSlides
-    then HMS.empty
-    else
-      HMS.singleton "DeckSlides"
-        (DynamoDB.attributeValue & DynamoDB.avSS .~ (unSlideId <$> deckSlides))
-    )
+    HMS.singleton "DeckId" (deckIdToAttributeValue deckId) <>
+    HMS.singleton "DeckSlides" (deckSlidesToAttributeValue deckSlides)
+
+deckToItem' :: Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
+deckToItem' Deck{deckSlides} =
+    HMS.singleton ":s" (deckSlidesToAttributeValue deckSlides)
 
 itemToDeck :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (WithId DeckId Deck)
 itemToDeck item = do
-    deckIdAttr <- HMS.lookup "DeckId" item
-    deckIdString <- deckIdAttr ^. DynamoDB.avS
-    deckId <- pure $ DeckId deckIdString
-    deckSlides <- pure $ case HMS.lookup "DeckSlides" item of
-      Nothing -> []
-      Just slides -> slides ^. DynamoDB.avSS <&> SlideId
+    deckId <- HMS.lookup "DeckId" item >>= deckIdFromAttributeValue
+    deckSlides <- HMS.lookup "DeckSlides" item >>= deckSlidesFromAttributeValue
     pure $ WithId deckId Deck{..}
-
 
 slideToItem :: SlideId -> Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
 slideToItem slideId Slide{slideContent, slideTemplate, slideAttributes} =
-    HMS.singleton "SlideId"
-      (DynamoDB.attributeValue & DynamoDB.avS .~ Just (unSlideId slideId)) <>
-    HMS.singleton "SlideContent"
-      (DynamoDB.attributeValue & DynamoDB.avS .~ Just slideContent) <>
-    HMS.singleton "SlideTemplate"
-      (DynamoDB.attributeValue & DynamoDB.avS .~ Just slideTemplate) <>
-    (if HMS.null slideAttributes
-    then HMS.empty
-    else
-      HMS.singleton "SlideAttributes"
-        (DynamoDB.attributeValue & DynamoDB.avM .~ (
-          (\txt -> DynamoDB.attributeValue & DynamoDB.avS .~ Just txt) <$>
-            slideAttributes
-        ))
-    )
+    HMS.singleton "SlideId" (slideIdToAttributeValue slideId) <>
+    HMS.singleton "SlideContent" (slideContentToAttributeValue slideContent) <>
+    HMS.singleton "SlideTemplate" (slideTemplateToAttributeValue slideTemplate) <>
+    HMS.singleton "SlideAttributes" (slideAttributesToAttributeValue slideAttributes)
+
+slideContentToAttributeValue :: T.Text -> DynamoDB.AttributeValue
+slideContentToAttributeValue content =
+    DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 content)
+
+slideContentFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
+slideContentFromAttributeValue attr = toSlideContent <$> attr ^. DynamoDB.avB
+  where
+    toSlideContent = T.decodeUtf8
+
+slideTemplateToAttributeValue :: T.Text -> DynamoDB.AttributeValue
+slideTemplateToAttributeValue content =
+    DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 content)
+
+slideTemplateFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
+slideTemplateFromAttributeValue attr = toSlideTemplate <$> attr ^. DynamoDB.avB
+  where
+    toSlideTemplate = T.decodeUtf8
+
+slideAttributesToAttributeValue :: HMS.HashMap T.Text T.Text -> DynamoDB.AttributeValue
+slideAttributesToAttributeValue attributes =
+    DynamoDB.attributeValue & DynamoDB.avM .~
+      HMS.map attributeValueToAttributeValue attributes
+  where
+    attributeValueToAttributeValue :: T.Text -> DynamoDB.AttributeValue
+    attributeValueToAttributeValue attrValue =
+      DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 attrValue)
+
+slideAttributesFromAttributeValue :: DynamoDB.AttributeValue -> Maybe (HMS.HashMap T.Text T.Text)
+slideAttributesFromAttributeValue attr =
+    traverse attributeValueFromAttributeValue (attr ^. DynamoDB.avM)
+  where
+    attributeValueFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
+    attributeValueFromAttributeValue attrValue =
+      T.decodeUtf8 <$> attrValue ^. DynamoDB.avB
+
+slideToItem' :: Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
+slideToItem' Slide{slideContent, slideTemplate, slideAttributes} =
+    HMS.singleton ":c" (slideContentToAttributeValue slideContent) <>
+    HMS.singleton ":t" (slideTemplateToAttributeValue slideTemplate) <>
+    HMS.singleton ":a" (slideAttributesToAttributeValue slideAttributes)
 
 itemToSlide :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (WithId SlideId Slide)
 itemToSlide item = do
-    slideIdAttr <- HMS.lookup "SlideId" item
-    slideIdString <- slideIdAttr ^. DynamoDB.avS
-    slideId <- pure $ SlideId slideIdString
+    slideId <- HMS.lookup "SlideId" item >>= slideIdFromAttributeValue
 
-    slideContentAttr <- HMS.lookup "SlideContent" item
-    slideContent <- slideContentAttr ^. DynamoDB.avS
+    slideContent <- HMS.lookup "SlideContent" item >>= slideContentFromAttributeValue
 
-    slideTemplateAttr <- HMS.lookup "SlideTemplate" item
-    slideTemplate <- slideTemplateAttr ^. DynamoDB.avS
-
-    slideAttributesAttr <- HMS.lookup "SlideAttributes" item
-    slideAttributes <- pure $ slideAttributesAttr ^. DynamoDB.avM &
-      HMS.mapMaybe (\attr -> attr ^. DynamoDB.avS)
+    slideTemplate <- HMS.lookup "SlideTemplate" item >>= slideTemplateFromAttributeValue
+    slideAttributes <- HMS.lookup "SlideAttributes" item >>= slideAttributesFromAttributeValue
 
     pure $ WithId slideId Slide{..}
