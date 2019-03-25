@@ -3,7 +3,6 @@ app-feed-card-content {
   ion-card-content {
     display: flex;
     align-items: stretch;
-    flex: 1 1 auto;
     width: 100%;
 
     ion-card-title, ion-card-subtitle {
@@ -85,7 +84,10 @@ app-feed-card-content {
 
   @media screen and (max-width: 540px) {
     ion-card-content {
-      div.preview {
+      flex-direction: column;
+      align-items: center;
+
+      div.preview:not(.editable) {
         display: none;
       }
     }

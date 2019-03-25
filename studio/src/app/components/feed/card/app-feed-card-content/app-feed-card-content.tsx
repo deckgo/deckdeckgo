@@ -96,7 +96,7 @@ export class AppFeedCardContent {
                     </ion-card-subtitle>
                 </ion-card-header>
 
-                <p padding-start padding-end class="content ion-text-lowercase" contentEditable={this.editable}>Keep
+                <p padding-start padding-end class="content" contentEditable={this.editable}>Keep
                     close to Nature's heart... and break clear away, once in
                     awhile,
                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
@@ -115,7 +115,7 @@ export class AppFeedCardContent {
         if (this.firstCard) {
             return undefined;
         } else {
-            return <div class="preview">
+            return <div class={this.editable ? "preview editable" : "preview"}>
                 <img src="./assets/img/deckdeckgo-logo.svg"/>
             </div>;
         }
