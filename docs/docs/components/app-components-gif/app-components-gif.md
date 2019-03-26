@@ -57,6 +57,7 @@ The following theming options will affect this component if set on its host or p
 | --color | | The color of the `header` and `footer` over the gif|
 | --padding | | The padding of the `header` and `footer` over the gif |
 | --zIndex | 2 | The z-index of the slide |
+| --border-radius | | A radius for the border of the gif container |
 
 ## Note
 

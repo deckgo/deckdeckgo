@@ -1,6 +1,7 @@
 import {Component, Element} from '@stencil/core';
 
 import {SlideTemplate} from '../../../models/slide-template';
+
 import {EditorUtils} from '../../../utils/editor-utils';
 
 @Component({
@@ -10,6 +11,25 @@ import {EditorUtils} from '../../../utils/editor-utils';
 export class AppSlideType {
 
     @Element() el: HTMLElement;
+
+    async componentDidLoad() {
+        await this.lazyLoadContent();
+    }
+
+    private lazyLoadContent(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slideGif: HTMLElement = this.el.querySelector('deckgo-slide-gif');
+
+            if (!slideGif) {
+                resolve();
+                return;
+            }
+
+            await (slideGif as any).lazyLoadContent();
+
+            resolve();
+        });
+    }
 
     private async addSlide(template: SlideTemplate) {
         const slide: any = await EditorUtils.createSlide(template);
@@ -41,6 +61,11 @@ export class AppSlideType {
                     <p slot="start">Content</p>
                     <p slot="end">Content</p>
                 </deckgo-slide-split>
+            </div>
+            <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.GIF)}>
+                <deckgo-slide-gif src="./assets/img/example.gif" alt="Slide Gif" fullscreen={true}>
+                    <p slot="footer" style={{"font-size": "var(--font-size-very-small)", padding: "2px", "border-radius": "4px"}}>GIFs</p>
+                </deckgo-slide-gif>
             </div>
         </div>;
     }
