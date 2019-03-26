@@ -41,6 +41,11 @@ main = do
     Right decks ->
       if decks == [WithId deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
 
+  runClientM (decksGetDeckId' deckId) clientEnv >>= \case
+    Left err -> error $ "Expected decks, got error: " <> show err
+    Right deck ->
+      if deck == (WithId deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
+
   runClientM slidesGet' clientEnv >>= \case
     Left err -> error $ "Expected slides, got error: " <> show err
     Right slides ->
@@ -56,6 +61,11 @@ main = do
     Left err -> error $ "Expected updated slides, got error: " <> show err
     Right slides ->
       if slides == [WithId slideId updatedSlide] then pure () else (error $ "Expected updated slides, got: " <> show slides)
+
+  runClientM (slidesGetSlideId' slideId) clientEnv >>= \case
+    Left err -> error $ "Expected updated slide, got error: " <> show err
+    Right slide ->
+      if slide == (WithId slideId updatedSlide) then pure () else (error $ "Expected updated slide, got: " <> show slide)
 
   runClientM (slidesDelete' slideId) clientEnv >>= \case
     Left err -> error $ "Expected slide delete, got error: " <> show err
@@ -77,13 +87,27 @@ main = do
 
 -- 'client' allows you to produce operations to query an API from a client.
 decksGet' :: ClientM [WithId DeckId Deck]
+decksGetDeckId' :: DeckId -> ClientM (WithId DeckId Deck)
 decksPost' :: Deck -> ClientM (WithId DeckId Deck)
 decksPut' :: DeckId -> Deck -> ClientM (WithId DeckId Deck)
 decksDelete' :: DeckId -> ClientM ()
 slidesGet' :: ClientM [WithId SlideId Slide]
+slidesGetSlideId' :: SlideId -> ClientM (WithId SlideId Slide)
 slidesPost' :: Slide -> ClientM (WithId SlideId Slide)
 slidesPut' :: SlideId -> Slide -> ClientM (WithId SlideId Slide)
 slidesDelete' :: SlideId -> ClientM ()
-((decksGet' :<|> decksPost' :<|> decksPut' :<|> decksDelete') :<|>
-  (slidesGet' :<|> slidesPost' :<|> slidesPut' :<|> slidesDelete')
+((
+  decksGet' :<|>
+  decksGetDeckId' :<|>
+  decksPost' :<|>
+  decksPut' :<|>
+  decksDelete'
+  ) :<|>
+  (
+  slidesGet' :<|>
+  slidesGetSlideId' :<|>
+  slidesPost' :<|>
+  slidesPut' :<|>
+  slidesDelete'
+  )
   ) = client api

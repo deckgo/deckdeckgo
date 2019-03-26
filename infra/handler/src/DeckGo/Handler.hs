@@ -108,12 +108,14 @@ type API =
 
 type DecksAPI =
     Get '[JSON] [WithId DeckId Deck] :<|>
+    Capture "deck_id" DeckId :> Get '[JSON] (WithId DeckId Deck) :<|>
     ReqBody '[JSON] Deck :> Post '[JSON] (WithId DeckId Deck) :<|>
     Capture "deck_id" DeckId :> ReqBody '[JSON] Deck :> Put '[JSON] (WithId DeckId Deck) :<|>
     Capture "deck_id" DeckId :> Delete '[JSON] ()
 
 type SlidesAPI =
     Get '[JSON] [WithId SlideId Slide] :<|>
+    Capture "slide_id" SlideId :> Get '[JSON] (WithId SlideId Slide) :<|>
     ReqBody '[JSON] Slide :> Post '[JSON] (WithId SlideId Slide) :<|>
     Capture "slide_id" SlideId :> ReqBody '[JSON] Slide :> Put '[JSON] (WithId SlideId Slide) :<|>
     Capture "slide_id" SlideId :> Delete '[JSON] ()
@@ -133,11 +135,13 @@ server env = serveDecks :<|> serveSlides
   where
     serveDecks =
       decksGet env :<|>
+      decksGetDeckId env :<|>
       decksPost env :<|>
       decksPut env :<|>
       decksDelete env
     serveSlides =
       slidesGet env :<|>
+      slidesGetSlideId env :<|>
       slidesPost env :<|>
       slidesPut env :<|>
       slidesDelete env
@@ -152,6 +156,32 @@ decksGet env = do
             liftIO $ putStrLn $ "Could not parse response: " <> show scanResponse
             Servant.throwError Servant.err500
           Just ids -> pure ids
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
+
+decksGetDeckId :: Aws.Env -> DeckId -> Servant.Handler (WithId DeckId Deck)
+decksGetDeckId env deckId = do
+    res <- runAWS env $ Aws.send $ DynamoDB.getItem "Decks" &
+        DynamoDB.giKey .~ HMS.singleton "DeckId" (deckIdToAttributeValue deckId)
+    case res of
+      Right getItemResponse -> do
+        case getItemResponse ^. DynamoDB.girsResponseStatus of
+          200 -> pure ()
+          404 -> do
+            liftIO $ putStrLn $ "Item not found: " <> show getItemResponse
+            Servant.throwError Servant.err404
+          s -> do
+            liftIO $
+              putStrLn $ "Unkown response status: " <> show s <>
+              " in response " <> show getItemResponse
+            Servant.throwError Servant.err500
+
+        case itemToDeck (getItemResponse ^. DynamoDB.girsItem) of
+          Nothing -> do
+            liftIO $ putStrLn $ "Could not parse response: " <> show getItemResponse
+            Servant.throwError Servant.err500
+          Just deck -> pure deck
       Left e -> do
         liftIO $ print e
         Servant.throwError Servant.err500
@@ -222,6 +252,32 @@ slidesGet env = do
             Servant.throwError Servant.err500
           Just ids -> pure ids
 
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
+
+slidesGetSlideId :: Aws.Env -> SlideId -> Servant.Handler (WithId SlideId Slide)
+slidesGetSlideId env slideId = do
+    res <- runAWS env $ Aws.send $ DynamoDB.getItem "Slides" &
+        DynamoDB.giKey .~ HMS.singleton "SlideId" (slideIdToAttributeValue slideId)
+    case res of
+      Right getItemResponse -> do
+        case getItemResponse ^. DynamoDB.girsResponseStatus of
+          200 -> pure ()
+          404 -> do
+            liftIO $ putStrLn $ "Item not found: " <> show getItemResponse
+            Servant.throwError Servant.err404
+          s -> do
+            liftIO $
+              putStrLn $ "Unkown response status: " <> show s <>
+              " in response " <> show getItemResponse
+            Servant.throwError Servant.err500
+
+        case itemToSlide (getItemResponse ^. DynamoDB.girsItem) of
+          Nothing -> do
+            liftIO $ putStrLn $ "Could not parse response: " <> show getItemResponse
+            Servant.throwError Servant.err500
+          Just slide -> pure slide
       Left e -> do
         liftIO $ print e
         Servant.throwError Servant.err500
