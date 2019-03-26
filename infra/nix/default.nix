@@ -3,6 +3,7 @@ with rec
 { sources = import ./sources.nix;
   pkgs = import sources.nixpkgs {};
   wai-lambda = pkgs.callPackage "${sources.wai-lambda}/nix/packages.nix" {};
+  surveyor = pkgs.callPackage ../surveyor {};
 
   pkgsStatic =
     (import "${sources.static-haskell-nix}/survey"
@@ -41,5 +42,6 @@ with rec
 
 pkgs //
 { inherit haskellPackagesStatic haskellPackages sources wai-lambda;
+  inherit (surveyor) surveyor;
   inherit (import sources.niv {}) niv;
 }
