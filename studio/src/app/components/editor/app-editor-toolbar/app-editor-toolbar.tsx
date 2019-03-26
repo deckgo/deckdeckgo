@@ -3,7 +3,7 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {EditorUtils, SlotType} from '../../../utils/editor-utils';
+import {SlotType} from '../../../utils/editor-utils';
 
 import {DeckBusyService} from '../../../services/deck/deck-busy.service';
 
@@ -45,6 +45,8 @@ export class AppEditorToolbar {
 
     @State()
     private deckBusy: boolean = false;
+
+    private originalPlaceHolder: Node;
 
     constructor() {
         this.deckBusyService = DeckBusyService.getInstance();
@@ -135,7 +137,7 @@ export class AppEditorToolbar {
 
             if (selected.classList && selected.classList.contains('deckgo-untouched')) {
                 if (selected.firstChild) {
-                    selected.removeChild(selected.firstChild);
+                    this.originalPlaceHolder = selected.removeChild(selected.firstChild);
                 }
 
                 selected.classList.remove('deckgo-untouched');
@@ -155,8 +157,8 @@ export class AppEditorToolbar {
     unSelect(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (this.selectedElement) {
-                if (this.selectedElement.classList && !this.selectedElement.classList.contains('deckgo-untouched') && !this.selectedElement.firstChild) {
-                    this.selectedElement.appendChild(document.createTextNode(this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase() === 'h1' ? EditorUtils.DEFAULT_TITLE : EditorUtils.DEFAULT_CONTENT));
+                if (this.originalPlaceHolder && this.selectedElement.classList && !this.selectedElement.classList.contains('deckgo-untouched') && !this.selectedElement.firstChild) {
+                    this.selectedElement.appendChild(this.originalPlaceHolder);
                     this.selectedElement.classList.add('deckgo-untouched');
                 }
 
