@@ -9,6 +9,7 @@ import {SlideService} from '../../services/slide/slide.service';
 import {DeckService} from '../../services/deck/deck.service';
 import {ErrorService} from '../../services/error/error.service';
 import {DeckBusyService} from '../../services/deck/deck-busy.service';
+import {SlideAttributes} from '../../models/slide-attributes';
 
 export class EditorHelper {
 
@@ -176,11 +177,35 @@ export class EditorHelper {
                     return;
                 }
 
-                await this.slideService.put({
+                let attributes: SlideAttributes;
+
+                if (slide.getAttribute('style')) {
+                    attributes = {
+                        style: slide.getAttribute('style')
+                    };
+                }
+
+                if (slide.getAttribute('src')) {
+                    if (!attributes) {
+                        attributes = {
+                            src: slide.getAttribute('style')
+                        };
+                    } else {
+                        attributes.src = slide.getAttribute('src');
+                    }
+                }
+
+                const slideUpdate: Slide = {
                     slide_id: slide.getAttribute('slide_id'),
                     slide_template: SlideTemplate.TITLE,
                     slide_content: slide.innerHTML
-                });
+                };
+
+                if (attributes) {
+                    slideUpdate.slide_attributes = attributes;
+                }
+
+                await this.slideService.put(slideUpdate);
 
                 this.deckBusyService.busy(false);
 
