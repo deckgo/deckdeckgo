@@ -8,9 +8,6 @@
 import '@stencil/core';
 
 
-import {
-  EventEmitter,
-} from '@stencil/core';
 
 
 export namespace Components {
@@ -208,7 +205,6 @@ export namespace Components {
     'alt'?: string;
     'fullscreen'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'onSlideInputChange'?: (event: CustomEvent<EventTarget>) => void;
     'src'?: string;
   }
 

@@ -18,22 +18,6 @@ div.deckgo-gif {
     background: var(--background);
     color: var(--color);
     padding: var(--padding, 8px);
-
-    min-width: var(--min-width);
-    border-radius: var(--border-radius);
-    text-transform: var(--text-transform);
-
-    overflow: hidden;
-  }
-
-  ::slotted([slot="header"]) {
-    font-size: var(--font-size-h2, inherit);
-    font-weight: var(--font-weight-h2, inherit);
-  }
-
-  ::slotted([slot="footer"]) {
-    font-size: var(--font-size-h3, inherit);
-    font-weight: var(--font-weight-h3, inherit);
   }
 
   ::slotted([slot="header"]) {

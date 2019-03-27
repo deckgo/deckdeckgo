@@ -193,15 +193,7 @@ export class AppEditorToolbar {
     }
 
     private isElementSlideOrDeck(element: HTMLElement): boolean {
-        if (!element) {
-            return false;
-        }
-
-        // TODO: That's a bit a hacky way to find if the deck or an item is clicked. Shadow dom limitation but still...
-        const isNodeDeckOrSlide: boolean = element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1);
-        const isClassSlide: boolean = element.className && (element.className.toLowerCase().indexOf('deckgo-slide') > -1 || element.className.toLowerCase().indexOf('deckgo-gif') > -1);
-
-        return isNodeDeckOrSlide || isClassSlide;
+        return element && element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1)
     }
 
     private displayToolbar(element: HTMLElement): Promise<void> {
@@ -551,8 +543,8 @@ export class AppEditorToolbar {
         };
 
         return [<a onClick={() => this.deleteElement()} class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
-                <ion-icon name="trash"></ion-icon>
-            </a>,
+            <ion-icon name="trash"></ion-icon>
+        </a>,
             <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)}>
                 <ion-label style={styleColor}>A</ion-label>
             </a>,

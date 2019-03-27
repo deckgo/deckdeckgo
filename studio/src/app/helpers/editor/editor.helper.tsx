@@ -37,8 +37,7 @@ export class EditorHelper {
     init(el: HTMLElement) {
         this.el = el;
 
-        this.el.addEventListener('input', this.onInputChange, false);
-        this.el.addEventListener('slideInputChange', this.onSlideInputChange, false);
+        this.el.addEventListener('input', this.onSlideInputChange, false);
         this.el.addEventListener('slideDidChange', this.onSlideChange, false);
         this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
         this.el.addEventListener('slideDelete', this.onSlideDelete, false);
@@ -49,8 +48,7 @@ export class EditorHelper {
     }
 
     destroy() {
-        this.el.removeEventListener('input', this.onInputChange, true);
-        this.el.removeEventListener('slideInputChange', this.onSlideInputChange, true);
+        this.el.removeEventListener('input', this.onSlideInputChange, true);
         this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
         this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
@@ -74,26 +72,12 @@ export class EditorHelper {
         this.updateSlideSubject.next($event.detail);
     };
 
-    private onInputChange = async ($event: Event) => {
-        if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
-            return;
-        }
-
-        const parent: HTMLElement = ($event.target as HTMLElement).parentElement;
-
-        if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
-            return;
-        }
-
-        this.updateSlideSubject.next(parent);
-    };
-
     private onSlideInputChange = async ($event: Event) => {
         if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
             return;
         }
 
-        const parent: HTMLElement = ($event.target as HTMLElement);
+        const parent: HTMLElement = ($event.target as HTMLElement).parentElement;
 
         if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
             return;

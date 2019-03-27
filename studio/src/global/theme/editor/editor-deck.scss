@@ -13,12 +13,23 @@ deckgo-deck {
     border: 1px solid var(--ion-color-light);
 
     padding: 8px;
+
+    &:focus {
+      outline: 0;
+      box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), .5);
+    }
   }
 
-  deckgo-slide-gif {
-    --min-width: 75%;
-    --border-radius: 2px;
-    --text-transform: uppercase;
+  h1 {
+    min-height: calc(var(--font-size-h1) + 4px);
+  }
+
+  h2 {
+    min-height: calc(var(--font-size-h2) + 4px);
+  }
+
+  h3 {
+    min-height: calc(var(--font-size-h3) + 4px);
   }
 
   p {

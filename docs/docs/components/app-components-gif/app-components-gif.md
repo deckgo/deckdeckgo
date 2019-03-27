@@ -58,12 +58,6 @@ The following theming options will affect this component if set on its host or p
 | --padding | | The padding of the `header` and `footer` over the gif |
 | --zIndex | 2 | The z-index of the slide |
 | --border-radius | | A radius for the border of the gif container |
-| --min-width | | The minimal width of the slotted elements header and footer |
-| --text-transform | | The text transform of the slotted elements header and footer |
-| --font-size-h2 | | The font size of the slotted elements header |
-| --font-weight-h2 | | The font weight of the slotted elements header |
-| --font-size-h3 | | The font size of the slotted elements footer |
-| --font-weight-h3 | | The font weight of the slotted elements footer |
 
 ## Note
 
