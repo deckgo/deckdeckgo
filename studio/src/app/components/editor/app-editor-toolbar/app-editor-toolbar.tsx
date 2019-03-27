@@ -193,7 +193,15 @@ export class AppEditorToolbar {
     }
 
     private isElementSlideOrDeck(element: HTMLElement): boolean {
-        return element && element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1)
+        if (!element) {
+            return false;
+        }
+
+        // TODO: That's a bit a hacky way to find if the deck or an item is clicked. Shadow dom limitation but still...
+        const isNodeDeckOrSlide: boolean = element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1);
+        const isClassSlide: boolean = element.className && (element.className.toLowerCase().indexOf('deckgo-slide') > -1 || element.className.toLowerCase().indexOf('deckgo-gif') > -1);
+
+        return isNodeDeckOrSlide || isClassSlide;
     }
 
     private displayToolbar(element: HTMLElement): Promise<void> {
