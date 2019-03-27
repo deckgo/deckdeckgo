@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, Listen, State} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
@@ -19,12 +19,12 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
 
   @Prop() fullscreen: boolean = false;
 
+  @State() loaded: boolean = false;
+
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
-
-    await this.moveSlots();
   }
 
   @Method()
@@ -44,25 +44,9 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
 
-  private moveSlots(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const header: HTMLElement = this.el.querySelector('[slot=\'header\']');
-      const footer: HTMLElement = this.el.querySelector('[slot=\'footer\']');
-
-      const gif: HTMLDeckgoGifElement = this.el.shadowRoot.querySelector('deckgo-gif');
-
-      if (gif) {
-        if (header) {
-          gif.appendChild(header);
-        }
-
-        if (footer) {
-          gif.appendChild(footer);
-        }
-      }
-
-      resolve();
-    });
+  @Listen('gifLoaded')
+  onGifLoaded($event: CustomEvent) {
+    this.loaded = $event && $event.detail;
   }
 
   render() {
@@ -83,7 +67,8 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
     return {
       class: {
         'deckgo-slide-container': true,
-        'deckgo-slide-container-fullscreen': this.fullscreen
+        'deckgo-slide-container-fullscreen': this.fullscreen,
+        'deckgo-slide-gif-hidden': !this.loaded
       }
     }
   }

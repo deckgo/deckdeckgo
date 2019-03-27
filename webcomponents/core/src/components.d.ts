@@ -57,6 +57,7 @@ export namespace Components {
   interface DeckgoGifAttributes extends StencilHTMLAttributes {
     'alt'?: string;
     'fullscreen'?: boolean;
+    'onGifLoaded'?: (event: CustomEvent<boolean>) => void;
     'src'?: string;
   }
 
