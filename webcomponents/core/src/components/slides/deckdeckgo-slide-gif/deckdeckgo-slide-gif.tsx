@@ -17,7 +17,7 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
   @Prop() src: string;
   @Prop() alt: string;
 
-  @Prop() fullscreen: boolean = false;
+  @Prop() fullscreen: boolean = true;
 
   @State() loaded: boolean = false;
 

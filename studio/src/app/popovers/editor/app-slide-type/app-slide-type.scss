@@ -76,6 +76,13 @@ app-slide-type {
         font-size: 0.2rem;
       }
     }
+
+    deckgo-slide-gif {
+      p {
+        min-height: inherit;
+        width: inherit;
+      }
+    }
   }
 
   div.swipe {

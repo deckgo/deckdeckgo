@@ -94,7 +94,7 @@ export class AppSlideGif {
 <tr>
 <td>fullscreen</td>
 <td>number</td>
-<td>false</td>
+<td>true</td>
 <td>If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen.</td>
 </tr>
 </tbody></table>

@@ -63,7 +63,7 @@ export class AppSlideType {
                 </deckgo-slide-split>
             </div>
             <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.GIF)}>
-                <deckgo-slide-gif src="./assets/img/example.gif" alt="Slide Gif" fullscreen={true}>
+                <deckgo-slide-gif src="./assets/img/example.gif" alt="Slide Gif">
                     <p slot="footer" style={{"font-size": "var(--font-size-very-small)", padding: "2px", "border-radius": "4px"}}>GIFs</p>
                 </deckgo-slide-gif>
             </div>

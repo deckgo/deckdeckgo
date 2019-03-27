@@ -63,7 +63,7 @@ This component offers the following options which could be set using attributes:
 | -------------------------- |-----------------|-----------------|-----------------|
 | src | string |  | The source url, the src, of the Gif. Could be an embeddable external url or a local one. |
 | alt | string |  | And alt information could be provided for accessibility reason. |
-| fullscreen | number | false | If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen. |
+| fullscreen | number | true | If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen. |
 
 ## Theming
 

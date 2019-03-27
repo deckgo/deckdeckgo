@@ -121,7 +121,7 @@ export class EditorUtils {
                 {this.DEFAULT_CAPTION}
             </h2>;
 
-            const slide: any = <deckgo-slide-gif src="./assets/img/example.gif" fullscreen={true}>
+            const slide: any = <deckgo-slide-gif src="./assets/img/example.gif">
                 {title}
                 {content}
             </deckgo-slide-gif>;
