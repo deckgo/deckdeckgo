@@ -148,6 +148,36 @@ export class AppComponentsGif {
 <td></td>
 <td>A radius for the border of the gif container</td>
 </tr>
+<tr>
+<td>--min-width</td>
+<td></td>
+<td>The minimal width of the slotted elements header and footer</td>
+</tr>
+<tr>
+<td>--text-transform</td>
+<td></td>
+<td>The text transform of the slotted elements header and footer</td>
+</tr>
+<tr>
+<td>--font-size-h2</td>
+<td></td>
+<td>The font size of the slotted elements header</td>
+</tr>
+<tr>
+<td>--font-weight-h2</td>
+<td></td>
+<td>The font weight of the slotted elements header</td>
+</tr>
+<tr>
+<td>--font-size-h3</td>
+<td></td>
+<td>The font size of the slotted elements footer</td>
+</tr>
+<tr>
+<td>--font-weight-h3</td>
+<td></td>
+<td>The font weight of the slotted elements footer</td>
+</tr>
 </tbody></table>
 <h2 id="app-components-gif-note">Note</h2>
 <p>Of course, as other images added to a presentation build with <a href="https://deckdeckgo.com">DeckDeckGo</a>, gifs are lazy loaded too. </p>
