@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, Listen} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
@@ -19,12 +19,23 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
 
   @Prop() fullscreen: boolean = false;
 
+  @Event() private slideInputChange: EventEmitter<EventTarget>;
+
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
 
     await this.moveSlots();
+  }
+
+  @Listen('input')
+  onInput($event: UIEvent) {
+    if ($event) {
+      $event.stopPropagation();
+
+      this.slideInputChange.emit($event.target);
+    }
   }
 
   @Method()
