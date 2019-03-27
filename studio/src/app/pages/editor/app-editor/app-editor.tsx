@@ -364,12 +364,19 @@ export class AppEditor {
                 return;
             }
 
-            if (!$event.target || !($event.target instanceof HTMLElement)) {
+            if (!$event.target) {
                 resolve();
                 return;
             }
 
-            const element: HTMLElement = $event.target as HTMLElement;
+            const targets: EventTarget[] = $event.composedPath();
+
+            if (!targets || targets.length <= 0) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = targets[0] as HTMLElement;
 
             await this.touchToolbar(element);
 
