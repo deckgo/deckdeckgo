@@ -129,8 +129,13 @@ export class AppEditor {
     }
 
     @Listen('document:mouseInactivity')
-    inactivity($event: CustomEvent) {
+    async inactivity($event: CustomEvent) {
         this.displaying = !$event.detail;
+
+        // Wait a bit for the display/repaint of the footer
+        setTimeout(async () => {
+            await this.initSlideSize();
+        }, 100);
     }
 
     @Listen('keyup')
