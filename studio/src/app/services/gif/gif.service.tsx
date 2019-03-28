@@ -89,7 +89,7 @@ export class GifService {
             const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
             try {
-                const rawResponse: Response = await fetch(config.url + '/anonid?key=' + config.key);
+                const rawResponse: Response = await fetch(config.url + 'anonid?key=' + config.key);
 
                 const response: TenorAnonymousResponse = JSON.parse(await rawResponse.text());
 
