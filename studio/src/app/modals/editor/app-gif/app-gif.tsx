@@ -101,8 +101,6 @@ export class AppGif {
                 return;
             }
 
-            this.paginationNext = tenorResponse.next;
-
             const gifs: TenorGif[] = tenorResponse.results;
 
             if (!gifs || gifs.length <= 0) {
@@ -122,6 +120,15 @@ export class AppGif {
 
             this.gifsOdd = [...this.gifsOdd, ...gifs.filter((_a, i) => i % 2)];
             this.gifsEven = [...this.gifsEven, ...gifs.filter((_a, i) => !(i % 2))];
+
+            if (!this.paginationNext || this.paginationNext === 0) {
+                // We just put a small delay because of the repaint
+                setTimeout(async () => {
+                    await this.autoScrollToTop();
+                }, 100)
+            }
+
+            this.paginationNext = tenorResponse.next;
 
             resolve();
         });
@@ -161,6 +168,21 @@ export class AppGif {
         this.searchTerm = ($event.target as InputTargetEvent).value;
     }
 
+    private autoScrollToTop(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const content: HTMLIonContentElement = this.el.querySelector('ion-content');
+
+            if (!content) {
+                resolve();
+                return;
+            }
+
+            await content.scrollToTop();
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <ion-header>
@@ -185,7 +207,8 @@ export class AppGif {
                     </div>
                 </div>
 
-                <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll} onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
+                <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
+                                     onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
                     <ion-infinite-scroll-content
                         loadingSpinner="bubbles"
                         loadingText="Loading more data...">
