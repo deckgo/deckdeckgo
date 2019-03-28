@@ -110,10 +110,16 @@ export class EditorHelper {
 
                 this.deckBusyService.busy(true);
 
-                const persistedSlide: Slide = await this.slideService.post({
-                    slide_template: SlideTemplate.TITLE,
-                    slide_content: slide.innerHTML
-                });
+                const slidePost: Slide = {
+                    slide_template: SlideTemplate.TITLE
+                };
+
+                const content: string = await this.cleanSlideContent(slide.innerHTML);
+                if (content && content.length > 0) {
+                    slidePost.slide_content = content
+                }
+
+                const persistedSlide: Slide = await this.slideService.post(slidePost);
 
                 if (persistedSlide && persistedSlide.slide_id) {
                     slide.setAttribute('slide_id', persistedSlide.slide_id);
@@ -179,9 +185,13 @@ export class EditorHelper {
 
                 const slideUpdate: Slide = {
                     slide_id: slide.getAttribute('slide_id'),
-                    slide_template: SlideTemplate.TITLE,
-                    slide_content: slide.innerHTML
+                    slide_template: SlideTemplate.TITLE
                 };
+
+                const content: string = await this.cleanSlideContent(slide.innerHTML);
+                if (content && content.length > 0) {
+                    slideUpdate.slide_content = content
+                }
 
                 const attributes: SlideAttributes = await this.getSlideAttributes(slide);
 
@@ -260,5 +270,20 @@ export class EditorHelper {
 
             resolve(attributes);
         })
+    }
+
+    private cleanSlideContent(content: string): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!content || content.length <= 0) {
+                resolve(content);
+                return;
+            }
+
+            let result: string = content.replace(/deckgo-untouched|contenteditable=""|contenteditable="true"|contenteditable/gi, '');
+            result = result.replace(/class=""/g, '');
+            result = result.replace(/\s\s+/g, '');
+
+            resolve(result);
+        });
     }
 }
