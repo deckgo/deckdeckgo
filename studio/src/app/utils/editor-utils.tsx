@@ -113,13 +113,13 @@ export class EditorUtils {
                 return;
             }
 
-            const title = <h1 slot="header" class="deckgo-untouched" contenteditable>
-                {this.DEFAULT_CAPTION}
-            </h1>;
-
-            const content = <h2 slot="footer" class="deckgo-untouched" contenteditable>
+            const title = <h2 slot="header" class="deckgo-untouched" contenteditable>
                 {this.DEFAULT_CAPTION}
             </h2>;
+
+            const content = <h3 slot="footer" class="deckgo-untouched" contenteditable>
+                {this.DEFAULT_CAPTION}
+            </h3>;
 
             const slide: any = <deckgo-slide-gif src={src}>
                 {title}
