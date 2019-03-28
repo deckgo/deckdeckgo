@@ -1,4 +1,8 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -11,9 +15,18 @@
 module DeckGo.Handler where
 
 import Control.Monad
+import Control.Monad.Except
 import Control.Lens hiding ((.=))
 import Data.Proxy
+import qualified Data.X509 as X509
+import qualified Data.PEM as PEM
+import qualified Data.ByteString.Lazy as BL
+-- import qualified Data.ByteString as BS
 import Servant.API
+import qualified Crypto.JOSE.JWA.JWS as JOSE
+import qualified Crypto.JOSE as JOSE
+import qualified Crypto.JWT as JWT
+import qualified Crypto.JOSE.JWK as JWK
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Data.HashMap.Strict as HMS
@@ -24,11 +37,77 @@ import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.Wai as Wai
 import qualified Servant as Servant
+import qualified Servant.Client.Core as Servant
+-- import qualified Servant.Auth as Servant
 import qualified System.Random as Random
+
+-- | Generate a key suitable for use with 'defaultConfig'.
+
+_sign :: JOSE.JWK -> JWT.ClaimsSet -> IO (Either JWT.JWTError JWT.SignedJWT)
+_sign jwk cs = runExceptT $ JWT.signClaims jwk (JOSE.newJWSHeader ((), JOSE.RS256)) cs
+
+newtype UserId = UserId { unUserId :: T.Text }
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, Show, Eq)
+
+newtype UnverifiedJWT = UnverifiedJWT JWT.SignedJWT
+
+-- TODO: MAKE SURE PATTERN MATCH FAILURES AREN'T PROPAGATED TO CLIENT!!!
+verifyUser :: UnverifiedJWT -> IO UserId
+verifyUser (UnverifiedJWT jwt) = do
+  Just jwkmap <- Aeson.decodeFileStrict' "./cert" :: IO (Maybe (HMS.HashMap T.Text T.Text))
+  Just jwkct <- pure $ HMS.lookup "1" jwkmap
+  pem <- case PEM.pemParseBS (T.encodeUtf8 jwkct) of
+    Left e -> error $ show e
+    Right [e] -> pure e
+    Right xs -> error $ show xs
+  cert <- case X509.decodeSignedCertificate (PEM.pemContent pem) of
+    Left e -> error $ show e
+    Right c -> pure c
+  Right jwk <- runExceptT (JWK.fromX509Certificate cert) :: IO (Either JWT.JWTError JWT.JWK)
+  let config = JWT.defaultJWTValidationSettings (== "my-project-id")
+  runExceptT (JWT.verifyClaims config jwk jwt) >>= \case
+    Right {} -> pure (UserId "")
+    Left (e :: JWT.JWTError) -> error (show e)
+
+instance FromHttpApiData UnverifiedJWT where
+  parseUrlPiece = const $ Left "No support for JWT"
+  parseHeader bs = case JWT.decodeCompact (BL.fromStrict bs) of
+    Left (e :: JWT.Error) -> Left $ T.pack $ show e
+    Right jwt -> Right $ UnverifiedJWT jwt
+
+instance Servant.RunClient m => Servant.HasClient m (Protected :> Get '[JSON] [WithId DeckId Deck]) where
+  type Client m (Protected :> Get '[JSON] [WithId DeckId Deck]) = T.Text -> Servant.Client m (Get '[JSON] [WithId DeckId Deck])
+  clientWithRoute p Proxy req = \bs ->
+    -- TODO: header should be Authorization Bearer
+    Servant.clientWithRoute p (Proxy :: Proxy (Header "Authorization" T.Text :> Get '[JSON] [WithId DeckId Deck])) req (Just bs)
+
+  hoistClientMonad Proxy Proxy hoist c = \bs -> hoist (c bs)
+
+instance Servant.HasServer  (Protected :> Get '[JSON] [WithId DeckId Deck]) context where
+  type ServerT (Protected :> Get '[JSON] [WithId DeckId Deck]) m = UserId -> Servant.ServerT (Get '[JSON] [WithId DeckId Deck]) m
+
+  route Proxy c sub = do
+      Servant.route (Proxy :: Proxy ( Header "Authorization" UnverifiedJWT :>  Get '[JSON] [WithId DeckId Deck])) c (adapt <$> sub)
+    where
+      adapt f = \case
+        Nothing -> error "NO SUCH FOOOO"
+        Just jwt -> do
+          uid <- liftIO $ verifyUser jwt
+          f uid
+
+
+  hoistServerWithContext = Servant.hoistServerWithContext
+
 
 ------------------------------------------------------------------------------
 -- API
 ------------------------------------------------------------------------------
+
+data Protected
+-- type Protected = Header "Bearer" JWT.SignedJWT
+
+-- protect :: m b -> Maybe JWT.SignedJWT -> m b
+-- protect f _ = f
 
 data WithId id a = WithId id a
   deriving (Show, Eq)
@@ -107,7 +186,7 @@ type API =
     "slides" :> SlidesAPI
 
 type DecksAPI =
-    Get '[JSON] [WithId DeckId Deck] :<|>
+    Protected :> Get '[JSON] [WithId DeckId Deck] :<|>
     Capture "deck_id" DeckId :> Get '[JSON] (WithId DeckId Deck) :<|>
     ReqBody '[JSON] Deck :> Post '[JSON] (WithId DeckId Deck) :<|>
     Capture "deck_id" DeckId :> ReqBody '[JSON] Deck :> Put '[JSON] (WithId DeckId Deck) :<|>
@@ -146,8 +225,9 @@ server env = serveDecks :<|> serveSlides
       slidesPut env :<|>
       slidesDelete env
 
-decksGet :: Aws.Env -> Servant.Handler [WithId DeckId Deck]
-decksGet env = do
+decksGet :: Aws.Env -> UserId -> Servant.Handler [WithId DeckId Deck]
+decksGet env uid = do
+    liftIO $ print uid
     res <- runAWS env $ Aws.send $ DynamoDB.scan "Decks"
     case res of
       Right scanResponse ->

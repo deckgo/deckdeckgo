@@ -25,8 +25,8 @@ with rec
 
       super //
         mkPackage "deckdeckgo-handler" ../handler //
-        ( mkPackage "wai-lambda" wai-lambda.wai-lambda-source
-        );
+        ( mkPackage "wai-lambda" wai-lambda.wai-lambda-source ) //
+        { jose = super.callCabal2nix "jose" sources.hs-jose {}; } ;
     };
   normalHaskellPackages = pkgsStatic.pkgsMusl.haskellPackages.override
     (haskellOverride pkgsStatic.pkgsMusl);

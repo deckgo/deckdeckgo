@@ -5,15 +5,22 @@ import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Servant.API
 import Servant.Client
 import DeckGo.Handler
+import qualified Data.Text as T
+import qualified Data.Text.IO as T
 import qualified Data.HashMap.Strict as HMS
+import System.Environment (getArgs)
 
 main :: IO ()
 main = do
+  [p] <- getArgs
+
+  b <- T.readFile p
+
   manager' <- newManager defaultManagerSettings
 
   let clientEnv = mkClientEnv manager' (BaseUrl Http "localhost" 8080 "")
 
-  runClientM decksGet' clientEnv >>= \case
+  runClientM (decksGet' b) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 decks, got: " <> show decks
@@ -36,7 +43,7 @@ main = do
     Left err -> error $ "Expected updated deck, got error: " <> show err
     Right {} -> pure ()
 
-  runClientM decksGet' clientEnv >>= \case
+  runClientM (decksGet' b) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right decks ->
       if decks == [WithId deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
@@ -80,13 +87,13 @@ main = do
     Left err -> error $ "Expected deck delete, got error: " <> show err
     Right {} -> pure ()
 
-  runClientM decksGet' clientEnv >>= \case
+  runClientM (decksGet' b) clientEnv >>= \case
     Left err -> error $ "Expected no decks, got error: " <> show err
     Right decks ->
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
 
 -- 'client' allows you to produce operations to query an API from a client.
-decksGet' :: ClientM [WithId DeckId Deck]
+decksGet' :: T.Text -> ClientM [WithId DeckId Deck]
 decksGetDeckId' :: DeckId -> ClientM (WithId DeckId Deck)
 decksPost' :: Deck -> ClientM (WithId DeckId Deck)
 decksPut' :: DeckId -> Deck -> ClientM (WithId DeckId Deck)

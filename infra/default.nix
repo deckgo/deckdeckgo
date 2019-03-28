@@ -14,7 +14,17 @@ rec
   tar -xvf ${pkgs.sources.dynamodb}
   '';
 
-  test = pkgs.runCommand "tests" { buildInputs = [ pkgs.jre pkgs.curl pkgs.netcat pkgs.awscli ]; }
+  publicKey = builtins.readFile ./public.cer;
+
+  googleResp = { "1" = publicKey ; };
+
+  apiDir = pkgs.writeTextFile
+      { name = "google-resp";
+        destination = "/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com";
+        text = builtins.toJSON googleResp;
+      };
+
+  test = pkgs.runCommand "tests" { buildInputs = [ pkgs.jre pkgs.curl pkgs.netcat pkgs.awscli pkgs.haskellPackages.wai-app-static]; }
   ''
 
       java -Djava.library.path=${dynamoJar}/DynamoDBLocal_lib -jar ${dynamoJar}/DynamoDBLocal.jar -sharedDb -port 8000 &
@@ -47,13 +57,24 @@ rec
         LD_PRELOAD="${pkgs.libredirect}/lib/libredirect.so" \
         ${handler}/bin/server &
 
+
+      cp ${pkgs.writeText "foo" (builtins.toJSON googleResp)} cert
       while ! nc -z 127.0.0.1 8080; do
+        echo waiting for server
+        sleep 1
+      done
+
+      warp -d ${apiDir} -p 8081 &
+
+      while ! nc -z 127.0.0.1 8081; do
         echo waiting for warp
         sleep 1
       done
 
+      curl localhost:8081/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com
+
       echo "Running tests"
-      ${handler}/bin/test
+      ${handler}/bin/test ${./token}
 
       touch $out
   '';

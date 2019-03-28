@@ -26,6 +26,18 @@
         "type": "file",
         "sha256": "0hrwxg4igyll40y7l1s0icg55g247fl8cjs4rrcpjf8d7m0bb09j"
     },
+    "hs-jose": {
+        "homepage": "http://hackage.haskell.org/package/jose",
+        "url": "https://github.com/frasertweedale/hs-jose/archive/71274bf64c0600c1d877152173a08a5bff7adf4d.tar.gz",
+        "owner": "frasertweedale",
+        "branch": "master",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "repo": "hs-jose",
+        "type": "tarball",
+        "sha256": "0ah189vika1s0jk8f17mn77gilkw24vbs6xlggxw1qj926i6c4pk",
+        "description": "Haskell JOSE and JWT library",
+        "rev": "71274bf64c0600c1d877152173a08a5bff7adf4d"
+    },
     "static-haskell-nix": {
         "homepage": "",
         "url": "https://github.com/nh2/static-haskell-nix/archive/9781df8a48eade302d159ce63a7ab0c30247788c.tar.gz",

@@ -5,12 +5,20 @@ license: AGPL-3
 
 dependencies:
     - aeson
+    - bytestring
+    - mtl
     - amazonka
     - amazonka-dynamodb
     - base
+    - jose
     - lens
     - random
     - servant
+    - x509
+    - pem
+    #- servant-auth
+    #- servant-auth-server
+    - servant-client-core
     - servant-server
     - text
     - unliftio
