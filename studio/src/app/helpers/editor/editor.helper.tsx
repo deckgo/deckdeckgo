@@ -97,7 +97,7 @@ export class EditorHelper {
     private createSlide(slide: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
-                if (!slide) {
+                if (!slide || !slide.nodeName) {
                     resolve();
                     return;
                 }
@@ -111,7 +111,7 @@ export class EditorHelper {
                 this.deckBusyService.busy(true);
 
                 const slidePost: Slide = {
-                    slide_template: SlideTemplate.TITLE
+                    slide_template: this.getSlideTemplate(slide)
                 };
 
                 const content: string = await this.cleanSlideContent(slide.innerHTML);
@@ -172,7 +172,7 @@ export class EditorHelper {
     private updateSlide(slide: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
-                if (!slide) {
+                if (!slide || !slide.nodeName) {
                     resolve();
                     return;
                 }
@@ -185,7 +185,7 @@ export class EditorHelper {
 
                 const slideUpdate: Slide = {
                     slide_id: slide.getAttribute('slide_id'),
-                    slide_template: SlideTemplate.TITLE
+                    slide_template: this.getSlideTemplate(slide)
                 };
 
                 const content: string = await this.cleanSlideContent(slide.innerHTML);
@@ -285,5 +285,13 @@ export class EditorHelper {
 
             resolve(result);
         });
+    }
+
+    private getSlideTemplate(slide: HTMLElement): SlideTemplate {
+        const templateKey: string = Object.keys(SlideTemplate).find((key: string) => {
+            return slide.nodeName.toLowerCase().indexOf(SlideTemplate[key]) > -1
+        });
+
+        return SlideTemplate[templateKey];
     }
 }
