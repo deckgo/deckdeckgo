@@ -177,31 +177,15 @@ export class EditorHelper {
                     return;
                 }
 
-                let attributes: SlideAttributes;
-
-                if (slide.getAttribute('style')) {
-                    attributes = {
-                        style: slide.getAttribute('style')
-                    };
-                }
-
-                if (slide.getAttribute('src')) {
-                    if (!attributes) {
-                        attributes = {
-                            src: slide.getAttribute('style')
-                        };
-                    } else {
-                        attributes.src = slide.getAttribute('src');
-                    }
-                }
-
                 const slideUpdate: Slide = {
                     slide_id: slide.getAttribute('slide_id'),
                     slide_template: SlideTemplate.TITLE,
                     slide_content: slide.innerHTML
                 };
 
-                if (attributes) {
+                const attributes: SlideAttributes = await this.getSlideAttributes(slide);
+
+                if (attributes && Object.keys(attributes).length > 0) {
                     slideUpdate.slide_attributes = attributes;
                 }
 
@@ -260,5 +244,21 @@ export class EditorHelper {
 
             resolve();
         });
+    }
+
+    private getSlideAttributes(slide: HTMLElement): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            let attributes: SlideAttributes = {};
+
+            if (slide.getAttribute('style')) {
+                attributes.style = slide.getAttribute('style');
+            }
+
+            if ((slide as any).src) {
+                attributes.src = (slide as any).src;
+            }
+
+            resolve(attributes);
+        })
     }
 }
