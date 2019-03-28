@@ -33,10 +33,10 @@ export class AppSlideType {
 
     private async addSlide(template: SlideTemplate) {
         const slide: any = await EditorUtils.createSlide(template);
-        await this.closePopover(slide, template);
+        await this.closePopover(template, slide);
     }
 
-    async closePopover(slide: any, template: SlideTemplate) {
+    async closePopover(template: SlideTemplate, slide?: any) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
             slide: slide,
             template: template
@@ -63,7 +63,7 @@ export class AppSlideType {
                     <p slot="end">Content</p>
                 </deckgo-slide-split>
             </div>
-            <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.GIF)}>
+            <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
                 <deckgo-slide-gif src="./assets/img/example.gif" alt="Slide Gif">
                     <p slot="footer" style={{"font-size": "var(--font-size-very-small)", padding: "2px", "border-radius": "4px"}}>GIFs</p>
                 </deckgo-slide-gif>

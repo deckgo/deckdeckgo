@@ -1,5 +1,7 @@
 import {Component, Element, Listen, State} from '@stencil/core';
 
+import {EditorUtils} from '../../../utils/editor-utils';
+
 import {GifService} from '../../../services/gif/gif.service';
 
 @Component({
@@ -39,6 +41,17 @@ export class AppGif {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
+    private addSlide(gif: TenorGif): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const url: string = gif.media[0].gif.url;
+
+            const slide: any = await EditorUtils.createSlideGif(url);
+            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(slide);
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <ion-header>
@@ -73,8 +86,12 @@ export class AppGif {
         if (gifs && gifs.length > 0) {
             return (
                 gifs.map((gif: TenorGif) => {
-                    if (gif.media && gif.media.length > 0 && gif.media[0].tinygif && gif.media[0].tinygif.url) {
-                        return <img src={gif.media[0].tinygif.url} alt={gif.title ? gif.title : gif.url}></img>
+                    if (gif.media && gif.media.length > 0
+                        && gif.media[0].tinygif && gif.media[0].tinygif.url
+                        && gif.media[0].gif && gif.media[0].gif.url) {
+                        return <div custom-tappable onClick={() => this.addSlide(gif)}>
+                            <img src={gif.media[0].tinygif.url} alt={gif.title ? gif.title : gif.url}></img>
+                        </div>
                     } else {
                         return undefined;
                     }
