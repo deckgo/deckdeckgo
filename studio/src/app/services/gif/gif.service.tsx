@@ -56,7 +56,7 @@ export class GifService {
             const anonymousId: string = await this.getAnonymousId();
 
             const searchUrl = config.url + 'search?tag=' + searchTerm + '&key=' +
-                config.key + '&ar_range=wide&limit=' + 8 + '&anon_id=' + anonymousId + '&media_filter=minimal&pos=' + next;
+                config.key + '&ar_range=wide&limit=' + 16 + '&anon_id=' + anonymousId + '&media_filter=minimal&pos=' + next;
 
             try {
                 const rawResponse: Response = await fetch(searchUrl);
