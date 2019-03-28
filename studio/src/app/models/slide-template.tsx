@@ -1,5 +1,6 @@
 export enum SlideTemplate {
     TITLE = 'title',
     CONTENT = 'content',
-    SPLIT = 'split'
+    SPLIT = 'split',
+    GIF = 'gif'
 }

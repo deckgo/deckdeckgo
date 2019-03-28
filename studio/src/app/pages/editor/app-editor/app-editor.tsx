@@ -129,8 +129,13 @@ export class AppEditor {
     }
 
     @Listen('document:mouseInactivity')
-    inactivity($event: CustomEvent) {
+    async inactivity($event: CustomEvent) {
         this.displaying = !$event.detail;
+
+        // Wait a bit for the display/repaint of the footer
+        setTimeout(async () => {
+            await this.initSlideSize();
+        }, 100);
     }
 
     @Listen('keyup')
@@ -179,7 +184,7 @@ export class AppEditor {
         }
 
         if (deck.hasChildNodes()) {
-            await this.slideTo(deck.children.length);
+            await this.slideTo(deck.children && deck.children.length > 0 ? deck.children.length - 1 : 0);
         }
     }
 
@@ -286,14 +291,34 @@ export class AppEditor {
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail.data.slide) {
-                await this.concatSlide(detail.data.slide);
+            if (detail.data.template === SlideTemplate.GIF) {
+                await this.openGifPicker();
+            }
 
-                await this.slideToLastSlide();
+            if (detail.data.slide) {
+                await this.addSlide(detail.data.slide);
             }
         });
 
         await popover.present();
+    }
+
+    private async addSlide(slide: any) {
+        await this.concatSlide(slide);
+    }
+
+    private async openGifPicker() {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-gif'
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                await this.addSlide(detail.data);
+            }
+        });
+
+        await modal.present();
     }
 
     @Listen('actionPublish')
@@ -456,6 +481,7 @@ export class AppEditor {
             <ion-content padding>
                 <main class={this.displaying ? 'idle' : undefined}>
                     <deckgo-deck embedded={true}
+                                 onSlidesDidLoad={() => this.slideToLastSlide()}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}

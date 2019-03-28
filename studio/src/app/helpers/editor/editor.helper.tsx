@@ -9,6 +9,7 @@ import {SlideService} from '../../services/slide/slide.service';
 import {DeckService} from '../../services/deck/deck.service';
 import {ErrorService} from '../../services/error/error.service';
 import {DeckBusyService} from '../../services/deck/deck-busy.service';
+import {SlideAttributes} from '../../models/slide-attributes';
 
 export class EditorHelper {
 
@@ -96,7 +97,7 @@ export class EditorHelper {
     private createSlide(slide: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
-                if (!slide) {
+                if (!slide || !slide.nodeName) {
                     resolve();
                     return;
                 }
@@ -109,10 +110,16 @@ export class EditorHelper {
 
                 this.deckBusyService.busy(true);
 
-                const persistedSlide: Slide = await this.slideService.post({
-                    slide_template: SlideTemplate.TITLE,
-                    slide_content: slide.innerHTML
-                });
+                const slidePost: Slide = {
+                    slide_template: this.getSlideTemplate(slide)
+                };
+
+                const content: string = await this.cleanSlideContent(slide.innerHTML);
+                if (content && content.length > 0) {
+                    slidePost.slide_content = content
+                }
+
+                const persistedSlide: Slide = await this.slideService.post(slidePost);
 
                 if (persistedSlide && persistedSlide.slide_id) {
                     slide.setAttribute('slide_id', persistedSlide.slide_id);
@@ -165,7 +172,7 @@ export class EditorHelper {
     private updateSlide(slide: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
-                if (!slide) {
+                if (!slide || !slide.nodeName) {
                     resolve();
                     return;
                 }
@@ -176,11 +183,23 @@ export class EditorHelper {
                     return;
                 }
 
-                await this.slideService.put({
+                const slideUpdate: Slide = {
                     slide_id: slide.getAttribute('slide_id'),
-                    slide_template: SlideTemplate.TITLE,
-                    slide_content: slide.innerHTML
-                });
+                    slide_template: this.getSlideTemplate(slide)
+                };
+
+                const content: string = await this.cleanSlideContent(slide.innerHTML);
+                if (content && content.length > 0) {
+                    slideUpdate.slide_content = content
+                }
+
+                const attributes: SlideAttributes = await this.getSlideAttributes(slide);
+
+                if (attributes && Object.keys(attributes).length > 0) {
+                    slideUpdate.slide_attributes = attributes;
+                }
+
+                await this.slideService.put(slideUpdate);
 
                 this.deckBusyService.busy(false);
 
@@ -235,5 +254,44 @@ export class EditorHelper {
 
             resolve();
         });
+    }
+
+    private getSlideAttributes(slide: HTMLElement): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            let attributes: SlideAttributes = {};
+
+            if (slide.getAttribute('style')) {
+                attributes.style = slide.getAttribute('style');
+            }
+
+            if ((slide as any).src) {
+                attributes.src = (slide as any).src;
+            }
+
+            resolve(attributes);
+        })
+    }
+
+    private cleanSlideContent(content: string): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!content || content.length <= 0) {
+                resolve(content);
+                return;
+            }
+
+            let result: string = content.replace(/deckgo-untouched|contenteditable=""|contenteditable="true"|contenteditable/gi, '');
+            result = result.replace(/class=""/g, '');
+            result = result.replace(/\s\s+/g, '');
+
+            resolve(result);
+        });
+    }
+
+    private getSlideTemplate(slide: HTMLElement): SlideTemplate {
+        const templateKey: string = Object.keys(SlideTemplate).find((key: string) => {
+            return slide.nodeName.toLowerCase().indexOf(SlideTemplate[key]) > -1
+        });
+
+        return SlideTemplate[templateKey];
     }
 }

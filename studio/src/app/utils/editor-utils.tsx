@@ -9,8 +9,9 @@ export enum SlotType {
 
 export class EditorUtils {
 
-    static DEFAULT_TITLE: string = 'Click to add title';
-    static DEFAULT_CONTENT: string = 'Click to add content';
+    private static DEFAULT_TITLE: string = 'Click to add title';
+    private static DEFAULT_CONTENT: string = 'Click to add content';
+    private static DEFAULT_CAPTION: string = 'Click to add a caption';
 
     static createSlide(template: SlideTemplate): Promise<any> {
         return new Promise<any>(async (resolve) => {
@@ -25,6 +26,8 @@ export class EditorUtils {
                 resolve(await this.createSlideContent());
             } else if (template === SlideTemplate.SPLIT) {
                 resolve(await this.createSlideSplit());
+            } else if (template === SlideTemplate.GIF) {
+                resolve(await this.createSlideGif('./assets/img/example.gif'));
             } else {
                 resolve(null);
             }
@@ -98,6 +101,30 @@ export class EditorUtils {
                 {start}
                 {end}
             </deckgo-slide-split>;
+
+            resolve(slide);
+        });
+    }
+
+    static createSlideGif(src: string): Promise<any> {
+        return new Promise<any>((resolve) => {
+            if (!document) {
+                resolve();
+                return;
+            }
+
+            const title = <h2 slot="header" class="deckgo-untouched" contenteditable>
+                {this.DEFAULT_CAPTION}
+            </h2>;
+
+            const content = <h3 slot="footer" class="deckgo-untouched" contenteditable>
+                {this.DEFAULT_CAPTION}
+            </h3>;
+
+            const slide: any = <deckgo-slide-gif src={src}>
+                {title}
+                {content}
+            </deckgo-slide-gif>;
 
             resolve(slide);
         });

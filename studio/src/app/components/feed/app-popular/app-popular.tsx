@@ -7,29 +7,23 @@ import {Component} from '@stencil/core';
 })
 export class AppPopular {
 
+    // TODO: For the time being, display what's DeckDeckGo. In the future present dynamic content, like the popular or trending presentations
+
     render() {
         return [
-            <h1 padding>Popular</h1>,
+            <h1 padding>What the heck is DeckDeckGo?</h1>,
             <ion-card>
-                <ion-item href="#" class="activated">
-                    <ion-icon name="wifi" slot="start"></ion-icon>
-                    <ion-label>Card Link Item 1 .activated</ion-label>
-                </ion-item>
+                <ion-card-content>
+                    <p>DeckDeckGo aims to be the <strong>open source</strong> editor for <strong>PWA presentations</strong>.</p>
 
-                <ion-item href="#">
-                    <ion-icon name="wine" slot="start"></ion-icon>
-                    <ion-label>Card Link Item 2</ion-label>
-                </ion-item>
+                    <p padding-top>What does that mean 🤔?</p>
 
-                <ion-item class="activated">
-                    <ion-icon name="warning" slot="start"></ion-icon>
-                    <ion-label>Card Button Item 1 .activated</ion-label>
-                </ion-item>
+                    <p padding-top>It means that every presentations you write, present and publish with DeckDeckGo are themselves also <strong>apps</strong> for desktop and mobile 🤪</p>
 
-                <ion-item>
-                    <ion-icon name="walk" slot="start"></ion-icon>
-                    <ion-label>Card Button Item 2</ion-label>
-                </ion-item>
+                    <p padding-top>DeckDeckGo aims to be an online community for sharing presentations, slides and talks about your interests and ideas too.</p>
+
+                    <p padding-top><strong>Edit anywhere, display everywhere</strong></p>
+                </ion-card-content>
             </ion-card>
 
         ];

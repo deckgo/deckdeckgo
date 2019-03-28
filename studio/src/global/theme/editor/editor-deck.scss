@@ -13,11 +13,6 @@ deckgo-deck {
     border: 1px solid var(--ion-color-light);
 
     padding: 8px;
-
-    &:focus {
-      outline: 0;
-      box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), .5);
-    }
   }
 
   h1 {

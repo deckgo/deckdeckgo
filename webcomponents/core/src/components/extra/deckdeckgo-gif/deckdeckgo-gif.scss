@@ -1,5 +1,6 @@
 div.deckgo-gif {
   position: relative;
+  border-radius: var(--border-radius);
 
   img {
     width: var(--width);
@@ -35,6 +36,8 @@ div.deckgo-gif {
     height: var(--slide-height);
 
     --width: var(--slide-width);
+    --height: var(--slide-height);
+
     overflow: hidden;
 
     img {

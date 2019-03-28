@@ -7,10 +7,16 @@ export interface EnvironmentFirebaseConfig {
     messagingSenderId: string;
 }
 
+export interface EnvironmentTenorConfig {
+    url: string;
+    key: string;
+}
+
 export interface EnvironmentConfig {
     appUrl: string;
     apiUrl: string;
     firebase: EnvironmentFirebaseConfig;
+    tenor: EnvironmentTenorConfig;
 }
 
 export function setupConfig(config: EnvironmentConfig) {

@@ -119,6 +119,9 @@ export namespace Components {
     'publication'?: Date;
   }
 
+  interface AppGif {}
+  interface AppGifAttributes extends StencilHTMLAttributes {}
+
   interface AppPublish {
     'caption': string;
     'description': string;
@@ -195,6 +198,7 @@ declare global {
     'AppPopular': Components.AppPopular;
     'AppFeedCardContent': Components.AppFeedCardContent;
     'AppFeedCard': Components.AppFeedCard;
+    'AppGif': Components.AppGif;
     'AppPublish': Components.AppPublish;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
@@ -225,6 +229,7 @@ declare global {
     'app-popular': Components.AppPopularAttributes;
     'app-feed-card-content': Components.AppFeedCardContentAttributes;
     'app-feed-card': Components.AppFeedCardAttributes;
+    'app-gif': Components.AppGifAttributes;
     'app-publish': Components.AppPublishAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
@@ -318,6 +323,12 @@ declare global {
   var HTMLAppFeedCardElement: {
     prototype: HTMLAppFeedCardElement;
     new (): HTMLAppFeedCardElement;
+  };
+
+  interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
+  var HTMLAppGifElement: {
+    prototype: HTMLAppGifElement;
+    new (): HTMLAppGifElement;
   };
 
   interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {}
@@ -418,6 +429,7 @@ declare global {
     'app-popular': HTMLAppPopularElement
     'app-feed-card-content': HTMLAppFeedCardContentElement
     'app-feed-card': HTMLAppFeedCardElement
+    'app-gif': HTMLAppGifElement
     'app-publish': HTMLAppPublishElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
@@ -448,6 +460,7 @@ declare global {
     'app-popular': HTMLAppPopularElement;
     'app-feed-card-content': HTMLAppFeedCardContentElement;
     'app-feed-card': HTMLAppFeedCardElement;
+    'app-gif': HTMLAppGifElement;
     'app-publish': HTMLAppPublishElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
