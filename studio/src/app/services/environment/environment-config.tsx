@@ -11,6 +11,7 @@ export interface EnvironmentConfig {
     appUrl: string;
     apiUrl: string;
     firebase: EnvironmentFirebaseConfig;
+    tenorKey: string
 }
 
 export function setupConfig(config: EnvironmentConfig) {

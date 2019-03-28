@@ -33,12 +33,13 @@ export class AppSlideType {
 
     private async addSlide(template: SlideTemplate) {
         const slide: any = await EditorUtils.createSlide(template);
-        await this.closePopover(slide);
+        await this.closePopover(slide, template);
     }
 
-    async closePopover(slide: any) {
+    async closePopover(slide: any, template: SlideTemplate) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
-            slide: slide
+            slide: slide,
+            template: template
         });
     }
 

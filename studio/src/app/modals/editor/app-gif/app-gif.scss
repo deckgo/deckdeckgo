@@ -1,0 +1,23 @@
+app-gif {
+  ion-content {
+    --background: var(--ion-color-light);
+  }
+
+  div.gifs-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    div.gifs-column {
+      display: block;
+      flex-grow: 1;
+      flex-basis: 50%;
+      max-width: 50%;
+
+      img {
+        width: calc(100% - 4px);
+        padding: 2px;
+      }
+    }
+  }
+}

@@ -1,4 +1,6 @@
-import {Component, Element, Listen} from '@stencil/core';
+import {Component, Element, Listen, State} from '@stencil/core';
+
+import {GifService} from '../../../services/gif/gif.service';
 
 @Component({
     tag: 'app-gif',
@@ -8,8 +10,24 @@ export class AppGif {
 
     @Element() el: HTMLElement;
 
+    private gifService: GifService;
+
+    @State()
+    private gifsOdd: TenorGif[];
+
+    @State()
+    private gifsEven: TenorGif[];
+
+    constructor() {
+        this.gifService = GifService.getInstance();
+    }
+
     async componentDidLoad() {
         history.pushState({modal: true}, null);
+
+        const gifs: TenorGif[] = await this.gifService.getTrending();
+        this.gifsOdd = gifs.filter((_a, i) => i % 2);
+        this.gifsEven = gifs.filter((_a, i) => !(i % 2));
     }
 
     @Listen('window:popstate')
@@ -30,13 +48,41 @@ export class AppGif {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Ready to publish?</ion-title>
+                    <ion-title class="ion-text-uppercase">Pick a Gif</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content padding>
-                Find cool Gifs
-            </ion-content>
+                <div class="gifs-container">
+                    <div class="gifs-column">
+                        {this.renderGifs(this.gifsOdd)}
+                    </div>
+                    <div class="gifs-column">
+                        {this.renderGifs(this.gifsEven)}
+                    </div>
+                </div>
+            </ion-content>,
+            <ion-footer>
+                <ion-toolbar>
+                    <ion-searchbar debounce={500} placeholder="Search Tenor"></ion-searchbar>
+                </ion-toolbar>
+            </ion-footer>
         ];
+    }
+
+    private renderGifs(gifs: TenorGif[]) {
+        if (gifs && gifs.length > 0) {
+            return (
+                gifs.map((gif: TenorGif) => {
+                    if (gif.media && gif.media.length > 0 && gif.media[0].tinygif && gif.media[0].tinygif.url) {
+                        return <img src={gif.media[0].tinygif.url} alt={gif.title ? gif.title : gif.url}></img>
+                    } else {
+                        return undefined;
+                    }
+                })
+            );
+        } else {
+            return undefined;
+        }
     }
 
 }

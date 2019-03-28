@@ -286,14 +286,29 @@ export class AppEditor {
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data.template === SlideTemplate.GIF) {
+                await this.openGifPicker();
+            }
+
             if (detail.data.slide) {
                 await this.concatSlide(detail.data.slide);
-
                 await this.slideToLastSlide();
             }
         });
 
         await popover.present();
+    }
+
+    private async openGifPicker() {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-gif'
+        });
+
+        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+            // TODO: apply gif
+        });
+
+        await modal.present();
     }
 
     @Listen('actionPublish')
