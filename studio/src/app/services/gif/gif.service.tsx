@@ -49,19 +49,19 @@ export class GifService {
         });
     }
 
-    getGifs(searchTerm: string): Promise<TenorGif[]> {
-        return new Promise<TenorGif[]>(async (resolve) => {
+    getGifs(searchTerm: string, next: string | number): Promise<TenorSearchResponse> {
+        return new Promise<TenorSearchResponse>(async (resolve) => {
             const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
             const anonymousId: string = await this.getAnonymousId();
 
             const searchUrl = config.url + 'search?tag=' + searchTerm + '&key=' +
-                config.key + '&ar_range=wide&limit=' + 8 + '&anon_id=' + anonymousId + '&media_filter=minimal';
+                config.key + '&ar_range=wide&limit=' + 8 + '&anon_id=' + anonymousId + '&media_filter=minimal&pos=' + next;
 
             try {
                 const rawResponse: Response = await fetch(searchUrl);
 
-                const response: TenorTrendingResponse = JSON.parse(await rawResponse.text());
+                const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
 
                 if (!response) {
                     this.errorService.error('Tenor trending could not be fetched');
@@ -69,7 +69,7 @@ export class GifService {
                     return;
                 }
 
-                resolve(response.results);
+                resolve(response);
             } catch (err) {
                 this.errorService.error(err.message);
                 resolve();

@@ -29,6 +29,11 @@ export class AppGif {
     @State()
     private searchTerm: string;
 
+    @State()
+    disableInfiniteScroll = false;
+
+    private paginationNext: string | number = 0;
+
     constructor() {
         this.gifService = GifService.getInstance();
     }
@@ -87,27 +92,66 @@ export class AppGif {
                 return;
             }
 
-            const gifs: TenorGif[] = await this.gifService.getGifs(this.searchTerm);
+            const tenorResponse: TenorSearchResponse = await this.gifService.getGifs(this.searchTerm, this.paginationNext);
 
-            if (!gifs || gifs.length <= 0) {
-                this.gifsOdd = [];
-                this.gifsEven = [];
+            if (!tenorResponse) {
+                this.emptyGifs();
 
                 resolve();
                 return;
             }
 
-            this.gifsOdd = gifs.filter((_a, i) => i % 2);
-            this.gifsEven = gifs.filter((_a, i) => !(i % 2));
+            this.paginationNext = tenorResponse.next;
+
+            const gifs: TenorGif[] = tenorResponse.results;
+
+            if (!gifs || gifs.length <= 0) {
+                this.emptyGifs();
+
+                resolve();
+                return;
+            }
+
+            if (!this.gifsOdd) {
+                this.gifsOdd = [];
+            }
+
+            if (!this.gifsEven) {
+                this.gifsEven = [];
+            }
+
+            this.gifsOdd = [...this.gifsOdd, ...gifs.filter((_a, i) => i % 2)];
+            this.gifsEven = [...this.gifsEven, ...gifs.filter((_a, i) => !(i % 2))];
 
             resolve();
         });
+    }
+
+    private searchNext(e: CustomEvent<void>): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            await this.search();
+
+            (e.target as HTMLIonInfiniteScrollElement).complete();
+
+            resolve();
+        });
+    }
+
+    private emptyGifs() {
+        this.gifsOdd = [];
+        this.gifsEven = [];
+
+        this.disableInfiniteScroll = true;
     }
 
     private clear(): Promise<void> {
         return new Promise<void>((resolve) => {
             this.gifsOdd = null;
             this.gifsEven = null;
+
+            this.disableInfiniteScroll = false
+
+            this.paginationNext = 0;
 
             resolve();
         });
@@ -140,6 +184,13 @@ export class AppGif {
                         {this.renderGifs(this.gifsEven)}
                     </div>
                 </div>
+
+                <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll} onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
+                    <ion-infinite-scroll-content
+                        loadingSpinner="bubbles"
+                        loadingText="Loading more data...">
+                    </ion-infinite-scroll-content>
+                </ion-infinite-scroll>
             </ion-content>,
             <ion-footer>
                 <ion-toolbar>

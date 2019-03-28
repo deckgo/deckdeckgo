@@ -36,8 +36,9 @@ interface TenorGif {
     media: TenorMedia[];
 }
 
-interface TenorTrendingResponse {
+interface TenorSearchResponse {
     results: TenorGif[];
+    next: string | number;
 }
 
 interface TenorCategory {
