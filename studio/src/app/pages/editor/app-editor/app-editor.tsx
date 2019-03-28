@@ -179,7 +179,7 @@ export class AppEditor {
         }
 
         if (deck.hasChildNodes()) {
-            await this.slideTo(deck.children.length);
+            await this.slideTo(deck.children && deck.children.length > 0 ? deck.children.length - 1 : 0);
         }
     }
 
@@ -300,7 +300,6 @@ export class AppEditor {
 
     private async addSlide(slide: any) {
         await this.concatSlide(slide);
-        await this.slideToLastSlide();
     }
 
     private async openGifPicker() {
@@ -311,8 +310,6 @@ export class AppEditor {
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail.data) {
                 await this.addSlide(detail.data);
-
-                // TODO: call lazy load
             }
         });
 
@@ -479,6 +476,7 @@ export class AppEditor {
             <ion-content padding>
                 <main class={this.displaying ? 'idle' : undefined}>
                     <deckgo-deck embedded={true}
+                                 onSlidesDidLoad={() => this.slideToLastSlide()}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}
