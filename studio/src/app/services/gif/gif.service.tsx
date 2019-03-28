@@ -3,6 +3,7 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 import {get, set} from 'idb-keyval';
 
 import {ErrorService} from '../error/error.service';
+import {EnvironmentTenorConfig} from '../environment/environment-config';
 
 export class GifService {
 
@@ -25,13 +26,14 @@ export class GifService {
     // call the trending and category endpoints
     getTrending(): Promise<TenorGif[]> {
         return new Promise<TenorGif[]>(async (resolve, reject) => {
-            const apiKey: string = EnvironmentConfigService.getInstance().get('tenorKey');
+            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
+
             const searchTerm: string = 'excited';
 
             const anonymousId: string = await this.getAnonymousId();
 
-            const searchUrl = 'https://api.tenor.com/v1/search?tag=' + searchTerm + '&key=' +
-                apiKey + '&ar_range=wide&limit=' + 8 + '&anon_id=' + anonymousId + '&media_filter=minimal';
+            const searchUrl = config.url + 'search?tag=' + searchTerm + '&key=' +
+                config.key + '&ar_range=wide&limit=' + 8 + '&anon_id=' + anonymousId + '&media_filter=minimal';
 
             try {
                 const rawResponse: Response = await fetch(searchUrl);
@@ -59,10 +61,10 @@ export class GifService {
                 return;
             }
 
-            const apiKey: string = EnvironmentConfigService.getInstance().get('tenorKey');
+            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
             try {
-                const rawResponse: Response = await fetch('https://api.tenor.com/v1/anonid?key=' + apiKey);
+                const rawResponse: Response = await fetch(config.url + '/anonid?key=' + config.key);
 
                 const response: TenorAnonymousResponse = JSON.parse(await rawResponse.text());
 

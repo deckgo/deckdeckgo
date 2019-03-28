@@ -16,5 +16,8 @@ setupConfig({
         storageBucket: '<@FIREBASE_STORAGE_BUCKET@>',
         messagingSenderId: '<@FIREBASE_MESSAGING_SENDER_ID@>'
     },
-    tenorKey: '<@TENOR_KEY@>'
+    tenor: {
+        url: 'https://api.tenor.com/v1/',
+        key: '<@TENOR_KEY@>'
+    }
 });
