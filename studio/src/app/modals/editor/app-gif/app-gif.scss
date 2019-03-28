@@ -14,10 +14,39 @@ app-gif {
       flex-basis: 50%;
       max-width: 50%;
 
-      img {
-        width: calc(100% - 4px);
-        padding: 2px;
-        border-radius: 4px;
+      div.gifs-category, div.gif {
+        position: relative;
+
+        div.gifs-category-container, div.gif-container {
+          border-radius: 4px;
+          overflow: hidden;
+          position: relative;
+
+          img {
+            width: 100%;
+            height: auto;
+            min-height: 150px;
+            vertical-align: top;
+          }
+
+          div.gifs-category-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            background: rgba(var(--ion-color-dark-rgb), 0.6);
+
+            h2 {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              color: white;
+            }
+          }
+        }
       }
     }
   }

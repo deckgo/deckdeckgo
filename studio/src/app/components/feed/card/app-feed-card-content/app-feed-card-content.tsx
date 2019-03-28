@@ -2,10 +2,6 @@ import {Component, Prop, State, Watch} from '@stencil/core';
 
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
-interface InputTargetEvent extends EventTarget {
-    value: string;
-}
-
 @Component({
     tag: 'app-feed-card-content',
     styleUrl: 'app-feed-card-content.scss',

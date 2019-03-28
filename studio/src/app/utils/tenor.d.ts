@@ -36,9 +36,19 @@ interface TenorGif {
     media: TenorMedia[];
 }
 
-
 interface TenorTrendingResponse {
     results: TenorGif[];
+}
+
+interface TenorCategory {
+    searchterm: string;
+    path: string;
+    image: string;
+    name: string;
+}
+
+interface TenorCategoryResponse {
+    tags: TenorCategory[];
 }
 
 interface TenorAnonymousResponse {

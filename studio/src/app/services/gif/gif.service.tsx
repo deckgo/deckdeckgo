@@ -23,12 +23,35 @@ export class GifService {
         return GifService.instance;
     }
 
-    // call the trending and category endpoints
-    getTrending(): Promise<TenorGif[]> {
-        return new Promise<TenorGif[]>(async (resolve, reject) => {
+    getCategories(): Promise<TenorCategory[]> {
+        return new Promise<TenorCategory[]>(async (resolve) => {
             const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
-            const searchTerm: string = 'excited';
+            const anonymousId: string = await this.getAnonymousId();
+
+            const searchUrl = config.url + 'categories?key=' + config.key + '&anon_id=' + anonymousId + '&media_filter=minimal';
+
+            try {
+                const rawResponse: Response = await fetch(searchUrl);
+
+                const response: TenorCategoryResponse = JSON.parse(await rawResponse.text());
+
+                if (!response) {
+                    this.errorService.error('Tenor trending could not be fetched');
+                    return;
+                }
+
+                resolve(response.tags);
+            } catch (err) {
+                this.errorService.error(err.message);
+                resolve(err);
+            }
+        });
+    }
+
+    getGifs(searchTerm: string): Promise<TenorGif[]> {
+        return new Promise<TenorGif[]>(async (resolve) => {
+            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
             const anonymousId: string = await this.getAnonymousId();
 
@@ -41,13 +64,15 @@ export class GifService {
                 const response: TenorTrendingResponse = JSON.parse(await rawResponse.text());
 
                 if (!response) {
-                    reject('Tenor trending could not be fetched');
+                    this.errorService.error('Tenor trending could not be fetched');
+                    resolve();
+                    return;
                 }
 
                 resolve(response.results);
             } catch (err) {
                 this.errorService.error(err.message);
-                reject(err);
+                resolve();
             }
         });
     }
