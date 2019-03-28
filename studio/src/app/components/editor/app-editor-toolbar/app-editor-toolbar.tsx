@@ -292,8 +292,9 @@ export class AppEditorToolbar {
             if (this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
                 this.slideDelete.emit(this.selectedElement);
             } else {
+                const parent: HTMLElement = this.selectedElement.parentElement;
                 this.selectedElement.parentElement.removeChild(this.selectedElement);
-                await this.emitSlideChange();
+                this.slideDidChange.emit(parent);
             }
 
             await this.hideToolbar();
@@ -542,7 +543,8 @@ export class AppEditorToolbar {
             'border-bottom': '2px solid ' + this.background
         };
 
-        return [<a onClick={() => this.deleteElement()} class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
+        return [<a onClick={() => this.deleteElement()}
+                   class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
             <ion-icon name="trash"></ion-icon>
         </a>,
             <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)}>
