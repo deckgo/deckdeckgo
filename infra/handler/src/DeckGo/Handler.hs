@@ -27,6 +27,7 @@ import Servant (Context ((:.)))
 import Servant.API
 import UnliftIO
 import qualified Crypto.JOSE.JWK as JWK
+import qualified Network.URI as URI
 import qualified Crypto.JWT as JWT
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString as BS
@@ -81,20 +82,32 @@ verifyUser mgr (FirebaseProjectId projectId) (UnverifiedJWT jwt) = do
     Left e -> error $ show e
     Right [e] -> pure e
     Right xs -> error $ show xs
+
   cert <- case X509.decodeSignedCertificate (PEM.pemContent pem) of
     Left e -> error $ show e
     Right c -> pure c
+
   jwk <- runExceptT (JWK.fromX509Certificate cert) >>= \case
     Left (e :: JWT.JWTError) -> error $ show e
     Right jwk -> pure jwk
 
-  let config = JWT.defaultJWTValidationSettings $ \sou ->
-                  Just projectId == sou ^? JWT.string
+  issUri <- case URI.parseURI $ "https://securetoken.google.com/" <> T.unpack projectId of
+    Just issUri -> pure issUri
+    Nothing -> error $ "Could not use project ID in URI"
 
+  let config =
+        JWT.defaultJWTValidationSettings
+          (\sou -> Just projectId == sou ^? JWT.string) & -- aud
+          JWT.issuerPredicate .~ (\sou -> Just issUri == sou ^? JWT.uri) -- iss
   runExceptT (JWT.verifyClaims config jwk jwt) >>= \case
     -- TODO: get user from claims
     -- TODO: check all the claims
-    Right {} -> pure (UserId "")
+    Right cs -> do
+      case cs ^. JWT.claimSub of
+        Nothing -> error "Could not get a subject from claim set"
+        Just sou -> case sou ^? JWT.string of
+          Nothing -> error "Expected subject to be string"
+          Just u -> pure (UserId u)
     Left (e :: JWT.JWTError) -> error (show e)
 
 instance FromHttpApiData UnverifiedJWT where
@@ -133,7 +146,7 @@ decodeJWTHdr req = do
 runJWTAuth :: HTTP.Manager -> FirebaseProjectId -> Wai.Request -> Servant.DelayedIO UserId
 runJWTAuth mgr projectId req = case decodeJWTHdr req of
     Left e -> error $ "bad auth: " <> e -- TODO: delayedFailFatal
-    Right ujwt ->  liftIO $ verifyUser mgr projectId ujwt
+    Right ujwt -> liftIO $ verifyUser mgr projectId ujwt
 
 instance
     ( Servant.HasContextEntry context FirebaseProjectId

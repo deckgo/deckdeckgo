@@ -20,8 +20,7 @@ dependencies:
     - http-client
     - http-client-tls
     - http-conduit
-    #- servant-auth
-    #- servant-auth-server
+    - network-uri
     - servant-client-core
     - servant-server
     - text
