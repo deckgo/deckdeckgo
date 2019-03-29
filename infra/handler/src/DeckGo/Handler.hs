@@ -14,6 +14,7 @@
 
 module DeckGo.Handler where
 
+import Data.Maybe (catMaybes)
 import Control.Monad
 import Control.Monad.Except
 import Control.Lens hiding ((.=))
@@ -52,7 +53,8 @@ verifyUser :: UnverifiedJWT -> IO UserId
 verifyUser (UnverifiedJWT jwt) = do
   -- TODO: Pull cert from google
   Just jwkmap <- Aeson.decodeFileStrict' "./cert" :: IO (Maybe (HMS.HashMap T.Text T.Text))
-  Just jwkct <- pure $ HMS.lookup "1" jwkmap
+  let [JWT.HeaderParam () t] = catMaybes $ jwt ^.. JWT.signatures . JWT.header . JWT.kid
+  Just jwkct <- pure $ HMS.lookup t jwkmap
 
   -- TODO: get rid of 'error'
   pem <- case PEM.pemParseBS (T.encodeUtf8 jwkct) of

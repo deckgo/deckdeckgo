@@ -16,7 +16,7 @@ rec
 
   publicKey = builtins.readFile ./public.cer;
 
-  googleResp = { "1" = publicKey ; };
+  googleResp = { "key1" = publicKey ; };
 
   apiDir = pkgs.writeTextFile
       { name = "google-resp";
