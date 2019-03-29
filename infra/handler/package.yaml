@@ -17,6 +17,9 @@ dependencies:
     - x509
     - word8
     - pem
+    - http-client
+    - http-client-tls
+    - http-conduit
     #- servant-auth
     #- servant-auth-server
     - servant-client-core

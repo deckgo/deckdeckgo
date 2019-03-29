@@ -1,4 +1,7 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 import UnliftIO
+import Control.Lens
 import qualified Network.AWS as Aws
 import qualified DeckGo.Handler
 import qualified Network.Wai.Handler.Lambda as Lambda
@@ -13,4 +16,8 @@ main = do
   env <- Aws.newEnv Aws.Discover
 
   liftIO $ putStrLn "Booted!"
-  Lambda.run $ Cors.simpleCors $ DeckGo.Handler.application env
+
+  -- TODO: from env
+  let projectId = DeckGo.Handler.FirebaseProjectId "my-project-id"
+
+  Lambda.run $ Cors.simpleCors $ DeckGo.Handler.application (env ^. Aws.envManager) projectId env

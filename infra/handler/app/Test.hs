@@ -39,7 +39,7 @@ main = do
 
   let newDeck = Deck { deckSlides = [ slideId ] }
 
-  runClientM (decksPut' deckId newDeck) clientEnv >>= \case
+  runClientM (decksPut' b deckId newDeck) clientEnv >>= \case
     Left err -> error $ "Expected updated deck, got error: " <> show err
     Right {} -> pure ()
 
@@ -48,7 +48,7 @@ main = do
     Right decks ->
       if decks == [WithId deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
 
-  runClientM (decksGetDeckId' deckId) clientEnv >>= \case
+  runClientM (decksGetDeckId' b deckId) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right deck ->
       if deck == (WithId deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
@@ -83,7 +83,7 @@ main = do
     Right slides ->
       if slides == [] then pure () else (error $ "Expected no slides, got: " <> show slides)
 
-  runClientM (decksDelete' deckId) clientEnv >>= \case
+  runClientM (decksDelete' b deckId) clientEnv >>= \case
     Left err -> error $ "Expected deck delete, got error: " <> show err
     Right {} -> pure ()
 
@@ -94,10 +94,10 @@ main = do
 
 -- 'client' allows you to produce operations to query an API from a client.
 decksGet' :: T.Text -> ClientM [WithId DeckId Deck]
-decksGetDeckId' :: DeckId -> ClientM (WithId DeckId Deck)
+decksGetDeckId' :: T.Text -> DeckId -> ClientM (WithId DeckId Deck)
 decksPost' :: Deck -> ClientM (WithId DeckId Deck)
-decksPut' :: DeckId -> Deck -> ClientM (WithId DeckId Deck)
-decksDelete' :: DeckId -> ClientM ()
+decksPut' :: T.Text -> DeckId -> Deck -> ClientM (WithId DeckId Deck)
+decksDelete' :: T.Text -> DeckId -> ClientM ()
 slidesGet' :: ClientM [WithId SlideId Slide]
 slidesGetSlideId' :: SlideId -> ClientM (WithId SlideId Slide)
 slidesPost' :: Slide -> ClientM (WithId SlideId Slide)

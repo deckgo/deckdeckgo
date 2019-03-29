@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -14,34 +15,40 @@
 
 module DeckGo.Handler where
 
-import Data.Maybe (catMaybes)
+-- TODO: double check what to return on 200 from DynamoDB
+
+import Control.Lens hiding ((.=))
 import Control.Monad
 import Control.Monad.Except
-import Control.Lens hiding ((.=))
+import Data.Aeson ((.=), (.:), (.!=), (.:?))
 import Data.Proxy
-import           Data.Word8 (isSpace, toLower)
-import qualified Data.X509 as X509
-import qualified Data.PEM as PEM
+import Data.Word8 (isSpace, toLower)
+import Servant (Context ((:.)))
+import Servant.API
+import UnliftIO
+import qualified Crypto.JOSE.JWK as JWK
+import qualified Crypto.JWT as JWT
+import qualified Data.Aeson as Aeson
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BL
-import Servant.API
-import qualified Crypto.JWT as JWT
-import qualified Crypto.JOSE.JWK as JWK
+import qualified Data.HashMap.Strict as HMS
+import qualified Data.PEM as PEM
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-import qualified Data.HashMap.Strict as HMS
-import UnliftIO
-import Data.Aeson ((.=), (.:), (.!=), (.:?))
-import qualified Data.Aeson as Aeson
+import qualified Data.X509 as X509
 import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
+import qualified Network.HTTP.Client as HTTP
+import qualified Network.HTTP.Simple as HTTP
 import qualified Network.Wai as Wai
 import qualified Servant as Servant
-
-import qualified Servant.Server.Internal.RoutingApplication as Servant
-import qualified Servant.Client.Core as Servant.Client
 import qualified Servant.Client.Core as Servant
+import qualified Servant.Client.Core as Servant.Client
+import qualified Servant.Server.Internal.RoutingApplication as Servant
 import qualified System.Random as Random
+
+newtype FirebaseProjectId = FirebaseProjectId { unFirebaseProjectId :: T.Text }
+data ServerContext = ServerContext { firebaseProjectId :: FirebaseProjectId }
 
 newtype UserId = UserId { unUserId :: T.Text }
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON, Show, Eq)
@@ -49,12 +56,25 @@ newtype UserId = UserId { unUserId :: T.Text }
 newtype UnverifiedJWT = UnverifiedJWT JWT.SignedJWT
 
 -- TODO: MAKE SURE PATTERN MATCH FAILURES AREN'T PROPAGATED TO CLIENT!!!
-verifyUser :: UnverifiedJWT -> IO UserId
-verifyUser (UnverifiedJWT jwt) = do
-  -- TODO: Pull cert from google
-  Just jwkmap <- Aeson.decodeFileStrict' "./cert" :: IO (Maybe (HMS.HashMap T.Text T.Text))
-  let [JWT.HeaderParam () t] = catMaybes $ jwt ^.. JWT.signatures . JWT.header . JWT.kid
-  Just jwkct <- pure $ HMS.lookup t jwkmap
+verifyUser :: HTTP.Manager -> FirebaseProjectId -> UnverifiedJWT -> IO UserId
+verifyUser mgr (FirebaseProjectId projectId) (UnverifiedJWT jwt) = do
+
+  -- TODO: proper error handling here
+  let req =
+        HTTP.setRequestSecure True .
+        HTTP.setRequestHost "www.googleapis.com" .
+        HTTP.setRequestPath "/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com" .
+        HTTP.setRequestManager mgr $
+        HTTP.defaultRequest
+  jwkmap <- HTTP.getResponseBody <$> HTTP.httpJSON req
+
+  t <- case jwt ^.. JWT.signatures . JWT.header . JWT.kid of
+    [Just (JWT.HeaderParam () t)] -> pure t
+    xs -> error $ "Expected exactly one signature with 'kid', got: " <> show xs
+
+  jwkct <- case HMS.lookup t jwkmap of
+    Nothing -> error $ "Could not find key " <> show t <> " in response"
+    Just ct -> pure ct
 
   -- TODO: get rid of 'error'
   pem <- case PEM.pemParseBS (T.encodeUtf8 jwkct) of
@@ -64,12 +84,16 @@ verifyUser (UnverifiedJWT jwt) = do
   cert <- case X509.decodeSignedCertificate (PEM.pemContent pem) of
     Left e -> error $ show e
     Right c -> pure c
-  Right jwk <- runExceptT (JWK.fromX509Certificate cert) :: IO (Either JWT.JWTError JWT.JWK)
+  jwk <- runExceptT (JWK.fromX509Certificate cert) >>= \case
+    Left (e :: JWT.JWTError) -> error $ show e
+    Right jwk -> pure jwk
 
-  -- TODO: fetch project id from config
-  let config = JWT.defaultJWTValidationSettings (== "my-project-id")
+  let config = JWT.defaultJWTValidationSettings $ \sou ->
+                  Just projectId == sou ^? JWT.string
 
   runExceptT (JWT.verifyClaims config jwk jwt) >>= \case
+    -- TODO: get user from claims
+    -- TODO: check all the claims
     Right {} -> pure (UserId "")
     Left (e :: JWT.JWTError) -> error (show e)
 
@@ -79,11 +103,15 @@ instance FromHttpApiData UnverifiedJWT where
     Left (e :: JWT.Error) -> Left $ T.pack $ show e
     Right jwt -> Right $ UnverifiedJWT jwt
 
-instance (Servant.HasClient m sub, Servant.RunClient m) => Servant.HasClient m (Protected :> sub) where
+instance
+    ( Servant.HasClient m sub
+    , Servant.RunClient m ) => Servant.HasClient m (Protected :> sub) where
   -- TODO: something better than just Text
   type Client m (Protected :> sub) = T.Text -> Servant.Client m sub
   clientWithRoute p1 Proxy req = \bs ->
-    Servant.clientWithRoute p1 (Proxy :: Proxy sub) (Servant.Client.addHeader "Authorization" ("Bearer " <> bs) req)
+    Servant.clientWithRoute
+      p1 (Proxy :: Proxy sub)
+      (Servant.Client.addHeader "Authorization" ("Bearer " <> bs) req)
   hoistClientMonad p1 Proxy hoist c = \bs ->
     Servant.Client.hoistClientMonad p1 (Proxy :: Proxy sub) hoist (c bs)
 
@@ -102,12 +130,16 @@ decodeJWTHdr req = do
       Left (e :: JWT.Error) -> Left $ show e <> ": " <> show rest
       Right jwt -> Right (UnverifiedJWT jwt)
 
-runJWTAuth :: Wai.Request -> Servant.DelayedIO UserId
-runJWTAuth req = case decodeJWTHdr req of
+runJWTAuth :: HTTP.Manager -> FirebaseProjectId -> Wai.Request -> Servant.DelayedIO UserId
+runJWTAuth mgr projectId req = case decodeJWTHdr req of
     Left e -> error $ "bad auth: " <> e -- TODO: delayedFailFatal
-    Right ujwt ->  liftIO $ verifyUser ujwt
+    Right ujwt ->  liftIO $ verifyUser mgr projectId ujwt
 
-instance Servant.HasServer sub context => Servant.HasServer (Protected :> sub) context where
+instance
+    ( Servant.HasContextEntry context FirebaseProjectId
+    , Servant.HasContextEntry context HTTP.Manager
+    , Servant.HasServer sub context
+    ) => Servant.HasServer (Protected :> sub) context where
   type ServerT (Protected :> sub) m = UserId -> Servant.ServerT sub m
 
   route Proxy c subserver = do
@@ -116,10 +148,10 @@ instance Servant.HasServer sub context => Servant.HasServer (Protected :> sub) c
     where
       authCheck :: Servant.DelayedIO UserId
       authCheck = Servant.withRequest $ runJWTAuth
+        (Servant.getContextEntry c) (Servant.getContextEntry c)
 
   hoistServerWithContext Proxy p hoist s = \uid ->
     Servant.hoistServerWithContext (Proxy :: Proxy sub) p hoist (s uid)
-
 
 ------------------------------------------------------------------------------
 -- API
@@ -205,10 +237,14 @@ type API =
 
 type DecksAPI =
     Protected :> Get '[JSON] [WithId DeckId Deck] :<|>
-    Capture "deck_id" DeckId :> Get '[JSON] (WithId DeckId Deck) :<|>
+    Protected :>
+      Capture "deck_id" DeckId :>
+      Get '[JSON] (WithId DeckId Deck) :<|>
     ReqBody '[JSON] Deck :> Post '[JSON] (WithId DeckId Deck) :<|>
-    Capture "deck_id" DeckId :> ReqBody '[JSON] Deck :> Put '[JSON] (WithId DeckId Deck) :<|>
-    Capture "deck_id" DeckId :> Delete '[JSON] ()
+    Protected :>
+      Capture "deck_id" DeckId :>
+      ReqBody '[JSON] Deck :> Put '[JSON] (WithId DeckId Deck) :<|>
+    Protected :> Capture "deck_id" DeckId :> Delete '[JSON] ()
 
 type SlidesAPI =
     Get '[JSON] [WithId SlideId Slide] :<|>
@@ -224,8 +260,12 @@ api = Proxy
 -- SERVER
 ------------------------------------------------------------------------------
 
-application :: Aws.Env -> Wai.Application
-application env = Servant.serve api (server env)
+application :: HTTP.Manager -> FirebaseProjectId -> Aws.Env -> Wai.Application
+application mgr projectId env =
+    Servant.serveWithContext
+      api
+      (mgr :. projectId :. Servant.EmptyContext)
+      (server env)
 
 server :: Aws.Env -> Servant.Server API
 server env = serveDecks :<|> serveSlides
@@ -244,8 +284,7 @@ server env = serveDecks :<|> serveSlides
       slidesDelete env
 
 decksGet :: Aws.Env -> UserId -> Servant.Handler [WithId DeckId Deck]
-decksGet env uid = do
-    liftIO $ print uid
+decksGet env _uid = do
     res <- runAWS env $ Aws.send $ DynamoDB.scan "Decks"
     case res of
       Right scanResponse ->
@@ -258,8 +297,8 @@ decksGet env uid = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-decksGetDeckId :: Aws.Env -> DeckId -> Servant.Handler (WithId DeckId Deck)
-decksGetDeckId env deckId = do
+decksGetDeckId :: Aws.Env -> UserId -> DeckId -> Servant.Handler (WithId DeckId Deck)
+decksGetDeckId env _ deckId = do
     res <- runAWS env $ Aws.send $ DynamoDB.getItem "Decks" &
         DynamoDB.giKey .~ HMS.singleton "DeckId" (deckIdToAttributeValue deckId)
     case res of
@@ -300,8 +339,8 @@ decksPost env deck = do
 
     pure $ WithId deckId deck
 
-decksPut :: Aws.Env -> DeckId -> Deck -> Servant.Handler (WithId DeckId Deck)
-decksPut env deckId deck = do
+decksPut :: Aws.Env -> UserId -> DeckId -> Deck -> Servant.Handler (WithId DeckId Deck)
+decksPut env _ deckId deck = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Decks" &
         DynamoDB.uiUpdateExpression .~ Just "SET DeckSlides = :s" &
@@ -318,8 +357,8 @@ decksPut env deckId deck = do
 
     pure $ WithId deckId deck
 
-decksDelete :: Aws.Env -> DeckId -> Servant.Handler ()
-decksDelete env deckId = do
+decksDelete :: Aws.Env -> UserId -> DeckId -> Servant.Handler ()
+decksDelete env _ deckId = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Decks" &
         DynamoDB.diKey .~ HMS.singleton "DeckId"
@@ -404,11 +443,11 @@ slidesPut env slideId slide = do
           "SET SlideContent = :c, SlideTemplate = :t, SlideAttributes = :a" &
         DynamoDB.uiExpressionAttributeValues .~ slideToItem' slide &
         DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
-        DynamoDB.uiKey .~  HMS.singleton "SlideId"
+        DynamoDB.uiKey .~ HMS.singleton "SlideId"
           (slideIdToAttributeValue slideId)
 
     case res of
-      Right x -> liftIO $ print x
+      Right {} -> pure ()
       Left e -> do
         liftIO $ print e
         Servant.throwError Servant.err500
@@ -423,7 +462,7 @@ slidesDelete env slideId = do
           (slideIdToAttributeValue slideId)
 
     case res of
-      Right x -> liftIO $ print x
+      Right {} -> pure ()
       Left e -> do
         liftIO $ print e
         Servant.throwError Servant.err500
