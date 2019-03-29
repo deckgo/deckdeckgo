@@ -15,6 +15,7 @@ dependencies:
     - random
     - servant
     - x509
+    - word8
     - pem
     #- servant-auth
     #- servant-auth-server

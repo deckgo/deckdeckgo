@@ -24,6 +24,8 @@ rec
         text = builtins.toJSON googleResp;
       };
 
+  # TODO: don't use latest dynamodb (but pin version)
+
   test = pkgs.runCommand "tests" { buildInputs = [ pkgs.jre pkgs.curl pkgs.netcat pkgs.awscli pkgs.haskellPackages.wai-app-static]; }
   ''
 

@@ -18,13 +18,12 @@ import Control.Monad
 import Control.Monad.Except
 import Control.Lens hiding ((.=))
 import Data.Proxy
+import           Data.Word8 (isSpace, toLower)
 import qualified Data.X509 as X509
 import qualified Data.PEM as PEM
+import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BL
--- import qualified Data.ByteString as BS
 import Servant.API
-import qualified Crypto.JOSE.JWA.JWS as JOSE
-import qualified Crypto.JOSE as JOSE
 import qualified Crypto.JWT as JWT
 import qualified Crypto.JOSE.JWK as JWK
 import qualified Data.Text as T
@@ -37,14 +36,11 @@ import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.Wai as Wai
 import qualified Servant as Servant
+
+import qualified Servant.Server.Internal.RoutingApplication as Servant
+import qualified Servant.Client.Core as Servant.Client
 import qualified Servant.Client.Core as Servant
--- import qualified Servant.Auth as Servant
 import qualified System.Random as Random
-
--- | Generate a key suitable for use with 'defaultConfig'.
-
-_sign :: JOSE.JWK -> JWT.ClaimsSet -> IO (Either JWT.JWTError JWT.SignedJWT)
-_sign jwk cs = runExceptT $ JWT.signClaims jwk (JOSE.newJWSHeader ((), JOSE.RS256)) cs
 
 newtype UserId = UserId { unUserId :: T.Text }
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON, Show, Eq)
@@ -54,8 +50,11 @@ newtype UnverifiedJWT = UnverifiedJWT JWT.SignedJWT
 -- TODO: MAKE SURE PATTERN MATCH FAILURES AREN'T PROPAGATED TO CLIENT!!!
 verifyUser :: UnverifiedJWT -> IO UserId
 verifyUser (UnverifiedJWT jwt) = do
+  -- TODO: Pull cert from google
   Just jwkmap <- Aeson.decodeFileStrict' "./cert" :: IO (Maybe (HMS.HashMap T.Text T.Text))
   Just jwkct <- pure $ HMS.lookup "1" jwkmap
+
+  -- TODO: get rid of 'error'
   pem <- case PEM.pemParseBS (T.encodeUtf8 jwkct) of
     Left e -> error $ show e
     Right [e] -> pure e
@@ -64,7 +63,10 @@ verifyUser (UnverifiedJWT jwt) = do
     Left e -> error $ show e
     Right c -> pure c
   Right jwk <- runExceptT (JWK.fromX509Certificate cert) :: IO (Either JWT.JWTError JWT.JWK)
+
+  -- TODO: fetch project id from config
   let config = JWT.defaultJWTValidationSettings (== "my-project-id")
+
   runExceptT (JWT.verifyClaims config jwk jwt) >>= \case
     Right {} -> pure (UserId "")
     Left (e :: JWT.JWTError) -> error (show e)
@@ -75,28 +77,46 @@ instance FromHttpApiData UnverifiedJWT where
     Left (e :: JWT.Error) -> Left $ T.pack $ show e
     Right jwt -> Right $ UnverifiedJWT jwt
 
-instance Servant.RunClient m => Servant.HasClient m (Protected :> Get '[JSON] [WithId DeckId Deck]) where
-  type Client m (Protected :> Get '[JSON] [WithId DeckId Deck]) = T.Text -> Servant.Client m (Get '[JSON] [WithId DeckId Deck])
-  clientWithRoute p Proxy req = \bs ->
-    -- TODO: header should be Authorization Bearer
-    Servant.clientWithRoute p (Proxy :: Proxy (Header "Authorization" T.Text :> Get '[JSON] [WithId DeckId Deck])) req (Just bs)
+instance (Servant.HasClient m sub, Servant.RunClient m) => Servant.HasClient m (Protected :> sub) where
+  -- TODO: something better than just Text
+  type Client m (Protected :> sub) = T.Text -> Servant.Client m sub
+  clientWithRoute p1 Proxy req = \bs ->
+    Servant.clientWithRoute p1 (Proxy :: Proxy sub) (Servant.Client.addHeader "Authorization" ("Bearer " <> bs) req)
+  hoistClientMonad p1 Proxy hoist c = \bs ->
+    Servant.Client.hoistClientMonad p1 (Proxy :: Proxy sub) hoist (c bs)
 
-  hoistClientMonad Proxy Proxy hoist c = \bs -> hoist (c bs)
+-- | Find and decode an 'Authorization' header from the request as JWT
+decodeJWTHdr :: Wai.Request -> Either String UnverifiedJWT
+decodeJWTHdr req = do
+    ah <- case lookup "Authorization" (Wai.requestHeaders req) of
+      Just x -> Right x
+      Nothing -> Left "No authorization header"
+    let (b, rest) = BS.break isSpace ah
+    guard (BS.map toLower b == "bearer")
+    tok <- case snd <$> BS.uncons rest of
+      Nothing -> Left "No token"
+      Just x -> Right x
+    case JWT.decodeCompact (BL.fromStrict tok) of
+      Left (e :: JWT.Error) -> Left $ show e <> ": " <> show rest
+      Right jwt -> Right (UnverifiedJWT jwt)
 
-instance Servant.HasServer  (Protected :> Get '[JSON] [WithId DeckId Deck]) context where
-  type ServerT (Protected :> Get '[JSON] [WithId DeckId Deck]) m = UserId -> Servant.ServerT (Get '[JSON] [WithId DeckId Deck]) m
+runJWTAuth :: Wai.Request -> Servant.DelayedIO UserId
+runJWTAuth req = case decodeJWTHdr req of
+    Left e -> error $ "bad auth: " <> e -- TODO: delayedFailFatal
+    Right ujwt ->  liftIO $ verifyUser ujwt
 
-  route Proxy c sub = do
-      Servant.route (Proxy :: Proxy ( Header "Authorization" UnverifiedJWT :>  Get '[JSON] [WithId DeckId Deck])) c (adapt <$> sub)
+instance Servant.HasServer sub context => Servant.HasServer (Protected :> sub) context where
+  type ServerT (Protected :> sub) m = UserId -> Servant.ServerT sub m
+
+  route Proxy c subserver = do
+      Servant.route (Proxy :: Proxy sub)
+        c (subserver `Servant.addAuthCheck` authCheck)
     where
-      adapt f = \case
-        Nothing -> error "NO SUCH FOOOO"
-        Just jwt -> do
-          uid <- liftIO $ verifyUser jwt
-          f uid
+      authCheck :: Servant.DelayedIO UserId
+      authCheck = Servant.withRequest $ runJWTAuth
 
-
-  hoistServerWithContext = Servant.hoistServerWithContext
+  hoistServerWithContext Proxy p hoist s = \uid ->
+    Servant.hoistServerWithContext (Proxy :: Proxy sub) p hoist (s uid)
 
 
 ------------------------------------------------------------------------------
@@ -104,10 +124,6 @@ instance Servant.HasServer  (Protected :> Get '[JSON] [WithId DeckId Deck]) cont
 ------------------------------------------------------------------------------
 
 data Protected
--- type Protected = Header "Bearer" JWT.SignedJWT
-
--- protect :: m b -> Maybe JWT.SignedJWT -> m b
--- protect f _ = f
 
 data WithId id a = WithId id a
   deriving (Show, Eq)
