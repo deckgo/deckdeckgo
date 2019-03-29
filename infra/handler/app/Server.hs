@@ -2,6 +2,7 @@
 
 import UnliftIO
 import Control.Lens
+import Servant.Auth.Firebase (ProjectId(..))
 import qualified Network.HTTP.Client as HTTPClient
 import qualified Network.HTTP.Client.TLS as HTTPClient
 import qualified Network.AWS as Aws
@@ -17,7 +18,7 @@ main = do
               pure . rerouteDynamoDB . rerouteGoogleApis
           }
   env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
-  let projectId = DeckGo.Handler.FirebaseProjectId "my-project-id"
+  let projectId = ProjectId "my-project-id"
   Warp.run 8080 $ DeckGo.Handler.application mgr projectId env
 
 rerouteDynamoDB :: HTTPClient.Request -> HTTPClient.Request

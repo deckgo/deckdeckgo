@@ -2,6 +2,7 @@
 
 import UnliftIO
 import Control.Lens
+import Servant.Auth.Firebase (ProjectId(..))
 import qualified Network.AWS as Aws
 import qualified DeckGo.Handler
 import qualified Network.Wai.Handler.Lambda as Lambda
@@ -18,6 +19,6 @@ main = do
   liftIO $ putStrLn "Booted!"
 
   -- TODO: from env
-  let projectId = DeckGo.Handler.FirebaseProjectId "my-project-id"
+  let projectId = ProjectId "my-project-id"
 
   Lambda.run $ Cors.simpleCors $ DeckGo.Handler.application (env ^. Aws.envManager) projectId env

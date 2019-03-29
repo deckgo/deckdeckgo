@@ -1,0 +1,31 @@
+name: firebase-login
+maintainer: Nicolas Mattia <nicolas@nmattia.com>
+copyright: (c) 2019 David Dal Busco and Nicolas Mattia
+license: MIT
+
+dependencies:
+    - aeson
+    - base
+    - bytestring
+    - http-client
+    - http-client-tls
+    - http-conduit
+    - jose >= 0.8.0.0 # For fromX509Certificate
+    - lens
+    - mtl
+    - network-uri
+    - pem
+    - servant
+    - servant-client-core
+    - servant-server
+    - text
+    - unordered-containers
+    - wai
+    - word8
+    - x509
+
+ghc-options:
+    - -Wall
+
+library:
+    source-dirs: src

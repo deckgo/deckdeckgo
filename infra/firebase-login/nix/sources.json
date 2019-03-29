@@ -1,0 +1,37 @@
+{
+    "nixpkgs": {
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/395a543f3605ea7c17797ad33fda0c251b802978.tar.gz",
+        "owner": "NixOS",
+        "branch": "nixos-18.09",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "repo": "nixpkgs-channels",
+        "type": "tarball",
+        "sha256": "0az7333nr9fax6885kj7s61c0hs6wblj7a2y78k4pq0jnhjxqzzg",
+        "description": "Nixpkgs/NixOS branches that track the Nixpkgs/NixOS channels",
+        "rev": "395a543f3605ea7c17797ad33fda0c251b802978"
+    },
+    "hs-jose": {
+        "homepage": "http://hackage.haskell.org/package/jose",
+        "url": "https://github.com/frasertweedale/hs-jose/archive/71274bf64c0600c1d877152173a08a5bff7adf4d.tar.gz",
+        "owner": "frasertweedale",
+        "branch": "master",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "repo": "hs-jose",
+        "type": "tarball",
+        "sha256": "0ah189vika1s0jk8f17mn77gilkw24vbs6xlggxw1qj926i6c4pk",
+        "description": "Haskell JOSE and JWT library",
+        "rev": "71274bf64c0600c1d877152173a08a5bff7adf4d"
+    },
+    "niv": {
+        "homepage": "https://github.com/nmattia/niv",
+        "url": "https://github.com/nmattia/niv/archive/f57c85d05e6c2dd359f901d936f896e4f117d3e6.tar.gz",
+        "owner": "nmattia",
+        "branch": "master",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "repo": "niv",
+        "type": "tarball",
+        "sha256": "0fbmbc73qgd4f07pag18zkdh65wxv406jm3rdrrfkk85l1inscg3",
+        "description": "Easy dependency management for Nix projects",
+        "rev": "f57c85d05e6c2dd359f901d936f896e4f117d3e6"
+    }
+}
