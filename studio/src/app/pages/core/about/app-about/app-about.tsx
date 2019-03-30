@@ -18,11 +18,9 @@ export class AppAbout {
 
                     <p padding-top>DeckDeckGo aims to be the open source editor for PWA presentations.</p>
 
-                    <p>What does that mean 🤔? It means that every presentations you write, present and publish with DeckDeckGo are themselves also <strong>apps</strong> for desktop and mobile 🤪</p>
+                    <p>What does that mean 🤔? It means that every presentations you write and publish with DeckDeckGo are also <strong>apps</strong> for desktop and mobile 🤪</p>
 
-                    <p>DeckDeckGo aims to be an online community for sharing presentations, slides and talks about your interests and ideas too.</p>
-
-                    <p>It has for goal to be simple and therefore hopefully to be usable by anyone.</p>
+                    <p>Furthermore, DeckDeckGo aims to be an online community for sharing presentations, slides and talks about your interests and ideas too.</p>
 
                     <h1 class="ion-text-center ion-padding-top">Team</h1>
 
