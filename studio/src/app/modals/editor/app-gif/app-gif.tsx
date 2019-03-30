@@ -55,9 +55,11 @@ export class AppGif {
 
     private addSlide(gif: TenorGif): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const url: string = gif.media[0].gif.url;
+            await this.gifService.registerShare(gif.id);
 
+            const url: string = gif.media[0].gif.url;
             const slide: any = await EditorUtils.createSlideGif(url);
+
             await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(slide);
 
             resolve();
