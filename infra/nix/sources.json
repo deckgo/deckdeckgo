@@ -21,7 +21,7 @@
         "rev": "88ae8f7d55efa457c95187011eb410d097108445"
     },
     "dynamodb": {
-        "url": "https://s3.eu-central-1.amazonaws.com/dynamodb-local-frankfurt/dynamodb_local_latest.tar.gz",
+        "url": "https://s3.eu-central-1.amazonaws.com/dynamodb-local-frankfurt/dynamodb_local_2019-02-07.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "type": "file",
         "sha256": "0hrwxg4igyll40y7l1s0icg55g247fl8cjs4rrcpjf8d7m0bb09j"
