@@ -5,16 +5,22 @@ license: AGPL-3
 
 dependencies:
     - aeson
-    - mtl
     - amazonka
     - amazonka-dynamodb
     - base
+    - bytestring
+    - directory
+    - filepath
+    - firebase-login
+    - http-client
     - lens
+    - mtl
     - random
     - servant
-    - http-client
-    - firebase-login
+    - swagger2
     - servant-server
+    - servant-swagger
+    - servant-swagger-ui
     - text
     - unliftio
     - unordered-containers
@@ -40,6 +46,7 @@ executables:
     swagger:
         main: app/Swagger.hs
         dependencies:
+            - warp
             - deckdeckgo-handler
             - servant-swagger
             - servant-swagger-ui
