@@ -20,12 +20,17 @@ main = do
 
   let clientEnv = mkClientEnv manager' (BaseUrl Http "localhost" 8080 "")
 
+  runClientM usersGet' clientEnv >>= \case
+    Left err -> error $ "Expected users, got error: " <> show err
+    Right [] -> pure ()
+    Right decks -> error $ "Expected 0 users, got: " <> show decks
+
   runClientM (decksGet' b) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 decks, got: " <> show decks
 
-  let someDeck = Deck { deckSlides = [] }
+  let someDeck = Deck { deckSlides = [] , deckDeckname = Deckname "foo" }
 
   deckId <- runClientM (decksPost' someDeck) clientEnv >>= \case
     Left err -> error $ "Expected new deck, got error: " <> show err
@@ -37,7 +42,7 @@ main = do
     Left err -> error $ "Expected new slide, got error: " <> show err
     Right (WithId slideId _) -> pure slideId
 
-  let newDeck = Deck { deckSlides = [ slideId ] }
+  let newDeck = Deck { deckSlides = [ slideId ], deckDeckname = Deckname "bar" }
 
   runClientM (decksPut' b deckId newDeck) clientEnv >>= \case
     Left err -> error $ "Expected updated deck, got error: " <> show err
@@ -92,18 +97,32 @@ main = do
     Right decks ->
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
 
--- 'client' allows you to produce operations to query an API from a client.
+
+usersGet' :: ClientM [WithId UserId User]
+_usersGetUserId' :: UserId -> ClientM (WithId UserId User)
+_usersPost' :: T.Text -> User -> ClientM (WithId UserId User)
+_usersPut' :: T.Text -> UserId -> User -> ClientM (WithId UserId User)
+_usersDelete' :: T.Text -> UserId -> ClientM ()
+
 decksGet' :: T.Text -> ClientM [WithId DeckId Deck]
 decksGetDeckId' :: T.Text -> DeckId -> ClientM (WithId DeckId Deck)
 decksPost' :: Deck -> ClientM (WithId DeckId Deck)
 decksPut' :: T.Text -> DeckId -> Deck -> ClientM (WithId DeckId Deck)
 decksDelete' :: T.Text -> DeckId -> ClientM ()
+
 slidesGet' :: ClientM [WithId SlideId Slide]
 slidesGetSlideId' :: SlideId -> ClientM (WithId SlideId Slide)
 slidesPost' :: Slide -> ClientM (WithId SlideId Slide)
 slidesPut' :: SlideId -> Slide -> ClientM (WithId SlideId Slide)
 slidesDelete' :: SlideId -> ClientM ()
 ((
+  usersGet' :<|>
+  _usersGetUserId' :<|>
+  _usersPost' :<|>
+  _usersPut' :<|>
+  _usersDelete'
+  ) :<|>
+  (
   decksGet' :<|>
   decksGetDeckId' :<|>
   decksPost' :<|>

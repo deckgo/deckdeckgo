@@ -52,6 +52,15 @@ rec
       export AWS_SECRET_ACCESS_KEY=dummy
 
       aws dynamodb create-table \
+        --table-name Users \
+        --attribute-definitions \
+            AttributeName=UserId,AttributeType=S \
+        --key-schema AttributeName=UserId,KeyType=HASH \
+        --endpoint-url http://127.0.0.1:8000 \
+        --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+        > /dev/null
+
+      aws dynamodb create-table \
         --table-name Decks \
         --attribute-definitions \
             AttributeName=DeckId,AttributeType=S \
