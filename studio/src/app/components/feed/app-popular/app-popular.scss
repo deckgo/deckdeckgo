@@ -3,3 +3,11 @@ app-popular {
     --background: white;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  app-popular {
+    h1 {
+      color: black;
+    }
+  }
+}
