@@ -1,7 +1,7 @@
 import {SlideTemplate} from '../models/slide-template';
 
 export enum SlotType {
-    P = 'p',
+    DIV = 'div',
     H1 = 'h1',
     H2 = 'h2',
     H3 = 'h3'
@@ -45,9 +45,9 @@ export class EditorUtils {
                 {this.DEFAULT_TITLE}
             </h1>;
 
-            const content = <p slot="content" class="deckgo-untouched" contenteditable>
+            const content = <div slot="content" class="deckgo-untouched" contenteditable>
                 {this.DEFAULT_CONTENT}
-            </p>;
+            </div>;
 
             const slide: any = <deckgo-slide-title>
                 {title}
@@ -69,9 +69,9 @@ export class EditorUtils {
                 {this.DEFAULT_TITLE}
             </h1>;
 
-            const content = <p slot="content" class="deckgo-untouched" contenteditable>
+            const content = <div slot="content" class="deckgo-untouched" contenteditable>
                 {this.DEFAULT_CONTENT}
-            </p>;
+            </div>;
 
             const slide: any = <deckgo-slide-content>
                 {title}
@@ -89,13 +89,13 @@ export class EditorUtils {
                 return;
             }
 
-            const start = <p slot="start" class="deckgo-untouched" contenteditable>
+            const start = <div slot="start" class="deckgo-untouched" contenteditable>
                 {this.DEFAULT_CONTENT}
-            </p>;
+            </div>;
 
-            const end = <p slot="end" class="deckgo-untouched" contenteditable>
+            const end = <div slot="end" class="deckgo-untouched" contenteditable>
                 {this.DEFAULT_CONTENT}
-            </p>;
+            </div>;
 
             const slide: any = <deckgo-slide-split>
                 {start}

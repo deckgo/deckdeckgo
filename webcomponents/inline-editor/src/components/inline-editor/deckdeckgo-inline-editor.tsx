@@ -1,6 +1,5 @@
 import {Component, Element, Listen, Prop, State, Watch} from '@stencil/core';
 
-import {DeckdeckgoInlineEditorTag} from '../../types/inline-editor/deckdeckgo-inline-editor-tag';
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
 interface AnchorLink {
@@ -63,6 +62,9 @@ export class DeckdeckgoInlineEditor {
 
   @Prop()
   attachTo: HTMLElement;
+
+  @Prop()
+  containerAttribute: string = 'slot';
 
   async componentWillLoad() {
     await this.attachListener();
@@ -257,10 +259,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      // It happens on mobile devices
-      const parentDiv: boolean = content.parentElement && content.parentElement.nodeName && content.parentElement.nodeName.toLowerCase() === 'div';
-
-      if (DeckdeckgoInlineEditorTag[content.nodeName.toUpperCase()] || parentDiv) {
+      if (content instanceof HTMLElement && (content as HTMLElement).getAttribute(this.containerAttribute) != null) {
         this.bold = false;
         this.italic = false;
         this.underline = false;
@@ -290,13 +289,15 @@ export class DeckdeckgoInlineEditor {
       }
 
       // Just in case
-      if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY' || node.nodeName.toUpperCase() === 'DIV') {
+      if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
         resolve();
         return;
       }
 
-      if (DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()]) {
-        this.disabledTitle = DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()] !== DeckdeckgoInlineEditorTag.P;
+      if (node instanceof HTMLElement && (node as HTMLElement).getAttribute(this.containerAttribute) != null) {
+        const nodeName: string = node.nodeName.toUpperCase();
+
+        this.disabledTitle = nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';
 
         await this.findColor(node);
 

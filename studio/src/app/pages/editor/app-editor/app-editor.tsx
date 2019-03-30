@@ -139,15 +139,15 @@ export class AppEditor {
     }
 
     @Listen('keyup')
-    async onKeyup(e: KeyboardEvent) {
-        if (e && e.key === 'Tab' && document && document.activeElement && document.activeElement instanceof HTMLElement) {
+    async onKeyup($event: KeyboardEvent) {
+        if ($event && $event.key === 'Tab' && document && document.activeElement && document.activeElement instanceof HTMLElement) {
             await this.touchToolbar(document.activeElement);
         }
     }
 
     @Listen('document:keydown')
-    async onKeydown(e: KeyboardEvent) {
-        if (e && e.key === 'Escape') {
+    async onKeydown($event: KeyboardEvent) {
+        if ($event && $event.key === 'Escape') {
             await this.selectDeck();
         }
     }

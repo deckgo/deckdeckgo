@@ -48,11 +48,11 @@ export class AppComponentsInlineEditor {
 </ul>
 <h2 id="app-components-inline-editor-showcase">Showcase</h2>
 <div>
-  <h1 style={{color: '#3880ff'}} contenteditable>DeckDeckGo (editable title)</h1>
+  <h1 style={{color: '#3880ff'}} contenteditable slot="title">DeckDeckGo (editable title)</h1>
 
-  <h2 style={{color: '#3880ff'}} contenteditable>The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
+  <h2 style={{color: '#3880ff'}} contenteditable slot="title">The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
 
-  <p style={{color: '#3880ff'}} contenteditable>Edit anywhere, display everywhere (editable paragraph)</p>
+  <p style={{color: '#3880ff'}} contenteditable slot="content">Edit anywhere, display everywhere (editable paragraph)</p>
 </div>
 
 <p><deckgo-inline-editor sticky-desktop="true" sticky-mobile="true"></deckgo-inline-editor></p>
@@ -110,6 +110,13 @@ export class AppComponentsInlineEditor {
 <td>Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document</td>
 <td><code>HTMLElement</code></td>
 <td></td>
+</tr>
+<tr>
+<td><code>containerAttribute</code></td>
+<td><code>container-attribute</code></td>
+<td>The container where the inline editor should be use need to be identified with an attribute in order to allow the component to detect some information like the current style or color</td>
+<td><code>string</code></td>
+<td><code>slot</code></td>
 </tr>
 </tbody></table>
 <h3 id="app-components-inline-editor-styling">Styling</h3>
@@ -270,7 +277,7 @@ export class AppComponentsInlineEditor {
       <code slot="code">&lt;deckgo-inline-editor&gt;{'\n'}  &lt;span slot=&quot;link&quot;&gt;L&lt;&#47;span&gt;{'\n'}&lt;&#47;deckgo-inline-editor&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-inline-editor-examples">Examples</h3>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;p contenteditable&gt;This text will be editable&lt;&#47;p&gt;{'\n'}{'\n'}&lt;h1 contenteditable&gt;This title too&lt;&#47;h1&gt;{'\n'}{'\n'}&lt;deckgo-inline-editor&gt;&lt;&#47;deckgo-inline-editor&gt;</code>
+      <code slot="code">&lt;p contenteditable slot=&quot;content&quot;&gt;This text will be editable&lt;&#47;p&gt;{'\n'}{'\n'}&lt;h1 contenteditable slot=&quot;title&quot;&gt;This title too&lt;&#47;h1&gt;{'\n'}{'\n'}&lt;deckgo-inline-editor&gt;&lt;&#47;deckgo-inline-editor&gt;</code>
     </deckgo-highlight-code></main>
 
         <app-footer></app-footer>
