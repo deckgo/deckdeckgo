@@ -55,3 +55,7 @@ interface TenorCategoryResponse {
 interface TenorAnonymousResponse {
     anon_id: string;
 }
+
+interface TenorRegisterShareResponse {
+    status: string;
+}

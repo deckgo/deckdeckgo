@@ -29,7 +29,7 @@ export class GifService {
 
             const anonymousId: string = await this.getAnonymousId();
 
-            const searchUrl = config.url + 'categories?key=' + config.key + '&anon_id=' + anonymousId + '&media_filter=minimal';
+            const searchUrl: string = config.url + 'categories?key=' + config.key + '&anon_id=' + anonymousId + '&media_filter=minimal';
 
             try {
                 const rawResponse: Response = await fetch(searchUrl);
@@ -55,7 +55,7 @@ export class GifService {
 
             const anonymousId: string = await this.getAnonymousId();
 
-            const searchUrl = config.url + 'search?tag=' + searchTerm + '&key=' +
+            const searchUrl: string = config.url + 'search?tag=' + searchTerm + '&key=' +
                 config.key + '&ar_range=wide&limit=' + 16 + '&anon_id=' + anonymousId + '&media_filter=minimal&pos=' + next;
 
             try {
@@ -72,6 +72,26 @@ export class GifService {
                 resolve(response);
             } catch (err) {
                 this.errorService.error(err.message);
+                resolve();
+            }
+        });
+    }
+
+    registerShare(gifId: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
+
+            // It isn't mandatory to provide the anonymous ID therefore, as we rather not like to track even if anonymous, we don't provide it
+
+            const shareUrl: string = config.url + 'registershare?key=' + config.key + '&id=' + gifId;
+
+            try {
+                await fetch(shareUrl);
+
+                // We don't check the status of the answer, user could still use the Gifs even if that would have failed
+                resolve();
+            } catch (err) {
+                // We ignore the error, user could still use the Gifs
                 resolve();
             }
         });

@@ -504,7 +504,7 @@ export class AppEditor {
                         </ion-button>
 
                         <ion-button onClick={() => this.openSlideNavigate()} color="primary">
-                            <ion-icon slot="icon-only" ios="ios-list" md="ios-list"></ion-icon>
+                            <ion-icon slot="icon-only" ios="ios-bookmarks" md="ios-bookmarks"></ion-icon>
                         </ion-button>
 
                         <ion-button onClick={() => this.toggleFullScreen()} color="primary">
