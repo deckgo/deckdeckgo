@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE LambdaCase #-}
@@ -16,7 +17,8 @@
 module DeckGo.Handler where
 
 -- TODO: double check what is returned on 200 from DynamoDB
-
+import Data.Swagger
+import GHC.Generics
 import Control.Lens hiding ((.=))
 import Control.Monad
 import Control.Monad.Except
@@ -45,7 +47,17 @@ data ServerContext = ServerContext { firebaseProjectId :: Firebase.ProjectId }
 ------------------------------------------------------------------------------
 
 data WithId id a = WithId id a
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic)
+
+instance ToSchema (WithId  SlideId Slide) where
+  declareNamedSchema _ = pure $ NamedSchema (Just "SlideWithId") mempty
+
+instance ToSchema Slide where
+  declareNamedSchema _ = pure $ NamedSchema (Just "Slide") mempty
+
+
+instance ToParamSchema (WithId SlideId Slide) where
+  toParamSchema _ = mempty
 
 newtype DeckId = DeckId { unDeckId :: T.Text }
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData, Show, Eq)
@@ -55,7 +67,18 @@ data Deck = Deck
   } deriving (Show, Eq)
 
 newtype SlideId = SlideId { unSlideId :: T.Text }
-  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData, Show, Eq)
+  deriving newtype
+    ( Aeson.FromJSON
+    , Aeson.ToJSON
+    , FromHttpApiData
+    , ToHttpApiData
+    , Show
+    , Eq
+    )
+  deriving stock
+    ( Generic )
+
+instance ToParamSchema SlideId
 
 data Slide = Slide
   { slideContent :: T.Text

@@ -5,23 +5,14 @@ license: AGPL-3
 
 dependencies:
     - aeson
-    #- bytestring
     - mtl
     - amazonka
     - amazonka-dynamodb
     - base
-    #- jose
     - lens
     - random
     - servant
-    #- x509
-    #- word8
-    #- pem
     - http-client
-    #- http-client-tls
-    #- http-conduit
-    #- network-uri
-    #- servant-client-core
     - firebase-login
     - servant-server
     - text
@@ -44,6 +35,14 @@ executables:
         main: app/Handler.hs
         dependencies:
             - deckdeckgo-handler
+
+    # The API
+    swagger:
+        main: app/Swagger.hs
+        dependencies:
+            - deckdeckgo-handler
+            - servant-swagger
+            - servant-swagger-ui
 
     server:
         main: app/Server.hs
