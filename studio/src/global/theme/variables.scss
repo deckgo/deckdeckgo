@@ -81,4 +81,8 @@
     --ion-color-medium-shade: #616062;
     --ion-color-medium-tint: #7d7c7d;
   }
+
+  ion-popover, ion-modal {
+    --ion-background-color: white;
+  }
 }
