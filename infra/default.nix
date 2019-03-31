@@ -16,6 +16,12 @@ rec
 
   publicKey = builtins.readFile ./public.cer;
 
+  swaggerUi = pkgs.runCommand "swagger-ui" {}
+  ''
+    mkdir -p $out
+    ${handler}/bin/swagger $out
+  '';
+
   googleResp = { "key1" = publicKey ; };
 
   apiDir = pkgs.writeTextFile

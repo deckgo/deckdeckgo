@@ -39,9 +39,37 @@ jobs:
       - run:
           name: Nix build
           command: |
-            ls
-            pwd
             ./script/test
+
+      - run:
+          name: "Update Node.js and npm"
+          command: |
+            nix-env -f ./nix -iA nodejs-10_x
+
+      - run:
+          name: Install netlify-cli
+          command: |
+            npm install netlify-cli
+
+      - run: # TODO: shouldn't deploy to prod on every commit
+          name: Netlify deploy
+          command: |
+            echo "Branch:" "$CIRCLE_BRANCH"
+            echo "Repo:" "$CIRCLE_REPOSITORY_URL"
+            echo "PR:" "$CIRCLE_PULL_REQUEST"
+            if [ "$CIRCLE_BRANCH" == "master" ]; then
+                echo "Deploying to production"
+                ./node_modules/netlify-cli/bin/run deploy \
+                    --dir=$(nix-build -A swaggerUi --no-link) \
+                    --message="$CIRCLE_SHA1" --prod
+            elif [ -n "$CIRCLE_PULL_REQUEST" ]; then
+                echo "One time deploy for PR $CIRCLE_PR_NUMBER"
+                ./node_modules/netlify-cli/bin/run deploy \
+                    --dir=$(nix-build -A swaggerUi --no-link) \
+                    --message="$CIRCLE_SHA1"
+            else
+                echo "Not deploying"
+            fi
 
 workflows:
   version: 2
