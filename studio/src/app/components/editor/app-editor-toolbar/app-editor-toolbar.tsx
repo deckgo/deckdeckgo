@@ -579,7 +579,7 @@ export class AppEditorToolbar {
 
     private async openForDeckOrSlide($event: UIEvent, myFunction: Function) {
         if (!this.deckOrSlide) {
-            myFunction();
+            await myFunction();
             return;
         }
 
@@ -592,7 +592,7 @@ export class AppEditorToolbar {
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail.data) {
                 this.applyToAllDeck = detail.data.deck;
-                myFunction();
+                await myFunction();
             }
         });
 
