@@ -85,4 +85,8 @@
   ion-popover, ion-modal {
     --ion-background-color: white;
   }
+
+  ion-menu-toggle {
+    color: var(--ion-color-light);
+  }
 }
