@@ -207,7 +207,12 @@ export class AppComponentsInlineEditor {
 <tr>
 <td>--deckgo-inline-editor-link-placeholder-color</td>
 <td>#3880ff</td>
-<td>Ther color of the placeholder of the input field for the url</td>
+<td>The color of the placeholder of the input field for the url</td>
+</tr>
+<tr>
+<td>--deckgo-inline-editor-width</td>
+<td>300px</td>
+<td>The width of the toolbar</td>
 </tr>
 </tbody></table>
 <p>Furthermore, the following variables are also available but only have an effects on mobile devices:</p>
@@ -272,7 +277,7 @@ export class AppComponentsInlineEditor {
 </tbody></table>
 <p>** like above but for mobile</p>
 <h3 id="app-components-inline-editor-slot">Slot</h3>
-<p>The icon for the link action should be provided using a dedicated slot name <code>link</code></p>
+<p>The icon for the actions link and lists should be provided using a dedicated slots&#39; names <code>link</code>, <code>orderedList</code> or <code>unorderedList</code>:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-inline-editor&gt;{'\n'}  &lt;span slot=&quot;link&quot;&gt;L&lt;&#47;span&gt;{'\n'}&lt;&#47;deckgo-inline-editor&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-inline-editor-examples">Examples</h3>

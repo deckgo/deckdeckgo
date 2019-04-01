@@ -96,6 +96,23 @@ export class DeckdeckgoInlineEditorUtils {
     });
   }
 
+  static isList(element: HTMLElement, parentTag: string): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+      if (!element) {
+        resolve(false);
+        return;
+      }
+
+      if (element.nodeName && element.nodeName.toLowerCase() === 'li'
+        && element.parentElement && element.parentElement.nodeName && element.parentElement.nodeName.toLowerCase() === parentTag) {
+        resolve(true);
+        return;
+      }
+
+      resolve(false);
+    });
+  }
+
   private static isTag(element: HTMLElement, tagName: string): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       if (!element) {

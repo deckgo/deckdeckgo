@@ -30,6 +30,12 @@ export class DeckdeckgoInlineEditor {
   private underline: boolean = false;
 
   @State()
+  private orderedList: boolean = false;
+
+  @State()
+  private unorderedList: boolean = false;
+
+  @State()
   private color: string;
 
   @State()
@@ -212,6 +218,8 @@ export class DeckdeckgoInlineEditor {
 
         if (this.mobile) {
           top = top + 40;
+        } else {
+          top = top + 10;
         }
 
         const innerWidth: number = DeckdeckgoInlineEditorUtils.isIOS() ? screen.width : window.innerWidth;
@@ -263,6 +271,8 @@ export class DeckdeckgoInlineEditor {
         this.bold = false;
         this.italic = false;
         this.underline = false;
+        this.orderedList = false;
+        this.unorderedList = false;
         this.color = null;
 
         await this.findStyle(content);
@@ -270,6 +280,8 @@ export class DeckdeckgoInlineEditor {
         this.bold = false;
         this.italic = false;
         this.underline = false;
+        this.orderedList = false;
+        this.unorderedList = false;
         this.color = null;
 
         await this.findStyle(content.parentElement);
@@ -306,6 +318,14 @@ export class DeckdeckgoInlineEditor {
         this.bold = await DeckdeckgoInlineEditorUtils.isBold((node as HTMLElement));
         this.italic = await DeckdeckgoInlineEditorUtils.isItalic((node as HTMLElement));
         this.underline = await DeckdeckgoInlineEditorUtils.isUnderline((node as HTMLElement));
+
+        if (!this.orderedList) {
+          this.orderedList = await DeckdeckgoInlineEditorUtils.isList((node as HTMLElement), 'ol');
+        }
+
+        if (!this.unorderedList) {
+          this.unorderedList = await DeckdeckgoInlineEditorUtils.isList((node as HTMLElement), 'ul');
+        }
 
         await this.findColor(node);
 
@@ -411,7 +431,7 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.applyStyle('bold');
+      await this.execCommand('bold');
 
       await this.initStyle(this.selection);
 
@@ -423,7 +443,7 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.applyStyle('italic');
+      await this.execCommand('italic');
 
       await this.initStyle(this.selection);
 
@@ -435,7 +455,7 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.applyStyle('underline');
+      await this.execCommand('underline');
 
       await this.initStyle(this.selection);
 
@@ -443,7 +463,19 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private applyStyle(style: string): Promise<void> {
+  private toggleList(e: UIEvent, cmd: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      e.stopPropagation();
+
+      await this.execCommand(cmd);
+
+      await this.initStyle(this.selection);
+
+      resolve();
+    });
+  }
+
+  private execCommand(command: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selection || this.selection.rangeCount <= 0 || !document) {
         resolve();
@@ -457,7 +489,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      document.execCommand(style);
+      document.execCommand(command);
 
       resolve();
     });
@@ -704,6 +736,20 @@ export class DeckdeckgoInlineEditor {
 
         <button onClick={() => this.openColorPicker()} class="color">
             <span style={styleColor}>A</span>
+        </button>,
+
+        <button
+          disabled={this.disabledTitle}
+          onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
+          class={this.orderedList ? "ordered-list active" : "ordered-list"}>
+          <slot name="orderedList"></slot>
+        </button>,
+
+        <button
+          disabled={this.disabledTitle}
+          onClick={(e: UIEvent) => this.toggleList(e,'insertUnorderedList')}
+          class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
+          <slot name="unorderedList"></slot>
         </button>,
 
         <div class="separator"></div>,

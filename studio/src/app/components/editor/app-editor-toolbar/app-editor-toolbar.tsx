@@ -604,7 +604,6 @@ export class AppEditorToolbar {
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderActions()}
                 {this.renderSlotType()}
-                {this.renderList()}
             </div>,
             <input type="color" name="color-picker" value={this.color}></input>,
             <input type="color" name="background-picker" value={this.background}></input>
@@ -639,16 +638,6 @@ export class AppEditorToolbar {
         } else {
             return <a onClick={(e: UIEvent) => this.openSlotType(e)}>
                 <ion-label>T</ion-label>
-            </a>
-        }
-    }
-
-    private renderList() {
-        if (this.deckOrSlide) {
-            return undefined;
-        } else {
-            return <a onClick={(e: UIEvent) => this.openSlotType(e)}>
-                <ion-icon slot="icon-only" ios="ios-list" md="ios-list"></ion-icon>
             </a>
         }
     }

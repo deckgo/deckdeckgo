@@ -21,6 +21,14 @@ deckgo-deck {
     font-size: 1.4em;
   }
 
+  div[slot] {
+    font-size: 1.4em;
+
+    ol, ul {
+      font-size: inherit;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     max-width: 100%
   }

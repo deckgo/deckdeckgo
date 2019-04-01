@@ -17,7 +17,7 @@ div.deckgo-tools {
   justify-content: center;
   align-items: center;
 
-  width: 210px;
+  width: var(--deckgo-inline-editor-width, 300px);
 
   transform: var(--deckgo-inline-editor-transform);
 
@@ -35,6 +35,7 @@ div.deckgo-tools {
     display: inline-block;
     vertical-align: middle;
     width: 1px;
+    min-width: 1px;
     margin: 0 6px;
     height: 24px;
     background: var(--deckgo-inline-editor-separator-background, rgba(56, 128, 255, .2));

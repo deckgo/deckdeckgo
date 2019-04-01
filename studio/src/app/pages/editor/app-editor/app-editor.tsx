@@ -504,7 +504,7 @@ export class AppEditor {
                         </ion-button>
 
                         <ion-button onClick={() => this.openSlideNavigate()} color="primary">
-                            <ion-icon slot="icon-only" ios="ios-bookmarks" md="ios-bookmarks"></ion-icon>
+                            <ion-icon slot="icon-only" src="assets/icons/chapters.svg"></ion-icon>
                         </ion-button>
 
                         <ion-button onClick={() => this.toggleFullScreen()} color="primary">
@@ -519,6 +519,8 @@ export class AppEditor {
             </ion-footer>,
             <deckgo-inline-editor>
                 <ion-icon ios="ios-link" md="ios-link" slot="link"></ion-icon>
+                <ion-icon src="assets/icons/ordered-list.svg" slot="orderedList"></ion-icon>
+                <ion-icon ios="ios-list" md="ios-list" slot="unorderedList"></ion-icon>
             </deckgo-inline-editor>
         ];
     }
