@@ -106,7 +106,7 @@ export class DeckdeckgoInlineEditor {
       if (listenerElement) {
         listenerElement.addEventListener('mousedown', this.mousedown, {passive: true});
         listenerElement.addEventListener('touchstart', this.touchstart, {passive: true});
-        listenerElement.addEventListener('keydown', this.keydown, {passive: true});
+        listenerElement.addEventListener('keydown', this.keydown, false);
       }
 
       resolve();
@@ -118,7 +118,7 @@ export class DeckdeckgoInlineEditor {
       if (listenerElement) {
         listenerElement.removeEventListener('mousedown', this.mousedown);
         listenerElement.removeEventListener('touchstart', this.touchstart);
-        listenerElement.removeEventListener('keydown', this.keydown);
+        listenerElement.removeEventListener('keydown', this.keydown, true);
       }
 
       resolve();
