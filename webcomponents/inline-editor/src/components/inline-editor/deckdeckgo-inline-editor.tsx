@@ -148,7 +148,8 @@ export class DeckdeckgoInlineEditor {
 
   @Listen('document:selectionchange', {passive: true})
   async selectionchange(_$event: Event) {
-    if (this.linkInput && document && document.activeElement && document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor') {
+    if (document && document.activeElement && document.activeElement.nodeName &&
+      (document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor' || document.activeElement.nodeName.toLowerCase() === 'body')) {
       return;
     }
 
