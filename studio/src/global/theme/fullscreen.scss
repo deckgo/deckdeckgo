@@ -45,7 +45,7 @@
 
     &.idle {
       deckgo-deck {
-        h1, h2, h3, p {
+        h1, h2, h3, div[slot] {
           border: 1px solid transparent;
         }
       }

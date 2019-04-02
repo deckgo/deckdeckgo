@@ -37,14 +37,12 @@ deckgo-deck {
     }
   }
 
-  deckgo-slide-title {
-    ol, ul {
-      list-style-position: inside;
-    }
+  ol, ul {
+    list-style-position: inside;
+  }
 
-    ul {
-      list-style-type: disc;
-    }
+  ul {
+    list-style-type: disc;
   }
 
   a {

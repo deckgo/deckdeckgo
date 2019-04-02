@@ -517,11 +517,7 @@ export class AppEditor {
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
-            <deckgo-inline-editor>
-                <ion-icon ios="ios-link" md="ios-link" slot="link"></ion-icon>
-                <ion-icon src="assets/icons/ordered-list.svg" slot="orderedList"></ion-icon>
-                <ion-icon ios="ios-list" md="ios-list" slot="unorderedList"></ion-icon>
-            </deckgo-inline-editor>
+            <deckgo-inline-editor></deckgo-inline-editor>
         ];
     }
 }

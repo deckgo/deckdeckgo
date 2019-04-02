@@ -470,7 +470,7 @@ export class DeckdeckgoInlineEditor {
 
       await this.execCommand(cmd);
 
-      await this.initStyle(this.selection);
+      await this.reset(true);
 
       resolve();
     });
@@ -743,14 +743,14 @@ export class DeckdeckgoInlineEditor {
           disabled={this.disabledTitle}
           onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
           class={this.orderedList ? "ordered-list active" : "ordered-list"}>
-          <slot name="orderedList"></slot>
+          <div></div>
         </button>,
 
         <button
           disabled={this.disabledTitle}
           onClick={(e: UIEvent) => this.toggleList(e,'insertUnorderedList')}
           class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
-          <slot name="unorderedList"></slot>
+          <div></div>
         </button>,
 
         <div class="separator"></div>,
@@ -758,7 +758,7 @@ export class DeckdeckgoInlineEditor {
         <button
           disabled={this.disabledTitle}
           onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>
-          <slot name="link"></slot>
+          <div></div>
         </button>
       ];
     }

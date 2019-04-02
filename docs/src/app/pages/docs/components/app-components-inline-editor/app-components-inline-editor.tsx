@@ -276,11 +276,7 @@ export class AppComponentsInlineEditor {
 </tr>
 </tbody></table>
 <p>** like above but for mobile</p>
-<h3 id="app-components-inline-editor-slot">Slot</h3>
-<p>The icon for the actions link and lists should be provided using a dedicated slots&#39; names <code>link</code>, <code>orderedList</code> or <code>unorderedList</code>:</p>
-<deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-inline-editor&gt;{'\n'}  &lt;span slot=&quot;link&quot;&gt;L&lt;&#47;span&gt;{'\n'}&lt;&#47;deckgo-inline-editor&gt;</code>
-    </deckgo-highlight-code><h3 id="app-components-inline-editor-examples">Examples</h3>
+<h3 id="app-components-inline-editor-examples">Examples</h3>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;p contenteditable slot=&quot;content&quot;&gt;This text will be editable&lt;&#47;p&gt;{'\n'}{'\n'}&lt;h1 contenteditable slot=&quot;title&quot;&gt;This title too&lt;&#47;h1&gt;{'\n'}{'\n'}&lt;deckgo-inline-editor&gt;&lt;&#47;deckgo-inline-editor&gt;</code>
     </deckgo-highlight-code></main>

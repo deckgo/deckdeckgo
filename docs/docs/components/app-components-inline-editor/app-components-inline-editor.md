@@ -108,16 +108,6 @@ Furthermore, the following variables are also available but only have an effects
 
 ** like above but for mobile
 
-### Slot
-
-The icon for the actions link and lists should be provided using a dedicated slots' names `link`, `orderedList` or `unorderedList`:
-
-```
-<deckgo-inline-editor>
-  <span slot="link">L</span>
-</deckgo-inline-editor>
-```
-
 ### Examples
 
 ```
