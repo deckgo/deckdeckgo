@@ -43,18 +43,6 @@ deckgo-deck {
   }
 }
 
-// 1200 and not 992 because of menu
-@media(min-width: 1200px) {
-  deckgo-deck {
-    font-size: 32px;
-    --code-font-size: 24px;
-
-    ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
-      font-size: 32px;
-    }
-  }
-}
-
 @media(max-width: 768px) {
   deckgo-deck {
     h1 {
