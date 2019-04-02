@@ -32,6 +32,11 @@ app-editor {
       padding-top: 12px;
       font-size: 1.2rem;
     }
+
+    ion-icon[slot="orderedList"], ion-icon[slot="unorderedList"] {
+      padding-top: 10px;
+      font-size: 1.6rem;
+    }
   }
 
   @media screen and (min-width: 992px) {

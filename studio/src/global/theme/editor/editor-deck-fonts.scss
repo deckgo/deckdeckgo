@@ -21,6 +21,14 @@ deckgo-deck {
     font-size: 1.4em;
   }
 
+  div[slot] {
+    font-size: 1.4em;
+
+    ol, ul {
+      font-size: inherit;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     max-width: 100%
   }
@@ -32,18 +40,6 @@ deckgo-deck {
 
   ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
     font-size: 1em;
-  }
-}
-
-// 1200 and not 992 because of menu
-@media(min-width: 1200px) {
-  deckgo-deck {
-    font-size: 32px;
-    --code-font-size: 24px;
-
-    ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
-      font-size: 32px;
-    }
   }
 }
 

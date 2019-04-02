@@ -155,8 +155,10 @@ export class EditorHelper {
 
                     this.deck = await this.deckService.put(this.deck);
                 } else {
+                    // TODO: Deck name to be solve with the UX
                     this.deck = {
-                        deck_slides: [slide.slide_id]
+                        deck_slides: [slide.slide_id],
+                        deck_name: 'Presentation A'
                     };
 
                     this.deck = await this.deckService.post(this.deck);

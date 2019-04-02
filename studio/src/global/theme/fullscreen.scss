@@ -45,9 +45,19 @@
 
     &.idle {
       deckgo-deck {
-        h1, h2, h3, p {
+        h1, h2, h3, div[slot] {
           border: 1px solid transparent;
         }
+      }
+    }
+
+    // Fonts
+    deckgo-deck {
+      font-size: 32px;
+      --code-font-size: 24px;
+
+      ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
+        font-size: 32px;
       }
     }
   }

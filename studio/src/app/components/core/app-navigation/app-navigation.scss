@@ -25,3 +25,13 @@ app-navigation {
   }
 
 }
+
+@media (prefers-color-scheme: dark) {
+  app-navigation {
+    ion-anchor {
+      &:hover, &:active {
+        border-bottom: 1px solid transparent;
+      }
+    }
+  }
+}

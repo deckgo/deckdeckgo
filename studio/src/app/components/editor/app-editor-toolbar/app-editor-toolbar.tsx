@@ -162,6 +162,8 @@ export class AppEditorToolbar {
                     this.selectedElement.classList.add('deckgo-untouched');
                 }
 
+                this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
+
                 await this.hideToolbar();
             }
 
@@ -194,6 +196,76 @@ export class AppEditorToolbar {
 
     private isElementSlideOrDeck(element: HTMLElement): boolean {
         return element && element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1)
+    }
+
+    private cleanOnPaste = async ($event) => {
+        return new Promise<void>(async (resolve) => {
+            if (!$event || !document) {
+                resolve();
+                return;
+            }
+
+            const parseText: string = $event.clipboardData.getData('text/plain');
+
+            if (!parseText || parseText.length <= 0) {
+                resolve();
+                return;
+            }
+
+            // In the future, Safari isn't yet ready / without preventDefault
+            // // @ts-ignore
+            // navigator.permissions.query({name: 'clipboard-write'}).then(async result => {
+            //     if (result.state === 'granted' || result.state === 'prompt') {
+            //         // @ts-ignore
+            //         await navigator.clipboard.writeText(parseText);
+            //     }
+            // });
+
+            $event.preventDefault();
+
+            const parseTexts: string[] = parseText.replace(/(?:\r\n|\r|\n)/g, '<br/>').split('<br/>');
+
+            if (!parseTexts || parseTexts.length <= 0) {
+                resolve();
+                return;
+            }
+
+            const selected: Selection = await this.getSelection();
+            if (selected && selected.rangeCount) {
+                const range = selected.getRangeAt(0);
+                range.deleteContents();
+
+                parseTexts.forEach((text: string, index: number) => {
+                    const newTextNode: Text = document.createTextNode(text);
+                    range.insertNode(newTextNode);
+
+                    if (index < parseTexts.length - 1) {
+                        const br: HTMLBRElement = document.createElement('br');
+                        range.insertNode(br);
+                    }
+                });
+
+                selected.empty();
+            }
+
+            resolve();
+        });
+    };
+
+    private getSelection(): Promise<Selection> {
+        return new Promise<Selection>((resolve) => {
+            let selectedSelection: Selection = null;
+
+            if (window && window.getSelection) {
+                selectedSelection = window.getSelection();
+            } else if (document && document.getSelection) {
+                selectedSelection = document.getSelection();
+            } else if (document && (document as any).selection) {
+                selectedSelection = (document as any).selection.createRange().text;
+            }
+
+            resolve(selectedSelection);
+        });
     }
 
     private displayToolbar(element: HTMLElement): Promise<void> {
@@ -497,13 +569,17 @@ export class AppEditorToolbar {
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
 
+            if (element) {
+                element.addEventListener('paste', this.cleanOnPaste, false);
+            }
+
             resolve();
         });
     }
 
     private async openForDeckOrSlide($event: UIEvent, myFunction: Function) {
         if (!this.deckOrSlide) {
-            myFunction();
+            await myFunction();
             return;
         }
 
@@ -516,7 +592,7 @@ export class AppEditorToolbar {
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail.data) {
                 this.applyToAllDeck = detail.data.deck;
-                myFunction();
+                await myFunction();
             }
         });
 

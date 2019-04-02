@@ -5,7 +5,7 @@ deckgo-deck {
 
   --slide-user-select: text;
 
-  h1, h2, h3, p {
+  h1, h2, h3, div[slot] {
     width: 100%;
     overflow: hidden;
 
@@ -27,13 +27,25 @@ deckgo-deck {
     min-height: calc(var(--font-size-h3) + 4px);
   }
 
-  p {
+  div[slot] {
     min-height: calc(var(--font-size-normal) + 4px);
   }
 
   deckgo-slide-split {
-    p {
+    div[slot] {
       height: fit-content;
     }
+  }
+
+  ol, ul {
+    list-style-position: inside;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  a {
+    cursor: pointer;
   }
 }

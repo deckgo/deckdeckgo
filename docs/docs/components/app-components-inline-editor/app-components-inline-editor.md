@@ -17,11 +17,11 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 ## Showcase
 
 <div>
-  <h1 style={{color: '#3880ff'}} contenteditable>DeckDeckGo (editable title)</h1>
+  <h1 style={{color: '#3880ff'}} contenteditable slot="title">DeckDeckGo (editable title)</h1>
 
-  <h2 style={{color: '#3880ff'}} contenteditable>The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
+  <h2 style={{color: '#3880ff'}} contenteditable slot="title">The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
   
-  <p style={{color: '#3880ff'}} contenteditable>Edit anywhere, display everywhere (editable paragraph)</p>
+  <p style={{color: '#3880ff'}} contenteditable slot="content">Edit anywhere, display everywhere (editable paragraph)</p>
 </div>
 
 <deckgo-inline-editor sticky-desktop="true" sticky-mobile="true"></deckgo-inline-editor>
@@ -65,6 +65,7 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | `stickyDesktop`       | `sticky-desktop`        | Use a sticky footer toolbar on desktop            | `boolean` | `false`     |
 | `stickyMobile`        | `sticky-mobile`         | Use a sticky footer toolbar on mobile. Note: except iOS, feel free to send a PR if you know how to handle this with the software keyboard            | `boolean` | `false`     |
 | `attachTo`            | `attach-to`             | Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document | `HTMLElement` |     |
+| `containerAttribute`            | `container-attribute`             | The container where the inline editor should be use need to be identified with an attribute in order to allow the component to detect some information like the current style or color | `string` |   `slot`  |
 
 ### Styling
 
@@ -87,7 +88,8 @@ The `<deckgo-inline-editor/>` could be styled using the following CSS4 variables
 | --deckgo-inline-editor-button-color-active | black | The color of the buttons when active |
 | --deckgo-inline-editor-button-color-disabled | #f4f5f8 | The color of the buttons when disabled  |
 | --deckgo-inline-editor-link-color | #3880ff | The color of the input field for the url |
-| --deckgo-inline-editor-link-placeholder-color | #3880ff | Ther color of the placeholder of the input field for the url |
+| --deckgo-inline-editor-link-placeholder-color | #3880ff | The color of the placeholder of the input field for the url |
+| --deckgo-inline-editor-width | 300px | The width of the toolbar |
 
 Furthermore, the following variables are also available but only have an effects on mobile devices:
 
@@ -106,22 +108,12 @@ Furthermore, the following variables are also available but only have an effects
 
 ** like above but for mobile
 
-### Slot
-
-The icon for the link action should be provided using a dedicated slot name `link`
-
-```
-<deckgo-inline-editor>
-  <span slot="link">L</span>
-</deckgo-inline-editor>
-```
-
 ### Examples
 
 ```
-<p contenteditable>This text will be editable</p>
+<p contenteditable slot="content">This text will be editable</p>
 
-<h1 contenteditable>This title too</h1>
+<h1 contenteditable slot="title">This title too</h1>
 
 <deckgo-inline-editor></deckgo-inline-editor>
 ```

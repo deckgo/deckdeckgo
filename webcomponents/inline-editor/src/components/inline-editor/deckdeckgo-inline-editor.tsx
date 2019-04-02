@@ -1,6 +1,5 @@
 import {Component, Element, Listen, Prop, State, Watch} from '@stencil/core';
 
-import {DeckdeckgoInlineEditorTag} from '../../types/inline-editor/deckdeckgo-inline-editor-tag';
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
 interface AnchorLink {
@@ -29,6 +28,12 @@ export class DeckdeckgoInlineEditor {
 
   @State()
   private underline: boolean = false;
+
+  @State()
+  private orderedList: boolean = false;
+
+  @State()
+  private unorderedList: boolean = false;
 
   @State()
   private color: string;
@@ -64,6 +69,9 @@ export class DeckdeckgoInlineEditor {
   @Prop()
   attachTo: HTMLElement;
 
+  @Prop()
+  containerAttribute: string = 'slot';
+
   async componentWillLoad() {
     await this.attachListener();
   }
@@ -98,7 +106,7 @@ export class DeckdeckgoInlineEditor {
       if (listenerElement) {
         listenerElement.addEventListener('mousedown', this.mousedown, {passive: true});
         listenerElement.addEventListener('touchstart', this.touchstart, {passive: true});
-        listenerElement.addEventListener('keydown', this.keydown, {passive: true});
+        listenerElement.addEventListener('keydown', this.keydown, false);
       }
 
       resolve();
@@ -110,7 +118,7 @@ export class DeckdeckgoInlineEditor {
       if (listenerElement) {
         listenerElement.removeEventListener('mousedown', this.mousedown);
         listenerElement.removeEventListener('touchstart', this.touchstart);
-        listenerElement.removeEventListener('keydown', this.keydown);
+        listenerElement.removeEventListener('keydown', this.keydown, true);
       }
 
       resolve();
@@ -140,7 +148,8 @@ export class DeckdeckgoInlineEditor {
 
   @Listen('document:selectionchange', {passive: true})
   async selectionchange(_$event: Event) {
-    if (this.linkInput && document && document.activeElement && document.activeElement.nodeName && document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor') {
+    if (document && document.activeElement && document.activeElement.nodeName &&
+      (document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor' || document.activeElement.nodeName.toLowerCase() === 'body')) {
       return;
     }
 
@@ -210,12 +219,14 @@ export class DeckdeckgoInlineEditor {
 
         if (this.mobile) {
           top = top + 40;
+        } else {
+          top = top + 10;
         }
 
         const innerWidth: number = DeckdeckgoInlineEditorUtils.isIOS() ? screen.width : window.innerWidth;
 
-        if (innerWidth > 0 && left > innerWidth - 300) {
-          left = innerWidth - 300;
+        if (innerWidth > 0 && left > innerWidth - 340) {
+          left = innerWidth - 340;
         }
 
         tools.style.top = '' + (top) + 'px';
@@ -257,13 +268,12 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      // It happens on mobile devices
-      const parentDiv: boolean = content.parentElement && content.parentElement.nodeName && content.parentElement.nodeName.toLowerCase() === 'div';
-
-      if (DeckdeckgoInlineEditorTag[content.nodeName.toUpperCase()] || parentDiv) {
+      if (content instanceof HTMLElement && (content as HTMLElement).getAttribute(this.containerAttribute) != null) {
         this.bold = false;
         this.italic = false;
         this.underline = false;
+        this.orderedList = false;
+        this.unorderedList = false;
         this.color = null;
 
         await this.findStyle(content);
@@ -271,6 +281,8 @@ export class DeckdeckgoInlineEditor {
         this.bold = false;
         this.italic = false;
         this.underline = false;
+        this.orderedList = false;
+        this.unorderedList = false;
         this.color = null;
 
         await this.findStyle(content.parentElement);
@@ -290,13 +302,15 @@ export class DeckdeckgoInlineEditor {
       }
 
       // Just in case
-      if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY' || node.nodeName.toUpperCase() === 'DIV') {
+      if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
         resolve();
         return;
       }
 
-      if (DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()]) {
-        this.disabledTitle = DeckdeckgoInlineEditorTag[node.nodeName.toUpperCase()] !== DeckdeckgoInlineEditorTag.P;
+      if (node instanceof HTMLElement && (node as HTMLElement).getAttribute(this.containerAttribute) != null) {
+        const nodeName: string = node.nodeName.toUpperCase();
+
+        this.disabledTitle = nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';
 
         await this.findColor(node);
 
@@ -305,6 +319,14 @@ export class DeckdeckgoInlineEditor {
         this.bold = await DeckdeckgoInlineEditorUtils.isBold((node as HTMLElement));
         this.italic = await DeckdeckgoInlineEditorUtils.isItalic((node as HTMLElement));
         this.underline = await DeckdeckgoInlineEditorUtils.isUnderline((node as HTMLElement));
+
+        if (!this.orderedList) {
+          this.orderedList = await DeckdeckgoInlineEditorUtils.isList((node as HTMLElement), 'ol');
+        }
+
+        if (!this.unorderedList) {
+          this.unorderedList = await DeckdeckgoInlineEditorUtils.isList((node as HTMLElement), 'ul');
+        }
 
         await this.findColor(node);
 
@@ -410,7 +432,7 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.applyStyle('bold');
+      await this.execCommand('bold');
 
       await this.initStyle(this.selection);
 
@@ -422,7 +444,7 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.applyStyle('italic');
+      await this.execCommand('italic');
 
       await this.initStyle(this.selection);
 
@@ -434,7 +456,7 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.applyStyle('underline');
+      await this.execCommand('underline');
 
       await this.initStyle(this.selection);
 
@@ -442,7 +464,19 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private applyStyle(style: string): Promise<void> {
+  private toggleList(e: UIEvent, cmd: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      e.stopPropagation();
+
+      await this.execCommand(cmd);
+
+      await this.reset(true);
+
+      resolve();
+    });
+  }
+
+  private execCommand(command: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selection || this.selection.rangeCount <= 0 || !document) {
         resolve();
@@ -456,7 +490,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      document.execCommand(style);
+      document.execCommand(command);
 
       resolve();
     });
@@ -705,12 +739,26 @@ export class DeckdeckgoInlineEditor {
             <span style={styleColor}>A</span>
         </button>,
 
+        <button
+          disabled={this.disabledTitle}
+          onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
+          class={this.orderedList ? "ordered-list active" : "ordered-list"}>
+          <div></div>
+        </button>,
+
+        <button
+          disabled={this.disabledTitle}
+          onClick={(e: UIEvent) => this.toggleList(e,'insertUnorderedList')}
+          class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
+          <div></div>
+        </button>,
+
         <div class="separator"></div>,
 
         <button
           disabled={this.disabledTitle}
           onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>
-          <slot name="link"></slot>
+          <div></div>
         </button>
       ];
     }

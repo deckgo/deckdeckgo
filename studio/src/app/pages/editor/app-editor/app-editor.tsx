@@ -139,15 +139,15 @@ export class AppEditor {
     }
 
     @Listen('keyup')
-    async onKeyup(e: KeyboardEvent) {
-        if (e && e.key === 'Tab' && document && document.activeElement && document.activeElement instanceof HTMLElement) {
+    async onKeyup($event: KeyboardEvent) {
+        if ($event && $event.key === 'Tab' && document && document.activeElement && document.activeElement instanceof HTMLElement) {
             await this.touchToolbar(document.activeElement);
         }
     }
 
     @Listen('document:keydown')
-    async onKeydown(e: KeyboardEvent) {
-        if (e && e.key === 'Escape') {
+    async onKeydown($event: KeyboardEvent) {
+        if ($event && $event.key === 'Escape') {
             await this.selectDeck();
         }
     }
@@ -504,7 +504,7 @@ export class AppEditor {
                         </ion-button>
 
                         <ion-button onClick={() => this.openSlideNavigate()} color="primary">
-                            <ion-icon slot="icon-only" ios="ios-bookmarks" md="ios-bookmarks"></ion-icon>
+                            <ion-icon slot="icon-only" src="assets/icons/chapters.svg"></ion-icon>
                         </ion-button>
 
                         <ion-button onClick={() => this.toggleFullScreen()} color="primary">
@@ -517,9 +517,7 @@ export class AppEditor {
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
-            <deckgo-inline-editor>
-                <ion-icon ios="ios-link" md="ios-link" slot="link"></ion-icon>
-            </deckgo-inline-editor>
+            <deckgo-inline-editor></deckgo-inline-editor>
         ];
     }
 }

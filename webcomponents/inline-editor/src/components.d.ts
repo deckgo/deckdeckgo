@@ -14,12 +14,14 @@ export namespace Components {
 
   interface DeckgoInlineEditor {
     'attachTo': HTMLElement;
+    'containerAttribute': string;
     'mobile': boolean;
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
   }
   interface DeckgoInlineEditorAttributes extends StencilHTMLAttributes {
     'attachTo'?: HTMLElement;
+    'containerAttribute'?: string;
     'mobile'?: boolean;
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;

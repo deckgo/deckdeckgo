@@ -67,7 +67,7 @@
   :root {
     --ion-background-color: #323639;
 
-    --ion-text-color: #ffffff;
+    --ion-text-color: black;
 
     --ion-border-color: #202124;
 
@@ -80,5 +80,13 @@
     --ion-color-medium-contrast-rgb: 255,255,255;
     --ion-color-medium-shade: #616062;
     --ion-color-medium-tint: #7d7c7d;
+  }
+
+  ion-popover, ion-modal {
+    --ion-background-color: white;
+  }
+
+  ion-menu-toggle {
+    color: var(--ion-color-light);
   }
 }
