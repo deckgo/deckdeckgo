@@ -17,6 +17,9 @@ export class SlideService {
         return SlideService.instance;
     }
 
+
+    // TODO: get /slides/:slide_id
+
     post(slide: Slide): Promise<Slide> {
         return this.query(slide, '/slides', 'POST');
     }

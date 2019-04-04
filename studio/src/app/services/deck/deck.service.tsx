@@ -52,5 +52,32 @@ export class DeckService {
             }
         });
     }
+
+    get(userId: string): Promise<Deck[]> {
+        return new Promise<Deck[]>(async (resolve, reject) => {
+            try {
+                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                const rawResponse: Response = await fetch(apiUrl + '/decks/?userId=' + userId, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while creating or updating the deck');
+                    return;
+                }
+
+                const persistedDecks: Deck[] = await rawResponse.json();
+
+                resolve(persistedDecks);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
 }
 

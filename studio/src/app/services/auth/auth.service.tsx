@@ -11,6 +11,7 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 import {User} from '../../models/user';
 
 import {ErrorService} from '../error/error.service';
+import {ApiService} from '../api/api.service';
 
 export class AuthService {
 
@@ -18,11 +19,14 @@ export class AuthService {
 
     private errorService: ErrorService;
 
+    private apiService: ApiService;
+
     private static instance: AuthService;
 
     private constructor() {
         // Private constructor, singleton
         this.errorService = ErrorService.getInstance();
+        this.apiService = ApiService.getInstance();
     }
 
     static getInstance() {
@@ -48,6 +52,7 @@ export class AuthService {
                     const tokenId: string = await authUser.getIdToken();
 
                     const user: User = {
+                        uid: authUser.uid,
                         token: tokenId,
                         anonymous: authUser.isAnonymous,
                         name: authUser.displayName,
@@ -65,6 +70,8 @@ export class AuthService {
                     if (!user.photo_url && authUser.providerData && authUser.providerData.length > 0 && authUser.providerData[0].photoURL) {
                         user.photo_url = authUser.providerData[0].photoURL;
                     }
+
+                    await this.apiService.onAuthStateChanged(user);
 
                     this.userSubject.next(user);
                     await set('deckdeckgo_user', user);

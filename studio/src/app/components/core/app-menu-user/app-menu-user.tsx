@@ -88,6 +88,10 @@ export class AppMenuUser {
         }
     }
 
+    // TODO: deck.service get userId
+
+    // TODO: modify editor route to load deck slides with params
+
     private renderPresentations() {
         if (Utils.isLoggedIn(this.user)) {
             return [

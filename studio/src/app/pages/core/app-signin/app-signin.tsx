@@ -114,10 +114,14 @@ export class AppSignIn {
             // Finish sign-in after data is copied.
 
             // TODO: What to do, copy or not? merge or not merge?
+            // TODO: only update flag anonymous in our backend?
 
             await firebase.auth().signInAndRetrieveDataWithCredential(cred);
 
             await this.navigateRedirect();
+
+            // TODO: delete anonymous user in firebase
+            // TODO: delete user backend
 
             resolve();
         });
