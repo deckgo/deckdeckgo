@@ -57,6 +57,9 @@ export class ApiService {
                         this.errorService.error(err);
                     }
                 }
+
+                // TODO si firebase_uid !== previous_firebaseuid sauvegarder dans les cookies
+                // updater deck.user_id avec nouvel id en passant token du previous user
             }
 
             resolve();

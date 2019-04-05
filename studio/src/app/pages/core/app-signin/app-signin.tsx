@@ -60,6 +60,8 @@ export class AppSignIn {
         signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
         signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
 
+        // TODO: avant sign in sauver dans cookie, token, firebase_id et deck_id
+
         const uiConfig = {
             signInFlow: 'redirect',
             signInSuccessUrl: appUrl,
