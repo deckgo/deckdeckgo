@@ -18,6 +18,12 @@
         cursor: pointer;
         color: var(--ion-color-medium);
 
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+
         &.selected {
           background: var(--ion-color-primary);
           color: white;
