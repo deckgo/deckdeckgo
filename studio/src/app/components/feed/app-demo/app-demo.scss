@@ -4,6 +4,27 @@
   div.container {
     display: var(--demo-display);
     width: 100%;
+
+    div.type-selection {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+
+      padding-bottom: 16px;
+
+      ion-anchor {
+        padding: 8px 16px;
+        cursor: pointer;
+        color: var(--ion-color-medium);
+
+        &.selected {
+          background: var(--ion-color-primary);
+          color: white;
+          border-radius: 16px;
+        }
+      }
+    }
   }
 }
 
@@ -183,8 +204,11 @@ div.tablet-container {
 }
 
 div.beamer-container {
-  height: 200px;
-  padding: 8px 16px;
+  height: 240px;
+}
+
+div.beamer-container, div.laptop-container, div.tablet-container, div.smartphone-container {
+  min-height: 240px;
 }
 
 iframe {

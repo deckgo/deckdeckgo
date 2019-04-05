@@ -17,26 +17,26 @@ export class AppDemo {
     @State()
     private type: DemoType = DemoType.MOBILE;
 
-    private switchType(e: CustomEvent) {
-        this.type = DemoType[e.detail.value.toUpperCase()] as DemoType;
+    private switchType(type: DemoType) {
+        this.type = type;
     }
 
     render() {
         return <div class="container">
-            <ion-segment onIonChange={(e: CustomEvent) => this.switchType(e)}>
-                <ion-segment-button value="mobile" checked={this.type === DemoType.MOBILE}>
+            <div class="type-selection">
+                <ion-anchor class={this.type === DemoType.MOBILE ? 'selected' : ''} onClick={() => this.switchType(DemoType.MOBILE)}>
                     <ion-label>Mobile</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="tablet" checked={this.type === DemoType.TABLET}>
+                </ion-anchor>
+                <ion-anchor class={this.type === DemoType.TABLET ? 'selected' : ''} onClick={() => this.switchType(DemoType.TABLET)}>
                     <ion-label>Tablet</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="desktop" checked={this.type === DemoType.DESKTOP}>
+                </ion-anchor>
+                <ion-anchor class={this.type === DemoType.DESKTOP ? 'selected' : ''} onClick={() => this.switchType(DemoType.DESKTOP)}>
                     <ion-label>Desktop</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="beamer" checked={this.type === DemoType.BEAMER}>
+                </ion-anchor>
+                <ion-anchor class={this.type === DemoType.BEAMER ? 'selected' : ''} onClick={() => this.switchType(DemoType.BEAMER)}>
                     <ion-label>Beamer</ion-label>
-                </ion-segment-button>
-            </ion-segment>
+                </ion-anchor>
+            </div>
 
             {this.renderMobile()}
             {this.renderTablet()}
