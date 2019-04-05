@@ -1,6 +1,11 @@
 app-popular {
   ion-card[class*="sc-ion-card"] {
     --background: white;
+    color: black;
+  }
+
+  div.demo {
+    position: relative;
   }
 }
 

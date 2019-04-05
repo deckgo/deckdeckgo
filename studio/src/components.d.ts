@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
+import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -80,6 +80,9 @@ export namespace Components {
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
+
+  interface AppDemo {}
+  interface AppDemoAttributes extends StencilHTMLAttributes {}
 
   interface AppFeed {}
   interface AppFeedAttributes extends StencilHTMLAttributes {}
@@ -194,6 +197,7 @@ declare global {
     'AppNavigation': Components.AppNavigation;
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
+    'AppDemo': Components.AppDemo;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
     'AppFeedCardContent': Components.AppFeedCardContent;
@@ -225,6 +229,7 @@ declare global {
     'app-navigation': Components.AppNavigationAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
+    'app-demo': Components.AppDemoAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-feed-card-content': Components.AppFeedCardContentAttributes;
@@ -299,6 +304,12 @@ declare global {
   var HTMLAppEditorToolbarElement: {
     prototype: HTMLAppEditorToolbarElement;
     new (): HTMLAppEditorToolbarElement;
+  };
+
+  interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
+  var HTMLAppDemoElement: {
+    prototype: HTMLAppDemoElement;
+    new (): HTMLAppDemoElement;
   };
 
   interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
@@ -425,6 +436,7 @@ declare global {
     'app-navigation': HTMLAppNavigationElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
+    'app-demo': HTMLAppDemoElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
     'app-feed-card-content': HTMLAppFeedCardContentElement
@@ -456,6 +468,7 @@ declare global {
     'app-navigation': HTMLAppNavigationElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
+    'app-demo': HTMLAppDemoElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
     'app-feed-card-content': HTMLAppFeedCardContentElement;
