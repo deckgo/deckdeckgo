@@ -18,14 +18,14 @@ export class AppPopular {
 
                     <p padding-top>What does that mean 🤔?</p>
 
-                    <p padding-top>It means that every presentations you write and publish with DeckDeckGo are also <strong>apps</strong> for desktop and mobile 🤪</p>
+                    <p padding-top>It means that every presentations you write and publish with DeckDeckGo are <strong>apps</strong> too 🤪</p>
 
-                    <p padding-top>Furthermore, DeckDeckGo aims to be an online community for sharing presentations, slides and talks about your interests and ideas too.</p>
-
-                    <p padding-top><strong>Edit anywhere, display everywhere</strong></p>
+                    <p padding-top padding-bottom>It is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
                 </ion-card-content>
+            </ion-card>,
+            <ion-card class="demo">
+                <app-demo></app-demo>
             </ion-card>
-
         ];
     }
 

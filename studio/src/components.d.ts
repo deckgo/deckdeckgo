@@ -81,6 +81,9 @@ export namespace Components {
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
 
+  interface AppDemo {}
+  interface AppDemoAttributes extends StencilHTMLAttributes {}
+
   interface AppFeed {}
   interface AppFeedAttributes extends StencilHTMLAttributes {}
 
@@ -150,6 +153,9 @@ export namespace Components {
   interface AppPrivacy {}
   interface AppPrivacyAttributes extends StencilHTMLAttributes {}
 
+  interface AppTeam {}
+  interface AppTeamAttributes extends StencilHTMLAttributes {}
+
   interface AppTerms {}
   interface AppTermsAttributes extends StencilHTMLAttributes {}
 
@@ -194,6 +200,7 @@ declare global {
     'AppNavigation': Components.AppNavigation;
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
+    'AppDemo': Components.AppDemo;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
     'AppFeedCardContent': Components.AppFeedCardContent;
@@ -205,6 +212,7 @@ declare global {
     'AppContact': Components.AppContact;
     'AppOpensource': Components.AppOpensource;
     'AppPrivacy': Components.AppPrivacy;
+    'AppTeam': Components.AppTeam;
     'AppTerms': Components.AppTerms;
     'AppHome': Components.AppHome;
     'AppSignin': Components.AppSignin;
@@ -225,6 +233,7 @@ declare global {
     'app-navigation': Components.AppNavigationAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
+    'app-demo': Components.AppDemoAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-feed-card-content': Components.AppFeedCardContentAttributes;
@@ -236,6 +245,7 @@ declare global {
     'app-contact': Components.AppContactAttributes;
     'app-opensource': Components.AppOpensourceAttributes;
     'app-privacy': Components.AppPrivacyAttributes;
+    'app-team': Components.AppTeamAttributes;
     'app-terms': Components.AppTermsAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-signin': Components.AppSigninAttributes;
@@ -299,6 +309,12 @@ declare global {
   var HTMLAppEditorToolbarElement: {
     prototype: HTMLAppEditorToolbarElement;
     new (): HTMLAppEditorToolbarElement;
+  };
+
+  interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
+  var HTMLAppDemoElement: {
+    prototype: HTMLAppDemoElement;
+    new (): HTMLAppDemoElement;
   };
 
   interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
@@ -367,6 +383,12 @@ declare global {
     new (): HTMLAppPrivacyElement;
   };
 
+  interface HTMLAppTeamElement extends Components.AppTeam, HTMLStencilElement {}
+  var HTMLAppTeamElement: {
+    prototype: HTMLAppTeamElement;
+    new (): HTMLAppTeamElement;
+  };
+
   interface HTMLAppTermsElement extends Components.AppTerms, HTMLStencilElement {}
   var HTMLAppTermsElement: {
     prototype: HTMLAppTermsElement;
@@ -425,6 +447,7 @@ declare global {
     'app-navigation': HTMLAppNavigationElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
+    'app-demo': HTMLAppDemoElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
     'app-feed-card-content': HTMLAppFeedCardContentElement
@@ -436,6 +459,7 @@ declare global {
     'app-contact': HTMLAppContactElement
     'app-opensource': HTMLAppOpensourceElement
     'app-privacy': HTMLAppPrivacyElement
+    'app-team': HTMLAppTeamElement
     'app-terms': HTMLAppTermsElement
     'app-home': HTMLAppHomeElement
     'app-signin': HTMLAppSigninElement
@@ -456,6 +480,7 @@ declare global {
     'app-navigation': HTMLAppNavigationElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
+    'app-demo': HTMLAppDemoElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
     'app-feed-card-content': HTMLAppFeedCardContentElement;
@@ -467,6 +492,7 @@ declare global {
     'app-contact': HTMLAppContactElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-privacy': HTMLAppPrivacyElement;
+    'app-team': HTMLAppTeamElement;
     'app-terms': HTMLAppTermsElement;
     'app-home': HTMLAppHomeElement;
     'app-signin': HTMLAppSigninElement;
