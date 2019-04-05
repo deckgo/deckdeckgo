@@ -11,6 +11,7 @@ import {DeckService} from '../../services/deck/deck.service';
 import {ErrorService} from '../../services/error/error.service';
 import {DeckBusyService} from '../../services/deck/deck-busy.service';
 import {ApiService} from '../../services/api/api.service';
+import {ApiUser} from '../../models/api-user';
 
 export class EditorHelper {
 
@@ -55,9 +56,9 @@ export class EditorHelper {
 
     // TODO: If user id change update current deck id, to test, in case of merge of anonymous
     private initWatchUser() {
-        this.apiSubscription = this.apiService.watch().subscribe(async (userId: string) => {
-            if (userId && this.deck && this.deck.deck_owner_id !== userId) {
-                await this.updateDeckUser(userId);
+        this.apiSubscription = this.apiService.watch().subscribe(async (user: ApiUser) => {
+            if (user && this.deck && this.deck.deck_owner_id !== user.user_id) {
+                await this.updateDeckUser(user.user_id);
             }
         });
     }
@@ -174,12 +175,12 @@ export class EditorHelper {
 
                     this.deck = await this.deckService.put(this.deck);
                 } else {
-                    this.apiService.watch().pipe(take(1)).subscribe(async (userId: string) => {
+                    this.apiService.watch().pipe(take(1)).subscribe(async (apiUser: ApiUser) => {
                         // TODO: Deck name to be solve with the UX
                         this.deck = {
                             deck_slides: [slide.slide_id],
                             deck_name: 'Presentation A',
-                            deck_owner_id: userId
+                            deck_owner_id: apiUser.user_id
                         };
 
                         // TODO: inform @Nicolas that they might be decks without owner id if shit happens

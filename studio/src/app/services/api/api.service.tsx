@@ -11,7 +11,7 @@ import {ErrorService} from '../error/error.service';
 
 export class ApiService {
 
-    private userIdSubject: ReplaySubject<string> = new ReplaySubject(1);
+    private apiUserSubject: ReplaySubject<ApiUser> = new ReplaySubject(1);
 
     private static instance: ApiService;
 
@@ -34,7 +34,7 @@ export class ApiService {
     onAuthStateChanged(user: User): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!user) {
-                this.userIdSubject.next(null);
+                this.apiUserSubject.next(null);
                 await del('deckdeckgo_api_user');
             } else {
                 const savedApiUserId: string = await get('deckdeckgo_api_user');
@@ -56,8 +56,6 @@ export class ApiService {
                     } catch (err) {
                         this.errorService.error(err);
                     }
-
-                    this.userIdSubject.next(savedApiUserId);
                 }
             }
 
@@ -87,8 +85,7 @@ export class ApiService {
 
                 const persistedUser: ApiUser = await rawResponse.json();
 
-                // TODO spread object not id
-                this.userIdSubject.next(persistedUser.user_id);
+                this.apiUserSubject.next(persistedUser);
 
                 await set('deckdeckgo_api_user', persistedUser.user_id);
 
@@ -119,7 +116,7 @@ export class ApiService {
 
                 const persistedUser: ApiUser = await rawResponse.json();
 
-                this.userIdSubject.next(persistedUser.user_id);
+                this.apiUserSubject.next(persistedUser);
 
                 resolve(persistedUser);
             } catch (err) {
@@ -128,7 +125,7 @@ export class ApiService {
         });
     }
 
-    watch(): Observable<string> {
-        return this.userIdSubject.asObservable();
+    watch(): Observable<ApiUser> {
+        return this.apiUserSubject.asObservable();
     }
 }
