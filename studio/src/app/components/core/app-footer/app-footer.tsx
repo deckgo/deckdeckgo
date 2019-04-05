@@ -15,6 +15,10 @@ export class AppFooter {
                     <ion-label>About</ion-label>
                 </ion-anchor>
 
+                <ion-anchor href="/team" routerDirection="forward">
+                    <ion-label>Team</ion-label>
+                </ion-anchor>
+
                 <ion-anchor href="/opensource" routerDirection="forward">
                     <ion-label>Open source</ion-label>
                 </ion-anchor>
