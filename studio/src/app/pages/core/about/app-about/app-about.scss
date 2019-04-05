@@ -2,6 +2,18 @@ app-about {
   main {
     background: white;
 
+    ion-grid {
+
+      ion-col.demo {
+        display: flex;
+        justify-content: center;
+
+        app-demo {
+          --demo-display: inline-block;
+        }
+      }
+    }
+
     div.team {
       display: flex;
       justify-content: center;

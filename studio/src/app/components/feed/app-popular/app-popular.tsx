@@ -18,12 +18,14 @@ export class AppPopular {
 
                     <p padding-top>What does that mean 🤔?</p>
 
-                    <p padding-top padding-bottom>It means that every presentations you write and publish with DeckDeckGo are also <strong>apps</strong> 🤪</p>
+                    <p padding-top>It means that every presentations you write and publish with DeckDeckGo are <strong>apps</strong> too 🤪</p>
+
+                    <p padding-top padding-bottom>It is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
                 </ion-card-content>
             </ion-card>,
-            <div class="demo">
+            <ion-card class="demo">
                 <app-demo></app-demo>
-            </div>
+            </ion-card>
         ];
     }
 

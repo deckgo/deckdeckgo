@@ -2,10 +2,13 @@ app-popular {
   ion-card[class*="sc-ion-card"] {
     --background: white;
     color: black;
+    padding: 16px;
   }
 
-  div.demo {
-    position: relative;
+  ion-card.demo {
+    padding: 16px;
+    --background: white;
+    min-height: 340px;
   }
 }
 

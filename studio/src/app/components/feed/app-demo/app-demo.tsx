@@ -22,7 +22,7 @@ export class AppDemo {
     }
 
     render() {
-        return <div>
+        return <div class="container">
             <ion-segment onIonChange={(e: CustomEvent) => this.switchType(e)}>
                 <ion-segment-button value="mobile" checked={this.type === DemoType.MOBILE}>
                     <ion-label>Mobile</ion-label>

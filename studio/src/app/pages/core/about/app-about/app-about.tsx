@@ -14,13 +14,25 @@ export class AppAbout {
                 <main padding>
                     <h1>About DeckDeckGo</h1>
 
-                    <h3 padding-top>Edit anywhere, display everywhere</h3>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="12" size-md="6">
+                                <h3 padding-top>Edit anywhere, display everywhere</h3>
 
-                    <p padding-top>DeckDeckGo aims to be the open source editor for PWA presentations.</p>
+                                <p padding-top>DeckDeckGo aims to be the open source editor for PWA presentations.</p>
 
-                    <p>What does that mean 🤔? It means that every presentations you write and publish with DeckDeckGo are also <strong>apps</strong> for desktop and mobile 🤪</p>
+                                <p>What does that mean 🤔? It means that every presentations you write and publish with DeckDeckGo are <strong>apps</strong> too 🤪</p>
 
-                    <p>Furthermore, DeckDeckGo aims to be an online community for sharing presentations, slides and talks about your interests and ideas too.</p>
+                                <p>It is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
+
+                                <p>DeckDeckGo was created with passion in Zürich🇨🇭in 2019</p>
+                            </ion-col>
+
+                            <ion-col class="demo">
+                                <app-demo></app-demo>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
 
                     <h1 class="ion-text-center ion-padding-top">Team</h1>
 
@@ -69,8 +81,6 @@ export class AppAbout {
                             </div>
                         </div>
                     </div>
-
-                    <p padding-top>DeckDeckGo was created with passion in Zürich🇨🇭in 2019</p>
 
                 </main>
 
