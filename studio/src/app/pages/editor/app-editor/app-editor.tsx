@@ -291,12 +291,14 @@ export class AppEditor {
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail.data.template === SlideTemplate.GIF) {
-                await this.openGifPicker();
-            }
+            if (detail && detail.data) {
+                if (detail.data.template === SlideTemplate.GIF) {
+                    await this.openGifPicker();
+                }
 
-            if (detail.data.slide) {
-                await this.addSlide(detail.data.slide);
+                if (detail.data.slide) {
+                    await this.addSlide(detail.data.slide);
+                }
             }
         });
 
