@@ -3,6 +3,7 @@ import '@firebase/auth';
 import {User as FirebaseUser} from 'firebase';
 
 import {Observable, ReplaySubject} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 import {get, set, del} from 'idb-keyval';
 
@@ -102,5 +103,13 @@ export class AuthService {
 
     watch(): Observable<User> {
         return this.userSubject.asObservable();
+    }
+
+    getBearer(): Promise<string> {
+        return new Promise<string>((resolve) => {
+            this.watch().pipe(take(1)).subscribe((user: User) => {
+                resolve(`Bearer ${user ? user.token : ''}`)
+            });
+        });
     }
 }

@@ -2,12 +2,17 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 
 import {Deck} from '../../models/deck';
 
+import {AuthService} from '../auth/auth.service';
+
 export class DeckService {
 
     private static instance: DeckService;
 
+    private authService: AuthService;
+
     private constructor() {
         // Private constructor, singleton
+        this.authService = AuthService.getInstance();
     }
 
     static getInstance() {
@@ -34,7 +39,8 @@ export class DeckService {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': await this.authService.getBearer()
                     },
                     body: JSON.stringify(deck)
                 });
@@ -62,7 +68,8 @@ export class DeckService {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': await this.authService.getBearer()
                     }
                 });
 
