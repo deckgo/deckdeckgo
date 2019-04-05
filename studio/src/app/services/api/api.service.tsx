@@ -1,11 +1,13 @@
 import {Observable, ReplaySubject} from 'rxjs';
 
-import {get, del} from 'idb-keyval';
+import {get, del, set} from 'idb-keyval';
 
 import {User} from '../../models/user';
 import {ApiUser} from '../../models/api-user';
 
 import {EnvironmentConfigService} from '../environment/environment-config.service';
+
+import {ErrorService} from '../error/error.service';
 
 export class ApiService {
 
@@ -13,8 +15,11 @@ export class ApiService {
 
     private static instance: ApiService;
 
+    private errorService: ErrorService;
+
     private constructor() {
         // Private constructor, singleton
+        this.errorService = ErrorService.getInstance();
     }
 
     static getInstance() {
@@ -40,13 +45,17 @@ export class ApiService {
                     };
 
                     try {
-                        await this.query(apiUser, 'POST');
+                        await this.query(apiUser, user.token, 'POST');
                     } catch (err) {
                         // TODO: Catch error to find if use is existing? Alternatively var isNewUser = authResult.additionalUserInfo.isNewUser;?
                     }
 
                 } else {
-                    // TODO: I need a get to load the object and not just play with the uid (for example in the future when user will upload their profile image)
+                    try {
+                        await this.get(savedApiUserId);
+                    } catch (err) {
+                        this.errorService.error(err);
+                    }
 
                     this.userIdSubject.next(savedApiUserId);
                 }
@@ -56,8 +65,8 @@ export class ApiService {
         });
     }
 
-    private query(apiUser: ApiUser, method: string): Promise<string> {
-        return new Promise<string>(async (resolve, reject) => {
+    private query(apiUser: ApiUser, token: string, method: string): Promise<ApiUser> {
+        return new Promise<ApiUser>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -65,7 +74,8 @@ export class ApiService {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(apiUser)
                 });
@@ -75,16 +85,43 @@ export class ApiService {
                     return;
                 }
 
-                console.log(rawResponse);
+                const persistedUser: ApiUser = await rawResponse.json();
 
-                // TODO What type I got back?
-                // const persistedDeck: Deck = await rawResponse.json();
+                // TODO spread object not id
+                this.userIdSubject.next(persistedUser.user_id);
 
-                // TODO userIdSubject.next
+                await set('deckdeckgo_api_user', persistedUser.user_id);
 
-                // TODO set cookie
+                resolve(persistedUser);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
 
-                resolve(null);
+    private get(userId: string): Promise<ApiUser> {
+        return new Promise<ApiUser>(async (resolve, reject) => {
+            try {
+                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                const rawResponse: Response = await fetch(apiUrl + `/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while creating a user');
+                    return;
+                }
+
+                const persistedUser: ApiUser = await rawResponse.json();
+
+                this.userIdSubject.next(persistedUser.user_id);
+
+                resolve(persistedUser);
             } catch (err) {
                 reject(err);
             }
