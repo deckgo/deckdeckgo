@@ -34,8 +34,7 @@ export class UserService {
     authStateChanged(authUser: AuthUser): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!authUser) {
-                this.apiUserSubject.next(null);
-                await del('deckdeckgo_user_id');
+                await this.signOut();
             } else {
                 const savedApiUserId: string = await get('deckdeckgo_user_id');
                 if (!savedApiUserId) {
@@ -44,10 +43,13 @@ export class UserService {
                         firebase_uid: authUser.uid
                     };
 
+                    console.log('here');
+
                     try {
                         await this.query(apiUser, authUser.token, 'POST');
                     } catch (err) {
                         // TODO: Catch error to find if use is existing? Alternatively var isNewUser = authResult.additionalUserInfo.isNewUser;?
+                        console.error(err);
                     }
 
                 } else {
@@ -61,6 +63,15 @@ export class UserService {
                 // TODO si firebase_uid !== previous_firebaseuid sauvegarder dans les cookies
                 // updater deck.user_id avec nouvel id en passant token du previous authUser
             }
+
+            resolve();
+        });
+    }
+
+    signOut(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            this.apiUserSubject.next(null);
+            await del('deckdeckgo_user_id');
 
             resolve();
         });
