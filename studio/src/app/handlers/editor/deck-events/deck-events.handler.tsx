@@ -12,6 +12,7 @@ import {DeckService} from '../../../services/deck/deck.service';
 import {ErrorService} from '../../../services/error/error.service';
 import {DeckBusyService} from '../../../services/deck/deck-busy.service';
 import {UserService} from '../../../services/user/user.service';
+import {DeckEditorService} from '../../../services/deck/deck-editor.service';
 
 export class DeckEventsHandler {
 
@@ -31,6 +32,8 @@ export class DeckEventsHandler {
     private updateSlideSubscription: Subscription;
     private updateSlideSubject: Subject<HTMLElement> = new Subject();
 
+    private deckEditorService: DeckEditorService;
+
     constructor() {
         this.slideService = SlideService.getInstance();
         this.deckService = DeckService.getInstance();
@@ -39,6 +42,8 @@ export class DeckEventsHandler {
         this.deckBusyService = DeckBusyService.getInstance();
 
         this.userService = UserService.getInstance();
+
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     init(el: HTMLElement) {
@@ -76,6 +81,8 @@ export class DeckEventsHandler {
         if (this.userSubscription) {
             this.userSubscription.unsubscribe();
         }
+
+        this.deckEditorService.deckEdited(null);
     }
 
     private onSlideDidLoad = async ($event: CustomEvent) => {
@@ -185,7 +192,7 @@ export class DeckEventsHandler {
 
                         this.deck = await this.deckService.post(this.deck);
 
-                        history.replaceState({}, `Deck edited ${this.deck.id}`, `/editor/${this.deck.id}`);
+                        await this.updateNavigation();
 
                         this.initWatchUser();
                     });
@@ -195,6 +202,20 @@ export class DeckEventsHandler {
             } catch (err) {
                 reject(err);
             }
+        });
+    }
+
+    private updateNavigation(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.deck || !this.deck.id) {
+                resolve();
+                return;
+            }
+
+            this.deckEditorService.updateEditorUrl(this.deck.id);
+            this.deckEditorService.deckEdited(this.deck.id);
+
+            resolve();
         });
     }
 

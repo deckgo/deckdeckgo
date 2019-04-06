@@ -9,6 +9,8 @@ import {Utils} from '../../../utils/utils';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
+import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {take} from 'rxjs/operators';
 
 @Component({
     tag: 'app-signin',
@@ -26,8 +28,11 @@ export class AppSignIn {
 
     private navService: NavService;
 
+    private deckEditorService: DeckEditorService;
+
     constructor() {
         this.navService = NavService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentDidLoad() {
@@ -134,7 +139,14 @@ export class AppSignIn {
 
     private async saveRedirect() {
         await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
-        await set('deckdeckgo_redirect_id', this.redirectId ? this.redirectId : '/');
+
+        if (this.redirect && this.redirect === 'editor') {
+            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deckId: string) => {
+               if (deckId) {
+                   await set('deckdeckgo_redirect_id', deckId);
+               }
+            });
+        }
     }
 
     private async navigateRedirect() {
