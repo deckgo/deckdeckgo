@@ -512,7 +512,7 @@ export class AppEditor {
                         </ion-button>
 
                         <ion-button onClick={() => this.openSlideNavigate()} color="primary">
-                            <ion-icon slot="icon-only" src="assets/icons/chapters.svg"></ion-icon>
+                            <ion-icon slot="icon-only" src="/assets/icons/chapters.svg"></ion-icon>
                         </ion-button>
 
                         <ion-button onClick={() => this.toggleFullScreen()} color="primary">
