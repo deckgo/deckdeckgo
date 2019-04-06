@@ -25,7 +25,7 @@ export class SlideService {
     }
 
     put(slide: Slide): Promise<Slide> {
-        return this.query(slide, '/slides/' + slide.slide_id,'PUT');
+        return this.query(slide, '/slides/' + slide.id,'PUT');
     }
 
     delete(slide_id: string): Promise<void> {

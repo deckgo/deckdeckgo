@@ -1,5 +1,5 @@
 export interface User {
-    user_id?: string;
+    id?: string;
     user_anonymous: boolean;
     user_firebase_uid: string;
 }

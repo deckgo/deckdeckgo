@@ -54,7 +54,7 @@ export class AppMenuUser {
             filter((user: User) => user && !user.user_anonymous)).subscribe(async (user: User) => {
             if (user) {
                 try {
-                    const decks: Deck[] = await this.deckService.getUserDecks(user.user_id);
+                    const decks: Deck[] = await this.deckService.getUserDecks(user.id);
                     this.decks = [...decks];
                 } catch (err) {
                     // TODO: print error?

@@ -57,8 +57,8 @@ export class DeckEventsHandler {
     // TODO: If user id change update current deck id, to test, in case of merge of anonymous
     private initWatchUser() {
         this.userSubscription = this.userService.watch().subscribe(async (user: User) => {
-            if (user && this.deck && this.deck.deck_owner_id !== user.user_id) {
-                await this.updateDeckUser(user.user_id);
+            if (user && this.deck && this.deck.deck_owner_id !== user.id) {
+                await this.updateDeckUser(user.id);
             }
         });
     }
@@ -141,8 +141,8 @@ export class DeckEventsHandler {
 
                 const persistedSlide: Slide = await this.slideService.post(slidePost);
 
-                if (persistedSlide && persistedSlide.slide_id) {
-                    slide.setAttribute('slide_id', persistedSlide.slide_id);
+                if (persistedSlide && persistedSlide.id) {
+                    slide.setAttribute('slide_id', persistedSlide.id);
 
                     await this.createOrUpdateDeckSlideList(persistedSlide);
                 }
@@ -171,16 +171,16 @@ export class DeckEventsHandler {
                         this.deck.deck_slides = [];
                     }
 
-                    this.deck.deck_slides.push(slide.slide_id);
+                    this.deck.deck_slides.push(slide.id);
 
                     this.deck = await this.deckService.put(this.deck);
                 } else {
                     this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
                         // TODO: Deck name to be solve with the UX
                         this.deck = {
-                            deck_slides: [slide.slide_id],
+                            deck_slides: [slide.id],
                             deck_name: 'Presentation A',
-                            deck_owner_id: user.user_id
+                            deck_owner_id: user.id
                         };
 
                         this.deck = await this.deckService.post(this.deck);
@@ -228,7 +228,7 @@ export class DeckEventsHandler {
                 }
 
                 const slideUpdate: Slide = {
-                    slide_id: slide.getAttribute('slide_id'),
+                    id: slide.getAttribute('slide_id'),
                     slide_template: this.getSlideTemplate(slide)
                 };
 

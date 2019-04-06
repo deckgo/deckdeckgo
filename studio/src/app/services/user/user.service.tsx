@@ -90,7 +90,7 @@ export class UserService {
 
                 this.apiUserSubject.next(persistedUser);
 
-                await set('deckdeckgo_user_id', persistedUser.user_id);
+                await set('deckdeckgo_user_id', persistedUser.id);
 
                 resolve(persistedUser);
             } catch (err) {
