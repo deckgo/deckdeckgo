@@ -53,6 +53,14 @@ data ServerContext = ServerContext { firebaseProjectId :: Firebase.ProjectId }
 data WithId id a = WithId id a
   deriving (Show, Eq, Generic)
 
+-- data Item a = Item { itemId :: T.Text, itemContent :: a }
+
+-- class ToJSONObject a where
+  -- toJSONObject :: a -> Aeson.Object
+
+
+-- instance ToJSONObject a => Aeson.ToJSON a where
+
 -- USERS
 
 type UsersAPI =
@@ -71,9 +79,11 @@ newtype Username = Username { unUsername :: T.Text }
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
 data User = User
-  { userDecks :: [DeckId]
-  , userFirebaseId :: FirebaseId -- TODO: enforce uniqueness
-  , userUsername :: Username
+  -- { userDecks :: [DeckId]
+  { userFirebaseId :: FirebaseId -- TODO: enforce uniqueness
+  -- , userUsername :: Username -- drop for now
+  , userAnonymous :: Bool
+  -- isanonymous
   } deriving (Show, Eq)
 
 newtype UserId = UserId { unUserId :: T.Text }
@@ -103,39 +113,42 @@ newtype FirebaseId = FirebaseId { unFirebaseId :: T.Text }
 instance Aeson.FromJSON User where
   parseJSON = Aeson.withObject "user" $ \obj ->
     User
-      <$> obj .: "user_username"
-      <*> obj .: "user_decks"
-      <*> obj .: "user_firebaseid"
+      -- potentially return "error exists" + user object
+      <$> obj .: "user_firebase_uid"
+      <*> obj .: "user_anonymous" -- TODO: TTL
 
 instance Aeson.ToJSON User where
   toJSON user = Aeson.object
-    [ "user_username" .= userUsername user
-    , "user_decks" .= userDecks user
-    , "user_firebaseid" .= userFirebaseId user
+    [ "user_firebase_uid" .= userFirebaseId user -- firebaseid -> firebaseuid
+    , "user_anonymous" .= userAnonymous user -- firebaseid -> firebaseuid
     ]
+
+-- TODO: check user is in DB
+-- TODO: check permissions
+-- TODO: created_at, updated_at
 
 -- TODO: deduplicate those instances
 instance Aeson.FromJSON (WithId UserId User) where
   parseJSON = Aeson.withObject "WithId UserId User" $ \o ->
     WithId <$>
       (UserId <$> o .: "user_id") <*>
-      (User <$> o .: "user_decks" <*> o .: "user_username" <*> o .: "user_firebaseid")
+      (User <$> o .: "user_firebase_uid" <*> o .: "user_anonymous" )
 
 instance Aeson.ToJSON (WithId UserId User) where
   toJSON (WithId userId user) = Aeson.object
     [ "user_id" .= userId
-    , "user_decks" .= userDecks user
-    , "user_name" .= userUsername user
+    , "user_firebase_uid" .= userFirebaseId user
+    , "user_anonymous" .= userAnonymous user
     ]
 
 -- DECKS
 
 type DecksAPI =
-    Protected :> Get '[JSON] [WithId DeckId Deck] :<|>
+    Protected :> QueryParam "owner_id" UserId :> Get '[JSON] [WithId DeckId Deck] :<|>
     Protected :>
       Capture "deck_id" DeckId :>
       Get '[JSON] (WithId DeckId Deck) :<|>
-    ReqBody '[JSON] Deck :> Post '[JSON] (WithId DeckId Deck) :<|> --TODO: protect
+    Protected :> ReqBody '[JSON] Deck :> Post '[JSON] (WithId DeckId Deck) :<|>
     Protected :>
       Capture "deck_id" DeckId :>
       ReqBody '[JSON] Deck :> Put '[JSON] (WithId DeckId Deck) :<|>
@@ -151,6 +164,7 @@ newtype Deckname = Deckname { unDeckname :: T.Text }
 data Deck = Deck
   { deckSlides :: [SlideId]
   , deckDeckname :: Deckname -- TODO: enforce uniqueness
+  , deckOwnerId :: UserId
   } deriving (Show, Eq)
 
 instance Aeson.FromJSON Deck where
@@ -158,11 +172,13 @@ instance Aeson.FromJSON Deck where
     Deck
       <$> obj .: "deck_slides"
       <*> obj .: "deck_name"
+      <*> obj .: "deck_owner_id"
 
 instance Aeson.ToJSON Deck where
   toJSON deck = Aeson.object
     [ "deck_slides" .= deckSlides deck
     , "deck_name" .= deckDeckname deck
+    , "deck_owner_id" .= deckOwnerId deck
     ]
 
 -- TODO: deduplicate those instances
@@ -170,13 +186,14 @@ instance Aeson.FromJSON (WithId DeckId Deck) where
   parseJSON = Aeson.withObject "WithId DeckId Deck" $ \o ->
     WithId <$>
       (DeckId <$> o .: "deck_id") <*>
-      (Deck <$> o .: "deck_slides" <*> o .: "deck_name")
+      (Deck <$> o .: "deck_slides" <*> o .: "deck_name" <*> o .: "deck_owner_id")
 
 instance Aeson.ToJSON (WithId DeckId Deck) where
   toJSON (WithId deckId deck) = Aeson.object
     [ "deck_id" .= deckId
     , "deck_slides" .= deckSlides deck
     , "deck_name" .= deckDeckname deck
+    , "deck_owner_id" .= deckOwnerId deck
     ]
 
 -- SLIDES
@@ -382,9 +399,16 @@ usersDelete env _ userId = do
 
 -- DECKS
 
-decksGet :: Aws.Env -> Firebase.UserId -> Servant.Handler [WithId DeckId Deck]
-decksGet env _uid = do
-    res <- runAWS env $ Aws.send $ DynamoDB.scan "Decks"
+decksGet :: Aws.Env -> Firebase.UserId -> Maybe UserId -> Servant.Handler [WithId DeckId Deck]
+decksGet env _uid mUserId = do
+
+    let updateReq = case mUserId of
+          Nothing -> id
+          Just userId -> \req -> req &
+            DynamoDB.sFilterExpression .~ Just "DeckOwnerId = :o" &
+            DynamoDB.sExpressionAttributeValues .~ HMS.singleton ":o" (userIdToAttributeValue userId)
+
+    res <- runAWS env $ Aws.send $ updateReq $ DynamoDB.scan "Decks"
     case res of
       Right scanResponse ->
         case sequence $ scanResponse ^. DynamoDB.srsItems <&> itemToDeck of
@@ -422,8 +446,8 @@ decksGetDeckId env _ deckId = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-decksPost :: Aws.Env -> Deck -> Servant.Handler (WithId DeckId Deck)
-decksPost env deck = do
+decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (WithId DeckId Deck)
+decksPost env _ deck = do
 
     deckId <- liftIO $ DeckId <$> newId
 
@@ -567,24 +591,28 @@ slidesDelete env slideId = do
 -- USERS
 
 userToItem :: UserId -> User -> HMS.HashMap T.Text DynamoDB.AttributeValue
-userToItem userId User{userDecks, userUsername, userFirebaseId} =
+userToItem userId User{userFirebaseId, userAnonymous} =
     HMS.singleton "UserId" (userIdToAttributeValue userId) <>
-    HMS.singleton "UserDecks" (userDecksToAttributeValue userDecks) <>
+    -- HMS.singleton "UserDecks" (userDecksToAttributeValue userDecks) <>
     HMS.singleton "UserFirebaseId" (userFirebaseIdToAttributeValue userFirebaseId) <>
-    HMS.singleton "UserUsername" (userNameToAttributeValue userUsername)
+    HMS.singleton "UserAnonymous" (userAnonymousToAttributeValue userAnonymous) -- <>B
+    -- HMS.singleton "UserFirebaseId" (userFirebaseIdToAttributeValue userFirebaseId) <>
+    -- HMS.singleton "UserUsername" (userNameToAttributeValue userUsername)
 
 userToItem' :: User -> HMS.HashMap T.Text DynamoDB.AttributeValue
-userToItem' User{userDecks, userUsername, userFirebaseId} =
-    HMS.singleton ":s" (userDecksToAttributeValue userDecks) <>
-    HMS.singleton ":i" (userFirebaseIdToAttributeValue userFirebaseId) <>
-    HMS.singleton ":n" (userNameToAttributeValue userUsername)
+userToItem' User{userFirebaseId, userAnonymous} =
+    -- HMS.singleton ":s" (userDecksToAttributeValue userDecks) <>
+    HMS.singleton ":i" (userFirebaseIdToAttributeValue userFirebaseId) <> -- <>
+    HMS.singleton ":a" (userAnonymousToAttributeValue userAnonymous) -- <>
+    -- HMS.singleton ":n" (userNameToAttributeValue userUsername)
 
 itemToUser :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (WithId UserId User)
 itemToUser item = do
     userId <- HMS.lookup "UserId" item >>= userIdFromAttributeValue
-    userDecks <- HMS.lookup "UserDecks" item >>= userDecksFromAttributeValue
-    userUsername <- HMS.lookup "UserUsername" item >>= userNameFromAttributeValue
+    -- userDecks <- HMS.lookup "UserDecks" item >>= userDecksFromAttributeValue
+    -- userUsername <- HMS.lookup "UserUsername" item >>= userNameFromAttributeValue
     userFirebaseId <- HMS.lookup "UserFirebaseId" item >>= userFirebaseIdFromAttributeValue
+    userAnonymous <- HMS.lookup "UserAnonymous" item >>= userAnonymousFromAttributeValue
     pure $ WithId userId User{..}
 
 -- USER ATTRIBUTES
@@ -610,6 +638,13 @@ userFirebaseIdToAttributeValue (FirebaseId userId) =
 userFirebaseIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe FirebaseId
 userFirebaseIdFromAttributeValue attr = FirebaseId <$> attr ^. DynamoDB.avS
 
+userAnonymousToAttributeValue :: Bool -> DynamoDB.AttributeValue
+userAnonymousToAttributeValue b =
+    DynamoDB.attributeValue & DynamoDB.avBOOL .~ Just b
+
+userAnonymousFromAttributeValue :: DynamoDB.AttributeValue -> Maybe Bool
+userAnonymousFromAttributeValue attr = attr ^. DynamoDB.avBOOL
+
 userDecksToAttributeValue :: [DeckId] -> DynamoDB.AttributeValue
 userDecksToAttributeValue userDecks =
     DynamoDB.attributeValue & DynamoDB.avL .~
@@ -622,21 +657,24 @@ userDecksFromAttributeValue attr =
 -- DECKS
 
 deckToItem :: DeckId -> Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
-deckToItem deckId Deck{deckSlides, deckDeckname} =
+deckToItem deckId Deck{deckSlides, deckDeckname, deckOwnerId} =
     HMS.singleton "DeckId" (deckIdToAttributeValue deckId) <>
     HMS.singleton "DeckSlides" (deckSlidesToAttributeValue deckSlides) <>
-    HMS.singleton "DeckName" (deckNameToAttributeValue deckDeckname)
+    HMS.singleton "DeckName" (deckNameToAttributeValue deckDeckname) <>
+    HMS.singleton "DeckOwnerId" (deckOwnerIdToAttributeValue deckOwnerId)
 
 deckToItem' :: Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
-deckToItem' Deck{deckSlides, deckDeckname} =
+deckToItem' Deck{deckSlides, deckDeckname, deckOwnerId} =
     HMS.singleton ":s" (deckSlidesToAttributeValue deckSlides) <>
-    HMS.singleton ":n" (deckNameToAttributeValue deckDeckname)
+    HMS.singleton ":n" (deckNameToAttributeValue deckDeckname) <>
+    HMS.singleton ":o" (deckOwnerIdToAttributeValue deckOwnerId)
 
 itemToDeck :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (WithId DeckId Deck)
 itemToDeck item = do
     deckId <- HMS.lookup "DeckId" item >>= deckIdFromAttributeValue
     deckSlides <- HMS.lookup "DeckSlides" item >>= deckSlidesFromAttributeValue
     deckDeckname <- HMS.lookup "DeckName" item >>= deckNameFromAttributeValue
+    deckOwnerId <- HMS.lookup "DeckOwnerId" item >>= deckOwnerIdFromAttributeValue
     pure $ WithId deckId Deck{..}
 
 -- DECK ATTRIBUTES
@@ -645,15 +683,15 @@ deckIdToAttributeValue :: DeckId -> DynamoDB.AttributeValue
 deckIdToAttributeValue (DeckId deckId) =
     DynamoDB.attributeValue & DynamoDB.avS .~ Just deckId
 
+deckIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe DeckId
+deckIdFromAttributeValue attr = DeckId <$> attr ^. DynamoDB.avS
+
 deckNameToAttributeValue :: Deckname -> DynamoDB.AttributeValue
 deckNameToAttributeValue (Deckname deckname) =
     DynamoDB.attributeValue & DynamoDB.avS .~ Just deckname
 
 deckNameFromAttributeValue :: DynamoDB.AttributeValue -> Maybe Deckname
 deckNameFromAttributeValue attr = Deckname <$> attr ^. DynamoDB.avS
-
-deckIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe DeckId
-deckIdFromAttributeValue attr = DeckId <$> attr ^. DynamoDB.avS
 
 deckSlidesToAttributeValue :: [SlideId] -> DynamoDB.AttributeValue
 deckSlidesToAttributeValue deckSlides =
@@ -663,6 +701,13 @@ deckSlidesToAttributeValue deckSlides =
 deckSlidesFromAttributeValue :: DynamoDB.AttributeValue -> Maybe [SlideId]
 deckSlidesFromAttributeValue attr =
     traverse slideIdFromAttributeValue (attr ^. DynamoDB.avL)
+
+deckOwnerIdToAttributeValue :: UserId -> DynamoDB.AttributeValue
+deckOwnerIdToAttributeValue (UserId deckOwnerId) =
+    DynamoDB.attributeValue & DynamoDB.avS .~ Just deckOwnerId
+
+deckOwnerIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe UserId
+deckOwnerIdFromAttributeValue attr = UserId <$> attr ^. DynamoDB.avS
 
 -- SLIDES
 

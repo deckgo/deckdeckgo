@@ -53,6 +53,7 @@ verifyUser mgr (ProjectId projectId) (UnverifiedJWT jwt) = do
   -- TODO: proper error handling here
   let req =
         HTTP.setRequestSecure True .
+        HTTP.setRequestPort 443 .
         HTTP.setRequestHost "www.googleapis.com" .
         HTTP.setRequestPath "/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com" .
         HTTP.setRequestManager mgr $

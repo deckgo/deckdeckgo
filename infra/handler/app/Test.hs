@@ -25,14 +25,16 @@ main = do
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 users, got: " <> show decks
 
-  runClientM (decksGet' b) clientEnv >>= \case
+  runClientM (decksGet' b Nothing) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 decks, got: " <> show decks
 
-  let someDeck = Deck { deckSlides = [] , deckDeckname = Deckname "foo" }
+  let someUserId = UserId "foo"
 
-  deckId <- runClientM (decksPost' someDeck) clientEnv >>= \case
+  let someDeck = Deck { deckSlides = [] , deckDeckname = Deckname "foo", deckOwnerId = someUserId }
+
+  deckId <- runClientM (decksPost' b someDeck) clientEnv >>= \case
     Left err -> error $ "Expected new deck, got error: " <> show err
     Right (WithId deckId _) -> pure deckId
 
@@ -42,13 +44,13 @@ main = do
     Left err -> error $ "Expected new slide, got error: " <> show err
     Right (WithId slideId _) -> pure slideId
 
-  let newDeck = Deck { deckSlides = [ slideId ], deckDeckname = Deckname "bar" }
+  let newDeck = Deck { deckSlides = [ slideId ], deckDeckname = Deckname "bar", deckOwnerId = someUserId }
 
   runClientM (decksPut' b deckId newDeck) clientEnv >>= \case
     Left err -> error $ "Expected updated deck, got error: " <> show err
     Right {} -> pure ()
 
-  runClientM (decksGet' b) clientEnv >>= \case
+  runClientM (decksGet' b Nothing) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right decks ->
       if decks == [WithId deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
@@ -92,7 +94,7 @@ main = do
     Left err -> error $ "Expected deck delete, got error: " <> show err
     Right {} -> pure ()
 
-  runClientM (decksGet' b) clientEnv >>= \case
+  runClientM (decksGet' b Nothing) clientEnv >>= \case
     Left err -> error $ "Expected no decks, got error: " <> show err
     Right decks ->
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
@@ -104,9 +106,9 @@ _usersPost' :: T.Text -> User -> ClientM (WithId UserId User)
 _usersPut' :: T.Text -> UserId -> User -> ClientM (WithId UserId User)
 _usersDelete' :: T.Text -> UserId -> ClientM ()
 
-decksGet' :: T.Text -> ClientM [WithId DeckId Deck]
+decksGet' :: T.Text -> Maybe UserId -> ClientM [WithId DeckId Deck]
 decksGetDeckId' :: T.Text -> DeckId -> ClientM (WithId DeckId Deck)
-decksPost' :: Deck -> ClientM (WithId DeckId Deck)
+decksPost' :: T.Text -> Deck -> ClientM (WithId DeckId Deck)
 decksPut' :: T.Text -> DeckId -> Deck -> ClientM (WithId DeckId Deck)
 decksDelete' :: T.Text -> DeckId -> ClientM ()
 

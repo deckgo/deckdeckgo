@@ -19,6 +19,6 @@ main = do
   liftIO $ putStrLn "Booted!"
 
   -- TODO: from env
-  let projectId = ProjectId "my-project-id"
+  let projectId = ProjectId "deckdeckgo-studio-beta"
 
   Lambda.run $ Cors.simpleCors $ DeckGo.Handler.application (env ^. Aws.envManager) projectId env
