@@ -3,11 +3,15 @@ import {Component, State} from '@stencil/core';
 import {Subscription} from 'rxjs';
 
 import {AuthUser} from '../../../models/auth-user';
+import {Deck} from '../../../models/deck';
+import {User} from '../../../models/user';
 
 import {Utils} from '../../../utils/utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
+import {DeckService} from '../../../services/deck/deck.service';
+import {UserService} from '../../../services/user/user.service';
 
 @Component({
     tag: 'app-menu-user',
@@ -17,27 +21,56 @@ import {NavDirection, NavService} from '../../../services/nav/nav.service';
 export class AppMenuUser {
 
     private authService: AuthService;
-    private subscription: Subscription;
+    private authSubscription: Subscription;
 
     private navService: NavService;
+
+    private userSubscription: Subscription;
+    private userService: UserService;
+
+    private deckService: DeckService;
 
     @State()
     private authUser: AuthUser;
 
+    @State()
+    private decks: Deck[] = [];
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.navService = NavService.getInstance();
+
+        this.deckService = DeckService.getInstance();
+        this.userService = UserService.getInstance();
     }
 
     componentWillLoad() {
-        this.subscription = this.authService.watch().subscribe((authUser: AuthUser) => {
+        this.authSubscription = this.authService.watch().subscribe((authUser: AuthUser) => {
             this.authUser = authUser;
+        });
+
+        this.userSubscription = this.userService.watch().subscribe(async (user: User) => {
+            if (user) {
+                try {
+                    const decks: Deck[] = await this.deckService.getUserDecks(user.user_id);
+                    this.decks = [...decks];
+                } catch (err) {
+                    // TODO: print error?
+                    this.decks = [];
+                }
+            } else {
+                this.decks = [];
+            }
         });
     }
 
     componentDidUnload() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.authSubscription) {
+            this.authSubscription.unsubscribe();
+        }
+
+        if (this.userSubscription) {
+            this.userSubscription.unsubscribe();
         }
     }
 
@@ -88,22 +121,9 @@ export class AppMenuUser {
         }
     }
 
-    // TODO: deck.service get userId
-
-    // TODO: modify editor route to load deck slides with params
-
     private renderPresentations() {
         if (Utils.isLoggedIn(this.authUser)) {
-            return [
-                <ion-item href="/editor" routerDirection="forward">
-                    <ion-icon name="book" slot="start"></ion-icon>
-                    <ion-label>Presentation A</ion-label>
-                </ion-item>,
-
-                <ion-item href="/editor" routerDirection="forward">
-                    <ion-icon name="book" slot="start"></ion-icon>
-                    <ion-label>Presentation B</ion-label>
-                </ion-item>];
+            return this.renderDecks();
         } else {
             return <ion-item button onClick={() => this.signIn()}>
                 <ion-icon name="log-in" slot="start"></ion-icon>
@@ -118,6 +138,23 @@ export class AppMenuUser {
                 <ion-icon name="log-out" slot="start"></ion-icon>
                 <ion-label>Sign out</ion-label>
             </ion-item>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderDecks() {
+        if (this.decks && this.decks.length > 0) {
+            return (
+                this.decks.map((deck: Deck) => {
+                    const url: string = `/editor/${deck.deck_id}`;
+
+                    return <ion-item href={url} routerDirection="forward">
+                        <ion-icon name="book" slot="start"></ion-icon>
+                        <ion-label>{deck.deck_name}</ion-label>
+                    </ion-item>
+                })
+            );
         } else {
             return undefined;
         }

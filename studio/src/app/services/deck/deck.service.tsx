@@ -52,9 +52,6 @@ export class DeckService {
 
                 const persistedDeck: Deck = await rawResponse.json();
 
-                // TODO: Nicolas decks.put supprime l'attribut deck_owner_id
-                console.log('Deck', method, deck, persistedDeck);
-
                 resolve(persistedDeck);
             } catch (err) {
                 reject(err);
@@ -95,7 +92,7 @@ export class DeckService {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
-                const rawResponse: Response = await fetch(apiUrl + '/decks/?userId=' + userId, {
+                const rawResponse: Response = await fetch(apiUrl + '/decks/?owner_id=' + userId, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',

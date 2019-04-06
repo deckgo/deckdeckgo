@@ -73,6 +73,8 @@ export class EditorHelper {
                 const tmp = [];
                 tmp.push(slide);
 
+                // TODO: There is a bug right now, it does a post after this!!! so we end up with 2 decks instead of 1 in the db
+
                 resolve(tmp);
             } catch (err) {
                 this.errorService.error(err);
