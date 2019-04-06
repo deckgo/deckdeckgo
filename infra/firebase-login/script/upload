@@ -1,0 +1,13 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -I nixpkgs=./nix
+#!nix-shell -i bash -p cabal-install -p nix -p curl --pure
+# vim: filetype=sh
+
+set -euo pipefail
+
+sdistVersion=$(cat $(nix-build -A firebase-login-version-file))
+sdistTarball=$(nix-build -A firebase-login-sdist)/firebase-login-$sdistVersion.tar.gz
+
+echo "Tarball: $sdistTarball"
+
+cabal upload "$@" $sdistTarball

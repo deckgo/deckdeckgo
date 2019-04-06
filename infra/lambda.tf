@@ -60,8 +60,9 @@ data "aws_iam_policy_document" "policy_for_lambda" {
     ]
 
     resources = [
-      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table.arn}",
+      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-decks.arn}",
       "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-slides.arn}",
+      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-users.arn}",
     ]
   }
 

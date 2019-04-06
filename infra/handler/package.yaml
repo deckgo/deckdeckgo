@@ -8,10 +8,19 @@ dependencies:
     - amazonka
     - amazonka-dynamodb
     - base
+    - bytestring
+    - directory
+    - filepath
+    - firebase-login
+    - http-client
     - lens
+    - mtl
     - random
     - servant
+    - swagger2
     - servant-server
+    - servant-swagger
+    - servant-swagger-ui
     - text
     - unliftio
     - unordered-containers
@@ -32,6 +41,15 @@ executables:
         main: app/Handler.hs
         dependencies:
             - deckdeckgo-handler
+
+    # The API
+    swagger:
+        main: app/Swagger.hs
+        dependencies:
+            - warp
+            - deckdeckgo-handler
+            - servant-swagger
+            - servant-swagger-ui
 
     server:
         main: app/Server.hs
