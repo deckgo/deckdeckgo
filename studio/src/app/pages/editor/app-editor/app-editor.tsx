@@ -8,7 +8,8 @@ import {EditorUtils} from '../../../utils/editor-utils';
 
 import {AuthUser} from '../../../models/auth-user';
 
-import {EditorHelper} from '../../../helpers/editor/editor.helper';
+import {DeckEventsHandler} from '../../../handlers/editor/deck-events/deck-events.handler';
+
 import {AuthService} from '../../../services/auth/auth.service';
 import {GuestService} from '../../../services/guest/guest.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
@@ -37,7 +38,7 @@ export class AppEditor {
     @State()
     private displaying: boolean = false;
 
-    private editorHelper: EditorHelper = new EditorHelper();
+    private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
 
     private authService: AuthService;
     private guestService: GuestService;
@@ -50,7 +51,7 @@ export class AppEditor {
     }
 
     async componentWillLoad() {
-        this.editorHelper.init(this.el);
+        this.deckEventsHandler.init(this.el);
 
         // If no user create an anonymous one
         this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
@@ -74,7 +75,7 @@ export class AppEditor {
     }
 
     componentDidUnload() {
-        this.editorHelper.destroy();
+        this.deckEventsHandler.destroy();
     }
 
     private initSlideSize(): Promise<void> {
