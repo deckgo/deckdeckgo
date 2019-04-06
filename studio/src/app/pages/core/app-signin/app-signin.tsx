@@ -3,14 +3,26 @@ import {Component, Element, Prop, Watch} from '@stencil/core';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
+import {filter, take} from 'rxjs/operators';
+
 import {del, get, set} from 'idb-keyval';
+
+import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/auth-user';
 
 import {Utils} from '../../../utils/utils';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
-import {take} from 'rxjs/operators';
+import {MergeService} from '../../../services/merge/merge.service';
+import {UserService} from '../../../services/user/user.service';
+import {AuthService} from '../../../services/auth/auth.service';
+
+interface MergeInformation {
+    deckId: string;
+    userId: string;
+    userToken: string;
+}
 
 @Component({
     tag: 'app-signin',
@@ -28,11 +40,17 @@ export class AppSignIn {
 
     private navService: NavService;
 
-    private deckEditorService: DeckEditorService;
+    private mergeService: MergeService;
+    private userService: UserService;
+    private authService: AuthService;
+
+    private firebaseUser: firebase.User;
 
     constructor() {
         this.navService = NavService.getInstance();
-        this.deckEditorService = DeckEditorService.getInstance();
+        this.mergeService = MergeService.getInstance();
+        this.userService = UserService.getInstance();
+        this.authService = AuthService.getInstance();
     }
 
     async componentDidLoad() {
@@ -68,7 +86,7 @@ export class AppSignIn {
         signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
         signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
 
-        // TODO: avant sign in sauver dans cookie, token, firebase_id et deck_id
+        this.firebaseUser = firebase.auth().currentUser;
 
         const uiConfig = {
             signInFlow: 'redirect',
@@ -118,46 +136,81 @@ export class AppSignIn {
             }
             // The credential the user tried to sign in with.
             const cred = error.credential;
-            // Copy data from anonymous user to permanent user and delete anonymous
-            // user.
-            // ...
-            // Finish sign-in after data is copied.
 
-            // TODO: What to do, copy or not? merge or not merge?
-            // TODO: only update flag anonymous in our backend?
+            const mergeInfo: MergeInformation = await get('deckdeckgo_redirect_info');
+
+            await this.userService.signOut();
+
+            this.userService.watch().pipe(
+                filter((user: User) => user !== null && user !== undefined),
+                take(1)).subscribe(async (user: User) => {
+
+                if (user && mergeInfo) {
+                    await this.mergeService.merge(mergeInfo.deckId, mergeInfo.userToken, user.id);
+
+                    await this.userService.delete(mergeInfo.userId, mergeInfo.userToken);
+
+                    if (this.firebaseUser) {
+                        await this.firebaseUser.delete();
+                    }
+
+                    if (user.anonymous) {
+                        user.anonymous = false;
+
+                        this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
+                            if (authUser) {
+                                await this.userService.query(user, authUser.token, 'PUT');
+                            }
+
+                            await this.navigateRedirect();
+
+                            resolve();
+                        });
+                    } else {
+                        await this.navigateRedirect();
+
+                        resolve();
+                    }
+                } else {
+                    await this.navigateRedirect();
+
+                    resolve();
+                }
+            });
 
             await firebase.auth().signInAndRetrieveDataWithCredential(cred);
-
-            await this.navigateRedirect();
-
-            // TODO: delete anonymous user in firebase
-            // TODO: delete user backend
 
             resolve();
         });
     };
 
-    private async saveRedirect() {
-        await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
+    private saveRedirect(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
 
-        if (this.redirect && this.redirect === 'editor') {
-            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deckId: string) => {
-               if (deckId) {
-                   await set('deckdeckgo_redirect_id', deckId);
-               }
+            this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
+                this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
+                    await set('deckdeckgo_redirect_info', {
+                        deckId: this.mergeService.deckId,
+                        userId: user.id,
+                        userToken: authUser.token
+                    });
+
+                    resolve();
+                });
             });
-        }
+        })
     }
 
     private async navigateRedirect() {
         const redirectUrl: string = await get('deckdeckgo_redirect');
-        const redirectId: string = await get('deckdeckgo_redirect_id');
+        const mergeInfo: MergeInformation = await get('deckdeckgo_redirect_info');
 
         await del('deckdeckgo_redirect');
-        await del('deckdeckgo_redirect_id');
+        await del('deckdeckgo_redirect_info');
 
         // TODO: That's ugly
-        const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + (!redirectId || redirectId.trim() === '' || redirectId.trim() === '/' ? '' : '/' + redirectId);
+        const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + (!mergeInfo || !mergeInfo.deckId || mergeInfo.deckId.trim() === '' || mergeInfo.deckId.trim() === '/' ? '' : '/' + mergeInfo.deckId);
 
         // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
         this.navService.navigate({
@@ -176,7 +229,9 @@ export class AppSignIn {
 
                     <div id="firebaseui-auth-container"></div>
 
-                    <p class="ion-text-center ion-padding-start ion-padding-end"><small>DeckDeckGo is free and open source 🖖</small></p>
+                    <p class="ion-text-center ion-padding-start ion-padding-end">
+                        <small>DeckDeckGo is free and open source 🖖</small>
+                    </p>
                 </main>
             </ion-content>
         ];
@@ -186,12 +241,14 @@ export class AppSignIn {
         if (this.redirect === 'editor') {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
-                <p class="ion-text-center ion-padding">Sign in to extend your deck, to publish your presentation and to get soon a personalized feed of recommendations.</p>
+                <p class="ion-text-center ion-padding">Sign in to extend your deck, to publish your presentation and to
+                    get soon a personalized feed of recommendations.</p>
             ]
         } else {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Welcome back.</h1>,
-                <p class="ion-text-center ion-padding">Sign in to publish your presentation and to get soon a personalized feed of recommendations.</p>
+                <p class="ion-text-center ion-padding">Sign in to publish your presentation and to get soon a
+                    personalized feed of recommendations.</p>
             ]
         }
     }

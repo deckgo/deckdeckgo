@@ -46,9 +46,6 @@ export class AuthService {
             firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
 
             firebase.auth().onAuthStateChanged(async (firebaseUser: FirebaseUser) => {
-
-                console.log('Firebase user');
-
                 if (!firebaseUser) {
                     this.authUserSubject.next(null);
                     await del('deckdeckgo_auth_user');

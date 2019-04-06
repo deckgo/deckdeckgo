@@ -12,7 +12,7 @@ import {DeckService} from '../../../services/deck/deck.service';
 import {ErrorService} from '../../../services/error/error.service';
 import {DeckBusyService} from '../../../services/deck/deck-busy.service';
 import {UserService} from '../../../services/user/user.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {MergeService} from '../../../services/merge/merge.service';
 
 export class DeckEventsHandler {
 
@@ -32,7 +32,7 @@ export class DeckEventsHandler {
     private updateSlideSubscription: Subscription;
     private updateSlideSubject: Subject<HTMLElement> = new Subject();
 
-    private deckEditorService: DeckEditorService;
+    private deckEditorService: MergeService;
 
     constructor() {
         this.slideService = SlideService.getInstance();
@@ -43,7 +43,7 @@ export class DeckEventsHandler {
 
         this.userService = UserService.getInstance();
 
-        this.deckEditorService = DeckEditorService.getInstance();
+        this.deckEditorService = MergeService.getInstance();
     }
 
     init(el: HTMLElement) {
@@ -56,15 +56,6 @@ export class DeckEventsHandler {
 
         this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
             await this.updateSlide(element);
-        });
-    }
-
-    // TODO: If user id change update current deck id, to test, in case of merge of anonymous
-    private initWatchUser() {
-        this.userSubscription = this.userService.watch().subscribe(async (user: User) => {
-            if (user && this.deck && this.deck.owner_id !== user.id) {
-                await this.updateDeckUser(user.id);
-            }
         });
     }
 
@@ -82,7 +73,7 @@ export class DeckEventsHandler {
             this.userSubscription.unsubscribe();
         }
 
-        this.deckEditorService.deckEdited(null);
+        this.deckEditorService.deckId = null;
     }
 
     private onSlideDidLoad = async ($event: CustomEvent) => {
@@ -193,8 +184,6 @@ export class DeckEventsHandler {
                         this.deck = await this.deckService.post(this.deck);
 
                         await this.updateNavigation();
-
-                        this.initWatchUser();
                     });
                 }
 
@@ -212,8 +201,8 @@ export class DeckEventsHandler {
                 return;
             }
 
-            this.deckEditorService.updateEditorUrl(this.deck.id);
-            this.deckEditorService.deckEdited(this.deck.id);
+            this.deckEditorService.deckId = this.deck.id;
+            history.replaceState({}, `Deck edited ${this.deck.id}`, `/editor/${this.deck.id}`);
 
             resolve();
         });

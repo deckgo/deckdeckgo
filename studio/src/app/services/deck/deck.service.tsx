@@ -26,21 +26,25 @@ export class DeckService {
         return this.query(deck, '/decks', 'POST');
     }
 
-    put(deck: Deck): Promise<Deck> {
-        return this.query(deck, '/decks/' + deck.id, 'PUT');
+    async put(deck: Deck, bearer?: string): Promise<Deck> {
+        return this.query(deck, '/decks/' + deck.id, 'PUT', bearer);
     }
 
-    private query(deck: Deck, context: string, method: string): Promise<Deck> {
+    private query(deck: Deck, context: string, method: string, bearer?: string): Promise<Deck> {
         return new Promise<Deck>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                if (!bearer) {
+                    bearer = await this.authService.getBearer();
+                }
 
                 const rawResponse: Response = await fetch(apiUrl + context, {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': await this.authService.getBearer()
+                        'Authorization': bearer
                     },
                     body: JSON.stringify(deck)
                 });
@@ -59,17 +63,21 @@ export class DeckService {
         });
     }
 
-    get(deckId: string): Promise<Deck> {
+    get(deckId: string, bearer?: string): Promise<Deck> {
         return new Promise<Deck>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                if (!bearer) {
+                    bearer = await this.authService.getBearer();
+                }
 
                 const rawResponse: Response = await fetch(apiUrl + `/decks/${deckId}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': await this.authService.getBearer()
+                        'Authorization': bearer
                     }
                 });
 

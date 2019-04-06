@@ -43,15 +43,11 @@ export class UserService {
                         firebase_uid: authUser.uid
                     };
 
-                    console.log('here');
-
                     try {
                         await this.query(apiUser, authUser.token, 'POST');
                     } catch (err) {
-                        // TODO: Catch error to find if use is existing? Alternatively var isNewUser = authResult.additionalUserInfo.isNewUser;?
-                        console.error(err);
+                        this.errorService.error(err);
                     }
-
                 } else {
                     try {
                         await this.get(savedApiUserId);
@@ -77,7 +73,7 @@ export class UserService {
         });
     }
 
-    private query(apiUser: User, token: string, method: string): Promise<User> {
+    query(apiUser: User, token: string, method: string): Promise<User> {
         return new Promise<User>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
@@ -92,7 +88,7 @@ export class UserService {
                     body: JSON.stringify(apiUser)
                 });
 
-                if (!rawResponse || !rawResponse.ok) {
+                if (!rawResponse || (!rawResponse.ok && rawResponse.status !== 409)) {
                     reject('Something went wrong while creating a user');
                     return;
                 }
@@ -133,6 +129,32 @@ export class UserService {
                 this.apiUserSubject.next(persistedUser);
 
                 resolve(persistedUser);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    delete(userId: string, token: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                const rawResponse: Response = await fetch(apiUrl + `/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while creating a user');
+                    return;
+                }
+
+                resolve();
             } catch (err) {
                 reject(err);
             }
