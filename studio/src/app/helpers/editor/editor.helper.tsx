@@ -53,19 +53,22 @@ export class EditorHelper {
 
                 // TODO load slide to be rendered
 
-                // let slides: Slide[] = [];
-                // if (promises.length > 0) {
-                //     slides = await Promise.all(promises);
-                // }
+                let slides: Slide[] = [];
+                if (promises.length > 0) {
+                    slides = await Promise.all(promises);
+                }
                 //
                 // const slide: any = <deckgo-slide-title>
                 //    {new DOMParser().parseFromString(slides[0].slide_content, 'text/html')}
                 // </deckgo-slide-title>;
 
-                const slide: any = <deckgo-slide-title>
-                    <h1 slot="title" class="deckgo-untouched" contenteditable>
-                        HELLO
-                    </h1>
+                const title: any = <h1 slot="title" class="deckgo-untouched" contenteditable>
+                    HELLO
+                </h1>;
+
+                // @ts-ignore
+                const slide: any = <deckgo-slide-title slide_id={slides[0].id}>
+                    {title}
                 </deckgo-slide-title>;
 
                 this.deckBusyService.busy(false);
