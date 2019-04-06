@@ -17,6 +17,10 @@
 module DeckGo.Handler where
 
 -- TODO: double check what is returned on 200 from DynamoDB
+-- TODO: check user is in DB
+-- TODO: check permissions
+-- TODO: created_at, updated_at
+-- TODO: TTL on anonymous users
 
 import Control.Lens hiding ((.=))
 import Control.Monad
@@ -119,7 +123,7 @@ instance FromJSONObject User where
     User
       -- potentially return "error exists" + user object
       <$> obj .: "firebase_uid"
-      <*> obj .: "anonymous" -- TODO: TTL
+      <*> obj .: "anonymous"
 
 instance ToJSONObject User where
   toJSONObject user = HMS.fromList
@@ -131,9 +135,19 @@ instance Aeson.FromJSON User where
   parseJSON = Aeson.withObject "User" parseJSONObject
 instance Aeson.ToJSON User where
   toJSON = Aeson.Object . toJSONObject
--- TODO: check user is in DB
--- TODO: check permissions
--- TODO: created_at, updated_at
+
+
+instance ToSchema (Item UserId User) where
+  declareNamedSchema _ = pure $ NamedSchema (Just "UserWithId") mempty
+
+instance ToSchema User where
+  declareNamedSchema _ = pure $ NamedSchema (Just "User") mempty
+
+instance ToParamSchema (Item UserId User) where
+  toParamSchema _ = mempty
+
+instance ToParamSchema UserId where
+  toParamSchema _ = mempty
 
 -- DECKS
 
@@ -179,6 +193,18 @@ instance Aeson.FromJSON Deck where
   parseJSON = Aeson.withObject "Deck" parseJSONObject
 instance Aeson.ToJSON Deck where
   toJSON = Aeson.Object . toJSONObject
+
+instance ToSchema (Item DeckId Deck) where
+  declareNamedSchema _ = pure $ NamedSchema (Just "DeckWithId") mempty
+
+instance ToSchema Deck where
+  declareNamedSchema _ = pure $ NamedSchema (Just "Deck") mempty
+
+instance ToParamSchema (Item DeckId Deck) where
+  toParamSchema _ = mempty
+
+instance ToParamSchema DeckId where
+  toParamSchema _ = mempty
 
 -- SLIDES
 

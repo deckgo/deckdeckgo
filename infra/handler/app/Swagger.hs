@@ -26,7 +26,7 @@ swagger :: Swagger.Swagger
 swagger = Servant.toSwagger (Proxy :: Proxy DeckGo.Handler.SlidesAPI)
 
 dumpSwagger :: FilePath -> IO ()
-dumpSwagger out = Servant.swaggerSchemaUiDump out swaggerApi (Proxy :: Proxy DeckGo.Handler.SlidesAPI)
+dumpSwagger out = Servant.swaggerSchemaUiDump out swaggerApi DeckGo.Handler.api
 
 serveSwagger :: IO ()
 serveSwagger =

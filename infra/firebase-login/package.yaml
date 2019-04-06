@@ -18,6 +18,7 @@ dependencies:
     - servant
     - servant-client-core
     - servant-server
+    - servant-swagger
     - text
     - unordered-containers
     - wai

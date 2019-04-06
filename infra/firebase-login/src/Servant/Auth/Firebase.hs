@@ -17,6 +17,7 @@ import Control.Monad.Except
 import Data.Proxy
 import Data.Word8 (isSpace, toLower)
 import Servant.API
+import qualified Servant.Swagger as Servant
 import qualified Crypto.JOSE.JWK as JWK
 import qualified Network.URI as URI
 import qualified Crypto.JWT as JWT
@@ -154,3 +155,6 @@ instance
 
   hoistServerWithContext Proxy p hoist s = \uid ->
     Servant.hoistServerWithContext (Proxy :: Proxy sub) p hoist (s uid)
+
+instance Servant.HasSwagger sub => Servant.HasSwagger (Protected :> sub) where
+  toSwagger Proxy = Servant.toSwagger (Proxy :: Proxy sub)
