@@ -6,7 +6,7 @@ import {filter, take} from 'rxjs/operators';
 import {SlideTemplate} from '../../../models/slide-template';
 import {EditorUtils} from '../../../utils/editor-utils';
 
-import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/auth-user';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 import {AuthService} from '../../../services/auth/auth.service';
@@ -53,16 +53,16 @@ export class AppEditor {
         this.editorHelper.init(this.el);
 
         // If no user create an anonymous one
-        this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
-            if(!user) {
+        this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
+            if(!authUser) {
                 await this.authService.signInAnonymous();
             }
         });
 
         // As soon as we have got a user, an anonymous where the creation started above or an already used anonymous or a logged one, we init
         this.authService.watch().pipe(
-            filter((user: User) => user !== null && user !== undefined),
-            take(1)).subscribe(async (_user: User) => {
+            filter((authUser: AuthUser) => authUser !== null && authUser !== undefined),
+            take(1)).subscribe(async (_authUser: AuthUser) => {
             await this.initSlide();
         });
     }

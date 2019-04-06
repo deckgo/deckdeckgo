@@ -2,7 +2,7 @@ import {Component, Element, Listen, Prop, State} from '@stencil/core';
 
 import {take} from 'rxjs/operators';
 
-import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/auth-user';
 
 import {AuthService} from '../../../services/auth/auth.service';
 
@@ -35,8 +35,8 @@ export class AppPublish {
     async componentDidLoad() {
         history.pushState({modal: true}, null);
 
-        this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
-            this.author = user ? user.name : '';
+        this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
+            this.author = authUser ? authUser.name : '';
         });
     }
 

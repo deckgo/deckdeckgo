@@ -2,7 +2,7 @@ import {Component, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/auth-user';
 
 import {Utils} from '../../../utils/utils';
 
@@ -22,7 +22,7 @@ export class AppMenuUser {
     private navService: NavService;
 
     @State()
-    private user: User;
+    private authUser: AuthUser;
 
     constructor() {
         this.authService = AuthService.getInstance();
@@ -30,8 +30,8 @@ export class AppMenuUser {
     }
 
     componentWillLoad() {
-        this.subscription = this.authService.watch().subscribe((user: User) => {
-            this.user = user;
+        this.subscription = this.authService.watch().subscribe((authUser: AuthUser) => {
+            this.authUser = authUser;
         });
     }
 
@@ -78,10 +78,10 @@ export class AppMenuUser {
     }
 
     private renderUser() {
-        if (Utils.isLoggedIn(this.user)) {
+        if (Utils.isLoggedIn(this.authUser)) {
             return <ion-item class="user">
-                <app-avatar slot="start" src={this.user.photo_url}></app-avatar>
-                <ion-label>{this.user.name}</ion-label>
+                <app-avatar slot="start" src={this.authUser.photo_url}></app-avatar>
+                <ion-label>{this.authUser.name}</ion-label>
             </ion-item>;
         } else {
             return <ion-item class="user"></ion-item>;
@@ -93,7 +93,7 @@ export class AppMenuUser {
     // TODO: modify editor route to load deck slides with params
 
     private renderPresentations() {
-        if (Utils.isLoggedIn(this.user)) {
+        if (Utils.isLoggedIn(this.authUser)) {
             return [
                 <ion-item href="/editor" routerDirection="forward">
                     <ion-icon name="book" slot="start"></ion-icon>
@@ -113,7 +113,7 @@ export class AppMenuUser {
     }
 
     private renderSignOut() {
-        if (Utils.isLoggedIn(this.user)) {
+        if (Utils.isLoggedIn(this.authUser)) {
             return <ion-item button class="signout" onClick={() => this.signOut()}>
                 <ion-icon name="log-out" slot="start"></ion-icon>
                 <ion-label>Sign out</ion-label>

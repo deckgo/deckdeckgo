@@ -1,6 +1,6 @@
 import {take} from 'rxjs/operators';
 
-import {User} from '../../models/user';
+import {AuthUser} from '../../models/auth-user';
 
 import {AuthService} from '../auth/auth.service';
 
@@ -33,13 +33,13 @@ export class GuestService {
                 return;
             }
 
-            this.authService.watch().pipe(take(1)).subscribe((user: User) => {
-                if (!user) {
+            this.authService.watch().pipe(take(1)).subscribe((authUser: AuthUser) => {
+                if (!authUser) {
                     resolve(false);
                     return;
                 }
 
-                if (!user.anonymous) {
+                if (!authUser.anonymous) {
                     resolve(true);
                     return;
                 }
@@ -56,13 +56,13 @@ export class GuestService {
                 return;
             }
 
-            this.authService.watch().pipe(take(1)).subscribe((user: User) => {
-                if (!user) {
+            this.authService.watch().pipe(take(1)).subscribe((authUser: AuthUser) => {
+                if (!authUser) {
                     resolve(false);
                     return;
                 }
 
-                resolve(!user.anonymous);
+                resolve(!authUser.anonymous);
             });
         });
     }

@@ -9,14 +9,14 @@ import {get, set, del} from 'idb-keyval';
 
 import {EnvironmentConfigService} from '../environment/environment-config.service';
 
-import {User} from '../../models/user';
+import {AuthUser} from '../../models/auth-user';
 
 import {ErrorService} from '../error/error.service';
 import {ApiService} from '../api/api.service';
 
 export class AuthService {
 
-    private userSubject: ReplaySubject<User> = new ReplaySubject(1);
+    private authUserSubject: ReplaySubject<AuthUser> = new ReplaySubject(1);
 
     private errorService: ErrorService;
 
@@ -40,42 +40,42 @@ export class AuthService {
     init(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             // We also save the user in the local storage to avoid a flickering in the GUI till Firebase as correctly fetched the user
-            const localUser: User = await get('deckdeckgo_user');
-            this.userSubject.next(localUser);
+            const localUser: AuthUser = await get('deckdeckgo_auth_user');
+            this.authUserSubject.next(localUser);
 
             firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
 
-            firebase.auth().onAuthStateChanged(async (authUser: FirebaseUser) => {
-                if (!authUser) {
-                    this.userSubject.next(null);
-                    await del('deckdeckgo_user');
+            firebase.auth().onAuthStateChanged(async (firebaseUser: FirebaseUser) => {
+                if (!firebaseUser) {
+                    this.authUserSubject.next(null);
+                    await del('deckdeckgo_auth_user');
                 } else {
-                    const tokenId: string = await authUser.getIdToken();
+                    const tokenId: string = await firebaseUser.getIdToken();
 
-                    const user: User = {
-                        uid: authUser.uid,
+                    const authUser: AuthUser = {
+                        uid: firebaseUser.uid,
                         token: tokenId,
-                        anonymous: authUser.isAnonymous,
-                        name: authUser.displayName,
-                        email: authUser.email,
-                        email_verified: authUser.emailVerified,
-                        photo_url: authUser.photoURL
+                        anonymous: firebaseUser.isAnonymous,
+                        name: firebaseUser.displayName,
+                        email: firebaseUser.email,
+                        email_verified: firebaseUser.emailVerified,
+                        photo_url: firebaseUser.photoURL
                     };
 
                     // Update anonymous user
                     // Reference: https://github.com/firebase/firebaseui-web/issues/449
-                    if (!user.name && authUser.providerData && authUser.providerData.length > 0 && authUser.providerData[0].displayName) {
-                        user.name = authUser.providerData[0].displayName;
+                    if (!authUser.name && firebaseUser.providerData && firebaseUser.providerData.length > 0 && firebaseUser.providerData[0].displayName) {
+                        authUser.name = firebaseUser.providerData[0].displayName;
                     }
 
-                    if (!user.photo_url && authUser.providerData && authUser.providerData.length > 0 && authUser.providerData[0].photoURL) {
-                        user.photo_url = authUser.providerData[0].photoURL;
+                    if (!authUser.photo_url && firebaseUser.providerData && firebaseUser.providerData.length > 0 && firebaseUser.providerData[0].photoURL) {
+                        authUser.photo_url = firebaseUser.providerData[0].photoURL;
                     }
 
-                    await this.apiService.onAuthStateChanged(user);
+                    await this.apiService.onAuthStateChanged(authUser);
 
-                    this.userSubject.next(user);
-                    await set('deckdeckgo_user', user);
+                    this.authUserSubject.next(authUser);
+                    await set('deckdeckgo_auth_user', authUser);
                 }
             });
 
@@ -84,7 +84,7 @@ export class AuthService {
     }
 
     async signOut() {
-        await del('deckdeckgo_user');
+        await del('deckdeckgo_auth_user');
         await firebase.auth().signOut();
     }
 
@@ -101,14 +101,14 @@ export class AuthService {
         });
     }
 
-    watch(): Observable<User> {
-        return this.userSubject.asObservable();
+    watch(): Observable<AuthUser> {
+        return this.authUserSubject.asObservable();
     }
 
     getBearer(): Promise<string> {
         return new Promise<string>((resolve) => {
-            this.watch().pipe(take(1)).subscribe((user: User) => {
-                resolve(`Bearer ${user ? user.token : ''}`)
+            this.watch().pipe(take(1)).subscribe((authUser: AuthUser) => {
+                resolve(`Bearer ${authUser ? authUser.token : ''}`)
             });
         });
     }

@@ -2,7 +2,7 @@ import {Observable, ReplaySubject} from 'rxjs';
 
 import {get, del, set} from 'idb-keyval';
 
-import {User} from '../../models/user';
+import {AuthUser} from '../../models/auth-user';
 import {ApiUser} from '../../models/api-user';
 
 import {EnvironmentConfigService} from '../environment/environment-config.service';
@@ -31,21 +31,21 @@ export class ApiService {
 
     // TODO: Implement the authentication in each API requests which need it
 
-    onAuthStateChanged(user: User): Promise<void> {
+    onAuthStateChanged(authUser: AuthUser): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!user) {
+            if (!authUser) {
                 this.apiUserSubject.next(null);
                 await del('deckdeckgo_api_user');
             } else {
                 const savedApiUserId: string = await get('deckdeckgo_api_user');
                 if (!savedApiUserId) {
                     const apiUser: ApiUser = {
-                        user_anonymous: user.anonymous,
-                        user_firebase_uid: user.uid
+                        user_anonymous: authUser.anonymous,
+                        user_firebase_uid: authUser.uid
                     };
 
                     try {
-                        await this.query(apiUser, user.token, 'POST');
+                        await this.query(apiUser, authUser.token, 'POST');
                     } catch (err) {
                         // TODO: Catch error to find if use is existing? Alternatively var isNewUser = authResult.additionalUserInfo.isNewUser;?
                     }
@@ -59,7 +59,7 @@ export class ApiService {
                 }
 
                 // TODO si firebase_uid !== previous_firebaseuid sauvegarder dans les cookies
-                // updater deck.user_id avec nouvel id en passant token du previous user
+                // updater deck.user_id avec nouvel id en passant token du previous authUser
             }
 
             resolve();
