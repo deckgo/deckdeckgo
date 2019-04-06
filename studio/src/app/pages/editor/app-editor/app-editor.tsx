@@ -508,7 +508,7 @@ export class AppEditor {
 
     private async signIn() {
         this.navService.navigate({
-            url: '/signin/editor',
+            url: '/signin/editor' + (this.deckId ? `/${this.deckId}` : ''),
             direction: NavDirection.FORWARD
         });
     }

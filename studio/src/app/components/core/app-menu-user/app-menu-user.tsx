@@ -1,6 +1,7 @@
 import {Component, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
+import {filter} from 'rxjs/operators';
 
 import {AuthUser} from '../../../models/auth-user';
 import {Deck} from '../../../models/deck';
@@ -49,7 +50,8 @@ export class AppMenuUser {
             this.authUser = authUser;
         });
 
-        this.userSubscription = this.userService.watch().subscribe(async (user: User) => {
+        this.userSubscription = this.userService.watch().pipe(
+            filter((user: User) => user && !user.user_anonymous)).subscribe(async (user: User) => {
             if (user) {
                 try {
                     const decks: Deck[] = await this.deckService.getUserDecks(user.user_id);

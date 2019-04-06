@@ -72,10 +72,10 @@ export class AuthService {
                         authUser.photo_url = firebaseUser.providerData[0].photoURL;
                     }
 
-                    await this.userService.authStateChanged(authUser);
-
-                    this.authUserSubject.next(authUser);
                     await set('deckdeckgo_auth_user', authUser);
+                    this.authUserSubject.next(authUser);
+
+                    await this.userService.authStateChanged(authUser);
                 }
             });
 
