@@ -30,6 +30,7 @@ import Servant.API
 import Servant.Auth.Firebase (Protected)
 import UnliftIO
 import qualified Data.Aeson as Aeson
+import qualified Data.Aeson.Types as Aeson
 import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
@@ -49,29 +50,35 @@ data ServerContext = ServerContext { firebaseProjectId :: Firebase.ProjectId }
 
 -- COMMON
 
-
-data WithId id a = WithId id a
+data Item id a = Item { itemId :: id, itemContent :: a }
   deriving (Show, Eq, Generic)
 
--- data Item a = Item { itemId :: T.Text, itemContent :: a }
+class ToJSONObject a where
+  toJSONObject :: a -> Aeson.Object
 
--- class ToJSONObject a where
-  -- toJSONObject :: a -> Aeson.Object
+instance (Aeson.ToJSON id, ToJSONObject a) => Aeson.ToJSON (Item id a) where
+  toJSON i = Aeson.Object $
+    HMS.fromList [ "id" .= itemId i ] <>
+    toJSONObject (itemContent i)
 
+class FromJSONObject a where
+  parseJSONObject :: Aeson.Object -> Aeson.Parser a
 
--- instance ToJSONObject a => Aeson.ToJSON a where
+instance (Aeson.FromJSON id, FromJSONObject a) => Aeson.FromJSON (Item id a) where
+  parseJSON = Aeson.withObject "FromJSONObject" $ \o -> Item <$>
+    o .: "id" <*> parseJSONObject o
 
 -- USERS
 
 type UsersAPI =
-    Get '[JSON] [WithId UserId User] :<|>
-    Capture "user_id" UserId :> Get '[JSON] (WithId UserId User) :<|>
+    Get '[JSON] [Item UserId User] :<|>
+    Capture "user_id" UserId :> Get '[JSON] (Item UserId User) :<|>
     Protected :>
       ReqBody '[JSON] User :>
-      Post '[JSON] (WithId UserId User) :<|>
+      Post '[JSON] (Item UserId User) :<|>
     Protected :>
       Capture "user_id" UserId :>
-      ReqBody '[JSON] User :> Put '[JSON] (WithId UserId User) :<|>
+      ReqBody '[JSON] User :> Put '[JSON] (Item UserId User) :<|>
     Protected :> Capture "user_id" UserId :> Delete '[JSON] ()
 
 newtype Username = Username { unUsername :: T.Text }
@@ -79,11 +86,8 @@ newtype Username = Username { unUsername :: T.Text }
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
 data User = User
-  -- { userDecks :: [DeckId]
   { userFirebaseId :: FirebaseId -- TODO: enforce uniqueness
-  -- , userUsername :: Username -- drop for now
   , userAnonymous :: Bool
-  -- isanonymous
   } deriving (Show, Eq)
 
 newtype UserId = UserId { unUserId :: T.Text }
@@ -110,48 +114,38 @@ newtype FirebaseId = FirebaseId { unFirebaseId :: T.Text }
   deriving stock
     ( Generic )
 
-instance Aeson.FromJSON User where
-  parseJSON = Aeson.withObject "user" $ \obj ->
+instance FromJSONObject User where
+  parseJSONObject = \obj ->
     User
       -- potentially return "error exists" + user object
       <$> obj .: "user_firebase_uid"
       <*> obj .: "user_anonymous" -- TODO: TTL
 
-instance Aeson.ToJSON User where
-  toJSON user = Aeson.object
-    [ "user_firebase_uid" .= userFirebaseId user -- firebaseid -> firebaseuid
-    , "user_anonymous" .= userAnonymous user -- firebaseid -> firebaseuid
+instance ToJSONObject User where
+  toJSONObject user = HMS.fromList
+    [ "user_firebase_uid" .= userFirebaseId user
+    , "user_anonymous" .= userAnonymous user
     ]
 
+instance Aeson.FromJSON User where
+  parseJSON = Aeson.withObject "User" parseJSONObject
+instance Aeson.ToJSON User where
+  toJSON = Aeson.Object . toJSONObject
 -- TODO: check user is in DB
 -- TODO: check permissions
 -- TODO: created_at, updated_at
 
--- TODO: deduplicate those instances
-instance Aeson.FromJSON (WithId UserId User) where
-  parseJSON = Aeson.withObject "WithId UserId User" $ \o ->
-    WithId <$>
-      (UserId <$> o .: "user_id") <*>
-      (User <$> o .: "user_firebase_uid" <*> o .: "user_anonymous" )
-
-instance Aeson.ToJSON (WithId UserId User) where
-  toJSON (WithId userId user) = Aeson.object
-    [ "user_id" .= userId
-    , "user_firebase_uid" .= userFirebaseId user
-    , "user_anonymous" .= userAnonymous user
-    ]
-
 -- DECKS
 
 type DecksAPI =
-    Protected :> QueryParam "owner_id" UserId :> Get '[JSON] [WithId DeckId Deck] :<|>
+    Protected :> QueryParam "owner_id" UserId :> Get '[JSON] [Item DeckId Deck] :<|>
     Protected :>
       Capture "deck_id" DeckId :>
-      Get '[JSON] (WithId DeckId Deck) :<|>
-    Protected :> ReqBody '[JSON] Deck :> Post '[JSON] (WithId DeckId Deck) :<|>
+      Get '[JSON] (Item DeckId Deck) :<|>
+    Protected :> ReqBody '[JSON] Deck :> Post '[JSON] (Item DeckId Deck) :<|>
     Protected :>
       Capture "deck_id" DeckId :>
-      ReqBody '[JSON] Deck :> Put '[JSON] (WithId DeckId Deck) :<|>
+      ReqBody '[JSON] Deck :> Put '[JSON] (Item DeckId Deck) :<|>
     Protected :> Capture "deck_id" DeckId :> Delete '[JSON] ()
 
 newtype DeckId = DeckId { unDeckId :: T.Text }
@@ -167,51 +161,41 @@ data Deck = Deck
   , deckOwnerId :: UserId
   } deriving (Show, Eq)
 
-instance Aeson.FromJSON Deck where
-  parseJSON = Aeson.withObject "deck" $ \obj ->
+instance FromJSONObject Deck where
+  parseJSONObject = \obj ->
     Deck
       <$> obj .: "deck_slides"
       <*> obj .: "deck_name"
       <*> obj .: "deck_owner_id"
 
-instance Aeson.ToJSON Deck where
-  toJSON deck = Aeson.object
+instance ToJSONObject Deck where
+  toJSONObject deck = HMS.fromList
     [ "deck_slides" .= deckSlides deck
     , "deck_name" .= deckDeckname deck
     , "deck_owner_id" .= deckOwnerId deck
     ]
 
--- TODO: deduplicate those instances
-instance Aeson.FromJSON (WithId DeckId Deck) where
-  parseJSON = Aeson.withObject "WithId DeckId Deck" $ \o ->
-    WithId <$>
-      (DeckId <$> o .: "deck_id") <*>
-      (Deck <$> o .: "deck_slides" <*> o .: "deck_name" <*> o .: "deck_owner_id")
-
-instance Aeson.ToJSON (WithId DeckId Deck) where
-  toJSON (WithId deckId deck) = Aeson.object
-    [ "deck_id" .= deckId
-    , "deck_slides" .= deckSlides deck
-    , "deck_name" .= deckDeckname deck
-    , "deck_owner_id" .= deckOwnerId deck
-    ]
+instance Aeson.FromJSON Deck where
+  parseJSON = Aeson.withObject "Deck" parseJSONObject
+instance Aeson.ToJSON Deck where
+  toJSON = Aeson.Object . toJSONObject
 
 -- SLIDES
 
 type SlidesAPI =
-    Get '[JSON] [WithId SlideId Slide] :<|>
-    Capture "slide_id" SlideId :> Get '[JSON] (WithId SlideId Slide) :<|>
-    ReqBody '[JSON] Slide :> Post '[JSON] (WithId SlideId Slide) :<|>
-    Capture "slide_id" SlideId :> ReqBody '[JSON] Slide :> Put '[JSON] (WithId SlideId Slide) :<|>
+    Get '[JSON] [Item SlideId Slide] :<|>
+    Capture "slide_id" SlideId :> Get '[JSON] (Item SlideId Slide) :<|>
+    ReqBody '[JSON] Slide :> Post '[JSON] (Item SlideId Slide) :<|>
+    Capture "slide_id" SlideId :> ReqBody '[JSON] Slide :> Put '[JSON] (Item SlideId Slide) :<|>
     Capture "slide_id" SlideId :> Delete '[JSON] ()
 
-instance ToSchema (WithId  SlideId Slide) where
+instance ToSchema (Item SlideId Slide) where
   declareNamedSchema _ = pure $ NamedSchema (Just "SlideWithId") mempty
 
 instance ToSchema Slide where
   declareNamedSchema _ = pure $ NamedSchema (Just "Slide") mempty
 
-instance ToParamSchema (WithId SlideId Slide) where
+instance ToParamSchema (Item SlideId Slide) where
   toParamSchema _ = mempty
 
 newtype SlideId = SlideId { unSlideId :: T.Text }
@@ -234,37 +218,24 @@ data Slide = Slide
   , slideAttributes :: HMS.HashMap T.Text T.Text
   } deriving (Show, Eq)
 
-instance Aeson.FromJSON Slide where
-  parseJSON = Aeson.withObject "slide" $ \obj ->
+instance FromJSONObject Slide where
+  parseJSONObject = \obj ->
     Slide <$>
       obj .: "slide_content" <*>
       obj .: "slide_template" <*>
       obj .:? "slide_attributes" .!= HMS.empty
 
-instance Aeson.ToJSON Slide where
-  toJSON slide = Aeson.object
+instance ToJSONObject Slide where
+  toJSONObject slide = HMS.fromList
     [ "slide_template" .= slideTemplate slide
     , "slide_attributes" .= slideAttributes slide
     , "slide_content" .= slideContent slide
     ]
 
-instance Aeson.FromJSON (WithId SlideId Slide) where
-  parseJSON = Aeson.withObject "WithId SlideId Slide" $ \o ->
-    WithId <$>
-      (SlideId <$> o .: "slide_id") <*>
-      (Slide <$>
-        o .: "slide_content" <*>
-        o .: "slide_template" <*>
-        o .: "slide_attributes"
-      )
-
-instance Aeson.ToJSON (WithId SlideId Slide) where
-  toJSON (WithId slideId slide) = Aeson.object
-    [ "slide_id" .= slideId
-    , "slide_template" .= slideTemplate slide
-    , "slide_attributes" .= slideAttributes slide
-    , "slide_content" .= slideContent slide
-    ]
+instance Aeson.FromJSON Slide where
+  parseJSON = Aeson.withObject "Slide" parseJSONObject
+instance Aeson.ToJSON Slide where
+  toJSON = Aeson.Object . toJSONObject
 
 type API =
     "users" :> UsersAPI :<|>
@@ -309,7 +280,7 @@ server env = serveUsers :<|> serveDecks :<|> serveSlides
 
 -- USERS
 
-usersGet :: Aws.Env -> Servant.Handler [WithId UserId User]
+usersGet :: Aws.Env -> Servant.Handler [Item UserId User]
 usersGet env = do
     res <- runAWS env $ Aws.send $ DynamoDB.scan "Users"
     case res of
@@ -323,7 +294,7 @@ usersGet env = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-usersGetUserId :: Aws.Env -> UserId -> Servant.Handler (WithId UserId User)
+usersGetUserId :: Aws.Env -> UserId -> Servant.Handler (Item UserId User)
 usersGetUserId env userId = do
     res <- runAWS env $ Aws.send $ DynamoDB.getItem "Users" &
         DynamoDB.giKey .~ HMS.singleton "UserId" (userIdToAttributeValue userId)
@@ -349,7 +320,7 @@ usersGetUserId env userId = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-usersPost :: Aws.Env -> Firebase.UserId -> User -> Servant.Handler (WithId UserId User)
+usersPost :: Aws.Env -> Firebase.UserId -> User -> Servant.Handler (Item UserId User)
 usersPost env _uid user = do
 
     userId <- liftIO $ UserId <$> newId
@@ -363,9 +334,9 @@ usersPost env _uid user = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-    pure $ WithId userId user
+    pure $ Item userId user
 
-usersPut :: Aws.Env -> Firebase.UserId -> UserId -> User -> Servant.Handler (WithId UserId User)
+usersPut :: Aws.Env -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
 usersPut env _ userId user = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Users" &
@@ -382,7 +353,7 @@ usersPut env _ userId user = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-    pure $ WithId userId user
+    pure $ Item userId user
 
 usersDelete :: Aws.Env -> Firebase.UserId -> UserId -> Servant.Handler ()
 usersDelete env _ userId = do
@@ -399,7 +370,7 @@ usersDelete env _ userId = do
 
 -- DECKS
 
-decksGet :: Aws.Env -> Firebase.UserId -> Maybe UserId -> Servant.Handler [WithId DeckId Deck]
+decksGet :: Aws.Env -> Firebase.UserId -> Maybe UserId -> Servant.Handler [Item DeckId Deck]
 decksGet env _uid mUserId = do
 
     let updateReq = case mUserId of
@@ -420,7 +391,7 @@ decksGet env _uid mUserId = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-decksGetDeckId :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler (WithId DeckId Deck)
+decksGetDeckId :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler (Item DeckId Deck)
 decksGetDeckId env _ deckId = do
     res <- runAWS env $ Aws.send $ DynamoDB.getItem "Decks" &
         DynamoDB.giKey .~ HMS.singleton "DeckId" (deckIdToAttributeValue deckId)
@@ -446,7 +417,7 @@ decksGetDeckId env _ deckId = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (WithId DeckId Deck)
+decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (Item DeckId Deck)
 decksPost env _ deck = do
 
     deckId <- liftIO $ DeckId <$> newId
@@ -460,13 +431,13 @@ decksPost env _ deck = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-    pure $ WithId deckId deck
+    pure $ Item deckId deck
 
-decksPut :: Aws.Env -> Firebase.UserId -> DeckId -> Deck -> Servant.Handler (WithId DeckId Deck)
+decksPut :: Aws.Env -> Firebase.UserId -> DeckId -> Deck -> Servant.Handler (Item DeckId Deck)
 decksPut env _ deckId deck = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Decks" &
-        DynamoDB.uiUpdateExpression .~ Just "SET DeckSlides = :s, DeckName = :n" &
+        DynamoDB.uiUpdateExpression .~ Just "SET DeckSlides = :s, DeckName = :n, DeckOwnerId = :o" &
         DynamoDB.uiExpressionAttributeValues .~ deckToItem' deck &
         DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
         DynamoDB.uiKey .~ HMS.singleton "DeckId"
@@ -478,7 +449,7 @@ decksPut env _ deckId deck = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-    pure $ WithId deckId deck
+    pure $ Item deckId deck
 
 decksDelete :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
 decksDelete env _ deckId = do
@@ -495,7 +466,7 @@ decksDelete env _ deckId = do
 
 -- SLIDES
 
-slidesGet :: Aws.Env -> Servant.Handler [WithId SlideId Slide]
+slidesGet :: Aws.Env -> Servant.Handler [Item SlideId Slide]
 slidesGet env = do
     res <- runAWS env $ Aws.send $ DynamoDB.scan "Slides"
     case res of
@@ -510,7 +481,7 @@ slidesGet env = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-slidesGetSlideId :: Aws.Env -> SlideId -> Servant.Handler (WithId SlideId Slide)
+slidesGetSlideId :: Aws.Env -> SlideId -> Servant.Handler (Item SlideId Slide)
 slidesGetSlideId env slideId = do
     res <- runAWS env $ Aws.send $ DynamoDB.getItem "Slides" &
         DynamoDB.giKey .~ HMS.singleton "SlideId" (slideIdToAttributeValue slideId)
@@ -536,7 +507,7 @@ slidesGetSlideId env slideId = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-slidesPost :: Aws.Env -> Slide -> Servant.Handler (WithId SlideId Slide)
+slidesPost :: Aws.Env -> Slide -> Servant.Handler (Item SlideId Slide)
 slidesPost env slide = do
     slideId <- liftIO $ SlideId <$> newId
 
@@ -550,9 +521,9 @@ slidesPost env slide = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-    pure $ WithId slideId slide
+    pure $ Item slideId slide
 
-slidesPut :: Aws.Env -> SlideId -> Slide -> Servant.Handler (WithId SlideId Slide)
+slidesPut :: Aws.Env -> SlideId -> Slide -> Servant.Handler (Item SlideId Slide)
 slidesPut env slideId slide = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Slides" &
@@ -569,7 +540,7 @@ slidesPut env slideId slide = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-    pure $ WithId slideId slide
+    pure $ Item slideId slide
 
 slidesDelete :: Aws.Env -> SlideId -> Servant.Handler ()
 slidesDelete env slideId = do
@@ -593,27 +564,20 @@ slidesDelete env slideId = do
 userToItem :: UserId -> User -> HMS.HashMap T.Text DynamoDB.AttributeValue
 userToItem userId User{userFirebaseId, userAnonymous} =
     HMS.singleton "UserId" (userIdToAttributeValue userId) <>
-    -- HMS.singleton "UserDecks" (userDecksToAttributeValue userDecks) <>
     HMS.singleton "UserFirebaseId" (userFirebaseIdToAttributeValue userFirebaseId) <>
     HMS.singleton "UserAnonymous" (userAnonymousToAttributeValue userAnonymous) -- <>B
-    -- HMS.singleton "UserFirebaseId" (userFirebaseIdToAttributeValue userFirebaseId) <>
-    -- HMS.singleton "UserUsername" (userNameToAttributeValue userUsername)
 
 userToItem' :: User -> HMS.HashMap T.Text DynamoDB.AttributeValue
 userToItem' User{userFirebaseId, userAnonymous} =
-    -- HMS.singleton ":s" (userDecksToAttributeValue userDecks) <>
-    HMS.singleton ":i" (userFirebaseIdToAttributeValue userFirebaseId) <> -- <>
-    HMS.singleton ":a" (userAnonymousToAttributeValue userAnonymous) -- <>
-    -- HMS.singleton ":n" (userNameToAttributeValue userUsername)
+    HMS.singleton ":i" (userFirebaseIdToAttributeValue userFirebaseId) <>
+    HMS.singleton ":a" (userAnonymousToAttributeValue userAnonymous)
 
-itemToUser :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (WithId UserId User)
+itemToUser :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (Item UserId User)
 itemToUser item = do
     userId <- HMS.lookup "UserId" item >>= userIdFromAttributeValue
-    -- userDecks <- HMS.lookup "UserDecks" item >>= userDecksFromAttributeValue
-    -- userUsername <- HMS.lookup "UserUsername" item >>= userNameFromAttributeValue
     userFirebaseId <- HMS.lookup "UserFirebaseId" item >>= userFirebaseIdFromAttributeValue
     userAnonymous <- HMS.lookup "UserAnonymous" item >>= userAnonymousFromAttributeValue
-    pure $ WithId userId User{..}
+    pure $ Item userId User{..}
 
 -- USER ATTRIBUTES
 
@@ -669,13 +633,13 @@ deckToItem' Deck{deckSlides, deckDeckname, deckOwnerId} =
     HMS.singleton ":n" (deckNameToAttributeValue deckDeckname) <>
     HMS.singleton ":o" (deckOwnerIdToAttributeValue deckOwnerId)
 
-itemToDeck :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (WithId DeckId Deck)
+itemToDeck :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (Item DeckId Deck)
 itemToDeck item = do
     deckId <- HMS.lookup "DeckId" item >>= deckIdFromAttributeValue
     deckSlides <- HMS.lookup "DeckSlides" item >>= deckSlidesFromAttributeValue
     deckDeckname <- HMS.lookup "DeckName" item >>= deckNameFromAttributeValue
     deckOwnerId <- HMS.lookup "DeckOwnerId" item >>= deckOwnerIdFromAttributeValue
-    pure $ WithId deckId Deck{..}
+    pure $ Item deckId Deck{..}
 
 -- DECK ATTRIBUTES
 
@@ -724,7 +688,7 @@ slideToItem' Slide{slideContent, slideTemplate, slideAttributes} =
     HMS.singleton ":t" (slideTemplateToAttributeValue slideTemplate) <>
     HMS.singleton ":a" (slideAttributesToAttributeValue slideAttributes)
 
-itemToSlide :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (WithId SlideId Slide)
+itemToSlide :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (Item SlideId Slide)
 itemToSlide item = do
     slideId <- HMS.lookup "SlideId" item >>= slideIdFromAttributeValue
 
@@ -733,7 +697,7 @@ itemToSlide item = do
     slideTemplate <- HMS.lookup "SlideTemplate" item >>= slideTemplateFromAttributeValue
     slideAttributes <- HMS.lookup "SlideAttributes" item >>= slideAttributesFromAttributeValue
 
-    pure $ WithId slideId Slide{..}
+    pure $ Item slideId Slide{..}
 
 -- SLIDE ATTRIBUTES
 

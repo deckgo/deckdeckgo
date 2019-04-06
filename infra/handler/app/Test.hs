@@ -36,13 +36,13 @@ main = do
 
   deckId <- runClientM (decksPost' b someDeck) clientEnv >>= \case
     Left err -> error $ "Expected new deck, got error: " <> show err
-    Right (WithId deckId _) -> pure deckId
+    Right (Item deckId _) -> pure deckId
 
   let someSlide = Slide "foo" "bar" HMS.empty
 
   slideId <- runClientM (slidesPost' someSlide) clientEnv >>= \case
     Left err -> error $ "Expected new slide, got error: " <> show err
-    Right (WithId slideId _) -> pure slideId
+    Right (Item slideId _) -> pure slideId
 
   let newDeck = Deck { deckSlides = [ slideId ], deckDeckname = Deckname "bar", deckOwnerId = someUserId }
 
@@ -53,17 +53,17 @@ main = do
   runClientM (decksGet' b Nothing) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right decks ->
-      if decks == [WithId deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
+      if decks == [Item deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
 
   runClientM (decksGetDeckId' b deckId) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right deck ->
-      if deck == (WithId deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
+      if deck == (Item deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
 
   runClientM slidesGet' clientEnv >>= \case
     Left err -> error $ "Expected slides, got error: " <> show err
     Right slides ->
-      if slides == [WithId slideId someSlide] then pure () else (error $ "Expected slides, got: " <> show slides)
+      if slides == [Item slideId someSlide] then pure () else (error $ "Expected slides, got: " <> show slides)
 
   let updatedSlide = Slide "foo" "quux" HMS.empty
 
@@ -74,12 +74,12 @@ main = do
   runClientM slidesGet' clientEnv >>= \case
     Left err -> error $ "Expected updated slides, got error: " <> show err
     Right slides ->
-      if slides == [WithId slideId updatedSlide] then pure () else (error $ "Expected updated slides, got: " <> show slides)
+      if slides == [Item slideId updatedSlide] then pure () else (error $ "Expected updated slides, got: " <> show slides)
 
   runClientM (slidesGetSlideId' slideId) clientEnv >>= \case
     Left err -> error $ "Expected updated slide, got error: " <> show err
     Right slide ->
-      if slide == (WithId slideId updatedSlide) then pure () else (error $ "Expected updated slide, got: " <> show slide)
+      if slide == (Item slideId updatedSlide) then pure () else (error $ "Expected updated slide, got: " <> show slide)
 
   runClientM (slidesDelete' slideId) clientEnv >>= \case
     Left err -> error $ "Expected slide delete, got error: " <> show err
@@ -100,22 +100,22 @@ main = do
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
 
 
-usersGet' :: ClientM [WithId UserId User]
-_usersGetUserId' :: UserId -> ClientM (WithId UserId User)
-_usersPost' :: T.Text -> User -> ClientM (WithId UserId User)
-_usersPut' :: T.Text -> UserId -> User -> ClientM (WithId UserId User)
+usersGet' :: ClientM [Item UserId User]
+_usersGetUserId' :: UserId -> ClientM (Item UserId User)
+_usersPost' :: T.Text -> User -> ClientM (Item UserId User)
+_usersPut' :: T.Text -> UserId -> User -> ClientM (Item UserId User)
 _usersDelete' :: T.Text -> UserId -> ClientM ()
 
-decksGet' :: T.Text -> Maybe UserId -> ClientM [WithId DeckId Deck]
-decksGetDeckId' :: T.Text -> DeckId -> ClientM (WithId DeckId Deck)
-decksPost' :: T.Text -> Deck -> ClientM (WithId DeckId Deck)
-decksPut' :: T.Text -> DeckId -> Deck -> ClientM (WithId DeckId Deck)
+decksGet' :: T.Text -> Maybe UserId -> ClientM [Item DeckId Deck]
+decksGetDeckId' :: T.Text -> DeckId -> ClientM (Item DeckId Deck)
+decksPost' :: T.Text -> Deck -> ClientM (Item DeckId Deck)
+decksPut' :: T.Text -> DeckId -> Deck -> ClientM (Item DeckId Deck)
 decksDelete' :: T.Text -> DeckId -> ClientM ()
 
-slidesGet' :: ClientM [WithId SlideId Slide]
-slidesGetSlideId' :: SlideId -> ClientM (WithId SlideId Slide)
-slidesPost' :: Slide -> ClientM (WithId SlideId Slide)
-slidesPut' :: SlideId -> Slide -> ClientM (WithId SlideId Slide)
+slidesGet' :: ClientM [Item SlideId Slide]
+slidesGetSlideId' :: SlideId -> ClientM (Item SlideId Slide)
+slidesPost' :: Slide -> ClientM (Item SlideId Slide)
+slidesPut' :: SlideId -> Slide -> ClientM (Item SlideId Slide)
 slidesDelete' :: SlideId -> ClientM ()
 ((
   usersGet' :<|>
