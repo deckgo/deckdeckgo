@@ -60,8 +60,8 @@ rec
       aws dynamodb create-table \
         --table-name Users \
         --attribute-definitions \
-            AttributeName=UserId,AttributeType=S \
-        --key-schema AttributeName=UserId,KeyType=HASH \
+            AttributeName=UserFirebaseId,AttributeType=S \
+        --key-schema AttributeName=UserFirebaseId,KeyType=HASH \
         --endpoint-url http://127.0.0.1:8000 \
         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
         > /dev/null

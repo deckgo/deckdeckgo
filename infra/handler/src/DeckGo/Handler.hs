@@ -17,10 +17,11 @@
 module DeckGo.Handler where
 
 -- TODO: double check what is returned on 200 from DynamoDB
--- TODO: check user is in DB
 -- TODO: check permissions
 -- TODO: created_at, updated_at
 -- TODO: TTL on anonymous users
+-- TODO: enforce uniqueness on deck_name (per user)
+-- TODO: improve swagger description
 
 import Control.Lens hiding ((.=))
 import Control.Monad
@@ -90,11 +91,11 @@ newtype Username = Username { unUsername :: T.Text }
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
 data User = User
-  { userFirebaseId :: FirebaseId -- TODO: enforce uniqueness
+  { userFirebaseId :: FirebaseId
   , userAnonymous :: Bool
   } deriving (Show, Eq)
 
-newtype UserId = UserId { unUserId :: T.Text }
+newtype UserId = UserId { unUserId :: FirebaseId }
   deriving newtype
     ( Aeson.FromJSON
     , Aeson.ToJSON
@@ -171,7 +172,7 @@ newtype Deckname = Deckname { unDeckname :: T.Text }
 
 data Deck = Deck
   { deckSlides :: [SlideId]
-  , deckDeckname :: Deckname -- TODO: enforce uniqueness
+  , deckDeckname :: Deckname
   , deckOwnerId :: UserId
   } deriving (Show, Eq)
 
@@ -323,7 +324,7 @@ usersGet env = do
 usersGetUserId :: Aws.Env -> UserId -> Servant.Handler (Item UserId User)
 usersGetUserId env userId = do
     res <- runAWS env $ Aws.send $ DynamoDB.getItem "Users" &
-        DynamoDB.giKey .~ HMS.singleton "UserId" (userIdToAttributeValue userId)
+        DynamoDB.giKey .~ HMS.singleton "UserFirebaseId" (userIdToAttributeValue userId)
     case res of
       Right getItemResponse -> do
         case getItemResponse ^. DynamoDB.girsResponseStatus of
@@ -347,18 +348,26 @@ usersGetUserId env userId = do
         Servant.throwError Servant.err500
 
 usersPost :: Aws.Env -> Firebase.UserId -> User -> Servant.Handler (Item UserId User)
-usersPost env _uid user = do
+usersPost env fuid user = do
 
-    userId <- liftIO $ UserId <$> newId
+    let userId = UserId (userFirebaseId user)
+
+    when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
+      Servant.throwError Servant.err403
 
     res <- runAWS env $ Aws.send $ DynamoDB.putItem "Users" &
-        DynamoDB.piItem .~ userToItem userId user
+        DynamoDB.piItem .~ userToItem userId user &
+        DynamoDB.piConditionExpression .~ Just "attribute_not_exists(UserFirebaseId)"
 
     case res of
       Right {} -> pure ()
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+      Left e -> case e ^? DynamoDB._ConditionalCheckFailedException of
+        Just _e -> do
+          u <- usersGetUserId env userId
+          Servant.throwError Servant.err409 { Servant.errBody = Aeson.encode u }
+        Nothing -> do
+          liftIO $ print e
+          Servant.throwError Servant.err500
 
     pure $ Item userId user
 
@@ -367,7 +376,7 @@ usersPut env _ userId user = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Users" &
         DynamoDB.uiUpdateExpression .~
-          Just "SET UserDecks = :s, UserUsername = :n, UserFirebaseId = :i" &
+          Just "SET UserDecks = :s, UserUsername = :n" &
         DynamoDB.uiExpressionAttributeValues .~ userToItem' user &
         DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
         DynamoDB.uiKey .~ HMS.singleton "UserId"
@@ -385,7 +394,7 @@ usersDelete :: Aws.Env -> Firebase.UserId -> UserId -> Servant.Handler ()
 usersDelete env _ userId = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Users" &
-        DynamoDB.diKey .~ HMS.singleton "UserId"
+        DynamoDB.diKey .~ HMS.singleton "UserFirebaseId"
           (userIdToAttributeValue userId)
 
     case res of
@@ -588,31 +597,29 @@ slidesDelete env slideId = do
 -- USERS
 
 userToItem :: UserId -> User -> HMS.HashMap T.Text DynamoDB.AttributeValue
-userToItem userId User{userFirebaseId, userAnonymous} =
-    HMS.singleton "UserId" (userIdToAttributeValue userId) <>
-    HMS.singleton "UserFirebaseId" (userFirebaseIdToAttributeValue userFirebaseId) <>
+userToItem userId User{userAnonymous} =
+    HMS.singleton "UserFirebaseId" (userIdToAttributeValue userId) <>
     HMS.singleton "UserAnonymous" (userAnonymousToAttributeValue userAnonymous)
 
 userToItem' :: User -> HMS.HashMap T.Text DynamoDB.AttributeValue
-userToItem' User{userFirebaseId, userAnonymous} =
-    HMS.singleton ":i" (userFirebaseIdToAttributeValue userFirebaseId) <>
+userToItem' User{userAnonymous} =
     HMS.singleton ":a" (userAnonymousToAttributeValue userAnonymous)
 
 itemToUser :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (Item UserId User)
 itemToUser item = do
-    userId <- HMS.lookup "UserId" item >>= userIdFromAttributeValue
-    userFirebaseId <- HMS.lookup "UserFirebaseId" item >>= userFirebaseIdFromAttributeValue
+    userId <- HMS.lookup "UserFirebaseId" item >>= userIdFromAttributeValue
+    let userFirebaseId = unUserId userId
     userAnonymous <- HMS.lookup "UserAnonymous" item >>= userAnonymousFromAttributeValue
     pure $ Item userId User{..}
 
 -- USER ATTRIBUTES
 
 userIdToAttributeValue :: UserId -> DynamoDB.AttributeValue
-userIdToAttributeValue (UserId userId) =
+userIdToAttributeValue (UserId (FirebaseId userId)) =
     DynamoDB.attributeValue & DynamoDB.avS .~ Just userId
 
 userIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe UserId
-userIdFromAttributeValue attr = UserId <$> attr ^. DynamoDB.avS
+userIdFromAttributeValue attr = (UserId . FirebaseId) <$> attr ^. DynamoDB.avS
 
 userNameToAttributeValue :: Username -> DynamoDB.AttributeValue
 userNameToAttributeValue (Username username) =
@@ -693,11 +700,11 @@ deckSlidesFromAttributeValue attr =
     traverse slideIdFromAttributeValue (attr ^. DynamoDB.avL)
 
 deckOwnerIdToAttributeValue :: UserId -> DynamoDB.AttributeValue
-deckOwnerIdToAttributeValue (UserId deckOwnerId) =
+deckOwnerIdToAttributeValue (UserId (FirebaseId deckOwnerId)) =
     DynamoDB.attributeValue & DynamoDB.avS .~ Just deckOwnerId
 
 deckOwnerIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe UserId
-deckOwnerIdFromAttributeValue attr = UserId <$> attr ^. DynamoDB.avS
+deckOwnerIdFromAttributeValue attr = (UserId . FirebaseId) <$> attr ^. DynamoDB.avS
 
 -- SLIDES
 

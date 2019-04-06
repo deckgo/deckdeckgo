@@ -2,6 +2,7 @@
 {-# LANGUAGE LambdaCase #-}
 
 import Network.HTTP.Client (newManager, defaultManagerSettings)
+import Network.HTTP.Types as HTTP
 import Servant.API
 import Servant.Client
 import DeckGo.Handler
@@ -30,7 +31,8 @@ main = do
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 decks, got: " <> show decks
 
-  let someUserId = UserId "foo"
+  let someFirebaseId = FirebaseId "the-uid" -- from ./token
+  let someUserId = UserId someFirebaseId
 
   let someDeck = Deck { deckSlides = [] , deckDeckname = Deckname "foo", deckOwnerId = someUserId }
 
@@ -100,9 +102,30 @@ main = do
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
 
 
+  let someUser = User { userFirebaseId = someFirebaseId, userAnonymous = False }
+
+  runClientM (usersPost' b someUser) clientEnv >>= \case
+    Left err -> error $ "Expected user, got error: " <> show err
+    Right (Item userId user) ->
+      if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
+
+  runClientM (usersPost' b someUser) clientEnv >>= \case
+    Left (FailureResponse resp) ->
+      if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
+        error $ "Got unexpecte response: " <> show resp
+    Left err -> error $ "Expected 409, got error: " <> show err
+    Right item -> error $ "Expected failure, got success: " <> show item
+
+
+  -- TODO: test that creating user with token that has different user as sub
+  -- fails
+
+
+
+
 usersGet' :: ClientM [Item UserId User]
 _usersGetUserId' :: UserId -> ClientM (Item UserId User)
-_usersPost' :: T.Text -> User -> ClientM (Item UserId User)
+usersPost' :: T.Text -> User -> ClientM (Item UserId User)
 _usersPut' :: T.Text -> UserId -> User -> ClientM (Item UserId User)
 _usersDelete' :: T.Text -> UserId -> ClientM ()
 
@@ -120,7 +143,7 @@ slidesDelete' :: SlideId -> ClientM ()
 ((
   usersGet' :<|>
   _usersGetUserId' :<|>
-  _usersPost' :<|>
+  usersPost' :<|>
   _usersPut' :<|>
   _usersDelete'
   ) :<|>
