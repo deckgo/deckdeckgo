@@ -21,6 +21,9 @@ export class AppSignIn {
     @Prop()
     redirect: string;
 
+    @Prop()
+    redirectId: string;
+
     private navService: NavService;
 
     constructor() {
@@ -131,16 +134,22 @@ export class AppSignIn {
 
     private async saveRedirect() {
         await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
+        await set('deckdeckgo_redirect_id', this.redirectId ? this.redirectId : '/');
     }
 
     private async navigateRedirect() {
         const redirectUrl: string = await get('deckdeckgo_redirect');
+        const redirectId: string = await get('deckdeckgo_redirect_id');
 
         await del('deckdeckgo_redirect');
+        await del('deckdeckgo_redirect_id');
+
+        // TODO: That's ugly
+        const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + (!redirectId || redirectId.trim() === '' || redirectId.trim() === '/' ? '' : '/' + redirectId);
 
         // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
         this.navService.navigate({
-            url: !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl,
+            url: url,
             direction: NavDirection.ROOT
         });
 

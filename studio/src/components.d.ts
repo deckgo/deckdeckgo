@@ -164,9 +164,11 @@ export namespace Components {
 
   interface AppSignin {
     'redirect': string;
+    'redirectId': string;
   }
   interface AppSigninAttributes extends StencilHTMLAttributes {
     'redirect'?: string;
+    'redirectId'?: string;
   }
 
   interface AppEditor {
