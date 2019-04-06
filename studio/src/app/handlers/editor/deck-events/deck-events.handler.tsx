@@ -185,7 +185,7 @@ export class DeckEventsHandler {
 
                         this.deck = await this.deckService.post(this.deck);
 
-                        history.replaceState({}, `Deck edited ${this.deck.deck_id}`, `/editor/${this.deck.deck_id}`);
+                        history.replaceState({}, `Deck edited ${this.deck.id}`, `/editor/${this.deck.id}`);
 
                         this.initWatchUser();
                     });

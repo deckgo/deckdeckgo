@@ -149,7 +149,7 @@ export class AppMenuUser {
         if (this.decks && this.decks.length > 0) {
             return (
                 this.decks.map((deck: Deck) => {
-                    const url: string = `/editor/${deck.deck_id}`;
+                    const url: string = `/editor/${deck.id}`;
 
                     return <ion-item href={url} routerDirection="forward">
                         <ion-icon name="book" slot="start"></ion-icon>

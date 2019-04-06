@@ -27,7 +27,7 @@ export class DeckService {
     }
 
     put(deck: Deck): Promise<Deck> {
-        return this.query(deck, '/decks/' + deck.deck_id, 'PUT');
+        return this.query(deck, '/decks/' + deck.id, 'PUT');
     }
 
     private query(deck: Deck, context: string, method: string): Promise<Deck> {
