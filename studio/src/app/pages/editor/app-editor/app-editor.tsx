@@ -1,7 +1,7 @@
 import {Component, Element, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
-import {take} from 'rxjs/operators';
+import {filter, take} from 'rxjs/operators';
 
 import {SlideTemplate} from '../../../models/slide-template';
 import {EditorUtils} from '../../../utils/editor-utils';
@@ -52,11 +52,17 @@ export class AppEditor {
     async componentWillLoad() {
         this.editorHelper.init(this.el);
 
+        // If no user create an anonymous one
         this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
             if(!user) {
                 await this.authService.signInAnonymous();
             }
+        });
 
+        // As soon as we have got a user, an anonymous where the creation started above or an already used anonymous or a logged one, we init
+        this.authService.watch().pipe(
+            filter((user: User) => user !== null && user !== undefined),
+            take(1)).subscribe(async (_user: User) => {
             await this.initSlide();
         });
     }
