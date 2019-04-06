@@ -52,6 +52,9 @@ export class DeckService {
 
                 const persistedDeck: Deck = await rawResponse.json();
 
+                // TODO: Nicolas decks.put supprime l'attribut deck_owner_id
+                console.log('Deck', method, deck, persistedDeck);
+
                 resolve(persistedDeck);
             } catch (err) {
                 reject(err);
@@ -59,7 +62,35 @@ export class DeckService {
         });
     }
 
-    get(userId: string): Promise<Deck[]> {
+    get(deckId: string): Promise<Deck> {
+        return new Promise<Deck>(async (resolve, reject) => {
+            try {
+                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                const rawResponse: Response = await fetch(apiUrl + `/decks/${deckId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': await this.authService.getBearer()
+                    }
+                });
+
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while search for the deck');
+                    return;
+                }
+
+                const deck: Deck = await rawResponse.json();
+
+                resolve(deck);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    getUserDecks(userId: string): Promise<Deck[]> {
         return new Promise<Deck[]>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');

@@ -7,12 +7,15 @@ import {SlideTemplate} from '../../../models/slide-template';
 import {EditorUtils} from '../../../utils/editor-utils';
 
 import {AuthUser} from '../../../models/auth-user';
+import {Slide} from '../../../models/slide';
 
 import {DeckEventsHandler} from '../../../handlers/editor/deck-events/deck-events.handler';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {GuestService} from '../../../services/guest/guest.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
+
+import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
 interface FirstSlideContent {
     title: string;
@@ -29,6 +32,9 @@ export class AppEditor {
 
     @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
     @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
+
+    @Prop()
+    deckId: string;
 
     @State()
     private slides: any[] = [];
@@ -55,7 +61,7 @@ export class AppEditor {
 
         // If no user create an anonymous one
         this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
-            if(!authUser) {
+            if (!authUser) {
                 await this.authService.signInAnonymous();
             }
         });
@@ -64,7 +70,12 @@ export class AppEditor {
         this.authService.watch().pipe(
             filter((authUser: AuthUser) => authUser !== null && authUser !== undefined),
             take(1)).subscribe(async (_authUser: AuthUser) => {
-            await this.initSlide();
+
+            if (!this.deckId) {
+                await this.initSlide();
+            } else {
+                await this.fetchSlides();
+            }
         });
     }
 
@@ -121,15 +132,33 @@ export class AppEditor {
 
             const slide: any = await EditorUtils.createSlide(SlideTemplate.TITLE);
 
-            await this.concatSlide(slide);
+            await this.concatSlides(slide);
 
             resolve();
         });
     }
 
-    private concatSlide(slide: any): Promise<void> {
+    private fetchSlides(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!document || !this.deckId) {
+                resolve();
+                return;
+            }
+
+            const helper: EditorHelper = new EditorHelper();
+            const slides: Slide[] = await helper.retrieveSlides(this.deckId);
+
+            if (slides && slides.length > 0) {
+                await this.concatSlides(slides);
+            }
+
+            resolve();
+        });
+    }
+
+    private concatSlides(extraSlides: any | any[]): Promise<void> {
         return new Promise<void>((resolve) => {
-            this.slides = [...this.slides, slide];
+            this.slides = [...this.slides, extraSlides];
 
             resolve();
         });
@@ -313,7 +342,7 @@ export class AppEditor {
     }
 
     private async addSlide(slide: any) {
-        await this.concatSlide(slide);
+        await this.concatSlides(slide);
     }
 
     private async openGifPicker() {

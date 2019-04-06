@@ -80,4 +80,31 @@ export class SlideService {
             }
         });
     }
+
+    get(slideId: string): Promise<Slide> {
+        return new Promise<Slide>(async (resolve, reject) => {
+            try {
+                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                const rawResponse: Response = await fetch(apiUrl + `/slides/${slideId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while search for the deck');
+                    return;
+                }
+
+                const slide: Slide = await rawResponse.json();
+
+                resolve(slide);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
 }

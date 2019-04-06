@@ -56,6 +56,8 @@ export class DeckEventsHandler {
 
     // TODO: If user id change update current deck id, to test, in case of merge of anonymous
     private initWatchUser() {
+
+        // TODO: Tell Nicolas their might be deck without owner
         this.userSubscription = this.userService.watch().subscribe(async (user: User) => {
             if (user && this.deck && this.deck.deck_owner_id !== user.user_id) {
                 await this.updateDeckUser(user.user_id);
@@ -198,8 +200,7 @@ export class DeckEventsHandler {
 
     updateDeckUser(userId: string): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
-            try {
-                if (this.deck) {
+            try {if (this.deck) {
                     this.deck.deck_owner_id = userId;
 
                     this.deck = await this.deckService.put(this.deck);
