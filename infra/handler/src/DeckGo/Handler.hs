@@ -118,13 +118,13 @@ instance FromJSONObject User where
   parseJSONObject = \obj ->
     User
       -- potentially return "error exists" + user object
-      <$> obj .: "user_firebase_uid"
-      <*> obj .: "user_anonymous" -- TODO: TTL
+      <$> obj .: "firebase_uid"
+      <*> obj .: "anonymous" -- TODO: TTL
 
 instance ToJSONObject User where
   toJSONObject user = HMS.fromList
-    [ "user_firebase_uid" .= userFirebaseId user
-    , "user_anonymous" .= userAnonymous user
+    [ "firebase_uid" .= userFirebaseId user
+    , "anonymous" .= userAnonymous user
     ]
 
 instance Aeson.FromJSON User where
@@ -164,15 +164,15 @@ data Deck = Deck
 instance FromJSONObject Deck where
   parseJSONObject = \obj ->
     Deck
-      <$> obj .: "deck_slides"
-      <*> obj .: "deck_name"
-      <*> obj .: "deck_owner_id"
+      <$> obj .: "slides"
+      <*> obj .: "name"
+      <*> obj .: "owner_id"
 
 instance ToJSONObject Deck where
   toJSONObject deck = HMS.fromList
-    [ "deck_slides" .= deckSlides deck
-    , "deck_name" .= deckDeckname deck
-    , "deck_owner_id" .= deckOwnerId deck
+    [ "slides" .= deckSlides deck
+    , "name" .= deckDeckname deck
+    , "owner_id" .= deckOwnerId deck
     ]
 
 instance Aeson.FromJSON Deck where
@@ -221,15 +221,15 @@ data Slide = Slide
 instance FromJSONObject Slide where
   parseJSONObject = \obj ->
     Slide <$>
-      obj .: "slide_content" <*>
-      obj .: "slide_template" <*>
-      obj .:? "slide_attributes" .!= HMS.empty
+      obj .: "content" <*>
+      obj .: "template" <*>
+      obj .:? "attributes" .!= HMS.empty
 
 instance ToJSONObject Slide where
   toJSONObject slide = HMS.fromList
-    [ "slide_template" .= slideTemplate slide
-    , "slide_attributes" .= slideAttributes slide
-    , "slide_content" .= slideContent slide
+    [ "template" .= slideTemplate slide
+    , "attributes" .= slideAttributes slide
+    , "content" .= slideContent slide
     ]
 
 instance Aeson.FromJSON Slide where
@@ -565,7 +565,7 @@ userToItem :: UserId -> User -> HMS.HashMap T.Text DynamoDB.AttributeValue
 userToItem userId User{userFirebaseId, userAnonymous} =
     HMS.singleton "UserId" (userIdToAttributeValue userId) <>
     HMS.singleton "UserFirebaseId" (userFirebaseIdToAttributeValue userFirebaseId) <>
-    HMS.singleton "UserAnonymous" (userAnonymousToAttributeValue userAnonymous) -- <>B
+    HMS.singleton "UserAnonymous" (userAnonymousToAttributeValue userAnonymous)
 
 userToItem' :: User -> HMS.HashMap T.Text DynamoDB.AttributeValue
 userToItem' User{userFirebaseId, userAnonymous} =
