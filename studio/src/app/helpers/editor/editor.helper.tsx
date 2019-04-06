@@ -41,13 +41,13 @@ export class EditorHelper {
                     return;
                 }
 
-                if (!deck.deck_slides || deck.deck_slides.length <= 0) {
+                if (!deck.slides || deck.slides.length <= 0) {
                     resolve([]);
                     return;
                 }
 
                 const promises: Promise<Slide>[] = [];
-                deck.deck_slides.forEach((slideId: string) => {
+                deck.slides.forEach((slideId: string) => {
                     promises.push(this.slideService.get(slideId));
                 });
 

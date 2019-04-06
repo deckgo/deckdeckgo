@@ -57,7 +57,7 @@ export class DeckEventsHandler {
     // TODO: If user id change update current deck id, to test, in case of merge of anonymous
     private initWatchUser() {
         this.userSubscription = this.userService.watch().subscribe(async (user: User) => {
-            if (user && this.deck && this.deck.deck_owner_id !== user.id) {
+            if (user && this.deck && this.deck.owner_id !== user.id) {
                 await this.updateDeckUser(user.id);
             }
         });
@@ -131,12 +131,12 @@ export class DeckEventsHandler {
                 this.deckBusyService.busy(true);
 
                 const slidePost: Slide = {
-                    slide_template: this.getSlideTemplate(slide)
+                    template: this.getSlideTemplate(slide)
                 };
 
                 const content: string = await this.cleanSlideContent(slide.innerHTML);
                 if (content && content.length > 0) {
-                    slidePost.slide_content = content
+                    slidePost.content = content
                 }
 
                 const persistedSlide: Slide = await this.slideService.post(slidePost);
@@ -167,20 +167,20 @@ export class DeckEventsHandler {
                 }
 
                 if (this.deck) {
-                    if (!this.deck.deck_slides || this.deck.deck_slides.length <= 0) {
-                        this.deck.deck_slides = [];
+                    if (!this.deck.slides || this.deck.slides.length <= 0) {
+                        this.deck.slides = [];
                     }
 
-                    this.deck.deck_slides.push(slide.id);
+                    this.deck.slides.push(slide.id);
 
                     this.deck = await this.deckService.put(this.deck);
                 } else {
                     this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
                         // TODO: Deck name to be solve with the UX
                         this.deck = {
-                            deck_slides: [slide.id],
-                            deck_name: 'Presentation A',
-                            deck_owner_id: user.id
+                            slides: [slide.id],
+                            name: 'Presentation A',
+                            owner_id: user.id
                         };
 
                         this.deck = await this.deckService.post(this.deck);
@@ -201,7 +201,7 @@ export class DeckEventsHandler {
     updateDeckUser(userId: string): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {if (this.deck) {
-                    this.deck.deck_owner_id = userId;
+                    this.deck.owner_id = userId;
 
                     this.deck = await this.deckService.put(this.deck);
                 }
@@ -229,18 +229,18 @@ export class DeckEventsHandler {
 
                 const slideUpdate: Slide = {
                     id: slide.getAttribute('slide_id'),
-                    slide_template: this.getSlideTemplate(slide)
+                    template: this.getSlideTemplate(slide)
                 };
 
                 const content: string = await this.cleanSlideContent(slide.innerHTML);
                 if (content && content.length > 0) {
-                    slideUpdate.slide_content = content
+                    slideUpdate.content = content
                 }
 
                 const attributes: SlideAttributes = await this.getSlideAttributes(slide);
 
                 if (attributes && Object.keys(attributes).length > 0) {
-                    slideUpdate.slide_attributes = attributes;
+                    slideUpdate.attributes = attributes;
                 }
 
                 await this.slideService.put(slideUpdate);

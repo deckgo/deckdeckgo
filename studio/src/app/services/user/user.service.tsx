@@ -40,8 +40,8 @@ export class UserService {
                 const savedApiUserId: string = await get('deckdeckgo_user_id');
                 if (!savedApiUserId) {
                     const apiUser: User = {
-                        user_anonymous: authUser.anonymous,
-                        user_firebase_uid: authUser.uid
+                        anonymous: authUser.anonymous,
+                        firebase_uid: authUser.uid
                     };
 
                     try {

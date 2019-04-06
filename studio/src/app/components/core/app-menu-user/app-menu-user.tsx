@@ -51,7 +51,7 @@ export class AppMenuUser {
         });
 
         this.userSubscription = this.userService.watch().pipe(
-            filter((user: User) => user && !user.user_anonymous)).subscribe(async (user: User) => {
+            filter((user: User) => user && !user.anonymous)).subscribe(async (user: User) => {
             if (user) {
                 try {
                     const decks: Deck[] = await this.deckService.getUserDecks(user.id);
@@ -153,7 +153,7 @@ export class AppMenuUser {
 
                     return <ion-item href={url} routerDirection="forward">
                         <ion-icon name="book" slot="start"></ion-icon>
-                        <ion-label>{deck.deck_name}</ion-label>
+                        <ion-label>{deck.name}</ion-label>
                     </ion-item>
                 })
             );
