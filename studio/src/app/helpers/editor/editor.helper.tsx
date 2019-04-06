@@ -5,13 +5,13 @@ import {SlideTemplate} from '../../models/slide-template';
 import {Slide} from '../../models/slide';
 import {Deck} from '../../models/deck';
 import {SlideAttributes} from '../../models/slide-attributes';
+import {User} from '../../models/user';
 
 import {SlideService} from '../../services/slide/slide.service';
 import {DeckService} from '../../services/deck/deck.service';
 import {ErrorService} from '../../services/error/error.service';
 import {DeckBusyService} from '../../services/deck/deck-busy.service';
-import {ApiService} from '../../services/api/api.service';
-import {ApiUser} from '../../models/api-user';
+import {UserService} from '../../services/user/user.service';
 
 export class EditorHelper {
 
@@ -23,8 +23,8 @@ export class EditorHelper {
     private errorService: ErrorService;
     private deckBusyService: DeckBusyService;
 
-    private apiSubscription: Subscription;
-    private apiService: ApiService;
+    private userSubscription: Subscription;
+    private userService: UserService;
 
     private deck: Deck;
 
@@ -38,7 +38,7 @@ export class EditorHelper {
         this.errorService = ErrorService.getInstance();
         this.deckBusyService = DeckBusyService.getInstance();
 
-        this.apiService = ApiService.getInstance();
+        this.userService = UserService.getInstance();
     }
 
     init(el: HTMLElement) {
@@ -56,7 +56,7 @@ export class EditorHelper {
 
     // TODO: If user id change update current deck id, to test, in case of merge of anonymous
     private initWatchUser() {
-        this.apiSubscription = this.apiService.watch().subscribe(async (user: ApiUser) => {
+        this.userSubscription = this.userService.watch().subscribe(async (user: User) => {
             if (user && this.deck && this.deck.deck_owner_id !== user.user_id) {
                 await this.updateDeckUser(user.user_id);
             }
@@ -73,8 +73,8 @@ export class EditorHelper {
             this.updateSlideSubscription.unsubscribe();
         }
 
-        if (this.apiSubscription) {
-            this.apiSubscription.unsubscribe();
+        if (this.userSubscription) {
+            this.userSubscription.unsubscribe();
         }
     }
 
@@ -175,15 +175,13 @@ export class EditorHelper {
 
                     this.deck = await this.deckService.put(this.deck);
                 } else {
-                    this.apiService.watch().pipe(take(1)).subscribe(async (apiUser: ApiUser) => {
+                    this.userService.watch().pipe(take(1)).subscribe(async (apiUser: User) => {
                         // TODO: Deck name to be solve with the UX
                         this.deck = {
                             deck_slides: [slide.slide_id],
                             deck_name: 'Presentation A',
                             deck_owner_id: apiUser.user_id
                         };
-
-                        // TODO: inform @Nicolas that they might be decks without owner id if shit happens
 
                         this.deck = await this.deckService.post(this.deck);
 

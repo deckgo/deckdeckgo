@@ -12,7 +12,7 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 import {AuthUser} from '../../models/auth-user';
 
 import {ErrorService} from '../error/error.service';
-import {ApiService} from '../api/api.service';
+import {UserService} from '../user/user.service';
 
 export class AuthService {
 
@@ -20,14 +20,14 @@ export class AuthService {
 
     private errorService: ErrorService;
 
-    private apiService: ApiService;
+    private userService: UserService;
 
     private static instance: AuthService;
 
     private constructor() {
         // Private constructor, singleton
         this.errorService = ErrorService.getInstance();
-        this.apiService = ApiService.getInstance();
+        this.userService = UserService.getInstance();
     }
 
     static getInstance() {
@@ -72,7 +72,7 @@ export class AuthService {
                         authUser.photo_url = firebaseUser.providerData[0].photoURL;
                     }
 
-                    await this.apiService.onAuthStateChanged(authUser);
+                    await this.userService.authStateChanged(authUser);
 
                     this.authUserSubject.next(authUser);
                     await set('deckdeckgo_auth_user', authUser);

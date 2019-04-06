@@ -3,17 +3,17 @@ import {Observable, ReplaySubject} from 'rxjs';
 import {get, del, set} from 'idb-keyval';
 
 import {AuthUser} from '../../models/auth-user';
-import {ApiUser} from '../../models/api-user';
+import {User} from '../../models/user';
 
 import {EnvironmentConfigService} from '../environment/environment-config.service';
 
 import {ErrorService} from '../error/error.service';
 
-export class ApiService {
+export class UserService {
 
-    private apiUserSubject: ReplaySubject<ApiUser> = new ReplaySubject(1);
+    private apiUserSubject: ReplaySubject<User> = new ReplaySubject(1);
 
-    private static instance: ApiService;
+    private static instance: UserService;
 
     private errorService: ErrorService;
 
@@ -23,23 +23,23 @@ export class ApiService {
     }
 
     static getInstance() {
-        if (!ApiService.instance) {
-            ApiService.instance = new ApiService();
+        if (!UserService.instance) {
+            UserService.instance = new UserService();
         }
-        return ApiService.instance;
+        return UserService.instance;
     }
 
     // TODO: Implement the authentication in each API requests which need it
 
-    onAuthStateChanged(authUser: AuthUser): Promise<void> {
+    authStateChanged(authUser: AuthUser): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!authUser) {
                 this.apiUserSubject.next(null);
-                await del('deckdeckgo_api_user');
+                await del('deckdeckgo_user_id');
             } else {
-                const savedApiUserId: string = await get('deckdeckgo_api_user');
+                const savedApiUserId: string = await get('deckdeckgo_user_id');
                 if (!savedApiUserId) {
-                    const apiUser: ApiUser = {
+                    const apiUser: User = {
                         user_anonymous: authUser.anonymous,
                         user_firebase_uid: authUser.uid
                     };
@@ -66,8 +66,8 @@ export class ApiService {
         });
     }
 
-    private query(apiUser: ApiUser, token: string, method: string): Promise<ApiUser> {
-        return new Promise<ApiUser>(async (resolve, reject) => {
+    private query(apiUser: User, token: string, method: string): Promise<User> {
+        return new Promise<User>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -86,11 +86,11 @@ export class ApiService {
                     return;
                 }
 
-                const persistedUser: ApiUser = await rawResponse.json();
+                const persistedUser: User = await rawResponse.json();
 
                 this.apiUserSubject.next(persistedUser);
 
-                await set('deckdeckgo_api_user', persistedUser.user_id);
+                await set('deckdeckgo_user_id', persistedUser.user_id);
 
                 resolve(persistedUser);
             } catch (err) {
@@ -99,8 +99,8 @@ export class ApiService {
         });
     }
 
-    private get(userId: string): Promise<ApiUser> {
-        return new Promise<ApiUser>(async (resolve, reject) => {
+    private get(userId: string): Promise<User> {
+        return new Promise<User>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -117,7 +117,7 @@ export class ApiService {
                     return;
                 }
 
-                const persistedUser: ApiUser = await rawResponse.json();
+                const persistedUser: User = await rawResponse.json();
 
                 this.apiUserSubject.next(persistedUser);
 
@@ -128,7 +128,7 @@ export class ApiService {
         });
     }
 
-    watch(): Observable<ApiUser> {
+    watch(): Observable<User> {
         return this.apiUserSubject.asObservable();
     }
 
