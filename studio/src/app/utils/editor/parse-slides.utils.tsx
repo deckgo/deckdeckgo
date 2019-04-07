@@ -87,6 +87,10 @@ export class ParseSlidesUtils {
                 attributes.style = await this.convertStyle(attributes.style);
             }
 
+            if (attributes.slot) {
+                attributes['contenteditable'] = true;
+            }
+
             resolve(<Elem {...attributes}>{content}</Elem>);
         });
     }
