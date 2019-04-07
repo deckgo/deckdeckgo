@@ -1,6 +1,5 @@
 import {Slide} from '../../models/slide';
 import {SlideTemplate} from '../../models/slide-template';
-import {SlideAttributes} from '../../models/slide-attributes';
 
 export class ParseSlidesUtils {
 
@@ -26,24 +25,13 @@ export class ParseSlidesUtils {
                 return;
             }
 
-            // const Content: string = 'h3';
-            // const props = {style: {background: 'red'}, slot: 'content'};
-            //
-            // const div = document.createElement('div');
-            // div.innerHTML = slide.content;
-            //
-            // console.log(div, (div.firstChild as HTMLElement).attributes);
-            //
-            // const Title: string = (div.firstChild as HTMLElement).nodeName;
-
+            // Create a div to parse back to JSX its children
             const div = document.createElement('div');
             div.innerHTML = slide.content;
 
             const content = await this.parseElements(div);
 
-            console.log('content', content);
-
-            const style = await this.convertStyle(slide.attributes);
+            const style = slide.attributes ? await this.convertStyle(slide.attributes.style) : undefined;
 
             // @ts-ignore
             const result: any = <deckgo-slide-title slide_id={slide.id} style={style}>
@@ -56,17 +44,13 @@ export class ParseSlidesUtils {
 
     private static parseElements(element: HTMLElement): Promise<any> {
         return new Promise<any>(async (resolve) => {
-
-            console.log('parse', element);
-
             if (!parent) {
                 resolve(undefined);
                 return;
             }
 
             if (element.nodeType === 3) {
-                const Elem: string = element.parentElement.nodeName;
-                resolve(<Elem {...element.parentElement.attributes}>{element.textContent}</Elem>);
+                resolve(await this.parseElement(element.parentElement, element.textContent));
                 return;
             }
 
@@ -81,22 +65,35 @@ export class ParseSlidesUtils {
 
                 resolve(results);
             } else {
-                const Elem: string = element.nodeName;
-                resolve(<Elem {...element.attributes}></Elem>);
+                resolve(await this.parseElement(element, element.textContent));
             }
         });
     }
 
-    private static convertStyle(attributes: SlideAttributes): Promise<any> {
+    private static parseElement(element: HTMLElement, content: string): Promise<any> {
+        return new Promise<any>(async (resolve) => {
+            const Elem: string = element.nodeName;
+
+            const attributes: any = this.getAttributes(element);
+            if (attributes.style) {
+                attributes.style = await this.convertStyle(attributes.style);
+            }
+
+            resolve(<Elem {...attributes}>{content}</Elem>);
+        });
+    }
+
+    private static convertStyle(originalStyle: string): Promise<any> {
         return new Promise<any>((resolve) => {
-            if (!attributes || !attributes.style || attributes.style.length <= 0) {
+            if (!originalStyle || originalStyle.length <= 0) {
                 resolve(undefined);
                 return;
             }
 
             const result: any = {};
 
-            const styles: string[] = attributes.style.split(';');
+            const styles: string[] = originalStyle.split(';');
+
             if (styles && styles.length > 0) {
                 styles.forEach((style: string) => {
                     if (style && style.length > 0) {
@@ -112,5 +109,14 @@ export class ParseSlidesUtils {
 
             resolve(result);
         });
+    }
+
+    private static getAttributes(el) {
+        return Array.from(el.attributes)
+            .map((a: Attr) => [a.name, a.value])
+            .reduce((acc, attr) => {
+                acc[attr[0]] = attr[1];
+                return acc
+            }, {});
     }
 }
