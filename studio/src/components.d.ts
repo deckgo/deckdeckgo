@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';

@@ -2,7 +2,7 @@ import {Component, Element} from '@stencil/core';
 
 import {SlideTemplate} from '../../../models/slide-template';
 
-import {EditorUtils} from '../../../utils/editor-utils';
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
 @Component({
     tag: 'app-slide-type',
@@ -32,7 +32,7 @@ export class AppSlideType {
     }
 
     private async addSlide(template: SlideTemplate) {
-        const slide: any = await EditorUtils.createSlide(template);
+        const slide: any = await CreateSlidesUtils.createSlide(template);
         await this.closePopover(template, slide);
     }
 

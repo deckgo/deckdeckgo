@@ -7,7 +7,7 @@ import {AuthUser} from '../../../models/auth-user';
 import {Deck} from '../../../models/deck';
 import {User} from '../../../models/user';
 
-import {Utils} from '../../../utils/utils';
+import {Utils} from '../../../utils/core/utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';

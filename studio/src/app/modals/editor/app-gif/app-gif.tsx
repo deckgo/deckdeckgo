@@ -1,6 +1,6 @@
 import {Component, Element, Listen, State} from '@stencil/core';
 
-import {EditorUtils} from '../../../utils/editor-utils';
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
 import {GifService} from '../../../services/gif/gif.service';
 
@@ -58,7 +58,7 @@ export class AppGif {
             await this.gifService.registerShare(gif.id);
 
             const url: string = gif.media[0].gif.url;
-            const slide: any = await EditorUtils.createSlideGif(url);
+            const slide: any = await CreateSlidesUtils.createSlideGif(url);
 
             await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(slide);
 

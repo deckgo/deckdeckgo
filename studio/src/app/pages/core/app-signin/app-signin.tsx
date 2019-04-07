@@ -10,7 +10,7 @@ import {del, get, set} from 'idb-keyval';
 import {User} from '../../../models/user';
 import {AuthUser} from '../../../models/auth-user';
 
-import {Utils} from '../../../utils/utils';
+import {Utils} from '../../../utils/core/utils';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';

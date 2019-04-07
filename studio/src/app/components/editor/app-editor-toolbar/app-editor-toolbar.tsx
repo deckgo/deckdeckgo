@@ -3,7 +3,7 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {SlotType} from '../../../utils/editor-utils';
+import {SlotType} from '../../../utils/editor/create-slides.utils';
 
 import {DeckBusyService} from '../../../services/deck/deck-busy.service';
 

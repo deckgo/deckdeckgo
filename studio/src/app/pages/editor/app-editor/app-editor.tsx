@@ -4,7 +4,7 @@ import {OverlayEventDetail} from '@ionic/core';
 import {filter, take} from 'rxjs/operators';
 
 import {SlideTemplate} from '../../../models/slide-template';
-import {EditorUtils} from '../../../utils/editor-utils';
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
 import {AuthUser} from '../../../models/auth-user';
 import {Slide} from '../../../models/slide';
@@ -130,7 +130,7 @@ export class AppEditor {
                 return;
             }
 
-            const slide: any = await EditorUtils.createSlide(SlideTemplate.TITLE);
+            const slide: any = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
 
             await this.concatSlides(slide);
 
