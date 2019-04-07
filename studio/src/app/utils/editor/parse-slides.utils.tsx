@@ -10,6 +10,8 @@ export class ParseSlidesUtils {
                 return;
             }
 
+            // TODO: other types
+
             if (SlideTemplate[slide.template.toUpperCase()] === SlideTemplate.TITLE) {
                 resolve(await this.parseSlideTitle(slide));
             } else {

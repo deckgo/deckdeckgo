@@ -1,11 +1,13 @@
 import {Slide} from '../../models/slide';
 
+import {Deck} from '../../models/deck';
+
+import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
+
 import {SlideService} from '../../services/slide/slide.service';
 import {DeckService} from '../../services/deck/deck.service';
 import {ErrorService} from '../../services/error/error.service';
 import {DeckBusyService} from '../../services/deck/deck-busy.service';
-import {Deck} from '../../models/deck';
-import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 
 export class EditorHelper {
 
@@ -49,30 +51,39 @@ export class EditorHelper {
 
                 const promises: Promise<Slide>[] = [];
                 deck.slides.forEach((slideId: string) => {
-                    promises.push(this.slideService.get(slideId));
+                    promises.push(this.fetchSlide(slideId));
                 });
-
-                // TODO load slide to be rendered
 
                 let slides: Slide[] = [];
                 if (promises.length > 0) {
                     slides = await Promise.all(promises);
                 }
 
-                const slide: any = await ParseSlidesUtils.parseSlide(slides[0]);
+                if (!slides || slides.length <= 0) {
+                    resolve([]);
+                    return;
+                }
 
                 this.deckBusyService.busy(false);
 
-                const tmp = [];
-                tmp.push(slide);
-
-                // TODO: There is a bug right now, it does a post after this!!! so we end up with 2 decks instead of 1 in the db
-
-                resolve(tmp);
+                resolve(slides);
             } catch (err) {
                 this.errorService.error(err);
                 this.deckBusyService.busy(false);
                 resolve(null);
+            }
+        });
+    }
+
+    private fetchSlide(slideId: string): Promise<any> {
+        return new Promise<any>(async (resolve, reject) => {
+            try {
+                const slide: Slide = await this.slideService.get(slideId);
+                const element: any = await ParseSlidesUtils.parseSlide(slide);
+
+                resolve(element);
+            } catch (err) {
+                reject(err);
             }
         });
     }
