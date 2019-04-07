@@ -145,7 +145,7 @@ export class AppSignIn {
                 filter((user: User) => user !== null && user !== undefined),
                 take(1)).subscribe(async (user: User) => {
 
-                if (user && mergeInfo) {
+                if (user && mergeInfo && mergeInfo.deckId && mergeInfo.userToken && mergeInfo.userId) {
                     // Merge deck to new user
                     await this.mergeService.mergeDeck(mergeInfo.deckId, mergeInfo.userToken, user.id);
 
@@ -196,8 +196,8 @@ export class AppSignIn {
                 this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
                     await set('deckdeckgo_redirect_info', {
                         deckId: this.mergeService.deckId,
-                        userId: user.id,
-                        userToken: authUser.token
+                        userId: user ? user.id : null,
+                        userToken: authUser ? authUser.token : null
                     });
 
                     resolve();
