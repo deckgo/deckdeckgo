@@ -18,6 +18,8 @@ export class ParseSlidesUtils {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-content'));
             } else if (SlideTemplate[slide.template.toUpperCase()] === SlideTemplate.SPLIT) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-split'));
+            } else if (SlideTemplate[slide.template.toUpperCase()] === SlideTemplate.GIF) {
+                resolve(await this.parseSlideElement(slide, 'deckgo-slide-gif'));
             } else {
                 resolve(null);
             }
@@ -39,10 +41,12 @@ export class ParseSlidesUtils {
 
             const style = slide.attributes ? await this.convertStyle(slide.attributes.style) : undefined;
 
+            const src = slide.attributes && slide.attributes.src ? slide.attributes.src : undefined;
+
             const SlideElement: string = slideTag;
 
             // @ts-ignore
-            const result: any = <SlideElement slide_id={slide.id} style={style}>
+            const result: any = <SlideElement slide_id={slide.id} style={style} src={src}>
                 {content}
             </SlideElement>;
 
