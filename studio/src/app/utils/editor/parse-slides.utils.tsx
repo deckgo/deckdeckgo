@@ -10,8 +10,6 @@ export class ParseSlidesUtils {
                 return;
             }
 
-            // TODO: other types
-
             if (SlideTemplate[slide.template.toUpperCase()] === SlideTemplate.TITLE) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-title'));
             } else if (SlideTemplate[slide.template.toUpperCase()] === SlideTemplate.CONTENT) {
