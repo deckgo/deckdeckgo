@@ -49,6 +49,8 @@ export class AuthService {
                 if (!firebaseUser) {
                     this.authUserSubject.next(null);
                     await del('deckdeckgo_auth_user');
+
+                    await this.userService.signOut();
                 } else {
                     const tokenId: string = await firebaseUser.getIdToken();
 
@@ -84,10 +86,7 @@ export class AuthService {
     }
 
     async signOut() {
-        await del('deckdeckgo_auth_user');
         await firebase.auth().signOut();
-
-        await this.userService.signOut();
     }
 
     signInAnonymous(): Promise<void> {
