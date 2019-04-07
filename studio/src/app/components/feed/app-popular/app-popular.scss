@@ -1,6 +1,16 @@
 app-popular {
   ion-card[class*="sc-ion-card"] {
     --background: white;
+    color: black;
+    padding: 16px;
+
+    width: 350px;
+  }
+
+  ion-card.demo {
+    padding: 16px;
+    --background: white;
+    min-height: 340px;
   }
 }
 
