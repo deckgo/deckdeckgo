@@ -82,7 +82,7 @@ export class DeckService {
                 });
 
                 if (!rawResponse || !rawResponse.ok) {
-                    reject('Something went wrong while search for the deck');
+                    reject('Something went wrong while loading the deck');
                     return;
                 }
 

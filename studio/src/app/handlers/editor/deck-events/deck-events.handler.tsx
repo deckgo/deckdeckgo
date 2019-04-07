@@ -266,7 +266,18 @@ export class DeckEventsHandler {
                     return;
                 }
 
-                await this.slideService.delete(slide.getAttribute('slide_id'));
+                const slideId: string = slide.getAttribute('slide_id');
+
+                await this.slideService.delete(slideId);
+
+                // Update list of slide in the deck
+                let deck: Deck = this.deckEditorService.deck;
+
+                if (deck && deck.slides && deck.slides.indexOf(slideId) > -1) {
+                    deck.slides.splice(deck.slides.indexOf(slideId), 1);
+
+                    this.deckEditorService.deck = await this.deckService.put(deck);
+                }
 
                 await this.deleteSlideElement();
 

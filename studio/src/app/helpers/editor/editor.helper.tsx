@@ -83,14 +83,15 @@ export class EditorHelper {
     }
 
     private fetchSlide(slideId: string): Promise<any> {
-        return new Promise<any>(async (resolve, reject) => {
+        return new Promise<any>(async (resolve) => {
             try {
                 const slide: Slide = await this.slideService.get(slideId);
                 const element: any = await ParseSlidesUtils.parseSlide(slide);
 
                 resolve(element);
             } catch (err) {
-                reject(err);
+                this.errorService.error('Something went wrong while loading and parsing a slide');
+                resolve();
             }
         });
     }
