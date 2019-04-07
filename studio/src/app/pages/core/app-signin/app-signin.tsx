@@ -146,15 +146,19 @@ export class AppSignIn {
                 take(1)).subscribe(async (user: User) => {
 
                 if (user && mergeInfo) {
-                    await this.mergeService.merge(mergeInfo.deckId, mergeInfo.userToken, user.id);
+                    // Merge deck to new user
+                    await this.mergeService.mergeDeck(mergeInfo.deckId, mergeInfo.userToken, user.id);
 
+                    // Delete previous anonymous user from our backend
                     await this.userService.delete(mergeInfo.userId, mergeInfo.userToken);
 
+                    // Delete previous anonymous user from Firebase
                     if (this.firebaseUser) {
                         await this.firebaseUser.delete();
                     }
 
                     if (user.anonymous) {
+                        // In case that would happen, if user merge in was created with the anonymous flag, set it to false now
                         user.anonymous = false;
 
                         this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {

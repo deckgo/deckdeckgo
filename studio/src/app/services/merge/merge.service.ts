@@ -21,7 +21,7 @@ export class MergeService {
         return MergeService.instance;
     }
 
-    merge(deckId: string, userToken: string, newUserId: string): Promise<void> {
+    mergeDeck(deckId: string, userToken: string, newUserId: string): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!deckId || !userToken || !newUserId) {
                 resolve();
