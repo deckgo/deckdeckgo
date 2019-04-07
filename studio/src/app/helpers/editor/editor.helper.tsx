@@ -5,6 +5,7 @@ import {DeckService} from '../../services/deck/deck.service';
 import {ErrorService} from '../../services/error/error.service';
 import {DeckBusyService} from '../../services/deck/deck-busy.service';
 import {Deck} from '../../models/deck';
+import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 
 export class EditorHelper {
 
@@ -57,19 +58,8 @@ export class EditorHelper {
                 if (promises.length > 0) {
                     slides = await Promise.all(promises);
                 }
-                //
-                // const slide: any = <deckgo-slide-title>
-                //    {new DOMParser().parseFromString(slides[0].slide_content, 'text/html')}
-                // </deckgo-slide-title>;
 
-                const title: any = <h1 slot="title" class="deckgo-untouched" contenteditable>
-                    HELLO
-                </h1>;
-
-                // @ts-ignore
-                const slide: any = <deckgo-slide-title slide_id={slides[0].id}>
-                    {title}
-                </deckgo-slide-title>;
+                const slide: any = await ParseSlidesUtils.parseSlide(slides[0]);
 
                 this.deckBusyService.busy(false);
 
