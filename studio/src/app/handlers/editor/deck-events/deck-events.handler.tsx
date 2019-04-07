@@ -3,16 +3,16 @@ import {debounceTime, take} from 'rxjs/operators';
 
 import {SlideTemplate} from '../../../models/slide-template';
 import {Slide} from '../../../models/slide';
-import {Deck} from '../../../models/deck';
 import {SlideAttributes} from '../../../models/slide-attributes';
 import {User} from '../../../models/user';
+import {Deck} from '../../../models/deck';
 
 import {SlideService} from '../../../services/slide/slide.service';
 import {DeckService} from '../../../services/deck/deck.service';
 import {ErrorService} from '../../../services/error/error.service';
 import {DeckBusyService} from '../../../services/deck/deck-busy.service';
 import {UserService} from '../../../services/user/user.service';
-import {MergeService} from '../../../services/merge/merge.service';
+import {DeckEditorService} from '../../../services/deck/deck-editor.service';
 
 export class DeckEventsHandler {
 
@@ -27,12 +27,10 @@ export class DeckEventsHandler {
     private userSubscription: Subscription;
     private userService: UserService;
 
-    private deck: Deck;
-
     private updateSlideSubscription: Subscription;
     private updateSlideSubject: Subject<HTMLElement> = new Subject();
 
-    private deckEditorService: MergeService;
+    private deckEditorService: DeckEditorService;
 
     constructor() {
         this.slideService = SlideService.getInstance();
@@ -43,7 +41,7 @@ export class DeckEventsHandler {
 
         this.userService = UserService.getInstance();
 
-        this.deckEditorService = MergeService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     init(el: HTMLElement) {
@@ -73,7 +71,7 @@ export class DeckEventsHandler {
             this.userSubscription.unsubscribe();
         }
 
-        this.deckEditorService.deckId = null;
+        this.deckEditorService.deck = null;
     }
 
     private onSlideDidLoad = async ($event: CustomEvent) => {
@@ -164,24 +162,26 @@ export class DeckEventsHandler {
                     return;
                 }
 
-                if (this.deck) {
-                    if (!this.deck.slides || this.deck.slides.length <= 0) {
-                        this.deck.slides = [];
+                let deck: Deck = this.deckEditorService.deck;
+
+                if (deck) {
+                    if (!deck.slides || deck.slides.length <= 0) {
+                        deck.slides = [];
                     }
 
-                    this.deck.slides.push(slide.id);
+                    deck.slides.push(slide.id);
 
-                    this.deck = await this.deckService.put(this.deck);
+                    this.deckEditorService.deck = await this.deckService.put(deck);
                 } else {
                     this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
                         // TODO: Deck name to be solve with the UX
-                        this.deck = {
+                        deck = {
                             slides: [slide.id],
                             name: 'Presentation A',
                             owner_id: user.id
                         };
 
-                        this.deck = await this.deckService.post(this.deck);
+                        this.deckEditorService.deck = await this.deckService.post(deck);
 
                         await this.updateNavigation();
                     });
@@ -196,30 +196,16 @@ export class DeckEventsHandler {
 
     private updateNavigation(): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (!this.deck || !this.deck.id) {
+            const deck: Deck = this.deckEditorService.deck;
+
+            if (!deck || !deck.id) {
                 resolve();
                 return;
             }
 
-            this.deckEditorService.deckId = this.deck.id;
-            history.replaceState({}, `Deck edited ${this.deck.id}`, `/editor/${this.deck.id}`);
+            history.replaceState({}, `Deck edited ${deck.id}`, `/editor/${deck.id}`);
 
             resolve();
-        });
-    }
-
-    updateDeckUser(userId: string): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {if (this.deck) {
-                    this.deck.owner_id = userId;
-
-                    this.deck = await this.deckService.put(this.deck);
-                }
-
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
         });
     }
 

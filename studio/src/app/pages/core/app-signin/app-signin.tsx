@@ -17,6 +17,7 @@ import {NavDirection, NavService} from '../../../services/nav/nav.service';
 import {MergeService} from '../../../services/merge/merge.service';
 import {UserService} from '../../../services/user/user.service';
 import {AuthService} from '../../../services/auth/auth.service';
+import {DeckEditorService} from '../../../services/deck/deck-editor.service';
 
 interface MergeInformation {
     deckId: string;
@@ -46,11 +47,14 @@ export class AppSignIn {
 
     private firebaseUser: firebase.User;
 
+    private deckEditorService: DeckEditorService;
+
     constructor() {
         this.navService = NavService.getInstance();
         this.mergeService = MergeService.getInstance();
         this.userService = UserService.getInstance();
         this.authService = AuthService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentDidLoad() {
@@ -195,7 +199,7 @@ export class AppSignIn {
             this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
                 this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
                     await set('deckdeckgo_redirect_info', {
-                        deckId: this.mergeService.deckId,
+                        deckId: this.deckEditorService.deck ? this.deckEditorService.deck.id : null,
                         userId: user ? user.id : null,
                         userToken: authUser ? authUser.token : null
                     });

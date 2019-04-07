@@ -8,6 +8,7 @@ import {SlideService} from '../../services/slide/slide.service';
 import {DeckService} from '../../services/deck/deck.service';
 import {ErrorService} from '../../services/error/error.service';
 import {DeckBusyService} from '../../services/deck/deck-busy.service';
+import {DeckEditorService} from '../../services/deck/deck-editor.service';
 
 export class EditorHelper {
 
@@ -17,15 +18,19 @@ export class EditorHelper {
     private errorService: ErrorService;
     private deckBusyService: DeckBusyService;
 
+    private deckEditorService: DeckEditorService;
+
     constructor() {
         this.slideService = SlideService.getInstance();
         this.deckService = DeckService.getInstance();
 
         this.errorService = ErrorService.getInstance();
         this.deckBusyService = DeckBusyService.getInstance();
+
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
-    retrieveSlides(deckId: string): Promise<any[]> {
+    loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
         return new Promise<any[]>(async (resolve) => {
             if (!deckId) {
                 this.errorService.error('Deck is not defined');
@@ -43,6 +48,8 @@ export class EditorHelper {
                     resolve(null);
                     return;
                 }
+
+                this.deckEditorService.deck = deck;
 
                 if (!deck.slides || deck.slides.length <= 0) {
                     resolve([]);

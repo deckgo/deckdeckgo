@@ -3,8 +3,6 @@ import {Deck} from '../../models/deck';
 
 export class MergeService {
     
-    deckId: string;
-
     private static instance: MergeService;
 
     private deckService: DeckService;

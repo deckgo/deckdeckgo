@@ -146,7 +146,7 @@ export class AppEditor {
             }
 
             const helper: EditorHelper = new EditorHelper();
-            const slides: Slide[] = await helper.retrieveSlides(this.deckId);
+            const slides: Slide[] = await helper.loadDeckAndRetrieveSlides(this.deckId);
 
             if (slides && slides.length > 0) {
                 await this.concatSlides(slides);
