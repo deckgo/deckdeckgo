@@ -35,7 +35,7 @@ export class AppMenuUser {
     private authUser: AuthUser;
 
     @State()
-    private decks: Deck[] = [];
+    private decks: Deck[] = null;
 
     private skeletons: number[] = Array(3).fill(0);
 
@@ -159,6 +159,12 @@ export class AppMenuUser {
                     </ion-item>
                 })
             );
+        } else if (this.decks && this.decks.length === 0) {
+            return (
+                <ion-item>
+                    <ion-label>No presentations yet 😔</ion-label>
+                </ion-item>
+            )
         } else {
             return this.renderSkeletons();
         }
