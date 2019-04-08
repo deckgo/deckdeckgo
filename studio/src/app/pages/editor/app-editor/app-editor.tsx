@@ -212,15 +212,20 @@ export class AppEditor {
         await (deck as any).slideTo(index, speed);
     }
 
-    private async slideToLastSlide() {
+    @Listen('slideDidLoad')
+    async slideToLastSlideOnSlideLoad($event) {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (!deck) {
             return;
         }
 
-        if (deck.hasChildNodes()) {
-            await this.slideTo(deck.children && deck.children.length > 0 ? deck.children.length - 1 : 0);
+        if ($event && $event.target && $event.target instanceof HTMLElement) {
+            const newSlide: HTMLElement = $event.target;
+
+            if (!newSlide.getAttribute('slide_id') && deck.hasChildNodes()) {
+                await this.slideTo(deck.children && deck.children.length > 0 ? deck.children.length - 1 : 0);
+            }
         }
     }
 
@@ -519,7 +524,6 @@ export class AppEditor {
             <ion-content padding>
                 <main class={this.displaying ? 'idle' : undefined}>
                     <deckgo-deck embedded={true}
-                                 onSlidesDidLoad={() => this.slideToLastSlide()}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}
