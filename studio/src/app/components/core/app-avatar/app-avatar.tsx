@@ -11,9 +11,18 @@ export class AppAvatar {
     @Prop() src: string;
 
     render() {
-        return <ion-avatar>
-            <img src={this.src}/>
-        </ion-avatar>
+        if (this.src) {
+
+            console.log(this.src);
+
+            return <ion-avatar>
+                <img src={this.src}/>
+            </ion-avatar>
+        } else {
+            return <ion-avatar>
+                <ion-icon md="md-person" ios="md-person"></ion-icon>
+            </ion-avatar>
+        }
     }
 
 }
