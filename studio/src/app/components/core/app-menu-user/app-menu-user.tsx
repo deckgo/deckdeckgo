@@ -37,6 +37,8 @@ export class AppMenuUser {
     @State()
     private decks: Deck[] = [];
 
+    private skeletons: number[] = Array(3).fill(0);
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.navService = NavService.getInstance();
@@ -154,6 +156,21 @@ export class AppMenuUser {
                     return <ion-item href={url} routerDirection="forward">
                         <ion-icon name="book" slot="start"></ion-icon>
                         <ion-label>{deck.name}</ion-label>
+                    </ion-item>
+                })
+            );
+        } else {
+            return this.renderSkeletons();
+        }
+    }
+
+    private renderSkeletons() {
+        if (this.skeletons && this.skeletons.length > 0) {
+            return (
+                this.skeletons.map((_value: number) => {
+                    return <ion-item>
+                        <ion-icon name="book" slot="start"></ion-icon>
+                        <ion-skeleton-text animated></ion-skeleton-text>
                     </ion-item>
                 })
             );
