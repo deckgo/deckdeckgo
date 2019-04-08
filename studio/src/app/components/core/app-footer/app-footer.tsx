@@ -31,6 +31,10 @@ export class AppFooter {
                     <ion-label>Terms of use</ion-label>
                 </ion-anchor>
 
+                <ion-anchor href="/services" routerDirection="forward">
+                    <ion-label>Services</ion-label>
+                </ion-anchor>
+
                 <ion-anchor href="/contact" routerDirection="forward">
                     <ion-label>Contact</ion-label>
                 </ion-anchor>

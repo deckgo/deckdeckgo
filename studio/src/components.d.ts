@@ -153,6 +153,9 @@ export namespace Components {
   interface AppPrivacy {}
   interface AppPrivacyAttributes extends StencilHTMLAttributes {}
 
+  interface AppServices {}
+  interface AppServicesAttributes extends StencilHTMLAttributes {}
+
   interface AppTeam {}
   interface AppTeamAttributes extends StencilHTMLAttributes {}
 
@@ -218,6 +221,7 @@ declare global {
     'AppContact': Components.AppContact;
     'AppOpensource': Components.AppOpensource;
     'AppPrivacy': Components.AppPrivacy;
+    'AppServices': Components.AppServices;
     'AppTeam': Components.AppTeam;
     'AppTerms': Components.AppTerms;
     'AppHome': Components.AppHome;
@@ -251,6 +255,7 @@ declare global {
     'app-contact': Components.AppContactAttributes;
     'app-opensource': Components.AppOpensourceAttributes;
     'app-privacy': Components.AppPrivacyAttributes;
+    'app-services': Components.AppServicesAttributes;
     'app-team': Components.AppTeamAttributes;
     'app-terms': Components.AppTermsAttributes;
     'app-home': Components.AppHomeAttributes;
@@ -389,6 +394,12 @@ declare global {
     new (): HTMLAppPrivacyElement;
   };
 
+  interface HTMLAppServicesElement extends Components.AppServices, HTMLStencilElement {}
+  var HTMLAppServicesElement: {
+    prototype: HTMLAppServicesElement;
+    new (): HTMLAppServicesElement;
+  };
+
   interface HTMLAppTeamElement extends Components.AppTeam, HTMLStencilElement {}
   var HTMLAppTeamElement: {
     prototype: HTMLAppTeamElement;
@@ -465,6 +476,7 @@ declare global {
     'app-contact': HTMLAppContactElement
     'app-opensource': HTMLAppOpensourceElement
     'app-privacy': HTMLAppPrivacyElement
+    'app-services': HTMLAppServicesElement
     'app-team': HTMLAppTeamElement
     'app-terms': HTMLAppTermsElement
     'app-home': HTMLAppHomeElement
@@ -498,6 +510,7 @@ declare global {
     'app-contact': HTMLAppContactElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-privacy': HTMLAppPrivacyElement;
+    'app-services': HTMLAppServicesElement;
     'app-team': HTMLAppTeamElement;
     'app-terms': HTMLAppTermsElement;
     'app-home': HTMLAppHomeElement;
