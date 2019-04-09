@@ -16,6 +16,7 @@ import {GuestService} from '../../../services/guest/guest.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
+import {DeckAction} from '../../../popovers/editor/app-deck-actions/deck-action';
 
 interface FirstSlideContent {
     title: string;
@@ -518,6 +519,44 @@ export class AppEditor {
         });
     }
 
+    async openDeckActions($event: UIEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-deck-actions',
+            event: $event,
+            mode: 'ios'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data) {
+                if (detail.data.action === DeckAction.FULLSCREEN) {
+                    await this.toggleFullScreen();
+                } else if (detail.data.action === DeckAction.JUMP_TO) {
+                    await this.openSlideNavigate();
+                } else if (detail.data.action === DeckAction.SETTINGS) {
+                    await this.openDeckSettings();
+                }
+            }
+        });
+
+        await popover.present();
+    }
+
+    async openDeckSettings() {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-deck-settings'
+        });
+
+        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+            // Nothing special
+        });
+
+        await modal.present();
+    }
+
     render() {
         return [
             <app-navigation publish={true}></app-navigation>,
@@ -537,21 +576,35 @@ export class AppEditor {
             <ion-footer class={this.displaying ? 'idle' : undefined}>
                 <ion-toolbar>
                     <ion-buttons slot="start">
-                        <ion-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
-                            <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-                        </ion-button>
+                        <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
+                            <ion-icon name="arrow-back"></ion-icon>
+                            <ion-label>Previous</ion-label>
+                        </ion-tab-button>
 
-                        <ion-button onClick={() => this.animatePrevNextSlide(true)} color="primary">
-                            <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
-                        </ion-button>
+                        <ion-tab-button onClick={() => this.animatePrevNextSlide(true)} color="primary">
+                            <ion-icon name="arrow-forward"></ion-icon>
+                            <ion-label>Next</ion-label>
+                        </ion-tab-button>
 
-                        <ion-button onClick={() => this.openSlideNavigate()} color="primary">
-                            <ion-icon slot="icon-only" src="/assets/icons/chapters.svg"></ion-icon>
-                        </ion-button>
+                        <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices">
+                            <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
+                            <ion-label>Jump to</ion-label>
+                        </ion-tab-button>
 
-                        <ion-button onClick={() => this.toggleFullScreen()} color="primary">
-                            <ion-icon slot="icon-only" name="expand"></ion-icon>
-                        </ion-button>
+                        <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices">
+                            <ion-icon name="expand"></ion-icon>
+                            <ion-label>Fullscreen</ion-label>
+                        </ion-tab-button>
+
+                        <ion-tab-button onClick={() => this.openDeckSettings()} color="primary" class="wider-devices">
+                            <ion-icon name="settings"></ion-icon>
+                            <ion-label>Settings</ion-label>
+                        </ion-tab-button>
+
+                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices">
+                            <ion-icon md="md-more" ios="md-more"></ion-icon>
+                            <ion-label>More</ion-label>
+                        </ion-tab-button>
                     </ion-buttons>
 
                     <ion-buttons slot="end">

@@ -12,9 +12,6 @@ export class AppAvatar {
 
     render() {
         if (this.src) {
-
-            console.log(this.src);
-
             return <ion-avatar>
                 <img src={this.src}/>
             </ion-avatar>

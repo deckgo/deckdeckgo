@@ -1,5 +1,5 @@
 import {Subject, Subscription} from 'rxjs';
-import {debounceTime, take} from 'rxjs/operators';
+import {debounceTime, filter, take} from 'rxjs/operators';
 
 import {SlideTemplate} from '../../../models/slide-template';
 import {Slide} from '../../../models/slide';
@@ -173,7 +173,7 @@ export class DeckEventsHandler {
 
                     this.deckEditorService.deck = await this.deckService.put(deck);
                 } else {
-                    this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
+                    this.userService.watch().pipe(filter((user: User) => user !== null && user !== undefined), take(1)).subscribe(async (user: User) => {
                         // TODO: Deck name to be solve with the UX
                         deck = {
                             slides: [slide.id],

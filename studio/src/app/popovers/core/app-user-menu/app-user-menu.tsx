@@ -36,7 +36,6 @@ export class AppUserMenu {
     render() {
         return <ion-list>
             <ion-item onClick={() => this.signOut()}>
-                <ion-icon name="log-out" slot="start"></ion-icon>
                 <ion-label>Sign out</ion-label>
             </ion-item>
         </ion-list>
