@@ -35,7 +35,7 @@ export class ParseSlidesUtils {
             const div = document.createElement('div');
             div.innerHTML = slide.content;
 
-            const content = await this.parseElements(div);
+            const content = await this.parseElements(div, true);
 
             const style = slide.attributes ? await this.convertStyle(slide.attributes.style) : undefined;
 
@@ -52,7 +52,7 @@ export class ParseSlidesUtils {
         });
     }
 
-    private static parseElements(element: HTMLElement): Promise<any> {
+    private static parseElements(element: HTMLElement, root: boolean): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!element) {
                 resolve(undefined);
@@ -70,7 +70,8 @@ export class ParseSlidesUtils {
                 const elements: HTMLElement[] = Array.prototype.slice.call(element.childNodes);
 
                 for (const elem of elements) {
-                    results.push(await this.parseElements(elem));
+                    const result = await this.parseElements(elem, false);
+                    results.push(root || elem.nodeType === 3 ? result : await this.parseElement(element, result));
                 }
 
                 resolve(results);
@@ -80,7 +81,7 @@ export class ParseSlidesUtils {
         });
     }
 
-    private static parseElement(element: HTMLElement, content: string): Promise<any> {
+    private static parseElement(element: HTMLElement, content: any): Promise<any> {
         return new Promise<any>(async (resolve) => {
             const Elem: string = element.nodeName;
 
@@ -125,7 +126,11 @@ export class ParseSlidesUtils {
         });
     }
 
-    private static getAttributes(el) {
+    private static getAttributes(el): any {
+        if (!el || !el.attributes) {
+            return {};
+        }
+
         return Array.from(el.attributes)
             .map((a: Attr) => [a.name, a.value])
             .reduce((acc, attr) => {
