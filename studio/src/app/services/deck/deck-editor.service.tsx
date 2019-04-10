@@ -1,8 +1,10 @@
+import {BehaviorSubject, Observable} from 'rxjs';
+
 import {Deck} from '../../models/deck';
 
 export class DeckEditorService {
-    
-    deck: Deck;
+
+    private deckSubject: BehaviorSubject<Deck> = new BehaviorSubject(null);
 
     private static instance: DeckEditorService;
 
@@ -15,6 +17,14 @@ export class DeckEditorService {
             DeckEditorService.instance = new DeckEditorService();
         }
         return DeckEditorService.instance;
+    }
+
+    watch(): Observable<Deck> {
+        return this.deckSubject.asObservable();
+    }
+
+    next(deck: Deck) {
+        this.deckSubject.next(deck);
     }
     
 }

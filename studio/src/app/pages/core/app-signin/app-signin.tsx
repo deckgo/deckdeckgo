@@ -3,12 +3,14 @@ import {Component, Element, Prop, Watch} from '@stencil/core';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
+import {forkJoin} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
 import {del, get, set} from 'idb-keyval';
 
 import {User} from '../../../models/user';
 import {AuthUser} from '../../../models/auth-user';
+import {Deck} from '../../../models/deck';
 
 import {Utils} from '../../../utils/core/utils';
 
@@ -18,6 +20,7 @@ import {MergeService} from '../../../services/merge/merge.service';
 import {UserService} from '../../../services/user/user.service';
 import {AuthService} from '../../../services/auth/auth.service';
 import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+
 
 interface MergeInformation {
     deckId: string;
@@ -196,16 +199,18 @@ export class AppSignIn {
         return new Promise<void>(async (resolve) => {
             await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
 
-            this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
-                this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
-                    await set('deckdeckgo_redirect_info', {
-                        deckId: this.deckEditorService.deck ? this.deckEditorService.deck.id : null,
-                        userId: user ? user.id : null,
-                        userToken: authUser ? authUser.token : null
-                    });
-
-                    resolve();
+            forkJoin(
+                this.authService.watch().pipe(take(1)),
+                this.userService.watch().pipe(take(1)),
+                this.deckEditorService.watch().pipe(take(1))
+            ).subscribe(async ([authUser, user, deck]: [AuthUser, User, Deck]) => {
+                await set('deckdeckgo_redirect_info', {
+                    deckId: deck ? deck.id : null,
+                    userId: user ? user.id : null,
+                    userToken: authUser ? authUser.token : null
                 });
+
+                resolve();
             });
         })
     }

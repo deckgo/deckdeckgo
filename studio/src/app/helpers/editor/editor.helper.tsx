@@ -49,7 +49,7 @@ export class EditorHelper {
                     return;
                 }
 
-                this.deckEditorService.deck = deck;
+                this.deckEditorService.next(deck);
 
                 if (!deck.slides || deck.slides.length <= 0) {
                     resolve([]);

@@ -71,7 +71,7 @@ export class DeckEventsHandler {
             this.userSubscription.unsubscribe();
         }
 
-        this.deckEditorService.deck = null;
+        this.deckEditorService.next(null);
     }
 
     private onSlideDidLoad = async ($event: CustomEvent) => {
@@ -162,42 +162,42 @@ export class DeckEventsHandler {
                     return;
                 }
 
-                let deck: Deck = this.deckEditorService.deck;
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    if (deck) {
+                        if (!deck.slides || deck.slides.length <= 0) {
+                            deck.slides = [];
+                        }
 
-                if (deck) {
-                    if (!deck.slides || deck.slides.length <= 0) {
-                        deck.slides = [];
+                        deck.slides.push(slide.id);
+
+                        const updatedDeck: Deck = await this.deckService.put(deck);
+                        this.deckEditorService.next(updatedDeck);
+                    } else {
+                        this.userService.watch().pipe(filter((user: User) => user !== null && user !== undefined), take(1)).subscribe(async (user: User) => {
+                            // TODO: Deck name to be solve with the UX
+                            deck = {
+                                slides: [slide.id],
+                                name: 'Presentation A',
+                                owner_id: user.id
+                            };
+
+                            const persistedDeck: Deck = await this.deckService.post(deck);
+                            this.deckEditorService.next(persistedDeck);
+
+                            await this.updateNavigation(persistedDeck);
+                        });
                     }
 
-                    deck.slides.push(slide.id);
-
-                    this.deckEditorService.deck = await this.deckService.put(deck);
-                } else {
-                    this.userService.watch().pipe(filter((user: User) => user !== null && user !== undefined), take(1)).subscribe(async (user: User) => {
-                        // TODO: Deck name to be solve with the UX
-                        deck = {
-                            slides: [slide.id],
-                            name: 'Presentation A',
-                            owner_id: user.id
-                        };
-
-                        this.deckEditorService.deck = await this.deckService.post(deck);
-
-                        await this.updateNavigation();
-                    });
-                }
-
-                resolve();
+                    resolve();
+                });
             } catch (err) {
                 reject(err);
             }
         });
     }
 
-    private updateNavigation(): Promise<void> {
+    private updateNavigation(deck: Deck): Promise<void> {
         return new Promise<void>((resolve) => {
-            const deck: Deck = this.deckEditorService.deck;
-
             if (!deck || !deck.id) {
                 resolve();
                 return;
@@ -270,20 +270,21 @@ export class DeckEventsHandler {
 
                 await this.slideService.delete(slideId);
 
-                // Update list of slide in the deck
-                let deck: Deck = this.deckEditorService.deck;
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    // Update list of slide in the deck
+                    if (deck && deck.slides && deck.slides.indexOf(slideId) > -1) {
+                        deck.slides.splice(deck.slides.indexOf(slideId), 1);
 
-                if (deck && deck.slides && deck.slides.indexOf(slideId) > -1) {
-                    deck.slides.splice(deck.slides.indexOf(slideId), 1);
+                        const updatedDeck: Deck = await this.deckService.put(deck);
+                        this.deckEditorService.next(updatedDeck);
+                    }
 
-                    this.deckEditorService.deck = await this.deckService.put(deck);
-                }
+                    await this.deleteSlideElement();
 
-                await this.deleteSlideElement();
+                    this.deckBusyService.busy(false);
 
-                this.deckBusyService.busy(false);
-
-                resolve();
+                    resolve();
+                });
             } catch (err) {
                 this.errorService.error(err);
                 this.deckBusyService.busy(false);

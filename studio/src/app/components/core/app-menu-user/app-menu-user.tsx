@@ -13,6 +13,7 @@ import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
 import {DeckService} from '../../../services/deck/deck.service';
 import {UserService} from '../../../services/user/user.service';
+import {DeckEditorService} from '../../../services/deck/deck-editor.service';
 
 @Component({
     tag: 'app-menu-user',
@@ -31,6 +32,9 @@ export class AppMenuUser {
 
     private deckService: DeckService;
 
+    private deckSubscription: Subscription;
+    private deckEditorService: DeckEditorService;
+
     @State()
     private authUser: AuthUser;
 
@@ -45,6 +49,8 @@ export class AppMenuUser {
 
         this.deckService = DeckService.getInstance();
         this.userService = UserService.getInstance();
+
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     componentWillLoad() {
@@ -68,6 +74,12 @@ export class AppMenuUser {
         });
     }
 
+    componentDidLoad() {
+        this.deckSubscription = this.deckEditorService.watch().subscribe(async (deck: Deck) => {
+            await this.updateDeckName(deck);
+        });
+    }
+
     componentDidUnload() {
         if (this.authSubscription) {
             this.authSubscription.unsubscribe();
@@ -75,6 +87,10 @@ export class AppMenuUser {
 
         if (this.userSubscription) {
             this.userSubscription.unsubscribe();
+        }
+
+        if (this.deckSubscription) {
+            this.deckSubscription.unsubscribe();
         }
     }
 
@@ -91,6 +107,34 @@ export class AppMenuUser {
         this.navService.navigate({
             url: '/',
             direction: NavDirection.ROOT
+        });
+    }
+
+    private updateDeckName(deck: Deck): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!deck || !deck.id || !deck.name) {
+                resolve();
+                return;
+            }
+
+            if (!this.decks || this.decks.length <= 0) {
+                resolve();
+                return;
+            }
+
+            const index: number = this.decks.findIndex((filteredDeck: Deck) => {
+                return filteredDeck.id === deck.id;
+            });
+
+            if (index < 0) {
+                resolve();
+                return;
+            }
+
+            this.decks[index].name = deck.name;
+            this.decks = [...this.decks];
+
+            resolve();
         });
     }
 

@@ -5,6 +5,7 @@ import {Deck} from '../../../models/deck';
 import {DeckService} from '../../../services/deck/deck.service';
 import {DeckEditorService} from '../../../services/deck/deck-editor.service';
 import {ErrorService} from '../../../services/error/error.service';
+import {take} from 'rxjs/operators';
 
 @Component({
     tag: 'app-deck-settings',
@@ -32,7 +33,9 @@ export class AppDeckSettings {
     }
 
     componentWillLoad() {
-        this.presentationName = this.deckEditorService.deck ? this.deckEditorService.deck.name : null;
+        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+            this.presentationName = deck ? deck.name : null;
+        });
     }
 
     async componentDidLoad() {
@@ -62,12 +65,6 @@ export class AppDeckSettings {
         return new Promise<void>(async (resolve) => {
             this.disableSave = true;
 
-            if (!this.deckEditorService.deck) {
-                this.disableSave = false;
-                resolve();
-                return;
-            }
-
             if (!this.hasPresentationName() || this.presentationName.length < 5) {
                 this.errorService.error('Presentation name should be at least 5 characters and max 40');
 
@@ -77,12 +74,20 @@ export class AppDeckSettings {
             }
 
             try {
-                let deck: Deck = this.deckEditorService.deck;
-                deck.name = this.presentationName;
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    if (!deck || !deck.id) {
+                        this.disableSave = false;
+                        resolve();
+                        return;
+                    }
 
-                this.deckEditorService.deck = await this.deckService.put(deck);
+                    deck.name = this.presentationName;
 
-                await this.closeModal();
+                    const updatedDeck: Deck = await this.deckService.put(deck);
+                    this.deckEditorService.next(updatedDeck);
+
+                    await this.closeModal();
+                });
             } catch (err) {
                 this.errorService.error(err);
             }
