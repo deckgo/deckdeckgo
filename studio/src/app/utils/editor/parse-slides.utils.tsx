@@ -60,7 +60,7 @@ export class ParseSlidesUtils {
             }
 
             if (element.nodeType === 3) {
-                resolve(await this.parseElement(element.parentElement, element.textContent));
+                resolve(element.textContent);
                 return;
             }
 
@@ -71,10 +71,10 @@ export class ParseSlidesUtils {
 
                 for (const elem of elements) {
                     const result = await this.parseElements(elem, false);
-                    results.push(root || elem.nodeType === 3 ? result : await this.parseElement(element, result));
+                    results.push(result);
                 }
 
-                resolve(results);
+                resolve(root ? results : await this.parseElement(element, results));
             } else {
                 resolve(await this.parseElement(element, element.textContent));
             }
