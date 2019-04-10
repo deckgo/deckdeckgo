@@ -341,8 +341,6 @@ export class AppEditorToolbar {
             this.displayed = false;
             await this.initSelectedElement(null);
 
-            this.displayed = false;
-
             resolve();
         });
     }
