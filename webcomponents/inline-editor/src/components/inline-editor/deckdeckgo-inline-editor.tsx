@@ -165,8 +165,6 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       const selection: Selection = await this.getSelection();
 
-      console.log(selection);
-
       if (!this.anchorEvent) {
         await this.reset(false);
         resolve();
