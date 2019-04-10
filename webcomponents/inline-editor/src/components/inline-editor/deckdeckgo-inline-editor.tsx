@@ -106,7 +106,6 @@ export class DeckdeckgoInlineEditor {
       if (listenerElement) {
         listenerElement.addEventListener('mousedown', this.mousedown, {passive: true});
         listenerElement.addEventListener('touchstart', this.touchstart, {passive: true});
-        listenerElement.addEventListener('keydown', this.keydown, {passive: true});
       }
 
       resolve();
@@ -118,7 +117,6 @@ export class DeckdeckgoInlineEditor {
       if (listenerElement) {
         listenerElement.removeEventListener('mousedown', this.mousedown);
         listenerElement.removeEventListener('touchstart', this.touchstart);
-        listenerElement.removeEventListener('keydown', this.keydown);
       }
 
       resolve();
@@ -131,19 +129,6 @@ export class DeckdeckgoInlineEditor {
 
   private touchstart = ($event: MouseEvent) => {
     this.anchorEvent = $event;
-  };
-
-  private keydown = async ($event: KeyboardEvent) => {
-    if (!$event) {
-      return;
-    }
-
-    if (!this.linkInput && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
-      await this.reset(false);
-    } else if (this.linkInput && $event.key.toLowerCase() === 'enter') {
-      await this.createLink();
-      await this.reset(true);
-    }
   };
 
   @Listen('document:selectionchange', {passive: true})
@@ -637,6 +622,19 @@ export class DeckdeckgoInlineEditor {
     this.linkUrl = ($event.target as InputTargetEvent).value;
   }
 
+  private async handleLinkEnter($event: KeyboardEvent) {
+    if (!$event) {
+      return;
+    }
+
+    if (!this.linkInput && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
+      await this.reset(false);
+    } else if (this.linkInput && $event.key.toLowerCase() === 'enter') {
+      await this.createLink();
+      await this.reset(true);
+    }
+  }
+
   private isSticky(): boolean {
     const mobile: boolean = DeckdeckgoInlineEditorUtils.isMobile();
 
@@ -720,7 +718,10 @@ export class DeckdeckgoInlineEditor {
     if (this.linkInput) {
       return (
         <div class="link">
-          <input autofocus placeholder="Add a link..." onInput={($event: UIEvent) => this.handleLinkInput($event)}></input>
+          <input autofocus placeholder="Add a link..."
+                 onInput={($event: UIEvent) => this.handleLinkInput($event)}
+                 onKeyUp={($event: KeyboardEvent) => this.handleLinkEnter($event)}
+          ></input>
         </div>
       );
     } else {
@@ -735,13 +736,13 @@ export class DeckdeckgoInlineEditor {
         </button>,
         <button onClick={(e: UIEvent) => this.styleUnderline(e)}
                 class={this.underline ? "underline active" : "underline"}>
-            <span>U</span>
+          <span>U</span>
         </button>,
 
         <div class="separator"></div>,
 
         <button onClick={() => this.openColorPicker()} class="color">
-            <span style={styleColor}>A</span>
+          <span style={styleColor}>A</span>
         </button>,
 
         <button
@@ -753,7 +754,7 @@ export class DeckdeckgoInlineEditor {
 
         <button
           disabled={this.disabledTitle}
-          onClick={(e: UIEvent) => this.toggleList(e,'insertUnorderedList')}
+          onClick={(e: UIEvent) => this.toggleList(e, 'insertUnorderedList')}
           class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
           <div></div>
         </button>,
@@ -762,7 +763,9 @@ export class DeckdeckgoInlineEditor {
 
         <button
           disabled={this.disabledTitle}
-          onClick={() => {this.toggleLink()}} class={this.link ? "link active" : "link"}>
+          onClick={() => {
+            this.toggleLink()
+          }} class={this.link ? "link active" : "link"}>
           <div></div>
         </button>
       ];
