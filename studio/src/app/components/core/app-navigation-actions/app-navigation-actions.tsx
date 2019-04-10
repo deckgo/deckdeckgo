@@ -2,9 +2,9 @@ import {Component, Event, EventEmitter, Prop, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/auth-user';
 
-import {Utils} from '../../../utils/utils';
+import {Utils} from '../../../utils/core/utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
@@ -28,7 +28,7 @@ export class AppNavigationActions {
     private navService: NavService;
 
     @State()
-    private user: User;
+    private authUser: AuthUser;
 
     @Event() private actionPublish: EventEmitter<void>;
 
@@ -38,8 +38,8 @@ export class AppNavigationActions {
     }
 
     componentWillLoad() {
-        this.subscription = this.authService.watch().subscribe((user: User) => {
-            this.user = user;
+        this.subscription = this.authService.watch().subscribe((authUser: AuthUser) => {
+            this.authUser = authUser;
         });
     }
 
@@ -76,7 +76,7 @@ export class AppNavigationActions {
     }
 
     private renderSignIn() {
-        if (Utils.isLoggedIn(this.user) || !this.signIn) {
+        if (Utils.isLoggedIn(this.authUser) || !this.signIn) {
             return undefined;
         } else if (this.presentation || this.publish) {
             return <a padding-start padding-end class="signin" onClick={() => this.navigateSignIn()}>
@@ -86,9 +86,9 @@ export class AppNavigationActions {
     }
 
     private renderLoggedIn() {
-        if (Utils.isLoggedIn(this.user)) {
+        if (Utils.isLoggedIn(this.authUser)) {
             return <a padding-end onClick={(e: UIEvent) => this.openMenu(e)}>
-                <app-avatar src={this.user.photo_url}></app-avatar>
+                <app-avatar src={this.authUser.photo_url}></app-avatar>
             </a>;
         } else {
             return undefined;

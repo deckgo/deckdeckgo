@@ -12,16 +12,13 @@ app-editor {
     margin: auto;
 
     overflow: hidden;
+  }
 
-    ion-button.get-started {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
-      --background: var(--ion-color-tertiary);
-      --color: white;
-      --color-activated: var(--ion-color-secondary);
+  ion-footer {
+    ion-tab-button {
+      ion-icon {
+        color: var(--ion-color-primary);
+      }
     }
   }
 
@@ -48,6 +45,26 @@ app-editor {
   @media screen and (min-width: 1140px) {
     main {
       max-width: 960px;
+    }
+  }
+
+  @media screen and (max-width: 540px) {
+    ion-footer {
+      ion-tab-button {
+        &.wider-devices {
+          display: none;
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: 540px) {
+    ion-footer {
+      ion-tab-button {
+        &.small-devices {
+          display: none;
+        }
+      }
     }
   }
 }

@@ -93,6 +93,7 @@ export class AppRoot {
                     <ion-route url="/" component="app-home"/>
 
                     <ion-route url="/editor" component="app-editor"/>
+                    <ion-route url="/editor/:deckId" component="app-editor"/>
 
                     <ion-route url="/signin" component="app-signin"/>
                     <ion-route url="/signin/:redirect" component="app-signin"/>
@@ -102,6 +103,7 @@ export class AppRoot {
                     <ion-route url="/opensource" component="app-opensource"/>
                     <ion-route url="/privacy" component="app-privacy"/>
                     <ion-route url="/terms" component="app-terms"/>
+                    <ion-route url="/services" component="app-services"/>
                     <ion-route url="/contact" component="app-contact"/>
                 </ion-router>
 

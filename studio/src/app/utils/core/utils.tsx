@@ -1,4 +1,4 @@
-import {User} from '../models/user';
+import {AuthUser} from '../../models/auth-user';
 
 export class Utils {
 
@@ -54,8 +54,8 @@ export class Utils {
         });
     }
 
-    static isLoggedIn(user: User): boolean {
-        return user && !user.anonymous;
+    static isLoggedIn(authUser: AuthUser): boolean {
+        return authUser && !authUser.anonymous;
     }
 }
 

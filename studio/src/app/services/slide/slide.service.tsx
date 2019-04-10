@@ -17,12 +17,15 @@ export class SlideService {
         return SlideService.instance;
     }
 
+
+    // TODO: get /slides/:slide_id
+
     post(slide: Slide): Promise<Slide> {
         return this.query(slide, '/slides', 'POST');
     }
 
     put(slide: Slide): Promise<Slide> {
-        return this.query(slide, '/slides/' + slide.slide_id,'PUT');
+        return this.query(slide, '/slides/' + slide.id,'PUT');
     }
 
     delete(slide_id: string): Promise<void> {
@@ -72,6 +75,33 @@ export class SlideService {
                 const persistedSlide: Slide = await rawResponse.json();
 
                 resolve(persistedSlide);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    get(slideId: string): Promise<Slide> {
+        return new Promise<Slide>(async (resolve, reject) => {
+            try {
+                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                const rawResponse: Response = await fetch(apiUrl + `/slides/${slideId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while loading the slide');
+                    return;
+                }
+
+                const slide: Slide = await rawResponse.json();
+
+                resolve(slide);
             } catch (err) {
                 reject(err);
             }

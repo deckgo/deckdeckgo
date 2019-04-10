@@ -1,4 +1,4 @@
-import {SlideTemplate} from '../models/slide-template';
+import {SlideTemplate} from '../../models/slide-template';
 
 export enum SlotType {
     DIV = 'div',
@@ -7,7 +7,7 @@ export enum SlotType {
     H3 = 'h3'
 }
 
-export class EditorUtils {
+export class CreateSlidesUtils {
 
     private static DEFAULT_TITLE: string = 'Click to add title';
     private static DEFAULT_CONTENT: string = 'Click to add content';
