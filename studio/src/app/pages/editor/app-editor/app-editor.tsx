@@ -133,7 +133,7 @@ export class AppEditor {
 
             const slide: any = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
 
-            await this.concatSlides(slide);
+            await this.concatSlide(slide);
 
             resolve();
         });
@@ -150,16 +150,16 @@ export class AppEditor {
             const slides: Slide[] = await helper.loadDeckAndRetrieveSlides(this.deckId);
 
             if (slides && slides.length > 0) {
-                await this.concatSlides(slides);
+                this.slides = [...slides];
             }
 
             resolve();
         });
     }
 
-    private concatSlides(extraSlides: any | any[]): Promise<void> {
+    private concatSlide(extraSlide: any): Promise<void> {
         return new Promise<void>((resolve) => {
-            this.slides = [...this.slides, extraSlides];
+            this.slides = [...this.slides, extraSlide];
 
             resolve();
         });
@@ -348,7 +348,7 @@ export class AppEditor {
     }
 
     private async addSlide(slide: any) {
-        await this.concatSlides(slide);
+        await this.concatSlide(slide);
     }
 
     private async openGifPicker() {
