@@ -150,6 +150,11 @@ export class DeckdeckgoInlineEditor {
   async selectionchange(_$event: Event) {
     if (document && document.activeElement && document.activeElement.nodeName &&
       (document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor' || document.activeElement.nodeName.toLowerCase() === 'body')) {
+
+      if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
+        await this.reset(false);
+      }
+
       return;
     }
 
@@ -159,6 +164,8 @@ export class DeckdeckgoInlineEditor {
   private displayTools(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const selection: Selection = await this.getSelection();
+
+      console.log(selection);
 
       if (!this.anchorEvent) {
         await this.reset(false);
