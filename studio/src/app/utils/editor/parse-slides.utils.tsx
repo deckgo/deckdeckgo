@@ -54,7 +54,7 @@ export class ParseSlidesUtils {
 
     private static parseElements(element: HTMLElement): Promise<any> {
         return new Promise<any>(async (resolve) => {
-            if (!parent) {
+            if (!element) {
                 resolve(undefined);
                 return;
             }
