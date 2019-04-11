@@ -93,32 +93,38 @@ export namespace Components {
   interface AppFeedCardContent {
     'author': string;
     'caption': string;
+    'compact': boolean;
     'description': string;
     'editable': boolean;
-    'firstCard': boolean;
+    'miniature': boolean;
     'publication': Date;
   }
   interface AppFeedCardContentAttributes extends StencilHTMLAttributes {
     'author'?: string;
     'caption'?: string;
+    'compact'?: boolean;
     'description'?: string;
     'editable'?: boolean;
-    'firstCard'?: boolean;
+    'miniature'?: boolean;
     'publication'?: Date;
   }
 
   interface AppFeedCard {
     'author': string;
     'caption': string;
+    'compact': boolean;
     'description': string;
     'editable': boolean;
+    'miniature': boolean;
     'publication': Date;
   }
   interface AppFeedCardAttributes extends StencilHTMLAttributes {
     'author'?: string;
     'caption'?: string;
+    'compact'?: boolean;
     'description'?: string;
     'editable'?: boolean;
+    'miniature'?: boolean;
     'publication'?: Date;
   }
 

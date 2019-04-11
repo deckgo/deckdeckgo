@@ -16,7 +16,10 @@ export class AppFeedCardContent {
     private tagInput: string = null;
 
     @Prop()
-    firstCard: boolean = false;
+    compact: boolean = true;
+
+    @Prop()
+    miniature: boolean = true;
 
     @Prop()
     editable: boolean = false;
@@ -85,37 +88,24 @@ export class AppFeedCardContent {
     }
 
     render() {
-        return <ion-card-content>
-            <div class="summary">
+        return <ion-card-content class={this.compact ? "ion-no-padding compact" : "ion-no-padding"}>
+            {this.renderMiniature()}
 
-                <ion-card-header>
-                    <ion-card-title class="ion-text-uppercase" contentEditable={this.editable}>{this.caption}</ion-card-title>
+            <ion-card-header>
+                <ion-card-title class="ion-text-uppercase" contentEditable={this.editable}>{this.caption}</ion-card-title>
 
-                    <ion-card-subtitle class="ion-text-lowercase">
-                        {this.renderTags()}
-                        {this.renderInputTags()}
-                    </ion-card-subtitle>
-                </ion-card-header>
+                <ion-card-subtitle class="ion-text-lowercase">
+                    {this.renderTags()}
+                    {this.renderInputTags()}
+                </ion-card-subtitle>
+            </ion-card-header>
 
-                <p padding-start padding-end class="content" contentEditable={this.editable}>{this.description}</p>
+            <p padding-start padding-end class="content" contentEditable={this.editable}>{this.description}</p>
 
-                <p class="author" padding>
-                    <ion-label>{this.author} | {this.formattedPublication}</ion-label>
-                </p>
-            </div>
-
-            {this.renderPreviewImage()}
+            <p class="author" padding>
+                <ion-label>{this.author} | {this.formattedPublication}</ion-label>
+            </p>
         </ion-card-content>
-    }
-
-    private renderPreviewImage() {
-        if (this.firstCard) {
-            return undefined;
-        } else {
-            return <div class={this.editable ? "preview editable" : "preview"}>
-                <img src="./assets/img/deckdeckgo-logo.svg"/>
-            </div>;
-        }
     }
 
     private renderTags() {
@@ -151,6 +141,14 @@ export class AppFeedCardContent {
         if (this.tags && this.tags.length < 5) {
             return <input autofocus placeholder="Add a tag..." value={this.tagInput}
                           onInput={($event: UIEvent) => this.handleTagInput($event)}></input>
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderMiniature() {
+        if (this.miniature) {
+            return <img src="/assets/dummy.png"/>;
         } else {
             return undefined;
         }

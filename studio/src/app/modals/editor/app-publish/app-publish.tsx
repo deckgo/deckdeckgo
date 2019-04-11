@@ -62,9 +62,9 @@ export class AppPublish {
                 </ion-toolbar>
             </ion-header>,
             <ion-content padding>
-                <p>Edit the preview of your presentation and add or change tags (up to 5) to make your presentation more inviting to readers</p>
+                <p>Edit the title and summary of your presentation and add or change tags (up to 5) to make your presentation more inviting to readers</p>
 
-                <app-feed-card editable={true} author={this.author} publication={this.today} caption={this.caption} description={this.description}></app-feed-card>
+                <app-feed-card compact={false} miniature={false} editable={true} author={this.author} publication={this.today} caption={this.caption} description={this.description}></app-feed-card>
 
                 <div class="ion-padding ion-text-center">
                     <ion-button shape="round" color="primary">
