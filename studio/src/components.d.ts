@@ -128,6 +128,9 @@ export namespace Components {
     'publication'?: Date;
   }
 
+  interface AppFeedLazyImg {}
+  interface AppFeedLazyImgAttributes extends StencilHTMLAttributes {}
+
   interface AppDeckSettings {}
   interface AppDeckSettingsAttributes extends StencilHTMLAttributes {}
 
@@ -226,6 +229,7 @@ declare global {
     'AppPopular': Components.AppPopular;
     'AppFeedCardContent': Components.AppFeedCardContent;
     'AppFeedCard': Components.AppFeedCard;
+    'AppFeedLazyImg': Components.AppFeedLazyImg;
     'AppDeckSettings': Components.AppDeckSettings;
     'AppGif': Components.AppGif;
     'AppPublish': Components.AppPublish;
@@ -262,6 +266,7 @@ declare global {
     'app-popular': Components.AppPopularAttributes;
     'app-feed-card-content': Components.AppFeedCardContentAttributes;
     'app-feed-card': Components.AppFeedCardAttributes;
+    'app-feed-lazy-img': Components.AppFeedLazyImgAttributes;
     'app-deck-settings': Components.AppDeckSettingsAttributes;
     'app-gif': Components.AppGifAttributes;
     'app-publish': Components.AppPublishAttributes;
@@ -366,6 +371,12 @@ declare global {
   var HTMLAppFeedCardElement: {
     prototype: HTMLAppFeedCardElement;
     new (): HTMLAppFeedCardElement;
+  };
+
+  interface HTMLAppFeedLazyImgElement extends Components.AppFeedLazyImg, HTMLStencilElement {}
+  var HTMLAppFeedLazyImgElement: {
+    prototype: HTMLAppFeedLazyImgElement;
+    new (): HTMLAppFeedLazyImgElement;
   };
 
   interface HTMLAppDeckSettingsElement extends Components.AppDeckSettings, HTMLStencilElement {}
@@ -497,6 +508,7 @@ declare global {
     'app-popular': HTMLAppPopularElement
     'app-feed-card-content': HTMLAppFeedCardContentElement
     'app-feed-card': HTMLAppFeedCardElement
+    'app-feed-lazy-img': HTMLAppFeedLazyImgElement
     'app-deck-settings': HTMLAppDeckSettingsElement
     'app-gif': HTMLAppGifElement
     'app-publish': HTMLAppPublishElement
@@ -533,6 +545,7 @@ declare global {
     'app-popular': HTMLAppPopularElement;
     'app-feed-card-content': HTMLAppFeedCardContentElement;
     'app-feed-card': HTMLAppFeedCardElement;
+    'app-feed-lazy-img': HTMLAppFeedLazyImgElement;
     'app-deck-settings': HTMLAppDeckSettingsElement;
     'app-gif': HTMLAppGifElement;
     'app-publish': HTMLAppPublishElement;

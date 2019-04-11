@@ -148,7 +148,7 @@ export class AppFeedCardContent {
 
     private renderMiniature() {
         if (this.miniature) {
-            return <img src="/assets/dummy.png"/>;
+            return <app-feed-lazy-img></app-feed-lazy-img>;
         } else {
             return undefined;
         }
