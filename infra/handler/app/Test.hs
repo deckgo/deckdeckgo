@@ -20,21 +20,24 @@ main = do
   manager' <- newManager defaultManagerSettings
 
   let clientEnv = mkClientEnv manager' (BaseUrl Http "localhost" 8080 "")
+  let someFirebaseId = FirebaseId "the-uid" -- from ./token
+  let someUserId = UserId someFirebaseId
+  let someDeck = Deck
+        { deckSlides = []
+        , deckDeckname = Deckname "foo"
+        , deckOwnerId = someUserId
+        , deckAttributes = HMS.empty
+        }
 
   runClientM usersGet' clientEnv >>= \case
     Left err -> error $ "Expected users, got error: " <> show err
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 users, got: " <> show decks
 
-  runClientM (decksGet' b Nothing) clientEnv >>= \case
+  runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 decks, got: " <> show decks
-
-  let someFirebaseId = FirebaseId "the-uid" -- from ./token
-  let someUserId = UserId someFirebaseId
-
-  let someDeck = Deck { deckSlides = [] , deckDeckname = Deckname "foo", deckOwnerId = someUserId, deckAttributes = HMS.empty }
 
   deckId <- runClientM (decksPost' b someDeck) clientEnv >>= \case
     Left err -> error $ "Expected new deck, got error: " <> show err
@@ -52,7 +55,7 @@ main = do
     Left err -> error $ "Expected updated deck, got error: " <> show err
     Right {} -> pure ()
 
-  runClientM (decksGet' b Nothing) clientEnv >>= \case
+  runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
     Right decks ->
       if decks == [Item deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
@@ -96,7 +99,7 @@ main = do
     Left err -> error $ "Expected deck delete, got error: " <> show err
     Right {} -> pure ()
 
-  runClientM (decksGet' b Nothing) clientEnv >>= \case
+  runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
     Left err -> error $ "Expected no decks, got error: " <> show err
     Right decks ->
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)

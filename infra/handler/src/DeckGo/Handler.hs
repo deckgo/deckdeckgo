@@ -382,7 +382,17 @@ usersPost env fuid user = do
     pure $ Item userId user
 
 usersPut :: Aws.Env -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
-usersPut env _ userId user = do
+usersPut env fuid userId user = do
+
+    when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
+      liftIO $ putStrLn $ unwords
+        [ "User is trying to update another user:", show (fuid, userId, user) ]
+      Servant.throwError Servant.err404
+
+    when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
+      liftIO $ putStrLn $ unwords
+        [ "Client used the wrong user ID on user", show (fuid, userId, user) ]
+      Servant.throwError Servant.err400
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Users" &
         DynamoDB.uiUpdateExpression .~
@@ -401,7 +411,10 @@ usersPut env _ userId user = do
     pure $ Item userId user
 
 usersDelete :: Aws.Env -> Firebase.UserId -> UserId -> Servant.Handler ()
-usersDelete env _ userId = do
+usersDelete env fuid userId = do
+
+    when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
+      Servant.throwError Servant.err403
 
     res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Users" &
         DynamoDB.diKey .~ HMS.singleton "UserFirebaseId"
@@ -416,15 +429,24 @@ usersDelete env _ userId = do
 -- DECKS
 
 decksGet :: Aws.Env -> Firebase.UserId -> Maybe UserId -> Servant.Handler [Item DeckId Deck]
-decksGet env _uid mUserId = do
+decksGet env fuid mUserId = do
 
-    let updateReq = case mUserId of
-          Nothing -> id
-          Just userId -> \req -> req &
+    userId <- case mUserId of
+      Nothing -> do
+        liftIO $ putStrLn $ unwords
+          [ "No user specified when GETting decks:", show fuid ]
+        Servant.throwError Servant.err400
+      Just userId -> pure userId
+
+    when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
+      liftIO $ putStrLn $ unwords
+        [ "Client asking for decks as another user", show (fuid, userId) ]
+      Servant.throwError Servant.err403
+
+    res <- runAWS env $ Aws.send $ DynamoDB.scan "Decks" &
             DynamoDB.sFilterExpression .~ Just "DeckOwnerId = :o" &
             DynamoDB.sExpressionAttributeValues .~ HMS.singleton ":o" (userIdToAttributeValue userId)
 
-    res <- runAWS env $ Aws.send $ updateReq $ DynamoDB.scan "Decks"
     case res of
       Right scanResponse ->
         case sequence $ scanResponse ^. DynamoDB.srsItems <&> itemToDeck of
@@ -437,10 +459,12 @@ decksGet env _uid mUserId = do
         Servant.throwError Servant.err500
 
 decksGetDeckId :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler (Item DeckId Deck)
-decksGetDeckId env _ deckId = do
+decksGetDeckId env fuid deckId = do
+
     res <- runAWS env $ Aws.send $ DynamoDB.getItem "Decks" &
         DynamoDB.giKey .~ HMS.singleton "DeckId" (deckIdToAttributeValue deckId)
-    case res of
+
+    deck@Item{itemContent} <- case res of
       Right getItemResponse -> do
         case getItemResponse ^. DynamoDB.girsResponseStatus of
           200 -> pure ()
@@ -462,8 +486,24 @@ decksGetDeckId env _ deckId = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
+    let ownerId = deckOwnerId itemContent
+
+    when (Firebase.unUserId fuid /= unFirebaseId (unUserId ownerId)) $ do
+      liftIO $ putStrLn $ unwords $
+        [ "Deck was found", show deck, "but requester is not the owner", show fuid ]
+      Servant.throwError Servant.err404
+
+    pure deck
+
 decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (Item DeckId Deck)
-decksPost env _ deck = do
+decksPost env fuid deck = do
+
+    let ownerId = deckOwnerId deck
+
+    when (Firebase.unUserId fuid /= unFirebaseId (unUserId ownerId)) $ do
+      liftIO $ putStrLn $ unwords $
+        [ "Deck was POSTed", show deck, "but requester is not the owner", show fuid ]
+      Servant.throwError Servant.err400
 
     deckId <- liftIO $ DeckId <$> newId
 
@@ -479,7 +519,18 @@ decksPost env _ deck = do
     pure $ Item deckId deck
 
 decksPut :: Aws.Env -> Firebase.UserId -> DeckId -> Deck -> Servant.Handler (Item DeckId Deck)
-decksPut env _ deckId deck = do
+decksPut env fuid deckId deck = do
+
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to PUT", show deckId, "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just Deck{deckOwnerId} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Deck was PUTed", show deck, "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Decks" &
         DynamoDB.uiUpdateExpression .~ Just "SET DeckSlides = :s, DeckName = :n, DeckOwnerId = :o, DeckAttributes = :a" &
@@ -508,6 +559,44 @@ decksDelete env _ deckId = do
       Left e -> do
         liftIO $ print e
         Servant.throwError Servant.err500
+
+-- | Reads a Deck from the database.
+--
+-- If the deck is not found, returns Nothing
+-- If the deck can't be parsed, throws a 500.
+-- If the response status is not 200, throws a 500.
+getDeck :: Aws.Env -> DeckId -> Servant.Handler (Maybe Deck)
+getDeck env deckId = do
+
+    res <- runAWS env $ Aws.send $ DynamoDB.getItem "Decks" &
+        DynamoDB.giKey .~ HMS.singleton "DeckId" (deckIdToAttributeValue deckId)
+
+    mItem <- case res of
+      Right r -> do
+        case
+          ( r ^. DynamoDB.girsResponseStatus
+          , itemToDeck (r ^. DynamoDB.girsItem )) of
+          (200, Just deck) -> pure $ Just deck
+          (200, Nothing) -> do
+            liftIO $ putStrLn $ "Could not parse response: " <> show r
+            Servant.throwError Servant.err500
+          (404, _) -> pure Nothing
+          s -> do
+            liftIO $
+              putStrLn $ "Unkown response status: " <> show s <>
+              " in response " <> show r
+            Servant.throwError Servant.err500
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
+
+    case mItem of
+      Just Item{itemId = deckId', itemContent = deck} -> do
+        when (deckId' /= deckId) $ do
+          liftIO $ putStrLn $ "Mismatched deck IDs " <> show (deckId, deckId')
+          Servant.throwError Servant.err500
+        pure $ Just deck
+      Nothing -> pure Nothing
 
 -- SLIDES
 
