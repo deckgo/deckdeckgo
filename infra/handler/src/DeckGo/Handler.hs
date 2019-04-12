@@ -253,7 +253,7 @@ data Slide = Slide
 instance FromJSONObject Slide where
   parseJSONObject = \obj ->
     Slide <$>
-      obj .: "content" <*>
+      obj .:? "content" .!= "" <*>
       obj .: "template" <*>
       obj .:? "attributes" .!= HMS.empty
 
