@@ -7,6 +7,8 @@ import {SlideAttributes} from '../../../models/slide-attributes';
 import {User} from '../../../models/user';
 import {Deck} from '../../../models/deck';
 
+import {Utils} from '../../../utils/core/utils';
+
 import {SlideService} from '../../../services/slide/slide.service';
 import {DeckService} from '../../../services/deck/deck.service';
 import {ErrorService} from '../../../services/error/error.service';
@@ -174,10 +176,9 @@ export class DeckEventsHandler {
                         this.deckEditorService.next(updatedDeck);
                     } else {
                         this.userService.watch().pipe(filter((user: User) => user !== null && user !== undefined), take(1)).subscribe(async (user: User) => {
-                            // TODO: Deck name to be solve with the UX
                             deck = {
                                 slides: [slide.id],
-                                name: 'Presentation A',
+                                name: `Presentation ${await Utils.getNow()}`,
                                 owner_id: user.id
                             };
 

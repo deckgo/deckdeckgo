@@ -76,7 +76,7 @@ export class AppMenuUser {
 
     componentDidLoad() {
         this.deckSubscription = this.deckEditorService.watch().subscribe(async (deck: Deck) => {
-            await this.updateDeckName(deck);
+            await this.updateDeckList(deck);
         });
     }
 
@@ -110,7 +110,7 @@ export class AppMenuUser {
         });
     }
 
-    private updateDeckName(deck: Deck): Promise<void> {
+    private updateDeckList(deck: Deck): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!deck || !deck.id || !deck.name) {
                 resolve();
@@ -127,15 +127,21 @@ export class AppMenuUser {
             });
 
             if (index < 0) {
-                resolve();
-                return;
+                this.decks = [...this.decks, deck];
+            } else {
+                this.decks[index].name = deck.name;
+                this.decks = [...this.decks];
             }
-
-            this.decks[index].name = deck.name;
-            this.decks = [...this.decks];
 
             resolve();
         });
+    }
+
+    private navigateNewDeck() {
+        this.navService.navigate({
+            url: '/editor',
+            direction: NavDirection.ROOT
+        })
     }
 
     render() {
@@ -144,8 +150,7 @@ export class AppMenuUser {
 
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
-                <ion-button size="small" slot="end" shape="round" margin-end href="/editor"
-                            routerDirection="forward" class="new">
+                <ion-button size="small" slot="end" shape="round" margin-end onClick={() => this.navigateNewDeck()} class="new">
                     <ion-icon name="book" slot="start"></ion-icon>
                     <ion-label>New</ion-label>
                 </ion-button>
@@ -197,7 +202,7 @@ export class AppMenuUser {
                 this.decks.map((deck: Deck) => {
                     const url: string = `/editor/${deck.id}`;
 
-                    return <ion-item href={url} routerDirection="forward">
+                    return <ion-item href={url} routerDirection="root">
                         <ion-icon name="book" slot="start"></ion-icon>
                         <ion-label>{deck.name}</ion-label>
                     </ion-item>

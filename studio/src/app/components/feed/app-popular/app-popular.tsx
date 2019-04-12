@@ -22,8 +22,7 @@ export class AppPopular {
 
                     <p padding-top padding-bottom>It is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
                 </ion-card-content>
-            </ion-card>,
-            <ion-card class="demo">
+
                 <app-demo></app-demo>
             </ion-card>
         ];
