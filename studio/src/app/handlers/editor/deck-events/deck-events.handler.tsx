@@ -3,7 +3,7 @@ import {debounceTime, filter, take} from 'rxjs/operators';
 
 import {Slide, SlideAttributes, SlideTemplate} from '../../../models/slide';
 import {User} from '../../../models/user';
-import {Deck} from '../../../models/deck';
+import {Deck, DeckAttributes} from '../../../models/deck';
 
 import {Utils} from '../../../utils/core/utils';
 
@@ -48,6 +48,7 @@ export class DeckEventsHandler {
         this.el = el;
 
         this.el.addEventListener('input', this.onSlideInputChange, false);
+        this.el.addEventListener('deckDidChange', this.onDeckChange, false);
         this.el.addEventListener('slideDidChange', this.onSlideChange, false);
         this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
         this.el.addEventListener('slideDelete', this.onSlideDelete, false);
@@ -59,6 +60,7 @@ export class DeckEventsHandler {
 
     destroy() {
         this.el.removeEventListener('input', this.onSlideInputChange, true);
+        this.el.removeEventListener('deckDidChange', this.onDeckChange, true);
         this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
         this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
@@ -78,6 +80,14 @@ export class DeckEventsHandler {
         if ($event && $event.target && $event.target instanceof HTMLElement) {
             await this.createSlide($event.target);
         }
+    };
+
+    private onDeckChange = async ($event: CustomEvent) => {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        await this.updateDeck($event.detail);
     };
 
     private onSlideChange = async ($event: CustomEvent) => {
@@ -208,6 +218,43 @@ export class DeckEventsHandler {
         });
     }
 
+    private updateDeck(deck: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            try {
+                if (!deck) {
+                    resolve();
+                    return;
+                }
+
+                this.deckBusyService.busy(true);
+
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: Deck) => {
+                    if (!currentDeck) {
+                        resolve();
+                        return;
+                    }
+
+                    const attributes: DeckAttributes = await this.getDeckAttributes(deck);
+
+                    if (attributes && Object.keys(attributes).length > 0) {
+                        currentDeck.attributes = attributes;
+                    }
+
+                    const updatedDeck: Deck = await this.deckService.put(currentDeck);
+                    this.deckEditorService.next(updatedDeck);
+
+                    this.deckBusyService.busy(false);
+
+                    resolve();
+                });
+            } catch (err) {
+                this.errorService.error(err);
+                this.deckBusyService.busy(false);
+                resolve();
+            }
+        });
+    }
+
     private updateSlide(slide: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
@@ -317,6 +364,18 @@ export class DeckEventsHandler {
 
             if ((slide as any).src) {
                 attributes.src = (slide as any).src;
+            }
+
+            resolve(attributes);
+        })
+    }
+
+    private getDeckAttributes(deck: HTMLElement): Promise<DeckAttributes> {
+        return new Promise<DeckAttributes>((resolve) => {
+            let attributes: DeckAttributes = {};
+
+            if (deck.getAttribute('style')) {
+                attributes.style = deck.getAttribute('style');
             }
 
             resolve(attributes);

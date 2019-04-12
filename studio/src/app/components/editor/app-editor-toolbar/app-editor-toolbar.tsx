@@ -39,6 +39,7 @@ export class AppEditorToolbar {
     @Event() private slideDelete: EventEmitter<HTMLElement>;
 
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
+    @Event() private deckDidChange: EventEmitter<HTMLElement>;
 
     private subscription: Subscription;
     private deckBusyService: DeckBusyService;
@@ -425,7 +426,7 @@ export class AppEditorToolbar {
             this.selectedElement.style.color = $event.target.value;
         }
 
-        await this.emitSlideChange();
+        await this.emitChange();
     };
 
     // Background
@@ -490,7 +491,7 @@ export class AppEditorToolbar {
             this.selectedElement.style.background = $event.target.value;
         }
 
-        await this.emitSlideChange();
+        await this.emitChange();
     };
 
     private async openSlotType($event: UIEvent) {
@@ -542,21 +543,26 @@ export class AppEditorToolbar {
 
             await this.initSelectedElement(element);
 
-            await this.emitSlideChange();
+            await this.emitChange();
 
             resolve();
         });
     }
 
-    private emitSlideChange(): Promise<void> {
+    private emitChange(): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
                 resolve();
                 return;
             }
 
-            // If not deck or slide, then parent is the container slide
-            this.slideDidChange.emit(this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
+            if (this.applyToAllDeck) {
+                const deckElement: HTMLElement = this.deckOrSlide ? this.selectedElement.parentElement : this.selectedElement.parentElement.parentElement;
+                this.deckDidChange.emit(deckElement);
+            } else {
+                // If not deck or slide, then parent is the container slide
+                this.slideDidChange.emit(this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
+            }
 
             resolve();
         });
