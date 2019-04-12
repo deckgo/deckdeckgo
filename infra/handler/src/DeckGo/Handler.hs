@@ -16,12 +16,14 @@
 
 module DeckGo.Handler where
 
+-- TODO: created_at, updated_at
+-- TODO: improve swagger description
+-- TODO: feed API
+
 -- TODO: double check what is returned on 200 from DynamoDB
 -- TODO: check permissions
--- TODO: created_at, updated_at
 -- TODO: TTL on anonymous users
 -- TODO: enforce uniqueness on deck_name (per user)
--- TODO: improve swagger description
 
 import Control.Lens hiding ((.=))
 import Control.Monad
