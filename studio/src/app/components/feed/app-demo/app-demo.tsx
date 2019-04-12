@@ -89,7 +89,7 @@ export class AppDemo {
 
     private renderBeamer() {
         if (this.type === DemoType.BEAMER) {
-            return <div class="beamer-container">
+            return <div class="beamer-container" padding>
                 <iframe src="https://www.deckdeckgo.com" />
             </div>
         } else {
