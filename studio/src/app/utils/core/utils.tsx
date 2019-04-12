@@ -1,4 +1,5 @@
 import {AuthUser} from '../../models/auth-user';
+import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
 export class Utils {
 
@@ -56,6 +57,15 @@ export class Utils {
 
     static isLoggedIn(authUser: AuthUser): boolean {
         return authUser && !authUser.anonymous;
+    }
+
+    static getNow(): Promise<string> {
+        return new Promise<string>((resolve) => {
+            const options: DateTimeFormatOptions = {year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false};
+            const now: string = new Intl.DateTimeFormat('en-US', options).format(new Date());
+
+            resolve(now);
+        });
     }
 }
 
