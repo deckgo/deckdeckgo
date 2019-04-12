@@ -91,25 +91,6 @@ export namespace Components {
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
-  interface AppFeedCardContent {
-    'author': string;
-    'caption': string;
-    'compact': boolean;
-    'description': string;
-    'editable': boolean;
-    'miniature': boolean;
-    'publication': Date;
-  }
-  interface AppFeedCardContentAttributes extends StencilHTMLAttributes {
-    'author'?: string;
-    'caption'?: string;
-    'compact'?: boolean;
-    'description'?: string;
-    'editable'?: boolean;
-    'miniature'?: boolean;
-    'publication'?: Date;
-  }
-
   interface AppFeedCard {
     'author': string;
     'caption': string;
@@ -228,7 +209,6 @@ declare global {
     'AppDemo': Components.AppDemo;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
-    'AppFeedCardContent': Components.AppFeedCardContent;
     'AppFeedCard': Components.AppFeedCard;
     'AppFeedLazyImg': Components.AppFeedLazyImg;
     'AppDeckSettings': Components.AppDeckSettings;
@@ -265,7 +245,6 @@ declare global {
     'app-demo': Components.AppDemoAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
-    'app-feed-card-content': Components.AppFeedCardContentAttributes;
     'app-feed-card': Components.AppFeedCardAttributes;
     'app-feed-lazy-img': Components.AppFeedLazyImgAttributes;
     'app-deck-settings': Components.AppDeckSettingsAttributes;
@@ -360,12 +339,6 @@ declare global {
   var HTMLAppPopularElement: {
     prototype: HTMLAppPopularElement;
     new (): HTMLAppPopularElement;
-  };
-
-  interface HTMLAppFeedCardContentElement extends Components.AppFeedCardContent, HTMLStencilElement {}
-  var HTMLAppFeedCardContentElement: {
-    prototype: HTMLAppFeedCardContentElement;
-    new (): HTMLAppFeedCardContentElement;
   };
 
   interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
@@ -507,7 +480,6 @@ declare global {
     'app-demo': HTMLAppDemoElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
-    'app-feed-card-content': HTMLAppFeedCardContentElement
     'app-feed-card': HTMLAppFeedCardElement
     'app-feed-lazy-img': HTMLAppFeedLazyImgElement
     'app-deck-settings': HTMLAppDeckSettingsElement
@@ -544,7 +516,6 @@ declare global {
     'app-demo': HTMLAppDemoElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
-    'app-feed-card-content': HTMLAppFeedCardContentElement;
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-lazy-img': HTMLAppFeedLazyImgElement;
     'app-deck-settings': HTMLAppDeckSettingsElement;
