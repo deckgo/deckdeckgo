@@ -185,7 +185,7 @@ instance FromJSONObject Deck where
       <$> obj .: "slides"
       <*> obj .: "name"
       <*> obj .: "owner_id"
-      <*> obj .: "attributes"
+      <*> obj .:? "attributes" .!= HMS.empty
 
 instance ToJSONObject Deck where
   toJSONObject deck = HMS.fromList
