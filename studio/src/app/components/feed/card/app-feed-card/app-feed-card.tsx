@@ -22,10 +22,16 @@ export class AppFeedCard {
     @Prop()
     description: string;
 
+    @Prop()
+    compact: boolean = true;
+
+    @Prop()
+    miniature: boolean = true;
+
     render() {
 
         return <ion-card class={this.editable ? "ion-no-margin" : undefined}>
-            <app-feed-card-content editable={this.editable} author={this.author} publication={this.publication} caption={this.caption} description={this.description}></app-feed-card-content>
+            <app-feed-card-content editable={this.editable} author={this.author} publication={this.publication} caption={this.caption} description={this.description} compact={this.compact} miniature={this.miniature}></app-feed-card-content>
         </ion-card>
     }
 
