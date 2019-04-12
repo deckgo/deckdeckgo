@@ -2,12 +2,17 @@ import {Slide} from '../../models/slide';
 
 import {EnvironmentConfigService} from '../environment/environment-config.service';
 
+import {AuthService} from '../auth/auth.service';
+
 export class SlideService {
 
     private static instance: SlideService;
 
+    private authService: AuthService;
+
     private constructor() {
         // Private constructor, singleton
+        this.authService = AuthService.getInstance();
     }
 
     static getInstance() {
@@ -37,7 +42,8 @@ export class SlideService {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': await this.authService.getBearer()
                     }
                 });
 
@@ -62,7 +68,8 @@ export class SlideService {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': await this.authService.getBearer()
                     },
                     body: JSON.stringify(slide)
                 });
@@ -90,7 +97,8 @@ export class SlideService {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': await this.authService.getBearer()
                     }
                 });
 
