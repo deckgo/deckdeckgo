@@ -38,8 +38,10 @@ export class AppMenuUser {
     @State()
     private authUser: AuthUser;
 
-    @State()
     private decks: Deck[] = null;
+
+    @State()
+    private filteredDecks: Deck[] = null;
 
     private skeletons: number[] = Array(3).fill(0);
 
@@ -62,14 +64,16 @@ export class AppMenuUser {
             filter((user: User) => user && !user.anonymous)).subscribe(async (user: User) => {
             if (user) {
                 try {
-                    const decks: Deck[] = await this.deckService.getUserDecks(user.id);
-                    this.decks = [...decks];
+                    this.decks = await this.deckService.getUserDecks(user.id);
+                    await this.filterDecks(null);
                 } catch (err) {
                     // TODO: print error?
                     this.decks = [];
+                    await this.filterDecks(null);
                 }
             } else {
                 this.decks = [];
+                await this.filterDecks(null);
             }
         });
     }
@@ -144,13 +148,48 @@ export class AppMenuUser {
         })
     }
 
+    private async filterDecksOnChange(e: CustomEvent) {
+        if (e && e.detail) {
+            await this.filterDecks(e.detail.value);
+        } else {
+            await this.filterDecks(null);
+        }
+    }
+
+    private filterDecks(value: string): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!value || value === undefined || value === '') {
+                this.filteredDecks = [...this.decks];
+
+                resolve();
+                return;
+            }
+
+            if (!this.decks || this.decks.length <= 0) {
+                this.filteredDecks = [...this.decks];
+
+                resolve();
+                return;
+            }
+
+            const matchingDecks: Deck[] = this.decks.filter((matchDeck: Deck) => {
+                return matchDeck.name && matchDeck.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+            });
+
+            this.filteredDecks = [...matchingDecks];
+
+            resolve();
+        });
+    }
+
     render() {
         return <ion-list>
             {this.renderUser()}
 
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
-                <ion-button size="small" slot="end" shape="round" margin-end onClick={() => this.navigateNewDeck()} class="new">
+                <ion-button size="small" slot="end" shape="round" margin-end onClick={() => this.navigateNewDeck()}
+                            class="new">
                     <ion-icon name="book" slot="start"></ion-icon>
                     <ion-label>New</ion-label>
                 </ion-button>
@@ -176,7 +215,10 @@ export class AppMenuUser {
 
     private renderPresentations() {
         if (Utils.isLoggedIn(this.authUser)) {
-            return this.renderDecks();
+            return [
+                this.renderDecksFilter(),
+                this.renderDecks()
+            ];
         } else {
             return <ion-item button onClick={() => this.signIn()}>
                 <ion-icon name="log-in" slot="start"></ion-icon>
@@ -196,10 +238,16 @@ export class AppMenuUser {
         }
     }
 
+    private renderDecksFilter() {
+        return <ion-searchbar debounce={500} animated placeholder="Filter your presentations"
+                              onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
+                              ion-no-padding ion-margin-top ion-margin-bottom></ion-searchbar>;
+    }
+
     private renderDecks() {
-        if (this.decks && this.decks.length > 0) {
+        if (this.filteredDecks && this.filteredDecks.length > 0) {
             return (
-                this.decks.map((deck: Deck) => {
+                this.filteredDecks.map((deck: Deck) => {
                     const url: string = `/editor/${deck.id}`;
 
                     return <ion-item href={url} routerDirection="root">
@@ -208,10 +256,10 @@ export class AppMenuUser {
                     </ion-item>
                 })
             );
-        } else if (this.decks && this.decks.length === 0) {
+        } else if (this.filteredDecks && this.filteredDecks.length === 0) {
             return (
                 <ion-item>
-                    <ion-label>No presentations yet 😔</ion-label>
+                    <ion-label>No presentations 😔</ion-label>
                 </ion-item>
             )
         } else {
