@@ -1,5 +1,14 @@
-import {SlideTemplate} from './slide-template';
-import {SlideAttributes} from './slide-attributes';
+export enum SlideTemplate {
+    TITLE = 'title',
+    CONTENT = 'content',
+    SPLIT = 'split',
+    GIF = 'gif'
+}
+
+export interface SlideAttributes {
+    style?: string;
+    src?: string;
+}
 
 export interface Slide {
     id?: string;

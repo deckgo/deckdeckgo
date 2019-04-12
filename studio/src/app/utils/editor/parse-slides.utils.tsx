@@ -1,5 +1,4 @@
-import {Slide} from '../../models/slide';
-import {SlideTemplate} from '../../models/slide-template';
+import {Slide, SlideTemplate} from '../../models/slide';
 
 export class ParseSlidesUtils {
 

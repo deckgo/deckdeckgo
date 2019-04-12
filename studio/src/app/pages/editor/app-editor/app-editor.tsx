@@ -3,11 +3,11 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {filter, take} from 'rxjs/operators';
 
-import {SlideTemplate} from '../../../models/slide-template';
+
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
 import {AuthUser} from '../../../models/auth-user';
-import {Slide} from '../../../models/slide';
+import {Slide, SlideTemplate} from '../../../models/slide';
 
 import {DeckEventsHandler} from '../../../handlers/editor/deck-events/deck-events.handler';
 

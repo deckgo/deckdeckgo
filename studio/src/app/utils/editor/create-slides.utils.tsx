@@ -1,4 +1,4 @@
-import {SlideTemplate} from '../../models/slide-template';
+import {SlideTemplate} from '../../models/slide';
 
 export enum SlotType {
     DIV = 'div',

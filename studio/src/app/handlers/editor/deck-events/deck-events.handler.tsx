@@ -1,9 +1,7 @@
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
-import {SlideTemplate} from '../../../models/slide-template';
-import {Slide} from '../../../models/slide';
-import {SlideAttributes} from '../../../models/slide-attributes';
+import {Slide, SlideAttributes, SlideTemplate} from '../../../models/slide';
 import {User} from '../../../models/user';
 import {Deck} from '../../../models/deck';
 

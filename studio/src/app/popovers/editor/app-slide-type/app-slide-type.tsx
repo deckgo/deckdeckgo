@@ -1,6 +1,6 @@
 import {Component, Element} from '@stencil/core';
 
-import {SlideTemplate} from '../../../models/slide-template';
+import {SlideTemplate} from '../../../models/slide';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
