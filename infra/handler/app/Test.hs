@@ -34,7 +34,7 @@ main = do
   let someFirebaseId = FirebaseId "the-uid" -- from ./token
   let someUserId = UserId someFirebaseId
 
-  let someDeck = Deck { deckSlides = [] , deckDeckname = Deckname "foo", deckOwnerId = someUserId }
+  let someDeck = Deck { deckSlides = [] , deckDeckname = Deckname "foo", deckOwnerId = someUserId, deckAttributes = HMS.empty }
 
   deckId <- runClientM (decksPost' b someDeck) clientEnv >>= \case
     Left err -> error $ "Expected new deck, got error: " <> show err
@@ -46,7 +46,7 @@ main = do
     Left err -> error $ "Expected new slide, got error: " <> show err
     Right (Item slideId _) -> pure slideId
 
-  let newDeck = Deck { deckSlides = [ slideId ], deckDeckname = Deckname "bar", deckOwnerId = someUserId }
+  let newDeck = Deck { deckSlides = [ slideId ], deckDeckname = Deckname "bar", deckOwnerId = someUserId, deckAttributes = HMS.singleton "foo" "bar" }
 
   runClientM (decksPut' b deckId newDeck) clientEnv >>= \case
     Left err -> error $ "Expected updated deck, got error: " <> show err

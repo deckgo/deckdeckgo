@@ -16,12 +16,14 @@
 
 module DeckGo.Handler where
 
+-- TODO: created_at, updated_at
+-- TODO: improve swagger description
+-- TODO: feed API
+
 -- TODO: double check what is returned on 200 from DynamoDB
 -- TODO: check permissions
--- TODO: created_at, updated_at
 -- TODO: TTL on anonymous users
 -- TODO: enforce uniqueness on deck_name (per user)
--- TODO: improve swagger description
 
 import Control.Lens hiding ((.=))
 import Control.Monad
@@ -174,6 +176,7 @@ data Deck = Deck
   { deckSlides :: [SlideId]
   , deckDeckname :: Deckname
   , deckOwnerId :: UserId
+  , deckAttributes :: HMS.HashMap T.Text T.Text
   } deriving (Show, Eq)
 
 instance FromJSONObject Deck where
@@ -182,12 +185,14 @@ instance FromJSONObject Deck where
       <$> obj .: "slides"
       <*> obj .: "name"
       <*> obj .: "owner_id"
+      <*> obj .: "attributes"
 
 instance ToJSONObject Deck where
   toJSONObject deck = HMS.fromList
     [ "slides" .= deckSlides deck
     , "name" .= deckDeckname deck
     , "owner_id" .= deckOwnerId deck
+    , "attributes" .= deckAttributes deck
     ]
 
 instance Aeson.FromJSON Deck where
@@ -472,7 +477,7 @@ decksPut :: Aws.Env -> Firebase.UserId -> DeckId -> Deck -> Servant.Handler (Ite
 decksPut env _ deckId deck = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Decks" &
-        DynamoDB.uiUpdateExpression .~ Just "SET DeckSlides = :s, DeckName = :n, DeckOwnerId = :o" &
+        DynamoDB.uiUpdateExpression .~ Just "SET DeckSlides = :s, DeckName = :n, DeckOwnerId = :o, DeckAttributes = :a" &
         DynamoDB.uiExpressionAttributeValues .~ deckToItem' deck &
         DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
         DynamoDB.uiKey .~ HMS.singleton "DeckId"
@@ -654,17 +659,19 @@ userDecksFromAttributeValue attr =
 -- DECKS
 
 deckToItem :: DeckId -> Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
-deckToItem deckId Deck{deckSlides, deckDeckname, deckOwnerId} =
+deckToItem deckId Deck{deckSlides, deckDeckname, deckOwnerId, deckAttributes} =
     HMS.singleton "DeckId" (deckIdToAttributeValue deckId) <>
     HMS.singleton "DeckSlides" (deckSlidesToAttributeValue deckSlides) <>
     HMS.singleton "DeckName" (deckNameToAttributeValue deckDeckname) <>
-    HMS.singleton "DeckOwnerId" (deckOwnerIdToAttributeValue deckOwnerId)
+    HMS.singleton "DeckOwnerId" (deckOwnerIdToAttributeValue deckOwnerId) <>
+    HMS.singleton "DeckAttributes" (deckAttributesToAttributeValue deckAttributes)
 
 deckToItem' :: Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
-deckToItem' Deck{deckSlides, deckDeckname, deckOwnerId} =
+deckToItem' Deck{deckSlides, deckDeckname, deckOwnerId, deckAttributes} =
     HMS.singleton ":s" (deckSlidesToAttributeValue deckSlides) <>
     HMS.singleton ":n" (deckNameToAttributeValue deckDeckname) <>
-    HMS.singleton ":o" (deckOwnerIdToAttributeValue deckOwnerId)
+    HMS.singleton ":o" (deckOwnerIdToAttributeValue deckOwnerId) <>
+    HMS.singleton ":a" (deckAttributesToAttributeValue deckAttributes)
 
 itemToDeck :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (Item DeckId Deck)
 itemToDeck item = do
@@ -672,6 +679,7 @@ itemToDeck item = do
     deckSlides <- HMS.lookup "DeckSlides" item >>= deckSlidesFromAttributeValue
     deckDeckname <- HMS.lookup "DeckName" item >>= deckNameFromAttributeValue
     deckOwnerId <- HMS.lookup "DeckOwnerId" item >>= deckOwnerIdFromAttributeValue
+    deckAttributes <- HMS.lookup "DeckAttributes" item >>= deckAttributesFromAttributeValue
     pure $ Item deckId Deck{..}
 
 -- DECK ATTRIBUTES
@@ -705,6 +713,23 @@ deckOwnerIdToAttributeValue (UserId (FirebaseId deckOwnerId)) =
 
 deckOwnerIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe UserId
 deckOwnerIdFromAttributeValue attr = (UserId . FirebaseId) <$> attr ^. DynamoDB.avS
+
+deckAttributesToAttributeValue :: HMS.HashMap T.Text T.Text -> DynamoDB.AttributeValue
+deckAttributesToAttributeValue attributes =
+    DynamoDB.attributeValue & DynamoDB.avM .~
+      HMS.map attributeValueToAttributeValue attributes
+  where
+    attributeValueToAttributeValue :: T.Text -> DynamoDB.AttributeValue
+    attributeValueToAttributeValue attrValue =
+      DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 attrValue)
+
+deckAttributesFromAttributeValue :: DynamoDB.AttributeValue -> Maybe (HMS.HashMap T.Text T.Text)
+deckAttributesFromAttributeValue attr =
+    traverse attributeValueFromAttributeValue (attr ^. DynamoDB.avM)
+  where
+    attributeValueFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
+    attributeValueFromAttributeValue attrValue =
+      T.decodeUtf8 <$> attrValue ^. DynamoDB.avB
 
 -- SLIDES
 
