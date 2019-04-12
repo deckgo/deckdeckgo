@@ -13,14 +13,15 @@ dependencies:
     - filepath
     - firebase-login
     - http-client
+    - http-types
     - lens
     - mtl
     - random
     - servant
-    - swagger2
     - servant-server
     - servant-swagger
     - servant-swagger-ui
+    - swagger2
     - text
     - unliftio
     - unordered-containers
