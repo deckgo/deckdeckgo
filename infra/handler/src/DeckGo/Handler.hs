@@ -185,7 +185,7 @@ instance FromJSONObject Deck where
       <$> obj .: "slides"
       <*> obj .: "name"
       <*> obj .: "owner_id"
-      <*> obj .: "attributes"
+      <*> obj .:? "attributes" .!= HMS.empty
 
 instance ToJSONObject Deck where
   toJSONObject deck = HMS.fromList
@@ -215,11 +215,16 @@ instance ToParamSchema DeckId where
 -- SLIDES
 
 type SlidesAPI =
-    Get '[JSON] [Item SlideId Slide] :<|>
-    Capture "slide_id" SlideId :> Get '[JSON] (Item SlideId Slide) :<|>
-    ReqBody '[JSON] Slide :> Post '[JSON] (Item SlideId Slide) :<|>
-    Capture "slide_id" SlideId :> ReqBody '[JSON] Slide :> Put '[JSON] (Item SlideId Slide) :<|>
-    Capture "slide_id" SlideId :> Delete '[JSON] ()
+    Protected :> Get '[JSON] [Item SlideId Slide] :<|>
+    Protected :>
+      Capture "slide_id" SlideId :> Get '[JSON] (Item SlideId Slide) :<|>
+    Protected :>
+      ReqBody '[JSON] Slide :> Post '[JSON] (Item SlideId Slide) :<|>
+    Protected :>
+      Capture "slide_id" SlideId :>
+      ReqBody '[JSON] Slide :>
+      Put '[JSON] (Item SlideId Slide) :<|>
+    Protected :> Capture "slide_id" SlideId :> Delete '[JSON] ()
 
 instance ToSchema (Item SlideId Slide) where
   declareNamedSchema _ = pure $ NamedSchema (Just "SlideWithId") mempty
@@ -253,7 +258,7 @@ data Slide = Slide
 instance FromJSONObject Slide where
   parseJSONObject = \obj ->
     Slide <$>
-      obj .: "content" <*>
+      obj .:? "content" .!= "" <*>
       obj .: "template" <*>
       obj .:? "attributes" .!= HMS.empty
 
@@ -506,8 +511,8 @@ decksDelete env _ deckId = do
 
 -- SLIDES
 
-slidesGet :: Aws.Env -> Servant.Handler [Item SlideId Slide]
-slidesGet env = do
+slidesGet :: Aws.Env -> Firebase.UserId -> Servant.Handler [Item SlideId Slide]
+slidesGet env _ = do
     res <- runAWS env $ Aws.send $ DynamoDB.scan "Slides"
     case res of
       Right scanResponse ->
@@ -521,8 +526,8 @@ slidesGet env = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-slidesGetSlideId :: Aws.Env -> SlideId -> Servant.Handler (Item SlideId Slide)
-slidesGetSlideId env slideId = do
+slidesGetSlideId :: Aws.Env -> Firebase.UserId -> SlideId -> Servant.Handler (Item SlideId Slide)
+slidesGetSlideId env _ slideId = do
     res <- runAWS env $ Aws.send $ DynamoDB.getItem "Slides" &
         DynamoDB.giKey .~ HMS.singleton "SlideId" (slideIdToAttributeValue slideId)
     case res of
@@ -547,8 +552,8 @@ slidesGetSlideId env slideId = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-slidesPost :: Aws.Env -> Slide -> Servant.Handler (Item SlideId Slide)
-slidesPost env slide = do
+slidesPost :: Aws.Env -> Firebase.UserId -> Slide -> Servant.Handler (Item SlideId Slide)
+slidesPost env _ slide = do
     slideId <- liftIO $ SlideId <$> newId
 
     res <- runAWS env $
@@ -563,8 +568,8 @@ slidesPost env slide = do
 
     pure $ Item slideId slide
 
-slidesPut :: Aws.Env -> SlideId -> Slide -> Servant.Handler (Item SlideId Slide)
-slidesPut env slideId slide = do
+slidesPut :: Aws.Env -> Firebase.UserId -> SlideId -> Slide -> Servant.Handler (Item SlideId Slide)
+slidesPut env _ slideId slide = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Slides" &
         DynamoDB.uiUpdateExpression .~ Just
@@ -582,8 +587,8 @@ slidesPut env slideId slide = do
 
     pure $ Item slideId slide
 
-slidesDelete :: Aws.Env -> SlideId -> Servant.Handler ()
-slidesDelete env slideId = do
+slidesDelete :: Aws.Env -> Firebase.UserId -> SlideId -> Servant.Handler ()
+slidesDelete env _ slideId = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Slides" &
         DynamoDB.diKey .~  HMS.singleton "SlideId"

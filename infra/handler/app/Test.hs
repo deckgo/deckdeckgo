@@ -42,7 +42,7 @@ main = do
 
   let someSlide = Slide "foo" "bar" HMS.empty
 
-  slideId <- runClientM (slidesPost' someSlide) clientEnv >>= \case
+  slideId <- runClientM (slidesPost' b someSlide) clientEnv >>= \case
     Left err -> error $ "Expected new slide, got error: " <> show err
     Right (Item slideId _) -> pure slideId
 
@@ -62,32 +62,32 @@ main = do
     Right deck ->
       if deck == (Item deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
 
-  runClientM slidesGet' clientEnv >>= \case
+  runClientM (slidesGet' b) clientEnv >>= \case
     Left err -> error $ "Expected slides, got error: " <> show err
     Right slides ->
       if slides == [Item slideId someSlide] then pure () else (error $ "Expected slides, got: " <> show slides)
 
   let updatedSlide = Slide "foo" "quux" HMS.empty
 
-  runClientM (slidesPut' slideId updatedSlide) clientEnv >>= \case
+  runClientM (slidesPut' b slideId updatedSlide) clientEnv >>= \case
     Left err -> error $ "Expected new slide, got error: " <> show err
     Right {} -> pure ()
 
-  runClientM slidesGet' clientEnv >>= \case
+  runClientM (slidesGet' b) clientEnv >>= \case
     Left err -> error $ "Expected updated slides, got error: " <> show err
     Right slides ->
       if slides == [Item slideId updatedSlide] then pure () else (error $ "Expected updated slides, got: " <> show slides)
 
-  runClientM (slidesGetSlideId' slideId) clientEnv >>= \case
+  runClientM (slidesGetSlideId' b slideId) clientEnv >>= \case
     Left err -> error $ "Expected updated slide, got error: " <> show err
     Right slide ->
       if slide == (Item slideId updatedSlide) then pure () else (error $ "Expected updated slide, got: " <> show slide)
 
-  runClientM (slidesDelete' slideId) clientEnv >>= \case
+  runClientM (slidesDelete' b slideId) clientEnv >>= \case
     Left err -> error $ "Expected slide delete, got error: " <> show err
     Right {} -> pure ()
 
-  runClientM slidesGet' clientEnv >>= \case
+  runClientM (slidesGet' b) clientEnv >>= \case
     Left err -> error $ "Expected no slides, got error: " <> show err
     Right slides ->
       if slides == [] then pure () else (error $ "Expected no slides, got: " <> show slides)
@@ -135,11 +135,11 @@ decksPost' :: T.Text -> Deck -> ClientM (Item DeckId Deck)
 decksPut' :: T.Text -> DeckId -> Deck -> ClientM (Item DeckId Deck)
 decksDelete' :: T.Text -> DeckId -> ClientM ()
 
-slidesGet' :: ClientM [Item SlideId Slide]
-slidesGetSlideId' :: SlideId -> ClientM (Item SlideId Slide)
-slidesPost' :: Slide -> ClientM (Item SlideId Slide)
-slidesPut' :: SlideId -> Slide -> ClientM (Item SlideId Slide)
-slidesDelete' :: SlideId -> ClientM ()
+slidesGet' :: T.Text -> ClientM [Item SlideId Slide]
+slidesGetSlideId' :: T.Text -> SlideId -> ClientM (Item SlideId Slide)
+slidesPost' :: T.Text -> Slide -> ClientM (Item SlideId Slide)
+slidesPut' :: T.Text -> SlideId -> Slide -> ClientM (Item SlideId Slide)
+slidesDelete' :: T.Text -> SlideId -> ClientM ()
 ((
   usersGet' :<|>
   _usersGetUserId' :<|>
