@@ -76,7 +76,7 @@ export class AppMenuUser {
 
     componentDidLoad() {
         this.deckSubscription = this.deckEditorService.watch().subscribe(async (deck: Deck) => {
-            await this.updateDeckName(deck);
+            await this.updateDeckList(deck);
         });
     }
 
@@ -110,7 +110,7 @@ export class AppMenuUser {
         });
     }
 
-    private updateDeckName(deck: Deck): Promise<void> {
+    private updateDeckList(deck: Deck): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!deck || !deck.id || !deck.name) {
                 resolve();
@@ -127,12 +127,11 @@ export class AppMenuUser {
             });
 
             if (index < 0) {
-                resolve();
-                return;
+                this.decks = [...this.decks, deck];
+            } else {
+                this.decks[index].name = deck.name;
+                this.decks = [...this.decks];
             }
-
-            this.decks[index].name = deck.name;
-            this.decks = [...this.decks];
 
             resolve();
         });
