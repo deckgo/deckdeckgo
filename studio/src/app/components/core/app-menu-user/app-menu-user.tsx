@@ -197,7 +197,7 @@ export class AppMenuUser {
                 this.decks.map((deck: Deck) => {
                     const url: string = `/editor/${deck.id}`;
 
-                    return <ion-item href={url} routerDirection="forward">
+                    return <ion-item href={url} routerDirection="root">
                         <ion-icon name="book" slot="start"></ion-icon>
                         <ion-label>{deck.name}</ion-label>
                     </ion-item>
