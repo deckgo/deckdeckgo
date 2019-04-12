@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -77,6 +77,7 @@ export namespace Components {
   }
   interface AppEditorToolbarAttributes extends StencilHTMLAttributes {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }

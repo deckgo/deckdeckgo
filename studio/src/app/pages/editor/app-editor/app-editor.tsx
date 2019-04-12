@@ -8,6 +8,9 @@ import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
 import {AuthUser} from '../../../models/auth-user';
 import {Slide, SlideTemplate} from '../../../models/slide';
+import {Deck} from '../../../models/deck';
+
+import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/deck-events/deck-events.handler';
 
@@ -17,6 +20,7 @@ import {NavDirection, NavService} from '../../../services/nav/nav.service';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 import {DeckAction} from '../../../popovers/editor/app-deck-actions/deck-action';
+import {DeckEditorService} from '../../../services/deck/deck-editor.service';
 
 interface FirstSlideContent {
     title: string;
@@ -51,10 +55,14 @@ export class AppEditor {
     private guestService: GuestService;
     private navService: NavService;
 
+    private deckEditorService: DeckEditorService;
+    private deckStyle: any;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.guestService = GuestService.getInstance();
         this.navService = NavService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentWillLoad() {
@@ -153,7 +161,23 @@ export class AppEditor {
                 this.slides = [...slides];
             }
 
+            await this.initDeckStyle();
+
             resolve();
+        });
+    }
+
+    private initDeckStyle(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                if (deck && deck.attributes && deck.attributes.style) {
+                    this.deckStyle = await ParseStyleUtils.convertStyle(deck.attributes.style);
+                } else {
+                    this.deckStyle = undefined;
+                }
+
+                resolve();
+            });
         });
     }
 
@@ -562,7 +586,7 @@ export class AppEditor {
             <app-navigation publish={true}></app-navigation>,
             <ion-content padding>
                 <main class={this.displaying ? 'idle' : undefined}>
-                    <deckgo-deck embedded={true}
+                    <deckgo-deck embedded={true} style={this.deckStyle}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}
