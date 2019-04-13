@@ -1,8 +1,20 @@
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
+import {filter, take} from 'rxjs/operators';
+
+import {Deck} from '../../../models/deck';
+
+import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+
 export class RemoteEventsHandler {
 
     private el: HTMLElement;
+
+    private deckEditorService: DeckEditorService;
+
+    constructor() {
+        this.deckEditorService = DeckEditorService.getInstance();
+    }
 
     init(el: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
@@ -195,12 +207,11 @@ export class RemoteEventsHandler {
 
             deckgoRemoteElement.slides = slides.detail;
 
-            if (!deckgoRemoteElement.room) {
-                // TODO: set ROOM name
-                deckgoRemoteElement.room = 'DeckDeckGo Studio';
-            }
-
             deckgoRemoteElement.server = EnvironmentConfigService.getInstance().get('signalingServerUrl');
+
+            this.deckEditorService.watch().pipe(filter((deck: Deck) => deck && (deck.name && deck.name !== undefined && deck.name !== '')), take(1)).subscribe(async (deck: Deck) => {
+                deckgoRemoteElement.room = deck.name;
+            });
 
             resolve();
         });
