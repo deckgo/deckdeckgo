@@ -4,6 +4,8 @@ import {filter, take} from 'rxjs/operators';
 
 import {Deck} from '../../../models/deck';
 
+import {Utils} from '../../../utils/core/utils';
+
 import {DeckEditorService} from '../../../services/deck/deck-editor.service';
 
 export class RemoteEventsHandler {
@@ -20,7 +22,7 @@ export class RemoteEventsHandler {
         return new Promise<void>(async (resolve) => {
             this.el = el;
 
-            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+            const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');
 
             if (!deckgoRemoteElement || !window) {
                 resolve();
@@ -31,13 +33,11 @@ export class RemoteEventsHandler {
                 await this.remoteEvent($event)
             });
 
-            window.addEventListener('resize', async () => {
+            window.addEventListener('resize', Utils.debounce(async () => {
                 await this.initRemoteSize();
-            });
+            }, 300));
             
             await this.initDeckRemote();
-            
-            await this.initRemoteSize();
             
             await this.initDeckMove();
             
@@ -46,7 +46,7 @@ export class RemoteEventsHandler {
     }
 
     destroy() {
-        const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+        const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');
 
         if (deckgoRemoteElement) {
             deckgoRemoteElement.removeEventListener('event', async ($event) => {
@@ -60,7 +60,7 @@ export class RemoteEventsHandler {
             });
         }
 
-        const deck = this.el.querySelector('deckgo-deck');
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (deck) {
             deck.removeEventListener('slidesDidLoad', async (slides) => {
@@ -130,20 +130,15 @@ export class RemoteEventsHandler {
         return new Promise(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
-            if (!deckgoRemoteElement) {
-                resolve();
-                return;
-            }
-
-            deckgoRemoteElement.width = window.innerWidth;
-            deckgoRemoteElement.height = window.innerHeight;
-
-            const deck = this.el.querySelector('deckgo-deck');
+            const deck = this.el.querySelector('deckgo-deck > *:first-child');
 
             if (!deckgoRemoteElement || !deck) {
                 resolve();
                 return;
             }
+
+            deckgoRemoteElement.width = deck.clientWidth;
+            deckgoRemoteElement.height = deck.clientHeight;
 
             deckgoRemoteElement.length = deck.childElementCount;
 
@@ -181,7 +176,7 @@ export class RemoteEventsHandler {
 
     private initDeckRemote() {
         return new Promise(async (resolve) => {
-            const deck = this.el.querySelector('deckgo-deck');
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
             if (!deck) {
                 resolve();
@@ -189,6 +184,8 @@ export class RemoteEventsHandler {
             }
 
             deck.addEventListener('slidesDidLoad', async (slides) => {
+                await this.initRemoteSize();
+
                 await this.initRemoteRoomServer(slides)
             });
 
@@ -219,7 +216,7 @@ export class RemoteEventsHandler {
     
     private initDeckMove() {
         return new Promise(async (resolve) => {
-            const deck = this.el.querySelector('deckgo-deck');
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
             if (!deck) {
                 resolve();
