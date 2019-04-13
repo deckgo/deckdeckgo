@@ -5,6 +5,8 @@ import {debounceTime} from 'rxjs/operators';
 
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
+import {Resources} from '../../../../utils/core/resources';
+
 @Component({
     tag: 'app-feed-card',
     styleUrl: 'app-feed-card.scss',
@@ -110,9 +112,27 @@ export class AppFeedCard {
             return;
         }
 
-        const title: string = ($event as InputUIEvent).target.textContent;
+        let title: string = ($event as InputUIEvent).target.textContent;
         if (title && title !== undefined && title !== '') {
+
+            if (title.length >= Resources.Constants.DECK.TITLE_MAX_LENGTH) {
+                title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
+            }
+
             this.captionSubject.next(title);
+        }
+    }
+
+    private onCaptionKeydown($event: KeyboardEvent) {
+        if ($event && $event.target &&
+            ($event.target as HTMLElement).textContent &&
+            ($event.target as HTMLElement).textContent.length > Resources.Constants.DECK.TITLE_MAX_LENGTH &&
+            $event.key !== 'Delete' &&
+            $event.key !== 'Backspace' &&
+            $event.key !== 'ArrowLeft' &&
+            $event.key !== 'ArrowRight' &&
+            !($event.key === 'a' && ($event.metaKey || $event.ctrlKey))) {
+            $event.preventDefault();
         }
     }
 
@@ -127,7 +147,9 @@ export class AppFeedCard {
             {this.renderMiniature()}
 
             <ion-card-header>
-                <ion-card-title class="ion-text-uppercase" contentEditable={this.editable} onInput={(e: UIEvent) => this.onCaptionInput(e)}>{this.caption}</ion-card-title>
+                <ion-card-title class="ion-text-uppercase" contentEditable={this.editable}
+                                onInput={(e: UIEvent) => this.onCaptionInput(e)}
+                                onKeyDown={(e: KeyboardEvent) => this.onCaptionKeydown(e)}>{this.caption}</ion-card-title>
 
                 <ion-card-subtitle class="ion-text-lowercase">
                     {this.renderTags()}

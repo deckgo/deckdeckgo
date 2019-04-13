@@ -6,6 +6,7 @@ import {User} from '../../../models/user';
 import {Deck, DeckAttributes} from '../../../models/deck';
 
 import {Utils} from '../../../utils/core/utils';
+import {Resources} from '../../../utils/core/resources';
 
 import {SlideService} from '../../../services/slide/slide.service';
 import {DeckService} from '../../../services/deck/deck.service';
@@ -287,6 +288,10 @@ export class DeckEventsHandler {
                     }
 
                     // TODO: Add a check, we should not update the title from the slide in case it would have been set in the publication
+
+                    if (title.length >= Resources.Constants.DECK.TITLE_MAX_LENGTH) {
+                        title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
+                    }
 
                     currentDeck.name = title;
 
