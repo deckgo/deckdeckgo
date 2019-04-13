@@ -97,7 +97,7 @@ export class AppNavigationActions {
 
     private renderPresentationButton() {
         if (this.presentation) {
-            return <ion-button class="presentation ion-padding-end" shape="round" href="/editor" routerDirection="forward">
+            return <ion-button class="presentation ion-padding-end" shape="round" href="/editor" routerDirection="root">
                 <ion-label class="ion-text-uppercase">Write a presentation</ion-label>
             </ion-button>;
         } else {

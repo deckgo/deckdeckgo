@@ -146,13 +146,6 @@ export class AppMenuUser {
         });
     }
 
-    private navigateNewDeck() {
-        this.navService.navigate({
-            url: '/editor',
-            direction: NavDirection.ROOT
-        })
-    }
-
     private async filterDecksOnChange(e: CustomEvent) {
         if (e && e.detail) {
             await this.filterDecks(e.detail.value);
@@ -213,7 +206,7 @@ export class AppMenuUser {
 
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
-                <ion-button size="small" slot="end" shape="round" onClick={() => this.navigateNewDeck()} class="new ion-margin-end">
+                <ion-button size="small" slot="end" shape="round" href="/editor" routerDirection="root" class="new ion-margin-end">
                     <ion-icon name="book" slot="start"></ion-icon>
                     <ion-label>New</ion-label>
                 </ion-button>
