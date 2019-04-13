@@ -1,4 +1,7 @@
-import {Component, Prop, State, Watch} from '@stencil/core';
+import {Component, Event, EventEmitter, Prop, State, Watch} from '@stencil/core';
+
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
@@ -39,8 +42,23 @@ export class AppFeedCard {
     @State()
     private formattedPublication: string;
 
+    @Event() private editCaption: EventEmitter<string>;
+
+    private captionSubscription: Subscription;
+    private captionSubject: Subject<string> = new Subject<string>();
+
     async componentWillLoad() {
         await this.formatPublication();
+
+        this.captionSubscription = this.captionSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
+            this.editCaption.emit(title);
+        });
+    }
+
+    componentDidUnload() {
+        if (this.captionSubscription) {
+            this.captionSubscription.unsubscribe();
+        }
     }
 
     @Watch('publication')
@@ -52,7 +70,6 @@ export class AppFeedCard {
             resolve();
         });
     }
-
 
     private handleTagInput($event: UIEvent) {
         const tag: string = ($event.target as InputTargetEvent).value;
@@ -88,6 +105,17 @@ export class AppFeedCard {
         });
     }
 
+    private onCaptionInput($event: UIEvent) {
+        if (!this.editable) {
+            return;
+        }
+
+        const title: string = ($event as InputUIEvent).target.textContent;
+        if (title && title !== undefined && title !== '') {
+            this.captionSubject.next(title);
+        }
+    }
+
     render() {
         return <ion-card class={this.editable ? "ion-no-margin" : undefined}>
             {this.renderCardContent()}
@@ -99,7 +127,7 @@ export class AppFeedCard {
             {this.renderMiniature()}
 
             <ion-card-header>
-                <ion-card-title class="ion-text-uppercase" contentEditable={this.editable}>{this.caption}</ion-card-title>
+                <ion-card-title class="ion-text-uppercase" contentEditable={this.editable} onInput={(e: UIEvent) => this.onCaptionInput(e)}>{this.caption}</ion-card-title>
 
                 <ion-card-subtitle class="ion-text-lowercase">
                     {this.renderTags()}

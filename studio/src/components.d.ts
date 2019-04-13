@@ -8,9 +8,9 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -107,6 +107,7 @@ export namespace Components {
     'description'?: string;
     'editable'?: boolean;
     'miniature'?: boolean;
+    'onEditCaption'?: (event: CustomEvent<string>) => void;
     'publication'?: Date;
   }
 
@@ -119,14 +120,8 @@ export namespace Components {
   interface AppGif {}
   interface AppGifAttributes extends StencilHTMLAttributes {}
 
-  interface AppPublish {
-    'caption': string;
-    'description': string;
-  }
-  interface AppPublishAttributes extends StencilHTMLAttributes {
-    'caption'?: string;
-    'description'?: string;
-  }
+  interface AppPublish {}
+  interface AppPublishAttributes extends StencilHTMLAttributes {}
 
   interface AppSlideNavigate {
     'slides': string[];

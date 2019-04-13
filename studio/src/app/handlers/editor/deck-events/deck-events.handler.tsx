@@ -286,6 +286,8 @@ export class DeckEventsHandler {
                         return;
                     }
 
+                    // TODO: Add a check, we should not update the title from the slide in case it would have been set in the publication
+
                     currentDeck.name = title;
 
                     const updatedDeck: Deck = await this.deckService.put(currentDeck);
