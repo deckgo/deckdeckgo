@@ -11,6 +11,7 @@ import '@ionic/core';
 import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
+import 'deckdeckgo-remote';
 import {
   EventEmitter,
 } from '@stencil/core';
