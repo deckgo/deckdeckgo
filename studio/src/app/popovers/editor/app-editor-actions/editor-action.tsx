@@ -1,4 +1,4 @@
-export enum DeckAction {
+export enum EditorAction {
     FULLSCREEN,
     JUMP_TO
 }

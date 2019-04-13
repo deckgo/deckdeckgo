@@ -174,11 +174,11 @@ export namespace Components {
   interface AppUserMenu {}
   interface AppUserMenuAttributes extends StencilHTMLAttributes {}
 
-  interface AppDeckActions {}
-  interface AppDeckActionsAttributes extends StencilHTMLAttributes {}
-
   interface AppDeckOrSlide {}
   interface AppDeckOrSlideAttributes extends StencilHTMLAttributes {}
+
+  interface AppEditorActions {}
+  interface AppEditorActionsAttributes extends StencilHTMLAttributes {}
 
   interface AppSlideType {}
   interface AppSlideTypeAttributes extends StencilHTMLAttributes {}
@@ -221,8 +221,8 @@ declare global {
     'AppSignin': Components.AppSignin;
     'AppEditor': Components.AppEditor;
     'AppUserMenu': Components.AppUserMenu;
-    'AppDeckActions': Components.AppDeckActions;
     'AppDeckOrSlide': Components.AppDeckOrSlide;
+    'AppEditorActions': Components.AppEditorActions;
     'AppSlideType': Components.AppSlideType;
     'AppSlotType': Components.AppSlotType;
   }
@@ -256,8 +256,8 @@ declare global {
     'app-signin': Components.AppSigninAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-user-menu': Components.AppUserMenuAttributes;
-    'app-deck-actions': Components.AppDeckActionsAttributes;
     'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
+    'app-editor-actions': Components.AppEditorActionsAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
     'app-slot-type': Components.AppSlotTypeAttributes;
   }
@@ -431,16 +431,16 @@ declare global {
     new (): HTMLAppUserMenuElement;
   };
 
-  interface HTMLAppDeckActionsElement extends Components.AppDeckActions, HTMLStencilElement {}
-  var HTMLAppDeckActionsElement: {
-    prototype: HTMLAppDeckActionsElement;
-    new (): HTMLAppDeckActionsElement;
-  };
-
   interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
   var HTMLAppDeckOrSlideElement: {
     prototype: HTMLAppDeckOrSlideElement;
     new (): HTMLAppDeckOrSlideElement;
+  };
+
+  interface HTMLAppEditorActionsElement extends Components.AppEditorActions, HTMLStencilElement {}
+  var HTMLAppEditorActionsElement: {
+    prototype: HTMLAppEditorActionsElement;
+    new (): HTMLAppEditorActionsElement;
   };
 
   interface HTMLAppSlideTypeElement extends Components.AppSlideType, HTMLStencilElement {}
@@ -484,8 +484,8 @@ declare global {
     'app-signin': HTMLAppSigninElement
     'app-editor': HTMLAppEditorElement
     'app-user-menu': HTMLAppUserMenuElement
-    'app-deck-actions': HTMLAppDeckActionsElement
     'app-deck-or-slide': HTMLAppDeckOrSlideElement
+    'app-editor-actions': HTMLAppEditorActionsElement
     'app-slide-type': HTMLAppSlideTypeElement
     'app-slot-type': HTMLAppSlotTypeElement
   }
@@ -519,8 +519,8 @@ declare global {
     'app-signin': HTMLAppSigninElement;
     'app-editor': HTMLAppEditorElement;
     'app-user-menu': HTMLAppUserMenuElement;
-    'app-deck-actions': HTMLAppDeckActionsElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
+    'app-editor-actions': HTMLAppEditorActionsElement;
     'app-slide-type': HTMLAppSlideTypeElement;
     'app-slot-type': HTMLAppSlotTypeElement;
   }

@@ -18,7 +18,7 @@ import {AuthService} from '../../../services/auth/auth.service';
 import {GuestService} from '../../../services/guest/guest.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
 import {DeckEditorService} from '../../../services/deck/deck-editor.service';
-import {DeckAction} from '../../../popovers/editor/app-deck-actions/deck-action';
+import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 
 @Component({
     tag: 'app-editor',
@@ -532,16 +532,16 @@ export class AppEditor {
         }
 
         const popover: HTMLIonPopoverElement = await this.popoverController.create({
-            component: 'app-deck-actions',
+            component: 'app-editor-actions',
             event: $event,
             mode: 'ios'
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data) {
-                if (detail.data.action === DeckAction.FULLSCREEN) {
+                if (detail.data.action === EditorAction.FULLSCREEN) {
                     await this.toggleFullScreen();
-                } else if (detail.data.action === DeckAction.JUMP_TO) {
+                } else if (detail.data.action === EditorAction.JUMP_TO) {
                     await this.openSlideNavigate();
                 }
             }
