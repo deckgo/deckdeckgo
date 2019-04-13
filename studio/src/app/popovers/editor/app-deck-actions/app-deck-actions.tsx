@@ -17,10 +17,11 @@ export class AppDeckActions {
     }
 
     render() {
+        // TODO: Share when published
+
         return <div padding>
             <a onClick={() => this.closePopover(DeckAction.JUMP_TO)}><p>Jump to slide</p></a>
             <a onClick={() => this.closePopover(DeckAction.FULLSCREEN)}><p>Fullscreen</p></a>
-            <a onClick={() => this.closePopover(DeckAction.SETTINGS)}><p>Settings</p></a>
         </div>
     }
 }

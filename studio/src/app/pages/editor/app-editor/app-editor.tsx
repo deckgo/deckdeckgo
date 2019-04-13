@@ -3,24 +3,22 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {filter, take} from 'rxjs/operators';
 
-
-import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
-
 import {AuthUser} from '../../../models/auth-user';
 import {Slide, SlideTemplate} from '../../../models/slide';
 import {Deck} from '../../../models/deck';
 
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/deck-events/deck-events.handler';
 
+import {EditorHelper} from '../../../helpers/editor/editor.helper';
+
 import {AuthService} from '../../../services/auth/auth.service';
 import {GuestService} from '../../../services/guest/guest.service';
 import {NavDirection, NavService} from '../../../services/nav/nav.service';
-
-import {EditorHelper} from '../../../helpers/editor/editor.helper';
-import {DeckAction} from '../../../popovers/editor/app-deck-actions/deck-action';
 import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {DeckAction} from '../../../popovers/editor/app-deck-actions/deck-action';
 
 @Component({
     tag: 'app-editor',
@@ -545,25 +543,11 @@ export class AppEditor {
                     await this.toggleFullScreen();
                 } else if (detail.data.action === DeckAction.JUMP_TO) {
                     await this.openSlideNavigate();
-                } else if (detail.data.action === DeckAction.SETTINGS) {
-                    await this.openDeckSettings();
                 }
             }
         });
 
         await popover.present();
-    }
-
-    async openDeckSettings() {
-        const modal: HTMLIonModalElement = await this.modalController.create({
-            component: 'app-deck-settings'
-        });
-
-        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-            // Nothing special
-        });
-
-        await modal.present();
     }
 
     render() {
@@ -603,11 +587,6 @@ export class AppEditor {
                         <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices">
                             <ion-icon name="expand"></ion-icon>
                             <ion-label>Fullscreen</ion-label>
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={() => this.openDeckSettings()} color="primary" class="wider-devices">
-                            <ion-icon name="settings"></ion-icon>
-                            <ion-label>Settings</ion-label>
                         </ion-tab-button>
 
                         <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices">
