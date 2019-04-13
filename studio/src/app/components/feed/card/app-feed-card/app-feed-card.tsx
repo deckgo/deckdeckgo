@@ -147,7 +147,7 @@ export class AppFeedCard {
             {this.renderMiniature()}
 
             <ion-card-header>
-                <ion-card-title class="ion-text-uppercase" contentEditable={this.editable}
+                <ion-card-title contentEditable={this.editable}
                                 onInput={(e: UIEvent) => this.onCaptionInput(e)}
                                 onKeyDown={(e: KeyboardEvent) => this.onCaptionKeydown(e)}>{this.caption}</ion-card-title>
 
