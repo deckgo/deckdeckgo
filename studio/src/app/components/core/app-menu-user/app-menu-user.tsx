@@ -1,4 +1,4 @@
-import {Component, State} from '@stencil/core';
+import {Component, Element, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
@@ -21,6 +21,8 @@ import {DeckEditorService} from '../../../services/deck/deck-editor.service';
     shadow: false
 })
 export class AppMenuUser {
+
+    @Element() el: HTMLElement;
 
     private authService: AuthService;
     private authSubscription: Subscription;
@@ -81,6 +83,9 @@ export class AppMenuUser {
     componentDidLoad() {
         this.deckSubscription = this.deckEditorService.watch().subscribe(async (deck: Deck) => {
             await this.updateDeckList(deck);
+
+            const filter: string = await this.getCurrentFilter();
+            await this.filterDecks(filter);
         });
     }
 
@@ -159,14 +164,14 @@ export class AppMenuUser {
     private filterDecks(value: string): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!value || value === undefined || value === '') {
-                this.filteredDecks = [...this.decks];
+                this.filteredDecks = this.decks ? [...this.decks] : null;
 
                 resolve();
                 return;
             }
 
             if (!this.decks || this.decks.length <= 0) {
-                this.filteredDecks = [...this.decks];
+                this.filteredDecks = this.decks ? [...this.decks] : null;
 
                 resolve();
                 return;
@@ -182,14 +187,33 @@ export class AppMenuUser {
         });
     }
 
+    private getCurrentFilter(): Promise<string> {
+        return new Promise<string>(async (resolve) => {
+            const searchBar: HTMLIonSearchbarElement = this.el.querySelector('ion-searchbar');
+
+            if (!searchBar) {
+                resolve(null);
+                return;
+            }
+
+            const input: HTMLInputElement = await searchBar.getInputElement();
+
+            if (!input) {
+                resolve(null);
+                return;
+            }
+
+            resolve(input.value);
+        });
+    }
+
     render() {
         return <ion-list>
             {this.renderUser()}
 
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
-                <ion-button size="small" slot="end" shape="round" margin-end onClick={() => this.navigateNewDeck()}
-                            class="new">
+                <ion-button size="small" slot="end" shape="round" onClick={() => this.navigateNewDeck()} class="new ion-margin-end">
                     <ion-icon name="book" slot="start"></ion-icon>
                     <ion-label>New</ion-label>
                 </ion-button>
@@ -241,7 +265,7 @@ export class AppMenuUser {
     private renderDecksFilter() {
         return <ion-searchbar debounce={500} animated placeholder="Filter your presentations"
                               onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
-                              ion-no-padding ion-margin-top ion-margin-bottom></ion-searchbar>;
+                              class="ion-no-padding ion-margin-top ion-margin-bottom"></ion-searchbar>;
     }
 
     private renderDecks() {

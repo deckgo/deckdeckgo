@@ -79,7 +79,7 @@ export class AppNavigationActions {
         if (Utils.isLoggedIn(this.authUser) || !this.signIn) {
             return undefined;
         } else if (this.presentation || this.publish) {
-            return <a padding-start padding-end class="signin" onClick={() => this.navigateSignIn()}>
+            return <a class="signin ion-padding-start ion-padding-end" onClick={() => this.navigateSignIn()}>
                 <ion-label>Sign in</ion-label>
             </a>;
         }
@@ -87,7 +87,7 @@ export class AppNavigationActions {
 
     private renderLoggedIn() {
         if (Utils.isLoggedIn(this.authUser)) {
-            return <a padding-end onClick={(e: UIEvent) => this.openMenu(e)}>
+            return <a class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)}>
                 <app-avatar src={this.authUser.photo_url}></app-avatar>
             </a>;
         } else {
@@ -97,7 +97,7 @@ export class AppNavigationActions {
 
     private renderPresentationButton() {
         if (this.presentation) {
-            return <ion-button class="presentation" shape="round" href="/editor" routerDirection="forward" padding-end>
+            return <ion-button class="presentation ion-padding-end" shape="round" href="/editor" routerDirection="forward">
                 <ion-label class="ion-text-uppercase">Write a presentation</ion-label>
             </ion-button>;
         } else {
@@ -107,7 +107,7 @@ export class AppNavigationActions {
 
     private renderPublishButton() {
         if (this.publish) {
-            return <ion-button class="publish" shape="round" onClick={() => this.actionPublish.emit()} padding-end>
+            return <ion-button class="publish ion-padding-end" shape="round" onClick={() => this.actionPublish.emit()}>
                 <ion-label class="ion-text-uppercase">Ready to publish?</ion-label>
             </ion-button>;
         } else {

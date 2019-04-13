@@ -6,6 +6,7 @@ import {User} from '../../../models/user';
 import {Deck, DeckAttributes} from '../../../models/deck';
 
 import {Utils} from '../../../utils/core/utils';
+import {Resources} from '../../../utils/core/resources';
 
 import {SlideService} from '../../../services/slide/slide.service';
 import {DeckService} from '../../../services/deck/deck.service';
@@ -24,13 +25,15 @@ export class DeckEventsHandler {
     private errorService: ErrorService;
     private deckBusyService: DeckBusyService;
 
-    private userSubscription: Subscription;
     private userService: UserService;
 
     private updateSlideSubscription: Subscription;
     private updateSlideSubject: Subject<HTMLElement> = new Subject();
 
     private deckEditorService: DeckEditorService;
+
+    private updateDeckTitleSubscription: Subscription;
+    private updateDeckTitleSubject: Subject<string> = new Subject();
 
     constructor() {
         this.slideService = SlideService.getInstance();
@@ -56,6 +59,10 @@ export class DeckEventsHandler {
         this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
             await this.updateSlide(element);
         });
+
+        this.updateDeckTitleSubscription = this.updateDeckTitleSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
+            await this.updateDeckTitle(title);
+        });
     }
 
     destroy() {
@@ -69,8 +76,8 @@ export class DeckEventsHandler {
             this.updateSlideSubscription.unsubscribe();
         }
 
-        if (this.userSubscription) {
-            this.userSubscription.unsubscribe();
+        if (this.updateDeckTitleSubscription) {
+            this.updateDeckTitleSubscription.unsubscribe();
         }
 
         this.deckEditorService.next(null);
@@ -87,7 +94,7 @@ export class DeckEventsHandler {
             return;
         }
 
-        await this.updateDeck($event.detail);
+        await this.updateDeckAttributes($event.detail);
     };
 
     private onSlideChange = async ($event: CustomEvent) => {
@@ -103,13 +110,20 @@ export class DeckEventsHandler {
             return;
         }
 
-        const parent: HTMLElement = ($event.target as HTMLElement).parentElement;
+        const element: HTMLElement = $event.target as HTMLElement;
+
+        const parent: HTMLElement = element.parentElement;
 
         if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
             return;
         }
 
         this.updateSlideSubject.next(parent);
+
+        // The first content editable element on the first slide is the title of the presentation
+        if (parent && !parent.previousElementSibling && !element.previousElementSibling) {
+            this.updateDeckTitleSubject.next(element.textContent);
+        }
     };
 
     private onSlideDelete = async ($event: CustomEvent) => {
@@ -218,7 +232,7 @@ export class DeckEventsHandler {
         });
     }
 
-    private updateDeck(deck: HTMLElement): Promise<void> {
+    private updateDeckAttributes(deck: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
                 if (!deck) {
@@ -238,7 +252,48 @@ export class DeckEventsHandler {
 
                     if (attributes && Object.keys(attributes).length > 0) {
                         currentDeck.attributes = attributes;
+                    } else {
+                        currentDeck.attributes = null;
                     }
+
+                    const updatedDeck: Deck = await this.deckService.put(currentDeck);
+                    this.deckEditorService.next(updatedDeck);
+
+                    this.deckBusyService.busy(false);
+
+                    resolve();
+                });
+            } catch (err) {
+                this.errorService.error(err);
+                this.deckBusyService.busy(false);
+                resolve();
+            }
+        });
+    }
+
+    private updateDeckTitle(title: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            try {
+                if (!title || title === undefined || title === '') {
+                    resolve();
+                    return;
+                }
+
+                this.deckBusyService.busy(true);
+
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: Deck) => {
+                    if (!currentDeck) {
+                        resolve();
+                        return;
+                    }
+
+                    // TODO: Add a check, we should not update the title from the slide in case it would have been set in the publication
+
+                    if (title.length >= Resources.Constants.DECK.TITLE_MAX_LENGTH) {
+                        title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
+                    }
+
+                    currentDeck.name = title;
 
                     const updatedDeck: Deck = await this.deckService.put(currentDeck);
                     this.deckEditorService.next(updatedDeck);
