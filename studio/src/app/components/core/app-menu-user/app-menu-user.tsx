@@ -213,8 +213,7 @@ export class AppMenuUser {
 
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
-                <ion-button size="small" slot="end" shape="round" margin-end onClick={() => this.navigateNewDeck()}
-                            class="new">
+                <ion-button size="small" slot="end" shape="round" onClick={() => this.navigateNewDeck()} class="new ion-margin-end">
                     <ion-icon name="book" slot="start"></ion-icon>
                     <ion-label>New</ion-label>
                 </ion-button>
@@ -266,7 +265,7 @@ export class AppMenuUser {
     private renderDecksFilter() {
         return <ion-searchbar debounce={500} animated placeholder="Filter your presentations"
                               onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
-                              ion-no-padding ion-margin-top ion-margin-bottom></ion-searchbar>;
+                              class="ion-no-padding ion-margin-top ion-margin-bottom"></ion-searchbar>;
     }
 
     private renderDecks() {

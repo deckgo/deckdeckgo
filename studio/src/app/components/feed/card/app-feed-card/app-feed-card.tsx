@@ -157,7 +157,7 @@ export class AppFeedCard {
                 </ion-card-subtitle>
             </ion-card-header>
 
-            <p padding-start padding-end class="content" contentEditable={this.editable}>{this.description}</p>
+            <p class="content ion-padding-start ion-padding-end" contentEditable={this.editable}>{this.description}</p>
 
             <p class="author" padding>
                 <ion-label>{this.author} | {this.formattedPublication}</ion-label>
