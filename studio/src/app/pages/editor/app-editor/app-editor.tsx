@@ -304,6 +304,24 @@ export class AppEditor {
         });
     }
 
+    private getFirstSlideContent(): Promise<string> {
+        return new Promise<string>(async (resolve) => {
+            let content: string = '';
+
+            const slide: HTMLElement = this.el.querySelector('deckgo-deck > *:first-child');
+
+            if (slide && slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
+                const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
+
+                if (contentElement) {
+                    content = contentElement.textContent;
+                }
+            }
+
+            resolve(content);
+        });
+    }
+
     @Listen('actionOpenSlideAdd')
     async onActionOpenSlideAdd($event: CustomEvent) {
         if (!$event || !$event.detail) {
@@ -371,8 +389,13 @@ export class AppEditor {
             return;
         }
 
+        const content: string = await this.getFirstSlideContent();
+
         const modal: HTMLIonModalElement = await this.modalController.create({
-            component: 'app-publish'
+            component: 'app-publish',
+            componentProps: {
+                description: content
+            }
         });
 
         modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {

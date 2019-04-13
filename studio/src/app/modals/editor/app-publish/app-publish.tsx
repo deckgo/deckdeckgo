@@ -1,4 +1,4 @@
-import {Component, Element, Listen, State} from '@stencil/core';
+import {Component, Element, Listen, Prop, State} from '@stencil/core';
 
 import {take} from 'rxjs/operators';
 
@@ -22,11 +22,11 @@ export class AppPublish {
 
     private authService: AuthService;
 
-    @State()
-    private caption: string;
+    @Prop()
+    description: string;
 
     @State()
-    private description: string;
+    private caption: string;
 
     @State()
     private author: string;
