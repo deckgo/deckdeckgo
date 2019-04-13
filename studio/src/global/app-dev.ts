@@ -2,6 +2,7 @@ import '@ionic/core';
 
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
+import 'deckdeckgo-remote';
 
 import {setupConfig} from '../app/services/environment/environment-config';
 
@@ -19,5 +20,6 @@ setupConfig({
     tenor: {
         url: 'https://api.tenor.com/v1/',
         key: '<@TENOR_KEY@>'
-    }
+    },
+    signalingServerUrl: '<@SIGNALING_SERVER_URL@>'
 });

@@ -600,7 +600,8 @@ export class AppEditor {
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
-            <deckgo-inline-editor></deckgo-inline-editor>
+            <deckgo-inline-editor></deckgo-inline-editor>,
+            <deckgo-remote></deckgo-remote>
         ];
     }
 }
