@@ -11,6 +11,7 @@ import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/deck-events/deck-events.handler';
+import {RemoteEventsHandler} from '../../../handlers/editor/remote-events/remote-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
@@ -43,6 +44,7 @@ export class AppEditor {
     private displaying: boolean = false;
 
     private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
+    private removeEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
 
     private authService: AuthService;
     private guestService: GuestService;
@@ -59,7 +61,7 @@ export class AppEditor {
     }
 
     async componentWillLoad() {
-        this.deckEventsHandler.init(this.el);
+        await this.deckEventsHandler.init(this.el);
 
         // If no user create an anonymous one
         this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
@@ -85,10 +87,13 @@ export class AppEditor {
         await this.initSlideSize();
 
         await this.updateInlineEditorListener();
+
+        await this.removeEventsHandler.init(this.el);
     }
 
     componentDidUnload() {
         this.deckEventsHandler.destroy();
+        this.removeEventsHandler.destroy();
     }
 
     private initSlideSize(): Promise<void> {

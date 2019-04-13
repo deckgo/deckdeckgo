@@ -1,10 +1,10 @@
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
-export class RemoteHelper {
+export class RemoteEventsHandler {
 
     private el: HTMLElement;
 
-    initRemote(el: HTMLElement): Promise<void> {
+    init(el: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             this.el = el;
 
@@ -197,7 +197,7 @@ export class RemoteHelper {
 
             if (!deckgoRemoteElement.room) {
                 // TODO: set ROOM name
-                // deckgoRemoteElement.room = process.env.ROOM_NAME ? process.env.ROOM_NAME : 'DeckDeckGo';
+                deckgoRemoteElement.room = 'DeckDeckGo Studio';
             }
 
             deckgoRemoteElement.server = EnvironmentConfigService.getInstance().get('signalingServerUrl');

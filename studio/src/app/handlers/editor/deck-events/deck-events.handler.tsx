@@ -47,21 +47,25 @@ export class DeckEventsHandler {
         this.deckEditorService = DeckEditorService.getInstance();
     }
 
-    init(el: HTMLElement) {
-        this.el = el;
+    init(el: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            this.el = el;
 
-        this.el.addEventListener('input', this.onSlideInputChange, false);
-        this.el.addEventListener('deckDidChange', this.onDeckChange, false);
-        this.el.addEventListener('slideDidChange', this.onSlideChange, false);
-        this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
-        this.el.addEventListener('slideDelete', this.onSlideDelete, false);
+            this.el.addEventListener('input', this.onSlideInputChange, false);
+            this.el.addEventListener('deckDidChange', this.onDeckChange, false);
+            this.el.addEventListener('slideDidChange', this.onSlideChange, false);
+            this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
+            this.el.addEventListener('slideDelete', this.onSlideDelete, false);
 
-        this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
-            await this.updateSlide(element);
-        });
+            this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
+                await this.updateSlide(element);
+            });
 
-        this.updateDeckTitleSubscription = this.updateDeckTitleSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
-            await this.updateDeckTitle(title);
+            this.updateDeckTitleSubscription = this.updateDeckTitleSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
+                await this.updateDeckTitle(title);
+            });
+
+            resolve();
         });
     }
 
