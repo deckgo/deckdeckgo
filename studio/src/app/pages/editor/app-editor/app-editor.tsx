@@ -579,6 +579,7 @@ export class AppEditor {
                         {this.slides}
                     </deckgo-deck>
                     <app-editor-toolbar></app-editor-toolbar>
+                    <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
             </ion-content>,
             <ion-footer class={this.displaying ? 'idle' : undefined}>
@@ -620,8 +621,7 @@ export class AppEditor {
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
-            <deckgo-inline-editor></deckgo-inline-editor>,
-            <deckgo-remote autoConnect={false}></deckgo-remote>
+            <deckgo-inline-editor></deckgo-inline-editor>
         ];
     }
 }

@@ -156,15 +156,22 @@ export class RemoteEventsHandler {
         return new Promise(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
-            const deck = this.el.querySelector('deckgo-deck > *:first-child');
+            const deck = this.el.querySelector('deckgo-deck');
 
             if (!deckgoRemoteElement || !deck) {
                 resolve();
                 return;
             }
 
-            deckgoRemoteElement.width = deck.clientWidth;
-            deckgoRemoteElement.height = deck.clientHeight;
+            const firstSlide = deck.firstElementChild;
+
+            if (!firstSlide) {
+                resolve();
+                return;
+            }
+
+            deckgoRemoteElement.width = firstSlide.clientWidth;
+            deckgoRemoteElement.height = firstSlide.clientHeight;
 
             deckgoRemoteElement.length = deck.childElementCount;
 
