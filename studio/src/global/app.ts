@@ -4,7 +4,7 @@ import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
 import 'deckdeckgo-remote';
 
-import {setupConfig} from '../app/services/environment/environment-config';
+import {setupConfig} from '../app/services/core/environment/environment-config';
 
 setupConfig({
     appUrl: 'http://deckdeckgo-studio-beta.firebaseapp.com',

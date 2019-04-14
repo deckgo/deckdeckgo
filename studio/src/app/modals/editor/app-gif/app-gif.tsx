@@ -2,7 +2,7 @@ import {Component, Element, Listen, State} from '@stencil/core';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
-import {GifService} from '../../../services/gif/gif.service';
+import {GifService} from '../../../services/api/gif/gif.service';
 
 @Component({
     tag: 'app-gif',

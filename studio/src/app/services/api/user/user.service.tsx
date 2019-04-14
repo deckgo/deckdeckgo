@@ -2,12 +2,12 @@ import {Observable, ReplaySubject} from 'rxjs';
 
 import {get, del, set} from 'idb-keyval';
 
-import {AuthUser} from '../../models/auth-user';
-import {User} from '../../models/user';
+import {AuthUser} from '../../../models/auth-user';
+import {User} from '../../../models/user';
 
-import {EnvironmentConfigService} from '../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {ErrorService} from '../error/error.service';
+import {ErrorService} from '../../core/error/error.service';
 
 export class UserService {
 

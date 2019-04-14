@@ -2,9 +2,9 @@ import {Component, Element, Prop} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {ErrorService} from './services/error/error.service';
-import {AuthService} from './services/auth/auth.service';
-import {NavDirection, NavParams, NavService} from './services/nav/nav.service';
+import {ErrorService} from './services/core/error/error.service';
+import {AuthService} from './services/api/auth/auth.service';
+import {NavDirection, NavParams, NavService} from './services/core/nav/nav.service';
 
 @Component({
     tag: 'app-root',

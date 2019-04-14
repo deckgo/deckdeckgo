@@ -1,8 +1,8 @@
 import {take} from 'rxjs/operators';
 
-import {AuthUser} from '../../models/auth-user';
+import {AuthUser} from '../../../models/auth-user';
 
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../../api/auth/auth.service';
 
 export class GuestService {
 

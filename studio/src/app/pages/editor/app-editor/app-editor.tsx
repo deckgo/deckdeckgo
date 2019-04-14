@@ -15,10 +15,10 @@ import {RemoteEventsHandler} from '../../../handlers/editor/remote-events/remote
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {GuestService} from '../../../services/guest/guest.service';
-import {NavDirection, NavService} from '../../../services/nav/nav.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {AuthService} from '../../../services/api/auth/auth.service';
+import {GuestService} from '../../../services/editor/guest/guest.service';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 
 @Component({

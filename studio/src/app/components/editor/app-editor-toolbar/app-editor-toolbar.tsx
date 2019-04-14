@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
 import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {Utils} from '../../../utils/core/utils';
 
-import {DeckBusyService} from '../../../services/deck/deck-busy.service';
+import {DeckBusyService} from '../../../services/api/deck/deck-busy.service';
 
 @Component({
     tag: 'app-editor-toolbar',

@@ -7,10 +7,10 @@ import {AuthUser} from '../../../models/auth-user';
 
 import {Deck} from '../../../models/deck';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
-import {DeckService} from '../../../services/deck/deck.service';
-import {ErrorService} from '../../../services/error/error.service';
+import {AuthService} from '../../../services/api/auth/auth.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+import {DeckService} from '../../../services/api/deck/deck.service';
+import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
     tag: 'app-publish',

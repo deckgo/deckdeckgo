@@ -8,12 +8,12 @@ import {Deck, DeckAttributes} from '../../../models/deck';
 import {Utils} from '../../../utils/core/utils';
 import {Resources} from '../../../utils/core/resources';
 
-import {SlideService} from '../../../services/slide/slide.service';
-import {DeckService} from '../../../services/deck/deck.service';
-import {ErrorService} from '../../../services/error/error.service';
-import {DeckBusyService} from '../../../services/deck/deck-busy.service';
-import {UserService} from '../../../services/user/user.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {SlideService} from '../../../services/api/slide/slide.service';
+import {DeckService} from '../../../services/api/deck/deck.service';
+import {ErrorService} from '../../../services/core/error/error.service';
+import {DeckBusyService} from '../../../services/api/deck/deck-busy.service';
+import {UserService} from '../../../services/api/user/user.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 
 export class DeckEventsHandler {
 

@@ -1,6 +1,6 @@
 import {BehaviorSubject, Observable} from 'rxjs';
 
-import {Deck} from '../../models/deck';
+import {Deck} from '../../../models/deck';
 
 export class DeckEditorService {
 

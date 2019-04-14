@@ -1,4 +1,4 @@
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 
 import {filter, take} from 'rxjs/operators';
 
@@ -6,7 +6,7 @@ import {Deck} from '../../../models/deck';
 
 import {Utils} from '../../../utils/core/utils';
 
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 
 export class RemoteEventsHandler {
 
