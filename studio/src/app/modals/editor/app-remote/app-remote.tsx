@@ -59,16 +59,30 @@ export class AppRemote {
             </ion-header>,
             <ion-content class="ion-padding">
 
-                <p class="ion-padding-start ion-padding-end">Control your presentations using the DeckDeckGo's <a href="https://deckdeckgo.app" target="_blank">remote control <ion-icon name="open"></ion-icon></a></p>
-
                 <ion-list>
                     <ion-item>
-                        <ion-label>Remote control {this.remoteEnabled ? 'enabled' : 'disabled'}</ion-label>
+                        {this.renderLabel()}
                         <ion-toggle slot="end" checked={this.remoteEnabled} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
                     </ion-item>
                 </ion-list>
+
+                <p class="ion-padding-start ion-padding-end">Don't have the remote control app on your phone yet? Scan the following QR Code or get the Progressive Web Apps at <a href="https://deckdeckgo.app" target="_blank">https://deckdeckgo.app <ion-icon name="open"></ion-icon></a></p>
+
+                <div class="qrcode-container">
+                    <deckgo-qrcode content="https://deckdeckgo.app">
+                        <ion-icon slot="logo" src="/assets/img/deckdeckgo-logo.svg"></ion-icon>
+                    </deckgo-qrcode>
+                </div>
             </ion-content>
         ];
+    }
+
+    private renderLabel() {
+        if (this.remoteEnabled) {
+            return <ion-label class="ion-text-wrap">Toggle if you wish to disable the remote control</ion-label>
+        } else {
+            return <ion-label class="ion-text-wrap">Toggle to <strong>enable</strong> the remote control</ion-label>
+        }
     }
 
 }

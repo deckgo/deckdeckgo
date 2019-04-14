@@ -3,6 +3,7 @@ import '@ionic/core';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
 import 'deckdeckgo-remote';
+import 'deckdeckgo-qrcode';
 
 import {setupConfig} from '../app/services/core/environment/environment-config';
 
