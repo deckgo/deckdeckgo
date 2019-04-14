@@ -11,13 +11,14 @@ import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/deck-events/deck-events.handler';
+import {RemoteEventsHandler} from '../../../handlers/editor/remote-events/remote-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {GuestService} from '../../../services/guest/guest.service';
-import {NavDirection, NavService} from '../../../services/nav/nav.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {AuthService} from '../../../services/api/auth/auth.service';
+import {GuestService} from '../../../services/editor/guest/guest.service';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 
 @Component({
@@ -43,6 +44,7 @@ export class AppEditor {
     private displaying: boolean = false;
 
     private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
+    private removeEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
 
     private authService: AuthService;
     private guestService: GuestService;
@@ -59,7 +61,7 @@ export class AppEditor {
     }
 
     async componentWillLoad() {
-        this.deckEventsHandler.init(this.el);
+        await this.deckEventsHandler.init(this.el);
 
         // If no user create an anonymous one
         this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
@@ -85,10 +87,13 @@ export class AppEditor {
         await this.initSlideSize();
 
         await this.updateInlineEditorListener();
+
+        await this.removeEventsHandler.init(this.el);
     }
 
     componentDidUnload() {
         this.deckEventsHandler.destroy();
+        this.removeEventsHandler.destroy();
     }
 
     private initSlideSize(): Promise<void> {
@@ -261,6 +266,14 @@ export class AppEditor {
             if (detail.data >= 0) {
                 await this.slideTo(detail.data);
             }
+        });
+
+        await modal.present();
+    }
+
+    private async openRemoteControl() {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-remote'
         });
 
         await modal.present();
@@ -543,6 +556,8 @@ export class AppEditor {
                     await this.toggleFullScreen();
                 } else if (detail.data.action === EditorAction.JUMP_TO) {
                     await this.openSlideNavigate();
+                } else if (detail.data.action === EditorAction.REMOTE) {
+                    await this.openRemoteControl();
                 }
             }
         });
@@ -553,7 +568,7 @@ export class AppEditor {
     render() {
         return [
             <app-navigation publish={true}></app-navigation>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <main class={this.displaying ? 'idle' : undefined}>
                     <deckgo-deck embedded={true} style={this.deckStyle}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
@@ -564,6 +579,7 @@ export class AppEditor {
                         {this.slides}
                     </deckgo-deck>
                     <app-editor-toolbar></app-editor-toolbar>
+                    <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
             </ion-content>,
             <ion-footer class={this.displaying ? 'idle' : undefined}>
@@ -587,6 +603,11 @@ export class AppEditor {
                         <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices">
                             <ion-icon name="expand"></ion-icon>
                             <ion-label>Fullscreen</ion-label>
+                        </ion-tab-button>
+
+                        <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices">
+                            <ion-icon name="phone-portrait"></ion-icon>
+                            <ion-label>Remote</ion-label>
                         </ion-tab-button>
 
                         <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices">

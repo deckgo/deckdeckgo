@@ -8,12 +8,12 @@ import {Deck, DeckAttributes} from '../../../models/deck';
 import {Utils} from '../../../utils/core/utils';
 import {Resources} from '../../../utils/core/resources';
 
-import {SlideService} from '../../../services/slide/slide.service';
-import {DeckService} from '../../../services/deck/deck.service';
-import {ErrorService} from '../../../services/error/error.service';
-import {DeckBusyService} from '../../../services/deck/deck-busy.service';
-import {UserService} from '../../../services/user/user.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {SlideService} from '../../../services/api/slide/slide.service';
+import {DeckService} from '../../../services/api/deck/deck.service';
+import {ErrorService} from '../../../services/core/error/error.service';
+import {DeckBusyService} from '../../../services/api/deck/deck-busy.service';
+import {UserService} from '../../../services/api/user/user.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 
 export class DeckEventsHandler {
 
@@ -47,21 +47,25 @@ export class DeckEventsHandler {
         this.deckEditorService = DeckEditorService.getInstance();
     }
 
-    init(el: HTMLElement) {
-        this.el = el;
+    init(el: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            this.el = el;
 
-        this.el.addEventListener('input', this.onSlideInputChange, false);
-        this.el.addEventListener('deckDidChange', this.onDeckChange, false);
-        this.el.addEventListener('slideDidChange', this.onSlideChange, false);
-        this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
-        this.el.addEventListener('slideDelete', this.onSlideDelete, false);
+            this.el.addEventListener('input', this.onSlideInputChange, false);
+            this.el.addEventListener('deckDidChange', this.onDeckChange, false);
+            this.el.addEventListener('slideDidChange', this.onSlideChange, false);
+            this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
+            this.el.addEventListener('slideDelete', this.onSlideDelete, false);
 
-        this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
-            await this.updateSlide(element);
-        });
+            this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
+                await this.updateSlide(element);
+            });
 
-        this.updateDeckTitleSubscription = this.updateDeckTitleSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
-            await this.updateDeckTitle(title);
+            this.updateDeckTitleSubscription = this.updateDeckTitleSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
+                await this.updateDeckTitle(title);
+            });
+
+            resolve();
         });
     }
 

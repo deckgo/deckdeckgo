@@ -1,6 +1,6 @@
-import {EnvironmentConfigService} from '../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {Deck} from '../../models/deck';
+import {Deck} from '../../../models/deck';
 
 import {AuthService} from '../auth/auth.service';
 

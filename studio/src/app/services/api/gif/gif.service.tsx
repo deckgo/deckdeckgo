@@ -1,9 +1,9 @@
-import {EnvironmentConfigService} from '../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 import {get, set} from 'idb-keyval';
 
-import {ErrorService} from '../error/error.service';
-import {EnvironmentTenorConfig} from '../environment/environment-config';
+import {ErrorService} from '../../core/error/error.service';
+import {EnvironmentTenorConfig} from '../../core/environment/environment-config';
 
 export class GifService {
 

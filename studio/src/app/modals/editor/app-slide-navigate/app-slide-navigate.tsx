@@ -16,7 +16,7 @@ export class AppSlideNavigate {
     }
 
     @Listen('window:popstate')
-    async handleHardwareBackbutton(_e: PopStateEvent) {
+    async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }
 
@@ -40,7 +40,7 @@ export class AppSlideNavigate {
                     <ion-title class="ion-text-uppercase">Jump to slide</ion-title>
                 </ion-toolbar>
             </ion-header>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <ion-list>
                     {this.renderSlides()}
                 </ion-list>

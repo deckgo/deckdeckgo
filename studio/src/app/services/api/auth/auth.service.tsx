@@ -7,11 +7,11 @@ import {take} from 'rxjs/operators';
 
 import {get, set, del} from 'idb-keyval';
 
-import {EnvironmentConfigService} from '../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {AuthUser} from '../../models/auth-user';
+import {AuthUser} from '../../../models/auth-user';
 
-import {ErrorService} from '../error/error.service';
+import {ErrorService} from '../../core/error/error.service';
 import {UserService} from '../user/user.service';
 
 export class AuthService {

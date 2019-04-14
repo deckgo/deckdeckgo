@@ -2,8 +2,10 @@ import '@ionic/core';
 
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
+import 'deckdeckgo-remote';
+import 'deckdeckgo-qrcode';
 
-import {setupConfig} from '../app/services/environment/environment-config';
+import {setupConfig} from '../app/services/core/environment/environment-config';
 
 setupConfig({
     appUrl: 'http://deckdeckgo-studio-beta.firebaseapp.com',
@@ -19,5 +21,6 @@ setupConfig({
     tenor: {
         url: 'https://api.tenor.com/v1/',
         key: '<@TENOR_KEY@>'
-    }
+    },
+    signalingServerUrl: '<@SIGNALING_SERVER_URL@>'
 });

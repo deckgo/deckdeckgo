@@ -7,10 +7,10 @@ import {AuthUser} from '../../../models/auth-user';
 
 import {Deck} from '../../../models/deck';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
-import {DeckService} from '../../../services/deck/deck.service';
-import {ErrorService} from '../../../services/error/error.service';
+import {AuthService} from '../../../services/api/auth/auth.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+import {DeckService} from '../../../services/api/deck/deck.service';
+import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
     tag: 'app-publish',
@@ -126,7 +126,7 @@ export class AppPublish {
                     <ion-title class="ion-text-uppercase">Ready to publish?</ion-title>
                 </ion-toolbar>
             </ion-header>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <p>Edit the title and summary of your presentation and add or change tags (up to 5) to make your
                     presentation more inviting to readers</p>
 

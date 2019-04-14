@@ -4,8 +4,9 @@ import {OverlayEventDetail} from '@ionic/core';
 import {Subscription} from 'rxjs';
 
 import {SlotType} from '../../../utils/editor/create-slides.utils';
+import {Utils} from '../../../utils/core/utils';
 
-import {DeckBusyService} from '../../../services/deck/deck-busy.service';
+import {DeckBusyService} from '../../../services/api/deck/deck-busy.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -77,23 +78,12 @@ export class AppEditorToolbar {
 
     private initWindowResize() {
         if (window) {
-            window.addEventListener('resize', this.debounce(async () => {
+            window.addEventListener('resize', Utils.debounce(async () => {
                 if (this.selectedElement) {
                     await this.select(this.selectedElement);
                 }
             }, 100));
         }
-    }
-
-    private debounce(func: Function, timeout?: number) {
-        let timer: number;
-        return (event) => {
-            if (timer) {
-                clearTimeout(timer);
-            }
-
-            timer = setTimeout(func, timeout > 0 ? timeout : 300, event);
-        };
     }
 
     @Listen('document:mouseInactivity')

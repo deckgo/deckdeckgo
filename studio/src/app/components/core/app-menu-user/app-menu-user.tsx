@@ -9,11 +9,11 @@ import {User} from '../../../models/user';
 
 import {Utils} from '../../../utils/core/utils';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {NavDirection, NavService} from '../../../services/nav/nav.service';
-import {DeckService} from '../../../services/deck/deck.service';
-import {UserService} from '../../../services/user/user.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {AuthService} from '../../../services/api/auth/auth.service';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {DeckService} from '../../../services/api/deck/deck.service';
+import {UserService} from '../../../services/api/user/user.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 
 @Component({
     tag: 'app-menu-user',

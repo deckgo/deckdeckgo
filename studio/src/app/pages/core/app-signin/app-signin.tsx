@@ -14,12 +14,12 @@ import {Deck} from '../../../models/deck';
 
 import {Utils} from '../../../utils/core/utils';
 
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {NavDirection, NavService} from '../../../services/nav/nav.service';
-import {MergeService} from '../../../services/merge/merge.service';
-import {UserService} from '../../../services/user/user.service';
-import {AuthService} from '../../../services/auth/auth.service';
-import {DeckEditorService} from '../../../services/deck/deck-editor.service';
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {MergeService} from '../../../services/api/merge/merge.service';
+import {UserService} from '../../../services/api/user/user.service';
+import {AuthService} from '../../../services/api/auth/auth.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 
 
 interface MergeInformation {
@@ -236,7 +236,7 @@ export class AppSignIn {
     render() {
         return [
             <app-navigation></app-navigation>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <main padding>
                     {this.renderMsg()}
 

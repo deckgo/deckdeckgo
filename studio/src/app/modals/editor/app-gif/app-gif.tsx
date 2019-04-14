@@ -2,7 +2,7 @@ import {Component, Element, Listen, State} from '@stencil/core';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
-import {GifService} from '../../../services/gif/gif.service';
+import {GifService} from '../../../services/api/gif/gif.service';
 
 @Component({
     tag: 'app-gif',
@@ -197,7 +197,7 @@ export class AppGif {
                     <ion-title class="ion-text-uppercase">Pick a Gif</ion-title>
                 </ion-toolbar>
             </ion-header>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <div class="gifs-container">
                     <div class="gifs-column">
                         {this.renderCategories(this.categoriesOdd)}

@@ -1,6 +1,6 @@
-import {Slide} from '../../models/slide';
+import {Slide} from '../../../models/slide';
 
-import {EnvironmentConfigService} from '../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 import {AuthService} from '../auth/auth.service';
 
