@@ -9,7 +9,7 @@ export class AppTeam {
     render() {
         return [
             <app-navigation presentation={true}></app-navigation>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
 
                 <main padding>
                     <h1>Team</h1>

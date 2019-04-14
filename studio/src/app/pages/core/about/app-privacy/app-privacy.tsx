@@ -9,7 +9,7 @@ export class AppAbout {
     render() {
         return [
             <app-navigation presentation={true}></app-navigation>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <main padding>
                     <h1>Privacy Policy</h1>
 

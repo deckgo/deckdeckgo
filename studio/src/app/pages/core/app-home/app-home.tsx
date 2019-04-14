@@ -9,7 +9,7 @@ export class AppHome {
   render() {
     return [
       <app-navigation presentation={true}></app-navigation>,
-      <ion-content padding>
+      <ion-content class="ion-padding">
 
         <main>
           <app-feed></app-feed>

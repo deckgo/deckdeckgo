@@ -197,7 +197,7 @@ export class AppGif {
                     <ion-title class="ion-text-uppercase">Pick a Gif</ion-title>
                 </ion-toolbar>
             </ion-header>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <div class="gifs-container">
                     <div class="gifs-column">
                         {this.renderCategories(this.categoriesOdd)}

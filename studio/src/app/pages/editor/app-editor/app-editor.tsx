@@ -558,7 +558,7 @@ export class AppEditor {
     render() {
         return [
             <app-navigation publish={true}></app-navigation>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <main class={this.displaying ? 'idle' : undefined}>
                     <deckgo-deck embedded={true} style={this.deckStyle}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
