@@ -32,6 +32,8 @@ export class DeckdeckgoRemote {
 
   @Prop() slides: DeckdeckgoSlideDefinition[];
 
+  @Prop() autoConnect: boolean = true;
+
   @State() canvasWidth: number;
 
   @Event() state: EventEmitter<ConnectionState>;
@@ -106,6 +108,10 @@ export class DeckdeckgoRemote {
   @Watch('room')
   @Watch('server')
   private async initConnect() {
+    if (!this.autoConnect) {
+      return;
+    }
+
     await this.connect();
   }
 
@@ -122,6 +128,15 @@ export class DeckdeckgoRemote {
 
       await this.communicationService.disconnect();
       await this.communicationService.connect();
+
+      resolve();
+    });
+  }
+
+  @Method()
+  disconnect(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      await this.communicationService.disconnect();
 
       resolve();
     });
