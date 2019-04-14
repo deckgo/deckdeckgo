@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-remote",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "description": "Present and interact with your DeckDeckGo's PWA presentation",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
