@@ -1,5 +1,8 @@
 import {Component, Element, Listen, State} from '@stencil/core';
 
+import {take} from 'rxjs/operators';
+
+import {RemoteService} from '../../../services/editor/remote/remote.service';
 
 @Component({
     tag: 'app-remote',
@@ -11,6 +14,18 @@ export class AppRemote {
 
     @State()
     private remoteEnabled: boolean = false;
+
+    private remoteService: RemoteService;
+
+    constructor() {
+        this.remoteService = RemoteService.getInstance();
+    }
+
+    async componentWillLoad() {
+        this.remoteService.watch().pipe(take(1)).subscribe((enable: boolean) => {
+            this.remoteEnabled = enable;
+        });
+    }
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
@@ -25,8 +40,9 @@ export class AppRemote {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private toggleRemoteEnabled() {
+    private async toggleRemoteEnabled() {
         this.remoteEnabled = !this.remoteEnabled;
+        await this.remoteService.switch(this.remoteEnabled);
     }
 
     render() {
@@ -49,11 +65,6 @@ export class AppRemote {
                     <ion-item>
                         <ion-label>Remote control {this.remoteEnabled ? 'enabled' : 'disabled'}</ion-label>
                         <ion-toggle slot="end" checked={this.remoteEnabled} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
-                    </ion-item>
-
-                    <ion-item>
-                        <ion-label class={this.remoteEnabled ? '' : 'disabled'}>Can't connect?</ion-label>
-                        <ion-button size="small" color="primary" disabled={!this.remoteEnabled}>Refresh</ion-button>
                     </ion-item>
                 </ion-list>
             </ion-content>

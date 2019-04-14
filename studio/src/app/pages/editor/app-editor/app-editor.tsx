@@ -621,7 +621,7 @@ export class AppEditor {
                 </ion-toolbar>
             </ion-footer>,
             <deckgo-inline-editor></deckgo-inline-editor>,
-            <deckgo-remote></deckgo-remote>
+            <deckgo-remote autoConnect={false}></deckgo-remote>
         ];
     }
 }

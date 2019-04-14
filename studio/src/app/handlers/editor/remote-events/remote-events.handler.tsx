@@ -1,5 +1,6 @@
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 
+import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
 import {Deck} from '../../../models/deck';
@@ -7,45 +8,47 @@ import {Deck} from '../../../models/deck';
 import {Utils} from '../../../utils/core/utils';
 
 import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+import {RemoteService} from '../../../services/editor/remote/remote.service';
 
 export class RemoteEventsHandler {
 
     private el: HTMLElement;
 
     private deckEditorService: DeckEditorService;
+    private remoteService: RemoteService;
+
+    private subscription: Subscription;
 
     constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
+        this.remoteService = RemoteService.getInstance();
     }
 
     init(el: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             this.el = el;
 
-            const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');
+            await this.initRemote();
 
-            if (!deckgoRemoteElement || !window) {
-                resolve();
-                return;
-            }
-
-            deckgoRemoteElement.addEventListener('event', async ($event) => {
-                await this.remoteEvent($event)
+            this.subscription = this.remoteService.watch().subscribe(async (enable: boolean) => {
+                if (enable) {
+                    await this.connect();
+                } else {
+                    await this.disconnect();
+                }
             });
-
-            window.addEventListener('resize', Utils.debounce(async () => {
-                await this.initRemoteSize();
-            }, 300));
-            
-            await this.initDeckRemote();
-            
-            await this.initDeckMove();
             
             resolve();
         });
     }
 
-    destroy() {
+    async destroy() {
+        await this.disconnect();
+
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+
         const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');
 
         if (deckgoRemoteElement) {
@@ -87,8 +90,31 @@ export class RemoteEventsHandler {
                 await this.slideToChange(event)
             });
         }
+    }
 
+    private initRemote(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');
 
+            if (!deckgoRemoteElement || !window) {
+                resolve();
+                return;
+            }
+
+            deckgoRemoteElement.addEventListener('event', async ($event) => {
+                await this.remoteEvent($event)
+            });
+
+            window.addEventListener('resize', Utils.debounce(async () => {
+                await this.initRemoteSize();
+            }, 300));
+
+            await this.initSlidesDidLoadListener();
+
+            await this.initDeckMove();
+
+            resolve();
+        });
     }
 
     remoteEvent = async ($event) => {
@@ -174,7 +200,7 @@ export class RemoteEventsHandler {
         });
     }
 
-    private initDeckRemote() {
+    private initSlidesDidLoadListener() {
         return new Promise(async (resolve) => {
             const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
@@ -186,7 +212,9 @@ export class RemoteEventsHandler {
             deck.addEventListener('slidesDidLoad', async (slides) => {
                 await this.initRemoteSize();
 
-                await this.initRemoteRoomServer(slides)
+                await this.initRemoteRoomServer(slides);
+
+                await this.remoteService.init();
             });
 
             resolve();
@@ -205,10 +233,6 @@ export class RemoteEventsHandler {
             deckgoRemoteElement.slides = slides.detail;
 
             deckgoRemoteElement.server = EnvironmentConfigService.getInstance().get('signalingServerUrl');
-
-            this.deckEditorService.watch().pipe(filter((deck: Deck) => deck && (deck.name && deck.name !== undefined && deck.name !== '')), take(1)).subscribe(async (deck: Deck) => {
-                deckgoRemoteElement.room = deck.name;
-            });
 
             resolve();
         });
@@ -308,6 +332,49 @@ export class RemoteEventsHandler {
             const slideIndex = $event.detail;
 
             await deckgoRemoteElement.slideTo(slideIndex, 0);
+
+            resolve();
+        });
+    }
+
+    private connect(): Promise<void> {
+        return new Promise(async (resolve) => {
+            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+
+            if (!deckgoRemoteElement) {
+                resolve();
+                return;
+            }
+
+            this.deckEditorService.watch().pipe(filter((deck: Deck) => deck && (deck.name && deck.name !== undefined && deck.name !== '')), take(1)).subscribe(async (deck: Deck) => {
+                deckgoRemoteElement.room = deck.name;
+
+                await deckgoRemoteElement.connect();
+
+                const deckElement = this.el.querySelector('deckgo-deck');
+
+                if (!deckElement) {
+                    resolve();
+                    return;
+                }
+
+                await deckElement.slideTo(0, 300, false);
+
+                resolve();
+            });
+        });
+    }
+
+    private disconnect(): Promise<void> {
+        return new Promise(async (resolve) => {
+            const deckgoRemoteElement: any = this.el.querySelector('deckgo-remote');
+
+            if (!deckgoRemoteElement) {
+                resolve();
+                return;
+            }
+
+            await deckgoRemoteElement.disconnect();
 
             resolve();
         });
