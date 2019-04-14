@@ -1,4 +1,5 @@
 export enum EditorAction {
     FULLSCREEN,
-    JUMP_TO
+    JUMP_TO,
+    REMOTE
 }

@@ -1,4 +1,11 @@
 app-user-menu {
+
+  ion-list.list-ios {
+    margin-bottom: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
   ion-item {
     --border-color: transparent;
 

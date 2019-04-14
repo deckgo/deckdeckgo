@@ -271,6 +271,14 @@ export class AppEditor {
         await modal.present();
     }
 
+    private async openRemoteControl() {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-remote'
+        });
+
+        await modal.present();
+    }
+
     private getSlidesTitle(): Promise<string[]> {
         return new Promise<string[]>((resolve) => {
             const results: string[] = [];
@@ -548,6 +556,8 @@ export class AppEditor {
                     await this.toggleFullScreen();
                 } else if (detail.data.action === EditorAction.JUMP_TO) {
                     await this.openSlideNavigate();
+                } else if (detail.data.action === EditorAction.REMOTE) {
+                    await this.openRemoteControl();
                 }
             }
         });
@@ -592,6 +602,11 @@ export class AppEditor {
                         <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices">
                             <ion-icon name="expand"></ion-icon>
                             <ion-label>Fullscreen</ion-label>
+                        </ion-tab-button>
+
+                        <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices">
+                            <ion-icon name="phone-portrait"></ion-icon>
+                            <ion-label>Remote</ion-label>
                         </ion-tab-button>
 
                         <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices">

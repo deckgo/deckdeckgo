@@ -1,0 +1,13 @@
+app-remote {
+  ion-list {
+    ion-item {
+      --border-color: transparent;
+
+      ion-label[class*="sc-ion-label"] {
+        &.disabled {
+          opacity: 0.2;
+        }
+      }
+    }
+  }
+}

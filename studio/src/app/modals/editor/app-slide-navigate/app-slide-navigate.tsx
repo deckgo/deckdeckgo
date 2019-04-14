@@ -16,7 +16,7 @@ export class AppSlideNavigate {
     }
 
     @Listen('window:popstate')
-    async handleHardwareBackbutton(_e: PopStateEvent) {
+    async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }
 
