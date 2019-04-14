@@ -583,7 +583,7 @@ export class AppEditorToolbar {
             mode: 'ios'
         });
 
-        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+        popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail.data) {
                 this.applyToAllDeck = detail.data.deck;
                 await myFunction();
