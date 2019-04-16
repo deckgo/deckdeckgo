@@ -12,6 +12,34 @@ app-editor {
     margin: auto;
 
     overflow: hidden;
+
+    [slot]:not([contentEditable]) {
+      position: relative;
+
+      background: var(--ion-color-light);
+      border-color: var(--ion-color-light);
+
+      color: transparent;
+
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+
+      pointer-events: none;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--ion-color-light), lighten(#f4f5f8, 7%), var(--ion-color-light));
+        animation: progress 2s ease-in-out infinite;
+      }
+    }
   }
 
   ion-footer {
@@ -66,5 +94,14 @@ app-editor {
         }
       }
     }
+  }
+}
+
+@keyframes progress {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(100%, 0, 0);
   }
 }

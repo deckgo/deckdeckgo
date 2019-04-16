@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {DeckBusyService} from '../../../services/api/deck/deck-busy.service';
+import {BusyService} from '../../../services/editor/busy/busy.service';
 
 @Component({
     tag: 'app-add-slide-action',
@@ -14,13 +14,13 @@ export class AppAddSlideAction {
     @Event() private actionOpenSlideAdd: EventEmitter<UIEvent>;
 
     private subscription: Subscription;
-    private deckBusyService: DeckBusyService;
+    private busyService: BusyService;
 
     @State()
     private deckBusy: boolean = false;
 
     constructor() {
-        this.deckBusyService = DeckBusyService.getInstance();
+        this.busyService = BusyService.getInstance();
     }
 
     private openSlideAdd($event: UIEvent) {
@@ -28,7 +28,7 @@ export class AppAddSlideAction {
     }
 
     async componentWillLoad() {
-        this.subscription = this.deckBusyService.watch().subscribe((busy: boolean) => {
+        this.subscription = this.busyService.watchDeckBusy().subscribe((busy: boolean) => {
             this.deckBusy = busy;
         });
     }

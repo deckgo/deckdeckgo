@@ -7,7 +7,7 @@ import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {SlideService} from '../../services/api/slide/slide.service';
 import {DeckService} from '../../services/api/deck/deck.service';
 import {ErrorService} from '../../services/core/error/error.service';
-import {DeckBusyService} from '../../services/api/deck/deck-busy.service';
+import {BusyService} from '../../services/editor/busy/busy.service';
 import {DeckEditorService} from '../../services/api/deck/deck-editor.service';
 
 export class EditorHelper {
@@ -16,7 +16,7 @@ export class EditorHelper {
     private deckService: DeckService;
 
     private errorService: ErrorService;
-    private deckBusyService: DeckBusyService;
+    private busyService: BusyService;
 
     private deckEditorService: DeckEditorService;
 
@@ -25,7 +25,7 @@ export class EditorHelper {
         this.deckService = DeckService.getInstance();
 
         this.errorService = ErrorService.getInstance();
-        this.deckBusyService = DeckBusyService.getInstance();
+        this.busyService = BusyService.getInstance();
 
         this.deckEditorService = DeckEditorService.getInstance();
     }
@@ -38,7 +38,7 @@ export class EditorHelper {
                 return;
             }
 
-            this.deckBusyService.busy(true);
+            this.busyService.deckBusy(true);
 
             try {
                 const deck: Deck = await this.deckService.get(deckId);
@@ -71,12 +71,12 @@ export class EditorHelper {
                     return;
                 }
 
-                this.deckBusyService.busy(false);
+                this.busyService.deckBusy(false);
 
                 resolve(slides);
             } catch (err) {
                 this.errorService.error(err);
-                this.deckBusyService.busy(false);
+                this.busyService.deckBusy(false);
                 resolve(null);
             }
         });

@@ -1,6 +1,7 @@
 import {Component, Element, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
+import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
 import {AuthUser} from '../../../models/auth-user';
@@ -20,6 +21,7 @@ import {GuestService} from '../../../services/editor/guest/guest.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
+import {BusyService} from '../../../services/editor/busy/busy.service';
 
 @Component({
     tag: 'app-editor',
@@ -53,11 +55,15 @@ export class AppEditor {
     private deckEditorService: DeckEditorService;
     private deckStyle: any;
 
+    private busySubscription: Subscription;
+    private busyService: BusyService;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.guestService = GuestService.getInstance();
         this.navService = NavService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
+        this.busyService = BusyService.getInstance();
     }
 
     async componentWillLoad() {
@@ -81,6 +87,10 @@ export class AppEditor {
                 await this.fetchSlides();
             }
         });
+
+        this.busySubscription = this.busyService.watchSlideBusy().subscribe(async (slide: HTMLElement) => {
+            await this.contentEditable(slide);
+        });
     }
 
     async componentDidLoad() {
@@ -91,9 +101,13 @@ export class AppEditor {
         await this.removeEventsHandler.init(this.el);
     }
 
-    componentDidUnload() {
+    async componentDidUnload() {
         this.deckEventsHandler.destroy();
-        this.removeEventsHandler.destroy();
+        await this.removeEventsHandler.destroy();
+
+        if (this.busySubscription) {
+            this.busySubscription.unsubscribe();
+        }
     }
 
     private initSlideSize(): Promise<void> {
@@ -563,6 +577,22 @@ export class AppEditor {
         });
 
         await popover.present();
+    }
+
+    private contentEditable(slide: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!slide || slide.childElementCount <= 0) {
+                resolve();
+                return;
+            }
+
+            const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
+            elements.forEach((e: HTMLElement) => {
+                e.setAttribute('contentEditable', '');
+            });
+
+            resolve();
+        });
     }
 
     render() {
