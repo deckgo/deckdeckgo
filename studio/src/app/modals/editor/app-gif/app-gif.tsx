@@ -29,6 +29,8 @@ export class AppGif {
     @State()
     private searchTerm: string;
 
+    private previousSearchTerm: string;
+
     @State()
     disableInfiniteScroll = false;
 
@@ -120,10 +122,19 @@ export class AppGif {
                 this.gifsEven = [];
             }
 
+            const newSearchTerm: boolean = !this.previousSearchTerm || this.searchTerm !== this.previousSearchTerm;
+
+            if (newSearchTerm) {
+                this.gifsOdd = [];
+                this.gifsEven = [];
+
+                console.log('reset');
+            }
+
             this.gifsOdd = [...this.gifsOdd, ...gifs.filter((_a, i) => i % 2)];
             this.gifsEven = [...this.gifsEven, ...gifs.filter((_a, i) => !(i % 2))];
 
-            if (!this.paginationNext || this.paginationNext === 0) {
+            if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
                 // We just put a small delay because of the repaint
                 setTimeout(async () => {
                     await this.autoScrollToTop();
@@ -131,6 +142,8 @@ export class AppGif {
             }
 
             this.paginationNext = tenorResponse.next;
+
+            this.previousSearchTerm = this.searchTerm;
 
             resolve();
         });
@@ -222,9 +235,7 @@ export class AppGif {
                     <ion-searchbar debounce={500} placeholder="Search Tenor" value={this.searchTerm}
                                    onIonClear={() => this.clear()}
                                    onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-                                   onIonChange={() => {
-                                       this.search()
-                                   }}></ion-searchbar>
+                                   onIonChange={() => {this.search()}}></ion-searchbar>
                 </ion-toolbar>
             </ion-footer>
         ];
