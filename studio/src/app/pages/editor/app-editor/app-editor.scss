@@ -13,6 +13,14 @@ app-editor {
 
     overflow: hidden;
 
+    ion-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    // Skeleton for new slides
     [slot]:not([contentEditable]) {
       position: relative;
 

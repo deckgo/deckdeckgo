@@ -58,6 +58,9 @@ export class AppEditor {
     private busySubscription: Subscription;
     private busyService: BusyService;
 
+    @State()
+    private slidesFetched: boolean = false;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.guestService = GuestService.getInstance();
@@ -86,6 +89,8 @@ export class AppEditor {
             } else {
                 await this.fetchSlides();
             }
+
+            this.slidesFetched = true;
         });
 
         this.busySubscription = this.busyService.watchSlideBusy().subscribe(async (slide: HTMLElement) => {
@@ -600,7 +605,10 @@ export class AppEditor {
             <app-navigation publish={true}></app-navigation>,
             <ion-content class="ion-padding">
                 <main class={this.displaying ? 'idle' : undefined}>
-                    <deckgo-deck embedded={true} style={this.deckStyle}
+
+                    {this.renderLoading()}
+
+                    <deckgo-deck embedded={true} style={this.deckStyle} pager={this.slidesFetched}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}
@@ -653,5 +661,13 @@ export class AppEditor {
             </ion-footer>,
             <deckgo-inline-editor></deckgo-inline-editor>
         ];
+    }
+
+    private renderLoading() {
+        if (this.slidesFetched) {
+            return undefined;
+        } else {
+            return <ion-spinner color="primary"></ion-spinner>;
+        }
     }
 }
