@@ -8,9 +8,11 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'ionicons';
+import 'deckdeckgo-remote';
+import 'deckdeckgo-qrcode';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -77,6 +79,7 @@ export namespace Components {
   }
   interface AppEditorToolbarAttributes extends StencilHTMLAttributes {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
@@ -90,49 +93,41 @@ export namespace Components {
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
-  interface AppFeedCardContent {
-    'author': string;
-    'caption': string;
-    'description': string;
-    'editable': boolean;
-    'firstCard': boolean;
-    'publication': Date;
-  }
-  interface AppFeedCardContentAttributes extends StencilHTMLAttributes {
-    'author'?: string;
-    'caption'?: string;
-    'description'?: string;
-    'editable'?: boolean;
-    'firstCard'?: boolean;
-    'publication'?: Date;
-  }
-
   interface AppFeedCard {
     'author': string;
     'caption': string;
+    'compact': boolean;
     'description': string;
     'editable': boolean;
+    'miniature': boolean;
     'publication': Date;
   }
   interface AppFeedCardAttributes extends StencilHTMLAttributes {
     'author'?: string;
     'caption'?: string;
+    'compact'?: boolean;
     'description'?: string;
     'editable'?: boolean;
+    'miniature'?: boolean;
+    'onEditCaption'?: (event: CustomEvent<string>) => void;
     'publication'?: Date;
   }
+
+  interface AppFeedLazyImg {}
+  interface AppFeedLazyImgAttributes extends StencilHTMLAttributes {}
 
   interface AppGif {}
   interface AppGifAttributes extends StencilHTMLAttributes {}
 
   interface AppPublish {
-    'caption': string;
     'description': string;
   }
   interface AppPublishAttributes extends StencilHTMLAttributes {
-    'caption'?: string;
     'description'?: string;
   }
+
+  interface AppRemote {}
+  interface AppRemoteAttributes extends StencilHTMLAttributes {}
 
   interface AppSlideNavigate {
     'slides': string[];
@@ -153,6 +148,9 @@ export namespace Components {
   interface AppPrivacy {}
   interface AppPrivacyAttributes extends StencilHTMLAttributes {}
 
+  interface AppServices {}
+  interface AppServicesAttributes extends StencilHTMLAttributes {}
+
   interface AppTeam {}
   interface AppTeamAttributes extends StencilHTMLAttributes {}
 
@@ -164,19 +162,28 @@ export namespace Components {
 
   interface AppSignin {
     'redirect': string;
+    'redirectId': string;
   }
   interface AppSigninAttributes extends StencilHTMLAttributes {
     'redirect'?: string;
+    'redirectId'?: string;
   }
 
-  interface AppEditor {}
-  interface AppEditorAttributes extends StencilHTMLAttributes {}
+  interface AppEditor {
+    'deckId': string;
+  }
+  interface AppEditorAttributes extends StencilHTMLAttributes {
+    'deckId'?: string;
+  }
 
   interface AppUserMenu {}
   interface AppUserMenuAttributes extends StencilHTMLAttributes {}
 
   interface AppDeckOrSlide {}
   interface AppDeckOrSlideAttributes extends StencilHTMLAttributes {}
+
+  interface AppEditorActions {}
+  interface AppEditorActionsAttributes extends StencilHTMLAttributes {}
 
   interface AppSlideType {}
   interface AppSlideTypeAttributes extends StencilHTMLAttributes {}
@@ -203,15 +210,17 @@ declare global {
     'AppDemo': Components.AppDemo;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
-    'AppFeedCardContent': Components.AppFeedCardContent;
     'AppFeedCard': Components.AppFeedCard;
+    'AppFeedLazyImg': Components.AppFeedLazyImg;
     'AppGif': Components.AppGif;
     'AppPublish': Components.AppPublish;
+    'AppRemote': Components.AppRemote;
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
     'AppContact': Components.AppContact;
     'AppOpensource': Components.AppOpensource;
     'AppPrivacy': Components.AppPrivacy;
+    'AppServices': Components.AppServices;
     'AppTeam': Components.AppTeam;
     'AppTerms': Components.AppTerms;
     'AppHome': Components.AppHome;
@@ -219,6 +228,7 @@ declare global {
     'AppEditor': Components.AppEditor;
     'AppUserMenu': Components.AppUserMenu;
     'AppDeckOrSlide': Components.AppDeckOrSlide;
+    'AppEditorActions': Components.AppEditorActions;
     'AppSlideType': Components.AppSlideType;
     'AppSlotType': Components.AppSlotType;
   }
@@ -236,15 +246,17 @@ declare global {
     'app-demo': Components.AppDemoAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
-    'app-feed-card-content': Components.AppFeedCardContentAttributes;
     'app-feed-card': Components.AppFeedCardAttributes;
+    'app-feed-lazy-img': Components.AppFeedLazyImgAttributes;
     'app-gif': Components.AppGifAttributes;
     'app-publish': Components.AppPublishAttributes;
+    'app-remote': Components.AppRemoteAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
     'app-contact': Components.AppContactAttributes;
     'app-opensource': Components.AppOpensourceAttributes;
     'app-privacy': Components.AppPrivacyAttributes;
+    'app-services': Components.AppServicesAttributes;
     'app-team': Components.AppTeamAttributes;
     'app-terms': Components.AppTermsAttributes;
     'app-home': Components.AppHomeAttributes;
@@ -252,6 +264,7 @@ declare global {
     'app-editor': Components.AppEditorAttributes;
     'app-user-menu': Components.AppUserMenuAttributes;
     'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
+    'app-editor-actions': Components.AppEditorActionsAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
     'app-slot-type': Components.AppSlotTypeAttributes;
   }
@@ -329,16 +342,16 @@ declare global {
     new (): HTMLAppPopularElement;
   };
 
-  interface HTMLAppFeedCardContentElement extends Components.AppFeedCardContent, HTMLStencilElement {}
-  var HTMLAppFeedCardContentElement: {
-    prototype: HTMLAppFeedCardContentElement;
-    new (): HTMLAppFeedCardContentElement;
-  };
-
   interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
   var HTMLAppFeedCardElement: {
     prototype: HTMLAppFeedCardElement;
     new (): HTMLAppFeedCardElement;
+  };
+
+  interface HTMLAppFeedLazyImgElement extends Components.AppFeedLazyImg, HTMLStencilElement {}
+  var HTMLAppFeedLazyImgElement: {
+    prototype: HTMLAppFeedLazyImgElement;
+    new (): HTMLAppFeedLazyImgElement;
   };
 
   interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
@@ -351,6 +364,12 @@ declare global {
   var HTMLAppPublishElement: {
     prototype: HTMLAppPublishElement;
     new (): HTMLAppPublishElement;
+  };
+
+  interface HTMLAppRemoteElement extends Components.AppRemote, HTMLStencilElement {}
+  var HTMLAppRemoteElement: {
+    prototype: HTMLAppRemoteElement;
+    new (): HTMLAppRemoteElement;
   };
 
   interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {}
@@ -381,6 +400,12 @@ declare global {
   var HTMLAppPrivacyElement: {
     prototype: HTMLAppPrivacyElement;
     new (): HTMLAppPrivacyElement;
+  };
+
+  interface HTMLAppServicesElement extends Components.AppServices, HTMLStencilElement {}
+  var HTMLAppServicesElement: {
+    prototype: HTMLAppServicesElement;
+    new (): HTMLAppServicesElement;
   };
 
   interface HTMLAppTeamElement extends Components.AppTeam, HTMLStencilElement {}
@@ -425,6 +450,12 @@ declare global {
     new (): HTMLAppDeckOrSlideElement;
   };
 
+  interface HTMLAppEditorActionsElement extends Components.AppEditorActions, HTMLStencilElement {}
+  var HTMLAppEditorActionsElement: {
+    prototype: HTMLAppEditorActionsElement;
+    new (): HTMLAppEditorActionsElement;
+  };
+
   interface HTMLAppSlideTypeElement extends Components.AppSlideType, HTMLStencilElement {}
   var HTMLAppSlideTypeElement: {
     prototype: HTMLAppSlideTypeElement;
@@ -450,15 +481,17 @@ declare global {
     'app-demo': HTMLAppDemoElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
-    'app-feed-card-content': HTMLAppFeedCardContentElement
     'app-feed-card': HTMLAppFeedCardElement
+    'app-feed-lazy-img': HTMLAppFeedLazyImgElement
     'app-gif': HTMLAppGifElement
     'app-publish': HTMLAppPublishElement
+    'app-remote': HTMLAppRemoteElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
     'app-contact': HTMLAppContactElement
     'app-opensource': HTMLAppOpensourceElement
     'app-privacy': HTMLAppPrivacyElement
+    'app-services': HTMLAppServicesElement
     'app-team': HTMLAppTeamElement
     'app-terms': HTMLAppTermsElement
     'app-home': HTMLAppHomeElement
@@ -466,6 +499,7 @@ declare global {
     'app-editor': HTMLAppEditorElement
     'app-user-menu': HTMLAppUserMenuElement
     'app-deck-or-slide': HTMLAppDeckOrSlideElement
+    'app-editor-actions': HTMLAppEditorActionsElement
     'app-slide-type': HTMLAppSlideTypeElement
     'app-slot-type': HTMLAppSlotTypeElement
   }
@@ -483,15 +517,17 @@ declare global {
     'app-demo': HTMLAppDemoElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
-    'app-feed-card-content': HTMLAppFeedCardContentElement;
     'app-feed-card': HTMLAppFeedCardElement;
+    'app-feed-lazy-img': HTMLAppFeedLazyImgElement;
     'app-gif': HTMLAppGifElement;
     'app-publish': HTMLAppPublishElement;
+    'app-remote': HTMLAppRemoteElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
     'app-contact': HTMLAppContactElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-privacy': HTMLAppPrivacyElement;
+    'app-services': HTMLAppServicesElement;
     'app-team': HTMLAppTeamElement;
     'app-terms': HTMLAppTermsElement;
     'app-home': HTMLAppHomeElement;
@@ -499,6 +535,7 @@ declare global {
     'app-editor': HTMLAppEditorElement;
     'app-user-menu': HTMLAppUserMenuElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
+    'app-editor-actions': HTMLAppEditorActionsElement;
     'app-slide-type': HTMLAppSlideTypeElement;
     'app-slot-type': HTMLAppSlotTypeElement;
   }

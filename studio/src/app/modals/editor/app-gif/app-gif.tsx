@@ -1,8 +1,8 @@
 import {Component, Element, Listen, State} from '@stencil/core';
 
-import {EditorUtils} from '../../../utils/editor-utils';
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
-import {GifService} from '../../../services/gif/gif.service';
+import {GifService} from '../../../services/api/gif/gif.service';
 
 @Component({
     tag: 'app-gif',
@@ -28,6 +28,8 @@ export class AppGif {
 
     @State()
     private searchTerm: string;
+
+    private previousSearchTerm: string;
 
     @State()
     disableInfiniteScroll = false;
@@ -58,7 +60,7 @@ export class AppGif {
             await this.gifService.registerShare(gif.id);
 
             const url: string = gif.media[0].gif.url;
-            const slide: any = await EditorUtils.createSlideGif(url);
+            const slide: any = await CreateSlidesUtils.createSlideGif(url);
 
             await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(slide);
 
@@ -120,10 +122,19 @@ export class AppGif {
                 this.gifsEven = [];
             }
 
+            const newSearchTerm: boolean = !this.previousSearchTerm || this.searchTerm !== this.previousSearchTerm;
+
+            if (newSearchTerm) {
+                this.gifsOdd = [];
+                this.gifsEven = [];
+
+                console.log('reset');
+            }
+
             this.gifsOdd = [...this.gifsOdd, ...gifs.filter((_a, i) => i % 2)];
             this.gifsEven = [...this.gifsEven, ...gifs.filter((_a, i) => !(i % 2))];
 
-            if (!this.paginationNext || this.paginationNext === 0) {
+            if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
                 // We just put a small delay because of the repaint
                 setTimeout(async () => {
                     await this.autoScrollToTop();
@@ -131,6 +142,8 @@ export class AppGif {
             }
 
             this.paginationNext = tenorResponse.next;
+
+            this.previousSearchTerm = this.searchTerm;
 
             resolve();
         });
@@ -197,7 +210,7 @@ export class AppGif {
                     <ion-title class="ion-text-uppercase">Pick a Gif</ion-title>
                 </ion-toolbar>
             </ion-header>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <div class="gifs-container">
                     <div class="gifs-column">
                         {this.renderCategories(this.categoriesOdd)}
@@ -222,9 +235,7 @@ export class AppGif {
                     <ion-searchbar debounce={500} placeholder="Search Tenor" value={this.searchTerm}
                                    onIonClear={() => this.clear()}
                                    onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-                                   onIonChange={() => {
-                                       this.search()
-                                   }}></ion-searchbar>
+                                   onIonChange={() => {this.search()}}></ion-searchbar>
                 </ion-toolbar>
             </ion-footer>
         ];

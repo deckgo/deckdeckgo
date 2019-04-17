@@ -1,19 +1,16 @@
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
-
-import {SlideTemplate} from '../../models/slide-template';
 import {Slide} from '../../models/slide';
+
 import {Deck} from '../../models/deck';
 
-import {SlideService} from '../../services/slide/slide.service';
-import {DeckService} from '../../services/deck/deck.service';
-import {ErrorService} from '../../services/error/error.service';
-import {DeckBusyService} from '../../services/deck/deck-busy.service';
-import {SlideAttributes} from '../../models/slide-attributes';
+import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
+
+import {SlideService} from '../../services/api/slide/slide.service';
+import {DeckService} from '../../services/api/deck/deck.service';
+import {ErrorService} from '../../services/core/error/error.service';
+import {DeckBusyService} from '../../services/api/deck/deck-busy.service';
+import {DeckEditorService} from '../../services/api/deck/deck-editor.service';
 
 export class EditorHelper {
-
-    private el: HTMLElement;
 
     private slideService: SlideService;
     private deckService: DeckService;
@@ -21,10 +18,7 @@ export class EditorHelper {
     private errorService: ErrorService;
     private deckBusyService: DeckBusyService;
 
-    private deck: Deck;
-
-    private subscription: Subscription;
-    private updateSlideSubject: Subject<HTMLElement> = new Subject();
+    private deckEditorService: DeckEditorService;
 
     constructor() {
         this.slideService = SlideService.getInstance();
@@ -32,268 +26,74 @@ export class EditorHelper {
 
         this.errorService = ErrorService.getInstance();
         this.deckBusyService = DeckBusyService.getInstance();
+
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
-    init(el: HTMLElement) {
-        this.el = el;
-
-        this.el.addEventListener('input', this.onSlideInputChange, false);
-        this.el.addEventListener('slideDidChange', this.onSlideChange, false);
-        this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
-        this.el.addEventListener('slideDelete', this.onSlideDelete, false);
-
-        this.subscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
-            await this.updateSlide(element);
-        });
-    }
-
-    destroy() {
-        this.el.removeEventListener('input', this.onSlideInputChange, true);
-        this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
-        this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
-        this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
-
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    }
-
-    private onSlideDidLoad = async ($event: CustomEvent) => {
-        if ($event && $event.target && $event.target instanceof HTMLElement) {
-            await this.createSlide($event.target);
-        }
-    };
-
-    private onSlideChange = async ($event: CustomEvent) => {
-        if (!$event || !$event.detail) {
-            return;
-        }
-
-        this.updateSlideSubject.next($event.detail);
-    };
-
-    private onSlideInputChange = async ($event: Event) => {
-        if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
-            return;
-        }
-
-        const parent: HTMLElement = ($event.target as HTMLElement).parentElement;
-
-        if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
-            return;
-        }
-
-        this.updateSlideSubject.next(parent);
-    };
-
-    private onSlideDelete = async ($event: CustomEvent) => {
-        if (!$event || !$event.detail) {
-            return;
-        }
-
-        await this.deleteSlide($event.detail);
-    };
-
-    private createSlide(slide: HTMLElement): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            try {
-                if (!slide || !slide.nodeName) {
-                    resolve();
-                    return;
-                }
-
-                if (slide.getAttribute('slide_id')) {
-                    // !isNew
-                    resolve();
-                    return;
-                }
-
-                this.deckBusyService.busy(true);
-
-                const slidePost: Slide = {
-                    slide_template: this.getSlideTemplate(slide)
-                };
-
-                const content: string = await this.cleanSlideContent(slide.innerHTML);
-                if (content && content.length > 0) {
-                    slidePost.slide_content = content
-                }
-
-                const persistedSlide: Slide = await this.slideService.post(slidePost);
-
-                if (persistedSlide && persistedSlide.slide_id) {
-                    slide.setAttribute('slide_id', persistedSlide.slide_id);
-
-                    await this.createOrUpdateDeck(persistedSlide);
-                }
-
-                this.deckBusyService.busy(false);
-
-                resolve();
-            } catch (err) {
-                this.errorService.error(err);
-                this.deckBusyService.busy(false);
-                resolve();
-            }
-        });
-    }
-
-    private createOrUpdateDeck(slide: Slide): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                if (!slide) {
-                    reject('Missing slide to create or update the deck');
-                    return;
-                }
-
-                if (this.deck) {
-                    if (!this.deck.deck_slides || this.deck.deck_slides.length <= 0) {
-                        this.deck.deck_slides = [];
-                    }
-
-                    this.deck.deck_slides.push(slide.slide_id);
-
-                    this.deck = await this.deckService.put(this.deck);
-                } else {
-                    // TODO: Deck name to be solve with the UX
-                    this.deck = {
-                        deck_slides: [slide.slide_id],
-                        deck_name: 'Presentation A'
-                    };
-
-                    this.deck = await this.deckService.post(this.deck);
-                }
-
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    private updateSlide(slide: HTMLElement): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            try {
-                if (!slide || !slide.nodeName) {
-                    resolve();
-                    return;
-                }
-
-                if (!slide.getAttribute('slide_id')) {
-                    this.errorService.error('Slide is not defined');
-                    resolve();
-                    return;
-                }
-
-                const slideUpdate: Slide = {
-                    slide_id: slide.getAttribute('slide_id'),
-                    slide_template: this.getSlideTemplate(slide)
-                };
-
-                const content: string = await this.cleanSlideContent(slide.innerHTML);
-                if (content && content.length > 0) {
-                    slideUpdate.slide_content = content
-                }
-
-                const attributes: SlideAttributes = await this.getSlideAttributes(slide);
-
-                if (attributes && Object.keys(attributes).length > 0) {
-                    slideUpdate.slide_attributes = attributes;
-                }
-
-                await this.slideService.put(slideUpdate);
-
-                this.deckBusyService.busy(false);
-
-                resolve();
-            } catch (err) {
-                this.errorService.error(err);
-                this.deckBusyService.busy(false);
-                resolve();
-            }
-        });
-    }
-
-    private deleteSlide(slide: HTMLElement): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            try {
-                if (!slide) {
-                    resolve();
-                    return;
-                }
-
-                if (!slide.getAttribute('slide_id')) {
-                    this.errorService.error('Slide is not defined');
-                    resolve();
-                    return;
-                }
-
-                await this.slideService.delete(slide.getAttribute('slide_id'));
-
-                await this.deleteSlideElement();
-
-                this.deckBusyService.busy(false);
-
-                resolve();
-            } catch (err) {
-                this.errorService.error(err);
-                this.deckBusyService.busy(false);
-                resolve();
-            }
-        });
-    }
-
-    private deleteSlideElement(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-            if (!deck) {
-                resolve();
+    loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
+        return new Promise<any[]>(async (resolve) => {
+            if (!deckId) {
+                this.errorService.error('Deck is not defined');
+                resolve(null);
                 return;
             }
 
-            await (deck as any).deleteActiveSlide();
+            this.deckBusyService.busy(true);
 
-            resolve();
+            try {
+                const deck: Deck = await this.deckService.get(deckId);
+
+                if (!deck) {
+                    this.errorService.error('No deck could be fetched');
+                    resolve(null);
+                    return;
+                }
+
+                this.deckEditorService.next(deck);
+
+                if (!deck.slides || deck.slides.length <= 0) {
+                    resolve([]);
+                    return;
+                }
+
+                const promises: Promise<Slide>[] = [];
+                deck.slides.forEach((slideId: string) => {
+                    promises.push(this.fetchSlide(slideId));
+                });
+
+                let slides: Slide[] = [];
+                if (promises.length > 0) {
+                    slides = await Promise.all(promises);
+                }
+
+                if (!slides || slides.length <= 0) {
+                    resolve([]);
+                    return;
+                }
+
+                this.deckBusyService.busy(false);
+
+                resolve(slides);
+            } catch (err) {
+                this.errorService.error(err);
+                this.deckBusyService.busy(false);
+                resolve(null);
+            }
         });
     }
 
-    private getSlideAttributes(slide: HTMLElement): Promise<SlideAttributes> {
-        return new Promise<SlideAttributes>((resolve) => {
-            let attributes: SlideAttributes = {};
+    private fetchSlide(slideId: string): Promise<any> {
+        return new Promise<any>(async (resolve) => {
+            try {
+                const slide: Slide = await this.slideService.get(slideId);
+                const element: any = await ParseSlidesUtils.parseSlide(slide);
 
-            if (slide.getAttribute('style')) {
-                attributes.style = slide.getAttribute('style');
+                resolve(element);
+            } catch (err) {
+                this.errorService.error('Something went wrong while loading and parsing a slide');
+                resolve();
             }
-
-            if ((slide as any).src) {
-                attributes.src = (slide as any).src;
-            }
-
-            resolve(attributes);
-        })
-    }
-
-    private cleanSlideContent(content: string): Promise<string> {
-        return new Promise<string>((resolve) => {
-            if (!content || content.length <= 0) {
-                resolve(content);
-                return;
-            }
-
-            let result: string = content.replace(/deckgo-untouched|contenteditable=""|contenteditable="true"|contenteditable/gi, '');
-            result = result.replace(/class=""/g, '');
-            result = result.replace(/\s\s+/g, '');
-
-            resolve(result);
         });
     }
 
-    private getSlideTemplate(slide: HTMLElement): SlideTemplate {
-        const templateKey: string = Object.keys(SlideTemplate).find((key: string) => {
-            return slide.nodeName.toLowerCase().indexOf(SlideTemplate[key]) > -1
-        });
-
-        return SlideTemplate[templateKey];
-    }
 }

@@ -9,7 +9,7 @@ export class AppAbout {
     render() {
         return [
             <app-navigation presentation={true}></app-navigation>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <main padding>
                     <h1>Terms and Conditions of Use</h1>
 
@@ -21,7 +21,7 @@ export class AppAbout {
 
                     <p>a. Permission is granted to temporarily download one copy of the materials (information or software) on DeckDeckGo's web site and platform for personal or commercial viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
 
-                    <ul padding-start>
+                    <ul class="ion-padding-start">
                         <li>modify or copy the materials;</li>
                         <li>attempt to decompile or reverse engineer any software contained on DeckDeckGo's web site;</li>
                         <li>remove any copyright or other proprietary notations from the materials; or</li>

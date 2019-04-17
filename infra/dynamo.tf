@@ -1,10 +1,10 @@
 resource "aws_dynamodb_table" "deckdeckgo-test-dynamodb-table-users" {
   name           = "Users"
   billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "UserId"
+  hash_key       = "UserFirebaseId"
 
   attribute {
-    name = "UserId"
+    name = "UserFirebaseId"
     type = "S"
   }
 

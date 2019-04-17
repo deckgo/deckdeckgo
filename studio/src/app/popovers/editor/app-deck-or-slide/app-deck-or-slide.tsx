@@ -16,8 +16,8 @@ export class AppDeckOrSlide {
 
     render() {
         return <div padding>
-            <a onClick={() => this.closePopover(true)}><p>Apply to the all deck</p></a>
             <a onClick={() => this.closePopover(false)}><p>Just to this slide</p></a>
+            <a onClick={() => this.closePopover(true)}><p>Apply to the all deck</p></a>
         </div>
     }
 }

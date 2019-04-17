@@ -1,5 +1,11 @@
+export interface DeckAttributes {
+    style?: string;
+}
+
 export interface Deck {
-    deck_id?: string;
-    deck_slides: string[];
-    deck_name: string;
+    id?: string;
+    slides: string[];
+    name: string;
+    owner_id: string;
+    attributes?: DeckAttributes;
 }

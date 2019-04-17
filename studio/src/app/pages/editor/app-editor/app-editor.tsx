@@ -1,22 +1,25 @@
 import {Component, Element, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
-import {take} from 'rxjs/operators';
+import {filter, take} from 'rxjs/operators';
 
-import {SlideTemplate} from '../../../models/slide-template';
-import {EditorUtils} from '../../../utils/editor-utils';
+import {AuthUser} from '../../../models/auth-user';
+import {Slide, SlideTemplate} from '../../../models/slide';
+import {Deck} from '../../../models/deck';
 
-import {User} from '../../../models/user';
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
+import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
+
+import {DeckEventsHandler} from '../../../handlers/editor/deck-events/deck-events.handler';
+import {RemoteEventsHandler} from '../../../handlers/editor/remote-events/remote-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
-import {AuthService} from '../../../services/auth/auth.service';
-import {GuestService} from '../../../services/guest/guest.service';
-import {NavDirection, NavService} from '../../../services/nav/nav.service';
 
-interface FirstSlideContent {
-    title: string;
-    content: string;
-}
+import {AuthService} from '../../../services/api/auth/auth.service';
+import {GuestService} from '../../../services/editor/guest/guest.service';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 
 @Component({
     tag: 'app-editor',
@@ -29,6 +32,9 @@ export class AppEditor {
     @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
     @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
+    @Prop()
+    deckId: string;
+
     @State()
     private slides: any[] = [];
 
@@ -37,27 +43,43 @@ export class AppEditor {
     @State()
     private displaying: boolean = false;
 
-    private editorHelper: EditorHelper = new EditorHelper();
+    private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
+    private removeEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
 
     private authService: AuthService;
     private guestService: GuestService;
     private navService: NavService;
 
+    private deckEditorService: DeckEditorService;
+    private deckStyle: any;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.guestService = GuestService.getInstance();
         this.navService = NavService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentWillLoad() {
-        this.editorHelper.init(this.el);
+        await this.deckEventsHandler.init(this.el);
 
-        this.authService.watch().pipe(take(1)).subscribe(async (user: User) => {
-            if(!user) {
+        // If no user create an anonymous one
+        this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
+            if (!authUser) {
                 await this.authService.signInAnonymous();
             }
+        });
 
-            await this.initSlide();
+        // As soon as we have got a user, an anonymous where the creation started above or an already used anonymous or a logged one, we init
+        this.authService.watch().pipe(
+            filter((authUser: AuthUser) => authUser !== null && authUser !== undefined),
+            take(1)).subscribe(async (_authUser: AuthUser) => {
+
+            if (!this.deckId) {
+                await this.initSlide();
+            } else {
+                await this.fetchSlides();
+            }
         });
     }
 
@@ -65,10 +87,13 @@ export class AppEditor {
         await this.initSlideSize();
 
         await this.updateInlineEditorListener();
+
+        await this.removeEventsHandler.init(this.el);
     }
 
     componentDidUnload() {
-        this.editorHelper.destroy();
+        this.deckEventsHandler.destroy();
+        this.removeEventsHandler.destroy();
     }
 
     private initSlideSize(): Promise<void> {
@@ -112,7 +137,7 @@ export class AppEditor {
                 return;
             }
 
-            const slide: any = await EditorUtils.createSlide(SlideTemplate.TITLE);
+            const slide: any = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
 
             await this.concatSlide(slide);
 
@@ -120,9 +145,43 @@ export class AppEditor {
         });
     }
 
-    private concatSlide(slide: any): Promise<void> {
+    private fetchSlides(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!document || !this.deckId) {
+                resolve();
+                return;
+            }
+
+            const helper: EditorHelper = new EditorHelper();
+            const slides: Slide[] = await helper.loadDeckAndRetrieveSlides(this.deckId);
+
+            if (slides && slides.length > 0) {
+                this.slides = [...slides];
+            }
+
+            await this.initDeckStyle();
+
+            resolve();
+        });
+    }
+
+    private initDeckStyle(): Promise<void> {
         return new Promise<void>((resolve) => {
-            this.slides = [...this.slides, slide];
+            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                if (deck && deck.attributes && deck.attributes.style) {
+                    this.deckStyle = await ParseStyleUtils.convertStyle(deck.attributes.style);
+                } else {
+                    this.deckStyle = undefined;
+                }
+
+                resolve();
+            });
+        });
+    }
+
+    private concatSlide(extraSlide: any): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.slides = [...this.slides, extraSlide];
 
             resolve();
         });
@@ -176,15 +235,20 @@ export class AppEditor {
         await (deck as any).slideTo(index, speed);
     }
 
-    private async slideToLastSlide() {
+    @Listen('slideDidLoad')
+    async slideToLastSlideOnSlideLoad($event) {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (!deck) {
             return;
         }
 
-        if (deck.hasChildNodes()) {
-            await this.slideTo(deck.children && deck.children.length > 0 ? deck.children.length - 1 : 0);
+        if ($event && $event.target && $event.target instanceof HTMLElement) {
+            const newSlide: HTMLElement = $event.target;
+
+            if (!newSlide.getAttribute('slide_id') && deck.hasChildNodes()) {
+                await this.slideTo(deck.children && deck.children.length > 0 ? deck.children.length - 1 : 0);
+            }
         }
     }
 
@@ -202,6 +266,14 @@ export class AppEditor {
             if (detail.data >= 0) {
                 await this.slideTo(detail.data);
             }
+        });
+
+        await modal.present();
+    }
+
+    private async openRemoteControl() {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-remote'
         });
 
         await modal.present();
@@ -243,30 +315,21 @@ export class AppEditor {
         });
     }
 
-    private getFirstSlideContent(): Promise<FirstSlideContent> {
-        return new Promise<FirstSlideContent>(async (resolve) => {
-            let title: string = '';
+    private getFirstSlideContent(): Promise<string> {
+        return new Promise<string>(async (resolve) => {
             let content: string = '';
 
             const slide: HTMLElement = this.el.querySelector('deckgo-deck > *:first-child');
 
             if (slide && slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                const titleElement: HTMLElement = slide.querySelector('[slot="title"]');
                 const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
-
-                if (titleElement) {
-                    title = titleElement.textContent;
-                }
 
                 if (contentElement) {
                     content = contentElement.textContent;
                 }
             }
 
-            resolve({
-                title: title,
-                content: content
-            });
+            resolve(content);
         });
     }
 
@@ -291,12 +354,14 @@ export class AppEditor {
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail.data.template === SlideTemplate.GIF) {
-                await this.openGifPicker();
-            }
+            if (detail && detail.data) {
+                if (detail.data.template === SlideTemplate.GIF) {
+                    await this.openGifPicker();
+                }
 
-            if (detail.data.slide) {
-                await this.addSlide(detail.data.slide);
+                if (detail.data.slide) {
+                    await this.addSlide(detail.data.slide);
+                }
             }
         });
 
@@ -335,13 +400,12 @@ export class AppEditor {
             return;
         }
 
-        const firstSlide: FirstSlideContent = await this.getFirstSlideContent();
+        const content: string = await this.getFirstSlideContent();
 
         const modal: HTMLIonModalElement = await this.modalController.create({
             component: 'app-publish',
             componentProps: {
-                caption: firstSlide.title,
-                description: firstSlide.content
+                description: content
             }
         });
 
@@ -475,13 +539,38 @@ export class AppEditor {
         });
     }
 
+    async openDeckActions($event: UIEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-editor-actions',
+            event: $event,
+            mode: 'ios'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data) {
+                if (detail.data.action === EditorAction.FULLSCREEN) {
+                    await this.toggleFullScreen();
+                } else if (detail.data.action === EditorAction.JUMP_TO) {
+                    await this.openSlideNavigate();
+                } else if (detail.data.action === EditorAction.REMOTE) {
+                    await this.openRemoteControl();
+                }
+            }
+        });
+
+        await popover.present();
+    }
+
     render() {
         return [
             <app-navigation publish={true}></app-navigation>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <main class={this.displaying ? 'idle' : undefined}>
-                    <deckgo-deck embedded={true}
-                                 onSlidesDidLoad={() => this.slideToLastSlide()}
+                    <deckgo-deck embedded={true} style={this.deckStyle}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}
@@ -490,26 +579,41 @@ export class AppEditor {
                         {this.slides}
                     </deckgo-deck>
                     <app-editor-toolbar></app-editor-toolbar>
+                    <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
             </ion-content>,
             <ion-footer class={this.displaying ? 'idle' : undefined}>
                 <ion-toolbar>
                     <ion-buttons slot="start">
-                        <ion-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
-                            <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-                        </ion-button>
+                        <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
+                            <ion-icon name="arrow-back"></ion-icon>
+                            <ion-label>Previous</ion-label>
+                        </ion-tab-button>
 
-                        <ion-button onClick={() => this.animatePrevNextSlide(true)} color="primary">
-                            <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
-                        </ion-button>
+                        <ion-tab-button onClick={() => this.animatePrevNextSlide(true)} color="primary">
+                            <ion-icon name="arrow-forward"></ion-icon>
+                            <ion-label>Next</ion-label>
+                        </ion-tab-button>
 
-                        <ion-button onClick={() => this.openSlideNavigate()} color="primary">
-                            <ion-icon slot="icon-only" src="assets/icons/chapters.svg"></ion-icon>
-                        </ion-button>
+                        <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices">
+                            <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
+                            <ion-label>Jump to</ion-label>
+                        </ion-tab-button>
 
-                        <ion-button onClick={() => this.toggleFullScreen()} color="primary">
-                            <ion-icon slot="icon-only" name="expand"></ion-icon>
-                        </ion-button>
+                        <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices">
+                            <ion-icon name="expand"></ion-icon>
+                            <ion-label>Fullscreen</ion-label>
+                        </ion-tab-button>
+
+                        <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices">
+                            <ion-icon name="phone-portrait"></ion-icon>
+                            <ion-label>Remote</ion-label>
+                        </ion-tab-button>
+
+                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices">
+                            <ion-icon md="md-more" ios="md-more"></ion-icon>
+                            <ion-label>More</ion-label>
+                        </ion-tab-button>
                     </ion-buttons>
 
                     <ion-buttons slot="end">

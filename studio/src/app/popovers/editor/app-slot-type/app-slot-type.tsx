@@ -1,6 +1,6 @@
 import {Component, Element, Prop, State} from '@stencil/core';
 
-import {SlotType} from '../../../utils/editor-utils';
+import {SlotType} from '../../../utils/editor/create-slides.utils';
 
 @Component({
     tag: 'app-slot-type',

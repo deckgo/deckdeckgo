@@ -78,6 +78,7 @@ The following options should be set using attributes:
 | height | number | The height of the canvas |
 | length | number | How many slides contains your deck, this is useful to inform the app about it and initialize the length of the canvas |
 | slides | string[] | The ordered list of all the tag names of the slides. Useful if you would like to inform the app about which slides are used in your deck. |
+| autoConnect | boolean | If you the component to not connect itself on load, set this property to `false` |
 
 ### Methods
 
@@ -95,6 +96,14 @@ Connect will open a socket with the signaling server and create a room for the p
 
 ```
 await remote.connect();
+```
+
+#### Disconnect
+
+Disconnect will close the socket with the signaling server and remove the deck from the list of possible deck to connect to.
+
+```
+await remote.disconnect();
 ```
 
 #### Move canvas

@@ -9,7 +9,7 @@ export class AppAbout {
     render() {
         return [
             <app-navigation presentation={true}></app-navigation>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <main padding>
                     <h1>Privacy Policy</h1>
 
@@ -23,7 +23,7 @@ export class AppAbout {
 
                     <p>The information we collect about all visitors to our website includes:</p>
 
-                    <ul padding-start>
+                    <ul class="ion-padding-start">
                         <li>The visitor’s browser type</li>
                         <li>Referring site</li>
                         <li>The date and time of each visitor request</li>
@@ -32,7 +32,7 @@ export class AppAbout {
 
                     <p>We use this information to:</p>
 
-                    <ul padding-start>
+                    <ul class="ion-padding-start">
                         <li>Provide, test, improve, promote and personalize DeckDeckGo Services</li>
                         <li>Fight spam and other forms of abuse</li>
                         <li>Generate aggregate, non-identifying information about how people use DeckDeckGo Services</li>
@@ -40,7 +40,7 @@ export class AppAbout {
 
                     <p>In order for you to create an account on DeckDeckGo and use our Services, we need to collect and process certain information. Depending on your use of the Services, that may include:</p>
 
-                    <ul padding-start>
+                    <ul class="ion-padding-start">
                         <li>Communications you send to us (for example, when you ask for support, send us questions or comments, or report a problem);</li>
                         <li>Information that you submit on or to DeckDeckGo in the form of reactions, comments, or messages to other users;</li>
                         <li>The email address associated with your Twitter account, if you choose to sign up using your Twitter credentials. DeckDeckGo will also request permission to access additional information (these permissions are governed by Twitter’s privacy policies and can be managed through your Twitter privacy settings). We never post anything to your Twitter without your permission.</li>

@@ -3,12 +3,30 @@ import {Component, Element, Prop, Watch} from '@stencil/core';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
+import {forkJoin} from 'rxjs';
+import {filter, take} from 'rxjs/operators';
+
 import {del, get, set} from 'idb-keyval';
 
-import {Utils} from '../../../utils/utils';
+import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/auth-user';
+import {Deck} from '../../../models/deck';
 
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {NavDirection, NavService} from '../../../services/nav/nav.service';
+import {Utils} from '../../../utils/core/utils';
+
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {MergeService} from '../../../services/api/merge/merge.service';
+import {UserService} from '../../../services/api/user/user.service';
+import {AuthService} from '../../../services/api/auth/auth.service';
+import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+
+
+interface MergeInformation {
+    deckId: string;
+    userId: string;
+    userToken: string;
+}
 
 @Component({
     tag: 'app-signin',
@@ -21,10 +39,25 @@ export class AppSignIn {
     @Prop()
     redirect: string;
 
+    @Prop()
+    redirectId: string;
+
     private navService: NavService;
+
+    private mergeService: MergeService;
+    private userService: UserService;
+    private authService: AuthService;
+
+    private firebaseUser: firebase.User;
+
+    private deckEditorService: DeckEditorService;
 
     constructor() {
         this.navService = NavService.getInstance();
+        this.mergeService = MergeService.getInstance();
+        this.userService = UserService.getInstance();
+        this.authService = AuthService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentDidLoad() {
@@ -59,6 +92,8 @@ export class AppSignIn {
 
         signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
         signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
+
+        this.firebaseUser = firebase.auth().currentUser;
 
         const uiConfig = {
             signInFlow: 'redirect',
@@ -108,33 +143,91 @@ export class AppSignIn {
             }
             // The credential the user tried to sign in with.
             const cred = error.credential;
-            // Copy data from anonymous user to permanent user and delete anonymous
-            // user.
-            // ...
-            // Finish sign-in after data is copied.
 
-            // TODO: What to do, copy or not? merge or not merge?
+            const mergeInfo: MergeInformation = await get('deckdeckgo_redirect_info');
+
+            await this.userService.signOut();
+
+            this.userService.watch().pipe(
+                filter((user: User) => user !== null && user !== undefined),
+                take(1)).subscribe(async (user: User) => {
+
+                if (user && mergeInfo && mergeInfo.deckId && mergeInfo.userToken && mergeInfo.userId) {
+                    // Merge deck to new user
+                    await this.mergeService.mergeDeck(mergeInfo.deckId, mergeInfo.userToken, user.id);
+
+                    // Delete previous anonymous user from our backend
+                    await this.userService.delete(mergeInfo.userId, mergeInfo.userToken);
+
+                    // Delete previous anonymous user from Firebase
+                    if (this.firebaseUser) {
+                        await this.firebaseUser.delete();
+                    }
+
+                    if (user.anonymous) {
+                        // In case that would happen, if user merge in was created with the anonymous flag, set it to false now
+                        user.anonymous = false;
+
+                        this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
+                            if (authUser) {
+                                await this.userService.query(user, authUser.token, 'PUT');
+                            }
+
+                            await this.navigateRedirect();
+
+                            resolve();
+                        });
+                    } else {
+                        await this.navigateRedirect();
+
+                        resolve();
+                    }
+                } else {
+                    await this.navigateRedirect();
+
+                    resolve();
+                }
+            });
 
             await firebase.auth().signInAndRetrieveDataWithCredential(cred);
-
-            await this.navigateRedirect();
 
             resolve();
         });
     };
 
-    private async saveRedirect() {
-        await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
+    private saveRedirect(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
+
+            forkJoin(
+                this.authService.watch().pipe(take(1)),
+                this.userService.watch().pipe(take(1)),
+                this.deckEditorService.watch().pipe(take(1))
+            ).subscribe(async ([authUser, user, deck]: [AuthUser, User, Deck]) => {
+                await set('deckdeckgo_redirect_info', {
+                    deckId: deck ? deck.id : null,
+                    userId: user ? user.id : null,
+                    userToken: authUser ? authUser.token : null
+                });
+
+                resolve();
+            });
+        })
     }
 
     private async navigateRedirect() {
         const redirectUrl: string = await get('deckdeckgo_redirect');
+        const mergeInfo: MergeInformation = await get('deckdeckgo_redirect_info');
 
         await del('deckdeckgo_redirect');
+        await del('deckdeckgo_redirect_info');
+
+        // TODO: That's ugly
+        const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + (!mergeInfo || !mergeInfo.deckId || mergeInfo.deckId.trim() === '' || mergeInfo.deckId.trim() === '/' ? '' : '/' + mergeInfo.deckId);
 
         // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
         this.navService.navigate({
-            url: !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl,
+            url: url,
             direction: NavDirection.ROOT
         });
 
@@ -143,13 +236,15 @@ export class AppSignIn {
     render() {
         return [
             <app-navigation></app-navigation>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <main padding>
                     {this.renderMsg()}
 
                     <div id="firebaseui-auth-container"></div>
 
-                    <p class="ion-text-center ion-padding-start ion-padding-end"><small>DeckDeckGo is free and open source 🖖</small></p>
+                    <p class="ion-text-center ion-padding-start ion-padding-end">
+                        <small>DeckDeckGo is free and open source 🖖</small>
+                    </p>
                 </main>
             </ion-content>
         ];
@@ -159,12 +254,14 @@ export class AppSignIn {
         if (this.redirect === 'editor') {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
-                <p class="ion-text-center ion-padding">Sign in to extend your deck, to publish your presentation and to get soon a personalized feed of recommendations.</p>
+                <p class="ion-text-center ion-padding">Sign in to extend your deck, to publish your presentation and to
+                    get soon a personalized feed of recommendations.</p>
             ]
         } else {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Welcome back.</h1>,
-                <p class="ion-text-center ion-padding">Sign in to publish your presentation and to get soon a personalized feed of recommendations.</p>
+                <p class="ion-text-center ion-padding">Sign in to publish your presentation and to get soon a
+                    personalized feed of recommendations.</p>
             ]
         }
     }

@@ -10,7 +10,7 @@ export class AppFooter {
     render() {
         return [
             <hr margin/>,
-            <div padding-start padding-end>
+            <div class="ion-padding-start ion-padding-end ion-margin-bottom">
                 <ion-anchor href="/about" routerDirection="forward">
                     <ion-label>About</ion-label>
                 </ion-anchor>
@@ -29,6 +29,10 @@ export class AppFooter {
 
                 <ion-anchor href="/terms" routerDirection="forward">
                     <ion-label>Terms of use</ion-label>
+                </ion-anchor>
+
+                <ion-anchor href="/services" routerDirection="forward">
+                    <ion-label>Services</ion-label>
                 </ion-anchor>
 
                 <ion-anchor href="/contact" routerDirection="forward">

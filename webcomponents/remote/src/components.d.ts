@@ -23,7 +23,9 @@ import {
 export namespace Components {
 
   interface DeckgoRemote {
+    'autoConnect': boolean;
     'connect': () => Promise<void>;
+    'disconnect': () => Promise<void>;
     'height': number;
     'length': number;
     'moveDraw': (leftOffset: number, transitionDuration: string) => Promise<void>;
@@ -36,6 +38,7 @@ export namespace Components {
     'width': number;
   }
   interface DeckgoRemoteAttributes extends StencilHTMLAttributes {
+    'autoConnect'?: boolean;
     'height'?: number;
     'length'?: number;
     'onEvent'?: (event: CustomEvent<DeckdeckgoEvent>) => void;

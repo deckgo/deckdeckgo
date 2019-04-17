@@ -52,11 +52,13 @@ data "aws_iam_policy_document" "policy_for_lambda" {
     actions = [
       "dynamodb:BatchGetItem",
       "dynamodb:GetItem",
+      "dynamodb:UpdateItem",
       "dynamodb:Query",
       "dynamodb:Scan",
       "dynamodb:BatchWriteItem",
       "dynamodb:PutItem",
       "dynamodb:UpdateItem",
+      "dynamodb:DeleteItem",
     ]
 
     resources = [

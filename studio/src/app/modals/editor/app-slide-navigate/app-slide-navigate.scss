@@ -1,12 +1,7 @@
-app-slide-picker {
+app-slide-navigate {
   ion-list {
-
-    ion-list-header {
-      font-size: var(--font-size-h1);
-    }
-
     ion-item {
-      --border-color: inherit;
+      --border-color: transparent;
     }
   }
 }

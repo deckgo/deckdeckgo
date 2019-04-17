@@ -3,8 +3,16 @@ ion-split-pane {
   --ion-toolbar-background: var(--ion-color-primary);
   color: white;
 
+  ion-header {
+    --deckgo-avatar-color: white;
+  }
+
   &:not(.split-pane-visible) {
     --ion-toolbar-background: transparent;
+
+    ion-header {
+      --deckgo-avatar-color: black;
+    }
   }
 }
 
@@ -24,6 +32,12 @@ ion-header {
 
 @media (prefers-color-scheme: dark) {
   ion-split-pane {
-    --ion-toolbar-background: var(--ion-tab-bar-background);
+    --ion-toolbar-background: var(--ion-background-color);
+
+    &:not(.split-pane-visible) {
+      ion-header {
+        --deckgo-avatar-color: white;
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 import {Component, Element} from '@stencil/core';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {NavDirection, NavService} from '../../../services/nav/nav.service';
+import {AuthService} from '../../../services/api/auth/auth.service';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 
 @Component({
     tag: 'app-user-menu',
@@ -34,9 +34,11 @@ export class AppUserMenu {
     }
 
     render() {
-        return <div padding>
-            <a onClick={() => this.signOut()}><p>Sign out</p></a>
-        </div>
+        return <ion-list>
+            <ion-item onClick={() => this.signOut()}>
+                <ion-label>Sign out</ion-label>
+            </ion-item>
+        </ion-list>
     }
 
 }

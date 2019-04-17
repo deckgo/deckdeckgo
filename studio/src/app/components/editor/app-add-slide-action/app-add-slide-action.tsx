@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {DeckBusyService} from '../../../services/deck/deck-busy.service';
+import {DeckBusyService} from '../../../services/api/deck/deck-busy.service';
 
 @Component({
     tag: 'app-add-slide-action',

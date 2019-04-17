@@ -3,9 +3,10 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {SlotType} from '../../../utils/editor-utils';
+import {SlotType} from '../../../utils/editor/create-slides.utils';
+import {Utils} from '../../../utils/core/utils';
 
-import {DeckBusyService} from '../../../services/deck/deck-busy.service';
+import {DeckBusyService} from '../../../services/api/deck/deck-busy.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -39,6 +40,7 @@ export class AppEditorToolbar {
     @Event() private slideDelete: EventEmitter<HTMLElement>;
 
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
+    @Event() private deckDidChange: EventEmitter<HTMLElement>;
 
     private subscription: Subscription;
     private deckBusyService: DeckBusyService;
@@ -76,23 +78,12 @@ export class AppEditorToolbar {
 
     private initWindowResize() {
         if (window) {
-            window.addEventListener('resize', this.debounce(async () => {
+            window.addEventListener('resize', Utils.debounce(async () => {
                 if (this.selectedElement) {
                     await this.select(this.selectedElement);
                 }
             }, 100));
         }
-    }
-
-    private debounce(func: Function, timeout?: number) {
-        let timer: number;
-        return (event) => {
-            if (timer) {
-                clearTimeout(timer);
-            }
-
-            timer = setTimeout(func, timeout > 0 ? timeout : 300, event);
-        };
     }
 
     @Listen('document:mouseInactivity')
@@ -341,8 +332,6 @@ export class AppEditorToolbar {
             this.displayed = false;
             await this.initSelectedElement(null);
 
-            this.displayed = false;
-
             resolve();
         });
     }
@@ -427,7 +416,7 @@ export class AppEditorToolbar {
             this.selectedElement.style.color = $event.target.value;
         }
 
-        await this.emitSlideChange();
+        await this.emitChange();
     };
 
     // Background
@@ -492,7 +481,7 @@ export class AppEditorToolbar {
             this.selectedElement.style.background = $event.target.value;
         }
 
-        await this.emitSlideChange();
+        await this.emitChange();
     };
 
     private async openSlotType($event: UIEvent) {
@@ -544,21 +533,26 @@ export class AppEditorToolbar {
 
             await this.initSelectedElement(element);
 
-            await this.emitSlideChange();
+            await this.emitChange();
 
             resolve();
         });
     }
 
-    private emitSlideChange(): Promise<void> {
+    private emitChange(): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
                 resolve();
                 return;
             }
 
-            // If not deck or slide, then parent is the container slide
-            this.slideDidChange.emit(this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
+            if (this.applyToAllDeck) {
+                const deckElement: HTMLElement = this.deckOrSlide ? this.selectedElement.parentElement : this.selectedElement.parentElement.parentElement;
+                this.deckDidChange.emit(deckElement);
+            } else {
+                // If not deck or slide, then parent is the container slide
+                this.slideDidChange.emit(this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
+            }
 
             resolve();
         });
@@ -589,7 +583,7 @@ export class AppEditorToolbar {
             mode: 'ios'
         });
 
-        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+        popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail.data) {
                 this.applyToAllDeck = detail.data.deck;
                 await myFunction();

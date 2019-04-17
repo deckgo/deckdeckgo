@@ -16,7 +16,7 @@ export class AppSlideNavigate {
     }
 
     @Listen('window:popstate')
-    async handleHardwareBackbutton(_e: PopStateEvent) {
+    async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }
 
@@ -37,15 +37,11 @@ export class AppSlideNavigate {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
+                    <ion-title class="ion-text-uppercase">Jump to slide</ion-title>
                 </ion-toolbar>
             </ion-header>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <ion-list>
-                    <ion-list-header  padding-bottom padding-top>
-                        <ion-label>Jump to slide</ion-label>
-                    </ion-list-header>
-
                     {this.renderSlides()}
                 </ion-list>
             </ion-content>
