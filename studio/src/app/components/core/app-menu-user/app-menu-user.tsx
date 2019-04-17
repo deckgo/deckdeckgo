@@ -1,7 +1,6 @@
 import {Component, Element, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
 
 import {AuthUser} from '../../../models/auth-user';
 import {Deck} from '../../../models/deck';
@@ -62,8 +61,7 @@ export class AppMenuUser {
             this.authUser = authUser;
         });
 
-        this.userSubscription = this.userService.watch().pipe(
-            filter((user: User) => user && !user.anonymous)).subscribe(async (user: User) => {
+        this.userSubscription = this.userService.watch().subscribe(async (user: User) => {
             if (user) {
                 try {
                     this.decks = await this.deckService.getUserDecks(user.id);
@@ -214,6 +212,7 @@ export class AppMenuUser {
 
             {this.renderPresentations()}
 
+            {this.renderSignIn()}
             {this.renderSignOut()}
 
         </ion-list>;
@@ -231,13 +230,17 @@ export class AppMenuUser {
     }
 
     private renderPresentations() {
+        return [
+            this.renderDecksFilter(),
+            this.renderDecks()
+        ];
+    }
+
+    private renderSignIn() {
         if (Utils.isLoggedIn(this.authUser)) {
-            return [
-                this.renderDecksFilter(),
-                this.renderDecks()
-            ];
+            return undefined;
         } else {
-            return <ion-item button onClick={() => this.signIn()}>
+            return <ion-item button class="signin" onClick={() => this.signIn()}>
                 <ion-icon name="log-in" slot="start"></ion-icon>
                 <ion-label>Sign in</ion-label>
             </ion-item>;
