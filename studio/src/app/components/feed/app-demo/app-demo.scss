@@ -50,8 +50,8 @@ div.laptop-container {
     transform: scale(.6) translate(-50%); /* Scaled down for a better Try-it experience (change to 1 for full scale) */
     left: 50%;
     position: absolute;
-    width: 360px;
-    height: 250px;
+    width: 260px;
+    height: 150px;
     border-radius: 6px;
     border-style: solid;
     border-color: black;
@@ -65,9 +65,9 @@ div.laptop-container {
     content: '';
     display: block;
     position: absolute;
-    width: 250px;
-    height: 20px;
-    bottom: -100px;
+    width: 150px;
+    height: 10px;
+    bottom: -80px;
     left: 50%;
     -webkit-transform: translate(-50%);
     transform: translate(-50%);
@@ -79,8 +79,8 @@ div.laptop-container {
 
   /* The screen (or content) of the device */
   .laptop .content {
-    width: 366px;
-    height: 300px;
+    width: 266px;
+    height: 200px;
     overflow: hidden;
     border: none;
   }
@@ -90,8 +90,8 @@ div.laptop-container {
     content: '';
     display: block;
     position: absolute;
-    width: 500px;
-    height: 40px;
+    width: 400px;
+    height: 20px;
     margin: 22px 0 0 -70px;
     background: black;
     border-radius: 6px;
@@ -109,10 +109,10 @@ div.smartphone-container {
   /* The device with borders */
   .smartphone {
     position: relative;
-    width: calc(360px / 3.5);
-    height: calc(640px / 3.5);
+    width: calc(360px / 5);
+    height: calc(640px / 5);
     margin: auto;
-    border: 16px black solid;
+    border: 12px black solid;
     border-top-width: 20px;
     border-bottom-width: 20px;
     border-radius: 36px;
@@ -163,8 +163,8 @@ div.tablet-container {
   /* The device with borders */
   .tablet {
     position: relative;
-    width: calc(1024px / 4);
-    height: calc(768px / 4);
+    width: calc(1024px / 6);
+    height: calc(768px / 6);
     margin: auto;
     border: 16px black solid;
     border-top-width: 20px;
@@ -210,12 +210,15 @@ div.tablet-container {
 }
 
 div.beamer-container {
-  height: 240px;
   padding: 0 16px;
+
+  iframe {
+    height: 160px;
+  }
 }
 
-div.beamer-container, div.laptop-container, div.tablet-container, div.smartphone-container {
-  min-height: 240px;
+div.beamer-container,div.laptop-container, div.tablet-container, div.smartphone-container {
+  min-height: 180px;
 }
 
 iframe {
