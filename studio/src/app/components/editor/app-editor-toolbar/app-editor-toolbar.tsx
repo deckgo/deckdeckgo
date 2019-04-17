@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
 import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {Utils} from '../../../utils/core/utils';
 
-import {DeckBusyService} from '../../../services/api/deck/deck-busy.service';
+import {BusyService} from '../../../services/editor/busy/busy.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -43,7 +43,7 @@ export class AppEditorToolbar {
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
 
     private subscription: Subscription;
-    private deckBusyService: DeckBusyService;
+    private busyService: BusyService;
 
     @State()
     private deckBusy: boolean = false;
@@ -51,11 +51,11 @@ export class AppEditorToolbar {
     private originalPlaceHolder: Node;
 
     constructor() {
-        this.deckBusyService = DeckBusyService.getInstance();
+        this.busyService = BusyService.getInstance();
     }
 
     async componentWillLoad() {
-        this.subscription = this.deckBusyService.watch().subscribe((busy: boolean) => {
+        this.subscription = this.busyService.watchDeckBusy().subscribe((busy: boolean) => {
             this.deckBusy = busy;
         });
     }
@@ -348,7 +348,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            this.deckBusyService.busy(true);
+            this.busyService.deckBusy(true);
 
             if (this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
                 this.slideDelete.emit(this.selectedElement);

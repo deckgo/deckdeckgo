@@ -41,11 +41,11 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="deckgo-untouched" contenteditable>
+            const title = <h1 slot="title" class="deckgo-untouched">
                 {this.DEFAULT_TITLE}
             </h1>;
 
-            const content = <div slot="content" class="deckgo-untouched" contenteditable>
+            const content = <div slot="content" class="deckgo-untouched">
                 {this.DEFAULT_CONTENT}
             </div>;
 
@@ -65,11 +65,11 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="deckgo-untouched" contenteditable>
+            const title = <h1 slot="title" class="deckgo-untouched">
                 {this.DEFAULT_TITLE}
             </h1>;
 
-            const content = <div slot="content" class="deckgo-untouched" contenteditable>
+            const content = <div slot="content" class="deckgo-untouched">
                 {this.DEFAULT_CONTENT}
             </div>;
 
@@ -89,11 +89,11 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const start = <div slot="start" class="deckgo-untouched" contenteditable>
+            const start = <div slot="start" class="deckgo-untouched">
                 {this.DEFAULT_CONTENT}
             </div>;
 
-            const end = <div slot="end" class="deckgo-untouched" contenteditable>
+            const end = <div slot="end" class="deckgo-untouched">
                 {this.DEFAULT_CONTENT}
             </div>;
 
@@ -113,11 +113,11 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const title = <h2 slot="header" class="deckgo-untouched" contenteditable>
+            const title = <h2 slot="header" class="deckgo-untouched">
                 {this.DEFAULT_CAPTION}
             </h2>;
 
-            const content = <h3 slot="footer" class="deckgo-untouched" contenteditable>
+            const content = <h3 slot="footer" class="deckgo-untouched">
                 {this.DEFAULT_CAPTION}
             </h3>;
 
