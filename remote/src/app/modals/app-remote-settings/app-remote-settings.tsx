@@ -109,7 +109,7 @@ export class AppRemoteSettings {
 
             <ion-content padding>
                 <ion-list>
-                    <ion-list-header padding-bottom padding-top>
+                    <ion-list-header class="ion-padding-bottom ion-padding-top">
                         <ion-label>Use the force, Luke</ion-label>
                     </ion-list-header>
 

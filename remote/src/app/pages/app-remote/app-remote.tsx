@@ -458,7 +458,7 @@ export class AppRemote {
         } else {
             return [
                 <h1 padding>The DeckDeckGo remote control</h1>,
-                <a onClick={() => this.openConnectModal()} class="link-to-modal"><p padding-start padding-end>Not connected yet, <strong>click here</strong> to find your presentation or use the link button below <ion-icon name="link"></ion-icon></p></a>
+                <a onClick={() => this.openConnectModal()} class="link-to-modal"><p class="ion-padding-start ion-padding-end">Not connected yet, <strong>click here</strong> to find your presentation or use the link button below <ion-icon name="link"></ion-icon></p></a>
             ];
         }
     }

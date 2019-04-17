@@ -74,7 +74,7 @@ export class AppRemoteConnect {
         if (this.rooms && this.rooms.length > 0) {
             return (
                 <ion-list>
-                    <ion-list-header padding-bottom padding-top>
+                    <ion-list-header class="ion-padding-bottom ion-padding-top">
                         <ion-label>Pick a presentation currently not in use</ion-label>
                     </ion-list-header>
 
