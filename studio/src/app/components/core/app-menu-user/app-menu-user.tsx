@@ -297,7 +297,10 @@ export class AppMenuUser {
                 })
             );
         } else {
-            return undefined;
+            return <ion-item>
+                <ion-icon name="book" slot="start"></ion-icon>
+                <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-item>;
         }
     }
 
