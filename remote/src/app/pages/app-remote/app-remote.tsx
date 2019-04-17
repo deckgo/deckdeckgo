@@ -515,7 +515,7 @@ export class AppRemote {
                     </ion-fab-button>
                     <ion-fab-list side="start">
                         <ion-fab-button color="medium" onClick={() => this.openSlidePicker()}>
-                            <ion-icon name="bookmark"></ion-icon>
+                            <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
                         </ion-fab-button>
                         <ion-fab-button color="medium" onClick={(e: UIEvent) => this.arrowNextSlide(e)}>
                             <ion-icon name="arrow-forward"></ion-icon>
