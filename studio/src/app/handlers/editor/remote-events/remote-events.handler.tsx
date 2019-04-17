@@ -1,26 +1,20 @@
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 
 import {Subscription} from 'rxjs';
-import {filter, take} from 'rxjs/operators';
-
-import {Deck} from '../../../models/deck';
 
 import {Utils} from '../../../utils/core/utils';
 
-import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 import {RemoteService} from '../../../services/editor/remote/remote.service';
 
 export class RemoteEventsHandler {
 
     private el: HTMLElement;
 
-    private deckEditorService: DeckEditorService;
     private remoteService: RemoteService;
 
     private subscription: Subscription;
 
     constructor() {
-        this.deckEditorService = DeckEditorService.getInstance();
         this.remoteService = RemoteService.getInstance();
     }
 
@@ -353,22 +347,22 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            this.deckEditorService.watch().pipe(filter((deck: Deck) => deck && (deck.name && deck.name !== undefined && deck.name !== '')), take(1)).subscribe(async (deck: Deck) => {
-                deckgoRemoteElement.room = deck.name;
+            const room: string = await this.remoteService.getRoom();
 
-                await deckgoRemoteElement.connect();
+            deckgoRemoteElement.room = room;
 
-                const deckElement = this.el.querySelector('deckgo-deck');
+            await deckgoRemoteElement.connect();
 
-                if (!deckElement) {
-                    resolve();
-                    return;
-                }
+            const deckElement = this.el.querySelector('deckgo-deck');
 
-                await deckElement.slideTo(0, 300, false);
-
+            if (!deckElement) {
                 resolve();
-            });
+                return;
+            }
+
+            await deckElement.slideTo(0, 300, false);
+
+            resolve();
         });
     }
 
