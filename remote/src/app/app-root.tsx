@@ -33,7 +33,7 @@ export class AppRoot {
                     <ion-route component="app-tabs">
                         <ion-route url="/remote" component="tab-home">
                             <ion-route component="app-remote"></ion-route>
-                            <ion-route url="/settings/:name" component="app-remote-settings"/>
+                            <ion-route url="/:room" component="app-remote"></ion-route>
                         </ion-route>
 
                         <ion-route url="/timer" component="tab-timer">

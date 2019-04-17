@@ -27,6 +27,9 @@ export class AppRemote {
 
     @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
 
+    @Prop()
+    room: string;
+
     private subscriptionState: Subscription;
     private subscriptionEvent: Subscription;
 
@@ -82,7 +85,7 @@ export class AppRemote {
             }
         });
 
-        this.acceleratorSubscription = this.accelerometerService.watch().subscribe(async (prev: boolean)  => {
+        this.acceleratorSubscription = this.accelerometerService.watch().subscribe(async (prev: boolean) => {
             if (prev) {
                 await this.prevSlide(false);
                 await this.animatePrevSlide();
@@ -96,14 +99,14 @@ export class AppRemote {
             }, this.accelerometerService.delay);
         });
 
-        this.acceleratorInitSubscription = this.accelerometerService.watchInitialized().subscribe(async (initialized: boolean) =>{
-           if (initialized) {
-               const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+        this.acceleratorInitSubscription = this.accelerometerService.watchInitialized().subscribe(async (initialized: boolean) => {
+            if (initialized) {
+                const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
-               if (deck) {
-                   await this.startAccelerometer();
-               }
-           }
+                if (deck) {
+                    await this.startAccelerometer();
+                }
+            }
         });
 
         if (window) {
@@ -113,6 +116,8 @@ export class AppRemote {
         }
 
         await this.contentSize();
+
+        await this.autoConnect();
     }
 
     private initSlides(event: DeckdeckgoEventSlides): Promise<void> {
@@ -123,7 +128,7 @@ export class AppRemote {
                 // If the slides definition is not provided, we generate a pseudo list of slides for the deck length
                 const length: number = event.length;
 
-                for (let i: number = 0; i<length; i++) {
+                for (let i: number = 0; i < length; i++) {
                     this.slides.push({
                         name: 'deckgo-slide-title'
                     });
@@ -213,7 +218,11 @@ export class AppRemote {
     }
 
     private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
-        this.communicationService.emit({type: type, emitter: DeckdeckgoEventEmitter.APP, slideAnimation: slideAnimation});
+        this.communicationService.emit({
+            type: type,
+            emitter: DeckdeckgoEventEmitter.APP,
+            slideAnimation: slideAnimation
+        });
     }
 
     private async animateNextSlide() {
@@ -345,7 +354,7 @@ export class AppRemote {
         });
 
         modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-            await this.startAccelerometer() ;
+            await this.startAccelerometer();
         });
 
         await modal.present();
@@ -400,6 +409,22 @@ export class AppRemote {
         } catch (err) {
             // Well then no accelerometer support
         }
+    }
+
+    private autoConnect(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.room || this.room === undefined || this.room.length <= 0) {
+                resolve();
+                return;
+            }
+
+            this.communicationService.room = decodeURI(this.room);
+
+            await this.communicationService.connect();
+            await this.communicationService.join();
+
+            resolve();
+        });
     }
 
     render() {
@@ -458,7 +483,10 @@ export class AppRemote {
         } else {
             return [
                 <h1 padding>The DeckDeckGo remote control</h1>,
-                <a onClick={() => this.openConnectModal()} class="link-to-modal"><p class="ion-padding-start ion-padding-end">Not connected yet, <strong>click here</strong> to find your presentation or use the link button below <ion-icon name="link"></ion-icon></p></a>
+                <a onClick={() => this.openConnectModal()} class="link-to-modal">
+                    <p class="ion-padding-start ion-padding-end">Not connected yet, <strong>click here</strong> to find
+                        your presentation or use the link button below <ion-icon name="link"></ion-icon></p>
+                </a>
             ];
         }
     }
@@ -501,7 +529,8 @@ export class AppRemote {
     private renderNotes(slideDefinition: DeckdeckgoSlideDefinition) {
         if (slideDefinition.notes && slideDefinition.notes.length > 0) {
             // Just in case, remove html tags from the notes
-            return <p padding class="notes">{slideDefinition.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
+            return <p padding
+                      class="notes">{slideDefinition.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
         } else {
             return undefined;
         }
