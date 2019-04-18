@@ -236,7 +236,7 @@ export class AppSignIn {
     render() {
         return [
             <app-navigation></app-navigation>,
-            <ion-content class="ion-padding">
+            <ion-content class="ion-padding fullscreen-padding">
                 <main padding>
                     {this.renderMsg()}
 
