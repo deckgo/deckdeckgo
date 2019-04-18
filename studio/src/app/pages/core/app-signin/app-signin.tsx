@@ -1,4 +1,4 @@
-import {Component, Element, Prop, Watch} from '@stencil/core';
+import {Component, Element, Prop, State, Watch} from '@stencil/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
@@ -42,6 +42,9 @@ export class AppSignIn {
     @Prop()
     redirectId: string;
 
+    @State()
+    private signInInProgress: boolean = false;
+
     private navService: NavService;
 
     private mergeService: MergeService;
@@ -77,6 +80,8 @@ export class AppSignIn {
     }
 
     async setupFirebaseUI() {
+        this.signInInProgress = false;
+
         await Utils.injectJS(
             'firebase-ui-script',
             'https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js'
@@ -109,6 +114,8 @@ export class AppSignIn {
             autoUpgradeAnonymousUsers: true,
             callbacks: {
                 signInSuccessWithAuthResult: async (_authResult, _redirectUrl) => {
+                    this.signInInProgress = true;
+
                     await this.navigateRedirect();
 
                     return true;
@@ -141,6 +148,9 @@ export class AppSignIn {
                 resolve();
                 return;
             }
+
+            this.signInInProgress = true;
+
             // The credential the user tried to sign in with.
             const cred = error.credential;
 
@@ -244,11 +254,7 @@ export class AppSignIn {
             <app-navigation></app-navigation>,
             <ion-content class="ion-padding fullscreen-padding">
                 <main padding>
-                    <ion-buttons class="back">
-                        <ion-button onClick={() => this.navigateBack()}>
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
+                    {this.renderBackButton()}
 
                     {this.renderMsg()}
 
@@ -275,6 +281,18 @@ export class AppSignIn {
                 <p class="ion-text-center ion-padding">Sign in to publish your presentation and to get soon a
                     personalized feed of recommendations.</p>
             ]
+        }
+    }
+
+    private renderBackButton() {
+        if (this.signInInProgress) {
+            return undefined;
+        } else {
+            return <ion-buttons class="back">
+                <ion-button onClick={() => this.navigateBack()}>
+                    <ion-icon name="close"></ion-icon>
+                </ion-button>
+            </ion-buttons>;
         }
     }
 }
