@@ -28,6 +28,7 @@ export class UserService {
         }
         return UserService.instance;
     }
+
     authStateChanged(authUser: AuthUser): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!authUser) {
