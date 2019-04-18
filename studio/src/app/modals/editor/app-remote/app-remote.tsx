@@ -17,6 +17,9 @@ export class AppRemote {
 
     private remoteService: RemoteService;
 
+    @State()
+    private qrCodeURI: string = 'https://deckdeckgo.app';
+
     constructor() {
         this.remoteService = RemoteService.getInstance();
     }
@@ -25,6 +28,8 @@ export class AppRemote {
         this.remoteService.watch().pipe(take(1)).subscribe((enable: boolean) => {
             this.remoteEnabled = enable;
         });
+
+        await this.initQRCodeURI();
     }
 
     async componentDidLoad() {
@@ -43,6 +48,18 @@ export class AppRemote {
     private async toggleRemoteEnabled() {
         this.remoteEnabled = !this.remoteEnabled;
         await this.remoteService.switch(this.remoteEnabled);
+    }
+
+    private initQRCodeURI(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const room: string = await this.remoteService.getRoom();
+
+            if (room && room !== undefined && room !== '') {
+                this.qrCodeURI = `https://deckdeckgo.app/remote/${room}`;
+            }
+
+            resolve();
+        });
     }
 
     render() {
@@ -66,10 +83,10 @@ export class AppRemote {
                     </ion-item>
                 </ion-list>
 
-                <p class="ion-padding-start ion-padding-end">Don't have the remote control app on your phone yet? Scan the following QR Code or get the Progressive Web Apps at <a href="https://deckdeckgo.app" target="_blank">https://deckdeckgo.app <ion-icon name="open"></ion-icon></a></p>
+                <p class="ion-padding-start ion-padding-end">Remote control your presentation with your phone or any devices. Scan the following QR Code to open directly your deck or get the Progressive Web Apps at <a href="https://deckdeckgo.app" target="_blank">https://deckdeckgo.app <ion-icon name="open"></ion-icon></a></p>
 
                 <div class="qrcode-container">
-                    <deckgo-qrcode content="https://deckdeckgo.app">
+                    <deckgo-qrcode content={this.qrCodeURI}>
                         <ion-icon slot="logo" src="/assets/img/deckdeckgo-logo.svg"></ion-icon>
                     </deckgo-qrcode>
                 </div>

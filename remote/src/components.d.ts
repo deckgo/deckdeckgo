@@ -70,8 +70,12 @@ export namespace Components {
   interface AppAbout {}
   interface AppAboutAttributes extends StencilHTMLAttributes {}
 
-  interface AppRemote {}
-  interface AppRemoteAttributes extends StencilHTMLAttributes {}
+  interface AppRemote {
+    'room': string;
+  }
+  interface AppRemoteAttributes extends StencilHTMLAttributes {
+    'room'?: string;
+  }
 
   interface AppTabs {}
   interface AppTabsAttributes extends StencilHTMLAttributes {}

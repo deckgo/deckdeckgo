@@ -694,8 +694,6 @@ export class DeckdeckgoDeck {
     this.activeIndex = this.activeIndex > 0 ? this.activeIndex - 1 : 0;
     this.length = this.length > 0 ? this.length - 1 : 0;
 
-    // TODO: If once needed, emit the deletion of the slide for the remote control
-
     if (this.length > 0) {
       await this.slideTo(this.activeIndex, 0);
     }

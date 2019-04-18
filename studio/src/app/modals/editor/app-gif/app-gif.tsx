@@ -127,8 +127,6 @@ export class AppGif {
             if (newSearchTerm) {
                 this.gifsOdd = [];
                 this.gifsEven = [];
-
-                console.log('reset');
             }
 
             this.gifsOdd = [...this.gifsOdd, ...gifs.filter((_a, i) => i % 2)];

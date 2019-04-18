@@ -8,7 +8,7 @@ import {SlideService} from '../../services/api/slide/slide.service';
 import {DeckService} from '../../services/api/deck/deck.service';
 import {ErrorService} from '../../services/core/error/error.service';
 import {BusyService} from '../../services/editor/busy/busy.service';
-import {DeckEditorService} from '../../services/api/deck/deck-editor.service';
+import {DeckEditorService} from '../../services/editor/deck/deck-editor.service';
 
 export class EditorHelper {
 

@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.8"></a>
+# 1.0.0-alpha.8 (2019-04-18)
+
+### Features
+
+* add methods `updateSlides` and `deleteSlide`
+
 <a name="1.0.0-alpha.7"></a>
 # 1.0.0-alpha.7 (2019-04-14)
 

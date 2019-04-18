@@ -1,3 +1,18 @@
+<a name="1.0.0-beta.33"></a>
+# [1.0.0-beta.33](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.32...v1.0.0-beta.33) (2019-04-18)
+
+### Applications
+
+* remote: v1.0.0-alpha.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+* docs: v1.0.0-alpha.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
+### Web Components
+
+* core: v1.0.0-beta.30 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+* inline-editor: 1.0.0-alpha.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+* remote: v1.0.0-alpha.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
+* types: v1.0.0-alpha.9 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+
 <a name="1.0.0-beta.32"></a>
 # [1.0.0-beta.32](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.31...v1.0.0-beta.32) (2019-04-14)
 

@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.8"></a>
+# 1.0.0-alpha.8 (2019-04-18)
+
+### Features
+
+* deep link the remote control with the upcoming DeckDeckGo studio respectively auto connect the remote control to a particular deck on start (if information is provided)
+
 <a name="1.0.0-alpha.7"></a>
 # [1.0.0-alpha.7](https://github.com/deckgo/deckdeckgo-app/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2019-02-26)
 

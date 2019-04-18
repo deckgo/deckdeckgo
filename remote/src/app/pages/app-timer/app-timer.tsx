@@ -142,7 +142,7 @@ export class AppTimer {
                 <app-stopwatch length={this.timerLength} remaining={this.timerRemaining}></app-stopwatch>
             </div>
         } else {
-            return <h1 padding-bottom>The DeckDeckGo remote timer</h1>;
+            return <h1 class="ion-padding-bottom">The DeckDeckGo remote timer</h1>;
         }
     }
 

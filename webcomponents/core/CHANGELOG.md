@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.30"></a>
+# 1.0.0-beta.30 (2019-04-18)
+
+### Features and fixes
+
+* some new features for the upcoming DeckDeckGo studio and a couple of fixes
+
 <a name="1.0.0-beta.29"></a>
 # 1.0.0-beta.29 (2019-03-08)
 

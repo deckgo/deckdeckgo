@@ -25,6 +25,7 @@ export namespace Components {
   interface DeckgoRemote {
     'autoConnect': boolean;
     'connect': () => Promise<void>;
+    'deleteSlide': () => Promise<void>;
     'disconnect': () => Promise<void>;
     'height': number;
     'length': number;
@@ -35,6 +36,7 @@ export namespace Components {
     'server': string;
     'slideTo': (index: number, speed?: number) => Promise<void>;
     'slides': DeckdeckgoSlideDefinition[];
+    'updateSlides': () => Promise<void>;
     'width': number;
   }
   interface DeckgoRemoteAttributes extends StencilHTMLAttributes {

@@ -1,6 +1,13 @@
 app-signin {
   main {
     background: white;
+    position: relative;
+
+    ion-buttons.back {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+    }
   }
 
   strong {

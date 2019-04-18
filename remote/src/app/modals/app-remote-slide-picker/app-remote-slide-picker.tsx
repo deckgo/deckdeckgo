@@ -44,7 +44,7 @@ export class AppRemoteSettings {
             </ion-header>,
             <ion-content padding>
                 <ion-list>
-                    <ion-list-header  padding-bottom padding-top>
+                    <ion-list-header class="ion-padding-bottom ion-padding-top">
                         <ion-label>Jump to slide</ion-label>
                     </ion-list-header>
 
@@ -62,7 +62,7 @@ export class AppRemoteSettings {
                     const text = 'Slide ' + (i + 1) + (slideDefinition.title ? ': ' + slideDefinition.title : '');
 
                     return <ion-item ion-item button onClick={() => this.jumpToSlide(i)}>
-                        <ion-label padding-start>{text}</ion-label>
+                        <ion-label class="ion-padding-start">{text}</ion-label>
                     </ion-item>
                 })
             );
