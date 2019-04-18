@@ -233,11 +233,23 @@ export class AppSignIn {
 
     }
 
+    async navigateBack() {
+        this.navService.navigate({
+            direction: NavDirection.BACK
+        });
+    }
+
     render() {
         return [
             <app-navigation></app-navigation>,
             <ion-content class="ion-padding fullscreen-padding">
                 <main padding>
+                    <ion-buttons class="back">
+                        <ion-button onClick={() => this.navigateBack()}>
+                            <ion-icon name="close"></ion-icon>
+                        </ion-button>
+                    </ion-buttons>
+
                     {this.renderMsg()}
 
                     <div id="firebaseui-auth-container"></div>

@@ -81,6 +81,8 @@ export class AppRoot {
 
         if (params.direction === NavDirection.ROOT) {
             window.location.assign(params.url);
+        } else if (params.direction === NavDirection.BACK) {
+            await router.back();
         } else {
             await router.push(params.url);
         }
