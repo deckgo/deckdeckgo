@@ -18,7 +18,7 @@
     "deckdeckgo": "file:../webcomponents/core",
     "deckdeckgo-inline-editor": "file:../webcomponents/inline-editor",
     "deckdeckgo-qrcode": "^1.0.0-alpha.6",
-    "deckdeckgo-remote": "file:../webcomponents/remote/deckdeckgo-remote-1.0.0-alpha.7.tgz",
+    "deckdeckgo-remote": "^1.0.0-alpha.8",
     "firebase": "^5.9.0",
     "idb-keyval": "^3.1.0",
     "rxjs": "^6.4.0"
