@@ -28,9 +28,6 @@ export class UserService {
         }
         return UserService.instance;
     }
-
-    // TODO: Implement the authentication in each API requests which need it
-
     authStateChanged(authUser: AuthUser): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!authUser) {
