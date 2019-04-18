@@ -93,7 +93,7 @@ export class AppEditor {
             this.slidesFetched = true;
         });
 
-        this.busySubscription = this.busyService.watchSlideBusy().subscribe(async (slide: HTMLElement) => {
+        this.busySubscription = this.busyService.watchSlideEditable().subscribe(async (slide: HTMLElement) => {
             await this.contentEditable(slide);
         });
     }
