@@ -4,6 +4,7 @@
 ### Applications
 
 * remote: v1.0.0-alpha.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+* docs: v1.0.0-alpha.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 
 ### Web Components
 

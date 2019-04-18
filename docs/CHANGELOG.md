@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.5"></a>
+# 1.0.0-alpha.5 (2019-04-18)
+
+### Features
+
+* some new features for the upcoming DeckDeckGo studio
+
 <a name="1.0.0-alpha.4"></a>
 # 1.0.0-alpha.4 (2019-03-07)
 
