@@ -1,9 +1,11 @@
 import {BehaviorSubject, Observable} from 'rxjs';
+import {filter, take} from 'rxjs/operators';
 
 import {get, set} from 'idb-keyval';
-import {filter, take} from 'rxjs/operators';
+
 import {Deck} from '../../../models/deck';
-import {DeckEditorService} from '../../api/deck/deck-editor.service';
+
+import {DeckEditorService} from '../deck/deck-editor.service';
 
 export class RemoteService {
 

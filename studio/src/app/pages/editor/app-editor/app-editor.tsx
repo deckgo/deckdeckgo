@@ -19,7 +19,7 @@ import {EditorHelper} from '../../../helpers/editor/editor.helper';
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {GuestService} from '../../../services/editor/guest/guest.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 import {BusyService} from '../../../services/editor/busy/busy.service';
 

@@ -13,7 +13,7 @@ import {DeckService} from '../../../services/api/deck/deck.service';
 import {ErrorService} from '../../../services/core/error/error.service';
 import {BusyService} from '../../../services/editor/busy/busy.service';
 import {UserService} from '../../../services/api/user/user.service';
-import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 export class DeckEventsHandler {
 

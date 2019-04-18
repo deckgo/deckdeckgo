@@ -13,7 +13,7 @@ import {AuthService} from '../../../services/api/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckService} from '../../../services/api/deck/deck.service';
 import {UserService} from '../../../services/api/user/user.service';
-import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
     tag: 'app-menu',
