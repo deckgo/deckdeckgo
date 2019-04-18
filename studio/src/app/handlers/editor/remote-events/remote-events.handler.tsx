@@ -84,6 +84,8 @@ export class RemoteEventsHandler {
                 await this.slideToChange(event)
             });
         }
+
+        this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
     }
 
     private initRemote(): Promise<void> {
@@ -110,6 +112,8 @@ export class RemoteEventsHandler {
             await this.initDeckMove();
 
             await this.remoteService.init();
+
+            this.el.addEventListener('slideDelete', this.onSlideDelete, false);
 
             resolve();
         });
@@ -413,6 +417,29 @@ export class RemoteEventsHandler {
             }
 
             await deckgoRemoteElement.updateSlides();
+
+            resolve();
+        });
+    }
+
+    private onSlideDelete = async ($event: CustomEvent) => {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        await this.deleteRemoteSlide();
+    };
+
+    private deleteRemoteSlide(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+
+            if (!deckgoRemoteElement) {
+                resolve();
+                return;
+            }
+
+            await deckgoRemoteElement.deleteSlide();
 
             resolve();
         });

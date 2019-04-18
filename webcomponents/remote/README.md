@@ -142,6 +142,14 @@ This method will emit an event from the deck to slide in order to update the lis
 await deck.updateSlides();
 ```
 
+### Delete slide
+
+This method will delete the current slide in the remote app.
+
+```
+await deck.deleteSlide();
+```
+
 ## License
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)

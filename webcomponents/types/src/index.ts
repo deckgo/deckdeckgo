@@ -25,7 +25,8 @@ export enum DeckdeckgoEventType {
     START_DRAWING = 'start_drawing',
     DRAW = 'draw',
     END_DRAWING = 'end_drawing',
-    SLIDE_ACTION = 'slide_action'
+    SLIDE_ACTION = 'slide_action',
+    DELETE_SLIDE = 'delete_slide'
 }
 
 export enum DeckdeckgoEventEmitter {

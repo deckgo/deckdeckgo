@@ -25,6 +25,7 @@ export namespace Components {
   interface DeckgoRemote {
     'autoConnect': boolean;
     'connect': () => Promise<void>;
+    'deleteSlide': () => Promise<void>;
     'disconnect': () => Promise<void>;
     'height': number;
     'length': number;

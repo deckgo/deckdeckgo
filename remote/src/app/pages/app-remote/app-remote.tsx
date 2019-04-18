@@ -84,6 +84,8 @@ export class AppRemote {
                     const speed: number = ($event as DeckdeckgoEventSlideTo).speed;
 
                     await this.slideTo(index, speed);
+                } else if ($event.type === DeckdeckgoEventType.DELETE_SLIDE) {
+                    await this.deleteSlide();
                 }
             }
         });
@@ -280,6 +282,8 @@ export class AppRemote {
         }
 
         await (deck as any).slideTo(index, speed);
+
+        await this.afterSwipe();
     }
 
     private async slideToLastSlide() {
@@ -293,9 +297,24 @@ export class AppRemote {
             const deckLength: number = await (deck as any).getLength();
 
             if (deckLength > 0) {
-                await (deck as any).slideTo(deckLength - 1);
+                await this.slideTo(deckLength - 1);
             }
         }, {once: true});
+    }
+
+    private async deleteSlide() {
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        await (deck as any).deleteActiveSlide();
+
+        if (this.slides && this.slides.length > this.slideIndex && this.slideIndex >= 0) {
+            this.slides.splice(this.slideIndex, 1);
+            this.slideIndex = this.slideIndex > 0 ? this.slideIndex - 1 : 0;
+        }
     }
 
     private moveDraw(event: CustomEvent<number>): Promise<void> {

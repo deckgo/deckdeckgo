@@ -261,6 +261,18 @@ export class DeckdeckgoRemote {
   }
 
   @Method()
+  deleteSlide(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.communicationService.emit({
+        type: DeckdeckgoEventType.DELETE_SLIDE,
+        emitter: DeckdeckgoEventEmitter.DECK
+      });
+
+      resolve();
+    });
+  }
+
+  @Method()
   moveDraw(leftOffset: number, transitionDuration: string): Promise<void> {
     return new Promise<void>((resolve) => {
       const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');
