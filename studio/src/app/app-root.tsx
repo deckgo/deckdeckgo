@@ -112,7 +112,7 @@ export class AppRoot {
                         <app-navigation logo={true} menuToggle={false} user={false}></app-navigation>
                         <ion-content>
                             <ion-menu-toggle autoHide={false}>
-                                <app-menu-user></app-menu-user>
+                                <app-menu></app-menu>
 
                                 <app-footer></app-footer>
                             </ion-menu-toggle>

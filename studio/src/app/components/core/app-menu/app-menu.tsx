@@ -16,11 +16,11 @@ import {UserService} from '../../../services/api/user/user.service';
 import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 
 @Component({
-    tag: 'app-menu-user',
-    styleUrl: 'app-menu-user.scss',
+    tag: 'app-menu',
+    styleUrl: 'app-menu.scss',
     shadow: false
 })
-export class AppMenuUser {
+export class AppMenu {
 
     @Element() el: HTMLElement;
 
