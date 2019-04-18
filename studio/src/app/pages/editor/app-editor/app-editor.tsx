@@ -17,7 +17,7 @@ import {RemoteEventsHandler} from '../../../handlers/editor/remote-events/remote
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
 import {AuthService} from '../../../services/api/auth/auth.service';
-import {GuestService} from '../../../services/editor/guest/guest.service';
+import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
@@ -49,7 +49,7 @@ export class AppEditor {
     private removeEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
 
     private authService: AuthService;
-    private guestService: GuestService;
+    private anonymousService: AnonymousService;
     private navService: NavService;
 
     private deckEditorService: DeckEditorService;
@@ -63,7 +63,7 @@ export class AppEditor {
 
     constructor() {
         this.authService = AuthService.getInstance();
-        this.guestService = GuestService.getInstance();
+        this.anonymousService = AnonymousService.getInstance();
         this.navService = NavService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
         this.busyService = BusyService.getInstance();
@@ -341,7 +341,7 @@ export class AppEditor {
             return;
         }
 
-        const couldAddSlide: boolean = await this.guestService.couldAddSlide(this.slides);
+        const couldAddSlide: boolean = await this.anonymousService.couldAddSlide(this.slides);
 
         if (!couldAddSlide) {
             await this.signIn();
@@ -395,7 +395,7 @@ export class AppEditor {
             return;
         }
 
-        const couldAddSlide: boolean = await this.guestService.couldPublish(this.slides);
+        const couldAddSlide: boolean = await this.anonymousService.couldPublish(this.slides);
 
         if (!couldAddSlide) {
             await this.signIn();
