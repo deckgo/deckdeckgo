@@ -26,7 +26,7 @@ export class BusyService {
         this.deckBusySubject.next(busy);
     }
 
-    watchSlideBusy(): Observable<HTMLElement> {
+    watchSlideEditable(): Observable<HTMLElement> {
         return this.slideEditableSubject.asObservable();
     }
 

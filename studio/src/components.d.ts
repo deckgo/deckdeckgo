@@ -36,8 +36,8 @@ export namespace Components {
   interface AppLogo {}
   interface AppLogoAttributes extends StencilHTMLAttributes {}
 
-  interface AppMenuUser {}
-  interface AppMenuUserAttributes extends StencilHTMLAttributes {}
+  interface AppMenu {}
+  interface AppMenuAttributes extends StencilHTMLAttributes {}
 
   interface AppNavigationActions {
     'presentation': boolean;
@@ -202,7 +202,7 @@ declare global {
     'AppAvatar': Components.AppAvatar;
     'AppFooter': Components.AppFooter;
     'AppLogo': Components.AppLogo;
-    'AppMenuUser': Components.AppMenuUser;
+    'AppMenu': Components.AppMenu;
     'AppNavigationActions': Components.AppNavigationActions;
     'AppNavigation': Components.AppNavigation;
     'AppAddSlideAction': Components.AppAddSlideAction;
@@ -238,7 +238,7 @@ declare global {
     'app-avatar': Components.AppAvatarAttributes;
     'app-footer': Components.AppFooterAttributes;
     'app-logo': Components.AppLogoAttributes;
-    'app-menu-user': Components.AppMenuUserAttributes;
+    'app-menu': Components.AppMenuAttributes;
     'app-navigation-actions': Components.AppNavigationActionsAttributes;
     'app-navigation': Components.AppNavigationAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
@@ -294,10 +294,10 @@ declare global {
     new (): HTMLAppLogoElement;
   };
 
-  interface HTMLAppMenuUserElement extends Components.AppMenuUser, HTMLStencilElement {}
-  var HTMLAppMenuUserElement: {
-    prototype: HTMLAppMenuUserElement;
-    new (): HTMLAppMenuUserElement;
+  interface HTMLAppMenuElement extends Components.AppMenu, HTMLStencilElement {}
+  var HTMLAppMenuElement: {
+    prototype: HTMLAppMenuElement;
+    new (): HTMLAppMenuElement;
   };
 
   interface HTMLAppNavigationActionsElement extends Components.AppNavigationActions, HTMLStencilElement {}
@@ -473,7 +473,7 @@ declare global {
     'app-avatar': HTMLAppAvatarElement
     'app-footer': HTMLAppFooterElement
     'app-logo': HTMLAppLogoElement
-    'app-menu-user': HTMLAppMenuUserElement
+    'app-menu': HTMLAppMenuElement
     'app-navigation-actions': HTMLAppNavigationActionsElement
     'app-navigation': HTMLAppNavigationElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
@@ -509,7 +509,7 @@ declare global {
     'app-avatar': HTMLAppAvatarElement;
     'app-footer': HTMLAppFooterElement;
     'app-logo': HTMLAppLogoElement;
-    'app-menu-user': HTMLAppMenuUserElement;
+    'app-menu': HTMLAppMenuElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;

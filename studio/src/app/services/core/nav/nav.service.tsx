@@ -2,11 +2,12 @@ import {Observable, Subject} from 'rxjs';
 
 export enum NavDirection {
     FORWARD,
-    ROOT
+    ROOT,
+    BACK
 }
 
 export interface NavParams {
-    url: string;
+    url?: string;
     direction: NavDirection
 }
 

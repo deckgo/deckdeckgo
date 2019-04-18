@@ -81,6 +81,8 @@ export class AppRoot {
 
         if (params.direction === NavDirection.ROOT) {
             window.location.assign(params.url);
+        } else if (params.direction === NavDirection.BACK) {
+            await router.back();
         } else {
             await router.push(params.url);
         }
@@ -112,7 +114,7 @@ export class AppRoot {
                         <app-navigation logo={true} menuToggle={false} user={false}></app-navigation>
                         <ion-content>
                             <ion-menu-toggle autoHide={false}>
-                                <app-menu-user></app-menu-user>
+                                <app-menu></app-menu>
 
                                 <app-footer></app-footer>
                             </ion-menu-toggle>

@@ -29,7 +29,7 @@
     "@types/socket.io-client": "^1.4.32",
     "@types/webrtc": "0.0.24",
     "autoprefixer": "^9.4.7",
-    "deckdeckgo-types": "^1.0.0-alpha.7",
+    "deckdeckgo-types": "file:../types",
     "rollup-plugin-node-builtins": "^2.1.2"
   },
   "repository": {

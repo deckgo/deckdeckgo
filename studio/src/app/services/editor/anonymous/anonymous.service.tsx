@@ -4,9 +4,9 @@ import {AuthUser} from '../../../models/auth-user';
 
 import {AuthService} from '../../api/auth/auth.service';
 
-export class GuestService {
+export class AnonymousService {
 
-    private static instance: GuestService;
+    private static instance: AnonymousService;
 
     private authService: AuthService;
 
@@ -16,10 +16,10 @@ export class GuestService {
     }
 
     static getInstance() {
-        if (!GuestService.instance) {
-            GuestService.instance = new GuestService();
+        if (!AnonymousService.instance) {
+            AnonymousService.instance = new AnonymousService();
         }
-        return GuestService.instance;
+        return AnonymousService.instance;
     }
 
     /**

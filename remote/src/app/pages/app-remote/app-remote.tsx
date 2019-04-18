@@ -27,6 +27,9 @@ export class AppRemote {
 
     @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
 
+    @Prop()
+    room: string;
+
     private subscriptionState: Subscription;
     private subscriptionEvent: Subscription;
 
@@ -64,25 +67,30 @@ export class AppRemote {
             }
         });
 
-        this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async (event: DeckdeckgoEvent) => {
-            if (event.emitter === DeckdeckgoEventEmitter.DECK) {
-                if (event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
-                    await this.initSlides((event as DeckdeckgoEventSlides));
+        this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async ($event: DeckdeckgoEvent) => {
+            if ($event.emitter === DeckdeckgoEventEmitter.DECK) {
+                if ($event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
+                    await this.initSlides(($event as DeckdeckgoEventSlides));
                     await this.slidePickerTo(0);
-                } else if (event.type === DeckdeckgoEventType.NEXT_SLIDE) {
+                } else if ($event.type === DeckdeckgoEventType.SLIDES_UPDATE) {
+                    await this.initSlides(($event as DeckdeckgoEventSlides));
+                    await this.slideToLastSlide();
+                } else if ($event.type === DeckdeckgoEventType.NEXT_SLIDE) {
                     await this.animateNextSlide();
-                } else if (event.type === DeckdeckgoEventType.PREV_SLIDE) {
+                } else if ($event.type === DeckdeckgoEventType.PREV_SLIDE) {
                     await this.animatePrevSlide();
-                } else if (event.type === DeckdeckgoEventType.SLIDE_TO) {
-                    const index: number = (event as DeckdeckgoEventSlideTo).index;
-                    const speed: number = (event as DeckdeckgoEventSlideTo).speed;
+                } else if ($event.type === DeckdeckgoEventType.SLIDE_TO) {
+                    const index: number = ($event as DeckdeckgoEventSlideTo).index;
+                    const speed: number = ($event as DeckdeckgoEventSlideTo).speed;
 
                     await this.slideTo(index, speed);
+                } else if ($event.type === DeckdeckgoEventType.DELETE_SLIDE) {
+                    await this.deleteSlide();
                 }
             }
         });
 
-        this.acceleratorSubscription = this.accelerometerService.watch().subscribe(async (prev: boolean)  => {
+        this.acceleratorSubscription = this.accelerometerService.watch().subscribe(async (prev: boolean) => {
             if (prev) {
                 await this.prevSlide(false);
                 await this.animatePrevSlide();
@@ -96,14 +104,14 @@ export class AppRemote {
             }, this.accelerometerService.delay);
         });
 
-        this.acceleratorInitSubscription = this.accelerometerService.watchInitialized().subscribe(async (initialized: boolean) =>{
-           if (initialized) {
-               const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+        this.acceleratorInitSubscription = this.accelerometerService.watchInitialized().subscribe(async (initialized: boolean) => {
+            if (initialized) {
+                const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
-               if (deck) {
-                   await this.startAccelerometer();
-               }
-           }
+                if (deck) {
+                    await this.startAccelerometer();
+                }
+            }
         });
 
         if (window) {
@@ -113,6 +121,8 @@ export class AppRemote {
         }
 
         await this.contentSize();
+
+        await this.autoConnect();
     }
 
     private initSlides(event: DeckdeckgoEventSlides): Promise<void> {
@@ -123,7 +133,7 @@ export class AppRemote {
                 // If the slides definition is not provided, we generate a pseudo list of slides for the deck length
                 const length: number = event.length;
 
-                for (let i: number = 0; i<length; i++) {
+                for (let i: number = 0; i < length; i++) {
                     this.slides.push({
                         name: 'deckgo-slide-title'
                     });
@@ -213,7 +223,11 @@ export class AppRemote {
     }
 
     private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
-        this.communicationService.emit({type: type, emitter: DeckdeckgoEventEmitter.APP, slideAnimation: slideAnimation});
+        this.communicationService.emit({
+            type: type,
+            emitter: DeckdeckgoEventEmitter.APP,
+            slideAnimation: slideAnimation
+        });
     }
 
     private async animateNextSlide() {
@@ -261,7 +275,46 @@ export class AppRemote {
             return;
         }
 
+        const deckLength: number = await (deck as any).getLength();
+
+        if (index >= deckLength) {
+            return;
+        }
+
         await (deck as any).slideTo(index, speed);
+
+        await this.afterSwipe();
+    }
+
+    private async slideToLastSlide() {
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        deck.addEventListener('slidesDidLoad', async (_$event: CustomEvent) => {
+            const deckLength: number = await (deck as any).getLength();
+
+            if (deckLength > 0) {
+                await this.slideTo(deckLength - 1);
+            }
+        }, {once: true});
+    }
+
+    private async deleteSlide() {
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        await (deck as any).deleteActiveSlide();
+
+        if (this.slides && this.slides.length > this.slideIndex && this.slideIndex >= 0) {
+            this.slides.splice(this.slideIndex, 1);
+            this.slideIndex = this.slideIndex > 0 ? this.slideIndex - 1 : 0;
+        }
     }
 
     private moveDraw(event: CustomEvent<number>): Promise<void> {
@@ -345,7 +398,7 @@ export class AppRemote {
         });
 
         modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-            await this.startAccelerometer() ;
+            await this.startAccelerometer();
         });
 
         await modal.present();
@@ -400,6 +453,22 @@ export class AppRemote {
         } catch (err) {
             // Well then no accelerometer support
         }
+    }
+
+    private autoConnect(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.room || this.room === undefined || this.room.length <= 0) {
+                resolve();
+                return;
+            }
+
+            this.communicationService.room = decodeURI(this.room);
+
+            await this.communicationService.connect();
+            await this.communicationService.join();
+
+            resolve();
+        });
     }
 
     render() {
@@ -458,7 +527,10 @@ export class AppRemote {
         } else {
             return [
                 <h1 padding>The DeckDeckGo remote control</h1>,
-                <a onClick={() => this.openConnectModal()} class="link-to-modal"><p padding-start padding-end>Not connected yet, <strong>click here</strong> to find your presentation or use the link button below <ion-icon name="link"></ion-icon></p></a>
+                <a onClick={() => this.openConnectModal()} class="link-to-modal">
+                    <p class="ion-padding-start ion-padding-end">Not connected yet, <strong>click here</strong> to find
+                        your presentation or use the link button below <ion-icon name="link"></ion-icon></p>
+                </a>
             ];
         }
     }
@@ -501,7 +573,8 @@ export class AppRemote {
     private renderNotes(slideDefinition: DeckdeckgoSlideDefinition) {
         if (slideDefinition.notes && slideDefinition.notes.length > 0) {
             // Just in case, remove html tags from the notes
-            return <p padding class="notes">{slideDefinition.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
+            return <p padding
+                      class="notes">{slideDefinition.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
         } else {
             return undefined;
         }
@@ -515,7 +588,7 @@ export class AppRemote {
                     </ion-fab-button>
                     <ion-fab-list side="start">
                         <ion-fab-button color="medium" onClick={() => this.openSlidePicker()}>
-                            <ion-icon name="bookmark"></ion-icon>
+                            <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
                         </ion-fab-button>
                         <ion-fab-button color="medium" onClick={(e: UIEvent) => this.arrowNextSlide(e)}>
                             <ion-icon name="arrow-forward"></ion-icon>

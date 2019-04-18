@@ -62,7 +62,7 @@ export class DeckdeckgoRemote {
       if (event.emitter === DeckdeckgoEventEmitter.APP) {
         if (event.type === DeckdeckgoEventType.SLIDES_REQUEST) {
           // If app is asking for the deck length, how many slides, we answer directly
-          await this.answerApp();
+          await this.sendSlidesToApp(DeckdeckgoEventType.SLIDES_ANSWER);
         } else if (event.type === DeckdeckgoEventType.CLEAR_SLIDE) {
           await this.clear();
         } else if (event.type === DeckdeckgoEventType.START_DRAWING) {
@@ -242,13 +242,30 @@ export class DeckdeckgoRemote {
     return event.clientY * ratio;
   }
 
-  private answerApp(): Promise<void> {
+  private sendSlidesToApp(type: DeckdeckgoEventType): Promise<void> {
     return new Promise<void>((resolve) => {
       this.communicationService.emit({
-        type: DeckdeckgoEventType.SLIDES_ANSWER,
+        type: type,
         emitter: DeckdeckgoEventEmitter.DECK,
         length: this.length,
         slides: this.slides
+      });
+
+      resolve();
+    });
+  }
+
+  @Method()
+  async updateSlides() {
+    await this.sendSlidesToApp(DeckdeckgoEventType.SLIDES_UPDATE);
+  }
+
+  @Method()
+  deleteSlide(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.communicationService.emit({
+        type: DeckdeckgoEventType.DELETE_SLIDE,
+        emitter: DeckdeckgoEventEmitter.DECK
       });
 
       resolve();

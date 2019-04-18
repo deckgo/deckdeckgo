@@ -17,6 +17,7 @@ export interface DeckdeckgoSlideDefinition {
 export enum DeckdeckgoEventType {
     SLIDES_REQUEST = 'slides_request',
     SLIDES_ANSWER = 'slides_answer',
+    SLIDES_UPDATE = 'slides_update',
     NEXT_SLIDE = 'next_slide',
     PREV_SLIDE = 'prev_slide',
     SLIDE_TO = 'slide_to',
@@ -24,7 +25,8 @@ export enum DeckdeckgoEventType {
     START_DRAWING = 'start_drawing',
     DRAW = 'draw',
     END_DRAWING = 'end_drawing',
-    SLIDE_ACTION = 'slide_action'
+    SLIDE_ACTION = 'slide_action',
+    DELETE_SLIDE = 'delete_slide'
 }
 
 export enum DeckdeckgoEventEmitter {

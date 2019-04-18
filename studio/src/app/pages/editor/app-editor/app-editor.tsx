@@ -17,9 +17,9 @@ import {RemoteEventsHandler} from '../../../handlers/editor/remote-events/remote
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
 import {AuthService} from '../../../services/api/auth/auth.service';
-import {GuestService} from '../../../services/editor/guest/guest.service';
+import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 import {BusyService} from '../../../services/editor/busy/busy.service';
 
@@ -49,7 +49,7 @@ export class AppEditor {
     private removeEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
 
     private authService: AuthService;
-    private guestService: GuestService;
+    private anonymousService: AnonymousService;
     private navService: NavService;
 
     private deckEditorService: DeckEditorService;
@@ -63,7 +63,7 @@ export class AppEditor {
 
     constructor() {
         this.authService = AuthService.getInstance();
-        this.guestService = GuestService.getInstance();
+        this.anonymousService = AnonymousService.getInstance();
         this.navService = NavService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
         this.busyService = BusyService.getInstance();
@@ -93,7 +93,7 @@ export class AppEditor {
             this.slidesFetched = true;
         });
 
-        this.busySubscription = this.busyService.watchSlideBusy().subscribe(async (slide: HTMLElement) => {
+        this.busySubscription = this.busyService.watchSlideEditable().subscribe(async (slide: HTMLElement) => {
             await this.contentEditable(slide);
         });
     }
@@ -254,23 +254,6 @@ export class AppEditor {
         await (deck as any).slideTo(index, speed);
     }
 
-    @Listen('slideDidLoad')
-    async slideToLastSlideOnSlideLoad($event) {
-        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-        if (!deck) {
-            return;
-        }
-
-        if ($event && $event.target && $event.target instanceof HTMLElement) {
-            const newSlide: HTMLElement = $event.target;
-
-            if (!newSlide.getAttribute('slide_id') && deck.hasChildNodes()) {
-                await this.slideTo(deck.children && deck.children.length > 0 ? deck.children.length - 1 : 0);
-            }
-        }
-    }
-
     private async openSlideNavigate() {
         const slidesTitle: string[] = await this.getSlidesTitle();
 
@@ -358,7 +341,7 @@ export class AppEditor {
             return;
         }
 
-        const couldAddSlide: boolean = await this.guestService.couldAddSlide(this.slides);
+        const couldAddSlide: boolean = await this.anonymousService.couldAddSlide(this.slides);
 
         if (!couldAddSlide) {
             await this.signIn();
@@ -412,7 +395,7 @@ export class AppEditor {
             return;
         }
 
-        const couldAddSlide: boolean = await this.guestService.couldPublish(this.slides);
+        const couldAddSlide: boolean = await this.anonymousService.couldPublish(this.slides);
 
         if (!couldAddSlide) {
             await this.signIn();

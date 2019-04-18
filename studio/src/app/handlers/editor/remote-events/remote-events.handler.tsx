@@ -1,26 +1,20 @@
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 
 import {Subscription} from 'rxjs';
-import {filter, take} from 'rxjs/operators';
-
-import {Deck} from '../../../models/deck';
 
 import {Utils} from '../../../utils/core/utils';
 
-import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 import {RemoteService} from '../../../services/editor/remote/remote.service';
 
 export class RemoteEventsHandler {
 
     private el: HTMLElement;
 
-    private deckEditorService: DeckEditorService;
     private remoteService: RemoteService;
 
     private subscription: Subscription;
 
     constructor() {
-        this.deckEditorService = DeckEditorService.getInstance();
         this.remoteService = RemoteService.getInstance();
     }
 
@@ -37,7 +31,7 @@ export class RemoteEventsHandler {
                     await this.disconnect();
                 }
             });
-            
+
             resolve();
         });
     }
@@ -66,8 +60,8 @@ export class RemoteEventsHandler {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (deck) {
-            deck.removeEventListener('slidesDidLoad', async (slides) => {
-                await this.initRemoteRoomServer(slides)
+            deck.removeEventListener('slidesDidLoad', async ($event: CustomEvent) => {
+                await this.initRemoteSlides($event)
             });
 
             deck.removeEventListener('slideNextDidChange', async () => {
@@ -90,16 +84,20 @@ export class RemoteEventsHandler {
                 await this.slideToChange(event)
             });
         }
+
+        this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
     }
 
     private initRemote(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');
+            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
             if (!deckgoRemoteElement || !window) {
                 resolve();
                 return;
             }
+
+            deckgoRemoteElement.server = EnvironmentConfigService.getInstance().get('signalingServerUrl');
 
             deckgoRemoteElement.addEventListener('event', async ($event) => {
                 await this.remoteEvent($event)
@@ -112,6 +110,10 @@ export class RemoteEventsHandler {
             await this.initSlidesDidLoadListener();
 
             await this.initDeckMove();
+
+            await this.remoteService.init();
+
+            this.el.addEventListener('slideDelete', this.onSlideDelete, false);
 
             resolve();
         });
@@ -216,35 +218,33 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            deck.addEventListener('slidesDidLoad', async (slides) => {
+            deck.addEventListener('slidesDidLoad', async ($event: CustomEvent) => {
                 await this.initRemoteSize();
 
-                await this.initRemoteRoomServer(slides);
-
-                await this.remoteService.init();
+                await this.initRemoteSlides($event);
             });
 
             resolve();
         });
     }
 
-    private initRemoteRoomServer = (slides) => {
+    private initRemoteSlides = ($event: CustomEvent) => {
         return new Promise(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
-            if (!deckgoRemoteElement || !document) {
+            if (!deckgoRemoteElement || !document || !$event || !$event.detail) {
                 resolve();
                 return;
             }
 
-            deckgoRemoteElement.slides = slides.detail;
+            deckgoRemoteElement.slides = $event.detail;
 
-            deckgoRemoteElement.server = EnvironmentConfigService.getInstance().get('signalingServerUrl');
+            await this.updateRemoteSlides($event);
 
             resolve();
         });
     };
-    
+
     private initDeckMove() {
         return new Promise(async (resolve) => {
             const deck: HTMLElement = this.el.querySelector('deckgo-deck');
@@ -277,7 +277,7 @@ export class RemoteEventsHandler {
             resolve();
         });
     }
-    
+
     private slidePrevNext(next) {
         return new Promise(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
@@ -296,7 +296,7 @@ export class RemoteEventsHandler {
             resolve();
         });
     }
-    
+
     private moveRemote($event) {
         return new Promise(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
@@ -326,7 +326,7 @@ export class RemoteEventsHandler {
             resolve();
         });
     }
-    
+
     private slideToChange($event) {
         return new Promise(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
@@ -338,7 +338,12 @@ export class RemoteEventsHandler {
 
             const slideIndex = $event.detail;
 
-            await deckgoRemoteElement.slideTo(slideIndex, 0);
+            const slide: HTMLElement = this.el.querySelector('deckgo-deck > :nth-child(' + (slideIndex + 1) + ')');
+
+            // If slide has no id, it's a new slide, we will slide to the last one in the remote
+            if (slide.getAttribute('slide_id')) {
+                await deckgoRemoteElement.slideTo(slideIndex, 0);
+            }
 
             resolve();
         });
@@ -353,22 +358,22 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            this.deckEditorService.watch().pipe(filter((deck: Deck) => deck && (deck.name && deck.name !== undefined && deck.name !== '')), take(1)).subscribe(async (deck: Deck) => {
-                deckgoRemoteElement.room = deck.name;
+            const room: string = await this.remoteService.getRoom();
 
-                await deckgoRemoteElement.connect();
+            deckgoRemoteElement.room = room;
 
-                const deckElement = this.el.querySelector('deckgo-deck');
+            await deckgoRemoteElement.connect();
 
-                if (!deckElement) {
-                    resolve();
-                    return;
-                }
+            const deckElement = this.el.querySelector('deckgo-deck');
 
-                await deckElement.slideTo(0, 300, false);
-
+            if (!deckElement) {
                 resolve();
-            });
+                return;
+            }
+
+            await deckElement.slideTo(0, 300, false);
+
+            resolve();
         });
     }
 
@@ -387,4 +392,56 @@ export class RemoteEventsHandler {
         });
     }
 
+    private updateRemoteSlides($event: CustomEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck || !$event || !$event.detail || !deck.hasChildNodes()) {
+                resolve();
+                return;
+            }
+
+            const lastSlide: Node = deck.lastChild;
+
+            // If lastSlide has already an id, it means it isn't a new slide, so no need to update the remote
+            if (!lastSlide || !(lastSlide instanceof HTMLElement) || lastSlide.getAttribute('slide_id')) {
+                resolve();
+                return;
+            }
+
+            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+
+            if (!deckgoRemoteElement) {
+                resolve();
+                return;
+            }
+
+            await deckgoRemoteElement.updateSlides();
+
+            resolve();
+        });
+    }
+
+    private onSlideDelete = async ($event: CustomEvent) => {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        await this.deleteRemoteSlide();
+    };
+
+    private deleteRemoteSlide(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+
+            if (!deckgoRemoteElement) {
+                resolve();
+                return;
+            }
+
+            await deckgoRemoteElement.deleteSlide();
+
+            resolve();
+        });
+    }
 }

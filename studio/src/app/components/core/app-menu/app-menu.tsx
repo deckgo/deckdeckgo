@@ -1,6 +1,7 @@
 import {Component, Element, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
+import {filter} from 'rxjs/operators';
 
 import {AuthUser} from '../../../models/auth-user';
 import {Deck} from '../../../models/deck';
@@ -12,14 +13,14 @@ import {AuthService} from '../../../services/api/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckService} from '../../../services/api/deck/deck.service';
 import {UserService} from '../../../services/api/user/user.service';
-import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
-    tag: 'app-menu-user',
-    styleUrl: 'app-menu-user.scss',
+    tag: 'app-menu',
+    styleUrl: 'app-menu.scss',
     shadow: false
 })
-export class AppMenuUser {
+export class AppMenu {
 
     @Element() el: HTMLElement;
 
@@ -61,7 +62,8 @@ export class AppMenuUser {
             this.authUser = authUser;
         });
 
-        this.userSubscription = this.userService.watch().subscribe(async (user: User) => {
+        this.userSubscription = this.userService.watch().pipe(
+            filter((user: User) => user && !user.anonymous)).subscribe(async (user: User) => {
             if (user) {
                 try {
                     this.decks = await this.deckService.getUserDecks(user.id);
@@ -125,7 +127,8 @@ export class AppMenuUser {
             }
 
             if (!this.decks || this.decks.length <= 0) {
-                this.decks = [];
+                resolve();
+                return;
             }
 
             const index: number = this.decks.findIndex((filteredDeck: Deck) => {
@@ -211,7 +214,6 @@ export class AppMenuUser {
 
             {this.renderPresentations()}
 
-            {this.renderSignIn()}
             {this.renderSignOut()}
 
         </ion-list>;
@@ -229,17 +231,13 @@ export class AppMenuUser {
     }
 
     private renderPresentations() {
-        return [
-            this.renderDecksFilter(),
-            this.renderDecks()
-        ];
-    }
-
-    private renderSignIn() {
         if (Utils.isLoggedIn(this.authUser)) {
-            return undefined;
+            return [
+                this.renderDecksFilter(),
+                this.renderDecks()
+            ];
         } else {
-            return <ion-item button class="signin" onClick={() => this.signIn()}>
+            return <ion-item button onClick={() => this.signIn()}>
                 <ion-icon name="log-in" slot="start"></ion-icon>
                 <ion-label>Sign in</ion-label>
             </ion-item>;
@@ -297,10 +295,7 @@ export class AppMenuUser {
                 })
             );
         } else {
-            return <ion-item>
-                <ion-icon name="book" slot="start"></ion-icon>
-                <ion-skeleton-text animated></ion-skeleton-text>
-            </ion-item>;
+            return undefined;
         }
     }
 

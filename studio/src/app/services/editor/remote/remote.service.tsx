@@ -1,7 +1,11 @@
 import {BehaviorSubject, Observable} from 'rxjs';
+import {filter, take} from 'rxjs/operators';
 
 import {get, set} from 'idb-keyval';
-import {take} from 'rxjs/operators';
+
+import {Deck} from '../../../models/deck';
+
+import {DeckEditorService} from '../deck/deck-editor.service';
 
 export class RemoteService {
 
@@ -9,8 +13,11 @@ export class RemoteService {
 
     private static instance: RemoteService;
 
+    private deckEditorService: DeckEditorService;
+
     private constructor() {
         // Private constructor, singleton
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     static getInstance() {
@@ -41,5 +48,15 @@ export class RemoteService {
 
     watch(): Observable<boolean> {
         return this.remoteSubject.asObservable();
+    }
+
+    getRoom(): Promise<string> {
+        return new Promise<string>((resolve) => {
+            this.deckEditorService.watch().pipe(filter((deck: Deck) => deck && (deck.name && deck.name !== undefined && deck.name !== '')), take(1)).subscribe(async (deck: Deck) => {
+                const roomName: string = deck.name.replace(/\./g,'_');
+
+                resolve(roomName);
+            });
+        });
     }
 }
