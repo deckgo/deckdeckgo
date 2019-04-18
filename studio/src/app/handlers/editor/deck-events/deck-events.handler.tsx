@@ -11,7 +11,7 @@ import {Resources} from '../../../utils/core/resources';
 import {SlideService} from '../../../services/api/slide/slide.service';
 import {DeckService} from '../../../services/api/deck/deck.service';
 import {ErrorService} from '../../../services/core/error/error.service';
-import {DeckBusyService} from '../../../services/api/deck/deck-busy.service';
+import {BusyService} from '../../../services/editor/busy/busy.service';
 import {UserService} from '../../../services/api/user/user.service';
 import {DeckEditorService} from '../../../services/api/deck/deck-editor.service';
 
@@ -23,7 +23,7 @@ export class DeckEventsHandler {
     private deckService: DeckService;
 
     private errorService: ErrorService;
-    private deckBusyService: DeckBusyService;
+    private busyService: BusyService;
 
     private userService: UserService;
 
@@ -40,7 +40,7 @@ export class DeckEventsHandler {
         this.deckService = DeckService.getInstance();
 
         this.errorService = ErrorService.getInstance();
-        this.deckBusyService = DeckBusyService.getInstance();
+        this.busyService = BusyService.getInstance();
 
         this.userService = UserService.getInstance();
 
@@ -148,11 +148,14 @@ export class DeckEventsHandler {
 
                 if (slide.getAttribute('slide_id')) {
                     // !isNew
+
+                    this.busyService.slideEditable(slide);
+
                     resolve();
                     return;
                 }
 
-                this.deckBusyService.busy(true);
+                this.busyService.deckBusy(true);
 
                 const slidePost: Slide = {
                     template: this.getSlideTemplate(slide)
@@ -171,12 +174,14 @@ export class DeckEventsHandler {
                     await this.createOrUpdateDeckSlideList(persistedSlide);
                 }
 
-                this.deckBusyService.busy(false);
+                this.busyService.deckBusy(false);
+
+                this.busyService.slideEditable(slide);
 
                 resolve();
             } catch (err) {
                 this.errorService.error(err);
-                this.deckBusyService.busy(false);
+                this.busyService.deckBusy(false);
                 resolve();
             }
         });
@@ -244,7 +249,7 @@ export class DeckEventsHandler {
                     return;
                 }
 
-                this.deckBusyService.busy(true);
+                this.busyService.deckBusy(true);
 
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: Deck) => {
                     if (!currentDeck) {
@@ -263,13 +268,13 @@ export class DeckEventsHandler {
                     const updatedDeck: Deck = await this.deckService.put(currentDeck);
                     this.deckEditorService.next(updatedDeck);
 
-                    this.deckBusyService.busy(false);
+                    this.busyService.deckBusy(false);
 
                     resolve();
                 });
             } catch (err) {
                 this.errorService.error(err);
-                this.deckBusyService.busy(false);
+                this.busyService.deckBusy(false);
                 resolve();
             }
         });
@@ -283,7 +288,7 @@ export class DeckEventsHandler {
                     return;
                 }
 
-                this.deckBusyService.busy(true);
+                this.busyService.deckBusy(true);
 
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: Deck) => {
                     if (!currentDeck) {
@@ -302,13 +307,13 @@ export class DeckEventsHandler {
                     const updatedDeck: Deck = await this.deckService.put(currentDeck);
                     this.deckEditorService.next(updatedDeck);
 
-                    this.deckBusyService.busy(false);
+                    this.busyService.deckBusy(false);
 
                     resolve();
                 });
             } catch (err) {
                 this.errorService.error(err);
-                this.deckBusyService.busy(false);
+                this.busyService.deckBusy(false);
                 resolve();
             }
         });
@@ -346,12 +351,12 @@ export class DeckEventsHandler {
 
                 await this.slideService.put(slideUpdate);
 
-                this.deckBusyService.busy(false);
+                this.busyService.deckBusy(false);
 
                 resolve();
             } catch (err) {
                 this.errorService.error(err);
-                this.deckBusyService.busy(false);
+                this.busyService.deckBusy(false);
                 resolve();
             }
         });
@@ -386,13 +391,13 @@ export class DeckEventsHandler {
 
                     await this.deleteSlideElement();
 
-                    this.deckBusyService.busy(false);
+                    this.busyService.deckBusy(false);
 
                     resolve();
                 });
             } catch (err) {
                 this.errorService.error(err);
-                this.deckBusyService.busy(false);
+                this.busyService.deckBusy(false);
                 resolve();
             }
         });

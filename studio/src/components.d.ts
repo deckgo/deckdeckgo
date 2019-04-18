@@ -8,11 +8,11 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
-import 'deckdeckgo-remote';
 import 'deckdeckgo-qrcode';
+import 'deckdeckgo-remote';
+import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';

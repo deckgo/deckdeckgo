@@ -50,7 +50,7 @@ ion-split-pane {
             min-height: 32px;
           }
 
-          &.signout {
+          &.signout, &.signin {
             --padding-top: 40px;
           }
         }

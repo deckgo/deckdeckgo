@@ -2,6 +2,8 @@ app-editor {
   @import "../../../../global/theme/editor/editor-deck";
   @import "../../../../global/theme/editor/editor-deck-fonts";
 
+  @import "../../../../global/theme/editor/editor-loading";
+
   main {
     position: relative;
 
@@ -66,5 +68,14 @@ app-editor {
         }
       }
     }
+  }
+}
+
+@keyframes progress {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(100%, 0, 0);
   }
 }
