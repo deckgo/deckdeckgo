@@ -169,6 +169,8 @@ export class DeckEventsHandler {
 
                 const persistedSlide: Slide = await this.slideService.post(slidePost);
 
+                this.busyService.slideEditable(slide);
+
                 if (persistedSlide && persistedSlide.id) {
                     slide.setAttribute('slide_id', persistedSlide.id);
 
@@ -176,8 +178,6 @@ export class DeckEventsHandler {
                 }
 
                 this.busyService.deckBusy(false);
-
-                this.busyService.slideEditable(slide);
 
                 resolve();
             } catch (err) {
