@@ -67,18 +67,21 @@ export class AppRemote {
             }
         });
 
-        this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async (event: DeckdeckgoEvent) => {
-            if (event.emitter === DeckdeckgoEventEmitter.DECK) {
-                if (event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
-                    await this.initSlides((event as DeckdeckgoEventSlides));
+        this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async ($event: DeckdeckgoEvent) => {
+            if ($event.emitter === DeckdeckgoEventEmitter.DECK) {
+                if ($event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
+                    await this.initSlides(($event as DeckdeckgoEventSlides));
                     await this.slidePickerTo(0);
-                } else if (event.type === DeckdeckgoEventType.NEXT_SLIDE) {
+                } else if ($event.type === DeckdeckgoEventType.SLIDES_UPDATE) {
+                    await this.initSlides(($event as DeckdeckgoEventSlides));
+                    await this.slideToLastSlide();
+                } else if ($event.type === DeckdeckgoEventType.NEXT_SLIDE) {
                     await this.animateNextSlide();
-                } else if (event.type === DeckdeckgoEventType.PREV_SLIDE) {
+                } else if ($event.type === DeckdeckgoEventType.PREV_SLIDE) {
                     await this.animatePrevSlide();
-                } else if (event.type === DeckdeckgoEventType.SLIDE_TO) {
-                    const index: number = (event as DeckdeckgoEventSlideTo).index;
-                    const speed: number = (event as DeckdeckgoEventSlideTo).speed;
+                } else if ($event.type === DeckdeckgoEventType.SLIDE_TO) {
+                    const index: number = ($event as DeckdeckgoEventSlideTo).index;
+                    const speed: number = ($event as DeckdeckgoEventSlideTo).speed;
 
                     await this.slideTo(index, speed);
                 }
@@ -270,7 +273,29 @@ export class AppRemote {
             return;
         }
 
+        const deckLength: number = await (deck as any).getLength();
+
+        if (index >= deckLength) {
+            return;
+        }
+
         await (deck as any).slideTo(index, speed);
+    }
+
+    private async slideToLastSlide() {
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        deck.addEventListener('slidesDidLoad', async (_$event: CustomEvent) => {
+            const deckLength: number = await (deck as any).getLength();
+
+            if (deckLength > 0) {
+                await (deck as any).slideTo(deckLength - 1);
+            }
+        }, {once: true});
     }
 
     private moveDraw(event: CustomEvent<number>): Promise<void> {

@@ -35,6 +35,7 @@ export namespace Components {
     'server': string;
     'slideTo': (index: number, speed?: number) => Promise<void>;
     'slides': DeckdeckgoSlideDefinition[];
+    'updateSlides': () => Promise<void>;
     'width': number;
   }
   interface DeckgoRemoteAttributes extends StencilHTMLAttributes {

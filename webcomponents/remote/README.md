@@ -13,10 +13,6 @@ This project is a Web Component which act as the remote control receiver of the 
 - [Usage](#usage)
 	- [Attributes](#attributes)
 	- [Methods](#methods)
-	  - [Connect](#connect)
-	  - [Move canvas](#move-canvas)
-	  - [Next slide](#next-slide)
-	  - [Prev slide](#prev-slide)
 - [License](#license)
 
 ## Features
@@ -136,6 +132,14 @@ This method will emit an event from the deck to slide to a specific slide.
 
 ```
 await deck.slideTo(0); // parameters: index: number, speed?: number | undefined
+```
+
+### Update slides
+
+This method will emit an event from the deck to slide in order to update the list of slides.
+
+```
+await deck.updateSlides();
 ```
 
 ## License

@@ -89,6 +89,7 @@ export class DeckEventsHandler {
 
     private onSlideDidLoad = async ($event: CustomEvent) => {
         if ($event && $event.target && $event.target instanceof HTMLElement) {
+            await this.slideToLastSlide($event.target);
             await this.createSlide($event.target);
         }
     };
@@ -468,5 +469,22 @@ export class DeckEventsHandler {
         });
 
         return SlideTemplate[templateKey];
+    }
+
+    private slideToLastSlide(newSlide: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                resolve();
+                return;
+            }
+
+            if (!newSlide.getAttribute('slide_id') && deck.hasChildNodes()) {
+                await (deck as any).slideTo(deck.children && deck.children.length > 0 ? deck.children.length - 1 : 0);
+            }
+
+            resolve();
+        });
     }
 }

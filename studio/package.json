@@ -18,7 +18,7 @@
     "deckdeckgo": "file:../webcomponents/core",
     "deckdeckgo-inline-editor": "file:../webcomponents/inline-editor",
     "deckdeckgo-qrcode": "^1.0.0-alpha.6",
-    "deckdeckgo-remote": "^1.0.0-alpha.7",
+    "deckdeckgo-remote": "file:../webcomponents/remote/deckdeckgo-remote-1.0.0-alpha.7.tgz",
     "firebase": "^5.9.0",
     "idb-keyval": "^3.1.0",
     "rxjs": "^6.4.0"
@@ -28,7 +28,7 @@
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
     "autoprefixer": "^9.4.7",
-    "deckdeckgo-types": "^1.0.0-alpha.8",
+    "deckdeckgo-types": "file:../webcomponents/types",
     "rollup-plugin-replace": "^2.1.1",
     "workbox-build": "3.4.1"
   },
