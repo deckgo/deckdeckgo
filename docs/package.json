@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/deckgo/deckdeckgo-docs.git"
+    "url": "git://github.com/deckgo/deckdeckgo.git"
   },
   "keywords": [
     "ionic",
