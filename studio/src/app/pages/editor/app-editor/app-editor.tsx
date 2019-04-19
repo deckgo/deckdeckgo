@@ -43,7 +43,7 @@ export class AppEditor {
     private slideIndex: number = 0;
 
     @State()
-    private displaying: boolean = false;
+    private presenting: boolean = false;
 
     private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
     private removeEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
@@ -208,7 +208,7 @@ export class AppEditor {
 
     @Listen('document:mouseInactivity')
     async inactivity($event: CustomEvent) {
-        this.displaying = !$event.detail;
+        this.presenting = !$event.detail;
 
         // Wait a bit for the display/repaint of the footer
         setTimeout(async () => {
@@ -587,11 +587,11 @@ export class AppEditor {
         return [
             <app-navigation publish={true}></app-navigation>,
             <ion-content class="ion-padding">
-                <main class={this.displaying ? 'idle' : undefined}>
+                <main class={this.slidesFetched ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
 
                     {this.renderLoading()}
 
-                    <deckgo-deck embedded={true} style={this.deckStyle} pager={this.slidesFetched}
+                    <deckgo-deck embedded={true} style={this.deckStyle}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}
@@ -603,7 +603,7 @@ export class AppEditor {
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
             </ion-content>,
-            <ion-footer class={this.displaying ? 'idle' : undefined}>
+            <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <ion-toolbar>
                     <ion-buttons slot="start">
                         <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary">

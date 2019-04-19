@@ -37,4 +37,8 @@ main {
     }
   }
 
+  &:not(.ready) {
+    --pager-display: none;
+  }
+
 }
