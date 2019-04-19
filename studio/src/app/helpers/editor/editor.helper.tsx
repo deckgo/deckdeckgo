@@ -58,7 +58,7 @@ export class EditorHelper {
 
                 const promises: Promise<Slide>[] = [];
                 deck.slides.forEach((slideId: string) => {
-                    promises.push(this.fetchSlide(slideId));
+                    promises.push(this.fetchSlide(deck.id, slideId));
                 });
 
                 let slides: Slide[] = [];
@@ -82,10 +82,10 @@ export class EditorHelper {
         });
     }
 
-    private fetchSlide(slideId: string): Promise<any> {
+    private fetchSlide(deckId: string, slideId: string): Promise<any> {
         return new Promise<any>(async (resolve) => {
             try {
-                const slide: Slide = await this.slideService.get(slideId);
+                const slide: Slide = await this.slideService.get(deckId, slideId);
                 const element: any = await ParseSlidesUtils.parseSlide(slide);
 
                 resolve(element);
