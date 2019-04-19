@@ -705,7 +705,26 @@ slidesPost env fuid deckId slide = do
     pure $ Item slideId slide
 
 slidesPut :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Slide -> Servant.Handler (Item SlideId Slide)
-slidesPut env _ _ slideId slide = do
+slidesPut env fuid deckId slideId slide = do
+
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to PUT slide", show slideId, "of deck",  show deckId
+          , "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just deck@Deck{deckOwnerId, deckSlides} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to PUT slide", show slideId, "of deck", show deck
+            , "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
+
+        unless (slideId `elem` deckSlides) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to PUT slide", show slideId, "of deck", show deck
+            , "but slide doesn't belong to deck owned by", show fuid ]
+          Servant.throwError Servant.err404
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Slides" &
         DynamoDB.uiUpdateExpression .~ Just
@@ -724,7 +743,26 @@ slidesPut env _ _ slideId slide = do
     pure $ Item slideId slide
 
 slidesDelete :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler ()
-slidesDelete env _ _ slideId = do
+slidesDelete env fuid deckId slideId = do
+
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to DELETE slide", show slideId, "of deck",  show deckId
+          , "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just deck@Deck{deckOwnerId, deckSlides} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to DELETE slide", show slideId, "of deck", show deck
+            , "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
+
+        unless (slideId `elem` deckSlides) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to DELETE slide", show slideId, "of deck", show deck
+            , "but slide doesn't belong to deck owned by", show fuid ]
+          Servant.throwError Servant.err404
 
     res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Slides" &
         DynamoDB.diKey .~  HMS.singleton "SlideId"
