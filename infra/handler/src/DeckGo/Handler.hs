@@ -295,7 +295,7 @@ instance Aeson.ToJSON Slide where
 type API =
     "users" :> UsersAPI :<|>
     "decks" :> DecksAPI :<|>
-    "slides" :> SlidesAPI
+    "decks" :> SlidesAPI
 
 api :: Proxy API
 api = Proxy
