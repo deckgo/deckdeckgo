@@ -136,9 +136,9 @@ instance ToJSONObject User where
 
 instance Aeson.FromJSON User where
   parseJSON = Aeson.withObject "User" parseJSONObject
+
 instance Aeson.ToJSON User where
   toJSON = Aeson.Object . toJSONObject
-
 
 instance ToSchema (Item UserId User) where
   declareNamedSchema _ = pure $ NamedSchema (Just "UserWithId") mempty
@@ -179,6 +179,24 @@ data Deck = Deck
   , deckAttributes :: HMS.HashMap T.Text T.Text
   } deriving (Show, Eq)
 
+
+{-
+data Deck = Deck
+  { deckSlides :: [SlideId]
+  , deckOwnerId :: UserId
+  , deckAttributes :: HMS.HashMap T.Text T.Text
+  , deckTitle :: T.Text
+  , deckDescription :: Maybe T.Text
+  , deckAuthor :: Maybe T.Text
+  , deckHashTags :: [CI T.Text]
+  , deckPublicationDate :: Maybe UTCTime
+  } deriving (Show, Eq)
+-}
+
+
+
+-- /decks/<deck-id>/publish
+
 instance FromJSONObject Deck where
   parseJSONObject = \obj ->
     Deck
@@ -215,16 +233,16 @@ instance ToParamSchema DeckId where
 -- SLIDES
 
 type SlidesAPI =
-    Protected :> Get '[JSON] [Item SlideId Slide] :<|>
-    Protected :>
+    Protected :> Capture "deck_id" DeckId :> "slides" :>
       Capture "slide_id" SlideId :> Get '[JSON] (Item SlideId Slide) :<|>
-    Protected :>
+    Protected :> Capture "deck_id" DeckId :> "slides" :>
       ReqBody '[JSON] Slide :> Post '[JSON] (Item SlideId Slide) :<|>
-    Protected :>
+    Protected :> Capture "deck_id" DeckId :> "slides" :>
       Capture "slide_id" SlideId :>
       ReqBody '[JSON] Slide :>
       Put '[JSON] (Item SlideId Slide) :<|>
-    Protected :> Capture "slide_id" SlideId :> Delete '[JSON] ()
+    Protected :> Capture "deck_id" DeckId :> "slides" :>
+      Capture "slide_id" SlideId :> Delete '[JSON] ()
 
 instance ToSchema (Item SlideId Slide) where
   declareNamedSchema _ = pure $ NamedSchema (Just "SlideWithId") mempty
@@ -277,7 +295,7 @@ instance Aeson.ToJSON Slide where
 type API =
     "users" :> UsersAPI :<|>
     "decks" :> DecksAPI :<|>
-    "slides" :> SlidesAPI
+    "decks" :> SlidesAPI
 
 api :: Proxy API
 api = Proxy
@@ -309,7 +327,6 @@ server env = serveUsers :<|> serveDecks :<|> serveSlides
       decksPut env :<|>
       decksDelete env
     serveSlides =
-      slidesGet env :<|>
       slidesGetSlideId env :<|>
       slidesPost env :<|>
       slidesPut env :<|>
@@ -548,7 +565,18 @@ decksPut env fuid deckId deck = do
     pure $ Item deckId deck
 
 decksDelete :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
-decksDelete env _ deckId = do
+decksDelete env fuid deckId = do
+
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to DELETE", show deckId, "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just Deck{deckOwnerId} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Deck was DELETEd", show deckId, "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
 
     res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Decks" &
         DynamoDB.diKey .~ HMS.singleton "DeckId"
@@ -600,23 +628,28 @@ getDeck env deckId = do
 
 -- SLIDES
 
-slidesGet :: Aws.Env -> Firebase.UserId -> Servant.Handler [Item SlideId Slide]
-slidesGet env _ = do
-    res <- runAWS env $ Aws.send $ DynamoDB.scan "Slides"
-    case res of
-      Right scanResponse ->
-        case sequence $ scanResponse ^. DynamoDB.srsItems <&> itemToSlide of
-          Nothing -> do
-            liftIO $ putStrLn $ "Could not parse respose: " <> show scanResponse
-            Servant.throwError Servant.err500
-          Just ids -> pure ids
+slidesGetSlideId :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler (Item SlideId Slide)
+slidesGetSlideId env fuid deckId slideId = do
 
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to GET slide", show slideId, "of deck",  show deckId
+          , "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just deck@Deck{deckOwnerId, deckSlides} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to GET slide", show slideId, "of deck", show deck
+            , "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
 
-slidesGetSlideId :: Aws.Env -> Firebase.UserId -> SlideId -> Servant.Handler (Item SlideId Slide)
-slidesGetSlideId env _ slideId = do
+        unless (slideId `elem` deckSlides) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to GET slide", show slideId, "of deck", show deck
+            , "but slide doesn't belong to deck owned by", show fuid ]
+          Servant.throwError Servant.err404
+
     res <- runAWS env $ Aws.send $ DynamoDB.getItem "Slides" &
         DynamoDB.giKey .~ HMS.singleton "SlideId" (slideIdToAttributeValue slideId)
     case res of
@@ -641,8 +674,22 @@ slidesGetSlideId env _ slideId = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-slidesPost :: Aws.Env -> Firebase.UserId -> Slide -> Servant.Handler (Item SlideId Slide)
-slidesPost env _ slide = do
+slidesPost :: Aws.Env -> Firebase.UserId -> DeckId -> Slide -> Servant.Handler (Item SlideId Slide)
+slidesPost env fuid deckId slide = do
+
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to POST slide", show slide, "of deck",  show deckId
+          , "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just deck@Deck{deckOwnerId} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to POST slide", show slide, "of deck", show deck
+            , "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
+
     slideId <- liftIO $ SlideId <$> newId
 
     res <- runAWS env $
@@ -657,8 +704,27 @@ slidesPost env _ slide = do
 
     pure $ Item slideId slide
 
-slidesPut :: Aws.Env -> Firebase.UserId -> SlideId -> Slide -> Servant.Handler (Item SlideId Slide)
-slidesPut env _ slideId slide = do
+slidesPut :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Slide -> Servant.Handler (Item SlideId Slide)
+slidesPut env fuid deckId slideId slide = do
+
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to PUT slide", show slideId, "of deck",  show deckId
+          , "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just deck@Deck{deckOwnerId, deckSlides} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to PUT slide", show slideId, "of deck", show deck
+            , "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
+
+        unless (slideId `elem` deckSlides) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to PUT slide", show slideId, "of deck", show deck
+            , "but slide doesn't belong to deck owned by", show fuid ]
+          Servant.throwError Servant.err404
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Slides" &
         DynamoDB.uiUpdateExpression .~ Just
@@ -676,8 +742,27 @@ slidesPut env _ slideId slide = do
 
     pure $ Item slideId slide
 
-slidesDelete :: Aws.Env -> Firebase.UserId -> SlideId -> Servant.Handler ()
-slidesDelete env _ slideId = do
+slidesDelete :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler ()
+slidesDelete env fuid deckId slideId = do
+
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to DELETE slide", show slideId, "of deck",  show deckId
+          , "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just deck@Deck{deckOwnerId, deckSlides} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to DELETE slide", show slideId, "of deck", show deck
+            , "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
+
+        unless (slideId `elem` deckSlides) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to DELETE slide", show slideId, "of deck", show deck
+            , "but slide doesn't belong to deck owned by", show fuid ]
+          Servant.throwError Servant.err404
 
     res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Slides" &
         DynamoDB.diKey .~  HMS.singleton "SlideId"
