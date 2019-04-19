@@ -1020,10 +1020,13 @@ data DynamoUpdateExpr
   | Remove T.Text
 
 dynamoSet :: [DynamoUpdateExpr] -> T.Text
-dynamoSet exprs = setExpr <> " " <> removeExpr
+dynamoSet exprs = T.unwords exprs'
   where
-    setExpr = "SET " <> T.intercalate "," sts
-    removeExpr = "REMOVE " <> T.intercalate "," removes
+    exprs' = catMaybes [setExpr, removeExpr]
+    setExpr = if length sts == 0 then Nothing else Just $
+      "SET " <> T.intercalate "," sts
+    removeExpr = if length removes == 0 then Nothing else Just $
+      "REMOVE " <> T.intercalate "," removes
     (sts, removes) = foldr f ([], []) exprs
     f (Set l r) (ls, rs) = (ls <> [l <> " = " <> r], rs)
     f (Remove t ) (ls, rs) = (ls, rs <> [t])
