@@ -27,6 +27,7 @@ module DeckGo.Handler where
 
 import Control.Lens hiding ((.=))
 import Control.Monad
+import Data.Maybe
 import Control.Monad.Except
 import Data.Aeson ((.=), (.:), (.!=), (.:?))
 import Data.Proxy
@@ -268,7 +269,7 @@ newtype SlideId = SlideId { unSlideId :: T.Text }
 instance ToParamSchema SlideId
 
 data Slide = Slide
-  { slideContent :: T.Text
+  { slideContent :: Maybe T.Text
   , slideTemplate :: T.Text
   , slideAttributes :: HMS.HashMap T.Text T.Text
   } deriving (Show, Eq)
@@ -276,7 +277,7 @@ data Slide = Slide
 instance FromJSONObject Slide where
   parseJSONObject = \obj ->
     Slide <$>
-      obj .:? "content" .!= "" <*>
+      obj .:? "content" .!= Nothing <*>
       obj .: "template" <*>
       obj .:? "attributes" .!= HMS.empty
 
@@ -728,7 +729,11 @@ slidesPut env fuid deckId slideId slide = do
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Slides" &
         DynamoDB.uiUpdateExpression .~ Just
-          "SET SlideContent = :c, SlideTemplate = :t, SlideAttributes = :a" &
+          (dynamoSet $
+            (if isJust (slideContent slide)
+              then [ Set "SlideContent" ":c" ]
+              else [ Remove "SlideContent" ]) <>
+            [ Set "SlideTemplate" ":t", Set "SlideAttributes" ":a"]) &
         DynamoDB.uiExpressionAttributeValues .~ slideToItem' slide &
         DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
         DynamoDB.uiKey .~ HMS.singleton "SlideId"
@@ -915,13 +920,19 @@ deckAttributesFromAttributeValue attr =
 slideToItem :: SlideId -> Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
 slideToItem slideId Slide{slideContent, slideTemplate, slideAttributes} =
     HMS.singleton "SlideId" (slideIdToAttributeValue slideId) <>
-    HMS.singleton "SlideContent" (slideContentToAttributeValue slideContent) <>
+    (maybe
+      HMS.empty
+      (\content -> HMS.singleton "SlideContent" (slideContentToAttributeValue content))
+      slideContent) <>
     HMS.singleton "SlideTemplate" (slideTemplateToAttributeValue slideTemplate) <>
     HMS.singleton "SlideAttributes" (slideAttributesToAttributeValue slideAttributes)
 
 slideToItem' :: Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
 slideToItem' Slide{slideContent, slideTemplate, slideAttributes} =
-    HMS.singleton ":c" (slideContentToAttributeValue slideContent) <>
+    (maybe
+      HMS.empty
+      (\content -> HMS.singleton ":c" (slideContentToAttributeValue content))
+      slideContent) <>
     HMS.singleton ":t" (slideTemplateToAttributeValue slideTemplate) <>
     HMS.singleton ":a" (slideAttributesToAttributeValue slideAttributes)
 
@@ -929,7 +940,9 @@ itemToSlide :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (Item SlideId
 itemToSlide item = do
     slideId <- HMS.lookup "SlideId" item >>= slideIdFromAttributeValue
 
-    slideContent <- HMS.lookup "SlideContent" item >>= slideContentFromAttributeValue
+    slideContent <- case HMS.lookup "SlideContent" item of
+      Nothing -> Just Nothing
+      Just c -> Just <$> slideContentFromAttributeValue c
 
     slideTemplate <- HMS.lookup "SlideTemplate" item >>= slideTemplateFromAttributeValue
     slideAttributes <- HMS.lookup "SlideAttributes" item >>= slideAttributesFromAttributeValue
@@ -1001,3 +1014,16 @@ randomText len allowedChars = T.pack <$> randomString len allowedChars
 
 newId :: IO T.Text
 newId = randomText 32 (['0' .. '9'] <> ['a' .. 'z'])
+
+data DynamoUpdateExpr
+  = Set T.Text T.Text
+  | Remove T.Text
+
+dynamoSet :: [DynamoUpdateExpr] -> T.Text
+dynamoSet exprs = setExpr <> " " <> removeExpr
+  where
+    setExpr = "SET " <> T.intercalate "," sts
+    removeExpr = "REMOVE " <> T.intercalate "," removes
+    (sts, removes) = foldr f ([], []) exprs
+    f (Set l r) (ls, rs) = (ls <> [l <> " = " <> r], rs)
+    f (Remove t ) (ls, rs) = (ls, rs <> [t])

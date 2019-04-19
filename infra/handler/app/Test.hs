@@ -43,7 +43,7 @@ main = do
     Left err -> error $ "Expected new deck, got error: " <> show err
     Right (Item deckId _) -> pure deckId
 
-  let someSlide = Slide "foo" "bar" HMS.empty
+  let someSlide = Slide (Just "foo") "bar" HMS.empty
 
   slideId <- runClientM (slidesPost' b deckId someSlide) clientEnv >>= \case
     Left err -> error $ "Expected new slide, got error: " <> show err
@@ -65,7 +65,11 @@ main = do
     Right deck ->
       if deck == (Item deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
 
-  let updatedSlide = Slide "foo" "quux" HMS.empty
+  let updatedSlide = Slide Nothing "quux" HMS.empty
+
+  runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
+    Left err -> error $ "Expected new slide, got error: " <> show err
+    Right {} -> pure ()
 
   runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
     Left err -> error $ "Expected new slide, got error: " <> show err
@@ -89,7 +93,6 @@ main = do
     Right decks ->
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
 
-
   let someUser = User { userFirebaseId = someFirebaseId, userAnonymous = False }
 
   runClientM (usersPost' b someUser) clientEnv >>= \case
@@ -107,9 +110,6 @@ main = do
 
   -- TODO: test that creating user with token that has different user as sub
   -- fails
-
-
-
 
 usersGet' :: ClientM [Item UserId User]
 _usersGetUserId' :: UserId -> ClientM (Item UserId User)
