@@ -7,6 +7,7 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](http
 ## Table of contents
 
 - [Getting Started](#getting-started)
+- [Documentation](#documentation)
 - [Example](#example)
 - [Progressive Web Apps](#progressive-web-apps)
 - [Web Components](#web-components)
@@ -15,6 +16,10 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](http
 ## Getting Started
 
 Start you new presentation by following the quick  👉 [Getting Started guide](https://docs.deckdeckgo.com/docs) 👈
+
+## Documentation
+
+The developers' documentation is available online at [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com).
 
 ## Example
    
