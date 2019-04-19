@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.31"></a>
+# 1.0.0-beta.31 (2019-04-19)
+
+### Breaking
+
+* attribute `pager` of the `deckgo-deck` component has been removed. if you wish to hide the pager, use instead the new CSS4 variable `--pager-display`.
+
 <a name="1.0.0-beta.30"></a>
 # 1.0.0-beta.30 (2019-04-18)
 
