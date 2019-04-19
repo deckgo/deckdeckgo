@@ -121,29 +121,31 @@ ion-split-pane {
   ion-split-pane {
     ion-menu {
 
-      --background: var(--ion-color-primary);
-      --ion-background-color: var(--ion-color-primary);
+      --background: white;
+      --ion-background-color: white;
 
       ion-content {
 
+        border-right: 1px solid rgba(0,0,0,.13);
+
         ion-list {
           ion-item-divider {
-            --color: var(--ion-color-light);
+            --color: black;
           }
 
           ion-item {
-            --color: var(--ion-color-light);
+            --color: var(--ion-color-medium);
 
             ion-icon {
-              color: white;
+              color: var(--ion-color-medium);
             }
           }
         }
 
         ion-button {
-          --background: white;
-          --color: var(--ion-color-dark);
-          --color-activated: var(--ion-color-dark);
+          --background: var(--ion-color-primary);
+          --color: white;
+          --color-activated: white;
         }
       }
     }

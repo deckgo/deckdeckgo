@@ -32,19 +32,3 @@ ion-split-pane {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  ion-split-pane {
-    app-footer {
-      div {
-        ion-anchor {
-          color: white;
-
-          &:hover, &.active {
-            color: var(--ion-color-secondary);
-            border-bottom-color: var(--ion-color-secondary);
-          }
-        }
-      }
-    }
-  }
-}
