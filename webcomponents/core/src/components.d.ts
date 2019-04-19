@@ -25,7 +25,6 @@ export namespace Components {
     'isEnd': () => Promise<boolean>;
     'isMobile': () => Promise<boolean>;
     'keyboard': boolean;
-    'pager': boolean;
     'pagerPercentage': boolean;
     'slideNext': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
@@ -44,7 +43,6 @@ export namespace Components {
     'onSlideToChange'?: (event: CustomEvent<number>) => void;
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
     'onSlidesDidLoad'?: (event: CustomEvent) => void;
-    'pager'?: boolean;
     'pagerPercentage'?: boolean;
   }
 

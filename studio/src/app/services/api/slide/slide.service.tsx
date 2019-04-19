@@ -23,22 +23,20 @@ export class SlideService {
     }
 
 
-    // TODO: get /slides/:slide_id
-
-    post(slide: Slide): Promise<Slide> {
-        return this.query(slide, '/slides', 'POST');
+    post(deckId: string, slide: Slide): Promise<Slide> {
+        return this.query(slide, `/decks/${deckId}/slides`, 'POST');
     }
 
-    put(slide: Slide): Promise<Slide> {
-        return this.query(slide, '/slides/' + slide.id,'PUT');
+    put(deckId: string, slide: Slide): Promise<Slide> {
+        return this.query(slide, `/decks/${deckId}/slides/${slide.id}`,'PUT');
     }
 
-    delete(slide_id: string): Promise<void> {
+    delete(deckId: string, slide_id: string): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
-                const rawResponse: Response = await fetch(apiUrl + '/slides/' + slide_id, {
+                const rawResponse: Response = await fetch(apiUrl + `/decks/${deckId}/slides/` + slide_id, {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
@@ -88,12 +86,12 @@ export class SlideService {
         });
     }
 
-    get(slideId: string): Promise<Slide> {
+    get(deckId: string, slideId: string): Promise<Slide> {
         return new Promise<Slide>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
-                const rawResponse: Response = await fetch(apiUrl + `/slides/${slideId}`, {
+                const rawResponse: Response = await fetch(apiUrl + `/decks/${deckId}/slides/${slideId}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',

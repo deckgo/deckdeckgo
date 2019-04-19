@@ -43,9 +43,9 @@ main = do
     Left err -> error $ "Expected new deck, got error: " <> show err
     Right (Item deckId _) -> pure deckId
 
-  let someSlide = Slide "foo" "bar" HMS.empty
+  let someSlide = Slide (Just "foo") "bar" HMS.empty
 
-  slideId <- runClientM (slidesPost' b someSlide) clientEnv >>= \case
+  slideId <- runClientM (slidesPost' b deckId someSlide) clientEnv >>= \case
     Left err -> error $ "Expected new slide, got error: " <> show err
     Right (Item slideId _) -> pure slideId
 
@@ -65,35 +65,24 @@ main = do
     Right deck ->
       if deck == (Item deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
 
-  runClientM (slidesGet' b) clientEnv >>= \case
-    Left err -> error $ "Expected slides, got error: " <> show err
-    Right slides ->
-      if slides == [Item slideId someSlide] then pure () else (error $ "Expected slides, got: " <> show slides)
+  let updatedSlide = Slide Nothing "quux" HMS.empty
 
-  let updatedSlide = Slide "foo" "quux" HMS.empty
-
-  runClientM (slidesPut' b slideId updatedSlide) clientEnv >>= \case
+  runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
     Left err -> error $ "Expected new slide, got error: " <> show err
     Right {} -> pure ()
 
-  runClientM (slidesGet' b) clientEnv >>= \case
-    Left err -> error $ "Expected updated slides, got error: " <> show err
-    Right slides ->
-      if slides == [Item slideId updatedSlide] then pure () else (error $ "Expected updated slides, got: " <> show slides)
+  runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
+    Left err -> error $ "Expected new slide, got error: " <> show err
+    Right {} -> pure ()
 
-  runClientM (slidesGetSlideId' b slideId) clientEnv >>= \case
+  runClientM (slidesGetSlideId' b deckId slideId) clientEnv >>= \case
     Left err -> error $ "Expected updated slide, got error: " <> show err
     Right slide ->
       if slide == (Item slideId updatedSlide) then pure () else (error $ "Expected updated slide, got: " <> show slide)
 
-  runClientM (slidesDelete' b slideId) clientEnv >>= \case
+  runClientM (slidesDelete' b deckId slideId) clientEnv >>= \case
     Left err -> error $ "Expected slide delete, got error: " <> show err
     Right {} -> pure ()
-
-  runClientM (slidesGet' b) clientEnv >>= \case
-    Left err -> error $ "Expected no slides, got error: " <> show err
-    Right slides ->
-      if slides == [] then pure () else (error $ "Expected no slides, got: " <> show slides)
 
   runClientM (decksDelete' b deckId) clientEnv >>= \case
     Left err -> error $ "Expected deck delete, got error: " <> show err
@@ -103,7 +92,6 @@ main = do
     Left err -> error $ "Expected no decks, got error: " <> show err
     Right decks ->
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
-
 
   let someUser = User { userFirebaseId = someFirebaseId, userAnonymous = False }
 
@@ -123,9 +111,6 @@ main = do
   -- TODO: test that creating user with token that has different user as sub
   -- fails
 
-
-
-
 usersGet' :: ClientM [Item UserId User]
 _usersGetUserId' :: UserId -> ClientM (Item UserId User)
 usersPost' :: T.Text -> User -> ClientM (Item UserId User)
@@ -138,11 +123,10 @@ decksPost' :: T.Text -> Deck -> ClientM (Item DeckId Deck)
 decksPut' :: T.Text -> DeckId -> Deck -> ClientM (Item DeckId Deck)
 decksDelete' :: T.Text -> DeckId -> ClientM ()
 
-slidesGet' :: T.Text -> ClientM [Item SlideId Slide]
-slidesGetSlideId' :: T.Text -> SlideId -> ClientM (Item SlideId Slide)
-slidesPost' :: T.Text -> Slide -> ClientM (Item SlideId Slide)
-slidesPut' :: T.Text -> SlideId -> Slide -> ClientM (Item SlideId Slide)
-slidesDelete' :: T.Text -> SlideId -> ClientM ()
+slidesGetSlideId' :: T.Text -> DeckId -> SlideId -> ClientM (Item SlideId Slide)
+slidesPost' :: T.Text -> DeckId -> Slide -> ClientM (Item SlideId Slide)
+slidesPut' :: T.Text -> DeckId -> SlideId -> Slide -> ClientM (Item SlideId Slide)
+slidesDelete' :: T.Text -> DeckId -> SlideId -> ClientM ()
 ((
   usersGet' :<|>
   _usersGetUserId' :<|>
@@ -158,7 +142,6 @@ slidesDelete' :: T.Text -> SlideId -> ClientM ()
   decksDelete'
   ) :<|>
   (
-  slidesGet' :<|>
   slidesGetSlideId' :<|>
   slidesPost' :<|>
   slidesPut' :<|>

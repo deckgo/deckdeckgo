@@ -58,20 +58,3 @@ ion-split-pane {
     }
   }
 }
-
-@media (prefers-color-scheme: dark) {
-  ion-split-pane {
-    ion-menu {
-      ion-content {
-        ion-list {
-          ion-searchbar[class*="sc-ion-searchbar"] {
-            --cancel-button-color: white;
-            --clear-button-color: white;
-            --icon-color: white;
-            color: white;
-          }
-        }
-      }
-    }
-  }
-}
