@@ -11,8 +11,8 @@ import {Deck} from '../../../models/deck';
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 
-import {DeckEventsHandler} from '../../../handlers/editor/deck-events/deck-events.handler';
-import {RemoteEventsHandler} from '../../../handlers/editor/remote-events/remote-events.handler';
+import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
+import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 

@@ -1,19 +1,19 @@
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
-import {Slide, SlideAttributes, SlideTemplate} from '../../../models/slide';
-import {User} from '../../../models/user';
-import {Deck, DeckAttributes} from '../../../models/deck';
+import {Slide, SlideAttributes, SlideTemplate} from '../../../../models/slide';
+import {User} from '../../../../models/user';
+import {Deck, DeckAttributes} from '../../../../models/deck';
 
-import {Utils} from '../../../utils/core/utils';
-import {Resources} from '../../../utils/core/resources';
+import {Utils} from '../../../../utils/core/utils';
+import {Resources} from '../../../../utils/core/resources';
 
-import {SlideService} from '../../../services/api/slide/slide.service';
-import {DeckService} from '../../../services/api/deck/deck.service';
-import {ErrorService} from '../../../services/core/error/error.service';
-import {BusyService} from '../../../services/editor/busy/busy.service';
-import {UserService} from '../../../services/api/user/user.service';
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+import {SlideService} from '../../../../services/api/slide/slide.service';
+import {DeckService} from '../../../../services/api/deck/deck.service';
+import {ErrorService} from '../../../../services/core/error/error.service';
+import {BusyService} from '../../../../services/editor/busy/busy.service';
+import {UserService} from '../../../../services/api/user/user.service';
+import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
 
 export class DeckEventsHandler {
 

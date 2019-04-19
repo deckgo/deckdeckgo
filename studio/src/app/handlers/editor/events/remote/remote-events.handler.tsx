@@ -1,10 +1,10 @@
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
 
 import {Subscription} from 'rxjs';
 
-import {Utils} from '../../../utils/core/utils';
+import {Utils} from '../../../../utils/core/utils';
 
-import {RemoteService} from '../../../services/editor/remote/remote.service';
+import {RemoteService} from '../../../../services/editor/remote/remote.service';
 
 export class RemoteEventsHandler {
 
