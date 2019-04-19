@@ -629,7 +629,27 @@ getDeck env deckId = do
 -- SLIDES
 
 slidesGetSlideId :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler (Item SlideId Slide)
-slidesGetSlideId env _ _ slideId = do
+slidesGetSlideId env fuid deckId slideId = do
+
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to GET slide", show slideId, "of deck",  show deckId
+          , "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just deck@Deck{deckOwnerId, deckSlides} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to GET slide", show slideId, "of deck", show deck
+            , "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
+
+        unless (slideId `elem` deckSlides) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to GET slide", show slideId, "of deck", show deck
+            , "but slide doesn't belong to deck owned by", show fuid ]
+          Servant.throwError Servant.err404
+
     res <- runAWS env $ Aws.send $ DynamoDB.getItem "Slides" &
         DynamoDB.giKey .~ HMS.singleton "SlideId" (slideIdToAttributeValue slideId)
     case res of
@@ -655,7 +675,21 @@ slidesGetSlideId env _ _ slideId = do
         Servant.throwError Servant.err500
 
 slidesPost :: Aws.Env -> Firebase.UserId -> DeckId -> Slide -> Servant.Handler (Item SlideId Slide)
-slidesPost env _ _ slide = do
+slidesPost env fuid deckId slide = do
+
+    getDeck env deckId >>= \case
+      Nothing ->  do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to POST slide", show slide, "of deck",  show deckId
+          , "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just deck@Deck{deckOwnerId} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Trying to POST slide", show slide, "of deck", show deck
+            , "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
+
     slideId <- liftIO $ SlideId <$> newId
 
     res <- runAWS env $
