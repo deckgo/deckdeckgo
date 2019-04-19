@@ -96,6 +96,7 @@ export class AppSignIn {
         const signInOptions = [];
 
         signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
+        signInOptions.push(firebase.auth.GithubAuthProvider.PROVIDER_ID);
         signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
 
         this.firebaseUser = firebase.auth().currentUser;
