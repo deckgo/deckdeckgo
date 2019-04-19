@@ -21,7 +21,6 @@ export class DeckdeckgoDeck {
 
   @Prop() keyboard: boolean = true;
 
-  @Prop() pager: boolean = true;
   @Prop() pagerPercentage: boolean = true;
 
   @Prop() embedded: boolean = false;
@@ -855,8 +854,9 @@ export class DeckdeckgoDeck {
         <slot name="actions"></slot>
         <slot name="background"></slot>
       </div>,
-      <div class="deckgo-pager">{this.pager ? <deckgo-pager active-index={this.activeIndex} length={this.length}
-                                                            percentage={this.pagerPercentage}></deckgo-pager> : ''}</div>
+      <div class="deckgo-pager">
+        <deckgo-pager active-index={this.activeIndex} length={this.length} percentage={this.pagerPercentage}></deckgo-pager>
+      </div>
     ]
   }
 
