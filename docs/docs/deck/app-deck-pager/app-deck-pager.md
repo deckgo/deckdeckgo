@@ -13,26 +13,26 @@ The show or hide options of the pager are available on the `<deckgo-deck>` eleme
 
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |-----------------|-----------------|-----------------|
-| pager | boolean | true | Show or hide the pager |
 | pagerPercentage | boolean | true | Show or hide the progression in percentage inside the pager |
 
 ## Customization
 
 The following style options are available to style the pager:
 
-| CSS4 variable                      | Default |
-| -------------------------- |-----------------|
-| --pager-size | 56px |
-| --pager-margin-top | 8px |
-| --pager-margin-end | 8px |
-| --pager-margin-bottom | 8px |
-| --pager-margin-start | 8px |
-| --pager-background | #eee |
-| --pager-text-color | #4c8dff |
-| --pager-text-size | 0.5em |
-| --pager-stroke-outer-width | 2.8 |
-| --pager-stroke-inner-width | 1.8 |
-| --pager-position-left | |
-| --pager-position-right | |
+| CSS4 variable                      | Default | Description |
+| -------------------------- |-----------------|-----------------|
+| --pager-size | 56px | |
+| --pager-margin-top | 8px | |
+| --pager-margin-end | 8px | |
+| --pager-margin-bottom | 8px | |
+| --pager-margin-start | 8px | |
+| --pager-background | #eee | |
+| --pager-text-color | #4c8dff | |
+| --pager-text-size | 0.5em | |
+| --pager-stroke-outer-width | 2.8 | |
+| --pager-stroke-inner-width | 1.8 | |
+| --pager-position-left | | |
+| --pager-position-right | | |
+| --pager-display | | To hide the pager |
 
 [DeckDeckGo]: https://deckdeckgo.com
