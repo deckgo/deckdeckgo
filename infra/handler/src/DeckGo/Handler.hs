@@ -634,7 +634,19 @@ getDeck env deckId = do
 -- SLIDES
 
 slidesGet :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler [Item SlideId Slide]
-slidesGet env _ _ = do
+slidesGet env fuid deckId = do
+
+    getDeck env deckId >>= \case
+      Nothing -> do
+        liftIO $ putStrLn $ unwords
+          [ "Trying to GET slides for", show deckId, "but deck doesn't exist." ]
+        Servant.throwError Servant.err404
+      Just deck@Deck{deckOwnerId, deckSlides} -> do
+        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
+          liftIO $ putStrLn $ unwords $
+            [ "Slides were requested for ", show deck, "but requester is not the owner", show fuid ]
+          Servant.throwError Servant.err404
+
     res <- runAWS env $ Aws.send $ DynamoDB.scan "Slides"
     case res of
       Right scanResponse ->
