@@ -65,21 +65,11 @@ main = do
     Right deck ->
       if deck == (Item deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
 
-  runClientM (slidesGet' b deckId) clientEnv >>= \case
-    Left err -> error $ "Expected slides, got error: " <> show err
-    Right slides ->
-      if slides == [Item slideId someSlide] then pure () else (error $ "Expected slides, got: " <> show slides)
-
   let updatedSlide = Slide "foo" "quux" HMS.empty
 
   runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
     Left err -> error $ "Expected new slide, got error: " <> show err
     Right {} -> pure ()
-
-  runClientM (slidesGet' b deckId) clientEnv >>= \case
-    Left err -> error $ "Expected updated slides, got error: " <> show err
-    Right slides ->
-      if slides == [Item slideId updatedSlide] then pure () else (error $ "Expected updated slides, got: " <> show slides)
 
   runClientM (slidesGetSlideId' b deckId slideId) clientEnv >>= \case
     Left err -> error $ "Expected updated slide, got error: " <> show err
@@ -89,11 +79,6 @@ main = do
   runClientM (slidesDelete' b deckId slideId) clientEnv >>= \case
     Left err -> error $ "Expected slide delete, got error: " <> show err
     Right {} -> pure ()
-
-  runClientM (slidesGet' b deckId) clientEnv >>= \case
-    Left err -> error $ "Expected no slides, got error: " <> show err
-    Right slides ->
-      if slides == [] then pure () else (error $ "Expected no slides, got: " <> show slides)
 
   runClientM (decksDelete' b deckId) clientEnv >>= \case
     Left err -> error $ "Expected deck delete, got error: " <> show err
@@ -138,7 +123,6 @@ decksPost' :: T.Text -> Deck -> ClientM (Item DeckId Deck)
 decksPut' :: T.Text -> DeckId -> Deck -> ClientM (Item DeckId Deck)
 decksDelete' :: T.Text -> DeckId -> ClientM ()
 
-slidesGet' :: T.Text -> DeckId -> ClientM [Item SlideId Slide]
 slidesGetSlideId' :: T.Text -> DeckId -> SlideId -> ClientM (Item SlideId Slide)
 slidesPost' :: T.Text -> DeckId -> Slide -> ClientM (Item SlideId Slide)
 slidesPut' :: T.Text -> DeckId -> SlideId -> Slide -> ClientM (Item SlideId Slide)
@@ -158,7 +142,6 @@ slidesDelete' :: T.Text -> DeckId -> SlideId -> ClientM ()
   decksDelete'
   ) :<|>
   (
-  slidesGet' :<|>
   slidesGetSlideId' :<|>
   slidesPost' :<|>
   slidesPut' :<|>

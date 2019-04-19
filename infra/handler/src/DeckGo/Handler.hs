@@ -164,7 +164,6 @@ type DecksAPI =
       Capture "deck_id" DeckId :>
       ReqBody '[JSON] Deck :> Put '[JSON] (Item DeckId Deck) :<|>
     Protected :> Capture "deck_id" DeckId :> Delete '[JSON] ()
-    -- Capture "deck_id" DeckId :> "slides" :> SlidesAPI
 
 newtype DeckId = DeckId { unDeckId :: T.Text }
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData, Show, Eq)
@@ -234,9 +233,6 @@ instance ToParamSchema DeckId where
 -- SLIDES
 
 type SlidesAPI =
-
-      -- Protected :> Capture "deck_id" DeckId :> Delete '[JSON] ()
-    Protected :> Capture "deck_id" DeckId :> "slides" :> Get '[JSON] [Item SlideId Slide] :<|>
     Protected :> Capture "deck_id" DeckId :> "slides" :>
       Capture "slide_id" SlideId :> Get '[JSON] (Item SlideId Slide) :<|>
     Protected :> Capture "deck_id" DeckId :> "slides" :>
@@ -331,7 +327,6 @@ server env = serveUsers :<|> serveDecks :<|> serveSlides
       decksPut env :<|>
       decksDelete env
     serveSlides =
-      slidesGet env :<|>
       slidesGetSlideId env :<|>
       slidesPost env :<|>
       slidesPut env :<|>
@@ -632,33 +627,6 @@ getDeck env deckId = do
       Nothing -> pure Nothing
 
 -- SLIDES
-
-slidesGet :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler [Item SlideId Slide]
-slidesGet env fuid deckId = do
-
-    getDeck env deckId >>= \case
-      Nothing -> do
-        liftIO $ putStrLn $ unwords
-          [ "Trying to GET slides for", show deckId, "but deck doesn't exist." ]
-        Servant.throwError Servant.err404
-      Just deck@Deck{deckOwnerId, deckSlides} -> do
-        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Slides were requested for ", show deck, "but requester is not the owner", show fuid ]
-          Servant.throwError Servant.err404
-
-    res <- runAWS env $ Aws.send $ DynamoDB.scan "Slides"
-    case res of
-      Right scanResponse ->
-        case sequence $ scanResponse ^. DynamoDB.srsItems <&> itemToSlide of
-          Nothing -> do
-            liftIO $ putStrLn $ "Could not parse respose: " <> show scanResponse
-            Servant.throwError Servant.err500
-          Just ids -> pure ids
-
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
 
 slidesGetSlideId :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler (Item SlideId Slide)
 slidesGetSlideId env _ _ slideId = do
