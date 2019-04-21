@@ -20,9 +20,10 @@
 
 ## Events
 
-| Event                 | Description | Type                  |
-| --------------------- | ----------- | --------------------- |
-| `prismLanguageLoaded` |             | `CustomEvent<string>` |
+| Event                 | Description | Type                       |
+| --------------------- | ----------- | -------------------------- |
+| `codeDidChange`       |             | `CustomEvent<HTMLElement>` |
+| `prismLanguageLoaded` |             | `CustomEvent<string>`      |
 
 
 ## Methods

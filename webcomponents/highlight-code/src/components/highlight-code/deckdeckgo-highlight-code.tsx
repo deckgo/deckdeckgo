@@ -13,7 +13,8 @@ export class DeckdeckgoHighlightCode {
 
   @Element() el: HTMLElement;
 
-  @Event() prismLanguageLoaded: EventEmitter<string>;
+  @Event() private prismLanguageLoaded: EventEmitter<string>;
+  @Event() private codeDidChange: EventEmitter<HTMLElement>;
 
   @Prop() src: string;
 
@@ -370,10 +371,26 @@ export class DeckdeckgoHighlightCode {
   }
 
   private applyCode = async () => {
-      this.editing = false;
+      await this.stopEditing();
 
       await this.parseSlottedCode();
   };
+
+  private stopEditing(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.editing = false;
+
+      const slottedCode: HTMLElement = this.el.querySelector('[slot=\'code\']');
+
+      if (slottedCode) {
+          slottedCode.removeAttribute('contentEditable');
+
+          this.codeDidChange.emit(this.el);
+      }
+
+      resolve();
+    });
+  }
 
   render() {
     return <div class="deckgo-highlight-code-container"
