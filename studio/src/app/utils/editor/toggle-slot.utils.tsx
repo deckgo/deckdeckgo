@@ -20,10 +20,10 @@ export class ToggleSlotUtils {
 
             const currentContainer: HTMLElement = this.getSlotContainer(selectedElement);
 
+            const container: HTMLElement = this.createSlotContainer(element, type);
+
             if (currentContainer.childNodes && currentContainer.childNodes.length > 0) {
                 const elements: HTMLElement[] = Array.prototype.slice.call(currentContainer.childNodes);
-
-                const container: HTMLElement = this.createSlotContainer(element, type);
 
                 elements.forEach((e: HTMLElement) => {
                     container.appendChild(e);
