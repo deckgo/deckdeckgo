@@ -255,6 +255,11 @@ export class AppComponentsHighlightCode {
 <td></td>
 <td>Highlighted code tokens regex, important, variable</td>
 </tr>
+<tr>
+<td>--deckgo-highlight-code-empty-text</td>
+<td>&quot;Click to add your code&quot;</td>
+<td>Place holder in case the <code>editable</code> is set to <code>true</code></td>
+</tr>
 </tbody></table>
 <h3 id="app-components-highlight-code-methods">Methods</h3>
 <p>The <code>&lt;deckgo-highlight-code/&gt;</code> expose the following methods:</p>

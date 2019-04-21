@@ -11,6 +11,12 @@
   }
 }
 
+:host([editable]) {
+  code:empty:not(:focus):after {
+    content: var(--deckgo-highlight-code-empty-text, "Click to add your code");
+  }
+}
+
 div.deckgo-highlight-code-container {
   color: var(--deckgo-highlight-code-color, inherit);
   background: var(--deckgo-highlight-code-background);

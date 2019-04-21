@@ -102,6 +102,7 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 | --deckgo-highlight-code-token-atrule |  | Highlighted code tokens atrule, attr-value, keyword |
 | --deckgo-highlight-code-token-function |  | Highlighted code function, class-name |
 | --deckgo-highlight-code-token-regex |  | Highlighted code tokens regex, important, variable |
+| --deckgo-highlight-code-empty-text | "Click to add your code" | Place holder in case the `editable` is set to `true` |
 
 ### Methods
 
