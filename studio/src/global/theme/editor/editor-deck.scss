@@ -5,7 +5,7 @@ deckgo-deck {
 
   --slide-user-select: text;
 
-  h1, h2, h3, div[slot] {
+  h1, h2, h3, div[slot], deckgo-highlight-code {
     width: 100%;
     overflow: hidden;
 

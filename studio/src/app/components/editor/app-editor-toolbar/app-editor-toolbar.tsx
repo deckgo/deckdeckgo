@@ -7,6 +7,7 @@ import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {Utils} from '../../../utils/core/utils';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
+import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -514,20 +515,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const element: HTMLElement = document.createElement(type.toString());
-
-            if (this.selectedElement.attributes && this.selectedElement.attributes.length) {
-                for (let i: number = 0; i < this.selectedElement.attributes.length; i++) {
-                    element.setAttribute(this.selectedElement.attributes[i].name, this.selectedElement.attributes[i].value);
-                }
-            }
-
-            if (this.selectedElement.childNodes && this.selectedElement.childNodes.length > 0) {
-                const elements: HTMLElement[] = Array.prototype.slice.call(this.selectedElement.childNodes);
-                elements.forEach((e: HTMLElement) => {
-                    element.appendChild(e);
-                });
-            }
+            const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement, type);
 
             this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
 

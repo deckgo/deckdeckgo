@@ -4,6 +4,7 @@ import 'deckdeckgo';
 import 'deckdeckgo-inline-editor';
 import 'deckdeckgo-remote';
 import 'deckdeckgo-qrcode';
+import 'deckdeckgo-highlight-code';
 
 import {setupConfig} from '../app/services/core/environment/environment-config';
 
