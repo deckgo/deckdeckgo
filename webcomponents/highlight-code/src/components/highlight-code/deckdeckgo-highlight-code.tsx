@@ -1,4 +1,4 @@
-import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen} from '@stencil/core';
+import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State} from '@stencil/core';
 
 import Prism from 'prismjs';
 
@@ -24,6 +24,10 @@ export class DeckdeckgoHighlightCode {
   @Prop() language: string = 'javascript';
 
   @Prop() highlightLines: string;
+
+  @Prop() editable: boolean = false;
+
+  @State() editing: boolean = false;
 
   private anchorOffsetTop: number = 0;
 
@@ -341,11 +345,51 @@ export class DeckdeckgoHighlightCode {
       line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1;
   }
 
+  private edit(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.editable) {
+        resolve();
+        return;
+      }
+
+      this.editing = true;
+
+      const slottedCode: HTMLElement = this.el.querySelector('[slot=\'code\']');
+
+      if (slottedCode) {
+        setTimeout(() => {
+          slottedCode.setAttribute('contentEditable', 'true');
+          slottedCode.addEventListener('blur', this.applyCode, {once: true});
+
+          slottedCode.focus();
+        }, 0);
+      }
+
+      resolve();
+    });
+  }
+
+  private applyCode = async () => {
+      this.editing = false;
+
+      await this.parseSlottedCode();
+  };
+
   render() {
-    return <div class="deckgo-highlight-code-container">
+    return <div class="deckgo-highlight-code-container"
+                onMouseDown={() => this.edit()}
+                onTouchStart={() => this.edit()}>
       <code></code>
       <slot name="code"></slot>
     </div>;
+  }
+
+  hostData() {
+    return {
+      class: {
+        'deckgo-highlight-code-edit': this.editing
+      }
+    }
   }
 
 }

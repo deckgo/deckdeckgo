@@ -18,6 +18,7 @@ export namespace Components {
   interface DeckgoHighlightCode {
     'anchor': string;
     'anchorZoom': string;
+    'editable': boolean;
     'findNextAnchor': (enter: boolean) => Promise<DeckdeckgoHighlightCodeAnchor>;
     'hideAnchor': boolean;
     'highlightLines': string;
@@ -29,6 +30,7 @@ export namespace Components {
   interface DeckgoHighlightCodeAttributes extends StencilHTMLAttributes {
     'anchor'?: string;
     'anchorZoom'?: string;
+    'editable'?: boolean;
     'hideAnchor'?: boolean;
     'highlightLines'?: string;
     'language'?: string;
