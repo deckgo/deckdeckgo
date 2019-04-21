@@ -38,9 +38,9 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="deckgo-untouched"></h1>;
+            const title = <h1 slot="title"></h1>;
 
-            const content = <div slot="content" class="deckgo-untouched"></div>;
+            const content = <div slot="content"></div>;
 
             const slide: any = <deckgo-slide-title>
                 {title}
@@ -58,9 +58,9 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="deckgo-untouched"></h1>;
+            const title = <h1 slot="title"></h1>;
 
-            const content = <div slot="content" class="deckgo-untouched"></div>;
+            const content = <div slot="content"></div>;
 
             const slide: any = <deckgo-slide-content>
                 {title}
@@ -78,9 +78,9 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const start = <div slot="start" class="deckgo-untouched"></div>;
+            const start = <div slot="start"></div>;
 
-            const end = <div slot="end" class="deckgo-untouched"></div>;
+            const end = <div slot="end"></div>;
 
             const slide: any = <deckgo-slide-split>
                 {start}
@@ -98,9 +98,9 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const title = <h2 slot="header" class="deckgo-untouched"></h2>;
+            const title = <h2 slot="header"></h2>;
 
-            const content = <h3 slot="footer" class="deckgo-untouched"></h3>;
+            const content = <h3 slot="footer"></h3>;
 
             const slide: any = <deckgo-slide-gif src={src}>
                 {title}

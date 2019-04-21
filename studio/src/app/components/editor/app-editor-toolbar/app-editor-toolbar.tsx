@@ -125,10 +125,6 @@ export class AppEditorToolbar {
 
             await this.initSelectedElement(selected);
 
-            if (selected.classList && selected.classList.contains('deckgo-untouched')) {
-                selected.classList.remove('deckgo-untouched');
-            }
-
             selected.focus();
 
             await this.displayToolbar(selected);
@@ -143,10 +139,6 @@ export class AppEditorToolbar {
     unSelect(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (this.selectedElement) {
-                if (this.selectedElement.classList && !this.selectedElement.classList.contains('deckgo-untouched') && !this.selectedElement.firstChild) {
-                    this.selectedElement.classList.add('deckgo-untouched');
-                }
-
                 this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
 
                 await this.hideToolbar();

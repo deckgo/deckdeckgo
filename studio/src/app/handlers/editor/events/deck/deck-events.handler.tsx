@@ -501,7 +501,6 @@ export class DeckEventsHandler {
                 return;
             }
 
-            // TODO: Should be cleaned on publish: deckgo-untouched|
             let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable/gi, '');
             result = result.replace(/editable=""|editable="true"|editable/gi, '');
             result = result.replace(/hydrated/gi, '');
