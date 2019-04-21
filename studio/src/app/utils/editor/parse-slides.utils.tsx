@@ -1,5 +1,6 @@
 import {Slide, SlideTemplate} from '../../models/slide';
 import {ParseStyleUtils} from './parse-style.utils';
+import {SlotType} from './create-slides.utils';
 
 export class ParseSlidesUtils {
 
@@ -90,7 +91,7 @@ export class ParseSlidesUtils {
                 attributes.style = await ParseStyleUtils.convertStyle(attributes.style);
             }
 
-            if (attributes.slot) {
+            if (attributes.slot && (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.CODE))) {
                 attributes['contenteditable'] = true;
             }
 

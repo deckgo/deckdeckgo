@@ -8,7 +8,7 @@ main {
 
   :not(deckgo-slide-gif) {
     // Skeleton for new slides
-     > [slot]:not([contentEditable]) {
+     > [slot]:not([contentEditable]):not([editable]) {
       position: relative;
 
       background: var(--ion-color-light);

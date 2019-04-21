@@ -8,7 +8,7 @@ import {AuthUser} from '../../../models/auth-user';
 import {Slide, SlideTemplate} from '../../../models/slide';
 import {Deck} from '../../../models/deck';
 
-import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
+import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
@@ -530,7 +530,7 @@ export class AppEditor {
 
             const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
             elements.forEach((e: HTMLElement) => {
-                e.setAttribute('contentEditable', '');
+                e.setAttribute(e.nodeName && e.nodeName.toLowerCase() === SlotType.CODE ? 'editable' : 'contentEditable', '');
             });
 
             resolve();

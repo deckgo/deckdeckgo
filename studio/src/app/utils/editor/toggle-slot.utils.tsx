@@ -16,11 +16,7 @@ export class ToggleSlotUtils {
 
             const element: HTMLElement = document.createElement(type.toString());
 
-            if (selectedElement.attributes && selectedElement.attributes.length) {
-                for (let i: number = 0; i < selectedElement.attributes.length; i++) {
-                    element.setAttribute(selectedElement.attributes[i].name, selectedElement.attributes[i].value);
-                }
-            }
+            await this.copyAttributes(selectedElement, element, type);
 
             const currentContainer: HTMLElement = this.getSlotContainer(selectedElement);
 
@@ -35,6 +31,22 @@ export class ToggleSlotUtils {
             }
             
             resolve(element);
+        });
+    }
+
+    private static copyAttributes(selectedElement: HTMLElement, element: HTMLElement, type: SlotType): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (selectedElement.attributes && selectedElement.attributes.length) {
+                for (let i: number = 0; i < selectedElement.attributes.length; i++) {
+                    if (selectedElement.attributes[i].name && selectedElement.attributes[i].name.toLowerCase() === 'contenteditable' && type === SlotType.CODE) {
+                        element.setAttribute('editable', selectedElement.attributes[i].value);
+                    } else {
+                        element.setAttribute(selectedElement.attributes[i].name, selectedElement.attributes[i].value);
+                    }
+                }
+            }
+
+            resolve();
         });
     }
 
