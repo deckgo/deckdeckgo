@@ -49,8 +49,6 @@ export class AppEditorToolbar {
     @State()
     private deckBusy: boolean = false;
 
-    private originalPlaceHolder: Node;
-
     constructor() {
         this.busyService = BusyService.getInstance();
     }
@@ -128,10 +126,6 @@ export class AppEditorToolbar {
             await this.initSelectedElement(selected);
 
             if (selected.classList && selected.classList.contains('deckgo-untouched')) {
-                if (selected.firstChild) {
-                    this.originalPlaceHolder = selected.removeChild(selected.firstChild);
-                }
-
                 selected.classList.remove('deckgo-untouched');
             }
 
@@ -149,8 +143,7 @@ export class AppEditorToolbar {
     unSelect(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (this.selectedElement) {
-                if (this.originalPlaceHolder && this.selectedElement.classList && !this.selectedElement.classList.contains('deckgo-untouched') && !this.selectedElement.firstChild) {
-                    this.selectedElement.appendChild(this.originalPlaceHolder);
+                if (this.selectedElement.classList && !this.selectedElement.classList.contains('deckgo-untouched') && !this.selectedElement.firstChild) {
                     this.selectedElement.classList.add('deckgo-untouched');
                 }
 
