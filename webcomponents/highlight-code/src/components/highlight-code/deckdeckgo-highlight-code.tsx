@@ -150,7 +150,7 @@ export class DeckdeckgoHighlightCode {
 
       if (container) {
         try {
-          const highlightedCode: string = Prism.highlight(code, Prism.languages[this.language]);
+          const highlightedCode: string = Prism.highlight(code, Prism.languages[this.language], this.language);
 
           container.children[0].innerHTML = highlightedCode;
 
