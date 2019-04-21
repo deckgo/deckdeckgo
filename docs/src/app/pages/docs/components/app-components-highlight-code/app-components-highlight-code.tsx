@@ -49,6 +49,7 @@ export class AppComponentsHighlightCode {
 <li><a href="#app-components-highlight-code-load-or-reload-the-component">Load or reload the component</a></li>
 </ul>
 </li>
+<li><a href="#app-components-highlight-code-events">Events</a></li>
 <li><a href="#app-components-highlight-code-examples">Examples</a></li>
 </ul>
 </li>
@@ -125,6 +126,13 @@ export class AppComponentsHighlightCode {
 <td>If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with space. For example: &quot;3,5 8,9 13,13 14,17&quot;</td>
 <td><code>string</code></td>
 <td></td>
+</tr>
+<tr>
+<td><code>editable</code></td>
+<td><code>editable</code></td>
+<td>In case you would like to set the code component as being editable.</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
 </tr>
 </tbody></table>
 <h3 id="app-components-highlight-code-styling">Styling</h3>
@@ -259,6 +267,12 @@ export class AppComponentsHighlightCode {
     </deckgo-highlight-code><h4 id="app-components-highlight-code-load-or-reload-the-component">Load or reload the component</h4>
 <deckgo-highlight-code language="javascript">
       <code slot="code">load() =&gt; Promise&lt;void&gt;</code>
+    </deckgo-highlight-code><h3 id="app-components-highlight-code-events">Events</h3>
+<p>The <code>&lt;deckgo-highlight-code/&gt;</code> will bubble the following events:</p>
+<h4 id="app-components-highlight-code-code-did-change">Code did change</h4>
+<p>Emitted when the code was edited (see attribute <code>editable</code>). Propagate the root component itself.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">codeDidChange(HTMLElement);</code>
     </deckgo-highlight-code><h3 id="app-components-highlight-code-examples">Examples</h3>
 <p>You could find the examples in the <a href="https://github.com/deckgo/deckdeckgo-qrcode/blob/master/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
