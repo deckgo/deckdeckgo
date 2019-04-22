@@ -31,6 +31,10 @@ deckgo-deck {
     min-height: calc(var(--font-size-normal) + 4px);
   }
 
+  deckgo-highlight-code {
+    --deckgo-highlight-code-margin: 0;
+  }
+
   deckgo-slide-split {
     div[slot] {
       height: fit-content;
