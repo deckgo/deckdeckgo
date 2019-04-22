@@ -182,6 +182,11 @@ export class AppEditorToolbar {
                 return;
             }
 
+            if (!$event.target || ($event.target.nodeName && $event.target.nodeName.toLowerCase() === 'code')) {
+                resolve();
+                return;
+            }
+
             const parseText: string = $event.clipboardData.getData('text/plain');
 
             if (!parseText || parseText.length <= 0) {
