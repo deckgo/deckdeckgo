@@ -61,7 +61,7 @@ export class ParseSlidesUtils {
             }
 
             if (element.nodeType === 3) {
-                resolve(element.textContent);
+                resolve(element.textContent + '\n');
                 return;
             }
 

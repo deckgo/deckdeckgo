@@ -505,7 +505,6 @@ export class DeckEventsHandler {
             result = result.replace(/editable=""|editable="true"|editable/gi, '');
             result = result.replace(/hydrated/gi, '');
             result = result.replace(/class=""/g, '');
-            result = result.replace(/\s\s+/g, '');
 
             resolve(result);
         });
