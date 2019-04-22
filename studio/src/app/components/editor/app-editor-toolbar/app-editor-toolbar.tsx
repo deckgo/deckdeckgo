@@ -182,11 +182,6 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if (!$event.target || ($event.target.nodeName && $event.target.nodeName.toLowerCase() === 'code')) {
-                resolve();
-                return;
-            }
-
             const parseText: string = $event.clipboardData.getData('text/plain');
 
             if (!parseText || parseText.length <= 0) {
@@ -219,10 +214,12 @@ export class AppEditorToolbar {
 
                 parseTexts.forEach((text: string, index: number) => {
                     const newTextNode: Text = document.createTextNode(text);
+                    range.collapse(false);
                     range.insertNode(newTextNode);
 
                     if (index < parseTexts.length - 1) {
                         const br: HTMLBRElement = document.createElement('br');
+                        range.collapse(false);
                         range.insertNode(br);
                     }
                 });
