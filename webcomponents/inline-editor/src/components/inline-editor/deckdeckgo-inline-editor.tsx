@@ -70,7 +70,7 @@ export class DeckdeckgoInlineEditor {
   attachTo: HTMLElement;
 
   @Prop()
-  containerAttribute: string = 'slot';
+  containers: string = 'h1,h2,h3,h4,h5,h6,div';
 
   async componentWillLoad() {
     await this.attachListener();
@@ -133,9 +133,7 @@ export class DeckdeckgoInlineEditor {
 
   @Listen('document:selectionchange', {passive: true})
   async selectionchange(_$event: Event) {
-    if (document && document.activeElement && document.activeElement.nodeName &&
-      (document.activeElement.nodeName.toLowerCase() === 'deckgo-inline-editor' || document.activeElement.nodeName.toLowerCase() === 'body')) {
-
+    if (document && document.activeElement && !this.isContainer(document.activeElement)) {
       if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
         await this.reset(false);
       }
@@ -258,7 +256,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (content instanceof HTMLElement && (content as HTMLElement).getAttribute(this.containerAttribute) != null) {
+      if (this.isContainer(content)) {
         this.bold = false;
         this.italic = false;
         this.underline = false;
@@ -282,6 +280,11 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private isContainer(element: Node): boolean {
+    const containerTypes: string[] = this.containers.toLowerCase().split(',');
+    return element && element.nodeName && containerTypes.indexOf(element.nodeName.toLowerCase()) > -1;
+  }
+
   // TODO: Find a clever way to detect to root container
   // We iterate until we find the root container to detect if bold, underline or italic are active
   private findStyle(node: Node): Promise<void> {
@@ -297,7 +300,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (node instanceof HTMLElement && (node as HTMLElement).getAttribute(this.containerAttribute) != null) {
+      if (this.isContainer(node)) {
         const nodeName: string = node.nodeName.toUpperCase();
 
         this.disabledTitle = nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';

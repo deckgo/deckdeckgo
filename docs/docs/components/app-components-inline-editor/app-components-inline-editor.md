@@ -65,7 +65,7 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | `stickyDesktop`       | `sticky-desktop`        | Use a sticky footer toolbar on desktop            | `boolean` | `false`     |
 | `stickyMobile`        | `sticky-mobile`         | Use a sticky footer toolbar on mobile. Note: except iOS, feel free to send a PR if you know how to handle this with the software keyboard            | `boolean` | `false`     |
 | `attachTo`            | `attach-to`             | Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document | `HTMLElement` |     |
-| `containerAttribute`            | `container-attribute`             | The container where the inline editor should be use need to be identified with an attribute in order to allow the component to detect some information like the current style or color | `string` |   `slot`  |
+| `containers`            | `containers`             | A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color | `string` |   `h1,h2,h3,h4,h5,h6,div`  |
 
 ### Styling
 
