@@ -180,6 +180,13 @@ export namespace Components {
   interface AppUserMenu {}
   interface AppUserMenuAttributes extends StencilHTMLAttributes {}
 
+  interface AppCode {
+    'selectedElement': HTMLElement;
+  }
+  interface AppCodeAttributes extends StencilHTMLAttributes {
+    'selectedElement'?: HTMLElement;
+  }
+
   interface AppDeckOrSlide {}
   interface AppDeckOrSlideAttributes extends StencilHTMLAttributes {}
 
@@ -228,6 +235,7 @@ declare global {
     'AppSignin': Components.AppSignin;
     'AppEditor': Components.AppEditor;
     'AppUserMenu': Components.AppUserMenu;
+    'AppCode': Components.AppCode;
     'AppDeckOrSlide': Components.AppDeckOrSlide;
     'AppEditorActions': Components.AppEditorActions;
     'AppSlideType': Components.AppSlideType;
@@ -264,6 +272,7 @@ declare global {
     'app-signin': Components.AppSigninAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-user-menu': Components.AppUserMenuAttributes;
+    'app-code': Components.AppCodeAttributes;
     'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
     'app-editor-actions': Components.AppEditorActionsAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
@@ -445,6 +454,12 @@ declare global {
     new (): HTMLAppUserMenuElement;
   };
 
+  interface HTMLAppCodeElement extends Components.AppCode, HTMLStencilElement {}
+  var HTMLAppCodeElement: {
+    prototype: HTMLAppCodeElement;
+    new (): HTMLAppCodeElement;
+  };
+
   interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
   var HTMLAppDeckOrSlideElement: {
     prototype: HTMLAppDeckOrSlideElement;
@@ -499,6 +514,7 @@ declare global {
     'app-signin': HTMLAppSigninElement
     'app-editor': HTMLAppEditorElement
     'app-user-menu': HTMLAppUserMenuElement
+    'app-code': HTMLAppCodeElement
     'app-deck-or-slide': HTMLAppDeckOrSlideElement
     'app-editor-actions': HTMLAppEditorActionsElement
     'app-slide-type': HTMLAppSlideTypeElement
@@ -535,6 +551,7 @@ declare global {
     'app-signin': HTMLAppSigninElement;
     'app-editor': HTMLAppEditorElement;
     'app-user-menu': HTMLAppUserMenuElement;
+    'app-code': HTMLAppCodeElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
     'app-slide-type': HTMLAppSlideTypeElement;

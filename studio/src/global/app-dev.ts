@@ -23,5 +23,6 @@ setupConfig({
         url: 'https://api.tenor.com/v1/',
         key: '<@TENOR_KEY@>'
     },
-    signalingServerUrl: '<@SIGNALING_SERVER_URL@>'
+    signalingServerUrl: '<@SIGNALING_SERVER_URL@>',
+    prismComponentsUrl: 'https://raw.githubusercontent.com/PrismJS/prism/886698d5b759ef46162a5723a2493f97c689dc94/components.json'
 });

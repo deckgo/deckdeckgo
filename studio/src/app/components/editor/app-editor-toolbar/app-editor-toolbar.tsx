@@ -34,6 +34,9 @@ export class AppEditorToolbar {
     @State()
     private deckOrSlide: boolean = false;
 
+    @State()
+    private code: boolean = false;
+
     private applyToAllDeck: boolean = false;
 
     @Event() private blockSlide: EventEmitter<boolean>;
@@ -160,7 +163,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if (element.getAttribute('slot')) {
+            if (element.getAttribute('slot') && element.getAttribute('slot') !== 'code') {
                 resolve(element);
                 return;
             }
@@ -172,7 +175,11 @@ export class AppEditorToolbar {
     }
 
     private isElementSlideOrDeck(element: HTMLElement): boolean {
-        return element && element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1)
+        return element && element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1);
+    }
+
+    private isElementCode(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-highlight-code';
     }
 
     private cleanOnPaste = async ($event) => {
@@ -495,6 +502,29 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openCode($event: UIEvent) {
+        if (!this.code) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-code',
+            componentProps: {
+                selectedElement: this.selectedElement
+            },
+            event: $event,
+            mode: 'ios'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data && detail.data.language) {
+                await this.toggleCodeLanguage(detail.data.language);
+            }
+        });
+
+        await popover.present();
+    }
+
     private toggleSlotType(type: SlotType): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
@@ -507,6 +537,21 @@ export class AppEditorToolbar {
             this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
 
             await this.initSelectedElement(element);
+
+            await this.emitChange();
+
+            resolve();
+        });
+    }
+
+    private toggleCodeLanguage(language: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.isElementCode(this.selectedElement)) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.setAttribute('language', language);
 
             await this.emitChange();
 
@@ -537,6 +582,7 @@ export class AppEditorToolbar {
         return new Promise<void>((resolve) => {
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
+            this.code = this.isElementCode(element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
@@ -573,6 +619,7 @@ export class AppEditorToolbar {
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderActions()}
                 {this.renderSlotType()}
+                {this.renderCodeOptions()}
             </div>,
             <input type="color" name="color-picker" value={this.color}></input>,
             <input type="color" name="background-picker" value={this.background}></input>
@@ -607,6 +654,16 @@ export class AppEditorToolbar {
         } else {
             return <a onClick={(e: UIEvent) => this.openSlotType(e)}>
                 <ion-label>T</ion-label>
+            </a>
+        }
+    }
+
+    private renderCodeOptions() {
+        if (!this.code) {
+            return undefined;
+        } else {
+            return <a onClick={(e: UIEvent) => this.openCode(e)}>
+                <ion-icon name="code"></ion-icon>
             </a>
         }
     }
