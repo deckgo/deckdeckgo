@@ -22,7 +22,7 @@ export class DeckdeckgoHighlightCode {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  @Prop() language: string = 'javascript';
+  @Prop({reflectToAttr: true}) language: string = 'javascript';
 
   @Prop() highlightLines: string;
 
