@@ -8,12 +8,12 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-highlight-code';
 import 'deckdeckgo-inline-editor';
 import 'deckdeckgo-qrcode';
 import 'deckdeckgo-remote';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -80,6 +80,7 @@ export namespace Components {
   }
   interface AppEditorToolbarAttributes extends StencilHTMLAttributes {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
@@ -181,10 +182,11 @@ export namespace Components {
   interface AppUserMenuAttributes extends StencilHTMLAttributes {}
 
   interface AppCode {
+    'codeDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
   }
   interface AppCodeAttributes extends StencilHTMLAttributes {
-    'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'codeDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
   }
 

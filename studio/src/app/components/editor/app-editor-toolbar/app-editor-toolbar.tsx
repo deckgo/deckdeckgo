@@ -45,6 +45,7 @@ export class AppEditorToolbar {
 
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
+    @Event() private codeDidChange: EventEmitter<HTMLElement>;
 
     private subscription: Subscription;
     private busyService: BusyService;
@@ -510,16 +511,11 @@ export class AppEditorToolbar {
         const popover: HTMLIonPopoverElement = await this.popoverController.create({
             component: 'app-code',
             componentProps: {
-                selectedElement: this.selectedElement
+                selectedElement: this.selectedElement,
+                codeDidChange: this.codeDidChange
             },
             event: $event,
             mode: 'ios'
-        });
-
-        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail && detail.data && detail.data.language) {
-                await this.toggleCodeLanguage(detail.data.language);
-            }
         });
 
         await popover.present();
@@ -537,21 +533,6 @@ export class AppEditorToolbar {
             this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
 
             await this.initSelectedElement(element);
-
-            await this.emitChange();
-
-            resolve();
-        });
-    }
-
-    private toggleCodeLanguage(language: string): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!this.selectedElement || !this.isElementCode(this.selectedElement)) {
-                resolve();
-                return;
-            }
-
-            this.selectedElement.setAttribute('language', language);
 
             await this.emitChange();
 

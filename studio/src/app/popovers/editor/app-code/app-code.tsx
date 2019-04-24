@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Prop} from '@stencil/core';
+import {Component, Element, EventEmitter, Prop} from '@stencil/core';
 
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
@@ -13,7 +13,8 @@ export class AppCode {
     @Prop()
     selectedElement: HTMLElement;
 
-    @Event() private slideDidChange: EventEmitter<HTMLElement>;
+    @Prop()
+    codeDidChange: EventEmitter<HTMLElement>;
 
     private hidePopoverTimer: number;
 
@@ -42,12 +43,6 @@ export class AppCode {
         });
     }
 
-    async closePopover(e: CustomEvent) {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
-            language: e && e.detail && e.detail.value ? e.detail.value : null
-        });
-    }
-
     private selectColor($event): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
@@ -66,7 +61,7 @@ export class AppCode {
 
             this.selectedElement.style.setProperty('--deckgo-highlight-code-token-comment', $event.target.value);
 
-            this.slideDidChange.emit(this.selectedElement.parentElement);
+            this.emitCodeDidChange();
 
             resolve();
         });
@@ -90,11 +85,45 @@ export class AppCode {
         });
     }
 
+    private toggleCodeLanguage($event: CustomEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (!$event || !$event.detail || !$event.detail.value) {
+                resolve();
+                return;
+            }
+
+            const currentLanguage: string = this.selectedElement.getAttribute('language');
+
+            if ($event.detail.value === currentLanguage) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.setAttribute('language', $event.detail.value);
+
+            // Reload component with new language
+            await (this.selectedElement as any).load();
+
+            this.emitCodeDidChange();
+
+            resolve();
+        });
+    }
+
+    private emitCodeDidChange() {
+        this.codeDidChange.emit(this.selectedElement);
+    }
+
     render() {
         return <ion-list>
             <ion-item>
                 <ion-label>Language</ion-label>
-                <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.closePopover(e)}>
+                <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)}>
                     {this.renderSelectOptions()}
                 </ion-select>
             </ion-item>
