@@ -215,6 +215,8 @@ export class AppEditorToolbar {
                 return;
             }
 
+            const isCodeElement: boolean = $event.target && $event.target.nodeName && $event.target.nodeName.toLowerCase() === 'code';
+
             const selected: Selection = await this.getSelection();
             if (selected && selected.rangeCount) {
                 const range = selected.getRangeAt(0);
@@ -226,9 +228,16 @@ export class AppEditorToolbar {
                     range.insertNode(newTextNode);
 
                     if (index < parseTexts.length - 1) {
-                        const br: HTMLBRElement = document.createElement('br');
                         range.collapse(false);
-                        range.insertNode(br);
+
+                        if (isCodeElement) {
+                            const text: Text = document.createTextNode('\n');
+                            range.insertNode(text);
+                        } else {
+                            const br: HTMLBRElement = document.createElement('br');
+                            range.insertNode(br);
+                        }
+
                     }
                 });
 
