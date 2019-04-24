@@ -184,6 +184,7 @@ export namespace Components {
     'selectedElement': HTMLElement;
   }
   interface AppCodeAttributes extends StencilHTMLAttributes {
+    'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'selectedElement'?: HTMLElement;
   }
 

@@ -1,4 +1,4 @@
-import {Component, Element, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Prop} from '@stencil/core';
 
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
@@ -13,10 +13,16 @@ export class AppCode {
     @Prop()
     selectedElement: HTMLElement;
 
+    @Event() private slideDidChange: EventEmitter<HTMLElement>;
+
+    private hidePopoverTimer: number;
+
     private prismService: PrismService;
 
     private currentLanguage: string = 'javascript';
     private languages: PrismLanguage[];
+
+    private commentsColor: string;
 
     constructor() {
         this.prismService = PrismService.getInstance();
@@ -38,17 +44,66 @@ export class AppCode {
 
     async closePopover(e: CustomEvent) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
-            language: e && e.detail &&e.detail.value ? e.detail.value : null
+            language: e && e.detail && e.detail.value ? e.detail.value : null
+        });
+    }
+
+    private selectColor($event): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement) {
+                resolve();
+                return;
+            }
+
+            if (!$event || !$event.target || !$event.target.value) {
+                resolve();
+                return;
+            }
+
+            await this.privateHideShowPopover();
+
+            this.commentsColor = $event.target.value;
+
+            this.selectedElement.style.setProperty('--deckgo-highlight-code-token-comment', $event.target.value);
+
+            this.slideDidChange.emit(this.selectedElement.parentElement);
+
+            resolve();
+        });
+    }
+
+    private privateHideShowPopover(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const popover: HTMLIonPopoverElement = this.el.closest('ion-popover');
+
+            popover.style.visibility = 'hidden';
+
+            if (this.hidePopoverTimer) {
+                clearTimeout(this.hidePopoverTimer);
+            }
+
+            this.hidePopoverTimer = setTimeout(() => {
+                popover.style.visibility = 'initial';
+            }, 1000);
+
+            resolve();
         });
     }
 
     render() {
-        return <ion-item>
-            <ion-label>Language</ion-label>
-            <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.closePopover(e)}>
-                {this.renderSelectOptions()}
-            </ion-select>
-        </ion-item>
+        return <ion-list>
+            <ion-item>
+                <ion-label>Language</ion-label>
+                <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.closePopover(e)}>
+                    {this.renderSelectOptions()}
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Comments</ion-label>
+                <input type="color" name="color-picker" value={this.commentsColor} onChange={(e) => this.selectColor(e)}></input>
+            </ion-item>
+        </ion-list>
     }
 
     private renderSelectOptions() {
