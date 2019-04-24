@@ -348,7 +348,9 @@ export class DeckdeckgoHighlightCode {
 
   private edit(): Promise<void> {
     return new Promise<void>((resolve) => {
+
       if (!this.editable) {
+
         resolve();
         return;
       }
@@ -363,7 +365,7 @@ export class DeckdeckgoHighlightCode {
           slottedCode.addEventListener('blur', this.applyCode, {once: true});
 
           slottedCode.focus();
-        }, 0);
+        }, 100);
       }
 
       resolve();

@@ -1,5 +1,11 @@
 @import "~prismjs/themes/prism.css";
 
+:host {
+  ::slotted([slot="code"]) {
+    display: none;
+  }
+}
+
 :host(.deckgo-highlight-code-edit) {
   ::slotted([slot="code"]) {
     display: block;
@@ -121,8 +127,4 @@ div.deckgo-highlight-code-container {
       color: var(--deckgo-highlight-code-token-regex, #e90);
     }
   }
-}
-
-::slotted([slot="code"]) {
-  display: none;
 }
