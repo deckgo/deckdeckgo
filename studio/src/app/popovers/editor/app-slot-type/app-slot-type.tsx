@@ -24,7 +24,7 @@ export class AppSlideAdd {
 
     async closePopover(type: SlotType) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
-            type: type
+            type: this.currentType !== type ? type : null
         });
     }
 
