@@ -40,6 +40,8 @@ export class ToggleSlotUtils {
                 for (let i: number = 0; i < selectedElement.attributes.length; i++) {
                     if (selectedElement.attributes[i].name && selectedElement.attributes[i].name.toLowerCase() === 'contenteditable' && type === SlotType.CODE) {
                         element.setAttribute('editable', selectedElement.attributes[i].value);
+                    } else if (selectedElement.attributes[i].name && selectedElement.attributes[i].name.toLowerCase() === 'editable' && type !== SlotType.CODE) {
+                        element.setAttribute('contenteditable', selectedElement.attributes[i].value);
                     } else {
                         element.setAttribute(selectedElement.attributes[i].name, selectedElement.attributes[i].value);
                     }
