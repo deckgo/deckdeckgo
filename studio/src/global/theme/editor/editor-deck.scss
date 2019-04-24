@@ -33,6 +33,10 @@ deckgo-deck {
 
   deckgo-highlight-code {
     --deckgo-highlight-code-margin: 0;
+
+    code[slot] {
+      min-height: 26px;
+    }
   }
 
   deckgo-slide-split {
