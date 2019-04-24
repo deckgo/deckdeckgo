@@ -119,7 +119,7 @@ export class DeckdeckgoHighlightCode {
     const code: HTMLElement = this.el.querySelector('[slot=\'code\']');
 
     if (code) {
-      return this.parseCode(code.innerText);
+      return this.parseCode(code.innerText ? code.innerText.trim() : code.innerText);
     } else {
       return new Promise<void>((resolve) => {
         resolve();
@@ -363,6 +363,7 @@ export class DeckdeckgoHighlightCode {
         setTimeout(() => {
           slottedCode.setAttribute('contentEditable', 'true');
           slottedCode.addEventListener('blur', this.applyCode, {once: true});
+          slottedCode.addEventListener('keydown', this.catchNewLine);
 
           slottedCode.focus();
         }, 100);
@@ -372,10 +373,41 @@ export class DeckdeckgoHighlightCode {
     });
   }
 
-  private applyCode = async () => {
-      await this.stopEditing();
+  private catchNewLine = async ($event: KeyboardEvent) => {
+    if ($event && $event.key === 'Enter') {
+      $event.preventDefault();
 
-      await this.parseSlottedCode();
+      const selection: Selection = await this.getSelection();
+      if (selection && selection.focusNode && selection.focusNode.textContent && selection.focusOffset > 0) {
+        const charCode: number = selection.focusNode.textContent.charCodeAt(window.getSelection().focusOffset);
+
+        document.execCommand('insertHTML', false, charCode === 10 || charCode === 13 ? '\n' : '\n\n');
+      } else {
+        document.execCommand('insertHTML', false, '\n\n');
+      }
+    }
+  };
+
+  private getSelection(): Promise<Selection> {
+    return new Promise<Selection>((resolve) => {
+      let selectedSelection: Selection = null;
+
+      if (window && window.getSelection) {
+        selectedSelection = window.getSelection();
+      } else if (document && document.getSelection) {
+        selectedSelection = document.getSelection();
+      } else if (document && (document as any).selection) {
+        selectedSelection = (document as any).selection.createRange().text;
+      }
+
+      resolve(selectedSelection);
+    });
+  }
+
+  private applyCode = async () => {
+    await this.stopEditing();
+
+    await this.parseSlottedCode();
   };
 
   private stopEditing(): Promise<void> {
@@ -385,9 +417,13 @@ export class DeckdeckgoHighlightCode {
       const slottedCode: HTMLElement = this.el.querySelector('[slot=\'code\']');
 
       if (slottedCode) {
-          slottedCode.removeAttribute('contentEditable');
+        slottedCode.removeAttribute('contentEditable');
 
-          this.codeDidChange.emit(this.el);
+        if (slottedCode.innerHTML) {
+          slottedCode.innerHTML = slottedCode.innerHTML.trim();
+        }
+
+        this.codeDidChange.emit(this.el);
       }
 
       resolve();
