@@ -2,6 +2,11 @@ import {Component, Element, EventEmitter, Prop} from '@stencil/core';
 
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
+enum CodeColorType {
+    COMMENTS,
+    PUNCTUATION
+}
+
 @Component({
     tag: 'app-code',
     styleUrl: 'app-code.scss'
@@ -23,8 +28,8 @@ export class AppCode {
     private currentLanguage: string = 'javascript';
     private languages: PrismLanguage[];
 
-    private commentsColor: string;
-    private punctuationColor: string;
+    private codeColorType: CodeColorType = CodeColorType.COMMENTS;
+    private codeColor: string;
 
     constructor() {
         this.prismService = PrismService.getInstance();
@@ -44,7 +49,7 @@ export class AppCode {
         });
     }
 
-    private selectColor($event, updateColor: Function): Promise<void> {
+    private selectColor($event): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
                 resolve();
@@ -58,7 +63,8 @@ export class AppCode {
 
             await this.privateHideShowPopover();
 
-            updateColor($event.target.value);
+            this.codeColor = $event.target.value;
+            this.selectedElement.style.setProperty(this.getStyle(), $event.target.value);
 
             this.emitCodeDidChange();
 
@@ -66,15 +72,13 @@ export class AppCode {
         });
     }
 
-    private updateCommentsColor = (color: string) => {
-        this.commentsColor = color;
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-token-comment', color);
-    };
-
-    private updatePunctuationColor = (color: string) => {
-        this.punctuationColor = color;
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-token-punctuation', color);
-    };
+    private getStyle(): string {
+        if (this.codeColorType === CodeColorType.PUNCTUATION) {
+            return '--deckgo-highlight-code-token-punctuation';
+        } else {
+            return '--deckgo-highlight-code-token-comment';
+        }
+    }
 
     private privateHideShowPopover(): Promise<void> {
         return new Promise<void>((resolve) => {
@@ -128,25 +132,37 @@ export class AppCode {
         this.codeDidChange.emit(this.selectedElement);
     }
 
+    private toggleColorType($event: CustomEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            this.codeColorType = $event.detail.value;
+
+            resolve();
+        });
+    }
+
     render() {
         return <ion-list>
-            <ion-item>
-                <ion-label>Language</ion-label>
-                <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)}>
-                    {this.renderSelectOptions()}
-                </ion-select>
-            </ion-item>
+            <ion-item-divider><ion-label>Language</ion-label></ion-item-divider>
+
+            <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)} class="ion-padding-start ion-padding-end">
+                {this.renderSelectOptions()}
+            </ion-select>
+
+            <ion-item-divider class="ion-padding-top"><ion-label>Colors</ion-label></ion-item-divider>
+
+            <ion-select value={this.codeColorType} onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
+                <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
+                <ion-select-option value={CodeColorType.PUNCTUATION}>Punctuation</ion-select-option>
+            </ion-select>
 
             <ion-item>
-                <ion-label>Comments</ion-label>
-                <input type="color" name="color-picker" value={this.commentsColor}
-                       onChange={(e) => this.selectColor(e, this.updateCommentsColor)}></input>
-            </ion-item>
-
-            <ion-item>
-                <ion-label>Punctuation</ion-label>
-                <input type="color" name="color-picker" value={this.punctuationColor}
-                       onChange={(e) => this.selectColor(e, this.updatePunctuationColor)}></input>
+                <ion-label>Value</ion-label>
+                <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e)}></input>
             </ion-item>
         </ion-list>
     }
