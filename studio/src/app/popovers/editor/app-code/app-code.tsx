@@ -1,4 +1,4 @@
-import {Component, Element, EventEmitter, Prop} from '@stencil/core';
+import {Component, Element, EventEmitter, Prop, State} from '@stencil/core';
 
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
@@ -29,6 +29,8 @@ export class AppCode {
     private languages: PrismLanguage[];
 
     private codeColorType: CodeColorType = CodeColorType.COMMENTS;
+
+    @State()
     private codeColor: string;
 
     constructor() {
@@ -42,8 +44,9 @@ export class AppCode {
     }
 
     private initCurrentLanguage(): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             this.currentLanguage = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
+            this.codeColor = await this.initColor();
 
             resolve();
         });
@@ -70,14 +73,6 @@ export class AppCode {
 
             resolve();
         });
-    }
-
-    private getStyle(): string {
-        if (this.codeColorType === CodeColorType.PUNCTUATION) {
-            return '--deckgo-highlight-code-token-punctuation';
-        } else {
-            return '--deckgo-highlight-code-token-comment';
-        }
     }
 
     private privateHideShowPopover(): Promise<void> {
@@ -140,8 +135,32 @@ export class AppCode {
             }
 
             this.codeColorType = $event.detail.value;
+            this.codeColor = await this.initColor();
 
             resolve();
+        });
+    }
+
+    private getStyle(): string {
+        if (this.codeColorType === CodeColorType.PUNCTUATION) {
+            return '--deckgo-highlight-code-token-punctuation';
+        } else {
+            return '--deckgo-highlight-code-token-comment';
+        }
+    }
+
+    private initColor(): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!this.selectedElement || !this.selectedElement.style) {
+                resolve(null);
+                return;
+            }
+
+            if (this.codeColorType === CodeColorType.PUNCTUATION) {
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') : null);
+            } else {
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') : null);
+            }
         });
     }
 
