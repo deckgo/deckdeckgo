@@ -200,22 +200,29 @@ export class AppCode {
         return <ion-list>
             <ion-item-divider><ion-label>Language</ion-label></ion-item-divider>
 
-            <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)} class="ion-padding-start ion-padding-end">
-                {this.renderSelectOptions()}
-            </ion-select>
+            <ion-item class="select">
+                <ion-label>Language</ion-label>
+                <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)} class="ion-padding-start ion-padding-end">
+                    {this.renderSelectOptions()}
+                </ion-select>
+            </ion-item>
 
             <ion-item-divider class="ion-padding-top"><ion-label>Colors</ion-label></ion-item-divider>
 
-            <ion-select value={this.codeColorType} onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
-                <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
-                <ion-select-option value={CodeColorType.FUNCTION}>Function</ion-select-option>
-                <ion-select-option value={CodeColorType.KEYWORD}>Keyword</ion-select-option>
-                <ion-select-option value={CodeColorType.OPERATOR}>Operator</ion-select-option>
-                <ion-select-option value={CodeColorType.PUNCTUATION}>Punctuation</ion-select-option>
-                <ion-select-option value={CodeColorType.PROPERTY}>Property</ion-select-option>
-                <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
-                <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
-            </ion-select>
+            <ion-item class="select">
+                <ion-label>Color applied to</ion-label>
+
+                <ion-select value={this.codeColorType} onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
+                    <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
+                    <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
+                    <ion-select-option value={CodeColorType.KEYWORD}>Keywords</ion-select-option>
+                    <ion-select-option value={CodeColorType.OPERATOR}>Operators</ion-select-option>
+                    <ion-select-option value={CodeColorType.PUNCTUATION}>Punctuation</ion-select-option>
+                    <ion-select-option value={CodeColorType.PROPERTY}>Properties</ion-select-option>
+                    <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
+                    <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
+                </ion-select>
+            </ion-item>
 
             <ion-item>
                 <ion-label>Color</ion-label>

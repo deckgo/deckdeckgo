@@ -2,6 +2,17 @@ app-code {
   ion-item {
     --border-width: 0;
     --inner-border-width: 0;
+    
+    &.select {
+      ion-label:first-of-type {
+        display: none;
+      }
+
+      ion-select {
+        min-width: 100%;
+        padding-left: 0;
+      }
+    }
   }
 
   ion-item-divider {
