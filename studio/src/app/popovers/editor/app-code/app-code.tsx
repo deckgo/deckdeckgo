@@ -48,6 +48,8 @@ export class AppCode {
             this.currentLanguage = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
             this.codeColor = await this.initColor();
 
+            console.log(this.codeColor);
+
             resolve();
         });
     }
@@ -157,9 +159,9 @@ export class AppCode {
             }
 
             if (this.codeColorType === CodeColorType.PUNCTUATION) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') : null);
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') : '#708090');
             } else {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') : null);
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') : '#999999');
             }
         });
     }
@@ -180,7 +182,7 @@ export class AppCode {
             </ion-select>
 
             <ion-item>
-                <ion-label>Value</ion-label>
+                <ion-label>Color</ion-label>
                 <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e)}></input>
             </ion-item>
         </ion-list>
