@@ -57,5 +57,11 @@ deckgo-deck {
     h3 {
       font-size: 1.2em;
     }
+
+    code {
+      font-size: 1em;
+    }
+
+    --deckgo-highlight-code-font-size: 1em;
   }
 }
