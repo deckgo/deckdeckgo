@@ -7,5 +7,7 @@ app-code {
   ion-item-divider {
     --color: var(--ion-color-primary);
     --background: inherit;
+    --ion-item-border-color: transparent;
+    --ion-padding: 0;
   }
 }
