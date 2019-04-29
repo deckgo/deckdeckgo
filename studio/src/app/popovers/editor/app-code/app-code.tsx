@@ -289,9 +289,13 @@ export class AppCode {
             </ion-item-divider>
 
             <ion-item>
-                <ion-input value={this.highlightLines} placeholder="Click to enter lines" debounce={500}
+                <ion-input value={this.highlightLines} placeholder="Enter lines here" debounce={500}
                            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
                             onIonChange={() => this.highlightSelectedLines()}></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <small>To highlight lines, use a coma separated list of lines. For example: 0,2 7,7 13,15</small>
             </ion-item>
 
             <ion-item>
