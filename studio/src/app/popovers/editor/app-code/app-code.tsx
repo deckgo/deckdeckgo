@@ -4,7 +4,13 @@ import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.
 
 enum CodeColorType {
     COMMENTS,
-    PUNCTUATION
+    PUNCTUATION,
+    PROPERTY,
+    SELECTOR,
+    OPERATOR,
+    KEYWORD,
+    FUNCTION,
+    REGEX
 }
 
 @Component({
@@ -146,6 +152,18 @@ export class AppCode {
     private getStyle(): string {
         if (this.codeColorType === CodeColorType.PUNCTUATION) {
             return '--deckgo-highlight-code-token-punctuation';
+        } else if (this.codeColorType === CodeColorType.PROPERTY) {
+            return '--deckgo-highlight-code-token-property';
+        } else if (this.codeColorType === CodeColorType.SELECTOR) {
+            return '--deckgo-highlight-code-token-selector';
+        } else if (this.codeColorType === CodeColorType.OPERATOR) {
+            return '--deckgo-highlight-code-token-operator';
+        } else if (this.codeColorType === CodeColorType.KEYWORD) {
+            return '--deckgo-highlight-code-token-atrule';
+        } else if (this.codeColorType === CodeColorType.FUNCTION) {
+            return '--deckgo-highlight-code-token-function';
+        } else if (this.codeColorType === CodeColorType.REGEX) {
+            return '--deckgo-highlight-code-token-regex';
         } else {
             return '--deckgo-highlight-code-token-comment';
         }
@@ -160,6 +178,18 @@ export class AppCode {
 
             if (this.codeColorType === CodeColorType.PUNCTUATION) {
                 resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') : '#708090');
+            } else if (this.codeColorType === CodeColorType.PROPERTY) {
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') : '#990055');
+            } else if (this.codeColorType === CodeColorType.SELECTOR) {
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') : '#669900');
+            } else if (this.codeColorType === CodeColorType.OPERATOR) {
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') : '#9a6e3a');
+            } else if (this.codeColorType === CodeColorType.KEYWORD) {
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') : '#0077AA');
+            } else if (this.codeColorType === CodeColorType.FUNCTION) {
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') : '#DD4A68');
+            } else if (this.codeColorType === CodeColorType.REGEX) {
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') : '#EE9900');
             } else {
                 resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') : '#999999');
             }
@@ -178,7 +208,13 @@ export class AppCode {
 
             <ion-select value={this.codeColorType} onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
                 <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
+                <ion-select-option value={CodeColorType.FUNCTION}>Function</ion-select-option>
+                <ion-select-option value={CodeColorType.KEYWORD}>Keyword</ion-select-option>
+                <ion-select-option value={CodeColorType.OPERATOR}>Operator</ion-select-option>
                 <ion-select-option value={CodeColorType.PUNCTUATION}>Punctuation</ion-select-option>
+                <ion-select-option value={CodeColorType.PROPERTY}>Property</ion-select-option>
+                <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
+                <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
             </ion-select>
 
             <ion-item>
