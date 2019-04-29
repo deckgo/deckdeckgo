@@ -39,7 +39,7 @@ div.deckgo-highlight-code-container {
   text-align: var(--deckgo-highlight-code-text-align, start);
 
   code {
-    overflow-y: scroll;
+    overflow-y: var(--deckgo-highlight-code-scroll, scroll);;
 
     white-space: pre-wrap;
 
