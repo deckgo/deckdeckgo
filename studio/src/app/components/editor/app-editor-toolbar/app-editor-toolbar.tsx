@@ -607,13 +607,21 @@ export class AppEditorToolbar {
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
-                {this.renderActions()}
+                {this.renderDelete()}
                 {this.renderSlotType()}
+                {this.renderActions()}
                 {this.renderCodeOptions()}
             </div>,
             <input type="color" name="color-picker" value={this.color}></input>,
             <input type="color" name="background-picker" value={this.background}></input>
         ];
+    }
+
+    private renderDelete() {
+        return <a onClick={() => this.deleteElement()}
+                  class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
+            <ion-icon name="trash"></ion-icon>
+        </a>
     }
 
     private renderActions() {
@@ -625,10 +633,7 @@ export class AppEditorToolbar {
             'border-bottom': '2px solid ' + this.background
         };
 
-        return [<a onClick={() => this.deleteElement()}
-                   class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
-            <ion-icon name="trash"></ion-icon>
-        </a>,
+        return [
             <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)}>
                 <ion-label style={styleColor}>A</ion-label>
             </a>,
