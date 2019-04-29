@@ -289,7 +289,7 @@ export class AppCode {
             </ion-item-divider>
 
             <ion-item>
-                <ion-input value={this.highlightLines} placeholder="Coma separated lines" debounce={500}
+                <ion-input value={this.highlightLines} placeholder="Click to enter lines" debounce={500}
                            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
                             onIonChange={() => this.highlightSelectedLines()}></ion-input>
             </ion-item>
