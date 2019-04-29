@@ -235,8 +235,6 @@ export class AppCode {
 
             const currentHighlight: string = this.selectedElement.getAttribute('highlight-lines');
 
-            console.log(currentHighlight, this.highlightLines);
-
             if (currentHighlight === this.highlightLines) {
                 resolve();
                 return;

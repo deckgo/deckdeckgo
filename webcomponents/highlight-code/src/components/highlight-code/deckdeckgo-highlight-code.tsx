@@ -161,7 +161,9 @@ export class DeckdeckgoHighlightCode {
 
           await this.addAnchors();
 
-          await this.addHighlight();
+          setTimeout(async () => {
+            await this.addHighlight();
+          }, 0);
 
           resolve();
         } catch (err) {
@@ -206,6 +208,7 @@ export class DeckdeckgoHighlightCode {
   private addHighlight(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.highlightLines && this.highlightLines.length > 0) {
+
         const rows: number[] = await this.findRowsToHighlight();
 
         if (rows && rows.length > 0) {
