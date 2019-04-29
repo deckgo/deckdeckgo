@@ -33,9 +33,11 @@ export class DeckdeckgoHighlightCode {
   private anchorOffsetTop: number = 0;
 
   async componentDidLoad() {
+    const languageWasLoaded: boolean = await this.languageDidLoad();
+
     await this.loadLanguage();
 
-    if (this.language === 'javascript') {
+    if (languageWasLoaded) {
       await this.fetchOrParse();
     }
   }
@@ -57,6 +59,27 @@ export class DeckdeckgoHighlightCode {
     } else {
       await this.parseSlottedCode();
     }
+  }
+
+  private languageDidLoad(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!document || !this.language || this.language === '') {
+        resolve(false);
+        return;
+      }
+
+      if (this.language === 'javascript') {
+        resolve(true);
+        return;
+      }
+
+      const scripts = document.querySelector('[deckdeckgo-prism-loaded=\'' + this.language + '\']');
+      if (scripts) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    });
   }
 
   @Watch('language')
