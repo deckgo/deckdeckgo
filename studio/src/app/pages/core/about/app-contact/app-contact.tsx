@@ -20,7 +20,7 @@ export class AppAbout {
 
                     <p>Twitter: <a href="https://twitter.com/deckdeckgo">@deckdeckgo</a></p>
 
-                    <p>And for feature requests, issues or even better Pull Requests, find us on <a href="https://github.com/deckgo/deckdeckgo">GitHub</a></p>
+                    <p>If you would like to contribute, that would be really awesome! For feature requests, issues or even better Pull Requests, find us on <a href="https://github.com/deckgo/deckdeckgo">GitHub</a></p>
                 </main>
             </ion-content>
         ];
