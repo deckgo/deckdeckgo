@@ -39,6 +39,12 @@ export class AppCode {
     @State()
     private codeColor: string;
 
+    @State()
+    private highlightLines: string;
+
+    @State()
+    private highlightColor: string;
+
     constructor() {
         this.prismService = PrismService.getInstance();
     }
@@ -47,6 +53,7 @@ export class AppCode {
         this.languages = await this.prismService.getLanguages();
 
         await this.initCurrentLanguage();
+        await this.initCurrentHiglight();
     }
 
     private initCurrentLanguage(): Promise<void> {
@@ -54,13 +61,23 @@ export class AppCode {
             this.currentLanguage = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
             this.codeColor = await this.initColor();
 
-            console.log(this.codeColor);
+            resolve();
+        });
+    }
+
+    private initCurrentHiglight(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            this.highlightLines = this.selectedElement && this.selectedElement.getAttribute('highlight-lines') ? this.selectedElement.getAttribute('highlight-lines') : null;
+
+            if (this.selectedElement && this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background')) {
+                this.highlightColor = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background');
+            }
 
             resolve();
         });
     }
 
-    private selectColor($event): Promise<void> {
+    private selectColor($event, colorFunction: Function): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
                 resolve();
@@ -74,14 +91,23 @@ export class AppCode {
 
             await this.privateHideShowPopover();
 
-            this.codeColor = $event.target.value;
-            this.selectedElement.style.setProperty(this.getStyle(), $event.target.value);
+            colorFunction($event);
 
             this.emitCodeDidChange();
 
             resolve();
         });
     }
+
+    private setCodeColor = ($event) => {
+        this.codeColor = $event.target.value;
+        this.selectedElement.style.setProperty(this.getStyle(), $event.target.value);
+    };
+
+    private setHighlightColor = ($event) => {
+        this.highlightColor = $event.target.value;
+        this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', $event.target.value);
+    };
 
     private privateHideShowPopover(): Promise<void> {
         return new Promise<void>((resolve) => {
@@ -196,6 +222,37 @@ export class AppCode {
         });
     }
 
+    private handleInput($event: CustomEvent<KeyboardEvent>) {
+        this.highlightLines = ($event.target as InputTargetEvent).value;
+    }
+
+    private highlightSelectedLines(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            const currentHighlight: string = this.selectedElement.getAttribute('highlight-lines');
+
+            console.log(currentHighlight, this.highlightLines);
+
+            if (currentHighlight === this.highlightLines) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.setAttribute('highlight-lines', this.highlightLines);
+
+            // Reload component with new lines to highlight
+            await (this.selectedElement as any).load();
+
+            this.emitCodeDidChange();
+
+            resolve();
+        });
+    }
+
     render() {
         return <ion-list>
             <ion-item-divider><ion-label>Language</ion-label></ion-item-divider>
@@ -226,7 +283,22 @@ export class AppCode {
 
             <ion-item>
                 <ion-label>Color</ion-label>
-                <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e)}></input>
+                <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e, this.setCodeColor)}></input>
+            </ion-item>
+
+            <ion-item-divider class="ion-padding-top">
+                <ion-label>Highlight lines</ion-label>
+            </ion-item-divider>
+
+            <ion-item>
+                <ion-input value={this.highlightLines} placeholder="Coma separated lines" debounce={500}
+                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+                            onIonChange={() => this.highlightSelectedLines()}></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Color</ion-label>
+                <input type="color" value={this.highlightColor} onChange={(e) => this.selectColor(e, this.setHighlightColor)}></input>
             </ion-item>
         </ion-list>
     }
