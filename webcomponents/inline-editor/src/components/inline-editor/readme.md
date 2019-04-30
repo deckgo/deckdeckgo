@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property             | Attribute             | Description | Type          | Default     |
-| -------------------- | --------------------- | ----------- | ------------- | ----------- |
-| `attachTo`           | --                    |             | `HTMLElement` | `undefined` |
-| `containerAttribute` | `container-attribute` |             | `string`      | `'slot'`    |
-| `mobile`             | `mobile`              |             | `boolean`     | `false`     |
-| `stickyDesktop`      | `sticky-desktop`      |             | `boolean`     | `false`     |
-| `stickyMobile`       | `sticky-mobile`       |             | `boolean`     | `false`     |
+| Property        | Attribute        | Description | Type          | Default                   |
+| --------------- | ---------------- | ----------- | ------------- | ------------------------- |
+| `attachTo`      | --               |             | `HTMLElement` | `undefined`               |
+| `containers`    | `containers`     |             | `string`      | `'h1,h2,h3,h4,h5,h6,div'` |
+| `mobile`        | `mobile`         |             | `boolean`     | `false`                   |
+| `stickyDesktop` | `sticky-desktop` |             | `boolean`     | `false`                   |
+| `stickyMobile`  | `sticky-mobile`  |             | `boolean`     | `false`                   |
 
 
 ----------------------------------------------

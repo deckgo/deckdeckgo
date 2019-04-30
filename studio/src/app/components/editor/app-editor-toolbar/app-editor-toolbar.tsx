@@ -7,6 +7,7 @@ import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {Utils} from '../../../utils/core/utils';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
+import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -33,6 +34,9 @@ export class AppEditorToolbar {
     @State()
     private deckOrSlide: boolean = false;
 
+    @State()
+    private code: boolean = false;
+
     private applyToAllDeck: boolean = false;
 
     @Event() private blockSlide: EventEmitter<boolean>;
@@ -41,14 +45,13 @@ export class AppEditorToolbar {
 
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
+    @Event() private codeDidChange: EventEmitter<HTMLElement>;
 
     private subscription: Subscription;
     private busyService: BusyService;
 
     @State()
     private deckBusy: boolean = false;
-
-    private originalPlaceHolder: Node;
 
     constructor() {
         this.busyService = BusyService.getInstance();
@@ -126,14 +129,6 @@ export class AppEditorToolbar {
 
             await this.initSelectedElement(selected);
 
-            if (selected.classList && selected.classList.contains('deckgo-untouched')) {
-                if (selected.firstChild) {
-                    this.originalPlaceHolder = selected.removeChild(selected.firstChild);
-                }
-
-                selected.classList.remove('deckgo-untouched');
-            }
-
             selected.focus();
 
             await this.displayToolbar(selected);
@@ -148,11 +143,6 @@ export class AppEditorToolbar {
     unSelect(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (this.selectedElement) {
-                if (this.originalPlaceHolder && this.selectedElement.classList && !this.selectedElement.classList.contains('deckgo-untouched') && !this.selectedElement.firstChild) {
-                    this.selectedElement.appendChild(this.originalPlaceHolder);
-                    this.selectedElement.classList.add('deckgo-untouched');
-                }
-
                 this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
 
                 await this.hideToolbar();
@@ -174,7 +164,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if (element.getAttribute('slot')) {
+            if (element.getAttribute('slot') && element.getAttribute('slot') !== 'code') {
                 resolve(element);
                 return;
             }
@@ -186,7 +176,11 @@ export class AppEditorToolbar {
     }
 
     private isElementSlideOrDeck(element: HTMLElement): boolean {
-        return element && element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1)
+        return element && element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1);
+    }
+
+    private isElementCode(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-highlight-code';
     }
 
     private cleanOnPaste = async ($event) => {
@@ -221,6 +215,8 @@ export class AppEditorToolbar {
                 return;
             }
 
+            const isCodeElement: boolean = $event.target && $event.target.nodeName && $event.target.nodeName.toLowerCase() === 'code';
+
             const selected: Selection = await this.getSelection();
             if (selected && selected.rangeCount) {
                 const range = selected.getRangeAt(0);
@@ -228,11 +224,20 @@ export class AppEditorToolbar {
 
                 parseTexts.forEach((text: string, index: number) => {
                     const newTextNode: Text = document.createTextNode(text);
+                    range.collapse(false);
                     range.insertNode(newTextNode);
 
                     if (index < parseTexts.length - 1) {
-                        const br: HTMLBRElement = document.createElement('br');
-                        range.insertNode(br);
+                        range.collapse(false);
+
+                        if (isCodeElement) {
+                            const text: Text = document.createTextNode('\n');
+                            range.insertNode(text);
+                        } else {
+                            const br: HTMLBRElement = document.createElement('br');
+                            range.insertNode(br);
+                        }
+
                     }
                 });
 
@@ -507,6 +512,24 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openCode($event: UIEvent) {
+        if (!this.code) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-code',
+            componentProps: {
+                selectedElement: this.selectedElement,
+                codeDidChange: this.codeDidChange
+            },
+            event: $event,
+            mode: 'ios'
+        });
+
+        await popover.present();
+    }
+
     private toggleSlotType(type: SlotType): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
@@ -514,20 +537,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const element: HTMLElement = document.createElement(type.toString());
-
-            if (this.selectedElement.attributes && this.selectedElement.attributes.length) {
-                for (let i: number = 0; i < this.selectedElement.attributes.length; i++) {
-                    element.setAttribute(this.selectedElement.attributes[i].name, this.selectedElement.attributes[i].value);
-                }
-            }
-
-            if (this.selectedElement.childNodes && this.selectedElement.childNodes.length > 0) {
-                const elements: HTMLElement[] = Array.prototype.slice.call(this.selectedElement.childNodes);
-                elements.forEach((e: HTMLElement) => {
-                    element.appendChild(e);
-                });
-            }
+            const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement, type);
 
             this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
 
@@ -562,6 +572,7 @@ export class AppEditorToolbar {
         return new Promise<void>((resolve) => {
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
+            this.code = this.isElementCode(element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
@@ -596,12 +607,21 @@ export class AppEditorToolbar {
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
-                {this.renderActions()}
+                {this.renderDelete()}
                 {this.renderSlotType()}
+                {this.renderActions()}
+                {this.renderCodeOptions()}
             </div>,
             <input type="color" name="color-picker" value={this.color}></input>,
             <input type="color" name="background-picker" value={this.background}></input>
         ];
+    }
+
+    private renderDelete() {
+        return <a onClick={() => this.deleteElement()}
+                  class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
+            <ion-icon name="trash"></ion-icon>
+        </a>
     }
 
     private renderActions() {
@@ -613,10 +633,7 @@ export class AppEditorToolbar {
             'border-bottom': '2px solid ' + this.background
         };
 
-        return [<a onClick={() => this.deleteElement()}
-                   class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
-            <ion-icon name="trash"></ion-icon>
-        </a>,
+        return [
             <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)}>
                 <ion-label style={styleColor}>A</ion-label>
             </a>,
@@ -632,6 +649,16 @@ export class AppEditorToolbar {
         } else {
             return <a onClick={(e: UIEvent) => this.openSlotType(e)}>
                 <ion-label>T</ion-label>
+            </a>
+        }
+    }
+
+    private renderCodeOptions() {
+        if (!this.code) {
+            return undefined;
+        } else {
+            return <a onClick={(e: UIEvent) => this.openCode(e)}>
+                <ion-icon name="code"></ion-icon>
             </a>
         }
     }

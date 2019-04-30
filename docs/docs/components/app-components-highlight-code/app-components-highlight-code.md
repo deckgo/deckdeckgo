@@ -18,6 +18,7 @@ To highlight your code, this component is using [Prism.js](https://prismjs.com) 
     - [Find the next anchor](#app-components-highlight-code-find-the-next-anchor)
     - [Zoom into code](#app-components-highlight-code-zoom-into-code)
     - [Load or reload the component](#app-components-highlight-code-load-or-reload-the-component)
+  - [Events](#app-components-highlight-code-events)
   - [Examples](#app-components-highlight-code-examples)
 
 ## Showcase
@@ -70,7 +71,8 @@ The `<deckgo-highlight-code/>` expose the following properties:
 | `anchorZoom` | `anchor-zoom` | The anchor identifier which will be use to find the next anchor to zoom inside your code using `findNextAnchor()`            | `string`  | `'// DeckDeckGoZoom'` |
 | `hideAnchor` | `hide-anchor` | Set this attribute to `false` in case you would like to actually display the anchor value too            | `boolean` | `true`                |
 | `language`   | `language`    |  Define the language to be used for the syntax highlighting. The list of [supported languages](https://prismjs.com/#languages-list) is defined by [Prism.js](https://prismjs.com/#languages-list)            | `string`  | `'javascript'`        |
-| `highlightLines` | `highlight-lines` | If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with space. For example: "3,5 8,9 13,13 14,17" | `string`  |            |  
+| `highlightLines` | `highlight-lines` | If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with space. For example: "3,5 8,9 13,13 14,17" | `string`  |            |
+| `editable` | `editable` | In case you would like to set the code component as being editable. | `boolean` | `false`                | 
 
 ### Styling
 
@@ -100,6 +102,8 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 | --deckgo-highlight-code-token-atrule |  | Highlighted code tokens atrule, attr-value, keyword |
 | --deckgo-highlight-code-token-function |  | Highlighted code function, class-name |
 | --deckgo-highlight-code-token-regex |  | Highlighted code tokens regex, important, variable |
+| --deckgo-highlight-code-empty-text | "Click to add your code" | Place holder in case the `editable` is set to `true` |
+| --deckgo-highlight-code-scroll | scroll | In case you would like to change the scroll property of the shadowed code block | 
 
 ### Methods
 
@@ -121,6 +125,18 @@ zoomCode(zoom: boolean) => Promise<void>
 
 ```
 load() => Promise<void>
+```
+
+### Events
+
+The `<deckgo-highlight-code/>` will bubble the following events:
+
+#### Code did change
+
+Emitted when the code was edited (see attribute `editable`). Propagate the root component itself.
+
+```
+codeDidChange(HTMLElement);
 ```
 
 ### Examples

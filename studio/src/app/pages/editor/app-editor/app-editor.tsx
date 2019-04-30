@@ -8,7 +8,7 @@ import {AuthUser} from '../../../models/auth-user';
 import {Slide, SlideTemplate} from '../../../models/slide';
 import {Deck} from '../../../models/deck';
 
-import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
+import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
@@ -22,6 +22,7 @@ import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 import {BusyService} from '../../../services/editor/busy/busy.service';
+import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
 
 @Component({
     tag: 'app-editor',
@@ -47,6 +48,7 @@ export class AppEditor {
 
     private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
     private removeEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
+    private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
 
     private authService: AuthService;
     private anonymousService: AnonymousService;
@@ -71,6 +73,7 @@ export class AppEditor {
 
     async componentWillLoad() {
         await this.deckEventsHandler.init(this.el);
+        await this.editorEventsHandler.init(this.el);
 
         // If no user create an anonymous one
         this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
@@ -108,6 +111,7 @@ export class AppEditor {
 
     async componentDidUnload() {
         this.deckEventsHandler.destroy();
+        this.editorEventsHandler.destroy();
         await this.removeEventsHandler.destroy();
 
         if (this.busySubscription) {
@@ -214,20 +218,6 @@ export class AppEditor {
         setTimeout(async () => {
             await this.initSlideSize();
         }, 100);
-    }
-
-    @Listen('keyup')
-    async onKeyup($event: KeyboardEvent) {
-        if ($event && $event.key === 'Tab' && document && document.activeElement && document.activeElement instanceof HTMLElement) {
-            await this.touchToolbar(document.activeElement);
-        }
-    }
-
-    @Listen('document:keydown')
-    async onKeydown($event: KeyboardEvent) {
-        if ($event && $event.key === 'Escape') {
-            await this.selectDeck();
-        }
     }
 
     private async animatePrevNextSlide(next: boolean) {
@@ -468,21 +458,6 @@ export class AppEditor {
         });
     }
 
-    private selectDeck(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
-
-            if (toolbar) {
-                await toolbar.blurSelectedElement();
-                await toolbar.unSelect();
-            }
-
-            await this.blockSlide(false);
-
-            resolve();
-        });
-    }
-
     private touchToolbar(element: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
@@ -493,27 +468,6 @@ export class AppEditor {
             }
 
             await toolbar.touch(element);
-
-            resolve();
-        });
-    }
-
-    @Listen('blockSlide')
-    async onBlockSlide($event: CustomEvent) {
-        await this.blockSlide($event.detail);
-    }
-
-    private blockSlide(blockState: boolean): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-            if (!deck) {
-                resolve();
-                return;
-            }
-
-            await (deck as any).blockSlide(blockState);
-            await (deck as any).toggleKeyboardAssist(!blockState);
 
             resolve();
         });
@@ -576,7 +530,7 @@ export class AppEditor {
 
             const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
             elements.forEach((e: HTMLElement) => {
-                e.setAttribute('contentEditable', '');
+                e.setAttribute(e.nodeName && e.nodeName.toLowerCase() === SlotType.CODE ? 'editable' : 'contentEditable', '');
             });
 
             resolve();

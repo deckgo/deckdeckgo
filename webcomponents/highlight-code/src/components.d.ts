@@ -11,6 +11,9 @@ import '@stencil/core';
 import {
   DeckdeckgoHighlightCodeAnchor,
 } from './components/declarations/deckdeckgo-highlight-code-anchor';
+import {
+  EventEmitter,
+} from '@stencil/core';
 
 
 export namespace Components {
@@ -18,6 +21,7 @@ export namespace Components {
   interface DeckgoHighlightCode {
     'anchor': string;
     'anchorZoom': string;
+    'editable': boolean;
     'findNextAnchor': (enter: boolean) => Promise<DeckdeckgoHighlightCodeAnchor>;
     'hideAnchor': boolean;
     'highlightLines': string;
@@ -29,9 +33,11 @@ export namespace Components {
   interface DeckgoHighlightCodeAttributes extends StencilHTMLAttributes {
     'anchor'?: string;
     'anchorZoom'?: string;
+    'editable'?: boolean;
     'hideAnchor'?: boolean;
     'highlightLines'?: string;
     'language'?: string;
+    'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onPrismLanguageLoaded'?: (event: CustomEvent<string>) => void;
     'src'?: string;
   }

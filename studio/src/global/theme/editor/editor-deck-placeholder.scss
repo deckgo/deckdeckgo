@@ -1,0 +1,31 @@
+deckgo-deck {
+
+  h1, h2, h3 {
+    &:empty:not(:focus):after {
+      content: "Click to add title";
+    }
+  }
+
+  div[slot] {
+    &:empty:not(:focus):after {
+      content: "Click to add content";
+    }
+  }
+
+  deckgo-slide-split {
+    h1, h2, h3 {
+      &:empty:not(:focus):after {
+        content: "Click to add content";
+      }
+    }
+  }
+
+  deckgo-slide-gif {
+    h1, h2, h3, div[slot] {
+      &:empty:not(:focus):after {
+        content: "Click to add a caption";
+      }
+    }
+  }
+
+}

@@ -112,11 +112,11 @@ export class AppComponentsInlineEditor {
 <td></td>
 </tr>
 <tr>
-<td><code>containerAttribute</code></td>
-<td><code>container-attribute</code></td>
-<td>The container where the inline editor should be use need to be identified with an attribute in order to allow the component to detect some information like the current style or color</td>
+<td><code>containers</code></td>
+<td><code>containers</code></td>
+<td>A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color</td>
 <td><code>string</code></td>
-<td><code>slot</code></td>
+<td><code>h1,h2,h3,h4,h5,h6,div</code></td>
 </tr>
 </tbody></table>
 <h3 id="app-components-inline-editor-styling">Styling</h3>

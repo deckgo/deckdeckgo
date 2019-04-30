@@ -4,14 +4,11 @@ export enum SlotType {
     DIV = 'div',
     H1 = 'h1',
     H2 = 'h2',
-    H3 = 'h3'
+    H3 = 'h3',
+    CODE = 'deckgo-highlight-code'
 }
 
 export class CreateSlidesUtils {
-
-    private static DEFAULT_TITLE: string = 'Click to add title';
-    private static DEFAULT_CONTENT: string = 'Click to add content';
-    private static DEFAULT_CAPTION: string = 'Click to add a caption';
 
     static createSlide(template: SlideTemplate): Promise<any> {
         return new Promise<any>(async (resolve) => {
@@ -41,13 +38,9 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="deckgo-untouched">
-                {this.DEFAULT_TITLE}
-            </h1>;
+            const title = <h1 slot="title"></h1>;
 
-            const content = <div slot="content" class="deckgo-untouched">
-                {this.DEFAULT_CONTENT}
-            </div>;
+            const content = <div slot="content"></div>;
 
             const slide: any = <deckgo-slide-title>
                 {title}
@@ -65,13 +58,9 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const title = <h1 slot="title" class="deckgo-untouched">
-                {this.DEFAULT_TITLE}
-            </h1>;
+            const title = <h1 slot="title"></h1>;
 
-            const content = <div slot="content" class="deckgo-untouched">
-                {this.DEFAULT_CONTENT}
-            </div>;
+            const content = <div slot="content"></div>;
 
             const slide: any = <deckgo-slide-content>
                 {title}
@@ -89,13 +78,9 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const start = <div slot="start" class="deckgo-untouched">
-                {this.DEFAULT_CONTENT}
-            </div>;
+            const start = <div slot="start"></div>;
 
-            const end = <div slot="end" class="deckgo-untouched">
-                {this.DEFAULT_CONTENT}
-            </div>;
+            const end = <div slot="end"></div>;
 
             const slide: any = <deckgo-slide-split>
                 {start}
@@ -113,13 +98,9 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const title = <h2 slot="header" class="deckgo-untouched">
-                {this.DEFAULT_CAPTION}
-            </h2>;
+            const title = <h2 slot="header"></h2>;
 
-            const content = <h3 slot="footer" class="deckgo-untouched">
-                {this.DEFAULT_CAPTION}
-            </h3>;
+            const content = <h3 slot="footer"></h3>;
 
             const slide: any = <deckgo-slide-gif src={src}>
                 {title}

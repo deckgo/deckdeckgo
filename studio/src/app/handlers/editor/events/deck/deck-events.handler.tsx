@@ -56,6 +56,7 @@ export class DeckEventsHandler {
             this.el.addEventListener('slideDidChange', this.onSlideChange, false);
             this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
             this.el.addEventListener('slideDelete', this.onSlideDelete, false);
+            this.el.addEventListener('codeDidChange', this.onCodeChange, false);
 
             this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
                 await this.updateSlide(element);
@@ -75,6 +76,7 @@ export class DeckEventsHandler {
         this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
         this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
+        this.el.removeEventListener('codeDidChange', this.onCodeChange, true);
 
         if (this.updateSlideSubscription) {
             this.updateSlideSubscription.unsubscribe();
@@ -108,6 +110,22 @@ export class DeckEventsHandler {
         }
 
         this.updateSlideSubject.next($event.detail);
+    };
+
+    private onCodeChange = async ($event: CustomEvent) => {
+        if (!$event || !$event.detail || !($event.detail instanceof HTMLElement)) {
+            return;
+        }
+
+        const element: HTMLElement = $event.detail as HTMLElement;
+
+        const parent: HTMLElement = element.parentElement;
+
+        if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
+            return;
+        }
+
+        this.updateSlideSubject.next(parent);
     };
 
     private onSlideInputChange = async ($event: Event) => {
@@ -483,10 +501,10 @@ export class DeckEventsHandler {
                 return;
             }
 
-            // TODO: Should be cleaned on publish: deckgo-untouched|
             let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable/gi, '');
+            result = result.replace(/editable=""|editable="true"|editable/gi, '');
+            result = result.replace(/hydrated/gi, '');
             result = result.replace(/class=""/g, '');
-            result = result.replace(/\s\s+/g, '');
 
             resolve(result);
         });
