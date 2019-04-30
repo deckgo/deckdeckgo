@@ -192,7 +192,7 @@ export class AppComponentsHighlightCode {
 </tr>
 <tr>
 <td>--deckgo-highlight-code-line-background</td>
-<td></td>
+<td>#3880ff</td>
 <td>The background of the lines you wish to highlight</td>
 </tr>
 <tr>

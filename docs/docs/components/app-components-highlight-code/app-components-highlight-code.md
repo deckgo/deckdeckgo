@@ -82,14 +82,14 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 | -------------------------- |-----------------|-----------------|
 | --deckgo-highlight-code-display | block | The display property of the code |
 | --deckgo-highlight-code-color | inherit | The color of the displayed code |
-| --deckgo-highlight-code-background |  | The background of the displayed code |
+| --deckgo-highlight-code-background | | The background of the displayed code |
 | --deckgo-highlight-code-padding |  | The padding of the displayed code |
 | --deckgo-highlight-code-border-radius |  | The border radius of the displayed code |
 | --deckgo-highlight-code-margin-bottom | 64px | Margin bottom of the code scroller |
 | --deckgo-highlight-code-zoom | 1 | If you wish to manually zoom the code |
 | --deckgo-highlight-code-font-size |  | The size of the font for the code |
 | --deckgo-highlight-code-font-family | monospace | The family of the font for the code |
-| --deckgo-highlight-code-line-background |  | The background of the lines you wish to highlight |
+| --deckgo-highlight-code-line-background | #3880ff | The background of the lines you wish to highlight |
 | --deckgo-highlight-code-line-padding |  | A padding for each lines you wish to highlight |
 | --deckgo-highlight-code-line-border-top |  | The border-top property of the lines you wish to highlight |
 | --deckgo-highlight-code-direction | ltr | The direction of the displayed code |
