@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.7"></a>
+# 1.0.0-alpha.7 (2019-04-30)
+
+### Features
+
+* this highlight-code component has now a default color for the background of the highlighted lines
+
 <a name="1.0.0-alpha.6"></a>
 # 1.0.0-alpha.6 (2019-04-30)
 

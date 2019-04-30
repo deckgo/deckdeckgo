@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.14"></a>
+# 1.0.0-alpha.14 (2019-04-30)
+
+### Features
+
+* add a default color for the code highlighting background
+
 <a name="1.0.0-alpha.13"></a>
 # 1.0.0-alpha.13 (2019-04-30)
 
