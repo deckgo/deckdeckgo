@@ -386,25 +386,26 @@ export class DeckdeckgoDeck {
 
   @Listen('slideDidLoad')
   async slideDidLoad() {
-    this.updateLength();
+    await this.updateLength();
 
     await this.emitSlidesDidLoad();
   }
 
-  private updateLength() {
-    this.length = this.el.children ? this.el.children.length : 0;
+  private async updateLength() {
+    const filteredSlides: Element[] = await this.getDefinedFilteredSlides();
+    this.length = filteredSlides ? filteredSlides.length : 0;
   }
 
   private emitSlidesDidLoad(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const definedSlides: HTMLCollection = this.el.children;
+      const filteredSlides: Element[] = await this.getDefinedFilteredSlides();
+
       const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
 
-      const filteredSlides: Element[] = await this.filterSlides(definedSlides);
       const definedSlidesLength: number = filteredSlides ? filteredSlides.length : 0;
 
       // Are all slides loaded?
-      if (definedSlides && loadedSlides && loadedSlides.length === definedSlidesLength && definedSlidesLength === this.length) {
+      if (filteredSlides && loadedSlides && loadedSlides.length === definedSlidesLength && definedSlidesLength === this.length) {
         const orderedSlidesTagNames: DeckdeckgoSlideDefinition[] = [];
 
         Array.from(loadedSlides).forEach((slide: HTMLElement) => {
@@ -429,6 +430,15 @@ export class DeckdeckgoDeck {
       }
 
       resolve();
+    });
+  }
+
+  private getDefinedFilteredSlides(): Promise<Element[]> {
+    return new Promise<Element[]>(async (resolve) => {
+      const definedSlides: HTMLCollection = this.el.children;
+      const filteredSlides: Element[] = await this.filterSlides(definedSlides);
+
+      resolve(filteredSlides);
     });
   }
 
