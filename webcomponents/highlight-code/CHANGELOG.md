@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.13"></a>
+# 1.0.0-alpha.13 (2019-04-30)
+
+### Features
+
+* add new properties and events in case you would like optionally set the code block as `editable`
+
 <a name="1.0.0-alpha.12"></a>
 # 1.0.0-alpha.12 (2019-03-03)
 
