@@ -70,10 +70,7 @@ export class AppCode {
     private initCurrentHiglight(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             this.highlightLines = this.selectedElement && this.selectedElement.getAttribute('highlight-lines') ? this.selectedElement.getAttribute('highlight-lines') : null;
-
-            if (this.selectedElement && this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background')) {
-                this.highlightColor = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background');
-            }
+            this.highlightColor = this.selectedElement && this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background') : '#3880ff';
 
             resolve();
         });
