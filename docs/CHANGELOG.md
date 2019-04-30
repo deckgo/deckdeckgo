@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.6"></a>
+# 1.0.0-alpha.6 (2019-04-30)
+
+### Features
+
+* the highlight-code component could now be optionally set as `editable`
+
 <a name="1.0.0-alpha.5"></a>
 # 1.0.0-alpha.5 (2019-04-18)
 
