@@ -19,6 +19,8 @@ enum CodeColorType {
 })
 export class AppCode {
 
+    @Prop({connect: 'ion-alert-controller'}) alertController: HTMLIonAlertControllerElement;
+
     @Element() el: HTMLElement;
 
     @Prop()
@@ -251,6 +253,15 @@ export class AppCode {
         });
     }
 
+    private async presentHighlightInfo() {
+        const alert = await this.alertController.create({
+            message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 0,2 7,7 13,15<br/><br/>Which would highlight lines 0 to 2, line 7 and lines 13 to 15.',
+            buttons: ['Ok']
+        });
+
+        return await alert.present();
+    }
+
     render() {
         return <ion-list>
             <ion-item-divider><ion-label>Language</ion-label></ion-item-divider>
@@ -286,16 +297,15 @@ export class AppCode {
 
             <ion-item-divider class="ion-padding-top">
                 <ion-label>Highlight lines</ion-label>
+                <button slot="end" class="info" onClick={() => this.presentHighlightInfo()}>
+                    <ion-icon name="help"></ion-icon>
+                </button>
             </ion-item-divider>
 
             <ion-item>
                 <ion-input value={this.highlightLines} placeholder="List your lines here" debounce={500}
                            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
                             onIonChange={() => this.highlightSelectedLines()}></ion-input>
-            </ion-item>
-
-            <ion-item>
-                <small>If you wish to highlight some specific lines of your code, list them separately using comma, for example: 0,2 7,7 13,15</small>
             </ion-item>
 
             <ion-item>
