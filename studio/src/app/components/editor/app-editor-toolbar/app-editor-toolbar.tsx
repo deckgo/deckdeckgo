@@ -512,7 +512,7 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openCode($event: UIEvent) {
+    private async openCode() {
         if (!this.code) {
             return;
         }
@@ -523,8 +523,8 @@ export class AppEditorToolbar {
                 selectedElement: this.selectedElement,
                 codeDidChange: this.codeDidChange
             },
-            event: $event,
-            mode: 'ios'
+            mode: 'md',
+            cssClass: 'popover-menu'
         });
 
         await popover.present();
@@ -657,7 +657,7 @@ export class AppEditorToolbar {
         if (!this.code) {
             return undefined;
         } else {
-            return <a onClick={(e: UIEvent) => this.openCode(e)}>
+            return <a onClick={() => this.openCode()}>
                 <ion-icon name="code"></ion-icon>
             </a>
         }

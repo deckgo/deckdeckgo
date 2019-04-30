@@ -9,6 +9,14 @@ app-code {
   ion-item {
     --border-width: 0;
     --inner-border-width: 0;
+
+    &.item-input {
+      --highlight-color-focused: transparent;
+
+      ion-input {
+        border-bottom: 1px solid var(--ion-color-medium);
+      }
+    }
     
     &.select {
       ion-label:first-of-type {
@@ -19,6 +27,10 @@ app-code {
         min-width: 100%;
         padding-left: 0;
       }
+    }
+
+    small {
+      color: var(--ion-color-medium);
     }
   }
 

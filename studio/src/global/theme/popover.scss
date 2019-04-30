@@ -12,3 +12,17 @@ ion-popover.app-slide-type {
   }
 }
 
+ion-popover.popover-menu {
+  div.popover-content {
+    top: 0 !important;
+    left: inherit !important;
+    right: 0;
+
+    --min-height: 100%;
+
+    transform-origin: right top !important;
+
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
