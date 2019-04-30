@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.37"></a>
+# [1.0.0-beta.37](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.36...v1.0.0-beta.37) (2019-04-30)
+
+### Web Components
+
+* highlight-code: v1.0.0-alpha.14 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+
+### Applications
+
+* docs: v1.0.0-alpha.7 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 <a name="1.0.0-beta.36"></a>
 # [1.0.0-beta.36](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.35...v1.0.0-beta.36) (2019-04-30)
 
