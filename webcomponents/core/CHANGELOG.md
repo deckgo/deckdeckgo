@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.32"></a>
+# 1.0.0-beta.32 (2019-04-30)
+
+### Fix
+
+* `slideDidLoad` event was not emitted anymore when extra deck's slots like `background` were used
+
 <a name="1.0.0-beta.31"></a>
 # 1.0.0-beta.31 (2019-04-19)
 
