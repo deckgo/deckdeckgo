@@ -57,7 +57,7 @@ div.deckgo-highlight-code-container {
     }
 
     span.deckgo-highlight-code-line {
-      background: var(--deckgo-highlight-code-line-background);
+      background: var(--deckgo-highlight-code-line-background, #3880ff);
       padding: var(--deckgo-highlight-code-line-padding);
       border-top: var(--deckgo-highlight-code-line-border-top);
       border-bottom: var(--deckgo-highlight-code-line-border-bottom);
