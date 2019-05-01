@@ -341,8 +341,8 @@ export class AppEditor {
         const popover: HTMLIonPopoverElement = await this.popoverController.create({
             component: 'app-slide-type',
             event: $event.detail,
-            mode: 'ios',
-            cssClass: 'app-slide-type'
+            mode: 'md',
+            cssClass: 'popover-menu'
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {

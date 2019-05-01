@@ -1,14 +1,14 @@
-ion-popover.app-slide-type {
+ion-popover.popover-menu {
   div.popover-content {
-    --min-width: 24rem;
+    top: 0 !important;
     left: inherit !important;
-    right: 16px !important;
-  }
+    right: 0;
 
-  @media(max-width: 768px) {
-    div.popover-content {
-      --min-width: 320px;
-    }
+    --min-height: 100%;
+
+    transform-origin: right top !important;
+
+    box-shadow: none;
+    border-radius: 0;
   }
 }
-
