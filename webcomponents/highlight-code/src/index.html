@@ -10,6 +10,31 @@
 </head>
 <body>
 
+<h1>Editable:</h1>
+
+<deckgo-highlight-code language="java" editable="true" highlight-lines="0,2 6,6">
+  <code slot="code">interface NumericTest {
+    boolean computeTest(int n);
+    }
+
+    public static void main(String args[]) {
+    NumericTest isEven = (n) -> (n % 2) == 0;
+    NumericTest isNegative = (n) -> (n < 0);
+
+    // Output: false
+    System.out.println(isEven.computeTest(5));
+
+    // Output: true
+    System.out.println(isNegative.computeTest(-5));
+    }</code>
+</deckgo-highlight-code>
+
+<h1>Editable empty:</h1>
+
+<deckgo-highlight-code language="java" editable="true">
+  <code slot="code"></code>
+</deckgo-highlight-code>
+
 <h1>From src:</h1>
 
 <deckgo-highlight-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx">

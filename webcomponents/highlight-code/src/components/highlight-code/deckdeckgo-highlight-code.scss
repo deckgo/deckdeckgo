@@ -1,5 +1,28 @@
 @import "~prismjs/themes/prism.css";
 
+:host {
+  ::slotted([slot="code"]) {
+    display: none;
+  }
+}
+
+:host(.deckgo-highlight-code-edit) {
+  ::slotted([slot="code"]) {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  code {
+    display: none;
+  }
+}
+
+:host([editable]) {
+  code:empty:not(:focus):after {
+    content: var(--deckgo-highlight-code-empty-text, "Click to add your code");
+  }
+}
+
 div.deckgo-highlight-code-container {
   color: var(--deckgo-highlight-code-color, inherit);
   background: var(--deckgo-highlight-code-background);
@@ -16,7 +39,7 @@ div.deckgo-highlight-code-container {
   text-align: var(--deckgo-highlight-code-text-align, start);
 
   code {
-    overflow-y: scroll;
+    overflow-y: var(--deckgo-highlight-code-scroll, scroll);;
 
     white-space: pre-wrap;
 
@@ -34,7 +57,7 @@ div.deckgo-highlight-code-container {
     }
 
     span.deckgo-highlight-code-line {
-      background: var(--deckgo-highlight-code-line-background);
+      background: var(--deckgo-highlight-code-line-background, #3880ff);
       padding: var(--deckgo-highlight-code-line-padding);
       border-top: var(--deckgo-highlight-code-line-border-top);
       border-bottom: var(--deckgo-highlight-code-line-border-bottom);
@@ -104,8 +127,4 @@ div.deckgo-highlight-code-container {
       color: var(--deckgo-highlight-code-token-regex, #e90);
     }
   }
-}
-
-::slotted([slot="code"]) {
-  display: none;
 }

@@ -21,6 +21,11 @@ deckgo-deck {
     font-size: 1.4em;
   }
 
+  code {
+    font-size: 1.4em;
+    font-family: Menlo, monospace;
+  }
+
   div[slot] {
     font-size: 1.4em;
 
@@ -33,8 +38,9 @@ deckgo-deck {
     max-width: 100%
   }
 
-  --code-font-size: 10px;
-  --code-font-family: Menlo, monospace;
+  --deckgo-highlight-code-font-size: 1.4em;
+  --deckgo-highlight-code-font-family: Menlo, monospace;
+  --deckgo-highlight-code-scroll: auto;
 
   --pager-text-size: 0.6rem;
 
@@ -52,5 +58,11 @@ deckgo-deck {
     h3 {
       font-size: 1.2em;
     }
+
+    code {
+      font-size: 1em;
+    }
+
+    --deckgo-highlight-code-font-size: 1em;
   }
 }

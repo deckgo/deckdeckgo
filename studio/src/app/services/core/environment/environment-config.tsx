@@ -18,6 +18,7 @@ export interface EnvironmentConfig {
     firebase: EnvironmentFirebaseConfig;
     tenor: EnvironmentTenorConfig;
     signalingServerUrl: string;
+    prismComponentsUrl: string;
 }
 
 export function setupConfig(config: EnvironmentConfig) {

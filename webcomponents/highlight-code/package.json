@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-highlight-code",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.14",
   "description": "A Web Component to highlight your code",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
@@ -19,15 +19,15 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "prismjs": "^1.15.0"
+    "prismjs": "^1.16.0"
   },
   "devDependencies": {
     "@stencil/core": "^0.18.0",
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
     "@stencil/utils": "0.0.5",
-    "@types/prismjs": "^1.9.0",
-    "autoprefixer": "^9.4.6"
+    "@types/prismjs": "^1.16.0",
+    "autoprefixer": "^9.5.1"
   },
   "repository": {
     "type": "git",

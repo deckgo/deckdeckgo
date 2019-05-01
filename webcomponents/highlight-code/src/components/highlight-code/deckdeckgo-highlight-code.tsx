@@ -1,4 +1,4 @@
-import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen} from '@stencil/core';
+import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State} from '@stencil/core';
 
 import Prism from 'prismjs';
 
@@ -13,7 +13,8 @@ export class DeckdeckgoHighlightCode {
 
   @Element() el: HTMLElement;
 
-  @Event() prismLanguageLoaded: EventEmitter<string>;
+  @Event() private prismLanguageLoaded: EventEmitter<string>;
+  @Event() private codeDidChange: EventEmitter<HTMLElement>;
 
   @Prop() src: string;
 
@@ -21,16 +22,22 @@ export class DeckdeckgoHighlightCode {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  @Prop() language: string = 'javascript';
+  @Prop({reflectToAttr: true}) language: string = 'javascript';
 
-  @Prop() highlightLines: string;
+  @Prop({reflectToAttr: true}) highlightLines: string;
+
+  @Prop() editable: boolean = false;
+
+  @State() editing: boolean = false;
 
   private anchorOffsetTop: number = 0;
 
   async componentDidLoad() {
+    const languageWasLoaded: boolean = await this.languageDidLoad();
+
     await this.loadLanguage();
 
-    if (this.language === 'javascript') {
+    if (languageWasLoaded) {
       await this.fetchOrParse();
     }
   }
@@ -52,6 +59,27 @@ export class DeckdeckgoHighlightCode {
     } else {
       await this.parseSlottedCode();
     }
+  }
+
+  private languageDidLoad(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!document || !this.language || this.language === '') {
+        resolve(false);
+        return;
+      }
+
+      if (this.language === 'javascript') {
+        resolve(true);
+        return;
+      }
+
+      const scripts = document.querySelector('[deckdeckgo-prism-loaded=\'' + this.language + '\']');
+      if (scripts) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    });
   }
 
   @Watch('language')
@@ -114,7 +142,7 @@ export class DeckdeckgoHighlightCode {
     const code: HTMLElement = this.el.querySelector('[slot=\'code\']');
 
     if (code) {
-      return this.parseCode(code.innerText);
+      return this.parseCode(code.innerText ? code.innerText.trim() : code.innerText);
     } else {
       return new Promise<void>((resolve) => {
         resolve();
@@ -150,13 +178,15 @@ export class DeckdeckgoHighlightCode {
 
       if (container) {
         try {
-          const highlightedCode: string = Prism.highlight(code, Prism.languages[this.language]);
+          const highlightedCode: string = Prism.highlight(code, Prism.languages[this.language], this.language);
 
           container.children[0].innerHTML = highlightedCode;
 
           await this.addAnchors();
 
-          await this.addHighlight();
+          setTimeout(async () => {
+            await this.addHighlight();
+          }, 0);
 
           resolve();
         } catch (err) {
@@ -201,6 +231,7 @@ export class DeckdeckgoHighlightCode {
   private addHighlight(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.highlightLines && this.highlightLines.length > 0) {
+
         const rows: number[] = await this.findRowsToHighlight();
 
         if (rows && rows.length > 0) {
@@ -341,11 +372,105 @@ export class DeckdeckgoHighlightCode {
       line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1;
   }
 
+  private edit(): Promise<void> {
+    return new Promise<void>((resolve) => {
+
+      if (!this.editable) {
+
+        resolve();
+        return;
+      }
+
+      this.editing = true;
+
+      const slottedCode: HTMLElement = this.el.querySelector('[slot=\'code\']');
+
+      if (slottedCode) {
+        setTimeout(() => {
+          slottedCode.setAttribute('contentEditable', 'true');
+          slottedCode.addEventListener('blur', this.applyCode, {once: true});
+          slottedCode.addEventListener('keydown', this.catchNewLine);
+
+          slottedCode.focus();
+        }, 100);
+      }
+
+      resolve();
+    });
+  }
+
+  private catchNewLine = async ($event: KeyboardEvent) => {
+    if ($event && $event.key === 'Enter') {
+      $event.preventDefault();
+
+      const selection: Selection = await this.getSelection();
+      if (selection && selection.focusNode && selection.focusNode.textContent && selection.focusOffset > 0) {
+        const charCode: number = selection.focusNode.textContent.charCodeAt(window.getSelection().focusOffset);
+
+        document.execCommand('insertHTML', false, charCode === 10 || charCode === 13 ? '\n' : '\n\n');
+      } else {
+        document.execCommand('insertHTML', false, '\n\n');
+      }
+    }
+  };
+
+  private getSelection(): Promise<Selection> {
+    return new Promise<Selection>((resolve) => {
+      let selectedSelection: Selection = null;
+
+      if (window && window.getSelection) {
+        selectedSelection = window.getSelection();
+      } else if (document && document.getSelection) {
+        selectedSelection = document.getSelection();
+      } else if (document && (document as any).selection) {
+        selectedSelection = (document as any).selection.createRange().text;
+      }
+
+      resolve(selectedSelection);
+    });
+  }
+
+  private applyCode = async () => {
+    await this.stopEditing();
+
+    await this.parseSlottedCode();
+  };
+
+  private stopEditing(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.editing = false;
+
+      const slottedCode: HTMLElement = this.el.querySelector('[slot=\'code\']');
+
+      if (slottedCode) {
+        slottedCode.removeAttribute('contentEditable');
+
+        if (slottedCode.innerHTML) {
+          slottedCode.innerHTML = slottedCode.innerHTML.trim();
+        }
+
+        this.codeDidChange.emit(this.el);
+      }
+
+      resolve();
+    });
+  }
+
   render() {
-    return <div class="deckgo-highlight-code-container">
+    return <div class="deckgo-highlight-code-container"
+                onMouseDown={() => this.edit()}
+                onTouchStart={() => this.edit()}>
       <code></code>
       <slot name="code"></slot>
     </div>;
+  }
+
+  hostData() {
+    return {
+      class: {
+        'deckgo-highlight-code-edit': this.editing
+      }
+    }
   }
 
 }

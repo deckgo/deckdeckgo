@@ -44,31 +44,35 @@ export class AppSlideType {
     }
 
     render() {
-        return <div class="container">
-            <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
-                <deckgo-slide-title>
-                    <h1 slot="title">Title</h1>
-                    <p slot="content">Content</p>
-                </deckgo-slide-title>
+        return [<div class="ion-padding title">
+                <h2>Add a slide</h2>
+            </div>,
+            <div class="container">
+                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
+                    <deckgo-slide-title>
+                        <h1 slot="title">Title</h1>
+                        <p slot="content">Content</p>
+                    </deckgo-slide-title>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.CONTENT)}>
+                    <deckgo-slide-content>
+                        <h1 slot="title">Title</h1>
+                        <p slot="content">Content</p>
+                    </deckgo-slide-content>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.SPLIT)}>
+                    <deckgo-slide-split>
+                        <p slot="start">Content</p>
+                        <p slot="end">Content</p>
+                    </deckgo-slide-split>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
+                    <deckgo-slide-gif src="/assets/img/example.gif" alt="Slide Gif">
+                        <p slot="footer" style={{"font-size": "var(--font-size-very-small)", padding: "2px", "border-radius": "4px"}}>GIFs</p>
+                    </deckgo-slide-gif>
+                </div>
             </div>
-            <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.CONTENT)}>
-                <deckgo-slide-content>
-                    <h1 slot="title">Title</h1>
-                    <p slot="content">Content</p>
-                </deckgo-slide-content>
-            </div>
-            <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.SPLIT)}>
-                <deckgo-slide-split>
-                    <p slot="start">Content</p>
-                    <p slot="end">Content</p>
-                </deckgo-slide-split>
-            </div>
-            <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
-                <deckgo-slide-gif src="/assets/img/example.gif" alt="Slide Gif">
-                    <p slot="footer" style={{"font-size": "var(--font-size-very-small)", padding: "2px", "border-radius": "4px"}}>GIFs</p>
-                </deckgo-slide-gif>
-            </div>
-        </div>;
+        ];
     }
 
 }

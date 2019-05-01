@@ -1,14 +1,35 @@
 app-slot-type {
+  div {
+    h2 {
+      color: var(--ion-color-primary);
+    }
+  }
+
+  ion-list.list-ios {
+    margin-bottom: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  ion-item {
+    --border-width: 0;
+    --inner-border-width: 0;
+  }
+
   a {
     color: inherit;
     cursor: pointer;
 
     &.current {
-      color: var(--ion-color-primary);
+      ion-item {
+        color: var(--ion-color-tertiary);
+      }
     }
 
     &:hover {
-      color: var(--ion-color-tertiary);
+      ion-item {
+        color: var(--ion-color-tertiary);
+      }
     }
   }
 }

@@ -50,7 +50,7 @@
 
     &.idle {
       deckgo-deck {
-        h1, h2, h3, div[slot] {
+        h1, h2, h3, div[slot], deckgo-highlight-code {
           border: 1px solid transparent;
         }
       }
@@ -65,7 +65,6 @@
     // Fonts
     deckgo-deck {
       font-size: 32px;
-      --code-font-size: 24px;
 
       ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
         font-size: 32px;
