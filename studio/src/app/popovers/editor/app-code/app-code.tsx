@@ -266,7 +266,7 @@ export class AppCode {
 
                 <ion-item class="select">
                     <ion-label>Language</ion-label>
-                    <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)} class="ion-padding-start ion-padding-end">
+                    <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)} class="ion-padding-start ion-padding-end" interfaceOptions={{backdropDismiss: false}}>
                         {this.renderSelectOptions()}
                     </ion-select>
                 </ion-item>
