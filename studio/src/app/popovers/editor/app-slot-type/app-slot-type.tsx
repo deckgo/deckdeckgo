@@ -29,12 +29,17 @@ export class AppSlideAdd {
     }
 
     render() {
-        return <div padding>
-            <a onClick={() => this.closePopover(SlotType.H1)} class={this.currentType === SlotType.H1 ? "current" : ""}><h1>Title</h1></a>
-            <a onClick={() => this.closePopover(SlotType.H2)} class={this.currentType === SlotType.H2 ? "current" : ""}><h2>Title</h2></a>
-            <a onClick={() => this.closePopover(SlotType.H3)} class={this.currentType === SlotType.H3 ? "current" : ""}><h3>Title</h3></a>
-            <a onClick={() => this.closePopover(SlotType.DIV)} class={this.currentType === SlotType.DIV ? "current" : ""}><p>Paragraph</p></a>
-            <a onClick={() => this.closePopover(SlotType.CODE)} class={this.currentType === SlotType.CODE ? "current" : ""}><p>Code</p></a>
-        </div>
+        return [<div class="ion-padding">
+                <h2>Toggle element type</h2>
+            </div>,
+
+            <ion-list>
+                <a onClick={() => this.closePopover(SlotType.H1)} class={this.currentType === SlotType.H1 ? "current" : ""}><ion-item><h1>Title</h1></ion-item></a>
+                <a onClick={() => this.closePopover(SlotType.H2)} class={this.currentType === SlotType.H2 ? "current" : ""}><ion-item><h2>Title</h2></ion-item></a>
+                <a onClick={() => this.closePopover(SlotType.H3)} class={this.currentType === SlotType.H3 ? "current" : ""}><ion-item><h3>Title</h3></ion-item></a>
+                <a onClick={() => this.closePopover(SlotType.DIV)} class={this.currentType === SlotType.DIV ? "current" : ""}><ion-item><p>Paragraph</p></ion-item></a>
+                <a onClick={() => this.closePopover(SlotType.CODE)} class={this.currentType === SlotType.CODE ? "current" : ""}><ion-item><p>Code</p></ion-item></a>
+            </ion-list>
+        ]
     }
 }

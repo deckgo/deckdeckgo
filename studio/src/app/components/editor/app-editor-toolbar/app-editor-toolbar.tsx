@@ -489,7 +489,7 @@ export class AppEditorToolbar {
         await this.emitChange();
     };
 
-    private async openSlotType($event: UIEvent) {
+    private async openSlotType() {
         if (this.deckOrSlide) {
             return;
         }
@@ -499,8 +499,8 @@ export class AppEditorToolbar {
             componentProps: {
                 selectedElement: this.selectedElement
             },
-            event: $event,
-            mode: 'ios'
+            mode: 'md',
+            cssClass: 'popover-menu'
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -618,7 +618,7 @@ export class AppEditorToolbar {
     }
 
     private renderDelete() {
-        return <a onClick={() => this.deleteElement()}
+        return <a onClick={() => this.deleteElement()} title="Delete"
                   class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
             <ion-icon name="trash"></ion-icon>
         </a>
@@ -634,10 +634,10 @@ export class AppEditorToolbar {
         };
 
         return [
-            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)}>
+            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)} title="Color">
                 <ion-label style={styleColor}>A</ion-label>
             </a>,
-            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)}>
+            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)} title="Background">
                 <ion-label style={styleBackground}>Bg</ion-label>
             </a>
         ]
@@ -647,7 +647,7 @@ export class AppEditorToolbar {
         if (this.deckOrSlide) {
             return undefined;
         } else {
-            return <a onClick={(e: UIEvent) => this.openSlotType(e)}>
+            return <a onClick={() => this.openSlotType()} title="Toggle element type">
                 <ion-label>T</ion-label>
             </a>
         }
@@ -657,7 +657,7 @@ export class AppEditorToolbar {
         if (!this.code) {
             return undefined;
         } else {
-            return <a onClick={() => this.openCode()}>
+            return <a onClick={() => this.openCode()} title="Code attributes">
                 <ion-icon name="code"></ion-icon>
             </a>
         }

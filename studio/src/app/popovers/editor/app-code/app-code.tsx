@@ -260,56 +260,57 @@ export class AppCode {
     }
 
     render() {
-        return <ion-list>
-            <ion-item-divider><ion-label>Language</ion-label></ion-item-divider>
+        return [<div class="ion-padding"><h2>Code attributes</h2></div>,
+            <ion-list>
+                <ion-item-divider><ion-label>Language</ion-label></ion-item-divider>
 
-            <ion-item class="select">
-                <ion-label>Language</ion-label>
-                <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)} class="ion-padding-start ion-padding-end">
-                    {this.renderSelectOptions()}
-                </ion-select>
-            </ion-item>
+                <ion-item class="select">
+                    <ion-label>Language</ion-label>
+                    <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)} class="ion-padding-start ion-padding-end">
+                        {this.renderSelectOptions()}
+                    </ion-select>
+                </ion-item>
 
-            <ion-item-divider class="ion-padding-top"><ion-label>Colors</ion-label></ion-item-divider>
+                <ion-item-divider class="ion-padding-top"><ion-label>Colors</ion-label></ion-item-divider>
 
-            <ion-item class="select">
-                <ion-label>Color applied to</ion-label>
+                <ion-item class="select">
+                    <ion-label>Color applied to</ion-label>
 
-                <ion-select value={this.codeColorType} onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
-                    <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
-                    <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
-                    <ion-select-option value={CodeColorType.KEYWORD}>Keywords</ion-select-option>
-                    <ion-select-option value={CodeColorType.OPERATOR}>Operators</ion-select-option>
-                    <ion-select-option value={CodeColorType.PUNCTUATION}>Punctuation</ion-select-option>
-                    <ion-select-option value={CodeColorType.PROPERTY}>Properties</ion-select-option>
-                    <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
-                    <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
-                </ion-select>
-            </ion-item>
+                    <ion-select value={this.codeColorType} onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
+                        <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
+                        <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
+                        <ion-select-option value={CodeColorType.KEYWORD}>Keywords</ion-select-option>
+                        <ion-select-option value={CodeColorType.OPERATOR}>Operators</ion-select-option>
+                        <ion-select-option value={CodeColorType.PUNCTUATION}>Punctuation</ion-select-option>
+                        <ion-select-option value={CodeColorType.PROPERTY}>Properties</ion-select-option>
+                        <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
+                        <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
+                    </ion-select>
+                </ion-item>
 
-            <ion-item>
-                <ion-label>Color</ion-label>
-                <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e, this.setCodeColor)}></input>
-            </ion-item>
+                <ion-item>
+                    <ion-label>Color</ion-label>
+                    <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e, this.setCodeColor)}></input>
+                </ion-item>
 
-            <ion-item-divider class="ion-padding-top">
-                <ion-label>Highlight lines</ion-label>
-                <button slot="end" class="info" onClick={() => this.presentHighlightInfo()}>
-                    <ion-icon name="help"></ion-icon>
-                </button>
-            </ion-item-divider>
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>Highlight lines</ion-label>
+                    <button slot="end" class="info" onClick={() => this.presentHighlightInfo()}>
+                        <ion-icon name="help"></ion-icon>
+                    </button>
+                </ion-item-divider>
 
-            <ion-item>
-                <ion-input value={this.highlightLines} placeholder="List your lines here" debounce={500}
-                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-                            onIonChange={() => this.highlightSelectedLines()}></ion-input>
-            </ion-item>
+                <ion-item>
+                    <ion-input value={this.highlightLines} placeholder="List your lines here" debounce={500}
+                               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+                                onIonChange={() => this.highlightSelectedLines()}></ion-input>
+                </ion-item>
 
-            <ion-item>
-                <ion-label>Color</ion-label>
-                <input type="color" value={this.highlightColor} onChange={(e) => this.selectColor(e, this.setHighlightColor)}></input>
-            </ion-item>
-        </ion-list>
+                <ion-item>
+                    <ion-label>Color</ion-label>
+                    <input type="color" value={this.highlightColor} onChange={(e) => this.selectColor(e, this.setHighlightColor)}></input>
+                </ion-item>
+        </ion-list>]
     }
 
     private renderSelectOptions() {
