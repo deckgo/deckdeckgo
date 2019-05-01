@@ -40,7 +40,7 @@ deckgo-deck {
   }
 
   deckgo-slide-split {
-    div[slot] {
+    div[slot], deckgo-highlight-code {
       height: fit-content;
     }
   }
