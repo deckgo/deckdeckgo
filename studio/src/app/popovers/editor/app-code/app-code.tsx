@@ -36,7 +36,7 @@ export class AppCode {
     private currentLanguage: string = 'javascript';
     private languages: PrismLanguage[];
 
-    private codeColorType: CodeColorType = CodeColorType.COMMENTS;
+    private codeColorType: CodeColorType;
 
     @State()
     private codeColor: string;
@@ -274,9 +274,10 @@ export class AppCode {
                 <ion-item-divider class="ion-padding-top"><ion-label>Colors</ion-label></ion-item-divider>
 
                 <ion-item class="select">
-                    <ion-label>Color applied to</ion-label>
+                    <ion-label>Apply color to</ion-label>
 
-                    <ion-select value={this.codeColorType} onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
+                    <ion-select value={this.codeColorType} placeholder="Select a category"
+                                onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
                         <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
                         <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
                         <ion-select-option value={CodeColorType.KEYWORD}>Keywords</ion-select-option>
@@ -288,7 +289,7 @@ export class AppCode {
                     </ion-select>
                 </ion-item>
 
-                <ion-item>
+                <ion-item disabled={!this.codeColorType}>
                     <ion-label>Color</ion-label>
                     <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e, this.setCodeColor)}></input>
                 </ion-item>
@@ -306,7 +307,7 @@ export class AppCode {
                                 onIonChange={() => this.highlightSelectedLines()}></ion-input>
                 </ion-item>
 
-                <ion-item>
+                <ion-item disabled={!this.highlightLines}>
                     <ion-label>Color</ion-label>
                     <input type="color" value={this.highlightColor} onChange={(e) => this.selectColor(e, this.setHighlightColor)}></input>
                 </ion-item>
