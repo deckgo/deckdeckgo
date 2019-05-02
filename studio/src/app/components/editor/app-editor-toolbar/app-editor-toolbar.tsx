@@ -143,6 +143,8 @@ export class AppEditorToolbar {
             if (this.selectedElement) {
                 this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
 
+                this.selectedElement.blur();
+
                 await this.hideToolbar();
             }
 
