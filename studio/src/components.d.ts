@@ -8,12 +8,12 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'deckdeckgo';
-import 'deckdeckgo-highlight-code';
-import 'deckdeckgo-inline-editor';
-import 'deckdeckgo-qrcode';
-import 'deckdeckgo-remote';
 import 'ionicons';
+import 'deckdeckgo';
+import 'deckdeckgo-inline-editor';
+import 'deckdeckgo-remote';
+import 'deckdeckgo-qrcode';
+import 'deckdeckgo-highlight-code';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -121,6 +121,9 @@ export namespace Components {
   interface AppGif {}
   interface AppGifAttributes extends StencilHTMLAttributes {}
 
+  interface AppPhoto {}
+  interface AppPhotoAttributes extends StencilHTMLAttributes {}
+
   interface AppPublish {
     'description': string;
   }
@@ -224,6 +227,7 @@ declare global {
     'AppFeedCard': Components.AppFeedCard;
     'AppFeedLazyImg': Components.AppFeedLazyImg;
     'AppGif': Components.AppGif;
+    'AppPhoto': Components.AppPhoto;
     'AppPublish': Components.AppPublish;
     'AppRemote': Components.AppRemote;
     'AppSlideNavigate': Components.AppSlideNavigate;
@@ -261,6 +265,7 @@ declare global {
     'app-feed-card': Components.AppFeedCardAttributes;
     'app-feed-lazy-img': Components.AppFeedLazyImgAttributes;
     'app-gif': Components.AppGifAttributes;
+    'app-photo': Components.AppPhotoAttributes;
     'app-publish': Components.AppPublishAttributes;
     'app-remote': Components.AppRemoteAttributes;
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
@@ -371,6 +376,12 @@ declare global {
   var HTMLAppGifElement: {
     prototype: HTMLAppGifElement;
     new (): HTMLAppGifElement;
+  };
+
+  interface HTMLAppPhotoElement extends Components.AppPhoto, HTMLStencilElement {}
+  var HTMLAppPhotoElement: {
+    prototype: HTMLAppPhotoElement;
+    new (): HTMLAppPhotoElement;
   };
 
   interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {}
@@ -503,6 +514,7 @@ declare global {
     'app-feed-card': HTMLAppFeedCardElement
     'app-feed-lazy-img': HTMLAppFeedLazyImgElement
     'app-gif': HTMLAppGifElement
+    'app-photo': HTMLAppPhotoElement
     'app-publish': HTMLAppPublishElement
     'app-remote': HTMLAppRemoteElement
     'app-slide-navigate': HTMLAppSlideNavigateElement
@@ -540,6 +552,7 @@ declare global {
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-lazy-img': HTMLAppFeedLazyImgElement;
     'app-gif': HTMLAppGifElement;
+    'app-photo': HTMLAppPhotoElement;
     'app-publish': HTMLAppPublishElement;
     'app-remote': HTMLAppRemoteElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;

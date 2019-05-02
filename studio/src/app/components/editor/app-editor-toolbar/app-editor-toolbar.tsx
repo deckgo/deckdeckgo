@@ -16,6 +16,7 @@ import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 })
 export class AppEditorToolbar {
 
+    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
     @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
     @Element() el: HTMLElement;
@@ -617,6 +618,14 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openPhotos() {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-photo'
+        });
+
+        await modal.present();
+    }
+
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
@@ -624,6 +633,7 @@ export class AppEditorToolbar {
                 {this.renderSlotType()}
                 {this.renderActions()}
                 {this.renderCodeOptions()}
+                {this.renderPhotos()}
             </div>,
             <input type="color" name="color-picker" value={this.color}></input>,
             <input type="color" name="background-picker" value={this.background}></input>
@@ -674,6 +684,13 @@ export class AppEditorToolbar {
                 <ion-icon name="code"></ion-icon>
             </a>
         }
+    }
+
+    private renderPhotos() {
+        // TODO undefined if not div
+        return <a onClick={() => this.openPhotos()} title="Add a stock photo">
+            <ion-icon name="images"></ion-icon>
+        </a>
     }
 
 }

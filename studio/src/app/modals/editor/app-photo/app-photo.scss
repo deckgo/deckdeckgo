@@ -1,0 +1,53 @@
+app-photo {
+  ion-content {
+    --background: var(--ion-color-light);
+  }
+
+  div.photos-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    div.photos-column {
+      display: block;
+      flex-grow: 1;
+      flex-basis: 50%;
+      max-width: 50%;
+
+      div.photos-category, div.photo {
+        position: relative;
+
+        div.photos-category-container, div.photo-container {
+          border-radius: 4px;
+          overflow: hidden;
+          position: relative;
+
+          img {
+            width: 100%;
+            height: auto;
+            min-height: 150px;
+            vertical-align: top;
+          }
+
+          div.photos-category-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            background: rgba(var(--ion-color-dark-rgb), 0.6);
+
+            h2 {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
