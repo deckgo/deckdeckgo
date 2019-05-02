@@ -36,7 +36,8 @@ export class AppCode {
     private currentLanguage: string = 'javascript';
     private languages: PrismLanguage[];
 
-    private codeColorType: CodeColorType;
+    @State()
+    private codeColorType: CodeColorType = undefined;
 
     @State()
     private codeColor: string;
@@ -289,7 +290,7 @@ export class AppCode {
                     </ion-select>
                 </ion-item>
 
-                <ion-item disabled={!this.codeColorType}>
+                <ion-item disabled={this.codeColorType === undefined}>
                     <ion-label>Color</ion-label>
                     <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e, this.setCodeColor)}></input>
                 </ion-item>
