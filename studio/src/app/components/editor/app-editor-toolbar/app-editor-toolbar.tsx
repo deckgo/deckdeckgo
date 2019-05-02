@@ -82,9 +82,7 @@ export class AppEditorToolbar {
     private initWindowResize() {
         if (window) {
             window.addEventListener('resize', Utils.debounce(async () => {
-                if (this.selectedElement) {
-                    await this.select(this.selectedElement);
-                }
+                await this.moveToolbar();
             }, 100));
         }
     }
@@ -271,14 +269,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const toolbar: HTMLElement = this.el.querySelector('div.editor-toolbar');
-
-            if (!toolbar) {
-                resolve();
-                return;
-            }
-
-            await this.setElementPosition(element, toolbar, 0);
+            await this.moveToolbar();
 
             this.displayed = true;
 
@@ -303,6 +294,26 @@ export class AppEditorToolbar {
             }
 
             await this.setElementPosition(element, backgroundPicker, 78);
+
+            resolve();
+        });
+    }
+
+    private moveToolbar(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            const toolbar: HTMLElement = this.el.querySelector('div.editor-toolbar');
+
+            if (!toolbar) {
+                resolve();
+                return;
+            }
+
+            await this.setElementPosition(this.selectedElement, toolbar, 0);
 
             resolve();
         });
