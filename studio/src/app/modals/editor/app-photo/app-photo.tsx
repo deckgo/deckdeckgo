@@ -45,11 +45,9 @@ export class AppPhoto {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private selectPhoto(_photo: PixabayHit): Promise<void> {
+    private selectPhoto(photo: PixabayHit): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            // TODO
-
-            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
+            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(photo);
 
             resolve();
         });

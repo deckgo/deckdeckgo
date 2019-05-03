@@ -392,13 +392,13 @@ export class DeckdeckgoDeck {
   }
 
   private async updateLength() {
-    const filteredSlides: Element[] = await this.getDefinedFilteredSlides();
+    const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
     this.length = filteredSlides ? filteredSlides.length : 0;
   }
 
   private emitSlidesDidLoad(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const filteredSlides: Element[] = await this.getDefinedFilteredSlides();
+      const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
       const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
 
@@ -424,7 +424,7 @@ export class DeckdeckgoDeck {
         const promises: Promise<void>[] = [];
         promises.push(this.lazyLoadFirstSlides());
         promises.push(this.cloneSlots(filteredSlides, 'actions'));
-        promises.push(this.loadBackground(filteredSlides));
+        promises.push(this.cloneAndLoadBackground(filteredSlides));
 
         await Promise.all(promises);
       }
@@ -433,10 +433,10 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private getDefinedFilteredSlides(): Promise<Element[]> {
-    return new Promise<Element[]>(async (resolve) => {
+  private getDefinedFilteredSlides(): Promise<HTMLElement[]> {
+    return new Promise<HTMLElement[]>(async (resolve) => {
       const definedSlides: HTMLCollection = this.el.children;
-      const filteredSlides: Element[] = await this.filterSlides(definedSlides);
+      const filteredSlides: HTMLElement[] = await this.filterSlides(definedSlides);
 
       resolve(filteredSlides);
     });
@@ -453,10 +453,28 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private loadBackground(slides: Element[]): Promise<void> {
+  @Method()
+  loadBackground(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
+
+      if (!filteredSlides || filteredSlides.length <= 0) {
+        resolve();
+        return;
+      }
+
+      // TODO remove previous background slots -> removeChildren on slides
+
+      await this.cloneAndLoadBackground(filteredSlides);
+
+      resolve();
+    });
+  }
+
+  private cloneAndLoadBackground(slides: HTMLElement[]): Promise<void> {
     return new Promise<void>(async (resolve) => {
 
-      const background: HTMLElement = this.el.querySelector('[slot=\'background\']');
+      const background: HTMLElement = this.el.querySelector(':scope > [slot=\'background\']');
 
       if (!background) {
         resolve();
@@ -494,17 +512,26 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private cloneSlots(slides: Element[], slotName: string): Promise<void> {
+  private cloneSlots(slides: HTMLElement[], slotName: string): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!slides || slides.length <= 0) {
         resolve();
         return;
       }
 
-      const slotElement: HTMLElement = this.el.querySelector('[slot=\'' + slotName + '\']');
+      const slotElement: HTMLElement = this.el.querySelector(':scope > [slot=\'' + slotName + '\']');
 
       if (slotElement) {
         slides.forEach((slide: Element) => {
+
+          const currentSlotElement: HTMLElement = slide.querySelector(':scope > [slot=\'' + slotName + '\']');
+
+          // TODO don't delete slot from slide if provided only for slide
+
+          if (currentSlotElement) {
+            slide.removeChild(currentSlotElement);
+          }
+
           slide.appendChild(slotElement.cloneNode(true));
         });
       }
@@ -514,8 +541,8 @@ export class DeckdeckgoDeck {
   }
 
   // The last children might be slots (background, note or action)
-  private filterSlides(definedSlides: HTMLCollection): Promise<Element[]> {
-    return new Promise<Element[]>((resolve) => {
+  private filterSlides(definedSlides: HTMLCollection): Promise<HTMLElement[]> {
+    return new Promise<HTMLElement[]>((resolve) => {
       if (!definedSlides || definedSlides.length <= 0) {
         resolve(null);
         return;
@@ -525,7 +552,7 @@ export class DeckdeckgoDeck {
         return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1
       });
 
-      resolve(slides);
+      resolve(slides as HTMLElement[]);
     });
   }
 

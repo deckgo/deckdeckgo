@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@ionic/core": "4.1.1",
-    "deckdeckgo": "^1.0.0-beta.32",
+    "deckdeckgo": "file:../webcomponents/core",
     "deckdeckgo-highlight-code": "^1.0.0-alpha.14",
     "deckdeckgo-inline-editor": "^1.0.0-alpha.5",
     "deckdeckgo-qrcode": "^1.0.0-alpha.6",

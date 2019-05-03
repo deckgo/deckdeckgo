@@ -25,6 +25,7 @@ export namespace Components {
     'isEnd': () => Promise<boolean>;
     'isMobile': () => Promise<boolean>;
     'keyboard': boolean;
+    'loadBackground': () => Promise<void>;
     'pagerPercentage': boolean;
     'slideNext': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;

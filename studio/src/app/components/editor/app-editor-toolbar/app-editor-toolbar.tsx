@@ -3,11 +3,12 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {Utils} from '../../../utils/core/utils';
+import {SlotType} from '../../../utils/editor/create-slides.utils';
+import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
+import {PhotoUtils} from '../../../utils/editor/photo.utils';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
-import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -618,13 +619,19 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openPhotos() {
+    private openPhotos = async () => {
         const modal: HTMLIonModalElement = await this.modalController.create({
             component: 'app-photo'
         });
 
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data && this.selectedElement) {
+                await PhotoUtils.appendPhoto(this.selectedElement, (detail.data as PixabayHit), this.deckOrSlide, this.applyToAllDeck);
+            }
+        });
+
         await modal.present();
-    }
+    };
 
     render() {
         return [
@@ -688,7 +695,7 @@ export class AppEditorToolbar {
 
     private renderPhotos() {
         // TODO undefined if not div
-        return <a onClick={() => this.openPhotos()} title="Add a stock photo">
+        return <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openPhotos)} title="Add a stock photo">
             <ion-icon name="images"></ion-icon>
         </a>
     }
