@@ -445,6 +445,10 @@ export class AppEditor {
                 return;
             }
 
+            if ($event instanceof TouchEvent) {
+                $event.preventDefault();
+            }
+
             if (!$event.target || !($event.target instanceof HTMLElement)) {
                 resolve();
                 return;
