@@ -6,9 +6,9 @@ main {
     transform: translate(-50%, -50%);
   }
 
-  :not(deckgo-slide-gif) {
+  > *:not(deckgo-slide-gif) {
     // Skeleton for new slides
-     > [slot]:not([contentEditable]):not([editable]) {
+     > [slot]:not([contentEditable]):not([editable]):not([slot="background"]) {
       position: relative;
 
       background: var(--ion-color-light);
