@@ -1,29 +1,37 @@
-export class PhotoUtils {
+import {EventEmitter} from '@stencil/core';
 
-    static appendPhoto(selectedElement: HTMLElement, photo: PixabayHit, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
+import {BusyService} from '../../services/editor/busy/busy.service';
+
+export class PhotoHelper {
+
+    private busyService: BusyService;
+
+    constructor(private slideDidChange: EventEmitter<HTMLElement>, private deckDidChange: EventEmitter<HTMLElement>) {
+        this.busyService = BusyService.getInstance();
+    }
+
+    appendPhoto(selectedElement: HTMLElement, photo: PixabayHit, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!selectedElement || !photo || !document) {
                 resolve();
                 return;
             }
 
-            // TODO deck busy
+            this.busyService.deckBusy(true);
 
             if (deckOrSlide) {
-                await this.appendBackgroundImg(selectedElement, photo, applyToAllDeck);
+                await this.appendBackgroundImg(selectedElement, photo, deckOrSlide, applyToAllDeck);
             } else {
-                await this.appendContentImg(selectedElement, photo);
+                await this.appendContentImg(selectedElement, deckOrSlide, photo);
             }
 
             // TODO lazy loading
-
-            // TODO save deck or slide
 
             resolve();
         });
     }
 
-    private static createImgElement(photo: PixabayHit): HTMLImageElement {
+    private createImgElement(photo: PixabayHit): HTMLImageElement {
         const img: HTMLImageElement = document.createElement('img');
         img.src = photo.largeImageURL;
         img.alt = photo.tags ? photo.tags : photo.largeImageURL;
@@ -31,17 +39,19 @@ export class PhotoUtils {
         return img;
     }
 
-    private static appendContentImg(selectedElement: HTMLElement, photo: PixabayHit): Promise<void> {
+    private appendContentImg(selectedElement: HTMLElement, deckOrSlide: boolean, photo: PixabayHit): Promise<void> {
         return new Promise<void>((resolve) => {
             const img: HTMLImageElement = this.createImgElement(photo);
 
             selectedElement.appendChild(img);
 
+            this.slideDidChange.emit(deckOrSlide ? selectedElement : selectedElement.parentElement);
+
             resolve();
         });
     }
 
-    private static appendBackgroundImg(selectedElement: HTMLElement, photo: PixabayHit, applyToAllDeck: boolean): Promise<void> {
+    private appendBackgroundImg(selectedElement: HTMLElement, photo: PixabayHit, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const element: HTMLElement = applyToAllDeck ? selectedElement.parentElement : selectedElement;
 
@@ -63,6 +73,9 @@ export class PhotoUtils {
             div.appendChild(img);
 
             element.appendChild(div);
+
+            const deckElement: HTMLElement = deckOrSlide ? selectedElement.parentElement : selectedElement.parentElement.parentElement;
+            this.deckDidChange.emit(deckElement);
 
             if (applyToAllDeck) {
                 await (element as any).loadBackground();

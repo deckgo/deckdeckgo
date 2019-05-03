@@ -298,6 +298,8 @@ export class DeckEventsHandler {
                     return;
                 }
 
+                // TODO(#104): We should also update/persist slots like deck.background and deck.actions
+
                 this.busyService.deckBusy(true);
 
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: Deck) => {

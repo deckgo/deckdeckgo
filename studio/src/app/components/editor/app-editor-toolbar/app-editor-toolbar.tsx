@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
 import {Utils} from '../../../utils/core/utils';
 import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
-import {PhotoUtils} from '../../../utils/editor/photo.utils';
+import {PhotoHelper} from '../../../helpers/editor/photo.helper';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
 
@@ -626,7 +626,8 @@ export class AppEditorToolbar {
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                await PhotoUtils.appendPhoto(this.selectedElement, (detail.data as PixabayHit), this.deckOrSlide, this.applyToAllDeck);
+                const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
+                await helper.appendPhoto(this.selectedElement, (detail.data as PixabayHit), this.deckOrSlide, this.applyToAllDeck);
             }
         });
 
