@@ -10,12 +10,14 @@ dependencies:
     - base
     - bytestring
     - directory
+    - hasql
     - filepath
     - firebase-login
     - http-client
     - http-types
     - lens
     - mtl
+    - contravariant
     - random
     - servant
     - servant-server

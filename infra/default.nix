@@ -32,15 +32,12 @@ rec
 
   # TODO: don't use latest dynamodb (but pin version)
 
-  test = pkgs.runCommand "tests"
-    { buildInputs =
-        [ pkgs.jre
-          pkgs.netcat
-          pkgs.awscli
-          pkgs.haskellPackages.wai-app-static
-        ];
-    }
-  ''
+  test = let
+    with-pg = pkgs.callPackage ./with-pg.nix {};
+    script = pkgs.writeScript "run-tests"
+      ''
+      #!${pkgs.stdenv.shell}
+      set -euo pipefail
 
       # Set up DynamoDB
       java \
@@ -105,6 +102,18 @@ rec
       echo "Running tests"
       ${handler}/bin/test ${./token}
 
+      echo "Tests were run"
+
       touch $out
-  '';
+      '';
+    in pkgs.runCommand "tests"
+    { buildInputs =
+        [ pkgs.jre
+          pkgs.netcat
+          pkgs.awscli
+          pkgs.haskellPackages.wai-app-static
+          pkgs.postgresql
+          pkgs.moreutils
+        ];
+    } (with-pg script);
 }
