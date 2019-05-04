@@ -524,15 +524,17 @@ export class DeckdeckgoDeck {
       if (slotElement) {
         slides.forEach((slide: Element) => {
 
-          const currentSlotElement: HTMLElement = slide.querySelector(':scope > [slot=\'' + slotName + '\']');
+          const custom: boolean = slide.hasAttribute('custom-' + slotName);
 
-          // TODO don't delete slot from slide if provided only for slide
+          if (!custom) {
+            const currentSlotElement: HTMLElement = slide.querySelector(':scope > [slot=\'' + slotName + '\']');
 
-          if (currentSlotElement) {
-            slide.removeChild(currentSlotElement);
+            if (currentSlotElement) {
+              slide.removeChild(currentSlotElement);
+            }
+
+            slide.appendChild(slotElement.cloneNode(true));
           }
-
-          slide.appendChild(slotElement.cloneNode(true));
         });
       }
 

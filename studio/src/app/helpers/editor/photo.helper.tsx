@@ -20,9 +20,9 @@ export class PhotoHelper {
             this.busyService.deckBusy(true);
 
             if (deckOrSlide) {
-                await this.appendBackgroundImg(selectedElement, photo, deckOrSlide, applyToAllDeck);
+                await this.appendBackgroundImg(selectedElement, photo, applyToAllDeck);
             } else {
-                await this.appendContentImg(selectedElement, deckOrSlide, photo);
+                await this.appendContentImg(selectedElement, photo);
             }
 
             // TODO lazy loading
@@ -39,19 +39,19 @@ export class PhotoHelper {
         return img;
     }
 
-    private appendContentImg(selectedElement: HTMLElement, deckOrSlide: boolean, photo: PixabayHit): Promise<void> {
+    private appendContentImg(selectedElement: HTMLElement, photo: PixabayHit): Promise<void> {
         return new Promise<void>((resolve) => {
             const img: HTMLImageElement = this.createImgElement(photo);
 
             selectedElement.appendChild(img);
 
-            this.slideDidChange.emit(deckOrSlide ? selectedElement : selectedElement.parentElement);
+            this.slideDidChange.emit(selectedElement.parentElement);
 
             resolve();
         });
     }
 
-    private appendBackgroundImg(selectedElement: HTMLElement, photo: PixabayHit, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
+    private appendBackgroundImg(selectedElement: HTMLElement, photo: PixabayHit, applyToAllDeck: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const element: HTMLElement = applyToAllDeck ? selectedElement.parentElement : selectedElement;
 
@@ -74,11 +74,14 @@ export class PhotoHelper {
 
             element.appendChild(div);
 
-            const deckElement: HTMLElement = deckOrSlide ? selectedElement.parentElement : selectedElement.parentElement.parentElement;
-            this.deckDidChange.emit(deckElement);
-
             if (applyToAllDeck) {
+                this.deckDidChange.emit(selectedElement.parentElement);
+
                 await (element as any).loadBackground();
+            } else {
+                selectedElement.setAttribute('custom-background', '');
+
+                this.slideDidChange.emit(selectedElement);
             }
 
             resolve();
