@@ -99,6 +99,18 @@ export class AppSlideAuthor {
 <td></td>
 <td>An optional accessibility alt for the image.</td>
 </tr>
+<tr>
+<td>custom-background</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide a background for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
+<tr>
+<td>custom-actions</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
 </tbody></table>
 <h3 id="app-slide-author-example">Example</h3>
 <deckgo-highlight-code language="javascript">

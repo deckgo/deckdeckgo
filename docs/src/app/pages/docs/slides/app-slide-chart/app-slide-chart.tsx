@@ -93,6 +93,18 @@ export class AppSlideChart {
 <td>pie</td>
 <td>The type of the chart, <code>pie</code>, <code>line</code> or <code>bar</code></td>
 </tr>
+<tr>
+<td>custom-background</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide a background for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
+<tr>
+<td>custom-actions</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
 </tbody></table>
 <p>Furthermore, this slide component offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts Web Component, see its <a href="https://github.com/deckgo/deckdeckgo-charts">documentation</a> for the details.</p>
 <h2 id="app-slide-chart-theming">Theming</h2>

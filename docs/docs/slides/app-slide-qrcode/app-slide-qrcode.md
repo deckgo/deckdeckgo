@@ -61,7 +61,12 @@ The [DeckDeckGo] - QR Code component is provided in separate extra library. If y
 
 ## Attributes
 
-The attribute `content` should be provided in order to render a QR code in this template. It offers the same attributes as the [DeckDeckGo] QR code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-qrcode) for the details.
+The attribute `content` should be provided in order to render a QR code in this template. It offers the same attributes as the [DeckDeckGo] QR code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-qrcode) for the details, and the following other attributes:
+                                                                                                                                                                                                                                                        
+| Attribute                      | Type   | Default   | Description   |
+| -------------------------- |-----------------|-----------------|-----------------|
+| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
 
 ### Example without any slots
 
