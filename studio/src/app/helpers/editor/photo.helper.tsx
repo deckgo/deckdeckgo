@@ -25,7 +25,9 @@ export class PhotoHelper {
                 await this.appendContentImg(selectedElement, photo);
             }
 
-            // TODO lazy loading
+            // TODO: lazy loading
+
+            // TODO: on size change slide should be saved
 
             resolve();
         });
@@ -43,7 +45,14 @@ export class PhotoHelper {
         return new Promise<void>((resolve) => {
             const img: HTMLImageElement = this.createImgElement(photo);
 
-            selectedElement.appendChild(img);
+            const div: HTMLElement = document.createElement('div');
+
+            div.setAttribute('contentEditable', 'false');
+            div.classList.add('deckgo-img');
+
+            div.appendChild(img);
+
+            selectedElement.appendChild(div);
 
             this.slideDidChange.emit(selectedElement.parentElement);
 

@@ -64,6 +64,9 @@ export class AppEditor {
     @State()
     private slidesFetched: boolean = false;
 
+    @State()
+    private mobile: boolean = false;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.anonymousService = AnonymousService.getInstance();
@@ -73,6 +76,8 @@ export class AppEditor {
     }
 
     async componentWillLoad() {
+        this.mobile = Utils.isMobile();
+
         await this.deckEventsHandler.init(this.el);
         await this.editorEventsHandler.init(this.el);
 
@@ -544,10 +549,12 @@ export class AppEditor {
     }
 
     render() {
+        const mainClass: string = this.slidesFetched ? (this.presenting ? (this.mobile ? 'ready mobile idle' : 'ready idle') : (this.mobile ? 'ready mobile' : 'ready')) : undefined;
+
         return [
             <app-navigation publish={true}></app-navigation>,
             <ion-content class="ion-padding">
-                <main class={this.slidesFetched ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
+                <main class={mainClass}>
 
                     {this.renderLoading()}
 
