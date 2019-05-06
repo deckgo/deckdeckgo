@@ -44,15 +44,7 @@ export class PhotoHelper {
     private appendContentImg(selectedElement: HTMLElement, photo: PixabayHit): Promise<void> {
         return new Promise<void>((resolve) => {
             const img: HTMLImageElement = this.createImgElement(photo);
-
-            const div: HTMLElement = document.createElement('div');
-
-            div.setAttribute('contentEditable', 'false');
-            div.classList.add('deckgo-img');
-
-            div.appendChild(img);
-
-            selectedElement.appendChild(div);
+            selectedElement.appendChild(img);
 
             this.slideDidChange.emit(selectedElement.parentElement);
 

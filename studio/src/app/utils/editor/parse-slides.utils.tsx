@@ -95,10 +95,6 @@ export class ParseSlidesUtils {
                 attributes['contenteditable'] = true;
             }
 
-            if (!attributes.slot && element.nodeName && element.nodeName.toLowerCase() === 'div' && element.classList && element.classList.contains('deckgo-img')) {
-                attributes['contenteditable'] = 'false';
-            }
-
             resolve(<Elem {...attributes}>{content}</Elem>);
         });
     }

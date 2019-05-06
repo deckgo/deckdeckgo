@@ -8,6 +8,9 @@
 import '@stencil/core';
 
 
+import {
+  EventEmitter,
+} from '@stencil/core';
 
 
 export namespace Components {
@@ -23,6 +26,7 @@ export namespace Components {
     'attachTo'?: HTMLElement;
     'containers'?: string;
     'mobile'?: boolean;
+    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;
   }

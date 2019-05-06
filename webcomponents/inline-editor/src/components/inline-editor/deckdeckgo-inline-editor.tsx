@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event} from '@stencil/core';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
@@ -9,6 +9,19 @@ interface AnchorLink {
 
 interface InputTargetEvent extends EventTarget {
   value: string;
+}
+
+enum ToolbarActions {
+  SELECTION,
+  LINK,
+  IMAGE
+}
+
+enum ImageSize {
+  SMALL = '25%',
+  MEDIUM = '50%',
+  LARGE = '75%',
+  ORIGINAL = '100%'
 }
 
 @Component({
@@ -34,6 +47,9 @@ export class DeckdeckgoInlineEditor {
 
   @State()
   private unorderedList: boolean = false;
+
+  @State()
+  private imageSize: ImageSize;
 
   @State()
   private color: string;
@@ -62,7 +78,7 @@ export class DeckdeckgoInlineEditor {
   private link: boolean = false;
 
   @State()
-  private linkInput: boolean = false;
+  private toolbarActions: ToolbarActions = ToolbarActions.SELECTION;
 
   private linkUrl: string;
 
@@ -71,6 +87,8 @@ export class DeckdeckgoInlineEditor {
 
   @Prop()
   containers: string = 'h1,h2,h3,h4,h5,h6,div';
+
+  @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
   async componentWillLoad() {
     await this.attachListener();
@@ -123,13 +141,83 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private mousedown = ($event: MouseEvent) => {
+  private mousedown = async ($event: MouseEvent) => {
+    if (this.toolsActivated) {
+      return;
+    }
+
     this.anchorEvent = $event;
+
+    await this.displayImageActions();
   };
 
-  private touchstart = ($event: MouseEvent) => {
+  private touchstart = async ($event: MouseEvent) => {
+    if (this.toolsActivated) {
+      return;
+    }
+
     this.anchorEvent = $event;
+
+    await this.displayImageActions();
   };
+
+  private displayImageActions(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const isAnchorImg: boolean = await this.isAnchorImage();
+      if (!isAnchorImg) {
+        resolve();
+        return;
+      }
+
+      await this.reset(true);
+
+      setTimeout(async () => {
+        await this.activateToolbarImage();
+        await this.setToolbarAnchorPosition();
+      }, 0);
+
+      resolve();
+    });
+  }
+
+  private activateToolbarImage(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const target: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
+
+      if (target.style.width === '25%') {
+        this.imageSize = ImageSize.SMALL;
+      } else if (target.style.width === '50%') {
+        this.imageSize = ImageSize.MEDIUM;
+      } else if (target.style.width === '75%') {
+        this.imageSize = ImageSize.LARGE;
+      } else {
+        this.imageSize = ImageSize.ORIGINAL;
+      }
+
+      this.toolbarActions = ToolbarActions.IMAGE;
+      this.toolsActivated = true;
+
+      resolve();
+    });
+  }
+
+  private isAnchorImage(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!this.anchorEvent) {
+        resolve(false);
+        return;
+      }
+
+      if (!this.anchorEvent.target || !(this.anchorEvent.target instanceof HTMLElement)) {
+        resolve(false);
+        return;
+      }
+
+      const target: HTMLElement = this.anchorEvent.target;
+
+      resolve(target.nodeName && target.nodeName.toLowerCase() === 'img');
+    });
+  }
 
   @Listen('document:selectionchange', {passive: true})
   async selectionchange(_$event: Event) {
@@ -183,16 +271,16 @@ export class DeckdeckgoInlineEditor {
             range: range,
             text: selection.toString()
           };
-        }
 
-        await this.setToolbarAnchorPosition(selection);
+          await this.setToolbarAnchorPosition();
+        }
       }
 
       resolve();
     });
   }
 
-  private setToolbarAnchorPosition(selection: Selection): Promise<void> {
+  private setToolbarAnchorPosition(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (this.isSticky()) {
         resolve();
@@ -201,7 +289,7 @@ export class DeckdeckgoInlineEditor {
 
       const tools: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-tools');
 
-      if (tools && selection.rangeCount > 0) {
+      if (tools) {
         let top: number = this.unifyEvent(this.anchorEvent).clientY;
         let left: number = this.unifyEvent(this.anchorEvent).clientX;
 
@@ -416,7 +504,7 @@ export class DeckdeckgoInlineEditor {
     this.toolsActivated = false;
     this.selection = null;
 
-    this.linkInput = false;
+    this.toolbarActions = ToolbarActions.SELECTION;
     this.anchorLink = null;
     this.link = false;
   }
@@ -534,7 +622,7 @@ export class DeckdeckgoInlineEditor {
 
   private openLink(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      this.linkInput = true;
+      this.toolbarActions = ToolbarActions.LINK;
 
       resolve();
     });
@@ -603,7 +691,7 @@ export class DeckdeckgoInlineEditor {
         target.parentElement.replaceChild(a, target);
       }
 
-      this.linkInput = false;
+      this.toolbarActions = ToolbarActions.SELECTION;
 
       resolve();
     });
@@ -630,9 +718,9 @@ export class DeckdeckgoInlineEditor {
       return;
     }
 
-    if (!this.linkInput && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
+    if (this.toolbarActions === ToolbarActions.SELECTION && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
       await this.reset(false);
-    } else if (this.linkInput && $event.key.toLowerCase() === 'enter') {
+    } else if (this.toolbarActions === ToolbarActions.LINK && $event.key.toLowerCase() === 'enter') {
       await this.createLink();
       await this.reset(true);
     }
@@ -704,6 +792,51 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private setImageWidth(e: UIEvent, size: ImageSize): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const isAnchorImg: boolean = await this.isAnchorImage();
+      if (!isAnchorImg) {
+        resolve();
+        return;
+      }
+
+      e.stopPropagation();
+
+      const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
+      anchorImg.style.width = size.toString();
+
+      const container: HTMLElement = await this.findContainer(anchorImg);
+      this.imgDidChange.emit(container);
+
+      await this.reset(true);
+
+      resolve();
+    });
+  }
+
+  private findContainer(element: HTMLElement): Promise<HTMLElement> {
+    return new Promise<HTMLElement>(async (resolve) => {
+      if (!element) {
+        resolve();
+        return;
+      }
+
+      // Just in case
+      if (element.nodeName.toUpperCase() === 'HTML' || element.nodeName.toUpperCase() === 'BODY' || !element.parentElement) {
+        resolve(element);
+        return;
+      }
+
+      if (this.isContainer(element)) {
+        resolve(element);
+      } else {
+        const container: HTMLElement = await this.findContainer(element.parentElement);
+
+        resolve(container);
+      }
+    });
+  }
+
   render() {
     let classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
 
@@ -718,7 +851,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private renderActions() {
-    if (this.linkInput) {
+    if (this.toolbarActions === ToolbarActions.LINK) {
       return (
         <div class="link">
           <input autofocus placeholder="Add a link..."
@@ -727,51 +860,82 @@ export class DeckdeckgoInlineEditor {
           ></input>
         </div>
       );
+    } else if (this.toolbarActions === ToolbarActions.IMAGE) {
+      return this.renderImageActions();
     } else {
-      const styleColor = this.color ? {'border-bottom': '2px solid ' + this.color} : {};
-
-      return [
-        <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disabledTitle}
-                class={this.bold ? "bold active" : "bold"}>B
-        </button>,
-        <button onClick={(e: UIEvent) => this.styleItalic(e)}
-                class={this.italic ? "italic active" : "italic"}>I
-        </button>,
-        <button onClick={(e: UIEvent) => this.styleUnderline(e)}
-                class={this.underline ? "underline active" : "underline"}>
-          <span>U</span>
-        </button>,
-
-        <div class="separator"></div>,
-
-        <button onClick={() => this.openColorPicker()} class="color">
-          <span style={styleColor}>A</span>
-        </button>,
-
-        <button
-          disabled={this.disabledTitle}
-          onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
-          class={this.orderedList ? "ordered-list active" : "ordered-list"}>
-          <div></div>
-        </button>,
-
-        <button
-          disabled={this.disabledTitle}
-          onClick={(e: UIEvent) => this.toggleList(e, 'insertUnorderedList')}
-          class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
-          <div></div>
-        </button>,
-
-        <div class="separator"></div>,
-
-        <button
-          disabled={this.disabledTitle}
-          onClick={() => {
-            this.toggleLink()
-          }} class={this.link ? "link active" : "link"}>
-          <div></div>
-        </button>
-      ];
+      return this.renderSelectionActions();
     }
+  }
+
+  private renderSelectionActions() {
+    const styleColor = this.color ? {'border-bottom': '2px solid ' + this.color} : {};
+
+    return [
+      <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disabledTitle}
+              class={this.bold ? "bold active" : "bold"}>B
+      </button>,
+      <button onClick={(e: UIEvent) => this.styleItalic(e)}
+              class={this.italic ? "italic active" : "italic"}>I
+      </button>,
+      <button onClick={(e: UIEvent) => this.styleUnderline(e)}
+              class={this.underline ? "underline active" : "underline"}>
+        <span>U</span>
+      </button>,
+
+      <div class="separator"></div>,
+
+      <button onClick={() => this.openColorPicker()} class="color">
+        <span style={styleColor}>A</span>
+      </button>,
+
+      <button
+        disabled={this.disabledTitle}
+        onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
+        class={this.orderedList ? "ordered-list active" : "ordered-list"}>
+        <div></div>
+      </button>,
+
+      <button
+        disabled={this.disabledTitle}
+        onClick={(e: UIEvent) => this.toggleList(e, 'insertUnorderedList')}
+        class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
+        <div></div>
+      </button>,
+
+      <div class="separator"></div>,
+
+      <button
+        disabled={this.disabledTitle}
+        onClick={() => {
+          this.toggleLink()
+        }} class={this.link ? "link active" : "link"}>
+        <div></div>
+      </button>
+    ];
+  }
+
+  private renderImageActions() {
+    return [
+      <button
+        onClick={(e: UIEvent) => this.setImageWidth(e, ImageSize.ORIGINAL)}
+        class={this.imageSize === ImageSize.ORIGINAL ? "image original active" : "image original"}>
+        <div></div>
+      </button>,
+      <button
+        onClick={(e: UIEvent) => this.setImageWidth(e, ImageSize.LARGE)}
+        class={this.imageSize === ImageSize.LARGE ? "image large active" : "image large"}>
+        <div></div>
+      </button>,
+      <button
+        onClick={(e: UIEvent) => this.setImageWidth(e, ImageSize.MEDIUM)}
+        class={this.imageSize === ImageSize.MEDIUM ? "image medium active" : "image medium"}>
+        <div></div>
+      </button>,
+      <button
+        onClick={(e: UIEvent) => this.setImageWidth(e, ImageSize.SMALL)}
+        class={this.imageSize === ImageSize.SMALL ? "image small active" : "image small"}>
+        <div></div>
+      </button>
+    ];
   }
 }

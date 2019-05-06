@@ -16,6 +16,13 @@
 | `stickyMobile`  | `sticky-mobile`  |             | `boolean`     | `false`                   |
 
 
+## Events
+
+| Event          | Description | Type                       |
+| -------------- | ----------- | -------------------------- |
+| `imgDidChange` |             | `CustomEvent<HTMLElement>` |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

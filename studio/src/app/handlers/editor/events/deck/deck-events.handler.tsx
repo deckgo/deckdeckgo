@@ -51,13 +51,14 @@ export class DeckEventsHandler {
         return new Promise<void>(async (resolve) => {
             this.el = el;
 
-            this.el.addEventListener('input', this.onSlideInputChange, false);
+            this.el.addEventListener('input', this.onInputChange, false);
             this.el.addEventListener('deckDidChange', this.onDeckChange, false);
             this.el.addEventListener('slideDidChange', this.onSlideChange, false);
             this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
             this.el.addEventListener('slidesDidLoad', this.onSlidesDidLoad, false);
             this.el.addEventListener('slideDelete', this.onSlideDelete, false);
-            this.el.addEventListener('codeDidChange', this.onCodeChange, false);
+            this.el.addEventListener('codeDidChange', this.onCustomEventChange, false);
+            this.el.addEventListener('imgDidChange', this.onCustomEventChange, false);
 
             this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
                 await this.updateSlide(element);
@@ -72,13 +73,14 @@ export class DeckEventsHandler {
     }
 
     destroy() {
-        this.el.removeEventListener('input', this.onSlideInputChange, true);
+        this.el.removeEventListener('input', this.onInputChange, true);
         this.el.removeEventListener('deckDidChange', this.onDeckChange, true);
         this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
         this.el.removeEventListener('slidesDidLoad', this.onSlidesDidLoad, true);
         this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
-        this.el.removeEventListener('codeDidChange', this.onCodeChange, true);
+        this.el.removeEventListener('codeDidChange', this.onCustomEventChange, true);
+        this.el.removeEventListener('imgDidChange', this.onCustomEventChange, true);
 
         if (this.updateSlideSubscription) {
             this.updateSlideSubscription.unsubscribe();
@@ -119,7 +121,7 @@ export class DeckEventsHandler {
         this.updateSlideSubject.next($event.detail);
     };
 
-    private onCodeChange = async ($event: CustomEvent) => {
+    private onCustomEventChange = async ($event: CustomEvent) => {
         if (!$event || !$event.detail || !($event.detail instanceof HTMLElement)) {
             return;
         }
@@ -135,7 +137,7 @@ export class DeckEventsHandler {
         this.updateSlideSubject.next(parent);
     };
 
-    private onSlideInputChange = async ($event: Event) => {
+    private onInputChange = async ($event: Event) => {
         if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
             return;
         }
@@ -514,7 +516,7 @@ export class DeckEventsHandler {
                 return;
             }
 
-            let result: string = content.replace(/contenteditable=""|contenteditable="false"|contenteditable="true"|contenteditable/gi, '');
+            let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable/gi, '');
             result = result.replace(/editable=""|editable="true"|editable/gi, '');
             result = result.replace(/hydrated/gi, '');
             result = result.replace(/class=""/g, '');

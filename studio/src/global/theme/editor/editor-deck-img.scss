@@ -1,34 +1,8 @@
 main {
-  // Same as starter kit
   deckgo-deck {
-    div.deckgo-img {
-      display: inline-block;
-      max-width: 100%;
-      max-height: 100%;
-      overflow: hidden;
-      height: 100% !important;
-    }
-  }
-
-  // Resizable only if not mobile
-  &:not(.mobile) {
-    deckgo-deck {
-      div.deckgo-img {
-        position: relative;
-        resize: both;
-        line-height: 0;
-        outline: 1px dashed var(--ion-color-primary);
-
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          right: 0;
-          width: 1rem;
-          height: 1rem;
-          background: var(--ion-color-primary);
-        }
+      img {
+        // In deckgo-deck, pointer-events are set to none in order to avoid dragging while presenting
+        pointer-events: initial !important;
       }
-    }
   }
 }
