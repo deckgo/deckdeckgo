@@ -42,6 +42,7 @@ export class AppComponentsInlineEditor {
 <li><a href="#app-components-qrcode-usage">Usage</a><ul>
 <li><a href="#app-components-qrcode-properties">Properties</a></li>
 <li><a href="#app-components-qrcode-styling">Styling</a></li>
+<li><a href="#app-components-qrcode-events">Events</a></li>
 <li><a href="#app-components-qrcode-examples">Examples</a></li>
 </ul>
 </li>
@@ -53,9 +54,12 @@ export class AppComponentsInlineEditor {
   <h2 style={{color: '#3880ff'}} contenteditable slot="title">The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
 
   <p style={{color: '#3880ff'}} contenteditable slot="content">Edit anywhere, display everywhere (editable paragraph)</p>
+
+  <p style={{width: '200px'}} contenteditable><img style={{'max-width': '100%'}} src="https://pixabay.com/get/ea34b50f2cfd033ed1584d05fb1d4794e070e2d71eb80c4090f5c679a2edb4b0d8_1280.jpg"/></p>
+
 </div>
 
-<p><deckgo-inline-editor sticky-desktop="true" sticky-mobile="true"></deckgo-inline-editor></p>
+<p><deckgo-inline-editor sticky-desktop="true" sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor></p>
 <h2 id="app-components-inline-editor-getting-started">Getting started</h2>
 <p>This Web Component is an inline WYSIWYG HTML Editor, It creates a floating editor bar or a sticky footer bar that shows up when you select a piece of text of your page.</p>
 <p>To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/deckdeckgo-qrcode">npm</a>.</p>
@@ -276,6 +280,22 @@ export class AppComponentsInlineEditor {
 </tr>
 </tbody></table>
 <p>** like above but for mobile</p>
+<h3 id="app-components-inline-editor-events">Events</h3>
+<p>The event <code>input</code> will be automatically triggered when the content will be modified using the <code>&lt;deckgo-inline-editor/&gt;</code>. However, when manipulating image, this event won&#39;t be triggered. Therefore a custom event will be instead triggered:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>imgDidChange</code></td>
+<td>Triggered when an image is manipulated. Note: the event won&#39;t provide directly the image but rather its container element.</td>
+<td><code>CustomEvent&lt;HTMLElement&gt;</code></td>
+</tr>
+</tbody></table>
 <h3 id="app-components-inline-editor-examples">Examples</h3>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;p contenteditable slot=&quot;content&quot;&gt;This text will be editable&lt;&#47;p&gt;{'\n'}{'\n'}&lt;h1 contenteditable slot=&quot;title&quot;&gt;This title too&lt;&#47;h1&gt;{'\n'}{'\n'}&lt;deckgo-inline-editor&gt;&lt;&#47;deckgo-inline-editor&gt;</code>
