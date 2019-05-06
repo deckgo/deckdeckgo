@@ -183,6 +183,8 @@ export class AppPhoto {
                     </div>
                 </div>
 
+                {this.renderPhotosPlaceHolder()}
+
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
                                      onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
                     <ion-infinite-scroll-content
@@ -217,6 +219,16 @@ export class AppPhoto {
                     }
                 })
             );
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderPhotosPlaceHolder() {
+        if ((!this.photosOdd || this.photosOdd.length <= 0) && (!this.photosEven || this.photosEven.length <= 0)) {
+            return <div class="photos-placeholder">
+                <ion-icon name="images"></ion-icon>
+            </div>
         } else {
             return undefined;
         }
