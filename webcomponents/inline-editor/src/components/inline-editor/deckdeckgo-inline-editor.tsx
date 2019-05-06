@@ -24,6 +24,11 @@ enum ImageSize {
   ORIGINAL = '100%'
 }
 
+enum ImageAlign {
+  STANDARD,
+  START
+}
+
 @Component({
   tag: 'deckgo-inline-editor',
   styleUrl: 'deckdeckgo-inline-editor.scss',
@@ -50,6 +55,9 @@ export class DeckdeckgoInlineEditor {
 
   @State()
   private imageSize: ImageSize;
+
+  @State()
+  private imageAlign: ImageAlign;
 
   @State()
   private color: string;
@@ -192,6 +200,12 @@ export class DeckdeckgoInlineEditor {
         this.imageSize = ImageSize.LARGE;
       } else {
         this.imageSize = ImageSize.ORIGINAL;
+      }
+
+      if (target.style.cssFloat === 'left') {
+        this.imageAlign = ImageAlign.START;
+      } else {
+        this.imageAlign = ImageAlign.STANDARD;
       }
 
       this.toolbarActions = ToolbarActions.IMAGE;
@@ -792,7 +806,7 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private setImageWidth(e: UIEvent, size: ImageSize): Promise<void> {
+  private styleImage(e: UIEvent, applyFunction: Function, param: ImageSize | ImageAlign): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const isAnchorImg: boolean = await this.isAnchorImage();
       if (!isAnchorImg) {
@@ -802,9 +816,9 @@ export class DeckdeckgoInlineEditor {
 
       e.stopPropagation();
 
-      const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-      anchorImg.style.width = size.toString();
+      applyFunction(param);
 
+      const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
       const container: HTMLElement = await this.findContainer(anchorImg);
       this.imgDidChange.emit(container);
 
@@ -813,6 +827,24 @@ export class DeckdeckgoInlineEditor {
       resolve();
     });
   }
+
+  private setImageWith = async (size: ImageSize) => {
+    const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
+    anchorImg.style.width = size.toString();
+
+    const container: HTMLElement = await this.findContainer(anchorImg);
+    this.imgDidChange.emit(container);
+  };
+
+  private setImageAlignment = (align: ImageAlign) => {
+    const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
+
+    if (align === ImageAlign.START) {
+      anchorImg.style.cssFloat = 'left';
+    } else {
+      anchorImg.style.cssFloat = null;
+    }
+  };
 
   private findContainer(element: HTMLElement): Promise<HTMLElement> {
     return new Promise<HTMLElement>(async (resolve) => {
@@ -917,23 +949,36 @@ export class DeckdeckgoInlineEditor {
   private renderImageActions() {
     return [
       <button
-        onClick={(e: UIEvent) => this.setImageWidth(e, ImageSize.ORIGINAL)}
+        onClick={(e: UIEvent) => this.styleImage(e, this.setImageWith, ImageSize.ORIGINAL)}
         class={this.imageSize === ImageSize.ORIGINAL ? "image original active" : "image original"}>
         <div></div>
       </button>,
       <button
-        onClick={(e: UIEvent) => this.setImageWidth(e, ImageSize.LARGE)}
+        onClick={(e: UIEvent) => this.styleImage(e, this.setImageWith, ImageSize.LARGE)}
         class={this.imageSize === ImageSize.LARGE ? "image large active" : "image large"}>
         <div></div>
       </button>,
       <button
-        onClick={(e: UIEvent) => this.setImageWidth(e, ImageSize.MEDIUM)}
+        onClick={(e: UIEvent) => this.styleImage(e, this.setImageWith, ImageSize.MEDIUM)}
         class={this.imageSize === ImageSize.MEDIUM ? "image medium active" : "image medium"}>
         <div></div>
       </button>,
       <button
-        onClick={(e: UIEvent) => this.setImageWidth(e, ImageSize.SMALL)}
+        onClick={(e: UIEvent) => this.styleImage(e, this.setImageWith, ImageSize.SMALL)}
         class={this.imageSize === ImageSize.SMALL ? "image small active" : "image small"}>
+        <div></div>
+      </button>,
+
+      <div class="separator"></div>,
+
+      <button
+        onClick={(e: UIEvent) => this.styleImage(e, this.setImageAlignment, ImageAlign.STANDARD)}
+        class={this.imageAlign === ImageAlign.STANDARD ? "image-align standard active" : "image-align standard"}>
+        <div></div>
+      </button>,
+      <button
+        onClick={(e: UIEvent) => this.styleImage(e, this.setImageAlignment, ImageAlign.START)}
+        class={this.imageAlign === ImageAlign.START ? "image-align start active" : "image-align start"}>
         <div></div>
       </button>
     ];
