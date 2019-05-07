@@ -1,6 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE LambdaCase #-}
 
+module Main where
+
 import UnliftIO
 import Control.Lens
 import Servant.Auth.Firebase (ProjectId(..))
@@ -21,19 +23,28 @@ main = do
             { HTTPClient.managerModifyRequest =
                 pure . rerouteDynamoDB . rerouteGoogleApis
             }
-
-    user <- getEnv "POSTGRES_USER"
-    password <- getEnv "POSTGRES_PASSWORD"
-    db <- getEnv "POSTGRES_DB"
-    conn <- Hasql.acquire (
-      Hasql.settings "localhost" 5432 (BS8.pack user) (BS8.pack password) (BS8.pack db)
-      ) >>= \case
-        Left e -> error (show e)
-        Right c -> pure c
-
+    conn <- getPostgresqlConnection
     env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
     let projectId = ProjectId "my-project-id"
     Warp.run 8080 $ DeckGo.Handler.application mgr projectId env conn
+
+getPostgresqlConnection :: IO Hasql.Connection
+getPostgresqlConnection = do
+    user <- getEnv "PGUSER"
+    password <- getEnv "PGPASSWORD"
+    host <- getEnv "PGHOST"
+    db <- getEnv "PGDATABASE"
+    port <- getEnv "PGPORT"
+    Hasql.acquire (
+      Hasql.settings
+        (BS8.pack host)
+        (read port)
+        (BS8.pack user)
+        (BS8.pack password)
+        (BS8.pack db)
+      ) >>= \case
+        Left e -> error (show e)
+        Right c -> pure c
 
 rerouteDynamoDB :: HTTPClient.Request -> HTTPClient.Request
 rerouteDynamoDB req =

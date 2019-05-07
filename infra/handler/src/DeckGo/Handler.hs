@@ -25,10 +25,11 @@ module DeckGo.Handler where
 -- TODO: check permissions
 -- TODO: TTL on anonymous users
 -- TODO: enforce uniqueness on deck_name (per user)
+-- TODO: return 500 on all DB errors
 
 import Data.List (find)
 import Control.Lens hiding ((.=))
--- import Data.Int
+import Data.Int
 -- import Data.Functor.Contravariant
 -- import Hasql.Session (Session)
 import Hasql.Statement (Statement(..))
@@ -349,11 +350,8 @@ server env conn = serveUsers :<|> serveDecks :<|> serveSlides
 
 usersGet :: HC.Connection -> Servant.Handler [Item UserId User]
 usersGet conn = do
-    liftIO (HS.run usersGetSession conn) >>= \case
-      Right users -> pure users
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+    iface <- liftIO $ getDbInterface conn
+    liftIO $ dbGetAllUsers iface -- TODO: to Servant err500 on error
 
 usersGetSession :: HS.Session [Item UserId User]
 usersGetSession = do
@@ -374,11 +372,10 @@ usersGetStatement = Statement sql encoder decoder True
 
 usersGetUserId :: HC.Connection -> UserId -> Servant.Handler (Item UserId User)
 usersGetUserId conn userId = do
-    liftIO (HS.run (usersGetUserIdSession userId) conn) >>= \case
-      Right user -> pure user
-      Left e -> do -- TODO: handle not found et al.
-        liftIO $ print e
-        Servant.throwError Servant.err500
+    iface <- liftIO $ getDbInterface conn
+    liftIO (dbGetUserById iface userId) >>= \case
+      Nothing -> Servant.throwError Servant.err404
+      Just u -> pure u
 
 usersGetUserIdSession :: UserId -> HS.Session (Item UserId User)
 usersGetUserIdSession userId = do
@@ -406,27 +403,33 @@ usersPost conn fuid user = do
     when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
       Servant.throwError Servant.err403
 
-    liftIO (HS.run (usersPostSession userId user) conn) >>= \case
+    iface <- liftIO $ getDbInterface conn
+    liftIO (dbCreateUser iface userId user) >>= \case
+      Left () -> Servant.throwError $ Servant.err409
       Right () -> pure $ Item userId user
-      Left e -> do -- TODO: handle not found et al.
-        liftIO $ print e
-        Servant.throwError Servant.err500
 
-usersPostSession :: UserId -> User -> HS.Session ()
+usersPostSession :: UserId -> User -> HS.Session (Either () ())
 usersPostSession uid u = do
-    HS.statement (uid,u) usersPostStatement
+    HS.statement (uid,u) usersPostStatement >>= \case
+      1 -> pure $ Right ()
+      _ -> pure $ Left ()
 
-usersPostStatement :: Statement (UserId, User) ()
+usersPostStatement :: Statement (UserId, User) Int64
 usersPostStatement = Statement sql encoder decoder True
   where
-    sql = "INSERT INTO account (id, firebase_id, anonymous) VALUES ($1, $2, $3)"
+    sql = BS8.unwords
+      [ "INSERT INTO account"
+      ,   "(id, firebase_id, anonymous)"
+      ,   "VALUES ($1, $2, $3)"
+      ,   "ON CONFLICT DO NOTHING"
+      ]
     encoder =
       contramap
         (unFirebaseId . unUserId . view _1)
         (HE.param HE.text) <>
       contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text) <>
       contramap (userAnonymous . view _2) (HE.param HE.bool)
-    decoder = HD.unit -- TODO: affected rows
+    decoder = HD.rowsAffected -- TODO: affected rows
 
 usersPut :: HC.Connection -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
 usersPut conn fuid userId user = do
@@ -441,7 +444,8 @@ usersPut conn fuid userId user = do
         [ "Client used the wrong user ID on user", show (fuid, userId, user) ]
       Servant.throwError Servant.err400
 
-    liftIO (HS.run (usersPutSession userId user) conn) >>= \case
+    iface <- liftIO $ getDbInterface conn
+    liftIO (dbUpdateUser iface userId user) >>= \case
       Right () -> pure $ Item userId user -- TODO: check # of affected rows
       Left e -> do -- TODO: handle not found et al.
         liftIO $ print e
@@ -456,6 +460,7 @@ usersPutSession uid u = do
 usersPutStatement :: Statement (UserId, User) ()
 usersPutStatement = Statement sql encoder decoder True
   where
+    -- TODO: make sure firebase_id is unique
     sql = "UPDATE account SET firebase_id = $2, anonymous = $3 WHERE id = $1"
     encoder =
       contramap
@@ -471,11 +476,10 @@ usersDelete conn fuid userId = do
     when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
       Servant.throwError Servant.err403
 
-    liftIO (HS.run (usersDeleteSession userId) conn) >>= \case
-      Right () -> pure () -- TODO: check # of affected rows
-      Left e -> do -- TODO: handle not found et al.
-        liftIO $ print e
-        Servant.throwError Servant.err500
+    iface <- liftIO $ getDbInterface conn
+    liftIO (dbDeleteUser iface userId) >>= \case
+      Left () -> Servant.throwError Servant.err404
+      Right () -> pure ()
 
 usersDeleteSession :: UserId -> HS.Session ()
 usersDeleteSession uid = do
@@ -1034,16 +1038,26 @@ data DbVersion
 
 -- | Migrates from ver to latest
 migrateFrom :: DbVersion -> HS.Session ()
-migrateFrom ver = forM_ [ver .. maxBound] migrateTo
-
--- | Migrates from (ver -1) to ver
-migrateTo :: DbVersion -> HS.Session ()
-migrateTo = \case
-  DbVersion0 -> HS.statement () $ Statement
-    (BS8.unwords
-      [ "CREATE TABLE account"
-      ]
-    ) HE.unit HD.unit True
+migrateFrom = \ver -> forM_ [ver .. maxBound] migrateTo
+  where
+    -- | Migrates from (ver -1) to ver
+    migrateTo :: DbVersion -> HS.Session ()
+    migrateTo = \case
+      ver@DbVersion0 -> do
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE account ("
+            ,   "id TEXT UNIQUE,"
+            ,   "firebase_id TEXT UNIQUE,"
+            ,   "anonymous BOOLEAN"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement (dbVersionToText ver) $ Statement
+          (BS8.unwords
+            [ "INSERT INTO db_meta (key, value) VALUES ('version', $1)"
+            ]
+          ) (HE.param HE.text) HD.unit True
 
 readDbVersion :: HS.Session (Either String (Maybe DbVersion))
 readDbVersion = do
@@ -1059,12 +1073,14 @@ readDbVersion = do
       ) HE.unit (HD.singleRow (HD.column HD.bool)) True
     case res of
       True -> do
-        tver <- HS.statement () $ Statement
+        mtver <- HS.statement () $ Statement
           "SELECT value FROM db_meta WHERE key = 'version'"
-          HE.unit (HD.singleRow (HD.column HD.text)) True
-        case dbVersionFromText tver of
-          Nothing -> error $ "could not decode DB version: " <> T.unpack tver
-          Just ver -> pure (Right $ Just ver)
+          HE.unit (HD.rowMaybe (HD.column HD.text)) True
+        case mtver of
+          Nothing -> pure (Right Nothing)
+          Just tver -> case dbVersionFromText tver of
+            Nothing -> error $ "could not decode DB version: " <> T.unpack tver
+            Just ver -> pure (Right $ Just ver)
       False -> do
         HS.statement () $ Statement
           (BS8.unwords
@@ -1088,18 +1104,33 @@ dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
     find (\ver -> dbVersionToText ver == t) [minBound .. maxBound]
 
-getDbInterface :: HC.Connection -> DbInterface
-getDbInterface conn = DbInterface
-    { dbGetAllUsers = wrap usersGetSession
-    , dbGetUserById = \uid -> Just <$> wrap (usersGetUserIdSession uid)
-    , dbCreateUser = \uid user -> Right <$> wrap (usersPostSession uid user)
-    , dbUpdateUser = \uid user -> Right <$> wrap (usersPutSession uid user)
-    , dbDeleteUser = \uid -> Right <$> wrap (usersDeleteSession uid)
-    }
+migrate :: HS.Session ()
+migrate = do
+    readDbVersion >>= \case
+      Left e -> error $ show e
+      Right Nothing -> migrateFrom minBound
+      Right (Just v) ->
+        if v >= maxBound
+        then pure ()
+        else migrateFrom v
+
+getDbInterface :: HC.Connection -> IO DbInterface
+getDbInterface conn = do
+    HS.run migrate conn >>= \case
+      Left e -> error $ show e
+      Right () -> pure ()
+
+    pure $ DbInterface
+      { dbGetAllUsers = wrap usersGetSession
+      , dbGetUserById = \uid -> Just <$> wrap (usersGetUserIdSession uid)
+      , dbCreateUser = \uid user -> wrap (usersPostSession uid user)
+      , dbUpdateUser = \uid user -> Right <$> wrap (usersPutSession uid user)
+      , dbDeleteUser = \uid -> Right <$> wrap (usersDeleteSession uid)
+      }
   where
     wrap :: forall b. HS.Session b -> IO b
     wrap act = HS.run act conn >>= \case
-      Left{} -> undefined -- TODO
+      Left e -> error $ "getDbInterface: error: " <> show e -- TODO
       Right x -> pure x
 
 -- AUX

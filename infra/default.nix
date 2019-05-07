@@ -33,7 +33,7 @@ rec
   # TODO: don't use latest dynamodb (but pin version)
 
   test = let
-    with-pg = pkgs.callPackage ./with-pg.nix {};
+    pgutil = pkgs.callPackage ./pgutil.nix {};
     script = pkgs.writeScript "run-tests"
       ''
       #!${pkgs.stdenv.shell}
@@ -81,6 +81,14 @@ rec
         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
         > /dev/null
 
+      export PGHOST=localhost
+      export PGPORT=5432
+      export PGDATABASE=test_db
+      export PGUSER=test_user
+      export PGPASSWORD=test_pass
+
+      ${pgutil.start_pg}
+
       # Start server with fs redirect for getProtocolByName
       NIX_REDIRECTS=/etc/protocols=${pkgs.iana-etc}/etc/protocols \
         LD_PRELOAD="${pkgs.libredirect}/lib/libredirect.so" \
@@ -115,5 +123,5 @@ rec
           pkgs.postgresql
           pkgs.moreutils
         ];
-    } (with-pg script);
+    } script;
 }
