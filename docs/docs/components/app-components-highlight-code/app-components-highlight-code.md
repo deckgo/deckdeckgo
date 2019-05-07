@@ -2,7 +2,7 @@
 
 The "Highlight Code" component is an extra component which let you highlight code easily.
 
-To highlight your code, this component is using [Prism.js](https://prismjs.com) from [James DiGioia](https://twitter.com/jamesdigioia).
+To highlight your code, this component is using [Prism.js](https://prismjs.com) from [Lea Verou](http://lea.verou.me) and [James DiGioia](https://twitter.com/jamesdigioia).
 
 ## Table of contents
 
