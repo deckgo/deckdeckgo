@@ -576,6 +576,8 @@ export class AppEditorToolbar {
 
             await this.emitChange();
 
+            await this.hideToolbar();
+
             resolve();
         });
     }
