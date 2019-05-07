@@ -2,7 +2,7 @@
 
 This component is the code highlighter of [DeckDeckGo].
 
-It is developed with [Stencil](https://stenciljs.com) and use [Prism.js](https://prismjs.com) from [James DiGioia](https://twitter.com/jamesdigioia) for the highlighting itself.
+It is developed with [Stencil](https://stenciljs.com) and use [Prism.js](https://prismjs.com) from [Lea Verou](http://lea.verou.me) and [James DiGioia](https://twitter.com/jamesdigioia) for the highlighting itself.
 
 ## Table of contents
 
