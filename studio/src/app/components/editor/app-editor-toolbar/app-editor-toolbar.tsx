@@ -288,7 +288,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            await this.setElementPosition(element, colorPicker, 38);
+            await this.setToolbarPosition(element, colorPicker, 38);
 
             const backgroundPicker: HTMLElement = this.el.querySelector('input[name=\'background-picker\']');
 
@@ -297,7 +297,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            await this.setElementPosition(element, backgroundPicker, 78);
+            await this.setToolbarPosition(element, backgroundPicker, 78);
 
             resolve();
         });
@@ -317,30 +317,46 @@ export class AppEditorToolbar {
                 return;
             }
 
-            await this.setElementPosition(this.selectedElement, toolbar, 0);
+            await this.setToolbarPosition(this.selectedElement, toolbar, 0);
 
             resolve();
         });
     }
 
-    private setElementPosition(src: HTMLElement, applyTo: HTMLElement, offsetWidth: number): Promise<void> {
+    private setToolbarPosition(src: HTMLElement, applyTo: HTMLElement, offsetWidth: number): Promise<void> {
         return new Promise<void>((resolve) => {
-            const top: number = src.offsetTop > 0 ? src.offsetTop : 0;
-            const left: number = src.offsetLeft > 0 ? src.offsetLeft : 0;
+            // Selected element
+            const width: number = src.clientWidth > 200 ? src.clientWidth : 200;
 
-            if (window.innerWidth < 1024 || screen.width < 1024) {
-                applyTo.style.top = '' + (top > 50 ? top - 42 : 0) + 'px';
+            const rect: ClientRect = src.getBoundingClientRect();
+            const left: number = rect && rect.left > 0 ? rect.left : 0;
+            const top: number = rect && rect.top > 0 ? rect.top : 0;
+
+            // The <main/> element in order to find the offset
+            const mainPaneRect: ClientRect = applyTo.parentElement && applyTo.parentElement.parentElement ? applyTo.parentElement.parentElement.getBoundingClientRect() : null;
+            const extraLeft: number = mainPaneRect && mainPaneRect.left > 0 ? mainPaneRect.left : 0;
+            const extraTop: number = mainPaneRect && mainPaneRect.top > 0 ? mainPaneRect.top : 0;
+
+            // Set top position
+            applyTo.style.top = '' + (top - extraTop > 0 ? top - extraTop : 0) + 'px';
+
+            const windowWidth: number = window.innerWidth | screen.width;
+
+            const leftStandardPosition: number = left + offsetWidth - extraLeft;
+            const leftPosition: number = leftStandardPosition + width >  windowWidth ? windowWidth - width : leftStandardPosition;
+
+            // Set left position
+            applyTo.style.left = '' + leftPosition + 'px';
+
+            // If not slide or deck selected, move a bit the toolbar
+            if (!this.deckOrSlide) {
+                applyTo.style.transform = 'translate(0, -2.4rem)';
             } else {
-                applyTo.style.top = '' + top + 'px';
-            }
-
-            if (this.deckOrSlide) {
-                applyTo.style.left = '' + (0 + offsetWidth) + 'px';
                 applyTo.style.transform = 'translate(0,0)';
-            } else {
-                applyTo.style.left = '' + (left + offsetWidth) + 'px';
-                applyTo.style.transform = left > 50 && top > 50 ? 'translate(0, -2.7rem)' : 'translate(0,0)';
             }
+
+            // Set a width in order to align right the delete button
+            applyTo.style.width = '' + width + 'px';
 
             resolve();
         });
@@ -637,11 +653,11 @@ export class AppEditorToolbar {
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
-                {this.renderDelete()}
                 {this.renderSlotType()}
+                {this.renderPhotos()}
                 {this.renderActions()}
                 {this.renderCodeOptions()}
-                {this.renderPhotos()}
+                {this.renderDelete()}
             </div>,
             <input type="color" name="color-picker" value={this.color}></input>,
             <input type="color" name="background-picker" value={this.background}></input>
@@ -650,7 +666,7 @@ export class AppEditorToolbar {
 
     private renderDelete() {
         return <a onClick={() => this.deleteElement()} title="Delete"
-                  class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
+                  class={this.deckBusy && this.deckOrSlide ? "delete disabled" : "delete"}>
             <ion-icon name="trash"></ion-icon>
         </a>
     }
@@ -665,11 +681,11 @@ export class AppEditorToolbar {
         };
 
         return [
-            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)} title="Color">
-                <ion-label style={styleColor}>A</ion-label>
-            </a>,
             <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)} title="Background">
                 <ion-label style={styleBackground}>Bg</ion-label>
+            </a>,
+            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)} title="Color">
+                <ion-label style={styleColor}>A</ion-label>
             </a>
         ]
     }

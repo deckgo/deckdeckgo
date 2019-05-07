@@ -559,9 +559,9 @@ export class AppEditor {
                                  onSlideToChange={() => this.hideToolbar()}>
                         {this.slides}
                     </deckgo-deck>
-                    <app-editor-toolbar></app-editor-toolbar>
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
+                <app-editor-toolbar></app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <ion-toolbar>
