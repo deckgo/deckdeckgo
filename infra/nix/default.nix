@@ -9,16 +9,45 @@ with rec
     (import "${sources.static-haskell-nix}/survey"
       { overlays = [ ] ; normalPkgs = import sources.nixpkgs {}; }).pkgs;
 
-  haskellOverride = pkgs':
+  haskellOverride = isStaticBuild:
     { overrides = self: super:
-      with
-        { mkPackage = name: path:
+      with rec
+        { pkgs' = if isStaticBuild then pkgsStatic.pkgsMusl else pkgs;
+          mkPackage = name: path:
+          with
+            { addStaticLinkerFlagsWithPkgconfig =
+                haskellDrv:
+                pkgConfigNixPackages:
+                pkgconfigFlagsString:
+                  pkgs'.haskell.lib.overrideCabal (pkgs'.haskell.lib.appendConfigureFlag haskellDrv [
+                    "--ld-option=--start-group"
+                  ]) (old: {
+                    preConfigure = builtins.concatStringsSep "\n" [
+                      (old.preConfigure or "")
+                      ''
+                        set -e
+                        configureFlags+=$(for flag in $(pkg-config --static ${pkgconfigFlagsString}); do echo -n " --ld-option=$flag"; done)
+                      ''
+                    ];
+                    libraryPkgconfigDepends = (old.libraryPkgconfigDepends or []) ++ pkgConfigNixPackages;
+                  });
+            };
             { "${name}" =
+                with
+                  { drv =
+                    super.callCabal2nix name (pkgs'.lib.cleanSource path) {};
+                  };
                 with pkgs'.haskell.lib;
                 disableLibraryProfiling (
                 disableExecutableProfiling (
                 failOnAllWarnings (
-                super.callCabal2nix name (pkgs'.lib.cleanSource path) {}
+                  # TODO: _AND_ is executable that depends on openssl
+                  if isStaticBuild
+                  then
+                    let
+                      openssl_static = pkgs'.openssl.override { static = true; };
+                      in addStaticLinkerFlagsWithPkgconfig drv [openssl_static ] "--libs openssl"
+                  else drv
               )));
             };
         };
@@ -30,10 +59,10 @@ with rec
         { jose = super.callCabal2nix "jose" sources.hs-jose {}; } ;
     };
   normalHaskellPackages = pkgsStatic.pkgsMusl.haskellPackages.override
-    (haskellOverride pkgsStatic.pkgsMusl);
+    (haskellOverride true);
 
   haskellPackages = pkgs.haskellPackages.override
-    (haskellOverride pkgs);
+    (haskellOverride false);
 
   haskellPackagesStatic =
     (import "${sources.static-haskell-nix}/survey"
