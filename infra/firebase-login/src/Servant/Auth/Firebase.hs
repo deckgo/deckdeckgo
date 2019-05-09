@@ -58,7 +58,9 @@ verifyUser mgr (ProjectId projectId) (UnverifiedJWT jwt) = do
         HTTP.setRequestHost "www.googleapis.com" .
         HTTP.setRequestPath "/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com" .
         HTTP.setRequestManager mgr $
-        HTTP.defaultRequest
+        HTTP.defaultRequest {
+            HTTP.responseTimeout = HTTP.responseTimeoutMicro (500 * 1000)
+          }
   jwkmap <- HTTP.getResponseBody <$> HTTP.httpJSON req
 
   t <- case jwt ^.. JWT.signatures . JWT.header . JWT.kid of

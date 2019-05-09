@@ -377,18 +377,18 @@ usersGetUserId conn userId = do
       Nothing -> Servant.throwError Servant.err404
       Just u -> pure u
 
-usersGetUserIdSession :: UserId -> HS.Session (Item UserId User)
+usersGetUserIdSession :: UserId -> HS.Session (Maybe (Item UserId User))
 usersGetUserIdSession userId = do
     HS.statement userId usersGetUserIdStatement
 
-usersGetUserIdStatement :: Statement UserId (Item UserId User)
+usersGetUserIdStatement :: Statement UserId (Maybe (Item UserId User))
 usersGetUserIdStatement = Statement sql encoder decoder True
   where
     sql = "SELECT * FROM account WHERE id = $1"
     encoder = contramap
         (unFirebaseId . unUserId)
         (HE.param HE.text)
-    decoder = HD.singleRow $
+    decoder = HD.rowMaybe $
       Item <$>
         ((UserId . FirebaseId) <$> HD.column HD.text) <*>
         ( User <$>
@@ -399,20 +399,29 @@ usersGetUserIdStatement = Statement sql encoder decoder True
 usersPost :: HC.Connection -> Firebase.UserId -> User -> Servant.Handler (Item UserId User)
 usersPost conn fuid user = do
     let userId = UserId (userFirebaseId user)
+    liftIO $ putStrLn "POST users"
 
     when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
       Servant.throwError Servant.err403
+    liftIO $ putStrLn "auth is ok"
 
+    void $ Servant.throwError $ Servant.err418
     iface <- liftIO $ getDbInterface conn
+    liftIO $ putStrLn "got DB interface"
     liftIO (dbCreateUser iface userId user) >>= \case
       Left () -> Servant.throwError $ Servant.err409
       Right () -> pure $ Item userId user
 
 usersPostSession :: UserId -> User -> HS.Session (Either () ())
 usersPostSession uid u = do
+    liftIO $ putStrLn "Creating user in DB"
     HS.statement (uid,u) usersPostStatement >>= \case
-      1 -> pure $ Right ()
-      _ -> pure $ Left ()
+      1 -> do
+        liftIO $ putStrLn "User was created"
+        pure $ Right ()
+      _ -> do
+        liftIO $ putStrLn "Couldn't create exactly one user"
+        pure $ Left ()
 
 usersPostStatement :: Statement (UserId, User) Int64
 usersPostStatement = Statement sql encoder decoder True
@@ -429,7 +438,7 @@ usersPostStatement = Statement sql encoder decoder True
         (HE.param HE.text) <>
       contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text) <>
       contramap (userAnonymous . view _2) (HE.param HE.bool)
-    decoder = HD.rowsAffected -- TODO: affected rows
+    decoder = HD.rowsAffected
 
 usersPut :: HC.Connection -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
 usersPut conn fuid userId user = do
@@ -1122,7 +1131,7 @@ getDbInterface conn = do
 
     pure $ DbInterface
       { dbGetAllUsers = wrap usersGetSession
-      , dbGetUserById = \uid -> Just <$> wrap (usersGetUserIdSession uid)
+      , dbGetUserById = \uid -> wrap (usersGetUserIdSession uid)
       , dbCreateUser = \uid user -> wrap (usersPostSession uid user)
       , dbUpdateUser = \uid user -> Right <$> wrap (usersPutSession uid user)
       , dbDeleteUser = \uid -> Right <$> wrap (usersDeleteSession uid)
