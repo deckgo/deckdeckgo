@@ -40,7 +40,29 @@ import qualified Servant.Server.Internal.RoutingApplication as Servant
 data Protected
 
 newtype ProjectId = ProjectId { unFirebaseProjectId :: T.Text }
-data ServerContext = ServerContext { firebaseProjectId :: ProjectId }
+
+data FirebaseLoginSettings = FirebaseLoginSettings
+  { firebaseLoginProjectId :: ProjectId
+  , firebaseLoginGetKeys :: IO (HMS.HashMap T.Text T.Text)
+  }
+
+defaultFirebaseLoginSettings
+  :: HTTP.Manager -> ProjectId -> FirebaseLoginSettings
+defaultFirebaseLoginSettings mgr pid = FirebaseLoginSettings
+    { firebaseLoginProjectId = pid
+    , firebaseLoginGetKeys = HTTP.getResponseBody <$> HTTP.httpJSON req
+    }
+  where
+    -- TODO: proper error handling here
+    req =
+      HTTP.setRequestSecure True .
+      HTTP.setRequestPort 443 .
+      HTTP.setRequestHost "www.googleapis.com" .
+      HTTP.setRequestPath "/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com" .
+      HTTP.setRequestManager mgr $
+      HTTP.defaultRequest {
+          HTTP.responseTimeout = HTTP.responseTimeoutMicro (500 * 1000)
+        }
 
 newtype UserId = UserId { unUserId :: T.Text }
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON, Show, Eq)
@@ -48,20 +70,10 @@ newtype UserId = UserId { unUserId :: T.Text }
 newtype UnverifiedJWT = UnverifiedJWT JWT.SignedJWT
 
 -- TODO: MAKE SURE PATTERN MATCH FAILURES AREN'T PROPAGATED TO CLIENT!!!
-verifyUser :: HTTP.Manager -> ProjectId -> UnverifiedJWT -> IO UserId
-verifyUser mgr (ProjectId projectId) (UnverifiedJWT jwt) = do
-
-  -- TODO: proper error handling here
-  let req =
-        HTTP.setRequestSecure True .
-        HTTP.setRequestPort 443 .
-        HTTP.setRequestHost "www.googleapis.com" .
-        HTTP.setRequestPath "/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com" .
-        HTTP.setRequestManager mgr $
-        HTTP.defaultRequest {
-            HTTP.responseTimeout = HTTP.responseTimeoutMicro (500 * 1000)
-          }
-  jwkmap <- HTTP.getResponseBody <$> HTTP.httpJSON req
+verifyUser :: FirebaseLoginSettings -> UnverifiedJWT -> IO UserId
+verifyUser settings (UnverifiedJWT jwt) = do
+  jwkmap <- firebaseLoginGetKeys settings
+  let projectId = unFirebaseProjectId $ firebaseLoginProjectId settings
 
   t <- case jwt ^.. JWT.signatures . JWT.header . JWT.kid of
     [Just (JWT.HeaderParam () t)] -> pure t
@@ -135,14 +147,13 @@ decodeJWTHdr req = do
       Left (e :: JWT.Error) -> Left $ show e <> ": " <> show rest
       Right jwt -> Right (UnverifiedJWT jwt)
 
-runJWTAuth :: HTTP.Manager -> ProjectId -> Wai.Request -> Servant.DelayedIO UserId
-runJWTAuth mgr projectId req = case decodeJWTHdr req of
+runJWTAuth :: FirebaseLoginSettings -> Wai.Request -> Servant.DelayedIO UserId
+runJWTAuth settings req = case decodeJWTHdr req of
     Left e -> error $ "bad auth: " <> e -- TODO: delayedFailFatal
-    Right ujwt -> liftIO $ verifyUser mgr projectId ujwt
+    Right ujwt -> liftIO $ verifyUser settings ujwt
 
 instance
-    ( Servant.HasContextEntry context ProjectId
-    , Servant.HasContextEntry context HTTP.Manager
+    ( Servant.HasContextEntry context FirebaseLoginSettings
     , Servant.HasServer sub context
     ) => Servant.HasServer (Protected :> sub) context where
   type ServerT (Protected :> sub) m = UserId -> Servant.ServerT sub m
@@ -152,8 +163,7 @@ instance
         c (subserver `Servant.addAuthCheck` authCheck)
     where
       authCheck :: Servant.DelayedIO UserId
-      authCheck = Servant.withRequest $ runJWTAuth
-        (Servant.getContextEntry c) (Servant.getContextEntry c)
+      authCheck = Servant.withRequest $ runJWTAuth (Servant.getContextEntry c)
 
   hoistServerWithContext Proxy p hoist s = \uid ->
     Servant.hoistServerWithContext (Proxy :: Proxy sub) p hoist (s uid)

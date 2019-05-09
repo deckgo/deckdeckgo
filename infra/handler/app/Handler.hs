@@ -1,9 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE LambdaCase #-}
 
-import Control.Lens
-import Servant.Auth.Firebase (ProjectId(..))
 import UnliftIO
+import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Char8 as BS8
 import qualified DeckGo.Handler
 import qualified Network.AWS as Aws
@@ -13,6 +12,8 @@ import qualified Network.Wai.Handler.Lambda as Lambda
 import qualified Network.Wai.Middleware.Cors as Cors
 import qualified Hasql.Connection as Hasql
 import System.Environment (getEnv)
+import qualified Servant.Auth.Firebase as Firebase
+import qualified Data.Text as T
 
 main :: IO ()
 main = do
@@ -24,14 +25,25 @@ main = do
 
     liftIO $ putStrLn "Booted!"
 
-    -- TODO: from env
-    let projectId = ProjectId "deckdeckgo-studio-beta"
-
+    settings <- getFirebaseSettings
     conn <- getPostgresqlConnection
 
-    Lambda.run $ cors $ DeckGo.Handler.application (env ^. Aws.envManager) projectId env conn
+    Lambda.run $ cors $ DeckGo.Handler.application settings env conn
+
 
 -- TODO: factor out
+getFirebaseSettings :: IO Firebase.FirebaseLoginSettings
+getFirebaseSettings = do
+    pkeys <- getEnv "GOOGLE_PUBLIC_KEYS"
+    pid <- getEnv "FIREBASE_PROJECT_ID"
+    keyMap <- Aeson.decodeFileStrict pkeys >>= \case
+      Nothing -> error "Could not decode key file"
+      Just keyMap -> pure keyMap
+    pure Firebase.FirebaseLoginSettings
+      { Firebase.firebaseLoginProjectId = Firebase.ProjectId (T.pack pid)
+      , Firebase.firebaseLoginGetKeys = pure keyMap
+      }
+
 getPostgresqlConnection :: IO Hasql.Connection
 getPostgresqlConnection = do
     user <- getEnv "PGUSER"

@@ -5,7 +5,7 @@ module Main where
 
 import UnliftIO
 import Control.Lens
-import Servant.Auth.Firebase (ProjectId(..))
+import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Char8 as BS8
 import qualified Network.HTTP.Client as HTTPClient
 import qualified Network.HTTP.Client.TLS as HTTPClient
@@ -13,6 +13,8 @@ import qualified Network.AWS as Aws
 import qualified DeckGo.Handler
 import qualified Network.Wai.Handler.Warp as Warp
 import qualified Hasql.Connection as Hasql
+import qualified Servant.Auth.Firebase as Firebase
+import qualified Data.Text as T
 import System.Environment (getEnv)
 
 main :: IO ()
@@ -21,12 +23,24 @@ main = do
     hSetBuffering stdout LineBuffering
     mgr <- HTTPClient.newManager HTTPClient.tlsManagerSettings
             { HTTPClient.managerModifyRequest =
-                pure . rerouteDynamoDB . rerouteGoogleApis
+                pure . rerouteDynamoDB
             }
     conn <- getPostgresqlConnection
     env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
-    let projectId = ProjectId "my-project-id"
-    Warp.run 8080 $ DeckGo.Handler.application mgr projectId env conn
+    settings <- getFirebaseSettings
+    Warp.run 8080 $ DeckGo.Handler.application settings env conn
+
+getFirebaseSettings :: IO Firebase.FirebaseLoginSettings
+getFirebaseSettings = do
+    pkeys <- getEnv "GOOGLE_PUBLIC_KEYS"
+    pid <- getEnv "FIREBASE_PROJECT_ID"
+    keyMap <- Aeson.decodeFileStrict pkeys >>= \case
+      Nothing -> error "Could not decode key file"
+      Just keyMap -> pure keyMap
+    pure Firebase.FirebaseLoginSettings
+      { Firebase.firebaseLoginProjectId = Firebase.ProjectId (T.pack pid)
+      , Firebase.firebaseLoginGetKeys = pure keyMap
+      }
 
 getPostgresqlConnection :: IO Hasql.Connection
 getPostgresqlConnection = do
@@ -53,17 +67,6 @@ rerouteDynamoDB req =
         req
           { HTTPClient.host = "127.0.0.1"
           , HTTPClient.port = 8000
-          , HTTPClient.secure = False
-          }
-      _ -> req
-
-rerouteGoogleApis :: HTTPClient.Request -> HTTPClient.Request
-rerouteGoogleApis req =
-    case HTTPClient.host req of
-      "www.googleapis.com" ->
-        req
-          { HTTPClient.host = "127.0.0.1"
-          , HTTPClient.port = 8081
           , HTTPClient.secure = False
           }
       _ -> req

@@ -57,7 +57,6 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
-import qualified Network.HTTP.Client as HTTP
 import qualified Network.Wai as Wai
 import qualified Servant as Servant
 import qualified Servant.Auth.Firebase as Firebase
@@ -318,11 +317,11 @@ api = Proxy
 -- SERVER
 ------------------------------------------------------------------------------
 
-application :: HTTP.Manager -> Firebase.ProjectId -> Aws.Env -> HC.Connection -> Wai.Application
-application mgr projectId env conn =
+application :: Firebase.FirebaseLoginSettings -> Aws.Env -> HC.Connection -> Wai.Application
+application settings env conn =
     Servant.serveWithContext
       api
-      (mgr :. projectId :. Servant.EmptyContext)
+      (settings :. Servant.EmptyContext)
       (server env conn)
 
 server :: Aws.Env -> HC.Connection -> Servant.Server API
@@ -405,7 +404,6 @@ usersPost conn fuid user = do
       Servant.throwError Servant.err403
     liftIO $ putStrLn "auth is ok"
 
-    void $ Servant.throwError $ Servant.err418
     iface <- liftIO $ getDbInterface conn
     liftIO $ putStrLn "got DB interface"
     liftIO (dbCreateUser iface userId user) >>= \case
