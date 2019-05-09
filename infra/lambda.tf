@@ -6,6 +6,22 @@ resource "aws_lambda_function" "api" {
 
   role             = "${aws_iam_role.iam_for_lambda.arn}"
 
+  vpc_config {
+    subnet_ids = ["${aws_default_subnet.default.id}"]
+    security_group_ids = ["${aws_default_security_group.default.id}"]
+  }
+
+  environment {
+    variables = {
+      PGUSER = "${aws_db_instance.default.username}"
+      PGHOST = "${aws_db_instance.default.address}"
+      PGPORT = "${aws_db_instance.default.port}"
+      PGDATABASE = "${aws_db_instance.default.name}"
+      PGPASSWORD = "${aws_db_instance.default.password}"
+      GOOGLE_PUBLIC_KEYS = "google-public-keys.json"
+      FIREBASE_PROJECT_ID = "deckdeckgo-studio-beta"
+    }
+  }
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
@@ -33,6 +49,11 @@ data "external" "build-function" {
   program = [
     "${path.module}/script/build-function"
     ]
+}
+
+resource "aws_iam_role_policy_attachment" "role_attach_lambdavpc" {
+  role = "${aws_iam_role.iam_for_lambda.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 data "aws_iam_policy_document" "policy_for_lambda" {

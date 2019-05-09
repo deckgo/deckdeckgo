@@ -10,9 +10,11 @@ import {Deck} from '../../../models/deck';
 
 import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
+import {Utils} from '../../../utils/core/utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
+import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
@@ -22,7 +24,6 @@ import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 import {BusyService} from '../../../services/editor/busy/busy.service';
-import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
 
 @Component({
     tag: 'app-editor',
@@ -445,11 +446,12 @@ export class AppEditor {
                 return;
             }
 
-            if ($event instanceof TouchEvent) {
-                $event.preventDefault();
+            if (!$event.target || !($event.target instanceof HTMLElement)) {
+                resolve();
+                return;
             }
 
-            if (!$event.target || !($event.target instanceof HTMLElement)) {
+            if ($event instanceof MouseEvent && Utils.isMobile()) {
                 resolve();
                 return;
             }
