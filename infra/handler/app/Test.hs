@@ -67,6 +67,7 @@ main = do
           [ Tasty.testCase "users get" testUsersGet
           , Tasty.testCase "users create" testUsersCreate
           , Tasty.testCase "users get by id" testUsersGetByUserId
+          , Tasty.testCase "users delete" testUsersDelete
           ]
       , Tasty.testCase "foo" main'
       ]
@@ -112,6 +113,22 @@ testUsersGetByUserId = withPristineDB $ \(_, iface) -> do
         then pure ()
         else error "bad user"
       Nothing -> error "Got no users"
+
+testUsersDelete :: IO ()
+testUsersDelete = withPristineDB $ \(_, iface) -> do
+    let someFirebaseId = FirebaseId "foo"
+        someUserId = UserId someFirebaseId
+        someUser = User
+          { userFirebaseId = someFirebaseId
+          , userUsername = Just (Username "patrick")
+          }
+    dbCreateUser iface someUserId someUser >>= \case
+      Left () -> error "Encountered error"
+      Right () -> pure ()
+
+    dbDeleteUser iface someUserId >>= \case
+      Left () -> error "couldn't delete"
+      Right () -> pure ()
 
 testUsersCreate :: IO ()
 testUsersCreate = withPristineDB $ \(_, iface) -> do
