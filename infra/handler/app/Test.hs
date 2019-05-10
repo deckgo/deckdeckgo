@@ -1,6 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE LambdaCase #-}
 
+module Main where
+
 import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Network.HTTP.Types as HTTP
 import Servant.API
@@ -32,7 +34,7 @@ main = do
   runClientM usersGet' clientEnv >>= \case
     Left err -> error $ "Expected users, got error: " <> show err
     Right [] -> pure ()
-    Right decks -> error $ "Expected 0 users, got: " <> show decks
+    Right users -> error $ "Expected 0 users, got: " <> show users
 
   runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
     Left err -> error $ "Expected decks, got error: " <> show err
@@ -93,12 +95,20 @@ main = do
     Right decks ->
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
 
-  let someUser = User { userFirebaseId = someFirebaseId, userAnonymous = False }
+  let someUser = User
+        { userFirebaseId = someFirebaseId
+        , userUsername = Just (Username "patrick") }
 
   runClientM (usersPost' b someUser) clientEnv >>= \case
     Left err -> error $ "Expected user, got error: " <> show err
     Right (Item userId user) ->
       if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
+
+  -- runClientM usersGet' clientEnv >>= \case
+    -- Left err -> error $ "Expected users, got error: " <> show err
+    -- Right [(Item userId user)] ->
+      -- if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
+    -- Right users -> error $ "Expected 1 user, got: " <> show users
 
   runClientM (usersPost' b someUser) clientEnv >>= \case
     Left (FailureResponse resp) ->

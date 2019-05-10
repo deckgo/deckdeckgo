@@ -27,6 +27,7 @@ module DeckGo.Handler where
 -- TODO: enforce uniqueness on deck_name (per user)
 -- TODO: return 500 on all DB errors
 
+import Control.Applicative
 import Control.Lens hiding ((.=))
 import Control.Monad
 import Control.Monad.Except
@@ -104,7 +105,7 @@ newtype Username = Username { unUsername :: T.Text }
 
 data User = User
   { userFirebaseId :: FirebaseId
-  , userAnonymous :: Bool
+  , userUsername :: Maybe Username
   } deriving (Show, Eq)
 
 newtype UserId = UserId { unUserId :: FirebaseId }
@@ -134,14 +135,23 @@ newtype FirebaseId = FirebaseId { unFirebaseId :: T.Text }
 instance FromJSONObject User where
   parseJSONObject = \obj ->
     User
-      -- potentially return "error exists" + user object
       <$> obj .: "firebase_uid"
-      <*> obj .: "anonymous"
+      <*> (
+        (do
+          True <- obj .: "anonymous"
+          (Nothing :: Maybe Username) <- obj .: "username"
+          pure Nothing
+        ) <|> (do
+          False <- obj .: "anonymous"
+          obj .: "username"
+        )
+        )
 
 instance ToJSONObject User where
   toJSONObject user = HMS.fromList
     [ "firebase_uid" .= userFirebaseId user
-    , "anonymous" .= userAnonymous user
+    , "anonymous" .= isNothing (userUsername user)
+    , "username" .= userUsername user
     ]
 
 instance Aeson.FromJSON User where
@@ -363,7 +373,7 @@ usersGetStatement = Statement sql encoder decoder True
         ((UserId . FirebaseId) <$> HD.column HD.text) <*>
         ( User <$>
           (FirebaseId <$> HD.column HD.text) <*>
-          HD.column HD.bool
+          HD.nullableColumn (Username <$> HD.text)
         )
 
 usersGetUserId :: HC.Connection -> UserId -> Servant.Handler (Item UserId User)
@@ -389,7 +399,7 @@ usersGetUserIdStatement = Statement sql encoder decoder True
         ((UserId . FirebaseId) <$> HD.column HD.text) <*>
         ( User <$>
           (FirebaseId <$> HD.column HD.text) <*>
-          HD.column HD.bool
+          HD.nullableColumn (Username <$> HD.text)
         )
 
 usersPost :: HC.Connection -> Firebase.UserId -> User -> Servant.Handler (Item UserId User)
@@ -409,13 +419,30 @@ usersPost conn fuid user = do
 
 usersPostSession :: UserId -> User -> HS.Session (Either () ())
 usersPostSession uid u = do
+    HS.sql "BEGIN"
     liftIO $ putStrLn "Creating user in DB"
     HS.statement (uid,u) usersPostStatement >>= \case
       1 -> do
         liftIO $ putStrLn "User was created"
-        pure $ Right ()
+        case userUsername u of
+          Just uname -> do
+            liftIO $ putStrLn "Creating username"
+            HS.statement (uname, uid) usersPostStatement' >>= \case
+              1 -> do
+                liftIO $ putStrLn "User created successfully"
+                HS.sql "COMMIT"
+                pure $ Right ()
+              _ -> do
+                liftIO $ putStrLn "Couldn't create username"
+                HS.sql "ROLLBACK"
+                pure $ Left ()
+          Nothing -> do
+            liftIO $ putStrLn "No username"
+            HS.sql "COMMIT"
+            pure $ Right ()
       _ -> do
         liftIO $ putStrLn "Couldn't create exactly one user"
+        HS.sql "ROLLBACK"
         pure $ Left ()
 
 usersPostStatement :: Statement (UserId, User) Int64
@@ -423,16 +450,33 @@ usersPostStatement = Statement sql encoder decoder True
   where
     sql = BS8.unwords
       [ "INSERT INTO account"
-      ,   "(id, firebase_id, anonymous)"
-      ,   "VALUES ($1, $2, $3)"
+      ,   "(id, firebase_id)"
+      ,   "VALUES ($1, $2)"
       ,   "ON CONFLICT DO NOTHING"
       ]
     encoder =
       contramap
         (unFirebaseId . unUserId . view _1)
         (HE.param HE.text) <>
-      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text) <>
-      contramap (userAnonymous . view _2) (HE.param HE.bool)
+      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text)
+    decoder = HD.rowsAffected
+
+usersPostStatement' :: Statement (Username, UserId) Int64
+usersPostStatement' = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "INSERT INTO username"
+      ,   "(id, account)"
+      ,   "VALUES ($1, $2)"
+      ,   "ON CONFLICT (id) DO NOTHING"
+      ]
+    encoder =
+      contramap
+        (unUsername . view _1)
+        (HE.param HE.text) <>
+      contramap
+        (unFirebaseId . unUserId . view _2)
+        (HE.param HE.text)
     decoder = HD.rowsAffected
 
 usersPut :: HC.Connection -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
@@ -455,8 +499,6 @@ usersPut conn fuid userId user = do
         liftIO $ print e
         Servant.throwError Servant.err500
 
-    -- pure $ Item userId user
-
 usersPutSession :: UserId -> User -> HS.Session ()
 usersPutSession uid u = do
     HS.statement (uid,u) usersPutStatement
@@ -464,14 +506,13 @@ usersPutSession uid u = do
 usersPutStatement :: Statement (UserId, User) ()
 usersPutStatement = Statement sql encoder decoder True
   where
-    -- TODO: make sure firebase_id is unique
     sql = "UPDATE account SET firebase_id = $2, anonymous = $3 WHERE id = $1"
     encoder =
       contramap
         (unFirebaseId . unUserId . view _1)
         (HE.param HE.text) <>
       contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text) <>
-      contramap (userAnonymous . view _2) (HE.param HE.bool)
+      contramap (fmap unUsername . userUsername . view _2) (HE.nullableParam HE.text)
     decoder = HD.unit -- TODO: affected rows
 
 usersDelete :: HC.Connection -> Firebase.UserId -> UserId -> Servant.Handler ()
@@ -1038,6 +1079,7 @@ data DbInterface = DbInterface
 
 data DbVersion
   = DbVersion0
+  | DbVersion1
   deriving stock (Enum, Bounded, Ord, Eq)
 
 -- | Migrates from ver to latest
@@ -1060,6 +1102,33 @@ migrateFrom = \ver -> forM_ [ver .. maxBound] migrateTo
         HS.statement (dbVersionToText ver) $ Statement
           (BS8.unwords
             [ "INSERT INTO db_meta (key, value) VALUES ('version', $1)"
+            ]
+          ) (HE.param HE.text) HD.unit True
+      ver@DbVersion1 -> do
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "DROP TABLE IF EXISTS account"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE account ("
+            ,   "id TEXT UNIQUE NOT NULL,"
+            ,   "firebase_id TEXT UNIQUE NOT NULL"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE username ("
+            ,   "id TEXT UNIQUE NOT NULL,"
+            ,   "account TEXT REFERENCES account (id) ON DELETE CASCADE UNIQUE NOT NULL"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement (dbVersionToText ver) $ Statement
+          (BS8.unwords
+            [ "UPDATE db_meta SET value = $1 WHERE key = 'version'"
             ]
           ) (HE.param HE.text) HD.unit True
 
@@ -1103,6 +1172,7 @@ latestDbVersion = maxBound
 dbVersionToText :: DbVersion -> T.Text
 dbVersionToText = \case
   DbVersion0 -> "0"
+  DbVersion1 -> "1"
 
 dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
