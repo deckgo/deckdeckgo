@@ -172,7 +172,7 @@ export class AppPhoto {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Pick a stock photo</ion-title>
+                    <ion-title class="ion-text-uppercase">Pick a photo</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
@@ -197,7 +197,7 @@ export class AppPhoto {
             </ion-content>,
             <ion-footer>
                 <ion-toolbar>
-                    <ion-searchbar debounce={500} placeholder="Search Unsplash" value={this.searchTerm}
+                    <ion-searchbar debounce={500} placeholder="Search" value={this.searchTerm}
                                    onIonClear={() => this.clear()}
                                    onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
                                    onIonChange={() => {this.search()}}></ion-searchbar>
@@ -231,7 +231,7 @@ export class AppPhoto {
         if (!photo.user || !photo.user.links || !photo.user.links.html || !photo.user.name) {
             return undefined;
         } else {
-            return <ion-label class="photo-credits">Photo by <a href={photo.user.links.html + '?utm_source=DeckDeckGo&utm_medium=referral'} target="_blank" onClick={($event: UIEvent) => $event.stopPropagation()}>{photo.user.name}</a></ion-label>;
+            return <ion-label class="photo-credits"><a href={photo.user.links.html + '?utm_source=DeckDeckGo&utm_medium=referral'} target="_blank" onClick={($event: UIEvent) => $event.stopPropagation()}>{photo.user.name}</a></ion-label>;
         }
     }
 
@@ -239,6 +239,7 @@ export class AppPhoto {
         if ((!this.photosOdd || this.photosOdd.length <= 0) && (!this.photosEven || this.photosEven.length <= 0)) {
             return <div class="photos-placeholder">
                 <ion-icon name="images"></ion-icon>
+                <ion-label>Photos by Unsplash</ion-label>
             </div>
         } else {
             return undefined;

@@ -57,8 +57,16 @@ app-photo {
     left: 50%;
     transform: translate(-50%, -50%);
 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     ion-icon {
       font-size: 10rem;
+    }
+
+    ion-label, ion-icon {
       color: var(--ion-color-medium);
     }
   }
