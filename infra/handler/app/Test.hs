@@ -4,6 +4,7 @@
 module Main where
 
 import Control.Lens
+import Control.Monad
 import DeckGo.Handler
 import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Network.HTTP.Types as HTTP
@@ -17,7 +18,8 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
-import qualified Hasql.Connection as Hasql
+import qualified Hasql.Connection as HC
+import qualified Hasql.Session as HS
 import qualified Network.AWS as Aws
 import qualified Network.HTTP.Client as HTTPClient
 import qualified Network.HTTP.Client.TLS as HTTPClient
@@ -33,23 +35,95 @@ withServer act = do
             { HTTPClient.managerModifyRequest =
                 pure . rerouteDynamoDB
             }
-    conn <- getPostgresqlConnection
-    env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
+    withPristineDB $ \(conn, _iface) -> do
+      env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
 
-    (port, socket) <- Warp.openFreePort
-    let warpSettings = Warp.setPort port $ Warp.defaultSettings
-    settings <- getFirebaseSettings
-    race
-      (Warp.runSettingsSocket warpSettings socket $ DeckGo.Handler.application settings env conn)
-      (do
-        Socket.wait "localhost" port
-        act port
-      ) >>= \case
-        Left () -> error "Server returned"
-        Right a -> pure a
+      (port, socket) <- Warp.openFreePort
+      let warpSettings = Warp.setPort port $ Warp.defaultSettings
+      settings <- getFirebaseSettings
+      race
+        (Warp.runSettingsSocket warpSettings socket $ DeckGo.Handler.application settings env conn)
+        (do
+          Socket.wait "localhost" port
+          act port
+        ) >>= \case
+          Left () -> error "Server returned"
+          Right a -> pure a
+
+withPristineDB :: ((HC.Connection, DbInterface) -> IO a) -> IO a
+withPristineDB act = do
+    conn <- getPostgresqlConnection
+    void $ HS.run (HS.sql "DROP TABLE IF EXISTS username") conn
+    void $ HS.run (HS.sql "DROP TABLE IF EXISTS account") conn
+    void $ HS.run (HS.sql "DROP TABLE IF EXISTS db_meta") conn
+    iface <- getDbInterface conn
+    act (conn, iface)
 
 main :: IO ()
-main = Tasty.defaultMain $ Tasty.testCase "foo" main'
+main = do
+    setEnv "TASTY_NUM_THREADS" "1"
+    Tasty.defaultMain $ Tasty.testGroup "tests"
+      [ Tasty.testGroup "db"
+          [ Tasty.testCase "users get" testUsersGet
+          , Tasty.testCase "users create" testUsersCreate
+          , Tasty.testCase "users get by id" testUsersGetByUserId
+          ]
+      , Tasty.testCase "foo" main'
+      ]
+
+testUsersGet :: IO ()
+testUsersGet = withPristineDB $ \(_, iface) -> do
+    dbGetAllUsers iface >>= \case
+      [] -> pure ()
+      users -> error $ "Expected no users, got: " <> show users
+
+    let someFirebaseId = FirebaseId "foo"
+        someUserId = UserId someFirebaseId
+        someUser = User
+          { userFirebaseId = someFirebaseId
+          , userUsername = Just (Username "patrick")
+          }
+    dbCreateUser iface someUserId someUser >>= \case
+      Left () -> error "Encountered error"
+      Right () -> pure ()
+
+    dbGetAllUsers iface >>= \case
+      [Item userId user] ->
+        if userId == someUserId && user == someUser
+        then pure ()
+        else error "bad user"
+      users -> error $ "Expected no users, got: " <> show users
+
+testUsersGetByUserId :: IO ()
+testUsersGetByUserId = withPristineDB $ \(_, iface) -> do
+    let someFirebaseId = FirebaseId "foo"
+        someUserId = UserId someFirebaseId
+        someUser = User
+          { userFirebaseId = someFirebaseId
+          , userUsername = Just (Username "patrick")
+          }
+    dbCreateUser iface someUserId someUser >>= \case
+      Left () -> error "Encountered error"
+      Right () -> pure ()
+
+    dbGetUserById iface someUserId >>= \case
+      Just (Item userId user) ->
+        if userId == someUserId && user == someUser
+        then pure ()
+        else error "bad user"
+      Nothing -> error "Got no users"
+
+testUsersCreate :: IO ()
+testUsersCreate = withPristineDB $ \(_, iface) -> do
+    let someFirebaseId = FirebaseId "foo"
+        someUserId = UserId someFirebaseId
+        someUser = User
+          { userFirebaseId = someFirebaseId
+          , userUsername = Just (Username "patrick")
+          }
+    dbCreateUser iface someUserId someUser >>= \case
+      Left () -> error "Encountered error"
+      Right () -> pure ()
 
 getTokenPath :: IO FilePath
 getTokenPath =
@@ -146,19 +220,12 @@ main' = withServer $ \port -> do
     Right (Item userId user) ->
       if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
 
-  -- runClientM usersGet' clientEnv >>= \case
-    -- Left err -> error $ "Expected users, got error: " <> show err
-    -- Right [(Item userId user)] ->
-      -- if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
-    -- Right users -> error $ "Expected 1 user, got: " <> show users
-
   runClientM (usersPost' b someUser) clientEnv >>= \case
     Left (FailureResponse resp) ->
       if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
         error $ "Got unexpected response: " <> show resp
     Left err -> error $ "Expected 409, got error: " <> show err
     Right item -> error $ "Expected failure, got success: " <> show item
-
 
   -- TODO: test that creating user with token that has different user as sub
   -- fails
@@ -224,15 +291,15 @@ getFirebaseSettings = do
       , Firebase.firebaseLoginGetKeys = pure keyMap
       }
 
-getPostgresqlConnection :: IO Hasql.Connection
+getPostgresqlConnection :: IO HC.Connection
 getPostgresqlConnection = do
     user <- getEnv "PGUSER"
     password <- getEnv "PGPASSWORD"
     host <- getEnv "PGHOST"
     db <- getEnv "PGDATABASE"
     port <- getEnv "PGPORT"
-    Hasql.acquire (
-      Hasql.settings
+    HC.acquire (
+      HC.settings
         (BS8.pack host)
         (read port)
         (BS8.pack user)

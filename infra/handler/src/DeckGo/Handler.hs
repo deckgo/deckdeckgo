@@ -354,7 +354,7 @@ server env conn = serveUsers :<|> serveDecks :<|> serveSlides
 
 -- USERS
 
-usersGet :: HC.Connection -> Servant.Handler [Item UserId User]
+usersGet :: MonadIO io => HC.Connection -> io [Item UserId User]
 usersGet conn = do
     iface <- liftIO $ getDbInterface conn
     liftIO $ dbGetAllUsers iface -- TODO: to Servant err500 on error
@@ -366,7 +366,12 @@ usersGetSession = do
 usersGetStatement :: Statement () [Item UserId User]
 usersGetStatement = Statement sql encoder decoder True
   where
-    sql = "SELECT * FROM account"
+    sql = BS8.unwords
+      [ "SELECT account.id, account.firebase_id, username.id"
+      ,   "FROM account"
+      ,   "LEFT JOIN username"
+      ,     "ON username.account = account.id"
+      ]
     encoder = HE.unit
     decoder = HD.rowList $
       Item <$>
@@ -390,7 +395,13 @@ usersGetUserIdSession userId = do
 usersGetUserIdStatement :: Statement UserId (Maybe (Item UserId User))
 usersGetUserIdStatement = Statement sql encoder decoder True
   where
-    sql = "SELECT * FROM account WHERE id = $1"
+    sql = BS8.unwords
+      [ "SELECT account.id, account.firebase_id, username.id"
+      ,   "FROM account"
+      ,   "LEFT JOIN username"
+      ,     "ON username.account = account.id"
+      ,   "WHERE account.id = $1"
+      ]
     encoder = contramap
         (unFirebaseId . unUserId)
         (HE.param HE.text)
