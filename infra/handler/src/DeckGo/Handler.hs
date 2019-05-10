@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE MonadFailDesugaring #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleContexts #-}
@@ -132,6 +133,7 @@ newtype FirebaseId = FirebaseId { unFirebaseId :: T.Text }
   deriving stock
     ( Generic )
 
+-- XXX !!?!??!?!! pattern match failures are propagated to the client!!!
 instance FromJSONObject User where
   parseJSONObject = \obj ->
     User
@@ -139,7 +141,7 @@ instance FromJSONObject User where
       <*> (
         (do
           True <- obj .: "anonymous"
-          (Nothing :: Maybe Username) <- obj .: "username"
+          (Nothing :: Maybe Username) <- obj .:? "username"
           pure Nothing
         ) <|> (do
           False <- obj .: "anonymous"
@@ -1132,8 +1134,8 @@ migrateFrom :: DbVersion -> HS.Session ()
 migrateFrom = \ver ->
     if ver < maxBound
     then
-      let from = succ ver
-      in forM_ [from .. maxBound] migrateTo
+      let frm = succ ver
+      in forM_ [frm .. maxBound] migrateTo
     else pure ()
   where
     -- | Migrates from (ver -1) to ver
@@ -1228,6 +1230,8 @@ dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
     find (\ver -> dbVersionToText ver == t) [minBound .. maxBound]
 
+-- XXX: this is not quite right, it'll never do the Version1 migration. Not a
+-- problem currently since we dump everything at v2 anyway.
 migrate :: HS.Session ()
 migrate = do
     readDbVersion >>= \case
