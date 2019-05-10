@@ -27,8 +27,11 @@ main = do
             }
     conn <- getPostgresqlConnection
     env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
+
+    (port, socket) <- Warp.openFreePort
+    let warpSettings = Warp.setPort port $ Warp.defaultSettings
     settings <- getFirebaseSettings
-    Warp.run 8080 $ DeckGo.Handler.application settings env conn
+    Warp.runSettingsSocket warpSettings socket $ DeckGo.Handler.application settings env conn
 
 getFirebaseSettings :: IO Firebase.FirebaseLoginSettings
 getFirebaseSettings = do

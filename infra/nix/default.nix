@@ -56,7 +56,8 @@ with rec
         mkPackage "deckdeckgo-handler" ../handler //
         ( mkPackage "wai-lambda" wai-lambda.wai-lambda-source ) //
         ( mkPackage "firebase-login" ../firebase-login ) //
-        { jose = super.callCabal2nix "jose" sources.hs-jose {}; } ;
+        { jose = super.callCabal2nix "jose" sources.hs-jose {}; } //
+        { port-utils = super.callCabal2nix "port-utils" sources.port-utils {}; } ;
     };
   normalHaskellPackages = pkgsStatic.pkgsMusl.haskellPackages.override
     (haskellOverride true);

@@ -3,25 +3,67 @@
 
 module Main where
 
+import Control.Lens
+import DeckGo.Handler
 import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Network.HTTP.Types as HTTP
 import Servant.API
 import Servant.Client
-import DeckGo.Handler
+import System.Environment
+import System.Environment (getEnv)
+import UnliftIO
+import qualified Data.Aeson as Aeson
+import qualified Data.ByteString.Char8 as BS8
+import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
-import qualified Data.HashMap.Strict as HMS
-import System.Environment (getArgs)
+import qualified Hasql.Connection as Hasql
+import qualified Network.AWS as Aws
+import qualified Network.HTTP.Client as HTTPClient
+import qualified Network.HTTP.Client.TLS as HTTPClient
+import qualified Network.Socket.Wait as Socket
+import qualified Network.Wai.Handler.Warp as Warp
+import qualified Servant.Auth.Firebase as Firebase
+import qualified Test.Tasty as Tasty
+import qualified Test.Tasty.HUnit as Tasty
+
+withServer :: (Warp.Port -> IO a) -> IO a
+withServer act = do
+    mgr <- HTTPClient.newManager HTTPClient.tlsManagerSettings
+            { HTTPClient.managerModifyRequest =
+                pure . rerouteDynamoDB
+            }
+    conn <- getPostgresqlConnection
+    env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
+
+    (port, socket) <- Warp.openFreePort
+    let warpSettings = Warp.setPort port $ Warp.defaultSettings
+    settings <- getFirebaseSettings
+    race
+      (Warp.runSettingsSocket warpSettings socket $ DeckGo.Handler.application settings env conn)
+      (do
+        Socket.wait "localhost" port
+        act port
+      ) >>= \case
+        Left () -> error "Server returned"
+        Right a -> pure a
 
 main :: IO ()
-main = do
-  [p] <- getArgs
+main = Tasty.defaultMain $ Tasty.testCase "foo" main'
 
-  b <- T.readFile p
+getTokenPath :: IO FilePath
+getTokenPath =
+    lookupEnv "TEST_TOKEN_PATH" >>= \case
+      Just tpath -> pure tpath
+      Nothing -> pure "./token"
+
+main' :: IO ()
+main' = withServer $ \port -> do
+  b <- T.readFile =<< getTokenPath
 
   manager' <- newManager defaultManagerSettings
 
-  let clientEnv = mkClientEnv manager' (BaseUrl Http "localhost" 8080 "")
+  let clientEnv = mkClientEnv manager' (BaseUrl Http "localhost" port "")
   let someFirebaseId = FirebaseId "the-uid" -- from ./token
   let someUserId = UserId someFirebaseId
   let someDeck = Deck
@@ -158,3 +200,44 @@ slidesDelete' :: T.Text -> DeckId -> SlideId -> ClientM ()
   slidesDelete'
   )
   ) = client api
+
+rerouteDynamoDB :: HTTPClient.Request -> HTTPClient.Request
+rerouteDynamoDB req =
+    case HTTPClient.host req of
+      "dynamodb.us-east-1.amazonaws.com" ->
+        req
+          { HTTPClient.host = "127.0.0.1"
+          , HTTPClient.port = 8000 -- TODO: read from Env
+          , HTTPClient.secure = False
+          }
+      _ -> req
+
+getFirebaseSettings :: IO Firebase.FirebaseLoginSettings
+getFirebaseSettings = do
+    pkeys <- getEnv "GOOGLE_PUBLIC_KEYS"
+    pid <- getEnv "FIREBASE_PROJECT_ID"
+    keyMap <- Aeson.decodeFileStrict pkeys >>= \case
+      Nothing -> error "Could not decode key file"
+      Just keyMap -> pure keyMap
+    pure Firebase.FirebaseLoginSettings
+      { Firebase.firebaseLoginProjectId = Firebase.ProjectId (T.pack pid)
+      , Firebase.firebaseLoginGetKeys = pure keyMap
+      }
+
+getPostgresqlConnection :: IO Hasql.Connection
+getPostgresqlConnection = do
+    user <- getEnv "PGUSER"
+    password <- getEnv "PGPASSWORD"
+    host <- getEnv "PGHOST"
+    db <- getEnv "PGDATABASE"
+    port <- getEnv "PGPORT"
+    Hasql.acquire (
+      Hasql.settings
+        (BS8.pack host)
+        (read port)
+        (BS8.pack user)
+        (BS8.pack password)
+        (BS8.pack db)
+      ) >>= \case
+        Left e -> error (show e)
+        Right c -> pure c
