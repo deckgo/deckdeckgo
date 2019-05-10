@@ -556,7 +556,7 @@ usersPutSession uid u = do
                 1 -> do
                   HS.sql "COMMIT"
                   pure UserUpdateOk
-                0 -> do
+                _ -> do
                   HS.sql "ROLLBACK"
                   pure UserUpdateClash
 
@@ -1129,7 +1129,12 @@ data DbVersion
 
 -- | Migrates from ver to latest
 migrateFrom :: DbVersion -> HS.Session ()
-migrateFrom = \ver -> forM_ [ver .. maxBound] migrateTo
+migrateFrom = \ver ->
+    if ver < maxBound
+    then
+      let from = succ ver
+      in forM_ [from .. maxBound] migrateTo
+    else pure ()
   where
     -- | Migrates from (ver -1) to ver
     migrateTo :: DbVersion -> HS.Session ()
