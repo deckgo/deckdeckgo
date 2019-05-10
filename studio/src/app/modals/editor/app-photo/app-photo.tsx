@@ -214,6 +214,7 @@ export class AppPhoto {
                         return <div class="photo ion-padding" custom-tappable onClick={() => this.selectPhoto(photo)}>
                             <div class="photo-container">
                                 <img src={photo.urls.thumb} alt={photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.thumb)}></img>
+                                {this.renderPhotoCredits(photo)}
                             </div>
                         </div>
                     } else {
@@ -223,6 +224,14 @@ export class AppPhoto {
             );
         } else {
             return undefined;
+        }
+    }
+
+    private renderPhotoCredits(photo: UnsplashPhoto) {
+        if (!photo.user || !photo.user.links || !photo.user.links.html || !photo.user.name) {
+            return undefined;
+        } else {
+            return <ion-label class="photo-credits">Photo by <a href={photo.user.links.html + '?utm_source=DeckDeckGo&utm_medium=referral'} target="_blank" onClick={($event: UIEvent) => $event.stopPropagation()}>{photo.user.name}</a></ion-label>;
         }
     }
 
