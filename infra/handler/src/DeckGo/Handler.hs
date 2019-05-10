@@ -27,34 +27,31 @@ module DeckGo.Handler where
 -- TODO: enforce uniqueness on deck_name (per user)
 -- TODO: return 500 on all DB errors
 
-import Data.List (find)
 import Control.Lens hiding ((.=))
-import Data.Int
--- import Data.Functor.Contravariant
--- import Hasql.Session (Session)
-import Hasql.Statement (Statement(..))
-import qualified Hasql.Session as HS
-import qualified Hasql.Decoders as HD
-import qualified Hasql.Encoders as HE
-import qualified Hasql.Connection as HC
--- import Control.Lens hiding ((.=))
 import Control.Monad
-import Data.Maybe
 import Control.Monad.Except
 import Data.Aeson ((.=), (.:), (.!=), (.:?))
-import qualified Data.ByteString.Char8 as BS8
+import Data.Int
+import Data.List (find)
+import Data.Maybe
 import Data.Proxy
 import Data.Swagger
 import GHC.Generics
+import Hasql.Statement (Statement(..))
 import Servant (Context ((:.)))
 import Servant.API
 import Servant.Auth.Firebase (Protected)
 import UnliftIO
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
+import qualified Data.ByteString.Char8 as BS8
 import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
+import qualified Hasql.Connection as HC
+import qualified Hasql.Decoders as HD
+import qualified Hasql.Encoders as HE
+import qualified Hasql.Session as HS
 import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.Wai as Wai
