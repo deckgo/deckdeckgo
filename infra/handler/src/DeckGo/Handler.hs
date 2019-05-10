@@ -490,6 +490,19 @@ usersPostStatement' = Statement sql encoder decoder True
         (HE.param HE.text)
     decoder = HD.rowsAffected
 
+usersPostStatement'' :: Statement Username () -- TODO: check was deleted?
+usersPostStatement'' = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "DELETE FROM username"
+      ,   "WHERE id = $1"
+      ]
+    encoder =
+      contramap
+        (unUsername)
+        (HE.param HE.text)
+    decoder = HD.unit
+
 usersPut :: HC.Connection -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
 usersPut conn fuid userId user = do
 
@@ -505,26 +518,47 @@ usersPut conn fuid userId user = do
 
     iface <- liftIO $ getDbInterface conn
     liftIO (dbUpdateUser iface userId user) >>= \case
-      Right () -> pure $ Item userId user -- TODO: check # of affected rows
-      Left e -> do -- TODO: handle not found et al.
+      UserUpdateOk -> pure $ Item userId user -- TODO: check # of affected rows
+      e -> do -- TODO: handle not found et al.
         liftIO $ print e
-        Servant.throwError Servant.err500
+        Servant.throwError Servant.err400
 
-usersPutSession :: UserId -> User -> HS.Session ()
+data UserUpdateResult
+  = UserUpdateOk
+  | UserUpdateNotExist
+  | UserUpdateClash
+  deriving Show
+
+usersPutSession :: UserId -> User -> HS.Session UserUpdateResult
 usersPutSession uid u = do
-    HS.statement (uid,u) usersPutStatement
+    HS.sql "BEGIN"
+    usersGetUserIdSession uid >>= \case
+      Nothing -> do
+        HS.sql "ROLLBACK"
+        pure UserUpdateNotExist
 
-usersPutStatement :: Statement (UserId, User) ()
-usersPutStatement = Statement sql encoder decoder True
-  where
-    sql = "UPDATE account SET firebase_id = $2, anonymous = $3 WHERE id = $1"
-    encoder =
-      contramap
-        (unFirebaseId . unUserId . view _1)
-        (HE.param HE.text) <>
-      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text) <>
-      contramap (fmap unUsername . userUsername . view _2) (HE.nullableParam HE.text)
-    decoder = HD.unit -- TODO: affected rows
+      -- XXX: no handling of updating firebase id
+      Just (Item _ oldUser) -> case (userUsername oldUser, userUsername u) of
+        (Nothing, Nothing) -> do
+          HS.sql "ROLLBACK" -- doesn't matter if rollback or commit
+          pure UserUpdateOk
+        (oldUname, newUname) -> do
+          case oldUname of
+            Nothing -> pure ()
+            Just uname -> do
+              HS.statement uname usersPostStatement''
+          case newUname of
+            Nothing -> do
+              HS.sql "COMMIT"
+              pure UserUpdateOk
+            Just uname -> do
+              HS.statement (uname, uid) usersPostStatement' >>= \case
+                1 -> do
+                  HS.sql "COMMIT"
+                  pure UserUpdateOk
+                0 -> do
+                  HS.sql "ROLLBACK"
+                  pure UserUpdateClash
 
 usersDelete :: HC.Connection -> Firebase.UserId -> UserId -> Servant.Handler ()
 usersDelete conn fuid userId = do
@@ -1084,7 +1118,7 @@ data DbInterface = DbInterface
   { dbGetAllUsers :: IO [Item UserId User]
   , dbGetUserById :: UserId -> IO (Maybe (Item UserId User))
   , dbCreateUser :: UserId -> User -> IO (Either () ())
-  , dbUpdateUser :: UserId -> User -> IO (Either () ())
+  , dbUpdateUser :: UserId -> User -> IO UserUpdateResult
   , dbDeleteUser :: UserId -> IO (Either () ())
   }
 
@@ -1209,7 +1243,7 @@ getDbInterface conn = do
       { dbGetAllUsers = wrap usersGetSession
       , dbGetUserById = \uid -> wrap (usersGetUserIdSession uid)
       , dbCreateUser = \uid user -> wrap (usersPostSession uid user)
-      , dbUpdateUser = \uid user -> Right <$> wrap (usersPutSession uid user)
+      , dbUpdateUser = \uid user -> wrap (usersPutSession uid user)
       , dbDeleteUser = \uid -> Right <$> wrap (usersDeleteSession uid)
       }
   where

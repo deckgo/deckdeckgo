@@ -68,6 +68,7 @@ main = do
           , Tasty.testCase "users create" testUsersCreate
           , Tasty.testCase "users get by id" testUsersGetByUserId
           , Tasty.testCase "users delete" testUsersDelete
+          , Tasty.testCase "users update" testUsersUpdate
           ]
       , Tasty.testCase "foo" main'
       ]
@@ -141,6 +142,35 @@ testUsersCreate = withPristineDB $ \(_, iface) -> do
     dbCreateUser iface someUserId someUser >>= \case
       Left () -> error "Encountered error"
       Right () -> pure ()
+
+testUsersUpdate :: IO ()
+testUsersUpdate = withPristineDB $ \(_, iface) -> do
+    let someFirebaseId = FirebaseId "foo"
+        someUserId = UserId someFirebaseId
+        someUser = User
+          { userFirebaseId = someFirebaseId
+          , userUsername = Just (Username "patrick")
+          }
+
+    dbCreateUser iface someUserId someUser >>= \case
+      Left () -> error "Encountered error"
+      Right () -> pure ()
+
+    let someUser' = User
+          { userFirebaseId = someFirebaseId
+          , userUsername = Just (Username "joseph")
+          }
+
+    dbUpdateUser iface someUserId someUser' >>= \case
+      UserUpdateOk -> pure ()
+      e -> error $ "encountered error:" <> show e
+
+    dbGetUserById iface someUserId >>= \case
+      Just (Item userId user) ->
+        if userId == someUserId && user == someUser'
+        then pure ()
+        else error "bad user"
+      Nothing -> error "Got no users"
 
 getTokenPath :: IO FilePath
 getTokenPath =
