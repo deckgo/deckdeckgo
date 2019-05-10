@@ -47,6 +47,8 @@ export class AppPhoto {
 
     private selectPhoto(photo: UnsplashPhoto): Promise<void> {
         return new Promise<void>(async (resolve) => {
+            await this.photoService.registerDownload(photo.id);
+
             await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(photo);
 
             resolve();

@@ -46,4 +46,22 @@ export class PhotoService {
         });
     }
 
+    registerDownload(photoId: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const config: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
+
+            const shareUrl: string = config.url + 'photos/' + photoId +'/download/?client_id=' + config.key;
+
+            try {
+                await fetch(shareUrl);
+
+                // We don't check the status of the answer, user could still use the photo even if that would have failed
+                resolve();
+            } catch (err) {
+                // We ignore the error, user could still use the photo
+                resolve();
+            }
+        });
+    }
+
 }
