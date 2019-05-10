@@ -12,7 +12,7 @@ export interface EnvironmentTenorConfig {
     key: string;
 }
 
-export interface EnvironmentPixabayConfig {
+export interface EnvironmentUnsplashConfig {
     url: string;
     key: string;
 }
@@ -22,7 +22,7 @@ export interface EnvironmentConfig {
     apiUrl: string;
     firebase: EnvironmentFirebaseConfig;
     tenor: EnvironmentTenorConfig;
-    pixabay: EnvironmentPixabayConfig;
+    unsplash: EnvironmentUnsplashConfig;
     signalingServerUrl: string;
     prismComponentsUrl: string;
 }

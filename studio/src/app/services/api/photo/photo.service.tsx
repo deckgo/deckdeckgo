@@ -1,4 +1,4 @@
-import {EnvironmentPixabayConfig} from '../../core/environment/environment-config';
+import {EnvironmentUnsplashConfig} from '../../core/environment/environment-config';
 
 import {ErrorService} from '../../core/error/error.service';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
@@ -21,19 +21,19 @@ export class PhotoService {
         return PhotoService.instance;
     }
 
-    getPhotos(searchTerm: string, next: string | number): Promise<PixabaySearchResponse> {
-        return new Promise<PixabaySearchResponse>(async (resolve) => {
-            const config: EnvironmentPixabayConfig = EnvironmentConfigService.getInstance().get('pixabay');
+    getPhotos(searchTerm: string, next: string | number): Promise<UnsplashSearchResponse> {
+        return new Promise<UnsplashSearchResponse>(async (resolve) => {
+            const config: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
 
-            const searchUrl: string = config.url + '?q=' + searchTerm + '&key=' + config.key + '&page=' + next;
+            const searchUrl: string = config.url + 'search/photos/?query=' + searchTerm + '&client_id=' + config.key + '&page=' + next;
 
             try {
                 const rawResponse: Response = await fetch(searchUrl);
 
-                const response: PixabaySearchResponse = JSON.parse(await rawResponse.text());
+                const response: UnsplashSearchResponse = JSON.parse(await rawResponse.text());
 
                 if (!response) {
-                    this.errorService.error('Pixabay photos could not be fetched');
+                    this.errorService.error('Unsplash photos could not be fetched');
                     resolve();
                     return;
                 }

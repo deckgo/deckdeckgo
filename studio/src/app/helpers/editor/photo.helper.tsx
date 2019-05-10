@@ -10,7 +10,7 @@ export class PhotoHelper {
         this.busyService = BusyService.getInstance();
     }
 
-    appendPhoto(selectedElement: HTMLElement, photo: PixabayHit, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
+    appendPhoto(selectedElement: HTMLElement, photo: UnsplashPhoto, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!selectedElement || !photo || !document) {
                 resolve();
@@ -33,15 +33,15 @@ export class PhotoHelper {
         });
     }
 
-    private createImgElement(photo: PixabayHit): HTMLImageElement {
+    private createImgElement(photo: UnsplashPhoto): HTMLImageElement {
         const img: HTMLImageElement = document.createElement('img');
-        img.src = photo.largeImageURL;
-        img.alt = photo.tags ? photo.tags : photo.largeImageURL;
+        img.src = photo.urls.regular;
+        img.alt = photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.regular);
 
         return img;
     }
 
-    private appendContentImg(selectedElement: HTMLElement, photo: PixabayHit): Promise<void> {
+    private appendContentImg(selectedElement: HTMLElement, photo: UnsplashPhoto): Promise<void> {
         return new Promise<void>((resolve) => {
             const img: HTMLImageElement = this.createImgElement(photo);
             selectedElement.appendChild(img);
@@ -52,7 +52,7 @@ export class PhotoHelper {
         });
     }
 
-    private appendBackgroundImg(selectedElement: HTMLElement, photo: PixabayHit, applyToAllDeck: boolean): Promise<void> {
+    private appendBackgroundImg(selectedElement: HTMLElement, photo: UnsplashPhoto, applyToAllDeck: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const element: HTMLElement = applyToAllDeck ? selectedElement.parentElement : selectedElement;
 

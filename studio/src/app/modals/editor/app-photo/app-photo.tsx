@@ -13,10 +13,10 @@ export class AppPhoto {
     private photoService: PhotoService;
 
     @State()
-    private photosOdd: PixabayHit[];
+    private photosOdd: UnsplashPhoto[];
 
     @State()
-    private photosEven: PixabayHit[];
+    private photosEven: UnsplashPhoto[];
 
     @State()
     private searchTerm: string;
@@ -45,7 +45,7 @@ export class AppPhoto {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private selectPhoto(photo: PixabayHit): Promise<void> {
+    private selectPhoto(photo: UnsplashPhoto): Promise<void> {
         return new Promise<void>(async (resolve) => {
             await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(photo);
 
@@ -78,14 +78,14 @@ export class AppPhoto {
                 return;
             }
 
-            const pixabayResponse: PixabaySearchResponse = await this.photoService.getPhotos(this.searchTerm, this.paginationNext);
+            const unsplashResponse: UnsplashSearchResponse = await this.photoService.getPhotos(this.searchTerm, this.paginationNext);
 
-            if (!pixabayResponse) {
+            if (!unsplashResponse) {
                 resolve();
                 return;
             }
 
-            const photos: PixabayHit[] = pixabayResponse.hits;
+            const photos: UnsplashPhoto[] = unsplashResponse.results;
 
             if (!photos || photos.length <= 0) {
                 this.emptyPhotos();
@@ -119,7 +119,7 @@ export class AppPhoto {
                 }, 100)
             }
 
-            this.disableInfiniteScroll = this.paginationNext * 20 >= pixabayResponse.totalHits;
+            this.disableInfiniteScroll = this.paginationNext * 10 >= unsplashResponse.total;
 
             this.paginationNext++;
 
@@ -195,7 +195,7 @@ export class AppPhoto {
             </ion-content>,
             <ion-footer>
                 <ion-toolbar>
-                    <ion-searchbar debounce={500} placeholder="Search Pixabay" value={this.searchTerm}
+                    <ion-searchbar debounce={500} placeholder="Search Unsplash" value={this.searchTerm}
                                    onIonClear={() => this.clear()}
                                    onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
                                    onIonChange={() => {this.search()}}></ion-searchbar>
@@ -204,14 +204,14 @@ export class AppPhoto {
         ];
     }
 
-    private renderPhotos(photos: PixabayHit[]) {
+    private renderPhotos(photos: UnsplashPhoto[]) {
         if (photos && photos.length > 0) {
             return (
-                photos.map((photo: PixabayHit) => {
-                    if (photo.previewURL) {
+                photos.map((photo: UnsplashPhoto) => {
+                    if (photo.urls && photo.urls.thumb) {
                         return <div class="photo ion-padding" custom-tappable onClick={() => this.selectPhoto(photo)}>
                             <div class="photo-container">
-                                <img src={photo.previewURL} alt={photo.tags ? photo.tags : photo.previewURL}></img>
+                                <img src={photo.urls.thumb} alt={photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.thumb)}></img>
                             </div>
                         </div>
                     } else {

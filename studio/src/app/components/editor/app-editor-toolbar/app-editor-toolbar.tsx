@@ -645,7 +645,7 @@ export class AppEditorToolbar {
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
                 const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
-                await helper.appendPhoto(this.selectedElement, (detail.data as PixabayHit), this.deckOrSlide, this.applyToAllDeck);
+                await helper.appendPhoto(this.selectedElement, (detail.data as UnsplashPhoto), this.deckOrSlide, this.applyToAllDeck);
             }
         });
 
