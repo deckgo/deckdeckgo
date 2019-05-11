@@ -5,6 +5,7 @@ import 'deckdeckgo-inline-editor';
 import 'deckdeckgo-remote';
 import 'deckdeckgo-qrcode';
 import 'deckdeckgo-highlight-code';
+import 'deckdeckgo-lazy-img';
 
 import {setupConfig} from '../app/services/core/environment/environment-config';
 

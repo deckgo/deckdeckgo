@@ -8,12 +8,13 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'deckdeckgo';
-import 'deckdeckgo-highlight-code';
-import 'deckdeckgo-inline-editor';
-import 'deckdeckgo-qrcode';
-import 'deckdeckgo-remote';
 import 'ionicons';
+import 'deckdeckgo';
+import 'deckdeckgo-inline-editor';
+import 'deckdeckgo-remote';
+import 'deckdeckgo-qrcode';
+import 'deckdeckgo-highlight-code';
+import 'deckdeckgo-lazy-img';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -114,9 +115,6 @@ export namespace Components {
     'onEditCaption'?: (event: CustomEvent<string>) => void;
     'publication'?: Date;
   }
-
-  interface AppFeedLazyImg {}
-  interface AppFeedLazyImgAttributes extends StencilHTMLAttributes {}
 
   interface AppGif {}
   interface AppGifAttributes extends StencilHTMLAttributes {}
@@ -225,7 +223,6 @@ declare global {
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
     'AppFeedCard': Components.AppFeedCard;
-    'AppFeedLazyImg': Components.AppFeedLazyImg;
     'AppGif': Components.AppGif;
     'AppPhoto': Components.AppPhoto;
     'AppPublish': Components.AppPublish;
@@ -263,7 +260,6 @@ declare global {
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-feed-card': Components.AppFeedCardAttributes;
-    'app-feed-lazy-img': Components.AppFeedLazyImgAttributes;
     'app-gif': Components.AppGifAttributes;
     'app-photo': Components.AppPhotoAttributes;
     'app-publish': Components.AppPublishAttributes;
@@ -364,12 +360,6 @@ declare global {
   var HTMLAppFeedCardElement: {
     prototype: HTMLAppFeedCardElement;
     new (): HTMLAppFeedCardElement;
-  };
-
-  interface HTMLAppFeedLazyImgElement extends Components.AppFeedLazyImg, HTMLStencilElement {}
-  var HTMLAppFeedLazyImgElement: {
-    prototype: HTMLAppFeedLazyImgElement;
-    new (): HTMLAppFeedLazyImgElement;
   };
 
   interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
@@ -512,7 +502,6 @@ declare global {
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
     'app-feed-card': HTMLAppFeedCardElement
-    'app-feed-lazy-img': HTMLAppFeedLazyImgElement
     'app-gif': HTMLAppGifElement
     'app-photo': HTMLAppPhotoElement
     'app-publish': HTMLAppPublishElement
@@ -550,7 +539,6 @@ declare global {
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
     'app-feed-card': HTMLAppFeedCardElement;
-    'app-feed-lazy-img': HTMLAppFeedLazyImgElement;
     'app-gif': HTMLAppGifElement;
     'app-photo': HTMLAppPhotoElement;
     'app-publish': HTMLAppPublishElement;

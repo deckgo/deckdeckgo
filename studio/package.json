@@ -29,6 +29,7 @@
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
     "autoprefixer": "^9.4.7",
+    "deckdeckgo-lazy-img": "file:../webcomponents/lazy-img",
     "deckdeckgo-types": "^1.0.0-alpha.9",
     "rollup-plugin-replace": "^2.1.1",
     "workbox-build": "3.4.1"
