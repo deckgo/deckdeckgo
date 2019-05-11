@@ -98,6 +98,15 @@ export class DeckdeckgoInlineEditor {
 
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
+  @Prop()
+  imgAnchor: string = 'img';
+
+  @Prop()
+  imgPropertyWidth: string = 'width';
+
+  @Prop()
+  imgPropertyCssFloat: string = 'cssFloat';
+
   async componentWillLoad() {
     await this.attachListener();
   }
@@ -192,17 +201,17 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>((resolve) => {
       const target: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
 
-      if (target.style.width === '25%') {
+      if (target.style.getPropertyValue(this.imgPropertyWidth) === '25%') {
         this.imageSize = ImageSize.SMALL;
-      } else if (target.style.width === '50%') {
+      } else if (target.style.getPropertyValue(this.imgPropertyWidth) === '50%') {
         this.imageSize = ImageSize.MEDIUM;
-      } else if (target.style.width === '75%') {
+      } else if (target.style.getPropertyValue(this.imgPropertyWidth) === '75%') {
         this.imageSize = ImageSize.LARGE;
       } else {
         this.imageSize = ImageSize.ORIGINAL;
       }
 
-      if (target.style.cssFloat === 'left') {
+      if (target.style.getPropertyValue(this.imgPropertyCssFloat) === 'left') {
         this.imageAlign = ImageAlign.START;
       } else {
         this.imageAlign = ImageAlign.STANDARD;
@@ -229,7 +238,7 @@ export class DeckdeckgoInlineEditor {
 
       const target: HTMLElement = this.anchorEvent.target;
 
-      resolve(target.nodeName && target.nodeName.toLowerCase() === 'img');
+      resolve(target.nodeName && target.nodeName.toLowerCase() === this.imgAnchor);
     });
   }
 
@@ -830,7 +839,7 @@ export class DeckdeckgoInlineEditor {
 
   private setImageWith = async (size: ImageSize) => {
     const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-    anchorImg.style.width = size.toString();
+    anchorImg.style.setProperty(this.imgPropertyWidth, size.toString());
 
     const container: HTMLElement = await this.findContainer(anchorImg);
     this.imgDidChange.emit(container);
@@ -840,9 +849,9 @@ export class DeckdeckgoInlineEditor {
     const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
 
     if (align === ImageAlign.START) {
-      anchorImg.style.cssFloat = 'left';
+      anchorImg.style.setProperty(this.imgPropertyCssFloat, 'left');
     } else {
-      anchorImg.style.cssFloat = null;
+      anchorImg.style.removeProperty(this.imgPropertyCssFloat);
     }
   };
 

@@ -18,6 +18,9 @@ export namespace Components {
   interface DeckgoInlineEditor {
     'attachTo': HTMLElement;
     'containers': string;
+    'imgAnchor': string;
+    'imgPropertyCssFloat': string;
+    'imgPropertyWidth': string;
     'mobile': boolean;
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
@@ -25,6 +28,9 @@ export namespace Components {
   interface DeckgoInlineEditorAttributes extends StencilHTMLAttributes {
     'attachTo'?: HTMLElement;
     'containers'?: string;
+    'imgAnchor'?: string;
+    'imgPropertyCssFloat'?: string;
+    'imgPropertyWidth'?: string;
     'mobile'?: boolean;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'stickyDesktop'?: boolean;

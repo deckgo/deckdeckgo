@@ -602,7 +602,9 @@ export class AppEditor {
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
-            <deckgo-inline-editor containers="h1,h2,h3,section"></deckgo-inline-editor>
+            <deckgo-inline-editor containers="h1,h2,h3,section"
+                                  img-anchor="deckgo-lazy-img" img-property-width="--deckgo-lazy-img-width" img-property-css-float="--deckgo-lazy-float"
+            ></deckgo-inline-editor>
         ];
     }
 
