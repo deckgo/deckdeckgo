@@ -1,3 +1,7 @@
 img {
   max-width: var(--deckgo-lazy-img-max-width, 100%);
+  pointer-events: var(--deckgo-lazy-img-pointer-events, none);
+
+  height: var(--deckgo-lazy-img-height);
+  width: var(--deckgo-lazy-img-width);
 }

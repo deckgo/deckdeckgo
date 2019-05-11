@@ -6,7 +6,8 @@ export class PhotoHelper {
 
     private busyService: BusyService;
 
-    constructor(private slideDidChange: EventEmitter<HTMLElement>, private deckDidChange: EventEmitter<HTMLElement>) {
+    constructor(private slideDidChange: EventEmitter<HTMLElement>,
+                private deckDidChange: EventEmitter<HTMLElement>) {
         this.busyService = BusyService.getInstance();
     }
 
@@ -33,17 +34,17 @@ export class PhotoHelper {
         });
     }
 
-    private createImgElement(photo: UnsplashPhoto): HTMLImageElement {
-        const img: HTMLImageElement = document.createElement('img');
-        img.src = photo.urls.regular;
-        img.alt = photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.regular);
+    private createImgElement(photo: UnsplashPhoto): HTMLElement {
+        const img: HTMLElement = document.createElement('deckgo-lazy-img');
+        (img as any).imgSrc = photo.urls.regular;
+        (img as any).imgAlt = photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.regular);
 
         return img;
     }
 
     private appendContentImg(selectedElement: HTMLElement, photo: UnsplashPhoto): Promise<void> {
         return new Promise<void>((resolve) => {
-            const img: HTMLImageElement = this.createImgElement(photo);
+            const img: HTMLElement = this.createImgElement(photo);
             selectedElement.appendChild(img);
 
             this.slideDidChange.emit(selectedElement.parentElement);
@@ -70,7 +71,7 @@ export class PhotoHelper {
             const div: HTMLElement = document.createElement('div');
             div.setAttribute('slot', 'background');
 
-            const img: HTMLImageElement = this.createImgElement(photo);
+            const img: HTMLElement = this.createImgElement(photo);
             div.appendChild(img);
 
             element.appendChild(div);
@@ -78,7 +79,7 @@ export class PhotoHelper {
             if (applyToAllDeck) {
                 this.deckDidChange.emit(selectedElement.parentElement);
 
-                await (element as any).loadBackground();
+                img.addEventListener('lazyImgDidLoad', async () => await (element as any).loadBackground(), {once: true});
             } else {
                 selectedElement.setAttribute('custom-background', '');
 

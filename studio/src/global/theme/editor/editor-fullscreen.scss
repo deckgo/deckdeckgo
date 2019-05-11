@@ -52,15 +52,6 @@
       deckgo-deck {
         h1, h2, h3, section, deckgo-highlight-code {
           border: 1px solid transparent;
-
-          div.deckgo-img {
-            outline: none;
-            resize: none;
-
-            &::after {
-              content: none;
-            }
-          }
         }
       }
     }

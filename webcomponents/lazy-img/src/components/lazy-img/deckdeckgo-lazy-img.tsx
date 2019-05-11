@@ -1,4 +1,4 @@
-import {Component, Element, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
 
 @Component({
   tag: 'deckgo-lazy-img',
@@ -9,10 +9,12 @@ export class DeckdeckgoLazyImg {
 
   @Element() el: HTMLElement;
 
-  @Prop()
+  @Event() lazyImgDidLoad: EventEmitter;
+
+  @Prop({reflectToAttr: true})
   imgSrc: string;
 
-  @Prop()
+  @Prop({reflectToAttr: true})
   imgAlt: string;
 
   @Prop()
@@ -34,6 +36,18 @@ export class DeckdeckgoLazyImg {
 
       this.observer.observe(img);
     }
+
+    this.lazyImgDidLoad.emit();
+  }
+
+  @Method()
+  lazyLoad(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
+      await this.load(img);
+
+      resolve();
+    });
   }
 
   private onIntersection = async (entries: IntersectionObserverEntry[]) => {
@@ -45,17 +59,25 @@ export class DeckdeckgoLazyImg {
   };
 
   private handleIntersection(entry: IntersectionObserverEntry): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (entry.isIntersecting) {
 
         if (this.observer) {
           this.observer.disconnect();
         }
 
-        if (entry.target.getAttribute('data-src')) {
-          entry.target.setAttribute('src', entry.target.getAttribute('data-src'));
-          entry.target.removeAttribute('data-src');
-        }
+        await this.load(entry.target);
+      }
+
+      resolve();
+    });
+  }
+
+  private load(img: HTMLImageElement | Element): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (img && img.getAttribute('data-src')) {
+        img.setAttribute('src', img.getAttribute('data-src'));
+        img.removeAttribute('data-src');
       }
 
       resolve();

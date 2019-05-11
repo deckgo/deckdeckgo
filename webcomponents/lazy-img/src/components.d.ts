@@ -15,6 +15,7 @@ export namespace Components {
   interface DeckgoLazyImg {
     'imgAlt': string;
     'imgSrc': string;
+    'lazyLoad': () => Promise<void>;
     'observerRootMargin': string;
     'observerThreshold': number | number[];
   }
@@ -23,6 +24,7 @@ export namespace Components {
     'imgSrc'?: string;
     'observerRootMargin'?: string;
     'observerThreshold'?: number | number[];
+    'onLazyImgDidLoad'?: (event: CustomEvent) => void;
   }
 }
 
