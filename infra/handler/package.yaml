@@ -54,18 +54,15 @@ executables:
             - servant-swagger
             - servant-swagger-ui
 
-    server:
-        main: app/Server.hs
-        dependencies:
-            - deckdeckgo-handler
-            - warp
-            - http-client
-            - http-client-tls
-            - lens
-
     test:
         main: app/Test.hs
         dependencies:
             - deckdeckgo-handler
             - http-client
+            - http-client-tls
+            - lens
+            - port-utils
             - servant-client
+            - tasty
+            - tasty-hunit
+            - warp

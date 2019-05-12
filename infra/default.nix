@@ -97,21 +97,12 @@ rec
 
       ${pgutil.start_pg}
 
-      # Start server with fs redirect for getProtocolByName
+      echo "Running tests"
       NIX_REDIRECTS=/etc/protocols=${pkgs.iana-etc}/etc/protocols \
         LD_PRELOAD="${pkgs.libredirect}/lib/libredirect.so" \
         GOOGLE_PUBLIC_KEYS="${pkgs.writeText "google-x509" (builtins.toJSON googleResp)}" \
         FIREBASE_PROJECT_ID="my-project-id" \
-        ${handler}/bin/server &
-
-      while ! nc -z 127.0.0.1 8080; do
-        echo waiting for server
-        sleep 1
-      done
-
-      echo "Running tests"
-      ${handler}/bin/test ${./token}
-
+        TEST_TOKEN_PATH=${./token} ${handler}/bin/test
       echo "Tests were run"
 
       touch $out
