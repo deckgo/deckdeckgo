@@ -272,7 +272,7 @@ instance FromJSONObject Deck where
     Deck
       <$> obj .: "slides"
       <*> obj .: "name"
-      <*> obj .: "background"
+      <*> obj .:? "background"
       <*> obj .: "owner_id"
       <*> obj .:? "attributes" .!= HMS.empty
 
