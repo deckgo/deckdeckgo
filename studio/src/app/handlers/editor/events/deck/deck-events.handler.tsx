@@ -110,7 +110,7 @@ export class DeckEventsHandler {
             return;
         }
 
-        await this.updateDeckAttributes($event.detail);
+        await this.updateDeck($event.detail);
     };
 
     private onSlideChange = async ($event: CustomEvent) => {
@@ -298,15 +298,13 @@ export class DeckEventsHandler {
         });
     }
 
-    private updateDeckAttributes(deck: HTMLElement): Promise<void> {
+    private updateDeck(deck: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
                 if (!deck) {
                     resolve();
                     return;
                 }
-
-                // TODO(#104): We should also update/persist slots like deck.background and deck.actions
 
                 this.busyService.deckBusy(true);
 
@@ -317,12 +315,10 @@ export class DeckEventsHandler {
                     }
 
                     const attributes: DeckAttributes = await this.getDeckAttributes(deck);
+                    currentDeck.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : null;
 
-                    if (attributes && Object.keys(attributes).length > 0) {
-                        currentDeck.attributes = attributes;
-                    } else {
-                        currentDeck.attributes = null;
-                    }
+                    const background: string = await this.getDeckBackground(deck);
+                    currentDeck.background = background && background !== undefined && background !== '' ? background : null;
 
                     const updatedDeck: Deck = await this.deckService.put(currentDeck);
                     this.deckEditorService.next(updatedDeck);
@@ -513,6 +509,19 @@ export class DeckEventsHandler {
 
             resolve(attributes);
         })
+    }
+
+    private getDeckBackground(deck: HTMLElement): Promise<string> {
+        return new Promise<string>((resolve) => {
+            const slotElement: HTMLElement = deck.querySelector(':scope > [slot=\'background\']');
+
+            if (!slotElement) {
+                resolve(null);
+                return;
+            }
+
+            resolve(slotElement.innerHTML);
+        });
     }
 
     private cleanSlideContent(content: string): Promise<string> {

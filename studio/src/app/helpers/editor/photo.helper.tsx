@@ -79,13 +79,16 @@ export class PhotoHelper {
             element.appendChild(div);
 
             if (applyToAllDeck) {
-                this.deckDidChange.emit(selectedElement.parentElement);
-
-                img.addEventListener('lazyImgDidLoad', async () => await (element as any).loadBackground(), {once: true});
+                img.addEventListener('lazyImgDidLoad', async () => {
+                    await (element as any).loadBackground();
+                    this.deckDidChange.emit(selectedElement.parentElement);
+                }, {once: true});
             } else {
                 selectedElement.setAttribute('custom-background', '');
 
-                this.slideDidChange.emit(selectedElement);
+                img.addEventListener('lazyImgDidLoad', async () => {
+                    this.slideDidChange.emit(selectedElement);
+                }, {once: true});
             }
 
             resolve();

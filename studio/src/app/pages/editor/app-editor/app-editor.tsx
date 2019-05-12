@@ -10,6 +10,7 @@ import {Deck} from '../../../models/deck';
 
 import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
+import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
 import {Utils} from '../../../utils/core/utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
@@ -42,6 +43,12 @@ export class AppEditor {
     @State()
     private slides: any[] = [];
 
+    @State()
+    private background: any;
+
+    @State()
+    private style: any;
+
     private slideIndex: number = 0;
 
     @State()
@@ -56,7 +63,6 @@ export class AppEditor {
     private navService: NavService;
 
     private deckEditorService: DeckEditorService;
-    private deckStyle: any;
 
     private busySubscription: Subscription;
     private busyService: BusyService;
@@ -193,10 +199,12 @@ export class AppEditor {
         return new Promise<void>((resolve) => {
             this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
                 if (deck && deck.attributes && deck.attributes.style) {
-                    this.deckStyle = await ParseStyleUtils.convertStyle(deck.attributes.style);
+                    this.style = await ParseStyleUtils.convertStyle(deck.attributes.style);
                 } else {
-                    this.deckStyle = undefined;
+                    this.style = undefined;
                 }
+
+                this.background = await ParseBackgroundUtils.convertBackground(deck.background);
 
                 resolve();
             });
@@ -551,13 +559,14 @@ export class AppEditor {
 
                     {this.renderLoading()}
 
-                    <deckgo-deck embedded={true} style={this.deckStyle}
+                    <deckgo-deck embedded={true} style={this.style}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}
                                  onSlidePrevDidChange={() => this.hideToolbar()}
                                  onSlideToChange={() => this.hideToolbar()}>
                         {this.slides}
+                        {this.background}
                     </deckgo-deck>
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
