@@ -35,7 +35,7 @@ withServer act = do
             { HTTPClient.managerModifyRequest =
                 pure . rerouteDynamoDB
             }
-    withPristineDB $ \(conn, _iface) -> do
+    withPristineDB $ \conn -> do
       env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
 
       (port, socket) <- Warp.openFreePort
@@ -50,14 +50,16 @@ withServer act = do
           Left () -> error "Server returned"
           Right a -> pure a
 
-withPristineDB :: ((HC.Connection, DbInterface) -> IO a) -> IO a
+withPristineDB :: (HC.Connection -> IO a) -> IO a
 withPristineDB act = do
     conn <- getPostgresqlConnection
+    putStrLn "DROP TABLE IF EXISTS username"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS username") conn
-    void $ HS.run (HS.sql "DROP TABLE IF EXISTS account") conn
+    putStrLn "DROP TABLE IF EXISTS account CASCADE"
+    void $ HS.run (HS.sql "DROP TABLE IF EXISTS account CASCADE") conn
+    putStrLn "DROP TABLE IF EXISTS db_meta"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS db_meta") conn
-    iface <- getDbInterface conn
-    act (conn, iface)
+    act conn
 
 main :: IO ()
 main = do
@@ -74,7 +76,8 @@ main = do
       ]
 
 testUsersGet :: IO ()
-testUsersGet = withPristineDB $ \(_, iface) -> do
+testUsersGet = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
     dbGetAllUsers iface >>= \case
       [] -> pure ()
       users -> error $ "Expected no users, got: " <> show users
@@ -97,7 +100,8 @@ testUsersGet = withPristineDB $ \(_, iface) -> do
       users -> error $ "Expected no users, got: " <> show users
 
 testUsersGetByUserId :: IO ()
-testUsersGetByUserId = withPristineDB $ \(_, iface) -> do
+testUsersGetByUserId = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
     let someFirebaseId = FirebaseId "foo"
         someUserId = UserId someFirebaseId
         someUser = User
@@ -116,7 +120,8 @@ testUsersGetByUserId = withPristineDB $ \(_, iface) -> do
       Nothing -> error "Got no users"
 
 testUsersDelete :: IO ()
-testUsersDelete = withPristineDB $ \(_, iface) -> do
+testUsersDelete = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
     let someFirebaseId = FirebaseId "foo"
         someUserId = UserId someFirebaseId
         someUser = User
@@ -132,7 +137,8 @@ testUsersDelete = withPristineDB $ \(_, iface) -> do
       Right () -> pure ()
 
 testUsersCreate :: IO ()
-testUsersCreate = withPristineDB $ \(_, iface) -> do
+testUsersCreate = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
     let someFirebaseId = FirebaseId "foo"
         someUserId = UserId someFirebaseId
         someUser = User
@@ -144,7 +150,8 @@ testUsersCreate = withPristineDB $ \(_, iface) -> do
       Right () -> pure ()
 
 testUsersUpdate :: IO ()
-testUsersUpdate = withPristineDB $ \(_, iface) -> do
+testUsersUpdate = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
     let someFirebaseId = FirebaseId "foo"
         someUserId = UserId someFirebaseId
         someUser = User
@@ -258,16 +265,17 @@ main' = withServer $ \port -> do
     Right decks ->
       if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
 
-  let someUser = User
-        { userFirebaseId = someFirebaseId
-        , userUsername = Just (Username "patrick") }
+  let someUserInfo = UserInfo
+        { userInfoFirebaseId = someFirebaseId
+        , userInfoEmail = Just "patrick" }
+      someUser = userInfoToUser someUserInfo
 
-  runClientM (usersPost' b someUser) clientEnv >>= \case
+  runClientM (usersPost' b someUserInfo) clientEnv >>= \case
     Left err -> error $ "Expected user, got error: " <> show err
     Right (Item userId user) ->
       if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
 
-  runClientM (usersPost' b someUser) clientEnv >>= \case
+  runClientM (usersPost' b someUserInfo) clientEnv >>= \case
     Left (FailureResponse resp) ->
       if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
         error $ "Got unexpected response: " <> show resp
@@ -279,8 +287,8 @@ main' = withServer $ \port -> do
 
 usersGet' :: ClientM [Item UserId User]
 _usersGetUserId' :: UserId -> ClientM (Item UserId User)
-usersPost' :: T.Text -> User -> ClientM (Item UserId User)
-_usersPut' :: T.Text -> UserId -> User -> ClientM (Item UserId User)
+usersPost' :: T.Text -> UserInfo -> ClientM (Item UserId User)
+_usersPut' :: T.Text -> UserId -> UserInfo -> ClientM (Item UserId User)
 _usersDelete' :: T.Text -> UserId -> ClientM ()
 
 decksGet' :: T.Text -> Maybe UserId -> ClientM [Item DeckId Deck]

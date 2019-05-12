@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE MultiWayIf #-}
 {-# LANGUAGE MonadFailDesugaring #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DeriveGeneric #-}
@@ -93,20 +94,25 @@ type UsersAPI =
     Get '[JSON] [Item UserId User] :<|>
     Capture "user_id" UserId :> Get '[JSON] (Item UserId User) :<|>
     Protected :>
-      ReqBody '[JSON] User :>
+      ReqBody '[JSON] UserInfo :>
       Post '[JSON] (Item UserId User) :<|>
     Protected :>
       Capture "user_id" UserId :>
-      ReqBody '[JSON] User :> Put '[JSON] (Item UserId User) :<|>
+      ReqBody '[JSON] UserInfo :> Put '[JSON] (Item UserId User) :<|>
     Protected :> Capture "user_id" UserId :> Delete '[JSON] ()
 
 newtype Username = Username { unUsername :: T.Text }
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
+data UserInfo = UserInfo
+  { userInfoFirebaseId :: FirebaseId
+  , userInfoEmail :: Maybe T.Text
+  } deriving (Show, Eq)
+
 data User = User
   { userFirebaseId :: FirebaseId
-  , userUsername :: Maybe Username
+  , userUsername :: Maybe Username -- + return anonymous
   } deriving (Show, Eq)
 
 newtype UserId = UserId { unUserId :: FirebaseId }
@@ -134,6 +140,21 @@ newtype FirebaseId = FirebaseId { unFirebaseId :: T.Text }
     ( Generic )
 
 -- XXX !!?!??!?!! pattern match failures are propagated to the client!!!
+instance FromJSONObject UserInfo where
+  parseJSONObject = \obj ->
+    UserInfo
+      <$> obj .: "firebase_uid"
+      <*> (
+        (do
+          True <- obj .: "anonymous"
+          (Nothing :: Maybe T.Text) <- obj .:? "email"
+          pure Nothing
+        ) <|> (do
+          False <- obj .: "anonymous"
+          obj .:? "email"
+        )
+        )
+
 instance FromJSONObject User where
   parseJSONObject = \obj ->
     User
@@ -145,21 +166,31 @@ instance FromJSONObject User where
           pure Nothing
         ) <|> (do
           False <- obj .: "anonymous"
-          obj .: "username"
+          obj .:? "username"
         )
         )
+
+instance ToJSONObject UserInfo where
+  toJSONObject uinfo = HMS.fromList
+    [ "anonymous" .= isNothing (userInfoEmail uinfo)
+    , "email" .= userInfoEmail uinfo
+    , "firebase_uid" .= userInfoFirebaseId uinfo
+    ]
+
+instance Aeson.FromJSON UserInfo where
+  parseJSON = Aeson.withObject "UserInfo" parseJSONObject
 
 instance ToJSONObject User where
   toJSONObject user = HMS.fromList
-    [ "firebase_uid" .= userFirebaseId user
-    , "anonymous" .= isNothing (userUsername user)
+    [ "anonymous" .= isNothing (userUsername user)
     , "username" .= userUsername user
+    , "firebase_uid" .= userFirebaseId user
     ]
 
-instance Aeson.FromJSON User where
-  parseJSON = Aeson.withObject "User" parseJSONObject
-
 instance Aeson.ToJSON User where
+  toJSON = Aeson.Object . toJSONObject
+
+instance Aeson.ToJSON UserInfo where
   toJSON = Aeson.Object . toJSONObject
 
 instance ToSchema (Item UserId User) where
@@ -173,6 +204,18 @@ instance ToParamSchema (Item UserId User) where
 
 instance ToParamSchema UserId where
   toParamSchema _ = mempty
+
+-- instance ToSchema (Item UserId User) where
+  -- declareNamedSchema _ = pure $ NamedSchema (Just "UserWithId") mempty
+
+instance ToSchema UserInfo where
+  declareNamedSchema _ = pure $ NamedSchema (Just "UserInfo") mempty
+
+instance ToParamSchema (Item UserId UserInfo) where
+  toParamSchema _ = mempty
+
+-- instance ToParamSchema UserId where
+  -- toParamSchema _ = mempty
 
 -- DECKS
 
@@ -415,20 +458,33 @@ usersGetUserIdStatement = Statement sql encoder decoder True
           HD.nullableColumn (Username <$> HD.text)
         )
 
-usersPost :: HC.Connection -> Firebase.UserId -> User -> Servant.Handler (Item UserId User)
-usersPost conn fuid user = do
-    let userId = UserId (userFirebaseId user)
-    liftIO $ putStrLn "POST users"
+usersPost
+  :: HC.Connection
+  -> Firebase.UserId
+  -> UserInfo
+  -> Servant.Handler (Item UserId User)
+usersPost conn fuid uinfo = do
 
-    when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
+    when (Firebase.unUserId fuid /= unFirebaseId (userInfoFirebaseId uinfo)) $ do
       Servant.throwError Servant.err403
-    liftIO $ putStrLn "auth is ok"
 
     iface <- liftIO $ getDbInterface conn
     liftIO $ putStrLn "got DB interface"
+
+    let userId = UserId (userInfoFirebaseId uinfo)
+        user = userInfoToUser uinfo
     liftIO (dbCreateUser iface userId user) >>= \case
       Left () -> Servant.throwError $ Servant.err409
       Right () -> pure $ Item userId user
+
+userInfoToUser :: UserInfo -> User
+userInfoToUser uinfo = User
+    { userFirebaseId = userInfoFirebaseId uinfo
+    , userUsername = emailToUsername <$> userInfoEmail uinfo
+    }
+
+emailToUsername :: T.Text -> Username
+emailToUsername = Username
 
 usersPostSession :: UserId -> User -> HS.Session (Either () ())
 usersPostSession uid u = do
@@ -505,20 +561,26 @@ usersPostStatement'' = Statement sql encoder decoder True
         (HE.param HE.text)
     decoder = HD.unit
 
-usersPut :: HC.Connection -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
-usersPut conn fuid userId user = do
+usersPut
+  :: HC.Connection
+  -> Firebase.UserId
+  -> UserId
+  -> UserInfo
+  -> Servant.Handler (Item UserId User)
+usersPut conn fuid userId uinfo = do
 
     when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
       liftIO $ putStrLn $ unwords
-        [ "User is trying to update another user:", show (fuid, userId, user) ]
+        [ "User is trying to update another uinfo:", show (fuid, userId, uinfo) ]
       Servant.throwError Servant.err404
 
-    when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
+    when (Firebase.unUserId fuid /= unFirebaseId (userInfoFirebaseId uinfo)) $ do
       liftIO $ putStrLn $ unwords
-        [ "Client used the wrong user ID on user", show (fuid, userId, user) ]
+        [ "Client used the wrong uinfo ID on uinfo", show (fuid, userId, uinfo) ]
       Servant.throwError Servant.err400
 
     iface <- liftIO $ getDbInterface conn
+    let user = userInfoToUser uinfo
     liftIO (dbUpdateUser iface userId user) >>= \case
       UserUpdateOk -> pure $ Item userId user -- TODO: check # of affected rows
       e -> do -- TODO: handle not found et al.
@@ -1131,12 +1193,9 @@ data DbVersion
 
 -- | Migrates from ver to latest
 migrateFrom :: DbVersion -> HS.Session ()
-migrateFrom = \ver ->
-    if ver < maxBound
-    then
-      let frm = succ ver
-      in forM_ [frm .. maxBound] migrateTo
-    else pure ()
+migrateFrom = \ver -> do
+    liftIO $ putStrLn $ "Migration: " <> show (dbVersionToText <$> [ver ..maxBound])
+    forM_ [ver .. maxBound] migrateTo
   where
     -- | Migrates from (ver -1) to ver
     migrateTo :: DbVersion -> HS.Session ()
@@ -1159,7 +1218,7 @@ migrateFrom = \ver ->
       ver@DbVersion1 -> do
         HS.statement () $ Statement
           (BS8.unwords
-            [ "DROP TABLE IF EXISTS account"
+            [ "DROP TABLE IF EXISTS account CASCADE"
             ]
           ) HE.unit HD.unit True
         HS.statement () $ Statement
@@ -1215,8 +1274,7 @@ readDbVersion = do
             ,   ");"
             ]
           ) HE.unit HD.unit True
-        migrateFrom minBound
-        pure $ Right $ Just maxBound
+        pure $ Right Nothing
 
 latestDbVersion :: DbVersion
 latestDbVersion = maxBound
@@ -1230,17 +1288,18 @@ dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
     find (\ver -> dbVersionToText ver == t) [minBound .. maxBound]
 
--- XXX: this is not quite right, it'll never do the Version1 migration. Not a
--- problem currently since we dump everything at v2 anyway.
 migrate :: HS.Session ()
 migrate = do
     readDbVersion >>= \case
       Left e -> error $ show e
-      Right Nothing -> migrateFrom minBound
+      Right Nothing -> do
+        liftIO $ putStrLn "Migrating from beginning"
+        migrateFrom minBound
       Right (Just v) ->
-        if v >= maxBound
-        then pure ()
-        else migrateFrom v
+        if
+          | v == maxBound -> pure ()
+          | v > maxBound -> error "V greater than maxbound"
+          | v < maxBound -> migrateFrom (succ v)
 
 getDbInterface :: HC.Connection -> IO DbInterface
 getDbInterface conn = do
@@ -1251,8 +1310,8 @@ getDbInterface conn = do
     pure $ DbInterface
       { dbGetAllUsers = wrap usersGetSession
       , dbGetUserById = \uid -> wrap (usersGetUserIdSession uid)
-      , dbCreateUser = \uid user -> wrap (usersPostSession uid user)
-      , dbUpdateUser = \uid user -> wrap (usersPutSession uid user)
+      , dbCreateUser = \uid uinfo -> wrap (usersPostSession uid uinfo)
+      , dbUpdateUser = \uid uinfo -> wrap (usersPutSession uid uinfo)
       , dbDeleteUser = \uid -> Right <$> wrap (usersDeleteSession uid)
       }
   where
