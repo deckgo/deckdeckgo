@@ -490,7 +490,7 @@ export class DeckEventsHandler {
             }
 
             if (slide.hasAttribute('custom-background')) {
-                attributes.customBackground = true;
+                attributes.customBackground = '' + true;
             }
 
             resolve(attributes);
