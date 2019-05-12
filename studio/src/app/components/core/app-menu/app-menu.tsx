@@ -222,8 +222,7 @@ export class AppMenu {
     private renderUser() {
         if (Utils.isLoggedIn(this.authUser)) {
             return <ion-item class="user">
-                <app-avatar slot="start" src={this.authUser.photo_url}></app-avatar>
-                <ion-label>{this.authUser.name}</ion-label>
+                <app-user-info avatarColSize={3}></app-user-info>
             </ion-item>;
         } else {
             return <ion-item class="user"></ion-item>;

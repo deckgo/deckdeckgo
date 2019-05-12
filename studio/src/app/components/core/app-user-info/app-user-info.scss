@@ -1,0 +1,31 @@
+app-user-info {
+  width: 100%;
+
+  ion-grid {
+    --deckgo-avatar-size: 3rem;
+
+    padding: var(--deckgo-user-info-padding, 16px 8px);
+    margin: var(--deckgo-user-info-margin, 16px 0 0 0);
+
+    ion-col.user-info {
+      display: flex;
+      flex-direction: column;
+
+      ion-label {
+        margin: 0;
+      }
+
+      ion-label:first-of-type {
+        padding-bottom: 4px;
+        font-weight: 500;
+        color: black;
+        font-size: var(--font-size-normal);
+      }
+
+      ion-label:last-of-type {
+        color: var(--ion-color-medium);
+        font-size: var(--font-size-small);
+      }
+    }
+  }
+}
