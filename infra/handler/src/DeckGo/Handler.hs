@@ -1,20 +1,20 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE MultiWayIf #-}
-{-# LANGUAGE MonadFailDesugaring #-}
-{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE MonadFailDesugaring #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE MultiWayIf #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
 module DeckGo.Handler where
@@ -35,6 +35,7 @@ import Control.Lens hiding ((.=))
 import Control.Monad
 import Control.Monad.Except
 import Data.Aeson ((.=), (.:), (.!=), (.:?))
+import Data.Bifunctor
 import Data.Int
 import Data.List (find)
 import Data.Maybe
@@ -50,7 +51,7 @@ import Data.Char
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString.Char8 as BS8
-import qualified Data.ByteString.Lazy as BSL
+import qualified Data.ByteString.Lazy as BL
 import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
@@ -205,17 +206,11 @@ instance ToParamSchema (Item UserId User) where
 instance ToParamSchema UserId where
   toParamSchema _ = mempty
 
--- instance ToSchema (Item UserId User) where
-  -- declareNamedSchema _ = pure $ NamedSchema (Just "UserWithId") mempty
-
 instance ToSchema UserInfo where
   declareNamedSchema _ = pure $ NamedSchema (Just "UserInfo") mempty
 
 instance ToParamSchema (Item UserId UserInfo) where
   toParamSchema _ = mempty
-
--- instance ToParamSchema UserId where
-  -- toParamSchema _ = mempty
 
 -- DECKS
 
@@ -249,7 +244,6 @@ data Deck = Deck
   , deckAttributes :: HMS.HashMap T.Text T.Text
   } deriving (Show, Eq)
 
-
 {-
 data Deck = Deck
   { deckSlides :: [SlideId]
@@ -262,8 +256,6 @@ data Deck = Deck
   , deckPublicationDate :: Maybe UTCTime
   } deriving (Show, Eq)
 -}
-
-
 
 -- /decks/<deck-id>/publish
 
@@ -399,10 +391,10 @@ server env conn = serveUsers :<|> serveDecks :<|> serveSlides
       decksPut env :<|>
       decksDelete env
     serveSlides =
-      slidesGetSlideId env :<|>
-      slidesPost env :<|>
-      slidesPut env :<|>
-      slidesDelete env
+      slidesGetSlideId env conn :<|>
+      slidesPost env conn :<|>
+      slidesPut env conn :<|>
+      slidesDelete env conn
 
 -- USERS
 
@@ -481,7 +473,7 @@ usersPost conn fuid uinfo = do
     let userId = UserId (userInfoFirebaseId uinfo)
     user <- case userInfoToUser uinfo of
       Left e -> Servant.throwError Servant.err400
-        { Servant.errBody = BSL.fromStrict $ T.encodeUtf8 e }
+        { Servant.errBody = BL.fromStrict $ T.encodeUtf8 e }
       Right user -> pure user
     liftIO (dbCreateUser iface userId user) >>= \case
       Left () -> Servant.throwError $ Servant.err409
@@ -602,7 +594,7 @@ usersPut conn fuid userId uinfo = do
     iface <- liftIO $ getDbInterface conn
     user <- case userInfoToUser uinfo of
       Left e -> Servant.throwError Servant.err400
-        { Servant.errBody = BSL.fromStrict $ T.encodeUtf8 e }
+        { Servant.errBody = BL.fromStrict $ T.encodeUtf8 e }
       Right user -> pure user
     liftIO (dbUpdateUser iface userId user) >>= \case
       UserUpdateOk -> pure $ Item userId user -- TODO: check # of affected rows
@@ -614,6 +606,11 @@ data UserUpdateResult
   = UserUpdateOk
   | UserUpdateNotExist
   | UserUpdateClash
+  deriving Show
+
+data SlideUpdateResult
+  = SlideUpdateOk
+  | SlideUpdateNotExist
   deriving Show
 
 usersPutSession :: UserId -> User -> HS.Session UserUpdateResult
@@ -789,7 +786,6 @@ decksPut env fuid deckId deck = do
           , Set "DeckOwnerId" ":o"
           , Set "DeckAttributes" ":a"
           ]) &
-          -- "SET DeckSlides = :s, DeckName = :n, DeckOwnerId = :o, DeckAttributes = :a" &
         DynamoDB.uiExpressionAttributeValues .~ deckToItem' deck &
         DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
         DynamoDB.uiKey .~ HMS.singleton "DeckId"
@@ -867,8 +863,48 @@ getDeck env deckId = do
 
 -- SLIDES
 
-slidesGetSlideId :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler (Item SlideId Slide)
-slidesGetSlideId env fuid deckId slideId = do
+slidesPostSession :: SlideId -> Slide -> HS.Session ()
+slidesPostSession sid s = do
+    liftIO $ putStrLn "Creating slide in DB"
+    HS.statement (sid, s) slidesPostStatement
+
+slidesPostStatement :: Statement (SlideId, Slide) ()
+slidesPostStatement = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "INSERT INTO slide"
+      ,   "(id, content, template, attributes)"
+      ,   "VALUES ($1, $2, $3, $4)"
+      ]
+    encoder =
+      contramap (unSlideId . view _1) (HE.param HE.text) <>
+      contramap (slideContent . view _2) (HE.nullableParam HE.text) <>
+      contramap (slideTemplate . view _2) (HE.param HE.text) <>
+      contramap (Aeson.toJSON . slideAttributes . view _2) (HE.param HE.json)
+    decoder = HD.unit
+
+slidesPutSession :: SlideId -> Slide -> HS.Session ()
+slidesPutSession sid s = do
+    liftIO $ putStrLn "Updating slide in DB"
+    HS.statement (sid, s) slidesPutStatement
+
+slidesPutStatement :: Statement (SlideId, Slide) ()
+slidesPutStatement = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "UPDATE slide"
+      ,   "SET content = $2, template = $3, attributes = $4"
+      ,   "WHERE id = $1"
+      ]
+    encoder =
+      contramap (unSlideId . view _1) (HE.param HE.text) <>
+      contramap (slideContent . view _2) (HE.nullableParam HE.text) <>
+      contramap (slideTemplate . view _2) (HE.param HE.text) <>
+      contramap (Aeson.toJSON . slideAttributes . view _2) (HE.param HE.json)
+    decoder = HD.unit
+
+slidesGetSlideId :: Aws.Env -> HC.Connection -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler (Item SlideId Slide)
+slidesGetSlideId env conn fuid deckId slideId = do
 
     getDeck env deckId >>= \case
       Nothing ->  do
@@ -889,32 +925,57 @@ slidesGetSlideId env fuid deckId slideId = do
             , "but slide doesn't belong to deck owned by", show fuid ]
           Servant.throwError Servant.err404
 
-    res <- runAWS env $ Aws.send $ DynamoDB.getItem "Slides" &
-        DynamoDB.giKey .~ HMS.singleton "SlideId" (slideIdToAttributeValue slideId)
-    case res of
-      Right getItemResponse -> do
-        case getItemResponse ^. DynamoDB.girsResponseStatus of
-          200 -> pure ()
-          404 -> do
-            liftIO $ putStrLn $ "Item not found: " <> show getItemResponse
-            Servant.throwError Servant.err404
-          s -> do
-            liftIO $
-              putStrLn $ "Unkown response status: " <> show s <>
-              " in response " <> show getItemResponse
-            Servant.throwError Servant.err500
 
-        case itemToSlide (getItemResponse ^. DynamoDB.girsItem) of
-          Nothing -> do
-            liftIO $ putStrLn $ "Could not parse response: " <> show getItemResponse
-            Servant.throwError Servant.err500
-          Just slide -> pure slide
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+    iface <- liftIO $ getDbInterface conn
 
-slidesPost :: Aws.Env -> Firebase.UserId -> DeckId -> Slide -> Servant.Handler (Item SlideId Slide)
-slidesPost env fuid deckId slide = do
+    liftIO (dbGetSlideById iface slideId) >>= \case
+      Nothing -> Servant.throwError Servant.err404
+      Just slide -> pure $ Item slideId slide
+
+slidesGetByIdSession :: SlideId -> HS.Session (Maybe Slide)
+slidesGetByIdSession sid = do
+    liftIO $ putStrLn $ "Getting slide by id"
+    HS.statement sid slidesGetByIdStatement
+
+slidesGetByIdStatement :: Statement SlideId (Maybe Slide)
+slidesGetByIdStatement = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "SELECT content, template, attributes FROM slide"
+      ,   "WHERE id = $1"
+      ]
+    encoder = contramap unSlideId (HE.param HE.text)
+    decoder = HD.rowMaybe $ Slide <$>
+      HD.nullableColumn HD.text <*>
+      HD.column HD.text <*>
+      HD.column (HD.jsonBytes (\bs ->
+        first T.pack (Aeson.eitherDecode $ BL.fromStrict bs)
+        ))
+
+slidesDeleteSession :: SlideId -> HS.Session ()
+slidesDeleteSession sid = do
+    liftIO $ putStrLn $ "Deleting slide by id"
+    HS.statement sid slidesDeleteStatement
+
+slidesDeleteStatement :: Statement SlideId ()
+slidesDeleteStatement = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "DELETE FROM slide"
+      ,   "WHERE id = $1"
+      ]
+    encoder = contramap unSlideId (HE.param HE.text)
+    decoder = HD.unit
+
+slidesPost
+  :: Aws.Env
+  -> HC.Connection
+  -> Firebase.UserId
+  -> DeckId
+  -> Slide
+  -> Servant.Handler (Item SlideId Slide)
+slidesPost env conn fuid deckId slide = do
+    iface <- liftIO $ getDbInterface conn
 
     getDeck env deckId >>= \case
       Nothing ->  do
@@ -931,26 +992,21 @@ slidesPost env fuid deckId slide = do
 
     slideId <- liftIO $ SlideId <$> newId
 
-    res <- runAWS env $
-      Aws.send $ DynamoDB.putItem "Slides" &
-        DynamoDB.piItem .~ slideToItem slideId slide
-
-    case res of
-      Right {} -> pure ()
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+    liftIO (dbCreateSlide iface slideId slide)
 
     pure $ Item slideId slide
 
 slidesPut
   :: Aws.Env
+  -> HC.Connection
   -> Firebase.UserId
   -> DeckId
   -> SlideId
   -> Slide
   -> Servant.Handler (Item SlideId Slide)
-slidesPut env fuid deckId slideId slide = do
+slidesPut env conn fuid deckId slideId slide = do
+
+    iface <- liftIO $ getDbInterface conn
 
     getDeck env deckId >>= \case
       Nothing ->  do
@@ -971,28 +1027,12 @@ slidesPut env fuid deckId slideId slide = do
             , "but slide doesn't belong to deck owned by", show fuid ]
           Servant.throwError Servant.err404
 
-    res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Slides" &
-        DynamoDB.uiUpdateExpression .~ Just
-          (dynamoSet $
-            (if isJust (slideContent slide)
-              then [ Set "SlideContent" ":c" ]
-              else [ Remove "SlideContent" ]) <>
-            [ Set "SlideTemplate" ":t", Set "SlideAttributes" ":a"]) &
-        DynamoDB.uiExpressionAttributeValues .~ slideToItem' slide &
-        DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
-        DynamoDB.uiKey .~ HMS.singleton "SlideId"
-          (slideIdToAttributeValue slideId)
-
-    case res of
-      Right {} -> pure ()
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+    liftIO (dbUpdateSlide iface slideId slide)
 
     pure $ Item slideId slide
 
-slidesDelete :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler ()
-slidesDelete env fuid deckId slideId = do
+slidesDelete :: Aws.Env -> HC.Connection -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler ()
+slidesDelete env conn fuid deckId slideId = do
 
     getDeck env deckId >>= \case
       Nothing ->  do
@@ -1013,15 +1053,8 @@ slidesDelete env fuid deckId slideId = do
             , "but slide doesn't belong to deck owned by", show fuid ]
           Servant.throwError Servant.err404
 
-    res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Slides" &
-        DynamoDB.diKey .~  HMS.singleton "SlideId"
-          (slideIdToAttributeValue slideId)
-
-    case res of
-      Right {} -> pure ()
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+    iface <- liftIO $ getDbInterface conn
+    liftIO $ dbDeleteSlide iface slideId
 
 -------------------------------------------------------------------------------
 -- DYNAMODB
@@ -1145,44 +1178,44 @@ deckAttributesFromAttributeValue attr =
 
 -- SLIDES
 
-slideToItem :: SlideId -> Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
-slideToItem slideId Slide{slideContent, slideTemplate, slideAttributes} =
-    HMS.singleton "SlideId" (slideIdToAttributeValue slideId) <>
-    (maybe
-      HMS.empty
-      (\content -> HMS.singleton "SlideContent"
-        (slideContentToAttributeValue content))
-      slideContent) <>
-    HMS.singleton "SlideTemplate"
-      (slideTemplateToAttributeValue slideTemplate) <>
-    HMS.singleton "SlideAttributes"
-      (slideAttributesToAttributeValue slideAttributes)
+-- slideToItem :: SlideId -> Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
+-- slideToItem slideId Slide{slideContent, slideTemplate, slideAttributes} =
+    -- HMS.singleton "SlideId" (slideIdToAttributeValue slideId) <>
+    -- (maybe
+      -- HMS.empty
+      -- (\content -> HMS.singleton "SlideContent"
+        -- (slideContentToAttributeValue content))
+      -- slideContent) <>
+    -- HMS.singleton "SlideTemplate"
+      -- (slideTemplateToAttributeValue slideTemplate) <>
+    -- HMS.singleton "SlideAttributes"
+      -- (slideAttributesToAttributeValue slideAttributes)
 
-slideToItem' :: Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
-slideToItem' Slide{slideContent, slideTemplate, slideAttributes} =
-    (maybe
-      HMS.empty
-      (\content -> HMS.singleton ":c" (slideContentToAttributeValue content))
-      slideContent) <>
-    HMS.singleton ":t" (slideTemplateToAttributeValue slideTemplate) <>
-    HMS.singleton ":a" (slideAttributesToAttributeValue slideAttributes)
+-- slideToItem' :: Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
+-- slideToItem' Slide{slideContent, slideTemplate, slideAttributes} =
+    -- (maybe
+      -- HMS.empty
+      -- (\content -> HMS.singleton ":c" (slideContentToAttributeValue content))
+      -- slideContent) <>
+    -- HMS.singleton ":t" (slideTemplateToAttributeValue slideTemplate) <>
+    -- HMS.singleton ":a" (slideAttributesToAttributeValue slideAttributes)
 
-itemToSlide
-  :: HMS.HashMap T.Text DynamoDB.AttributeValue
-  -> Maybe (Item SlideId Slide)
-itemToSlide item = do
-    slideId <- HMS.lookup "SlideId" item >>= slideIdFromAttributeValue
+-- itemToSlide
+  -- :: HMS.HashMap T.Text DynamoDB.AttributeValue
+  -- -> Maybe (Item SlideId Slide)
+-- itemToSlide item = do
+    -- slideId <- HMS.lookup "SlideId" item >>= slideIdFromAttributeValue
 
-    slideContent <- case HMS.lookup "SlideContent" item of
-      Nothing -> Just Nothing
-      Just c -> Just <$> slideContentFromAttributeValue c
+    -- slideContent <- case HMS.lookup "SlideContent" item of
+      -- Nothing -> Just Nothing
+      -- Just c -> Just <$> slideContentFromAttributeValue c
 
-    slideTemplate <- HMS.lookup "SlideTemplate" item >>=
-      slideTemplateFromAttributeValue
-    slideAttributes <- HMS.lookup "SlideAttributes" item >>=
-      slideAttributesFromAttributeValue
+    -- slideTemplate <- HMS.lookup "SlideTemplate" item >>=
+      -- slideTemplateFromAttributeValue
+    -- slideAttributes <- HMS.lookup "SlideAttributes" item >>=
+      -- slideAttributesFromAttributeValue
 
-    pure $ Item slideId Slide{..}
+    -- pure $ Item slideId Slide{..}
 
 -- SLIDE ATTRIBUTES
 
@@ -1193,44 +1226,44 @@ slideIdToAttributeValue (SlideId slideId) =
 slideIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe SlideId
 slideIdFromAttributeValue attr = SlideId <$> attr ^. DynamoDB.avS
 
-slideContentToAttributeValue :: T.Text -> DynamoDB.AttributeValue
-slideContentToAttributeValue content =
-    DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 content)
+-- slideContentToAttributeValue :: T.Text -> DynamoDB.AttributeValue
+-- slideContentToAttributeValue content =
+    -- DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 content)
 
-slideContentFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
-slideContentFromAttributeValue attr = toSlideContent <$> attr ^. DynamoDB.avB
-  where
-    toSlideContent = T.decodeUtf8
+-- slideContentFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
+-- slideContentFromAttributeValue attr = toSlideContent <$> attr ^. DynamoDB.avB
+  -- where
+    -- toSlideContent = T.decodeUtf8
 
-slideTemplateToAttributeValue :: T.Text -> DynamoDB.AttributeValue
-slideTemplateToAttributeValue content =
-    DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 content)
+-- slideTemplateToAttributeValue :: T.Text -> DynamoDB.AttributeValue
+-- slideTemplateToAttributeValue content =
+    -- DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 content)
 
-slideTemplateFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
-slideTemplateFromAttributeValue attr = toSlideTemplate <$> attr ^. DynamoDB.avB
-  where
-    toSlideTemplate = T.decodeUtf8
+-- slideTemplateFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
+-- slideTemplateFromAttributeValue attr = toSlideTemplate <$> attr ^. DynamoDB.avB
+  -- where
+    -- toSlideTemplate = T.decodeUtf8
 
-slideAttributesToAttributeValue
-  :: HMS.HashMap T.Text T.Text
-  -> DynamoDB.AttributeValue
-slideAttributesToAttributeValue attributes =
-    DynamoDB.attributeValue & DynamoDB.avM .~
-      HMS.map attributeValueToAttributeValue attributes
-  where
-    attributeValueToAttributeValue :: T.Text -> DynamoDB.AttributeValue
-    attributeValueToAttributeValue attrValue =
-      DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 attrValue)
+-- slideAttributesToAttributeValue
+  -- :: HMS.HashMap T.Text T.Text
+  -- -> DynamoDB.AttributeValue
+-- slideAttributesToAttributeValue attributes =
+    -- DynamoDB.attributeValue & DynamoDB.avM .~
+      -- HMS.map attributeValueToAttributeValue attributes
+  -- where
+    -- attributeValueToAttributeValue :: T.Text -> DynamoDB.AttributeValue
+    -- attributeValueToAttributeValue attrValue =
+      -- DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 attrValue)
 
-slideAttributesFromAttributeValue
-  :: DynamoDB.AttributeValue
-  -> Maybe (HMS.HashMap T.Text T.Text)
-slideAttributesFromAttributeValue attr =
-    traverse attributeValueFromAttributeValue (attr ^. DynamoDB.avM)
-  where
-    attributeValueFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
-    attributeValueFromAttributeValue attrValue =
-      T.decodeUtf8 <$> attrValue ^. DynamoDB.avB
+-- slideAttributesFromAttributeValue
+  -- :: DynamoDB.AttributeValue
+  -- -> Maybe (HMS.HashMap T.Text T.Text)
+-- slideAttributesFromAttributeValue attr =
+    -- traverse attributeValueFromAttributeValue (attr ^. DynamoDB.avM)
+  -- where
+    -- attributeValueFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
+    -- attributeValueFromAttributeValue attrValue =
+      -- T.decodeUtf8 <$> attrValue ^. DynamoDB.avB
 
 -------------------------------------------------------------------------------
 -- DATABASE
@@ -1242,23 +1275,36 @@ data DbInterface = DbInterface
   , dbCreateUser :: UserId -> User -> IO (Either () ())
   , dbUpdateUser :: UserId -> User -> IO UserUpdateResult
   , dbDeleteUser :: UserId -> IO (Either () ())
+  , dbGetSlideById :: SlideId -> IO (Maybe Slide)
+  , dbCreateSlide :: SlideId -> Slide -> IO ()
+  , dbUpdateSlide :: SlideId -> Slide -> IO ()
+  , dbDeleteSlide :: SlideId -> IO () -- TODO: either () () for not found
   }
 
 data DbVersion
   = DbVersion0
   | DbVersion1
+  | DbVersion2
   deriving stock (Enum, Bounded, Ord, Eq)
 
 -- | Migrates from ver to latest
 migrateFrom :: DbVersion -> HS.Session ()
-migrateFrom = \ver -> do
-    liftIO $ putStrLn $ "Migration: " <> show (dbVersionToText <$> [ver ..maxBound])
-    forM_ [ver .. maxBound] migrateTo
+migrateFrom = \frm -> do
+    liftIO $ putStrLn $ "Migration: " <>
+      show (dbVersionToText <$> [frm ..maxBound])
+    forM_ [frm .. maxBound] $ \ver -> do
+      migrateTo ver
+      HS.statement (dbVersionToText ver) $ Statement
+        (BS8.unwords
+          [ "INSERT INTO db_meta (key, value) VALUES ('version', $1)"
+          , "ON CONFLICT (key) DO UPDATE SET value = $1"
+          ]
+        ) (HE.param HE.text) HD.unit True
   where
     -- | Migrates from (ver -1) to ver
     migrateTo :: DbVersion -> HS.Session ()
     migrateTo = \case
-      ver@DbVersion0 -> do
+      DbVersion0 -> do
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE account ("
@@ -1268,12 +1314,7 @@ migrateFrom = \ver -> do
             , ");"
             ]
           ) HE.unit HD.unit True
-        HS.statement (dbVersionToText ver) $ Statement
-          (BS8.unwords
-            [ "INSERT INTO db_meta (key, value) VALUES ('version', $1)"
-            ]
-          ) (HE.param HE.text) HD.unit True
-      ver@DbVersion1 -> do
+      DbVersion1 -> do
         HS.statement () $ Statement
           (BS8.unwords
             [ "DROP TABLE IF EXISTS account CASCADE"
@@ -1295,11 +1336,17 @@ migrateFrom = \ver -> do
             , ");"
             ]
           ) HE.unit HD.unit True
-        HS.statement (dbVersionToText ver) $ Statement
+      DbVersion2 -> do
+        HS.statement () $ Statement
           (BS8.unwords
-            [ "UPDATE db_meta SET value = $1 WHERE key = 'version'"
+            [ "CREATE TABLE slide ("
+            ,   "id TEXT UNIQUE NOT NULL,"
+            ,   "content TEXT,"
+            ,   "template TEXT,"
+            ,   "attributes JSON"
+            , ");"
             ]
-          ) (HE.param HE.text) HD.unit True
+          ) HE.unit HD.unit True
 
 readDbVersion :: HS.Session (Either String (Maybe DbVersion))
 readDbVersion = do
@@ -1341,6 +1388,7 @@ dbVersionToText :: DbVersion -> T.Text
 dbVersionToText = \case
   DbVersion0 -> "0"
   DbVersion1 -> "1"
+  DbVersion2 -> "2"
 
 dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
@@ -1370,7 +1418,14 @@ getDbInterface conn = do
       , dbGetUserById = \uid -> wrap (usersGetUserIdSession uid)
       , dbCreateUser = \uid uinfo -> wrap (usersPostSession uid uinfo)
       , dbUpdateUser = \uid uinfo -> wrap (usersPutSession uid uinfo)
+
+      -- TODO: proper return type on delete
       , dbDeleteUser = \uid -> Right <$> wrap (usersDeleteSession uid)
+
+      , dbGetSlideById = \sid -> wrap (slidesGetByIdSession sid)
+      , dbCreateSlide = \sid s -> wrap (slidesPostSession sid s)
+      , dbUpdateSlide = \sid s -> wrap (slidesPutSession sid s)
+      , dbDeleteSlide = \sid -> wrap (slidesDeleteSession sid)
       }
   where
     wrap :: forall b. HS.Session b -> IO b

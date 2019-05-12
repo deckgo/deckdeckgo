@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE LambdaCase #-}
 
-module Main where
+module Main (main) where
 
 import Control.Lens
 import Control.Monad
@@ -57,6 +57,8 @@ withPristineDB act = do
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS username") conn
     putStrLn "DROP TABLE IF EXISTS account CASCADE"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS account CASCADE") conn
+    putStrLn "DROP TABLE IF EXISTS slide"
+    void $ HS.run (HS.sql "DROP TABLE IF EXISTS slide") conn
     putStrLn "DROP TABLE IF EXISTS db_meta"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS db_meta") conn
     act conn
@@ -66,13 +68,20 @@ main = do
     setEnv "TASTY_NUM_THREADS" "1"
     Tasty.defaultMain $ Tasty.testGroup "tests"
       [ Tasty.testGroup "db"
-          [ Tasty.testCase "users get" testUsersGet
-          , Tasty.testCase "users create" testUsersCreate
-          , Tasty.testCase "users get by id" testUsersGetByUserId
-          , Tasty.testCase "users delete" testUsersDelete
-          , Tasty.testCase "users update" testUsersUpdate
+          [ Tasty.testGroup "users"
+              [ Tasty.testCase "get" testUsersGet
+              , Tasty.testCase "create" testUsersCreate
+              , Tasty.testCase "get by id" testUsersGetByUserId
+              , Tasty.testCase "delete" testUsersDelete
+              , Tasty.testCase "update" testUsersUpdate
+              ]
+          , Tasty.testGroup "slides"
+              [ Tasty.testCase "get" testSlidesGet
+              , Tasty.testCase "create" testSlidesCreate
+              , Tasty.testCase "update" testSlidesUpdate
+              ]
           ]
-      , Tasty.testCase "foo" main'
+      , Tasty.testCase "server" main'
       ]
 
 testUsersGet :: IO ()
@@ -178,6 +187,52 @@ testUsersUpdate = withPristineDB $ \conn -> do
         then pure ()
         else error "bad user"
       Nothing -> error "Got no users"
+
+testSlidesGet :: IO ()
+testSlidesGet = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
+    let someSlideId = SlideId "foo"
+        someSlide = Slide
+          { slideContent = Nothing
+          , slideTemplate = "The template"
+          , slideAttributes = HMS.singleton "foo" "bar"
+          }
+    dbCreateSlide iface someSlideId someSlide
+    dbGetSlideById iface someSlideId >>= \case
+      Nothing -> error "couldn't find slide"
+      Just slide -> unless (slide == someSlide) $ error "Bad slide"
+
+testSlidesCreate :: IO ()
+testSlidesCreate = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
+    let someSlideId = SlideId "foo"
+        someSlide = Slide
+          { slideContent = Nothing
+          , slideTemplate = "The template"
+          , slideAttributes = HMS.singleton "foo" "bar"
+          }
+    dbCreateSlide iface someSlideId someSlide
+
+testSlidesUpdate :: IO ()
+testSlidesUpdate = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
+    let someSlideId = SlideId "foo"
+        someSlide = Slide
+          { slideContent = Nothing
+          , slideTemplate = "The template"
+          , slideAttributes = HMS.singleton "foo" "bar"
+          }
+    dbCreateSlide iface someSlideId someSlide
+
+    let someOtherSlide = Slide
+          { slideContent = Just "Some content"
+          , slideTemplate = "The template"
+          , slideAttributes = HMS.singleton "foo" "baz"
+          }
+
+    dbUpdateSlide iface someSlideId someOtherSlide
+
+    -- TODO: test result of "GET"
 
 getTokenPath :: IO FilePath
 getTokenPath =

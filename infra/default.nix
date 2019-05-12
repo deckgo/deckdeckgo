@@ -80,15 +80,6 @@ rec
         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
         > /dev/null
 
-      aws dynamodb create-table \
-        --table-name Slides \
-        --attribute-definitions \
-            AttributeName=SlideId,AttributeType=S \
-        --key-schema AttributeName=SlideId,KeyType=HASH \
-        --endpoint-url http://127.0.0.1:8000 \
-        --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-        > /dev/null
-
       export PGHOST=localhost
       export PGPORT=5432
       export PGDATABASE=test_db
