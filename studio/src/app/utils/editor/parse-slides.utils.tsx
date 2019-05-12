@@ -95,6 +95,10 @@ export class ParseSlidesUtils {
                 attributes['contenteditable'] = true;
             }
 
+            if (element.nodeName&& element.nodeName.toLowerCase() === 'deckgo-lazy-img') {
+                attributes['contenteditable'] = 'false';
+            }
+
             resolve(<Elem {...attributes}>{content}</Elem>);
         });
     }
