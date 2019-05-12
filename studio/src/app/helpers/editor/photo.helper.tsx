@@ -39,6 +39,8 @@ export class PhotoHelper {
         (img as any).imgSrc = photo.urls.regular;
         (img as any).imgAlt = photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.regular);
 
+        img.setAttribute('contentEditable', 'false');
+
         return img;
     }
 
