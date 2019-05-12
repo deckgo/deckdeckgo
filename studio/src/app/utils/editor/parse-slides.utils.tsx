@@ -42,10 +42,12 @@ export class ParseSlidesUtils {
 
             const src = slide.attributes && slide.attributes.src ? slide.attributes.src : undefined;
 
+            const customBackground = slide.attributes && slide.attributes.customBackground ? slide.attributes.customBackground : undefined;
+
             const SlideElement: string = slideTag;
 
             // @ts-ignore
-            const result: any = <SlideElement slide_id={slide.id} style={style} src={src}>
+            const result: any = <SlideElement slide_id={slide.id} style={style} src={src} custom-background={customBackground}>
                 {content}
             </SlideElement>;
 
