@@ -20,6 +20,12 @@
         "description": "Nixpkgs/NixOS branches that track the Nixpkgs/NixOS channels",
         "rev": "88ae8f7d55efa457c95187011eb410d097108445"
     },
+    "port-utils": {
+        "url": "http://hackage.haskell.org/package/port-utils-0.2.1.0/port-utils-0.2.1.0.tar.gz",
+        "url_template": "http://hackage.haskell.org/package/port-utils-0.2.1.0/port-utils-0.2.1.0.tar.gz",
+        "type": "tarball",
+        "sha256": "1vfmm8mmkmfffgza64h6qz4ibniibqdr8mj452ikp1xmvv6m8qm9"
+    },
     "dynamodb": {
         "url": "https://s3.eu-central-1.amazonaws.com/dynamodb-local-frankfurt/dynamodb_local_2019-02-07.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",

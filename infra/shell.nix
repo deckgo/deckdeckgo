@@ -28,5 +28,9 @@ in
          ${pgutil.stop_pg}
        }
 
+       function repl() {
+         ghci handler/app/Test.hs handler/src/DeckGo/Handler.hs
+       }
+
       '';
    })

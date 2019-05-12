@@ -216,6 +216,12 @@ export class DeckEventsHandler {
                 slidePost.content = content
             }
 
+            const attributes: SlideAttributes = await this.getSlideAttributes(slide);
+
+            if (attributes && Object.keys(attributes).length > 0) {
+                slidePost.attributes = attributes;
+            }
+
             const persistedSlide: Slide = await this.slideService.post(deck.id, slidePost);
 
             if (persistedSlide && persistedSlide.id) {
