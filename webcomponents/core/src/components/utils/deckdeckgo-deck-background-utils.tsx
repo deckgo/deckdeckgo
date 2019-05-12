@@ -35,7 +35,7 @@ export class DeckdeckgoDeckBackgroundUtils {
 
       const images: HTMLElement[] = Array.from(allShadowImagesComponents);
 
-      await DeckdeckgoUtils.lazyLoadSelectedImages(images);
+      await DeckdeckgoUtils.lazyLoadSelectedLazyImagesComponent(images);
 
       resolve();
     });

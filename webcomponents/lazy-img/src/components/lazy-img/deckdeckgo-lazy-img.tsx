@@ -75,7 +75,7 @@ export class DeckdeckgoLazyImg {
 
   private load(img: HTMLImageElement | Element): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (img && img.getAttribute('data-src')) {
+      if (img && img.hasAttribute('data-src')) {
         img.setAttribute('src', img.getAttribute('data-src'));
         img.removeAttribute('data-src');
       }

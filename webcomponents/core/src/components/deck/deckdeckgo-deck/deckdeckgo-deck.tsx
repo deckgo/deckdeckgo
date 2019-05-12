@@ -389,7 +389,7 @@ export class DeckdeckgoDeck {
   async slideDidLoad() {
     await this.updateLength();
 
-    await this.emitSlidesDidLoad();
+    await this.afterSlidesDidLoad();
   }
 
   private async updateLength() {
@@ -397,7 +397,7 @@ export class DeckdeckgoDeck {
     this.length = filteredSlides ? filteredSlides.length : 0;
   }
 
-  private emitSlidesDidLoad(): Promise<void> {
+  private afterSlidesDidLoad(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
