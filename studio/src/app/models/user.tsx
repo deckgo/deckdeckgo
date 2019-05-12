@@ -9,5 +9,6 @@ export interface UserInfo {
 export interface User {
     id: string;
     anonymous: boolean;
+    firebase_uid: string;
     username?: string;
 }
