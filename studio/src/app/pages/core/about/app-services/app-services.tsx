@@ -18,7 +18,7 @@ export class AppAbout {
 
                     <h2>Amazon</h2>
 
-                    <p>We are using AWS <a href="https://aws.amazon.com/lambda/">Lambda</a>, <a href="https://aws.amazon.com/dynamodb/">Dynamo DB</a>, <a href="https://aws.amazon.com/rds/postgresql/">PostgreSQL</a> and <a href="https://aws.amazon.com/s3/">S3</a> to save the data and publish the presentations as Progressive Web Apps online. The choice behind this is mostly the fact that we thought that the S3 solution was a good one for our purpose but beside that, it was also challenging to run Haskell Webapps on AWS Lambda.</p>
+                    <p>We are using AWS <a href="https://aws.amazon.com/lambda/">Lambda</a>, <a href="https://aws.amazon.com/dynamodb/">Dynamo DB</a>, <a href="https://aws.amazon.com/rds/">RDS</a> and <a href="https://aws.amazon.com/s3/">S3</a> to save the data and publish the presentations as Progressive Web Apps online. The choice behind this is mostly the fact that we thought that the S3 solution was a good one for our purpose but beside that, it was also challenging to run Haskell Webapps on AWS Lambda.</p>
 
                     <h2>Google</h2>
 
