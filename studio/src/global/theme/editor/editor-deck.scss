@@ -68,4 +68,8 @@ deckgo-deck {
     justify-content: center;
     align-items: center;
   }
+
+  :not([slot="background"]) > deckgo-lazy-img {
+    --deckgo-lazy-img-padding: 16px;
+  }
 }

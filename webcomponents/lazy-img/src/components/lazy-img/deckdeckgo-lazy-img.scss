@@ -5,5 +5,7 @@ img {
   height: var(--deckgo-lazy-img-height);
   width: var(--deckgo-lazy-img-width);
 
-  float: var(--deckgo-lazy-float);
+  float: var(--deckgo-lazy-img-float);
+
+  padding: var(--deckgo-lazy-img-padding);
 }
