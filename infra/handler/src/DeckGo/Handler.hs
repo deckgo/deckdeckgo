@@ -20,6 +20,7 @@
 module DeckGo.Handler where
 
 -- TODO: created_at, updated_at
+-- TODO: nullable slide content
 -- TODO: improve swagger description
 -- TODO: feed API
 
@@ -45,9 +46,11 @@ import Servant (Context ((:.)))
 import Servant.API
 import Servant.Auth.Firebase (Protected)
 import UnliftIO
+import Data.Char
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString.Char8 as BS8
+import qualified Data.ByteString.Lazy as BSL
 import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
@@ -186,9 +189,6 @@ instance ToJSONObject User where
     , "username" .= userUsername user
     , "firebase_uid" .= userFirebaseId user
     ]
-
-instance Aeson.ToJSON User where
-  toJSON = Aeson.Object . toJSONObject
 
 instance Aeson.ToJSON UserInfo where
   toJSON = Aeson.Object . toJSONObject
@@ -472,19 +472,32 @@ usersPost conn fuid uinfo = do
     liftIO $ putStrLn "got DB interface"
 
     let userId = UserId (userInfoFirebaseId uinfo)
-        user = userInfoToUser uinfo
+    user <- case userInfoToUser uinfo of
+      Left e -> Servant.throwError Servant.err400
+        { Servant.errBody = BSL.fromStrict $ T.encodeUtf8 e }
+      Right user -> pure user
     liftIO (dbCreateUser iface userId user) >>= \case
       Left () -> Servant.throwError $ Servant.err409
+        { Servant.errBody = Aeson.encode (Item userId user) }
       Right () -> pure $ Item userId user
 
-userInfoToUser :: UserInfo -> User
-userInfoToUser uinfo = User
-    { userFirebaseId = userInfoFirebaseId uinfo
-    , userUsername = emailToUsername <$> userInfoEmail uinfo
-    }
+userInfoToUser :: UserInfo -> Either T.Text User
+userInfoToUser uinfo = User <$>
+    pure (userInfoFirebaseId uinfo) <*>
+    (traverse emailToUsername (userInfoEmail uinfo))
 
-emailToUsername :: T.Text -> Username
-emailToUsername = Username
+emailToUsername :: T.Text -> Either T.Text Username
+emailToUsername t = case T.breakOn "@" t of
+    ("", _) -> Left ("Invalid email: " <> t)
+    (out', _) -> case dropBadChars (T.toLower out') of
+      "" -> Left ("No valid char found: " <> out')
+      out -> Right $ Username out
+  where
+    dropBadChars :: T.Text -> T.Text
+    dropBadChars = T.concatMap
+      $ \case
+        c | isAscii c && isAlphaNum c -> T.singleton c
+          | otherwise -> ""
 
 usersPostSession :: UserId -> User -> HS.Session (Either () ())
 usersPostSession uid u = do
@@ -580,7 +593,10 @@ usersPut conn fuid userId uinfo = do
       Servant.throwError Servant.err400
 
     iface <- liftIO $ getDbInterface conn
-    let user = userInfoToUser uinfo
+    user <- case userInfoToUser uinfo of
+      Left e -> Servant.throwError Servant.err400
+        { Servant.errBody = BSL.fromStrict $ T.encodeUtf8 e }
+      Right user -> pure user
     liftIO (dbUpdateUser iface userId user) >>= \case
       UserUpdateOk -> pure $ Item userId user -- TODO: check # of affected rows
       e -> do -- TODO: handle not found et al.

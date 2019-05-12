@@ -267,8 +267,8 @@ main' = withServer $ \port -> do
 
   let someUserInfo = UserInfo
         { userInfoFirebaseId = someFirebaseId
-        , userInfoEmail = Just "patrick" }
-      someUser = userInfoToUser someUserInfo
+        , userInfoEmail = Just "patrick@foo.com" }
+      Right someUser = userInfoToUser someUserInfo
 
   runClientM (usersPost' b someUserInfo) clientEnv >>= \case
     Left err -> error $ "Expected user, got error: " <> show err
@@ -276,6 +276,7 @@ main' = withServer $ \port -> do
       if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
 
   runClientM (usersPost' b someUserInfo) clientEnv >>= \case
+    -- TODO: test that user is returned here, even on 409
     Left (FailureResponse resp) ->
       if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
         error $ "Got unexpected response: " <> show resp
