@@ -34,6 +34,13 @@ export class AppUserMenu {
     }
 
     render() {
+        return [
+            <app-user-info></app-user-info>,
+            this.renderActions()
+        ]
+    }
+
+    private renderActions() {
         return <ion-list>
             <ion-item onClick={() => this.signOut()}>
                 <ion-label>Sign out</ion-label>

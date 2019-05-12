@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -24,12 +25,24 @@ module DeckGo.Handler where
 -- TODO: check permissions
 -- TODO: TTL on anonymous users
 -- TODO: enforce uniqueness on deck_name (per user)
+-- TODO: return 500 on all DB errors
 
+import Data.List (find)
 import Control.Lens hiding ((.=))
+import Data.Int
+-- import Data.Functor.Contravariant
+-- import Hasql.Session (Session)
+import Hasql.Statement (Statement(..))
+import qualified Hasql.Session as HS
+import qualified Hasql.Decoders as HD
+import qualified Hasql.Encoders as HE
+import qualified Hasql.Connection as HC
+-- import Control.Lens hiding ((.=))
 import Control.Monad
 import Data.Maybe
 import Control.Monad.Except
 import Data.Aeson ((.=), (.:), (.!=), (.:?))
+import qualified Data.ByteString.Char8 as BS8
 import Data.Proxy
 import Data.Swagger
 import GHC.Generics
@@ -44,7 +57,6 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
-import qualified Network.HTTP.Client as HTTP
 import qualified Network.Wai as Wai
 import qualified Servant as Servant
 import qualified Servant.Auth.Firebase as Firebase
@@ -305,22 +317,22 @@ api = Proxy
 -- SERVER
 ------------------------------------------------------------------------------
 
-application :: HTTP.Manager -> Firebase.ProjectId -> Aws.Env -> Wai.Application
-application mgr projectId env =
+application :: Firebase.FirebaseLoginSettings -> Aws.Env -> HC.Connection -> Wai.Application
+application settings env conn =
     Servant.serveWithContext
       api
-      (mgr :. projectId :. Servant.EmptyContext)
-      (server env)
+      (settings :. Servant.EmptyContext)
+      (server env conn)
 
-server :: Aws.Env -> Servant.Server API
-server env = serveUsers :<|> serveDecks :<|> serveSlides
+server :: Aws.Env -> HC.Connection -> Servant.Server API
+server env conn = serveUsers :<|> serveDecks :<|> serveSlides
   where
     serveUsers =
-      usersGet env :<|>
-      usersGetUserId env :<|>
-      usersPost env :<|>
-      usersPut env :<|>
-      usersDelete env
+      usersGet conn :<|>
+      usersGetUserId conn :<|>
+      usersPost conn :<|>
+      usersPut conn :<|>
+      usersDelete conn
     serveDecks =
       decksGet env :<|>
       decksGetDeckId env :<|>
@@ -335,72 +347,99 @@ server env = serveUsers :<|> serveDecks :<|> serveSlides
 
 -- USERS
 
-usersGet :: Aws.Env -> Servant.Handler [Item UserId User]
-usersGet env = do
-    res <- runAWS env $ Aws.send $ DynamoDB.scan "Users"
-    case res of
-      Right scanResponse ->
-        case sequence $ scanResponse ^. DynamoDB.srsItems <&> itemToUser of
-          Nothing -> do
-            liftIO $ putStrLn $ "Could not parse response: " <> show scanResponse
-            Servant.throwError Servant.err500
-          Just ids -> pure ids
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+usersGet :: HC.Connection -> Servant.Handler [Item UserId User]
+usersGet conn = do
+    iface <- liftIO $ getDbInterface conn
+    liftIO $ dbGetAllUsers iface -- TODO: to Servant err500 on error
 
-usersGetUserId :: Aws.Env -> UserId -> Servant.Handler (Item UserId User)
-usersGetUserId env userId = do
-    res <- runAWS env $ Aws.send $ DynamoDB.getItem "Users" &
-        DynamoDB.giKey .~ HMS.singleton "UserFirebaseId" (userIdToAttributeValue userId)
-    case res of
-      Right getItemResponse -> do
-        case getItemResponse ^. DynamoDB.girsResponseStatus of
-          200 -> pure ()
-          404 -> do
-            liftIO $ putStrLn $ "Item not found: " <> show getItemResponse
-            Servant.throwError Servant.err404
-          s -> do
-            liftIO $
-              putStrLn $ "Unkown response status: " <> show s <>
-              " in response " <> show getItemResponse
-            Servant.throwError Servant.err500
+usersGetSession :: HS.Session [Item UserId User]
+usersGetSession = do
+    HS.statement () usersGetStatement
 
-        case itemToUser (getItemResponse ^. DynamoDB.girsItem) of
-          Nothing -> do
-            liftIO $ putStrLn $ "Could not parse response: " <> show getItemResponse
-            Servant.throwError Servant.err500
-          Just user -> pure user
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+usersGetStatement :: Statement () [Item UserId User]
+usersGetStatement = Statement sql encoder decoder True
+  where
+    sql = "SELECT * FROM account"
+    encoder = HE.unit
+    decoder = HD.rowList $
+      Item <$>
+        ((UserId . FirebaseId) <$> HD.column HD.text) <*>
+        ( User <$>
+          (FirebaseId <$> HD.column HD.text) <*>
+          HD.column HD.bool
+        )
 
-usersPost :: Aws.Env -> Firebase.UserId -> User -> Servant.Handler (Item UserId User)
-usersPost env fuid user = do
+usersGetUserId :: HC.Connection -> UserId -> Servant.Handler (Item UserId User)
+usersGetUserId conn userId = do
+    iface <- liftIO $ getDbInterface conn
+    liftIO (dbGetUserById iface userId) >>= \case
+      Nothing -> Servant.throwError Servant.err404
+      Just u -> pure u
 
+usersGetUserIdSession :: UserId -> HS.Session (Maybe (Item UserId User))
+usersGetUserIdSession userId = do
+    HS.statement userId usersGetUserIdStatement
+
+usersGetUserIdStatement :: Statement UserId (Maybe (Item UserId User))
+usersGetUserIdStatement = Statement sql encoder decoder True
+  where
+    sql = "SELECT * FROM account WHERE id = $1"
+    encoder = contramap
+        (unFirebaseId . unUserId)
+        (HE.param HE.text)
+    decoder = HD.rowMaybe $
+      Item <$>
+        ((UserId . FirebaseId) <$> HD.column HD.text) <*>
+        ( User <$>
+          (FirebaseId <$> HD.column HD.text) <*>
+          HD.column HD.bool
+        )
+
+usersPost :: HC.Connection -> Firebase.UserId -> User -> Servant.Handler (Item UserId User)
+usersPost conn fuid user = do
     let userId = UserId (userFirebaseId user)
+    liftIO $ putStrLn "POST users"
 
     when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
       Servant.throwError Servant.err403
+    liftIO $ putStrLn "auth is ok"
 
-    res <- runAWS env $ Aws.send $ DynamoDB.putItem "Users" &
-        DynamoDB.piItem .~ userToItem userId user &
-        DynamoDB.piConditionExpression .~ Just "attribute_not_exists(UserFirebaseId)"
+    iface <- liftIO $ getDbInterface conn
+    liftIO $ putStrLn "got DB interface"
+    liftIO (dbCreateUser iface userId user) >>= \case
+      Left () -> Servant.throwError $ Servant.err409
+      Right () -> pure $ Item userId user
 
-    case res of
-      Right {} -> pure ()
-      Left e -> case e ^? DynamoDB._ConditionalCheckFailedException of
-        Just _e -> do
-          u <- usersGetUserId env userId
-          Servant.throwError Servant.err409 { Servant.errBody = Aeson.encode u }
-        Nothing -> do
-          liftIO $ print e
-          Servant.throwError Servant.err500
+usersPostSession :: UserId -> User -> HS.Session (Either () ())
+usersPostSession uid u = do
+    liftIO $ putStrLn "Creating user in DB"
+    HS.statement (uid,u) usersPostStatement >>= \case
+      1 -> do
+        liftIO $ putStrLn "User was created"
+        pure $ Right ()
+      _ -> do
+        liftIO $ putStrLn "Couldn't create exactly one user"
+        pure $ Left ()
 
-    pure $ Item userId user
+usersPostStatement :: Statement (UserId, User) Int64
+usersPostStatement = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "INSERT INTO account"
+      ,   "(id, firebase_id, anonymous)"
+      ,   "VALUES ($1, $2, $3)"
+      ,   "ON CONFLICT DO NOTHING"
+      ]
+    encoder =
+      contramap
+        (unFirebaseId . unUserId . view _1)
+        (HE.param HE.text) <>
+      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text) <>
+      contramap (userAnonymous . view _2) (HE.param HE.bool)
+    decoder = HD.rowsAffected
 
-usersPut :: Aws.Env -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
-usersPut env fuid userId user = do
+usersPut :: HC.Connection -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
+usersPut conn fuid userId user = do
 
     when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
       liftIO $ putStrLn $ unwords
@@ -412,37 +451,56 @@ usersPut env fuid userId user = do
         [ "Client used the wrong user ID on user", show (fuid, userId, user) ]
       Servant.throwError Servant.err400
 
-    res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Users" &
-        DynamoDB.uiUpdateExpression .~
-          Just "SET UserDecks = :s, UserUsername = :n" &
-        DynamoDB.uiExpressionAttributeValues .~ userToItem' user &
-        DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
-        DynamoDB.uiKey .~ HMS.singleton "UserId"
-          (userIdToAttributeValue userId)
-
-    case res of
-      Right {} -> pure ()
-      Left e -> do
+    iface <- liftIO $ getDbInterface conn
+    liftIO (dbUpdateUser iface userId user) >>= \case
+      Right () -> pure $ Item userId user -- TODO: check # of affected rows
+      Left e -> do -- TODO: handle not found et al.
         liftIO $ print e
         Servant.throwError Servant.err500
 
-    pure $ Item userId user
+    -- pure $ Item userId user
 
-usersDelete :: Aws.Env -> Firebase.UserId -> UserId -> Servant.Handler ()
-usersDelete env fuid userId = do
+usersPutSession :: UserId -> User -> HS.Session ()
+usersPutSession uid u = do
+    HS.statement (uid,u) usersPutStatement
+
+usersPutStatement :: Statement (UserId, User) ()
+usersPutStatement = Statement sql encoder decoder True
+  where
+    -- TODO: make sure firebase_id is unique
+    sql = "UPDATE account SET firebase_id = $2, anonymous = $3 WHERE id = $1"
+    encoder =
+      contramap
+        (unFirebaseId . unUserId . view _1)
+        (HE.param HE.text) <>
+      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text) <>
+      contramap (userAnonymous . view _2) (HE.param HE.bool)
+    decoder = HD.unit -- TODO: affected rows
+
+usersDelete :: HC.Connection -> Firebase.UserId -> UserId -> Servant.Handler ()
+usersDelete conn fuid userId = do
 
     when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
       Servant.throwError Servant.err403
 
-    res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Users" &
-        DynamoDB.diKey .~ HMS.singleton "UserFirebaseId"
-          (userIdToAttributeValue userId)
+    iface <- liftIO $ getDbInterface conn
+    liftIO (dbDeleteUser iface userId) >>= \case
+      Left () -> Servant.throwError Servant.err404
+      Right () -> pure ()
 
-    case res of
-      Right {} -> pure ()
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
+usersDeleteSession :: UserId -> HS.Session ()
+usersDeleteSession uid = do
+    HS.statement uid usersDeleteStatement
+
+usersDeleteStatement :: Statement UserId ()
+usersDeleteStatement = Statement sql encoder decoder True
+  where
+    sql = "DELETE FROM account WHERE id = $1"
+    encoder =
+      contramap
+        (unFirebaseId . unUserId)
+        (HE.param HE.text)
+    decoder = HD.unit -- TODO: affected rows
 
 -- DECKS
 
@@ -705,7 +763,13 @@ slidesPost env fuid deckId slide = do
 
     pure $ Item slideId slide
 
-slidesPut :: Aws.Env -> Firebase.UserId -> DeckId -> SlideId -> Slide -> Servant.Handler (Item SlideId Slide)
+slidesPut
+  :: Aws.Env
+  -> Firebase.UserId
+  -> DeckId
+  -> SlideId
+  -> Slide
+  -> Servant.Handler (Item SlideId Slide)
 slidesPut env fuid deckId slideId slide = do
 
     getDeck env deckId >>= \case
@@ -783,62 +847,11 @@ slidesDelete env fuid deckId slideId = do
 -- DYNAMODB
 -------------------------------------------------------------------------------
 
--- USERS
-
-userToItem :: UserId -> User -> HMS.HashMap T.Text DynamoDB.AttributeValue
-userToItem userId User{userAnonymous} =
-    HMS.singleton "UserFirebaseId" (userIdToAttributeValue userId) <>
-    HMS.singleton "UserAnonymous" (userAnonymousToAttributeValue userAnonymous)
-
-userToItem' :: User -> HMS.HashMap T.Text DynamoDB.AttributeValue
-userToItem' User{userAnonymous} =
-    HMS.singleton ":a" (userAnonymousToAttributeValue userAnonymous)
-
-itemToUser :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (Item UserId User)
-itemToUser item = do
-    userId <- HMS.lookup "UserFirebaseId" item >>= userIdFromAttributeValue
-    let userFirebaseId = unUserId userId
-    userAnonymous <- HMS.lookup "UserAnonymous" item >>= userAnonymousFromAttributeValue
-    pure $ Item userId User{..}
-
 -- USER ATTRIBUTES
 
 userIdToAttributeValue :: UserId -> DynamoDB.AttributeValue
 userIdToAttributeValue (UserId (FirebaseId userId)) =
     DynamoDB.attributeValue & DynamoDB.avS .~ Just userId
-
-userIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe UserId
-userIdFromAttributeValue attr = (UserId . FirebaseId) <$> attr ^. DynamoDB.avS
-
-userNameToAttributeValue :: Username -> DynamoDB.AttributeValue
-userNameToAttributeValue (Username username) =
-    DynamoDB.attributeValue & DynamoDB.avS .~ Just username
-
-userNameFromAttributeValue :: DynamoDB.AttributeValue -> Maybe Username
-userNameFromAttributeValue attr = Username <$> attr ^. DynamoDB.avS
-
-userFirebaseIdToAttributeValue :: FirebaseId -> DynamoDB.AttributeValue
-userFirebaseIdToAttributeValue (FirebaseId userId) =
-    DynamoDB.attributeValue & DynamoDB.avS .~ Just userId
-
-userFirebaseIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe FirebaseId
-userFirebaseIdFromAttributeValue attr = FirebaseId <$> attr ^. DynamoDB.avS
-
-userAnonymousToAttributeValue :: Bool -> DynamoDB.AttributeValue
-userAnonymousToAttributeValue b =
-    DynamoDB.attributeValue & DynamoDB.avBOOL .~ Just b
-
-userAnonymousFromAttributeValue :: DynamoDB.AttributeValue -> Maybe Bool
-userAnonymousFromAttributeValue attr = attr ^. DynamoDB.avBOOL
-
-userDecksToAttributeValue :: [DeckId] -> DynamoDB.AttributeValue
-userDecksToAttributeValue userDecks =
-    DynamoDB.attributeValue & DynamoDB.avL .~
-      (deckIdToAttributeValue <$> userDecks)
-
-userDecksFromAttributeValue :: DynamoDB.AttributeValue -> Maybe [DeckId]
-userDecksFromAttributeValue attr =
-    traverse deckIdFromAttributeValue (attr ^. DynamoDB.avL)
 
 -- DECKS
 
@@ -848,7 +861,8 @@ deckToItem deckId Deck{deckSlides, deckDeckname, deckOwnerId, deckAttributes} =
     HMS.singleton "DeckSlides" (deckSlidesToAttributeValue deckSlides) <>
     HMS.singleton "DeckName" (deckNameToAttributeValue deckDeckname) <>
     HMS.singleton "DeckOwnerId" (deckOwnerIdToAttributeValue deckOwnerId) <>
-    HMS.singleton "DeckAttributes" (deckAttributesToAttributeValue deckAttributes)
+    HMS.singleton "DeckAttributes"
+      (deckAttributesToAttributeValue deckAttributes)
 
 deckToItem' :: Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
 deckToItem' Deck{deckSlides, deckDeckname, deckOwnerId, deckAttributes} =
@@ -857,13 +871,17 @@ deckToItem' Deck{deckSlides, deckDeckname, deckOwnerId, deckAttributes} =
     HMS.singleton ":o" (deckOwnerIdToAttributeValue deckOwnerId) <>
     HMS.singleton ":a" (deckAttributesToAttributeValue deckAttributes)
 
-itemToDeck :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (Item DeckId Deck)
+itemToDeck
+  :: HMS.HashMap T.Text DynamoDB.AttributeValue
+  -> Maybe (Item DeckId Deck)
 itemToDeck item = do
     deckId <- HMS.lookup "DeckId" item >>= deckIdFromAttributeValue
     deckSlides <- HMS.lookup "DeckSlides" item >>= deckSlidesFromAttributeValue
     deckDeckname <- HMS.lookup "DeckName" item >>= deckNameFromAttributeValue
-    deckOwnerId <- HMS.lookup "DeckOwnerId" item >>= deckOwnerIdFromAttributeValue
-    deckAttributes <- HMS.lookup "DeckAttributes" item >>= deckAttributesFromAttributeValue
+    deckOwnerId <- HMS.lookup "DeckOwnerId" item >>=
+      deckOwnerIdFromAttributeValue
+    deckAttributes <- HMS.lookup "DeckAttributes" item >>=
+      deckAttributesFromAttributeValue
     pure $ Item deckId Deck{..}
 
 -- DECK ATTRIBUTES
@@ -896,9 +914,12 @@ deckOwnerIdToAttributeValue (UserId (FirebaseId deckOwnerId)) =
     DynamoDB.attributeValue & DynamoDB.avS .~ Just deckOwnerId
 
 deckOwnerIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe UserId
-deckOwnerIdFromAttributeValue attr = (UserId . FirebaseId) <$> attr ^. DynamoDB.avS
+deckOwnerIdFromAttributeValue attr =
+    (UserId . FirebaseId) <$> attr ^. DynamoDB.avS
 
-deckAttributesToAttributeValue :: HMS.HashMap T.Text T.Text -> DynamoDB.AttributeValue
+deckAttributesToAttributeValue
+  :: HMS.HashMap T.Text T.Text
+  -> DynamoDB.AttributeValue
 deckAttributesToAttributeValue attributes =
     DynamoDB.attributeValue & DynamoDB.avM .~
       HMS.map attributeValueToAttributeValue attributes
@@ -907,7 +928,9 @@ deckAttributesToAttributeValue attributes =
     attributeValueToAttributeValue attrValue =
       DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 attrValue)
 
-deckAttributesFromAttributeValue :: DynamoDB.AttributeValue -> Maybe (HMS.HashMap T.Text T.Text)
+deckAttributesFromAttributeValue
+  :: DynamoDB.AttributeValue
+  -> Maybe (HMS.HashMap T.Text T.Text)
 deckAttributesFromAttributeValue attr =
     traverse attributeValueFromAttributeValue (attr ^. DynamoDB.avM)
   where
@@ -922,10 +945,13 @@ slideToItem slideId Slide{slideContent, slideTemplate, slideAttributes} =
     HMS.singleton "SlideId" (slideIdToAttributeValue slideId) <>
     (maybe
       HMS.empty
-      (\content -> HMS.singleton "SlideContent" (slideContentToAttributeValue content))
+      (\content -> HMS.singleton "SlideContent"
+        (slideContentToAttributeValue content))
       slideContent) <>
-    HMS.singleton "SlideTemplate" (slideTemplateToAttributeValue slideTemplate) <>
-    HMS.singleton "SlideAttributes" (slideAttributesToAttributeValue slideAttributes)
+    HMS.singleton "SlideTemplate"
+      (slideTemplateToAttributeValue slideTemplate) <>
+    HMS.singleton "SlideAttributes"
+      (slideAttributesToAttributeValue slideAttributes)
 
 slideToItem' :: Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
 slideToItem' Slide{slideContent, slideTemplate, slideAttributes} =
@@ -936,7 +962,9 @@ slideToItem' Slide{slideContent, slideTemplate, slideAttributes} =
     HMS.singleton ":t" (slideTemplateToAttributeValue slideTemplate) <>
     HMS.singleton ":a" (slideAttributesToAttributeValue slideAttributes)
 
-itemToSlide :: HMS.HashMap T.Text DynamoDB.AttributeValue -> Maybe (Item SlideId Slide)
+itemToSlide
+  :: HMS.HashMap T.Text DynamoDB.AttributeValue
+  -> Maybe (Item SlideId Slide)
 itemToSlide item = do
     slideId <- HMS.lookup "SlideId" item >>= slideIdFromAttributeValue
 
@@ -944,8 +972,10 @@ itemToSlide item = do
       Nothing -> Just Nothing
       Just c -> Just <$> slideContentFromAttributeValue c
 
-    slideTemplate <- HMS.lookup "SlideTemplate" item >>= slideTemplateFromAttributeValue
-    slideAttributes <- HMS.lookup "SlideAttributes" item >>= slideAttributesFromAttributeValue
+    slideTemplate <- HMS.lookup "SlideTemplate" item >>=
+      slideTemplateFromAttributeValue
+    slideAttributes <- HMS.lookup "SlideAttributes" item >>=
+      slideAttributesFromAttributeValue
 
     pure $ Item slideId Slide{..}
 
@@ -976,7 +1006,9 @@ slideTemplateFromAttributeValue attr = toSlideTemplate <$> attr ^. DynamoDB.avB
   where
     toSlideTemplate = T.decodeUtf8
 
-slideAttributesToAttributeValue :: HMS.HashMap T.Text T.Text -> DynamoDB.AttributeValue
+slideAttributesToAttributeValue
+  :: HMS.HashMap T.Text T.Text
+  -> DynamoDB.AttributeValue
 slideAttributesToAttributeValue attributes =
     DynamoDB.attributeValue & DynamoDB.avM .~
       HMS.map attributeValueToAttributeValue attributes
@@ -985,13 +1017,128 @@ slideAttributesToAttributeValue attributes =
     attributeValueToAttributeValue attrValue =
       DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 attrValue)
 
-slideAttributesFromAttributeValue :: DynamoDB.AttributeValue -> Maybe (HMS.HashMap T.Text T.Text)
+slideAttributesFromAttributeValue
+  :: DynamoDB.AttributeValue
+  -> Maybe (HMS.HashMap T.Text T.Text)
 slideAttributesFromAttributeValue attr =
     traverse attributeValueFromAttributeValue (attr ^. DynamoDB.avM)
   where
     attributeValueFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
     attributeValueFromAttributeValue attrValue =
       T.decodeUtf8 <$> attrValue ^. DynamoDB.avB
+
+-------------------------------------------------------------------------------
+-- DATABASE
+-------------------------------------------------------------------------------
+
+data DbInterface = DbInterface
+  { dbGetAllUsers :: IO [Item UserId User]
+  , dbGetUserById :: UserId -> IO (Maybe (Item UserId User))
+  , dbCreateUser :: UserId -> User -> IO (Either () ())
+  , dbUpdateUser :: UserId -> User -> IO (Either () ())
+  , dbDeleteUser :: UserId -> IO (Either () ())
+  }
+
+data DbVersion
+  = DbVersion0
+  deriving stock (Enum, Bounded, Ord, Eq)
+
+-- | Migrates from ver to latest
+migrateFrom :: DbVersion -> HS.Session ()
+migrateFrom = \ver -> forM_ [ver .. maxBound] migrateTo
+  where
+    -- | Migrates from (ver -1) to ver
+    migrateTo :: DbVersion -> HS.Session ()
+    migrateTo = \case
+      ver@DbVersion0 -> do
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE account ("
+            ,   "id TEXT UNIQUE,"
+            ,   "firebase_id TEXT UNIQUE,"
+            ,   "anonymous BOOLEAN"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement (dbVersionToText ver) $ Statement
+          (BS8.unwords
+            [ "INSERT INTO db_meta (key, value) VALUES ('version', $1)"
+            ]
+          ) (HE.param HE.text) HD.unit True
+
+readDbVersion :: HS.Session (Either String (Maybe DbVersion))
+readDbVersion = do
+    res <- HS.statement () $ Statement
+      (BS8.unwords
+        [ "SELECT EXISTS ("
+        ,   "SELECT 1"
+        ,   "FROM   information_schema.tables"
+        ,   "WHERE  table_schema = 'public'"
+        ,   "AND    table_name = 'db_meta'"
+        ,   ");"
+        ]
+      ) HE.unit (HD.singleRow (HD.column HD.bool)) True
+    case res of
+      True -> do
+        mtver <- HS.statement () $ Statement
+          "SELECT value FROM db_meta WHERE key = 'version'"
+          HE.unit (HD.rowMaybe (HD.column HD.text)) True
+        case mtver of
+          Nothing -> pure (Right Nothing)
+          Just tver -> case dbVersionFromText tver of
+            Nothing -> error $ "could not decode DB version: " <> T.unpack tver
+            Just ver -> pure (Right $ Just ver)
+      False -> do
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE db_meta ("
+            ,   "key TEXT UNIQUE NOT NULL,"
+            ,   "value TEXT NOT NULL"
+            ,   ");"
+            ]
+          ) HE.unit HD.unit True
+        migrateFrom minBound
+        pure $ Right $ Just maxBound
+
+latestDbVersion :: DbVersion
+latestDbVersion = maxBound
+
+dbVersionToText :: DbVersion -> T.Text
+dbVersionToText = \case
+  DbVersion0 -> "0"
+
+dbVersionFromText :: T.Text -> Maybe DbVersion
+dbVersionFromText t =
+    find (\ver -> dbVersionToText ver == t) [minBound .. maxBound]
+
+migrate :: HS.Session ()
+migrate = do
+    readDbVersion >>= \case
+      Left e -> error $ show e
+      Right Nothing -> migrateFrom minBound
+      Right (Just v) ->
+        if v >= maxBound
+        then pure ()
+        else migrateFrom v
+
+getDbInterface :: HC.Connection -> IO DbInterface
+getDbInterface conn = do
+    HS.run migrate conn >>= \case
+      Left e -> error $ show e
+      Right () -> pure ()
+
+    pure $ DbInterface
+      { dbGetAllUsers = wrap usersGetSession
+      , dbGetUserById = \uid -> wrap (usersGetUserIdSession uid)
+      , dbCreateUser = \uid user -> wrap (usersPostSession uid user)
+      , dbUpdateUser = \uid user -> Right <$> wrap (usersPutSession uid user)
+      , dbDeleteUser = \uid -> Right <$> wrap (usersDeleteSession uid)
+      }
+  where
+    wrap :: forall b. HS.Session b -> IO b
+    wrap act = HS.run act conn >>= \case
+      Left e -> error $ "getDbInterface: error: " <> show e -- TODO
+      Right x -> pure x
 
 -- AUX
 
@@ -1014,6 +1161,9 @@ randomText len allowedChars = T.pack <$> randomString len allowedChars
 
 newId :: IO T.Text
 newId = randomText 32 (['0' .. '9'] <> ['a' .. 'z'])
+
+tshow :: Show a => a -> T.Text
+tshow = T.pack . show
 
 data DynamoUpdateExpr
   = Set T.Text T.Text

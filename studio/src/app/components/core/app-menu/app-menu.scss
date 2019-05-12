@@ -46,6 +46,9 @@ ion-split-pane {
         ion-item {
           --detail-icon-opacity: 0;
 
+          --deckgo-user-info-padding: 0;
+          --deckgo-user-info-margin: 0;
+
           &.user {
             min-height: 32px;
           }

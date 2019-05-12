@@ -103,7 +103,7 @@ main = do
   runClientM (usersPost' b someUser) clientEnv >>= \case
     Left (FailureResponse resp) ->
       if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
-        error $ "Got unexpecte response: " <> show resp
+        error $ "Got unexpected response: " <> show resp
     Left err -> error $ "Expected 409, got error: " <> show err
     Right item -> error $ "Expected failure, got success: " <> show item
 
