@@ -8,7 +8,7 @@ import {filter, take} from 'rxjs/operators';
 
 import {del, get, set} from 'idb-keyval';
 
-import {User} from '../../../models/user';
+import {User, UserInfo} from '../../../models/user';
 import {AuthUser} from '../../../models/auth-user';
 import {Deck} from '../../../models/deck';
 
@@ -181,7 +181,8 @@ export class AppSignIn {
 
                         this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
                             if (authUser) {
-                                await this.userService.query(user, authUser.token, 'PUT');
+                                const apiUser: UserInfo = await this.userService.createUserInfo(authUser);
+                                await this.userService.query(apiUser, authUser.token, 'PUT');
                             }
 
                             await this.navigateRedirect();
