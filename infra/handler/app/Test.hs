@@ -197,6 +197,7 @@ main' = withServer $ \port -> do
   let someDeck = Deck
         { deckSlides = []
         , deckDeckname = Deckname "foo"
+        , deckDeckbackground = Nothing
         , deckOwnerId = someUserId
         , deckAttributes = HMS.empty
         }
@@ -221,7 +222,13 @@ main' = withServer $ \port -> do
     Left err -> error $ "Expected new slide, got error: " <> show err
     Right (Item slideId _) -> pure slideId
 
-  let newDeck = Deck { deckSlides = [ slideId ], deckDeckname = Deckname "bar", deckOwnerId = someUserId, deckAttributes = HMS.singleton "foo" "bar" }
+  let newDeck = Deck
+        { deckSlides = [ slideId ]
+        , deckDeckname = Deckname "bar"
+        , deckDeckbackground = Just (Deckbackground "bar")
+        , deckOwnerId = someUserId
+        , deckAttributes = HMS.singleton "foo" "bar"
+        }
 
   runClientM (decksPut' b deckId newDeck) clientEnv >>= \case
     Left err -> error $ "Expected updated deck, got error: " <> show err

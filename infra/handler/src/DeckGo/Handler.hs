@@ -237,9 +237,14 @@ newtype Deckname = Deckname { unDeckname :: T.Text }
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
+newtype Deckbackground = Deckbackground { unDeckbackground :: T.Text }
+  deriving stock (Show, Eq)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
+
 data Deck = Deck
   { deckSlides :: [SlideId]
   , deckDeckname :: Deckname
+  , deckDeckbackground :: Maybe Deckbackground
   , deckOwnerId :: UserId
   , deckAttributes :: HMS.HashMap T.Text T.Text
   } deriving (Show, Eq)
@@ -267,6 +272,7 @@ instance FromJSONObject Deck where
     Deck
       <$> obj .: "slides"
       <*> obj .: "name"
+      <*> obj .:? "background"
       <*> obj .: "owner_id"
       <*> obj .:? "attributes" .!= HMS.empty
 
@@ -274,6 +280,7 @@ instance ToJSONObject Deck where
   toJSONObject deck = HMS.fromList
     [ "slides" .= deckSlides deck
     , "name" .= deckDeckname deck
+    , "background" .= deckDeckbackground deck
     , "owner_id" .= deckOwnerId deck
     , "attributes" .= deckAttributes deck
     ]
@@ -772,7 +779,17 @@ decksPut env fuid deckId deck = do
           Servant.throwError Servant.err404
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Decks" &
-        DynamoDB.uiUpdateExpression .~ Just "SET DeckSlides = :s, DeckName = :n, DeckOwnerId = :o, DeckAttributes = :a" &
+        DynamoDB.uiUpdateExpression .~ Just
+          (dynamoSet $
+            (if isJust (deckDeckbackground deck)
+              then [ Set "DeckBackground" ":b" ]
+              else [ Remove "DeckBackground" ]) <>
+          [ Set "DeckSlides" ":s"
+          , Set "DeckName" ":n"
+          , Set "DeckOwnerId" ":o"
+          , Set "DeckAttributes" ":a"
+          ]) &
+          -- "SET DeckSlides = :s, DeckName = :n, DeckOwnerId = :o, DeckAttributes = :a" &
         DynamoDB.uiExpressionAttributeValues .~ deckToItem' deck &
         DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
         DynamoDB.uiKey .~ HMS.singleton "DeckId"
@@ -1019,18 +1036,29 @@ userIdToAttributeValue (UserId (FirebaseId userId)) =
 -- DECKS
 
 deckToItem :: DeckId -> Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
-deckToItem deckId Deck{deckSlides, deckDeckname, deckOwnerId, deckAttributes} =
+deckToItem
+  deckId
+  Deck{deckSlides, deckDeckname, deckDeckbackground, deckOwnerId, deckAttributes} =
     HMS.singleton "DeckId" (deckIdToAttributeValue deckId) <>
     HMS.singleton "DeckSlides" (deckSlidesToAttributeValue deckSlides) <>
     HMS.singleton "DeckName" (deckNameToAttributeValue deckDeckname) <>
+    (maybe
+      HMS.empty
+      (\content -> HMS.singleton "DeckBackground"
+        (deckBackgroundToAttributeValue content))
+      deckDeckbackground) <>
     HMS.singleton "DeckOwnerId" (deckOwnerIdToAttributeValue deckOwnerId) <>
     HMS.singleton "DeckAttributes"
       (deckAttributesToAttributeValue deckAttributes)
 
 deckToItem' :: Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
-deckToItem' Deck{deckSlides, deckDeckname, deckOwnerId, deckAttributes} =
+deckToItem' Deck{deckSlides, deckDeckname, deckDeckbackground, deckOwnerId, deckAttributes} =
     HMS.singleton ":s" (deckSlidesToAttributeValue deckSlides) <>
     HMS.singleton ":n" (deckNameToAttributeValue deckDeckname) <>
+    (maybe
+      HMS.empty
+      (HMS.singleton ":b" . deckBackgroundToAttributeValue)
+      deckDeckbackground) <>
     HMS.singleton ":o" (deckOwnerIdToAttributeValue deckOwnerId) <>
     HMS.singleton ":a" (deckAttributesToAttributeValue deckAttributes)
 
@@ -1041,6 +1069,11 @@ itemToDeck item = do
     deckId <- HMS.lookup "DeckId" item >>= deckIdFromAttributeValue
     deckSlides <- HMS.lookup "DeckSlides" item >>= deckSlidesFromAttributeValue
     deckDeckname <- HMS.lookup "DeckName" item >>= deckNameFromAttributeValue
+
+    deckDeckbackground <- case HMS.lookup "DeckBackground" item of
+      Nothing -> Just Nothing
+      Just c -> Just <$> deckBackgroundFromAttributeValue c
+
     deckOwnerId <- HMS.lookup "DeckOwnerId" item >>=
       deckOwnerIdFromAttributeValue
     deckAttributes <- HMS.lookup "DeckAttributes" item >>=
@@ -1062,6 +1095,15 @@ deckNameToAttributeValue (Deckname deckname) =
 
 deckNameFromAttributeValue :: DynamoDB.AttributeValue -> Maybe Deckname
 deckNameFromAttributeValue attr = Deckname <$> attr ^. DynamoDB.avS
+
+deckBackgroundToAttributeValue :: Deckbackground -> DynamoDB.AttributeValue
+deckBackgroundToAttributeValue (Deckbackground bg) =
+    DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 bg)
+
+deckBackgroundFromAttributeValue :: DynamoDB.AttributeValue -> Maybe Deckbackground
+deckBackgroundFromAttributeValue attr = toDeckbackground <$> attr ^. DynamoDB.avB
+  where
+    toDeckbackground = Deckbackground . T.decodeUtf8
 
 deckSlidesToAttributeValue :: [SlideId] -> DynamoDB.AttributeValue
 deckSlidesToAttributeValue deckSlides =
