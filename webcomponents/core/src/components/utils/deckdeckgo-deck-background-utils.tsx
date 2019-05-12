@@ -65,16 +65,14 @@ export class DeckdeckgoDeckBackgroundUtils {
 
   private static showHideBackgroundSlot(el: HTMLElement, cloneBackground: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const slider: HTMLElement = el.shadowRoot.querySelector('div.deckgo-deck');
+      const slider: HTMLElement = el.shadowRoot.host as HTMLElement;
 
       if (!slider) {
         resolve();
         return;
       }
 
-      if (cloneBackground) {
-        slider.style.setProperty('--background-display', 'none');
-      } else {
+      if (!cloneBackground) {
         slider.style.removeProperty('--background-display');
       }
 

@@ -58,7 +58,7 @@ deckgo-deck {
     cursor: pointer;
   }
 
-  div[slot="background"] {
+  > * div[slot="background"] {
     position: absolute;
     top: 0;
     left: 0;

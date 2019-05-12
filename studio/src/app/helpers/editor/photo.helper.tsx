@@ -26,10 +26,6 @@ export class PhotoHelper {
                 await this.appendContentImg(selectedElement, photo);
             }
 
-            // TODO: lazy loading
-
-            // TODO: on size change slide should be saved
-
             resolve();
         });
     }
