@@ -4,16 +4,16 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 
 ## Table of contents
 
-- [Showcase](#app-components-qrcode-showcase)
-- [Getting started](#app-components-qrcode-getting-started)
+- [Showcase](#app-components-inline-editor-showcase)
+- [Getting started](#app-components-inline-editor-getting-started)
 	- [Using from a CDN](#app-components-from-a-cdn)
 	- [Install from NPM](#app-components-from-npm)
-	- [Framework integration](#app-components-qrcode-framework-integration)
-- [Usage](#app-components-qrcode-usage)
-	- [Properties](#app-components-qrcode-properties)
-	- [Styling](#app-components-qrcode-styling)
-	- [Events](#app-components-qrcode-events)
-	- [Examples](#app-components-qrcode-examples)
+	- [Framework integration](#app-components-inline-editor-framework-integration)
+- [Usage](#app-components-inline-editor-usage)
+	- [Properties](#app-components-inline-editor-properties)
+	- [Styling](#app-components-inline-editor-styling)
+	- [Events](#app-components-inline-editor-events)
+	- [Examples](#app-components-inline-editor-examples)
 
 ## Showcase
 

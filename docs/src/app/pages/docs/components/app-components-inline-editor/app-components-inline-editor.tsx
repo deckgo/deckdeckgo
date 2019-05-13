@@ -32,18 +32,18 @@ export class AppComponentsInlineEditor {
 <p>The &quot;WYSIWYG inline editor&quot; component is an extra component which will be use in the upcoming <a href="https://deckdeckgo.com">DeckDeckGo</a> Studio.</p>
 <h2 id="app-components-inline-editor-table-of-contents">Table of contents</h2>
 <ul>
-<li><a href="#app-components-qrcode-showcase">Showcase</a></li>
-<li><a href="#app-components-qrcode-getting-started">Getting started</a><ul>
+<li><a href="#app-components-inline-editor-showcase">Showcase</a></li>
+<li><a href="#app-components-inline-editor-getting-started">Getting started</a><ul>
 <li><a href="#app-components-from-a-cdn">Using from a CDN</a></li>
 <li><a href="#app-components-from-npm">Install from NPM</a></li>
-<li><a href="#app-components-qrcode-framework-integration">Framework integration</a></li>
+<li><a href="#app-components-inline-editor-framework-integration">Framework integration</a></li>
 </ul>
 </li>
-<li><a href="#app-components-qrcode-usage">Usage</a><ul>
-<li><a href="#app-components-qrcode-properties">Properties</a></li>
-<li><a href="#app-components-qrcode-styling">Styling</a></li>
-<li><a href="#app-components-qrcode-events">Events</a></li>
-<li><a href="#app-components-qrcode-examples">Examples</a></li>
+<li><a href="#app-components-inline-editor-usage">Usage</a><ul>
+<li><a href="#app-components-inline-editor-properties">Properties</a></li>
+<li><a href="#app-components-inline-editor-styling">Styling</a></li>
+<li><a href="#app-components-inline-editor-events">Events</a></li>
+<li><a href="#app-components-inline-editor-examples">Examples</a></li>
 </ul>
 </li>
 </ul>

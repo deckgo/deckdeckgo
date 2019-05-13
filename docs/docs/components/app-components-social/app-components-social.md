@@ -4,11 +4,11 @@ The "Social" component allows you to easily add a social link to your presentati
 
 ## Table of contents
 
-- [Showcase](#showcase)
-- [Usage](#usage)
-  - [Slots](#slots)
-  - [Attributes](#attributes)
-  - [Examples](#examples)
+- [Showcase](#app-components-social-showcase)
+- [Usage](#app-components-social-usage)
+  - [Slots](#app-components-social-slots)
+  - [Attributes](#app-components-social-attributes)
+  - [Examples](#app-components-social-examples)
 
 ## Showcase
 
@@ -22,7 +22,7 @@ The "Social" component allows you to easily add a social link to your presentati
 
 ## Usage
 
-The "Social" slide's Web Component could be integrated using the tag `<deckgo-social/>`.
+The "Social" Web Component could be integrated using the tag `<deckgo-social/>`.
 
 ```
 <deckgo-social twitter="daviddalbusco">
