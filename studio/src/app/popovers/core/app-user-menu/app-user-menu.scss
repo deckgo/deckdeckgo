@@ -1,5 +1,9 @@
 app-user-menu {
 
+  ion-list {
+    border-top: 1px solid var(--ion-color-light);
+  }
+
   ion-list.list-ios {
     margin-bottom: 0;
     padding-top: 8px;

@@ -14,8 +14,8 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() src: string;
-  @Prop() alt: string;
+  @Prop({reflectToAttr: true}) src: string;
+  @Prop({reflectToAttr: true}) alt: string;
 
   @Prop() fullscreen: boolean = true;
 

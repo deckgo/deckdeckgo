@@ -1,4 +1,6 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE MultiWayIf #-}
+{-# LANGUAGE MonadFailDesugaring #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleContexts #-}
@@ -18,6 +20,7 @@
 module DeckGo.Handler where
 
 -- TODO: created_at, updated_at
+-- TODO: nullable slide content
 -- TODO: improve swagger description
 -- TODO: feed API
 
@@ -27,34 +30,34 @@ module DeckGo.Handler where
 -- TODO: enforce uniqueness on deck_name (per user)
 -- TODO: return 500 on all DB errors
 
-import Data.List (find)
+import Control.Applicative
 import Control.Lens hiding ((.=))
-import Data.Int
--- import Data.Functor.Contravariant
--- import Hasql.Session (Session)
-import Hasql.Statement (Statement(..))
-import qualified Hasql.Session as HS
-import qualified Hasql.Decoders as HD
-import qualified Hasql.Encoders as HE
-import qualified Hasql.Connection as HC
--- import Control.Lens hiding ((.=))
 import Control.Monad
-import Data.Maybe
 import Control.Monad.Except
 import Data.Aeson ((.=), (.:), (.!=), (.:?))
-import qualified Data.ByteString.Char8 as BS8
+import Data.Int
+import Data.List (find)
+import Data.Maybe
 import Data.Proxy
 import Data.Swagger
 import GHC.Generics
+import Hasql.Statement (Statement(..))
 import Servant (Context ((:.)))
 import Servant.API
 import Servant.Auth.Firebase (Protected)
 import UnliftIO
+import Data.Char
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
+import qualified Data.ByteString.Char8 as BS8
+import qualified Data.ByteString.Lazy as BSL
 import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
+import qualified Hasql.Connection as HC
+import qualified Hasql.Decoders as HD
+import qualified Hasql.Encoders as HE
+import qualified Hasql.Session as HS
 import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.Wai as Wai
@@ -94,20 +97,25 @@ type UsersAPI =
     Get '[JSON] [Item UserId User] :<|>
     Capture "user_id" UserId :> Get '[JSON] (Item UserId User) :<|>
     Protected :>
-      ReqBody '[JSON] User :>
+      ReqBody '[JSON] UserInfo :>
       Post '[JSON] (Item UserId User) :<|>
     Protected :>
       Capture "user_id" UserId :>
-      ReqBody '[JSON] User :> Put '[JSON] (Item UserId User) :<|>
+      ReqBody '[JSON] UserInfo :> Put '[JSON] (Item UserId User) :<|>
     Protected :> Capture "user_id" UserId :> Delete '[JSON] ()
 
 newtype Username = Username { unUsername :: T.Text }
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
+data UserInfo = UserInfo
+  { userInfoFirebaseId :: FirebaseId
+  , userInfoEmail :: Maybe T.Text
+  } deriving (Show, Eq)
+
 data User = User
   { userFirebaseId :: FirebaseId
-  , userAnonymous :: Bool
+  , userUsername :: Maybe Username -- + return anonymous
   } deriving (Show, Eq)
 
 newtype UserId = UserId { unUserId :: FirebaseId }
@@ -134,23 +142,55 @@ newtype FirebaseId = FirebaseId { unFirebaseId :: T.Text }
   deriving stock
     ( Generic )
 
+-- XXX !!?!??!?!! pattern match failures are propagated to the client!!!
+instance FromJSONObject UserInfo where
+  parseJSONObject = \obj ->
+    UserInfo
+      <$> obj .: "firebase_uid"
+      <*> (
+        (do
+          True <- obj .: "anonymous"
+          (Nothing :: Maybe T.Text) <- obj .:? "email"
+          pure Nothing
+        ) <|> (do
+          False <- obj .: "anonymous"
+          obj .:? "email"
+        )
+        )
+
 instance FromJSONObject User where
   parseJSONObject = \obj ->
     User
-      -- potentially return "error exists" + user object
       <$> obj .: "firebase_uid"
-      <*> obj .: "anonymous"
+      <*> (
+        (do
+          True <- obj .: "anonymous"
+          (Nothing :: Maybe Username) <- obj .:? "username"
+          pure Nothing
+        ) <|> (do
+          False <- obj .: "anonymous"
+          obj .:? "username"
+        )
+        )
+
+instance ToJSONObject UserInfo where
+  toJSONObject uinfo = HMS.fromList
+    [ "anonymous" .= isNothing (userInfoEmail uinfo)
+    , "email" .= userInfoEmail uinfo
+    , "firebase_uid" .= userInfoFirebaseId uinfo
+    ]
+
+instance Aeson.FromJSON UserInfo where
+  parseJSON = Aeson.withObject "UserInfo" parseJSONObject
 
 instance ToJSONObject User where
   toJSONObject user = HMS.fromList
-    [ "firebase_uid" .= userFirebaseId user
-    , "anonymous" .= userAnonymous user
+    [ "anonymous" .= isNothing (userUsername user)
+    , "username" .= userUsername user
+    , "firebase_uid" .= userFirebaseId user
     ]
 
-instance Aeson.FromJSON User where
-  parseJSON = Aeson.withObject "User" parseJSONObject
-
-instance Aeson.ToJSON User where
+instance Aeson.ToJSON UserInfo where
   toJSON = Aeson.Object . toJSONObject
 
 instance ToSchema (Item UserId User) where
@@ -164,6 +204,18 @@ instance ToParamSchema (Item UserId User) where
 
 instance ToParamSchema UserId where
   toParamSchema _ = mempty
+
+-- instance ToSchema (Item UserId User) where
+  -- declareNamedSchema _ = pure $ NamedSchema (Just "UserWithId") mempty
+
+instance ToSchema UserInfo where
+  declareNamedSchema _ = pure $ NamedSchema (Just "UserInfo") mempty
+
+instance ToParamSchema (Item UserId UserInfo) where
+  toParamSchema _ = mempty
+
+-- instance ToParamSchema UserId where
+  -- toParamSchema _ = mempty
 
 -- DECKS
 
@@ -185,9 +237,14 @@ newtype Deckname = Deckname { unDeckname :: T.Text }
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
+newtype Deckbackground = Deckbackground { unDeckbackground :: T.Text }
+  deriving stock (Show, Eq)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
+
 data Deck = Deck
   { deckSlides :: [SlideId]
   , deckDeckname :: Deckname
+  , deckDeckbackground :: Maybe Deckbackground
   , deckOwnerId :: UserId
   , deckAttributes :: HMS.HashMap T.Text T.Text
   } deriving (Show, Eq)
@@ -215,6 +272,7 @@ instance FromJSONObject Deck where
     Deck
       <$> obj .: "slides"
       <*> obj .: "name"
+      <*> obj .:? "background"
       <*> obj .: "owner_id"
       <*> obj .:? "attributes" .!= HMS.empty
 
@@ -222,6 +280,7 @@ instance ToJSONObject Deck where
   toJSONObject deck = HMS.fromList
     [ "slides" .= deckSlides deck
     , "name" .= deckDeckname deck
+    , "background" .= deckDeckbackground deck
     , "owner_id" .= deckOwnerId deck
     , "attributes" .= deckAttributes deck
     ]
@@ -347,7 +406,7 @@ server env conn = serveUsers :<|> serveDecks :<|> serveSlides
 
 -- USERS
 
-usersGet :: HC.Connection -> Servant.Handler [Item UserId User]
+usersGet :: MonadIO io => HC.Connection -> io [Item UserId User]
 usersGet conn = do
     iface <- liftIO $ getDbInterface conn
     liftIO $ dbGetAllUsers iface -- TODO: to Servant err500 on error
@@ -359,14 +418,19 @@ usersGetSession = do
 usersGetStatement :: Statement () [Item UserId User]
 usersGetStatement = Statement sql encoder decoder True
   where
-    sql = "SELECT * FROM account"
+    sql = BS8.unwords
+      [ "SELECT account.id, account.firebase_id, username.id"
+      ,   "FROM account"
+      ,   "LEFT JOIN username"
+      ,     "ON username.account = account.id"
+      ]
     encoder = HE.unit
     decoder = HD.rowList $
       Item <$>
         ((UserId . FirebaseId) <$> HD.column HD.text) <*>
         ( User <$>
           (FirebaseId <$> HD.column HD.text) <*>
-          HD.column HD.bool
+          HD.nullableColumn (Username <$> HD.text)
         )
 
 usersGetUserId :: HC.Connection -> UserId -> Servant.Handler (Item UserId User)
@@ -383,7 +447,13 @@ usersGetUserIdSession userId = do
 usersGetUserIdStatement :: Statement UserId (Maybe (Item UserId User))
 usersGetUserIdStatement = Statement sql encoder decoder True
   where
-    sql = "SELECT * FROM account WHERE id = $1"
+    sql = BS8.unwords
+      [ "SELECT account.id, account.firebase_id, username.id"
+      ,   "FROM account"
+      ,   "LEFT JOIN username"
+      ,     "ON username.account = account.id"
+      ,   "WHERE account.id = $1"
+      ]
     encoder = contramap
         (unFirebaseId . unUserId)
         (HE.param HE.text)
@@ -392,33 +462,76 @@ usersGetUserIdStatement = Statement sql encoder decoder True
         ((UserId . FirebaseId) <$> HD.column HD.text) <*>
         ( User <$>
           (FirebaseId <$> HD.column HD.text) <*>
-          HD.column HD.bool
+          HD.nullableColumn (Username <$> HD.text)
         )
 
-usersPost :: HC.Connection -> Firebase.UserId -> User -> Servant.Handler (Item UserId User)
-usersPost conn fuid user = do
-    let userId = UserId (userFirebaseId user)
-    liftIO $ putStrLn "POST users"
+usersPost
+  :: HC.Connection
+  -> Firebase.UserId
+  -> UserInfo
+  -> Servant.Handler (Item UserId User)
+usersPost conn fuid uinfo = do
 
-    when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
+    when (Firebase.unUserId fuid /= unFirebaseId (userInfoFirebaseId uinfo)) $ do
       Servant.throwError Servant.err403
-    liftIO $ putStrLn "auth is ok"
 
     iface <- liftIO $ getDbInterface conn
     liftIO $ putStrLn "got DB interface"
+
+    let userId = UserId (userInfoFirebaseId uinfo)
+    user <- case userInfoToUser uinfo of
+      Left e -> Servant.throwError Servant.err400
+        { Servant.errBody = BSL.fromStrict $ T.encodeUtf8 e }
+      Right user -> pure user
     liftIO (dbCreateUser iface userId user) >>= \case
       Left () -> Servant.throwError $ Servant.err409
+        { Servant.errBody = Aeson.encode (Item userId user) }
       Right () -> pure $ Item userId user
+
+userInfoToUser :: UserInfo -> Either T.Text User
+userInfoToUser uinfo = User <$>
+    pure (userInfoFirebaseId uinfo) <*>
+    (traverse emailToUsername (userInfoEmail uinfo))
+
+emailToUsername :: T.Text -> Either T.Text Username
+emailToUsername t = case T.breakOn "@" t of
+    ("", _) -> Left ("Invalid email: " <> t)
+    (out', _) -> case dropBadChars (T.toLower out') of
+      "" -> Left ("No valid char found: " <> out')
+      out -> Right $ Username out
+  where
+    dropBadChars :: T.Text -> T.Text
+    dropBadChars = T.concatMap
+      $ \case
+        c | isAscii c && isAlphaNum c -> T.singleton c
+          | otherwise -> ""
 
 usersPostSession :: UserId -> User -> HS.Session (Either () ())
 usersPostSession uid u = do
+    HS.sql "BEGIN"
     liftIO $ putStrLn "Creating user in DB"
     HS.statement (uid,u) usersPostStatement >>= \case
       1 -> do
         liftIO $ putStrLn "User was created"
-        pure $ Right ()
+        case userUsername u of
+          Just uname -> do
+            liftIO $ putStrLn "Creating username"
+            HS.statement (uname, uid) usersPostStatement' >>= \case
+              1 -> do
+                liftIO $ putStrLn "User created successfully"
+                HS.sql "COMMIT"
+                pure $ Right ()
+              _ -> do
+                liftIO $ putStrLn "Couldn't create username"
+                HS.sql "ROLLBACK"
+                pure $ Left ()
+          Nothing -> do
+            liftIO $ putStrLn "No username"
+            HS.sql "COMMIT"
+            pure $ Right ()
       _ -> do
         liftIO $ putStrLn "Couldn't create exactly one user"
+        HS.sql "ROLLBACK"
         pure $ Left ()
 
 usersPostStatement :: Statement (UserId, User) Int64
@@ -426,56 +539,113 @@ usersPostStatement = Statement sql encoder decoder True
   where
     sql = BS8.unwords
       [ "INSERT INTO account"
-      ,   "(id, firebase_id, anonymous)"
-      ,   "VALUES ($1, $2, $3)"
+      ,   "(id, firebase_id)"
+      ,   "VALUES ($1, $2)"
       ,   "ON CONFLICT DO NOTHING"
       ]
     encoder =
       contramap
         (unFirebaseId . unUserId . view _1)
         (HE.param HE.text) <>
-      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text) <>
-      contramap (userAnonymous . view _2) (HE.param HE.bool)
+      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text)
     decoder = HD.rowsAffected
 
-usersPut :: HC.Connection -> Firebase.UserId -> UserId -> User -> Servant.Handler (Item UserId User)
-usersPut conn fuid userId user = do
+usersPostStatement' :: Statement (Username, UserId) Int64
+usersPostStatement' = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "INSERT INTO username"
+      ,   "(id, account)"
+      ,   "VALUES ($1, $2)"
+      ,   "ON CONFLICT (id) DO NOTHING"
+      ]
+    encoder =
+      contramap
+        (unUsername . view _1)
+        (HE.param HE.text) <>
+      contramap
+        (unFirebaseId . unUserId . view _2)
+        (HE.param HE.text)
+    decoder = HD.rowsAffected
+
+usersPostStatement'' :: Statement Username () -- TODO: check was deleted?
+usersPostStatement'' = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "DELETE FROM username"
+      ,   "WHERE id = $1"
+      ]
+    encoder =
+      contramap
+        (unUsername)
+        (HE.param HE.text)
+    decoder = HD.unit
+
+usersPut
+  :: HC.Connection
+  -> Firebase.UserId
+  -> UserId
+  -> UserInfo
+  -> Servant.Handler (Item UserId User)
+usersPut conn fuid userId uinfo = do
 
     when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
       liftIO $ putStrLn $ unwords
-        [ "User is trying to update another user:", show (fuid, userId, user) ]
+        [ "User is trying to update another uinfo:", show (fuid, userId, uinfo) ]
       Servant.throwError Servant.err404
 
-    when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
+    when (Firebase.unUserId fuid /= unFirebaseId (userInfoFirebaseId uinfo)) $ do
       liftIO $ putStrLn $ unwords
-        [ "Client used the wrong user ID on user", show (fuid, userId, user) ]
+        [ "Client used the wrong uinfo ID on uinfo", show (fuid, userId, uinfo) ]
       Servant.throwError Servant.err400
 
     iface <- liftIO $ getDbInterface conn
+    user <- case userInfoToUser uinfo of
+      Left e -> Servant.throwError Servant.err400
+        { Servant.errBody = BSL.fromStrict $ T.encodeUtf8 e }
+      Right user -> pure user
     liftIO (dbUpdateUser iface userId user) >>= \case
-      Right () -> pure $ Item userId user -- TODO: check # of affected rows
-      Left e -> do -- TODO: handle not found et al.
+      UserUpdateOk -> pure $ Item userId user -- TODO: check # of affected rows
+      e -> do -- TODO: handle not found et al.
         liftIO $ print e
-        Servant.throwError Servant.err500
+        Servant.throwError Servant.err400
 
-    -- pure $ Item userId user
+data UserUpdateResult
+  = UserUpdateOk
+  | UserUpdateNotExist
+  | UserUpdateClash
+  deriving Show
 
-usersPutSession :: UserId -> User -> HS.Session ()
+usersPutSession :: UserId -> User -> HS.Session UserUpdateResult
 usersPutSession uid u = do
-    HS.statement (uid,u) usersPutStatement
+    HS.sql "BEGIN"
+    usersGetUserIdSession uid >>= \case
+      Nothing -> do
+        HS.sql "ROLLBACK"
+        pure UserUpdateNotExist
 
-usersPutStatement :: Statement (UserId, User) ()
-usersPutStatement = Statement sql encoder decoder True
-  where
-    -- TODO: make sure firebase_id is unique
-    sql = "UPDATE account SET firebase_id = $2, anonymous = $3 WHERE id = $1"
-    encoder =
-      contramap
-        (unFirebaseId . unUserId . view _1)
-        (HE.param HE.text) <>
-      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text) <>
-      contramap (userAnonymous . view _2) (HE.param HE.bool)
-    decoder = HD.unit -- TODO: affected rows
+      -- XXX: no handling of updating firebase id
+      Just (Item _ oldUser) -> case (userUsername oldUser, userUsername u) of
+        (Nothing, Nothing) -> do
+          HS.sql "ROLLBACK" -- doesn't matter if rollback or commit
+          pure UserUpdateOk
+        (oldUname, newUname) -> do
+          case oldUname of
+            Nothing -> pure ()
+            Just uname -> do
+              HS.statement uname usersPostStatement''
+          case newUname of
+            Nothing -> do
+              HS.sql "COMMIT"
+              pure UserUpdateOk
+            Just uname -> do
+              HS.statement (uname, uid) usersPostStatement' >>= \case
+                1 -> do
+                  HS.sql "COMMIT"
+                  pure UserUpdateOk
+                _ -> do
+                  HS.sql "ROLLBACK"
+                  pure UserUpdateClash
 
 usersDelete :: HC.Connection -> Firebase.UserId -> UserId -> Servant.Handler ()
 usersDelete conn fuid userId = do
@@ -609,7 +779,17 @@ decksPut env fuid deckId deck = do
           Servant.throwError Servant.err404
 
     res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Decks" &
-        DynamoDB.uiUpdateExpression .~ Just "SET DeckSlides = :s, DeckName = :n, DeckOwnerId = :o, DeckAttributes = :a" &
+        DynamoDB.uiUpdateExpression .~ Just
+          (dynamoSet $
+            (if isJust (deckDeckbackground deck)
+              then [ Set "DeckBackground" ":b" ]
+              else [ Remove "DeckBackground" ]) <>
+          [ Set "DeckSlides" ":s"
+          , Set "DeckName" ":n"
+          , Set "DeckOwnerId" ":o"
+          , Set "DeckAttributes" ":a"
+          ]) &
+          -- "SET DeckSlides = :s, DeckName = :n, DeckOwnerId = :o, DeckAttributes = :a" &
         DynamoDB.uiExpressionAttributeValues .~ deckToItem' deck &
         DynamoDB.uiReturnValues .~ Just DynamoDB.UpdatedNew &
         DynamoDB.uiKey .~ HMS.singleton "DeckId"
@@ -856,18 +1036,29 @@ userIdToAttributeValue (UserId (FirebaseId userId)) =
 -- DECKS
 
 deckToItem :: DeckId -> Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
-deckToItem deckId Deck{deckSlides, deckDeckname, deckOwnerId, deckAttributes} =
+deckToItem
+  deckId
+  Deck{deckSlides, deckDeckname, deckDeckbackground, deckOwnerId, deckAttributes} =
     HMS.singleton "DeckId" (deckIdToAttributeValue deckId) <>
     HMS.singleton "DeckSlides" (deckSlidesToAttributeValue deckSlides) <>
     HMS.singleton "DeckName" (deckNameToAttributeValue deckDeckname) <>
+    (maybe
+      HMS.empty
+      (\content -> HMS.singleton "DeckBackground"
+        (deckBackgroundToAttributeValue content))
+      deckDeckbackground) <>
     HMS.singleton "DeckOwnerId" (deckOwnerIdToAttributeValue deckOwnerId) <>
     HMS.singleton "DeckAttributes"
       (deckAttributesToAttributeValue deckAttributes)
 
 deckToItem' :: Deck -> HMS.HashMap T.Text DynamoDB.AttributeValue
-deckToItem' Deck{deckSlides, deckDeckname, deckOwnerId, deckAttributes} =
+deckToItem' Deck{deckSlides, deckDeckname, deckDeckbackground, deckOwnerId, deckAttributes} =
     HMS.singleton ":s" (deckSlidesToAttributeValue deckSlides) <>
     HMS.singleton ":n" (deckNameToAttributeValue deckDeckname) <>
+    (maybe
+      HMS.empty
+      (HMS.singleton ":b" . deckBackgroundToAttributeValue)
+      deckDeckbackground) <>
     HMS.singleton ":o" (deckOwnerIdToAttributeValue deckOwnerId) <>
     HMS.singleton ":a" (deckAttributesToAttributeValue deckAttributes)
 
@@ -878,6 +1069,11 @@ itemToDeck item = do
     deckId <- HMS.lookup "DeckId" item >>= deckIdFromAttributeValue
     deckSlides <- HMS.lookup "DeckSlides" item >>= deckSlidesFromAttributeValue
     deckDeckname <- HMS.lookup "DeckName" item >>= deckNameFromAttributeValue
+
+    deckDeckbackground <- case HMS.lookup "DeckBackground" item of
+      Nothing -> Just Nothing
+      Just c -> Just <$> deckBackgroundFromAttributeValue c
+
     deckOwnerId <- HMS.lookup "DeckOwnerId" item >>=
       deckOwnerIdFromAttributeValue
     deckAttributes <- HMS.lookup "DeckAttributes" item >>=
@@ -899,6 +1095,15 @@ deckNameToAttributeValue (Deckname deckname) =
 
 deckNameFromAttributeValue :: DynamoDB.AttributeValue -> Maybe Deckname
 deckNameFromAttributeValue attr = Deckname <$> attr ^. DynamoDB.avS
+
+deckBackgroundToAttributeValue :: Deckbackground -> DynamoDB.AttributeValue
+deckBackgroundToAttributeValue (Deckbackground bg) =
+    DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 bg)
+
+deckBackgroundFromAttributeValue :: DynamoDB.AttributeValue -> Maybe Deckbackground
+deckBackgroundFromAttributeValue attr = toDeckbackground <$> attr ^. DynamoDB.avB
+  where
+    toDeckbackground = Deckbackground . T.decodeUtf8
 
 deckSlidesToAttributeValue :: [SlideId] -> DynamoDB.AttributeValue
 deckSlidesToAttributeValue deckSlides =
@@ -1035,17 +1240,20 @@ data DbInterface = DbInterface
   { dbGetAllUsers :: IO [Item UserId User]
   , dbGetUserById :: UserId -> IO (Maybe (Item UserId User))
   , dbCreateUser :: UserId -> User -> IO (Either () ())
-  , dbUpdateUser :: UserId -> User -> IO (Either () ())
+  , dbUpdateUser :: UserId -> User -> IO UserUpdateResult
   , dbDeleteUser :: UserId -> IO (Either () ())
   }
 
 data DbVersion
   = DbVersion0
+  | DbVersion1
   deriving stock (Enum, Bounded, Ord, Eq)
 
 -- | Migrates from ver to latest
 migrateFrom :: DbVersion -> HS.Session ()
-migrateFrom = \ver -> forM_ [ver .. maxBound] migrateTo
+migrateFrom = \ver -> do
+    liftIO $ putStrLn $ "Migration: " <> show (dbVersionToText <$> [ver ..maxBound])
+    forM_ [ver .. maxBound] migrateTo
   where
     -- | Migrates from (ver -1) to ver
     migrateTo :: DbVersion -> HS.Session ()
@@ -1063,6 +1271,33 @@ migrateFrom = \ver -> forM_ [ver .. maxBound] migrateTo
         HS.statement (dbVersionToText ver) $ Statement
           (BS8.unwords
             [ "INSERT INTO db_meta (key, value) VALUES ('version', $1)"
+            ]
+          ) (HE.param HE.text) HD.unit True
+      ver@DbVersion1 -> do
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "DROP TABLE IF EXISTS account CASCADE"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE account ("
+            ,   "id TEXT UNIQUE NOT NULL,"
+            ,   "firebase_id TEXT UNIQUE NOT NULL"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE username ("
+            ,   "id TEXT UNIQUE NOT NULL,"
+            ,   "account TEXT REFERENCES account (id) ON DELETE CASCADE UNIQUE NOT NULL"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement (dbVersionToText ver) $ Statement
+          (BS8.unwords
+            [ "UPDATE db_meta SET value = $1 WHERE key = 'version'"
             ]
           ) (HE.param HE.text) HD.unit True
 
@@ -1097,8 +1332,7 @@ readDbVersion = do
             ,   ");"
             ]
           ) HE.unit HD.unit True
-        migrateFrom minBound
-        pure $ Right $ Just maxBound
+        pure $ Right Nothing
 
 latestDbVersion :: DbVersion
 latestDbVersion = maxBound
@@ -1106,6 +1340,7 @@ latestDbVersion = maxBound
 dbVersionToText :: DbVersion -> T.Text
 dbVersionToText = \case
   DbVersion0 -> "0"
+  DbVersion1 -> "1"
 
 dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
@@ -1115,11 +1350,14 @@ migrate :: HS.Session ()
 migrate = do
     readDbVersion >>= \case
       Left e -> error $ show e
-      Right Nothing -> migrateFrom minBound
+      Right Nothing -> do
+        liftIO $ putStrLn "Migrating from beginning"
+        migrateFrom minBound
       Right (Just v) ->
-        if v >= maxBound
-        then pure ()
-        else migrateFrom v
+        if
+          | v == maxBound -> pure ()
+          | v > maxBound -> error "V greater than maxbound"
+          | v < maxBound -> migrateFrom (succ v)
 
 getDbInterface :: HC.Connection -> IO DbInterface
 getDbInterface conn = do
@@ -1130,8 +1368,8 @@ getDbInterface conn = do
     pure $ DbInterface
       { dbGetAllUsers = wrap usersGetSession
       , dbGetUserById = \uid -> wrap (usersGetUserIdSession uid)
-      , dbCreateUser = \uid user -> wrap (usersPostSession uid user)
-      , dbUpdateUser = \uid user -> Right <$> wrap (usersPutSession uid user)
+      , dbCreateUser = \uid uinfo -> wrap (usersPostSession uid uinfo)
+      , dbUpdateUser = \uid uinfo -> wrap (usersPutSession uid uinfo)
       , dbDeleteUser = \uid -> Right <$> wrap (usersDeleteSession uid)
       }
   where

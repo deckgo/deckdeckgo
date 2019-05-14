@@ -67,6 +67,13 @@ export namespace Components {
     'user'?: boolean;
   }
 
+  interface AppUserInfo {
+    'avatarColSize': number;
+  }
+  interface AppUserInfoAttributes extends StencilHTMLAttributes {
+    'avatarColSize'?: number;
+  }
+
   interface AppAddSlideAction {}
   interface AppAddSlideActionAttributes extends StencilHTMLAttributes {
     'onActionOpenSlideAdd'?: (event: CustomEvent<UIEvent>) => void;
@@ -216,6 +223,7 @@ declare global {
     'AppMenu': Components.AppMenu;
     'AppNavigationActions': Components.AppNavigationActions;
     'AppNavigation': Components.AppNavigation;
+    'AppUserInfo': Components.AppUserInfo;
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
     'AppDemo': Components.AppDemo;
@@ -253,6 +261,7 @@ declare global {
     'app-menu': Components.AppMenuAttributes;
     'app-navigation-actions': Components.AppNavigationActionsAttributes;
     'app-navigation': Components.AppNavigationAttributes;
+    'app-user-info': Components.AppUserInfoAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-demo': Components.AppDemoAttributes;
@@ -323,6 +332,12 @@ declare global {
   var HTMLAppNavigationElement: {
     prototype: HTMLAppNavigationElement;
     new (): HTMLAppNavigationElement;
+  };
+
+  interface HTMLAppUserInfoElement extends Components.AppUserInfo, HTMLStencilElement {}
+  var HTMLAppUserInfoElement: {
+    prototype: HTMLAppUserInfoElement;
+    new (): HTMLAppUserInfoElement;
   };
 
   interface HTMLAppAddSlideActionElement extends Components.AppAddSlideAction, HTMLStencilElement {}
@@ -495,6 +510,7 @@ declare global {
     'app-menu': HTMLAppMenuElement
     'app-navigation-actions': HTMLAppNavigationActionsElement
     'app-navigation': HTMLAppNavigationElement
+    'app-user-info': HTMLAppUserInfoElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-demo': HTMLAppDemoElement
@@ -532,6 +548,7 @@ declare global {
     'app-menu': HTMLAppMenuElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-navigation': HTMLAppNavigationElement;
+    'app-user-info': HTMLAppUserInfoElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-demo': HTMLAppDemoElement;

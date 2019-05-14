@@ -3,7 +3,7 @@ import {Observable, ReplaySubject} from 'rxjs';
 import {get, del, set} from 'idb-keyval';
 
 import {AuthUser} from '../../../models/auth-user';
-import {User} from '../../../models/user';
+import {User, UserInfo} from '../../../models/user';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
@@ -36,10 +36,7 @@ export class UserService {
             } else {
                 const savedApiUserId: string = await get('deckdeckgo_user_id');
                 if (!savedApiUserId) {
-                    const apiUser: User = {
-                        anonymous: authUser.anonymous,
-                        firebase_uid: authUser.uid
-                    };
+                    const apiUser: UserInfo = await this.createUserInfo(authUser);
 
                     try {
                         await this.query(apiUser, authUser.token, 'POST');
@@ -71,7 +68,7 @@ export class UserService {
         });
     }
 
-    query(apiUser: User, token: string, method: string): Promise<User> {
+    query(apiUserInfo: UserInfo, token: string, method: string): Promise<User> {
         return new Promise<User>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
@@ -83,7 +80,7 @@ export class UserService {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(apiUser)
+                    body: JSON.stringify(apiUserInfo)
                 });
 
                 if (!rawResponse || (!rawResponse.ok && rawResponse.status !== 409)) {
@@ -161,6 +158,23 @@ export class UserService {
 
     watch(): Observable<User> {
         return this.apiUserSubject.asObservable();
+    }
+
+    createUserInfo(authUser: AuthUser): Promise<UserInfo> {
+        return new Promise<UserInfo>((resolve) => {
+            if (!authUser) {
+                resolve(null);
+                return;
+            }
+
+            const apiUserInfo: UserInfo = {
+                anonymous: authUser.anonymous,
+                firebase_uid: authUser.uid,
+                email: authUser.anonymous ? null : authUser.email
+            };
+
+            resolve(apiUserInfo);
+        });
     }
 
 }
