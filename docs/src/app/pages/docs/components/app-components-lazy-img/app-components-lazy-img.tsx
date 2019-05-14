@@ -73,7 +73,7 @@ export class AppComponentsLazyImg {
 <tr>
 <td>observer-root-margin</td>
 <td>string</td>
-<td>100px 0</td>
+<td>100px 0px</td>
 <td>A string which specifies a set of offsets to add to the root&#39;s bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes. <a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver">More info.</a></td>
 </tr>
 <tr>
@@ -97,6 +97,11 @@ export class AppComponentsLazyImg {
 <td>--deckgo-lazy-img-max-width</td>
 <td>100%</td>
 <td>Image max width</td>
+</tr>
+<tr>
+<td>--deckgo-lazy-img-min-width</td>
+<td></td>
+<td>Image min width</td>
 </tr>
 <tr>
 <td>--deckgo-lazy-img-pointer-events</td>

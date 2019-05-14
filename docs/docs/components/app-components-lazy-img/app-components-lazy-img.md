@@ -33,7 +33,7 @@ This component offers the following options which could be set using attributes:
 | -------------------------- |-----------------|-----------------|-----------------|
 | img-src | string |  | The image source (= URI) to lazy load |
 | img-alt | string |  | The image alternate text |
-| observer-root-margin | string | 100px 0 | A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
+| observer-root-margin | string | 100px 0px | A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
 | observer-threshold | number or number[] |  | Either a single number or an array of numbers between 0.0 and 1.0, specifying a ratio of intersection area to total bounding box area for the observed target. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
 
 ### Theming
@@ -43,6 +43,7 @@ The following theming options will affect this component if set on its host or p
 | CSS4 variable                      | Default | Note |
 | -------------------------- |-----------------|-----------------|
 | --deckgo-lazy-img-max-width | 100% | Image max width |
+| --deckgo-lazy-img-min-width |  | Image min width |
 | --deckgo-lazy-img-pointer-events | none | Image pointer events |
 | --deckgo-lazy-img-height | | Image height |
 | --deckgo-lazy-img-width | | Image width |

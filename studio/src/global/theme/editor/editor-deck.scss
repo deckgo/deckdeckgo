@@ -72,4 +72,13 @@ deckgo-deck {
   :not([slot="background"]) > deckgo-lazy-img {
     --deckgo-lazy-img-padding: 16px;
   }
+
+  [slot="background"] > deckgo-lazy-img {
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --deckgo-lazy-img-min-width: 100%;
+  }
 }

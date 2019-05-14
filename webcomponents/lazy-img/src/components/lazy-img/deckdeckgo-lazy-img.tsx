@@ -18,7 +18,7 @@ export class DeckdeckgoLazyImg {
   imgAlt: string;
 
   @Prop()
-  observerRootMargin: string = '100px 0';
+  observerRootMargin: string = '100px 0px';
 
   @Prop()
   observerThreshold: number | number[];
