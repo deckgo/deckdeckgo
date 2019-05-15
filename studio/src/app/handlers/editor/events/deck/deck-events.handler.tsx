@@ -211,7 +211,7 @@ export class DeckEventsHandler {
                 template: this.getSlideTemplate(slide)
             };
 
-            const content: string = await this.cleanSlideContent(slide.innerHTML);
+            const content: string = await this.cleanSlideContent(slide);
             if (content && content.length > 0) {
                 slidePost.content = content
             }
@@ -393,7 +393,7 @@ export class DeckEventsHandler {
                     template: this.getSlideTemplate(slide)
                 };
 
-                const content: string = await this.cleanSlideContent(slide.innerHTML);
+                const content: string = await this.cleanSlideContent(slide);
                 if (content && content.length > 0) {
                     slideUpdate.content = content
                 }
@@ -524,8 +524,15 @@ export class DeckEventsHandler {
         });
     }
 
-    private cleanSlideContent(content: string): Promise<string> {
+    private cleanSlideContent(slide: HTMLElement): Promise<string> {
         return new Promise<string>((resolve) => {
+            if (!slide) {
+                resolve(null);
+                return;
+            }
+
+            const content: string = slide.innerHTML;
+
             if (!content || content.length <= 0) {
                 resolve(content);
                 return;
@@ -535,6 +542,10 @@ export class DeckEventsHandler {
             result = result.replace(/editable=""|editable="true"|editable/gi, '');
             result = result.replace(/hydrated/gi, '');
             result = result.replace(/class=""/g, '');
+
+            if (!slide.hasAttribute('custom-background')) {
+                result = result.replace(/<div slot="background">(.*?)<\/div>/g, '');
+            }
 
             resolve(result);
         });
