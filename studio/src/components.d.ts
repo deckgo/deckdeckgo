@@ -204,6 +204,13 @@ export namespace Components {
   interface AppEditorActions {}
   interface AppEditorActionsAttributes extends StencilHTMLAttributes {}
 
+  interface AppImage {
+    'deckOrSlide': boolean;
+  }
+  interface AppImageAttributes extends StencilHTMLAttributes {
+    'deckOrSlide'?: boolean;
+  }
+
   interface AppSlideType {}
   interface AppSlideTypeAttributes extends StencilHTMLAttributes {}
 
@@ -250,6 +257,7 @@ declare global {
     'AppCode': Components.AppCode;
     'AppDeckOrSlide': Components.AppDeckOrSlide;
     'AppEditorActions': Components.AppEditorActions;
+    'AppImage': Components.AppImage;
     'AppSlideType': Components.AppSlideType;
     'AppSlotType': Components.AppSlotType;
   }
@@ -288,6 +296,7 @@ declare global {
     'app-code': Components.AppCodeAttributes;
     'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
     'app-editor-actions': Components.AppEditorActionsAttributes;
+    'app-image': Components.AppImageAttributes;
     'app-slide-type': Components.AppSlideTypeAttributes;
     'app-slot-type': Components.AppSlotTypeAttributes;
   }
@@ -491,6 +500,12 @@ declare global {
     new (): HTMLAppEditorActionsElement;
   };
 
+  interface HTMLAppImageElement extends Components.AppImage, HTMLStencilElement {}
+  var HTMLAppImageElement: {
+    prototype: HTMLAppImageElement;
+    new (): HTMLAppImageElement;
+  };
+
   interface HTMLAppSlideTypeElement extends Components.AppSlideType, HTMLStencilElement {}
   var HTMLAppSlideTypeElement: {
     prototype: HTMLAppSlideTypeElement;
@@ -537,6 +552,7 @@ declare global {
     'app-code': HTMLAppCodeElement
     'app-deck-or-slide': HTMLAppDeckOrSlideElement
     'app-editor-actions': HTMLAppEditorActionsElement
+    'app-image': HTMLAppImageElement
     'app-slide-type': HTMLAppSlideTypeElement
     'app-slot-type': HTMLAppSlotTypeElement
   }
@@ -575,6 +591,7 @@ declare global {
     'app-code': HTMLAppCodeElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
+    'app-image': HTMLAppImageElement;
     'app-slide-type': HTMLAppSlideTypeElement;
     'app-slot-type': HTMLAppSlotTypeElement;
   }

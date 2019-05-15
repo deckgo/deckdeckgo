@@ -110,4 +110,27 @@ export class DeckdeckgoDeckBackgroundUtils {
     });
   }
 
+  static removeSlots(slides: HTMLElement[], slotName: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!slides || slides.length <= 0) {
+        resolve();
+        return;
+      }
+
+      slides.forEach((slide: Element) => {
+        const custom: boolean = slide.hasAttribute('custom-' + slotName);
+
+        if (!custom) {
+          const currentSlotElement: HTMLElement = slide.querySelector(':scope > [slot=\'' + slotName + '\']');
+
+          if (currentSlotElement) {
+            slide.removeChild(currentSlotElement);
+          }
+        }
+      });
+
+      resolve();
+    });
+  }
+
 }

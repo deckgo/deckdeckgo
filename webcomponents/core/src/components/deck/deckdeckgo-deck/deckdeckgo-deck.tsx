@@ -464,7 +464,7 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      // TODO remove previous background slots -> removeChildren on slides
+      await DeckdeckgoDeckBackgroundUtils.removeSlots(filteredSlides, 'background');
 
       await DeckdeckgoDeckBackgroundUtils.cloneAndLoadBackground(this.el, filteredSlides, this.cloneBackground);
 

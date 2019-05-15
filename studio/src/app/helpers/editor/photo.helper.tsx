@@ -30,6 +30,49 @@ export class PhotoHelper {
         });
     }
 
+    deleteBackground(selectedElement: HTMLElement, applyToAllDeck: boolean): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!selectedElement || !document) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = applyToAllDeck ? selectedElement.parentElement : selectedElement;
+
+            if (!element) {
+                resolve();
+                return;
+            }
+
+            const currentSlotElement: HTMLElement = element.querySelector(':scope > [slot=\'background\']');
+
+            if (currentSlotElement) {
+                this.busyService.deckBusy(true);
+
+                if (applyToAllDeck) {
+                    element.removeChild(currentSlotElement);
+
+                    this.deckDidChange.emit(selectedElement.parentElement);
+
+                    await (element as any).loadBackground();
+                } else if (selectedElement.hasAttribute('custom-background')) {
+                    element.removeChild(currentSlotElement);
+
+                    selectedElement.removeAttribute('custom-background');
+
+                    this.slideDidChange.emit(selectedElement);
+
+                    // Refresh background, deck might have one defined which need to be replicated on the slide which
+                    if (element.parentElement) {
+                        await (element.parentElement as any).loadBackground();
+                    }
+                }
+            }
+
+            resolve();
+        });
+    }
+
     private createImgElement(photo: UnsplashPhoto): HTMLElement {
         const img: HTMLElement = document.createElement('deckgo-lazy-img');
         (img as any).imgSrc = photo.urls.regular;

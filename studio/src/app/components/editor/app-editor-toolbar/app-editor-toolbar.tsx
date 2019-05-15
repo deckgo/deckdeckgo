@@ -8,6 +8,8 @@ import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {PhotoHelper} from '../../../helpers/editor/photo.helper';
 
+import {ImageAction} from '../../../popovers/editor/app-image/image-action';
+
 import {BusyService} from '../../../services/editor/busy/busy.service';
 
 @Component({
@@ -343,7 +345,7 @@ export class AppEditorToolbar {
             const windowWidth: number = window.innerWidth | screen.width;
 
             const leftStandardPosition: number = left + offsetWidth - extraLeft;
-            const leftPosition: number = leftStandardPosition + width >  windowWidth ? windowWidth - width : leftStandardPosition;
+            const leftPosition: number = leftStandardPosition + width > windowWidth ? windowWidth - width : leftStandardPosition;
 
             // Set left position
             applyTo.style.left = '' + leftPosition + 'px';
@@ -637,7 +639,34 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private openPhotos = async () => {
+    private async openBackground() {
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-image',
+            componentProps: {
+                deckOrSlide: this.deckOrSlide
+            },
+            mode: 'md',
+            cssClass: 'popover-menu'
+        });
+
+        popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                if (detail.data.hasOwnProperty('applyToAllDeck')) {
+                    this.applyToAllDeck = detail.data.applyToAllDeck;
+                }
+
+                if (detail.data.action === ImageAction.OPEN_PHOTOS) {
+                    await this.openPhotos();
+                } else if (detail.data.action === ImageAction.DELETE_PHOTO) {
+                    await this.deleteBackgroundPhoto();
+                }
+            }
+        });
+
+        await popover.present();
+    }
+
+    private async openPhotos() {
         const modal: HTMLIonModalElement = await this.modalController.create({
             component: 'app-photo'
         });
@@ -650,7 +679,19 @@ export class AppEditorToolbar {
         });
 
         await modal.present();
-    };
+    }
+
+    private deleteBackgroundPhoto(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.deckOrSlide) {
+                resolve();
+                return;
+            }
+
+            const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
+            await helper.deleteBackground(this.selectedElement, this.applyToAllDeck);
+        });
+    }
 
     render() {
         return [
@@ -683,7 +724,8 @@ export class AppEditorToolbar {
         };
 
         return [
-            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)} title="Background">
+            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)}
+               title="Background">
                 <ion-label style={styleBackground}>Bg</ion-label>
             </a>,
             <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)} title="Color">
@@ -713,8 +755,7 @@ export class AppEditorToolbar {
     }
 
     private renderPhotos() {
-        // TODO undefined if not div
-        return <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openPhotos)} title="Add a stock photo">
+        return <a onClick={() => this.openBackground()} title="Background">
             <ion-icon name="images"></ion-icon>
         </a>
     }
