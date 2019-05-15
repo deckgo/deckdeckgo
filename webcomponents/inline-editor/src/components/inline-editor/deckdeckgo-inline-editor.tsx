@@ -840,9 +840,6 @@ export class DeckdeckgoInlineEditor {
   private setImageWith = async (size: ImageSize) => {
     const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
     anchorImg.style.setProperty(this.imgPropertyWidth, size.toString());
-
-    const container: HTMLElement = await this.findContainer(anchorImg);
-    this.imgDidChange.emit(container);
   };
 
   private setImageAlignment = (align: ImageAlign) => {
@@ -875,6 +872,40 @@ export class DeckdeckgoInlineEditor {
 
         resolve(container);
       }
+    });
+  }
+
+  private deleteImage(e: UIEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const isAnchorImg: boolean = await this.isAnchorImage();
+      if (!isAnchorImg) {
+        resolve();
+        return;
+      }
+
+      e.stopPropagation();
+
+      const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
+
+      if (!anchorImg || !anchorImg.parentElement) {
+        resolve();
+        return;
+      }
+
+      const container: HTMLElement = await this.findContainer(anchorImg);
+
+      if (!container) {
+        resolve();
+        return;
+      }
+
+      anchorImg.parentElement.removeChild(anchorImg);
+
+      this.imgDidChange.emit(container);
+
+      await this.reset(true);
+
+      resolve();
     });
   }
 
@@ -946,10 +977,7 @@ export class DeckdeckgoInlineEditor {
       <div class="separator"></div>,
 
       <button
-        disabled={this.disabledTitle}
-        onClick={() => {
-          this.toggleLink()
-        }} class={this.link ? "link active" : "link"}>
+        disabled={this.disabledTitle} onClick={() => this.toggleLink()} class={this.link ? "link active" : "link"}>
         <div></div>
       </button>
     ];
@@ -989,7 +1017,16 @@ export class DeckdeckgoInlineEditor {
         onClick={(e: UIEvent) => this.styleImage(e, this.setImageAlignment, ImageAlign.START)}
         class={this.imageAlign === ImageAlign.START ? "image-align start active" : "image-align start"}>
         <div></div>
+      </button>,
+
+      <div class="separator"></div>,
+
+      <button
+        onClick={(e: UIEvent) => this.deleteImage(e)} class="image-delete">
+        <div></div>
       </button>
+
+
     ];
   }
 }

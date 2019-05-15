@@ -710,7 +710,7 @@ export class AppEditorToolbar {
     private renderDelete() {
         return <a onClick={() => this.deleteElement()} title="Delete"
                   class={this.deckBusy && this.deckOrSlide ? "delete disabled" : "delete"}>
-            <ion-icon name="trash"></ion-icon>
+            <ion-icon ios="md-trash" md="md-trash"></ion-icon>
         </a>
     }
 
