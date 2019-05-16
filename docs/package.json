@@ -18,7 +18,7 @@
     "deckdeckgo": "^1.0.0-beta.30",
     "deckdeckgo-charts": "^1.0.0-alpha.5",
     "deckdeckgo-highlight-code": "^1.0.0-alpha.11",
-    "deckdeckgo-inline-editor": "file:../webcomponents/inline-editor",
+    "deckdeckgo-inline-editor": "^1.0.0-alpha.6",
     "deckdeckgo-qrcode": "^1.0.0-alpha.6",
     "rxjs": "^6.4.0"
   },
