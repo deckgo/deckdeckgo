@@ -659,6 +659,8 @@ export class AppEditorToolbar {
                     await this.openPhotos();
                 } else if (detail.data.action === ImageAction.DELETE_PHOTO) {
                     await this.deleteBackgroundPhoto();
+                } else if (detail.data.action === ImageAction.ADD_PHOTO && detail.data.photo) {
+                    await this.appendPhoto(detail.data.photo as UnsplashPhoto);
                 }
             }
         });
@@ -673,12 +675,30 @@ export class AppEditorToolbar {
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
-                await helper.appendPhoto(this.selectedElement, (detail.data as UnsplashPhoto), this.deckOrSlide, this.applyToAllDeck);
+                await this.appendPhoto(detail.data as UnsplashPhoto);
             }
         });
 
         await modal.present();
+    }
+
+    private appendPhoto(photo: UnsplashPhoto): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (!photo) {
+                resolve();
+                return;
+            }
+
+            const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
+            await helper.appendPhoto(this.selectedElement, photo, this.deckOrSlide, this.applyToAllDeck);
+
+            resolve();
+        });
     }
 
     private deleteBackgroundPhoto(): Promise<void> {

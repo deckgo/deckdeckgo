@@ -1,6 +1,7 @@
 import {Component, Element, Listen, State} from '@stencil/core';
 
 import {PhotoService} from '../../../services/api/photo/photo.service';
+import {PhotoHistoryService} from '../../../services/editor/photo-history/photo-history.service';
 
 @Component({
     tag: 'app-photo',
@@ -11,6 +12,7 @@ export class AppPhoto {
     @Element() el: HTMLElement;
 
     private photoService: PhotoService;
+    private photoHistoryService: PhotoHistoryService;
 
     @State()
     private photosOdd: UnsplashPhoto[];
@@ -30,6 +32,7 @@ export class AppPhoto {
 
     constructor() {
         this.photoService = PhotoService.getInstance();
+        this.photoHistoryService = PhotoHistoryService.getInstance();
     }
 
     async componentDidLoad() {
@@ -45,9 +48,18 @@ export class AppPhoto {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private selectPhoto(photo: UnsplashPhoto): Promise<void> {
+    private selectPhoto($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            const photo: UnsplashPhoto = $event.detail;
+
             await this.photoService.registerDownload(photo.id);
+
+            await this.photoHistoryService.push(photo);
 
             await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(photo);
 
@@ -111,8 +123,8 @@ export class AppPhoto {
                 this.photosEven = [];
             }
 
-            this.photosOdd = [...this.photosOdd, ...photos.filter((_a, i) => i % 2)];
-            this.photosEven = [...this.photosEven, ...photos.filter((_a, i) => !(i % 2))];
+            this.photosEven = [...this.photosEven, ...photos.filter((_a, i) => i % 2)];
+            this.photosOdd = [...this.photosOdd, ...photos.filter((_a, i) => !(i % 2))];
 
             if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
                 // We just put a small delay because of the repaint
@@ -176,14 +188,9 @@ export class AppPhoto {
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
-                <div class="photos-container">
-                    <div class="photos-column">
-                        {this.renderPhotos(this.photosOdd)}
-                    </div>
-                    <div class="photos-column">
-                        {this.renderPhotos(this.photosEven)}
-                    </div>
-                </div>
+                <app-stock-photos photosOdd={this.photosOdd} photosEven={this.photosEven}
+                                  onSelectPhoto={($event: CustomEvent) => this.selectPhoto($event)}>
+                </app-stock-photos>
 
                 {this.renderPhotosPlaceHolder()}
 
@@ -200,39 +207,12 @@ export class AppPhoto {
                     <ion-searchbar debounce={500} placeholder="Search" value={this.searchTerm}
                                    onIonClear={() => this.clear()}
                                    onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-                                   onIonChange={() => {this.search()}}></ion-searchbar>
+                                   onIonChange={() => {
+                                       this.search()
+                                   }}></ion-searchbar>
                 </ion-toolbar>
             </ion-footer>
         ];
-    }
-
-    private renderPhotos(photos: UnsplashPhoto[]) {
-        if (photos && photos.length > 0) {
-            return (
-                photos.map((photo: UnsplashPhoto) => {
-                    if (photo.urls && photo.urls.thumb) {
-                        return <div class="photo ion-padding" custom-tappable onClick={() => this.selectPhoto(photo)}>
-                            <div class="photo-container">
-                                <img src={photo.urls.thumb} alt={photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.thumb)}></img>
-                                {this.renderPhotoCredits(photo)}
-                            </div>
-                        </div>
-                    } else {
-                        return undefined;
-                    }
-                })
-            );
-        } else {
-            return undefined;
-        }
-    }
-
-    private renderPhotoCredits(photo: UnsplashPhoto) {
-        if (!photo.user || !photo.user.links || !photo.user.links.html || !photo.user.name) {
-            return undefined;
-        } else {
-            return <ion-label class="photo-credits"><a href={photo.user.links.html + '?utm_source=DeckDeckGo&utm_medium=referral'} target="_blank" onClick={($event: UIEvent) => $event.stopPropagation()}>{photo.user.name}</a></ion-label>;
-        }
     }
 
     private renderPhotosPlaceHolder() {

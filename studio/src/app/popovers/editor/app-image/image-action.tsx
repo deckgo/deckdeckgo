@@ -1,4 +1,5 @@
 export enum ImageAction {
     OPEN_PHOTOS,
-    DELETE_PHOTO
+    DELETE_PHOTO,
+    ADD_PHOTO
 }

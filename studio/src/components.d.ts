@@ -94,6 +94,16 @@ export namespace Components {
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
 
+  interface AppStockPhotos {
+    'photosEven': UnsplashPhoto[];
+    'photosOdd': UnsplashPhoto[];
+  }
+  interface AppStockPhotosAttributes extends StencilHTMLAttributes {
+    'onSelectPhoto'?: (event: CustomEvent<UnsplashPhoto>) => void;
+    'photosEven'?: UnsplashPhoto[];
+    'photosOdd'?: UnsplashPhoto[];
+  }
+
   interface AppDemo {}
   interface AppDemoAttributes extends StencilHTMLAttributes {}
 
@@ -234,6 +244,7 @@ declare global {
     'AppUserInfo': Components.AppUserInfo;
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
+    'AppStockPhotos': Components.AppStockPhotos;
     'AppDemo': Components.AppDemo;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
@@ -273,6 +284,7 @@ declare global {
     'app-user-info': Components.AppUserInfoAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
+    'app-stock-photos': Components.AppStockPhotosAttributes;
     'app-demo': Components.AppDemoAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
@@ -360,6 +372,12 @@ declare global {
   var HTMLAppEditorToolbarElement: {
     prototype: HTMLAppEditorToolbarElement;
     new (): HTMLAppEditorToolbarElement;
+  };
+
+  interface HTMLAppStockPhotosElement extends Components.AppStockPhotos, HTMLStencilElement {}
+  var HTMLAppStockPhotosElement: {
+    prototype: HTMLAppStockPhotosElement;
+    new (): HTMLAppStockPhotosElement;
   };
 
   interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
@@ -529,6 +547,7 @@ declare global {
     'app-user-info': HTMLAppUserInfoElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
+    'app-stock-photos': HTMLAppStockPhotosElement
     'app-demo': HTMLAppDemoElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
@@ -568,6 +587,7 @@ declare global {
     'app-user-info': HTMLAppUserInfoElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
+    'app-stock-photos': HTMLAppStockPhotosElement;
     'app-demo': HTMLAppDemoElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;

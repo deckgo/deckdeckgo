@@ -1,9 +1,11 @@
-import {Component, Element, Prop} from '@stencil/core';
+import {Component, Element, Prop, State} from '@stencil/core';
 
 import {ImageAction} from './image-action';
 
+import {PhotoHistoryService} from '../../../services/editor/photo-history/photo-history.service';
+
 @Component({
-    tag: 'app-image',
+        tag: 'app-image',
     styleUrl: 'app-image.scss'
 })
 export class AppImage {
@@ -15,7 +17,39 @@ export class AppImage {
 
     private applyToAllDeck: boolean = false;
 
-    private async closePopover(action: ImageAction) {
+    private photoHistoryService: PhotoHistoryService;
+
+    @State()
+    private photosHistoryOdd: UnsplashPhoto[];
+
+    @State()
+    private photosHistoryEven: UnsplashPhoto[];
+
+    constructor() {
+        this.photoHistoryService = PhotoHistoryService.getInstance();
+    }
+
+    async componentWillLoad() {
+        await this.initPhotoHistory();
+    }
+
+    private initPhotoHistory(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const photosHistory: UnsplashPhoto[] = await this.photoHistoryService.get();
+
+            if (!photosHistory || photosHistory.length <= 0) {
+                resolve();
+                return;
+            }
+
+            this.photosHistoryEven = [...photosHistory.filter((_a, i) => i % 2)];
+            this.photosHistoryOdd = [...photosHistory.filter((_a, i) => !(i % 2))];
+
+            resolve();
+        });
+    }
+
+    private async closePopover(action: ImageAction, photo?: UnsplashPhoto) {
         const data = {
             action: action
         };
@@ -24,7 +58,24 @@ export class AppImage {
             data['applyToAllDeck'] = this.applyToAllDeck;
         }
 
+        if (photo) {
+            data['photo'] = photo;
+        }
+
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss(data);
+    }
+
+    private selectPhotoFromHistory($event: CustomEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            await this.closePopover(ImageAction.ADD_PHOTO, $event.detail);
+
+            resolve();
+        });
     }
 
     render() {
@@ -39,6 +90,10 @@ export class AppImage {
                 </ion-item>
 
                 {this.renderDeleteAction()}
+
+                <ion-item-divider class="ion-padding-top"><ion-label>History</ion-label></ion-item-divider>
+
+                {this.renderPhotosHistory()}
             </ion-list>
         ];
     }
@@ -58,11 +113,11 @@ export class AppImage {
                 <ion-radio-group onIonChange={($event) => this.selectApplyToAllDeck($event)}>
                     <ion-item>
                         <ion-label>Just this slide</ion-label>
-                        <ion-radio slot="start" value={false} checked></ion-radio>
+                        <ion-radio slot="start" value={false} checked mode="md"></ion-radio>
                     </ion-item>
                     <ion-item>
                         <ion-label>The all deck</ion-label>
-                        <ion-radio slot="start" value={true}></ion-radio>
+                        <ion-radio slot="start" value={true} mode="md"></ion-radio>
                     </ion-item>
                 </ion-radio-group>
             ]
@@ -78,6 +133,18 @@ export class AppImage {
                     <ion-label class="ion-text-uppercase">Delete background</ion-label>
                 </ion-button>
             </ion-item>;
+        }
+    }
+
+    private renderPhotosHistory() {
+        if (!this.photosHistoryOdd && !this.photosHistoryEven) {
+            return <ion-item>
+                <ion-label>Empty</ion-label>
+            </ion-item>
+        } else {
+            return <div class="history-photos ion-padding">
+                <app-stock-photos photosOdd={this.photosHistoryOdd} photosEven={this.photosHistoryEven} onSelectPhoto={($event: CustomEvent) => this.selectPhotoFromHistory($event)}></app-stock-photos>
+            </div>
         }
     }
 }
