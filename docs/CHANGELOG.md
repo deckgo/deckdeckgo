@@ -1,3 +1,11 @@
+<a name="1.0.0-alpha.8"></a>
+# 1.0.0-alpha.8 (2019-05-16)
+
+### Features
+
+* document the brand new dead simple Web Component to lazy load images
+* add some methods and attributes used to handle images and background in the editor
+
 <a name="1.0.0-alpha.7"></a>
 # 1.0.0-alpha.7 (2019-04-30)
 
