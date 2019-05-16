@@ -1,3 +1,8 @@
+<a name="1.0.0-alpha.6"></a>
+# 1.0.0-alpha.6 (2019-05-16)
+
+* this WYSIWYG inline editor now supports images too. it gives the ability to resize (big, medium, small, very small) images, to align them horizontally or left and even to delete them
+
 <a name="1.0.0-alpha.5"></a>
 # 1.0.0-alpha.5 (2019-04-30)
 

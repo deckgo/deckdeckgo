@@ -4,6 +4,7 @@
 ### Web Components
 
 * lazy-img: a brand new dead simple Web Component to lazy load images 🎉 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
+* inline-editor: v1.0.0-alpha.6 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
 <a name="1.0.0-beta.37"></a>
 # [1.0.0-beta.37](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.36...v1.0.0-beta.37) (2019-04-30)
