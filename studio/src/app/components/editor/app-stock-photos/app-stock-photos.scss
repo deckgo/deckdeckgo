@@ -34,7 +34,7 @@ div.photos-container {
           right: 0;
           background: rgba(var(--ion-color-dark-rgb), 0.4);
           padding: 4px 8px;
-          font-size: var(--font-size-very-small);
+          font-size: var(--deckgo-stock-photos-font-size, var(--font-size-very-small));
           color: white;
 
           a {
