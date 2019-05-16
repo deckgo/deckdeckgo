@@ -1,4 +1,6 @@
 app-image {
+  @import "../../../../global/theme/editor/editor-info";
+  
   h2 {
     color: var(--ion-color-primary);
   }

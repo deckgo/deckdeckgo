@@ -10,6 +10,8 @@ import {PhotoHistoryService} from '../../../services/editor/photo-history/photo-
 })
 export class AppImage {
 
+    @Prop({connect: 'ion-alert-controller'}) alertController: HTMLIonAlertControllerElement;
+
     @Element() el: HTMLElement;
 
     @Prop()
@@ -78,6 +80,21 @@ export class AppImage {
         });
     }
 
+    private selectApplyToAllDeck($event: CustomEvent) {
+        if ($event && $event.detail) {
+            this.applyToAllDeck = $event.detail.value;
+        }
+    }
+
+    private async presentHistoryInfo() {
+        const alert = await this.alertController.create({
+            message: 'The editor keeps track of the last 10 images you would have use in any of your presentations.<br/><br/>Select one to add it again quickly.',
+            buttons: ['Ok']
+        });
+
+        return await alert.present();
+    }
+
     render() {
         return [<div class="ion-padding"><h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2></div>,
             <ion-list>
@@ -91,17 +108,16 @@ export class AppImage {
 
                 {this.renderDeleteAction()}
 
-                <ion-item-divider class="ion-padding-top"><ion-label>History</ion-label></ion-item-divider>
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>History</ion-label>
+                    <button slot="end" class="info" onClick={() => this.presentHistoryInfo()}>
+                        <ion-icon name="help"></ion-icon>
+                    </button>
+                </ion-item-divider>
 
                 {this.renderPhotosHistory()}
             </ion-list>
         ];
-    }
-
-    private selectApplyToAllDeck($event: CustomEvent) {
-        if ($event && $event.detail) {
-            this.applyToAllDeck = $event.detail.value;
-        }
     }
 
     private renderDeckOrSlide() {
