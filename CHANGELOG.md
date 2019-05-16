@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.38"></a>
+# [1.0.0-beta.38](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.37...v1.0.0-beta.38) (2019-05-16)
+
+### Web Components
+
+* lazy-img: a brand new dead simple Web Component to lazy load images 🎉 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
+
 <a name="1.0.0-beta.37"></a>
 # [1.0.0-beta.37](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.36...v1.0.0-beta.37) (2019-04-30)
 
