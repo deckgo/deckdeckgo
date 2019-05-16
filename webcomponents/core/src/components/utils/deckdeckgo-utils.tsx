@@ -72,16 +72,6 @@ export class DeckdeckgoUtils {
 
       components.forEach(async (component: HTMLElement) => {
         await (component as any).lazyLoad();
-
-        // TODO: reveal?
-        // if (image.getAttribute('data-src')) {
-
-          // If image is part of a reveal group, let it be revealed with the reveal feature
-
-          // if (!image.classList.contains('deckgo-reveal')) {
-          //   image.style.setProperty('visibility', 'inherit');
-          // }
-        // }
       });
 
       resolve();
