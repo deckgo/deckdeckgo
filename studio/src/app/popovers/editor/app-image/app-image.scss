@@ -18,6 +18,10 @@ app-image {
     &.action-button {
       --min-height: 42px;
     }
+
+    &.history-empty {
+      --color: var(--ion-color-medium);
+    }
   }
 
   ion-item-divider {
