@@ -1,0 +1,38 @@
+app-image {
+  @import "../../../../global/theme/editor/editor-info";
+
+  h2 {
+    color: var(--ion-color-primary);
+  }
+
+  ion-list.list-ios {
+    margin-bottom: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  ion-item {
+    --border-width: 0;
+    --inner-border-width: 0;
+
+    &.action-button {
+      --min-height: 42px;
+    }
+  }
+
+  ion-item-divider {
+    --color: var(--ion-color-primary);
+    --background: inherit;
+    --ion-item-border-color: transparent;
+    --ion-padding: 0;
+
+    ion-label {
+      margin: 16px 0 4px;
+    }
+  }
+
+  app-stock-photos {
+    --deckgo-stock-photos-padding: 4px;
+    --deckgo-stock-photos-font-size: calc(var(--font-size-very-small) - 4px);
+  }
+}

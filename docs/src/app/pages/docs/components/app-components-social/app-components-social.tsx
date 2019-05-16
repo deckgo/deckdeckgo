@@ -32,11 +32,11 @@ export class AppComponentsSocial {
 <p>The &quot;Social&quot; component allows you to easily add a social link to your presentation.</p>
 <h2 id="app-components-social-table-of-contents">Table of contents</h2>
 <ul>
-<li><a href="#showcase">Showcase</a></li>
-<li><a href="#usage">Usage</a><ul>
-<li><a href="#slots">Slots</a></li>
-<li><a href="#attributes">Attributes</a></li>
-<li><a href="#examples">Examples</a></li>
+<li><a href="#app-components-social-showcase">Showcase</a></li>
+<li><a href="#app-components-social-usage">Usage</a><ul>
+<li><a href="#app-components-social-slots">Slots</a></li>
+<li><a href="#app-components-social-attributes">Attributes</a></li>
+<li><a href="#app-components-social-examples">Examples</a></li>
 </ul>
 </li>
 </ul>
@@ -50,7 +50,7 @@ export class AppComponentsSocial {
 </p>
 
 <h2 id="app-components-social-usage">Usage</h2>
-<p>The &quot;Social&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-social/&gt;</code>.</p>
+<p>The &quot;Social&quot; Web Component could be integrated using the tag <code>&lt;deckgo-social/&gt;</code>.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-social twitter=&quot;daviddalbusco&quot;&gt;{'\n'}  &lt;img data-src=&quot;&#47;assets&#47;twitter.svg&quot; slot=&quot;icon&quot;&#47;&gt;{'\n'}  Twitter{'\n'}&lt;&#47;deckgo-social&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-social-slots">Slots</h3>

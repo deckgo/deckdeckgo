@@ -1,4 +1,6 @@
 app-code {
+  @import "../../../../global/theme/editor/editor-info";
+
   h2 {
     color: var(--ion-color-primary);
   }
@@ -49,20 +51,6 @@ app-code {
 
     ion-label {
       margin: 16px 0 4px;
-    }
-
-    button.info {
-      background: transparent;
-      border: 1px solid var(--ion-color-primary);
-      border-radius: 50%;
-      height: 1.5rem;
-      width: 1.5rem;
-      margin: 16px 16px 0;
-      padding: 0;
-
-      ion-icon {
-        color: var(--ion-color-primary);
-      }
     }
   }
 }

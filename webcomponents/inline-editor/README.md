@@ -29,6 +29,6 @@ npm run start
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
 
-The bullet list and link icons were both extracted to data uri from the [Ionicons](https://ionicons.com) which is licensed under the MIT license too.
+The bullet list, link and image icons were both extracted to data uri from the [Ionicons](https://ionicons.com) which is licensed under the MIT license too.
 
 [DeckDeckGo]: https://deckdeckgo.com

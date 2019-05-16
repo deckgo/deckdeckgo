@@ -36,6 +36,7 @@ export class AppDeckExtraFeatures {
 <li><a href="#app-deck-extra-features-print-the-presentation">Print the presentation</a></li>
 <li><a href="#app-deck-extra-features-mobile">Mobile</a></li>
 <li><a href="#app-deck-extra-features-init-slide-size">initSlideSize</a></li>
+<li><a href="#app-deck-extra-features-load-background">loadBackground</a></li>
 </ul>
 <h2 id="app-deck-extra-features-toggle-onoff-the-full-screen-mode">Toggle on/off the full screen mode</h2>
 <deckgo-highlight-code language="javascript">
@@ -51,6 +52,10 @@ export class AppDeckExtraFeatures {
 <p>In case you would like to recalculate the slides&#39; size (width and height)</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">await deck.initSlideSize();</code>
+    </deckgo-highlight-code><h2 id="app-deck-extra-features-load-background">Load background</h2>
+<p>If you would dynamically change the deck background element you could forward that changes to also slides using the following method:  </p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">await deck.loadBackground();</code>
     </deckgo-highlight-code></main>
 
         <app-footer></app-footer>

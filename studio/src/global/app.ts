@@ -5,6 +5,7 @@ import 'deckdeckgo-inline-editor';
 import 'deckdeckgo-remote';
 import 'deckdeckgo-qrcode';
 import 'deckdeckgo-highlight-code';
+import 'deckdeckgo-lazy-img';
 
 import {setupConfig} from '../app/services/core/environment/environment-config';
 
@@ -22,6 +23,10 @@ setupConfig({
     tenor: {
         url: 'https://api.tenor.com/v1/',
         key: '<@TENOR_KEY@>'
+    },
+    unsplash: {
+        url: 'https://api.unsplash.com/',
+        key: '<@UNSPLASH_KEY@>'
     },
     signalingServerUrl: '<@SIGNALING_SERVER_URL@>',
     prismComponentsUrl: 'https://raw.githubusercontent.com/PrismJS/prism/886698d5b759ef46162a5723a2493f97c689dc94/components.json'

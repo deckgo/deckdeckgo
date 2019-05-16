@@ -17,6 +17,9 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Prop() imgSrc: string;
   @Prop() imgAlt: string;
 
+  @Prop({reflectToAttr: true}) customActions: boolean = false;
+  @Prop({reflectToAttr: true}) customBackground: boolean = false;
+
   async componentDidLoad() {
     await DeckdeckgoUtils.hideLazyLoadImages(this.el);
 

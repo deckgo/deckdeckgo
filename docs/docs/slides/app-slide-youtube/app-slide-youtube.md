@@ -58,6 +58,8 @@ This component offers the following options which could be set using attributes:
 | src | string |  | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
 | width | number | Per default the video width will be calculated according the content size available. | Using this option you would be able to define your own width. |
 | height | number | Per default the video height will be calculated according the content size available. | Using this option you would be able to define your own height. |
+| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
 
 ## Theming
 

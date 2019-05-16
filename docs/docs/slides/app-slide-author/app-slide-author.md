@@ -71,6 +71,8 @@ This component offers the following options which could be set using attributes:
 | -------------------------- |-----------------|-----------------|-----------------|
 | img-src | string |  | An image URI, for example a picture of the author. Note: this image will be displayed as a circle. |
 | img-alt | string |  | An optional accessibility alt for the image. |
+| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` | 
 
 ### Example
 

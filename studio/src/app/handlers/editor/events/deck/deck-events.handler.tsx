@@ -51,13 +51,14 @@ export class DeckEventsHandler {
         return new Promise<void>(async (resolve) => {
             this.el = el;
 
-            this.el.addEventListener('input', this.onSlideInputChange, false);
+            this.el.addEventListener('input', this.onInputChange, false);
             this.el.addEventListener('deckDidChange', this.onDeckChange, false);
             this.el.addEventListener('slideDidChange', this.onSlideChange, false);
             this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
             this.el.addEventListener('slidesDidLoad', this.onSlidesDidLoad, false);
             this.el.addEventListener('slideDelete', this.onSlideDelete, false);
-            this.el.addEventListener('codeDidChange', this.onCodeChange, false);
+            this.el.addEventListener('codeDidChange', this.onCustomEventChange, false);
+            this.el.addEventListener('imgDidChange', this.onCustomEventChange, false);
 
             this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
                 await this.updateSlide(element);
@@ -72,13 +73,14 @@ export class DeckEventsHandler {
     }
 
     destroy() {
-        this.el.removeEventListener('input', this.onSlideInputChange, true);
+        this.el.removeEventListener('input', this.onInputChange, true);
         this.el.removeEventListener('deckDidChange', this.onDeckChange, true);
         this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
         this.el.removeEventListener('slidesDidLoad', this.onSlidesDidLoad, true);
         this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
-        this.el.removeEventListener('codeDidChange', this.onCodeChange, true);
+        this.el.removeEventListener('codeDidChange', this.onCustomEventChange, true);
+        this.el.removeEventListener('imgDidChange', this.onCustomEventChange, true);
 
         if (this.updateSlideSubscription) {
             this.updateSlideSubscription.unsubscribe();
@@ -108,7 +110,7 @@ export class DeckEventsHandler {
             return;
         }
 
-        await this.updateDeckAttributes($event.detail);
+        await this.updateDeck($event.detail);
     };
 
     private onSlideChange = async ($event: CustomEvent) => {
@@ -119,7 +121,7 @@ export class DeckEventsHandler {
         this.updateSlideSubject.next($event.detail);
     };
 
-    private onCodeChange = async ($event: CustomEvent) => {
+    private onCustomEventChange = async ($event: CustomEvent) => {
         if (!$event || !$event.detail || !($event.detail instanceof HTMLElement)) {
             return;
         }
@@ -135,7 +137,7 @@ export class DeckEventsHandler {
         this.updateSlideSubject.next(parent);
     };
 
-    private onSlideInputChange = async ($event: Event) => {
+    private onInputChange = async ($event: Event) => {
         if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
             return;
         }
@@ -209,7 +211,7 @@ export class DeckEventsHandler {
                 template: this.getSlideTemplate(slide)
             };
 
-            const content: string = await this.cleanSlideContent(slide.innerHTML);
+            const content: string = await this.cleanSlideContent(slide);
             if (content && content.length > 0) {
                 slidePost.content = content
             }
@@ -296,7 +298,7 @@ export class DeckEventsHandler {
         });
     }
 
-    private updateDeckAttributes(deck: HTMLElement): Promise<void> {
+    private updateDeck(deck: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
                 if (!deck) {
@@ -313,12 +315,10 @@ export class DeckEventsHandler {
                     }
 
                     const attributes: DeckAttributes = await this.getDeckAttributes(deck);
+                    currentDeck.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : null;
 
-                    if (attributes && Object.keys(attributes).length > 0) {
-                        currentDeck.attributes = attributes;
-                    } else {
-                        currentDeck.attributes = null;
-                    }
+                    const background: string = await this.getDeckBackground(deck);
+                    currentDeck.background = background && background !== undefined && background !== '' ? background : null;
 
                     const updatedDeck: Deck = await this.deckService.put(currentDeck);
                     this.deckEditorService.next(updatedDeck);
@@ -393,7 +393,7 @@ export class DeckEventsHandler {
                     template: this.getSlideTemplate(slide)
                 };
 
-                const content: string = await this.cleanSlideContent(slide.innerHTML);
+                const content: string = await this.cleanSlideContent(slide);
                 if (content && content.length > 0) {
                     slideUpdate.content = content
                 }
@@ -491,6 +491,10 @@ export class DeckEventsHandler {
                 attributes.src = (slide as any).src;
             }
 
+            if (slide.hasAttribute('custom-background')) {
+                attributes.customBackground = '' + true;
+            }
+
             resolve(attributes);
         })
     }
@@ -507,17 +511,41 @@ export class DeckEventsHandler {
         })
     }
 
-    private cleanSlideContent(content: string): Promise<string> {
+    private getDeckBackground(deck: HTMLElement): Promise<string> {
         return new Promise<string>((resolve) => {
+            const slotElement: HTMLElement = deck.querySelector(':scope > [slot=\'background\']');
+
+            if (!slotElement) {
+                resolve(null);
+                return;
+            }
+
+            resolve(slotElement.innerHTML);
+        });
+    }
+
+    private cleanSlideContent(slide: HTMLElement): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!slide) {
+                resolve(null);
+                return;
+            }
+
+            const content: string = slide.innerHTML;
+
             if (!content || content.length <= 0) {
                 resolve(content);
                 return;
             }
 
-            let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable/gi, '');
+            let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable="false"|contenteditable/gi, '');
             result = result.replace(/editable=""|editable="true"|editable/gi, '');
             result = result.replace(/hydrated/gi, '');
             result = result.replace(/class=""/g, '');
+
+            if (!slide.hasAttribute('custom-background')) {
+                result = result.replace(/<div slot="background">(.*?)<\/div>/g, '');
+            }
 
             resolve(result);
         });

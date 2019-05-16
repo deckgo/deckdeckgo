@@ -73,7 +73,29 @@ export class AppSlideQRCode {
 <h2 id="app-slide-qrcode-installation">Installation</h2>
 <p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> - QR Code component is provided in separate extra library. If you don&#39;t use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to add the <a href="https://deckdeckgo.com">DeckDeckGo</a> QR code to your project, you will need to install and integrate it from a CDN or <a href="https://www.npmjs.com/package/deckdeckgo-qrcode">npm</a> as described in its <a href="https://github.com/deckgo/deckdeckgo-qrcode#getting-started">installation guide</a>.</p>
 <h2 id="app-slide-qrcode-attributes">Attributes</h2>
-<p>The attribute <code>content</code> should be provided in order to render a QR code in this template. It offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> QR code Web Component, see its <a href="https://github.com/deckgo/deckdeckgo-qrcode">documentation</a> for the details.</p>
+<p>The attribute <code>content</code> should be provided in order to render a QR code in this template. It offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> QR code Web Component, see its <a href="https://github.com/deckgo/deckdeckgo-qrcode">documentation</a> for the details, and the following other attributes:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>custom-background</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide a background for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
+<tr>
+<td>custom-actions</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
+</tbody></table>
 <h3 id="app-slide-qrcode-example-without-any-slots">Example without any slots</h3>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-qrcode content=&quot;An encoded text&quot;&gt;{'\n'}  &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;  </code>

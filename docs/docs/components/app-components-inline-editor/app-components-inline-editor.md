@@ -4,15 +4,16 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 
 ## Table of contents
 
-- [Showcase](#app-components-qrcode-showcase)
-- [Getting started](#app-components-qrcode-getting-started)
+- [Showcase](#app-components-inline-editor-showcase)
+- [Getting started](#app-components-inline-editor-getting-started)
 	- [Using from a CDN](#app-components-from-a-cdn)
 	- [Install from NPM](#app-components-from-npm)
-	- [Framework integration](#app-components-qrcode-framework-integration)
-- [Usage](#app-components-qrcode-usage)
-	- [Properties](#app-components-qrcode-properties)
-	- [Styling](#app-components-qrcode-styling)
-	- [Examples](#app-components-qrcode-examples)
+	- [Framework integration](#app-components-inline-editor-framework-integration)
+- [Usage](#app-components-inline-editor-usage)
+	- [Properties](#app-components-inline-editor-properties)
+	- [Styling](#app-components-inline-editor-styling)
+	- [Events](#app-components-inline-editor-events)
+	- [Examples](#app-components-inline-editor-examples)
 
 ## Showcase
 
@@ -22,9 +23,12 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
   <h2 style={{color: '#3880ff'}} contenteditable slot="title">The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
   
   <p style={{color: '#3880ff'}} contenteditable slot="content">Edit anywhere, display everywhere (editable paragraph)</p>
+  
+  <p style={{width: '200px'}} contenteditable><img style={{'max-width': '100%'}} src="https://pixabay.com/get/ea34b50f2cfd033ed1584d05fb1d4794e070e2d71eb80c4090f5c679a2edb4b0d8_1280.jpg"/></p>
+ 
 </div>
 
-<deckgo-inline-editor sticky-desktop="true" sticky-mobile="true"></deckgo-inline-editor>
+<deckgo-inline-editor sticky-desktop="true" sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor>
 
 ## Getting started
 
@@ -107,6 +111,14 @@ Furthermore, the following variables are also available but only have an effects
 | --deckgo-inline-editor-link-mobile-placeholder-color | inherit | ** |
 
 ** like above but for mobile
+
+### Events
+
+The event `input` will be automatically triggered when the content will be modified using the `<deckgo-inline-editor/>`. However, when manipulating image, this event won't be triggered. Therefore a custom event will be instead triggered:
+
+| Event          | Description | Type                       |
+| -------------- | ----------- | -------------------------- |
+| `imgDidChange` | Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element. | `CustomEvent<HTMLElement>` |
 
 ### Examples
 

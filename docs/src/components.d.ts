@@ -63,6 +63,9 @@ export namespace Components {
   interface AppComponentsInlineEditor {}
   interface AppComponentsInlineEditorAttributes extends StencilHTMLAttributes {}
 
+  interface AppComponentsLazyImg {}
+  interface AppComponentsLazyImgAttributes extends StencilHTMLAttributes {}
+
   interface AppComponentsQrcode {}
   interface AppComponentsQrcodeAttributes extends StencilHTMLAttributes {}
 
@@ -182,6 +185,7 @@ declare global {
     'AppComponentsGif': Components.AppComponentsGif;
     'AppComponentsHighlightCode': Components.AppComponentsHighlightCode;
     'AppComponentsInlineEditor': Components.AppComponentsInlineEditor;
+    'AppComponentsLazyImg': Components.AppComponentsLazyImg;
     'AppComponentsQrcode': Components.AppComponentsQrcode;
     'AppComponentsSocial': Components.AppComponentsSocial;
     'AppComponentsYoutube': Components.AppComponentsYoutube;
@@ -231,6 +235,7 @@ declare global {
     'app-components-gif': Components.AppComponentsGifAttributes;
     'app-components-highlight-code': Components.AppComponentsHighlightCodeAttributes;
     'app-components-inline-editor': Components.AppComponentsInlineEditorAttributes;
+    'app-components-lazy-img': Components.AppComponentsLazyImgAttributes;
     'app-components-qrcode': Components.AppComponentsQrcodeAttributes;
     'app-components-social': Components.AppComponentsSocialAttributes;
     'app-components-youtube': Components.AppComponentsYoutubeAttributes;
@@ -333,6 +338,12 @@ declare global {
   var HTMLAppComponentsInlineEditorElement: {
     prototype: HTMLAppComponentsInlineEditorElement;
     new (): HTMLAppComponentsInlineEditorElement;
+  };
+
+  interface HTMLAppComponentsLazyImgElement extends Components.AppComponentsLazyImg, HTMLStencilElement {}
+  var HTMLAppComponentsLazyImgElement: {
+    prototype: HTMLAppComponentsLazyImgElement;
+    new (): HTMLAppComponentsLazyImgElement;
   };
 
   interface HTMLAppComponentsQrcodeElement extends Components.AppComponentsQrcode, HTMLStencilElement {}
@@ -557,6 +568,7 @@ declare global {
     'app-components-gif': HTMLAppComponentsGifElement
     'app-components-highlight-code': HTMLAppComponentsHighlightCodeElement
     'app-components-inline-editor': HTMLAppComponentsInlineEditorElement
+    'app-components-lazy-img': HTMLAppComponentsLazyImgElement
     'app-components-qrcode': HTMLAppComponentsQrcodeElement
     'app-components-social': HTMLAppComponentsSocialElement
     'app-components-youtube': HTMLAppComponentsYoutubeElement
@@ -606,6 +618,7 @@ declare global {
     'app-components-gif': HTMLAppComponentsGifElement;
     'app-components-highlight-code': HTMLAppComponentsHighlightCodeElement;
     'app-components-inline-editor': HTMLAppComponentsInlineEditorElement;
+    'app-components-lazy-img': HTMLAppComponentsLazyImgElement;
     'app-components-qrcode': HTMLAppComponentsQrcodeElement;
     'app-components-social': HTMLAppComponentsSocialElement;
     'app-components-youtube': HTMLAppComponentsYoutubeElement;

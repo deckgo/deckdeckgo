@@ -19,7 +19,7 @@ export class DeckdeckgoSlideUtils {
         return;
       }
 
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealShowFirst ? '[slot] li:not(:first-child), [slot] > p:not(:first-child), [slot] > span:not(:first-child), [slot] > img:not(:first-child)' : '[slot] li, [slot] > p, [slot] > span, [slot] > img');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealShowFirst ? '[slot] li:not(:first-child), [slot] > p:not(:first-child), [slot] > span:not(:first-child), [slot] > img:not(:first-child), [slot] > deckgo-lazy-img:not(:first-child)' : '[slot] li, [slot] > p, [slot] > span, [slot] > img, [slot] > deckgo-lazy-img');
 
       if (!elements) {
         resolve();
@@ -39,7 +39,7 @@ export class DeckdeckgoSlideUtils {
 
   private static showRevealElement(el: HTMLElement): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] li, [slot] > p, [slot] > span, [slot] > img');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] li, [slot] > p, [slot] > span, [slot] > img, [slot] > deckgo-lazy-img');
 
       let couldSwipe: boolean = true;
 
@@ -62,7 +62,7 @@ export class DeckdeckgoSlideUtils {
 
   private static hideRevealElement(el: HTMLElement): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] li, [slot] > p, [slot] > span, [slot] > img');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] li, [slot] > p, [slot] > span, [slot] > img, [slot] > deckgo-lazy-img');
 
       let couldSwipe: boolean = true;
 

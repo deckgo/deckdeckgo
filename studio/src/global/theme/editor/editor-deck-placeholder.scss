@@ -6,7 +6,7 @@ deckgo-deck {
     }
   }
 
-  div[slot] {
+  section {
     &:empty:not(:focus):after {
       content: "Click to add content";
     }
@@ -21,7 +21,7 @@ deckgo-deck {
   }
 
   deckgo-slide-gif {
-    h1, h2, h3, div[slot] {
+    h1, h2, h3, section {
       &:empty:not(:focus):after {
         content: "Click to add a caption";
       }

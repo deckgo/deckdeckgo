@@ -205,7 +205,7 @@ export class AppFeedCard {
 
     private renderMiniature() {
         if (this.miniature) {
-            return <app-feed-lazy-img></app-feed-lazy-img>;
+            return <deckgo-lazy-img img-src="/assets/dummy.png"></deckgo-lazy-img>;
         } else {
             return undefined;
         }

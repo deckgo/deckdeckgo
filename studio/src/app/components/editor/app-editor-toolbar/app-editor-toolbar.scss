@@ -49,6 +49,10 @@ app-editor-toolbar {
           color: var(--ion-color-light);
         }
       }
+
+      &.delete {
+        margin-left: auto;
+      }
     }
   }
 

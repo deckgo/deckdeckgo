@@ -68,6 +68,8 @@ This component offers the following options which could be set using attributes:
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |-----------------|-----------------|-----------------|
 | type | string | pie | The type of the chart, `pie`, `line` or `bar` |
+| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
 
 Furthermore, this slide component offers the same attributes as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-charts) for the details.
 

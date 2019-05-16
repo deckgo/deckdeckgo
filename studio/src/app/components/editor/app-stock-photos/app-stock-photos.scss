@@ -1,0 +1,52 @@
+div.photos-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  div.photos-column {
+    display: block;
+    flex-grow: 1;
+    flex-basis: 50%;
+    max-width: 50%;
+
+    div.photo {
+      position: relative;
+      padding: var(--deckgo-stock-photos-padding);
+
+      touch-action: manipulation;
+      cursor: pointer;
+
+      div.photo-container {
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+
+        img {
+          width: 100%;
+          height: auto;
+          min-height: var(--deckgo-stock-photos-min-height);
+          vertical-align: top;
+        }
+
+        ion-label.photo-credits {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          background: rgba(var(--ion-color-dark-rgb), 0.4);
+          padding: 4px 8px;
+          font-size: var(--deckgo-stock-photos-font-size, var(--font-size-very-small));
+          color: white;
+
+          a {
+            color: white;
+            text-decoration: inherit;
+
+            &:hover, &:active {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+}

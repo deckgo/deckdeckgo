@@ -1,0 +1,30 @@
+app-photo {
+  ion-content {
+    --background: var(--ion-color-light);
+  }
+
+  app-stock-photos {
+    --deckgo-stock-photos-min-height: 5rem;
+    --deckgo-stock-photos-padding: 16px;
+  }
+
+  div.photos-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    ion-icon {
+      font-size: 10rem;
+    }
+
+    ion-label, ion-icon {
+      color: var(--ion-color-medium);
+    }
+  }
+}

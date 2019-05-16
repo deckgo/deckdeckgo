@@ -1,0 +1,55 @@
+{
+  "name": "deckdeckgo-lazy-img",
+  "version": "1.0.0-apha.0",
+  "description": "A dead simple Web Component to lazy load images",
+  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@stencil/core": "^0.18.0",
+    "@stencil/dev-server": "0.0.18",
+    "@stencil/postcss": "^0.1.0",
+    "@stencil/sass": "^0.2.1",
+    "@stencil/utils": "0.0.5",
+    "autoprefixer": "^9.5.1",
+    "deckdeckgo-types": "^1.0.0-alpha.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "David Dal Busco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk",
+    "lazyload",
+    "images",
+    "picture",
+    "intersectionObserver"
+  ]
+}

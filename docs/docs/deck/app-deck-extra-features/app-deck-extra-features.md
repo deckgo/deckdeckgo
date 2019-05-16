@@ -8,6 +8,7 @@ The [DeckDeckGo] deck exposes a couple of extra features which could be added to
 - [Print the presentation](#app-deck-extra-features-print-the-presentation)
 - [Mobile](#app-deck-extra-features-mobile)
 - [initSlideSize](#app-deck-extra-features-init-slide-size)
+- [loadBackground](#app-deck-extra-features-load-background)
 
 ## Toggle on/off the full screen mode
 
@@ -35,6 +36,14 @@ In case you would like to recalculate the slides' size (width and height)
 
 ```
 await deck.initSlideSize();
+```
+
+## Load background
+
+If you would dynamically change the deck background element you could forward that changes to also slides using the following method:  
+
+```
+await deck.loadBackground();
 ```
 
 [DeckDeckGo]: https://deckdeckgo.com
