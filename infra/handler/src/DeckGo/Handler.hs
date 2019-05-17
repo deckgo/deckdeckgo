@@ -608,11 +608,6 @@ data UserUpdateResult
   | UserUpdateClash
   deriving Show
 
-data SlideUpdateResult
-  = SlideUpdateOk
-  | SlideUpdateNotExist
-  deriving Show
-
 usersPutSession :: UserId -> User -> HS.Session UserUpdateResult
 usersPutSession uid u = do
     HS.sql "BEGIN"
@@ -1178,45 +1173,6 @@ deckAttributesFromAttributeValue attr =
 
 -- SLIDES
 
--- slideToItem :: SlideId -> Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
--- slideToItem slideId Slide{slideContent, slideTemplate, slideAttributes} =
-    -- HMS.singleton "SlideId" (slideIdToAttributeValue slideId) <>
-    -- (maybe
-      -- HMS.empty
-      -- (\content -> HMS.singleton "SlideContent"
-        -- (slideContentToAttributeValue content))
-      -- slideContent) <>
-    -- HMS.singleton "SlideTemplate"
-      -- (slideTemplateToAttributeValue slideTemplate) <>
-    -- HMS.singleton "SlideAttributes"
-      -- (slideAttributesToAttributeValue slideAttributes)
-
--- slideToItem' :: Slide -> HMS.HashMap T.Text DynamoDB.AttributeValue
--- slideToItem' Slide{slideContent, slideTemplate, slideAttributes} =
-    -- (maybe
-      -- HMS.empty
-      -- (\content -> HMS.singleton ":c" (slideContentToAttributeValue content))
-      -- slideContent) <>
-    -- HMS.singleton ":t" (slideTemplateToAttributeValue slideTemplate) <>
-    -- HMS.singleton ":a" (slideAttributesToAttributeValue slideAttributes)
-
--- itemToSlide
-  -- :: HMS.HashMap T.Text DynamoDB.AttributeValue
-  -- -> Maybe (Item SlideId Slide)
--- itemToSlide item = do
-    -- slideId <- HMS.lookup "SlideId" item >>= slideIdFromAttributeValue
-
-    -- slideContent <- case HMS.lookup "SlideContent" item of
-      -- Nothing -> Just Nothing
-      -- Just c -> Just <$> slideContentFromAttributeValue c
-
-    -- slideTemplate <- HMS.lookup "SlideTemplate" item >>=
-      -- slideTemplateFromAttributeValue
-    -- slideAttributes <- HMS.lookup "SlideAttributes" item >>=
-      -- slideAttributesFromAttributeValue
-
-    -- pure $ Item slideId Slide{..}
-
 -- SLIDE ATTRIBUTES
 
 slideIdToAttributeValue :: SlideId -> DynamoDB.AttributeValue
@@ -1225,45 +1181,6 @@ slideIdToAttributeValue (SlideId slideId) =
 
 slideIdFromAttributeValue :: DynamoDB.AttributeValue -> Maybe SlideId
 slideIdFromAttributeValue attr = SlideId <$> attr ^. DynamoDB.avS
-
--- slideContentToAttributeValue :: T.Text -> DynamoDB.AttributeValue
--- slideContentToAttributeValue content =
-    -- DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 content)
-
--- slideContentFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
--- slideContentFromAttributeValue attr = toSlideContent <$> attr ^. DynamoDB.avB
-  -- where
-    -- toSlideContent = T.decodeUtf8
-
--- slideTemplateToAttributeValue :: T.Text -> DynamoDB.AttributeValue
--- slideTemplateToAttributeValue content =
-    -- DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 content)
-
--- slideTemplateFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
--- slideTemplateFromAttributeValue attr = toSlideTemplate <$> attr ^. DynamoDB.avB
-  -- where
-    -- toSlideTemplate = T.decodeUtf8
-
--- slideAttributesToAttributeValue
-  -- :: HMS.HashMap T.Text T.Text
-  -- -> DynamoDB.AttributeValue
--- slideAttributesToAttributeValue attributes =
-    -- DynamoDB.attributeValue & DynamoDB.avM .~
-      -- HMS.map attributeValueToAttributeValue attributes
-  -- where
-    -- attributeValueToAttributeValue :: T.Text -> DynamoDB.AttributeValue
-    -- attributeValueToAttributeValue attrValue =
-      -- DynamoDB.attributeValue & DynamoDB.avB .~ Just (T.encodeUtf8 attrValue)
-
--- slideAttributesFromAttributeValue
-  -- :: DynamoDB.AttributeValue
-  -- -> Maybe (HMS.HashMap T.Text T.Text)
--- slideAttributesFromAttributeValue attr =
-    -- traverse attributeValueFromAttributeValue (attr ^. DynamoDB.avM)
-  -- where
-    -- attributeValueFromAttributeValue :: DynamoDB.AttributeValue -> Maybe T.Text
-    -- attributeValueFromAttributeValue attrValue =
-      -- T.decodeUtf8 <$> attrValue ^. DynamoDB.avB
 
 -------------------------------------------------------------------------------
 -- DATABASE
