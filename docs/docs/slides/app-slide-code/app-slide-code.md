@@ -79,7 +79,12 @@ The [DeckDeckGo] - Hightlight code component is provided in separate extra libra
 
 ## Attributes
 
-At least `src` or the `slot` code should be provided in order to render code in this template. It offers the same attributes as the [DeckDeckGo] code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-highlight-code) for the details.
+At least `src` or the `slot` code should be provided in order to render code in this template. It offers the same attributes as the [DeckDeckGo] code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-highlight-code) for the details and the following other attributes:
+
+| Attribute                      | Type   | Default   | Description   |
+| -------------------------- |-----------------|-----------------|-----------------|
+| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
 
 ### Example with file URI
 

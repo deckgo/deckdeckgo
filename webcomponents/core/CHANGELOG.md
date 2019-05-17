@@ -1,3 +1,8 @@
+<a name="1.0.0-beta.33"></a>
+# 1.0.0-beta.33 (2019-05-16)
+
+* handles the new component `deckgo-lazy-img` and expose a new deck's method `loadBackground()` to load all the backgrounds "manually"
+
 <a name="1.0.0-beta.32"></a>
 # 1.0.0-beta.32 (2019-04-30)
 

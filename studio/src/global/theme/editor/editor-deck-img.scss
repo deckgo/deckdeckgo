@@ -1,0 +1,8 @@
+main {
+  deckgo-deck {
+      deckgo-lazy-img {
+        // In deckgo-deck, pointer-events are set to none in order to avoid dragging while presenting
+        --deckgo-lazy-img-pointer-events: all;
+      }
+  }
+}

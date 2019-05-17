@@ -3,11 +3,14 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {Utils} from '../../../utils/core/utils';
+import {SlotType} from '../../../utils/editor/create-slides.utils';
+import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
+import {PhotoHelper} from '../../../helpers/editor/photo.helper';
+
+import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
-import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -16,6 +19,7 @@ import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 })
 export class AppEditorToolbar {
 
+    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
     @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
     @Element() el: HTMLElement;
@@ -286,7 +290,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            await this.setElementPosition(element, colorPicker, 38);
+            await this.setToolbarPosition(element, colorPicker, 38);
 
             const backgroundPicker: HTMLElement = this.el.querySelector('input[name=\'background-picker\']');
 
@@ -295,7 +299,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            await this.setElementPosition(element, backgroundPicker, 78);
+            await this.setToolbarPosition(element, backgroundPicker, 78);
 
             resolve();
         });
@@ -315,30 +319,46 @@ export class AppEditorToolbar {
                 return;
             }
 
-            await this.setElementPosition(this.selectedElement, toolbar, 0);
+            await this.setToolbarPosition(this.selectedElement, toolbar, 0);
 
             resolve();
         });
     }
 
-    private setElementPosition(src: HTMLElement, applyTo: HTMLElement, offsetWidth: number): Promise<void> {
+    private setToolbarPosition(src: HTMLElement, applyTo: HTMLElement, offsetWidth: number): Promise<void> {
         return new Promise<void>((resolve) => {
-            const top: number = src.offsetTop > 0 ? src.offsetTop : 0;
-            const left: number = src.offsetLeft > 0 ? src.offsetLeft : 0;
+            // Selected element
+            const width: number = src.clientWidth > 200 ? src.clientWidth : 200;
 
-            if (window.innerWidth < 1024 || screen.width < 1024) {
-                applyTo.style.top = '' + (top > 50 ? top - 42 : 0) + 'px';
+            const rect: ClientRect = src.getBoundingClientRect();
+            const left: number = rect && rect.left > 0 ? rect.left : 0;
+            const top: number = rect && rect.top > 0 ? rect.top : 0;
+
+            // The <main/> element in order to find the offset
+            const mainPaneRect: ClientRect = applyTo.parentElement && applyTo.parentElement.parentElement ? applyTo.parentElement.parentElement.getBoundingClientRect() : null;
+            const extraLeft: number = mainPaneRect && mainPaneRect.left > 0 ? mainPaneRect.left : 0;
+            const extraTop: number = mainPaneRect && mainPaneRect.top > 0 ? mainPaneRect.top : 0;
+
+            // Set top position
+            applyTo.style.top = '' + (top - extraTop > 0 ? top - extraTop : 0) + 'px';
+
+            const windowWidth: number = window.innerWidth | screen.width;
+
+            const leftStandardPosition: number = left + offsetWidth - extraLeft;
+            const leftPosition: number = leftStandardPosition + width > windowWidth ? windowWidth - width : leftStandardPosition;
+
+            // Set left position
+            applyTo.style.left = '' + leftPosition + 'px';
+
+            // If not slide or deck selected, move a bit the toolbar
+            if (!this.deckOrSlide) {
+                applyTo.style.transform = 'translate(0, -2.4rem)';
             } else {
-                applyTo.style.top = '' + top + 'px';
-            }
-
-            if (this.deckOrSlide) {
-                applyTo.style.left = '' + (0 + offsetWidth) + 'px';
                 applyTo.style.transform = 'translate(0,0)';
-            } else {
-                applyTo.style.left = '' + (left + offsetWidth) + 'px';
-                applyTo.style.transform = left > 50 && top > 50 ? 'translate(0, -2.7rem)' : 'translate(0,0)';
             }
+
+            // Set a width in order to align right the delete button
+            applyTo.style.width = '' + width + 'px';
 
             resolve();
         });
@@ -558,6 +578,8 @@ export class AppEditorToolbar {
 
             await this.emitChange();
 
+            await this.hideToolbar();
+
             resolve();
         });
     }
@@ -617,13 +639,88 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openBackground() {
+        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+            component: 'app-image',
+            componentProps: {
+                deckOrSlide: this.deckOrSlide
+            },
+            mode: 'md',
+            cssClass: 'popover-menu'
+        });
+
+        popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                if (detail.data.hasOwnProperty('applyToAllDeck')) {
+                    this.applyToAllDeck = detail.data.applyToAllDeck;
+                }
+
+                if (detail.data.action === ImageAction.OPEN_PHOTOS) {
+                    await this.openPhotos();
+                } else if (detail.data.action === ImageAction.DELETE_PHOTO) {
+                    await this.deleteBackgroundPhoto();
+                } else if (detail.data.action === ImageAction.ADD_PHOTO && detail.data.photo) {
+                    await this.appendPhoto(detail.data.photo as UnsplashPhoto);
+                }
+            }
+        });
+
+        await popover.present();
+    }
+
+    private async openPhotos() {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-photo'
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data && this.selectedElement) {
+                await this.appendPhoto(detail.data as UnsplashPhoto);
+            }
+        });
+
+        await modal.present();
+    }
+
+    private appendPhoto(photo: UnsplashPhoto): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (!photo) {
+                resolve();
+                return;
+            }
+
+            const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
+            await helper.appendPhoto(this.selectedElement, photo, this.deckOrSlide, this.applyToAllDeck);
+
+            resolve();
+        });
+    }
+
+    private deleteBackgroundPhoto(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.deckOrSlide) {
+                resolve();
+                return;
+            }
+
+            const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
+            await helper.deleteBackground(this.selectedElement, this.applyToAllDeck);
+        });
+    }
+
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
-                {this.renderDelete()}
                 {this.renderSlotType()}
+                {this.renderPhotos()}
                 {this.renderActions()}
                 {this.renderCodeOptions()}
+                {this.renderDelete()}
             </div>,
             <input type="color" name="color-picker" value={this.color}></input>,
             <input type="color" name="background-picker" value={this.background}></input>
@@ -632,8 +729,8 @@ export class AppEditorToolbar {
 
     private renderDelete() {
         return <a onClick={() => this.deleteElement()} title="Delete"
-                  class={this.deckBusy && this.deckOrSlide ? "disabled" : undefined}>
-            <ion-icon name="trash"></ion-icon>
+                  class={this.deckBusy && this.deckOrSlide ? "delete disabled" : "delete"}>
+            <ion-icon ios="md-trash" md="md-trash"></ion-icon>
         </a>
     }
 
@@ -647,11 +744,12 @@ export class AppEditorToolbar {
         };
 
         return [
+            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)}
+               title="Background">
+                <ion-label style={styleBackground}>Bg</ion-label>
+            </a>,
             <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)} title="Color">
                 <ion-label style={styleColor}>A</ion-label>
-            </a>,
-            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)} title="Background">
-                <ion-label style={styleBackground}>Bg</ion-label>
             </a>
         ]
     }
@@ -674,6 +772,12 @@ export class AppEditorToolbar {
                 <ion-icon name="code"></ion-icon>
             </a>
         }
+    }
+
+    private renderPhotos() {
+        return <a onClick={() => this.openBackground()} title="Background">
+            <ion-icon name="images"></ion-icon>
+        </a>
     }
 
 }

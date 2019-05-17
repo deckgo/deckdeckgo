@@ -3,6 +3,7 @@ import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter} fr
 import {DeckdeckgoSlideDefinition} from 'deckdeckgo-types';
 
 import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
+import {DeckdeckgoDeckBackgroundUtils} from '../../utils/deckdeckgo-deck-background-utils';
 
 interface DeltaX {
   slider: HTMLElement
@@ -388,17 +389,17 @@ export class DeckdeckgoDeck {
   async slideDidLoad() {
     await this.updateLength();
 
-    await this.emitSlidesDidLoad();
+    await this.afterSlidesDidLoad();
   }
 
   private async updateLength() {
-    const filteredSlides: Element[] = await this.getDefinedFilteredSlides();
+    const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
     this.length = filteredSlides ? filteredSlides.length : 0;
   }
 
-  private emitSlidesDidLoad(): Promise<void> {
+  private afterSlidesDidLoad(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const filteredSlides: Element[] = await this.getDefinedFilteredSlides();
+      const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
       const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
 
@@ -423,8 +424,8 @@ export class DeckdeckgoDeck {
 
         const promises: Promise<void>[] = [];
         promises.push(this.lazyLoadFirstSlides());
-        promises.push(this.cloneSlots(filteredSlides, 'actions'));
-        promises.push(this.loadBackground(filteredSlides));
+        promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
+        promises.push(DeckdeckgoDeckBackgroundUtils.cloneAndLoadBackground(this.el, filteredSlides, this.cloneBackground));
 
         await Promise.all(promises);
       }
@@ -433,10 +434,10 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private getDefinedFilteredSlides(): Promise<Element[]> {
-    return new Promise<Element[]>(async (resolve) => {
+  private getDefinedFilteredSlides(): Promise<HTMLElement[]> {
+    return new Promise<HTMLElement[]>(async (resolve) => {
       const definedSlides: HTMLCollection = this.el.children;
-      const filteredSlides: Element[] = await this.filterSlides(definedSlides);
+      const filteredSlides: HTMLElement[] = await this.filterSlides(definedSlides);
 
       resolve(filteredSlides);
     });
@@ -453,69 +454,27 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private loadBackground(slides: Element[]): Promise<void> {
+  @Method()
+  loadBackground(): Promise<void> {
     return new Promise<void>(async (resolve) => {
+      const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
-      const background: HTMLElement = this.el.querySelector('[slot=\'background\']');
-
-      if (!background) {
+      if (!filteredSlides || filteredSlides.length <= 0) {
         resolve();
         return;
       }
 
-      await this.lazyBackgroungImages();
+      await DeckdeckgoDeckBackgroundUtils.removeSlots(filteredSlides, 'background');
 
-      if (this.cloneBackground) {
-        await this.cloneSlots(slides, 'background');
-      }
-
-      await this.showHideBackgroundSlot();
-
-      resolve();
-    });
-  }
-
-  private showHideBackgroundSlot(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
-
-      if (!slider) {
-        resolve();
-        return;
-      }
-
-      if (this.cloneBackground) {
-        slider.style.setProperty('--background-display', 'none');
-      } else {
-        slider.style.removeProperty('--background-display');
-      }
-
-      resolve();
-    });
-  }
-
-  private cloneSlots(slides: Element[], slotName: string): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!slides || slides.length <= 0) {
-        resolve();
-        return;
-      }
-
-      const slotElement: HTMLElement = this.el.querySelector('[slot=\'' + slotName + '\']');
-
-      if (slotElement) {
-        slides.forEach((slide: Element) => {
-          slide.appendChild(slotElement.cloneNode(true));
-        });
-      }
+      await DeckdeckgoDeckBackgroundUtils.cloneAndLoadBackground(this.el, filteredSlides, this.cloneBackground);
 
       resolve();
     });
   }
 
   // The last children might be slots (background, note or action)
-  private filterSlides(definedSlides: HTMLCollection): Promise<Element[]> {
-    return new Promise<Element[]>((resolve) => {
+  private filterSlides(definedSlides: HTMLCollection): Promise<HTMLElement[]> {
+    return new Promise<HTMLElement[]>((resolve) => {
       if (!definedSlides || definedSlides.length <= 0) {
         resolve(null);
         return;
@@ -525,7 +484,7 @@ export class DeckdeckgoDeck {
         return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1
       });
 
-      resolve(slides);
+      resolve(slides as HTMLElement[]);
     });
   }
 
@@ -642,20 +601,6 @@ export class DeckdeckgoDeck {
       if (slide) {
         await (slide as any).lazyLoadContent();
       }
-
-      resolve();
-    });
-  }
-
-  // Lazy load images from slot=background
-  private lazyBackgroungImages(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const allSlottedImages: NodeListOf<HTMLElement> = this.el.querySelectorAll('img[slot=\'background\']');
-      const allShadowImages: NodeListOf<HTMLElement> = this.el.querySelectorAll('[slot=\'background\'] img');
-
-      const images: HTMLElement[] = Array.from(allSlottedImages).concat(Array.from(allShadowImages));
-
-      await DeckdeckgoUtils.lazyLoadSelectedImages(images);
 
       resolve();
     });

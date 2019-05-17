@@ -8,6 +8,7 @@ export enum SlideTemplate {
 export interface SlideAttributes {
     style?: string;
     src?: string;
+    customBackground?: string;
 }
 
 export interface Slide {

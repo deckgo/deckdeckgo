@@ -32,7 +32,7 @@ export class AppGif {
     private previousSearchTerm: string;
 
     @State()
-    disableInfiniteScroll = false;
+    private disableInfiniteScroll = false;
 
     private paginationNext: string | number = 0;
 
@@ -169,7 +169,7 @@ export class AppGif {
             this.gifsOdd = null;
             this.gifsEven = null;
 
-            this.disableInfiniteScroll = false
+            this.disableInfiniteScroll = false;
 
             this.paginationNext = 0;
 

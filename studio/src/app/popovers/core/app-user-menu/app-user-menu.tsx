@@ -2,6 +2,7 @@ import {Component, Element} from '@stencil/core';
 
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {PhotoHistoryService} from '../../../services/editor/photo-history/photo-history.service';
 
 @Component({
     tag: 'app-user-menu',
@@ -14,13 +15,19 @@ export class AppUserMenu {
     private authService: AuthService;
     private navService: NavService;
 
+    private photoHistoryService: PhotoHistoryService;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.navService = NavService.getInstance();
+        this.photoHistoryService = PhotoHistoryService.getInstance();
+
     }
 
     private async signOut() {
         await this.authService.signOut();
+        await this.photoHistoryService.clear();
+
         await this.closePopover();
 
         this.navService.navigate({

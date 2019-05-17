@@ -97,6 +97,18 @@ export class AppSlideYoutube {
 <td>Per default the video height will be calculated according the content size available.</td>
 <td>Using this option you would be able to define your own height.</td>
 </tr>
+<tr>
+<td>custom-background</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide a background for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
+<tr>
+<td>custom-actions</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
 </tbody></table>
 <h2 id="app-slide-youtube-theming">Theming</h2>
 <p>The following theming options will affect this component if set on its host or parent.</p>

@@ -34,6 +34,9 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   private action: DeckdeckgoSlideCodeAction = DeckdeckgoSlideCodeAction.SWIPE;
 
+  @Prop({reflectToAttr: true}) customActions: boolean = false;
+  @Prop({reflectToAttr: true}) customBackground: boolean = false;
+
   componentWillLoad() {
     this.mobile = DeckdeckgoUtils.isMobile();
   }

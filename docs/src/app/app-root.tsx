@@ -97,6 +97,7 @@ export class AppRoot {
           <ion-route url="/components/qrcode" component="app-components-qrcode"/>
           <ion-route url="/components/social" component="app-components-social"/>
           <ion-route url="/components/youtube" component="app-components-youtube"/>
+          <ion-route url="/components/lazy-img" component="app-components-lazy-img"/>
 
           <ion-route url="/deck" component="app-deck-navigation"/>
           <ion-route url="/deck/navigation" component="app-deck-navigation"/>
@@ -160,9 +161,10 @@ export class AppRoot {
                     <ion-item href="/components/charts" routerDirection="forward"><ion-label>Charts</ion-label></ion-item>
                     <ion-item href="/components/gif" routerDirection="forward"><ion-label>Gif</ion-label></ion-item>
                     <ion-item href="/components/code" routerDirection="forward"><ion-label>Highlight Code</ion-label></ion-item>
-                    <ion-item href="/components/inline-editor" routerDirection="forward"><ion-label>WYSIWYG inline editor</ion-label></ion-item>
+                    <ion-item href="/components/lazy-img" routerDirection="forward"><ion-label>Lazy Image</ion-label></ion-item>
                     <ion-item href="/components/qrcode" routerDirection="forward"><ion-label>QR Code</ion-label></ion-item>
                     <ion-item href="/components/social" routerDirection="forward"><ion-label>Social</ion-label></ion-item>
+                    <ion-item href="/components/inline-editor" routerDirection="forward"><ion-label>WYSIWYG inline editor</ion-label></ion-item>
                     <ion-item href="/components/youtube" routerDirection="forward"><ion-label>Youtube</ion-label></ion-item>
 
                     <ion-item-divider>

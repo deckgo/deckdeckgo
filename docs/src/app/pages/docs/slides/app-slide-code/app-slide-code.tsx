@@ -79,7 +79,29 @@ export class AppSlideCode {
 <h2 id="app-slide-code-installation">Installation</h2>
 <p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> - Hightlight code component is provided in separate extra library. If you don&#39;t use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to add the <a href="https://deckdeckgo.com">DeckDeckGo</a> code to your project, you will need to install and integrate it from a CDN or <a href="https://www.npmjs.com/package/deckdeckgo-highlight-code">npm</a> as described in its <a href="https://github.com/deckgo/deckdeckgo-highlight-code#getting-started">installation guide</a>.</p>
 <h2 id="app-slide-code-attributes">Attributes</h2>
-<p>At least <code>src</code> or the <code>slot</code> code should be provided in order to render code in this template. It offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> code Web Component, see its <a href="https://github.com/deckgo/deckdeckgo-highlight-code">documentation</a> for the details.</p>
+<p>At least <code>src</code> or the <code>slot</code> code should be provided in order to render code in this template. It offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> code Web Component, see its <a href="https://github.com/deckgo/deckdeckgo-highlight-code">documentation</a> for the details and the following other attributes:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>custom-background</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide a background for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
+<tr>
+<td>custom-actions</td>
+<td>boolean</td>
+<td>false</td>
+<td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
+</tbody></table>
 <h3 id="app-slide-code-example-with-file-uri">Example with file URI</h3>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-code hide-anchor=&quot;false&quot; src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;fluster&#47;deckdeckgo&#47;master&#47;src&#47;components&#47;slides&#47;deckdeckgo-slide-code&#47;deckdeckgo-slide-code.tsx&quot;&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;Code&lt;&#47;h1&gt;{'\n'}  &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>

@@ -12,11 +12,17 @@ export interface EnvironmentTenorConfig {
     key: string;
 }
 
+export interface EnvironmentUnsplashConfig {
+    url: string;
+    key: string;
+}
+
 export interface EnvironmentConfig {
     appUrl: string;
     apiUrl: string;
     firebase: EnvironmentFirebaseConfig;
     tenor: EnvironmentTenorConfig;
+    unsplash: EnvironmentUnsplashConfig;
     signalingServerUrl: string;
     prismComponentsUrl: string;
 }

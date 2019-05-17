@@ -1,7 +1,7 @@
 import {SlideTemplate} from '../../models/slide';
 
 export enum SlotType {
-    DIV = 'div',
+    SECTION = 'section',
     H1 = 'h1',
     H2 = 'h2',
     H3 = 'h3',
@@ -40,7 +40,7 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title"></h1>;
 
-            const content = <div slot="content"></div>;
+            const content = <section slot="content"></section>;
 
             const slide: any = <deckgo-slide-title>
                 {title}
@@ -60,7 +60,7 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title"></h1>;
 
-            const content = <div slot="content"></div>;
+            const content = <section slot="content"></section>;
 
             const slide: any = <deckgo-slide-content>
                 {title}
@@ -78,9 +78,9 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const start = <div slot="start"></div>;
+            const start = <section slot="start"></section>;
 
-            const end = <div slot="end"></div>;
+            const end = <section slot="end"></section>;
 
             const slide: any = <deckgo-slide-split>
                 {start}

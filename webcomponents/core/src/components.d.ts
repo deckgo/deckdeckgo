@@ -25,6 +25,7 @@ export namespace Components {
     'isEnd': () => Promise<boolean>;
     'isMobile': () => Promise<boolean>;
     'keyboard': boolean;
+    'loadBackground': () => Promise<void>;
     'pagerPercentage': boolean;
     'slideNext': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
@@ -106,11 +107,15 @@ export namespace Components {
   interface DeckgoSlideAuthor {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'imgAlt': string;
     'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
   }
   interface DeckgoSlideAuthorAttributes extends StencilHTMLAttributes {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'imgAlt'?: string;
     'imgSrc'?: string;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
@@ -120,6 +125,8 @@ export namespace Components {
     'afterSwipe': () => Promise<void>;
     'area': boolean;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'datePattern': string;
     'grid': boolean;
     'height': number;
@@ -140,6 +147,8 @@ export namespace Components {
   }
   interface DeckgoSlideChartAttributes extends StencilHTMLAttributes {
     'area'?: boolean;
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'datePattern'?: string;
     'grid'?: boolean;
     'height'?: number;
@@ -164,6 +173,8 @@ export namespace Components {
     'anchor': string;
     'anchorZoom': string;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'hideAnchor': boolean;
     'language': string;
     'lazyLoadContent': () => Promise<void>;
@@ -172,6 +183,8 @@ export namespace Components {
   interface DeckgoSlideCodeAttributes extends StencilHTMLAttributes {
     'anchor'?: string;
     'anchorZoom'?: string;
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'hideAnchor'?: boolean;
     'language'?: string;
     'onScrolling'?: (event: CustomEvent<boolean>) => void;
@@ -182,11 +195,15 @@ export namespace Components {
   interface DeckgoSlideContent {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
   interface DeckgoSlideContentAttributes extends StencilHTMLAttributes {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'reveal'?: boolean;
     'revealShowFirst'?: boolean;
@@ -196,12 +213,16 @@ export namespace Components {
     'afterSwipe': () => Promise<void>;
     'alt': string;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'fullscreen': boolean;
     'lazyLoadContent': () => Promise<void>;
     'src': string;
   }
   interface DeckgoSlideGifAttributes extends StencilHTMLAttributes {
     'alt'?: string;
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'fullscreen'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'src'?: string;
@@ -211,21 +232,29 @@ export namespace Components {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
     'content': string;
+    'customActions': boolean;
+    'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
   }
   interface DeckgoSlideQrcodeAttributes extends StencilHTMLAttributes {
     'content'?: string;
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
   }
 
   interface DeckgoSlideSplit {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
   interface DeckgoSlideSplitAttributes extends StencilHTMLAttributes {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'reveal'?: boolean;
     'revealShowFirst'?: boolean;
@@ -234,11 +263,15 @@ export namespace Components {
   interface DeckgoSlideTitle {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
   interface DeckgoSlideTitleAttributes extends StencilHTMLAttributes {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'reveal'?: boolean;
     'revealShowFirst'?: boolean;
@@ -247,6 +280,8 @@ export namespace Components {
   interface DeckgoSlideYoutube {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'height': number;
     'lazyLoadContent': () => Promise<void>;
     'pause': () => Promise<void>;
@@ -256,6 +291,8 @@ export namespace Components {
     'width': number;
   }
   interface DeckgoSlideYoutubeAttributes extends StencilHTMLAttributes {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'height'?: number;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'src'?: string;

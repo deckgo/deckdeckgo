@@ -17,6 +17,13 @@ app-navigation {
         margin-right: 4px;
         padding: 4px;
       }
+
+      mark {
+        background-color: transparent;
+        font-style: italic;
+        color: white;
+        font-size: calc(var(--font-size-small) * 0.9);
+      }
     }
   }
 

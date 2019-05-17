@@ -2,8 +2,3 @@
   touch-action: manipulation;
   cursor: pointer;
 }
-
-*[contenteditable] {
-  -webkit-user-select: text;
-  user-select: text;
-}
