@@ -33,7 +33,7 @@ export class AppNavigation {
       return <ion-anchor onClick={() => this.closeMenu()} href="/" routerDirection="forward" slot="start">
         <div>
           <app-logo></app-logo>
-          <span class="ion-text-uppercase">DeckDeckGo</span>
+          <span class="ion-text-uppercase">DeckDeckGo <mark>BETA</mark></span>
         </div>
       </ion-anchor>;
     } else {
