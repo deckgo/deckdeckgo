@@ -504,7 +504,7 @@ export class AppEditor {
 
     private async signIn() {
         this.navService.navigate({
-            url: '/signin/editor',
+            url: '/signin' + (window && window.location ? window.location.pathname : ''),
             direction: NavDirection.FORWARD
         });
     }
