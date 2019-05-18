@@ -14,7 +14,6 @@ export interface EnvironmentTenorConfig {
 
 export interface EnvironmentUnsplashConfig {
     url: string;
-    key: string;
 }
 
 export interface EnvironmentConfig {

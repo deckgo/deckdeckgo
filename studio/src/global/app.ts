@@ -25,8 +25,7 @@ setupConfig({
         key: '<@TENOR_KEY@>'
     },
     unsplash: {
-        url: 'https://api.unsplash.com/',
-        key: '<@UNSPLASH_KEY@>'
+        url: '<@UNSPLASH_URL@>'
     },
     signalingServerUrl: '<@SIGNALING_SERVER_URL@>',
     prismComponentsUrl: 'https://raw.githubusercontent.com/PrismJS/prism/886698d5b759ef46162a5723a2493f97c689dc94/components.json'

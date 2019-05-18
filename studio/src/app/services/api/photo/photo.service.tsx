@@ -25,7 +25,7 @@ export class PhotoService {
         return new Promise<UnsplashSearchResponse>(async (resolve) => {
             const config: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
 
-            const searchUrl: string = config.url + 'search/photos/?query=' + searchTerm + '&client_id=' + config.key + '&page=' + next;
+            const searchUrl: string = config.url + 'search/photos/?query=' + searchTerm + '&page=' + next;
 
             try {
                 const rawResponse: Response = await fetch(searchUrl);
@@ -50,7 +50,7 @@ export class PhotoService {
         return new Promise<void>(async (resolve) => {
             const config: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
 
-            const shareUrl: string = config.url + 'photos/' + photoId +'/download/?client_id=' + config.key;
+            const shareUrl: string = config.url + 'photos/' + photoId +'/download/';
 
             try {
                 await fetch(shareUrl);
