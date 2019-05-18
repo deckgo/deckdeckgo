@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.9"></a>
+# 1.0.0-alpha.9 (2019-05-18)
+
+### Features
+
+* add `srcset` and `sizes` to `deckdeckgo-lazy-img` component
+
 <a name="1.0.0-alpha.8"></a>
 # 1.0.0-alpha.8 (2019-05-16)
 
