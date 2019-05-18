@@ -1,7 +1,7 @@
 with { pkgs = import ./nix {}; };
 
 rec
-{ function =
+{ function = # TODO: rename to handler
     pkgs.runCommand "build-lambda" {}
       ''
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
@@ -12,8 +12,21 @@ rec
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs google-public-keys.json
       '';
 
+  function-unsplash =
+    pkgs.runCommand "build-lambda" {}
+      ''
+        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        # Can't be called 'main' otherwise lambda tries to load it
+        cp "${unsplashProxyStatic}/bin/unsplash-proxy" main_hs
+        mkdir $out
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
+      '';
+
   handlerStatic = pkgs.haskellPackagesStatic.deckdeckgo-handler;
   handler = pkgs.haskellPackages.deckdeckgo-handler;
+
+  unsplashProxyStatic = pkgs.haskellPackagesStatic.unsplash-proxy;
+  unsplashProxy = pkgs.haskellPackages.unsplash-proxy;
 
   dynamoJar = pkgs.runCommand "dynamodb-jar" { buildInputs = [ pkgs.gnutar ]; }
   ''
