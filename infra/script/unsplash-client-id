@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# vim: filetype=sh
+
+set -euo pipefail
+
+out=$(pass deckdeckgo/unsplash-client-id | head -n 1 | tr -d '\n')
+
+cat <<JSON
+{
+  "unsplash-client-id": "${out}"
+}
+JSON
