@@ -1,15 +1,16 @@
-variable "allowed_origins" {
-  type = "list"
-  default = ["localhost:3333", "deckdeckgo.com"]
-}
-
 resource "aws_api_gateway_rest_api" "lambda-api" {
   name = "deckdeckgo-handler-rest-api"
 }
 
-resource "aws_api_gateway_resource" "proxy" {
+resource "aws_api_gateway_resource" "proxy-api" {
   rest_api_id = "${aws_api_gateway_rest_api.lambda-api.id}"
   parent_id   = "${aws_api_gateway_rest_api.lambda-api.root_resource_id}"
+  path_part   = "api"
+}
+
+resource "aws_api_gateway_resource" "proxy" {
+  rest_api_id = "${aws_api_gateway_rest_api.lambda-api.id}"
+  parent_id   = "${aws_api_gateway_resource.proxy-api.id}"
   path_part   = "{proxy+}"
 }
 
@@ -20,6 +21,7 @@ resource "aws_api_gateway_method" "proxy" {
   authorization = "NONE"
 }
 
+# XXX: when redeploying, tweak the stage name
 resource "aws_api_gateway_integration" "lambda-api" {
   rest_api_id = "${aws_api_gateway_rest_api.lambda-api.id}"
   resource_id = "${aws_api_gateway_method.proxy.resource_id}"
@@ -33,6 +35,8 @@ resource "aws_api_gateway_integration" "lambda-api" {
 resource "aws_api_gateway_deployment" "lambda-api" {
   depends_on = [
     "aws_api_gateway_integration.lambda-api",
+    "aws_api_gateway_resource.proxy-api",
+    "aws_api_gateway_resource.proxy",
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.lambda-api.id}"
@@ -103,7 +107,7 @@ resource "aws_api_gateway_integration_response" "options_integration_response" {
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "method.response.header.Access-Control-Allow-Methods" = "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
-    "method.response.header.Access-Control-Allow-Origin"  = "'${join(",",var.allowed_origins)}'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
 }
 
