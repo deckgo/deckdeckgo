@@ -1,4 +1,5 @@
 import {Component, Element, Listen, Prop, State} from '@stencil/core';
+import {UserUtils} from '../../utils/core/user-utils';
 
 @Component({
     tag: 'app-user-delete',
@@ -34,8 +35,7 @@ export class AppUserDelete {
     }
 
     private validateUsernameInput() {
-        this.valid = this.username && this.username !== null && this.username !== undefined && this.username.length >= 3 && this.username.length <= 32
-                        && this.username === this.inputUsername;
+        this.valid = UserUtils.validUsername(this.username) && this.username === this.inputUsername;
     }
 
     private async handleSubmit(e: Event) {

@@ -8,6 +8,8 @@ import '@firebase/auth';
 import {AuthUser} from '../../../models/auth-user';
 import {User} from '../../../models/user';
 
+import {UserUtils} from '../../../utils/core/user-utils';
+
 import {UserService} from '../../../services/api/user/user.service';
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
@@ -86,7 +88,7 @@ export class AppHome {
     }
 
     private validateUsernameInput() {
-        this.valid = this.user && this.user.username && this.user.username !== null && this.user.username !== undefined && this.user.username.length >= 3 && this.user.username.length <= 32;
+        this.valid = this.user && UserUtils.validUsername(this.user.username);
     }
 
     private save(): Promise<void> {
