@@ -65,7 +65,7 @@ export class UserService {
         });
     }
 
-    query(apiUserInfo: UserInfo, token: string, method: string): Promise<User> {
+    query(apiUserInfo: UserInfo | User, token: string, method: string): Promise<User> {
         return new Promise<User>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');

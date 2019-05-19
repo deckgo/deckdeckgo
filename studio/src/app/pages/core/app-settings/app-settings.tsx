@@ -7,6 +7,7 @@ import {User} from '../../../models/user';
 import {UserService} from '../../../services/api/user/user.service';
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
     tag: 'app-settings',
@@ -28,10 +29,13 @@ export class AppHome {
 
     private navService: NavService;
 
+    private errorService: ErrorService;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.userService= UserService.getInstance();
         this.navService = NavService.getInstance();
+        this.errorService = ErrorService.getInstance();
     }
 
     componentWillLoad() {
@@ -48,11 +52,6 @@ export class AppHome {
         });
     }
 
-    @Listen('keydown.enter')
-    handleEnterKey() {
-        // TODO submit
-    }
-
     private async signIn() {
         this.navService.navigate({
             url: '/signin' + (window && window.location ? window.location.pathname : ''),
@@ -60,11 +59,15 @@ export class AppHome {
         });
     }
 
-    private handleSubmit(e: Event) {
+    @Listen('keydown.enter')
+    async handleEnterKey() {
+        await this.save();
+    }
+
+    private async handleSubmit(e: Event) {
         e.preventDefault();
 
-        console.log(e);
-        // send data to our backend
+        await this.save();
     }
 
     private handleUsernameInput($event: CustomEvent<KeyboardEvent>) {
@@ -73,6 +76,24 @@ export class AppHome {
 
     private validateUsernameInput() {
         this.valid = this.user && this.user.username && this.user.username !== null && this.user.username !== undefined && this.user.username.length >= 3 && this.user.username.length <= 32;
+    }
+
+    private save(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.valid) {
+                resolve();
+                return;
+            }
+
+            try {
+                // TODO: Doesn't work yet, end up with a 405
+                await this.userService.query(this.user, this.authUser.token, 'PUT');
+            } catch (err) {
+                this.errorService.error('Your changes couldn\'t be saved');
+            }
+
+            resolve();
+        });
     }
 
     render() {
