@@ -19,7 +19,15 @@ app-code {
       --highlight-color-focused: transparent;
 
       ion-input {
-        border-bottom: 1px solid rgba(0,0,0, 0.33);
+        --background: var(--ion-color-light);
+        border: 1px solid #dedede;
+        border-radius: 4px;
+      }
+    }
+
+    &:not(.item-label) {
+      ion-input[class*="sc-ion-input"] {
+        --padding-start: 8px;
       }
     }
 
