@@ -2,6 +2,10 @@ ion-avatar {
   width: var(--deckgo-avatar-size, 2rem);
   height: var(--deckgo-avatar-size, 2rem);
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   ion-icon {
     font-size: 2rem;
     color: var(--deckgo-avatar-color);
