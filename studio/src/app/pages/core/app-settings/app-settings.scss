@@ -7,27 +7,12 @@ app-settings {
     }
 
     ion-item {
-      --padding-start: 0;
-      --border-color: transparent;
-      --inner-padding-end: 0;
-      --highlight-color-focused: transparent;
-
       &.item-title {
         height: 38px;
+
+        --padding-start: 0;
+        --inner-padding-end: 0;
       }
-
-      &:not(.item-label) {
-        ion-input[class*="sc-ion-input"] {
-          --padding-start: 8px;
-          --background: var(--ion-color-light);
-          border: 1px solid #dedede;
-          border-radius: 4px;
-        }
-      }
-    }
-
-    input:not(:valid) {
-
     }
   }
 }

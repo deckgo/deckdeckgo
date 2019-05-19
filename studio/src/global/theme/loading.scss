@@ -1,0 +1,7 @@
+ion-loading[class*="sc-ion-loading"] {
+  --background: transparent;
+
+  div.loading-wrapper {
+    box-shadow: none;
+  }
+}

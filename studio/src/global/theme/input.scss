@@ -1,0 +1,18 @@
+ion-item.item-input {
+  --border-color: transparent;
+  --highlight-color-focused: transparent;
+
+    &:not(.with-padding) {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+
+  ion-input[class*="sc-ion-input"] {
+    --padding-start: 8px;
+    --background: var(--ion-color-light);
+    border: 1px solid #dedede;
+    border-radius: 4px;
+
+    --placeholder-opacity: 0.33;
+  }
+}

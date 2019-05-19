@@ -14,26 +14,6 @@ app-code {
   ion-item {
     --border-width: 0;
     --inner-border-width: 0;
-
-    &.item-input {
-      --highlight-color-focused: transparent;
-
-      ion-input {
-        --background: var(--ion-color-light);
-        border: 1px solid #dedede;
-        border-radius: 4px;
-      }
-    }
-
-    &:not(.item-label) {
-      ion-input[class*="sc-ion-input"] {
-        --padding-start: 8px;
-      }
-    }
-
-    ion-input[class*="sc-ion-input"] {
-      --placeholder-opacity: 0.33;
-    }
     
     &.select {
       ion-label:first-of-type {

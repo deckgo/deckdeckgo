@@ -133,6 +133,13 @@ export namespace Components {
     'publication'?: Date;
   }
 
+  interface AppUserDelete {
+    'username': string;
+  }
+  interface AppUserDeleteAttributes extends StencilHTMLAttributes {
+    'username'?: string;
+  }
+
   interface AppGif {}
   interface AppGifAttributes extends StencilHTMLAttributes {}
 
@@ -252,6 +259,7 @@ declare global {
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
     'AppFeedCard': Components.AppFeedCard;
+    'AppUserDelete': Components.AppUserDelete;
     'AppGif': Components.AppGif;
     'AppPhoto': Components.AppPhoto;
     'AppPublish': Components.AppPublish;
@@ -293,6 +301,7 @@ declare global {
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-feed-card': Components.AppFeedCardAttributes;
+    'app-user-delete': Components.AppUserDeleteAttributes;
     'app-gif': Components.AppGifAttributes;
     'app-photo': Components.AppPhotoAttributes;
     'app-publish': Components.AppPublishAttributes;
@@ -407,6 +416,12 @@ declare global {
   var HTMLAppFeedCardElement: {
     prototype: HTMLAppFeedCardElement;
     new (): HTMLAppFeedCardElement;
+  };
+
+  interface HTMLAppUserDeleteElement extends Components.AppUserDelete, HTMLStencilElement {}
+  var HTMLAppUserDeleteElement: {
+    prototype: HTMLAppUserDeleteElement;
+    new (): HTMLAppUserDeleteElement;
   };
 
   interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
@@ -563,6 +578,7 @@ declare global {
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
     'app-feed-card': HTMLAppFeedCardElement
+    'app-user-delete': HTMLAppUserDeleteElement
     'app-gif': HTMLAppGifElement
     'app-photo': HTMLAppPhotoElement
     'app-publish': HTMLAppPublishElement
@@ -604,6 +620,7 @@ declare global {
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
     'app-feed-card': HTMLAppFeedCardElement;
+    'app-user-delete': HTMLAppUserDeleteElement;
     'app-gif': HTMLAppGifElement;
     'app-photo': HTMLAppPhotoElement;
     'app-publish': HTMLAppPublishElement;

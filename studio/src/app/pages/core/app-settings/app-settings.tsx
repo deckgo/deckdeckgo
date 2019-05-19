@@ -1,5 +1,9 @@
-import {Component, Listen, State} from '@stencil/core';
+import {Component, Listen, Prop, State} from '@stencil/core';
+import {OverlayEventDetail} from '@ionic/core';
 import {filter, take} from 'rxjs/operators';
+
+import firebase from '@firebase/app';
+import '@firebase/auth';
 
 import {AuthUser} from '../../../models/auth-user';
 import {User} from '../../../models/user';
@@ -8,12 +12,16 @@ import {UserService} from '../../../services/api/user/user.service';
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ErrorService} from '../../../services/core/error/error.service';
+import {PhotoHistoryService} from '../../../services/editor/photo-history/photo-history.service';
 
 @Component({
     tag: 'app-settings',
     styleUrl: 'app-settings.scss'
 })
 export class AppHome {
+
+    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
+    @Prop({connect: 'ion-loading-controller'}) loadingController: HTMLIonLoadingControllerElement;
 
     @State()
     private authUser: AuthUser;
@@ -31,24 +39,27 @@ export class AppHome {
 
     private errorService: ErrorService;
 
+    private photoHistoryService: PhotoHistoryService;
+
     constructor() {
         this.authService = AuthService.getInstance();
-        this.userService= UserService.getInstance();
+        this.userService = UserService.getInstance();
         this.navService = NavService.getInstance();
         this.errorService = ErrorService.getInstance();
+        this.photoHistoryService = PhotoHistoryService.getInstance();
     }
 
     componentWillLoad() {
         this.authService.watch().pipe(
             filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && !authUser.anonymous),
             take(1)).subscribe(async (authUser: AuthUser) => {
-                this.authUser = authUser;
+            this.authUser = authUser;
         });
 
         this.userService.watch().pipe(
             filter((user: User) => user !== null && user !== undefined && !user.anonymous),
             take(1)).subscribe(async (user: User) => {
-                this.user = user;
+            this.user = user;
         });
     }
 
@@ -96,12 +107,61 @@ export class AppHome {
         });
     }
 
+    private async presentConfirmDelete() {
+        const modal: HTMLIonModalElement = await this.modalController.create({
+            component: 'app-user-delete',
+            componentProps: {
+                username: this.user.username
+            }
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data) {
+                await this.deleteUser();
+            }
+        });
+
+        await modal.present();
+    }
+
+    private deleteUser(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            try {
+                const loading = await this.loadingController.create({});
+
+                await loading.present();
+
+                await this.userService.delete(this.user.id, this.authUser.token);
+
+                const firebaseUser: firebase.User = firebase.auth().currentUser;
+
+                if (firebaseUser) {
+                    await firebaseUser.delete();
+                }
+
+                await this.photoHistoryService.clear();
+
+                this.navService.navigate({
+                    url: '/',
+                    direction: NavDirection.ROOT
+                });
+
+                await loading.dismiss();
+
+                resolve();
+            } catch (err) {
+                this.errorService.error('Your user couldn\'t be deleted, contact us per email')
+            }
+        });
+    }
+
     render() {
         return [
             <app-navigation></app-navigation>,
             <ion-content class="ion-padding fullscreen-padding">
                 <main padding>
                     {this.renderGuardedContent()}
+                    {this.renderDangerZone()}
                 </main>
             </ion-content>
         ];
@@ -110,7 +170,7 @@ export class AppHome {
     private renderGuardedContent() {
         if (!this.authUser) {
             return this.renderNotLoggedInContent();
-        } else{
+        } else {
             return this.renderUserContent();
         }
     }
@@ -118,7 +178,9 @@ export class AppHome {
     private renderNotLoggedInContent() {
         return [
             <h1>Oh, hi! Good to have you.</h1>,
-            <p class="ion-padding-top"><ion-anchor onClick={() => this.signIn()}>Sign in</ion-anchor> to access your settings.</p>
+            <p class="ion-padding-top">
+                <ion-anchor onClick={() => this.signIn()}>Sign in</ion-anchor>
+                to access your settings.</p>
         ]
     }
 
@@ -153,12 +215,13 @@ export class AppHome {
         if (this.user) {
             return [<ion-item class="item-title">
                 <ion-label>Username</ion-label>
-                </ion-item>,
+            </ion-item>,
                 <ion-item>
-                    <ion-input value={this.user.username} debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
-                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleUsernameInput(e)}
-                           onIonChange={() => this.validateUsernameInput()}></ion-input>
-            </ion-item>];
+                    <ion-input value={this.user.username} debounce={500} minlength={3} maxlength={32} required={true}
+                               input-mode="text"
+                               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleUsernameInput(e)}
+                               onIonChange={() => this.validateUsernameInput()}></ion-input>
+                </ion-item>];
         } else {
             return undefined;
         }
@@ -166,9 +229,22 @@ export class AppHome {
 
     private renderSubmitForm() {
         if (this.user) {
-            return <ion-button type="submit" disabled={!this.valid} color="primary" shape="round" class="ion-margin-top">
+            return <ion-button type="submit" disabled={!this.valid} color="primary" shape="round">
                 <ion-label>Submit</ion-label>
             </ion-button>
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderDangerZone() {
+        if (this.user && this.authUser) {
+            return [<h1 class="ion-padding-top ion-margin-top">Danger Zone</h1>,
+                <p>Once you delete your user, there is no going back. Please be certain.</p>,
+                <ion-button color="danger" shape="round" fill="outline" onClick={() => this.presentConfirmDelete()}>
+                    <ion-label>Delete my user</ion-label>
+                </ion-button>
+            ]
         } else {
             return undefined;
         }
