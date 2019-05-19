@@ -13,8 +13,15 @@ app-user-menu {
   ion-item {
     --border-color: transparent;
 
-    ion-label {
+    ion-anchor {
       cursor: pointer;
+      color: inherit;
+      font-weight: inherit;
+
+      &:hover, &.active {
+        color: var(--ion-color-primary);
+        border-bottom: 1px solid transparent;
+      }
     }
   }
 }
