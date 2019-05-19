@@ -6,12 +6,18 @@ app-settings {
       cursor: pointer;
     }
 
-    ion-item {
-      &.item-title {
-        height: 38px;
+    ion-list[class*="list"]  {
+      background: transparent;
 
-        --padding-start: 0;
-        --inner-padding-end: 0;
+      ion-item {
+        --background: transparent;
+
+        &.item-title {
+          height: 38px;
+
+          --padding-start: 0;
+          --inner-padding-end: 0;
+        }
       }
     }
   }
