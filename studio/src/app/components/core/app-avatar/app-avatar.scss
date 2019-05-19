@@ -3,7 +3,7 @@ ion-avatar {
   height: var(--deckgo-avatar-size, 2rem);
 
   display: flex;
-  justify-content: center;
+  justify-items: center;
   align-items: center;
 
   ion-icon {
