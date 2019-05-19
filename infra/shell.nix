@@ -28,8 +28,16 @@ in
          ${pgutil.stop_pg}
        }
 
+       function repl_handler() {
+          ghci handler/app/Test.hs handler/src/DeckGo/Handler.hs
+       }
+
+       function repl_unsplash() {
+          ghci unsplash-proxy/Main.hs
+       }
+
        function repl() {
-         ghci handler/app/Test.hs handler/src/DeckGo/Handler.hs
+          repl_handler
        }
 
       '';

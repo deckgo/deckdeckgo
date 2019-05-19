@@ -14,14 +14,18 @@ export namespace Components {
 
   interface DeckgoLazyImg {
     'imgAlt': string;
+    'imgSizes': string;
     'imgSrc': string;
+    'imgSrcSet': string;
     'lazyLoad': () => Promise<void>;
     'observerRootMargin': string;
     'observerThreshold': number | number[];
   }
   interface DeckgoLazyImgAttributes extends StencilHTMLAttributes {
     'imgAlt'?: string;
+    'imgSizes'?: string;
     'imgSrc'?: string;
+    'imgSrcSet'?: string;
     'observerRootMargin'?: string;
     'observerThreshold'?: number | number[];
     'onLazyImgDidLoad'?: (event: CustomEvent) => void;

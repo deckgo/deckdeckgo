@@ -15,7 +15,13 @@ export class DeckdeckgoLazyImg {
   imgSrc: string;
 
   @Prop({reflectToAttr: true})
+  imgSrcSet: string;
+
+  @Prop({reflectToAttr: true})
   imgAlt: string;
+
+  @Prop({reflectToAttr: true})
+  imgSizes: string;
 
   @Prop()
   observerRootMargin: string = '100px 0px';
@@ -80,11 +86,17 @@ export class DeckdeckgoLazyImg {
         img.removeAttribute('data-src');
       }
 
+      if (img && img.hasAttribute('data-srcset')) {
+        img.setAttribute('srcset', img.getAttribute('data-srcset'));
+        img.removeAttribute('data-srcset');
+      }
+
       resolve();
     });
   }
 
   render() {
-    return <img data-src={this.imgSrc} alt={this.imgAlt ? this.imgAlt : this.imgSrc}/>;
+    return <img data-src={this.imgSrc} alt={this.imgAlt ? this.imgAlt : this.imgSrc}
+                data-srcset={this.imgSrcSet ? this.imgSrcSet : undefined} sizes={this.imgSizes ? this.imgSizes : undefined}/>;
   }
 }

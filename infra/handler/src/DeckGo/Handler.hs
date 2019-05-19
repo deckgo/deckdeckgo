@@ -356,10 +356,11 @@ instance Aeson.FromJSON Slide where
 instance Aeson.ToJSON Slide where
   toJSON = Aeson.Object . toJSONObject
 
-type API =
+type API = "api" :> (
     "users" :> UsersAPI :<|>
     "decks" :> DecksAPI :<|>
     "decks" :> SlidesAPI
+    )
 
 api :: Proxy API
 api = Proxy

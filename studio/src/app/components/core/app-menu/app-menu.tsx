@@ -105,7 +105,7 @@ export class AppMenu {
 
     private async signIn() {
         this.navService.navigate({
-            url: '/signin',
+            url: '/signin' + (window && window.location ? window.location.pathname : ''),
             direction: NavDirection.FORWARD
         });
     }

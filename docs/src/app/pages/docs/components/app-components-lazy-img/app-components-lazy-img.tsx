@@ -65,6 +65,18 @@ export class AppComponentsLazyImg {
 <td>The image source (= URI) to lazy load</td>
 </tr>
 <tr>
+<td>img-src-set</td>
+<td>string</td>
+<td></td>
+<td>The attribute &quot;srcset&quot; (= multiple URI) to lazy load in case you would like to provide multiple images for responsiveness</td>
+</tr>
+<tr>
+<td>img-sizes</td>
+<td>string</td>
+<td></td>
+<td>The set of media conditions to indicates what image size would be best to choose</td>
+</tr>
+<tr>
 <td>img-alt</td>
 <td>string</td>
 <td></td>

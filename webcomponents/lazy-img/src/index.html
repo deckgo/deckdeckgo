@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
   <title>DeckDeckGo Lazy Load Images</title>
 
-  <script type="module" src="build/deckdeckgo-lazy-img.esm.js"></script>
-  <script nomodule src="build/deckdeckgo-lazy-img.js"></script>
+  <script src="/build/deckdeckgo-lazy-img.js"></script>
 
   <style>
     deckgo-lazy-img {
@@ -42,6 +41,10 @@
   <deckgo-lazy-img img-src="https://deckdeckgo.com/assets/img/deckdeckgo.png"></deckgo-lazy-img>
   <deckgo-lazy-img img-src="https://deckdeckgo.com/assets/img/deckdeckgo.png"></deckgo-lazy-img>
   <deckgo-lazy-img img-src="https://deckdeckgo.com/assets/img/deckdeckgo.png"></deckgo-lazy-img>
+
+  <deckgo-lazy-img style="background: red;"
+    img-sizes="(min-width: 40em) 80vw, 100vw"
+    img-src-set="https://deckdeckgo.com/assets/img/deckdeckgo.png 1x, https://deckdeckgo.com/assets/img/deckdeckgo.svg 2x"></deckgo-lazy-img>
 
 </body>
 </html>
