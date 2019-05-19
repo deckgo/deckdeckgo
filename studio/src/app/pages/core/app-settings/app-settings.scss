@@ -1,0 +1,18 @@
+app-settings {
+  main {
+    background: white;
+
+    ion-anchor {
+      cursor: pointer;
+    }
+
+    ion-item {
+      &.item-title {
+        height: 38px;
+
+        --padding-start: 0;
+        --inner-padding-end: 0;
+      }
+    }
+  }
+}

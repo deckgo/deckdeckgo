@@ -8,13 +8,13 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-highlight-code';
 import 'deckdeckgo-inline-editor';
 import 'deckdeckgo-lazy-img';
 import 'deckdeckgo-qrcode';
 import 'deckdeckgo-remote';
+import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -133,6 +133,13 @@ export namespace Components {
     'publication'?: Date;
   }
 
+  interface AppUserDelete {
+    'username': string;
+  }
+  interface AppUserDeleteAttributes extends StencilHTMLAttributes {
+    'username'?: string;
+  }
+
   interface AppGif {}
   interface AppGifAttributes extends StencilHTMLAttributes {}
 
@@ -179,6 +186,9 @@ export namespace Components {
 
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
+
+  interface AppSettings {}
+  interface AppSettingsAttributes extends StencilHTMLAttributes {}
 
   interface AppSignin {
     'redirect': string;
@@ -249,6 +259,7 @@ declare global {
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
     'AppFeedCard': Components.AppFeedCard;
+    'AppUserDelete': Components.AppUserDelete;
     'AppGif': Components.AppGif;
     'AppPhoto': Components.AppPhoto;
     'AppPublish': Components.AppPublish;
@@ -262,6 +273,7 @@ declare global {
     'AppTeam': Components.AppTeam;
     'AppTerms': Components.AppTerms;
     'AppHome': Components.AppHome;
+    'AppSettings': Components.AppSettings;
     'AppSignin': Components.AppSignin;
     'AppEditor': Components.AppEditor;
     'AppUserMenu': Components.AppUserMenu;
@@ -289,6 +301,7 @@ declare global {
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
     'app-feed-card': Components.AppFeedCardAttributes;
+    'app-user-delete': Components.AppUserDeleteAttributes;
     'app-gif': Components.AppGifAttributes;
     'app-photo': Components.AppPhotoAttributes;
     'app-publish': Components.AppPublishAttributes;
@@ -302,6 +315,7 @@ declare global {
     'app-team': Components.AppTeamAttributes;
     'app-terms': Components.AppTermsAttributes;
     'app-home': Components.AppHomeAttributes;
+    'app-settings': Components.AppSettingsAttributes;
     'app-signin': Components.AppSigninAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-user-menu': Components.AppUserMenuAttributes;
@@ -404,6 +418,12 @@ declare global {
     new (): HTMLAppFeedCardElement;
   };
 
+  interface HTMLAppUserDeleteElement extends Components.AppUserDelete, HTMLStencilElement {}
+  var HTMLAppUserDeleteElement: {
+    prototype: HTMLAppUserDeleteElement;
+    new (): HTMLAppUserDeleteElement;
+  };
+
   interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
   var HTMLAppGifElement: {
     prototype: HTMLAppGifElement;
@@ -482,6 +502,12 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
+  interface HTMLAppSettingsElement extends Components.AppSettings, HTMLStencilElement {}
+  var HTMLAppSettingsElement: {
+    prototype: HTMLAppSettingsElement;
+    new (): HTMLAppSettingsElement;
+  };
+
   interface HTMLAppSigninElement extends Components.AppSignin, HTMLStencilElement {}
   var HTMLAppSigninElement: {
     prototype: HTMLAppSigninElement;
@@ -552,6 +578,7 @@ declare global {
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
     'app-feed-card': HTMLAppFeedCardElement
+    'app-user-delete': HTMLAppUserDeleteElement
     'app-gif': HTMLAppGifElement
     'app-photo': HTMLAppPhotoElement
     'app-publish': HTMLAppPublishElement
@@ -565,6 +592,7 @@ declare global {
     'app-team': HTMLAppTeamElement
     'app-terms': HTMLAppTermsElement
     'app-home': HTMLAppHomeElement
+    'app-settings': HTMLAppSettingsElement
     'app-signin': HTMLAppSigninElement
     'app-editor': HTMLAppEditorElement
     'app-user-menu': HTMLAppUserMenuElement
@@ -592,6 +620,7 @@ declare global {
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
     'app-feed-card': HTMLAppFeedCardElement;
+    'app-user-delete': HTMLAppUserDeleteElement;
     'app-gif': HTMLAppGifElement;
     'app-photo': HTMLAppPhotoElement;
     'app-publish': HTMLAppPublishElement;
@@ -605,6 +634,7 @@ declare global {
     'app-team': HTMLAppTeamElement;
     'app-terms': HTMLAppTermsElement;
     'app-home': HTMLAppHomeElement;
+    'app-settings': HTMLAppSettingsElement;
     'app-signin': HTMLAppSigninElement;
     'app-editor': HTMLAppEditorElement;
     'app-user-menu': HTMLAppUserMenuElement;

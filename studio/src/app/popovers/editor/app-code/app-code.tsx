@@ -302,7 +302,7 @@ export class AppCode {
                     </button>
                 </ion-item-divider>
 
-                <ion-item>
+                <ion-item class="with-padding">
                     <ion-input value={this.highlightLines} placeholder="List your lines here" debounce={500}
                                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
                                 onIonChange={() => this.highlightSelectedLines()}></ion-input>
