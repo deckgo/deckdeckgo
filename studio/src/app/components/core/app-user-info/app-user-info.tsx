@@ -57,7 +57,7 @@ export class AppUserInfo {
     }
 
     render() {
-        if (this.authUser || this.user) {
+        if (this.authUser) {
             return <ion-grid>
                 <ion-row class="ion-align-items-center">
                     <ion-col size={'' + this.avatarColSize}><app-avatar src={this.authUser.photo_url}></app-avatar></ion-col>
