@@ -127,8 +127,7 @@ export class AppMenu {
             }
 
             if (!this.decks || this.decks.length <= 0) {
-                resolve();
-                return;
+                this.decks = [];
             }
 
             const index: number = this.decks.findIndex((filteredDeck: Deck) => {
