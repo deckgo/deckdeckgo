@@ -1,5 +1,9 @@
 app-settings {
   main {
     background: white;
+
+    ion-anchor {
+      cursor: pointer;
+    }
   }
 }
