@@ -49,6 +49,10 @@ export class AppUserMenu {
 
     private renderActions() {
         return <ion-list>
+            <ion-item href="/settings" routerDirection="forward" onClick={() => this.closePopover()}>
+                <ion-label>Settings</ion-label>
+            </ion-item>
+
             <ion-item onClick={() => this.signOut()}>
                 <ion-label>Sign out</ion-label>
             </ion-item>

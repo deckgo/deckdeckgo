@@ -8,13 +8,13 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'ionicons';
 import 'deckdeckgo';
 import 'deckdeckgo-highlight-code';
 import 'deckdeckgo-inline-editor';
 import 'deckdeckgo-lazy-img';
 import 'deckdeckgo-qrcode';
 import 'deckdeckgo-remote';
+import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -180,6 +180,9 @@ export namespace Components {
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
+  interface AppSettings {}
+  interface AppSettingsAttributes extends StencilHTMLAttributes {}
+
   interface AppSignin {
     'redirect': string;
     'redirectId': string;
@@ -262,6 +265,7 @@ declare global {
     'AppTeam': Components.AppTeam;
     'AppTerms': Components.AppTerms;
     'AppHome': Components.AppHome;
+    'AppSettings': Components.AppSettings;
     'AppSignin': Components.AppSignin;
     'AppEditor': Components.AppEditor;
     'AppUserMenu': Components.AppUserMenu;
@@ -302,6 +306,7 @@ declare global {
     'app-team': Components.AppTeamAttributes;
     'app-terms': Components.AppTermsAttributes;
     'app-home': Components.AppHomeAttributes;
+    'app-settings': Components.AppSettingsAttributes;
     'app-signin': Components.AppSigninAttributes;
     'app-editor': Components.AppEditorAttributes;
     'app-user-menu': Components.AppUserMenuAttributes;
@@ -482,6 +487,12 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
+  interface HTMLAppSettingsElement extends Components.AppSettings, HTMLStencilElement {}
+  var HTMLAppSettingsElement: {
+    prototype: HTMLAppSettingsElement;
+    new (): HTMLAppSettingsElement;
+  };
+
   interface HTMLAppSigninElement extends Components.AppSignin, HTMLStencilElement {}
   var HTMLAppSigninElement: {
     prototype: HTMLAppSigninElement;
@@ -565,6 +576,7 @@ declare global {
     'app-team': HTMLAppTeamElement
     'app-terms': HTMLAppTermsElement
     'app-home': HTMLAppHomeElement
+    'app-settings': HTMLAppSettingsElement
     'app-signin': HTMLAppSigninElement
     'app-editor': HTMLAppEditorElement
     'app-user-menu': HTMLAppUserMenuElement
@@ -605,6 +617,7 @@ declare global {
     'app-team': HTMLAppTeamElement;
     'app-terms': HTMLAppTermsElement;
     'app-home': HTMLAppHomeElement;
+    'app-settings': HTMLAppSettingsElement;
     'app-signin': HTMLAppSigninElement;
     'app-editor': HTMLAppEditorElement;
     'app-user-menu': HTMLAppUserMenuElement;
