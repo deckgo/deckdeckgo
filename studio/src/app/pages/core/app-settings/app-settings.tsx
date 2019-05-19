@@ -40,13 +40,13 @@ export class AppHome {
 
     componentWillLoad() {
         this.authService.watch().pipe(
-            filter((authUser: AuthUser) => authUser !== null && authUser !== undefined),
+            filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && !authUser.anonymous),
             take(1)).subscribe(async (authUser: AuthUser) => {
                 this.authUser = authUser;
         });
 
         this.userService.watch().pipe(
-            filter((user: User) => user !== null && user !== undefined),
+            filter((user: User) => user !== null && user !== undefined && !user.anonymous),
             take(1)).subscribe(async (user: User) => {
                 this.user = user;
         });
