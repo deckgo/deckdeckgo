@@ -106,12 +106,26 @@ export class AppHome {
             <h1>Settings</h1>,
             <form onSubmit={(e: Event) => this.handleSubmit(e)}>
                 <ion-list>
+                    {this.renderName()}
                     {this.renderUsername()}
                 </ion-list>
 
                 {this.renderSubmitForm()}
             </form>
         ]
+    }
+
+    private renderName() {
+        if (this.authUser) {
+            return [<ion-item class="item-title">
+                <ion-label>Name</ion-label>
+            </ion-item>,
+                <ion-item>
+                    <ion-input value={this.authUser.name} required={true} input-mode="text" disabled={true}></ion-input>
+                </ion-item>];
+        } else {
+            return undefined;
+        }
     }
 
     private renderUsername() {
