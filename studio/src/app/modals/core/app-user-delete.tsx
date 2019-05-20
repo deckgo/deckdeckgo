@@ -51,7 +51,7 @@ export class AppUserDelete {
     render() {
         return [
             <ion-header>
-                <ion-toolbar color="primary">
+                <ion-toolbar color="danger">
                     <ion-buttons slot="start">
                         <ion-button onClick={() => this.closeModal()}>
                             <ion-icon name="close"></ion-icon>
@@ -72,7 +72,7 @@ export class AppUserDelete {
                                onIonChange={() => this.validateUsernameInput()}></ion-input>
                     </ion-item>
 
-                    <ion-button type="submit" disabled={!this.valid} color="primary" class="ion-margin-top">
+                    <ion-button type="submit" disabled={!this.valid} color="danger" class="ion-margin-top">
                         <ion-label>I understand, delete my user</ion-label>
                     </ion-button>
                 </form>
