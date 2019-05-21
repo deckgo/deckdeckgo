@@ -11,6 +11,7 @@ It leverages the IntersectionObserver API to lazy load images and also allows yo
   - [Attributes](#app-components-lazy-img-attributes)
   - [Theming](#app-components-lazy-img-theming)
   - [Methods](#app-components-lazy-img-methods)
+- [Trying it out](#app-components-lazy-img-trying-it-out)
 
 ## Usage
 
@@ -60,5 +61,9 @@ This component also expost an async method `lazyLoad()` in case you would like t
 const element = document.querySelector('deckgo-lazy-img');
 await element.lazyLoad();
 ```
+
+### Trying it out
+
+This component lazy load images when these are not presented in the viewport. If you would use this component in a simple test containing only a couple of images, respectively no content or no real use case where the images are effectively offscreen, assign a default height to components in order to ensure that some are effectively placed outside of the window [[#128]](https://github.com/deckgo/deckdeckgo/issues/128#issuecomment-493979841).
 
 [DeckDeckGo]: https://deckdeckgo.com 
