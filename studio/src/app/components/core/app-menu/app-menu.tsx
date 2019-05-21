@@ -199,13 +199,20 @@ export class AppMenu {
         });
     }
 
+    private async navigateEditor() {
+        this.navService.navigate({
+            url: '/editor',
+            direction: NavDirection.ROOT
+        });
+    }
+
     render() {
         return <ion-list>
             {this.renderUser()}
 
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
-                <ion-button size="small" slot="end" shape="round" href="/editor" routerDirection="root" class="new ion-margin-end">
+                <ion-button size="small" slot="end" shape="round" onClick={() => this.navigateEditor()} class="new ion-margin-end">
                     <ion-icon name="book" slot="start"></ion-icon>
                     <ion-label>New</ion-label>
                 </ion-button>
