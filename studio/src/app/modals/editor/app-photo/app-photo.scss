@@ -14,17 +14,35 @@ app-photo {
     left: 50%;
     transform: translate(-50%, -50%);
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
 
-    ion-icon {
-      font-size: 10rem;
-    }
+      position: relative;
 
-    ion-label, ion-icon {
-      color: var(--ion-color-medium);
+      ion-icon {
+        font-size: 10rem;
+      }
+
+      ion-label, ion-icon {
+        color: var(--ion-color-medium);
+      }
+
+      p.searching {
+        position: absolute;
+        bottom: -48px;
+        margin: 0;
+
+        font-size: var(--font-size-very-small);
+        color: var(--ion-color-medium);
+
+        ion-spinner {
+          width: 0.5rem;
+          height: 0.5rem;
+        }
+      }
     }
   }
 }

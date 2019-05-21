@@ -19,11 +19,11 @@ export class AppAbout {
                             <ion-col size="12" size-md="6">
                                 <h3 padding-top>Edit anywhere, display everywhere</h3>
 
-                                <p padding-top>DeckDeckGo aims to be the open source editor for PWA presentations.</p>
+                                <p padding-top>DeckDeckGo aims to be the open source web editor for presentations.</p>
 
-                                <p>What does that mean 🤔? It means that every presentations you write and publish with DeckDeckGo are <strong>apps</strong> too 🤪</p>
+                                <p>What makes it different 🤔? Every presentations published with DeckDeckGo are standalone <strong>Progressive Web Apps</strong> 🚀</p>
 
-                                <p>It is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
+                                <p>Moreover, it is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
 
                                 <p>DeckDeckGo was created with passion in Zürich🇨🇭in 2019</p>
                             </ion-col>

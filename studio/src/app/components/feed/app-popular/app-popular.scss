@@ -4,7 +4,14 @@ app-popular {
     color: black;
     padding: 16px;
 
-    width: 250px;
+    width: calc(100% - 16px);
+    max-width: 380px;
+
+    ion-card-content {
+      p:last-of-type {
+        font-weight: 700;
+      }
+    }
   }
 
   ion-card.demo {

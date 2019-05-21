@@ -30,6 +30,9 @@ export class AppPhoto {
 
     private paginationNext: number = 1;
 
+    @State()
+    private searching: boolean = false;
+
     constructor() {
         this.photoService = PhotoService.getInstance();
         this.photoHistoryService = PhotoHistoryService.getInstance();
@@ -92,7 +95,11 @@ export class AppPhoto {
                 return;
             }
 
+            this.searching = true;
+
             const unsplashResponse: UnsplashSearchResponse = await this.photoService.getPhotos(this.searchTerm, this.paginationNext);
+
+            this.searching = false;
 
             if (!unsplashResponse) {
                 resolve();
@@ -218,9 +225,22 @@ export class AppPhoto {
     private renderPhotosPlaceHolder() {
         if ((!this.photosOdd || this.photosOdd.length <= 0) && (!this.photosEven || this.photosEven.length <= 0)) {
             return <div class="photos-placeholder">
-                <ion-icon name="images"></ion-icon>
-                <ion-label>Photos by Unsplash</ion-label>
+                <div>
+                    <ion-icon name="images"></ion-icon>
+                    <ion-label>Photos by Unsplash</ion-label>
+                    {this.renderPlaceHolderSearching()}
+                </div>
             </div>
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderPlaceHolderSearching() {
+        if (this.searching) {
+            return <p class="searching ion-margin-top">
+                Searching <ion-spinner color="medium"></ion-spinner>
+            </p>;
         } else {
             return undefined;
         }

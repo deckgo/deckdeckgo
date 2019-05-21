@@ -14,18 +14,6 @@ app-code {
   ion-item {
     --border-width: 0;
     --inner-border-width: 0;
-
-    &.item-input {
-      --highlight-color-focused: transparent;
-
-      ion-input {
-        border-bottom: 1px solid rgba(0,0,0, 0.33);
-      }
-    }
-
-    ion-input[class*="sc-ion-input"] {
-      --placeholder-opacity: 0.33;
-    }
     
     &.select {
       ion-label:first-of-type {

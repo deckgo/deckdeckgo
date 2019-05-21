@@ -20,6 +20,11 @@ app-user-info {
         font-weight: 500;
         color: black;
         font-size: var(--font-size-normal);
+
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       ion-label:last-of-type {

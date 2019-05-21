@@ -55,7 +55,7 @@ export class AppEditor {
     private presenting: boolean = false;
 
     private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
-    private removeEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
+    private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
     private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
 
     private authService: AuthService;
@@ -78,7 +78,21 @@ export class AppEditor {
         this.busyService = BusyService.getInstance();
     }
 
-    async componentWillLoad() {
+    @Listen('window:ionRouteDidChange')
+    async onRouteDidChange($event: CustomEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        // ionViewDidEnter and ionViewDidLeave, kind of
+        if ($event.detail.to && $event.detail.to.indexOf('editor') > -1) {
+            await this.init();
+        } else if ($event.detail.from && $event.detail.from.indexOf('editor') > -1) {
+            await this.destroy();
+        }
+    }
+
+    async init() {
         await this.deckEventsHandler.init(this.el);
         await this.editorEventsHandler.init(this.el);
 
@@ -108,22 +122,26 @@ export class AppEditor {
         });
     }
 
+    async destroy() {
+        this.deckEventsHandler.destroy();
+        this.editorEventsHandler.destroy();
+        await this.remoteEventsHandler.destroy();
+
+        if (this.busySubscription) {
+            this.busySubscription.unsubscribe();
+        }
+    }
+
     async componentDidLoad() {
         await this.initSlideSize();
 
         await this.updateInlineEditorListener();
 
-        await this.removeEventsHandler.init(this.el);
+        await this.remoteEventsHandler.init(this.el);
     }
 
     async componentDidUnload() {
-        this.deckEventsHandler.destroy();
-        this.editorEventsHandler.destroy();
-        await this.removeEventsHandler.destroy();
-
-        if (this.busySubscription) {
-            this.busySubscription.unsubscribe();
-        }
+        await this.remoteEventsHandler.destroy();
     }
 
     private initSlideSize(): Promise<void> {

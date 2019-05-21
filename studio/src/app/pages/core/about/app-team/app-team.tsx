@@ -23,16 +23,20 @@ export class AppTeam {
                             <p text-center>David is a freelancer by day and the creator of DeckDeckGo by night. He's also the organiser of the Ionic Meetup Zürich and used to play in a band called VanRonMaiden, which was probably the coolest band ever but no one will ever know 🤣</p>
 
                             <div class="social-links">
-                                <a href="http://github.com/peterpeterparker">
-                                    <ion-icon name="logo-github" area-label="Github"></ion-icon>
-                                </a>
-
                                 <a href="https://twitter.com/daviddalbusco">
                                     <ion-icon name="logo-twitter" area-label="Twitter"></ion-icon>
                                 </a>
 
                                 <a href="https://medium.com/@david.dalbusco">
                                     <ion-icon src="./assets/img/medium-icon.svg" area-label="Medium"></ion-icon>
+                                </a>
+
+                                <a href="https://dev.to/daviddalbusco">
+                                    <ion-icon src="./assets/img/dev-icon.svg" area-label="Dev"></ion-icon>
+                                </a>
+
+                                <a href="http://github.com/peterpeterparker">
+                                    <ion-icon name="logo-github" area-label="Github"></ion-icon>
                                 </a>
                             </div>
                         </div>
@@ -45,16 +49,16 @@ export class AppTeam {
                             <p class="ion-text-center">Nicolas ... has a bio as soon as he'll send me a PR 😉</p>
 
                             <div class="social-links">
-                                <a href="https://github.com/nmattia">
-                                    <ion-icon name="logo-github" area-label="Github"></ion-icon>
-                                </a>
-
                                 <a href="https://twitter.com/nasmattia">
                                     <ion-icon name="logo-twitter" area-label="Twitter"></ion-icon>
                                 </a>
 
                                 <a href="https://nmattia.com">
                                     <ion-icon name="globe" area-label="Personal website"></ion-icon>
+                                </a>
+
+                                <a href="https://github.com/nmattia">
+                                    <ion-icon name="logo-github" area-label="Github"></ion-icon>
                                 </a>
                             </div>
                         </div>
