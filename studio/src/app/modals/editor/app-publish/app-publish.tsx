@@ -114,6 +114,26 @@ export class AppPublish {
         });
     }
 
+    private publish(): Promise<void> {
+        return new Promise<void>((resolve) => {
+           try {
+               this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                   if (!deck || !deck.id) {
+                       resolve();
+                       return;
+                   }
+
+                   await this.deckService.publish(deck);
+
+                   resolve();
+               });
+           } catch (err) {
+               this.errorService.error(err);
+               resolve();
+           }
+        });
+    }
+
     render() {
         return [
             <ion-header>
@@ -135,7 +155,7 @@ export class AppPublish {
                                description={this.description}></app-feed-card>
 
                 <div class="ion-padding ion-text-center">
-                    <ion-button shape="round" color="primary" disabled={this.disablePublish}>
+                    <ion-button shape="round" color="primary" disabled={this.disablePublish} onClick={() => {this.publish()}}>
                         <ion-label class="ion-text-uppercase">Publish now</ion-label>
                     </ion-button>
                 </div>
