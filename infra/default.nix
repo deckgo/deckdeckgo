@@ -8,8 +8,12 @@ rec
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${handlerStatic}/bin/handler" main_hs
         cp ${./google-public-keys.json} google-public-keys.json
+        mkdir dist
+        cp -r ${deckdeckgo-starter-dist}/* dist
         mkdir $out
-        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs google-public-keys.json
+        ${pkgs.zip}/bin/zip \
+          -r $out/function.zip \
+          main.js main_hs google-public-keys.json dist
       '';
 
   function-unsplash =
@@ -20,6 +24,19 @@ rec
         cp "${unsplashProxyStatic}/bin/unsplash-proxy" main_hs
         mkdir $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
+      '';
+
+  deckdeckgo-starter-dist =
+    with
+      { napalm = import pkgs.sources.napalm { inherit pkgs;} ; };
+    pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs-10_x ]; }
+      ''
+        cp -r ${napalm.buildPackage pkgs.sources.deckdeckgo-starter {}}/* .
+        chmod +w -R _napalm-install
+        cd _napalm-install
+        patchShebangs node_modules/webpack/bin/webpack.js
+        npm run build
+        mv dist $out
       '';
 
   handlerStatic = pkgs.haskellPackagesStatic.deckdeckgo-handler;
