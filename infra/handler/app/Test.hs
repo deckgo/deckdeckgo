@@ -374,6 +374,7 @@ slidesDelete' :: T.Text -> DeckId -> SlideId -> ClientM ()
   (
   decksGet' :<|>
   decksGetDeckId' :<|>
+  _ :<|>
   decksPost' :<|>
   decksPut' :<|>
   decksDelete'

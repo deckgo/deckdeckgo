@@ -219,6 +219,10 @@ type DecksAPI =
     Protected :>
       Capture "deck_id" DeckId :>
       Get '[JSON] (Item DeckId Deck) :<|>
+    Protected :>
+      Capture "deck_id" DeckId :>
+      "publish" :>
+      Post '[JSON] () :<|>
     Protected :> ReqBody '[JSON] Deck :> Post '[JSON] (Item DeckId Deck) :<|>
     Protected :>
       Capture "deck_id" DeckId :>
@@ -388,6 +392,7 @@ server env conn = serveUsers :<|> serveDecks :<|> serveSlides
     serveDecks =
       decksGet env :<|>
       decksGetDeckId env :<|>
+      decksPostPublish env :<|>
       decksPost env :<|>
       decksPut env :<|>
       decksDelete env
@@ -733,6 +738,11 @@ decksGetDeckId env fuid deckId = do
       Servant.throwError Servant.err404
 
     pure deck
+
+decksPostPublish :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
+decksPostPublish _ _ _ = do
+    liftIO $ putStrLn "Your PRESENTATION WAS PUBLISHED!!!!"
+    pure ()
 
 decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (Item DeckId Deck)
 decksPost env fuid deck = do
