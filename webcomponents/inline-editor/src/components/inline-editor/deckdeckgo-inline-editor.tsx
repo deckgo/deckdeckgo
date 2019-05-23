@@ -167,26 +167,28 @@ export class DeckdeckgoInlineEditor {
 
     this.anchorEvent = $event;
 
-    await this.displayImageActions();
+    await this.displayImageActions($event);
   };
 
-  private touchstart = async ($event: MouseEvent) => {
+  private touchstart = async ($event: TouchEvent) => {
     if (this.toolsActivated) {
       return;
     }
 
     this.anchorEvent = $event;
 
-    await this.displayImageActions();
+    await this.displayImageActions($event);
   };
 
-  private displayImageActions(): Promise<void> {
+  private displayImageActions($event: MouseEvent | TouchEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const isAnchorImg: boolean = await this.isAnchorImage();
       if (!isAnchorImg) {
         resolve();
         return;
       }
+
+      $event.stopImmediatePropagation();
 
       await this.reset(true);
 
