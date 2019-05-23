@@ -88,6 +88,10 @@ export class PhotoHelper {
             const img: HTMLElement = this.createImgElement(photo);
             selectedElement.appendChild(img);
 
+            // If no spacer is added, no cursor will be displayed if the content editable element is selected
+            const zeroWidthSpacer: Text = document.createTextNode('\u200B');
+            selectedElement.appendChild(zeroWidthSpacer);
+
             this.slideDidChange.emit(selectedElement.parentElement);
 
             resolve();
