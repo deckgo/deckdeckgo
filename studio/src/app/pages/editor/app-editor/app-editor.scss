@@ -26,10 +26,17 @@ app-editor {
         color: var(--ion-color-primary);
       }
     }
+
+    ion-buttons {
+      &.hidden {
+        visibility: hidden;
+      }
+    }
   }
 
   deckgo-inline-editor {
     --deckgo-inline-editor-button-mobile-color: var(--ion-color-dark);
+    --deckgo-inline-editor-sticky-zindex: 10;
 
     ion-icon[slot="link"] {
       padding-top: 12px;

@@ -88,6 +88,8 @@ export class DeckdeckgoInlineEditor {
   @State()
   private toolbarActions: ToolbarActions = ToolbarActions.SELECTION;
 
+  @Event() stickyToolbarActivated: EventEmitter<boolean>;
+
   private linkUrl: string;
 
   @Prop()
@@ -198,7 +200,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private activateToolbarImage(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       const target: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
 
       if (target.style.getPropertyValue(this.imgPropertyWidth) === '25%') {
@@ -218,7 +220,7 @@ export class DeckdeckgoInlineEditor {
       }
 
       this.toolbarActions = ToolbarActions.IMAGE;
-      this.toolsActivated = true;
+      await this.setToolsActivated(true);
 
       resolve();
     });
@@ -283,7 +285,8 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      this.toolsActivated = await this.activateToolbar(selection);
+      const activated: boolean = await this.activateToolbar(selection);
+      await this.setToolsActivated(activated);
 
       if (this.toolsActivated) {
         this.selection = selection;
@@ -524,7 +527,8 @@ export class DeckdeckgoInlineEditor {
       await this.clearTheSelection();
     }
 
-    this.toolsActivated = false;
+    await this.setToolsActivated(false);
+
     this.selection = null;
 
     this.toolbarActions = ToolbarActions.SELECTION;
@@ -756,6 +760,18 @@ export class DeckdeckgoInlineEditor {
     return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile && !DeckdeckgoInlineEditorUtils.isIOS());
   }
 
+  private setToolsActivated(activated: boolean): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.toolsActivated = activated;
+
+      if (this.isSticky()) {
+        this.stickyToolbarActivated.emit(this.toolsActivated);
+      }
+
+      resolve();
+    });
+  }
+
   // Color picker
 
   private colorPickerListener(bind: boolean): Promise<void> {
@@ -799,7 +815,7 @@ export class DeckdeckgoInlineEditor {
   };
 
   private openColorPicker(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
 
       if (!colorPicker) {
@@ -809,7 +825,7 @@ export class DeckdeckgoInlineEditor {
 
       colorPicker.click();
 
-      this.toolsActivated = false;
+      await this.setToolsActivated(false);
 
       resolve();
     });

@@ -33,6 +33,7 @@ export namespace Components {
     'imgPropertyWidth'?: string;
     'mobile'?: boolean;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onStickyToolbarActivated'?: (event: CustomEvent<boolean>) => void;
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;
   }

@@ -174,6 +174,11 @@ export class AppComponentsInlineEditor {
 <td>The bottom attribute of the sticky toolbar</td>
 </tr>
 <tr>
+<td>--deckgo-inline-editor-sticky-zindex</td>
+<td></td>
+<td>The z-Index of the sticky toolbar</td>
+</tr>
+<tr>
 <td>--deckgo-inline-editor-separator-background</td>
 <td>rgba(255, 255, 255, .2)</td>
 <td>The color of the separator</td>
@@ -294,6 +299,11 @@ export class AppComponentsInlineEditor {
 <td><code>imgDidChange</code></td>
 <td>Triggered when an image is manipulated. Note: the event won&#39;t provide directly the image but rather its container element.</td>
 <td><code>CustomEvent&lt;HTMLElement&gt;</code></td>
+</tr>
+<tr>
+<td><code>stickyToolbarActivated</code></td>
+<td>Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it.</td>
+<td><code>CustomEvent&lt;boolean&gt;</code></td>
 </tr>
 </tbody></table>
 <h3 id="app-components-inline-editor-examples">Examples</h3>

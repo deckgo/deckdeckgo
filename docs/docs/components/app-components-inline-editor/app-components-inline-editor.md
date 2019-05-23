@@ -85,6 +85,7 @@ The `<deckgo-inline-editor/>` could be styled using the following CSS4 variables
 | --deckgo-inline-editor-zindex | 1 | The z-Index of the toolbar |
 | --deckgo-inline-editor-transform | | The transform property of the toolbar, useful for example if your viewport contains a split menu pane |
 | --deckgo-inline-editor-sticky-bottom | 0 | The bottom attribute of the sticky toolbar |
+| --deckgo-inline-editor-sticky-zindex | | The z-Index of the sticky toolbar |
 | --deckgo-inline-editor-separator-background | rgba(255, 255, 255, .2) | The color of the separator |
 | --deckgo-inline-editor-button-color | #3880ff | The buttons color |
 | --deckgo-inline-editor-button-font-size | 1.4rem | The buttons font size |
@@ -119,6 +120,7 @@ The event `input` will be automatically triggered when the content will be modif
 | Event          | Description | Type                       |
 | -------------- | ----------- | -------------------------- |
 | `imgDidChange` | Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element. | `CustomEvent<HTMLElement>` |
+| `stickyToolbarActivated` | Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it. | `CustomEvent<boolean>` | 
 
 ### Examples
 

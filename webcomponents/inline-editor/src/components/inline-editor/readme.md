@@ -21,9 +21,10 @@
 
 ## Events
 
-| Event          | Description | Type                       |
-| -------------- | ----------- | -------------------------- |
-| `imgDidChange` |             | `CustomEvent<HTMLElement>` |
+| Event                    | Description | Type                       |
+| ------------------------ | ----------- | -------------------------- |
+| `imgDidChange`           |             | `CustomEvent<HTMLElement>` |
+| `stickyToolbarActivated` |             | `CustomEvent<boolean>`     |
 
 
 ----------------------------------------------
