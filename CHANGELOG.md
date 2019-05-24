@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.40-2"></a>
+# [1.0.0-beta.40-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.40-1...v1.0.0-beta.40-2) (2019-05-24)
+
+### Fix
+
+* lazy-img: v1.0.0-alpha.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
+
 <a name="1.0.0-beta.40-1"></a>
 # [1.0.0-beta.40-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.40...v1.0.0-beta.40-1) (2019-05-24)
 
