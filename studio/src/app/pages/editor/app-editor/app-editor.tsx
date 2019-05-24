@@ -425,7 +425,8 @@ export class AppEditor {
             component: 'app-publish',
             componentProps: {
                 description: content
-            }
+            },
+            cssClass: 'fullscreen'
         });
 
         modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
