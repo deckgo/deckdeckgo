@@ -16,8 +16,8 @@
   "dependencies": {
     "@deckdeckgo/charts": "^1.0.0-alpha.6",
     "@deckdeckgo/core": "^1.0.0-beta.34",
+    "@deckdeckgo/highlight-code": "^1.0.0-alpha.15",
     "@ionic/core": "4.2.0",
-    "deckdeckgo-highlight-code": "^1.0.0-alpha.11",
     "deckdeckgo-inline-editor": "^1.0.0-alpha.6",
     "deckdeckgo-qrcode": "^1.0.0-alpha.6",
     "rxjs": "^6.4.0"
