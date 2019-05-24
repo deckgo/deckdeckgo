@@ -44,7 +44,7 @@ export class AppSlideContent {
 </ul>
 <h2 id="app-slide-split-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-split>
         <h1 slot="title">Two columns subject</h1>
         <p slot="start">

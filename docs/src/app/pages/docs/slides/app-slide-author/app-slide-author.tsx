@@ -48,7 +48,7 @@ export class AppSlideAuthor {
 </ul>
 <h2 id="app-slide-author-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>
         <div slot="author">slot="author"</div>

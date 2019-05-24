@@ -52,7 +52,7 @@ export class AppSlideCode {
 </ul>
 <h2 id="app-slide-code-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
           <h1 slot="title">slot="title"</h1>
         </deckgo-slide-code>

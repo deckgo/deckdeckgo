@@ -50,7 +50,7 @@ export class AppSlideQRCode {
 </ul>
 <h2 id="app-slide-qrcode-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-qrcode content="https://deckdeckgo.com">
         <h1 slot="title">slot="title"</h1>
         <p slot="content">slot="content"</p>
