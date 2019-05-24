@@ -1,5 +1,9 @@
 app-publish {
   main {
     background: white;
+
+    strong {
+      color: var(--ion-color-tertiary);
+    }
   }
 }

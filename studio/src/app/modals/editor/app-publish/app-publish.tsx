@@ -137,7 +137,7 @@ export class AppPublish {
     render() {
         return [
             <ion-header>
-                <ion-toolbar color="primary">
+                <ion-toolbar color="tertiary">
                     <ion-buttons slot="start">
                         <ion-button onClick={() => this.closeModal()}>
                             <ion-icon name="close"></ion-icon>
@@ -147,15 +147,21 @@ export class AppPublish {
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding fullscreen-padding">
-                <main padding><p>Edit the title and summary of your presentation and add or change tags (up to 5) to make your
-                    presentation more inviting to readers</p>
+                <main padding>
+                    <h1>Publish</h1>
+
+                    <p>Publish your presentation to <strong>share</strong> it with the world, your colleagues, friends and community.</p>
+
+                    <p>DeckDeckGo will distribute online your deck as a modern <strong>app</strong>.</p>
+
+                    <p>Edit its title and summary and add or change tags (up to 5) to make your presentation more inviting to readers</p>
 
                     <app-feed-card compact={false} miniature={false} editable={true} author={this.author}
                                    publication={this.today} caption={this.caption}
                                    description={this.description}></app-feed-card>
 
                     <div class="ion-padding ion-text-center">
-                        <ion-button shape="round" color="primary" disabled={this.disablePublish} onClick={() => {this.publish()}}>
+                        <ion-button shape="round" color="tertiary" disabled={this.disablePublish} onClick={() => {this.publish()}}>
                             <ion-label class="ion-text-uppercase">Publish now</ion-label>
                         </ion-button>
                     </div>
