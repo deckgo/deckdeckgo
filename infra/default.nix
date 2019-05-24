@@ -39,7 +39,7 @@ rec
         mv dist $out
       '';
 
-  devshell =
+  devshell = if ! pkgs.lib.inNixShell then null else
     with
       { pkg = pkgs.haskellPackages.developPackage { root = ./handler; } ; };
     pkg.overrideAttrs(attr: {
