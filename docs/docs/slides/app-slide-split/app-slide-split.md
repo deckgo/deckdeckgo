@@ -82,10 +82,10 @@ The following theming options will affect this component if set on its host or p
 | --slide-split-color-start | | Left split pane color |
 | --slide-split-background-end | | Right split pane background |
 | --slide-split-color-end | | Right split pane color |
-| --slide-split-padding-top | 16px | Padding top of a slide split pane |
-| --slide-split-padding-end | 32px | Padding right of a slide split pane |
-| --slide-split-padding-bottom | 16px | Padding bottom of a slide split pane |
-| --slide-split-padding-start | 32px | Padding left of a slide split pane |
+| --slide-split-padding-top | 0 | Padding top of a slide split pane |
+| --slide-split-padding-end | 64px | Padding right of a slide split pane |
+| --slide-split-padding-bottom | 0 | Padding bottom of a slide split pane |
+| --slide-split-padding-start | 64px | Padding left of a slide split pane |
 | --slide-split-title-padding-top | 16px | Padding top of the title of the |
 | --slide-split-title-padding-end | 32px | Padding right of the title of the |
 | --slide-split-title-padding-bottom | 16px | Padding bottom of the title of the |

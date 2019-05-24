@@ -146,22 +146,22 @@ export class AppSlideContent {
 </tr>
 <tr>
 <td>--slide-split-padding-top</td>
-<td>16px</td>
+<td>0</td>
 <td>Padding top of a slide split pane</td>
 </tr>
 <tr>
 <td>--slide-split-padding-end</td>
-<td>32px</td>
+<td>64px</td>
 <td>Padding right of a slide split pane</td>
 </tr>
 <tr>
 <td>--slide-split-padding-bottom</td>
-<td>16px</td>
+<td>0</td>
 <td>Padding bottom of a slide split pane</td>
 </tr>
 <tr>
 <td>--slide-split-padding-start</td>
-<td>32px</td>
+<td>64px</td>
 <td>Padding left of a slide split pane</td>
 </tr>
 <tr>
