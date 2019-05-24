@@ -16,8 +16,8 @@
   "dependencies": {
     "@deckdeckgo/core": "^1.0.0-beta.34",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.15",
+    "@deckdeckgo/inline-editor": "^1.0.0-alpha.7",
     "@ionic/core": "4.1.1",
-    "deckdeckgo-inline-editor": "^1.0.0-alpha.6",
     "deckdeckgo-lazy-img": "file:../webcomponents/lazy-img",
     "deckdeckgo-qrcode": "^1.0.0-alpha.6",
     "deckdeckgo-remote": "^1.0.0-alpha.8",
