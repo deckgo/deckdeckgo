@@ -57,11 +57,11 @@ The slide "QR Code" relies on the code component `<deckgo-qrcode/>` which is des
 
 ## Installation
 
-The [DeckDeckGo] - QR Code component is provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] QR code to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-qrcode) as described in its [installation guide](https://github.com/deckgo/deckdeckgo-qrcode#getting-started).
+The [DeckDeckGo] - QR Code component is provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] QR code to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) as described in its [installation guide](https://docs.deckdeckgo.com/components/qrcode#app-components-qrcode-getting-started).
 
 ## Attributes
 
-The attribute `content` should be provided in order to render a QR code in this template. It offers the same attributes as the [DeckDeckGo] QR code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-qrcode) for the details, and the following other attributes:
+The attribute `content` should be provided in order to render a QR code in this template. It offers the same attributes as the [DeckDeckGo] QR code Web Component, see its [documentation](https://docs.deckdeckgo.com/components/qrcode) for the details, and the following other attributes:
                                                                                                                                                                                                                                                         
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |-----------------|-----------------|-----------------|
@@ -94,6 +94,6 @@ The following theming options will affect this component if set on its host or p
 | --slide-qrcode-background | | QR code column's background |
 | --slide-qrcode-title-display | inherit | If you wish to hide the slot="title" |
 
-Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - QR code Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-qrcode) for the details.
+Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - QR code Web Component, see its [documentation](https://docs.deckdeckgo.com/components/qrcode) for the details.
 
 [DeckDeckGo]: https://deckdeckgo.com

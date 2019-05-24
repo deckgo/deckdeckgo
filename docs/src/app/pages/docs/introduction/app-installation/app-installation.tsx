@@ -32,7 +32,7 @@ export class AppInstallation {
         <main><h1 id="app-installation-installation">Installation</h1>
 <p>To create easily your PWA presentation and to enjoy all the options, I suggest you to create your slides using the CLI and the starter kit as described in the <a href="/docs/introduction">previous chapter</a>.</p>
 <p>However, the <a href="https://deckdeckgo.com">DeckDeckGo</a> core component, could be installed in any project too.</p>
-<p>If you wish to do so, use it directly in your project from a CDN, using a simple script include, or install it from <a href="https://www.npmjs.com/package/deckdeckgo">npm</a>.</p>
+<p>If you wish to do so, use it directly in your project from a CDN, using a simple script include, or install it from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a>.</p>
 <h2 id="app-installation-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-installation-using-deckdeckgo-from-a-cdn">Using DeckDeckGo from a CDN</a></li>
@@ -44,7 +44,7 @@ export class AppInstallation {
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;script src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;core@latest&#47;dist&#47;deckdeckgo.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h2 id="app-installation-install-deckdeckgo-from-npm">Install DeckDeckGo from NPM</h2>
-<p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> in your project from <a href="https://www.npmjs.com/package/deckdeckgo">npm</a> using the following command:</p>
+<p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">
       <code slot="code">npm install @deckdeckgo&#47;core</code>
     </deckgo-highlight-code><h2 id="app-installation-framework-integration">Framework integration</h2>

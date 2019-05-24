@@ -46,11 +46,11 @@ To create and draw the charts, this project is using [D3js](https://d3js.org).
 
 ## Showcase
 
-The following examples are the one provided in the [src/index.html](https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html) of this component. If you would like to run them locally, proceed as follow:
+The following examples are the one provided in the [src/index.html](https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html) of this component. If you would like to run them locally, proceed as follow:
 
 ```
-git clone https://github.com/deckgo/deckdeckgo-charts
-cd deckdeckgo-charts
+git clone https://github.com/deckgo/deckdeckgo
+cd webcomponents/charts
 npm install
 npm run start
 ```
@@ -106,7 +106,7 @@ To create easily your PWA presentation and to enjoy all the options, I suggest y
 
 Doing so you will use the [DeckDeckGo] starter kit which already includes this Web Component.
 
-However, if you are looking to use this Web Component as a standalone component, to add a charts to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/deckdeckgo-charts).
+However, if you are looking to use this Web Component as a standalone component, to add a charts to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/@deckdeckgo/charts).
 
 ### Using DeckDeckGo charts from a CDN
 
@@ -117,7 +117,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] char
 ```
 ### Install DeckDeckGo charts from NPM
 
-Install [DeckDeckGo] charts in your project from [npm](https://www.npmjs.com/package/deckdeckgo-charts) using the following command:
+Install [DeckDeckGo] charts in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/charts) using the following command:
 
 ```bash
 npm install deckdeckgo-charts
@@ -195,7 +195,7 @@ draw() => Promise<void>
 
 #### Examples
 
-You could find other examples of pie charts in the [src/index.html](https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html) of the project.
+You could find other examples of pie charts in the [src/index.html](https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html) of the project.
 
 ```
 <deckgo-pie-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"></deckgo-pie-chart>
@@ -302,7 +302,7 @@ draw() => Promise<void>
 
 #### Examples
 
-You could find other examples of line charts in the [src/index.html](https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html) of the project.
+You could find other examples of line charts in the [src/index.html](https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html) of the project.
 
 ```
 <deckgo-line-chart width={500} height={400} date-pattern="dd.MM.yyyy" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv"></deckgo-line-chart>
@@ -372,7 +372,7 @@ draw() => Promise<void>
 
 #### Examples
 
-You could find other examples of bar charts in the [src/index.html](https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html) of the project.
+You could find other examples of bar charts in the [src/index.html](https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html) of the project.
 
 ```
 <deckgo-bar-chart width={500} 

@@ -4,7 +4,7 @@ To create easily your PWA presentation and to enjoy all the options, I suggest y
 
 However, the [DeckDeckGo] core component, could be installed in any project too.
 
-If you wish to do so, use it directly in your project from a CDN, using a simple script include, or install it from [npm](https://www.npmjs.com/package/deckdeckgo).
+If you wish to do so, use it directly in your project from a CDN, using a simple script include, or install it from [npm](https://www.npmjs.com/package/@deckdeckgo/core).
 
 ## Table of contents
 
@@ -22,7 +22,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] from
 
 ## Install DeckDeckGo from NPM
 
-Install [DeckDeckGo] in your project from [npm](https://www.npmjs.com/package/deckdeckgo) using the following command:
+Install [DeckDeckGo] in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) using the following command:
 
 ```bash
 npm install @deckdeckgo/core
