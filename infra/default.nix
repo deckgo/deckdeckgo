@@ -39,6 +39,84 @@ rec
         mv dist $out
       '';
 
+  devshell =
+    with
+      { pkg = pkgs.haskellPackages.developPackage { root = ./handler; } ; };
+    pkg.overrideAttrs(attr: {
+      buildInputs = with pkgs; [ niv terraform awscli postgresql moreutils ];
+      shellHook =
+      let
+        pgutil = pkgs.callPackage ./pgutil.nix {};
+      in
+        ''
+         function load_pg() {
+          export PGHOST=localhost
+          export PGPORT=5432
+          export PGDATABASE=test_db
+          export PGUSER=test_user
+          export PGPASSWORD=test_pass
+         }
+
+         function start_services() {
+           load_pg
+           ${pgutil.start_pg} || echo "PG start failed"
+           if [ ! -f .dynamodb.pid ]; then
+            echo "Starting dynamodb"
+            java \
+              -Djava.library.path=${dynamoJar}/DynamoDBLocal_lib \
+              -jar ${dynamoJar}/DynamoDBLocal.jar \
+              -sharedDb -port 8123 &
+            echo $! > .dynamodb.pid
+           else
+            echo "Looks like dynamo is already running"
+           fi
+           if [ ! -f .sqs.pid ]; then
+            echo "Starting SQS"
+            java \
+              -jar ${pkgs.sources.elasticmq} &
+            echo $! > .sqs.pid
+           else
+            echo "Looks like SQS is already running"
+           fi
+           export GOOGLE_PUBLIC_KEYS="${pkgs.writeText "google-x509" (builtins.toJSON googleResp)}"
+           export FIREBASE_PROJECT_ID="my-project-id"
+           export TEST_TOKEN_PATH=${./token}
+         }
+
+         function stop_services() {
+           ${pgutil.stop_pg}
+           if [ -f .dynamodb.pid ]; then
+            echo "Killing dynamodb"
+            kill $(cat .dynamodb.pid)
+            rm .dynamodb.pid
+           else
+            echo "Looks like dynamodb is not running"
+           fi
+           if [ -f .sqs.pid ]; then
+            echo "Killing SQS"
+            kill $(cat .sqs.pid)
+            rm .sqs.pid
+           else
+            echo "Looks like SQS is not running"
+           fi
+           rm -rf .pgdata
+         }
+
+         function repl_handler() {
+            ghci -Wall handler/app/Test.hs handler/src/DeckGo/Handler.hs
+         }
+
+         function repl_unsplash() {
+            ghci -Wall unsplash-proxy/Main.hs
+         }
+
+         function repl() {
+            repl_handler
+         }
+
+        '';
+     });
+
   handlerStatic = pkgs.haskellPackagesStatic.deckdeckgo-handler;
   handler = pkgs.haskellPackages.deckdeckgo-handler;
 
@@ -68,8 +146,6 @@ rec
         text = builtins.toJSON googleResp;
       };
 
-  # TODO: don't use latest dynamodb (but pin version)
-
   test = let
     pgutil = pkgs.callPackage ./pgutil.nix {};
     script = pkgs.writeScript "run-tests"
@@ -81,34 +157,24 @@ rec
       java \
         -Djava.library.path=${dynamoJar}/DynamoDBLocal_lib \
         -jar ${dynamoJar}/DynamoDBLocal.jar \
-        -sharedDb -port 8000 &
+        -sharedDb -port 8123 &
 
-      while ! nc -z 127.0.0.1 8000; do
+      java \
+        -jar ${pkgs.sources.elasticmq} &
+
+      while ! nc -z 127.0.0.1 8123; do
         echo waiting for DynamoDB
+        sleep 1
+      done
+
+      while ! nc -z 127.0.0.1 9324; do
+        echo waiting for SQS
         sleep 1
       done
 
       export AWS_DEFAULT_REGION=us-east-1
       export AWS_ACCESS_KEY_ID=dummy
       export AWS_SECRET_ACCESS_KEY=dummy
-
-      aws dynamodb create-table \
-        --table-name Users \
-        --attribute-definitions \
-            AttributeName=UserFirebaseId,AttributeType=S \
-        --key-schema AttributeName=UserFirebaseId,KeyType=HASH \
-        --endpoint-url http://127.0.0.1:8000 \
-        --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-        > /dev/null
-
-      aws dynamodb create-table \
-        --table-name Decks \
-        --attribute-definitions \
-            AttributeName=DeckId,AttributeType=S \
-        --key-schema AttributeName=DeckId,KeyType=HASH \
-        --endpoint-url http://127.0.0.1:8000 \
-        --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-        > /dev/null
 
       export PGHOST=localhost
       export PGPORT=5432

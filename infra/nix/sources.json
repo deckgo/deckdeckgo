@@ -44,6 +44,12 @@
         "type": "file",
         "sha256": "0hrwxg4igyll40y7l1s0icg55g247fl8cjs4rrcpjf8d7m0bb09j"
     },
+    "elasticmq": {
+        "url": "https://s3-eu-west-1.amazonaws.com/softwaremill-public/elasticmq-server-0.14.6.jar",
+        "url_template": "https://s3-eu-west-1.amazonaws.com/softwaremill-public/elasticmq-server-0.14.6.jar",
+        "type": "file",
+        "sha256": "1cp2pmkc6gx7gr6109jlcphlky5rr6s1wj528r6hyhzdc01sjhhz"
+    },
     "napalm": {
         "homepage": "",
         "url": "https://github.com/nmattia/napalm/archive/bd7f348a478bd79c30b898cc800d47a1cd4541b5.tar.gz",

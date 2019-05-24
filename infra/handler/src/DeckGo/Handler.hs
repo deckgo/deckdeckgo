@@ -61,12 +61,13 @@ import qualified Hasql.Encoders as HE
 import qualified Hasql.Session as HS
 import qualified Network.AWS as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
+import qualified Network.AWS.SQS as SQS
 import qualified Network.Wai as Wai
 import qualified Servant as Servant
 import qualified Servant.Auth.Firebase as Firebase
 import qualified System.Random as Random
 
-data ServerContext = ServerContext { firebaseProjectId :: Firebase.ProjectId }
+newtype BucketName = BucketName { unBucketName :: T.Text }
 
 ------------------------------------------------------------------------------
 -- API
@@ -373,7 +374,11 @@ api = Proxy
 -- SERVER
 ------------------------------------------------------------------------------
 
-application :: Firebase.FirebaseLoginSettings -> Aws.Env -> HC.Connection -> Wai.Application
+application
+  :: Firebase.FirebaseLoginSettings
+  -> Aws.Env
+  -> HC.Connection
+  -> Wai.Application
 application settings env conn =
     Servant.serveWithContext
       api
@@ -740,9 +745,26 @@ decksGetDeckId env fuid deckId = do
     pure deck
 
 decksPostPublish :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
-decksPostPublish _ _ _ = do
+decksPostPublish env _ _ = do
     liftIO $ putStrLn "Your PRESENTATION WAS PUBLISHED!!!!"
-    pure ()
+
+    -- TODO: change queue name
+    queueUrl <- runAWS env (Aws.send $ SQS.getQueueURL "queue1") >>= \case
+      Right e -> pure $ e ^. SQS.gqursQueueURL
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
+
+    liftIO $ print queueUrl
+
+    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl "foo_message"
+
+    case res of
+      Right r -> do
+        liftIO $ print r
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
 
 decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (Item DeckId Deck)
 decksPost env fuid deck = do

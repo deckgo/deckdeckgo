@@ -20,6 +20,7 @@ resource "aws_lambda_function" "api" {
       PGPASSWORD = "${aws_db_instance.default.password}"
       GOOGLE_PUBLIC_KEYS = "google-public-keys.json"
       FIREBASE_PROJECT_ID = "deckdeckgo-studio-beta"
+      PRESENTATION_BUCKET = "${aws_s3_bucket.deckdeckgo_presentations.bucket}"
     }
   }
 }
