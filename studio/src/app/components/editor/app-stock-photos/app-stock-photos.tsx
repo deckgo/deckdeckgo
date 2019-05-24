@@ -33,8 +33,8 @@ export class AppStockPhotos {
                     if (photo.urls && photo.urls.thumb) {
                         return <div class="photo ion-padding" custom-tappable onClick={() => this.selectPhoto.emit(photo)}>
                             <div class="photo-container">
-                                <img src={photo.urls.thumb}
-                                     alt={photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.thumb)}></img>
+                                <deckgo-lazy-img imgSrc={photo.urls.thumb}
+                                     imgAlt={photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.thumb)}></deckgo-lazy-img>
                                 {this.renderPhotoCredits(photo)}
                             </div>
                         </div>

@@ -44,7 +44,7 @@ export class AppSlideContent {
 </ul>
 <h2 id="app-slide-split-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-split>
         <h1 slot="title">Two columns subject</h1>
         <p slot="start">
@@ -146,22 +146,22 @@ export class AppSlideContent {
 </tr>
 <tr>
 <td>--slide-split-padding-top</td>
-<td>16px</td>
+<td>0</td>
 <td>Padding top of a slide split pane</td>
 </tr>
 <tr>
 <td>--slide-split-padding-end</td>
-<td>32px</td>
+<td>64px</td>
 <td>Padding right of a slide split pane</td>
 </tr>
 <tr>
 <td>--slide-split-padding-bottom</td>
-<td>16px</td>
+<td>0</td>
 <td>Padding bottom of a slide split pane</td>
 </tr>
 <tr>
 <td>--slide-split-padding-start</td>
-<td>32px</td>
+<td>64px</td>
 <td>Padding left of a slide split pane</td>
 </tr>
 <tr>

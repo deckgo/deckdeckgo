@@ -35,7 +35,7 @@ To create easily your PWA presentation and to enjoy all the options, I suggest y
 
 Doing so you will use the [DeckDeckGo] starter kit which already includes this Web Component.
 
-However, if you are looking to use this Web Component as a standalone component, to add a code highlighter feature to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/deckdeckgo-highlight-code).
+However, if you are looking to use this Web Component as a standalone component, to add a code highlighter feature to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/@deckdeckgo/highlight-code).
 
 ### Using DeckDeckGo Highlight Code from a CDN
 
@@ -46,7 +46,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] Code
 ```
 ### Install DeckDeckGo Highlight Code from NPM
 
-Install [DeckDeckGo] - Highlight Code in your project from [npm](https://www.npmjs.com/package/deckdeckgo-highlight-code) using the following command:
+Install [DeckDeckGo] - Highlight Code in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/highlight-code) using the following command:
 
 ```bash
 npm install deckdeckgo-highlight-code
@@ -141,7 +141,7 @@ codeDidChange(HTMLElement);
 
 ### Examples
 
-You could find the examples in the [src/index.html](https://github.com/deckgo/deckdeckgo-qrcode/blob/master/src/index.html) of the project.
+You could find the examples in the [src/index.html](https://github.com/deckgo/deckdeckgo/webcomponents/qrcode/blob/master/src/index.html) of the project.
 
 ```
 <deckgo-highlight-code src="https://domain.com/yourfile.js">

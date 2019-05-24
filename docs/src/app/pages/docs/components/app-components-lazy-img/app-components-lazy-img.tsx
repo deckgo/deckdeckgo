@@ -107,9 +107,19 @@ export class AppComponentsLazyImg {
 </tr>
 </thead>
 <tbody><tr>
+<td>--deckgo-lazy-img-max-height</td>
+<td></td>
+<td>Image max height</td>
+</tr>
+<tr>
 <td>--deckgo-lazy-img-max-width</td>
 <td>100%</td>
 <td>Image max width</td>
+</tr>
+<tr>
+<td>--deckgo-lazy-img-min-height</td>
+<td></td>
+<td>Image min height</td>
 </tr>
 <tr>
 <td>--deckgo-lazy-img-min-width</td>
@@ -140,6 +150,11 @@ export class AppComponentsLazyImg {
 <td>--deckgo-lazy-img-padding</td>
 <td></td>
 <td>Image padding</td>
+</tr>
+<tr>
+<td>--deckgo-lazy-img-vertical-align</td>
+<td></td>
+<td>Image vertical alignment</td>
 </tr>
 </tbody></table>
 <h3 id="app-components-lazy-img-methods">Methods</h3>

@@ -90,9 +90,9 @@ export class AppComponentsCharts {
 </li>
 </ul>
 <h2 id="app-components-charts-showcase">Showcase</h2>
-<p>The following examples are the one provided in the <a href="https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html">src/index.html</a> of this component. If you would like to run them locally, proceed as follow:</p>
+<p>The following examples are the one provided in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html">src/index.html</a> of this component. If you would like to run them locally, proceed as follow:</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">git clone https:&#47;&#47;github.com&#47;deckgo&#47;deckdeckgo-charts{'\n'}cd deckdeckgo-charts{'\n'}npm install{'\n'}npm run start</code>
+      <code slot="code">git clone https:&#47;&#47;github.com&#47;deckgo&#47;deckdeckgo{'\n'}cd webcomponents&#47;charts{'\n'}npm install{'\n'}npm run start</code>
     </deckgo-highlight-code><h3 id="app-components-charts-pie">Pie</h3>
 <p><deckgo-pie-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"></deckgo-pie-chart></p>
 <h3 id="app-components-charts-donut">Donut</h3>
@@ -129,13 +129,13 @@ export class AppComponentsCharts {
 <h2 id="app-components-charts-getting-started">Getting started</h2>
 <p>To create easily your PWA presentation and to enjoy all the options, I suggest you to create your slides using the CLI as described in the <a href="/docs/introduction">Getting started chapter</a>.</p>
 <p>Doing so you will use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit which already includes this Web Component.</p>
-<p>However, if you are looking to use this Web Component as a standalone component, to add a charts to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/deckdeckgo-charts">npm</a>.</p>
+<p>However, if you are looking to use this Web Component as a standalone component, to add a charts to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/@deckdeckgo/charts">npm</a>.</p>
 <h3 id="app-components-charts-using-deckdeckgo-charts-from-a-cdn">Using DeckDeckGo charts from a CDN</h3>
 <p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;script src=&quot;https:&#47;&#47;unpkg.com&#47;deckdeckgo-charts@latest&#47;dist&#47;deckdeckgo-charts.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-charts-install-deckdeckgo-charts-from-npm">Install DeckDeckGo charts from NPM</h3>
-<p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> charts in your project from <a href="https://www.npmjs.com/package/deckdeckgo-charts">npm</a> using the following command:</p>
+<p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> charts in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/charts">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">
       <code slot="code">npm install deckdeckgo-charts</code>
     </deckgo-highlight-code><h3 id="app-components-charts-framework-integration">Framework integration</h3>
@@ -247,7 +247,7 @@ export class AppComponentsCharts {
 <deckgo-highlight-code language="javascript">
       <code slot="code">draw() =&gt; Promise&lt;void&gt;</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples">Examples</h4>
-<p>You could find other examples of pie charts in the <a href="https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
+<p>You could find other examples of pie charts in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-pie-chart width=&#123;500&#125; height=&#123;400&#125; src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;&gt;&lt;&#47;deckgo-pie-chart&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-charts-line-usage">Line usage</h3>
@@ -478,7 +478,7 @@ export class AppComponentsCharts {
 <deckgo-highlight-code language="javascript">
       <code slot="code">draw() =&gt; Promise&lt;void&gt;</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples-1">Examples</h4>
-<p>You could find other examples of line charts in the <a href="https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
+<p>You could find other examples of line charts in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-line-chart width=&#123;500&#125; height=&#123;400&#125; date-pattern=&quot;dd.MM.yyyy&quot; src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-line-chart.csv&quot;&gt;&lt;&#47;deckgo-line-chart&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-charts-bar-usage">Bar usage</h3>
@@ -628,7 +628,7 @@ export class AppComponentsCharts {
 <deckgo-highlight-code language="javascript">
       <code slot="code">draw() =&gt; Promise&lt;void&gt;</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples-2">Examples</h4>
-<p>You could find other examples of bar charts in the <a href="https://github.com/deckgo/deckdeckgo-charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
+<p>You could find other examples of bar charts in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-bar-chart width=&#123;500&#125; {'\n'}                  height=&#123;400&#125;{'\n'}                   src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;{'\n'}                   style=&quot;--deckgo-chart-fill-color-bar1: #3880ff;&quot;&gt;{'\n'}&lt;&#47;deckgo-bar-chart&gt;</code>
     </deckgo-highlight-code></main>

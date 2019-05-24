@@ -28,7 +28,7 @@ In the previous example, the presentation contains two slides. The first slide u
 * Slide: [Title](/slides/title)
 
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-title>
         <h1 slot="title">slot="title"</h1>
         <p slot="content">
@@ -41,7 +41,7 @@ In the previous example, the presentation contains two slides. The first slide u
 * Slide: [Content](/slides/content)
 
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-content>
       <h1 slot="title">slot="title"</h1>
       <p slot="content">
@@ -54,7 +54,7 @@ In the previous example, the presentation contains two slides. The first slide u
 * Slide: [Split](/slides/split)
 
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-split>
       <h1 slot="title">slot="title"</h1>
       <p slot="start">
@@ -70,7 +70,7 @@ In the previous example, the presentation contains two slides. The first slide u
 * Slide: [Gif](/slides/gif)
 
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen={true}>
       <h1 slot="title">slot="title"</h1>
       <h1 slot="header" style={{fontSize: 'var(--font-size-h1)'}}>slot="header"</h1>
@@ -102,7 +102,7 @@ In the previous example, the presentation contains two slides. The first slide u
 * Slide: [Youtube](/slides/youtube)
 
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-youtube>
@@ -112,7 +112,7 @@ In the previous example, the presentation contains two slides. The first slide u
 * Slide: [Code](/slides/code)
 
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-code>
@@ -123,7 +123,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>
         <div slot="author">slot="author"</div>
@@ -136,7 +136,7 @@ In the previous example, the presentation contains two slides. The first slide u
 * Slide: [QR Code](/slides/qrcode)
 
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-qrcode content="https://deckdeckgo.com">
         <h1 slot="title">slot="title"</h1>
         <p slot="content">slot="content"</p>

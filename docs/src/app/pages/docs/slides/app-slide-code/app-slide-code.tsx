@@ -52,7 +52,7 @@ export class AppSlideCode {
 </ul>
 <h2 id="app-slide-code-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
           <h1 slot="title">slot="title"</h1>
         </deckgo-slide-code>
@@ -77,9 +77,9 @@ export class AppSlideCode {
 <h2 id="app-slide-code-code-components">Code components</h2>
 <p>The slide &quot;Code&quot; relies on the code component <code>&lt;deckgo-highlight-code/&gt;</code> which is described in the components <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.</p>
 <h2 id="app-slide-code-installation">Installation</h2>
-<p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> - Hightlight code component is provided in separate extra library. If you don&#39;t use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to add the <a href="https://deckdeckgo.com">DeckDeckGo</a> code to your project, you will need to install and integrate it from a CDN or <a href="https://www.npmjs.com/package/deckdeckgo-highlight-code">npm</a> as described in its <a href="https://github.com/deckgo/deckdeckgo-highlight-code#getting-started">installation guide</a>.</p>
+<p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> - Hightlight code component is provided in separate extra library. If you don&#39;t use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to add the <a href="https://deckdeckgo.com">DeckDeckGo</a> code to your project, you will need to install and integrate it from a CDN or <a href="https://www.npmjs.com/package/@deckdeckgo/highlight-code">npm</a> as described in its <a href="https://docs.deckdeckgo.com/components/code#app-components-highlight-code-getting-started">installation guide</a>.</p>
 <h2 id="app-slide-code-attributes">Attributes</h2>
-<p>At least <code>src</code> or the <code>slot</code> code should be provided in order to render code in this template. It offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> code Web Component, see its <a href="https://github.com/deckgo/deckdeckgo-highlight-code">documentation</a> for the details and the following other attributes:</p>
+<p>At least <code>src</code> or the <code>slot</code> code should be provided in order to render code in this template. It offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> code Web Component, see its <a href="https://docs.deckdeckgo.com/components/code">documentation</a> for the details and the following other attributes:</p>
 <table>
 <thead>
 <tr>
@@ -149,7 +149,7 @@ export class AppSlideCode {
 <td>Padding left of the all slide</td>
 </tr>
 </tbody></table>
-<p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> - Highlight code Web Component, see its <a href="https://github.com/deckgo/deckdeckgo-highlight-code">documentation</a> for the details.</p>
+<p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> - Highlight code Web Component, see its <a href="https://docs.deckdeckgo.com/components/code">documentation</a> for the details.</p>
 </main>
 
         <app-footer></app-footer>

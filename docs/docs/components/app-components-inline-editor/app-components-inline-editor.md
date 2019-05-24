@@ -34,7 +34,7 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 
 This Web Component is an inline WYSIWYG HTML Editor, It creates a floating editor bar or a sticky footer bar that shows up when you select a piece of text of your page.
 
-To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/deckdeckgo-qrcode).
+To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode).
 
 ### Using from a CDN
 
@@ -45,7 +45,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] inli
 ```
 ### Install from NPM
 
-Install it in your project from [npm](https://www.npmjs.com/package/deckdeckgo-qrcode) using the following command:
+Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
 
 ```bash
 npm install deckdeckgo-inline-editor

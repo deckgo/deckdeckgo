@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-docs",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "description": "The Progressive Web App alternative for simple presentations",
   "license": "MIT",
   "files": [
@@ -14,12 +14,12 @@
     "test.watch": "npm run docs && stencil test --spec --e2e --watch"
   },
   "dependencies": {
+    "@deckdeckgo/charts": "^1.0.0-alpha.6",
+    "@deckdeckgo/core": "^1.0.0-beta.34",
+    "@deckdeckgo/highlight-code": "^1.0.0-alpha.15",
+    "@deckdeckgo/inline-editor": "^1.0.0-alpha.7",
+    "@deckdeckgo/qrcode": "^1.0.0-alpha.7",
     "@ionic/core": "4.2.0",
-    "deckdeckgo": "^1.0.0-beta.30",
-    "deckdeckgo-charts": "^1.0.0-alpha.5",
-    "deckdeckgo-highlight-code": "^1.0.0-alpha.11",
-    "deckdeckgo-inline-editor": "^1.0.0-alpha.6",
-    "deckdeckgo-qrcode": "^1.0.0-alpha.6",
     "rxjs": "^6.4.0"
   },
   "devDependencies": {

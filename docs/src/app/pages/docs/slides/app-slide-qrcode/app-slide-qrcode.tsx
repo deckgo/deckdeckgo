@@ -50,7 +50,7 @@ export class AppSlideQRCode {
 </ul>
 <h2 id="app-slide-qrcode-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-qrcode content="https://deckdeckgo.com">
         <h1 slot="title">slot="title"</h1>
         <p slot="content">slot="content"</p>
@@ -71,9 +71,9 @@ export class AppSlideQRCode {
 <h2 id="app-slide-qrcode-code-components">Code components</h2>
 <p>The slide &quot;QR Code&quot; relies on the code component <code>&lt;deckgo-qrcode/&gt;</code> which is described in the components <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.</p>
 <h2 id="app-slide-qrcode-installation">Installation</h2>
-<p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> - QR Code component is provided in separate extra library. If you don&#39;t use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to add the <a href="https://deckdeckgo.com">DeckDeckGo</a> QR code to your project, you will need to install and integrate it from a CDN or <a href="https://www.npmjs.com/package/deckdeckgo-qrcode">npm</a> as described in its <a href="https://github.com/deckgo/deckdeckgo-qrcode#getting-started">installation guide</a>.</p>
+<p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> - QR Code component is provided in separate extra library. If you don&#39;t use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to add the <a href="https://deckdeckgo.com">DeckDeckGo</a> QR code to your project, you will need to install and integrate it from a CDN or <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a> as described in its <a href="https://docs.deckdeckgo.com/components/qrcode#app-components-qrcode-getting-started">installation guide</a>.</p>
 <h2 id="app-slide-qrcode-attributes">Attributes</h2>
-<p>The attribute <code>content</code> should be provided in order to render a QR code in this template. It offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> QR code Web Component, see its <a href="https://github.com/deckgo/deckdeckgo-qrcode">documentation</a> for the details, and the following other attributes:</p>
+<p>The attribute <code>content</code> should be provided in order to render a QR code in this template. It offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> QR code Web Component, see its <a href="https://docs.deckdeckgo.com/components/qrcode">documentation</a> for the details, and the following other attributes:</p>
 <table>
 <thead>
 <tr>
@@ -160,7 +160,7 @@ export class AppSlideQRCode {
 <td>If you wish to hide the slot=&quot;title&quot;</td>
 </tr>
 </tbody></table>
-<p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> - QR code Web Component, see its <a href="https://github.com/deckgo/deckdeckgo-qrcode">documentation</a> for the details.</p>
+<p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> - QR code Web Component, see its <a href="https://docs.deckdeckgo.com/components/qrcode">documentation</a> for the details.</p>
 </main>
 
         <app-footer></app-footer>

@@ -50,7 +50,7 @@ export class AppSlideYoutube {
 </ul>
 <h2 id="app-slide-youtube-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
       <h1 slot="title">A 16/9 video</h1>
     </deckgo-slide-youtube>
