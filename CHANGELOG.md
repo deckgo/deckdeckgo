@@ -9,6 +9,7 @@
 * inline-editor: v1.0.0-alpha.7 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 * lazy-img: v1.0.0-alpha.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
 * qrcode: v1.0.0-alpha.7 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/qrcode/CHANGELOG.md))
+* remote: v1.0.0-alpha.9 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 
 <a name="1.0.0-beta.39"></a>
 # [1.0.0-beta.39](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.38...v1.0.0-beta.39) (2019-05-18)

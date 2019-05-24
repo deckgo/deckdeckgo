@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.9"></a>
+# 1.0.0-alpha.9 (2019-05-24)
+
+### Breaking
+
+* move to the org scoped package `@deckdeckgo/remote`
+
 <a name="1.0.0-alpha.8"></a>
 # 1.0.0-alpha.8 (2019-04-18)
 
