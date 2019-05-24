@@ -16,3 +16,18 @@ ion-item.item-input {
     --placeholder-opacity: 0.33;
   }
 }
+
+ion-list[class*="list"].inputs-list  {
+  background: transparent;
+
+  ion-item {
+    --background: transparent;
+
+    &.item-title {
+      height: 38px;
+
+      --padding-start: 0;
+      --inner-padding-end: 0;
+    }
+  }
+}

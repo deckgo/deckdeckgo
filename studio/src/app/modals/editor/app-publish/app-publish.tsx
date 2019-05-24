@@ -1,13 +1,12 @@
 import {Component, Element, Listen, Prop, State} from '@stencil/core';
 
-import {take} from 'rxjs/operators';
-
-import {AuthUser} from '../../../models/auth-user';
-
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime, take} from 'rxjs/operators';
 
 import {Deck} from '../../../models/deck';
 
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {Resources} from '../../../utils/core/resources';
+
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {DeckService} from '../../../services/api/deck/deck.service';
 import {ErrorService} from '../../../services/core/error/error.service';
@@ -20,8 +19,6 @@ export class AppPublish {
 
     @Element() el: HTMLElement;
 
-    private authService: AuthService;
-
     @Prop()
     description: string;
 
@@ -29,10 +26,7 @@ export class AppPublish {
     private caption: string;
 
     @State()
-    private author: string;
-
-    @State()
-    private today: Date = new Date();
+    private valid: boolean = true;
 
     @State()
     private disablePublish: boolean = false;
@@ -42,9 +36,10 @@ export class AppPublish {
 
     private errorService: ErrorService;
 
-    constructor() {
-        this.authService = AuthService.getInstance();
+    private updateDeckSubsction: Subscription;
+    private updateDeckSubject: Subject<void> = new Subject();
 
+    constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
         this.deckService = DeckService.getInstance();
 
@@ -57,14 +52,20 @@ export class AppPublish {
                 this.caption = deck.name;
             }
         });
+
+        this.updateDeckSubsction = this.updateDeckSubject.asObservable().pipe(debounceTime(500)).subscribe(async () => {
+            await this.updateDeck();
+        });
     }
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
+    }
 
-        this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
-            this.author = authUser ? authUser.name : '';
-        });
+    componentDidUnload() {
+        if (this.updateDeckSubsction) {
+            this.updateDeckSubsction.unsubscribe();
+        }
     }
 
     @Listen('window:popstate')
@@ -76,14 +77,9 @@ export class AppPublish {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    @Listen('editCaption')
-    async onEditCaption(e: CustomEvent) {
-        await this.updateDeck(e.detail);
-    }
-
-    private updateDeck(title: string): Promise<void> {
+    private updateDeck(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!title || title === undefined || title === '') {
+            if (!this.caption || this.caption === undefined || this.caption === '') {
                 resolve();
                 return;
             }
@@ -98,7 +94,7 @@ export class AppPublish {
                         return;
                     }
 
-                    deck.name = title;
+                    deck.name = this.caption;
 
                     const updatedDeck: Deck = await this.deckService.put(deck);
                     this.deckEditorService.next(updatedDeck);
@@ -112,6 +108,12 @@ export class AppPublish {
 
             resolve();
         });
+    }
+
+    private async handleSubmit(e: Event) {
+        e.preventDefault();
+
+        await this.publish();
     }
 
     private publish(): Promise<void> {
@@ -134,6 +136,31 @@ export class AppPublish {
         });
     }
 
+    private onCaptionInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
+        return new Promise<void>( (resolve) => {
+            let title: string = ($event.target as InputTargetEvent).value;
+            if (title && title !== undefined && title !== '') {
+                if (!this.validCaption(title)) {
+                    title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
+                }
+            }
+
+            this.caption = title;
+
+            this.updateDeckSubject.next();
+
+            resolve();
+        });
+    }
+
+    private validateCaptionInput() {
+        this.valid = this.validCaption(this.caption);
+    }
+
+    private validCaption(title: string): boolean {
+        return title && title !== undefined && title !== '' && title.length < Resources.Constants.DECK.TITLE_MAX_LENGTH;
+    }
+
     render() {
         return [
             <ion-header>
@@ -154,17 +181,30 @@ export class AppPublish {
 
                     <p>DeckDeckGo will distribute online your deck as a modern <strong>app</strong>.</p>
 
-                    <p>Edit its title and summary and add or change tags (up to 5) to make your presentation more inviting to readers</p>
+                    <h2>Meta</h2>
 
-                    <app-feed-card compact={false} miniature={false} editable={true} author={this.author}
-                                   publication={this.today} caption={this.caption}
-                                   description={this.description}></app-feed-card>
+                    <p class="meta-text">Edit your presentation title and summary and add or change tags (up to 5) to make your presentation more inviting to readers.</p>
 
-                    <div class="ion-padding ion-text-center">
-                        <ion-button shape="round" color="tertiary" disabled={this.disablePublish} onClick={() => {this.publish()}}>
-                            <ion-label class="ion-text-uppercase">Publish now</ion-label>
-                        </ion-button>
-                    </div>
+                    <form onSubmit={(e: Event) => this.handleSubmit(e)}>
+                        <ion-list class="inputs-list">
+                            <ion-item class="item-title">
+                                <ion-label>Title</ion-label>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-input value={this.caption} debounce={500} minlength={3} maxlength={Resources.Constants.DECK.TITLE_MAX_LENGTH} required={true}
+                                           input-mode="text"
+                                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onCaptionInput(e)}
+                                           onIonChange={() => this.validateCaptionInput()}></ion-input>
+                            </ion-item>
+                        </ion-list>
+
+                        <div class="ion-padding ion-text-center">
+                            <ion-button type="submit" disabled={!this.valid || this.disablePublish} color="tertiary" shape="round">
+                                <ion-label>Publish now</ion-label>
+                            </ion-button>
+                        </div>
+                    </form>
                 </main>
             </ion-content>
         ];

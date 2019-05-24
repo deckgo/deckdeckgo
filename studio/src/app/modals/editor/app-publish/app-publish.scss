@@ -5,5 +5,9 @@ app-publish {
     strong {
       color: var(--ion-color-tertiary);
     }
+
+    p.meta-text {
+      margin-bottom: 0;
+    }
   }
 }

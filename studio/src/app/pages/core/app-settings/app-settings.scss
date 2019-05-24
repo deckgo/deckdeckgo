@@ -5,20 +5,5 @@ app-settings {
     ion-anchor {
       cursor: pointer;
     }
-
-    ion-list[class*="list"]  {
-      background: transparent;
-
-      ion-item {
-        --background: transparent;
-
-        &.item-title {
-          height: 38px;
-
-          --padding-start: 0;
-          --inner-padding-end: 0;
-        }
-      }
-    }
   }
 }

@@ -118,7 +118,6 @@ export namespace Components {
     'caption': string;
     'compact': boolean;
     'description': string;
-    'editable': boolean;
     'miniature': boolean;
     'publication': Date;
   }
@@ -127,9 +126,7 @@ export namespace Components {
     'caption'?: string;
     'compact'?: boolean;
     'description'?: string;
-    'editable'?: boolean;
     'miniature'?: boolean;
-    'onEditCaption'?: (event: CustomEvent<string>) => void;
     'publication'?: Date;
   }
 
