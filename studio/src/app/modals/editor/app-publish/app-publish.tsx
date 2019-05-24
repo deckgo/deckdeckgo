@@ -197,6 +197,15 @@ export class AppPublish {
                                            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onCaptionInput(e)}
                                            onIonChange={() => this.validateCaptionInput()}></ion-input>
                             </ion-item>
+
+                            <ion-item class="item-title">
+                                <ion-label>Tags</ion-label>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-input debounce={500} required={true}
+                                           input-mode="text"></ion-input>
+                            </ion-item>
                         </ion-list>
 
                         <div class="ion-padding ion-text-center">
