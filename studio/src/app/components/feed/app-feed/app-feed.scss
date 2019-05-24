@@ -1,5 +1,10 @@
 app-feed {
 
+  deckgo-lazy-img {
+    min-height: 400px;
+    display: block;
+  }
+
   ion-card[class*="sc-ion-card"] {
     --background: white;
   }
