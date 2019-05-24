@@ -146,19 +146,20 @@ export class AppPublish {
                     <ion-title class="ion-text-uppercase">Ready to publish?</ion-title>
                 </ion-toolbar>
             </ion-header>,
-            <ion-content class="ion-padding">
-                <p>Edit the title and summary of your presentation and add or change tags (up to 5) to make your
+            <ion-content class="ion-padding fullscreen-padding">
+                <main padding><p>Edit the title and summary of your presentation and add or change tags (up to 5) to make your
                     presentation more inviting to readers</p>
 
-                <app-feed-card compact={false} miniature={false} editable={true} author={this.author}
-                               publication={this.today} caption={this.caption}
-                               description={this.description}></app-feed-card>
+                    <app-feed-card compact={false} miniature={false} editable={true} author={this.author}
+                                   publication={this.today} caption={this.caption}
+                                   description={this.description}></app-feed-card>
 
-                <div class="ion-padding ion-text-center">
-                    <ion-button shape="round" color="primary" disabled={this.disablePublish} onClick={() => {this.publish()}}>
-                        <ion-label class="ion-text-uppercase">Publish now</ion-label>
-                    </ion-button>
-                </div>
+                    <div class="ion-padding ion-text-center">
+                        <ion-button shape="round" color="primary" disabled={this.disablePublish} onClick={() => {this.publish()}}>
+                            <ion-label class="ion-text-uppercase">Publish now</ion-label>
+                        </ion-button>
+                    </div>
+                </main>
             </ion-content>
         ];
     }

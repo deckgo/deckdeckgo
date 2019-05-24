@@ -1,5 +1,11 @@
-ion-nav {
+ion-nav, ion-modal {
   ion-content {
     --background: var(--ion-color-light);
+
+    main {
+      max-width: calc(1200px - 64px);
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 }
