@@ -17,7 +17,7 @@ If you wish to do so, use it directly in your project from a CDN, using a simple
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
-<script src="https://unpkg.com/deckdeckgo@latest/dist/deckdeckgo.js"></script>
+<script src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo.js"></script>
 ```
 
 ## Install DeckDeckGo from NPM
@@ -25,7 +25,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] from
 Install [DeckDeckGo] in your project from [npm](https://www.npmjs.com/package/deckdeckgo) using the following command:
 
 ```bash
-npm install deckdeckgo
+npm install @deckdeckgo/core
 ```
 
 ## Framework integration
