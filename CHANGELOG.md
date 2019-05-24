@@ -1,10 +1,11 @@
 <a name="1.0.0-beta.40"></a>
 # [1.0.0-beta.40](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.39...v1.0.0-beta.40) (2019-05-24)
 
-### Web Components
+### BREAKING: Web Components - Org scoped packages
 
 * charts: v1.0.0-alpha.6 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
 * core: v1.0.0-beta.34 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+* highlight-code: v1.0.0-alpha.15 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
 <a name="1.0.0-beta.39"></a>
 # [1.0.0-beta.39](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.38...v1.0.0-beta.39) (2019-05-18)

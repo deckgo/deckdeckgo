@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.15"></a>
+# 1.0.0-alpha.15 (2019-05-24)
+
+### Breaking
+
+* move to the org scoped package `@deckdeckgo/highlight-code`
+
 <a name="1.0.0-alpha.14"></a>
 # 1.0.0-alpha.14 (2019-04-30)
 
