@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.35"></a>
+# 1.0.0-beta.35 (2019-05-24)
+
+### Fix
+
+* top and bottom padding of the slide `split`
+
 <a name="1.0.0-beta.34"></a>
 # 1.0.0-beta.34 (2019-05-24)
 
