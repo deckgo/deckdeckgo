@@ -1,3 +1,14 @@
+<a name="1.0.0-alpha.10"></a>
+# 1.0.0-alpha.10 (2019-05-24)
+
+### Libs
+
+* use org scoped packages
+
+### Features
+
+* document new `lazy-img` variables
+
 <a name="1.0.0-alpha.9"></a>
 # 1.0.0-alpha.9 (2019-05-18)
 

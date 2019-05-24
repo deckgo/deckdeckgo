@@ -1,12 +1,18 @@
 img {
-  max-width: var(--deckgo-lazy-img-max-width, 100%);
-  min-width: var(--deckgo-lazy-img-min-width);
   pointer-events: var(--deckgo-lazy-img-pointer-events, none);
 
   height: var(--deckgo-lazy-img-height);
   width: var(--deckgo-lazy-img-width);
 
+  max-height: var(--deckgo-lazy-img-max-height);
+  max-width: var(--deckgo-lazy-img-max-width, 100%);
+
+  min-height: var(--deckgo-lazy-img-min-height);
+  min-width: var(--deckgo-lazy-img-min-width);
+
   float: var(--deckgo-lazy-img-float);
 
   padding: var(--deckgo-lazy-img-padding);
+
+  vertical-align: var(--deckgo-lazy-img-vertical-align);
 }

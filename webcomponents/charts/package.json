@@ -1,6 +1,6 @@
 {
-  "name": "deckdeckgo-charts",
-  "version": "1.0.0-alpha.5",
+  "name": "@deckdeckgo/charts",
+  "version": "1.0.0-alpha.6",
   "description": "A collection of Web Components to easily draw charts",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",

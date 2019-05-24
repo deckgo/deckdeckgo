@@ -1,3 +1,17 @@
+<a name="1.0.0-beta.35"></a>
+# 1.0.0-beta.35 (2019-05-24)
+
+### Fix
+
+* top and bottom padding of the slide `split`
+
+<a name="1.0.0-beta.34"></a>
+# 1.0.0-beta.34 (2019-05-24)
+
+### Breaking
+
+* move to the org scoped package `@deckdeckgo/core`
+
 <a name="1.0.0-beta.33"></a>
 # 1.0.0-beta.33 (2019-05-16)
 

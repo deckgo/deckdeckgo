@@ -46,7 +46,7 @@ export class AppSlideTitle {
 </ul>
 <h2 id="app-slide-title-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-title>
       <h1 slot="title">My presentation title</h1>
       <p slot="content">

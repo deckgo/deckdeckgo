@@ -48,7 +48,7 @@ export class AppConcept {
 </ul>
 <h2 id="app-slide-content-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-content>
         <h1 slot="title">Something related to my topic</h1>
         <p slot="content">

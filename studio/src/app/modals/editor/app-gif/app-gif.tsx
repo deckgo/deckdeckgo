@@ -251,7 +251,7 @@ export class AppGif {
                         return <div custom-tappable class="gifs-category ion-padding"
                                     onClick={() => this.selectCategory(category.searchterm)}>
                             <div class="gifs-category-container">
-                                <img src={category.image}></img>
+                                <deckgo-lazy-img imgSrc={category.image}></deckgo-lazy-img>
                                 <div class="gifs-category-placeholder">
                                     <h2 class="ion-no-margin">{category.name}</h2>
                                 </div>
@@ -276,7 +276,7 @@ export class AppGif {
                         && gif.media[0].gif && gif.media[0].gif.url) {
                         return <div class="gif ion-padding" custom-tappable onClick={() => this.addSlide(gif)}>
                             <div class="gif-container">
-                                <img src={gif.media[0].tinygif.url} alt={gif.title ? gif.title : gif.url}></img>
+                                <deckgo-lazy-img imgSrc={gif.media[0].tinygif.url} imgAlt={gif.title ? gif.title : gif.url}></deckgo-lazy-img>
                             </div>
                         </div>
                     } else {

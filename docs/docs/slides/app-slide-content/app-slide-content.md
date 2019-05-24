@@ -17,7 +17,7 @@ This slide could be for example use for the every slides of your presentation wh
 ## Layout
 
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-content>
         <h1 slot="title">Something related to my topic</h1>
         <p slot="content">
