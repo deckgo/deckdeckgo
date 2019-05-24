@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, Watch} from '@stencil/core';
 
 @Component({
   tag: 'deckgo-lazy-img',
@@ -32,6 +32,17 @@ export class DeckdeckgoLazyImg {
   private observer: IntersectionObserver;
 
   componentDidLoad() {
+    this.init();
+
+    this.lazyImgDidLoad.emit();
+  }
+
+  @Watch('imgSrc')
+  handleAttrImgSrc() {
+    this.init();
+  }
+
+  private init() {
     const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
 
     if (img) {
@@ -42,8 +53,6 @@ export class DeckdeckgoLazyImg {
 
       this.observer.observe(img);
     }
-
-    this.lazyImgDidLoad.emit();
   }
 
   @Method()
@@ -67,7 +76,6 @@ export class DeckdeckgoLazyImg {
   private handleIntersection(entry: IntersectionObserverEntry): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (entry.isIntersecting) {
-
         if (this.observer) {
           this.observer.disconnect();
         }
@@ -81,14 +89,12 @@ export class DeckdeckgoLazyImg {
 
   private load(img: HTMLImageElement | Element): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (img && img.hasAttribute('data-src')) {
-        img.setAttribute('src', img.getAttribute('data-src'));
-        img.removeAttribute('data-src');
+      if (this.imgSrc) {
+        img.setAttribute('src', this.imgSrc);
       }
 
-      if (img && img.hasAttribute('data-srcset')) {
-        img.setAttribute('srcset', img.getAttribute('data-srcset'));
-        img.removeAttribute('data-srcset');
+      if (this.imgSrcSet) {
+        img.setAttribute('srcset', this.imgSrcSet);
       }
 
       resolve();
@@ -96,7 +102,6 @@ export class DeckdeckgoLazyImg {
   }
 
   render() {
-    return <img data-src={this.imgSrc} alt={this.imgAlt ? this.imgAlt : this.imgSrc}
-                data-srcset={this.imgSrcSet ? this.imgSrcSet : undefined} sizes={this.imgSizes ? this.imgSizes : undefined}/>;
+    return <img alt={this.imgAlt ? this.imgAlt : this.imgSrc} sizes={this.imgSizes ? this.imgSizes : undefined}/>;
   }
 }
