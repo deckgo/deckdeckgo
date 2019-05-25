@@ -7,9 +7,10 @@ ion-item.item-input {
     --inner-padding-end: 0;
   }
 
-  ion-input[class*="sc-ion-input"] {
+  ion-input[class*="sc-ion-input"], ion-textarea[class*="sc-ion-textarea"] {
     --padding-start: 8px;
     --background: var(--ion-color-light);
+    background: var(--ion-color-light);
     border: 1px solid #dedede;
     border-radius: 4px;
 

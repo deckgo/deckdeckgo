@@ -255,6 +255,15 @@ export class AppPublish {
                                            onIonChange={() => this.validateCaptionInput()}></ion-input>
                             </ion-item>
 
+
+                            <ion-item class="item-title">
+                                <ion-label>Description</ion-label>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-textarea rows={5} value={this.description}></ion-textarea>
+                            </ion-item>
+
                             <ion-item class="item-title">
                                 <ion-label>Tags</ion-label>
                             </ion-item>
