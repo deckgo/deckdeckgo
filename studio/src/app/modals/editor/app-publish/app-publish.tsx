@@ -255,7 +255,6 @@ export class AppPublish {
                                            onIonChange={() => this.validateCaptionInput()}></ion-input>
                             </ion-item>
 
-
                             <ion-item class="item-title">
                                 <ion-label>Description</ion-label>
                             </ion-item>
@@ -285,6 +284,9 @@ export class AppPublish {
                             </ion-button>
                         </div>
                     </form>
+
+                    <p class="social">No images need to be uploaded for the the social card of your presentation. DeckDeckGo will automatically generate it for you based on the first slide of your deck.</p>
+
                 </main>
             </ion-content>
         ];
