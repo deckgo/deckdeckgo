@@ -43,7 +43,8 @@ rec
     with
       { pkg = pkgs.haskellPackages.developPackage { root = ./handler; } ; };
     pkg.overrideAttrs(attr: {
-      buildInputs = with pkgs; [ niv terraform awscli postgresql moreutils ];
+      buildInputs = with pkgs;
+        [ niv terraform awscli postgresql moreutils minio ];
       shellHook =
       let
         pgutil = pkgs.callPackage ./pgutil.nix {};
@@ -78,6 +79,15 @@ rec
            else
             echo "Looks like SQS is already running"
            fi
+           if [ ! -f .s3.pid ]; then
+            echo "Starting S3"
+            MINIO_ACCESS_KEY=dummy \
+              MINIO_SECRET_KEY=dummy_key \
+              minio server --address localhost:9000 $(mktemp -d) &
+            echo $! > .s3.pid
+           else
+            echo "Looks like S3 is already running"
+           fi
            export GOOGLE_PUBLIC_KEYS="${pkgs.writeText "google-x509" (builtins.toJSON googleResp)}"
            export FIREBASE_PROJECT_ID="my-project-id"
            export TEST_TOKEN_PATH=${./token}
@@ -99,11 +109,20 @@ rec
            else
             echo "Looks like SQS is not running"
            fi
+           if [ -f .s3.pid ]; then
+            echo "Killing S3"
+            kill $(cat .s3.pid)
+            rm .s3.pid
+           else
+            echo "Looks like S3 is not running"
+           fi
            rm -rf .pgdata
+           rm shared-local-instance.db
          }
 
          function repl_handler() {
-            ghci -Wall handler/app/Test.hs handler/src/DeckGo/Handler.hs
+            DECKGO_STARTER_DIST=${deckdeckgo-starter-dist} \
+              ghci -Wall handler/app/Test.hs handler/src/DeckGo/*.hs
          }
 
          function repl_unsplash() {

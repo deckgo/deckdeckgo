@@ -8,6 +8,7 @@ dependencies:
     - amazonka
     - amazonka-dynamodb
     - amazonka-sqs
+    - amazonka-s3
     - base
     - bytestring
     - directory

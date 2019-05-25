@@ -36,21 +36,27 @@ import qualified Network.Wai.Handler.Warp as Warp
 import qualified Servant.Auth.Firebase as Firebase
 import qualified Test.Tasty as Tasty
 import qualified Test.Tasty.HUnit as Tasty
+import qualified Network.AWS.S3 as S3
 
-withServer :: (Warp.Port -> IO a) -> IO a
-withServer act = do
+withEnv :: (Aws.Env -> IO a) -> IO a
+withEnv act = do
     mgr <- HTTPClient.newManager HTTPClient.tlsManagerSettings
             { HTTPClient.managerModifyRequest =
                 pure . rerouteDynamoDB . rerouteSQS
             }
-    withPristineDB $ \conn -> do
-      env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
-      withSQS env $ withDynamoDB env $ do
+    env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
+    act env
+
+withServer :: (Warp.Port -> IO a) -> IO a
+withServer act =
+    withEnv $ \env -> withS3 env $ withSQS env $ withDynamoDB env $
+      withPristineDB $ \conn -> do
         (port, socket) <- Warp.openFreePort
         let warpSettings = Warp.setPort port $ Warp.defaultSettings
         settings <- getFirebaseSettings
         race
-          (Warp.runSettingsSocket warpSettings socket $ DeckGo.Handler.application settings env conn)
+          (Warp.runSettingsSocket warpSettings socket $
+            DeckGo.Handler.application settings env conn)
           (do
             Socket.wait "localhost" port
             act port
@@ -125,6 +131,23 @@ withSQS env act = do
       Right {} -> pure ()
     act
 
+withS3 :: Aws.Env -> IO a -> IO a
+withS3 env act = do
+    let bname = S3.BucketName "deckgo-bucket"
+    putStrLn "Deleting bucket, if exists"
+    runAWS env (Aws.send $ S3.deleteBucket bname) >>= \case
+      Right {} -> pure ()
+      Left e
+        | is' S3._NoSuchBucket e -> pure ()
+        | otherwise -> error $ "Could not delete bucket: " <> show e
+
+    putStrLn "Creating bucket"
+
+    runAWS env (Aws.send $ S3.createBucket bname) >>= \case
+      Right {} -> pure ()
+      Left e -> error $ "Could not create bucket: " <> show e
+    act
+
 withPristineDB :: (HC.Connection -> IO a) -> IO a
 withPristineDB act = do
     conn <- getPostgresqlConnection
@@ -156,8 +179,12 @@ main = do
               , Tasty.testCase "update" testSlidesUpdate
               ]
           ]
+      , Tasty.testCase "presentation" main'
       , Tasty.testCase "server" main'
       ]
+
+testPresDeploys :: IO ()
+testPresDeploys = withEnv $ \env  -> undefined
 
 testUsersGet :: IO ()
 testUsersGet = withPristineDB $ \conn -> do
