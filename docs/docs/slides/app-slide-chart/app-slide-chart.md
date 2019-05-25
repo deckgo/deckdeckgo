@@ -59,7 +59,7 @@ The slide "Chart" relies on the charts components `<deckgo-pie-chart/>`, `<deckg
 
 ## Installation
 
-The [DeckDeckGo] charts components are provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] chart to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/deckdeckgo-charts) as described in its [installation guide](https://github.com/deckgo/deckdeckgo-charts#getting-started).
+The [DeckDeckGo] charts components are provided in separate extra library. If you don't use the [DeckDeckGo] starter kit and wish to add the [DeckDeckGo] chart to your project, you will need to install and integrate it from a CDN or [npm](https://www.npmjs.com/package/@deckdeckgo/charts) as described in its [installation guide](https://docs.deckdeckgo.com/components/charts).
 
 ## Attributes
 
@@ -71,7 +71,7 @@ This component offers the following options which could be set using attributes:
 | custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
 | custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
 
-Furthermore, this slide component offers the same attributes as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-charts) for the details.
+Furthermore, this slide component offers the same attributes as the [DeckDeckGo] charts Web Component, see its [documentation](https://docs.deckdeckgo.com/components/charts) for the details.
 
 ## Theming
 
@@ -91,6 +91,6 @@ The following theming options will affect this component if set on its host or p
 | --slide-chart-margin-bottom | 32px | Margin bottom of the chart inside its container |
 | --slide-chart-margin-start | 32px | Margin left of the chart inside its container |
 
-Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] charts Web Component, see its [documentation](https://github.com/deckgo/deckdeckgo-charts) for the details.
+Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] charts Web Component, see its [documentation](https://docs.deckdeckgo.com/components/charts) for the details.
 
 [DeckDeckGo]: https://deckdeckgo.com

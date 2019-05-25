@@ -45,13 +45,16 @@ The following theming options will affect this component if set on its host or p
 
 | CSS4 variable                      | Default | Note |
 | -------------------------- |-----------------|-----------------|
+| --deckgo-lazy-img-max-height | | Image max height | 
 | --deckgo-lazy-img-max-width | 100% | Image max width |
+| --deckgo-lazy-img-min-height |  | Image min height |
 | --deckgo-lazy-img-min-width |  | Image min width |
 | --deckgo-lazy-img-pointer-events | none | Image pointer events |
 | --deckgo-lazy-img-height | | Image height |
 | --deckgo-lazy-img-width | | Image width |
 | --deckgo-lazy-img-float | | Image float |
 | --deckgo-lazy-img-padding | | Image padding |
+| --deckgo-lazy-img-vertical-align | | Image vertical alignment |
 
 ### Methods
 

@@ -41,7 +41,7 @@ export class AppSlidesConcept {
 <li>Slide: <a href="/slides/title">Title</a></li>
 </ul>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-title>
         <h1 slot="title">slot="title"</h1>
         <p slot="content">
@@ -55,7 +55,7 @@ export class AppSlidesConcept {
 <li>Slide: <a href="/slides/content">Content</a></li>
 </ul>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-content>
       <h1 slot="title">slot="title"</h1>
       <p slot="content">
@@ -69,7 +69,7 @@ export class AppSlidesConcept {
 <li>Slide: <a href="/slides/split">Split</a></li>
 </ul>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-split>
       <h1 slot="title">slot="title"</h1>
       <p slot="start">
@@ -86,7 +86,7 @@ export class AppSlidesConcept {
 <li>Slide: <a href="/slides/gif">Gif</a></li>
 </ul>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen={true}>
       <h1 slot="title">slot="title"</h1>
       <h1 slot="header" style={{fontSize: 'var(--font-size-h1)'}}>slot="header"</h1>
@@ -120,7 +120,7 @@ export class AppSlidesConcept {
 <li>Slide: <a href="/slides/youtube">Youtube</a></li>
 </ul>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-youtube>
@@ -131,7 +131,7 @@ export class AppSlidesConcept {
 <li>Slide: <a href="/slides/code">Code</a></li>
 </ul>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-code>
@@ -142,7 +142,7 @@ export class AppSlidesConcept {
 <li>Slide: <a href="/slides/author">Author</a></li>
 </ul>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>
         <div slot="author">slot="author"</div>
@@ -156,7 +156,7 @@ export class AppSlidesConcept {
 <li>Slide: <a href="/slides/qrcode">QR Code</a></li>
 </ul>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-qrcode content="https://deckdeckgo.com">
         <h1 slot="title">slot="title"</h1>
         <p slot="content">slot="content"</p>

@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.6"></a>
+# 1.0.0-alpha.6 (2019-05-24)
+
+### Breaking
+
+* move to the org scoped package `@deckdeckgo/charts`
+
 <a name="1.0.0-alpha.5"></a>
 # [1.0.0-alpha.5](https://github.com/fluster/deckdeckgo-charts/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2019-02-07)
 

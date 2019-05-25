@@ -46,7 +46,7 @@ export class AppSlideGif {
 </ul>
 <h2 id="app-slide-gif-layout">Layout</h2>
 <div class="container" margin>
-  <deckgo-deck embedded={true} pager={false}>
+  <deckgo-deck embedded={true}>
     <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen={true}>
       <h1 slot="title">My title</h1>
       <h1 slot="header">Hey</h1>

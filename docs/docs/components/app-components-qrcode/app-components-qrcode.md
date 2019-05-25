@@ -43,7 +43,7 @@ To create easily your PWA presentation and to enjoy all the options, I suggest y
 
 Doing so you will use the [DeckDeckGo] starter kit which already includes this Web Component.
 
-However, if you are looking to use this Web Component as a standalone component, to add a QR codes to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/deckdeckgo-qrcode).
+However, if you are looking to use this Web Component as a standalone component, to add a QR codes to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode).
 
 ### Using DeckDeckGo QR Code from a CDN
 
@@ -54,7 +54,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] Code
 ```
 ### Install DeckDeckGo QR Code from NPM
 
-Install [DeckDeckGo] - QR Code in your project from [npm](https://www.npmjs.com/package/deckdeckgo-qrcode) using the following command:
+Install [DeckDeckGo] - QR Code in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
 
 ```bash
 npm install deckdeckgo-qrcode

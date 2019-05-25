@@ -1,3 +1,34 @@
+<a name="1.0.0-beta.40-2"></a>
+# [1.0.0-beta.40-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.40-1...v1.0.0-beta.40-2) (2019-05-24)
+
+### Fix
+
+* lazy-img: v1.0.0-alpha.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
+
+<a name="1.0.0-beta.40-1"></a>
+# [1.0.0-beta.40-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.40...v1.0.0-beta.40-1) (2019-05-24)
+
+### Fix
+
+* core: v1.0.0-beta.35 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+
+<a name="1.0.0-beta.40"></a>
+# [1.0.0-beta.40](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.39...v1.0.0-beta.40) (2019-05-24)
+
+### BREAKING: Web Components - Org scoped packages
+
+* charts: v1.0.0-alpha.6 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
+* core: v1.0.0-beta.34 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+* highlight-code: v1.0.0-alpha.15 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+* inline-editor: v1.0.0-alpha.7 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+* lazy-img: v1.0.0-alpha.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
+* qrcode: v1.0.0-alpha.7 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/qrcode/CHANGELOG.md))
+* remote: v1.0.0-alpha.9 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+
+### Applications
+
+* docs: v1.0.0-alpha.10 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 <a name="1.0.0-beta.39"></a>
 # [1.0.0-beta.39](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.38...v1.0.0-beta.39) (2019-05-18)
 

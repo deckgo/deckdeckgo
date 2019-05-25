@@ -11,6 +11,8 @@ div.container {
   border-radius: 8px;
 
   deckgo-deck {
+    --pager-display: false;
+
     --font-size-h1: 18px;
 
     --slide-padding-top: 16px;

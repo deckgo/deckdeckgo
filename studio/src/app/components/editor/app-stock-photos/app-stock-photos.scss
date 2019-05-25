@@ -21,11 +21,11 @@ div.photos-container {
         overflow: hidden;
         position: relative;
 
-        img {
-          width: 100%;
-          height: auto;
-          min-height: var(--deckgo-stock-photos-min-height);
-          vertical-align: top;
+        deckgo-lazy-img {
+          --deckgo-lazy-img-width: 100%;
+          --deckgo-lazy-img-height: auto;
+          --deckgo-lazy-img-min-height: var(--deckgo-stock-photos-min-height);
+          --deckgo-lazy-img-vertical-align: top;
         }
 
         ion-label.photo-credits {

@@ -62,13 +62,13 @@ export class AppComponentsInlineEditor {
 <p><deckgo-inline-editor sticky-desktop="true" sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor></p>
 <h2 id="app-components-inline-editor-getting-started">Getting started</h2>
 <p>This Web Component is an inline WYSIWYG HTML Editor, It creates a floating editor bar or a sticky footer bar that shows up when you select a piece of text of your page.</p>
-<p>To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/deckdeckgo-qrcode">npm</a>.</p>
+<p>To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a>.</p>
 <h3 id="app-components-inline-editor-using-from-a-cdn">Using from a CDN</h3>
 <p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> inline editor from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;script src=&quot;https:&#47;&#47;unpkg.com&#47;deckdeckgo-inline-editor@latest&#47;dist&#47;deckdeckgo-inline-editor.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-inline-editor-install-from-npm">Install from NPM</h3>
-<p>Install it in your project from <a href="https://www.npmjs.com/package/deckdeckgo-qrcode">npm</a> using the following command:</p>
+<p>Install it in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">
       <code slot="code">npm install deckdeckgo-inline-editor</code>
     </deckgo-highlight-code><h3 id="app-components-inline-editor-framework-integration">Framework integration</h3>

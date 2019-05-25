@@ -1,16 +1,16 @@
 import '@ionic/core';
 
-import 'deckdeckgo';
-import 'deckdeckgo-inline-editor';
-import 'deckdeckgo-remote';
-import 'deckdeckgo-qrcode';
-import 'deckdeckgo-highlight-code';
-import 'deckdeckgo-lazy-img';
+import '@deckdeckgo/core';
+import '@deckdeckgo/inline-editor';
+import '@deckdeckgo/remote';
+import '@deckdeckgo/qrcode';
+import '@deckdeckgo/highlight-code';
+import '@deckdeckgo/lazy-img';
 
 import {setupConfig} from '../app/services/core/environment/environment-config';
 
 setupConfig({
-    appUrl: 'http://deckdeckgo-studio-beta.firebaseapp.com',
+    appUrl: 'http://@deckdeckgo/studio-beta.firebaseapp.com',
     apiUrl: '<@API_URL@>',
     firebase: {
         apiKey: '<@FIREBASE_API_KEY@>',
