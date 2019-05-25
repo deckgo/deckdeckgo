@@ -9,5 +9,13 @@ app-publish {
     p.meta-text {
       margin-bottom: 0;
     }
+
+    app-feed-card-tags {
+      --card-tags-background: rgba(var(--ion-color-tertiary-rgb), 0.08);
+      --card-tags-color: var(--ion-color-tertiary-shade);
+
+      display: inline-block;
+      padding-top: 8px;
+    }
   }
 }

@@ -31,6 +31,12 @@ export class AppPublish {
     @State()
     private disablePublish: boolean = false;
 
+    @State()
+    private tag: string;
+
+    @State()
+    private tags: string[] = [];
+
     private deckEditorService: DeckEditorService;
     private deckService: DeckService;
 
@@ -118,26 +124,26 @@ export class AppPublish {
 
     private publish(): Promise<void> {
         return new Promise<void>((resolve) => {
-           try {
-               this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                   if (!deck || !deck.id) {
-                       resolve();
-                       return;
-                   }
+            try {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    if (!deck || !deck.id) {
+                        resolve();
+                        return;
+                    }
 
-                   await this.deckService.publish(deck);
+                    await this.deckService.publish(deck);
 
-                   resolve();
-               });
-           } catch (err) {
-               this.errorService.error(err);
-               resolve();
-           }
+                    resolve();
+                });
+            } catch (err) {
+                this.errorService.error(err);
+                resolve();
+            }
         });
     }
 
     private onCaptionInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
-        return new Promise<void>( (resolve) => {
+        return new Promise<void>((resolve) => {
             let title: string = ($event.target as InputTargetEvent).value;
             if (title && title !== undefined && title !== '') {
                 if (!this.validCaption(title)) {
@@ -161,6 +167,54 @@ export class AppPublish {
         return title && title !== undefined && title !== '' && title.length < Resources.Constants.DECK.TITLE_MAX_LENGTH;
     }
 
+    private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.tag = ($event.target as InputTargetEvent).value;
+
+            resolve();
+        });
+    }
+
+    private onTagChange() {
+        if (this.tag && this.tag !== undefined && this.tag !== null && this.tag.length  > 3) {
+            if (this.tag.charAt(0) === '#') {
+                this.tag = this.tag.substr(1);
+            }
+
+            if (this.tags && this.tags.indexOf(this.tag) === -1) {
+                this.tags = [...this.tags, this.tag.trim()];
+                this.tag = null;
+            }
+        }
+    }
+
+    private removeTag($event: CustomEvent): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            const tag: string = $event.detail;
+
+            if (!this.tags) {
+                resolve();
+                return;
+            }
+
+            const index: number = this.tags.findIndex((actualTag: string) => {
+                return tag === actualTag
+            });
+
+            if (index >= 0) {
+                this.tags.splice(index, 1);
+                this.tags = [...this.tags];
+            }
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <ion-header>
@@ -177,13 +231,15 @@ export class AppPublish {
                 <main padding>
                     <h1>Publish</h1>
 
-                    <p>Publish your presentation to <strong>share</strong> it with the world, your colleagues, friends and community.</p>
+                    <p>Publish your presentation to <strong>share</strong> it with the world, your colleagues, friends
+                        and community.</p>
 
-                    <p>DeckDeckGo will distribute online your deck as a modern <strong>app</strong>.</p>
+                    <p>DeckDeckGo will distribute it online as a modern <strong>app</strong>.</p>
 
                     <h2>Meta</h2>
 
-                    <p class="meta-text">Edit your presentation title and summary and add or change tags (up to 5) to make your presentation more inviting to readers.</p>
+                    <p class="meta-text">But first, edit or review your presentation's title and summary and add or change tags (up to 5) to
+                        make your presentation more inviting to readers.</p>
 
                     <form onSubmit={(e: Event) => this.handleSubmit(e)}>
                         <ion-list class="inputs-list">
@@ -192,7 +248,8 @@ export class AppPublish {
                             </ion-item>
 
                             <ion-item>
-                                <ion-input value={this.caption} debounce={500} minlength={3} maxlength={Resources.Constants.DECK.TITLE_MAX_LENGTH} required={true}
+                                <ion-input value={this.caption} debounce={500} minlength={3}
+                                           maxlength={Resources.Constants.DECK.TITLE_MAX_LENGTH} required={true}
                                            input-mode="text"
                                            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onCaptionInput(e)}
                                            onIonChange={() => this.validateCaptionInput()}></ion-input>
@@ -203,13 +260,18 @@ export class AppPublish {
                             </ion-item>
 
                             <ion-item>
-                                <ion-input debounce={500} required={true}
-                                           input-mode="text"></ion-input>
+                                <ion-input debounce={500} required={true} input-mode="text" value={this.tag} placeholder="Add a tag..."
+                                           disabled={!this.tags || this.tags.length >= 5}
+                                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}
+                                           onIonChange={() => this.onTagChange()}></ion-input>
                             </ion-item>
+
+                            <app-feed-card-tags tags={this.tags} editable={true} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
                         </ion-list>
 
                         <div class="ion-padding ion-text-center">
-                            <ion-button type="submit" disabled={!this.valid || this.disablePublish} color="tertiary" shape="round">
+                            <ion-button type="submit" disabled={!this.valid || this.disablePublish} color="tertiary"
+                                        shape="round">
                                 <ion-label>Publish now</ion-label>
                             </ion-button>
                         </div>
@@ -218,6 +280,5 @@ export class AppPublish {
             </ion-content>
         ];
     }
-
 
 }

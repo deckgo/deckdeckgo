@@ -60,9 +60,7 @@ export class AppFeedCard {
             <ion-card-header>
                 <ion-card-title>{this.caption}</ion-card-title>
 
-                <ion-card-subtitle class="ion-text-lowercase">
-                    {this.renderTags()}
-                </ion-card-subtitle>
+                <app-feed-card-tags tags={this.tags}></app-feed-card-tags>
             </ion-card-header>
 
             <p class="content ion-padding-start ion-padding-end">{this.description}</p>
@@ -71,22 +69,6 @@ export class AppFeedCard {
                 <ion-label>{this.author} | {this.formattedPublication}</ion-label>
             </p>
         </ion-card-content>
-    }
-
-    private renderTags() {
-        if (!this.tags || this.tags.length <= 0) {
-            return undefined;
-        } else {
-            return (
-                this.tags.map((tag: string) => {
-                    return (
-                        <div class="chips">
-                            <ion-label>{tag}</ion-label>
-                        </div>
-                    )
-                })
-            );
-        }
     }
 
     private renderMiniature() {
