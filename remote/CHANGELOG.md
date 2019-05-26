@@ -1,3 +1,14 @@
+<a name="1.0.0-alpha.9"></a>
+# 1.0.0-alpha.9 (2019-05-26)
+
+### Fix
+
+* update `ion-datetime` usage to follow last Ionic changes ([#138](https://github.com/deckgo/deckdeckgo/issues/138))
+
+### Libs
+
+* update libs including org scoped DeckDeckGo
+
 <a name="1.0.0-alpha.8"></a>
 # 1.0.0-alpha.8 (2019-04-18)
 
