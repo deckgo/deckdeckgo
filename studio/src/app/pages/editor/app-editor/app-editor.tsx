@@ -181,16 +181,6 @@ export class AppEditor {
         });
     }
 
-    private async closeInlineEditor() {
-        const inlineEditor: HTMLElement = this.el.querySelector('deckgo-inline-editor');
-
-        if (!inlineEditor) {
-            return;
-        }
-
-        await (inlineEditor as any).reset(true);
-    }
-
     private initSlide(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!document) {
@@ -606,7 +596,7 @@ export class AppEditor {
                     </deckgo-deck>
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
-                <app-editor-toolbar onWillOpenColorPicker={() => {this.closeInlineEditor()}}></app-editor-toolbar>
+                <app-editor-toolbar></app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <ion-toolbar>

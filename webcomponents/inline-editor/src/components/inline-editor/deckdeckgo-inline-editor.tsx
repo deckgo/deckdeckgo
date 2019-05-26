@@ -249,6 +249,13 @@ export class DeckdeckgoInlineEditor {
   @Listen('document:selectionchange', {passive: true})
   async selectionchange(_$event: UIEvent) {
     if (document && document.activeElement && !this.isContainer(document.activeElement)) {
+      if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
+        // iOS triggers selection change on cursor move with an anchor on body even inside the content, don't ask
+        if (!DeckdeckgoInlineEditorUtils.isIOS()) {
+          await this.reset(false);
+        }
+      }
+
       return;
     }
 
