@@ -18,9 +18,9 @@ resource "aws_lambda_function" "api" {
       PGPORT = "${aws_db_instance.default.port}"
       PGDATABASE = "${aws_db_instance.default.name}"
       PGPASSWORD = "${aws_db_instance.default.password}"
+      QUEUE_NAME = "${aws_sqs_queue.presentation_deploy.name}"
       GOOGLE_PUBLIC_KEYS = "google-public-keys.json"
       FIREBASE_PROJECT_ID = "deckdeckgo-studio-beta"
-      PRESENTATION_BUCKET = "${aws_s3_bucket.deckdeckgo_presentations.bucket}"
     }
   }
 }

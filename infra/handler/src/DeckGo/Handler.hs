@@ -48,6 +48,7 @@ import Servant.API
 import Servant.Auth.Firebase (Protected)
 import UnliftIO
 import Data.Char
+import System.Environment
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString.Char8 as BS8
@@ -748,8 +749,10 @@ decksPostPublish :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
 decksPostPublish env _ _ = do
     liftIO $ putStrLn "Your PRESENTATION WAS PUBLISHED!!!!"
 
+    queueName <- liftIO $ T.pack <$> getEnv "QUEUE_NAME"
+
     -- TODO: change queue name
-    queueUrl <- runAWS env (Aws.send $ SQS.getQueueURL "queue1") >>= \case
+    queueUrl <- runAWS env (Aws.send $ SQS.getQueueURL queueName) >>= \case
       Right e -> pure $ e ^. SQS.gqursQueueURL
       Left e -> do
         liftIO $ print e

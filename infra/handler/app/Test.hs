@@ -115,10 +115,10 @@ withDynamoDB env act = do
     act
 
 withSQS :: Aws.Env -> IO a -> IO a
-withSQS env act = do
-    runAWS env (Aws.send $ SQS.getQueueURL "queue1") >>= \case
+withSQS env act = withQueueName $ do
+    runAWS env (Aws.send $ SQS.getQueueURL ttestQueueName) >>= \case
       Right r -> runAWS env (Aws.send $
-          SQS.deleteQueue "queue1" & SQS.dqQueueURL .~ (r ^. SQS.gqursQueueURL)
+          SQS.deleteQueue ttestQueueName & SQS.dqQueueURL .~ (r ^. SQS.gqursQueueURL)
           ) >>= \case
         Left e -> error $ "Could not delete queue: " <> show e
         Right {} -> pure ()
@@ -127,10 +127,15 @@ withSQS env act = do
         | is' SQS._QueueDoesNotExist e -> pure ()
         | otherwise -> error $ "Could not get queue URL: " <> show e
 
-    runAWS env (Aws.send $ SQS.createQueue "queue1") >>= \case
+    runAWS env (Aws.send $ SQS.createQueue ttestQueueName) >>= \case
       Left e -> error $ "Could not create queue: " <> show e
       Right {} -> pure ()
     act
+  where
+    testQueueName = "the-queue"
+    ttestQueueName = T.pack testQueueName
+    withQueueName =
+      bracket_ (setEnv "QUEUE_NAME" testQueueName) (unsetEnv "QUEUE_NAME")
 
 withS3 :: Aws.Env -> IO a -> IO a
 withS3 env act = do
@@ -182,7 +187,7 @@ main = do
               ]
           ]
       , Tasty.testCase "presentation" testPresDeploys
-      , Tasty.testCase "server" main'
+      , Tasty.testCase "server" testServer
       ]
 
 testPresDeploys :: IO ()
@@ -345,8 +350,8 @@ getTokenPath =
       Just tpath -> pure tpath
       Nothing -> pure "./token"
 
-main' :: IO ()
-main' = withServer $ \port -> do
+testServer :: IO ()
+testServer = withServer $ \port -> do
   b <- T.readFile =<< getTokenPath
 
   manager' <- newManager defaultManagerSettings
