@@ -43,6 +43,7 @@ export class AppComponentsInlineEditor {
 <li><a href="#app-components-inline-editor-properties">Properties</a></li>
 <li><a href="#app-components-inline-editor-styling">Styling</a></li>
 <li><a href="#app-components-inline-editor-events">Events</a></li>
+<li><a href="#app-components-inline-editor-methods">Methods</a></li>
 <li><a href="#app-components-inline-editor-examples">Examples</a></li>
 </ul>
 </li>
@@ -306,7 +307,11 @@ export class AppComponentsInlineEditor {
 <td><code>CustomEvent&lt;boolean&gt;</code></td>
 </tr>
 </tbody></table>
-<h3 id="app-components-inline-editor-examples">Examples</h3>
+<h3 id="app-components-inline-editor-methods">Methods</h3>
+<p>This component also export an async method <code>reset()</code> which will reset the inline editor (= hide it) and optionally clear its selection.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">const element = document.querySelector(&#039;deckgo-inline-editor&#039;);{'\n'}await element.reset(true);</code>
+    </deckgo-highlight-code><h3 id="app-components-inline-editor-examples">Examples</h3>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;p contenteditable slot=&quot;content&quot;&gt;This text will be editable&lt;&#47;p&gt;{'\n'}{'\n'}&lt;h1 contenteditable slot=&quot;title&quot;&gt;This title too&lt;&#47;h1&gt;{'\n'}{'\n'}&lt;deckgo-inline-editor&gt;&lt;&#47;deckgo-inline-editor&gt;</code>
     </deckgo-highlight-code></main>

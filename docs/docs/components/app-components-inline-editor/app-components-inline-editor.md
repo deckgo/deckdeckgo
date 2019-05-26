@@ -13,6 +13,7 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 	- [Properties](#app-components-inline-editor-properties)
 	- [Styling](#app-components-inline-editor-styling)
 	- [Events](#app-components-inline-editor-events)
+	- [Methods](#app-components-inline-editor-methods)
 	- [Examples](#app-components-inline-editor-examples)
 
 ## Showcase
@@ -121,6 +122,15 @@ The event `input` will be automatically triggered when the content will be modif
 | -------------- | ----------- | -------------------------- |
 | `imgDidChange` | Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element. | `CustomEvent<HTMLElement>` |
 | `stickyToolbarActivated` | Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it. | `CustomEvent<boolean>` | 
+
+### Methods
+
+This component also export an async method `reset()` which will reset the inline editor (= hide it) and optionally clear its selection.
+
+```
+const element = document.querySelector('deckgo-inline-editor');
+await element.reset(true);
+```
 
 ### Examples
 

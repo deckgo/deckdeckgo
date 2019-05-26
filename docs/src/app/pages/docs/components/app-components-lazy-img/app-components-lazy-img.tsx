@@ -159,7 +159,7 @@ export class AppComponentsLazyImg {
 </tr>
 </tbody></table>
 <h3 id="app-components-lazy-img-methods">Methods</h3>
-<p>This component also expost an async method <code>lazyLoad()</code> in case you would like to trigger &quot;manually&quot; the loading of the image.</p>
+<p>This component also export an async method <code>lazyLoad()</code> in case you would like to trigger &quot;manually&quot; the loading of the image.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">const element = document.querySelector(&#039;deckgo-lazy-img&#039;);{'\n'}await element.lazyLoad();</code>
     </deckgo-highlight-code><h3 id="app-components-lazy-img-fallback">Fallback</h3>

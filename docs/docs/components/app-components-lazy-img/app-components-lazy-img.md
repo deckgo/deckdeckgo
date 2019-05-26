@@ -59,7 +59,7 @@ The following theming options will affect this component if set on its host or p
 
 ### Methods
 
-This component also expost an async method `lazyLoad()` in case you would like to trigger "manually" the loading of the image.
+This component also export an async method `lazyLoad()` in case you would like to trigger "manually" the loading of the image.
 
 ```
 const element = document.querySelector('deckgo-lazy-img');
