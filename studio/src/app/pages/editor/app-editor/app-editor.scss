@@ -38,6 +38,12 @@ app-editor {
     --deckgo-inline-editor-button-mobile-color: var(--ion-color-dark);
     --deckgo-inline-editor-sticky-zindex: 10;
 
+    --deckgo-inline-editor-mobile-background-top: var(--ion-color-primary);
+    --deckgo-inline-editor-mobile-background-bottom: var(--ion-color-primary);
+    --deckgo-inline-editor-button-mobile-color: white;
+    --deckgo-inline-editor-button-mobile-color-active: var(--ion-color-warning);
+    --deckgo-inline-editor-button-mobile-color-disabled: var(--ion-color-primary-tint);
+
     ion-icon[slot="link"] {
       padding-top: 12px;
       font-size: 1.2rem;
