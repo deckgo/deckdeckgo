@@ -229,11 +229,14 @@ export class AppTimer {
                 return;
             }
 
-            if (ionFabElement.activated) {
-                await this.openDatetime();
-            } else {
-                await this.stopTimer();
-            }
+            // Safari needs a bit to populate attribute activated
+            setTimeout(async () => {
+                if (ionFabElement.activated) {
+                    await this.openDatetime();
+                } else {
+                    await this.stopTimer();
+                }
+            }, 100);
 
             resolve();
         });
