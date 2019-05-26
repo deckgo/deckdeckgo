@@ -49,6 +49,12 @@ executables:
         dependencies:
             - deckdeckgo-handler
 
+    # The AWS presenter
+    presenter:
+        main: app/Presenter.hs
+        dependencies:
+            - deckdeckgo-handler
+
     # The API
     swagger:
         main: app/Swagger.hs

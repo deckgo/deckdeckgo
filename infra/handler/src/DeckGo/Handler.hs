@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DuplicateRecordFields #-}
@@ -61,6 +62,7 @@ import qualified Hasql.Decoders as HD
 import qualified Hasql.Encoders as HE
 import qualified Hasql.Session as HS
 import qualified Network.AWS as Aws
+import qualified Network.AWS.Data as Data
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.AWS.SQS as SQS
 import qualified Network.Wai as Wai
@@ -746,12 +748,12 @@ decksGetDeckId env fuid deckId = do
     pure deck
 
 decksPostPublish :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
-decksPostPublish env _ _ = do
+decksPostPublish (fixupEnv -> env) _ _ = do
     liftIO $ putStrLn "Your PRESENTATION WAS PUBLISHED!!!!"
 
     queueName <- liftIO $ T.pack <$> getEnv "QUEUE_NAME"
 
-    -- TODO: change queue name
+    liftIO $ putStrLn $ "Forwarding to queue: " <> T.unpack queueName
     queueUrl <- runAWS env (Aws.send $ SQS.getQueueURL queueName) >>= \case
       Right e -> pure $ e ^. SQS.gqursQueueURL
       Left e -> do
@@ -760,7 +762,8 @@ decksPostPublish env _ _ = do
 
     liftIO $ print queueUrl
 
-    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl "foo_message"
+    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl "foo_message" &
+      SQS.smMessageGroupId .~ Just "dummy-group" -- XXX: could be user ID
 
     case res of
       Right r -> do
@@ -768,6 +771,13 @@ decksPostPublish env _ _ = do
       Left e -> do
         liftIO $ print e
         Servant.throwError Servant.err500
+
+fixupEnv :: Aws.Env -> Aws.Env
+fixupEnv = Aws.configure $ SQS.sqs
+  { Aws._svcEndpoint = \reg -> do
+      let new = "sqs." <> Data.toText reg <> ".amazonaws.com"
+      (Aws._svcEndpoint SQS.sqs reg) & Aws.endpointHost .~ T.encodeUtf8 new
+  }
 
 decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (Item DeckId Deck)
 decksPost env fuid deck = do

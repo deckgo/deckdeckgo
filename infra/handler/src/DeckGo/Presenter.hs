@@ -3,7 +3,6 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE LambdaCase #-}
 
-
 -- XXX: !!!!IMPORTANT: CONCURRENCY 1 on this lambda!!!!
 module DeckGo.Presenter where
 

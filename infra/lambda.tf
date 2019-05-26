@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "api" {
   function_name    = "deckdeckgo-handler-lambda"
-  filename         = "${data.external.build-function.result.build_function_zip_path}"
+  filename         = "${data.external.build-function.result.path}"
   handler          = "main.handler"
   runtime          = "nodejs8.10"
 
@@ -48,8 +48,9 @@ EOF
 
 data "external" "build-function" {
   program = [
-    "${path.module}/script/build-function"
-    ]
+    "nix", "eval",
+    "(import ./default.nix).function-handler-path", "--json"
+  ]
 }
 
 resource "aws_iam_role_policy_attachment" "role_attach_lambdavpc" {
@@ -57,6 +58,8 @@ resource "aws_iam_role_policy_attachment" "role_attach_lambdavpc" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+# XXX: looks like Lambda needs to be redeploy for the policy to take effect
+# TODO: auto redeploy on policy change
 data "aws_iam_policy_document" "policy_for_lambda" {
 
   # Give access to CloudWatch
@@ -67,6 +70,16 @@ data "aws_iam_policy_document" "policy_for_lambda" {
     ]
 
     resources = ["${aws_cloudwatch_log_group.lambda-api.arn}"]
+  }
+
+  # Give access to SQS
+  statement {
+    actions = [
+      "sqs:SendMessage",
+      "sqs:GetQueueURL",
+    ]
+
+    resources = ["${aws_sqs_queue.presentation_deploy.arn}"]
   }
 
   # Give access to DynamoDB
@@ -89,7 +102,6 @@ data "aws_iam_policy_document" "policy_for_lambda" {
       "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-users.arn}",
     ]
   }
-
 }
 
 resource "aws_iam_role_policy" "policy_for_lambda" {

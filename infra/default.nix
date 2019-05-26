@@ -16,12 +16,27 @@ rec
           main.js main_hs google-public-keys.json dist
       '';
 
+  # TODO: move all other builders to this
+  function-handler-path = { path = "${function}/function.zip"; } ;
+
   function-unsplash =
     pkgs.runCommand "build-lambda" {}
       ''
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${unsplashProxyStatic}/bin/unsplash-proxy" main_hs
+        mkdir $out
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
+      '';
+
+  function-presenter-path = { path = "${function-presenter}/function.zip"; } ;
+
+  function-presenter =
+    pkgs.runCommand "build-lambda-presenter" {}
+      ''
+        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        # Can't be called 'main' otherwise lambda tries to load it
+        cp "${handlerStatic}/bin/presenter" main_hs
         mkdir $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';

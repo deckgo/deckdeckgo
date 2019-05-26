@@ -127,12 +127,19 @@ withSQS env act = withQueueName $ do
         | is' SQS._QueueDoesNotExist e -> pure ()
         | otherwise -> error $ "Could not get queue URL: " <> show e
 
-    runAWS env (Aws.send $ SQS.createQueue ttestQueueName) >>= \case
+    putStrLn $ "Creating " <> testQueueName
+
+    runAWS env (Aws.send $ SQS.createQueue ttestQueueName &
+      SQS.cqAttributes .~ (HMS.fromList
+        [ (SQS.QANFifoQueue, "true")
+        , (SQS.QANContentBasedDeduplication, "true")
+        ])
+      ) >>= \case
       Left e -> error $ "Could not create queue: " <> show e
       Right {} -> pure ()
     act
   where
-    testQueueName = "the-queue"
+    testQueueName = "the-queue.fifo"
     ttestQueueName = T.pack testQueueName
     withQueueName =
       bracket_ (setEnv "QUEUE_NAME" testQueueName) (unsetEnv "QUEUE_NAME")
@@ -516,6 +523,12 @@ rerouteDynamoDB req =
 rerouteSQS :: HTTPClient.Request -> HTTPClient.Request
 rerouteSQS req =
     case HTTPClient.host req of
+      "sqs.us-east-1.amazonaws.com" ->
+        req
+          { HTTPClient.host = "127.0.0.1"
+          , HTTPClient.port = 9324 -- TODO: read from Env
+          , HTTPClient.secure = False
+          }
       "queue.amazonaws.com" ->
         req
           { HTTPClient.host = "127.0.0.1"
