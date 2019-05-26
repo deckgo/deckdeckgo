@@ -1,4 +1,4 @@
-import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event} from '@stencil/core';
+import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method} from '@stencil/core';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
@@ -524,18 +524,23 @@ export class DeckdeckgoInlineEditor {
     return e.changedTouches ? e.changedTouches[0] : e;
   }
 
-  private async reset(clearSelection: boolean) {
-    if (clearSelection) {
-      await this.clearTheSelection();
-    }
+  @Method()
+  reset(clearSelection: boolean): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (clearSelection) {
+        await this.clearTheSelection();
+      }
 
-    await this.setToolsActivated(false);
+      await this.setToolsActivated(false);
 
-    this.selection = null;
+      this.selection = null;
 
-    this.toolbarActions = ToolbarActions.SELECTION;
-    this.anchorLink = null;
-    this.link = false;
+      this.toolbarActions = ToolbarActions.SELECTION;
+      this.anchorLink = null;
+      this.link = false;
+
+      resolve();
+    });
   }
 
   private styleBold(e: UIEvent): Promise<void> {

@@ -27,6 +27,25 @@
 | `stickyToolbarActivated` |             | `CustomEvent<boolean>`     |
 
 
+## Methods
+
+### `reset(clearSelection: boolean) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name             | Type      | Description |
+| ---------------- | --------- | ----------- |
+| `clearSelection` | `boolean` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

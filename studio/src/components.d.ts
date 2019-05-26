@@ -7,13 +7,13 @@
 
 import '@stencil/core';
 
+import '@ionic/core';
 import '@deckdeckgo/core';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/lazy-img';
 import '@deckdeckgo/qrcode';
 import '@deckdeckgo/remote';
-import '@ionic/core';
 import 'ionicons';
 import {
   EventEmitter,
@@ -92,6 +92,7 @@ export namespace Components {
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onWillOpenColorPicker'?: (event: CustomEvent<void>) => void;
   }
 
   interface AppStockPhotos {

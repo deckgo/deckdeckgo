@@ -51,6 +51,8 @@ export class AppEditorToolbar {
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
     @Event() private codeDidChange: EventEmitter<HTMLElement>;
 
+    @Event() willOpenColorPicker: EventEmitter<void>;
+
     private subscription: Subscription;
     private busyService: BusyService;
 
@@ -130,8 +132,6 @@ export class AppEditorToolbar {
             }
 
             await this.initSelectedElement(selected);
-
-            selected.focus();
 
             await this.displayToolbar(selected);
 
@@ -431,6 +431,8 @@ export class AppEditorToolbar {
                 return;
             }
 
+            this.willOpenColorPicker.emit();
+
             colorPicker.click();
 
             resolve();
@@ -485,6 +487,8 @@ export class AppEditorToolbar {
                 resolve();
                 return;
             }
+
+            this.willOpenColorPicker.emit();
 
             backgroundPicker.click();
 
