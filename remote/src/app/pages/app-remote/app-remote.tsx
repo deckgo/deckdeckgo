@@ -216,7 +216,7 @@ export class AppRemote {
                 return;
             }
 
-            this.slideIndex = await (deck as HTMLDeckgoDeckElement).getActiveIndex();
+            this.slideIndex = await (deck as any).getActiveIndex();
 
             resolve();
         });
