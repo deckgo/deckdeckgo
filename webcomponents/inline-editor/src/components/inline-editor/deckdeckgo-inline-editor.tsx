@@ -247,12 +247,8 @@ export class DeckdeckgoInlineEditor {
   }
 
   @Listen('document:selectionchange', {passive: true})
-  async selectionchange(_$event: Event) {
+  async selectionchange(_$event: UIEvent) {
     if (document && document.activeElement && !this.isContainer(document.activeElement)) {
-      if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
-        await this.reset(false);
-      }
-
       return;
     }
 
