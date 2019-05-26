@@ -496,7 +496,7 @@ export class AppRemote {
     private renderContent() {
         if (this.connectionState === ConnectionState.CONNECTED) {
             return ([
-                <deckgo-deck embedded={true} pager={false}
+                <deckgo-deck embedded={true}
                              onSlidesDidLoad={() => this.startAccelerometer()}
                              onSlideNextDidChange={() => this.nextSlide(false)}
                              onSlidePrevDidChange={() => this.prevSlide(false)}
