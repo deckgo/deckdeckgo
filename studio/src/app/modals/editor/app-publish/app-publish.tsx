@@ -268,7 +268,7 @@ export class AppPublish {
                             </ion-item>
 
                             <ion-item>
-                                <ion-input debounce={500} required={true} input-mode="text" value={this.tag} placeholder="Add a tag..."
+                                <ion-input debounce={500} input-mode="text" value={this.tag} placeholder="Add a tag..."
                                            disabled={!this.tags || this.tags.length >= 5}
                                            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}
                                            onIonChange={() => this.onTagChange()}></ion-input>
