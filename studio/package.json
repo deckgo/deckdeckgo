@@ -19,18 +19,18 @@
     "@deckdeckgo/inline-editor": "^1.0.0-alpha.7",
     "@deckdeckgo/lazy-img": "^1.0.0-alpha.4",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.7",
-    "@deckdeckgo/remote": "^1.0.0-alpha.9",
+    "@deckdeckgo/remote": "^1.0.0-alpha.10",
     "@ionic/core": "4.1.1",
     "firebase": "^5.9.0",
     "idb-keyval": "^3.1.0",
     "rxjs": "^6.4.0"
   },
   "devDependencies": {
+    "@deckdeckgo/types": "^1.0.0-alpha.10",
     "@stencil/core": "0.18.0",
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
     "autoprefixer": "^9.4.7",
-    "deckdeckgo-types": "^1.0.0-alpha.9",
     "rollup-plugin-replace": "^2.1.1",
     "workbox-build": "3.4.1"
   },
