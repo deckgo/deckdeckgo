@@ -31,35 +31,54 @@ export class DeckdeckgoLazyImg {
 
   private observer: IntersectionObserver;
 
-  componentDidLoad() {
-    this.init();
+  async componentDidLoad() {
+    await this.init();
 
     this.lazyImgDidLoad.emit();
   }
 
   @Watch('imgSrc')
-  handleAttrImgSrc() {
-    this.init();
+  async handleAttrImgSrc() {
+    await this.init();
   }
 
-  private init() {
+  private async init() {
     const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
 
     if (img) {
+      if (window && 'IntersectionObserver' in window) {
+        await this.deferLoad(img);
+      } else {
+        await this.loadImmediately(img);
+      }
+    }
+  }
+
+  private loadImmediately(img: HTMLImageElement): Promise<void> {
+    return this.load(img);
+  }
+
+  private deferLoad(img: HTMLImageElement): Promise<void> {
+    return new Promise<void>((resolve) => {
       this.observer = new IntersectionObserver(this.onIntersection, {
         rootMargin: this.observerRootMargin,
         threshold: this.observerThreshold
       });
 
       this.observer.observe(img);
-    }
+
+      resolve();
+    });
   }
 
   @Method()
   lazyLoad(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
-      await this.load(img);
+
+      if (img) {
+        await this.load(img);
+      }
 
       resolve();
     });
