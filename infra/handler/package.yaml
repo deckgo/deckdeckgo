@@ -6,20 +6,22 @@ license: AGPL-3
 dependencies:
     - aeson
     - amazonka
+    - amazonka-core
     - amazonka-dynamodb
-    - amazonka-sqs
     - amazonka-s3
+    - amazonka-sqs
     - base
     - bytestring
+    - contravariant
     - directory
-    - hasql
     - filepath
     - firebase-login
+    - hasql
     - http-client
     - http-types
     - lens
     - mtl
-    - contravariant
+    - mime-types
     - random
     - servant
     - servant-server

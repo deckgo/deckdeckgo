@@ -79,6 +79,7 @@ rec
            else
             echo "Looks like SQS is already running"
            fi
+
            if [ ! -f .s3.pid ]; then
             echo "Starting S3"
             MINIO_ACCESS_KEY=dummy \
@@ -121,7 +122,10 @@ rec
          }
 
          function repl_handler() {
-            DECKGO_STARTER_DIST=${deckdeckgo-starter-dist} \
+            AWS_DEFAULT_REGION=us-east-1 \
+              AWS_ACCESS_KEY_ID=dummy \
+              AWS_SECRET_ACCESS_KEY=dummy_key \
+              DECKGO_STARTER_DIST=${deckdeckgo-starter-dist} \
               ghci -Wall handler/app/Test.hs handler/src/DeckGo/*.hs
          }
 
@@ -172,6 +176,10 @@ rec
       #!${pkgs.stdenv.shell}
       set -euo pipefail
 
+      export AWS_DEFAULT_REGION=us-east-1
+      export AWS_ACCESS_KEY_ID=dummy
+      export AWS_SECRET_ACCESS_KEY=dummy_key
+
       # Set up DynamoDB
       java \
         -Djava.library.path=${dynamoJar}/DynamoDBLocal_lib \
@@ -180,6 +188,10 @@ rec
 
       java \
         -jar ${pkgs.sources.elasticmq} &
+
+      MINIO_ACCESS_KEY=dummy \
+        MINIO_SECRET_KEY=dummy_key \
+        minio server --address localhost:9000 $(mktemp -d) &
 
       while ! nc -z 127.0.0.1 8123; do
         echo waiting for DynamoDB
@@ -191,9 +203,13 @@ rec
         sleep 1
       done
 
-      export AWS_DEFAULT_REGION=us-east-1
-      export AWS_ACCESS_KEY_ID=dummy
-      export AWS_SECRET_ACCESS_KEY=dummy
+      while ! nc -z 127.0.0.1 9000; do
+        echo waiting for S3
+        sleep 1
+      done
+
+      aws s3api create-bucket --bucket deckgo-bucket \
+          --endpoint-url http://127.0.0.1:9000
 
       export PGHOST=localhost
       export PGPORT=5432
@@ -208,6 +224,11 @@ rec
         LD_PRELOAD="${pkgs.libredirect}/lib/libredirect.so" \
         GOOGLE_PUBLIC_KEYS="${pkgs.writeText "google-x509" (builtins.toJSON googleResp)}" \
         FIREBASE_PROJECT_ID="my-project-id" \
+        FIREBASE_PROJECT_ID="my-project-id" \
+        AWS_DEFAULT_REGION=us-east-1 \
+        AWS_ACCESS_KEY_ID=dummy \
+        AWS_SECRET_ACCESS_KEY=dummy_key \
+        DECKGO_STARTER_DIST=${deckdeckgo-starter-dist} \
         TEST_TOKEN_PATH=${./token} ${handler}/bin/test
       echo "Tests were run"
 
@@ -221,6 +242,7 @@ rec
           pkgs.haskellPackages.wai-app-static
           pkgs.postgresql
           pkgs.moreutils
+          pkgs.minio
         ];
     } script;
 }

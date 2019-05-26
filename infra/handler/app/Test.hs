@@ -10,8 +10,9 @@ import Control.Lens.Extras (is)
 import Control.Monad
 import Data.Monoid (First)
 import Data.List.NonEmpty
-import Data.Function
 import DeckGo.Handler
+import DeckGo.Prelude
+import DeckGo.Presenter
 import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Network.HTTP.Types as HTTP
 import Servant.API
@@ -42,7 +43,7 @@ withEnv :: (Aws.Env -> IO a) -> IO a
 withEnv act = do
     mgr <- HTTPClient.newManager HTTPClient.tlsManagerSettings
             { HTTPClient.managerModifyRequest =
-                pure . rerouteDynamoDB . rerouteSQS
+                pure . rerouteDynamoDB . rerouteSQS . rerouteS3
             }
     env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
     act env
@@ -134,6 +135,7 @@ withSQS env act = do
 withS3 :: Aws.Env -> IO a -> IO a
 withS3 env act = do
     let bname = S3.BucketName "deckgo-bucket"
+    deleteObjects env bname Nothing
     putStrLn "Deleting bucket, if exists"
     runAWS env (Aws.send $ S3.deleteBucket bname) >>= \case
       Right {} -> pure ()
@@ -179,12 +181,13 @@ main = do
               , Tasty.testCase "update" testSlidesUpdate
               ]
           ]
-      , Tasty.testCase "presentation" main'
+      , Tasty.testCase "presentation" testPresDeploys
       , Tasty.testCase "server" main'
       ]
 
 testPresDeploys :: IO ()
-testPresDeploys = withEnv $ \env  -> undefined
+testPresDeploys = withEnv $ \env -> withS3 env $ do
+    deployPresentation env (Username "josph") (Deckname "some-deck")
 
 testUsersGet :: IO ()
 testUsersGet = withPristineDB $ \conn -> do
@@ -516,6 +519,17 @@ rerouteSQS req =
           }
       _ -> req
 
+rerouteS3 :: HTTPClient.Request -> HTTPClient.Request
+rerouteS3 req =
+    case HTTPClient.host req of
+      "s3.amazonaws.com" ->
+        req
+          { HTTPClient.host = "127.0.0.1"
+          , HTTPClient.port = 9000 -- TODO: read from Env
+          , HTTPClient.secure = False
+          }
+      _ -> req
+
 getFirebaseSettings :: IO Firebase.FirebaseLoginSettings
 getFirebaseSettings = do
     pkeys <- getEnv "GOOGLE_PUBLIC_KEYS"
@@ -545,6 +559,3 @@ getPostgresqlConnection = do
       ) >>= \case
         Left e -> error (show e)
         Right c -> pure c
-
-xif :: b -> ((b -> c) -> b -> c) -> c
-xif = flip fix

@@ -11,6 +11,7 @@ import Control.Lens hiding ((.=))
 import Control.Monad
 import Data.Bifunctor
 import Data.Function
+import DeckGo.Prelude
 import qualified Data.ByteString as BS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
@@ -23,29 +24,42 @@ import qualified Network.AWS.S3 as S3
 import qualified Network.AWS.Data.Body as Body
 import qualified System.Directory as Dir
 
-deployPresentation :: Aws.Env -> Username -> Deckname -> IO ()
-deployPresentation env uname dname = do
-    let bname = S3.BucketName "deckgo-bucket"
-    es <- xif ([],Nothing) $ \f (es, ct) ->
-      runAWS env (Aws.send $ S3.listObjectsV2 bname &
-        S3.lovContinuationToken .~ ct &
-        S3.lovPrefix .~ Just (unUsername uname <> "/")
-        ) >>= \case
-        Right r -> do
-          let objs = r ^. S3.lovrsContents
-          case (r ^. S3.lovrsIsTruncated, r ^. S3.lovrsNextContinuationToken) of
-            (Just True, Just ct') -> f (es <> objs, Just ct')
-            _ -> pure (es <> objs)
-        Left e -> error $ "Could not list objects: " <> show e
+listObjects :: Aws.Env -> S3.BucketName -> Maybe T.Text -> IO [S3.Object]
+listObjects env bname mpref = xif ([],Nothing) $ \f (es, ct) ->
+    runAWS env (Aws.send $ S3.listObjectsV2 bname &
+      S3.lovContinuationToken .~ ct &
+      S3.lovPrefix .~ mpref
+      ) >>= \case
+      Right r -> do
+        putStrLn "Listed objects..."
+        let objs = r ^. S3.lovrsContents
+        case (r ^. S3.lovrsIsTruncated, r ^. S3.lovrsNextContinuationToken) of
+          (Just True, Just ct') -> f (es <> objs, Just ct')
+          _ -> pure (es <> objs)
+      Left e -> error $ "Could not list objects: " <> show e
+
+deleteObjects :: Aws.Env -> S3.BucketName -> Maybe T.Text -> IO ()
+deleteObjects env bname mpref = do
+    es <- listObjects env bname mpref
+    putStrLn $ "Deleting " <> show (length es) <> " objects..."
     forM_ es $ \((^. S3.oKey) -> okey) -> runAWS env (
       Aws.send $ S3.deleteObject bname okey) >>= \case
         Right {} -> pure ()
         Left e -> error $ "Could not delete object: " <> show e
+
+deployPresentation :: Aws.Env -> Username -> Deckname -> IO ()
+deployPresentation env uname dname = do
+    let bname = S3.BucketName "deckgo-bucket"
+    putStrLn "Deleting old objects..."
+    deleteObjects env bname (Just (unUsername uname <> "/"))
     deckgoStarterDist <- getEnv "DECKGO_STARTER_DIST"
+    putStrLn "Listing new files..."
     starterFiles <- listDirectoryRecursive deckgoStarterDist
+    putStrLn "Copying objects..."
     forM_ starterFiles $ \(fp, pathComponents) -> do
+      putStrLn $ "Copying " <> fp
       bs <- BS.readFile fp -- TODO: streaming
-      runAWS env ( -- TODO: content type
+      runAWS env (
         Aws.send $ S3.putObject
           bname
           (mkObjectKey uname dname pathComponents)
@@ -64,11 +78,8 @@ inferContentType :: T.Text -> Maybe T.Text
 inferContentType = Just . T.decodeUtf8 .
     Mime.mimeByExt Mime.defaultMimeMap Mime.defaultMimeType
 
-xif :: b -> ((b -> c) -> b -> c) -> c
-xif = flip fix
-
 listDirectoryRecursive :: FilePath -> IO [(FilePath, [T.Text])]
-listDirectoryRecursive = fix (\f dir -> do
+listDirectoryRecursive = fix $ \f dir -> do
     -- XXX: /so/ not tail recursive
     (dirs, fs) <- Dir.listDirectory dir >>=
       mapM (\component -> pure (dir </> component, [T.pack component])) >>=
@@ -77,7 +88,6 @@ listDirectoryRecursive = fix (\f dir -> do
       (\(dir', components) -> fmap (second (components <>)) <$> (f dir'))
       dirs
     pure (fs <> fs')
-    )
 
 -- Data.List for Monad
 
