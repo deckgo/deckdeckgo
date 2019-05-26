@@ -1,6 +1,8 @@
 import {Component, Element, State} from '@stencil/core';
 import {DatetimeChangeEventDetail} from '@ionic/core';
 
+import {differenceInMilliseconds, isAfter, startOfDay} from 'date-fns';
+
 import {BehaviorSubject, Subscription} from 'rxjs';
 
 import {Comparator} from '../../services/utils/utils';
@@ -114,7 +116,7 @@ export class AppTimer {
         const datetimeElement: HTMLIonDatetimeElement = this.el.querySelector('ion-datetime');
 
         if (datetimeElement) {
-            datetimeElement.value = null;
+            datetimeElement.value = startOfDay(new Date()).toDateString();
         }
     }
 
@@ -129,7 +131,7 @@ export class AppTimer {
             <ion-content padding>
                 {this.renderContent()}
                 {this.renderActions()}
-                <ion-datetime display-format="HH:mm" pickerOptions={{backdropDismiss: false}}
+                <ion-datetime display-format="HH:mm" pickerOptions={{backdropDismiss: false}} value={startOfDay(new Date()).toDateString()}
                               onIonCancel={() => this.toggleFabActivated()}
                               onIonChange={(e: CustomEvent<DatetimeChangeEventDetail>) => this.initTimerLengthAndStartTimer(e)}></ion-datetime>
             </ion-content>
@@ -196,24 +198,21 @@ export class AppTimer {
                 return;
             }
 
-            const values: string[] = $event.detail.value.split(':');
-
-            if (Comparator.isEmpty(values) || values.length < 2) {
-                resolve();
+            if (this.timerRunning) {
+                // ion-datetime fire twice on select
                 return;
             }
 
-            const hours: number = parseInt(values[0], 0);
-            const minutes: number = parseInt(values[1], 0);
+            try {
+                const selected: Date = new Date($event.detail.value);
+                const todayStart: Date = startOfDay(new Date());
 
-            if (hours <= 0 && minutes <= 0) {
-                resolve();
-                return;
+                if (isAfter(selected, todayStart)) {
+                    await this.startTimer(differenceInMilliseconds(selected, todayStart));
+                }
+            } catch (err) {
+                // Do nothing
             }
-
-            const length: number = (minutes * 60 * 1000) + (hours * 60 * 60 * 1000);
-
-            await this.startTimer(length);
 
             resolve();
         });
