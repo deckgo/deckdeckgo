@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/remote",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "description": "Present and interact with your DeckDeckGo's PWA presentation",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
@@ -22,6 +22,7 @@
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
+    "@deckdeckgo/types": "^1.0.0-alpha.10",
     "@stencil/core": "~0.18.0",
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.1.1",
@@ -29,7 +30,6 @@
     "@types/socket.io-client": "^1.4.32",
     "@types/webrtc": "0.0.24",
     "autoprefixer": "^9.4.7",
-    "deckdeckgo-types": "^1.0.0-alpha.9",
     "rollup-plugin-node-builtins": "^2.1.2"
   },
   "repository": {

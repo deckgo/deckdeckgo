@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.10"></a>
+# 1.0.0-alpha.10 (2019-05-26)
+
+### Libs
+
+* use org scoped `@deckdeckgo/types`
+
 <a name="1.0.0-alpha.9"></a>
 # 1.0.0-alpha.9 (2019-05-24)
 
