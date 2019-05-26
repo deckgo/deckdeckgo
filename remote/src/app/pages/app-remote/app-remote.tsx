@@ -11,7 +11,7 @@ import {
     DeckdeckgoEventSlides,
     DeckdeckgoEventSlideTo,
     DeckdeckgoSlideAction, DeckdeckgoSlideDefinition
-} from 'deckdeckgo-types';
+} from '@deckdeckgo/types';
 
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';

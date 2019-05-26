@@ -12,7 +12,7 @@ import 'ionicons';
 import '@deckdeckgo/core';
 import {
   DeckdeckgoSlideDefinition,
-} from 'deckdeckgo-types';
+} from '@deckdeckgo/types';
 
 
 export namespace Components {

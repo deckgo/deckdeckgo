@@ -9,7 +9,7 @@ import {
     DeckdeckgoEventNextPrevSlide,
     DeckdeckgoEventSlideAction,
     DeckdeckgoEventSlideTo
-} from 'deckdeckgo-types';
+} from '@deckdeckgo/types';
 
 // Services
 import {EnvironmentConfigService} from '../environment/environment-config.service';
