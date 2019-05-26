@@ -1,0 +1,37 @@
+app-feed-card-tags {
+  :host {
+    display: flex;
+    flex-wrap: wrap;
+
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  div.chips {
+    background: var(--card-tags-background, rgba(var(--ion-color-primary-rgb), 0.08));
+    color: var(--card-tags-color, var(--ion-color-primary-shade));
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    margin: 4px 4px 4px 0;
+    height: 100%;
+
+    font-size: var(--font-size-normal);
+
+    ion-icon {
+      padding: 4px 0;
+    }
+
+    ion-label {
+      padding: 0px 4px;
+      margin-bottom: 2px;
+
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

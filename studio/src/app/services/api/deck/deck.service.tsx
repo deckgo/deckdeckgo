@@ -26,8 +26,12 @@ export class DeckService {
         return this.query(deck, '/decks', 'POST');
     }
 
-    async put(deck: Deck, bearer?: string): Promise<Deck> {
-        return this.query(deck, '/decks/' + deck.id, 'PUT', bearer);
+    put(deck: Deck, bearer?: string): Promise<Deck> {
+        return this.query(deck, `/decks/${deck.id}`, 'PUT', bearer);
+    }
+
+    publish(deck: Deck): Promise<Deck> {
+        return this.query(deck, `/decks/${deck.id}/publish`, 'POST');
     }
 
     private query(deck: Deck, context: string, method: string, bearer?: string): Promise<Deck> {

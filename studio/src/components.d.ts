@@ -113,12 +113,21 @@ export namespace Components {
   interface AppPopular {}
   interface AppPopularAttributes extends StencilHTMLAttributes {}
 
+  interface AppFeedCardTags {
+    'editable': boolean;
+    'tags': string[];
+  }
+  interface AppFeedCardTagsAttributes extends StencilHTMLAttributes {
+    'editable'?: boolean;
+    'onRemoveTag'?: (event: CustomEvent<string>) => void;
+    'tags'?: string[];
+  }
+
   interface AppFeedCard {
     'author': string;
     'caption': string;
     'compact': boolean;
     'description': string;
-    'editable': boolean;
     'miniature': boolean;
     'publication': Date;
   }
@@ -127,9 +136,7 @@ export namespace Components {
     'caption'?: string;
     'compact'?: boolean;
     'description'?: string;
-    'editable'?: boolean;
     'miniature'?: boolean;
-    'onEditCaption'?: (event: CustomEvent<string>) => void;
     'publication'?: Date;
   }
 
@@ -258,6 +265,7 @@ declare global {
     'AppDemo': Components.AppDemo;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
+    'AppFeedCardTags': Components.AppFeedCardTags;
     'AppFeedCard': Components.AppFeedCard;
     'AppUserDelete': Components.AppUserDelete;
     'AppGif': Components.AppGif;
@@ -300,6 +308,7 @@ declare global {
     'app-demo': Components.AppDemoAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
+    'app-feed-card-tags': Components.AppFeedCardTagsAttributes;
     'app-feed-card': Components.AppFeedCardAttributes;
     'app-user-delete': Components.AppUserDeleteAttributes;
     'app-gif': Components.AppGifAttributes;
@@ -410,6 +419,12 @@ declare global {
   var HTMLAppPopularElement: {
     prototype: HTMLAppPopularElement;
     new (): HTMLAppPopularElement;
+  };
+
+  interface HTMLAppFeedCardTagsElement extends Components.AppFeedCardTags, HTMLStencilElement {}
+  var HTMLAppFeedCardTagsElement: {
+    prototype: HTMLAppFeedCardTagsElement;
+    new (): HTMLAppFeedCardTagsElement;
   };
 
   interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
@@ -577,6 +592,7 @@ declare global {
     'app-demo': HTMLAppDemoElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
+    'app-feed-card-tags': HTMLAppFeedCardTagsElement
     'app-feed-card': HTMLAppFeedCardElement
     'app-user-delete': HTMLAppUserDeleteElement
     'app-gif': HTMLAppGifElement
@@ -619,6 +635,7 @@ declare global {
     'app-demo': HTMLAppDemoElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
+    'app-feed-card-tags': HTMLAppFeedCardTagsElement;
     'app-feed-card': HTMLAppFeedCardElement;
     'app-user-delete': HTMLAppUserDeleteElement;
     'app-gif': HTMLAppGifElement;
