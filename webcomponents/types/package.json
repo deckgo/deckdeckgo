@@ -1,6 +1,6 @@
 {
-  "name": "deckdeckgo-types",
-  "version": "1.0.0-alpha.9",
+  "name": "@deckdeckgo/types",
+  "version": "1.0.0-alpha.10",
   "author": "David Dal Busco",
   "description": "Present and interact with your DeckDeckGo's PWA presentation",
   "license": "MIT",

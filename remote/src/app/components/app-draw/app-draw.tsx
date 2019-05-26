@@ -1,7 +1,7 @@
 import {Component, Element, Method, Prop, State, Watch, EventEmitter, Event} from '@stencil/core';
 
 // Types
-import {DeckdeckgoDrawAction, DeckdeckgoEventType, DeckdeckgoEventEmitter} from 'deckdeckgo-types';
+import {DeckdeckgoDrawAction, DeckdeckgoEventType, DeckdeckgoEventEmitter} from '@deckdeckgo/types';
 
 // Services
 import {CommunicationService} from '../../services/communication/communication.service';
