@@ -26,8 +26,8 @@ export class DeckService {
         return this.query(deck, '/decks', 'POST');
     }
 
-    async put(deck: Deck, bearer?: string): Promise<Deck> {
-        return this.query(deck, '/decks/' + deck.id, 'PUT', bearer);
+    put(deck: Deck, bearer?: string): Promise<Deck> {
+        return this.query(deck, `/decks/${deck.id}`, 'PUT', bearer);
     }
 
     private query(deck: Deck, context: string, method: string, bearer?: string): Promise<Deck> {
@@ -117,6 +117,36 @@ export class DeckService {
                 const persistedDecks: Deck[] = await rawResponse.json();
 
                 resolve(persistedDecks);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    publish(deck: Deck): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+
+                const bearer: string = await this.authService.getBearer();
+
+                const rawResponse: Response = await fetch(apiUrl + `/decks/${deck.id}/publish`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': bearer
+                    }
+                });
+
+                if (!rawResponse || !rawResponse.ok) {
+                    reject('Something went wrong while publishing the deck');
+                    return;
+                }
+
+                await rawResponse.json();
+
+                resolve();
             } catch (err) {
                 reject(err);
             }

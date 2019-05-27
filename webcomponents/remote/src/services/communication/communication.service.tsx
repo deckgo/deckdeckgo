@@ -3,7 +3,7 @@ import * as io from 'socket.io-client';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 // Types
-import {DeckdeckgoEvent, DeckdeckgoEventSlides, DeckdeckgoEventSlideTo} from 'deckdeckgo-types';
+import {DeckdeckgoEvent, DeckdeckgoEventSlides, DeckdeckgoEventSlideTo} from '@deckdeckgo/types';
 
 const configuration: RTCConfiguration = {
   iceServers: [

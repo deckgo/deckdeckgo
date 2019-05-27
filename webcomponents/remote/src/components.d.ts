@@ -11,7 +11,7 @@ import '@stencil/core';
 import {
   DeckdeckgoEvent,
   DeckdeckgoSlideDefinition,
-} from 'deckdeckgo-types';
+} from '@deckdeckgo/types';
 import {
   EventEmitter,
 } from '@stencil/core';

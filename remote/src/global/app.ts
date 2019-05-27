@@ -1,6 +1,6 @@
 import '@ionic/core';
 
-import 'deckdeckgo';
+import '@deckdeckgo/core';
 
 import {setupConfig} from '../app/services/environment/environment-config';
 

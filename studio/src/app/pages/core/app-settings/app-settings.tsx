@@ -190,7 +190,7 @@ export class AppHome {
         return [
             <h1>Settings</h1>,
             <form onSubmit={(e: Event) => this.handleSubmit(e)}>
-                <ion-list>
+                <ion-list class="inputs-list">
                     {this.renderName()}
                     {this.renderUsername()}
                 </ion-list>

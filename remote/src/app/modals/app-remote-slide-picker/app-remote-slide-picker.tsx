@@ -1,6 +1,6 @@
 import {Component, Listen, Element, Prop} from '@stencil/core';
 
-import {DeckdeckgoSlideDefinition} from 'deckdeckgo-types';
+import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
 @Component({
     tag: 'app-remote-slide-picker',

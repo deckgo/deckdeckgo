@@ -11,7 +11,7 @@ import {
     DeckdeckgoEventSlides,
     DeckdeckgoEventSlideTo,
     DeckdeckgoSlideAction, DeckdeckgoSlideDefinition
-} from 'deckdeckgo-types';
+} from '@deckdeckgo/types';
 
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
@@ -216,7 +216,7 @@ export class AppRemote {
                 return;
             }
 
-            this.slideIndex = await (deck as HTMLDeckgoDeckElement).getActiveIndex();
+            this.slideIndex = await (deck as any).getActiveIndex();
 
             resolve();
         });
@@ -496,7 +496,7 @@ export class AppRemote {
     private renderContent() {
         if (this.connectionState === ConnectionState.CONNECTED) {
             return ([
-                <deckgo-deck embedded={true} pager={false}
+                <deckgo-deck embedded={true}
                              onSlidesDidLoad={() => this.startAccelerometer()}
                              onSlideNextDidChange={() => this.nextSlide(false)}
                              onSlidePrevDidChange={() => this.prevSlide(false)}

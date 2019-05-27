@@ -1,5 +1,25 @@
 app-publish {
-  ion-content {
-    --background: var(--ion-color-light);
+  main {
+    background: white;
+
+    strong {
+      color: var(--ion-color-tertiary);
+    }
+
+    p.meta-text {
+      margin-bottom: 0;
+    }
+
+    app-feed-card-tags {
+      --card-tags-background: rgba(var(--ion-color-tertiary-rgb), 0.08);
+      --card-tags-color: var(--ion-color-tertiary-shade);
+
+      display: inline-block;
+      padding-top: 8px;
+    }
+
+    p.social {
+      font-size: var(--font-size-small);
+    }
   }
 }

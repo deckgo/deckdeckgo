@@ -33,8 +33,14 @@ ion-split-pane {
   &:not(.split-pane-visible) {
     app-navigation-actions {
       ion-button {
-        &.presentation, &.publish {
+        &.publish {
           --background: var(--ion-color-tertiary);
+          --color: white;
+          --color-activated: var(--ion-color-secondary);
+        }
+
+        &.presentation {
+          --background: var(--ion-color-primary);
           --color: white;
           --color-activated: var(--ion-color-secondary);
         }
