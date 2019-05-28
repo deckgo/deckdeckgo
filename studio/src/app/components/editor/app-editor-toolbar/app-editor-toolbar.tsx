@@ -336,15 +336,16 @@ export class AppEditorToolbar {
             const extraTop: number = mainPaneRect && mainPaneRect.top > 0 ? mainPaneRect.top : 0;
 
             // Set top position
-            applyTo.style.top = '' + (top - extraTop > 0 ? top - extraTop : 0) + 'px';
+            const topPosition: string = `${(top - extraTop > 0 ? top - extraTop : 0)}px`;
+            applyTo.style.top = this.deckOrSlide ? `calc(${topPosition} + var(--editor-toolbar-padding, 0px))` : `${topPosition}`;
 
             const windowWidth: number = window.innerWidth | screen.width;
 
             const leftStandardPosition: number = left + offsetWidth - extraLeft;
-            const leftPosition: number = leftStandardPosition + width > windowWidth ? windowWidth - width : leftStandardPosition;
 
             // Set left position
-            applyTo.style.left = '' + leftPosition + 'px';
+            const leftPosition: string = `${leftStandardPosition + width > windowWidth ? windowWidth - width : leftStandardPosition}px`;
+            applyTo.style.left = this.deckOrSlide ? `calc(${leftPosition} + var(--editor-toolbar-padding, 0px))` : `${leftPosition}`;
 
             // If not slide or deck selected, move a bit the toolbar
             if (!this.deckOrSlide) {
@@ -354,7 +355,7 @@ export class AppEditorToolbar {
             }
 
             // Set a width in order to align right the delete button
-            applyTo.style.width = '' + width + 'px';
+            applyTo.style.width = this.deckOrSlide ? `calc(${width}px - var(--editor-toolbar-padding, 0px) - var(--editor-toolbar-padding, 0px))` : `${width}px`;
 
             resolve();
         });
