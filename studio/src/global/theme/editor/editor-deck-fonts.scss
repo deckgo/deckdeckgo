@@ -11,14 +11,17 @@ deckgo-deck {
 
   h1 {
     font-size: 3em;
+    min-height: 1.5em;
   }
 
   h2 {
     font-size: 2em;
+    min-height: 1.7em;
   }
 
   h3 {
     font-size: 1.4em;
+    min-height: 2em;
   }
 
   code {
@@ -28,6 +31,7 @@ deckgo-deck {
 
   section {
     font-size: 1.4em;
+    min-height: 2em;
 
     ol, ul {
       font-size: inherit;
