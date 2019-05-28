@@ -24,6 +24,8 @@ main {
 
       pointer-events: none;
 
+      overflow:hidden;
+
       &::after {
         content: '';
         position: absolute;
