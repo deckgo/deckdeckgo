@@ -10,11 +10,11 @@ import '@stencil/core';
 import '@ionic/core';
 import 'ionicons';
 import '@deckdeckgo/core';
-import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/inline-editor';
-import '@deckdeckgo/lazy-img';
-import '@deckdeckgo/qrcode';
 import '@deckdeckgo/remote';
+import '@deckdeckgo/qrcode';
+import '@deckdeckgo/highlight-code';
+import '@deckdeckgo/lazy-img';
 import {
   EventEmitter,
 } from '@stencil/core';
