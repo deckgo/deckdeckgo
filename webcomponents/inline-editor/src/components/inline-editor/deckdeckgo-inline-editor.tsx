@@ -192,10 +192,12 @@ export class DeckdeckgoInlineEditor {
 
       await this.reset(true);
 
+      document.addEventListener('focusout', async () => {await this.reset(true);}, {once: true});
+
       setTimeout(async () => {
         await this.activateToolbarImage();
         await this.setToolbarAnchorPosition();
-      }, 0);
+      }, 100);
 
       resolve();
     });
@@ -250,12 +252,14 @@ export class DeckdeckgoInlineEditor {
   async selectionchange(_$event: UIEvent) {
     if (document && document.activeElement && !this.isContainer(document.activeElement)) {
       if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
-        // iOS triggers selection change on cursor move with an anchor on body even inside the content, don't ask
-        if (!DeckdeckgoInlineEditorUtils.isIOS()) {
-          await this.reset(false);
-        }
+        await this.reset(false);
       }
 
+      return;
+    }
+
+    if (this.toolbarActions === ToolbarActions.IMAGE && this.isAnchorImage()) {
+      await this.reset(false);
       return;
     }
 
