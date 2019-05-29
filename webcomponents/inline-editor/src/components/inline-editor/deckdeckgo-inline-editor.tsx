@@ -109,6 +109,8 @@ export class DeckdeckgoInlineEditor {
   @Prop()
   imgPropertyCssFloat: string = 'cssFloat';
 
+  private iOSTimerScroll: number;
+
   async componentWillLoad() {
     await this.attachListener();
   }
@@ -316,8 +318,10 @@ export class DeckdeckgoInlineEditor {
   }
 
   private setToolbarAnchorPosition(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (this.isSticky()) {
+        await this.handlePositionIPhone();
+
         resolve();
         return;
       }
@@ -343,6 +347,40 @@ export class DeckdeckgoInlineEditor {
         tools.style.top = '' + (top) + 'px';
         tools.style.left = '' + (left) + 'px';
       }
+
+      resolve();
+    });
+  }
+
+  private handlePositionIPhone(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!DeckdeckgoInlineEditorUtils.isIPhone() || !this.anchorEvent) {
+        resolve();
+        return;
+      }
+
+      await this.setStickyPositionIPhone();
+
+      if (window) {
+        window.addEventListener('scroll', async () => {await this.setStickyPositionIPhone();});
+      }
+    });
+  }
+
+  private setStickyPositionIPhone(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.stickyMobile || !DeckdeckgoInlineEditorUtils.isIPhone() || !window) {
+        resolve();
+        return;
+      }
+
+      if(this.iOSTimerScroll > 0) {
+        clearTimeout(this.iOSTimerScroll);
+      }
+
+      this.iOSTimerScroll = setTimeout(() => {
+        this.el.style.setProperty('--deckgo-inline-editor-sticky-scroll', `${window.scrollY}px`);
+      }, 50);
 
       resolve();
     });
@@ -545,6 +583,10 @@ export class DeckdeckgoInlineEditor {
       this.toolbarActions = ToolbarActions.SELECTION;
       this.anchorLink = null;
       this.link = false;
+
+      if (window) {
+        window.removeEventListener('scroll', async () => {await this.setStickyPositionIPhone();});
+      }
 
       resolve();
     });
@@ -770,12 +812,11 @@ export class DeckdeckgoInlineEditor {
   private isSticky(): boolean {
     const mobile: boolean = DeckdeckgoInlineEditorUtils.isMobile();
 
-    // On iOS, when the keyboard opens, it doesn't resize the window/viewport, therefore be my guest to set the toolbar as sticky footer without any other requirements
-    return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile && !DeckdeckgoInlineEditorUtils.isIOS());
+    return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile);
   }
 
   private setToolsActivated(activated: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       this.toolsActivated = activated;
 
       if (this.isSticky()) {
@@ -1058,5 +1099,13 @@ export class DeckdeckgoInlineEditor {
 
 
     ];
+  }
+
+  hostData() {
+    return {
+      class: {
+        'deckgo-tools-iphone': DeckdeckgoInlineEditorUtils.isIPhone()
+      }
+    }
   }
 }
