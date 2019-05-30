@@ -20,7 +20,7 @@
     "@deckdeckgo/lazy-img": "file:../webcomponents/lazy-img",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.7",
     "@deckdeckgo/remote": "^1.0.0-alpha.10",
-    "@deckdeckgo/utils": "file:../webcomponents/utils",
+    "@deckdeckgo/utils": "^1.0.0-alpha.1",
     "@ionic/core": "4.1.1",
     "firebase": "^5.9.0",
     "idb-keyval": "^3.1.0",
