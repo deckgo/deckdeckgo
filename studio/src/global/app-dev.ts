@@ -1,5 +1,10 @@
 import '@ionic/core';
 
+import {setupConfig} from '@ionic/core';
+setupConfig({
+    inputBlurring: false
+});
+
 import '@deckdeckgo/core';
 import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/remote';
@@ -7,9 +12,9 @@ import '@deckdeckgo/qrcode';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/lazy-img';
 
-import {setupConfig} from '../app/services/core/environment/environment-config';
+import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment/environment-config';
 
-setupConfig({
+setupDeckGoConfig({
     appUrl: 'http://localhost:3333',
     apiUrl: '<@API_URL@>',
     firebase: {

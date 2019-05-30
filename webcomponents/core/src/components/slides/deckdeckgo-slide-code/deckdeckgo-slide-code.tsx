@@ -1,7 +1,9 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State} from '@stencil/core';
 
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
+import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
 
 enum DeckdeckgoSlideCodeAction {
   SWIPE,
@@ -38,11 +40,11 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   componentWillLoad() {
-    this.mobile = DeckdeckgoUtils.isMobile();
+    this.mobile = DeckDeckGoUtils.isMobile();
   }
 
   async componentDidLoad() {
-    await DeckdeckgoUtils.hideLazyLoadImages(this.el);
+    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
 
@@ -68,7 +70,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private showInfo(): Promise<void> {
     return new Promise<void>((resolve) => {
       // Only on mobile devices
-      if (DeckdeckgoUtils.isMobile()) {
+      if (DeckDeckGoUtils.isMobile()) {
         const info: HTMLElement = this.el.querySelector('[slot=\'info\']');
 
         if (info) {
@@ -83,7 +85,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private hideInfo(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       // Only on mobile devices
-      if (DeckdeckgoUtils.isMobile()) {
+      if (DeckDeckGoUtils.isMobile()) {
         const info: HTMLElement = this.el.querySelector('[slot=\'info\']');
 
         if (info && info.classList.contains('deckgo-show-info')) {

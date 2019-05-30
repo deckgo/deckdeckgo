@@ -1,7 +1,7 @@
 import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
+import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
 
 @Component({
   tag: 'deckgo-slide-content',
@@ -21,7 +21,7 @@ export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
-    await DeckdeckgoUtils.hideLazyLoadImages(this.el);
+    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
 

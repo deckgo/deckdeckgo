@@ -41,6 +41,10 @@ app-editor-toolbar {
         color: var(--ion-color-primary);
       }
 
+      ion-label {
+        font-family: sans-serif;
+      }
+
       &.disabled {
         cursor: initial;
         border: 1px solid var(--ion-color-light);

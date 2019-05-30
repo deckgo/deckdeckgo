@@ -2,7 +2,7 @@ import {EnvironmentConfigService} from '../../../../services/core/environment/en
 
 import {Subscription} from 'rxjs';
 
-import {Utils} from '../../../../utils/core/utils';
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
 import {RemoteService} from '../../../../services/editor/remote/remote.service';
 
@@ -103,7 +103,7 @@ export class RemoteEventsHandler {
                 await this.remoteEvent($event)
             });
 
-            window.addEventListener('resize', Utils.debounce(async () => {
+            window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
                 await this.initRemoteSize();
             }, 300));
 

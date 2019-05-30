@@ -11,6 +11,7 @@ It leverages the IntersectionObserver API to lazy load images and also allows yo
   - [Attributes](#app-components-lazy-img-attributes)
   - [Theming](#app-components-lazy-img-theming)
   - [Methods](#app-components-lazy-img-methods)
+- [Fallback]((#app-components-lazy-img-fallback)
 - [Trying it out](#app-components-lazy-img-trying-it-out)
 
 ## Usage
@@ -58,12 +59,16 @@ The following theming options will affect this component if set on its host or p
 
 ### Methods
 
-This component also expost an async method `lazyLoad()` in case you would like to trigger "manually" the loading of the image.
+This component also export an async method `lazyLoad()` in case you would like to trigger "manually" the loading of the image.
 
 ```
 const element = document.querySelector('deckgo-lazy-img');
 await element.lazyLoad();
 ```
+
+### Fallback
+
+In case the browsers would not support the Intersection Observer, images are going to be loaded without any delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded. 
 
 ### Trying it out
 

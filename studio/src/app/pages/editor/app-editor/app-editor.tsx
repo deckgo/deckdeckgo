@@ -4,6 +4,8 @@ import {OverlayEventDetail} from '@ionic/core';
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
 import {AuthUser} from '../../../models/auth-user';
 import {Slide, SlideTemplate} from '../../../models/slide';
 import {Deck} from '../../../models/deck';
@@ -11,7 +13,6 @@ import {Deck} from '../../../models/deck';
 import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
-import {Utils} from '../../../utils/core/utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
@@ -69,6 +70,12 @@ export class AppEditor {
 
     @State()
     private slidesFetched: boolean = false;
+
+    @State()
+    private hideFooterActions: boolean = false;
+
+    @State()
+    private hideNavigation: boolean = false;
 
     constructor() {
         this.authService = AuthService.getInstance();
@@ -478,7 +485,7 @@ export class AppEditor {
                 return;
             }
 
-            if ($event instanceof MouseEvent && Utils.isMobile()) {
+            if ($event instanceof MouseEvent && DeckDeckGoUtils.isMobile()) {
                 resolve();
                 return;
             }
@@ -570,9 +577,14 @@ export class AppEditor {
         });
     }
 
+    private stickyToolbarActivated($event: CustomEvent) {
+        this.hideFooterActions = $event ? $event.detail : false;
+        this.hideNavigation = $event ? DeckDeckGoUtils.isIOS() && $event.detail : false;
+    }
+
     render() {
         return [
-            <app-navigation publish={true}></app-navigation>,
+            <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
             <ion-content class="ion-padding">
                 <main class={this.slidesFetched ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
 
@@ -593,7 +605,7 @@ export class AppEditor {
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <ion-toolbar>
-                    <ion-buttons slot="start">
+                    <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
                         <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
                             <ion-icon name="arrow-back"></ion-icon>
                             <ion-label>Previous</ion-label>
@@ -625,14 +637,15 @@ export class AppEditor {
                         </ion-tab-button>
                     </ion-buttons>
 
-                    <ion-buttons slot="end">
+                    <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
                         <app-add-slide-action></app-add-slide-action>
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
-            <deckgo-inline-editor containers="h1,h2,h3,section"
-                                  img-anchor="deckgo-lazy-img" img-property-width="--deckgo-lazy-img-width" img-property-css-float="--deckgo-lazy-img-float"
-            ></deckgo-inline-editor>
+            <deckgo-inline-editor containers="h1,h2,h3,section" sticky-mobile="true" onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
+                                  img-anchor="deckgo-lazy-img" img-property-width="--deckgo-lazy-img-width"
+                                  img-property-css-float="--deckgo-lazy-img-float">
+            </deckgo-inline-editor>
         ];
     }
 

@@ -40,6 +40,7 @@ export class AppComponentsLazyImg {
 <li><a href="#app-components-lazy-img-methods">Methods</a></li>
 </ul>
 </li>
+<li><a href="(#app-components-lazy-img-fallback">Fallback</a></li>
 <li><a href="#app-components-lazy-img-trying-it-out">Trying it out</a></li>
 </ul>
 <h2 id="app-components-lazy-img-usage">Usage</h2>
@@ -158,10 +159,12 @@ export class AppComponentsLazyImg {
 </tr>
 </tbody></table>
 <h3 id="app-components-lazy-img-methods">Methods</h3>
-<p>This component also expost an async method <code>lazyLoad()</code> in case you would like to trigger &quot;manually&quot; the loading of the image.</p>
+<p>This component also export an async method <code>lazyLoad()</code> in case you would like to trigger &quot;manually&quot; the loading of the image.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">const element = document.querySelector(&#039;deckgo-lazy-img&#039;);{'\n'}await element.lazyLoad();</code>
-    </deckgo-highlight-code><h3 id="app-components-lazy-img-trying-it-out">Trying it out</h3>
+    </deckgo-highlight-code><h3 id="app-components-lazy-img-fallback">Fallback</h3>
+<p>In case the browsers would not support the Intersection Observer, images are going to be loaded without any delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded. </p>
+<h3 id="app-components-lazy-img-trying-it-out">Trying it out</h3>
 <p>This component lazy load images when these are not presented in the viewport. If you would use this component in a simple test containing only a couple of images, respectively no content or no real use case where the images are effectively offscreen, assign a default height to components in order to ensure that some are effectively placed outside of the window <a href="https://github.com/deckgo/deckdeckgo/issues/128#issuecomment-493979841">[#128]</a>.</p>
 </main>
 

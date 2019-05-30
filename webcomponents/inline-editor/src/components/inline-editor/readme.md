@@ -21,9 +21,30 @@
 
 ## Events
 
-| Event          | Description | Type                       |
-| -------------- | ----------- | -------------------------- |
-| `imgDidChange` |             | `CustomEvent<HTMLElement>` |
+| Event                    | Description | Type                       |
+| ------------------------ | ----------- | -------------------------- |
+| `imgDidChange`           |             | `CustomEvent<HTMLElement>` |
+| `stickyToolbarActivated` |             | `CustomEvent<boolean>`     |
+
+
+## Methods
+
+### `reset(clearSelection: boolean, blurActiveElement?: boolean) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name                | Type      | Description |
+| ------------------- | --------- | ----------- |
+| `clearSelection`    | `boolean` |             |
+| `blurActiveElement` | `boolean` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ----------------------------------------------

@@ -3,7 +3,8 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {Utils} from '../../../utils/core/utils';
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
 import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {PhotoHelper} from '../../../helpers/editor/photo.helper';
@@ -57,6 +58,8 @@ export class AppEditorToolbar {
     @State()
     private deckBusy: boolean = false;
 
+    private elementResizeObserver: ResizeObserverConstructor;
+
     constructor() {
         this.busyService = BusyService.getInstance();
     }
@@ -81,11 +84,21 @@ export class AppEditorToolbar {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+
+        this.removeWindowResize();
     }
 
     private initWindowResize() {
         if (window) {
-            window.addEventListener('resize', Utils.debounce(async () => {
+            window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
+                await this.moveToolbar();
+            }, 100));
+        }
+    }
+
+    private removeWindowResize() {
+        if (window) {
+            window.removeEventListener('resize', DeckDeckGoUtils.debounce(async () => {
                 await this.moveToolbar();
             }, 100));
         }
@@ -131,8 +144,6 @@ export class AppEditorToolbar {
 
             await this.initSelectedElement(selected);
 
-            selected.focus();
-
             await this.displayToolbar(selected);
 
             this.blockSlide.emit(!this.deckOrSlide);
@@ -146,8 +157,7 @@ export class AppEditorToolbar {
         return new Promise<void>(async (resolve) => {
             if (this.selectedElement) {
                 this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
-
-                this.selectedElement.blur();
+                await this.detachMoveToolbarOnElement();
 
                 await this.hideToolbar();
             }
@@ -337,18 +347,19 @@ export class AppEditorToolbar {
             // The <main/> element in order to find the offset
             const mainPaneRect: ClientRect = applyTo.parentElement && applyTo.parentElement.parentElement ? applyTo.parentElement.parentElement.getBoundingClientRect() : null;
             const extraLeft: number = mainPaneRect && mainPaneRect.left > 0 ? mainPaneRect.left : 0;
-            const extraTop: number = mainPaneRect && mainPaneRect.top > 0 ? mainPaneRect.top : 0;
+            const extraTop: number = mainPaneRect ? mainPaneRect.top : 0;
 
             // Set top position
-            applyTo.style.top = '' + (top - extraTop > 0 ? top - extraTop : 0) + 'px';
+            const topPosition: string = `${(top - extraTop > 0 ? top - extraTop : 0)}px`;
+            applyTo.style.top = this.deckOrSlide ? `calc(${topPosition} + var(--editor-toolbar-padding, 0px))` : `${topPosition}`;
 
             const windowWidth: number = window.innerWidth | screen.width;
 
             const leftStandardPosition: number = left + offsetWidth - extraLeft;
-            const leftPosition: number = leftStandardPosition + width > windowWidth ? windowWidth - width : leftStandardPosition;
 
             // Set left position
-            applyTo.style.left = '' + leftPosition + 'px';
+            const leftPosition: string = `${leftStandardPosition + width > windowWidth ? windowWidth - width : leftStandardPosition}px`;
+            applyTo.style.left = this.deckOrSlide ? `calc(${leftPosition} + var(--editor-toolbar-padding, 0px))` : `${leftPosition}`;
 
             // If not slide or deck selected, move a bit the toolbar
             if (!this.deckOrSlide) {
@@ -358,7 +369,7 @@ export class AppEditorToolbar {
             }
 
             // Set a width in order to align right the delete button
-            applyTo.style.width = '' + width + 'px';
+            applyTo.style.width = this.deckOrSlide ? `calc(${width}px - var(--editor-toolbar-padding, 0px) - var(--editor-toolbar-padding, 0px))` : `${width}px`;
 
             resolve();
         });
@@ -604,13 +615,54 @@ export class AppEditorToolbar {
     }
 
     private initSelectedElement(element: HTMLElement): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
             this.code = this.isElementCode(element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
+
+                await this.attachMoveToolbarOnElement();
+            }
+
+            resolve();
+        });
+    }
+
+    private attachMoveToolbarOnElement(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (window && 'ResizeObserver' in window) {
+                await this.detachMoveToolbarOnElement();
+
+                this.elementResizeObserver = new ResizeObserver(async (_entries) => {
+                    await this.moveToolbar();
+                });
+                this.elementResizeObserver.observe(this.selectedElement);
+            } else {
+                // Fallback, better  than nothing. It won't place the toolbar if the size on enter or delete  but at least if the content change like if list is toggled
+                this.selectedElement.addEventListener('focusout', DeckDeckGoUtils.debounce(async () => {await this.moveToolbar();}, 100));
+            }
+
+            resolve();
+        });
+    }
+
+
+    private detachMoveToolbarOnElement(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (window && 'ResizeObserver' in window) {
+                if (this.elementResizeObserver && this.selectedElement) {
+                    this.elementResizeObserver.unobserve(this.selectedElement);
+                    this.elementResizeObserver.disconnect;
+                }
+            } else {
+                this.selectedElement.removeEventListener('focusout', DeckDeckGoUtils.debounce(async () => {await this.moveToolbar();}, 100));
             }
 
             resolve();
