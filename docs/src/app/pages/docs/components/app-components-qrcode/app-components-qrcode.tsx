@@ -213,7 +213,7 @@ export class AppComponentsQRCode {
 <deckgo-highlight-code language="javascript">
       <code slot="code">generate() =&gt; Promise&lt;void&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-qrcode-examples">Examples</h3>
-<p>You could find all the examples in the <a href="src/index.html">src/index.html</a> of the project.</p>
+<p>You could find all the examples in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/qrcode/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-qrcode content=&quot;https:&#47;&#47;deckdeckgo.com&quot; style=&quot;--deckgo-qrcode-size: 300px;&quot;&gt;{'\n'}&lt;&#47;deckgo-qrcode&gt;</code>
     </deckgo-highlight-code><p>Example with a logo:</p>

@@ -284,7 +284,7 @@ export class AppComponentsHighlightCode {
 <deckgo-highlight-code language="javascript">
       <code slot="code">codeDidChange(HTMLElement);</code>
     </deckgo-highlight-code><h3 id="app-components-highlight-code-examples">Examples</h3>
-<p>You could find the examples in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/qrcode/blob/master/src/index.html">src/index.html</a> of the project.</p>
+<p>You could find the examples in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/highlight-code/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-highlight-code src=&quot;https:&#47;&#47;domain.com&#47;yourfile.js&quot;&gt;{'\n'}&lt;&#47;deckgo-highlight-code&gt;{'\n'}{'\n'}&lt;deckgo-highlight-code language=&quot;java&quot; highlight-lines=&quot;2,2&quot;&gt;{'\n'}  &lt;code slot=&quot;code&quot;&gt;public static void main(String args[]) &#123;{'\n'}{'\n'}  System.out.println(&quot;Hello World&quot;);{'\n'}&#125;&lt;&#47;code&gt;{'\n'}&lt;&#47;deckgo-highlight-code&gt;</code>
     </deckgo-highlight-code></main>

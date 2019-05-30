@@ -115,7 +115,7 @@ generate() => Promise<void>
 
 ### Examples
 
-You could find all the examples in the [src/index.html](src/index.html) of the project.
+You could find all the examples in the [src/index.html](https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/qrcode/src/index.html) of the project.
 
 ```
 <deckgo-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-size: 300px;">
