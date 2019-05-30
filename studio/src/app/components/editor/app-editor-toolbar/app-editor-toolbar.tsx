@@ -58,6 +58,8 @@ export class AppEditorToolbar {
     @State()
     private deckBusy: boolean = false;
 
+    private elementResizeObserver: ResizeObserverConstructor;
+
     constructor() {
         this.busyService = BusyService.getInstance();
     }
@@ -82,11 +84,21 @@ export class AppEditorToolbar {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+
+        this.removeWindowResize();
     }
 
     private initWindowResize() {
         if (window) {
             window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
+                await this.moveToolbar();
+            }, 100));
+        }
+    }
+
+    private removeWindowResize() {
+        if (window) {
+            window.removeEventListener('resize', DeckDeckGoUtils.debounce(async () => {
                 await this.moveToolbar();
             }, 100));
         }
@@ -145,6 +157,7 @@ export class AppEditorToolbar {
         return new Promise<void>(async (resolve) => {
             if (this.selectedElement) {
                 this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
+                await this.detachMoveToolbarOnElement();
 
                 await this.hideToolbar();
             }
@@ -304,6 +317,9 @@ export class AppEditorToolbar {
 
     private moveToolbar(): Promise<void> {
         return new Promise<void>(async (resolve) => {
+
+            console.log('MOVE');
+
             if (!this.selectedElement) {
                 resolve();
                 return;
@@ -602,13 +618,55 @@ export class AppEditorToolbar {
     }
 
     private initSelectedElement(element: HTMLElement): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
             this.code = this.isElementCode(element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
+
+                await this.attachMoveToolbarOnElement();
+            }
+
+            resolve();
+        });
+    }
+
+    private attachMoveToolbarOnElement(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (window && 'ResizeObserver' in window) {
+                await this.detachMoveToolbarOnElement();
+
+                this.elementResizeObserver = new ResizeObserver(async (_entries) => {
+                    console.log('here');
+                    await this.moveToolbar();
+                });
+                this.elementResizeObserver.observe(this.selectedElement);
+            } else {
+                // Fallback, better  than nothing. It won't place the toolbar if the size on enter or delete  but at least if the content change like if list is toggled
+                this.selectedElement.addEventListener('focusout', DeckDeckGoUtils.debounce(async () => {await this.moveToolbar();}, 100));
+            }
+
+            resolve();
+        });
+    }
+
+
+    private detachMoveToolbarOnElement(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (window && 'ResizeObserver' in window) {
+                if (this.elementResizeObserver && this.selectedElement) {
+                    this.elementResizeObserver.unobserve(this.selectedElement);
+                    this.elementResizeObserver.disconnect;
+                }
+            } else {
+                this.selectedElement.removeEventListener('focusout', DeckDeckGoUtils.debounce(async () => {await this.moveToolbar();}, 100));
             }
 
             resolve();

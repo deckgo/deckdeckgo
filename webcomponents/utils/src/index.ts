@@ -6,12 +6,13 @@ export class DeckDeckGoUtils {
 
     static debounce(func: Function, timeout?: number) {
         let timer: number;
-        return ($event: any) => {
+        return ($args: any) => {
             if (timer) {
                 clearTimeout(timer);
             }
 
-            timer = setTimeout(func, timeout && timeout > 0 ? timeout : 300, $event);
+            // @ts-ignore
+            timer = setTimeout(func, timeout > 0 ? timeout : 300, $args);
         };
     }
 
