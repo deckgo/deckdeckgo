@@ -331,8 +331,8 @@ export class DeckdeckgoInlineEditor {
       const tools: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-tools');
 
       if (tools) {
-        let top: number = this.unifyEvent(this.anchorEvent).clientY;
-        let left: number = this.unifyEvent(this.anchorEvent).clientX;
+        let top: number = DeckDeckGoUtils.unifyEvent(this.anchorEvent).clientY;
+        let left: number = DeckDeckGoUtils.unifyEvent(this.anchorEvent).clientX;
 
         if (this.mobile) {
           top = top + 40;
@@ -565,11 +565,6 @@ export class DeckdeckgoInlineEditor {
 
       resolve();
     });
-  }
-
-  // Touch or Mouse
-  private unifyEvent(e: any): any {
-    return e.changedTouches ? e.changedTouches[0] : e;
   }
 
   @Method()

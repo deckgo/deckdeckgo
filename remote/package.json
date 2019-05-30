@@ -15,9 +15,10 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
+    "@deckdeckgo/core": "^1.0.0-beta.35",
+    "@deckdeckgo/utils": "file:../webcomponents/utils",
     "@ionic/core": "^4.4.2",
     "date-fns": "^2.0.0-alpha.26",
-    "@deckdeckgo/core": "^1.0.0-beta.35",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.2",
     "socket.io-client": "^2.2.0"
