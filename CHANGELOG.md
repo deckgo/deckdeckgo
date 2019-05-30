@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.42"></a>
+# [1.0.0-beta.42](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.41...v1.0.0-beta.42) (2019-05-30)
+
+### Web Components - First release
+
+* utils: v1.0.0-alpha.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+
 <a name="1.0.0-beta.41"></a>
 # [1.0.0-beta.41](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.40-2...v1.0.0-beta.41) (2019-05-26)
 
