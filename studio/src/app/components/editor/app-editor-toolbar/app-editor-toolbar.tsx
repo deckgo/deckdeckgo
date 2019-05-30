@@ -317,9 +317,6 @@ export class AppEditorToolbar {
 
     private moveToolbar(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-
-            console.log('MOVE');
-
             if (!this.selectedElement) {
                 resolve();
                 return;
@@ -644,7 +641,6 @@ export class AppEditorToolbar {
                 await this.detachMoveToolbarOnElement();
 
                 this.elementResizeObserver = new ResizeObserver(async (_entries) => {
-                    console.log('here');
                     await this.moveToolbar();
                 });
                 this.elementResizeObserver.observe(this.selectedElement);
