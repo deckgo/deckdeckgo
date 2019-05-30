@@ -29,7 +29,7 @@ export class RemoteService {
 
     init(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const remote: boolean = await get('deckdeckgo_remote');
+            const remote: boolean = await get<boolean>('deckdeckgo_remote');
 
             this.watch().pipe(take(1)).subscribe((current: boolean) => {
                if (current !== remote) {

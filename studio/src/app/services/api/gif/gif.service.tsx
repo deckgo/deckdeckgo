@@ -99,7 +99,7 @@ export class GifService {
 
     private getAnonymousId(): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
-            const localAnonymousId: string = await get('tenor_anonid');
+            const localAnonymousId: string = await get<string>('tenor_anonid');
 
             if (localAnonymousId) {
                 resolve(localAnonymousId);

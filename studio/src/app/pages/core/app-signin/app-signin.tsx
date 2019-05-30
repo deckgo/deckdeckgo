@@ -21,7 +21,6 @@ import {UserService} from '../../../services/api/user/user.service';
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
-
 interface MergeInformation {
     deckId: string;
     userId: string;
@@ -155,7 +154,7 @@ export class AppSignIn {
             // The credential the user tried to sign in with.
             const cred = error.credential;
 
-            const mergeInfo: MergeInformation = await get('deckdeckgo_redirect_info');
+            const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
 
             await this.userService.signOut();
 
@@ -228,8 +227,8 @@ export class AppSignIn {
     }
 
     private async navigateRedirect() {
-        const redirectUrl: string = await get('deckdeckgo_redirect');
-        const mergeInfo: MergeInformation = await get('deckdeckgo_redirect_info');
+        const redirectUrl: string = await get<string>('deckdeckgo_redirect');
+        const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
 
         await del('deckdeckgo_redirect');
         await del('deckdeckgo_redirect_info');
