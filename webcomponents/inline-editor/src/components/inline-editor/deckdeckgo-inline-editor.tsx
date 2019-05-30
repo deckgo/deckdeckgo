@@ -362,7 +362,8 @@ export class DeckdeckgoInlineEditor {
       await this.setStickyPositionIPhone();
 
       if (window) {
-        window.addEventListener('scroll', async () => {await this.setStickyPositionIPhone();});
+        window.addEventListener('scroll', async () => {await this.setStickyPositionIPhone();},{passive:true});
+        window.addEventListener('resize', async () => {await this.reset(true, true);}, {passive:true});
       }
     });
   }
@@ -570,7 +571,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   @Method()
-  reset(clearSelection: boolean): Promise<void> {
+  reset(clearSelection: boolean, blurActiveElement?: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (clearSelection) {
         await this.clearTheSelection();
@@ -586,6 +587,11 @@ export class DeckdeckgoInlineEditor {
 
       if (window) {
         window.removeEventListener('scroll', async () => {await this.setStickyPositionIPhone();});
+        window.removeEventListener('resize', async () => {await this.reset(true, true);});
+      }
+
+      if (blurActiveElement && document && document.activeElement && document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
       }
 
       resolve();

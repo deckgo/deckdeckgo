@@ -129,7 +129,7 @@ This component also export an async method `reset()` which will reset the inline
 
 ```
 const element = document.querySelector('deckgo-inline-editor');
-await element.reset(true);
+await element.reset(clearSelection: boolean, blurActiveElement?: boolean);
 ```
 
 ### Examples

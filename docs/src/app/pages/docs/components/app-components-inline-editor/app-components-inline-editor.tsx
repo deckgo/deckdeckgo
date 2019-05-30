@@ -310,7 +310,7 @@ export class AppComponentsInlineEditor {
 <h3 id="app-components-inline-editor-methods">Methods</h3>
 <p>This component also export an async method <code>reset()</code> which will reset the inline editor (= hide it) and optionally clear its selection.</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">const element = document.querySelector(&#039;deckgo-inline-editor&#039;);{'\n'}await element.reset(true);</code>
+      <code slot="code">const element = document.querySelector(&#039;deckgo-inline-editor&#039;);{'\n'}await element.reset(clearSelection: boolean, blurActiveElement?: boolean);</code>
     </deckgo-highlight-code><h3 id="app-components-inline-editor-examples">Examples</h3>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;p contenteditable slot=&quot;content&quot;&gt;This text will be editable&lt;&#47;p&gt;{'\n'}{'\n'}&lt;h1 contenteditable slot=&quot;title&quot;&gt;This title too&lt;&#47;h1&gt;{'\n'}{'\n'}&lt;deckgo-inline-editor&gt;&lt;&#47;deckgo-inline-editor&gt;</code>

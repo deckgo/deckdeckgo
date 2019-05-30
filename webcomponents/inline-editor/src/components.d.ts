@@ -22,7 +22,7 @@ export namespace Components {
     'imgPropertyCssFloat': string;
     'imgPropertyWidth': string;
     'mobile': boolean;
-    'reset': (clearSelection: boolean) => Promise<void>;
+    'reset': (clearSelection: boolean, blurActiveElement?: boolean) => Promise<void>;
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
   }
