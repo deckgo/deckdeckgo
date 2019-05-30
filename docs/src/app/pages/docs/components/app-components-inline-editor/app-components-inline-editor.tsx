@@ -75,7 +75,7 @@ export class AppComponentsInlineEditor {
     </deckgo-highlight-code><h3 id="app-components-inline-editor-framework-integration">Framework integration</h3>
 <p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
 <h2 id="app-components-inline-editor-usage">Usage</h2>
-<p>The <code>&lt;deckgo-inline-editor/&gt;</code> should be added once only in your page. It will interact with all elements of types <code>p</code>, <code>h1</code>, <code>h2</code>  and <code>h3</code> you would have set as <code>contenteditable</code>.</p>
+<p>The <code>&lt;deckgo-inline-editor/&gt;</code> should be added once only in your page. It will interact with all elements of types <code>p</code>, <code>h1</code>, <code>h2</code>  and <code>h3</code>, or other <code>containers</code> you would define, which are set as <code>contenteditable</code>.</p>
 <h3 id="app-components-inline-editor-properties">Properties</h3>
 <p>The <code>&lt;deckgo-inline-editor/&gt;</code> expose the following properties:</p>
 <table>
@@ -105,7 +105,7 @@ export class AppComponentsInlineEditor {
 <tr>
 <td><code>stickyMobile</code></td>
 <td><code>sticky-mobile</code></td>
-<td>Use a sticky footer toolbar on mobile. Note: except iOS, feel free to send a PR if you know how to handle this with the software keyboard</td>
+<td>Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top.</td>
 <td><code>boolean</code></td>
 <td><code>false</code></td>
 </tr>
