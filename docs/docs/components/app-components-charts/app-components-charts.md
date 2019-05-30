@@ -120,7 +120,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] char
 Install [DeckDeckGo] charts in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/charts) using the following command:
 
 ```bash
-npm install deckdeckgo-charts
+npm install @deckdeckgo/charts
 ```
 
 ### Framework integration

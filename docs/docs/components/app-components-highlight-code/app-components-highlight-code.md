@@ -49,7 +49,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] Code
 Install [DeckDeckGo] - Highlight Code in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/highlight-code) using the following command:
 
 ```bash
-npm install deckdeckgo-highlight-code
+npm install @deckdeckgo/highlight-code
 ```
 
 ### Framework integration

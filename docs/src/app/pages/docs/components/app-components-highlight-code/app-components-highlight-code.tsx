@@ -68,7 +68,7 @@ export class AppComponentsHighlightCode {
     </deckgo-highlight-code><h3 id="app-components-highlight-code-install-deckdeckgo-highlight-code-from-npm">Install DeckDeckGo Highlight Code from NPM</h3>
 <p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> - Highlight Code in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/highlight-code">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">
-      <code slot="code">npm install deckdeckgo-highlight-code</code>
+      <code slot="code">npm install @deckdeckgo&#47;highlight-code</code>
     </deckgo-highlight-code><h3 id="app-components-highlight-code-framework-integration">Framework integration</h3>
 <p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
 <h2 id="app-components-highlight-code-usage">Usage</h2>

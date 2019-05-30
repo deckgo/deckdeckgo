@@ -49,7 +49,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] inli
 Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
 
 ```bash
-npm install deckdeckgo-inline-editor
+npm install @deckdeckgo/inline-editor
 ```
 
 ### Framework integration

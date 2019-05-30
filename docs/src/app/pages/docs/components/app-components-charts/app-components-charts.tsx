@@ -137,7 +137,7 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h3 id="app-components-charts-install-deckdeckgo-charts-from-npm">Install DeckDeckGo charts from NPM</h3>
 <p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> charts in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/charts">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">
-      <code slot="code">npm install deckdeckgo-charts</code>
+      <code slot="code">npm install @deckdeckgo&#47;charts</code>
     </deckgo-highlight-code><h3 id="app-components-charts-framework-integration">Framework integration</h3>
 <p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
 <h2 id="app-components-charts-usage">Usage</h2>
