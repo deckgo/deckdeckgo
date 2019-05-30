@@ -4,6 +4,8 @@ import {OverlayEventDetail} from '@ionic/core';
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
 import {AuthUser} from '../../../models/auth-user';
 import {Slide, SlideTemplate} from '../../../models/slide';
 import {Deck} from '../../../models/deck';
@@ -11,7 +13,6 @@ import {Deck} from '../../../models/deck';
 import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
-import {Utils} from '../../../utils/core/utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
@@ -481,7 +482,7 @@ export class AppEditor {
                 return;
             }
 
-            if ($event instanceof MouseEvent && Utils.isMobile()) {
+            if ($event instanceof MouseEvent && DeckDeckGoUtils.isMobile()) {
                 resolve();
                 return;
             }

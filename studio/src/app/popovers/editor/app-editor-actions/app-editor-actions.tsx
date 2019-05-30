@@ -1,8 +1,8 @@
 import {Component, Element, State} from '@stencil/core';
 
-import {EditorAction} from './editor-action';
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
-import {Utils} from '../../../utils/core/utils';
+import {EditorAction} from './editor-action';
 
 @Component({
     tag: 'app-editor-actions',
@@ -16,7 +16,7 @@ export class AppEditorActions {
     private mobile: boolean = false;
 
     componentWillLoad() {
-        this.mobile = Utils.isMobile();
+        this.mobile = DeckDeckGoUtils.isMobile();
     }
 
     async closePopover(action: EditorAction) {

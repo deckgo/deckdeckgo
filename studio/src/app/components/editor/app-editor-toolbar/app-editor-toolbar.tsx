@@ -3,7 +3,8 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {Utils} from '../../../utils/core/utils';
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
 import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {PhotoHelper} from '../../../helpers/editor/photo.helper';
@@ -85,7 +86,7 @@ export class AppEditorToolbar {
 
     private initWindowResize() {
         if (window) {
-            window.addEventListener('resize', Utils.debounce(async () => {
+            window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
                 await this.moveToolbar();
             }, 100));
         }
