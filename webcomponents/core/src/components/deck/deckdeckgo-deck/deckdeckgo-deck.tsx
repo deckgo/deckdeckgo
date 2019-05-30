@@ -1,8 +1,9 @@
 import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter} from '@stencil/core';
 
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
 import {DeckdeckgoSlideDefinition} from 'deckdeckgo-types';
 
-import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
 import {DeckdeckgoDeckBackgroundUtils} from '../../utils/deckdeckgo-deck-background-utils';
 
 interface DeltaX {
@@ -80,11 +81,11 @@ export class DeckdeckgoDeck {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', DeckdeckgoUtils.debounce(async () => {
+      window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
         await this.initSlideSize();
         await this.slideTo(this.activeIndex);
 
-        const toggleFullscreen: boolean = DeckdeckgoUtils.isFullscreen();
+        const toggleFullscreen: boolean = DeckDeckGoUtils.isFullscreen();
         await this.hideOrClearMouseCursorTimer(toggleFullscreen);
         await this.showHideActionsSlot(toggleFullscreen);
       }, 100));
@@ -118,7 +119,7 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      if (DeckdeckgoUtils.isIOS()) {
+      if (DeckDeckGoUtils.isIOS()) {
         slider.style.setProperty('--slide-width', '' + screen.width + 'px');
       } else {
         slider.style.setProperty('--slide-width', '' + window.innerWidth + 'px');
@@ -233,7 +234,7 @@ export class DeckdeckgoDeck {
   }
 
   private start(e: Event) {
-    this.startX = DeckdeckgoUtils.unifyEvent(e).clientX;
+    this.startX = DeckDeckGoUtils.unifyEvent(e).clientX;
   }
 
   private async move(e: Event) {
@@ -364,7 +365,7 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      const currentX: number = DeckdeckgoUtils.unifyEvent(e).clientX;
+      const currentX: number = DeckDeckGoUtils.unifyEvent(e).clientX;
 
       if (this.startX === currentX) {
         resolve(null);
@@ -796,7 +797,7 @@ export class DeckdeckgoDeck {
   @Method()
   isMobile(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      resolve(DeckdeckgoUtils.isMobile());
+      resolve(DeckDeckGoUtils.isMobile());
     });
   }
 

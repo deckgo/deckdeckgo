@@ -68,7 +68,7 @@ export class AppComponentsHighlightCode {
     </deckgo-highlight-code><h3 id="app-components-highlight-code-install-deckdeckgo-highlight-code-from-npm">Install DeckDeckGo Highlight Code from NPM</h3>
 <p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> - Highlight Code in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/highlight-code">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">
-      <code slot="code">npm install deckdeckgo-highlight-code</code>
+      <code slot="code">npm install @deckdeckgo&#47;highlight-code</code>
     </deckgo-highlight-code><h3 id="app-components-highlight-code-framework-integration">Framework integration</h3>
 <p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
 <h2 id="app-components-highlight-code-usage">Usage</h2>
@@ -284,7 +284,7 @@ export class AppComponentsHighlightCode {
 <deckgo-highlight-code language="javascript">
       <code slot="code">codeDidChange(HTMLElement);</code>
     </deckgo-highlight-code><h3 id="app-components-highlight-code-examples">Examples</h3>
-<p>You could find the examples in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/qrcode/blob/master/src/index.html">src/index.html</a> of the project.</p>
+<p>You could find the examples in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/highlight-code/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-highlight-code src=&quot;https:&#47;&#47;domain.com&#47;yourfile.js&quot;&gt;{'\n'}&lt;&#47;deckgo-highlight-code&gt;{'\n'}{'\n'}&lt;deckgo-highlight-code language=&quot;java&quot; highlight-lines=&quot;2,2&quot;&gt;{'\n'}  &lt;code slot=&quot;code&quot;&gt;public static void main(String args[]) &#123;{'\n'}{'\n'}  System.out.println(&quot;Hello World&quot;);{'\n'}&#125;&lt;&#47;code&gt;{'\n'}&lt;&#47;deckgo-highlight-code&gt;</code>
     </deckgo-highlight-code></main>

@@ -135,6 +135,9 @@ export namespace Components {
   interface AppMiscCollections {}
   interface AppMiscCollectionsAttributes extends StencilHTMLAttributes {}
 
+  interface AppMiscContact {}
+  interface AppMiscContactAttributes extends StencilHTMLAttributes {}
+
   interface AppMiscLogo {}
   interface AppMiscLogoAttributes extends StencilHTMLAttributes {}
 
@@ -209,6 +212,7 @@ declare global {
     'AppRunning': Components.AppRunning;
     'AppMiscBackstory': Components.AppMiscBackstory;
     'AppMiscCollections': Components.AppMiscCollections;
+    'AppMiscContact': Components.AppMiscContact;
     'AppMiscLogo': Components.AppMiscLogo;
     'AppMiscOpenSource': Components.AppMiscOpenSource;
     'AppSlideAuthor': Components.AppSlideAuthor;
@@ -259,6 +263,7 @@ declare global {
     'app-running': Components.AppRunningAttributes;
     'app-misc-backstory': Components.AppMiscBackstoryAttributes;
     'app-misc-collections': Components.AppMiscCollectionsAttributes;
+    'app-misc-contact': Components.AppMiscContactAttributes;
     'app-misc-logo': Components.AppMiscLogoAttributes;
     'app-misc-open-source': Components.AppMiscOpenSourceAttributes;
     'app-slide-author': Components.AppSlideAuthorAttributes;
@@ -484,6 +489,12 @@ declare global {
     new (): HTMLAppMiscCollectionsElement;
   };
 
+  interface HTMLAppMiscContactElement extends Components.AppMiscContact, HTMLStencilElement {}
+  var HTMLAppMiscContactElement: {
+    prototype: HTMLAppMiscContactElement;
+    new (): HTMLAppMiscContactElement;
+  };
+
   interface HTMLAppMiscLogoElement extends Components.AppMiscLogo, HTMLStencilElement {}
   var HTMLAppMiscLogoElement: {
     prototype: HTMLAppMiscLogoElement;
@@ -592,6 +603,7 @@ declare global {
     'app-running': HTMLAppRunningElement
     'app-misc-backstory': HTMLAppMiscBackstoryElement
     'app-misc-collections': HTMLAppMiscCollectionsElement
+    'app-misc-contact': HTMLAppMiscContactElement
     'app-misc-logo': HTMLAppMiscLogoElement
     'app-misc-open-source': HTMLAppMiscOpenSourceElement
     'app-slide-author': HTMLAppSlideAuthorElement
@@ -642,6 +654,7 @@ declare global {
     'app-running': HTMLAppRunningElement;
     'app-misc-backstory': HTMLAppMiscBackstoryElement;
     'app-misc-collections': HTMLAppMiscCollectionsElement;
+    'app-misc-contact': HTMLAppMiscContactElement;
     'app-misc-logo': HTMLAppMiscLogoElement;
     'app-misc-open-source': HTMLAppMiscOpenSourceElement;
     'app-slide-author': HTMLAppSlideAuthorElement;

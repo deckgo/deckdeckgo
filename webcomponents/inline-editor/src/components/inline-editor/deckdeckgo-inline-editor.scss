@@ -22,13 +22,15 @@ div.deckgo-tools {
   transform: var(--deckgo-inline-editor-transform);
 
   &.deckgo-tools-sticky, &.deckgo-tools-mobile.deckgo-tools-sticky {
-    position: fixed;
+    position: absolute;
 
     bottom: var(--deckgo-inline-editor-sticky-bottom, 0);
     left: 0;
 
     width: 100%;
     border-radius: 0;
+
+    z-index: var(--deckgo-inline-editor-sticky-zindex);
   }
 
   div.separator {
@@ -320,6 +322,15 @@ div.deckgo-tools {
           background-color: var(--deckgo-inline-editor-button-mobile-color-disabled, #f4f5f8);
         }
       }
+    }
+  }
+}
+
+:host(.deckgo-tools-ios) {
+  div.deckgo-tools {
+    &.deckgo-tools-mobile.deckgo-tools-sticky {
+      top: calc(var(--deckgo-inline-editor-sticky-scroll, 0));
+      bottom: inherit;
     }
   }
 }

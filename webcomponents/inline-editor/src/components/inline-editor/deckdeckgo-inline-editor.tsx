@@ -1,4 +1,6 @@
-import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event} from '@stencil/core';
+import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method} from '@stencil/core';
+
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
@@ -88,6 +90,8 @@ export class DeckdeckgoInlineEditor {
   @State()
   private toolbarActions: ToolbarActions = ToolbarActions.SELECTION;
 
+  @Event() stickyToolbarActivated: EventEmitter<boolean>;
+
   private linkUrl: string;
 
   @Prop()
@@ -107,6 +111,8 @@ export class DeckdeckgoInlineEditor {
   @Prop()
   imgPropertyCssFloat: string = 'cssFloat';
 
+  private iOSTimerScroll: number;
+
   async componentWillLoad() {
     await this.attachListener();
   }
@@ -115,7 +121,7 @@ export class DeckdeckgoInlineEditor {
     await this.colorPickerListener(true);
 
     if (!this.mobile) {
-      this.mobile = DeckdeckgoInlineEditorUtils.isMobile();
+      this.mobile = DeckDeckGoUtils.isMobile();
     }
   }
 
@@ -165,20 +171,20 @@ export class DeckdeckgoInlineEditor {
 
     this.anchorEvent = $event;
 
-    await this.displayImageActions();
+    await this.displayImageActions($event);
   };
 
-  private touchstart = async ($event: MouseEvent) => {
+  private touchstart = async ($event: TouchEvent) => {
     if (this.toolsActivated) {
       return;
     }
 
     this.anchorEvent = $event;
 
-    await this.displayImageActions();
+    await this.displayImageActions($event);
   };
 
-  private displayImageActions(): Promise<void> {
+  private displayImageActions($event: MouseEvent | TouchEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const isAnchorImg: boolean = await this.isAnchorImage();
       if (!isAnchorImg) {
@@ -186,19 +192,21 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
+      $event.stopImmediatePropagation();
+
       await this.reset(true);
 
       setTimeout(async () => {
         await this.activateToolbarImage();
         await this.setToolbarAnchorPosition();
-      }, 0);
+      }, 100);
 
       resolve();
     });
   }
 
   private activateToolbarImage(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       const target: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
 
       if (target.style.getPropertyValue(this.imgPropertyWidth) === '25%') {
@@ -218,7 +226,7 @@ export class DeckdeckgoInlineEditor {
       }
 
       this.toolbarActions = ToolbarActions.IMAGE;
-      this.toolsActivated = true;
+      await this.setToolsActivated(true);
 
       resolve();
     });
@@ -243,12 +251,17 @@ export class DeckdeckgoInlineEditor {
   }
 
   @Listen('document:selectionchange', {passive: true})
-  async selectionchange(_$event: Event) {
+  async selectionchange(_$event: UIEvent) {
     if (document && document.activeElement && !this.isContainer(document.activeElement)) {
       if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
         await this.reset(false);
       }
 
+      return;
+    }
+
+    if (this.toolbarActions === ToolbarActions.IMAGE && this.isAnchorImage()) {
+      await this.reset(false);
       return;
     }
 
@@ -283,7 +296,8 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      this.toolsActivated = await this.activateToolbar(selection);
+      const activated: boolean = await this.activateToolbar(selection);
+      await this.setToolsActivated(activated);
 
       if (this.toolsActivated) {
         this.selection = selection;
@@ -304,8 +318,10 @@ export class DeckdeckgoInlineEditor {
   }
 
   private setToolbarAnchorPosition(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (this.isSticky()) {
+        await this.handlePositionIOS();
+
         resolve();
         return;
       }
@@ -313,8 +329,8 @@ export class DeckdeckgoInlineEditor {
       const tools: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-tools');
 
       if (tools) {
-        let top: number = this.unifyEvent(this.anchorEvent).clientY;
-        let left: number = this.unifyEvent(this.anchorEvent).clientX;
+        let top: number = DeckDeckGoUtils.unifyEvent(this.anchorEvent).clientY;
+        let left: number = DeckDeckGoUtils.unifyEvent(this.anchorEvent).clientX;
 
         if (this.mobile) {
           top = top + 40;
@@ -322,7 +338,7 @@ export class DeckdeckgoInlineEditor {
           top = top + 10;
         }
 
-        const innerWidth: number = DeckdeckgoInlineEditorUtils.isIOS() ? screen.width : window.innerWidth;
+        const innerWidth: number = DeckDeckGoUtils.isIOS() ? screen.width : window.innerWidth;
 
         if (innerWidth > 0 && left > innerWidth - 340) {
           left = innerWidth - 340;
@@ -331,6 +347,41 @@ export class DeckdeckgoInlineEditor {
         tools.style.top = '' + (top) + 'px';
         tools.style.left = '' + (left) + 'px';
       }
+
+      resolve();
+    });
+  }
+
+  private handlePositionIOS(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!DeckDeckGoUtils.isIOS() || !this.anchorEvent) {
+        resolve();
+        return;
+      }
+
+      await this.setStickyPositionIOS();
+
+      if (window) {
+        window.addEventListener('scroll', async () => {await this.setStickyPositionIOS();},{passive:true});
+        window.addEventListener('resize', async () => {await this.reset(true, true);}, {passive:true});
+      }
+    });
+  }
+
+  private setStickyPositionIOS(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.stickyMobile || !DeckDeckGoUtils.isIOS() || !window) {
+        resolve();
+        return;
+      }
+
+      if(this.iOSTimerScroll > 0) {
+        clearTimeout(this.iOSTimerScroll);
+      }
+
+      this.iOSTimerScroll = setTimeout(() => {
+        this.el.style.setProperty('--deckgo-inline-editor-sticky-scroll', `${window.scrollY}px`);
+      }, 50);
 
       resolve();
     });
@@ -514,22 +565,32 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  // Touch or Mouse
-  private unifyEvent(e: any): any {
-    return e.changedTouches ? e.changedTouches[0] : e;
-  }
+  @Method()
+  reset(clearSelection: boolean, blurActiveElement?: boolean): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (clearSelection) {
+        await this.clearTheSelection();
+      }
 
-  private async reset(clearSelection: boolean) {
-    if (clearSelection) {
-      await this.clearTheSelection();
-    }
+      await this.setToolsActivated(false);
 
-    this.toolsActivated = false;
-    this.selection = null;
+      this.selection = null;
 
-    this.toolbarActions = ToolbarActions.SELECTION;
-    this.anchorLink = null;
-    this.link = false;
+      this.toolbarActions = ToolbarActions.SELECTION;
+      this.anchorLink = null;
+      this.link = false;
+
+      if (window) {
+        window.removeEventListener('scroll', async () => {await this.setStickyPositionIOS();});
+        window.removeEventListener('resize', async () => {await this.reset(true, true);});
+      }
+
+      if (blurActiveElement && document && document.activeElement && document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+
+      resolve();
+    });
   }
 
   private styleBold(e: UIEvent): Promise<void> {
@@ -750,10 +811,21 @@ export class DeckdeckgoInlineEditor {
   }
 
   private isSticky(): boolean {
-    const mobile: boolean = DeckdeckgoInlineEditorUtils.isMobile();
+    const mobile: boolean = DeckDeckGoUtils.isMobile();
 
-    // On iOS, when the keyboard opens, it doesn't resize the window/viewport, therefore be my guest to set the toolbar as sticky footer without any other requirements
-    return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile && !DeckdeckgoInlineEditorUtils.isIOS());
+    return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile);
+  }
+
+  private setToolsActivated(activated: boolean): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      this.toolsActivated = activated;
+
+      if (this.isSticky()) {
+        this.stickyToolbarActivated.emit(this.toolsActivated);
+      }
+
+      resolve();
+    });
   }
 
   // Color picker
@@ -799,7 +871,7 @@ export class DeckdeckgoInlineEditor {
   };
 
   private openColorPicker(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
 
       if (!colorPicker) {
@@ -809,7 +881,7 @@ export class DeckdeckgoInlineEditor {
 
       colorPicker.click();
 
-      this.toolsActivated = false;
+      await this.setToolsActivated(false);
 
       resolve();
     });
@@ -1028,5 +1100,13 @@ export class DeckdeckgoInlineEditor {
 
 
     ];
+  }
+
+  hostData() {
+    return {
+      class: {
+        'deckgo-tools-ios': DeckDeckGoUtils.isIOS()
+      }
+    }
   }
 }

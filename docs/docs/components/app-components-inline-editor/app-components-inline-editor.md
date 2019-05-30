@@ -13,6 +13,7 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 	- [Properties](#app-components-inline-editor-properties)
 	- [Styling](#app-components-inline-editor-styling)
 	- [Events](#app-components-inline-editor-events)
+	- [Methods](#app-components-inline-editor-methods)
 	- [Examples](#app-components-inline-editor-examples)
 
 ## Showcase
@@ -48,7 +49,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] inli
 Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
 
 ```bash
-npm install deckdeckgo-inline-editor
+npm install @deckdeckgo/inline-editor
 ```
 
 ### Framework integration
@@ -57,7 +58,7 @@ The [Stencil documentation](https://stenciljs.com/docs/overview) provide example
 
 ## Usage
 
-The `<deckgo-inline-editor/>` should be added once only in your page. It will interact with all elements of types `p`, `h1`, `h2`  and `h3` you would have set as `contenteditable`.
+The `<deckgo-inline-editor/>` should be added once only in your page. It will interact with all elements of types `p`, `h1`, `h2`  and `h3`, or other `containers` you would define, which are set as `contenteditable`.
 
 ### Properties
 
@@ -67,7 +68,7 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | --------------------- | ----------------------- | ----------- | --------- | ----------- |
 | `mobile`              | `mobile`                | The mobile mode is automatically recognize, but just it case you would like to "force" it            | `boolean` | `false` or `true` according the device    |
 | `stickyDesktop`       | `sticky-desktop`        | Use a sticky footer toolbar on desktop            | `boolean` | `false`     |
-| `stickyMobile`        | `sticky-mobile`         | Use a sticky footer toolbar on mobile. Note: except iOS, feel free to send a PR if you know how to handle this with the software keyboard            | `boolean` | `false`     |
+| `stickyMobile`        | `sticky-mobile`         | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top.     | `boolean` | `false`     |
 | `attachTo`            | `attach-to`             | Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document | `HTMLElement` |     |
 | `containers`            | `containers`             | A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color | `string` |   `h1,h2,h3,h4,h5,h6,div`  |
 
@@ -85,6 +86,7 @@ The `<deckgo-inline-editor/>` could be styled using the following CSS4 variables
 | --deckgo-inline-editor-zindex | 1 | The z-Index of the toolbar |
 | --deckgo-inline-editor-transform | | The transform property of the toolbar, useful for example if your viewport contains a split menu pane |
 | --deckgo-inline-editor-sticky-bottom | 0 | The bottom attribute of the sticky toolbar |
+| --deckgo-inline-editor-sticky-zindex | | The z-Index of the sticky toolbar |
 | --deckgo-inline-editor-separator-background | rgba(255, 255, 255, .2) | The color of the separator |
 | --deckgo-inline-editor-button-color | #3880ff | The buttons color |
 | --deckgo-inline-editor-button-font-size | 1.4rem | The buttons font size |
@@ -119,6 +121,16 @@ The event `input` will be automatically triggered when the content will be modif
 | Event          | Description | Type                       |
 | -------------- | ----------- | -------------------------- |
 | `imgDidChange` | Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element. | `CustomEvent<HTMLElement>` |
+| `stickyToolbarActivated` | Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it. | `CustomEvent<boolean>` | 
+
+### Methods
+
+This component also export an async method `reset()` which will reset the inline editor (= hide it) and optionally clear its selection.
+
+```
+const element = document.querySelector('deckgo-inline-editor');
+await element.reset(clearSelection: boolean, blurActiveElement?: boolean);
+```
 
 ### Examples
 

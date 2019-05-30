@@ -8,14 +8,21 @@ app-editor {
 
   @import "../../../../global/theme/editor/editor-loading";
 
+  app-navigation, app-help {
+    &.hidden {
+      visibility: hidden;
+    }
+  }
+
+  ion-content {
+    --overflow: hidden;
+  }
+
   main {
     position: relative;
 
     width: 100%;
-    max-width: 720px;
     height: 100%;
-
-    margin: auto;
 
     overflow: hidden;
   }
@@ -26,10 +33,23 @@ app-editor {
         color: var(--ion-color-primary);
       }
     }
+
+    ion-buttons {
+      &.hidden {
+        visibility: hidden;
+      }
+    }
   }
 
   deckgo-inline-editor {
     --deckgo-inline-editor-button-mobile-color: var(--ion-color-dark);
+    --deckgo-inline-editor-sticky-zindex: 10;
+
+    --deckgo-inline-editor-mobile-background-top: var(--ion-color-primary);
+    --deckgo-inline-editor-mobile-background-bottom: var(--ion-color-primary);
+    --deckgo-inline-editor-button-mobile-color: white;
+    --deckgo-inline-editor-button-mobile-color-active: var(--ion-color-warning);
+    --deckgo-inline-editor-button-mobile-color-disabled: var(--ion-color-primary-tint);
 
     ion-icon[slot="link"] {
       padding-top: 12px;

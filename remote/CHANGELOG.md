@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.10"></a>
+# 1.0.0-alpha.9 (2019-05-30)
+
+### Libs
+
+* use new `@deckdeckgo/utils` package
+
 <a name="1.0.0-alpha.9"></a>
 # 1.0.0-alpha.9 (2019-05-26)
 

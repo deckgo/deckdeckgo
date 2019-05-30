@@ -94,6 +94,9 @@ export namespace Components {
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
 
+  interface AppHelp {}
+  interface AppHelpAttributes extends StencilHTMLAttributes {}
+
   interface AppStockPhotos {
     'photosEven': UnsplashPhoto[];
     'photosOdd': UnsplashPhoto[];
@@ -261,6 +264,7 @@ declare global {
     'AppUserInfo': Components.AppUserInfo;
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
+    'AppHelp': Components.AppHelp;
     'AppStockPhotos': Components.AppStockPhotos;
     'AppDemo': Components.AppDemo;
     'AppFeed': Components.AppFeed;
@@ -304,6 +308,7 @@ declare global {
     'app-user-info': Components.AppUserInfoAttributes;
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
+    'app-help': Components.AppHelpAttributes;
     'app-stock-photos': Components.AppStockPhotosAttributes;
     'app-demo': Components.AppDemoAttributes;
     'app-feed': Components.AppFeedAttributes;
@@ -395,6 +400,12 @@ declare global {
   var HTMLAppEditorToolbarElement: {
     prototype: HTMLAppEditorToolbarElement;
     new (): HTMLAppEditorToolbarElement;
+  };
+
+  interface HTMLAppHelpElement extends Components.AppHelp, HTMLStencilElement {}
+  var HTMLAppHelpElement: {
+    prototype: HTMLAppHelpElement;
+    new (): HTMLAppHelpElement;
   };
 
   interface HTMLAppStockPhotosElement extends Components.AppStockPhotos, HTMLStencilElement {}
@@ -588,6 +599,7 @@ declare global {
     'app-user-info': HTMLAppUserInfoElement
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
+    'app-help': HTMLAppHelpElement
     'app-stock-photos': HTMLAppStockPhotosElement
     'app-demo': HTMLAppDemoElement
     'app-feed': HTMLAppFeedElement
@@ -631,6 +643,7 @@ declare global {
     'app-user-info': HTMLAppUserInfoElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
+    'app-help': HTMLAppHelpElement;
     'app-stock-photos': HTMLAppStockPhotosElement;
     'app-demo': HTMLAppDemoElement;
     'app-feed': HTMLAppFeedElement;

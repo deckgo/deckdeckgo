@@ -22,6 +22,7 @@ export namespace Components {
     'imgPropertyCssFloat': string;
     'imgPropertyWidth': string;
     'mobile': boolean;
+    'reset': (clearSelection: boolean, blurActiveElement?: boolean) => Promise<void>;
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
   }
@@ -33,6 +34,7 @@ export namespace Components {
     'imgPropertyWidth'?: string;
     'mobile'?: boolean;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onStickyToolbarActivated'?: (event: CustomEvent<boolean>) => void;
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;
   }

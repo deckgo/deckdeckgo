@@ -34,7 +34,7 @@ export class UserService {
             if (!authUser) {
                 await this.signOut();
             } else {
-                const savedApiUserId: string = await get('deckdeckgo_user_id');
+                const savedApiUserId: string = await get<string>('deckdeckgo_user_id');
                 if (!savedApiUserId) {
                     const apiUser: UserInfo = await this.createUserInfo(authUser);
 

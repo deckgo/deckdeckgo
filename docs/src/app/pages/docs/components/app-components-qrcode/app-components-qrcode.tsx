@@ -80,7 +80,7 @@ export class AppComponentsQRCode {
     </deckgo-highlight-code><h3 id="app-components-qrcode-install-deckdeckgo-qr-code-from-npm">Install DeckDeckGo QR Code from NPM</h3>
 <p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> - QR Code in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">
-      <code slot="code">npm install deckdeckgo-qrcode</code>
+      <code slot="code">npm install @deckdeckgo&#47;qrcode</code>
     </deckgo-highlight-code><h3 id="app-components-qrcode-framework-integration">Framework integration</h3>
 <p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
 <h2 id="app-components-qrcode-usage">Usage</h2>
@@ -213,7 +213,7 @@ export class AppComponentsQRCode {
 <deckgo-highlight-code language="javascript">
       <code slot="code">generate() =&gt; Promise&lt;void&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-qrcode-examples">Examples</h3>
-<p>You could find all the examples in the <a href="src/index.html">src/index.html</a> of the project.</p>
+<p>You could find all the examples in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/qrcode/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-qrcode content=&quot;https:&#47;&#47;deckdeckgo.com&quot; style=&quot;--deckgo-qrcode-size: 300px;&quot;&gt;{'\n'}&lt;&#47;deckgo-qrcode&gt;</code>
     </deckgo-highlight-code><p>Example with a logo:</p>

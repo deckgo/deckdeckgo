@@ -1,4 +1,4 @@
-import {DeckdeckgoUtils} from './deckdeckgo-utils';
+import {DeckdeckgoDeckUtils} from './deckdeckgo-deck-utils';
 
 export class DeckdeckgoDeckBackgroundUtils {
 
@@ -23,7 +23,7 @@ export class DeckdeckgoDeckBackgroundUtils {
 
       const images: HTMLElement[] = Array.from(allSlottedImages).concat(Array.from(allShadowImages));
 
-      await DeckdeckgoUtils.lazyLoadSelectedImages(images);
+      await DeckdeckgoDeckUtils.lazyLoadSelectedImages(images);
 
       resolve();
     });
@@ -35,7 +35,7 @@ export class DeckdeckgoDeckBackgroundUtils {
 
       const images: HTMLElement[] = Array.from(allShadowImagesComponents);
 
-      await DeckdeckgoUtils.lazyLoadSelectedLazyImagesComponent(images);
+      await DeckdeckgoDeckUtils.lazyLoadSelectedLazyImagesComponent(images);
 
       resolve();
     });

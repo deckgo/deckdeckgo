@@ -90,7 +90,7 @@ export class AppComponentsCharts {
 </li>
 </ul>
 <h2 id="app-components-charts-showcase">Showcase</h2>
-<p>The following examples are the one provided in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html">src/index.html</a> of this component. If you would like to run them locally, proceed as follow:</p>
+<p>The following examples are the one provided in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of this component. If you would like to run them locally, proceed as follow:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">git clone https:&#47;&#47;github.com&#47;deckgo&#47;deckdeckgo{'\n'}cd webcomponents&#47;charts{'\n'}npm install{'\n'}npm run start</code>
     </deckgo-highlight-code><h3 id="app-components-charts-pie">Pie</h3>
@@ -137,7 +137,7 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h3 id="app-components-charts-install-deckdeckgo-charts-from-npm">Install DeckDeckGo charts from NPM</h3>
 <p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> charts in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/charts">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">
-      <code slot="code">npm install deckdeckgo-charts</code>
+      <code slot="code">npm install @deckdeckgo&#47;charts</code>
     </deckgo-highlight-code><h3 id="app-components-charts-framework-integration">Framework integration</h3>
 <p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
 <h2 id="app-components-charts-usage">Usage</h2>
@@ -247,7 +247,7 @@ export class AppComponentsCharts {
 <deckgo-highlight-code language="javascript">
       <code slot="code">draw() =&gt; Promise&lt;void&gt;</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples">Examples</h4>
-<p>You could find other examples of pie charts in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
+<p>You could find other examples of pie charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-pie-chart width=&#123;500&#125; height=&#123;400&#125; src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;&gt;&lt;&#47;deckgo-pie-chart&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-charts-line-usage">Line usage</h3>
@@ -478,7 +478,7 @@ export class AppComponentsCharts {
 <deckgo-highlight-code language="javascript">
       <code slot="code">draw() =&gt; Promise&lt;void&gt;</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples-1">Examples</h4>
-<p>You could find other examples of line charts in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
+<p>You could find other examples of line charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-line-chart width=&#123;500&#125; height=&#123;400&#125; date-pattern=&quot;dd.MM.yyyy&quot; src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-line-chart.csv&quot;&gt;&lt;&#47;deckgo-line-chart&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-charts-bar-usage">Bar usage</h3>
@@ -628,7 +628,7 @@ export class AppComponentsCharts {
 <deckgo-highlight-code language="javascript">
       <code slot="code">draw() =&gt; Promise&lt;void&gt;</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples-2">Examples</h4>
-<p>You could find other examples of bar charts in the <a href="https://github.com/deckgo/deckdeckgo/webcomponents/charts/tree/master/src/index.html">src/index.html</a> of the project.</p>
+<p>You could find other examples of bar charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-bar-chart width=&#123;500&#125; {'\n'}                  height=&#123;400&#125;{'\n'}                   src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;{'\n'}                   style=&quot;--deckgo-chart-fill-color-bar1: #3880ff;&quot;&gt;{'\n'}&lt;&#47;deckgo-bar-chart&gt;</code>
     </deckgo-highlight-code></main>

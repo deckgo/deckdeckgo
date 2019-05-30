@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/core",
-  "version": "1.0.0-beta.35",
+  "version": "1.0.0-beta.36",
   "description": "Add a presentation to your web application using HTML and Web Components",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
@@ -17,7 +17,9 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@deckdeckgo/utils": "^1.0.0-alpha.1"
+  },
   "devDependencies": {
     "@stencil/core": "^0.18.0",
     "@stencil/dev-server": "0.0.18",

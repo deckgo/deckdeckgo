@@ -1,3 +1,17 @@
+<a name="1.0.0-alpha.11"></a>
+# 1.0.0-alpha.11 (2019-05-30)
+
+### Fix
+
+* fix some Github URl which didn't pointed to master
+
+### Docs
+
+* `core` changes regarding pager
+* `inline-editor` changes regarding sticky toolbar on iOS 
+* `inline-editor` add exposed method reset
+* `lazy-img` fallback on standard image if `MutaitonObserver` not supported
+
 <a name="1.0.0-alpha.10"></a>
 # 1.0.0-alpha.10 (2019-05-24)
 

@@ -113,6 +113,7 @@ export class AppRoot {
           <ion-route url="/misc/opensource" component="app-misc-open-source"/>
           <ion-route url="/misc/logo" component="app-misc-logo"/>
           <ion-route url="/misc/backstory" component="app-misc-backstory"/>
+          <ion-route url="/misc/contact" component="app-misc-contact"/>
         </ion-router>
 
         <ion-split-pane when="lg">
@@ -185,6 +186,7 @@ export class AppRoot {
                     <ion-item href="/misc/opensource" routerDirection="forward"><ion-label>Open source</ion-label></ion-item>
                     <ion-item href="/misc/logo" routerDirection="forward"><ion-label>Logo</ion-label></ion-item>
                     <ion-item href="/misc/backstory" routerDirection="forward"><ion-label>Backstory</ion-label></ion-item>
+                    <ion-item href="/misc/contact" routerDirection="forward"><ion-label>Contact</ion-label></ion-item>
 
                   </ion-item-group>
                 </ion-list>

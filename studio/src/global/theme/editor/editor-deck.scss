@@ -30,6 +30,7 @@ deckgo-deck {
   section {
     min-height: calc(var(--font-size-normal) + 4px);
     margin-top: 16px;
+    overflow: auto;
   }
 
   deckgo-highlight-code {

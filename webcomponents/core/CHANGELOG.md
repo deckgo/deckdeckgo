@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.36"></a>
+# 1.0.0-beta.36 (2019-05-30)
+
+### Lib
+
+* use new package `@deckdeckgo/utils`
+
 <a name="1.0.0-beta.35"></a>
 # 1.0.0-beta.35 (2019-05-24)
 

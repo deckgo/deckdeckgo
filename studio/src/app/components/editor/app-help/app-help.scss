@@ -1,0 +1,47 @@
+app-help {
+  aside {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    padding: var(--ion-padding, 16px);
+
+    width: 100%;
+    max-width: calc(1200px - 64px);
+    margin-left: auto;
+    margin-right: auto;
+
+    z-index: 1;
+
+    div {
+      padding: var(--ion-padding, 16px);
+      border: 1px solid var(--ion-color-secondary);
+      background: #a9f6ff;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      p {
+        margin: 0;
+        line-height: inherit;
+
+        a {
+          color: var(--ion-color-tertiary);
+          font-weight: normal;
+          text-decoration: underline;
+        }
+      }
+
+      button {
+        font-size: var(--font-size-h3);
+        background: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: inherit;
+      }
+    }
+  }
+}
