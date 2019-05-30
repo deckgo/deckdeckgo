@@ -347,7 +347,7 @@ export class AppEditorToolbar {
             // The <main/> element in order to find the offset
             const mainPaneRect: ClientRect = applyTo.parentElement && applyTo.parentElement.parentElement ? applyTo.parentElement.parentElement.getBoundingClientRect() : null;
             const extraLeft: number = mainPaneRect && mainPaneRect.left > 0 ? mainPaneRect.left : 0;
-            const extraTop: number = mainPaneRect && mainPaneRect.top > 0 ? mainPaneRect.top : 0;
+            const extraTop: number = mainPaneRect ? mainPaneRect.top : 0;
 
             // Set top position
             const topPosition: string = `${(top - extraTop > 0 ? top - extraTop : 0)}px`;
