@@ -8,7 +8,7 @@ app-editor {
 
   @import "../../../../global/theme/editor/editor-loading";
 
-  app-navigation {
+  app-navigation, app-help {
     &.hidden {
       visibility: hidden;
     }

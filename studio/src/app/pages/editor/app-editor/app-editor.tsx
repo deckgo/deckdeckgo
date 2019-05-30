@@ -586,7 +586,7 @@ export class AppEditor {
         return [
             <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
             <ion-content class="ion-padding">
-                <app-help></app-help>
+                <app-help class={!this.slidesFetched ? 'hidden' : undefined}></app-help>
                 <main class={this.slidesFetched ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
 
                     {this.renderLoading()}
