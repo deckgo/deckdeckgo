@@ -1,6 +1,7 @@
 import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method} from '@stencil/core';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
 interface AnchorLink {
   range: Range;
@@ -119,7 +120,7 @@ export class DeckdeckgoInlineEditor {
     await this.colorPickerListener(true);
 
     if (!this.mobile) {
-      this.mobile = DeckdeckgoInlineEditorUtils.isMobile();
+      this.mobile = DeckDeckGoUtils.isMobile();
     }
   }
 
@@ -338,7 +339,7 @@ export class DeckdeckgoInlineEditor {
           top = top + 10;
         }
 
-        const innerWidth: number = DeckdeckgoInlineEditorUtils.isIOS() ? screen.width : window.innerWidth;
+        const innerWidth: number = DeckDeckGoUtils.isIOS() ? screen.width : window.innerWidth;
 
         if (innerWidth > 0 && left > innerWidth - 340) {
           left = innerWidth - 340;
@@ -354,7 +355,7 @@ export class DeckdeckgoInlineEditor {
 
   private handlePositionIOS(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!DeckdeckgoInlineEditorUtils.isIOS() || !this.anchorEvent) {
+      if (!DeckDeckGoUtils.isIOS() || !this.anchorEvent) {
         resolve();
         return;
       }
@@ -370,7 +371,7 @@ export class DeckdeckgoInlineEditor {
 
   private setStickyPositionIOS(): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (!this.stickyMobile || !DeckdeckgoInlineEditorUtils.isIOS() || !window) {
+      if (!this.stickyMobile || !DeckDeckGoUtils.isIOS() || !window) {
         resolve();
         return;
       }
@@ -816,7 +817,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private isSticky(): boolean {
-    const mobile: boolean = DeckdeckgoInlineEditorUtils.isMobile();
+    const mobile: boolean = DeckDeckGoUtils.isMobile();
 
     return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile);
   }
@@ -1110,7 +1111,7 @@ export class DeckdeckgoInlineEditor {
   hostData() {
     return {
       class: {
-        'deckgo-tools-ios': DeckdeckgoInlineEditorUtils.isIOS()
+        'deckgo-tools-ios': DeckDeckGoUtils.isIOS()
       }
     }
   }
