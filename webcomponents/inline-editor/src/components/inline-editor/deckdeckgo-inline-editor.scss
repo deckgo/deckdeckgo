@@ -325,3 +325,12 @@ div.deckgo-tools {
     }
   }
 }
+
+:host(.deckgo-tools-ios) {
+  div.deckgo-tools {
+    &.deckgo-tools-mobile.deckgo-tools-sticky {
+      top: calc(var(--deckgo-inline-editor-sticky-scroll, 0));
+      bottom: inherit;
+    }
+  }
+}

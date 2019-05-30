@@ -58,7 +58,7 @@ The [Stencil documentation](https://stenciljs.com/docs/overview) provide example
 
 ## Usage
 
-The `<deckgo-inline-editor/>` should be added once only in your page. It will interact with all elements of types `p`, `h1`, `h2`  and `h3` you would have set as `contenteditable`.
+The `<deckgo-inline-editor/>` should be added once only in your page. It will interact with all elements of types `p`, `h1`, `h2`  and `h3`, or other `containers` you would define, which are set as `contenteditable`.
 
 ### Properties
 
@@ -68,7 +68,7 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | --------------------- | ----------------------- | ----------- | --------- | ----------- |
 | `mobile`              | `mobile`                | The mobile mode is automatically recognize, but just it case you would like to "force" it            | `boolean` | `false` or `true` according the device    |
 | `stickyDesktop`       | `sticky-desktop`        | Use a sticky footer toolbar on desktop            | `boolean` | `false`     |
-| `stickyMobile`        | `sticky-mobile`         | Use a sticky footer toolbar on mobile. Note: except iOS, feel free to send a PR if you know how to handle this with the software keyboard            | `boolean` | `false`     |
+| `stickyMobile`        | `sticky-mobile`         | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top.     | `boolean` | `false`     |
 | `attachTo`            | `attach-to`             | Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document | `HTMLElement` |     |
 | `containers`            | `containers`             | A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color | `string` |   `h1,h2,h3,h4,h5,h6,div`  |
 
@@ -129,7 +129,7 @@ This component also export an async method `reset()` which will reset the inline
 
 ```
 const element = document.querySelector('deckgo-inline-editor');
-await element.reset(true);
+await element.reset(clearSelection: boolean, blurActiveElement?: boolean);
 ```
 
 ### Examples

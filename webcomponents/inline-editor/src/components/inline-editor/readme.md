@@ -29,15 +29,16 @@
 
 ## Methods
 
-### `reset(clearSelection: boolean) => Promise<void>`
+### `reset(clearSelection: boolean, blurActiveElement?: boolean) => Promise<void>`
 
 
 
 #### Parameters
 
-| Name             | Type      | Description |
-| ---------------- | --------- | ----------- |
-| `clearSelection` | `boolean` |             |
+| Name                | Type      | Description |
+| ------------------- | --------- | ----------- |
+| `clearSelection`    | `boolean` |             |
+| `blurActiveElement` | `boolean` |             |
 
 #### Returns
 
