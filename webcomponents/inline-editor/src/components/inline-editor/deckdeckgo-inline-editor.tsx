@@ -196,8 +196,6 @@ export class DeckdeckgoInlineEditor {
 
       await this.reset(true);
 
-      document.addEventListener('focusout', async () => {await this.reset(true);}, {once: true});
-
       setTimeout(async () => {
         await this.activateToolbarImage();
         await this.setToolbarAnchorPosition();
