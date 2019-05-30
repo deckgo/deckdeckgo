@@ -1,3 +1,15 @@
+<a name="1.0.0-alpha.8"></a>
+# 1.0.0-alpha.8 (2019-05-30)
+
+### Features
+
+* sticky toolbar on iOS positioned at the top of the browser window
+* improve behavior on mobile devices specially regarding selection and focus
+
+### Lib
+
+* use new package `@deckdeckgo/utils`
+
 <a name="1.0.0-alpha.7"></a>
 # 1.0.0-alpha.7 (2019-05-24)
 

@@ -8,6 +8,7 @@
 ### Web Components
 
 * core: v1.0.0-beta.36 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+* inline-editor: v1.0.0-alpha.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
 <a name="1.0.0-beta.41"></a>
 # [1.0.0-beta.41](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.40-2...v1.0.0-beta.41) (2019-05-26)
