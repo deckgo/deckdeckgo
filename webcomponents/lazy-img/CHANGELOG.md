@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.5"></a>
+# 1.0.0-alpha.5 (2019-05-30)
+
+### Feature
+
+* fallback on a good old standard display of the image (at component load time) in case of the `MutationObserver` would not be supported
+
 <a name="1.0.0-alpha.4"></a>
 # 1.0.0-alpha.4 (2019-05-24)
 
