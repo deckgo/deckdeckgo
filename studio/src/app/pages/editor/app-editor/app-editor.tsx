@@ -74,6 +74,9 @@ export class AppEditor {
     @State()
     private hideFooterActions: boolean = false;
 
+    @State()
+    private hideNavigation: boolean = false;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.anonymousService = AnonymousService.getInstance();
@@ -576,11 +579,12 @@ export class AppEditor {
 
     private stickyToolbarActivated($event: CustomEvent) {
         this.hideFooterActions = $event ? $event.detail : false;
+        this.hideNavigation = $event ? DeckDeckGoUtils.isIOS() && $event.detail : false;
     }
 
     render() {
         return [
-            <app-navigation publish={true}></app-navigation>,
+            <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
             <ion-content class="ion-padding">
                 <main class={this.slidesFetched ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
 

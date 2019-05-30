@@ -8,6 +8,12 @@ app-editor {
 
   @import "../../../../global/theme/editor/editor-loading";
 
+  app-navigation {
+    &.hidden {
+      visibility: hidden;
+    }
+  }
+
   main {
     position: relative;
 
