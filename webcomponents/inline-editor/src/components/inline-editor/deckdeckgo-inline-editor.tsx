@@ -1,7 +1,8 @@
 import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method} from '@stencil/core';
 
-import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
+import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
 interface AnchorLink {
   range: Range;

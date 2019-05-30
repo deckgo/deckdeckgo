@@ -1,7 +1,9 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State} from '@stencil/core';
 
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
+import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
 
 enum DeckdeckgoSlideChartType {
   LINE = 'line',
@@ -54,7 +56,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
-    await DeckdeckgoUtils.hideLazyLoadImages(this.el);
+    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
 
     this.initWindowResize();
 
@@ -101,7 +103,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', DeckdeckgoUtils.debounce(this.onResizeContent));
+      window.addEventListener('resize', DeckDeckGoUtils.debounce(this.onResizeContent));
     }
   }
 

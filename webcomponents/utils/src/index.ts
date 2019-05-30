@@ -1,5 +1,21 @@
 export class DeckDeckGoUtils {
 
+    static unifyEvent(e: any): any {
+        return e.changedTouches ? e.changedTouches[0] : e;
+    }
+
+    static debounce(func: Function, timeout?: number) {
+        let timer: number;
+        return ($event: any) => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+
+            timer = setTimeout(func, timeout && timeout > 0 ? timeout : 300, $event);
+        };
+    }
+
+    // Source: http://detectmobilebrowsers.com
     static isMobile(): boolean {
         if (!window || !navigator) {
             return false;
@@ -20,4 +36,11 @@ export class DeckDeckGoUtils {
         return /iPad|iPhone|iPod/i.test(a);
     }
 
+    static isFullscreen(): boolean {
+        if (!window || !screen) {
+            return false;
+        }
+
+        return window.innerHeight == screen.height;
+    }
 }

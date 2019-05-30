@@ -1,4 +1,6 @@
-import {DeckdeckgoUtils} from '../utils/deckdeckgo-utils';
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
+import {DeckdeckgoDeckUtils} from '../utils/deckdeckgo-deck-utils';
 import {DeckdeckgoExtraUtils} from '../extra/deckdeckgo-extra';
 
 export interface DeckdeckgoSlide {
@@ -14,7 +16,7 @@ export class DeckdeckgoSlideUtils {
   static hideRevealElements(el: HTMLElement, revealShowFirst: boolean): Promise<void> {
     return new Promise<void>((resolve) => {
       // No keyboard on mobile device to reveal elements
-      if (DeckdeckgoUtils.isMobile()) {
+      if (DeckDeckGoUtils.isMobile()) {
         resolve();
         return;
       }
@@ -105,7 +107,7 @@ export class DeckdeckgoSlideUtils {
     return new Promise<void>(async (resolve) => {
       const promises = [];
 
-      promises.push(DeckdeckgoUtils.lazyLoadImages(el));
+      promises.push(DeckdeckgoDeckUtils.lazyLoadImages(el));
       promises.push(DeckdeckgoExtraUtils.lazyLoadContent(el, 'deckgo-gif'));
       promises.push(DeckdeckgoExtraUtils.lazyLoadContent(el, 'deckgo-youtube'));
 

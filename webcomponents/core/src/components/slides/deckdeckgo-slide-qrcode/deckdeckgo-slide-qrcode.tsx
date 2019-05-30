@@ -1,7 +1,9 @@
 import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
 
+import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoUtils} from '../../utils/deckdeckgo-utils';
+import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
 
 @Component({
   tag: 'deckgo-slide-qrcode',
@@ -20,7 +22,7 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
-    await DeckdeckgoUtils.hideLazyLoadImages(this.el);
+    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
 
     this.initWindowResize();
 
@@ -29,7 +31,7 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', DeckdeckgoUtils.debounce(this.onResizeContent));
+      window.addEventListener('resize', DeckDeckGoUtils.debounce(this.onResizeContent));
     }
   }
 
