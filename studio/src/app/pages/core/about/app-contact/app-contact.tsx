@@ -20,7 +20,7 @@ export class AppAbout {
 
                     <p>Twitter: <a href="https://twitter.com/deckdeckgo">@deckdeckgo</a></p>
 
-                    <p>Or join us on our dedicated <a  href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNjMyNTk2NTQwODk5LTAxZjAwZWQwODQyZDg1ZDA5ODhlOTE3OGMwZjhmYjY3NDRhZjViZTRiNWU3OGU3MjYyNjE1OWE3NzNkZmQ3ZWI">Slack</a> channel</p>
+                    <p>Or join us on our dedicated <a href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNjMyNTk2NTQwODk5LTAxZjAwZWQwODQyZDg1ZDA5ODhlOTE3OGMwZjhmYjY3NDRhZjViZTRiNWU3OGU3MjYyNjE1OWE3NzNkZmQ3ZWI">Slack</a> channel</p>
 
                     <p>If you would like to contribute, that would be really awesome! For feature requests, issues or even better Pull Requests, find us on <a href="https://github.com/deckgo/deckdeckgo">GitHub</a></p>
                 </main>
