@@ -153,14 +153,4 @@ export class DeckdeckgoInlineEditorUtils {
 
     return /iPad|iPhone|iPod/i.test(a);
   }
-
-  static isIPhone(): boolean {
-    if (!window || !navigator) {
-      return false;
-    }
-
-    const a: string = navigator.userAgent || navigator.vendor || (window as any).opera;
-
-    return /iPhone|iPod/i.test(a);
-  }
 }

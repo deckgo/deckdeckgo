@@ -320,7 +320,7 @@ export class DeckdeckgoInlineEditor {
   private setToolbarAnchorPosition(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.isSticky()) {
-        await this.handlePositionIPhone();
+        await this.handlePositionIOS();
 
         resolve();
         return;
@@ -352,25 +352,25 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private handlePositionIPhone(): Promise<void> {
+  private handlePositionIOS(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!DeckdeckgoInlineEditorUtils.isIPhone() || !this.anchorEvent) {
+      if (!DeckdeckgoInlineEditorUtils.isIOS() || !this.anchorEvent) {
         resolve();
         return;
       }
 
-      await this.setStickyPositionIPhone();
+      await this.setStickyPositionIOS();
 
       if (window) {
-        window.addEventListener('scroll', async () => {await this.setStickyPositionIPhone();},{passive:true});
+        window.addEventListener('scroll', async () => {await this.setStickyPositionIOS();},{passive:true});
         window.addEventListener('resize', async () => {await this.reset(true, true);}, {passive:true});
       }
     });
   }
 
-  private setStickyPositionIPhone(): Promise<void> {
+  private setStickyPositionIOS(): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (!this.stickyMobile || !DeckdeckgoInlineEditorUtils.isIPhone() || !window) {
+      if (!this.stickyMobile || !DeckdeckgoInlineEditorUtils.isIOS() || !window) {
         resolve();
         return;
       }
@@ -586,7 +586,7 @@ export class DeckdeckgoInlineEditor {
       this.link = false;
 
       if (window) {
-        window.removeEventListener('scroll', async () => {await this.setStickyPositionIPhone();});
+        window.removeEventListener('scroll', async () => {await this.setStickyPositionIOS();});
         window.removeEventListener('resize', async () => {await this.reset(true, true);});
       }
 
@@ -1110,7 +1110,7 @@ export class DeckdeckgoInlineEditor {
   hostData() {
     return {
       class: {
-        'deckgo-tools-iphone': DeckdeckgoInlineEditorUtils.isIPhone()
+        'deckgo-tools-ios': DeckdeckgoInlineEditorUtils.isIOS()
       }
     }
   }
