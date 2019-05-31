@@ -9,7 +9,7 @@ import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
-import {PhotoHelper} from '../../../helpers/editor/photo.helper';
+import {ImageHelper} from '../../../helpers/editor/image.helper';
 
 import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
@@ -710,8 +710,8 @@ export class AppEditorToolbar {
                     await this.openPhotos();
                 } else if (detail.data.action === ImageAction.DELETE_BACKGROUND) {
                     await this.deleteBackground();
-                } else if (detail.data.action === ImageAction.ADD_PHOTO && detail.data.photo) {
-                    await this.appendPhoto(detail.data.photo as UnsplashPhoto);
+                } else if (detail.data.action === ImageAction.ADD_IMAGE && detail.data.image) {
+                    await this.appendImage(detail.data.image);
                 }
             }
         });
@@ -726,27 +726,27 @@ export class AppEditorToolbar {
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                await this.appendPhoto(detail.data as UnsplashPhoto);
+                await this.appendImage(detail.data as UnsplashPhoto);
             }
         });
 
         await modal.present();
     }
 
-    private appendPhoto(photo: UnsplashPhoto): Promise<void> {
+    private appendImage(image: UnsplashPhoto | TenorGif): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
                 resolve();
                 return;
             }
 
-            if (!photo) {
+            if (!image) {
                 resolve();
                 return;
             }
 
-            const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
-            await helper.appendPhoto(this.selectedElement, photo, this.deckOrSlide, this.applyToAllDeck);
+            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            await helper.appendImage(this.selectedElement, image, this.deckOrSlide, this.applyToAllDeck);
 
             resolve();
         });
@@ -759,7 +759,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
+            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
             await helper.deleteBackground(this.selectedElement, this.applyToAllDeck);
         });
     }

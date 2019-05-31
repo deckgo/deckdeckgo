@@ -1,8 +1,7 @@
 import {Component, Element, Listen, State} from '@stencil/core';
 
-import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
-
 import {GifService} from '../../../services/api/gif/gif.service';
+import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
     tag: 'app-gif',
@@ -36,8 +35,11 @@ export class AppGif {
 
     private paginationNext: string | number = 0;
 
+    private imageHistoryService: ImageHistoryService;
+
     constructor() {
         this.gifService = GifService.getInstance();
+        this.imageHistoryService = ImageHistoryService.getInstance();
     }
 
     async componentDidLoad() {
@@ -59,10 +61,9 @@ export class AppGif {
         return new Promise<void>(async (resolve) => {
             await this.gifService.registerShare(gif.id);
 
-            const url: string = gif.media[0].gif.url;
-            const slide: any = await CreateSlidesUtils.createSlideGif(url);
+            await this.imageHistoryService.push(gif);
 
-            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(slide);
+            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(gif);
 
             resolve();
         });

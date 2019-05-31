@@ -2,7 +2,7 @@ import {EventEmitter} from '@stencil/core';
 
 import {BusyService} from '../../services/editor/busy/busy.service';
 
-export class PhotoHelper {
+export class ImageHelper {
 
     private busyService: BusyService;
 
@@ -11,9 +11,9 @@ export class PhotoHelper {
         this.busyService = BusyService.getInstance();
     }
 
-    appendPhoto(selectedElement: HTMLElement, photo: UnsplashPhoto, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
+    appendImage(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!selectedElement || !photo || !document) {
+            if (!selectedElement || !image || !document) {
                 resolve();
                 return;
             }
@@ -21,9 +21,9 @@ export class PhotoHelper {
             this.busyService.deckBusy(true);
 
             if (deckOrSlide) {
-                await this.appendBackgroundImg(selectedElement, photo, applyToAllDeck);
+                await this.appendBackgroundImg(selectedElement, image, applyToAllDeck);
             } else {
-                await this.appendContentImg(selectedElement, photo);
+                await this.appendContentImg(selectedElement, image);
             }
 
             resolve();
@@ -73,19 +73,33 @@ export class PhotoHelper {
         });
     }
 
-    private createImgElement(photo: UnsplashPhoto): HTMLElement {
+    private createImgElement(image: UnsplashPhoto | TenorGif): HTMLElement {
         const img: HTMLElement = document.createElement('deckgo-lazy-img');
-        (img as any).imgSrc = photo.urls.regular;
-        (img as any).imgAlt = photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.regular);
+
+        if (image.hasOwnProperty('urls')) {
+            // Unsplash
+            const photo: UnsplashPhoto = image as UnsplashPhoto;
+
+            (img as any).imgSrc = photo.urls.regular;
+            (img as any).imgAlt = photo.description ? photo.description : (photo.links && photo.links.html ? photo.links.html : photo.urls.regular);
+        } else if (image.hasOwnProperty('media')) {
+            // Tenor
+            const gif: TenorGif = image as TenorGif;
+
+            if (gif.media && gif.media.length > 0 && gif.media[0].gif) {
+                (img as any).imgSrc = gif.media[0].gif.url;
+                (img as any).imgAlt = gif.title;
+            }
+        }
 
         img.setAttribute('contentEditable', 'false');
 
         return img;
     }
 
-    private appendContentImg(selectedElement: HTMLElement, photo: UnsplashPhoto): Promise<void> {
+    private appendContentImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif): Promise<void> {
         return new Promise<void>((resolve) => {
-            const img: HTMLElement = this.createImgElement(photo);
+            const img: HTMLElement = this.createImgElement(image);
             selectedElement.appendChild(img);
 
             // If no spacer is added, no cursor will be displayed if the content editable element is selected
@@ -98,7 +112,7 @@ export class PhotoHelper {
         });
     }
 
-    private appendBackgroundImg(selectedElement: HTMLElement, photo: UnsplashPhoto, applyToAllDeck: boolean): Promise<void> {
+    private appendBackgroundImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif, applyToAllDeck: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const element: HTMLElement = applyToAllDeck ? selectedElement.parentElement : selectedElement;
 
@@ -116,7 +130,7 @@ export class PhotoHelper {
             const div: HTMLElement = document.createElement('div');
             div.setAttribute('slot', 'background');
 
-            const img: HTMLElement = this.createImgElement(photo);
+            const img: HTMLElement = this.createImgElement(image);
             div.appendChild(img);
 
             element.appendChild(div);

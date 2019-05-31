@@ -8,13 +8,13 @@
 import '@stencil/core';
 
 import '@ionic/core';
+import 'ionicons';
 import '@deckdeckgo/core';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/lazy-img';
 import '@deckdeckgo/qrcode';
 import '@deckdeckgo/remote';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -97,14 +97,14 @@ export namespace Components {
   interface AppHelp {}
   interface AppHelpAttributes extends StencilHTMLAttributes {}
 
-  interface AppStockPhotos {
-    'photosEven': UnsplashPhoto[];
-    'photosOdd': UnsplashPhoto[];
+  interface AppImageColumns {
+    'imagesEven': (UnsplashPhoto | TenorGif)[];
+    'imagesOdd': (UnsplashPhoto | TenorGif)[];
   }
-  interface AppStockPhotosAttributes extends StencilHTMLAttributes {
-    'onSelectPhoto'?: (event: CustomEvent<UnsplashPhoto>) => void;
-    'photosEven'?: UnsplashPhoto[];
-    'photosOdd'?: UnsplashPhoto[];
+  interface AppImageColumnsAttributes extends StencilHTMLAttributes {
+    'imagesEven'?: (UnsplashPhoto | TenorGif)[];
+    'imagesOdd'?: (UnsplashPhoto | TenorGif)[];
+    'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif>) => void;
   }
 
   interface AppDemo {}
@@ -268,7 +268,7 @@ declare global {
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
     'AppHelp': Components.AppHelp;
-    'AppStockPhotos': Components.AppStockPhotos;
+    'AppImageColumns': Components.AppImageColumns;
     'AppDemo': Components.AppDemo;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
@@ -313,7 +313,7 @@ declare global {
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-help': Components.AppHelpAttributes;
-    'app-stock-photos': Components.AppStockPhotosAttributes;
+    'app-image-columns': Components.AppImageColumnsAttributes;
     'app-demo': Components.AppDemoAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
@@ -413,10 +413,10 @@ declare global {
     new (): HTMLAppHelpElement;
   };
 
-  interface HTMLAppStockPhotosElement extends Components.AppStockPhotos, HTMLStencilElement {}
-  var HTMLAppStockPhotosElement: {
-    prototype: HTMLAppStockPhotosElement;
-    new (): HTMLAppStockPhotosElement;
+  interface HTMLAppImageColumnsElement extends Components.AppImageColumns, HTMLStencilElement {}
+  var HTMLAppImageColumnsElement: {
+    prototype: HTMLAppImageColumnsElement;
+    new (): HTMLAppImageColumnsElement;
   };
 
   interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
@@ -611,7 +611,7 @@ declare global {
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-help': HTMLAppHelpElement
-    'app-stock-photos': HTMLAppStockPhotosElement
+    'app-image-columns': HTMLAppImageColumnsElement
     'app-demo': HTMLAppDemoElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
@@ -656,7 +656,7 @@ declare global {
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-help': HTMLAppHelpElement;
-    'app-stock-photos': HTMLAppStockPhotosElement;
+    'app-image-columns': HTMLAppImageColumnsElement;
     'app-demo': HTMLAppDemoElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
