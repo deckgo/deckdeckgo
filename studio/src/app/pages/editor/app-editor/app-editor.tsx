@@ -359,7 +359,6 @@ export class AppEditor {
         });
     }
 
-    @Listen('actionOpenSlideAdd')
     async onActionOpenSlideAdd($event: CustomEvent) {
         if (!$event || !$event.detail) {
             return;
@@ -639,7 +638,7 @@ export class AppEditor {
                     </ion-buttons>
 
                     <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
-                        <app-add-slide-action></app-add-slide-action>
+                        <app-add-slide-action onActionOpenSlideAdd={($event:CustomEvent) => this.onActionOpenSlideAdd($event)}></app-add-slide-action>
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
