@@ -1,6 +1,6 @@
 import {AlertOptions, LoadingOptions, ModalOptions, PopoverOptions} from '@ionic/core';
 
-export class ControllerUtils {
+export class IonControllerUtils {
 
     static createModal(opts: ModalOptions): Promise<HTMLIonModalElement> {
         return new Promise<HTMLIonModalElement>(async (resolve) => {

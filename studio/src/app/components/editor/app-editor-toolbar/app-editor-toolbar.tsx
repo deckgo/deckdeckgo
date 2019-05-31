@@ -7,7 +7,7 @@ import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
 import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
-import {ControllerUtils} from '../../../utils/core/controller-utils';
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {PhotoHelper} from '../../../helpers/editor/photo.helper';
 
@@ -537,7 +537,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-slot-type',
             componentProps: {
                 selectedElement: this.selectedElement
@@ -560,7 +560,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-code',
             componentProps: {
                 selectedElement: this.selectedElement,
@@ -674,7 +674,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-deck-or-slide',
             event: $event,
             mode: 'ios'
@@ -691,7 +691,7 @@ export class AppEditorToolbar {
     }
 
     private async openBackground() {
-        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-image',
             componentProps: {
                 deckOrSlide: this.deckOrSlide
@@ -720,7 +720,7 @@ export class AppEditorToolbar {
     }
 
     private async openPhotos() {
-        const modal: HTMLIonModalElement = await ControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-photo'
         });
 

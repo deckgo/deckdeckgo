@@ -2,7 +2,7 @@ import {Component, Element, EventEmitter, Prop, State} from '@stencil/core';
 
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
-import {ControllerUtils} from '../../../utils/core/controller-utils';
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 enum CodeColorType {
     COMMENTS,
@@ -252,7 +252,7 @@ export class AppCode {
     }
 
     private async presentHighlightInfo() {
-        const alert: HTMLIonAlertElement = await ControllerUtils.createAlert({
+        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
             message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 0,2 7,7 13,15<br/><br/>Which would highlight lines 0 to 2, line 7 and lines 13 to 15.',
             buttons: ['Ok']
         });

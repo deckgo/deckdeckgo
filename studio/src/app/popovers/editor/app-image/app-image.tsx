@@ -2,7 +2,7 @@ import {Component, Element, Prop, State} from '@stencil/core';
 
 import {ImageAction} from './image-action';
 
-import {ControllerUtils} from '../../../utils/core/controller-utils';
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {PhotoHistoryService} from '../../../services/editor/photo-history/photo-history.service';
 
@@ -87,7 +87,7 @@ export class AppImage {
     }
 
     private async presentHistoryInfo() {
-        const alert: HTMLIonAlertElement = await ControllerUtils.createAlert({
+        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
             message: 'The editor keeps track of the last 10 images you would have use in any of your presentations.<br/><br/>Select one to add it again quickly.',
             buttons: ['Ok']
         });

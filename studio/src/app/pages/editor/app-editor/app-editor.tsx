@@ -13,7 +13,7 @@ import {Deck} from '../../../models/deck';
 import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
-import {ControllerUtils} from '../../../utils/core/controller-utils';
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
@@ -279,7 +279,7 @@ export class AppEditor {
     private async openSlideNavigate() {
         const slidesTitle: string[] = await this.getSlidesTitle();
 
-        const modal: HTMLIonModalElement = await ControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-slide-navigate',
             componentProps: {
                 slides: slidesTitle
@@ -296,7 +296,7 @@ export class AppEditor {
     }
 
     private async openRemoteControl() {
-        const modal: HTMLIonModalElement = await ControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote'
         });
 
@@ -369,7 +369,7 @@ export class AppEditor {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-slide-type',
             event: $event.detail,
             mode: 'md',
@@ -396,7 +396,7 @@ export class AppEditor {
     }
 
     private async openGifPicker() {
-        const modal: HTMLIonModalElement = await ControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-gif'
         });
 
@@ -425,7 +425,7 @@ export class AppEditor {
 
         const content: string = await this.getFirstSlideContent();
 
-        const modal: HTMLIonModalElement = await ControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-publish',
             componentProps: {
                 description: content
@@ -537,7 +537,7 @@ export class AppEditor {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-editor-actions',
             event: $event,
             mode: 'ios'

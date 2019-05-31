@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {AuthUser} from '../../../models/auth-user';
 
 import {Utils} from '../../../utils/core/utils';
-import {ControllerUtils} from '../../../utils/core/controller-utils';
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
@@ -49,7 +49,7 @@ export class AppNavigationActions {
     }
 
     private async openMenu($event: UIEvent) {
-        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-user-menu',
             event: $event,
             mode: 'ios'

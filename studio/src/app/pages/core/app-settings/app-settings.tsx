@@ -9,7 +9,7 @@ import {AuthUser} from '../../../models/auth-user';
 import {User} from '../../../models/user';
 
 import {UserUtils} from '../../../utils/core/user-utils';
-import {ControllerUtils} from '../../../utils/core/controller-utils';
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {UserService} from '../../../services/api/user/user.service';
 import {AuthService} from '../../../services/api/auth/auth.service';
@@ -108,7 +108,7 @@ export class AppHome {
     }
 
     private async presentConfirmDelete() {
-        const modal: HTMLIonModalElement = await ControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-user-delete',
             componentProps: {
                 username: this.user.username
@@ -127,7 +127,7 @@ export class AppHome {
     private deleteUser(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
-                const loading: HTMLIonLoadingElement = await ControllerUtils.createLoading({});
+                const loading: HTMLIonLoadingElement = await IonControllerUtils.createLoading({});
 
                 await loading.present();
 
