@@ -1,8 +1,7 @@
 import {Component, Element, Listen, State} from '@stencil/core';
 
-import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
-
 import {GifService} from '../../../services/api/gif/gif.service';
+import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
     tag: 'app-gif',
@@ -36,8 +35,11 @@ export class AppGif {
 
     private paginationNext: string | number = 0;
 
+    private imageHistoryService: ImageHistoryService;
+
     constructor() {
         this.gifService = GifService.getInstance();
+        this.imageHistoryService = ImageHistoryService.getInstance();
     }
 
     async componentDidLoad() {
@@ -55,14 +57,20 @@ export class AppGif {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private addSlide(gif: TenorGif): Promise<void> {
+    private selectGif($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            const gif: TenorGif = $event.detail;
+
             await this.gifService.registerShare(gif.id);
 
-            const url: string = gif.media[0].gif.url;
-            const slide: any = await CreateSlidesUtils.createSlideGif(url);
+            await this.imageHistoryService.push(gif);
 
-            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(slide);
+            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(gif);
 
             resolve();
         });
@@ -129,8 +137,8 @@ export class AppGif {
                 this.gifsEven = [];
             }
 
-            this.gifsOdd = [...this.gifsOdd, ...gifs.filter((_a, i) => i % 2)];
-            this.gifsEven = [...this.gifsEven, ...gifs.filter((_a, i) => !(i % 2))];
+            this.gifsOdd = [...this.gifsOdd, ...gifs.filter((_a, i) => !(i % 2))];
+            this.gifsEven = [...this.gifsEven, ...gifs.filter((_a, i) => i % 2)];
 
             if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
                 // We just put a small delay because of the repaint
@@ -209,16 +217,9 @@ export class AppGif {
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
-                <div class="gifs-container">
-                    <div class="gifs-column">
-                        {this.renderCategories(this.categoriesOdd)}
-                        {this.renderGifs(this.gifsOdd)}
-                    </div>
-                    <div class="gifs-column">
-                        {this.renderCategories(this.categoriesEven)}
-                        {this.renderGifs(this.gifsEven)}
-                    </div>
-                </div>
+                {this.renderCategories()}
+
+                <app-image-columns imagesOdd={this.gifsOdd} imagesEven={this.gifsEven} onSelectImage={($event: CustomEvent) => this.selectGif($event)}></app-image-columns>
 
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
                                      onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
@@ -239,11 +240,22 @@ export class AppGif {
         ];
     }
 
-    private renderCategories(categories: TenorCategory[]) {
+    private renderCategories() {
         if (this.gifsEven || this.gifsOdd) {
             return undefined;
         }
 
+        return <div class="gifs-container">
+            <div class="gifs-column">
+                {this.renderCategoriesColumn(this.categoriesOdd)}
+            </div>
+            <div class="gifs-column">
+                {this.renderCategoriesColumn(this.categoriesEven)}
+            </div>
+        </div>
+    }
+
+    private renderCategoriesColumn(categories: TenorCategory[]) {
         if (categories && categories.length > 0) {
             return (
                 categories.map((category: TenorCategory) => {
@@ -255,28 +267,6 @@ export class AppGif {
                                 <div class="gifs-category-placeholder">
                                     <h2 class="ion-no-margin">{category.name}</h2>
                                 </div>
-                            </div>
-                        </div>
-                    } else {
-                        return undefined;
-                    }
-                })
-            );
-        } else {
-            return undefined;
-        }
-    }
-
-    private renderGifs(gifs: TenorGif[]) {
-        if (gifs && gifs.length > 0) {
-            return (
-                gifs.map((gif: TenorGif) => {
-                    if (gif.media && gif.media.length > 0
-                        && gif.media[0].tinygif && gif.media[0].tinygif.url
-                        && gif.media[0].gif && gif.media[0].gif.url) {
-                        return <div class="gif ion-padding" custom-tappable onClick={() => this.addSlide(gif)}>
-                            <div class="gif-container">
-                                <deckgo-lazy-img imgSrc={gif.media[0].tinygif.url} imgAlt={gif.title ? gif.title : gif.url}></deckgo-lazy-img>
                             </div>
                         </div>
                     } else {

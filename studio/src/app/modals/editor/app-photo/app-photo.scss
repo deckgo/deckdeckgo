@@ -3,9 +3,9 @@ app-photo {
     --background: var(--ion-color-light);
   }
 
-  app-stock-photos {
-    --deckgo-stock-photos-min-height: 5rem;
-    --deckgo-stock-photos-padding: 16px;
+  app-image-columns {
+    --deckgo-images-min-height: 5rem;
+    --deckgo-images-padding: 16px;
   }
 
   div.photos-placeholder {

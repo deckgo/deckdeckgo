@@ -15,7 +15,7 @@ import {UserService} from '../../../services/api/user/user.service';
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ErrorService} from '../../../services/core/error/error.service';
-import {PhotoHistoryService} from '../../../services/editor/photo-history/photo-history.service';
+import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
     tag: 'app-settings',
@@ -39,14 +39,14 @@ export class AppHome {
 
     private errorService: ErrorService;
 
-    private photoHistoryService: PhotoHistoryService;
+    private imageHistoryService: ImageHistoryService;
 
     constructor() {
         this.authService = AuthService.getInstance();
         this.userService = UserService.getInstance();
         this.navService = NavService.getInstance();
         this.errorService = ErrorService.getInstance();
-        this.photoHistoryService = PhotoHistoryService.getInstance();
+        this.imageHistoryService = ImageHistoryService.getInstance();
     }
 
     componentWillLoad() {
@@ -139,7 +139,7 @@ export class AppHome {
                     await firebaseUser.delete();
                 }
 
-                await this.photoHistoryService.clear();
+                await this.imageHistoryService.clear();
 
                 this.navService.navigate({
                     url: '/',

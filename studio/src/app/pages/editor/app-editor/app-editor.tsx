@@ -404,12 +404,26 @@ export class AppEditor {
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail.data) {
-                await this.addSlide(detail.data);
-            }
+            await this.addSlideGif(detail.data);
         });
 
         await modal.present();
+    }
+
+    private addSlideGif(gif: TenorGif): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!gif || !gif.media || gif.media.length <= 0 || !gif.media[0].gif || !gif.media[0].gif.url) {
+                resolve();
+                return;
+            }
+
+            const url: string = gif.media[0].gif.url;
+            const slide: any = await CreateSlidesUtils.createSlideGif(url);
+
+            await this.addSlide(slide);
+
+            resolve();
+        });
     }
 
     @Listen('actionPublish')
@@ -632,18 +646,21 @@ export class AppEditor {
                             <ion-label>Remote</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices">
+                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary"
+                                        class="small-devices">
                             <ion-icon md="md-more" ios="md-more"></ion-icon>
                             <ion-label>More</ion-label>
                         </ion-tab-button>
                     </ion-buttons>
 
                     <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
-                        <app-add-slide-action onActionOpenSlideAdd={($event:CustomEvent) => this.onActionOpenSlideAdd($event)}></app-add-slide-action>
+                        <app-add-slide-action
+                            onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}></app-add-slide-action>
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
-            <deckgo-inline-editor containers="h1,h2,h3,section" sticky-mobile="true" onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
+            <deckgo-inline-editor containers="h1,h2,h3,section" sticky-mobile="true"
+                                  onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
                                   img-anchor="deckgo-lazy-img" img-property-width="--deckgo-lazy-img-width"
                                   img-property-css-float="--deckgo-lazy-img-float">
             </deckgo-inline-editor>
