@@ -708,8 +708,8 @@ export class AppEditorToolbar {
 
                 if (detail.data.action === ImageAction.OPEN_PHOTOS) {
                     await this.openPhotos();
-                } else if (detail.data.action === ImageAction.DELETE_PHOTO) {
-                    await this.deleteBackgroundPhoto();
+                } else if (detail.data.action === ImageAction.DELETE_BACKGROUND) {
+                    await this.deleteBackground();
                 } else if (detail.data.action === ImageAction.ADD_PHOTO && detail.data.photo) {
                     await this.appendPhoto(detail.data.photo as UnsplashPhoto);
                 }
@@ -752,7 +752,7 @@ export class AppEditorToolbar {
         });
     }
 
-    private deleteBackgroundPhoto(): Promise<void> {
+    private deleteBackground(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.deckOrSlide) {
                 resolve();
