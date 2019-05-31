@@ -32,9 +32,9 @@ export class AppRoot {
   private enableMenu(enable: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const menuController: HTMLIonMenuControllerElement = document.querySelector('ion-menu-controller');
-      await menuController.componentOnReady();
 
       if (menuController) {
+        await menuController.componentOnReady();
         const isAnimating: boolean = await menuController.isAnimating();
 
         // Menu can't be disabled or enabled if currently closing or opening
