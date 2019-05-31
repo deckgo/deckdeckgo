@@ -39,8 +39,6 @@ export class AppImage {
         return new Promise<void>(async (resolve) => {
             const imagesHistory: (UnsplashPhoto | TenorGif)[] = await this.imageHistoryService.get();
 
-            console.log(imagesHistory);
-
             if (!imagesHistory || imagesHistory.length <= 0) {
                 resolve();
                 return;
@@ -105,6 +103,12 @@ export class AppImage {
                 <ion-item class="ion-margin-top action-button">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_PHOTOS)} color="primary">
                         <ion-label class="ion-text-uppercase">Add a stock photo</ion-label>
+                    </ion-button>
+                </ion-item>
+
+                <ion-item class="action-button">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_GIFS)} color="primary">
+                        <ion-label class="ion-text-uppercase">Add a gif</ion-label>
                     </ion-button>
                 </ion-item>
 

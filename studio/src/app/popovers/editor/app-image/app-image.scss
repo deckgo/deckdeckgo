@@ -17,6 +17,10 @@ app-image {
 
     &.action-button {
       --min-height: 42px;
+
+      ion-button {
+        width: 100%;
+      }
     }
 
     &.history-empty {

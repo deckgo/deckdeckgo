@@ -707,11 +707,13 @@ export class AppEditorToolbar {
                 }
 
                 if (detail.data.action === ImageAction.OPEN_PHOTOS) {
-                    await this.openPhotos();
+                    await this.openImagesModal('app-photo');
                 } else if (detail.data.action === ImageAction.DELETE_BACKGROUND) {
                     await this.deleteBackground();
                 } else if (detail.data.action === ImageAction.ADD_IMAGE && detail.data.image) {
                     await this.appendImage(detail.data.image);
+                } else if (detail.data.action === ImageAction.OPEN_GIFS) {
+                    await this.openImagesModal('app-gif');
                 }
             }
         });
@@ -719,14 +721,14 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openPhotos() {
+    private async openImagesModal(componentTag: string) {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-photo'
+            component: componentTag
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                await this.appendImage(detail.data as UnsplashPhoto);
+                await this.appendImage(detail.data);
             }
         });
 

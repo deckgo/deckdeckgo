@@ -57,7 +57,7 @@ export class AppGif {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private addSlide(gif: TenorGif): Promise<void> {
+    private selectGif(gif: TenorGif): Promise<void> {
         return new Promise<void>(async (resolve) => {
             await this.gifService.registerShare(gif.id);
 
@@ -275,7 +275,7 @@ export class AppGif {
                     if (gif.media && gif.media.length > 0
                         && gif.media[0].tinygif && gif.media[0].tinygif.url
                         && gif.media[0].gif && gif.media[0].gif.url) {
-                        return <div class="gif ion-padding" custom-tappable onClick={() => this.addSlide(gif)}>
+                        return <div class="gif ion-padding" custom-tappable onClick={() => this.selectGif(gif)}>
                             <div class="gif-container">
                                 <deckgo-lazy-img imgSrc={gif.media[0].tinygif.url} imgAlt={gif.title ? gif.title : gif.url}></deckgo-lazy-img>
                             </div>
