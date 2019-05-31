@@ -16,14 +16,18 @@ export class AppImageColumns {
     @Event() private selectImage: EventEmitter<UnsplashPhoto | TenorGif>;
 
     render() {
-        return <div class="images-container">
-            <div class="images-column">
-                {this.renderImages(this.imagesOdd)}
+        if ((!this.imagesEven || this.imagesEven.length <= 0) && (!this.imagesOdd || this.imagesOdd.length <= 0)) {
+            return undefined;
+        } else {
+            return <div class="images-container">
+                <div class="images-column">
+                    {this.renderImages(this.imagesOdd)}
+                </div>
+                <div class="images-column">
+                    {this.renderImages(this.imagesEven)}
+                </div>
             </div>
-            <div class="images-column">
-                {this.renderImages(this.imagesEven)}
-            </div>
-        </div>
+        }
     }
 
     private renderImages(images: (UnsplashPhoto | TenorGif)[]) {

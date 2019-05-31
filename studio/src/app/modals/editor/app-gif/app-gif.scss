@@ -3,6 +3,11 @@ app-gif {
     --background: var(--ion-color-light);
   }
 
+  app-image-columns {
+    --deckgo-images-min-height: 5rem;
+    --deckgo-images-padding: 16px;
+  }
+
   div.gifs-container {
     display: flex;
     flex-direction: row;
