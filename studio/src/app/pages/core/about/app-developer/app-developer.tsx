@@ -20,7 +20,7 @@ export class AppDeveloper {
 
                     <h3 class="ion-padding-top">Cherry on the cake 🍒🎂</h3>
 
-                    <p>We hope that you do like to edit, present and publish your talk with our application. But if you are a developer and rather like to use <strong>Html</strong> or <strong>Markdown</strong> to compose your slides, we do provide a Cli, starter kit and even a full <a href="https://docs.deckdeckgo.com">documentation</a> 😁</p>
+                    <p>We hope that you do like to edit, present and publish your talk with our application. But if you are a developer and rather like to use <strong>Html</strong> or <strong>Markdown</strong> to compose your slides, build and deploy your deck yourself, we do provide a Cli, starter kit and even a full <a href="https://docs.deckdeckgo.com">documentation</a> 😁</p>
 
                     <p class="ion-margin-bottom ion-padding-bottom">If you would like to follow that path, run the following command in your terminal to begin your journey.</p>
 
