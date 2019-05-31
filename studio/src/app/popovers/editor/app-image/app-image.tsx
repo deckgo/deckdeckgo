@@ -161,7 +161,7 @@ export class AppImage {
     private renderImagesHistory() {
         if (!this.imagesHistoryOdd && !this.imagesHistoryEven) {
             return <ion-item class="history-empty">
-                <ion-label class="ion-text-wrap"><small>You have not used any photos so far</small></ion-label>
+                <ion-label class="ion-text-wrap"><small>You have not used any images so far</small></ion-label>
             </ion-item>
         } else {
             return <div class="history-photos ion-padding">
