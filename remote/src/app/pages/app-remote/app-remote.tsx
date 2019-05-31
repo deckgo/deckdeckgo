@@ -13,6 +13,9 @@ import {
     DeckdeckgoSlideAction, DeckdeckgoSlideDefinition
 } from '@deckdeckgo/types';
 
+// Utils
+import {IonControllerUtils} from '../../services/utils/ion-controller-utils';
+
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
 import {AccelerometerService} from '../../services/accelerometer/accelerometer.service';
@@ -24,8 +27,6 @@ import {AccelerometerService} from '../../services/accelerometer/accelerometer.s
 export class AppRemote {
 
     @Element() el: HTMLElement;
-
-    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
 
     @Prop()
     room: string;
@@ -377,7 +378,7 @@ export class AppRemote {
     }
 
     private async openConnectModal() {
-        const modal: HTMLIonModalElement = await this.modalController.create({
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote-connect'
         });
 
@@ -393,7 +394,7 @@ export class AppRemote {
     }
 
     private async openSettingsModal() {
-        const modal: HTMLIonModalElement = await this.modalController.create({
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote-settings'
         });
 
@@ -405,7 +406,7 @@ export class AppRemote {
     }
 
     private async openSlidePicker() {
-        const modal: HTMLIonModalElement = await this.modalController.create({
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote-slide-picker',
             componentProps: {
                 slides: this.slides
