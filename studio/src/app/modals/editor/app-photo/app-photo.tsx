@@ -130,8 +130,8 @@ export class AppPhoto {
                 this.photosEven = [];
             }
 
-            this.photosEven = [...this.photosEven, ...photos.filter((_a, i) => i % 2)];
             this.photosOdd = [...this.photosOdd, ...photos.filter((_a, i) => !(i % 2))];
+            this.photosEven = [...this.photosEven, ...photos.filter((_a, i) => i % 2)];
 
             if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
                 // We just put a small delay because of the repaint

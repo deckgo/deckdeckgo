@@ -137,8 +137,8 @@ export class AppGif {
                 this.gifsEven = [];
             }
 
-            this.gifsOdd = [...this.gifsOdd, ...gifs.filter((_a, i) => i % 2)];
-            this.gifsEven = [...this.gifsEven, ...gifs.filter((_a, i) => !(i % 2))];
+            this.gifsOdd = [...this.gifsOdd, ...gifs.filter((_a, i) => !(i % 2))];
+            this.gifsEven = [...this.gifsEven, ...gifs.filter((_a, i) => i % 2)];
 
             if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
                 // We just put a small delay because of the repaint
