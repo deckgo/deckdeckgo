@@ -1,9 +1,12 @@
-import {Component, Element, Prop} from '@stencil/core';
+import {Component, Element} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
+import {IonControllerUtils} from './utils/core/ion-controller-utils';
+
 import {ErrorService} from './services/core/error/error.service';
 import {AuthService} from './services/api/auth/auth.service';
+
 import {NavDirection, NavParams, NavService} from './services/core/nav/nav.service';
 
 @Component({
@@ -18,9 +21,6 @@ export class AppRoot {
     ];
 
     @Element() el: HTMLElement;
-
-    @Prop({connect: 'ion-menu-controller'}) lazyMenuController!: HTMLIonMenuControllerElement;
-    @Prop({connect: 'ion-toast-controller'}) toastController: HTMLIonToastControllerElement;
 
     private errorSubscription: Subscription;
     private errorService: ErrorService;
@@ -61,7 +61,7 @@ export class AppRoot {
     }
 
     private async toastError(error: string) {
-        const popover: HTMLIonToastElement = await this.toastController.create({
+        const popover: HTMLIonToastElement = await IonControllerUtils.createToast({
             message: error,
             showCloseButton: true,
             position: 'top',
@@ -131,11 +131,11 @@ export class AppRoot {
                     <ion-nav main/>
                 </ion-split-pane>
 
-                <ion-menu-controller></ion-menu-controller>
                 <ion-modal-controller></ion-modal-controller>
                 <ion-popover-controller></ion-popover-controller>
                 <ion-alert-controller></ion-alert-controller>
                 <ion-loading-controller></ion-loading-controller>
+                <ion-toast-controller></ion-toast-controller>
             </ion-app>
         ]);
     }

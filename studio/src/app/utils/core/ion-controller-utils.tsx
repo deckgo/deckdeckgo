@@ -1,4 +1,4 @@
-import {AlertOptions, LoadingOptions, ModalOptions, PopoverOptions} from '@ionic/core';
+import {AlertOptions, LoadingOptions, ModalOptions, PopoverOptions, ToastOptions} from '@ionic/core';
 
 export class IonControllerUtils {
 
@@ -43,6 +43,17 @@ export class IonControllerUtils {
             const loading: HTMLIonLoadingElement = await loadingController.create(opts);
 
             resolve(loading);
+        });
+    }
+
+    static createToast(opts: ToastOptions): Promise<HTMLIonToastElement> {
+        return new Promise<HTMLIonToastElement>(async (resolve) => {
+            const toastController: HTMLIonToastControllerElement = document.querySelector('ion-toast-controller');
+            await toastController.componentOnReady();
+
+            const toast: HTMLIonToastElement = await toastController.create(opts);
+
+            resolve(toast);
         });
     }
 
