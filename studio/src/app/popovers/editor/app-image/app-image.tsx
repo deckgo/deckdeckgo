@@ -107,7 +107,7 @@ export class AppImage {
                 </ion-item>
 
                 <ion-item class="action-button">
-                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_GIFS)} color="primary">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_GIFS)} color="secondary">
                         <ion-label class="ion-text-uppercase">Add a gif</ion-label>
                     </ion-button>
                 </ion-item>
