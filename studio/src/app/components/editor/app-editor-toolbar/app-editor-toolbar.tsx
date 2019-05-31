@@ -1,4 +1,4 @@
-import {Component, Element, Method, State, Event, EventEmitter, Prop, Listen} from '@stencil/core';
+import {Component, Element, Method, State, Event, EventEmitter, Listen} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
@@ -7,7 +7,9 @@ import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
 import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
-import {PhotoHelper} from '../../../helpers/editor/photo.helper';
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
+
+import {ImageHelper} from '../../../helpers/editor/image.helper';
 
 import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
@@ -19,9 +21,6 @@ import {BusyService} from '../../../services/editor/busy/busy.service';
     shadow: false
 })
 export class AppEditorToolbar {
-
-    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
-    @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
     @Element() el: HTMLElement;
 
@@ -538,7 +537,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-slot-type',
             componentProps: {
                 selectedElement: this.selectedElement
@@ -561,7 +560,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-code',
             componentProps: {
                 selectedElement: this.selectedElement,
@@ -675,7 +674,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-deck-or-slide',
             event: $event,
             mode: 'ios'
@@ -692,7 +691,7 @@ export class AppEditorToolbar {
     }
 
     private async openBackground() {
-        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-image',
             componentProps: {
                 deckOrSlide: this.deckOrSlide
@@ -708,11 +707,13 @@ export class AppEditorToolbar {
                 }
 
                 if (detail.data.action === ImageAction.OPEN_PHOTOS) {
-                    await this.openPhotos();
-                } else if (detail.data.action === ImageAction.DELETE_PHOTO) {
-                    await this.deleteBackgroundPhoto();
-                } else if (detail.data.action === ImageAction.ADD_PHOTO && detail.data.photo) {
-                    await this.appendPhoto(detail.data.photo as UnsplashPhoto);
+                    await this.openImagesModal('app-photo');
+                } else if (detail.data.action === ImageAction.DELETE_BACKGROUND) {
+                    await this.deleteBackground();
+                } else if (detail.data.action === ImageAction.ADD_IMAGE && detail.data.image) {
+                    await this.appendImage(detail.data.image);
+                } else if (detail.data.action === ImageAction.OPEN_GIFS) {
+                    await this.openImagesModal('app-gif');
                 }
             }
         });
@@ -720,47 +721,47 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openPhotos() {
-        const modal: HTMLIonModalElement = await this.modalController.create({
-            component: 'app-photo'
+    private async openImagesModal(componentTag: string) {
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+            component: componentTag
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                await this.appendPhoto(detail.data as UnsplashPhoto);
+                await this.appendImage(detail.data);
             }
         });
 
         await modal.present();
     }
 
-    private appendPhoto(photo: UnsplashPhoto): Promise<void> {
+    private appendImage(image: UnsplashPhoto | TenorGif): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
                 resolve();
                 return;
             }
 
-            if (!photo) {
+            if (!image) {
                 resolve();
                 return;
             }
 
-            const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
-            await helper.appendPhoto(this.selectedElement, photo, this.deckOrSlide, this.applyToAllDeck);
+            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            await helper.appendImage(this.selectedElement, image, this.deckOrSlide, this.applyToAllDeck);
 
             resolve();
         });
     }
 
-    private deleteBackgroundPhoto(): Promise<void> {
+    private deleteBackground(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.deckOrSlide) {
                 resolve();
                 return;
             }
 
-            const helper: PhotoHelper = new PhotoHelper(this.slideDidChange, this.deckDidChange);
+            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
             await helper.deleteBackground(this.selectedElement, this.applyToAllDeck);
         });
     }

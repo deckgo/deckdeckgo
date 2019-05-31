@@ -2,15 +2,15 @@ import {Component, Element, Prop, State} from '@stencil/core';
 
 import {ImageAction} from './image-action';
 
-import {PhotoHistoryService} from '../../../services/editor/photo-history/photo-history.service';
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
+
+import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
         tag: 'app-image',
     styleUrl: 'app-image.scss'
 })
 export class AppImage {
-
-    @Prop({connect: 'ion-alert-controller'}) alertController: HTMLIonAlertControllerElement;
 
     @Element() el: HTMLElement;
 
@@ -19,39 +19,39 @@ export class AppImage {
 
     private applyToAllDeck: boolean = false;
 
-    private photoHistoryService: PhotoHistoryService;
+    private imageHistoryService: ImageHistoryService;
 
     @State()
-    private photosHistoryOdd: UnsplashPhoto[];
+    private imagesHistoryOdd: (UnsplashPhoto | TenorGif)[];
 
     @State()
-    private photosHistoryEven: UnsplashPhoto[];
+    private imagesHistoryEven: (UnsplashPhoto | TenorGif)[];
 
     constructor() {
-        this.photoHistoryService = PhotoHistoryService.getInstance();
+        this.imageHistoryService = ImageHistoryService.getInstance();
     }
 
     async componentWillLoad() {
-        await this.initPhotoHistory();
+        await this.initImagesHistory();
     }
 
-    private initPhotoHistory(): Promise<void> {
+    private initImagesHistory(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const photosHistory: UnsplashPhoto[] = await this.photoHistoryService.get();
+            const imagesHistory: (UnsplashPhoto | TenorGif)[] = await this.imageHistoryService.get();
 
-            if (!photosHistory || photosHistory.length <= 0) {
+            if (!imagesHistory || imagesHistory.length <= 0) {
                 resolve();
                 return;
             }
 
-            this.photosHistoryEven = [...photosHistory.filter((_a, i) => i % 2)];
-            this.photosHistoryOdd = [...photosHistory.filter((_a, i) => !(i % 2))];
+            this.imagesHistoryEven = [...imagesHistory.filter((_a, i) => i % 2)];
+            this.imagesHistoryOdd = [...imagesHistory.filter((_a, i) => !(i % 2))];
 
             resolve();
         });
     }
 
-    private async closePopover(action: ImageAction, photo?: UnsplashPhoto) {
+    private async closePopover(action: ImageAction, image?: UnsplashPhoto | TenorGif) {
         const data = {
             action: action
         };
@@ -60,21 +60,21 @@ export class AppImage {
             data['applyToAllDeck'] = this.applyToAllDeck;
         }
 
-        if (photo) {
-            data['photo'] = photo;
+        if (image) {
+            data['image'] = image;
         }
 
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss(data);
     }
 
-    private selectPhotoFromHistory($event: CustomEvent): Promise<void> {
+    private selectImageFromHistory($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!$event || !$event.detail) {
                 resolve();
                 return;
             }
 
-            await this.closePopover(ImageAction.ADD_PHOTO, $event.detail);
+            await this.closePopover(ImageAction.ADD_IMAGE, $event.detail);
 
             resolve();
         });
@@ -87,7 +87,7 @@ export class AppImage {
     }
 
     private async presentHistoryInfo() {
-        const alert = await this.alertController.create({
+        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
             message: 'The editor keeps track of the last 10 images you would have use in any of your presentations.<br/><br/>Select one to add it again quickly.',
             buttons: ['Ok']
         });
@@ -106,6 +106,12 @@ export class AppImage {
                     </ion-button>
                 </ion-item>
 
+                <ion-item class="action-button">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_GIFS)} color="secondary">
+                        <ion-label class="ion-text-uppercase">Add a gif</ion-label>
+                    </ion-button>
+                </ion-item>
+
                 {this.renderDeleteAction()}
 
                 <ion-item-divider class="ion-padding-top">
@@ -115,7 +121,7 @@ export class AppImage {
                     </button>
                 </ion-item-divider>
 
-                {this.renderPhotosHistory()}
+                {this.renderImagesHistory()}
             </ion-list>
         ];
     }
@@ -145,21 +151,21 @@ export class AppImage {
             return undefined;
         } else {
             return <ion-item class="action-button">
-                <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_PHOTO)} color="medium" fill="outline">
+                <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_BACKGROUND)} color="medium" fill="outline">
                     <ion-label class="ion-text-uppercase">Delete background</ion-label>
                 </ion-button>
             </ion-item>;
         }
     }
 
-    private renderPhotosHistory() {
-        if (!this.photosHistoryOdd && !this.photosHistoryEven) {
+    private renderImagesHistory() {
+        if (!this.imagesHistoryOdd && !this.imagesHistoryEven) {
             return <ion-item class="history-empty">
-                <ion-label class="ion-text-wrap"><small>You have not used any photos so far</small></ion-label>
+                <ion-label class="ion-text-wrap"><small>You have not used any images so far</small></ion-label>
             </ion-item>
         } else {
             return <div class="history-photos ion-padding">
-                <app-stock-photos photosOdd={this.photosHistoryOdd} photosEven={this.photosHistoryEven} onSelectPhoto={($event: CustomEvent) => this.selectPhotoFromHistory($event)}></app-stock-photos>
+                <app-image-columns imagesOdd={this.imagesHistoryOdd} imagesEven={this.imagesHistoryEven} onSelectImage={($event: CustomEvent) => this.selectImageFromHistory($event)}></app-image-columns>
             </div>
         }
     }

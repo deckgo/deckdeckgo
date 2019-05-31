@@ -1,22 +1,22 @@
-div.photos-container {
+div.images-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 
-  div.photos-column {
+  div.images-column {
     display: block;
     flex-grow: 1;
     flex-basis: 50%;
     max-width: 50%;
 
-    div.photo {
+    div.image {
       position: relative;
-      padding: var(--deckgo-stock-photos-padding);
+      padding: var(--deckgo-images-padding);
 
       touch-action: manipulation;
       cursor: pointer;
 
-      div.photo-container {
+      div.image-container {
         border-radius: 4px;
         overflow: hidden;
         position: relative;
@@ -24,7 +24,7 @@ div.photos-container {
         deckgo-lazy-img {
           --deckgo-lazy-img-width: 100%;
           --deckgo-lazy-img-height: auto;
-          --deckgo-lazy-img-min-height: var(--deckgo-stock-photos-min-height);
+          --deckgo-lazy-img-min-height: var(--deckgo-images-min-height);
           --deckgo-lazy-img-vertical-align: top;
         }
 
@@ -34,7 +34,7 @@ div.photos-container {
           right: 0;
           background: rgba(var(--ion-color-dark-rgb), 0.4);
           padding: 4px 8px;
-          font-size: var(--deckgo-stock-photos-font-size, var(--font-size-very-small));
+          font-size: var(--deckgo-images-font-size, var(--font-size-very-small));
           color: white;
 
           a {

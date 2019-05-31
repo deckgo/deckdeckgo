@@ -17,6 +17,10 @@ app-image {
 
     &.action-button {
       --min-height: 42px;
+
+      ion-button {
+        width: 100%;
+      }
     }
 
     &.history-empty {
@@ -35,8 +39,8 @@ app-image {
     }
   }
 
-  app-stock-photos {
-    --deckgo-stock-photos-padding: 4px;
-    --deckgo-stock-photos-font-size: calc(var(--font-size-very-small) - 4px);
+  app-image-columns {
+    --deckgo-images-padding: 4px;
+    --deckgo-images-font-size: calc(var(--font-size-very-small) - 4px);
   }
 }

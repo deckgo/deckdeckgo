@@ -1,7 +1,7 @@
 import {Component, Element, Listen, State} from '@stencil/core';
 
 import {PhotoService} from '../../../services/api/photo/photo.service';
-import {PhotoHistoryService} from '../../../services/editor/photo-history/photo-history.service';
+import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
     tag: 'app-photo',
@@ -12,7 +12,7 @@ export class AppPhoto {
     @Element() el: HTMLElement;
 
     private photoService: PhotoService;
-    private photoHistoryService: PhotoHistoryService;
+    private imageHistoryService: ImageHistoryService;
 
     @State()
     private photosOdd: UnsplashPhoto[];
@@ -35,7 +35,7 @@ export class AppPhoto {
 
     constructor() {
         this.photoService = PhotoService.getInstance();
-        this.photoHistoryService = PhotoHistoryService.getInstance();
+        this.imageHistoryService = ImageHistoryService.getInstance();
     }
 
     async componentDidLoad() {
@@ -62,7 +62,7 @@ export class AppPhoto {
 
             await this.photoService.registerDownload(photo.id);
 
-            await this.photoHistoryService.push(photo);
+            await this.imageHistoryService.push(photo);
 
             await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(photo);
 
@@ -130,8 +130,8 @@ export class AppPhoto {
                 this.photosEven = [];
             }
 
-            this.photosEven = [...this.photosEven, ...photos.filter((_a, i) => i % 2)];
             this.photosOdd = [...this.photosOdd, ...photos.filter((_a, i) => !(i % 2))];
+            this.photosEven = [...this.photosEven, ...photos.filter((_a, i) => i % 2)];
 
             if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
                 // We just put a small delay because of the repaint
@@ -195,9 +195,9 @@ export class AppPhoto {
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
-                <app-stock-photos photosOdd={this.photosOdd} photosEven={this.photosEven}
-                                  onSelectPhoto={($event: CustomEvent) => this.selectPhoto($event)}>
-                </app-stock-photos>
+                <app-image-columns imagesOdd={this.photosOdd} imagesEven={this.photosEven}
+                                  onSelectImage={($event: CustomEvent) => this.selectPhoto($event)}>
+                </app-image-columns>
 
                 {this.renderPhotosPlaceHolder()}
 

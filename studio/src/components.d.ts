@@ -7,14 +7,14 @@
 
 import '@stencil/core';
 
+import '@ionic/core';
+import 'ionicons';
 import '@deckdeckgo/core';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/lazy-img';
 import '@deckdeckgo/qrcode';
 import '@deckdeckgo/remote';
-import '@ionic/core';
-import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -97,14 +97,14 @@ export namespace Components {
   interface AppHelp {}
   interface AppHelpAttributes extends StencilHTMLAttributes {}
 
-  interface AppStockPhotos {
-    'photosEven': UnsplashPhoto[];
-    'photosOdd': UnsplashPhoto[];
+  interface AppImageColumns {
+    'imagesEven': (UnsplashPhoto | TenorGif)[];
+    'imagesOdd': (UnsplashPhoto | TenorGif)[];
   }
-  interface AppStockPhotosAttributes extends StencilHTMLAttributes {
-    'onSelectPhoto'?: (event: CustomEvent<UnsplashPhoto>) => void;
-    'photosEven'?: UnsplashPhoto[];
-    'photosOdd'?: UnsplashPhoto[];
+  interface AppImageColumnsAttributes extends StencilHTMLAttributes {
+    'imagesEven'?: (UnsplashPhoto | TenorGif)[];
+    'imagesOdd'?: (UnsplashPhoto | TenorGif)[];
+    'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif>) => void;
   }
 
   interface AppDemo {}
@@ -178,6 +178,9 @@ export namespace Components {
 
   interface AppContact {}
   interface AppContactAttributes extends StencilHTMLAttributes {}
+
+  interface AppDeveloper {}
+  interface AppDeveloperAttributes extends StencilHTMLAttributes {}
 
   interface AppOpensource {}
   interface AppOpensourceAttributes extends StencilHTMLAttributes {}
@@ -265,7 +268,7 @@ declare global {
     'AppAddSlideAction': Components.AppAddSlideAction;
     'AppEditorToolbar': Components.AppEditorToolbar;
     'AppHelp': Components.AppHelp;
-    'AppStockPhotos': Components.AppStockPhotos;
+    'AppImageColumns': Components.AppImageColumns;
     'AppDemo': Components.AppDemo;
     'AppFeed': Components.AppFeed;
     'AppPopular': Components.AppPopular;
@@ -279,6 +282,7 @@ declare global {
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
     'AppContact': Components.AppContact;
+    'AppDeveloper': Components.AppDeveloper;
     'AppOpensource': Components.AppOpensource;
     'AppPrivacy': Components.AppPrivacy;
     'AppServices': Components.AppServices;
@@ -309,7 +313,7 @@ declare global {
     'app-add-slide-action': Components.AppAddSlideActionAttributes;
     'app-editor-toolbar': Components.AppEditorToolbarAttributes;
     'app-help': Components.AppHelpAttributes;
-    'app-stock-photos': Components.AppStockPhotosAttributes;
+    'app-image-columns': Components.AppImageColumnsAttributes;
     'app-demo': Components.AppDemoAttributes;
     'app-feed': Components.AppFeedAttributes;
     'app-popular': Components.AppPopularAttributes;
@@ -323,6 +327,7 @@ declare global {
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
     'app-contact': Components.AppContactAttributes;
+    'app-developer': Components.AppDeveloperAttributes;
     'app-opensource': Components.AppOpensourceAttributes;
     'app-privacy': Components.AppPrivacyAttributes;
     'app-services': Components.AppServicesAttributes;
@@ -408,10 +413,10 @@ declare global {
     new (): HTMLAppHelpElement;
   };
 
-  interface HTMLAppStockPhotosElement extends Components.AppStockPhotos, HTMLStencilElement {}
-  var HTMLAppStockPhotosElement: {
-    prototype: HTMLAppStockPhotosElement;
-    new (): HTMLAppStockPhotosElement;
+  interface HTMLAppImageColumnsElement extends Components.AppImageColumns, HTMLStencilElement {}
+  var HTMLAppImageColumnsElement: {
+    prototype: HTMLAppImageColumnsElement;
+    new (): HTMLAppImageColumnsElement;
   };
 
   interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
@@ -490,6 +495,12 @@ declare global {
   var HTMLAppContactElement: {
     prototype: HTMLAppContactElement;
     new (): HTMLAppContactElement;
+  };
+
+  interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
+  var HTMLAppDeveloperElement: {
+    prototype: HTMLAppDeveloperElement;
+    new (): HTMLAppDeveloperElement;
   };
 
   interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
@@ -600,7 +611,7 @@ declare global {
     'app-add-slide-action': HTMLAppAddSlideActionElement
     'app-editor-toolbar': HTMLAppEditorToolbarElement
     'app-help': HTMLAppHelpElement
-    'app-stock-photos': HTMLAppStockPhotosElement
+    'app-image-columns': HTMLAppImageColumnsElement
     'app-demo': HTMLAppDemoElement
     'app-feed': HTMLAppFeedElement
     'app-popular': HTMLAppPopularElement
@@ -614,6 +625,7 @@ declare global {
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
     'app-contact': HTMLAppContactElement
+    'app-developer': HTMLAppDeveloperElement
     'app-opensource': HTMLAppOpensourceElement
     'app-privacy': HTMLAppPrivacyElement
     'app-services': HTMLAppServicesElement
@@ -644,7 +656,7 @@ declare global {
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-help': HTMLAppHelpElement;
-    'app-stock-photos': HTMLAppStockPhotosElement;
+    'app-image-columns': HTMLAppImageColumnsElement;
     'app-demo': HTMLAppDemoElement;
     'app-feed': HTMLAppFeedElement;
     'app-popular': HTMLAppPopularElement;
@@ -658,6 +670,7 @@ declare global {
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
     'app-contact': HTMLAppContactElement;
+    'app-developer': HTMLAppDeveloperElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-privacy': HTMLAppPrivacyElement;
     'app-services': HTMLAppServicesElement;

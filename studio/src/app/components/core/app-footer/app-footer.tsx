@@ -35,6 +35,10 @@ export class AppFooter {
                     <ion-label>Services</ion-label>
                 </ion-anchor>
 
+                <ion-anchor href="/developer" routerDirection="forward">
+                    <ion-label>Developer</ion-label>
+                </ion-anchor>
+
                 <ion-anchor href="/contact" routerDirection="forward">
                     <ion-label>Contact</ion-label>
                 </ion-anchor>
