@@ -70,7 +70,7 @@ export class AppEditor {
     private slidesFetched: boolean = false;
 
     @State()
-    private hideFooterActions: boolean = false;
+    private hideFooterActions: boolean = true;
 
     @State()
     private hideNavigation: boolean = false;
@@ -123,6 +123,9 @@ export class AppEditor {
         });
 
         this.busySubscription = this.busyService.watchSlideEditable().subscribe(async (slide: HTMLElement) => {
+            // Hide actions footer till deck is editable
+            this.hideFooterActions = false;
+
             await this.contentEditable(slide);
         });
     }
