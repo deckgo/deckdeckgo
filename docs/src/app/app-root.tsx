@@ -1,4 +1,4 @@
-import {Component, Prop, Element} from '@stencil/core';
+import {Component, Element} from '@stencil/core';
 
 import {MenuService} from './services/menu/menu.service';
 import {Subscription} from 'rxjs';
@@ -8,8 +8,6 @@ import {Subscription} from 'rxjs';
   styleUrl: 'app-root.scss'
 })
 export class AppRoot {
-
-  @Prop({connect: 'ion-menu-controller'}) lazyMenuController!: HTMLIonMenuControllerElement;
 
   private subscription: Subscription;
 
@@ -33,7 +31,9 @@ export class AppRoot {
 
   private enableMenu(enable: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const menuController: HTMLIonMenuControllerElement = this.el.querySelector('ion-menu-controller');
+      const menuController: HTMLIonMenuControllerElement = document.querySelector('ion-menu-controller');
+      await menuController.componentOnReady();
+
       if (menuController) {
         const isAnimating: boolean = await menuController.isAnimating();
 
@@ -199,8 +199,9 @@ export class AppRoot {
           <ion-nav main/>
         </ion-split-pane>
 
-      </ion-app>,
-      <ion-menu-controller></ion-menu-controller>
+        <ion-menu-controller></ion-menu-controller>
+        <ion-modal-controller></ion-modal-controller>
+      </ion-app>
     ]);
   }
 }

@@ -7,8 +7,6 @@ import {Component, Prop} from '@stencil/core';
 })
 export class AppNavigation {
 
-  @Prop({connect: 'ion-menu-controller'}) lazyMenuController!: HTMLIonMenuControllerElement;
-
   @Prop() logo: boolean = false;
   @Prop() menuToggle: boolean = true;
 
