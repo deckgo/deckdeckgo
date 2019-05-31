@@ -1,0 +1,16 @@
+app-developer {
+  main {
+    background: white;
+
+    deckgo-highlight-code {
+      --deckgo-highlight-code-font-size: var(--font-size-h1);
+      --deckgo-highlight-code-token-function: var(--ion-color-primary);
+      color: var(--ion-color-primary);
+      --deckgo-highlight-code-text-align: center;
+    }
+
+    a {
+      border-bottom-color: var(--ion-color-primary);
+    }
+  }
+}

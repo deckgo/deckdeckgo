@@ -8,13 +8,13 @@
 import '@stencil/core';
 
 import '@ionic/core';
-import 'ionicons';
 import '@deckdeckgo/core';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/lazy-img';
 import '@deckdeckgo/qrcode';
 import '@deckdeckgo/remote';
+import 'ionicons';
 import {
   EventEmitter,
 } from '@stencil/core';
@@ -179,6 +179,9 @@ export namespace Components {
   interface AppContact {}
   interface AppContactAttributes extends StencilHTMLAttributes {}
 
+  interface AppDeveloper {}
+  interface AppDeveloperAttributes extends StencilHTMLAttributes {}
+
   interface AppOpensource {}
   interface AppOpensourceAttributes extends StencilHTMLAttributes {}
 
@@ -279,6 +282,7 @@ declare global {
     'AppSlideNavigate': Components.AppSlideNavigate;
     'AppAbout': Components.AppAbout;
     'AppContact': Components.AppContact;
+    'AppDeveloper': Components.AppDeveloper;
     'AppOpensource': Components.AppOpensource;
     'AppPrivacy': Components.AppPrivacy;
     'AppServices': Components.AppServices;
@@ -323,6 +327,7 @@ declare global {
     'app-slide-navigate': Components.AppSlideNavigateAttributes;
     'app-about': Components.AppAboutAttributes;
     'app-contact': Components.AppContactAttributes;
+    'app-developer': Components.AppDeveloperAttributes;
     'app-opensource': Components.AppOpensourceAttributes;
     'app-privacy': Components.AppPrivacyAttributes;
     'app-services': Components.AppServicesAttributes;
@@ -492,6 +497,12 @@ declare global {
     new (): HTMLAppContactElement;
   };
 
+  interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
+  var HTMLAppDeveloperElement: {
+    prototype: HTMLAppDeveloperElement;
+    new (): HTMLAppDeveloperElement;
+  };
+
   interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
   var HTMLAppOpensourceElement: {
     prototype: HTMLAppOpensourceElement;
@@ -614,6 +625,7 @@ declare global {
     'app-slide-navigate': HTMLAppSlideNavigateElement
     'app-about': HTMLAppAboutElement
     'app-contact': HTMLAppContactElement
+    'app-developer': HTMLAppDeveloperElement
     'app-opensource': HTMLAppOpensourceElement
     'app-privacy': HTMLAppPrivacyElement
     'app-services': HTMLAppServicesElement
@@ -658,6 +670,7 @@ declare global {
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-about': HTMLAppAboutElement;
     'app-contact': HTMLAppContactElement;
+    'app-developer': HTMLAppDeveloperElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-privacy': HTMLAppPrivacyElement;
     'app-services': HTMLAppServicesElement;

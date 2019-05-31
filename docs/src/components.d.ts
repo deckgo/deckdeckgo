@@ -7,13 +7,13 @@
 
 import '@stencil/core';
 
-import '@ionic/core';
-import 'ionicons';
 import '@deckdeckgo/charts';
 import '@deckdeckgo/core';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/qrcode';
+import '@ionic/core';
+import 'ionicons';
 
 
 export namespace Components {
