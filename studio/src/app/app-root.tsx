@@ -130,8 +130,13 @@ export class AppRoot {
 
                     <ion-nav main/>
                 </ion-split-pane>
-            </ion-app>,
-            <ion-menu-controller></ion-menu-controller>
+
+                <ion-menu-controller></ion-menu-controller>
+                <ion-modal-controller></ion-modal-controller>
+                <ion-popover-controller></ion-popover-controller>
+                <ion-alert-controller></ion-alert-controller>
+                <ion-loading-controller></ion-loading-controller>
+            </ion-app>
         ]);
     }
 }

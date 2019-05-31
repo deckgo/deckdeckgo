@@ -1,4 +1,4 @@
-import {Component, Element, Method, State, Event, EventEmitter, Prop, Listen} from '@stencil/core';
+import {Component, Element, Method, State, Event, EventEmitter, Listen} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
@@ -7,6 +7,8 @@ import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
 import {SlotType} from '../../../utils/editor/create-slides.utils';
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
+import {ControllerUtils} from '../../../utils/core/controller-utils';
+
 import {PhotoHelper} from '../../../helpers/editor/photo.helper';
 
 import {ImageAction} from '../../../popovers/editor/app-image/image-action';
@@ -19,9 +21,6 @@ import {BusyService} from '../../../services/editor/busy/busy.service';
     shadow: false
 })
 export class AppEditorToolbar {
-
-    @Prop({connect: 'ion-modal-controller'}) modalController: HTMLIonModalControllerElement;
-    @Prop({connect: 'ion-popover-controller'}) popoverController: HTMLIonPopoverControllerElement;
 
     @Element() el: HTMLElement;
 
@@ -538,7 +537,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
             component: 'app-slot-type',
             componentProps: {
                 selectedElement: this.selectedElement
@@ -561,7 +560,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
             component: 'app-code',
             componentProps: {
                 selectedElement: this.selectedElement,
@@ -675,7 +674,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
             component: 'app-deck-or-slide',
             event: $event,
             mode: 'ios'
@@ -692,7 +691,7 @@ export class AppEditorToolbar {
     }
 
     private async openBackground() {
-        const popover: HTMLIonPopoverElement = await this.popoverController.create({
+        const popover: HTMLIonPopoverElement = await ControllerUtils.createPopover({
             component: 'app-image',
             componentProps: {
                 deckOrSlide: this.deckOrSlide
@@ -721,7 +720,7 @@ export class AppEditorToolbar {
     }
 
     private async openPhotos() {
-        const modal: HTMLIonModalElement = await this.modalController.create({
+        const modal: HTMLIonModalElement = await ControllerUtils.createModal({
             component: 'app-photo'
         });
 
