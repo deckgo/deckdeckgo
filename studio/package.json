@@ -21,19 +21,19 @@
     "@deckdeckgo/qrcode": "^1.0.0-alpha.7",
     "@deckdeckgo/remote": "^1.0.0-alpha.10",
     "@deckdeckgo/utils": "^1.0.0-alpha.1",
-    "@ionic/core": "4.1.1",
-    "firebase": "^5.9.0",
-    "idb-keyval": "^3.1.0",
-    "rxjs": "^6.4.0"
+    "@ionic/core": "^4.5.0-dev.201905311531.e014c6a",
+    "firebase": "^6.1.0",
+    "idb-keyval": "^3.2.0",
+    "rxjs": "^6.5.2"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.10",
-    "@stencil/core": "0.18.0",
+    "@stencil/core": "1.0.0-beta.8",
     "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.1.1",
-    "autoprefixer": "^9.4.7",
-    "rollup-plugin-replace": "^2.1.1",
-    "workbox-build": "3.4.1"
+    "@stencil/sass": "^0.2.3",
+    "autoprefixer": "^9.5.1",
+    "rollup-plugin-replace": "^2.2.0",
+    "workbox-build": "4.3.1"
   },
   "repository": {
     "type": "git",

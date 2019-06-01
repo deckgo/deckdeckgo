@@ -1,4 +1,4 @@
-import {Component} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
 @Component({
     tag: 'app-footer',
@@ -9,7 +9,7 @@ export class AppFooter {
 
     render() {
         return [
-            <hr margin/>,
+            <hr class="ion-margin"/>,
             <div class="ion-padding-start ion-padding-end ion-margin-bottom">
                 <ion-anchor href="/about" routerDirection="forward">
                     <ion-label>About</ion-label>

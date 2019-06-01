@@ -1,4 +1,4 @@
-import {Component, Element, Listen, State} from '@stencil/core';
+import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import {take} from 'rxjs/operators';
 
@@ -36,7 +36,7 @@ export class AppRemote {
         history.pushState({modal: true}, null);
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', { target: 'window' })
     async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }

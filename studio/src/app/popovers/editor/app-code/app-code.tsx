@@ -1,4 +1,4 @@
-import {Component, Element, EventEmitter, Prop, State} from '@stencil/core';
+import {Component, Element, EventEmitter, Prop, State, h} from '@stencil/core';
 
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
@@ -29,7 +29,7 @@ export class AppCode {
     @Prop()
     codeDidChange: EventEmitter<HTMLElement>;
 
-    private hidePopoverTimer: number;
+    private hidePopoverTimer;
 
     private prismService: PrismService;
 

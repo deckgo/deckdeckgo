@@ -5,127 +5,37 @@
  */
 
 
-import '@stencil/core';
-
-import '@ionic/core';
-import '@deckdeckgo/core';
-import '@deckdeckgo/highlight-code';
-import '@deckdeckgo/inline-editor';
-import '@deckdeckgo/lazy-img';
-import '@deckdeckgo/qrcode';
-import '@deckdeckgo/remote';
-import 'ionicons';
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   EventEmitter,
 } from '@stencil/core';
 
 
 export namespace Components {
-
-  interface AppRoot {}
-  interface AppRootAttributes extends StencilHTMLAttributes {}
-
+  interface AppAbout {}
+  interface AppAddSlideAction {}
   interface AppAvatar {
     'src': string;
   }
-  interface AppAvatarAttributes extends StencilHTMLAttributes {
-    'src'?: string;
+  interface AppCode {
+    'codeDidChange': EventEmitter<HTMLElement>;
+    'selectedElement': HTMLElement;
   }
-
-  interface AppFooter {}
-  interface AppFooterAttributes extends StencilHTMLAttributes {}
-
-  interface AppLogo {}
-  interface AppLogoAttributes extends StencilHTMLAttributes {}
-
-  interface AppMenu {}
-  interface AppMenuAttributes extends StencilHTMLAttributes {}
-
-  interface AppNavigationActions {
-    'presentation': boolean;
-    'publish': boolean;
-    'signIn': boolean;
+  interface AppContact {}
+  interface AppDeckOrSlide {}
+  interface AppDemo {}
+  interface AppDeveloper {}
+  interface AppEditor {
+    'deckId': string;
   }
-  interface AppNavigationActionsAttributes extends StencilHTMLAttributes {
-    'onActionPublish'?: (event: CustomEvent<void>) => void;
-    'presentation'?: boolean;
-    'publish'?: boolean;
-    'signIn'?: boolean;
-  }
-
-  interface AppNavigation {
-    'logo': boolean;
-    'menuToggle': boolean;
-    'presentation': boolean;
-    'publish': boolean;
-    'user': boolean;
-  }
-  interface AppNavigationAttributes extends StencilHTMLAttributes {
-    'logo'?: boolean;
-    'menuToggle'?: boolean;
-    'presentation'?: boolean;
-    'publish'?: boolean;
-    'user'?: boolean;
-  }
-
-  interface AppUserInfo {
-    'avatarColSize': number;
-  }
-  interface AppUserInfoAttributes extends StencilHTMLAttributes {
-    'avatarColSize'?: number;
-  }
-
-  interface AppAddSlideAction {}
-  interface AppAddSlideActionAttributes extends StencilHTMLAttributes {
-    'onActionOpenSlideAdd'?: (event: CustomEvent<UIEvent>) => void;
-  }
-
+  interface AppEditorActions {}
   interface AppEditorToolbar {
     'blurSelectedElement': () => Promise<void>;
     'hideToolbar': () => Promise<void>;
     'touch': (element: HTMLElement) => Promise<void>;
     'unSelect': () => Promise<void>;
   }
-  interface AppEditorToolbarAttributes extends StencilHTMLAttributes {
-    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
-    'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-    'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
-    'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-  }
-
-  interface AppHelp {}
-  interface AppHelpAttributes extends StencilHTMLAttributes {}
-
-  interface AppImageColumns {
-    'imagesEven': (UnsplashPhoto | TenorGif)[];
-    'imagesOdd': (UnsplashPhoto | TenorGif)[];
-  }
-  interface AppImageColumnsAttributes extends StencilHTMLAttributes {
-    'imagesEven'?: (UnsplashPhoto | TenorGif)[];
-    'imagesOdd'?: (UnsplashPhoto | TenorGif)[];
-    'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif>) => void;
-  }
-
-  interface AppDemo {}
-  interface AppDemoAttributes extends StencilHTMLAttributes {}
-
   interface AppFeed {}
-  interface AppFeedAttributes extends StencilHTMLAttributes {}
-
-  interface AppPopular {}
-  interface AppPopularAttributes extends StencilHTMLAttributes {}
-
-  interface AppFeedCardTags {
-    'editable': boolean;
-    'tags': string[];
-  }
-  interface AppFeedCardTagsAttributes extends StencilHTMLAttributes {
-    'editable'?: boolean;
-    'onRemoveTag'?: (event: CustomEvent<string>) => void;
-    'tags'?: string[];
-  }
-
   interface AppFeedCard {
     'author': string;
     'caption': string;
@@ -134,223 +44,86 @@ export namespace Components {
     'miniature': boolean;
     'publication': Date;
   }
-  interface AppFeedCardAttributes extends StencilHTMLAttributes {
-    'author'?: string;
-    'caption'?: string;
-    'compact'?: boolean;
-    'description'?: string;
-    'miniature'?: boolean;
-    'publication'?: Date;
+  interface AppFeedCardTags {
+    'editable': boolean;
+    'tags': string[];
   }
-
-  interface AppUserDelete {
-    'username': string;
-  }
-  interface AppUserDeleteAttributes extends StencilHTMLAttributes {
-    'username'?: string;
-  }
-
+  interface AppFooter {}
   interface AppGif {}
-  interface AppGifAttributes extends StencilHTMLAttributes {}
-
+  interface AppHelp {}
+  interface AppHome {}
+  interface AppImage {
+    'deckOrSlide': boolean;
+  }
+  interface AppImageColumns {
+    'imagesEven': (UnsplashPhoto | TenorGif)[];
+    'imagesOdd': (UnsplashPhoto | TenorGif)[];
+  }
+  interface AppLogo {}
+  interface AppMenu {}
+  interface AppNavigation {
+    'logo': boolean;
+    'menuToggle': boolean;
+    'presentation': boolean;
+    'publish': boolean;
+    'user': boolean;
+  }
+  interface AppNavigationActions {
+    'presentation': boolean;
+    'publish': boolean;
+    'signIn': boolean;
+  }
+  interface AppOpensource {}
   interface AppPhoto {}
-  interface AppPhotoAttributes extends StencilHTMLAttributes {}
-
+  interface AppPopular {}
+  interface AppPrivacy {}
   interface AppPublish {
     'description': string;
   }
-  interface AppPublishAttributes extends StencilHTMLAttributes {
-    'description'?: string;
-  }
-
   interface AppRemote {}
-  interface AppRemoteAttributes extends StencilHTMLAttributes {}
-
-  interface AppSlideNavigate {
-    'slides': string[];
-  }
-  interface AppSlideNavigateAttributes extends StencilHTMLAttributes {
-    'slides'?: string[];
-  }
-
-  interface AppAbout {}
-  interface AppAboutAttributes extends StencilHTMLAttributes {}
-
-  interface AppContact {}
-  interface AppContactAttributes extends StencilHTMLAttributes {}
-
-  interface AppDeveloper {}
-  interface AppDeveloperAttributes extends StencilHTMLAttributes {}
-
-  interface AppOpensource {}
-  interface AppOpensourceAttributes extends StencilHTMLAttributes {}
-
-  interface AppPrivacy {}
-  interface AppPrivacyAttributes extends StencilHTMLAttributes {}
-
+  interface AppRoot {}
   interface AppServices {}
-  interface AppServicesAttributes extends StencilHTMLAttributes {}
-
-  interface AppTeam {}
-  interface AppTeamAttributes extends StencilHTMLAttributes {}
-
-  interface AppTerms {}
-  interface AppTermsAttributes extends StencilHTMLAttributes {}
-
-  interface AppHome {}
-  interface AppHomeAttributes extends StencilHTMLAttributes {}
-
   interface AppSettings {}
-  interface AppSettingsAttributes extends StencilHTMLAttributes {}
-
   interface AppSignin {
     'redirect': string;
     'redirectId': string;
   }
-  interface AppSigninAttributes extends StencilHTMLAttributes {
-    'redirect'?: string;
-    'redirectId'?: string;
+  interface AppSlideNavigate {
+    'slides': string[];
   }
-
-  interface AppEditor {
-    'deckId': string;
-  }
-  interface AppEditorAttributes extends StencilHTMLAttributes {
-    'deckId'?: string;
-  }
-
-  interface AppUserMenu {}
-  interface AppUserMenuAttributes extends StencilHTMLAttributes {}
-
-  interface AppCode {
-    'codeDidChange': EventEmitter<HTMLElement>;
-    'selectedElement': HTMLElement;
-  }
-  interface AppCodeAttributes extends StencilHTMLAttributes {
-    'codeDidChange'?: EventEmitter<HTMLElement>;
-    'selectedElement'?: HTMLElement;
-  }
-
-  interface AppDeckOrSlide {}
-  interface AppDeckOrSlideAttributes extends StencilHTMLAttributes {}
-
-  interface AppEditorActions {}
-  interface AppEditorActionsAttributes extends StencilHTMLAttributes {}
-
-  interface AppImage {
-    'deckOrSlide': boolean;
-  }
-  interface AppImageAttributes extends StencilHTMLAttributes {
-    'deckOrSlide'?: boolean;
-  }
-
   interface AppSlideType {}
-  interface AppSlideTypeAttributes extends StencilHTMLAttributes {}
-
   interface AppSlotType {
     'selectedElement': HTMLElement;
   }
-  interface AppSlotTypeAttributes extends StencilHTMLAttributes {
-    'selectedElement'?: HTMLElement;
+  interface AppTeam {}
+  interface AppTerms {}
+  interface AppUserDelete {
+    'username': string;
   }
+  interface AppUserInfo {
+    'avatarColSize': number;
+  }
+  interface AppUserMenu {}
 }
 
 declare global {
-  interface StencilElementInterfaces {
-    'AppRoot': Components.AppRoot;
-    'AppAvatar': Components.AppAvatar;
-    'AppFooter': Components.AppFooter;
-    'AppLogo': Components.AppLogo;
-    'AppMenu': Components.AppMenu;
-    'AppNavigationActions': Components.AppNavigationActions;
-    'AppNavigation': Components.AppNavigation;
-    'AppUserInfo': Components.AppUserInfo;
-    'AppAddSlideAction': Components.AppAddSlideAction;
-    'AppEditorToolbar': Components.AppEditorToolbar;
-    'AppHelp': Components.AppHelp;
-    'AppImageColumns': Components.AppImageColumns;
-    'AppDemo': Components.AppDemo;
-    'AppFeed': Components.AppFeed;
-    'AppPopular': Components.AppPopular;
-    'AppFeedCardTags': Components.AppFeedCardTags;
-    'AppFeedCard': Components.AppFeedCard;
-    'AppUserDelete': Components.AppUserDelete;
-    'AppGif': Components.AppGif;
-    'AppPhoto': Components.AppPhoto;
-    'AppPublish': Components.AppPublish;
-    'AppRemote': Components.AppRemote;
-    'AppSlideNavigate': Components.AppSlideNavigate;
-    'AppAbout': Components.AppAbout;
-    'AppContact': Components.AppContact;
-    'AppDeveloper': Components.AppDeveloper;
-    'AppOpensource': Components.AppOpensource;
-    'AppPrivacy': Components.AppPrivacy;
-    'AppServices': Components.AppServices;
-    'AppTeam': Components.AppTeam;
-    'AppTerms': Components.AppTerms;
-    'AppHome': Components.AppHome;
-    'AppSettings': Components.AppSettings;
-    'AppSignin': Components.AppSignin;
-    'AppEditor': Components.AppEditor;
-    'AppUserMenu': Components.AppUserMenu;
-    'AppCode': Components.AppCode;
-    'AppDeckOrSlide': Components.AppDeckOrSlide;
-    'AppEditorActions': Components.AppEditorActions;
-    'AppImage': Components.AppImage;
-    'AppSlideType': Components.AppSlideType;
-    'AppSlotType': Components.AppSlotType;
-  }
 
-  interface StencilIntrinsicElements {
-    'app-root': Components.AppRootAttributes;
-    'app-avatar': Components.AppAvatarAttributes;
-    'app-footer': Components.AppFooterAttributes;
-    'app-logo': Components.AppLogoAttributes;
-    'app-menu': Components.AppMenuAttributes;
-    'app-navigation-actions': Components.AppNavigationActionsAttributes;
-    'app-navigation': Components.AppNavigationAttributes;
-    'app-user-info': Components.AppUserInfoAttributes;
-    'app-add-slide-action': Components.AppAddSlideActionAttributes;
-    'app-editor-toolbar': Components.AppEditorToolbarAttributes;
-    'app-help': Components.AppHelpAttributes;
-    'app-image-columns': Components.AppImageColumnsAttributes;
-    'app-demo': Components.AppDemoAttributes;
-    'app-feed': Components.AppFeedAttributes;
-    'app-popular': Components.AppPopularAttributes;
-    'app-feed-card-tags': Components.AppFeedCardTagsAttributes;
-    'app-feed-card': Components.AppFeedCardAttributes;
-    'app-user-delete': Components.AppUserDeleteAttributes;
-    'app-gif': Components.AppGifAttributes;
-    'app-photo': Components.AppPhotoAttributes;
-    'app-publish': Components.AppPublishAttributes;
-    'app-remote': Components.AppRemoteAttributes;
-    'app-slide-navigate': Components.AppSlideNavigateAttributes;
-    'app-about': Components.AppAboutAttributes;
-    'app-contact': Components.AppContactAttributes;
-    'app-developer': Components.AppDeveloperAttributes;
-    'app-opensource': Components.AppOpensourceAttributes;
-    'app-privacy': Components.AppPrivacyAttributes;
-    'app-services': Components.AppServicesAttributes;
-    'app-team': Components.AppTeamAttributes;
-    'app-terms': Components.AppTermsAttributes;
-    'app-home': Components.AppHomeAttributes;
-    'app-settings': Components.AppSettingsAttributes;
-    'app-signin': Components.AppSigninAttributes;
-    'app-editor': Components.AppEditorAttributes;
-    'app-user-menu': Components.AppUserMenuAttributes;
-    'app-code': Components.AppCodeAttributes;
-    'app-deck-or-slide': Components.AppDeckOrSlideAttributes;
-    'app-editor-actions': Components.AppEditorActionsAttributes;
-    'app-image': Components.AppImageAttributes;
-    'app-slide-type': Components.AppSlideTypeAttributes;
-    'app-slot-type': Components.AppSlotTypeAttributes;
+  // Adding a global JSX for backcompatibility with legacy dependencies
+  export namespace JSX {
+    export interface Element {}
   }
 
 
-  interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
-  var HTMLAppRootElement: {
-    prototype: HTMLAppRootElement;
-    new (): HTMLAppRootElement;
+  interface HTMLAppAboutElement extends Components.AppAbout, HTMLStencilElement {}
+  var HTMLAppAboutElement: {
+    prototype: HTMLAppAboutElement;
+    new (): HTMLAppAboutElement;
+  };
+
+  interface HTMLAppAddSlideActionElement extends Components.AppAddSlideAction, HTMLStencilElement {}
+  var HTMLAppAddSlideActionElement: {
+    prototype: HTMLAppAddSlideActionElement;
+    new (): HTMLAppAddSlideActionElement;
   };
 
   interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {}
@@ -359,10 +132,106 @@ declare global {
     new (): HTMLAppAvatarElement;
   };
 
+  interface HTMLAppCodeElement extends Components.AppCode, HTMLStencilElement {}
+  var HTMLAppCodeElement: {
+    prototype: HTMLAppCodeElement;
+    new (): HTMLAppCodeElement;
+  };
+
+  interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {}
+  var HTMLAppContactElement: {
+    prototype: HTMLAppContactElement;
+    new (): HTMLAppContactElement;
+  };
+
+  interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
+  var HTMLAppDeckOrSlideElement: {
+    prototype: HTMLAppDeckOrSlideElement;
+    new (): HTMLAppDeckOrSlideElement;
+  };
+
+  interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
+  var HTMLAppDemoElement: {
+    prototype: HTMLAppDemoElement;
+    new (): HTMLAppDemoElement;
+  };
+
+  interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
+  var HTMLAppDeveloperElement: {
+    prototype: HTMLAppDeveloperElement;
+    new (): HTMLAppDeveloperElement;
+  };
+
+  interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
+  var HTMLAppEditorElement: {
+    prototype: HTMLAppEditorElement;
+    new (): HTMLAppEditorElement;
+  };
+
+  interface HTMLAppEditorActionsElement extends Components.AppEditorActions, HTMLStencilElement {}
+  var HTMLAppEditorActionsElement: {
+    prototype: HTMLAppEditorActionsElement;
+    new (): HTMLAppEditorActionsElement;
+  };
+
+  interface HTMLAppEditorToolbarElement extends Components.AppEditorToolbar, HTMLStencilElement {}
+  var HTMLAppEditorToolbarElement: {
+    prototype: HTMLAppEditorToolbarElement;
+    new (): HTMLAppEditorToolbarElement;
+  };
+
+  interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
+  var HTMLAppFeedElement: {
+    prototype: HTMLAppFeedElement;
+    new (): HTMLAppFeedElement;
+  };
+
+  interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
+  var HTMLAppFeedCardElement: {
+    prototype: HTMLAppFeedCardElement;
+    new (): HTMLAppFeedCardElement;
+  };
+
+  interface HTMLAppFeedCardTagsElement extends Components.AppFeedCardTags, HTMLStencilElement {}
+  var HTMLAppFeedCardTagsElement: {
+    prototype: HTMLAppFeedCardTagsElement;
+    new (): HTMLAppFeedCardTagsElement;
+  };
+
   interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
   var HTMLAppFooterElement: {
     prototype: HTMLAppFooterElement;
     new (): HTMLAppFooterElement;
+  };
+
+  interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
+  var HTMLAppGifElement: {
+    prototype: HTMLAppGifElement;
+    new (): HTMLAppGifElement;
+  };
+
+  interface HTMLAppHelpElement extends Components.AppHelp, HTMLStencilElement {}
+  var HTMLAppHelpElement: {
+    prototype: HTMLAppHelpElement;
+    new (): HTMLAppHelpElement;
+  };
+
+  interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
+  var HTMLAppHomeElement: {
+    prototype: HTMLAppHomeElement;
+    new (): HTMLAppHomeElement;
+  };
+
+  interface HTMLAppImageElement extends Components.AppImage, HTMLStencilElement {}
+  var HTMLAppImageElement: {
+    prototype: HTMLAppImageElement;
+    new (): HTMLAppImageElement;
+  };
+
+  interface HTMLAppImageColumnsElement extends Components.AppImageColumns, HTMLStencilElement {}
+  var HTMLAppImageColumnsElement: {
+    prototype: HTMLAppImageColumnsElement;
+    new (): HTMLAppImageColumnsElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
@@ -377,58 +246,28 @@ declare global {
     new (): HTMLAppMenuElement;
   };
 
-  interface HTMLAppNavigationActionsElement extends Components.AppNavigationActions, HTMLStencilElement {}
-  var HTMLAppNavigationActionsElement: {
-    prototype: HTMLAppNavigationActionsElement;
-    new (): HTMLAppNavigationActionsElement;
-  };
-
   interface HTMLAppNavigationElement extends Components.AppNavigation, HTMLStencilElement {}
   var HTMLAppNavigationElement: {
     prototype: HTMLAppNavigationElement;
     new (): HTMLAppNavigationElement;
   };
 
-  interface HTMLAppUserInfoElement extends Components.AppUserInfo, HTMLStencilElement {}
-  var HTMLAppUserInfoElement: {
-    prototype: HTMLAppUserInfoElement;
-    new (): HTMLAppUserInfoElement;
+  interface HTMLAppNavigationActionsElement extends Components.AppNavigationActions, HTMLStencilElement {}
+  var HTMLAppNavigationActionsElement: {
+    prototype: HTMLAppNavigationActionsElement;
+    new (): HTMLAppNavigationActionsElement;
   };
 
-  interface HTMLAppAddSlideActionElement extends Components.AppAddSlideAction, HTMLStencilElement {}
-  var HTMLAppAddSlideActionElement: {
-    prototype: HTMLAppAddSlideActionElement;
-    new (): HTMLAppAddSlideActionElement;
+  interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
+  var HTMLAppOpensourceElement: {
+    prototype: HTMLAppOpensourceElement;
+    new (): HTMLAppOpensourceElement;
   };
 
-  interface HTMLAppEditorToolbarElement extends Components.AppEditorToolbar, HTMLStencilElement {}
-  var HTMLAppEditorToolbarElement: {
-    prototype: HTMLAppEditorToolbarElement;
-    new (): HTMLAppEditorToolbarElement;
-  };
-
-  interface HTMLAppHelpElement extends Components.AppHelp, HTMLStencilElement {}
-  var HTMLAppHelpElement: {
-    prototype: HTMLAppHelpElement;
-    new (): HTMLAppHelpElement;
-  };
-
-  interface HTMLAppImageColumnsElement extends Components.AppImageColumns, HTMLStencilElement {}
-  var HTMLAppImageColumnsElement: {
-    prototype: HTMLAppImageColumnsElement;
-    new (): HTMLAppImageColumnsElement;
-  };
-
-  interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
-  var HTMLAppDemoElement: {
-    prototype: HTMLAppDemoElement;
-    new (): HTMLAppDemoElement;
-  };
-
-  interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
-  var HTMLAppFeedElement: {
-    prototype: HTMLAppFeedElement;
-    new (): HTMLAppFeedElement;
+  interface HTMLAppPhotoElement extends Components.AppPhoto, HTMLStencilElement {}
+  var HTMLAppPhotoElement: {
+    prototype: HTMLAppPhotoElement;
+    new (): HTMLAppPhotoElement;
   };
 
   interface HTMLAppPopularElement extends Components.AppPopular, HTMLStencilElement {}
@@ -437,34 +276,10 @@ declare global {
     new (): HTMLAppPopularElement;
   };
 
-  interface HTMLAppFeedCardTagsElement extends Components.AppFeedCardTags, HTMLStencilElement {}
-  var HTMLAppFeedCardTagsElement: {
-    prototype: HTMLAppFeedCardTagsElement;
-    new (): HTMLAppFeedCardTagsElement;
-  };
-
-  interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
-  var HTMLAppFeedCardElement: {
-    prototype: HTMLAppFeedCardElement;
-    new (): HTMLAppFeedCardElement;
-  };
-
-  interface HTMLAppUserDeleteElement extends Components.AppUserDelete, HTMLStencilElement {}
-  var HTMLAppUserDeleteElement: {
-    prototype: HTMLAppUserDeleteElement;
-    new (): HTMLAppUserDeleteElement;
-  };
-
-  interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
-  var HTMLAppGifElement: {
-    prototype: HTMLAppGifElement;
-    new (): HTMLAppGifElement;
-  };
-
-  interface HTMLAppPhotoElement extends Components.AppPhoto, HTMLStencilElement {}
-  var HTMLAppPhotoElement: {
-    prototype: HTMLAppPhotoElement;
-    new (): HTMLAppPhotoElement;
+  interface HTMLAppPrivacyElement extends Components.AppPrivacy, HTMLStencilElement {}
+  var HTMLAppPrivacyElement: {
+    prototype: HTMLAppPrivacyElement;
+    new (): HTMLAppPrivacyElement;
   };
 
   interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {}
@@ -479,64 +294,16 @@ declare global {
     new (): HTMLAppRemoteElement;
   };
 
-  interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {}
-  var HTMLAppSlideNavigateElement: {
-    prototype: HTMLAppSlideNavigateElement;
-    new (): HTMLAppSlideNavigateElement;
-  };
-
-  interface HTMLAppAboutElement extends Components.AppAbout, HTMLStencilElement {}
-  var HTMLAppAboutElement: {
-    prototype: HTMLAppAboutElement;
-    new (): HTMLAppAboutElement;
-  };
-
-  interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {}
-  var HTMLAppContactElement: {
-    prototype: HTMLAppContactElement;
-    new (): HTMLAppContactElement;
-  };
-
-  interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
-  var HTMLAppDeveloperElement: {
-    prototype: HTMLAppDeveloperElement;
-    new (): HTMLAppDeveloperElement;
-  };
-
-  interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
-  var HTMLAppOpensourceElement: {
-    prototype: HTMLAppOpensourceElement;
-    new (): HTMLAppOpensourceElement;
-  };
-
-  interface HTMLAppPrivacyElement extends Components.AppPrivacy, HTMLStencilElement {}
-  var HTMLAppPrivacyElement: {
-    prototype: HTMLAppPrivacyElement;
-    new (): HTMLAppPrivacyElement;
+  interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
+  var HTMLAppRootElement: {
+    prototype: HTMLAppRootElement;
+    new (): HTMLAppRootElement;
   };
 
   interface HTMLAppServicesElement extends Components.AppServices, HTMLStencilElement {}
   var HTMLAppServicesElement: {
     prototype: HTMLAppServicesElement;
     new (): HTMLAppServicesElement;
-  };
-
-  interface HTMLAppTeamElement extends Components.AppTeam, HTMLStencilElement {}
-  var HTMLAppTeamElement: {
-    prototype: HTMLAppTeamElement;
-    new (): HTMLAppTeamElement;
-  };
-
-  interface HTMLAppTermsElement extends Components.AppTerms, HTMLStencilElement {}
-  var HTMLAppTermsElement: {
-    prototype: HTMLAppTermsElement;
-    new (): HTMLAppTermsElement;
-  };
-
-  interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
-  var HTMLAppHomeElement: {
-    prototype: HTMLAppHomeElement;
-    new (): HTMLAppHomeElement;
   };
 
   interface HTMLAppSettingsElement extends Components.AppSettings, HTMLStencilElement {}
@@ -551,40 +318,10 @@ declare global {
     new (): HTMLAppSigninElement;
   };
 
-  interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
-  var HTMLAppEditorElement: {
-    prototype: HTMLAppEditorElement;
-    new (): HTMLAppEditorElement;
-  };
-
-  interface HTMLAppUserMenuElement extends Components.AppUserMenu, HTMLStencilElement {}
-  var HTMLAppUserMenuElement: {
-    prototype: HTMLAppUserMenuElement;
-    new (): HTMLAppUserMenuElement;
-  };
-
-  interface HTMLAppCodeElement extends Components.AppCode, HTMLStencilElement {}
-  var HTMLAppCodeElement: {
-    prototype: HTMLAppCodeElement;
-    new (): HTMLAppCodeElement;
-  };
-
-  interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
-  var HTMLAppDeckOrSlideElement: {
-    prototype: HTMLAppDeckOrSlideElement;
-    new (): HTMLAppDeckOrSlideElement;
-  };
-
-  interface HTMLAppEditorActionsElement extends Components.AppEditorActions, HTMLStencilElement {}
-  var HTMLAppEditorActionsElement: {
-    prototype: HTMLAppEditorActionsElement;
-    new (): HTMLAppEditorActionsElement;
-  };
-
-  interface HTMLAppImageElement extends Components.AppImage, HTMLStencilElement {}
-  var HTMLAppImageElement: {
-    prototype: HTMLAppImageElement;
-    new (): HTMLAppImageElement;
+  interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {}
+  var HTMLAppSlideNavigateElement: {
+    prototype: HTMLAppSlideNavigateElement;
+    new (): HTMLAppSlideNavigateElement;
   };
 
   interface HTMLAppSlideTypeElement extends Components.AppSlideType, HTMLStencilElement {}
@@ -599,103 +336,234 @@ declare global {
     new (): HTMLAppSlotTypeElement;
   };
 
-  interface HTMLElementTagNameMap {
-    'app-root': HTMLAppRootElement
-    'app-avatar': HTMLAppAvatarElement
-    'app-footer': HTMLAppFooterElement
-    'app-logo': HTMLAppLogoElement
-    'app-menu': HTMLAppMenuElement
-    'app-navigation-actions': HTMLAppNavigationActionsElement
-    'app-navigation': HTMLAppNavigationElement
-    'app-user-info': HTMLAppUserInfoElement
-    'app-add-slide-action': HTMLAppAddSlideActionElement
-    'app-editor-toolbar': HTMLAppEditorToolbarElement
-    'app-help': HTMLAppHelpElement
-    'app-image-columns': HTMLAppImageColumnsElement
-    'app-demo': HTMLAppDemoElement
-    'app-feed': HTMLAppFeedElement
-    'app-popular': HTMLAppPopularElement
-    'app-feed-card-tags': HTMLAppFeedCardTagsElement
-    'app-feed-card': HTMLAppFeedCardElement
-    'app-user-delete': HTMLAppUserDeleteElement
-    'app-gif': HTMLAppGifElement
-    'app-photo': HTMLAppPhotoElement
-    'app-publish': HTMLAppPublishElement
-    'app-remote': HTMLAppRemoteElement
-    'app-slide-navigate': HTMLAppSlideNavigateElement
-    'app-about': HTMLAppAboutElement
-    'app-contact': HTMLAppContactElement
-    'app-developer': HTMLAppDeveloperElement
-    'app-opensource': HTMLAppOpensourceElement
-    'app-privacy': HTMLAppPrivacyElement
-    'app-services': HTMLAppServicesElement
-    'app-team': HTMLAppTeamElement
-    'app-terms': HTMLAppTermsElement
-    'app-home': HTMLAppHomeElement
-    'app-settings': HTMLAppSettingsElement
-    'app-signin': HTMLAppSigninElement
-    'app-editor': HTMLAppEditorElement
-    'app-user-menu': HTMLAppUserMenuElement
-    'app-code': HTMLAppCodeElement
-    'app-deck-or-slide': HTMLAppDeckOrSlideElement
-    'app-editor-actions': HTMLAppEditorActionsElement
-    'app-image': HTMLAppImageElement
-    'app-slide-type': HTMLAppSlideTypeElement
-    'app-slot-type': HTMLAppSlotTypeElement
-  }
+  interface HTMLAppTeamElement extends Components.AppTeam, HTMLStencilElement {}
+  var HTMLAppTeamElement: {
+    prototype: HTMLAppTeamElement;
+    new (): HTMLAppTeamElement;
+  };
 
-  interface ElementTagNameMap {
-    'app-root': HTMLAppRootElement;
+  interface HTMLAppTermsElement extends Components.AppTerms, HTMLStencilElement {}
+  var HTMLAppTermsElement: {
+    prototype: HTMLAppTermsElement;
+    new (): HTMLAppTermsElement;
+  };
+
+  interface HTMLAppUserDeleteElement extends Components.AppUserDelete, HTMLStencilElement {}
+  var HTMLAppUserDeleteElement: {
+    prototype: HTMLAppUserDeleteElement;
+    new (): HTMLAppUserDeleteElement;
+  };
+
+  interface HTMLAppUserInfoElement extends Components.AppUserInfo, HTMLStencilElement {}
+  var HTMLAppUserInfoElement: {
+    prototype: HTMLAppUserInfoElement;
+    new (): HTMLAppUserInfoElement;
+  };
+
+  interface HTMLAppUserMenuElement extends Components.AppUserMenu, HTMLStencilElement {}
+  var HTMLAppUserMenuElement: {
+    prototype: HTMLAppUserMenuElement;
+    new (): HTMLAppUserMenuElement;
+  };
+  interface HTMLElementTagNameMap {
+    'app-about': HTMLAppAboutElement;
+    'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-avatar': HTMLAppAvatarElement;
+    'app-code': HTMLAppCodeElement;
+    'app-contact': HTMLAppContactElement;
+    'app-deck-or-slide': HTMLAppDeckOrSlideElement;
+    'app-demo': HTMLAppDemoElement;
+    'app-developer': HTMLAppDeveloperElement;
+    'app-editor': HTMLAppEditorElement;
+    'app-editor-actions': HTMLAppEditorActionsElement;
+    'app-editor-toolbar': HTMLAppEditorToolbarElement;
+    'app-feed': HTMLAppFeedElement;
+    'app-feed-card': HTMLAppFeedCardElement;
+    'app-feed-card-tags': HTMLAppFeedCardTagsElement;
     'app-footer': HTMLAppFooterElement;
+    'app-gif': HTMLAppGifElement;
+    'app-help': HTMLAppHelpElement;
+    'app-home': HTMLAppHomeElement;
+    'app-image': HTMLAppImageElement;
+    'app-image-columns': HTMLAppImageColumnsElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
-    'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-navigation': HTMLAppNavigationElement;
-    'app-user-info': HTMLAppUserInfoElement;
-    'app-add-slide-action': HTMLAppAddSlideActionElement;
-    'app-editor-toolbar': HTMLAppEditorToolbarElement;
-    'app-help': HTMLAppHelpElement;
-    'app-image-columns': HTMLAppImageColumnsElement;
-    'app-demo': HTMLAppDemoElement;
-    'app-feed': HTMLAppFeedElement;
-    'app-popular': HTMLAppPopularElement;
-    'app-feed-card-tags': HTMLAppFeedCardTagsElement;
-    'app-feed-card': HTMLAppFeedCardElement;
-    'app-user-delete': HTMLAppUserDeleteElement;
-    'app-gif': HTMLAppGifElement;
+    'app-navigation-actions': HTMLAppNavigationActionsElement;
+    'app-opensource': HTMLAppOpensourceElement;
     'app-photo': HTMLAppPhotoElement;
+    'app-popular': HTMLAppPopularElement;
+    'app-privacy': HTMLAppPrivacyElement;
     'app-publish': HTMLAppPublishElement;
     'app-remote': HTMLAppRemoteElement;
-    'app-slide-navigate': HTMLAppSlideNavigateElement;
-    'app-about': HTMLAppAboutElement;
-    'app-contact': HTMLAppContactElement;
-    'app-developer': HTMLAppDeveloperElement;
-    'app-opensource': HTMLAppOpensourceElement;
-    'app-privacy': HTMLAppPrivacyElement;
+    'app-root': HTMLAppRootElement;
     'app-services': HTMLAppServicesElement;
-    'app-team': HTMLAppTeamElement;
-    'app-terms': HTMLAppTermsElement;
-    'app-home': HTMLAppHomeElement;
     'app-settings': HTMLAppSettingsElement;
     'app-signin': HTMLAppSigninElement;
-    'app-editor': HTMLAppEditorElement;
-    'app-user-menu': HTMLAppUserMenuElement;
-    'app-code': HTMLAppCodeElement;
-    'app-deck-or-slide': HTMLAppDeckOrSlideElement;
-    'app-editor-actions': HTMLAppEditorActionsElement;
-    'app-image': HTMLAppImageElement;
+    'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-slide-type': HTMLAppSlideTypeElement;
     'app-slot-type': HTMLAppSlotTypeElement;
+    'app-team': HTMLAppTeamElement;
+    'app-terms': HTMLAppTermsElement;
+    'app-user-delete': HTMLAppUserDeleteElement;
+    'app-user-info': HTMLAppUserInfoElement;
+    'app-user-menu': HTMLAppUserMenuElement;
   }
-
-
-  export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
-  }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+declare namespace LocalJSX {
+  interface AppAbout extends JSXBase.HTMLAttributes<HTMLAppAboutElement> {}
+  interface AppAddSlideAction extends JSXBase.HTMLAttributes<HTMLAppAddSlideActionElement> {
+    'onActionOpenSlideAdd'?: (event: CustomEvent<UIEvent>) => void;
+  }
+  interface AppAvatar extends JSXBase.HTMLAttributes<HTMLAppAvatarElement> {
+    'src'?: string;
+  }
+  interface AppCode extends JSXBase.HTMLAttributes<HTMLAppCodeElement> {
+    'codeDidChange'?: EventEmitter<HTMLElement>;
+    'selectedElement'?: HTMLElement;
+  }
+  interface AppContact extends JSXBase.HTMLAttributes<HTMLAppContactElement> {}
+  interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {}
+  interface AppDemo extends JSXBase.HTMLAttributes<HTMLAppDemoElement> {}
+  interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
+  interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
+    'deckId'?: string;
+  }
+  interface AppEditorActions extends JSXBase.HTMLAttributes<HTMLAppEditorActionsElement> {}
+  interface AppEditorToolbar extends JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement> {
+    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
+    'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+  }
+  interface AppFeed extends JSXBase.HTMLAttributes<HTMLAppFeedElement> {}
+  interface AppFeedCard extends JSXBase.HTMLAttributes<HTMLAppFeedCardElement> {
+    'author'?: string;
+    'caption'?: string;
+    'compact'?: boolean;
+    'description'?: string;
+    'miniature'?: boolean;
+    'publication'?: Date;
+  }
+  interface AppFeedCardTags extends JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement> {
+    'editable'?: boolean;
+    'onRemoveTag'?: (event: CustomEvent<string>) => void;
+    'tags'?: string[];
+  }
+  interface AppFooter extends JSXBase.HTMLAttributes<HTMLAppFooterElement> {}
+  interface AppGif extends JSXBase.HTMLAttributes<HTMLAppGifElement> {}
+  interface AppHelp extends JSXBase.HTMLAttributes<HTMLAppHelpElement> {}
+  interface AppHome extends JSXBase.HTMLAttributes<HTMLAppHomeElement> {}
+  interface AppImage extends JSXBase.HTMLAttributes<HTMLAppImageElement> {
+    'deckOrSlide'?: boolean;
+  }
+  interface AppImageColumns extends JSXBase.HTMLAttributes<HTMLAppImageColumnsElement> {
+    'imagesEven'?: (UnsplashPhoto | TenorGif)[];
+    'imagesOdd'?: (UnsplashPhoto | TenorGif)[];
+    'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif>) => void;
+  }
+  interface AppLogo extends JSXBase.HTMLAttributes<HTMLAppLogoElement> {}
+  interface AppMenu extends JSXBase.HTMLAttributes<HTMLAppMenuElement> {}
+  interface AppNavigation extends JSXBase.HTMLAttributes<HTMLAppNavigationElement> {
+    'logo'?: boolean;
+    'menuToggle'?: boolean;
+    'presentation'?: boolean;
+    'publish'?: boolean;
+    'user'?: boolean;
+  }
+  interface AppNavigationActions extends JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement> {
+    'onActionPublish'?: (event: CustomEvent<void>) => void;
+    'presentation'?: boolean;
+    'publish'?: boolean;
+    'signIn'?: boolean;
+  }
+  interface AppOpensource extends JSXBase.HTMLAttributes<HTMLAppOpensourceElement> {}
+  interface AppPhoto extends JSXBase.HTMLAttributes<HTMLAppPhotoElement> {}
+  interface AppPopular extends JSXBase.HTMLAttributes<HTMLAppPopularElement> {}
+  interface AppPrivacy extends JSXBase.HTMLAttributes<HTMLAppPrivacyElement> {}
+  interface AppPublish extends JSXBase.HTMLAttributes<HTMLAppPublishElement> {
+    'description'?: string;
+  }
+  interface AppRemote extends JSXBase.HTMLAttributes<HTMLAppRemoteElement> {}
+  interface AppRoot extends JSXBase.HTMLAttributes<HTMLAppRootElement> {}
+  interface AppServices extends JSXBase.HTMLAttributes<HTMLAppServicesElement> {}
+  interface AppSettings extends JSXBase.HTMLAttributes<HTMLAppSettingsElement> {}
+  interface AppSignin extends JSXBase.HTMLAttributes<HTMLAppSigninElement> {
+    'redirect'?: string;
+    'redirectId'?: string;
+  }
+  interface AppSlideNavigate extends JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement> {
+    'slides'?: string[];
+  }
+  interface AppSlideType extends JSXBase.HTMLAttributes<HTMLAppSlideTypeElement> {}
+  interface AppSlotType extends JSXBase.HTMLAttributes<HTMLAppSlotTypeElement> {
+    'selectedElement'?: HTMLElement;
+  }
+  interface AppTeam extends JSXBase.HTMLAttributes<HTMLAppTeamElement> {}
+  interface AppTerms extends JSXBase.HTMLAttributes<HTMLAppTermsElement> {}
+  interface AppUserDelete extends JSXBase.HTMLAttributes<HTMLAppUserDeleteElement> {
+    'username'?: string;
+  }
+  interface AppUserInfo extends JSXBase.HTMLAttributes<HTMLAppUserInfoElement> {
+    'avatarColSize'?: number;
+  }
+  interface AppUserMenu extends JSXBase.HTMLAttributes<HTMLAppUserMenuElement> {}
+
+  interface IntrinsicElements {
+    'app-about': AppAbout;
+    'app-add-slide-action': AppAddSlideAction;
+    'app-avatar': AppAvatar;
+    'app-code': AppCode;
+    'app-contact': AppContact;
+    'app-deck-or-slide': AppDeckOrSlide;
+    'app-demo': AppDemo;
+    'app-developer': AppDeveloper;
+    'app-editor': AppEditor;
+    'app-editor-actions': AppEditorActions;
+    'app-editor-toolbar': AppEditorToolbar;
+    'app-feed': AppFeed;
+    'app-feed-card': AppFeedCard;
+    'app-feed-card-tags': AppFeedCardTags;
+    'app-footer': AppFooter;
+    'app-gif': AppGif;
+    'app-help': AppHelp;
+    'app-home': AppHome;
+    'app-image': AppImage;
+    'app-image-columns': AppImageColumns;
+    'app-logo': AppLogo;
+    'app-menu': AppMenu;
+    'app-navigation': AppNavigation;
+    'app-navigation-actions': AppNavigationActions;
+    'app-opensource': AppOpensource;
+    'app-photo': AppPhoto;
+    'app-popular': AppPopular;
+    'app-privacy': AppPrivacy;
+    'app-publish': AppPublish;
+    'app-remote': AppRemote;
+    'app-root': AppRoot;
+    'app-services': AppServices;
+    'app-settings': AppSettings;
+    'app-signin': AppSignin;
+    'app-slide-navigate': AppSlideNavigate;
+    'app-slide-type': AppSlideType;
+    'app-slot-type': AppSlotType;
+    'app-team': AppTeam;
+    'app-terms': AppTerms;
+    'app-user-delete': AppUserDelete;
+    'app-user-info': AppUserInfo;
+    'app-user-menu': AppUserMenu;
+  }
+}
+
+export { LocalJSX as JSX };
+
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
+

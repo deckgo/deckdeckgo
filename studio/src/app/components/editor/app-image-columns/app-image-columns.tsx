@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, Prop} from '@stencil/core';
+import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 
 @Component({
     tag: 'app-image-columns',

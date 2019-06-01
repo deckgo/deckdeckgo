@@ -1,4 +1,4 @@
-import {Component} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
 @Component({
     tag: 'app-contact',
@@ -11,7 +11,7 @@ export class AppAbout {
             <app-navigation presentation={true}></app-navigation>,
             <ion-content class="ion-padding">
 
-                <main padding>
+                <main class="ion-padding">
                     <h1>Contact</h1>
 
                     <p>We would love to hear from you, ping us 😃</p>

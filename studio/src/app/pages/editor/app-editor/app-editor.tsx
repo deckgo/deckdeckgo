@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Prop, State} from '@stencil/core';
+import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
@@ -83,7 +83,7 @@ export class AppEditor {
         this.busyService = BusyService.getInstance();
     }
 
-    @Listen('window:ionRouteDidChange')
+    @Listen('ionRouteDidChange', { target: 'window' })
     async onRouteDidChange($event: CustomEvent) {
         if (!$event || !$event.detail) {
             return;

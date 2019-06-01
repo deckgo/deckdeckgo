@@ -1,4 +1,4 @@
-import {Component, Element, Listen, State} from '@stencil/core';
+import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import {GifService} from '../../../services/api/gif/gif.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
@@ -48,7 +48,7 @@ export class AppGif {
         await this.fetchCategories();
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', { target: 'window' })
     async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }
