@@ -208,6 +208,13 @@ export class AppSignIn {
 
     private saveRedirect(): Promise<void> {
         return new Promise<void>(async (resolve) => {
+            const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
+
+            if (mergeInfo) {
+                resolve();
+                return;
+            }
+
             await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
 
             forkJoin(

@@ -255,6 +255,8 @@ export class AppEditorToolbar {
                 });
 
                 selected.empty();
+
+                await this.emitChange();
             }
 
             resolve();

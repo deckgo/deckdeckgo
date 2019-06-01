@@ -42,3 +42,15 @@ app-navigation {
     }
   }
 }
+
+ion-split-pane {
+
+  &.split-pane-visible {
+    app-navigation {
+
+      ion-toolbar {
+        --min-height: 52px;
+      }
+    }
+  }
+}
