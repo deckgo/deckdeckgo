@@ -245,9 +245,10 @@ export class AppEditor {
         });
     }
 
-    @Listen('document:mouseInactivity')
     async inactivity($event: CustomEvent) {
         this.presenting = !$event.detail;
+
+        await this.editorEventsHandler.selectDeck();
 
         // Wait a bit for the display/repaint of the footer
         setTimeout(async () => {
@@ -610,7 +611,8 @@ export class AppEditor {
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.hideToolbar()}
                                  onSlidePrevDidChange={() => this.hideToolbar()}
-                                 onSlideToChange={() => this.hideToolbar()}>
+                                 onSlideToChange={() => this.hideToolbar()}
+                                 onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}>
                         {this.slides}
                         {this.background}
                     </deckgo-deck>

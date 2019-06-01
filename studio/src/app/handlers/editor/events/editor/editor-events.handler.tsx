@@ -47,7 +47,7 @@ export class EditorEventsHandler {
         });
     }
 
-    private selectDeck(): Promise<void> {
+    selectDeck(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
 
