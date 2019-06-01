@@ -1,4 +1,4 @@
-import {Component, Element, h} from '@stencil/core';
+import {Build, Component, Element, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -37,7 +37,9 @@ export class AppRoot {
     }
 
     async componentWillLoad() {
-        await this.authService.init();
+        if (Build.isBrowser) {
+            await this.authService.init();
+        }
     }
 
     async componentDidLoad() {
