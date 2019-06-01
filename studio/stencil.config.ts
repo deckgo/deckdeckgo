@@ -20,8 +20,7 @@ const configValues = dev ? devConfig : prodConfig;
 
 export const config: Config = {
     outputTargets: [{
-        type: 'www',
-        serviceWorker: null
+        type: 'www'
     }],
     globalScript: globalScript,
     globalStyle: 'src/global/app.scss',
