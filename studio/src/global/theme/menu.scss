@@ -82,6 +82,7 @@ ion-split-pane {
           font-size: var(--font-size-small);
           font-weight: bold;
           --padding-top: 32px;
+          --background: transparent;
 
           &:not(:first-of-type) {
             margin-top: 8px;
