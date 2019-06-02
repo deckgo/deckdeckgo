@@ -172,8 +172,8 @@ fixupEnv' = Aws.configure $ S3.s3
   }
 
 presentationPrefix :: Username -> Deckname -> T.Text
-presentationPrefix uname dname = T.intercalate "/" $
-    [unUsername uname] <> [unDeckname dname] -- TODO: deckname escaping
+presentationPrefix uname dname =
+    unUsername uname <> "/" <>  unDeckname dname <> "/" -- TODO: deckname escaping
 
 mkObjectKey :: Username -> Deckname -> [T.Text] -> S3.ObjectKey
 mkObjectKey uname dname components = S3.ObjectKey $
