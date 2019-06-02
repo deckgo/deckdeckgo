@@ -1,11 +1,18 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE LambdaCase #-}
 
 module Main (main) where
 
+import Control.Concurrent
 import Control.Lens
+import Control.Lens.Extras (is)
 import Control.Monad
+import Data.Monoid (First)
+import Data.List.NonEmpty
 import DeckGo.Handler
+import DeckGo.Prelude
+import DeckGo.Presenter
 import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Network.HTTP.Types as HTTP
 import Servant.API
@@ -21,6 +28,8 @@ import qualified Data.Text.IO as T
 import qualified Hasql.Connection as HC
 import qualified Hasql.Session as HS
 import qualified Network.AWS as Aws
+import qualified Network.AWS.DynamoDB as DynamoDB
+import qualified Network.AWS.SQS as SQS
 import qualified Network.HTTP.Client as HTTPClient
 import qualified Network.HTTP.Client.TLS as HTTPClient
 import qualified Network.Socket.Wait as Socket
@@ -28,27 +37,135 @@ import qualified Network.Wai.Handler.Warp as Warp
 import qualified Servant.Auth.Firebase as Firebase
 import qualified Test.Tasty as Tasty
 import qualified Test.Tasty.HUnit as Tasty
+import qualified Network.AWS.S3 as S3
 
-withServer :: (Warp.Port -> IO a) -> IO a
-withServer act = do
+withEnv :: (Aws.Env -> IO a) -> IO a
+withEnv act = do
     mgr <- HTTPClient.newManager HTTPClient.tlsManagerSettings
             { HTTPClient.managerModifyRequest =
-                pure . rerouteDynamoDB
+                pure . rerouteDynamoDB . rerouteSQS . rerouteS3
             }
-    withPristineDB $ \conn -> do
-      env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
+    env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
+    act env
 
-      (port, socket) <- Warp.openFreePort
-      let warpSettings = Warp.setPort port $ Warp.defaultSettings
-      settings <- getFirebaseSettings
-      race
-        (Warp.runSettingsSocket warpSettings socket $ DeckGo.Handler.application settings env conn)
-        (do
-          Socket.wait "localhost" port
-          act port
-        ) >>= \case
-          Left () -> error "Server returned"
-          Right a -> pure a
+withServer :: (Warp.Port -> IO a) -> IO a
+withServer act =
+    withEnv $ \env -> withS3 env $ withSQS env $ withDynamoDB env $
+      withPristineDB $ \conn -> do
+        (port, socket) <- Warp.openFreePort
+        let warpSettings = Warp.setPort port $ Warp.defaultSettings
+        settings <- getFirebaseSettings
+        race
+          (Warp.runSettingsSocket warpSettings socket $
+            DeckGo.Handler.application settings env conn)
+          (do
+            Socket.wait "localhost" port
+            act port
+          ) >>= \case
+            Left () -> error "Server returned"
+            Right a -> pure a
+
+is'
+  :: Aws.AsError a
+  => Getting (First Aws.ServiceError) a Aws.ServiceError
+  -> a
+  -> Bool
+is' prsm v = is _Just $ v ^? prsm
+
+withDynamoDB :: Aws.Env -> IO a -> IO a
+withDynamoDB env act = do
+    putStrLn "Deleting old DynamoDB table (if exists)"
+    runAWS env (Aws.send $ DynamoDB.deleteTable "Decks") >>= \case
+      Left e
+        | is' DynamoDB._ResourceNotFoundException e -> pure ()
+        | otherwise -> error $ "Could not delete table: " <> show e
+      Right {} -> xif (100 * 1000) $ \f delay -> do
+        runAWS env (Aws.send $ DynamoDB.describeTable "Decks") >>= \case
+          Left e
+            | is' DynamoDB._TableNotFoundException e -> pure ()
+            | is' DynamoDB._ResourceNotFoundException e -> pure ()
+            | otherwise -> error $ "Could not describeTable: " <> show e
+          Right {} -> do
+            threadDelay delay
+            f (delay * 2)
+    putStrLn "Creating DynamoDB table"
+    runAWS env (Aws.send $
+      DynamoDB.createTable
+        "Decks"
+        (DynamoDB.keySchemaElement "DeckId" DynamoDB.Hash :| [])
+        (DynamoDB.provisionedThroughput 1 1) &
+          DynamoDB.ctAttributeDefinitions .~
+            [DynamoDB.attributeDefinition "DeckId" DynamoDB.S]
+      ) >>= \case
+      Left e -> error $ show e
+      Right {} -> xif (100 * 1000) $ \f delay -> do
+        runAWS env (Aws.send $ DynamoDB.describeTable "Decks") >>= \case
+          Left e -> error $ show e
+          Right r -> do
+            tst <- pure $ do
+              tb <- r ^. DynamoDB.drsTable
+              tst <- tb ^. DynamoDB.tdTableStatus
+              pure tst
+            case tst of
+              Just DynamoDB.TSCreating -> do
+                threadDelay delay
+                f (delay * 2)
+              Just DynamoDB.TSActive -> pure ()
+              _ -> error $ "Unexpected table: " <> show r
+    act
+
+withSQS :: Aws.Env -> IO a -> IO a
+withSQS env act = withQueueName $ do
+    runAWS env (Aws.send $ SQS.getQueueURL ttestQueueName) >>= \case
+      Right r -> runAWS env (Aws.send $
+          SQS.deleteQueue ttestQueueName & SQS.dqQueueURL .~ (r ^. SQS.gqursQueueURL)
+          ) >>= \case
+        Left e -> error $ "Could not delete queue: " <> show e
+        Right {} -> pure ()
+      Left e
+        | is' DynamoDB._ResourceNotFoundException e -> pure ()
+        | is' SQS._QueueDoesNotExist e -> pure ()
+        | otherwise -> error $ "Could not get queue URL: " <> show e
+
+    putStrLn $ "Creating " <> testQueueName
+
+    runAWS env (Aws.send $ SQS.createQueue ttestQueueName) >>= \case
+      Left e -> error $ "Could not create queue: " <> show e
+      Right {} -> pure ()
+    act
+  where
+    testQueueName = "the-queue"
+    ttestQueueName = T.pack testQueueName
+    withQueueName =
+      bracket_ (setEnv "QUEUE_NAME" testQueueName) (unsetEnv "QUEUE_NAME")
+
+withS3 :: Aws.Env -> IO a -> IO a
+withS3 env act = do
+    let bucket = S3.BucketName bucketName
+    putStrLn "Emptying bucket, if exists"
+    try (deleteObjects env bucket Nothing) >>= \case
+      Right () -> pure ()
+      Left (Err msg e)
+        | is' S3._NoSuchBucket e -> pure ()
+        | otherwise -> error $ T.unpack msg <> ": " <> show e
+
+    putStrLn "Deleting bucket, if exists"
+    runAWS env (Aws.send $ S3.deleteBucket bucket) >>= \case
+      Right {} -> pure ()
+      Left e
+        | is' S3._NoSuchBucket e -> pure ()
+        | otherwise -> error $ "Could not delete bucket: " <> show e
+
+    putStrLn "Creating bucket"
+
+    runAWS env (Aws.send $ S3.createBucket bucket) >>= \case
+      Right {} -> pure ()
+      Left e -> error $ "Could not create bucket: " <> show e
+    withBucketName act
+  where
+    bucketName = "deckgo-bucket-foo"
+    withBucketName =
+      bracket_ (setEnv "BUCKET_NAME" (T.unpack bucketName)) (unsetEnv "BUCKET_NAME")
 
 withPristineDB :: (HC.Connection -> IO a) -> IO a
 withPristineDB act = do
@@ -81,8 +198,16 @@ main = do
               , Tasty.testCase "update" testSlidesUpdate
               ]
           ]
-      , Tasty.testCase "server" main'
+      , Tasty.testCase "presentation" testPresDeploys
+      , Tasty.testCase "server" testServer
       ]
+
+testPresDeploys :: IO ()
+testPresDeploys = withEnv $ \env -> withS3 env $ do
+    deployPresentation env (Username "josph") (Deckname "some-deck")
+    -- XXX: tests the obj diffing by making sure we can upload a presentation
+    -- twice without errors
+    deployPresentation env (Username "josph") (Deckname "some-deck")
 
 testUsersGet :: IO ()
 testUsersGet = withPristineDB $ \conn -> do
@@ -240,8 +365,8 @@ getTokenPath =
       Just tpath -> pure tpath
       Nothing -> pure "./token"
 
-main' :: IO ()
-main' = withServer $ \port -> do
+testServer :: IO ()
+testServer = withServer $ \port -> do
   b <- T.readFile =<< getTokenPath
 
   manager' <- newManager defaultManagerSettings
@@ -258,23 +383,23 @@ main' = withServer $ \port -> do
         }
 
   runClientM usersGet' clientEnv >>= \case
-    Left err -> error $ "Expected users, got error: " <> show err
+    Left e -> error $ "Expected users, got error: " <> show e
     Right [] -> pure ()
     Right users -> error $ "Expected 0 users, got: " <> show users
 
   runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
-    Left err -> error $ "Expected decks, got error: " <> show err
+    Left e -> error $ "Expected decks, got error: " <> show e
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 decks, got: " <> show decks
 
   deckId <- runClientM (decksPost' b someDeck) clientEnv >>= \case
-    Left err -> error $ "Expected new deck, got error: " <> show err
+    Left e -> error $ "Expected new deck, got error: " <> show e
     Right (Item deckId _) -> pure deckId
 
   let someSlide = Slide (Just "foo") "bar" HMS.empty
 
   slideId <- runClientM (slidesPost' b deckId someSlide) clientEnv >>= \case
-    Left err -> error $ "Expected new slide, got error: " <> show err
+    Left e -> error $ "Expected new slide, got error: " <> show e
     Right (Item slideId _) -> pure slideId
 
   let newDeck = Deck
@@ -286,46 +411,50 @@ main' = withServer $ \port -> do
         }
 
   runClientM (decksPut' b deckId newDeck) clientEnv >>= \case
-    Left err -> error $ "Expected updated deck, got error: " <> show err
+    Left e -> error $ "Expected updated deck, got error: " <> show e
     Right {} -> pure ()
 
+  runClientM (decksPostPublish' b deckId) clientEnv >>= \case
+    Left e -> error $ "Expected publish, got error: " <> show e
+    Right () -> pure ()
+
   runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
-    Left err -> error $ "Expected decks, got error: " <> show err
+    Left e -> error $ "Expected decks, got error: " <> show e
     Right decks ->
       if decks == [Item deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
 
   runClientM (decksGetDeckId' b deckId) clientEnv >>= \case
-    Left err -> error $ "Expected decks, got error: " <> show err
+    Left e -> error $ "Expected decks, got error: " <> show e
     Right deck ->
       if deck == (Item deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
 
   let updatedSlide = Slide Nothing "quux" HMS.empty
 
   runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
-    Left err -> error $ "Expected new slide, got error: " <> show err
+    Left e -> error $ "Expected new slide, got error: " <> show e
     Right {} -> pure ()
 
   runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
-    Left err -> error $ "Expected new slide, got error: " <> show err
+    Left e -> error $ "Expected new slide, got error: " <> show e
     Right {} -> pure ()
 
   runClientM (slidesGetSlideId' b deckId slideId) clientEnv >>= \case
-    Left err -> error $ "Expected updated slide, got error: " <> show err
+    Left e -> error $ "Expected updated slide, got error: " <> show e
     Right slide ->
       if slide == (Item slideId updatedSlide) then pure () else (error $ "Expected updated slide, got: " <> show slide)
 
   runClientM (slidesDelete' b deckId slideId) clientEnv >>= \case
-    Left err -> error $ "Expected slide delete, got error: " <> show err
+    Left e -> error $ "Expected slide delete, got error: " <> show e
     Right {} -> pure ()
 
   runClientM (decksDelete' b deckId) clientEnv >>= \case
-    Left err -> error $ "Expected deck delete, got error: " <> show err
+    Left e -> error $ "Expected deck delete, got error: " <> show e
     Right {} -> pure ()
 
   runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
-    Left err -> error $ "Expected no decks, got error: " <> show err
+    Left e -> error $ "Expected no decks, got error: " <> show e
     Right decks ->
-      if decks == [] then pure () else (error $ "Expected no decks, got: " <> show decks)
+      unless (decks == []) (error $ "Expected no decks, got: " <> show decks)
 
   let someUserInfo = UserInfo
         { userInfoFirebaseId = someFirebaseId
@@ -333,7 +462,7 @@ main' = withServer $ \port -> do
       Right someUser = userInfoToUser someUserInfo
 
   runClientM (usersPost' b someUserInfo) clientEnv >>= \case
-    Left err -> error $ "Expected user, got error: " <> show err
+    Left e -> error $ "Expected user, got error: " <> show e
     Right (Item userId user) ->
       if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
 
@@ -342,7 +471,7 @@ main' = withServer $ \port -> do
     Left (FailureResponse resp) ->
       if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
         error $ "Got unexpected response: " <> show resp
-    Left err -> error $ "Expected 409, got error: " <> show err
+    Left e -> error $ "Expected 409, got error: " <> show e
     Right item -> error $ "Expected failure, got success: " <> show item
 
   -- TODO: test that creating user with token that has different user as sub
@@ -356,6 +485,7 @@ _usersDelete' :: T.Text -> UserId -> ClientM ()
 
 decksGet' :: T.Text -> Maybe UserId -> ClientM [Item DeckId Deck]
 decksGetDeckId' :: T.Text -> DeckId -> ClientM (Item DeckId Deck)
+decksPostPublish' :: T.Text -> DeckId -> ClientM ()
 decksPost' :: T.Text -> Deck -> ClientM (Item DeckId Deck)
 decksPut' :: T.Text -> DeckId -> Deck -> ClientM (Item DeckId Deck)
 decksDelete' :: T.Text -> DeckId -> ClientM ()
@@ -374,6 +504,7 @@ slidesDelete' :: T.Text -> DeckId -> SlideId -> ClientM ()
   (
   decksGet' :<|>
   decksGetDeckId' :<|>
+  decksPostPublish' :<|>
   decksPost' :<|>
   decksPut' :<|>
   decksDelete'
@@ -392,7 +523,41 @@ rerouteDynamoDB req =
       "dynamodb.us-east-1.amazonaws.com" ->
         req
           { HTTPClient.host = "127.0.0.1"
-          , HTTPClient.port = 8000 -- TODO: read from Env
+          , HTTPClient.port = 8123 -- TODO: read from Env
+          , HTTPClient.secure = False
+          }
+      _ -> req
+
+rerouteSQS :: HTTPClient.Request -> HTTPClient.Request
+rerouteSQS req =
+    case HTTPClient.host req of
+      "sqs.us-east-1.amazonaws.com" ->
+        req
+          { HTTPClient.host = "127.0.0.1"
+          , HTTPClient.port = 9324 -- TODO: read from Env
+          , HTTPClient.secure = False
+          }
+      "queue.amazonaws.com" ->
+        req
+          { HTTPClient.host = "127.0.0.1"
+          , HTTPClient.port = 9324 -- TODO: read from Env
+          , HTTPClient.secure = False
+          }
+      _ -> req
+
+rerouteS3 :: HTTPClient.Request -> HTTPClient.Request
+rerouteS3 req =
+    case HTTPClient.host req of
+      "s3.us-east-1.amazonaws.com" ->
+        req
+          { HTTPClient.host = "127.0.0.1"
+          , HTTPClient.port = 9000 -- TODO: read from Env
+          , HTTPClient.secure = False
+          }
+      "s3.amazonaws.com" ->
+        req
+          { HTTPClient.host = "127.0.0.1"
+          , HTTPClient.port = 9000 -- TODO: read from Env
           , HTTPClient.secure = False
           }
       _ -> req

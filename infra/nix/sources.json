@@ -1,4 +1,16 @@
 {
+    "deckdeckgo-starter": {
+        "homepage": "https://deckdeckgo.com",
+        "url": "https://github.com/deckgo/deckdeckgo-starter/archive/a0a734d4008d164ee5b9a4980ca1ad1ed468f663.tar.gz",
+        "owner": "deckgo",
+        "branch": "studio",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "repo": "deckdeckgo-starter",
+        "type": "tarball",
+        "sha256": "1a921ggn9ml7m1nc9vlphgq3g6l5zf2l8fh2ih96zgyq0bv4p6s4",
+        "description": "The Progressive Web App alternative for simple presentations",
+        "rev": "a0a734d4008d164ee5b9a4980ca1ad1ed468f663"
+    },
     "wai-lambda": {
         "url": "https://github.com/deckgo/wai-lambda/archive/7f139047addff89e9d30e55b7eebb07c0e846456.tar.gz",
         "owner": "deckgo",
@@ -31,6 +43,24 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "type": "file",
         "sha256": "0hrwxg4igyll40y7l1s0icg55g247fl8cjs4rrcpjf8d7m0bb09j"
+    },
+    "elasticmq": {
+        "url": "https://s3-eu-west-1.amazonaws.com/softwaremill-public/elasticmq-server-0.14.6.jar",
+        "url_template": "https://s3-eu-west-1.amazonaws.com/softwaremill-public/elasticmq-server-0.14.6.jar",
+        "type": "file",
+        "sha256": "1cp2pmkc6gx7gr6109jlcphlky5rr6s1wj528r6hyhzdc01sjhhz"
+    },
+    "napalm": {
+        "homepage": "",
+        "url": "https://github.com/nmattia/napalm/archive/bd7f348a478bd79c30b898cc800d47a1cd4541b5.tar.gz",
+        "owner": "nmattia",
+        "branch": "master",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "repo": "napalm",
+        "type": "tarball",
+        "sha256": "002y6ds57zpjqizq497amc791iqmbydm574xla6k7ad4x0ka86rx",
+        "description": "Support for building npm packages in Nix and lightweight npm registry",
+        "rev": "bd7f348a478bd79c30b898cc800d47a1cd4541b5"
     },
     "hs-jose": {
         "homepage": "http://hackage.haskell.org/package/jose",
