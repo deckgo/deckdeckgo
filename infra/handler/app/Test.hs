@@ -205,6 +205,9 @@ main = do
 testPresDeploys :: IO ()
 testPresDeploys = withEnv $ \env -> withS3 env $ do
     deployPresentation env (Username "josph") (Deckname "some-deck")
+    -- XXX: tests the obj diffing by making sure we can upload a presentation
+    -- twice without errors
+    deployPresentation env (Username "josph") (Deckname "some-deck")
 
 testUsersGet :: IO ()
 testUsersGet = withPristineDB $ \conn -> do
