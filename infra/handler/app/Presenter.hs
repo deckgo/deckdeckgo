@@ -1,12 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE LambdaCase #-}
 
--- import System.Environment (getEnv)
--- import qualified Hasql.Connection as Hasql
--- import qualified Network.HTTP.Types as HTTP
--- import qualified Network.Wai as Wai
--- import qualified Network.Wai.Middleware.Cors as Cors
--- import qualified Servant.Auth.Firebase as Firebase
 import Control.Monad
 import DeckGo.Handler
 import DeckGo.Presenter
