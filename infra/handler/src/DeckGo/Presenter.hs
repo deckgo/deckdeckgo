@@ -115,11 +115,14 @@ deployPresentation (fixupEnv' -> env) uname dname = do
     putStrLn "Listing presentations files"
     files <- presentationFiles uname dname
     let
-      currentObjs' = (\obj -> (obj ^. S3.oKey, obj ^. S3.oETag)) <$> currentObjs
+      currentObjs' =
+        (\obj ->
+          (obj ^. S3.oKey, fixupS3ETag $ obj ^. S3.oETag)
+        ) <$> currentObjs
       (toPut, toDelete) = diffObjects files currentObjs'
-    putStrLn "Deleting old files"
+    putStrLn $ "Deleting " <> show (length toDelete) <> " old files"
     deleteObjects' env bucket toDelete
-    putStrLn "Uploading new files"
+    putStrLn $ "Uploading " <> show (length toPut) <> " new files"
     putObjects env bucket toPut
 
 putObjects
@@ -142,7 +145,7 @@ putObject (fixupEnv' -> env) bucket (fp, okey, etag) = do
           S3.poContentType .~ inferContentType (T.pack fp)
       ) >>= \case
         Right r -> do
-          putStrLn $ "Copied: " <> fp
+          putStrLn $ "Copied: " <> fp <> " to " <> show okey <> " with ETag " <> show etag
           case r ^. S3.porsETag of
             Just (fixupS3ETag -> s3ETag) ->
               when (etag /= s3ETag) $ do
