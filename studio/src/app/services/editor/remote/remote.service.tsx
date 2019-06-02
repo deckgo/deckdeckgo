@@ -53,7 +53,7 @@ export class RemoteService {
     getRoom(): Promise<string> {
         return new Promise<string>((resolve) => {
             this.deckEditorService.watch().pipe(filter((deck: Deck) => deck && (deck.name && deck.name !== undefined && deck.name !== '')), take(1)).subscribe(async (deck: Deck) => {
-                const roomName: string = deck.name.replace(/\./g,'_');
+                const roomName: string = deck.name.replace(/\.|#/g,'_');
 
                 resolve(roomName);
             });
