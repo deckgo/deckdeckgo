@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DuplicateRecordFields #-}
@@ -48,6 +49,7 @@ import Servant.API
 import Servant.Auth.Firebase (Protected)
 import UnliftIO
 import Data.Char
+import System.Environment
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString.Char8 as BS8
@@ -60,13 +62,15 @@ import qualified Hasql.Decoders as HD
 import qualified Hasql.Encoders as HE
 import qualified Hasql.Session as HS
 import qualified Network.AWS as Aws
+import qualified Network.AWS.Data as Data
 import qualified Network.AWS.DynamoDB as DynamoDB
+import qualified Network.AWS.SQS as SQS
 import qualified Network.Wai as Wai
 import qualified Servant as Servant
 import qualified Servant.Auth.Firebase as Firebase
 import qualified System.Random as Random
 
-data ServerContext = ServerContext { firebaseProjectId :: Firebase.ProjectId }
+newtype BucketName = BucketName { unBucketName :: T.Text }
 
 ------------------------------------------------------------------------------
 -- API
@@ -219,6 +223,10 @@ type DecksAPI =
     Protected :>
       Capture "deck_id" DeckId :>
       Get '[JSON] (Item DeckId Deck) :<|>
+    Protected :>
+      Capture "deck_id" DeckId :>
+      "publish" :>
+      Post '[JSON] () :<|>
     Protected :> ReqBody '[JSON] Deck :> Post '[JSON] (Item DeckId Deck) :<|>
     Protected :>
       Capture "deck_id" DeckId :>
@@ -369,7 +377,11 @@ api = Proxy
 -- SERVER
 ------------------------------------------------------------------------------
 
-application :: Firebase.FirebaseLoginSettings -> Aws.Env -> HC.Connection -> Wai.Application
+application
+  :: Firebase.FirebaseLoginSettings
+  -> Aws.Env
+  -> HC.Connection
+  -> Wai.Application
 application settings env conn =
     Servant.serveWithContext
       api
@@ -388,6 +400,7 @@ server env conn = serveUsers :<|> serveDecks :<|> serveSlides
     serveDecks =
       decksGet env :<|>
       decksGetDeckId env :<|>
+      decksPostPublish env :<|>
       decksPost env :<|>
       decksPut env :<|>
       decksDelete env
@@ -733,6 +746,41 @@ decksGetDeckId env fuid deckId = do
       Servant.throwError Servant.err404
 
     pure deck
+
+decksPostPublish :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
+decksPostPublish (fixupEnv -> env) _ deckId = do
+
+    -- TODO: check auth
+
+    liftIO $ putStrLn "Your PRESENTATION WAS PUBLISHED!!!!"
+
+    queueName <- liftIO $ T.pack <$> getEnv "QUEUE_NAME"
+
+    liftIO $ putStrLn $ "Forwarding to queue: " <> T.unpack queueName
+    queueUrl <- runAWS env (Aws.send $ SQS.getQueueURL queueName) >>= \case
+      Right e -> pure $ e ^. SQS.gqursQueueURL
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
+
+    liftIO $ print queueUrl
+
+    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl $
+      T.decodeUtf8 $ BL.toStrict $ Aeson.encode deckId
+
+    case res of
+      Right r -> do
+        liftIO $ print r
+      Left e -> do
+        liftIO $ print e
+        Servant.throwError Servant.err500
+
+fixupEnv :: Aws.Env -> Aws.Env
+fixupEnv = Aws.configure $ SQS.sqs
+  { Aws._svcEndpoint = \reg -> do
+      let new = "sqs." <> Data.toText reg <> ".amazonaws.com"
+      (Aws._svcEndpoint SQS.sqs reg) & Aws.endpointHost .~ T.encodeUtf8 new
+  }
 
 decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (Item DeckId Deck)
 decksPost env fuid deck = do

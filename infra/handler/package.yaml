@@ -6,18 +6,22 @@ license: AGPL-3
 dependencies:
     - aeson
     - amazonka
+    - amazonka-core
     - amazonka-dynamodb
+    - amazonka-s3
+    - amazonka-sqs
     - base
     - bytestring
+    - contravariant
     - directory
-    - hasql
     - filepath
     - firebase-login
+    - hasql
     - http-client
     - http-types
     - lens
     - mtl
-    - contravariant
+    - mime-types
     - random
     - servant
     - servant-server
@@ -42,6 +46,12 @@ executables:
     # The AWS Lambda handler
     handler:
         main: app/Handler.hs
+        dependencies:
+            - deckdeckgo-handler
+
+    # The AWS presenter
+    presenter:
+        main: app/Presenter.hs
         dependencies:
             - deckdeckgo-handler
 
