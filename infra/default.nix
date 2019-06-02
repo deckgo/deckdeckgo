@@ -17,7 +17,10 @@ rec
       '';
 
   # TODO: move all other builders to this
-  function-handler-path = { path = "${function}/function.zip"; } ;
+  function-handler-path =
+    { path = builtins.seq
+        (builtins.readDir function) "${function}/function.zip";
+    } ;
 
   function-unsplash =
     pkgs.runCommand "build-lambda" {}
@@ -29,7 +32,10 @@ rec
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';
 
-  function-presenter-path = { path = "${function-presenter}/function.zip"; } ;
+  function-presenter-path =
+    { path = builtins.seq
+        (builtins.readDir function-presenter) "${function-presenter}/function.zip";
+    } ;
 
   function-presenter =
     pkgs.runCommand "build-lambda-presenter" {}
@@ -37,8 +43,9 @@ rec
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${handlerStatic}/bin/presenter" main_hs
+        cp -r "${deckdeckgo-starter-dist}" dist
         mkdir $out
-        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist
       '';
 
   deckdeckgo-starter-dist =

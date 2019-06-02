@@ -748,7 +748,10 @@ decksGetDeckId env fuid deckId = do
     pure deck
 
 decksPostPublish :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
-decksPostPublish (fixupEnv -> env) _ _ = do
+decksPostPublish (fixupEnv -> env) _ deckId = do
+
+    -- TODO: check auth
+
     liftIO $ putStrLn "Your PRESENTATION WAS PUBLISHED!!!!"
 
     queueName <- liftIO $ T.pack <$> getEnv "QUEUE_NAME"
@@ -762,8 +765,8 @@ decksPostPublish (fixupEnv -> env) _ _ = do
 
     liftIO $ print queueUrl
 
-    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl "foo_message" &
-      SQS.smMessageGroupId .~ Just "dummy-group" -- XXX: could be user ID
+    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl $
+      T.decodeUtf8 $ BL.toStrict $ Aeson.encode deckId
 
     case res of
       Right r -> do

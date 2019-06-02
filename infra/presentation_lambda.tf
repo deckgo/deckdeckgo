@@ -3,6 +3,7 @@ resource "aws_lambda_function" "presenter" {
   filename         = "${data.external.build-function-presenter.result.path}"
 
   # TODO: need a big *ss timeout on this one
+  timeout          = 60
   handler          = "main.handler"
   runtime          = "nodejs8.10"
 
@@ -15,12 +16,10 @@ resource "aws_lambda_function" "presenter" {
 
   environment {
     variables = {
-      FOO = "bar"
+      BUCKET_NAME = "${aws_s3_bucket.deckdeckgo_presentations.bucket}"
+      DECKGO_STARTER_DIST = "dist"
     }
   }
-
-  depends_on = [ "aws_iam_role_policy.policy_for_lambda_presenter" ]
-
 }
 
 
@@ -77,7 +76,7 @@ data "aws_iam_policy_document" "policy_for_lambda_presenter" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["${aws_cloudwatch_log_group.lambda-api.arn}"]
+    resources = ["${aws_cloudwatch_log_group.lambda-presenter.arn}"]
   }
 
   # Give access to CloudWatch
@@ -91,6 +90,35 @@ data "aws_iam_policy_document" "policy_for_lambda_presenter" {
     ]
 
     resources = [ "*" ]
+  }
+
+  # Give access to CloudWatch
+  statement {
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+    ]
+
+    resources = [ "${aws_sqs_queue.presentation_deploy.arn}" ]
+  }
+
+  # Give access to CloudWatch
+  statement {
+    actions = [
+      "s3:ListBucket",
+    ]
+
+    resources = [ "${aws_s3_bucket.deckdeckgo_presentations.arn}" ]
+  }
+
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:DeleteObject",
+    ]
+
+    resources = [ "${aws_s3_bucket.deckdeckgo_presentations.arn}/*" ]
   }
 
 }

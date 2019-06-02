@@ -129,27 +129,28 @@ withSQS env act = withQueueName $ do
 
     putStrLn $ "Creating " <> testQueueName
 
-    runAWS env (Aws.send $ SQS.createQueue ttestQueueName &
-      SQS.cqAttributes .~ (HMS.fromList
-        [ (SQS.QANFifoQueue, "true")
-        , (SQS.QANContentBasedDeduplication, "true")
-        ])
-      ) >>= \case
+    runAWS env (Aws.send $ SQS.createQueue ttestQueueName) >>= \case
       Left e -> error $ "Could not create queue: " <> show e
       Right {} -> pure ()
     act
   where
-    testQueueName = "the-queue.fifo"
+    testQueueName = "the-queue"
     ttestQueueName = T.pack testQueueName
     withQueueName =
       bracket_ (setEnv "QUEUE_NAME" testQueueName) (unsetEnv "QUEUE_NAME")
 
 withS3 :: Aws.Env -> IO a -> IO a
 withS3 env act = do
-    let bname = S3.BucketName "deckgo-bucket"
-    deleteObjects env bname Nothing
+    let bucket = S3.BucketName bucketName
+    putStrLn "Emptying bucket, if exists"
+    try (deleteObjects env bucket Nothing) >>= \case
+      Right () -> pure ()
+      Left (Err msg e)
+        | is' S3._NoSuchBucket e -> pure ()
+        | otherwise -> error $ T.unpack msg <> ": " <> show e
+
     putStrLn "Deleting bucket, if exists"
-    runAWS env (Aws.send $ S3.deleteBucket bname) >>= \case
+    runAWS env (Aws.send $ S3.deleteBucket bucket) >>= \case
       Right {} -> pure ()
       Left e
         | is' S3._NoSuchBucket e -> pure ()
@@ -157,10 +158,14 @@ withS3 env act = do
 
     putStrLn "Creating bucket"
 
-    runAWS env (Aws.send $ S3.createBucket bname) >>= \case
+    runAWS env (Aws.send $ S3.createBucket bucket) >>= \case
       Right {} -> pure ()
       Left e -> error $ "Could not create bucket: " <> show e
-    act
+    withBucketName act
+  where
+    bucketName = "deckgo-bucket-foo"
+    withBucketName =
+      bracket_ (setEnv "BUCKET_NAME" (T.unpack bucketName)) (unsetEnv "BUCKET_NAME")
 
 withPristineDB :: (HC.Connection -> IO a) -> IO a
 withPristineDB act = do
@@ -375,23 +380,23 @@ testServer = withServer $ \port -> do
         }
 
   runClientM usersGet' clientEnv >>= \case
-    Left err -> error $ "Expected users, got error: " <> show err
+    Left e -> error $ "Expected users, got error: " <> show e
     Right [] -> pure ()
     Right users -> error $ "Expected 0 users, got: " <> show users
 
   runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
-    Left err -> error $ "Expected decks, got error: " <> show err
+    Left e -> error $ "Expected decks, got error: " <> show e
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 decks, got: " <> show decks
 
   deckId <- runClientM (decksPost' b someDeck) clientEnv >>= \case
-    Left err -> error $ "Expected new deck, got error: " <> show err
+    Left e -> error $ "Expected new deck, got error: " <> show e
     Right (Item deckId _) -> pure deckId
 
   let someSlide = Slide (Just "foo") "bar" HMS.empty
 
   slideId <- runClientM (slidesPost' b deckId someSlide) clientEnv >>= \case
-    Left err -> error $ "Expected new slide, got error: " <> show err
+    Left e -> error $ "Expected new slide, got error: " <> show e
     Right (Item slideId _) -> pure slideId
 
   let newDeck = Deck
@@ -403,48 +408,48 @@ testServer = withServer $ \port -> do
         }
 
   runClientM (decksPut' b deckId newDeck) clientEnv >>= \case
-    Left err -> error $ "Expected updated deck, got error: " <> show err
+    Left e -> error $ "Expected updated deck, got error: " <> show e
     Right {} -> pure ()
 
   runClientM (decksPostPublish' b deckId) clientEnv >>= \case
-    Left err -> error $ "Expected publish, got error: " <> show err
+    Left e -> error $ "Expected publish, got error: " <> show e
     Right () -> pure ()
 
   runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
-    Left err -> error $ "Expected decks, got error: " <> show err
+    Left e -> error $ "Expected decks, got error: " <> show e
     Right decks ->
       if decks == [Item deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
 
   runClientM (decksGetDeckId' b deckId) clientEnv >>= \case
-    Left err -> error $ "Expected decks, got error: " <> show err
+    Left e -> error $ "Expected decks, got error: " <> show e
     Right deck ->
       if deck == (Item deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
 
   let updatedSlide = Slide Nothing "quux" HMS.empty
 
   runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
-    Left err -> error $ "Expected new slide, got error: " <> show err
+    Left e -> error $ "Expected new slide, got error: " <> show e
     Right {} -> pure ()
 
   runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
-    Left err -> error $ "Expected new slide, got error: " <> show err
+    Left e -> error $ "Expected new slide, got error: " <> show e
     Right {} -> pure ()
 
   runClientM (slidesGetSlideId' b deckId slideId) clientEnv >>= \case
-    Left err -> error $ "Expected updated slide, got error: " <> show err
+    Left e -> error $ "Expected updated slide, got error: " <> show e
     Right slide ->
       if slide == (Item slideId updatedSlide) then pure () else (error $ "Expected updated slide, got: " <> show slide)
 
   runClientM (slidesDelete' b deckId slideId) clientEnv >>= \case
-    Left err -> error $ "Expected slide delete, got error: " <> show err
+    Left e -> error $ "Expected slide delete, got error: " <> show e
     Right {} -> pure ()
 
   runClientM (decksDelete' b deckId) clientEnv >>= \case
-    Left err -> error $ "Expected deck delete, got error: " <> show err
+    Left e -> error $ "Expected deck delete, got error: " <> show e
     Right {} -> pure ()
 
   runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
-    Left err -> error $ "Expected no decks, got error: " <> show err
+    Left e -> error $ "Expected no decks, got error: " <> show e
     Right decks ->
       unless (decks == []) (error $ "Expected no decks, got: " <> show decks)
 
@@ -454,7 +459,7 @@ testServer = withServer $ \port -> do
       Right someUser = userInfoToUser someUserInfo
 
   runClientM (usersPost' b someUserInfo) clientEnv >>= \case
-    Left err -> error $ "Expected user, got error: " <> show err
+    Left e -> error $ "Expected user, got error: " <> show e
     Right (Item userId user) ->
       if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
 
@@ -463,7 +468,7 @@ testServer = withServer $ \port -> do
     Left (FailureResponse resp) ->
       if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
         error $ "Got unexpected response: " <> show resp
-    Left err -> error $ "Expected 409, got error: " <> show err
+    Left e -> error $ "Expected 409, got error: " <> show e
     Right item -> error $ "Expected failure, got success: " <> show item
 
   -- TODO: test that creating user with token that has different user as sub
@@ -540,6 +545,12 @@ rerouteSQS req =
 rerouteS3 :: HTTPClient.Request -> HTTPClient.Request
 rerouteS3 req =
     case HTTPClient.host req of
+      "s3.us-east-1.amazonaws.com" ->
+        req
+          { HTTPClient.host = "127.0.0.1"
+          , HTTPClient.port = 9000 -- TODO: read from Env
+          , HTTPClient.secure = False
+          }
       "s3.amazonaws.com" ->
         req
           { HTTPClient.host = "127.0.0.1"
