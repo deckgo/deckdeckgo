@@ -20,8 +20,9 @@ dependencies:
     - http-client
     - http-types
     - lens
-    - mtl
     - mime-types
+    - mtl
+    - pureMD5
     - random
     - servant
     - servant-server

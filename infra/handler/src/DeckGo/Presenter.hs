@@ -8,16 +8,20 @@
 -- XXX: !!!!IMPORTANT: CONCURRENCY 1 on this lambda!!!!
 module DeckGo.Presenter where
 
-import UnliftIO
 import Control.Lens hiding ((.=))
 import Data.Bifunctor
-import Data.List (foldl')
+import Control.Monad
 import Data.Function
+import Data.List (foldl')
 import DeckGo.Handler
 import DeckGo.Prelude
 import System.Environment
 import System.FilePath
+import UnliftIO
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.Lazy as BL
+import qualified Data.Digest.Pure.MD5 as MD5
+import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Network.AWS as Aws
@@ -26,7 +30,6 @@ import qualified Network.AWS.Data.Body as Body
 import qualified Network.AWS.S3 as S3
 import qualified Network.Mime as Mime
 import qualified System.Directory as Dir
-import qualified Data.HashMap.Strict as HMS
 
 data Err = Err T.Text SomeException
   deriving (Show, Exception)
@@ -70,6 +73,8 @@ deployPresentation (fixupEnv' -> env) uname dname = do
     forConcurrentlyN_ 10 starterFiles $ \(fp, pathComponents) -> do
       putStrLn $ "Copying " <> fp
       bs <- BS.readFile fp -- TODO: streaming
+      let expectedETag = show $ MD5.md5 $ BL.fromStrict bs
+      putStrLn $ "Copying " <> fp <> " | md5: " <> expectedETag
       runAWS env (
         Aws.send $ S3.putObject
           bucket
@@ -78,10 +83,23 @@ deployPresentation (fixupEnv' -> env) uname dname = do
             -- XXX: partial, though technically should never fail
             S3.poContentType .~ inferContentType (last pathComponents)
         ) >>= \case
-          Right {} -> putStrLn $ "Copied: " <> fp
+          Right r -> do
+            putStrLn $ "Copied: " <> fp
+            case r ^. S3.porsETag of
+              Just (readETag -> actualETag) ->
+                when (expectedETag /= actualETag) $ do
+                  putStrLn $ "Warning: mismatched MD5: expected : actual: " <>
+                    expectedETag <> " : " <> actualETag
+              Nothing -> putStrLn "Warning: no ETag"
           Left e -> error $ "Error in put: " <> show e
     putStrLn "Done copying objects."
 
+readETag :: S3.ETag -> String
+readETag (S3.ETag etag) =
+    T.unpack $
+      T.dropWhileEnd (== '"') $
+      T.dropWhile (== '"') $
+      T.decodeUtf8 etag
 
 fixupEnv' :: Aws.Env -> Aws.Env
 fixupEnv' = Aws.configure $ S3.s3
