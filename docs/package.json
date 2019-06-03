@@ -19,20 +19,20 @@
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.15",
     "@deckdeckgo/inline-editor": "^1.0.0-alpha.7",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.7",
-    "@ionic/core": "4.4.2",
+    "@ionic/core": "^4.5.0-dev.201905311531.e014c6a",
     "rxjs": "^6.5.2"
   },
   "devDependencies": {
-    "@stencil/core": "^0.18.0",
+    "@stencil/core": "^1.0.0",
     "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.1.1",
+    "@stencil/sass": "^0.2.3",
     "@types/glob": "^7.1.1",
     "@types/marked": "^0.6.5",
     "@types/node": "^12.0.4",
     "autoprefixer": "^9.6.0",
     "glob": "^7.1.4",
     "marked": "^0.6.2",
-    "workbox-build": "3.4.1"
+    "workbox-build": "4.3.1"
   },
   "repository": {
     "type": "git",

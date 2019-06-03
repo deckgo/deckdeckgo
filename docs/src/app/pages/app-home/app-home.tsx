@@ -1,4 +1,4 @@
-import {Component} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
 import {MenuService} from '../../services/menu/menu.service';
 
@@ -8,7 +8,9 @@ import {MenuService} from '../../services/menu/menu.service';
 })
 export class AppHome {
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -21,7 +23,7 @@ export class AppHome {
       <app-navigation logo={true}></app-navigation>,
 
       <ion-content>
-        <main padding>
+        <main class="ion-padding">
           <section class="hero">
             <app-logo></app-logo>
             <h1>The <strong>Progressive Web App</strong> alternative for simple presentations</h1>

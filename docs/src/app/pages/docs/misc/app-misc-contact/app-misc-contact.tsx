@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {MenuService} from '../../../../services/menu/menu.service';
 
@@ -9,7 +9,9 @@ export class AppMiscContact {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -21,7 +23,7 @@ export class AppMiscContact {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-misc-contact-contact">Contact</h1>
 <p>We would love to hear from you, ping us 😃</p>
 <p>Email: <a href="mailto:hello@deckdeckgo.com">hello@deckdeckgo.com</a></p>

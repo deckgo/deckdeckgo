@@ -1,4 +1,4 @@
-import {Component, Element, Listen} from '@stencil/core';
+import {Component, Element, Listen, h} from '@stencil/core';
 
 @Component({
     tag: 'app-navigation-modal',
@@ -11,7 +11,7 @@ export class AppNavigationModal {
         history.pushState({modal: true}, null);
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', {target: 'window'})
     async handleHardwareBackbutton(_e: PopStateEvent) {
         await this.closeModal(false);
     }
@@ -32,7 +32,7 @@ export class AppNavigationModal {
               </ion-toolbar>
             </ion-header>,
 
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <div>
                   <a href="/docs">Docs</a>
                   <a href="https://deckdeckgo.com" padding-top>Demo</a>

@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppDeckPager {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppDeckPager {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-deck-pager-pager">Pager</h1>
 <p><a href="https://deckdeckgo.com">DeckDeckGo</a> will per default display a pager in form of a progress circle bar. It&#39;s possible to hide it or to customize the following various style options.</p>
 <p>Also worth to notice that the pager inherits per default the document and deck direction (LTR or RTL for example).</p>

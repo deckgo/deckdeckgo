@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppSlideQRCode {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppSlideQRCode {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-slide-qrcode-slide-qr-code">Slide: QR Code</h1>
 <p>The &quot;QR code&quot; slide is an handy slide in case you would like to display a QR code. It could for example be use as the very last slide of your presentation to display an easy link pointing to your deck, you previously published online. It would allow your audience to get easily your slides without any delay on their phone.</p>
 <h2 id="app-slide-qrcode-table-of-contents">Table of contents</h2>
@@ -49,7 +51,7 @@ export class AppSlideQRCode {
 <li><a href="#app-slide-qrcode-theming">Theming</a></li>
 </ul>
 <h2 id="app-slide-qrcode-layout">Layout</h2>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-qrcode content="https://deckdeckgo.com">
         <h1 slot="title">slot="title"</h1>

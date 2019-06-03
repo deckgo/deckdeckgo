@@ -17,7 +17,7 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
 
 ## Layout
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
       <h1 slot="title">A 16/9 video</h1>

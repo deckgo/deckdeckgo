@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppSlideTitle {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppSlideTitle {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-slide-title-slide-title">Slide: Title</h1>
 <p>The &quot;Title&quot; slide is a simple slide which display its title and content center in the middle of the page.</p>
 <p>This slide could be for example use for the very first and last slide of your presentation.</p>
@@ -45,7 +47,7 @@ export class AppSlideTitle {
 <li><a href="#app-slide-title-theming">Theming</a></li>
 </ul>
 <h2 id="app-slide-title-layout">Layout</h2>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-title>
       <h1 slot="title">My presentation title</h1>

@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppSlideGif {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppSlideGif {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-slide-gif-slide-gif">Slide: Gif</h1>
 <p>The &quot;Gif&quot; slide let you add easily a gif, like those provided by <a href="https://giphy.com">Giphy</a>, to your presentation.</p>
 <h2 id="app-slide-gif-table-of-contents">Table of contents</h2>
@@ -45,7 +47,7 @@ export class AppSlideGif {
 <li><a href="#app-slide-gif-theming">Theming</a></li>
 </ul>
 <h2 id="app-slide-gif-layout">Layout</h2>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen={true}>
       <h1 slot="title">My title</h1>

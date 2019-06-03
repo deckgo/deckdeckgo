@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {MenuService} from '../../../../services/menu/menu.service';
 
@@ -9,7 +9,9 @@ export class AppEditLazyLoading {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -21,7 +23,7 @@ export class AppEditLazyLoading {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-edit-lazy-loading-lazy-loading">Lazy loading</h1>
 <p><a href="https://deckdeckgo.com">DeckDeckGo</a> is build for performance and try to lazy load as much as possible the components of your presentation, have a look to the Lighthouse score of the <a href="https://deckdeckgo.com">DeckDeckGo</a> website for reference.</p>
 <p>In order to lazy load the images of your presentation, your could either use our dead simple component or tweak your images&#39;s attributes like following.</p>

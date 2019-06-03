@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {MenuService} from '../../../../services/menu/menu.service';
 
@@ -9,7 +9,9 @@ export class AppMiscBackstory {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -21,7 +23,7 @@ export class AppMiscBackstory {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-misc-backstory-backstory">Backstory</h1>
 <p><em>As backstory, here a small article I wrote in Mai 2019 when we were developing the DeckDeckGo editor and platform.</em></p>
 <p><img src="https://cdn-images-1.medium.com/max/2600/1*zuqx73hjAWNnmwRpjJ06Zw.jpeg" alt=""/>

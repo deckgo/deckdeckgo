@@ -27,7 +27,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 * Slide: [Title](/slides/title)
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-title>
         <h1 slot="title">slot="title"</h1>
@@ -40,7 +40,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 * Slide: [Content](/slides/content)
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-content>
       <h1 slot="title">slot="title"</h1>
@@ -53,7 +53,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 * Slide: [Split](/slides/split)
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-split>
       <h1 slot="title">slot="title"</h1>
@@ -69,7 +69,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 * Slide: [Gif](/slides/gif)
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen={true}>
       <h1 slot="title">slot="title"</h1>
@@ -81,7 +81,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 * Slide: [Chart](/slides/chart)
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-chart width={200} height={100} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv">
       <h1 slot="title">slot="title"</h1>
@@ -101,7 +101,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 * Slide: [Youtube](/slides/youtube)
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
       <h1 slot="title">slot="title"</h1>
@@ -111,7 +111,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 * Slide: [Code](/slides/code)
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
       <h1 slot="title">slot="title"</h1>
@@ -122,7 +122,7 @@ In the previous example, the presentation contains two slides. The first slide u
 * Slide: [Author](/slides/author)
 
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>
@@ -135,7 +135,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 * Slide: [QR Code](/slides/qrcode)
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-qrcode content="https://deckdeckgo.com">
         <h1 slot="title">slot="title"</h1>
