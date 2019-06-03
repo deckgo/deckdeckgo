@@ -457,14 +457,16 @@ export class DeckdeckgoHighlightCode {
   }
 
   render() {
-    return [<Host class={{'deckgo-highlight-code-edit': this.editing}}></Host>,
-      <div class="deckgo-highlight-code-container"
-           onMouseDown={() => this.edit()}
-           onTouchStart={() => this.edit()}>
-        <code></code>
-        <slot name="code"></slot>
-      </div>
-    ];
+    return (
+      <Host class={{'deckgo-highlight-code-edit': this.editing}}>
+        <div class="deckgo-highlight-code-container"
+             onMouseDown={() => this.edit()}
+             onTouchStart={() => this.edit()}>
+          <code></code>
+          <slot name="code"></slot>
+        </div>
+      </Host>
+    );
   }
 
 }
