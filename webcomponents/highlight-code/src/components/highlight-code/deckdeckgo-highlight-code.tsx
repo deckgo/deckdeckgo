@@ -1,4 +1,4 @@
-import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State} from '@stencil/core';
+import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
 import Prism from 'prismjs';
 
@@ -42,7 +42,7 @@ export class DeckdeckgoHighlightCode {
     }
   }
 
-  @Listen('document:prismLanguageLoaded')
+  @Listen('prismLanguageLoaded', {target: 'document'})
   async languageLoaded($event: CustomEvent) {
     if (!$event || !$event.detail) {
       return;
@@ -457,20 +457,14 @@ export class DeckdeckgoHighlightCode {
   }
 
   render() {
-    return <div class="deckgo-highlight-code-container"
-                onMouseDown={() => this.edit()}
-                onTouchStart={() => this.edit()}>
-      <code></code>
-      <slot name="code"></slot>
-    </div>;
-  }
-
-  hostData() {
-    return {
-      class: {
-        'deckgo-highlight-code-edit': this.editing
-      }
-    }
+    return [<Host class={{'deckgo-highlight-code-edit': this.editing}}></Host>,
+      <div class="deckgo-highlight-code-container"
+           onMouseDown={() => this.edit()}
+           onTouchStart={() => this.edit()}>
+        <code></code>
+        <slot name="code"></slot>
+      </div>
+    ];
   }
 
 }

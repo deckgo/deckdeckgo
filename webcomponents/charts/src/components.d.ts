@@ -5,9 +5,7 @@
  */
 
 
-import '@stencil/core';
-
-
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   BaseType,
   Selection,
@@ -19,7 +17,6 @@ import {
 
 
 export namespace Components {
-
   interface DeckgoBarChart {
     'draw': () => Promise<void>;
     'height': number;
@@ -31,17 +28,6 @@ export namespace Components {
     'src': string;
     'width': number;
   }
-  interface DeckgoBarChartAttributes extends StencilHTMLAttributes {
-    'height'?: number;
-    'marginBottom'?: number;
-    'marginLeft'?: number;
-    'marginRight'?: number;
-    'marginTop'?: number;
-    'separator'?: string;
-    'src'?: string;
-    'width'?: number;
-  }
-
   interface DeckgoLineChart {
     'area': boolean;
     'datePattern': string;
@@ -59,23 +45,6 @@ export namespace Components {
     'width': number;
     'yAxisDomain': string;
   }
-  interface DeckgoLineChartAttributes extends StencilHTMLAttributes {
-    'area'?: boolean;
-    'datePattern'?: string;
-    'grid'?: boolean;
-    'height'?: number;
-    'marginBottom'?: number;
-    'marginLeft'?: number;
-    'marginRight'?: number;
-    'marginTop'?: number;
-    'separator'?: string;
-    'smooth'?: boolean;
-    'src'?: string;
-    'ticks'?: number;
-    'width'?: number;
-    'yAxisDomain'?: string;
-  }
-
   interface DeckgoPieChart {
     'draw': () => Promise<void>;
     'height': number;
@@ -85,28 +54,9 @@ export namespace Components {
     'src': string;
     'width': number;
   }
-  interface DeckgoPieChartAttributes extends StencilHTMLAttributes {
-    'height'?: number;
-    'innerRadius'?: number;
-    'range'?: string[];
-    'separator'?: string;
-    'src'?: string;
-    'width'?: number;
-  }
 }
 
 declare global {
-  interface StencilElementInterfaces {
-    'DeckgoBarChart': Components.DeckgoBarChart;
-    'DeckgoLineChart': Components.DeckgoLineChart;
-    'DeckgoPieChart': Components.DeckgoPieChart;
-  }
-
-  interface StencilIntrinsicElements {
-    'deckgo-bar-chart': Components.DeckgoBarChartAttributes;
-    'deckgo-line-chart': Components.DeckgoLineChartAttributes;
-    'deckgo-pie-chart': Components.DeckgoPieChartAttributes;
-  }
 
 
   interface HTMLDeckgoBarChartElement extends Components.DeckgoBarChart, HTMLStencilElement {}
@@ -126,26 +76,63 @@ declare global {
     prototype: HTMLDeckgoPieChartElement;
     new (): HTMLDeckgoPieChartElement;
   };
-
   interface HTMLElementTagNameMap {
-    'deckgo-bar-chart': HTMLDeckgoBarChartElement
-    'deckgo-line-chart': HTMLDeckgoLineChartElement
-    'deckgo-pie-chart': HTMLDeckgoPieChartElement
-  }
-
-  interface ElementTagNameMap {
     'deckgo-bar-chart': HTMLDeckgoBarChartElement;
     'deckgo-line-chart': HTMLDeckgoLineChartElement;
     'deckgo-pie-chart': HTMLDeckgoPieChartElement;
   }
-
-
-  export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
-  }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+declare namespace LocalJSX {
+  interface DeckgoBarChart extends JSXBase.HTMLAttributes<HTMLDeckgoBarChartElement> {
+    'height'?: number;
+    'marginBottom'?: number;
+    'marginLeft'?: number;
+    'marginRight'?: number;
+    'marginTop'?: number;
+    'separator'?: string;
+    'src'?: string;
+    'width'?: number;
+  }
+  interface DeckgoLineChart extends JSXBase.HTMLAttributes<HTMLDeckgoLineChartElement> {
+    'area'?: boolean;
+    'datePattern'?: string;
+    'grid'?: boolean;
+    'height'?: number;
+    'marginBottom'?: number;
+    'marginLeft'?: number;
+    'marginRight'?: number;
+    'marginTop'?: number;
+    'separator'?: string;
+    'smooth'?: boolean;
+    'src'?: string;
+    'ticks'?: number;
+    'width'?: number;
+    'yAxisDomain'?: string;
+  }
+  interface DeckgoPieChart extends JSXBase.HTMLAttributes<HTMLDeckgoPieChartElement> {
+    'height'?: number;
+    'innerRadius'?: number;
+    'range'?: string[];
+    'separator'?: string;
+    'src'?: string;
+    'width'?: number;
+  }
+
+  interface IntrinsicElements {
+    'deckgo-bar-chart': DeckgoBarChart;
+    'deckgo-line-chart': DeckgoLineChart;
+    'deckgo-pie-chart': DeckgoPieChart;
+  }
+}
+
+export { LocalJSX as JSX };
+
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
+

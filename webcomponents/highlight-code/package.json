@@ -2,7 +2,7 @@
   "name": "@deckdeckgo/highlight-code",
   "version": "1.0.0-alpha.15",
   "description": "A Web Component to highlight your code",
-  "module": "dist/esm/index.js",
+  "module": "dist/index.mjs",
   "main": "dist/index.js",
   "unpkg": "dist/ionic.js",
   "types": "dist/types/components.d.ts",
@@ -22,12 +22,12 @@
     "prismjs": "^1.16.0"
   },
   "devDependencies": {
-    "@stencil/core": "^0.18.0",
+    "@stencil/core": "^1.0.0",
     "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.1.1",
+    "@stencil/sass": "^0.2.3",
     "@stencil/utils": "0.0.5",
-    "@types/prismjs": "^1.16.0",
-    "autoprefixer": "^9.5.1"
+    "autoprefixer": "^9.6.0",
+    "@types/prismjs": "^1.16.0"
   },
   "repository": {
     "type": "git",

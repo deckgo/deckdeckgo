@@ -1,4 +1,4 @@
-import {Component, Prop, Element, Method, Watch} from '@stencil/core';
+import {Component, Prop, Element, Method, Watch, h} from '@stencil/core';
 
 import {BaseType, Selection} from 'd3-selection';
 import {pie, arc, Pie, Arc, DefaultArcObject} from 'd3-shape';
