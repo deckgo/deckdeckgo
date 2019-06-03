@@ -5,13 +5,10 @@
  */
 
 
-import '@stencil/core';
-
-
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-
   interface DeckgoQrcode {
     'content': string;
     'generate': () => Promise<void>;
@@ -22,7 +19,23 @@ export namespace Components {
     'qrMargin': number;
     'type': string;
   }
-  interface DeckgoQrcodeAttributes extends StencilHTMLAttributes {
+}
+
+declare global {
+
+
+  interface HTMLDeckgoQrcodeElement extends Components.DeckgoQrcode, HTMLStencilElement {}
+  var HTMLDeckgoQrcodeElement: {
+    prototype: HTMLDeckgoQrcodeElement;
+    new (): HTMLDeckgoQrcodeElement;
+  };
+  interface HTMLElementTagNameMap {
+    'deckgo-qrcode': HTMLDeckgoQrcodeElement;
+  }
+}
+
+declare namespace LocalJSX {
+  interface DeckgoQrcode extends JSXBase.HTMLAttributes<HTMLDeckgoQrcodeElement> {
     'content'?: string;
     'qrAlt'?: string;
     'qrBackgroundColor'?: string;
@@ -31,39 +44,19 @@ export namespace Components {
     'qrMargin'?: number;
     'type'?: string;
   }
+
+  interface IntrinsicElements {
+    'deckgo-qrcode': DeckgoQrcode;
+  }
 }
 
-declare global {
-  interface StencilElementInterfaces {
-    'DeckgoQrcode': Components.DeckgoQrcode;
-  }
-
-  interface StencilIntrinsicElements {
-    'deckgo-qrcode': Components.DeckgoQrcodeAttributes;
-  }
+export { LocalJSX as JSX };
 
 
-  interface HTMLDeckgoQrcodeElement extends Components.DeckgoQrcode, HTMLStencilElement {}
-  var HTMLDeckgoQrcodeElement: {
-    prototype: HTMLDeckgoQrcodeElement;
-    new (): HTMLDeckgoQrcodeElement;
-  };
-
-  interface HTMLElementTagNameMap {
-    'deckgo-qrcode': HTMLDeckgoQrcodeElement
-  }
-
-  interface ElementTagNameMap {
-    'deckgo-qrcode': HTMLDeckgoQrcodeElement;
-  }
-
-
+declare module "@stencil/core" {
   export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
   }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+

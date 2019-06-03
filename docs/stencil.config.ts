@@ -6,7 +6,8 @@ import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
   outputTargets: [{
-    type: 'www'
+    type: 'www',
+    baseUrl: 'https://docs.deckdeckgo.com'
   }],
   globalScript: 'src/global/app.ts',
   globalStyle: 'src/global/app.scss',

@@ -33,13 +33,6 @@
 
 
 
-#### Parameters
-
-| Name                | Type      | Description |
-| ------------------- | --------- | ----------- |
-| `clearSelection`    | `boolean` |             |
-| `blurActiveElement` | `boolean` |             |
-
 #### Returns
 
 Type: `Promise<void>`

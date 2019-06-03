@@ -2,7 +2,7 @@
   "name": "@deckdeckgo/lazy-img",
   "version": "1.0.0-alpha.5",
   "description": "A dead simple Web Component to lazy load images",
-  "module": "dist/esm/index.js",
+  "module": "dist/index.mjs",
   "main": "dist/index.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
@@ -19,13 +19,12 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "^0.18.0",
-    "@stencil/dev-server": "0.0.18",
+    "@deckdeckgo/types": "^1.0.0-alpha.10",
+    "@stencil/core": "^1.0.0",
     "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.2.1",
+    "@stencil/sass": "^0.2.3",
     "@stencil/utils": "0.0.5",
-    "autoprefixer": "^9.5.1",
-    "deckdeckgo-types": "^1.0.0-alpha.8"
+    "autoprefixer": "^9.6.0"
   },
   "repository": {
     "type": "git",
