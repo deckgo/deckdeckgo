@@ -3,6 +3,7 @@
 
 ### Web Components
 
+* highlight-code: v1.0.0-alpha.16 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 * inline-editor: v1.0.0-alpha.9 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 * lazy-img: v1.0.0-alpha.6 and v1.0.0-alpha.7 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
 * qrcode: v1.0.0-alpha.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/qrcode/CHANGELOG.md))
