@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.44"></a>
-# [1.0.0-beta.44](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.42...v1.0.0-beta.43) (2019-06-04)
+<a name="1.0.0-beta.43"></a>
+# [1.0.0-beta.43](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.42...v1.0.0-beta.43) (2019-06-04)
 
 ### Applications
 
