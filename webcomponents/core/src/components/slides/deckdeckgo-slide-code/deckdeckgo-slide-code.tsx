@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, State, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
@@ -217,27 +217,20 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
       containerStyle += ' deckgo-slide-code-container-mobile';
     }
 
-    return <div class="deckgo-slide"
-                onClick={() => this.switchAction()}>
-      <slot name="title"></slot>
-      <div class={containerStyle}>
-        <deckgo-highlight-code src={this.src} anchor={this.anchor} anchorZoom={this.anchorZoom} hideAnchor={this.hideAnchor} language={this.language}></deckgo-highlight-code>
+    return <Host class={{'deckgo-slide-container': true}}>
+        <div class="deckgo-slide"
+                  onClick={() => this.switchAction()}>
+        <slot name="title"></slot>
+        <div class={containerStyle}>
+          <deckgo-highlight-code src={this.src} anchor={this.anchor} anchorZoom={this.anchorZoom} hideAnchor={this.hideAnchor} language={this.language}></deckgo-highlight-code>
+        </div>
+        <slot name="code"></slot>
+        <slot name="info"></slot>
+        <slot name="notes"></slot>
+        <slot name="actions"></slot>
+        <slot name="background"></slot>
       </div>
-      <slot name="code"></slot>
-      <slot name="info"></slot>
-      <slot name="notes"></slot>
-      <slot name="actions"></slot>
-      <slot name="background"></slot>
-    </div>;
-  }
-
-  // DeckDeckGoZoom
-  hostData() {
-    return {
-      class: {
-        'deckgo-slide-container': true
-      }
-    }
+    </Host>;
   }
 
 }

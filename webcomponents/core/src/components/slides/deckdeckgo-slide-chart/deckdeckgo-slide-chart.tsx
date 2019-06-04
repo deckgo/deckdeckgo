@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, State, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
@@ -118,15 +118,17 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   };
 
   render() {
-    return <div class="deckgo-slide">
-      <slot name="title"></slot>
-      <div class="deckgo-chart-container">
-        {this.renderChart()}
+    return <Host class={{'deckgo-slide-container': true}}>
+      <div class="deckgo-slide">
+        <slot name="title"></slot>
+        <div class="deckgo-chart-container">
+          {this.renderChart()}
+        </div>
+        <slot name="notes"></slot>
+        <slot name="actions"></slot>
+        <slot name="background"></slot>
       </div>
-      <slot name="notes"></slot>
-      <slot name="actions"></slot>
-      <slot name="background"></slot>
-    </div>
+    </Host>
   }
 
   private renderChart() {
@@ -145,14 +147,6 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
     } else {
       return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
                                inner-radius={this.innerRadius} range={this.range}></deckgo-pie-chart>
-    }
-  }
-
-  hostData() {
-    return {
-      class: {
-        'deckgo-slide-container': true
-      }
     }
   }
 

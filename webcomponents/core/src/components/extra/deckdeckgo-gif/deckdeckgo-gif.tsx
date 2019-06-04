@@ -1,4 +1,4 @@
-import {Component, Element, Prop, Method, State, Event, EventEmitter, h} from '@stencil/core';
+import {Component, Element, Prop, Method, State, Event, EventEmitter, h, Host} from '@stencil/core';
 
 import {DeckdeckgoExtra} from '../deckdeckgo-extra';
 import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
@@ -40,19 +40,15 @@ export class DeckdeckgoGif implements DeckdeckgoExtra {
   }
 
   render() {
-    return <div class="deckgo-gif">
-      <slot name="header"></slot>
-      <img data-src={this.src} alt={this.alt}/>
-      <slot name="footer"></slot>
-    </div>;
-  }
-
-  hostData() {
-    return {
-      class: {
+    return <Host class={{
         'deckgo-gif-fullscreen': this.fullscreen,
         'deckgo-gif-hidden': !this.loaded
-      }
-    }
+      }}>
+      <div class="deckgo-gif">
+        <slot name="header"></slot>
+        <img data-src={this.src} alt={this.alt}/>
+        <slot name="footer"></slot>
+      </div>
+    </Host>;
   }
 }

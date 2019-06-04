@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, State, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
@@ -158,28 +158,22 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   }
 
   render() {
-    return <div class="deckgo-slide">
-      <slot name="title"></slot>
-      <slot name="content"></slot>
-      <div class="deckgo-youtube-container">
-        {this.renderVideo()}
+    return <Host class={{'deckgo-slide-container': true}}>
+      <div class="deckgo-slide">
+        <slot name="title"></slot>
+        <slot name="content"></slot>
+        <div class="deckgo-youtube-container">
+          {this.renderVideo()}
+        </div>
+        <slot name="notes"></slot>
+        <slot name="actions"></slot>
+        <slot name="background"></slot>
       </div>
-      <slot name="notes"></slot>
-      <slot name="actions"></slot>
-      <slot name="background"></slot>
-    </div>
+    </Host>
   }
 
   private renderVideo() {
     return <deckgo-youtube src={this.src} width={this.videoWidth} height={this.videoHeight} frame-title={this.frameTitle}></deckgo-youtube>
-  }
-
-  hostData() {
-    return {
-      class: {
-        'deckgo-slide-container': true
-      }
-    }
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
@@ -44,34 +44,28 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   }
 
   render() {
-    return <div class="deckgo-slide">
-      <slot name="title"></slot>
-      <div class="deckgo-slide-author deckgo-slide-author-start">
-        <img data-src={this.imgSrc} alt={this.imgAlt}/>
-      </div>
-      <div class="deckgo-slide-author deckgo-slide-author-end">
-        <slot name="author"></slot>
-        <div class="deckgo-slide-author-social">
-          <slot name="social-link"></slot>
-          <slot name="social-link"></slot>
-          <slot name="social-link"></slot>
-          <slot name="social-link"></slot>
-          <slot name="social-link"></slot>
-          <slot name="social-link"></slot>
+    return <Host class={{'deckgo-slide-container': true}}>
+        <div class="deckgo-slide">
+        <slot name="title"></slot>
+        <div class="deckgo-slide-author deckgo-slide-author-start">
+          <img data-src={this.imgSrc} alt={this.imgAlt}/>
         </div>
+        <div class="deckgo-slide-author deckgo-slide-author-end">
+          <slot name="author"></slot>
+          <div class="deckgo-slide-author-social">
+            <slot name="social-link"></slot>
+            <slot name="social-link"></slot>
+            <slot name="social-link"></slot>
+            <slot name="social-link"></slot>
+            <slot name="social-link"></slot>
+            <slot name="social-link"></slot>
+          </div>
+        </div>
+        <slot name="notes"></slot>
+        <slot name="actions"></slot>
+        <slot name="background"></slot>
       </div>
-      <slot name="notes"></slot>
-      <slot name="actions"></slot>
-      <slot name="background"></slot>
-    </div>;
-  }
-
-  hostData() {
-    return {
-      class: {
-        'deckgo-slide-container': true
-      }
-    }
+    </Host>;
   }
 
 }

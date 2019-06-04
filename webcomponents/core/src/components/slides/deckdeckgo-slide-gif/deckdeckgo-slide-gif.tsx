@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, Listen, State, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, Listen, State, h, Host} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
@@ -53,27 +53,23 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
   }
 
   render() {
-    return <div class="deckgo-slide">
-      <slot name="title"></slot>
-      <div class="deckgo-gif-container">
-        <slot name="header"></slot>
-        <deckgo-gif src={this.src} alt={this.alt} fullscreen={this.fullscreen}></deckgo-gif>
-        <slot name="footer"></slot>
-        <slot name="notes"></slot>
-        <slot name="actions"></slot>
-        <slot name="background"></slot>
+    return <Host class={{
+      'deckgo-slide-container': true,
+      'deckgo-slide-container-fullscreen': this.fullscreen,
+      'deckgo-slide-gif-hidden': !this.loaded
+    }}>
+      <div class="deckgo-slide">
+        <slot name="title"></slot>
+        <div class="deckgo-gif-container">
+          <slot name="header"></slot>
+          <deckgo-gif src={this.src} alt={this.alt} fullscreen={this.fullscreen}></deckgo-gif>
+          <slot name="footer"></slot>
+          <slot name="notes"></slot>
+          <slot name="actions"></slot>
+          <slot name="background"></slot>
+        </div>
       </div>
-    </div>
-  }
-
-  hostData() {
-    return {
-      class: {
-        'deckgo-slide-container': true,
-        'deckgo-slide-container-fullscreen': this.fullscreen,
-        'deckgo-slide-gif-hidden': !this.loaded
-      }
-    }
+    </Host>
   }
 
 }

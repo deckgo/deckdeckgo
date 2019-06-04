@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
@@ -90,24 +90,18 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
   }
 
   render() {
-    return <div class="deckgo-slide">
-      <slot name="title"></slot>
-      <div class="deckgo-slide-qrcode">
-        <slot name="content"></slot>
-        <deckgo-qrcode content={this.content}></deckgo-qrcode>
+    return <Host class={{'deckgo-slide-container': true}}>
+      <div class="deckgo-slide">
+        <slot name="title"></slot>
+        <div class="deckgo-slide-qrcode">
+          <slot name="content"></slot>
+          <deckgo-qrcode content={this.content}></deckgo-qrcode>
+        </div>
+        <slot name="notes"></slot>
+        <slot name="actions"></slot>
+        <slot name="background"></slot>
       </div>
-      <slot name="notes"></slot>
-      <slot name="actions"></slot>
-      <slot name="background"></slot>
-    </div>;
-  }
-
-  hostData() {
-    return {
-      class: {
-        'deckgo-slide-container': true
-      }
-    }
+    </Host>;
   }
 
 }
