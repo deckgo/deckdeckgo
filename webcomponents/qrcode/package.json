@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/qrcode",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "A Web Component to generate QR code",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
