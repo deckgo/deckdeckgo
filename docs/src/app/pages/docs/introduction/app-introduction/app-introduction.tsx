@@ -32,7 +32,7 @@ export class AppIntroduction {
 
       <ion-content class="ion-padding">
         <main><h1 id="app-introduction-getting-started">Getting started</h1>
-<p><a href="https://deckdeckgo.com">DeckDeckGo</a> provides a <a href="https://github.com/deckgo/create-deckdeckgo">CLI</a> and a <a href="https://github.com/deckgo/deckdeckgo/cli">starter kit</a>.</p>
+<p><a href="https://deckdeckgo.com">DeckDeckGo</a> provides a <a href="https://github.com/deckgo/deckdeckgo/tree/master/cli">CLI</a> and a <a href="https://github.com/deckgo/deckdeckgo-starter">starter kit</a>.</p>
 <h2 id="app-introduction-prerequisites">Prerequisites</h2>
 <p><a href="https://deckdeckgo.com">DeckDeckGo</a> requires a recent LTS version of <a href="https://nodejs.org">NodeJS</a> and npm. Make sure you&#39;ve installed and/or updated Node before continuing.</p>
 <blockquote>
