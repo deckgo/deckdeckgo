@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.7"></a>
+# 1.0.0-alpha.7 (2019-06-04)
+
+### Libs
+
+* update DeckDeckGo types last lib
+
 <a name="1.0.0-alpha.6"></a>
 # 1.0.0-alpha.6 (2019-06-04)
 
