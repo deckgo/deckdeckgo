@@ -15,8 +15,8 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/core": "file:../webcomponents/core",
-    "@deckdeckgo/utils": "file:../webcomponents/utils",
+    "@deckdeckgo/core": "^1.0.0-beta.37",
+    "@deckdeckgo/utils": "^1.0.0-alpha.2",
     "@ionic/core": "^4.5.0-dev.201905311531.e014c6a",
     "date-fns": "^2.0.0-alpha.26",
     "idb-keyval": "^3.2.0",
@@ -24,7 +24,7 @@
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0-alpha.10",
+    "@deckdeckgo/types": "^1.0.0-alpha.11",
     "@stencil/core": "^1.0.0",
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.2.3",
