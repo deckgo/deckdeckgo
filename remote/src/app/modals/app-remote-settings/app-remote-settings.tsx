@@ -1,4 +1,4 @@
-import {Component, Element, Listen, State} from '@stencil/core';
+import {Component, Element, Listen, State, h} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import {take} from 'rxjs/operators';
@@ -28,7 +28,9 @@ export class AppRemoteSettings {
     @State()
     private accelerometerDelay: number = 0;
 
-    constructor(private accelerometerService: AccelerometerService) {
+    private accelerometerService: AccelerometerService;
+
+    constructor() {
         this.accelerometerService = AccelerometerService.getInstance();
     }
 
@@ -47,7 +49,7 @@ export class AppRemoteSettings {
         history.pushState({modal: true}, null);
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', {target: 'window'})
     async handleHardwareBackbutton(_e: PopStateEvent) {
         await this.closeModal();
     }
@@ -107,7 +109,7 @@ export class AppRemoteSettings {
                 </ion-toolbar>
             </ion-header>,
 
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <ion-list>
                     <ion-list-header class="ion-padding-bottom ion-padding-top">
                         <ion-label>Use the force, Luke</ion-label>

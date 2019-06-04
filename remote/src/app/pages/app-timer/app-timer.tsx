@@ -1,4 +1,4 @@
-import {Component, Element, State} from '@stencil/core';
+import {Component, Element, State, h} from '@stencil/core';
 import {DatetimeChangeEventDetail} from '@ionic/core';
 
 import {differenceInMilliseconds, isAfter, startOfDay} from 'date-fns';
@@ -33,8 +33,10 @@ export class AppTimer {
     @State()
     private timerPause: boolean = false;
 
-    constructor(private timerService: TimerService,
-                private notificationService: NotificationService) {
+    private timerService: TimerService;
+    private notificationService: NotificationService;
+
+    constructor() {
         this.timerService = TimerService.getInstance();
         this.notificationService = NotificationService.getInstance();
     }
@@ -128,7 +130,7 @@ export class AppTimer {
                 </ion-toolbar>
             </ion-header>,
 
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 {this.renderContent()}
                 {this.renderActions()}
                 <ion-datetime display-format="HH:mm" pickerOptions={{backdropDismiss: false}} value={startOfDay(new Date()).toDateString()}

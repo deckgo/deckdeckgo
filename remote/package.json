@@ -15,9 +15,9 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/core": "^1.0.0-beta.35",
-    "@deckdeckgo/utils": "^1.0.0-alpha.1",
-    "@ionic/core": "^4.4.2",
+    "@deckdeckgo/core": "file:../webcomponents/core",
+    "@deckdeckgo/utils": "file:../webcomponents/utils",
+    "@ionic/core": "^4.5.0-dev.201905311531.e014c6a",
     "date-fns": "^2.0.0-alpha.26",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.2",
@@ -25,15 +25,15 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.10",
-    "@stencil/core": "^0.18.0",
+    "@stencil/core": "^1.0.0",
     "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.1.1",
+    "@stencil/sass": "^0.2.3",
     "@types/socket.io-client": "^1.4.32",
     "@types/w3c-generic-sensor": "^1.0.2",
     "@types/webrtc": "0.0.25",
-    "autoprefixer": "^9.5.1",
+    "autoprefixer": "^9.6.0",
     "rollup-plugin-node-builtins": "^2.1.2",
-    "workbox-build": "3.4.1"
+    "workbox-build": "4.3.1"
   },
   "repository": {
     "type": "git",

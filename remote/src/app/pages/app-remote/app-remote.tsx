@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Prop, State} from '@stencil/core';
+import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
@@ -50,8 +50,10 @@ export class AppRemote {
     private acceleratorSubscription: Subscription;
     private acceleratorInitSubscription: Subscription;
 
-    constructor(private communicationService: CommunicationService,
-                private accelerometerService: AccelerometerService) {
+    private communicationService: CommunicationService;
+    private accelerometerService: AccelerometerService;
+
+    constructor() {
         this.communicationService = CommunicationService.getInstance();
         this.accelerometerService = AccelerometerService.getInstance();
     }
@@ -522,12 +524,12 @@ export class AppRemote {
             }
 
             return [
-                <h1 padding>{text}</h1>,
+                <h1 class="ion-padding">{text}</h1>,
                 <ion-spinner name="dots" color="primary"></ion-spinner>
             ];
         } else {
             return [
-                <h1 padding>The DeckDeckGo remote control</h1>,
+                <h1 class="ion-padding">The DeckDeckGo remote control</h1>,
                 <a onClick={() => this.openConnectModal()} class="link-to-modal">
                     <p class="ion-padding-start ion-padding-end">Not connected yet, <strong>click here</strong> to find
                         your presentation or use the link button below <ion-icon name="link"></ion-icon></p>
@@ -540,7 +542,7 @@ export class AppRemote {
         return (
             this.slides.map((slideDefinition: DeckdeckgoSlideDefinition, i: number) => {
                 return <deckgo-slide-title>
-                    <div slot="content" padding>
+                    <div slot="content" class="ion-padding">
                         <div class="floating-slide-title">
                             <ion-chip color="primary">
                                 <ion-label>Slide {i + 1} of {this.slides.length}</ion-label>
@@ -574,8 +576,7 @@ export class AppRemote {
     private renderNotes(slideDefinition: DeckdeckgoSlideDefinition) {
         if (slideDefinition.notes && slideDefinition.notes.length > 0) {
             // Just in case, remove html tags from the notes
-            return <p padding
-                      class="notes">{slideDefinition.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
+            return <p class="ion-padding notes">{slideDefinition.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
         } else {
             return undefined;
         }
