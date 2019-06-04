@@ -14,20 +14,20 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/core": "file:../webcomponents/core",
-    "@deckdeckgo/highlight-code": "file:../webcomponents/highlight-code/deckdeckgo-highlight-code-1.0.0-alpha.15.tgz",
-    "@deckdeckgo/inline-editor": "file:../webcomponents/inline-editor/deckdeckgo-inline-editor-1.0.0-alpha.8.tgz",
-    "@deckdeckgo/lazy-img": "file:../webcomponents/lazy-img",
-    "@deckdeckgo/qrcode": "file:../webcomponents/qrcode",
-    "@deckdeckgo/remote": "file:../webcomponents/remote",
-    "@deckdeckgo/utils": "file:../webcomponents/utils",
+    "@deckdeckgo/core": "^1.0.0-beta.37",
+    "@deckdeckgo/highlight-code": "^1.0.0-alpha.16",
+    "@deckdeckgo/inline-editor": "^1.0.0-alpha.9",
+    "@deckdeckgo/lazy-img": "^1.0.0-alpha.7",
+    "@deckdeckgo/qrcode": "^1.0.0-alpha.8",
+    "@deckdeckgo/remote": "^1.0.0-alpha.11",
+    "@deckdeckgo/utils": "^1.0.0-alpha.2",
     "@ionic/core": "^4.5.0-dev.201905311531.e014c6a",
     "firebase": "^6.1.0",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.2"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0-alpha.10",
+    "@deckdeckgo/types": "^1.0.0-alpha.11",
     "@stencil/core": "1.0.0",
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.2.3",
