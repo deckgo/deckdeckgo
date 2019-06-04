@@ -10,7 +10,7 @@
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
-    "typescript": "^3.1.6"
+    "typescript": "^3.5.1"
   },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
