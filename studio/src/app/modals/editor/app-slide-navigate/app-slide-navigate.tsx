@@ -1,4 +1,4 @@
-import {Component, Listen, Element, Prop} from '@stencil/core';
+import {Component, Listen, Element, Prop, h} from '@stencil/core';
 
 @Component({
     tag: 'app-slide-navigate',
@@ -15,7 +15,7 @@ export class AppSlideNavigate {
         history.pushState({modal: true}, null);
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', { target: 'window' })
     async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }

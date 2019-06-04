@@ -1,4 +1,4 @@
-import {Component, Listen, State} from '@stencil/core';
+import {Component, Listen, State, h} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 import {filter, take} from 'rxjs/operators';
 
@@ -70,9 +70,11 @@ export class AppHome {
         });
     }
 
-    @Listen('keydown.enter')
-    async handleEnterKey() {
-        await this.save();
+    @Listen('keydown')
+    async handleEnterKey($event: KeyboardEvent) {
+        if ($event && $event.key === 'Enter') {
+            await this.save();
+        }
     }
 
     private async handleSubmit(e: Event) {
@@ -159,7 +161,7 @@ export class AppHome {
         return [
             <app-navigation></app-navigation>,
             <ion-content class="ion-padding fullscreen-padding">
-                <main padding>
+                <main class="ion-padding">
                     {this.renderGuardedContent()}
                     {this.renderDangerZone()}
                 </main>

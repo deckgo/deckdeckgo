@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
@@ -46,22 +46,16 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
   }
 
   render() {
-    return <div class="deckgo-slide">
-      <slot name="title"></slot>
-      <div class="deckgo-slide-split deckgo-slide-split-start"><slot name="start"></slot></div>
-      <div class="deckgo-slide-split deckgo-slide-split-end"><slot name="end"></slot></div>
-      <slot name="notes"></slot>
-      <slot name="actions"></slot>
-      <slot name="background"></slot>
-    </div>;
-  }
-
-  hostData() {
-    return {
-      class: {
-        'deckgo-slide-container': true
-      }
-    }
+    return <Host class={{'deckgo-slide-container': true}}>
+      <div class="deckgo-slide">
+        <slot name="title"></slot>
+        <div class="deckgo-slide-split deckgo-slide-split-start"><slot name="start"></slot></div>
+        <div class="deckgo-slide-split deckgo-slide-split-end"><slot name="end"></slot></div>
+        <slot name="notes"></slot>
+        <slot name="actions"></slot>
+        <slot name="background"></slot>
+      </div>
+    </Host>;
   }
 
 }

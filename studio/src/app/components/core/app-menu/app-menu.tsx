@@ -1,4 +1,4 @@
-import {Component, Element, State} from '@stencil/core';
+import {Component, Element, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';

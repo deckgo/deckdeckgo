@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {MenuService} from '../../../../services/menu/menu.service';
 
@@ -10,7 +10,9 @@ export class AppEditFonts {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -22,7 +24,7 @@ export class AppEditFonts {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-edit-fonts-fonts">Fonts</h1>
 <p>As any web application, the fonts of your presentation could be easily styled, but <a href="https://deckdeckgo.com">DeckDeckGo</a> goes one step further by downloading and installing <strong>automatically</strong> any <a href="https://fonts.google.com">Google Fonts</a> you would like to use during the setup process (if you are using the starter kit). </p>
 <h2 id="app-edit-fonts-using-automatically-any-google-fonts">Using automatically any Google Fonts</h2>

@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 @Component({
     tag: 'app-deck-or-slide',
@@ -15,7 +15,7 @@ export class AppDeckOrSlide {
     }
 
     render() {
-        return <div padding>
+        return <div class="padding">
             <a onClick={() => this.closePopover(false)}><p>Just to this slide</p></a>
             <a onClick={() => this.closePopover(true)}><p>Apply to the all deck</p></a>
         </div>

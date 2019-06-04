@@ -19,7 +19,8 @@ if (dev) {
 export const config: Config = {
     outputTargets: [
         {
-            type: 'www'
+            type: 'www',
+            baseUrl: 'https://deckdeckgo.app'
         }
     ],
     globalScript: globalScript,

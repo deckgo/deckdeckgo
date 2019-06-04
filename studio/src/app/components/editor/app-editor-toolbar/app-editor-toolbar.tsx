@@ -1,4 +1,4 @@
-import {Component, Element, Method, State, Event, EventEmitter, Listen} from '@stencil/core';
+import {Component, Element, Method, State, Event, EventEmitter, Listen, h} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
@@ -103,7 +103,7 @@ export class AppEditorToolbar {
         }
     }
 
-    @Listen('document:mouseInactivity')
+    @Listen('mouseInactivity', { target: 'document' })
     async inactivity($event: CustomEvent) {
         this.displayed = $event.detail;
 

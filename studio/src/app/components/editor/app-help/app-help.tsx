@@ -1,4 +1,4 @@
-import {Component, State} from '@stencil/core';
+import {Component, State, h} from '@stencil/core';
 
 import {get, set} from 'idb-keyval';
 

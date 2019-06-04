@@ -1,4 +1,4 @@
-import {Component} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
 import {TimerService} from './services/timer/timer.service';
 import {AccelerometerService} from './services/accelerometer/accelerometer.service';
@@ -9,8 +9,10 @@ import {AccelerometerService} from './services/accelerometer/accelerometer.servi
 })
 export class AppRoot {
 
-    constructor(private timerService: TimerService,
-                private accelerometerService: AccelerometerService) {
+    private timerService: TimerService;
+    private accelerometerService: AccelerometerService;
+
+    constructor() {
         this.timerService = TimerService.getInstance();
         this.accelerometerService = AccelerometerService.getInstance();
     }
@@ -46,7 +48,7 @@ export class AppRoot {
                     </ion-route>
                 </ion-router>
 
-                <ion-router-outlet animated={true} main></ion-router-outlet>
+                <ion-router-outlet animated={true}></ion-router-outlet>
 
                 <ion-modal-controller></ion-modal-controller>
             </ion-app>

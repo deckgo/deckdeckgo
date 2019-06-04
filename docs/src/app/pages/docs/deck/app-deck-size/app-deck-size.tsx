@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppDeckSize {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppDeckSize {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-deck-size-size">Size</h1>
 <p>Per default, the <a href="https://deckdeckgo.com">DeckDeckGo</a> deck will use all the browser <code>window</code> size respectively width and height.</p>
 <p>However, it is possible to include or use <a href="https://deckdeckgo.com">DeckDeckGo</a> in any container, for that purpose you would only need to set the attribute <code>embedded</code> to <code>true</code>.</p>

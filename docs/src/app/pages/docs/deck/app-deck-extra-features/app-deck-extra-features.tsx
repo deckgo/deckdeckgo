@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppDeckExtraFeatures {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppDeckExtraFeatures {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-deck-extra-features-extra-features">Extra Features</h1>
 <p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> deck exposes a couple of extra features which could be added to your presentation too if you don&#39;t already use the starter kit.</p>
 <h2 id="app-deck-extra-features-table-of-contents">Table of contents</h2>

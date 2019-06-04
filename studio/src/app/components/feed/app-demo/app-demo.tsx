@@ -1,4 +1,4 @@
-import {Component, State} from '@stencil/core';
+import {Component, State, h} from '@stencil/core';
 
 enum DemoType {
     MOBILE = 'mobile',
@@ -89,7 +89,7 @@ export class AppDemo {
 
     private renderBeamer() {
         if (this.type === DemoType.BEAMER) {
-            return <div class="beamer-container" padding>
+            return <div class="beamer-container ion-padding">
                 <iframe src="https://www.deckdeckgo.com" />
             </div>
         } else {

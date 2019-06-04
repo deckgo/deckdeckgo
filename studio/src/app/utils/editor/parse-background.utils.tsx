@@ -1,3 +1,5 @@
+import {h} from '@stencil/core';
+
 import {ParseElementsUtils} from './parse-elements.utils';
 
 export class ParseBackgroundUtils {

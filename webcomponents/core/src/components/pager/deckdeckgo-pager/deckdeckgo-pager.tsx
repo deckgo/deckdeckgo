@@ -1,4 +1,4 @@
-import {Component, Prop, State, Watch} from '@stencil/core';
+import {Component, Prop, State, Watch, h} from '@stencil/core';
 
 
 @Component({
@@ -44,7 +44,7 @@ export class DeckdeckgoPager {
   }
 
   private renderText() {
-    return this.percentage ? <text x="18" y="20.35" className="deckgo-pager-percentage">{this.progression}%</text> : undefined;
+    return this.percentage ? <text x="18" y="20.35" class="deckgo-pager-percentage">{this.progression}%</text> : undefined;
   }
 
 }

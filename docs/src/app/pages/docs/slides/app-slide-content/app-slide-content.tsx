@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppConcept {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppConcept {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-slide-content-slide-content">Slide: Content</h1>
 <p>The &quot;Content&quot; slide is a simple slide which display its title and content aligned to the start of the page.</p>
 <p>This slide could be for example use for the every slides of your presentation where you would like to display content related to your talk.</p>
@@ -47,7 +49,7 @@ export class AppConcept {
 <li><a href="#app-slide-content-theming">Theming</a></li>
 </ul>
 <h2 id="app-slide-content-layout">Layout</h2>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-content>
         <h1 slot="title">Something related to my topic</h1>

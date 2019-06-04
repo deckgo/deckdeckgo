@@ -1,4 +1,4 @@
-import {Component, Element, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, Prop, State, Watch, h} from '@stencil/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
@@ -261,7 +261,7 @@ export class AppSignIn {
         return [
             <app-navigation></app-navigation>,
             <ion-content class="ion-padding fullscreen-padding">
-                <main padding>
+                <main class="ion-padding">
                     {this.renderBackButton()}
 
                     {this.renderMsg()}

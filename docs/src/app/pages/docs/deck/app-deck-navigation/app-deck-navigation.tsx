@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppDeckNavigation {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppDeckNavigation {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-deck-navigation-navigation">Navigation</h1>
 <p>If you use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit, the navigation methods are already bind out of the box.</p>
 <p>However, if you wish to know more about the different options or are using the core of <a href="https://deckdeckgo.com">DeckDeckGo</a>, the <a href="https://deckdeckgo.com">DeckDeckGo</a> deck exposes the following asynchronous methods in case you would like to add navigation features to your project.</p>

@@ -15,7 +15,7 @@ The "Chart" slide let you draw easily charts in your presentation.
 
 ## Layout
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-chart width={200} height={100} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
       <h1 slot="title">slot="title"</h1>

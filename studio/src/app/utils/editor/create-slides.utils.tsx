@@ -1,3 +1,5 @@
+import {h} from '@stencil/core';
+
 import {SlideTemplate} from '../../models/slide';
 
 export enum SlotType {

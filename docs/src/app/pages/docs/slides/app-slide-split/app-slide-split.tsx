@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppSlideContent {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppSlideContent {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-slide-split-slide-split">Slide: Split</h1>
 <p>The &quot;Split&quot; slide is a simple slide which display two panes on the page.</p>
 <h2 id="app-slide-split-table-of-contents">Table of contents</h2>
@@ -43,7 +45,7 @@ export class AppSlideContent {
 <li><a href="#app-slide-split-theming">Theming</a></li>
 </ul>
 <h2 id="app-slide-split-layout">Layout</h2>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-split>
         <h1 slot="title">Two columns subject</h1>

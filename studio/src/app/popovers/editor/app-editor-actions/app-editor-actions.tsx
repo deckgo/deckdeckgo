@@ -1,4 +1,4 @@
-import {Component, Element, State} from '@stencil/core';
+import {Component, Element, State, h} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
@@ -28,7 +28,7 @@ export class AppEditorActions {
     render() {
         // TODO: Share when published
 
-        return <div padding>
+        return <div class="padding">
             <a onClick={() => this.closePopover(EditorAction.JUMP_TO)}><p>Jump to slide</p></a>
             {this.renderFullscreenOption()}
             <a onClick={() => this.closePopover(EditorAction.REMOTE)}><p>Remote control</p></a>

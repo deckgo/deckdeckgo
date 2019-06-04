@@ -1,3 +1,5 @@
+import {h} from '@stencil/core';
+
 import {Slide, SlideTemplate} from '../../models/slide';
 import {ParseStyleUtils} from './parse-style.utils';
 import {ParseElementsUtils} from './parse-elements.utils';

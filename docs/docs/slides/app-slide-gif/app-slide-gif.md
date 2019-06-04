@@ -15,7 +15,7 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 
 ## Layout
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen={true}>
       <h1 slot="title">My title</h1>

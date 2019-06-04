@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Prop, State} from '@stencil/core';
+import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 import {UserUtils} from '../../utils/core/user-utils';
 
 @Component({
@@ -21,7 +21,7 @@ export class AppUserDelete {
         history.pushState({modal: true}, null);
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', { target: 'window' })
     async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }

@@ -1,4 +1,4 @@
-import {Component, Element, Prop, State} from '@stencil/core';
+import {Component, Element, Prop, State, h} from '@stencil/core';
 
 import {ImageAction} from './image-action';
 

@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {MenuService} from '../../../../services/menu/menu.service';
 
@@ -9,7 +9,9 @@ export class AppEditDefault {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -21,7 +23,7 @@ export class AppEditDefault {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-edit-default-html">HTML</h1>
 <p>To edit your <a href="https://deckdeckgo.com">DeckDeckGo</a> presentation your could either use <strong>HTML</strong> or <strong>Markdown</strong>.</p>
 <p>The default language is <strong>HTML</strong>. It&#39;s also the recommended language as it will offers you more flexibility specially regarding styling.</p>

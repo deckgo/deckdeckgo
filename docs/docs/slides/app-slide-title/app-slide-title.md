@@ -16,7 +16,7 @@ This slide could be for example use for the very first and last slide of your pr
 
 ## Layout
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-title>
       <h1 slot="title">My presentation title</h1>

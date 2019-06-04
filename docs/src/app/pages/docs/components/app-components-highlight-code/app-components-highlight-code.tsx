@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppComponentsHighlightCode {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppComponentsHighlightCode {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-components-highlight-code-highlight-code">Highlight Code</h1>
 <p>The &quot;Highlight Code&quot; component is an extra component which let you highlight code easily.</p>
 <p>To highlight your code, this component is using <a href="https://prismjs.com">Prism.js</a> from <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://twitter.com/jamesdigioia">James DiGioia</a>.</p>

@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppDeckActions {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppDeckActions {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-deck-actions-actions">Actions</h1>
 <p>A <a href="https://deckdeckgo.com">DeckDeckGo</a> deck also contains an additional slot <code>actions</code>. In the starter kit, this slot is use to add a <code>social share</code> action for your presentation.</p>
 <h2 id="app-deck-actions-table-of-contents">Table of contents</h2>

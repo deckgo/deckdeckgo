@@ -5,19 +5,13 @@
  */
 
 
-import '@stencil/core';
-
-
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   DeckdeckgoHighlightCodeAnchor,
 } from './components/declarations/deckdeckgo-highlight-code-anchor';
-import {
-  EventEmitter,
-} from '@stencil/core';
 
 
 export namespace Components {
-
   interface DeckgoHighlightCode {
     'anchor': string;
     'anchorZoom': string;
@@ -30,7 +24,23 @@ export namespace Components {
     'src': string;
     'zoomCode': (zoom: boolean) => Promise<void>;
   }
-  interface DeckgoHighlightCodeAttributes extends StencilHTMLAttributes {
+}
+
+declare global {
+
+
+  interface HTMLDeckgoHighlightCodeElement extends Components.DeckgoHighlightCode, HTMLStencilElement {}
+  var HTMLDeckgoHighlightCodeElement: {
+    prototype: HTMLDeckgoHighlightCodeElement;
+    new (): HTMLDeckgoHighlightCodeElement;
+  };
+  interface HTMLElementTagNameMap {
+    'deckgo-highlight-code': HTMLDeckgoHighlightCodeElement;
+  }
+}
+
+declare namespace LocalJSX {
+  interface DeckgoHighlightCode extends JSXBase.HTMLAttributes<HTMLDeckgoHighlightCodeElement> {
     'anchor'?: string;
     'anchorZoom'?: string;
     'editable'?: boolean;
@@ -41,39 +51,19 @@ export namespace Components {
     'onPrismLanguageLoaded'?: (event: CustomEvent<string>) => void;
     'src'?: string;
   }
+
+  interface IntrinsicElements {
+    'deckgo-highlight-code': DeckgoHighlightCode;
+  }
 }
 
-declare global {
-  interface StencilElementInterfaces {
-    'DeckgoHighlightCode': Components.DeckgoHighlightCode;
-  }
-
-  interface StencilIntrinsicElements {
-    'deckgo-highlight-code': Components.DeckgoHighlightCodeAttributes;
-  }
+export { LocalJSX as JSX };
 
 
-  interface HTMLDeckgoHighlightCodeElement extends Components.DeckgoHighlightCode, HTMLStencilElement {}
-  var HTMLDeckgoHighlightCodeElement: {
-    prototype: HTMLDeckgoHighlightCodeElement;
-    new (): HTMLDeckgoHighlightCodeElement;
-  };
-
-  interface HTMLElementTagNameMap {
-    'deckgo-highlight-code': HTMLDeckgoHighlightCodeElement
-  }
-
-  interface ElementTagNameMap {
-    'deckgo-highlight-code': HTMLDeckgoHighlightCodeElement;
-  }
-
-
+declare module "@stencil/core" {
   export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
   }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+

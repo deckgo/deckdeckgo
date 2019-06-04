@@ -1,4 +1,4 @@
-import {Component, Prop, State, Watch} from '@stencil/core';
+import {Component, Prop, State, Watch, h} from '@stencil/core';
 
 import {formatDistanceStrict, addMilliseconds} from 'date-fns';
 
@@ -83,7 +83,7 @@ export class AppStopwatch {
         if (this.remaining >= 0) {
             const end: Date = addMilliseconds(new Date(), this.remaining);
             const distance: string = formatDistanceStrict(end, new Date());
-            return <text x="18" y="19" className="stopwatch-remaining-time">{distance}</text>;
+            return <text x="18" y="19" class="stopwatch-remaining-time">{distance}</text>;
         } else {
             return undefined;
         }

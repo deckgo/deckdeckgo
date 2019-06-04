@@ -1,4 +1,4 @@
-import {Component, Element, Listen, State} from '@stencil/core';
+import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import {PhotoService} from '../../../services/api/photo/photo.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
@@ -42,7 +42,7 @@ export class AppPhoto {
         history.pushState({modal: true}, null);
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', { target: 'window' })
     async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }

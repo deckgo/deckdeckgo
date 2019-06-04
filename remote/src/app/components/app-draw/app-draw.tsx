@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop, State, Watch, EventEmitter, Event} from '@stencil/core';
+import {Component, Element, Method, Prop, State, Watch, EventEmitter, Event, h} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
@@ -40,7 +40,9 @@ export class AppDraw {
 
     @State() private color: string = 'red';
 
-    constructor(private communicationService: CommunicationService) {
+    private communicationService: CommunicationService;
+
+    constructor() {
         this.communicationService = CommunicationService.getInstance();
     }
 

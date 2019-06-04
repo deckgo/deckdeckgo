@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {MenuService} from './services/menu/menu.service';
 import {Subscription} from 'rxjs';
@@ -13,7 +13,9 @@ export class AppRoot {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -116,8 +118,8 @@ export class AppRoot {
           <ion-route url="/misc/contact" component="app-misc-contact"/>
         </ion-router>
 
-        <ion-split-pane when="lg">
-          <ion-menu side="start" type="push" swipeGesture={false} disabled={true} onIonDidClose={() => this.enableMenuOnClose()}>
+        <ion-split-pane when="lg" contentId="menu-content">
+          <ion-menu side="start" type="push" swipeGesture={false} disabled={true} onIonDidClose={() => this.enableMenuOnClose()} contentId="menu-content">
             <app-navigation logo={true} menuToggle={false} navigation={false}></app-navigation>
             <ion-content>
               <ion-menu-toggle autoHide={false}>
@@ -192,11 +194,11 @@ export class AppRoot {
                 </ion-list>
               </ion-menu-toggle>
 
-              <app-menu-footer padding></app-menu-footer>
+              <app-menu-footer class="ion-padding"></app-menu-footer>
             </ion-content>
           </ion-menu>
 
-          <ion-nav main/>
+          <ion-nav id="menu-content"/>
         </ion-split-pane>
 
         <ion-menu-controller></ion-menu-controller>
