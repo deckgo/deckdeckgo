@@ -3,7 +3,8 @@
 
 ### Web Components
 
-* utils: v1.0.0-alpha.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* types: v1.0.0-alpha.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* utils: v1.0.0-alpha.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/utils/CHANGELOG.md))
 
 <a name="1.0.0-beta.42"></a>
 # [1.0.0-beta.42](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.41...v1.0.0-beta.42) (2019-05-30)
