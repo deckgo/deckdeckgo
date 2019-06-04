@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, Listen, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, Listen, State, h} from '@stencil/core';
 
 import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
 import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';

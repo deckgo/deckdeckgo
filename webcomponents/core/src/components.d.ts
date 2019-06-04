@@ -5,13 +5,10 @@
  */
 
 
-import '@stencil/core';
-
-
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-
   interface DeckgoDeck {
     'blockSlide': (block: boolean) => Promise<void>;
     'cloneBackground': boolean;
@@ -31,79 +28,19 @@ export namespace Components {
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
     'toggleFullScreen': () => Promise<void>;
-    'toggleKeyboardAssist': (state: boolean) => void;
+    'toggleKeyboardAssist': (state: boolean) => Promise<void>;
   }
-  interface DeckgoDeckAttributes extends StencilHTMLAttributes {
-    'cloneBackground'?: boolean;
-    'embedded'?: boolean;
-    'keyboard'?: boolean;
-    'onMouseInactivity'?: (event: CustomEvent<boolean>) => void;
-    'onSlideDrag'?: (event: CustomEvent<number>) => void;
-    'onSlideNextDidChange'?: (event: CustomEvent<number>) => void;
-    'onSlidePrevDidChange'?: (event: CustomEvent<number>) => void;
-    'onSlideToChange'?: (event: CustomEvent<number>) => void;
-    'onSlideWillChange'?: (event: CustomEvent<number>) => void;
-    'onSlidesDidLoad'?: (event: CustomEvent) => void;
-    'pagerPercentage'?: boolean;
-  }
-
   interface DeckgoGif {
     'alt': string;
     'fullscreen': boolean;
     'lazyLoadContent': () => Promise<void>;
     'src': string;
   }
-  interface DeckgoGifAttributes extends StencilHTMLAttributes {
-    'alt'?: string;
-    'fullscreen'?: boolean;
-    'onGifLoaded'?: (event: CustomEvent<boolean>) => void;
-    'src'?: string;
-  }
-
-  interface DeckgoSocial {
-    'fullUrl': string;
-    'github': string;
-    'lazyLoadContent': () => Promise<void>;
-    'linkedin': string;
-    'medium': string;
-    'twitter': string;
-  }
-  interface DeckgoSocialAttributes extends StencilHTMLAttributes {
-    'fullUrl'?: string;
-    'github'?: string;
-    'linkedin'?: string;
-    'medium'?: string;
-    'twitter'?: string;
-  }
-
-  interface DeckgoYoutube {
-    'frameTitle': string;
-    'height': number;
-    'lazyLoadContent': () => Promise<void>;
-    'pause': () => Promise<void>;
-    'play': () => Promise<void>;
-    'src': string;
-    'updateIFrame': (width: number, height: number) => Promise<void>;
-    'width': number;
-  }
-  interface DeckgoYoutubeAttributes extends StencilHTMLAttributes {
-    'frameTitle'?: string;
-    'height'?: number;
-    'src'?: string;
-    'width'?: number;
-  }
-
   interface DeckgoPager {
     'activeIndex': number;
     'length': number;
     'percentage': boolean;
   }
-  interface DeckgoPagerAttributes extends StencilHTMLAttributes {
-    'activeIndex'?: number;
-    'length'?: number;
-    'percentage'?: boolean;
-  }
-
   interface DeckgoSlideAuthor {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
@@ -113,14 +50,6 @@ export namespace Components {
     'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
   }
-  interface DeckgoSlideAuthorAttributes extends StencilHTMLAttributes {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'imgAlt'?: string;
-    'imgSrc'?: string;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-  }
-
   interface DeckgoSlideChart {
     'afterSwipe': () => Promise<void>;
     'area': boolean;
@@ -145,29 +74,6 @@ export namespace Components {
     'width': number;
     'yAxisDomain': string;
   }
-  interface DeckgoSlideChartAttributes extends StencilHTMLAttributes {
-    'area'?: boolean;
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'datePattern'?: string;
-    'grid'?: boolean;
-    'height'?: number;
-    'innerRadius'?: number;
-    'marginBottom'?: number;
-    'marginLeft'?: number;
-    'marginRight'?: number;
-    'marginTop'?: number;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'range'?: string[];
-    'separator'?: string;
-    'smooth'?: boolean;
-    'src'?: string;
-    'ticks'?: number;
-    'type'?: string;
-    'width'?: number;
-    'yAxisDomain'?: string;
-  }
-
   interface DeckgoSlideCode {
     'afterSwipe': () => Promise<void>;
     'anchor': string;
@@ -180,18 +86,6 @@ export namespace Components {
     'lazyLoadContent': () => Promise<void>;
     'src': string;
   }
-  interface DeckgoSlideCodeAttributes extends StencilHTMLAttributes {
-    'anchor'?: string;
-    'anchorZoom'?: string;
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'hideAnchor'?: boolean;
-    'language'?: string;
-    'onScrolling'?: (event: CustomEvent<boolean>) => void;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'src'?: string;
-  }
-
   interface DeckgoSlideContent {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (enter: boolean) => Promise<boolean>;
@@ -201,14 +95,6 @@ export namespace Components {
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
-  interface DeckgoSlideContentAttributes extends StencilHTMLAttributes {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'reveal'?: boolean;
-    'revealShowFirst'?: boolean;
-  }
-
   interface DeckgoSlideGif {
     'afterSwipe': () => Promise<void>;
     'alt': string;
@@ -219,15 +105,6 @@ export namespace Components {
     'lazyLoadContent': () => Promise<void>;
     'src': string;
   }
-  interface DeckgoSlideGifAttributes extends StencilHTMLAttributes {
-    'alt'?: string;
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'fullscreen'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'src'?: string;
-  }
-
   interface DeckgoSlideQrcode {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
@@ -236,13 +113,6 @@ export namespace Components {
     'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
   }
-  interface DeckgoSlideQrcodeAttributes extends StencilHTMLAttributes {
-    'content'?: string;
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-  }
-
   interface DeckgoSlideSplit {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (enter: boolean) => Promise<boolean>;
@@ -252,14 +122,6 @@ export namespace Components {
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
-  interface DeckgoSlideSplitAttributes extends StencilHTMLAttributes {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'reveal'?: boolean;
-    'revealShowFirst'?: boolean;
-  }
-
   interface DeckgoSlideTitle {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (enter: boolean) => Promise<boolean>;
@@ -269,14 +131,6 @@ export namespace Components {
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
-  interface DeckgoSlideTitleAttributes extends StencilHTMLAttributes {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'reveal'?: boolean;
-    'revealShowFirst'?: boolean;
-  }
-
   interface DeckgoSlideYoutube {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
@@ -290,50 +144,27 @@ export namespace Components {
     'toggle': () => Promise<void>;
     'width': number;
   }
-  interface DeckgoSlideYoutubeAttributes extends StencilHTMLAttributes {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'height'?: number;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'src'?: string;
-    'width'?: number;
+  interface DeckgoSocial {
+    'fullUrl': string;
+    'github': string;
+    'lazyLoadContent': () => Promise<void>;
+    'linkedin': string;
+    'medium': string;
+    'twitter': string;
+  }
+  interface DeckgoYoutube {
+    'frameTitle': string;
+    'height': number;
+    'lazyLoadContent': () => Promise<void>;
+    'pause': () => Promise<void>;
+    'play': () => Promise<void>;
+    'src': string;
+    'updateIFrame': (width: number, height: number) => Promise<void>;
+    'width': number;
   }
 }
 
 declare global {
-  interface StencilElementInterfaces {
-    'DeckgoDeck': Components.DeckgoDeck;
-    'DeckgoGif': Components.DeckgoGif;
-    'DeckgoSocial': Components.DeckgoSocial;
-    'DeckgoYoutube': Components.DeckgoYoutube;
-    'DeckgoPager': Components.DeckgoPager;
-    'DeckgoSlideAuthor': Components.DeckgoSlideAuthor;
-    'DeckgoSlideChart': Components.DeckgoSlideChart;
-    'DeckgoSlideCode': Components.DeckgoSlideCode;
-    'DeckgoSlideContent': Components.DeckgoSlideContent;
-    'DeckgoSlideGif': Components.DeckgoSlideGif;
-    'DeckgoSlideQrcode': Components.DeckgoSlideQrcode;
-    'DeckgoSlideSplit': Components.DeckgoSlideSplit;
-    'DeckgoSlideTitle': Components.DeckgoSlideTitle;
-    'DeckgoSlideYoutube': Components.DeckgoSlideYoutube;
-  }
-
-  interface StencilIntrinsicElements {
-    'deckgo-deck': Components.DeckgoDeckAttributes;
-    'deckgo-gif': Components.DeckgoGifAttributes;
-    'deckgo-social': Components.DeckgoSocialAttributes;
-    'deckgo-youtube': Components.DeckgoYoutubeAttributes;
-    'deckgo-pager': Components.DeckgoPagerAttributes;
-    'deckgo-slide-author': Components.DeckgoSlideAuthorAttributes;
-    'deckgo-slide-chart': Components.DeckgoSlideChartAttributes;
-    'deckgo-slide-code': Components.DeckgoSlideCodeAttributes;
-    'deckgo-slide-content': Components.DeckgoSlideContentAttributes;
-    'deckgo-slide-gif': Components.DeckgoSlideGifAttributes;
-    'deckgo-slide-qrcode': Components.DeckgoSlideQrcodeAttributes;
-    'deckgo-slide-split': Components.DeckgoSlideSplitAttributes;
-    'deckgo-slide-title': Components.DeckgoSlideTitleAttributes;
-    'deckgo-slide-youtube': Components.DeckgoSlideYoutubeAttributes;
-  }
 
 
   interface HTMLDeckgoDeckElement extends Components.DeckgoDeck, HTMLStencilElement {}
@@ -346,18 +177,6 @@ declare global {
   var HTMLDeckgoGifElement: {
     prototype: HTMLDeckgoGifElement;
     new (): HTMLDeckgoGifElement;
-  };
-
-  interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
-  var HTMLDeckgoSocialElement: {
-    prototype: HTMLDeckgoSocialElement;
-    new (): HTMLDeckgoSocialElement;
-  };
-
-  interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {}
-  var HTMLDeckgoYoutubeElement: {
-    prototype: HTMLDeckgoYoutubeElement;
-    new (): HTMLDeckgoYoutubeElement;
   };
 
   interface HTMLDeckgoPagerElement extends Components.DeckgoPager, HTMLStencilElement {}
@@ -420,28 +239,20 @@ declare global {
     new (): HTMLDeckgoSlideYoutubeElement;
   };
 
-  interface HTMLElementTagNameMap {
-    'deckgo-deck': HTMLDeckgoDeckElement
-    'deckgo-gif': HTMLDeckgoGifElement
-    'deckgo-social': HTMLDeckgoSocialElement
-    'deckgo-youtube': HTMLDeckgoYoutubeElement
-    'deckgo-pager': HTMLDeckgoPagerElement
-    'deckgo-slide-author': HTMLDeckgoSlideAuthorElement
-    'deckgo-slide-chart': HTMLDeckgoSlideChartElement
-    'deckgo-slide-code': HTMLDeckgoSlideCodeElement
-    'deckgo-slide-content': HTMLDeckgoSlideContentElement
-    'deckgo-slide-gif': HTMLDeckgoSlideGifElement
-    'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement
-    'deckgo-slide-split': HTMLDeckgoSlideSplitElement
-    'deckgo-slide-title': HTMLDeckgoSlideTitleElement
-    'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement
-  }
+  interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
+  var HTMLDeckgoSocialElement: {
+    prototype: HTMLDeckgoSocialElement;
+    new (): HTMLDeckgoSocialElement;
+  };
 
-  interface ElementTagNameMap {
+  interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {}
+  var HTMLDeckgoYoutubeElement: {
+    prototype: HTMLDeckgoYoutubeElement;
+    new (): HTMLDeckgoYoutubeElement;
+  };
+  interface HTMLElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement;
     'deckgo-gif': HTMLDeckgoGifElement;
-    'deckgo-social': HTMLDeckgoSocialElement;
-    'deckgo-youtube': HTMLDeckgoYoutubeElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
     'deckgo-slide-chart': HTMLDeckgoSlideChartElement;
@@ -452,15 +263,158 @@ declare global {
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
     'deckgo-slide-title': HTMLDeckgoSlideTitleElement;
     'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement;
+    'deckgo-social': HTMLDeckgoSocialElement;
+    'deckgo-youtube': HTMLDeckgoYoutubeElement;
   }
-
-
-  export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
-  }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+declare namespace LocalJSX {
+  interface DeckgoDeck extends JSXBase.HTMLAttributes<HTMLDeckgoDeckElement> {
+    'cloneBackground'?: boolean;
+    'embedded'?: boolean;
+    'keyboard'?: boolean;
+    'onMouseInactivity'?: (event: CustomEvent<boolean>) => void;
+    'onSlideDrag'?: (event: CustomEvent<number>) => void;
+    'onSlideNextDidChange'?: (event: CustomEvent<number>) => void;
+    'onSlidePrevDidChange'?: (event: CustomEvent<number>) => void;
+    'onSlideToChange'?: (event: CustomEvent<number>) => void;
+    'onSlideWillChange'?: (event: CustomEvent<number>) => void;
+    'onSlidesDidLoad'?: (event: CustomEvent<any>) => void;
+    'pagerPercentage'?: boolean;
+  }
+  interface DeckgoGif extends JSXBase.HTMLAttributes<HTMLDeckgoGifElement> {
+    'alt'?: string;
+    'fullscreen'?: boolean;
+    'onGifLoaded'?: (event: CustomEvent<boolean>) => void;
+    'src'?: string;
+  }
+  interface DeckgoPager extends JSXBase.HTMLAttributes<HTMLDeckgoPagerElement> {
+    'activeIndex'?: number;
+    'length'?: number;
+    'percentage'?: boolean;
+  }
+  interface DeckgoSlideAuthor extends JSXBase.HTMLAttributes<HTMLDeckgoSlideAuthorElement> {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'imgAlt'?: string;
+    'imgSrc'?: string;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+  }
+  interface DeckgoSlideChart extends JSXBase.HTMLAttributes<HTMLDeckgoSlideChartElement> {
+    'area'?: boolean;
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'datePattern'?: string;
+    'grid'?: boolean;
+    'height'?: number;
+    'innerRadius'?: number;
+    'marginBottom'?: number;
+    'marginLeft'?: number;
+    'marginRight'?: number;
+    'marginTop'?: number;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'range'?: string[];
+    'separator'?: string;
+    'smooth'?: boolean;
+    'src'?: string;
+    'ticks'?: number;
+    'type'?: string;
+    'width'?: number;
+    'yAxisDomain'?: string;
+  }
+  interface DeckgoSlideCode extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCodeElement> {
+    'anchor'?: string;
+    'anchorZoom'?: string;
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'hideAnchor'?: boolean;
+    'language'?: string;
+    'onScrolling'?: (event: CustomEvent<boolean>) => void;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'src'?: string;
+  }
+  interface DeckgoSlideContent extends JSXBase.HTMLAttributes<HTMLDeckgoSlideContentElement> {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'reveal'?: boolean;
+    'revealShowFirst'?: boolean;
+  }
+  interface DeckgoSlideGif extends JSXBase.HTMLAttributes<HTMLDeckgoSlideGifElement> {
+    'alt'?: string;
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'fullscreen'?: boolean;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'src'?: string;
+  }
+  interface DeckgoSlideQrcode extends JSXBase.HTMLAttributes<HTMLDeckgoSlideQrcodeElement> {
+    'content'?: string;
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+  }
+  interface DeckgoSlideSplit extends JSXBase.HTMLAttributes<HTMLDeckgoSlideSplitElement> {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'reveal'?: boolean;
+    'revealShowFirst'?: boolean;
+  }
+  interface DeckgoSlideTitle extends JSXBase.HTMLAttributes<HTMLDeckgoSlideTitleElement> {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'reveal'?: boolean;
+    'revealShowFirst'?: boolean;
+  }
+  interface DeckgoSlideYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoSlideYoutubeElement> {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'height'?: number;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'src'?: string;
+    'width'?: number;
+  }
+  interface DeckgoSocial extends JSXBase.HTMLAttributes<HTMLDeckgoSocialElement> {
+    'fullUrl'?: string;
+    'github'?: string;
+    'linkedin'?: string;
+    'medium'?: string;
+    'twitter'?: string;
+  }
+  interface DeckgoYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoYoutubeElement> {
+    'frameTitle'?: string;
+    'height'?: number;
+    'src'?: string;
+    'width'?: number;
+  }
+
+  interface IntrinsicElements {
+    'deckgo-deck': DeckgoDeck;
+    'deckgo-gif': DeckgoGif;
+    'deckgo-pager': DeckgoPager;
+    'deckgo-slide-author': DeckgoSlideAuthor;
+    'deckgo-slide-chart': DeckgoSlideChart;
+    'deckgo-slide-code': DeckgoSlideCode;
+    'deckgo-slide-content': DeckgoSlideContent;
+    'deckgo-slide-gif': DeckgoSlideGif;
+    'deckgo-slide-qrcode': DeckgoSlideQrcode;
+    'deckgo-slide-split': DeckgoSlideSplit;
+    'deckgo-slide-title': DeckgoSlideTitle;
+    'deckgo-slide-youtube': DeckgoSlideYoutube;
+    'deckgo-social': DeckgoSocial;
+    'deckgo-youtube': DeckgoYoutube;
+  }
+}
+
+export { LocalJSX as JSX };
+
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
+

@@ -2,7 +2,7 @@
   "name": "@deckdeckgo/core",
   "version": "1.0.0-beta.36",
   "description": "Add a presentation to your web application using HTML and Web Components",
-  "module": "dist/esm/index.js",
+  "module": "dist/index.mjs",
   "main": "dist/index.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
@@ -21,13 +21,13 @@
     "@deckdeckgo/utils": "^1.0.0-alpha.1"
   },
   "devDependencies": {
-    "@stencil/core": "^0.18.0",
+    "@stencil/core": "^1.0.0",
     "@stencil/dev-server": "0.0.18",
     "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.1.1",
+    "@stencil/sass": "^0.2.3",
     "@stencil/utils": "0.0.5",
-    "autoprefixer": "^9.4.7",
-    "deckdeckgo-types": "^1.0.0-alpha.8"
+    "autoprefixer": "^9.6.0",
+    "@deckdeckgo/types": "^1.0.0-alpha.10"
   },
   "repository": {
     "type": "git",
