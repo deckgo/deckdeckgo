@@ -24,13 +24,13 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.10",
-    "@stencil/core": "^1.0.0-beta.8",
+    "@stencil/core": "^1.0.0",
     "@stencil/postcss": "^0.1.0",
     "@stencil/sass": "^0.2.3",
     "@stencil/utils": "0.0.5",
     "@types/socket.io-client": "^1.4.32",
     "@types/webrtc": "0.0.25",
-    "autoprefixer": "^9.5.1",
+    "autoprefixer": "^9.6.0",
     "rollup-plugin-node-builtins": "^2.1.2"
   },
   "repository": {
