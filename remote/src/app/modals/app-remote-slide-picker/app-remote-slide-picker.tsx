@@ -1,4 +1,4 @@
-import {Component, Listen, Element, Prop} from '@stencil/core';
+import {Component, Listen, Element, Prop, h} from '@stencil/core';
 
 import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
@@ -17,7 +17,7 @@ export class AppRemoteSettings {
         history.pushState({modal: true}, null);
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', {target: 'window'})
     async handleHardwareBackbutton(_e: PopStateEvent) {
         await this.closeModal();
     }
@@ -42,7 +42,7 @@ export class AppRemoteSettings {
                     <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
                 </ion-toolbar>
             </ion-header>,
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <ion-list>
                     <ion-list-header class="ion-padding-bottom ion-padding-top">
                         <ion-label>Jump to slide</ion-label>

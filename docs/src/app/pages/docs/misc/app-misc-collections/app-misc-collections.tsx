@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {MenuService} from '../../../../services/menu/menu.service';
 
@@ -9,7 +9,9 @@ export class AppMiscCollections {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -21,7 +23,7 @@ export class AppMiscCollections {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-misc-collections-collections">Collections</h1>
 <p>A collection of presentations and talks where <a href="https://deckdeckgo.com">DeckDeckGo</a> was used:</p>
 <table>

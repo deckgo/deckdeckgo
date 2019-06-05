@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';

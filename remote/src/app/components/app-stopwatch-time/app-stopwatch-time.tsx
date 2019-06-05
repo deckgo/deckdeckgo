@@ -1,4 +1,4 @@
-import {Component, State} from '@stencil/core';
+import {Component, State, h} from '@stencil/core';
 
 import {BehaviorSubject, Subscription} from 'rxjs';
 
@@ -21,7 +21,9 @@ export class AppStopwatchTime {
     @State()
     private remainingTime: number = 0;
 
-    constructor(private timerService: TimerService) {
+    private timerService: TimerService;
+
+    constructor() {
         this.timerService = TimerService.getInstance();
     }
 

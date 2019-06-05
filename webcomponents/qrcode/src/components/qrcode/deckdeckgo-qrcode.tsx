@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop} from '@stencil/core';
+import {Component, Element, Method, Prop, h} from '@stencil/core';
 
 import * as QRCodeGenerator from '../utils/qrcode-generator/qrcode';
 

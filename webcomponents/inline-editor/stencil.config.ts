@@ -8,7 +8,6 @@ export const config: Config = {
   namespace: 'deckdeckgo-inline-editor',
   outputTargets:[
     { type: 'dist' },
-    { type: 'docs' },
     {
       type: 'www',
       serviceWorker: null // disable service workers

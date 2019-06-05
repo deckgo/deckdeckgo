@@ -5,23 +5,17 @@
  */
 
 
-import '@stencil/core';
-
-
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   DeckdeckgoEvent,
   DeckdeckgoSlideDefinition,
 } from '@deckdeckgo/types';
-import {
-  EventEmitter,
-} from '@stencil/core';
 import {
   ConnectionState,
 } from './services/communication/communication.service';
 
 
 export namespace Components {
-
   interface DeckgoRemote {
     'autoConnect': boolean;
     'connect': () => Promise<void>;
@@ -30,8 +24,8 @@ export namespace Components {
     'height': number;
     'length': number;
     'moveDraw': (leftOffset: number, transitionDuration: string) => Promise<void>;
-    'nextSlide': () => void;
-    'prevSlide': () => void;
+    'nextSlide': () => Promise<void>;
+    'prevSlide': () => Promise<void>;
     'room': string;
     'server': string;
     'slideTo': (index: number, speed?: number) => Promise<void>;
@@ -39,7 +33,23 @@ export namespace Components {
     'updateSlides': () => Promise<void>;
     'width': number;
   }
-  interface DeckgoRemoteAttributes extends StencilHTMLAttributes {
+}
+
+declare global {
+
+
+  interface HTMLDeckgoRemoteElement extends Components.DeckgoRemote, HTMLStencilElement {}
+  var HTMLDeckgoRemoteElement: {
+    prototype: HTMLDeckgoRemoteElement;
+    new (): HTMLDeckgoRemoteElement;
+  };
+  interface HTMLElementTagNameMap {
+    'deckgo-remote': HTMLDeckgoRemoteElement;
+  }
+}
+
+declare namespace LocalJSX {
+  interface DeckgoRemote extends JSXBase.HTMLAttributes<HTMLDeckgoRemoteElement> {
     'autoConnect'?: boolean;
     'height'?: number;
     'length'?: number;
@@ -50,39 +60,19 @@ export namespace Components {
     'slides'?: DeckdeckgoSlideDefinition[];
     'width'?: number;
   }
+
+  interface IntrinsicElements {
+    'deckgo-remote': DeckgoRemote;
+  }
 }
 
-declare global {
-  interface StencilElementInterfaces {
-    'DeckgoRemote': Components.DeckgoRemote;
-  }
-
-  interface StencilIntrinsicElements {
-    'deckgo-remote': Components.DeckgoRemoteAttributes;
-  }
+export { LocalJSX as JSX };
 
 
-  interface HTMLDeckgoRemoteElement extends Components.DeckgoRemote, HTMLStencilElement {}
-  var HTMLDeckgoRemoteElement: {
-    prototype: HTMLDeckgoRemoteElement;
-    new (): HTMLDeckgoRemoteElement;
-  };
-
-  interface HTMLElementTagNameMap {
-    'deckgo-remote': HTMLDeckgoRemoteElement
-  }
-
-  interface ElementTagNameMap {
-    'deckgo-remote': HTMLDeckgoRemoteElement;
-  }
-
-
+declare module "@stencil/core" {
   export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
   }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+

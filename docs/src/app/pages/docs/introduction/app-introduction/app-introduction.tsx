@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppIntroduction {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppIntroduction {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-introduction-getting-started">Getting started</h1>
 <p><a href="https://deckdeckgo.com">DeckDeckGo</a> provides a <a href="https://github.com/deckgo/create-deckdeckgo">CLI</a> and a <a href="https://github.com/deckgo/deckdeckgo/cli">starter kit</a>.</p>
 <h2 id="app-introduction-prerequisites">Prerequisites</h2>

@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppSlidesConcept {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppSlidesConcept {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-slides-concept-concept">Concept</h1>
 <p><a href="https://deckdeckgo.com">DeckDeckGo</a> is a deck of slides where each slide is based on a template which has its own layout and behaviour. Their content could be edited and structured using <code>slots</code> and other attributes.</p>
 <p>The parent deck should be declared using the tag <code>&lt;deckgo-deck/&gt;</code> and each slide should be added as its children.</p>
@@ -40,7 +42,7 @@ export class AppSlidesConcept {
 <ul>
 <li>Slide: <a href="/slides/title">Title</a></li>
 </ul>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-title>
         <h1 slot="title">slot="title"</h1>
@@ -54,7 +56,7 @@ export class AppSlidesConcept {
 <ul>
 <li>Slide: <a href="/slides/content">Content</a></li>
 </ul>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-content>
       <h1 slot="title">slot="title"</h1>
@@ -68,7 +70,7 @@ export class AppSlidesConcept {
 <ul>
 <li>Slide: <a href="/slides/split">Split</a></li>
 </ul>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-split>
       <h1 slot="title">slot="title"</h1>
@@ -85,7 +87,7 @@ export class AppSlidesConcept {
 <ul>
 <li>Slide: <a href="/slides/gif">Gif</a></li>
 </ul>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen={true}>
       <h1 slot="title">slot="title"</h1>
@@ -98,7 +100,7 @@ export class AppSlidesConcept {
 <ul>
 <li>Slide: <a href="/slides/chart">Chart</a></li>
 </ul>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-chart width={200} height={100} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv">
       <h1 slot="title">slot="title"</h1>
@@ -119,7 +121,7 @@ export class AppSlidesConcept {
 <ul>
 <li>Slide: <a href="/slides/youtube">Youtube</a></li>
 </ul>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
       <h1 slot="title">slot="title"</h1>
@@ -130,7 +132,7 @@ export class AppSlidesConcept {
 <ul>
 <li>Slide: <a href="/slides/code">Code</a></li>
 </ul>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
       <h1 slot="title">slot="title"</h1>
@@ -141,7 +143,7 @@ export class AppSlidesConcept {
 <ul>
 <li>Slide: <a href="/slides/author">Author</a></li>
 </ul>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>
@@ -155,7 +157,7 @@ export class AppSlidesConcept {
 <ul>
 <li>Slide: <a href="/slides/qrcode">QR Code</a></li>
 </ul>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-qrcode content="https://deckdeckgo.com">
         <h1 slot="title">slot="title"</h1>

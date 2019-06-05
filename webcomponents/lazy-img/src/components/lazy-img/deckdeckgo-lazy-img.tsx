@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, Watch} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, Watch, h} from '@stencil/core';
 
 @Component({
   tag: 'deckgo-lazy-img',

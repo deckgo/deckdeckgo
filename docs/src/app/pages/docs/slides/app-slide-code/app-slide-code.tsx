@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppSlideCode {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppSlideCode {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-slide-code-slide-code">Slide: Code</h1>
 <p>The &quot;Code&quot; slide is a the slide to use if you would like to showcase code during your talk.</p>
 <h2 id="app-slide-code-table-of-contents">Table of contents</h2>
@@ -51,7 +53,7 @@ export class AppSlideCode {
 <li><a href="#app-slide-code-theming">Theming</a></li>
 </ul>
 <h2 id="app-slide-code-layout">Layout</h2>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
           <h1 slot="title">slot="title"</h1>

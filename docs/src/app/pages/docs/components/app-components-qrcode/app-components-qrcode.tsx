@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppComponentsQRCode {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppComponentsQRCode {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-components-qrcode-qr-code">QR Code</h1>
 <p>The &quot;QR Code&quot; component is an extra component which let you add QR code in your slides, useful for example to display links and url and if you wish your audience to easily access them.</p>
 <p>To generate the QR code, the project <a href="https://github.com/kazuhikoarase/qrcode-generator">qrcode-generator</a> from <a href="https://github.com/kazuhikoarase">Kazuhiko Arase</a> is used.</p>

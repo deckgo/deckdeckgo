@@ -1,4 +1,4 @@
-import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method} from '@stencil/core';
+import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method, h} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
@@ -250,7 +250,7 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  @Listen('document:selectionchange', {passive: true})
+  @Listen('selectionchange', {target: 'document', passive: true})
   async selectionchange(_$event: UIEvent) {
     if (document && document.activeElement && !this.isContainer(document.activeElement)) {
       if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {

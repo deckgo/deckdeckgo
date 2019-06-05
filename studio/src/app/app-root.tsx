@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Build, Component, Element, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -37,7 +37,9 @@ export class AppRoot {
     }
 
     async componentWillLoad() {
-        await this.authService.init();
+        if (Build.isBrowser) {
+            await this.authService.init();
+        }
     }
 
     async componentDidLoad() {
@@ -117,8 +119,8 @@ export class AppRoot {
                     <ion-route url="/contact" component="app-contact"/>
                 </ion-router>
 
-                <ion-split-pane when="lg">
-                    <ion-menu id="ion-menu" side="start" type="push" swipeGesture={false}>
+                <ion-split-pane when="lg" contentId="menu-content">
+                    <ion-menu id="ion-menu" side="start" type="push" swipeGesture={false} contentId="menu-content">
                         <app-navigation logo={true} menuToggle={false} user={false}></app-navigation>
                         <ion-content>
                             <ion-menu-toggle autoHide={false}>
@@ -129,7 +131,7 @@ export class AppRoot {
                         </ion-content>
                     </ion-menu>
 
-                    <ion-nav main/>
+                    <ion-nav id="menu-content"/>
                 </ion-split-pane>
 
                 <ion-modal-controller></ion-modal-controller>

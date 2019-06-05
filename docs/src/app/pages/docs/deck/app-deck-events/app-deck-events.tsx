@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppDeckEvents {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppDeckEvents {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-deck-events-events">Events</h1>
 <p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> deck triggers the following events:</p>
 <table>

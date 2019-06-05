@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppComponentsSocial {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppComponentsSocial {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-components-social-social">Social</h1>
 <p>The &quot;Social&quot; component allows you to easily add a social link to your presentation.</p>
 <h2 id="app-components-social-table-of-contents">Table of contents</h2>

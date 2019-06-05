@@ -1,8 +1,8 @@
-import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter} from '@stencil/core';
+import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
-import {DeckdeckgoSlideDefinition} from 'deckdeckgo-types';
+import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
 import {DeckdeckgoDeckBackgroundUtils} from '../../utils/deckdeckgo-deck-background-utils';
 
@@ -157,7 +157,7 @@ export class DeckdeckgoDeck {
   }
 
   @Method()
-  toggleKeyboardAssist(state: boolean) {
+  async toggleKeyboardAssist(state: boolean) {
     if (!document) {
       return;
     }

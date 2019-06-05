@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {MenuService} from '../../../../services/menu/menu.service';
 
@@ -9,7 +9,9 @@ export class AppEditRtl {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -21,7 +23,7 @@ export class AppEditRtl {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-edit-rtl-rtl-support">RTL Support</h1>
 <p><a href="https://deckdeckgo.com">DeckDeckGo</a> offers full LTR and RTL support. The deck inherits its parent text direction.</p>
 <p>Commonly, if you wish to use RTL for your all page respectively presentation, you could set the attribute <code>dir</code> of the root <code>html</code> tag to <code>rtl</code>.    </p>

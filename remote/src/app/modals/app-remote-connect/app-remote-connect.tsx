@@ -1,4 +1,4 @@
-import {Component, Element, Listen, State} from '@stencil/core';
+import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -16,7 +16,9 @@ export class AppRemoteConnect {
 
     private readonly subscription: Subscription;
 
-    constructor(private communicationService: CommunicationService) {
+    private communicationService: CommunicationService;
+
+    constructor() {
         this.communicationService = CommunicationService.getInstance();
 
         this.subscription = this.communicationService.watchRooms().subscribe(async (activeRooms: ActiveRoom[]) => {
@@ -36,7 +38,7 @@ export class AppRemoteConnect {
         }
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', {target: 'window'})
     async handleHardwareBackbutton(_e: PopStateEvent) {
         await this.closeModal(false);
     }
@@ -64,7 +66,7 @@ export class AppRemoteConnect {
                 </ion-toolbar>
             </ion-header>,
 
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 {this.renderContent()}
             </ion-content>
         ];

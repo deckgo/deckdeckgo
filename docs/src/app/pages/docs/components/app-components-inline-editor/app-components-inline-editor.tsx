@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppComponentsInlineEditor {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppComponentsInlineEditor {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-components-inline-editor-wysiwyg-inline-editor">WYSIWYG inline editor</h1>
 <p>The &quot;WYSIWYG inline editor&quot; component is an extra component which will be use in the upcoming <a href="https://deckdeckgo.com">DeckDeckGo</a> Studio.</p>
 <h2 id="app-components-inline-editor-table-of-contents">Table of contents</h2>
@@ -56,11 +58,11 @@ export class AppComponentsInlineEditor {
 
   <p style={{color: '#3880ff'}} contenteditable slot="content">Edit anywhere, display everywhere (editable paragraph)</p>
 
-  <p style={{width: '200px'}} contenteditable><img style={{'max-width': '100%'}} src="https://pixabay.com/get/ea34b50f2cfd033ed1584d05fb1d4794e070e2d71eb80c4090f5c679a2edb4b0d8_1280.jpg"/></p>
+  <p style={{width: '200px'}} contenteditable><img style={{'max-width': '100%'}} src="https://deckdeckgo.com/assets/img/deckdeckgo.png"/></p>
 
 </div>
 
-<p><deckgo-inline-editor sticky-desktop="true" sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor></p>
+<p><deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor></p>
 <h2 id="app-components-inline-editor-getting-started">Getting started</h2>
 <p>This Web Component is an inline WYSIWYG HTML Editor, It creates a floating editor bar or a sticky footer bar that shows up when you select a piece of text of your page.</p>
 <p>To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a>.</p>

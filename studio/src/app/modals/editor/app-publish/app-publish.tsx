@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Prop, State} from '@stencil/core';
+import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, take} from 'rxjs/operators';
@@ -74,7 +74,7 @@ export class AppPublish {
         }
     }
 
-    @Listen('window:popstate')
+    @Listen('popstate', { target: 'window' })
     async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }
@@ -228,7 +228,7 @@ export class AppPublish {
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding fullscreen-padding">
-                <main padding>
+                <main class="ion-padding">
                     <h1>Publish</h1>
 
                     <p>Publish your presentation to <strong>share</strong> it with the world, your colleagues, friends

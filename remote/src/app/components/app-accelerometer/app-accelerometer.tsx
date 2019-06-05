@@ -1,4 +1,4 @@
-import {Component, Prop, State} from '@stencil/core';
+import {Component, Prop, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -23,7 +23,9 @@ export class AppAccelerometer {
     private acceleratorEnabledSubscription: Subscription;
     private acceleratorPermissionGrantedSubscription: Subscription;
 
-    constructor(private accelerometerService: AccelerometerService) {
+    private accelerometerService: AccelerometerService;
+
+    constructor() {
         this.accelerometerService = AccelerometerService.getInstance();
     }
 

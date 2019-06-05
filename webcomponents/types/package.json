@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/types",
-  "version": "1.0.0-alpha.10",
+  "version": "1.0.0-alpha.11",
   "author": "David Dal Busco",
   "description": "Present and interact with your DeckDeckGo's PWA presentation",
   "license": "MIT",
@@ -10,7 +10,7 @@
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
-    "typescript": "^3.1.6"
+    "typescript": "^3.5.1"
   },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",

@@ -5,16 +5,10 @@
  */
 
 
-import '@stencil/core';
-
-
-import {
-  EventEmitter,
-} from '@stencil/core';
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-
   interface DeckgoInlineEditor {
     'attachTo': HTMLElement;
     'containers': string;
@@ -26,7 +20,23 @@ export namespace Components {
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
   }
-  interface DeckgoInlineEditorAttributes extends StencilHTMLAttributes {
+}
+
+declare global {
+
+
+  interface HTMLDeckgoInlineEditorElement extends Components.DeckgoInlineEditor, HTMLStencilElement {}
+  var HTMLDeckgoInlineEditorElement: {
+    prototype: HTMLDeckgoInlineEditorElement;
+    new (): HTMLDeckgoInlineEditorElement;
+  };
+  interface HTMLElementTagNameMap {
+    'deckgo-inline-editor': HTMLDeckgoInlineEditorElement;
+  }
+}
+
+declare namespace LocalJSX {
+  interface DeckgoInlineEditor extends JSXBase.HTMLAttributes<HTMLDeckgoInlineEditorElement> {
     'attachTo'?: HTMLElement;
     'containers'?: string;
     'imgAnchor'?: string;
@@ -38,39 +48,19 @@ export namespace Components {
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;
   }
+
+  interface IntrinsicElements {
+    'deckgo-inline-editor': DeckgoInlineEditor;
+  }
 }
 
-declare global {
-  interface StencilElementInterfaces {
-    'DeckgoInlineEditor': Components.DeckgoInlineEditor;
-  }
-
-  interface StencilIntrinsicElements {
-    'deckgo-inline-editor': Components.DeckgoInlineEditorAttributes;
-  }
+export { LocalJSX as JSX };
 
 
-  interface HTMLDeckgoInlineEditorElement extends Components.DeckgoInlineEditor, HTMLStencilElement {}
-  var HTMLDeckgoInlineEditorElement: {
-    prototype: HTMLDeckgoInlineEditorElement;
-    new (): HTMLDeckgoInlineEditorElement;
-  };
-
-  interface HTMLElementTagNameMap {
-    'deckgo-inline-editor': HTMLDeckgoInlineEditorElement
-  }
-
-  interface ElementTagNameMap {
-    'deckgo-inline-editor': HTMLDeckgoInlineEditorElement;
-  }
-
-
+declare module "@stencil/core" {
   export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
   }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+

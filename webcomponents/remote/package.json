@@ -1,8 +1,8 @@
 {
   "name": "@deckdeckgo/remote",
-  "version": "1.0.0-alpha.10",
+  "version": "1.0.0-alpha.11",
   "description": "Present and interact with your DeckDeckGo's PWA presentation",
-  "module": "dist/esm/index.js",
+  "module": "dist/index.mjs",
   "main": "dist/index.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
@@ -18,19 +18,19 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0-alpha.1",
-    "rxjs": "^6.4.0",
+    "@deckdeckgo/utils": "^1.0.0-alpha.2",
+    "rxjs": "^6.5.2",
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0-alpha.10",
-    "@stencil/core": "~0.18.0",
+    "@deckdeckgo/types": "^1.0.0-alpha.11",
+    "@stencil/core": "^1.0.0",
     "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.1.1",
+    "@stencil/sass": "^0.2.3",
     "@stencil/utils": "0.0.5",
     "@types/socket.io-client": "^1.4.32",
-    "@types/webrtc": "0.0.24",
-    "autoprefixer": "^9.4.7",
+    "@types/webrtc": "0.0.25",
+    "autoprefixer": "^9.6.0",
     "rollup-plugin-node-builtins": "^2.1.2"
   },
   "repository": {

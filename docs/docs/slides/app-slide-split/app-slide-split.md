@@ -13,7 +13,7 @@ The "Split" slide is a simple slide which display two panes on the page.
 
 ## Layout
 
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-split>
         <h1 slot="title">Two columns subject</h1>

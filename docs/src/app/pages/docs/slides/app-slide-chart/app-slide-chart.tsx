@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppSlideChart {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppSlideChart {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-slide-chart-slide-chart">Slide: Chart</h1>
 <p>The &quot;Chart&quot; slide let you draw easily charts in your presentation.</p>
 <h2 id="app-slide-chart-table-of-contents">Table of contents</h2>
@@ -45,7 +47,7 @@ export class AppSlideChart {
 <li><a href="#app-slide-chart-theming">Theming</a></li>
 </ul>
 <h2 id="app-slide-chart-layout">Layout</h2>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-chart width={200} height={100} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
       <h1 slot="title">slot="title"</h1>

@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppComponentsYoutube {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppComponentsYoutube {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-components-youtube-youtube">Youtube</h1>
 <p>The &quot;Youtube&quot; component allows you to easily add a <a href="https://youtube.com">Youtube</a> video in almost any slide of your presentation.</p>
 <h2 id="app-components-youtube-table-of-contents">Table of contents</h2>

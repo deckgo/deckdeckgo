@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppDeckBackground {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppDeckBackground {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-deck-background-background">Background</h1>
 <p>Beside slides and templates, a <a href="https://deckdeckgo.com">DeckDeckGo</a> deck could also contains a customized element <code>background</code> which could be injected using a dedicated <code>slot</code>.</p>
 <h2 id="app-deck-background-table-of-contents">Table of contents</h2>

@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.11"></a>
+# 1.0.0-alpha.11 (2019-05-26)
+
+### Lib
+
+* update Typescript to follow the same version as Stencil One
+
 <a name="1.0.0-alpha.10"></a>
 # 1.0.0-alpha.10 (2019-05-26)
 

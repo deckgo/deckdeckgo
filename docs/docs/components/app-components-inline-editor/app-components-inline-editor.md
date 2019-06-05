@@ -25,11 +25,11 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
   
   <p style={{color: '#3880ff'}} contenteditable slot="content">Edit anywhere, display everywhere (editable paragraph)</p>
   
-  <p style={{width: '200px'}} contenteditable><img style={{'max-width': '100%'}} src="https://pixabay.com/get/ea34b50f2cfd033ed1584d05fb1d4794e070e2d71eb80c4090f5c679a2edb4b0d8_1280.jpg"/></p>
+  <p style={{width: '200px'}} contenteditable><img style={{'max-width': '100%'}} src="https://deckdeckgo.com/assets/img/deckdeckgo.png"/></p>
  
 </div>
 
-<deckgo-inline-editor sticky-desktop="true" sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor>
+<deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor>
 
 ## Getting started
 

@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop, Watch} from '@stencil/core';
+import {Component, Element, Method, Prop, Watch, h} from '@stencil/core';
 
 import {DeckdeckgoChart, DeckdeckgoChartUtils} from '../deckdeckgo-chart';
 

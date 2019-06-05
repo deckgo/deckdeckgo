@@ -1,17 +1,17 @@
 @mixin fullscreen() {
-  &:-moz-full-screen {
+  #{if(&, "&", "*")}:-moz-full-screen {
     @content;
   }
 
-  &:-webkit-full-screen {
+  #{if(&, "&", "*")}:-webkit-full-screen {
     @content;
   }
 
-  &:-ms-fullscreen {
+  #{if(&, "&", "*")}:-ms-fullscreen {
     @content;
   }
 
-  &:fullscreen {
+  #{if(&, "&", "*")}:fullscreen {
     @content;
   }
 }

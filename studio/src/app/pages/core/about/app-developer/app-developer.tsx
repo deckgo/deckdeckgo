@@ -1,4 +1,4 @@
-import {Component} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
 @Component({
     tag: 'app-developer',
@@ -11,7 +11,7 @@ export class AppDeveloper {
             <app-navigation presentation={true}></app-navigation>,
             <ion-content class="ion-padding">
 
-                <main padding>
+                <main class="ion-padding">
                     <h1>Developer</h1>
 
                     <h2 class="ion-padding-top">You know what's cool?</h2>

@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, Prop, State} from '@stencil/core';
+import {Component, Event, EventEmitter, Prop, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 

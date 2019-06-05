@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -12,7 +12,9 @@ export class AppSlideAuthor {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -28,7 +30,7 @@ export class AppSlideAuthor {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-slide-author-slide-author">Slide: Author</h1>
 <p>The &quot;Author&quot; slide let you introduce the author of the presentation.</p>
 <h2 id="app-slide-author-table-of-contents">Table of contents</h2>
@@ -47,7 +49,7 @@ export class AppSlideAuthor {
 <li><a href="#app-slide-author-theming">Theming</a></li>
 </ul>
 <h2 id="app-slide-author-layout">Layout</h2>
-<div class="container" margin>
+<div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>

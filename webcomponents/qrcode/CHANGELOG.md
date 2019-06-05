@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.8"></a>
+# 1.0.0-alpha.8 (2019-06-04)
+
+### Libs
+
+* upgrade to Stencil One
+
 <a name="1.0.0-alpha.7"></a>
 # 1.0.0-alpha.7 (2019-05-24)
 

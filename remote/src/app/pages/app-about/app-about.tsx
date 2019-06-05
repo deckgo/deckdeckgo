@@ -1,4 +1,4 @@
-import {Component} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
 @Component({
     tag: 'app-about',
@@ -14,7 +14,7 @@ export class AppAbout {
                 </ion-toolbar>
             </ion-header>,
 
-            <ion-content padding>
+            <ion-content class="ion-padding">
                 <h1 class="ion-padding-bottom">DeckDeckGo</h1>
 
                 <p>Create a PWA presentation using Web Components, <a href="http://ionicframework.com">Ionic</a> components and HTML or Markdown 🚀</p>

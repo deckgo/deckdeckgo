@@ -20,7 +20,8 @@ const configValues = dev ? devConfig : prodConfig;
 
 export const config: Config = {
     outputTargets: [{
-        type: 'www'
+        type: 'www',
+        baseUrl: 'https://beta.deckdeckgo.com'
     }],
     globalScript: globalScript,
     globalStyle: 'src/global/app.scss',

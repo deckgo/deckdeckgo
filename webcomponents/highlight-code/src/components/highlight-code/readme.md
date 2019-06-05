@@ -32,12 +32,6 @@
 
 
 
-#### Parameters
-
-| Name    | Type      | Description |
-| ------- | --------- | ----------- |
-| `enter` | `boolean` |             |
-
 #### Returns
 
 Type: `Promise<DeckdeckgoHighlightCodeAnchor>`
@@ -57,12 +51,6 @@ Type: `Promise<void>`
 ### `zoomCode(zoom: boolean) => Promise<void>`
 
 
-
-#### Parameters
-
-| Name   | Type      | Description |
-| ------ | --------- | ----------- |
-| `zoom` | `boolean` |             |
 
 #### Returns
 

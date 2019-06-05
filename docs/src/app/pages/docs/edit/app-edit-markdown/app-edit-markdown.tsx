@@ -1,4 +1,4 @@
-import {Component, Element} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,9 @@ export class AppEditMarkdown {
 
   @Element() el: HTMLElement;
 
-  constructor(private menuService: MenuService) {
+  private menuService: MenuService;
+
+  constructor() {
     this.menuService = MenuService.getInstance();
   }
 
@@ -27,7 +29,7 @@ export class AppEditMarkdown {
     return [
       <app-navigation></app-navigation>,
 
-      <ion-content padding>
+      <ion-content class="ion-padding">
         <main><h1 id="app-edit-markdown-markdown">Markdown</h1>
 <p>If you wish, you could edit your <a href="https://deckdeckgo.com">DeckDeckGo</a> presentation using Markdown. This chapter has for goal to introduce you briefly on how editing your slides with Markdown differs from the HTML method.</p>
 <h2 id="app-edit-markdown-table-of-contents">Table of contents</h2>

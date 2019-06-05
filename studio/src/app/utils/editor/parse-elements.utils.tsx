@@ -1,3 +1,5 @@
+import {h} from '@stencil/core';
+
 import {ParseStyleUtils} from './parse-style.utils';
 import {SlotType} from './create-slides.utils';
 
@@ -45,7 +47,7 @@ export class ParseElementsUtils {
                 attributes['contenteditable'] = true;
             }
 
-            if (element.nodeName&& element.nodeName.toLowerCase() === 'deckgo-lazy-img') {
+            if (element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img') {
                 attributes['contenteditable'] = 'false';
             }
 

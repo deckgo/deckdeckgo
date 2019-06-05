@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, State, Watch, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -49,7 +49,9 @@ export class DeckdeckgoRemote {
 
   private leftOffset: number = 0;
 
-  constructor(private communicationService: CommunicationService) {
+  private communicationService: CommunicationService;
+
+  constructor() {
     this.communicationService = CommunicationService.getInstance();
   }
 
@@ -292,12 +294,12 @@ export class DeckdeckgoRemote {
   }
 
   @Method()
-  nextSlide() {
+  async nextSlide() {
     this.emitSlidePrevNext(DeckdeckgoEventType.NEXT_SLIDE);
   }
 
   @Method()
-  prevSlide() {
+  async prevSlide() {
     this.emitSlidePrevNext(DeckdeckgoEventType.PREV_SLIDE);
   }
 
