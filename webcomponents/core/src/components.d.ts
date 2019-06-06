@@ -23,7 +23,6 @@ export namespace Components {
     'isMobile': () => Promise<boolean>;
     'keyboard': boolean;
     'loadBackground': () => Promise<void>;
-    'pagerPercentage': boolean;
     'slideNext': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
@@ -39,7 +38,6 @@ export namespace Components {
   interface DeckgoPager {
     'activeIndex': number;
     'length': number;
-    'percentage': boolean;
   }
   interface DeckgoSlideAuthor {
     'afterSwipe': () => Promise<void>;
@@ -280,7 +278,6 @@ declare namespace LocalJSX {
     'onSlideToChange'?: (event: CustomEvent<number>) => void;
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
     'onSlidesDidLoad'?: (event: CustomEvent<any>) => void;
-    'pagerPercentage'?: boolean;
   }
   interface DeckgoGif extends JSXBase.HTMLAttributes<HTMLDeckgoGifElement> {
     'alt'?: string;
@@ -291,7 +288,6 @@ declare namespace LocalJSX {
   interface DeckgoPager extends JSXBase.HTMLAttributes<HTMLDeckgoPagerElement> {
     'activeIndex'?: number;
     'length'?: number;
-    'percentage'?: boolean;
   }
   interface DeckgoSlideAuthor extends JSXBase.HTMLAttributes<HTMLDeckgoSlideAuthorElement> {
     'customActions'?: boolean;

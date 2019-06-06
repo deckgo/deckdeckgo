@@ -1,3 +1,18 @@
+<a name="1.0.0-beta.38"></a>
+# 1.0.0-beta.38 (2019-06-06)
+
+### Breaking changes
+
+* hide pager progression with a CSS4 variable
+
+### Fix
+
+* don't track slides' swipe if contextmenu is fired
+
+### Features
+
+* new progression text as slides count available
+
 <a name="1.0.0-beta.37"></a>
 # 1.0.0-beta.37 (2019-06-04)
 

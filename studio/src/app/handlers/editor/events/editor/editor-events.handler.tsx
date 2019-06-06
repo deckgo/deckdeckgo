@@ -6,7 +6,12 @@ export class EditorEventsHandler {
         return new Promise<void>(async (resolve) => {
             this.el = el;
 
-            this.el.addEventListener('keyup', this.onKeyUp, false);
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (deck) {
+                deck.addEventListener('keyup', this.onKeyUp, false);
+            }
+
             this.el.addEventListener('blockSlide', this.onBlockSlide, false);
             document.addEventListener('keydown', this.onKeyDown, false);
 
@@ -15,7 +20,12 @@ export class EditorEventsHandler {
     }
 
     destroy() {
-        this.el.removeEventListener('keyup', this.onKeyUp, true);
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+        if (deck) {
+            deck.removeEventListener('keyup', this.onKeyUp, true);
+        }
+
         this.el.removeEventListener('blockSlide', this.onBlockSlide, true);
         document.removeEventListener('keydown', this.onKeyDown, true);
     }

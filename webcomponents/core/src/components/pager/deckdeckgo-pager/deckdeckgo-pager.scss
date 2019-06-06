@@ -27,11 +27,19 @@
   transition: stroke-dasharray 500ms cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-.deckgo-pager-percentage {
+.deckgo-pager-progression {
   fill: var(--pager-text-color, #4c8dff);
   font-size: var(--pager-text-size, 0.5em);
   text-anchor: middle;
   font-weight: 300;
+
+  &.deckgo-pager-percentage {
+    display: var(--pager-text-percentage-display, none);
+  }
+
+  &.deckgo-pager-slides {
+    display: var(--pager-text-slides-display, none);
+  }
 }
 
 @media print {

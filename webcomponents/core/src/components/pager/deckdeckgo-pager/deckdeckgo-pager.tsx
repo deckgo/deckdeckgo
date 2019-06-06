@@ -11,21 +11,19 @@ export class DeckdeckgoPager {
   @Prop() activeIndex: number;
   @Prop() length: number;
 
-  @Prop() percentage: boolean = false;
-
   @State()
-  private progression: number = 0;
+  private percentageProgression: number = 0;
 
   @Watch('length')
   @Watch('activeIndex')
   calculateProgression() {
-    this.progression = this.length > 0 ? Math.round(((this.activeIndex + 1) / this.length) * 100) : 0;
+    this.percentageProgression = this.length > 0 ? Math.round(((this.activeIndex + 1) / this.length) * 100) : 0;
   }
 
   // Nice circular percentage chart from the article of Sergio Pedercini
   // https://medium.com/@pppped/how-to-code-a-responsive-circular-percentage-chart-with-svg-and-css-3632f8cd7705
   render() {
-    const ratio: string = '' + this.progression + ', 100';
+    const ratio: string = '' + this.percentageProgression + ', 100';
 
     return <svg viewBox="0 0 36 36" class="deckgo-pager-circular-chart">
       <path class="deckgo-pager-circle-bg"
@@ -44,7 +42,10 @@ export class DeckdeckgoPager {
   }
 
   private renderText() {
-    return this.percentage ? <text x="18" y="20.35" class="deckgo-pager-percentage">{this.progression}%</text> : undefined;
+    return [
+      <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-percentage">{this.percentageProgression}%</text>,
+      <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-slides">{this.activeIndex + 1}/{this.length}</text>
+    ];
   }
 
 }

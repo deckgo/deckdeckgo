@@ -23,8 +23,6 @@ export class DeckdeckgoDeck {
 
   @Prop() keyboard: boolean = true;
 
-  @Prop() pagerPercentage: boolean = true;
-
   @Prop() embedded: boolean = false;
 
   @Prop() cloneBackground: boolean = true;
@@ -220,6 +218,11 @@ export class DeckdeckgoDeck {
 
   @Listen('dblclick', {passive: true})
   async dblclick() {
+    this.startX = null;
+  }
+
+  @Listen('contextmenu', {passive: true})
+  async contextMenu() {
     this.startX = null;
   }
 
@@ -811,7 +814,7 @@ export class DeckdeckgoDeck {
         <slot name="background"></slot>
       </div>,
       <div class="deckgo-pager">
-        <deckgo-pager active-index={this.activeIndex} length={this.length} percentage={this.pagerPercentage}></deckgo-pager>
+        <deckgo-pager active-index={this.activeIndex} length={this.length}></deckgo-pager>
       </div>
     ]
   }

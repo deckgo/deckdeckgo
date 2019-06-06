@@ -44,7 +44,7 @@ export class AppEditMarkdown {
 <li><a href="#app-edit-markdown-summary">Summary</a></li>
 </ul>
 <h2 id="app-edit-markdown-introduction">Introduction</h2>
-<p>When you edit your talk with Markdown, the <a href="https://github.com/deckgo/deckdeckgo/webpack">DeckDeckGo Webpack Markdown Plugin</a> will convert, at bundle time, your code to HTML and will inject the results in the <code>index.html</code> file. Doing so, your <a href="https://deckdeckgo.com">DeckDeckGo</a> presentation will remain SEO friendly even without server side rendering. </p>
+<p>When you edit your talk with Markdown, the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webpack">DeckDeckGo Webpack Markdown Plugin</a> will convert, at bundle time, your code to HTML and will inject the results in the <code>index.html</code> file. Doing so, your <a href="https://deckdeckgo.com">DeckDeckGo</a> presentation will remain SEO friendly even without server side rendering. </p>
 <h2 id="app-edit-markdown-edit">Edit</h2>
 <p>To begin to edit your talk, instead of editing the <code>index.html</code> you will instead have to edit the <code>index.md</code> file provided by the starter kit.</p>
 <p>Furthermore than the standard Markdown tags, you will be able to use extended tags in order to specify which types of slides you would like to use. For that purpose, use the separator <code>---</code> followed by a shortened version of the template&#39;s name, like for example <code>--- title</code> for <code>&lt;/deckgo-slide-title&gt;</code>.</p>

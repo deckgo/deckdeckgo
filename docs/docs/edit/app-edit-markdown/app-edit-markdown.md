@@ -13,7 +13,7 @@ If you wish, you could edit your [DeckDeckGo] presentation using Markdown. This 
 
 ## Introduction
 
-When you edit your talk with Markdown, the [DeckDeckGo Webpack Markdown Plugin](https://github.com/deckgo/deckdeckgo/webpack) will convert, at bundle time, your code to HTML and will inject the results in the `index.html` file. Doing so, your [DeckDeckGo] presentation will remain SEO friendly even without server side rendering. 
+When you edit your talk with Markdown, the [DeckDeckGo Webpack Markdown Plugin](https://github.com/deckgo/deckdeckgo/tree/master/webpack) will convert, at bundle time, your code to HTML and will inject the results in the `index.html` file. Doing so, your [DeckDeckGo] presentation will remain SEO friendly even without server side rendering. 
 
 ## Edit
 

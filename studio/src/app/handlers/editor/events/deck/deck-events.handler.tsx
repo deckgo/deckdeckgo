@@ -101,6 +101,7 @@ export class DeckEventsHandler {
 
     private onSlidesDidLoad = async ($event: CustomEvent) => {
         if ($event) {
+            await this.initSlideSize();
             await this.slideToLastSlide();
         }
     };
@@ -585,6 +586,20 @@ export class DeckEventsHandler {
             }
 
             await (deck as any).slideTo(slides.length - 1);
+
+            resolve();
+        });
+    }
+
+    initSlideSize(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                return;
+            }
+
+            await (deck as any).initSlideSize();
 
             resolve();
         });

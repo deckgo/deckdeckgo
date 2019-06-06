@@ -15,7 +15,7 @@ export class AppDeckOrSlide {
     }
 
     render() {
-        return <div class="padding">
+        return <div class="ion-padding">
             <a onClick={() => this.closePopover(false)}><p>Just to this slide</p></a>
             <a onClick={() => this.closePopover(true)}><p>Apply to the all deck</p></a>
         </div>

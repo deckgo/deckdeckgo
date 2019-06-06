@@ -40,10 +40,10 @@ export class AppAddSlideAction {
     }
 
     render() {
-        return <ion-button onClick={(e: UIEvent) => this.openSlideAdd(e)} color="primary" shape="round" disabled={this.deckBusy}
-                           size="small" fill="solid">
+        return <ion-tab-button onClick={(e: UIEvent) => this.openSlideAdd(e)} color="primary" disabled={this.deckBusy} mode="md">
+            <ion-icon name="add"></ion-icon>
             <ion-label>Add slide</ion-label>
-        </ion-button>;
+        </ion-tab-button>;
     }
 
 }

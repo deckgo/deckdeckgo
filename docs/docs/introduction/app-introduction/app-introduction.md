@@ -1,6 +1,6 @@
 # Getting started
 
-[DeckDeckGo] provides a [CLI](https://github.com/deckgo/create-deckdeckgo) and a [starter kit](https://github.com/deckgo/deckdeckgo/cli).
+[DeckDeckGo] provides a [CLI](https://github.com/deckgo/deckdeckgo/tree/master/cli) and a [starter kit](https://github.com/deckgo/deckdeckgo-starter).
 
 ## Prerequisites
 

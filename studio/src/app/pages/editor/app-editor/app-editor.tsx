@@ -141,8 +141,6 @@ export class AppEditor {
     }
 
     async componentDidLoad() {
-        await this.initSlideSize();
-
         await this.updateInlineEditorListener();
 
         await this.remoteEventsHandler.init(this.el);
@@ -150,20 +148,6 @@ export class AppEditor {
 
     async componentDidUnload() {
         await this.remoteEventsHandler.destroy();
-    }
-
-    private initSlideSize(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-            if (!deck) {
-                return;
-            }
-
-            await (deck as any).initSlideSize();
-
-            resolve();
-        });
     }
 
     private updateInlineEditorListener(): Promise<void> {
@@ -252,7 +236,7 @@ export class AppEditor {
 
         // Wait a bit for the display/repaint of the footer
         setTimeout(async () => {
-            await this.initSlideSize();
+            await this.deckEventsHandler.initSlideSize();
         }, 100);
     }
 
@@ -281,13 +265,8 @@ export class AppEditor {
     }
 
     private async openSlideNavigate() {
-        const slidesTitle: string[] = await this.getSlidesTitle();
-
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-slide-navigate',
-            componentProps: {
-                slides: slidesTitle
-            }
+            component: 'app-slide-navigate'
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -305,42 +284,6 @@ export class AppEditor {
         });
 
         await modal.present();
-    }
-
-    private getSlidesTitle(): Promise<string[]> {
-        return new Promise<string[]>((resolve) => {
-            const results: string[] = [];
-
-            const slides: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-deck > *');
-
-            if (slides) {
-                for (const slide of Array.from(slides)) {
-                    if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                        const title: HTMLElement = slide.querySelector('[slot="title"]');
-
-                        if (title) {
-                            results.push(title.innerHTML);
-                        } else {
-                            const start: HTMLElement = slide.querySelector('[slot="start"]');
-
-                            if (start) {
-                                results.push(start.textContent);
-                            } else {
-                                const end: HTMLElement = slide.querySelector('[slot="end"]');
-
-                                if (end) {
-                                    results.push(end.textContent);
-                                } else {
-                                    results.push('');
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            resolve(results);
-        });
     }
 
     private getFirstSlideContent(): Promise<string> {
@@ -623,41 +566,38 @@ export class AppEditor {
             <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <ion-toolbar>
                     <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
-                        <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
+                        <app-add-slide-action
+                            onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}></app-add-slide-action>
+
+                        <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary" mode="md">
                             <ion-icon name="arrow-back"></ion-icon>
                             <ion-label>Previous</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={() => this.animatePrevNextSlide(true)} color="primary">
+                        <ion-tab-button onClick={() => this.animatePrevNextSlide(true)} color="primary" mode="md">
                             <ion-icon name="arrow-forward"></ion-icon>
                             <ion-label>Next</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices">
+                        <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices" mode="md">
                             <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
                             <ion-label>Jump to</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices">
+                        <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices" mode="md">
                             <ion-icon name="expand"></ion-icon>
                             <ion-label>Fullscreen</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices">
+                        <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices" mode="md">
                             <ion-icon name="phone-portrait"></ion-icon>
                             <ion-label>Remote</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary"
-                                        class="small-devices">
+                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices" mode="md">
                             <ion-icon md="md-more" ios="md-more"></ion-icon>
                             <ion-label>More</ion-label>
                         </ion-tab-button>
-                    </ion-buttons>
-
-                    <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
-                        <app-add-slide-action
-                            onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}></app-add-slide-action>
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,

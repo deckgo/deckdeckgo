@@ -88,9 +88,7 @@ export namespace Components {
     'redirect': string;
     'redirectId': string;
   }
-  interface AppSlideNavigate {
-    'slides': string[];
-  }
+  interface AppSlideNavigate {}
   interface AppSlideType {}
   interface AppSlotType {
     'selectedElement': HTMLElement;
@@ -489,9 +487,7 @@ declare namespace LocalJSX {
     'redirect'?: string;
     'redirectId'?: string;
   }
-  interface AppSlideNavigate extends JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement> {
-    'slides'?: string[];
-  }
+  interface AppSlideNavigate extends JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement> {}
   interface AppSlideType extends JSXBase.HTMLAttributes<HTMLAppSlideTypeElement> {}
   interface AppSlotType extends JSXBase.HTMLAttributes<HTMLAppSlotTypeElement> {
     'selectedElement'?: HTMLElement;
