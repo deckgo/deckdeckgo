@@ -610,33 +610,32 @@ export class AppEditor {
                         <app-add-slide-action
                             onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}></app-add-slide-action>
 
-                        <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
+                        <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary" mode="md">
                             <ion-icon name="arrow-back"></ion-icon>
                             <ion-label>Previous</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={() => this.animatePrevNextSlide(true)} color="primary">
+                        <ion-tab-button onClick={() => this.animatePrevNextSlide(true)} color="primary" mode="md">
                             <ion-icon name="arrow-forward"></ion-icon>
                             <ion-label>Next</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices">
+                        <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices" mode="md">
                             <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
                             <ion-label>Jump to</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices">
+                        <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices" mode="md">
                             <ion-icon name="expand"></ion-icon>
                             <ion-label>Fullscreen</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices">
+                        <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices" mode="md">
                             <ion-icon name="phone-portrait"></ion-icon>
                             <ion-label>Remote</ion-label>
                         </ion-tab-button>
 
-                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary"
-                                        class="small-devices">
+                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices" mode="md">
                             <ion-icon md="md-more" ios="md-more"></ion-icon>
                             <ion-label>More</ion-label>
                         </ion-tab-button>
