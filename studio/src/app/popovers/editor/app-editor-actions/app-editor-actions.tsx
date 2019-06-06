@@ -28,7 +28,7 @@ export class AppEditorActions {
     render() {
         // TODO: Share when published
 
-        return <div class="padding">
+        return <div class="ion-padding">
             <a onClick={() => this.closePopover(EditorAction.JUMP_TO)}><p>Jump to slide</p></a>
             {this.renderFullscreenOption()}
             <a onClick={() => this.closePopover(EditorAction.REMOTE)}><p>Remote control</p></a>

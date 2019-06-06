@@ -29,6 +29,14 @@ app-slide-type {
     deckgo-slide-title {
       --slide-padding-top: 4px;
       --slide-padding-end: 4px;
+
+      h1 {
+        margin-top: 22px;
+      }
+
+      p {
+        min-height: 36px;
+      }
     }
 
     deckgo-slide-content {
