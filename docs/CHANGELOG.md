@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.13"></a>
+# 1.0.0-alpha.13 (2019-06-04)
+
+### Features
+
+* update documentation regarding pager
+
 <a name="1.0.0-alpha.12"></a>
 # 1.0.0-alpha.12 (2019-06-04)
 
