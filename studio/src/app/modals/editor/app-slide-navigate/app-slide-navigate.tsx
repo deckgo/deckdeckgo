@@ -1,4 +1,4 @@
-import {Component, Listen, Element, Prop, h} from '@stencil/core';
+import {Component, Listen, Element, State, h} from '@stencil/core';
 
 @Component({
     tag: 'app-slide-navigate',
@@ -8,11 +8,13 @@ export class AppSlideNavigate {
 
     @Element() el: HTMLElement;
 
-    @Prop()
+    @State()
     slides: string[];
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
+
+        this.slides = await this.getSlidesTitle();
     }
 
     @Listen('popstate', { target: 'window' })
@@ -26,6 +28,47 @@ export class AppSlideNavigate {
 
     private async jumpToSlide(index: number) {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(index);
+    }
+
+    private getSlidesTitle(): Promise<string[]> {
+        return new Promise<string[]>((resolve) => {
+            if (!document) {
+                resolve();
+                return;
+            }
+
+            const results: string[] = [];
+
+            const slides: NodeListOf<HTMLElement> = document.querySelectorAll('deckgo-deck > *');
+
+            if (slides) {
+                for (const slide of Array.from(slides)) {
+                    if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
+                        const title: HTMLElement = slide.querySelector('[slot="title"]');
+
+                        if (title) {
+                            results.push(title.textContent);
+                        } else {
+                            const start: HTMLElement = slide.querySelector('[slot="start"]');
+
+                            if (start) {
+                                results.push(start.textContent);
+                            } else {
+                                const end: HTMLElement = slide.querySelector('[slot="end"]');
+
+                                if (end) {
+                                    results.push(end.textContent);
+                                } else {
+                                    results.push('');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            resolve(results);
+        });
     }
 
     render() {

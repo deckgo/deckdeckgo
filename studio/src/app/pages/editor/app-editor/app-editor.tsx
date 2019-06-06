@@ -265,13 +265,8 @@ export class AppEditor {
     }
 
     private async openSlideNavigate() {
-        const slidesTitle: string[] = await this.getSlidesTitle();
-
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-slide-navigate',
-            componentProps: {
-                slides: slidesTitle
-            }
+            component: 'app-slide-navigate'
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -289,42 +284,6 @@ export class AppEditor {
         });
 
         await modal.present();
-    }
-
-    private getSlidesTitle(): Promise<string[]> {
-        return new Promise<string[]>((resolve) => {
-            const results: string[] = [];
-
-            const slides: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-deck > *');
-
-            if (slides) {
-                for (const slide of Array.from(slides)) {
-                    if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                        const title: HTMLElement = slide.querySelector('[slot="title"]');
-
-                        if (title) {
-                            results.push(title.innerHTML);
-                        } else {
-                            const start: HTMLElement = slide.querySelector('[slot="start"]');
-
-                            if (start) {
-                                results.push(start.textContent);
-                            } else {
-                                const end: HTMLElement = slide.querySelector('[slot="end"]');
-
-                                if (end) {
-                                    results.push(end.textContent);
-                                } else {
-                                    results.push('');
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            resolve(results);
-        });
     }
 
     private getFirstSlideContent(): Promise<string> {
