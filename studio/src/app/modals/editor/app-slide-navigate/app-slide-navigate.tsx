@@ -46,17 +46,17 @@ export class AppSlideNavigate {
                     if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
                         const title: HTMLElement = slide.querySelector('[slot="title"]');
 
-                        if (title) {
+                        if (title && title.textContent !== '') {
                             results.push(title.textContent);
                         } else {
-                            const start: HTMLElement = slide.querySelector('[slot="start"]');
+                            const start: HTMLElement = slide.querySelector('[slot="start"],[slot="header"]');
 
-                            if (start) {
+                            if (start && start.textContent !== '') {
                                 results.push(start.textContent);
                             } else {
-                                const end: HTMLElement = slide.querySelector('[slot="end"]');
+                                const end: HTMLElement = slide.querySelector('[slot="end"],[slot="footer"]');
 
-                                if (end) {
+                                if (end && end.textContent !== '') {
                                     results.push(end.textContent);
                                 } else {
                                     results.push('');
