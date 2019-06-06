@@ -23,8 +23,6 @@ export class DeckdeckgoDeck {
 
   @Prop() keyboard: boolean = true;
 
-  @Prop() pagerPercentage: boolean = true;
-
   @Prop() embedded: boolean = false;
 
   @Prop() cloneBackground: boolean = true;
@@ -190,7 +188,6 @@ export class DeckdeckgoDeck {
 
   @Listen('mousedown', {passive: true})
   mousedown($event: MouseEvent) {
-    console.log('down');
     this.start($event);
   }
 
@@ -201,7 +198,6 @@ export class DeckdeckgoDeck {
 
   @Listen('mouseup', {passive: true})
   async mouseup($event: MouseEvent) {
-    console.log('up');
     await this.stop($event);
   }
 
@@ -212,7 +208,6 @@ export class DeckdeckgoDeck {
 
   @Listen('mousemove', {passive: true})
   async mousemove($event: MouseEvent) {
-    console.log('move');
     await this.move($event);
   }
 
@@ -819,7 +814,7 @@ export class DeckdeckgoDeck {
         <slot name="background"></slot>
       </div>,
       <div class="deckgo-pager">
-        <deckgo-pager active-index={this.activeIndex} length={this.length} percentage={this.pagerPercentage}></deckgo-pager>
+        <deckgo-pager active-index={this.activeIndex} length={this.length}></deckgo-pager>
       </div>
     ]
   }
