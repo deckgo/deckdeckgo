@@ -607,6 +607,9 @@ export class AppEditor {
             <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <ion-toolbar>
                     <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
+                        <app-add-slide-action
+                            onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}></app-add-slide-action>
+
                         <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary">
                             <ion-icon name="arrow-back"></ion-icon>
                             <ion-label>Previous</ion-label>
@@ -637,11 +640,6 @@ export class AppEditor {
                             <ion-icon md="md-more" ios="md-more"></ion-icon>
                             <ion-label>More</ion-label>
                         </ion-tab-button>
-                    </ion-buttons>
-
-                    <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
-                        <app-add-slide-action
-                            onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}></app-add-slide-action>
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,
