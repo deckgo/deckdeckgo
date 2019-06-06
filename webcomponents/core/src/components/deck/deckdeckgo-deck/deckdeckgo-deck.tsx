@@ -190,6 +190,7 @@ export class DeckdeckgoDeck {
 
   @Listen('mousedown', {passive: true})
   mousedown($event: MouseEvent) {
+    console.log('down');
     this.start($event);
   }
 
@@ -200,6 +201,7 @@ export class DeckdeckgoDeck {
 
   @Listen('mouseup', {passive: true})
   async mouseup($event: MouseEvent) {
+    console.log('up');
     await this.stop($event);
   }
 
@@ -210,6 +212,7 @@ export class DeckdeckgoDeck {
 
   @Listen('mousemove', {passive: true})
   async mousemove($event: MouseEvent) {
+    console.log('move');
     await this.move($event);
   }
 
@@ -220,6 +223,11 @@ export class DeckdeckgoDeck {
 
   @Listen('dblclick', {passive: true})
   async dblclick() {
+    this.startX = null;
+  }
+
+  @Listen('contextmenu', {passive: true})
+  async contextMenu() {
     this.startX = null;
   }
 
