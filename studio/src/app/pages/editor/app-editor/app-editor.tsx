@@ -141,8 +141,6 @@ export class AppEditor {
     }
 
     async componentDidLoad() {
-        await this.initSlideSize();
-
         await this.updateInlineEditorListener();
 
         await this.remoteEventsHandler.init(this.el);
@@ -150,20 +148,6 @@ export class AppEditor {
 
     async componentDidUnload() {
         await this.remoteEventsHandler.destroy();
-    }
-
-    private initSlideSize(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-            if (!deck) {
-                return;
-            }
-
-            await (deck as any).initSlideSize();
-
-            resolve();
-        });
     }
 
     private updateInlineEditorListener(): Promise<void> {
@@ -252,7 +236,7 @@ export class AppEditor {
 
         // Wait a bit for the display/repaint of the footer
         setTimeout(async () => {
-            await this.initSlideSize();
+            await this.deckEventsHandler.initSlideSize();
         }, 100);
     }
 
