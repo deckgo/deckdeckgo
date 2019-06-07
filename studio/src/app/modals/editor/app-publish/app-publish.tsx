@@ -32,6 +32,9 @@ export class AppPublish {
     private disablePublish: boolean = false;
 
     @State()
+    private publishing: boolean = false;
+
+    @State()
     private tag: string;
 
     @State()
@@ -125,17 +128,24 @@ export class AppPublish {
     private publish(): Promise<void> {
         return new Promise<void>((resolve) => {
             try {
+                this.publishing = true;
+
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
                     if (!deck || !deck.id) {
+                        this.publishing = false;
+
                         resolve();
                         return;
                     }
 
                     await this.deckService.publish(deck);
 
+                    this.publishing = false;
+
                     resolve();
                 });
             } catch (err) {
+                this.publishing = false;
                 this.errorService.error(err);
                 resolve();
             }
@@ -277,11 +287,8 @@ export class AppPublish {
                             <app-feed-card-tags tags={this.tags} editable={true} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
                         </ion-list>
 
-                        <div class="ion-padding ion-text-center">
-                            <ion-button type="submit" disabled={!this.valid || this.disablePublish} color="tertiary"
-                                        shape="round">
-                                <ion-label>Publish now</ion-label>
-                            </ion-button>
+                        <div class="ion-padding ion-text-center publish">
+                            {this.renderPublish()}
                         </div>
                     </form>
 
@@ -290,6 +297,17 @@ export class AppPublish {
                 </main>
             </ion-content>
         ];
+    }
+
+    private renderPublish() {
+        if (!this.publishing) {
+            return <ion-button type="submit" disabled={!this.valid || this.disablePublish} color="tertiary"
+                        shape="round">
+                <ion-label>Publish now</ion-label>
+            </ion-button>
+        } else {
+            return <ion-spinner color="tertiary"></ion-spinner>;
+        }
     }
 
 }

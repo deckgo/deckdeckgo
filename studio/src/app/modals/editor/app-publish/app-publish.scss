@@ -21,5 +21,13 @@ app-publish {
     p.social {
       font-size: var(--font-size-small);
     }
+
+    div.publish {
+      min-height: 5rem;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
