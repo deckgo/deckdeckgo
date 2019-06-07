@@ -31,6 +31,11 @@ export class AppPublishDone {
     @State()
     private gif: TenorGif;
 
+    private keywords: string[] = ['Hooray', 'You did it', 'Applause', 'Thumbs up'];
+
+    @State()
+    private keywordIndex: number = Math.floor(Math.random() * 4);
+
     constructor() {
         this.gifService = GifService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
@@ -43,7 +48,7 @@ export class AppPublishDone {
 
     private initRandomGifUrl(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const gifResponse: TenorSearchResponse = await this.gifService.getRandomGif('hooray');
+            const gifResponse: TenorSearchResponse = await this.gifService.getRandomGif(this.keywords[this.keywordIndex]);
 
             this.gif = gifResponse &&  gifResponse.results && gifResponse.results.length > 0 ? gifResponse.results[0] : null;
 
@@ -142,7 +147,7 @@ export class AppPublishDone {
                     {this.renderGif()}
                 </div>
 
-                <h1>Hooray! Your presentation has been published.</h1>
+                <h1>{this.keywords[this.keywordIndex]}! Your presentation has been published.</h1>
 
                 <p>Time to <a onClick={() => this.openShare()}><strong>share</strong></a> it with the world, your colleagues, friends and community.</p>
 
