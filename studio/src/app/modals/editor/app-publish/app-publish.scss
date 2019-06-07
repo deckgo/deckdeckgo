@@ -2,32 +2,12 @@ app-publish {
   main {
     background: white;
 
+    &.published {
+      height: 100%;
+    }
+
     strong {
       color: var(--ion-color-tertiary);
-    }
-
-    p.meta-text {
-      margin-bottom: 0;
-    }
-
-    app-feed-card-tags {
-      --card-tags-background: rgba(var(--ion-color-tertiary-rgb), 0.08);
-      --card-tags-color: var(--ion-color-tertiary-shade);
-
-      display: inline-block;
-      padding-top: 8px;
-    }
-
-    p.social {
-      font-size: var(--font-size-small);
-    }
-
-    div.publish {
-      min-height: 5rem;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
   }
 }

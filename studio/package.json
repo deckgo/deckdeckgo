@@ -24,7 +24,8 @@
     "@ionic/core": "^4.5.0-dev.201905311531.e014c6a",
     "firebase": "^6.1.0",
     "idb-keyval": "^3.2.0",
-    "rxjs": "^6.5.2"
+    "rxjs": "^6.5.2",
+    "web-social-share": "^5.1.0"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.11",
