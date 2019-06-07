@@ -492,7 +492,9 @@ declare namespace LocalJSX {
   interface AppPrivacy extends JSXBase.HTMLAttributes<HTMLAppPrivacyElement> {}
   interface AppPublish extends JSXBase.HTMLAttributes<HTMLAppPublishElement> {}
   interface AppPublishDone extends JSXBase.HTMLAttributes<HTMLAppPublishDoneElement> {}
-  interface AppPublishEdit extends JSXBase.HTMLAttributes<HTMLAppPublishEditElement> {}
+  interface AppPublishEdit extends JSXBase.HTMLAttributes<HTMLAppPublishEditElement> {
+    'onPublished'?: (event: CustomEvent<string>) => void;
+  }
   interface AppRemote extends JSXBase.HTMLAttributes<HTMLAppRemoteElement> {}
   interface AppRoot extends JSXBase.HTMLAttributes<HTMLAppRootElement> {}
   interface AppServices extends JSXBase.HTMLAttributes<HTMLAppServicesElement> {}

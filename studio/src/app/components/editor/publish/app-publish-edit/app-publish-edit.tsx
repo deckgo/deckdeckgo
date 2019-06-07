@@ -1,4 +1,4 @@
-import {Component, h, State} from '@stencil/core';
+import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 import {Resources} from '../../../../utils/core/resources';
 import {debounceTime, take} from 'rxjs/operators';
 import {Deck} from '../../../../models/deck';
@@ -41,6 +41,8 @@ export class AppPublishEdit {
 
     private updateDeckSubsction: Subscription;
     private updateDeckSubject: Subject<void> = new Subject();
+
+    @Event() private published: EventEmitter<string>;
 
     constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
@@ -147,6 +149,9 @@ export class AppPublishEdit {
                     }
 
                     await this.deckService.publish(deck);
+
+                    // TODO: URL and other data related to the published deck
+                    this.published.emit('https://deckdeckgo.com/youpi');
 
                     this.publishing = false;
 

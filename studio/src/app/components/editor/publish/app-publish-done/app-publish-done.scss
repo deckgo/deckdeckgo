@@ -1,5 +1,10 @@
 app-publish-done {
   main {
     background: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
