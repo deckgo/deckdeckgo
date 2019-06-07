@@ -1,8 +1,16 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
 
+import {take} from 'rxjs/operators';
+
 import 'web-social-share';
 
 import {GifService} from '../../../../services/api/gif/gif.service';
+
+import {Deck} from '../../../../models/deck';
+import {AuthUser} from '../../../../models/auth-user';
+
+import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
+import {AuthService} from '../../../../services/api/auth/auth.service';
 
 @Component({
     tag: 'app-publish-done',
@@ -14,6 +22,9 @@ export class AppPublishDone {
 
     private gifService: GifService;
 
+    private deckEditorService: DeckEditorService;
+    private authService: AuthService;
+
     @Prop()
     publishedUrl: string;
 
@@ -22,6 +33,8 @@ export class AppPublishDone {
 
     constructor() {
         this.gifService = GifService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
+        this.authService = AuthService.getInstance();
     }
 
     async componentDidLoad() {
@@ -53,11 +66,11 @@ export class AppPublishDone {
 
     private shareMobile() {
         return new Promise(async (resolve) => {
-            // TODO: Titel
+            const title: string = await this.getShareTitle();
 
             // @ts-ignore
             await navigator.share({
-                title: document.title,
+                title: title,
                 url: this.publishedUrl,
             });
 
@@ -101,6 +114,24 @@ export class AppPublishDone {
             webSocialShare.show = true;
 
             resolve();
+        });
+    }
+
+    private getShareTitle(): Promise<string> {
+        return new Promise<string>((resolve) => {
+            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                if (deck && deck.name && deck.name !== '') {
+                    this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
+                        if (authUser && !authUser.anonymous && authUser.name && authUser.name !== '') {
+                            resolve(`"${deck.name}" by ${authUser.name} created with DeckDeckGo`);
+                        } else {
+                            resolve(`"${deck.name}" created with DeckDeckGo`);
+                        }
+                    });
+                } else {
+                    resolve('A presentation created with DeckDeckGo');
+                }
+            });
         });
     }
 
