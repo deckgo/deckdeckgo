@@ -2,6 +2,8 @@ import {h} from '@stencil/core';
 
 import {SlideTemplate} from '../../models/slide';
 
+import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
+
 export enum SlotType {
     SECTION = 'section',
     H1 = 'h1',
@@ -26,7 +28,7 @@ export class CreateSlidesUtils {
             } else if (template === SlideTemplate.SPLIT) {
                 resolve(await this.createSlideSplit());
             } else if (template === SlideTemplate.GIF) {
-                resolve(await this.createSlideGif('./assets/img/example.gif'));
+                resolve(await this.createSlideGif(EnvironmentConfigService.getInstance().get('gifExampleSrc')));
             } else {
                 resolve(null);
             }

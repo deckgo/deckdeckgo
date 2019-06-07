@@ -24,6 +24,7 @@ export interface EnvironmentConfig {
     unsplash: EnvironmentUnsplashConfig;
     signalingServerUrl: string;
     prismComponentsUrl: string;
+    gifExampleSrc: string;
 }
 
 export function setupConfig(config: EnvironmentConfig) {
