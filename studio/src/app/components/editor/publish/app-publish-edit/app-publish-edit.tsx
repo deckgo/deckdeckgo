@@ -242,8 +242,7 @@ export class AppPublishEdit {
         return <main class="ion-padding">
             <h1>Publish</h1>
 
-            <p>Publish your presentation to <strong>share</strong> it with the world, your colleagues, friends
-                and community.</p>
+            <p>Publish your presentation to <strong>share</strong> it with the world, your colleagues, friends and community.</p>
 
             <p>DeckDeckGo will distribute it online as a modern <strong>app</strong>.</p>
 

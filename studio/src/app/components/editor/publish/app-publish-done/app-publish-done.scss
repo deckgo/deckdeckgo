@@ -6,5 +6,20 @@ app-publish-done {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    height: 100%;
+
+    strong {
+      color: var(--ion-color-tertiary);
+    }
+
+    div.gif-container {
+      border-radius: 50%;
+      overflow: hidden;
+      --deckgo-lazy-img-width: 10rem;
+      --deckgo-lazy-img-height: 10rem;
+      width: 10rem;
+      height: 10rem;
+    }
   }
 }
