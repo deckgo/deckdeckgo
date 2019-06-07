@@ -239,7 +239,7 @@ export class AppPublishEdit {
     }
 
     render() {
-        return <main class="ion-padding">
+        return <article>
             <h1>Publish</h1>
 
             <p>Publish your presentation to <strong>share</strong> it with the world, your colleagues, friends and community.</p>
@@ -294,7 +294,7 @@ export class AppPublishEdit {
 
             <p class="social">No images need to be uploaded for the the social card of your presentation. DeckDeckGo will automatically generate it for you based on the first slide of your deck.</p>
 
-        </main>
+        </article>
     }
 
     private renderPublish() {

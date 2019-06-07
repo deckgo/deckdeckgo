@@ -1,42 +1,34 @@
 app-publish-edit {
-  main {
-    background: white;
+  p.meta-text {
+    margin-bottom: 0;
+  }
 
-    strong {
-      color: var(--ion-color-tertiary);
-    }
+  app-feed-card-tags {
+    --card-tags-background: rgba(var(--ion-color-tertiary-rgb), 0.08);
+    --card-tags-color: var(--ion-color-tertiary-shade);
 
-    p.meta-text {
-      margin-bottom: 0;
-    }
+    display: inline-block;
+    padding-top: 8px;
+  }
 
-    app-feed-card-tags {
-      --card-tags-background: rgba(var(--ion-color-tertiary-rgb), 0.08);
-      --card-tags-color: var(--ion-color-tertiary-shade);
+  p.social {
+    font-size: var(--font-size-small);
+  }
 
-      display: inline-block;
-      padding-top: 8px;
-    }
+  div.publish {
+    min-height: 5rem;
 
-    p.social {
-      font-size: var(--font-size-small);
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    div.publish {
-      min-height: 5rem;
-
+    div.publishing {
       display: flex;
       justify-content: center;
       align-items: center;
 
-      div.publishing {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        ion-label {
-          margin-right: 8px;
-        }
+      ion-label {
+        margin-right: 8px;
       }
     }
   }

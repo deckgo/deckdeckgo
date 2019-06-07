@@ -43,13 +43,15 @@ export class AppPublish {
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding fullscreen-padding">
-                {this.renderMain()}
+                <main class={this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '' ? "published ion-padding" : "ion-padding"}>
+                    {this.renderMain()}
+                </main>
             </ion-content>
         ];
     }
 
     private renderMain() {
-        if (this.publishedUrl && this.publishedUrl !== undefined) {
+        if (this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '') {
             return <app-publish-done></app-publish-done>
         } else {
             return <app-publish-edit onPublished={($event: CustomEvent) => this.published($event)}></app-publish-edit>;

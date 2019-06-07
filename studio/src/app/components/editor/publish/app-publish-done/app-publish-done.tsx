@@ -33,13 +33,13 @@ export class AppPublishDone {
 
 
     render() {
-        return <main class="ion-padding">
+        return <article>
             {this.renderGif()}
 
             <h1>Hooray! Your presentation has been published.</h1>
 
             <p>Time to <strong>share</strong> it with the world, your colleagues, friends and community.</p>
-        </main>
+        </article>
     }
 
     private renderGif() {

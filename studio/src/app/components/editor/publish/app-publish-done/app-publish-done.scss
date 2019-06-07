@@ -1,17 +1,11 @@
 app-publish-done {
-  main {
-    background: white;
-
+  article {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
     height: 100%;
-
-    strong {
-      color: var(--ion-color-tertiary);
-    }
 
     div.gif-container {
       border-radius: 50%;
