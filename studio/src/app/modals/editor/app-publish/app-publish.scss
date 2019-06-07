@@ -28,6 +28,16 @@ app-publish {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      div.publishing {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        ion-label {
+          margin-right: 8px;
+        }
+      }
     }
   }
 }

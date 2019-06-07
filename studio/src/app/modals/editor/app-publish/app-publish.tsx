@@ -306,7 +306,10 @@ export class AppPublish {
                 <ion-label>Publish now</ion-label>
             </ion-button>
         } else {
-            return <ion-spinner color="tertiary"></ion-spinner>;
+            return <div class="publishing">
+                <ion-label>Publishing</ion-label>
+                <ion-spinner name="dots" color="tertiary"></ion-spinner>
+            </div>;
         }
     }
 
