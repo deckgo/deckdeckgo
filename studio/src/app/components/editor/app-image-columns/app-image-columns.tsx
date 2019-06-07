@@ -49,11 +49,11 @@ export class AppImageColumns {
     }
 
     private renderGif(gif: TenorGif) {
-        if (gif && gif.media && gif.media.length > 0 && gif.media[0].gif && gif.media[0].gif.url) {
+        if (gif && gif.media && gif.media.length > 0 && gif.media[0].tinygif && gif.media[0].tinygif.url) {
             return <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(gif)}>
                 <div class="image-container">
-                    <deckgo-lazy-img imgSrc={gif.media[0].gif.url}
-                                     imgAlt={gif.title ? gif.title : gif.media[0].gif.url}></deckgo-lazy-img>
+                    <deckgo-lazy-img imgSrc={gif.media[0].tinygif.url}
+                                     imgAlt={gif.title ? gif.title : gif.media[0].tinygif.url}></deckgo-lazy-img>
                 </div>
             </div>
         } else {
