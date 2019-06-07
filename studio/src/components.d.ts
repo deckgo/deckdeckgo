@@ -10,7 +10,6 @@ import {
   EventEmitter,
 } from '@stencil/core';
 
-
 export namespace Components {
   interface AppAbout {}
   interface AppAddSlideAction {}

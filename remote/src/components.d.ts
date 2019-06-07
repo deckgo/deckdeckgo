@@ -10,7 +10,6 @@ import {
   DeckdeckgoSlideDefinition,
 } from '@deckdeckgo/types';
 
-
 export namespace Components {
   interface AppAbout {}
   interface AppAccelerometer {
