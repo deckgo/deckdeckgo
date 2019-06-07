@@ -258,7 +258,7 @@ export class AppPublish {
                             </ion-item>
 
                             <ion-item>
-                                <ion-input value={this.caption} debounce={500} minlength={3}
+                                <ion-input value={this.caption} debounce={500} minlength={3} disabled={this.publishing}
                                            maxlength={Resources.Constants.DECK.TITLE_MAX_LENGTH} required={true}
                                            input-mode="text"
                                            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onCaptionInput(e)}
@@ -270,7 +270,7 @@ export class AppPublish {
                             </ion-item>
 
                             <ion-item>
-                                <ion-textarea rows={5} value={this.description}></ion-textarea>
+                                <ion-textarea rows={5} value={this.description} disabled={this.publishing}></ion-textarea>
                             </ion-item>
 
                             <ion-item class="item-title">
@@ -279,7 +279,7 @@ export class AppPublish {
 
                             <ion-item>
                                 <ion-input debounce={500} input-mode="text" value={this.tag} placeholder="Add a tag..."
-                                           disabled={!this.tags || this.tags.length >= 5}
+                                           disabled={!this.tags || this.tags.length >= 5 || this.publishing}
                                            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}
                                            onIonChange={() => this.onTagChange()}></ion-input>
                             </ion-item>
