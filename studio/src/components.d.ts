@@ -78,7 +78,9 @@ export namespace Components {
   interface AppPopular {}
   interface AppPrivacy {}
   interface AppPublish {}
-  interface AppPublishDone {}
+  interface AppPublishDone {
+    'publishedUrl': string;
+  }
   interface AppPublishEdit {}
   interface AppRemote {}
   interface AppRoot {}
@@ -491,7 +493,9 @@ declare namespace LocalJSX {
   interface AppPopular extends JSXBase.HTMLAttributes<HTMLAppPopularElement> {}
   interface AppPrivacy extends JSXBase.HTMLAttributes<HTMLAppPrivacyElement> {}
   interface AppPublish extends JSXBase.HTMLAttributes<HTMLAppPublishElement> {}
-  interface AppPublishDone extends JSXBase.HTMLAttributes<HTMLAppPublishDoneElement> {}
+  interface AppPublishDone extends JSXBase.HTMLAttributes<HTMLAppPublishDoneElement> {
+    'publishedUrl'?: string;
+  }
   interface AppPublishEdit extends JSXBase.HTMLAttributes<HTMLAppPublishEditElement> {
     'onPublished'?: (event: CustomEvent<string>) => void;
   }

@@ -39,7 +39,7 @@ export class AppPublish {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Ready to publish?</ion-title>
+                    {this.renderTitle()}
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding fullscreen-padding">
@@ -50,9 +50,17 @@ export class AppPublish {
         ];
     }
 
+    private renderTitle() {
+        if (this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '') {
+            return <ion-title class="ion-text-uppercase">Published</ion-title>
+        } else {
+            return <ion-title class="ion-text-uppercase">Ready to publish?</ion-title>
+        }
+    }
+
     private renderMain() {
         if (this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '') {
-            return <app-publish-done></app-publish-done>
+            return <app-publish-done publishedUrl={this.publishedUrl}></app-publish-done>
         } else {
             return <app-publish-edit onPublished={($event: CustomEvent) => this.published($event)}></app-publish-edit>;
         }
