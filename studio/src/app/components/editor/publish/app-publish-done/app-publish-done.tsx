@@ -66,11 +66,11 @@ export class AppPublishDone {
 
     private shareMobile() {
         return new Promise(async (resolve) => {
-            const title: string = await this.getShareTitle();
+            const text: string = await this.getShareText();
 
             // @ts-ignore
             await navigator.share({
-                title: title,
+                text: text,
                 url: this.publishedUrl,
             });
 
@@ -117,7 +117,7 @@ export class AppPublishDone {
         });
     }
 
-    private getShareTitle(): Promise<string> {
+    private getShareText(): Promise<string> {
         return new Promise<string>((resolve) => {
             this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
                 if (deck && deck.name && deck.name !== '') {
