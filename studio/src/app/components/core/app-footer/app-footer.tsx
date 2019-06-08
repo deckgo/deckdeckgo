@@ -11,7 +11,7 @@ export class AppFooter {
         return [
             <hr class="ion-margin"/>,
             <div class="ion-padding-start ion-padding-end ion-margin-bottom">
-                <ion-label>DeckDeckGo</ion-label>
+                <ion-label class="ion-padding-top">DeckDeckGo</ion-label>
 
                 <ion-anchor href="/about" routerDirection="forward">
                     <ion-label>About</ion-label>
