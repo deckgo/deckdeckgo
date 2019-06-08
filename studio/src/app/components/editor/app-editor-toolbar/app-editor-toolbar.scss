@@ -5,6 +5,7 @@ app-editor-toolbar {
 
   div.editor-toolbar {
     display: none;
+    pointer-events: none;
 
     &.displayed {
       display: flex;
@@ -15,6 +16,7 @@ app-editor-toolbar {
 
     a {
       cursor: pointer;
+      pointer-events: initial;
 
       -webkit-user-select: none;
       -moz-user-select: none;
