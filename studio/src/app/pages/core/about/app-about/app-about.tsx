@@ -25,7 +25,7 @@ export class AppAbout {
 
                                 <p>Moreover, it is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
 
-                                <p>DeckDeckGo was created with passion in Zürich🇨🇭in 2019</p>
+                                <p>DeckDeckGo was created with passion in 2019 in Zürich🇨🇭</p>
                             </ion-col>
 
                             <ion-col class="demo">

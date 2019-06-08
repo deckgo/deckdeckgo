@@ -1,12 +1,16 @@
 app-footer {
   div {
-    display: flex;
-    flex-wrap: wrap;
-
     font-size: var(--font-size-small);
 
+    > ion-label {
+      display: block;
+      padding-bottom: 6px;
+    }
+
     ion-anchor {
-      padding: 4px;
+      padding: 4px 0;
+      display: block;
+      width: max-content;
     }
   }
 
@@ -20,6 +24,11 @@ ion-split-pane {
   &:not(.split-pane-visible) {
     app-footer {
       div {
+        > ion-label {
+          color: white;
+          font-weight: bold;
+        }
+
         ion-anchor {
           color: white;
 

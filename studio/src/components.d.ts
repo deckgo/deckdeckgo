@@ -72,6 +72,7 @@ export namespace Components {
     'publish': boolean;
     'signIn': boolean;
   }
+  interface AppNewsletter {}
   interface AppOpensource {}
   interface AppPhoto {}
   interface AppPopular {}
@@ -252,6 +253,12 @@ declare global {
     new (): HTMLAppNavigationActionsElement;
   };
 
+  interface HTMLAppNewsletterElement extends Components.AppNewsletter, HTMLStencilElement {}
+  var HTMLAppNewsletterElement: {
+    prototype: HTMLAppNewsletterElement;
+    new (): HTMLAppNewsletterElement;
+  };
+
   interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
   var HTMLAppOpensourceElement: {
     prototype: HTMLAppOpensourceElement;
@@ -396,6 +403,7 @@ declare global {
     'app-menu': HTMLAppMenuElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
+    'app-newsletter': HTMLAppNewsletterElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-photo': HTMLAppPhotoElement;
     'app-popular': HTMLAppPopularElement;
@@ -487,6 +495,7 @@ declare namespace LocalJSX {
     'publish'?: boolean;
     'signIn'?: boolean;
   }
+  interface AppNewsletter extends JSXBase.HTMLAttributes<HTMLAppNewsletterElement> {}
   interface AppOpensource extends JSXBase.HTMLAttributes<HTMLAppOpensourceElement> {}
   interface AppPhoto extends JSXBase.HTMLAttributes<HTMLAppPhotoElement> {}
   interface AppPopular extends JSXBase.HTMLAttributes<HTMLAppPopularElement> {}
@@ -546,6 +555,7 @@ declare namespace LocalJSX {
     'app-menu': AppMenu;
     'app-navigation': AppNavigation;
     'app-navigation-actions': AppNavigationActions;
+    'app-newsletter': AppNewsletter;
     'app-opensource': AppOpensource;
     'app-photo': AppPhoto;
     'app-popular': AppPopular;

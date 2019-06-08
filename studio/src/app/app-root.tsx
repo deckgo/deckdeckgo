@@ -112,6 +112,7 @@ export class AppRoot {
                     <ion-route url="/services" component="app-services"/>
                     <ion-route url="/developer" component="app-developer"/>
                     <ion-route url="/contact" component="app-contact"/>
+                    <ion-route url="/newsletter" component="app-newsletter"/>
                 </ion-router>
 
                 <ion-split-pane when="lg" contentId="menu-content">
