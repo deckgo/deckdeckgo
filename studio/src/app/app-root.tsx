@@ -15,11 +15,6 @@ import {NavDirection, NavParams, NavService} from './services/core/nav/nav.servi
 })
 export class AppRoot {
 
-    // @ts-ignore
-    private treeShakingWorkaroundRoutedComponents: any = [
-        <deckgo-highlight-code></deckgo-highlight-code>
-    ];
-
     @Element() el: HTMLElement;
 
     private errorSubscription: Subscription;
