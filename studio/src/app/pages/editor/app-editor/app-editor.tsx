@@ -286,24 +286,6 @@ export class AppEditor {
         await modal.present();
     }
 
-    private getFirstSlideContent(): Promise<string> {
-        return new Promise<string>(async (resolve) => {
-            let content: string = '';
-
-            const slide: HTMLElement = this.el.querySelector('deckgo-deck > *:first-child');
-
-            if (slide && slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
-
-                if (contentElement) {
-                    content = contentElement.textContent;
-                }
-            }
-
-            resolve(content);
-        });
-    }
-
     async onActionOpenSlideAdd($event: CustomEvent) {
         if (!$event || !$event.detail) {
             return;
@@ -384,13 +366,8 @@ export class AppEditor {
             return;
         }
 
-        const content: string = await this.getFirstSlideContent();
-
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-publish',
-            componentProps: {
-                description: content
-            },
             cssClass: 'fullscreen'
         });
 
@@ -595,7 +572,7 @@ export class AppEditor {
                         </ion-tab-button>
 
                         <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices" mode="md">
-                            <ion-icon md="md-more" ios="md-more"></ion-icon>
+                            <ion-icon name="more" md="md-more" ios="md-more"></ion-icon>
                             <ion-label>More</ion-label>
                         </ion-tab-button>
                     </ion-buttons>

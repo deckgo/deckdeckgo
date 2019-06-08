@@ -17,7 +17,7 @@ export class AppAvatar {
             </ion-avatar>
         } else {
             return <ion-avatar>
-                <ion-icon md="md-person" ios="md-person"></ion-icon>
+                <ion-icon name="person" md="md-person" ios="md-person"></ion-icon>
             </ion-avatar>
         }
     }

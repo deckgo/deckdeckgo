@@ -77,6 +77,34 @@ export class GifService {
         });
     }
 
+    getRandomGif(searchTerm: string): Promise<TenorSearchResponse> {
+        return new Promise<TenorSearchResponse>(async (resolve) => {
+            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
+
+            const anonymousId: string = await this.getAnonymousId();
+
+            const searchUrl: string = config.url + 'random?q=' + searchTerm + '&key=' +
+                config.key + '&ar_range=standard&limit=' + 1 + '&anon_id=' + anonymousId + '&media_filter=minimal';
+
+            try {
+                const rawResponse: Response = await fetch(searchUrl);
+
+                const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
+
+                if (!response) {
+                    this.errorService.error('Tenor trending could not be fetched');
+                    resolve();
+                    return;
+                }
+
+                resolve(response);
+            } catch (err) {
+                // We don't throw an error, in such a case we just not gonna display a gif
+                resolve();
+            }
+        });
+    }
+
     registerShare(gifId: string): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');

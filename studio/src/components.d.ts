@@ -10,7 +10,6 @@ import {
   EventEmitter,
 } from '@stencil/core';
 
-
 export namespace Components {
   interface AppAbout {}
   interface AppAddSlideAction {}
@@ -73,13 +72,16 @@ export namespace Components {
     'publish': boolean;
     'signIn': boolean;
   }
+  interface AppNewsletter {}
   interface AppOpensource {}
   interface AppPhoto {}
   interface AppPopular {}
   interface AppPrivacy {}
-  interface AppPublish {
-    'description': string;
+  interface AppPublish {}
+  interface AppPublishDone {
+    'publishedUrl': string;
   }
+  interface AppPublishEdit {}
   interface AppRemote {}
   interface AppRoot {}
   interface AppServices {}
@@ -251,6 +253,12 @@ declare global {
     new (): HTMLAppNavigationActionsElement;
   };
 
+  interface HTMLAppNewsletterElement extends Components.AppNewsletter, HTMLStencilElement {}
+  var HTMLAppNewsletterElement: {
+    prototype: HTMLAppNewsletterElement;
+    new (): HTMLAppNewsletterElement;
+  };
+
   interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
   var HTMLAppOpensourceElement: {
     prototype: HTMLAppOpensourceElement;
@@ -279,6 +287,18 @@ declare global {
   var HTMLAppPublishElement: {
     prototype: HTMLAppPublishElement;
     new (): HTMLAppPublishElement;
+  };
+
+  interface HTMLAppPublishDoneElement extends Components.AppPublishDone, HTMLStencilElement {}
+  var HTMLAppPublishDoneElement: {
+    prototype: HTMLAppPublishDoneElement;
+    new (): HTMLAppPublishDoneElement;
+  };
+
+  interface HTMLAppPublishEditElement extends Components.AppPublishEdit, HTMLStencilElement {}
+  var HTMLAppPublishEditElement: {
+    prototype: HTMLAppPublishEditElement;
+    new (): HTMLAppPublishEditElement;
   };
 
   interface HTMLAppRemoteElement extends Components.AppRemote, HTMLStencilElement {}
@@ -383,11 +403,14 @@ declare global {
     'app-menu': HTMLAppMenuElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
+    'app-newsletter': HTMLAppNewsletterElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-photo': HTMLAppPhotoElement;
     'app-popular': HTMLAppPopularElement;
     'app-privacy': HTMLAppPrivacyElement;
     'app-publish': HTMLAppPublishElement;
+    'app-publish-done': HTMLAppPublishDoneElement;
+    'app-publish-edit': HTMLAppPublishEditElement;
     'app-remote': HTMLAppRemoteElement;
     'app-root': HTMLAppRootElement;
     'app-services': HTMLAppServicesElement;
@@ -472,12 +495,17 @@ declare namespace LocalJSX {
     'publish'?: boolean;
     'signIn'?: boolean;
   }
+  interface AppNewsletter extends JSXBase.HTMLAttributes<HTMLAppNewsletterElement> {}
   interface AppOpensource extends JSXBase.HTMLAttributes<HTMLAppOpensourceElement> {}
   interface AppPhoto extends JSXBase.HTMLAttributes<HTMLAppPhotoElement> {}
   interface AppPopular extends JSXBase.HTMLAttributes<HTMLAppPopularElement> {}
   interface AppPrivacy extends JSXBase.HTMLAttributes<HTMLAppPrivacyElement> {}
-  interface AppPublish extends JSXBase.HTMLAttributes<HTMLAppPublishElement> {
-    'description'?: string;
+  interface AppPublish extends JSXBase.HTMLAttributes<HTMLAppPublishElement> {}
+  interface AppPublishDone extends JSXBase.HTMLAttributes<HTMLAppPublishDoneElement> {
+    'publishedUrl'?: string;
+  }
+  interface AppPublishEdit extends JSXBase.HTMLAttributes<HTMLAppPublishEditElement> {
+    'onPublished'?: (event: CustomEvent<string>) => void;
   }
   interface AppRemote extends JSXBase.HTMLAttributes<HTMLAppRemoteElement> {}
   interface AppRoot extends JSXBase.HTMLAttributes<HTMLAppRootElement> {}
@@ -527,11 +555,14 @@ declare namespace LocalJSX {
     'app-menu': AppMenu;
     'app-navigation': AppNavigation;
     'app-navigation-actions': AppNavigationActions;
+    'app-newsletter': AppNewsletter;
     'app-opensource': AppOpensource;
     'app-photo': AppPhoto;
     'app-popular': AppPopular;
     'app-privacy': AppPrivacy;
     'app-publish': AppPublish;
+    'app-publish-done': AppPublishDone;
+    'app-publish-edit': AppPublishEdit;
     'app-remote': AppRemote;
     'app-root': AppRoot;
     'app-services': AppServices;

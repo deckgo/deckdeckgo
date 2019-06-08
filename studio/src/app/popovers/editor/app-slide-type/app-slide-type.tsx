@@ -4,6 +4,8 @@ import {SlideTemplate} from '../../../models/slide';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+
 @Component({
     tag: 'app-slide-type',
     styleUrl: 'app-slide-type.scss'
@@ -67,7 +69,7 @@ export class AppSlideType {
                     </deckgo-slide-split>
                 </div>
                 <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
-                    <deckgo-slide-gif src="/assets/img/example.gif" alt="Slide Gif">
+                    <deckgo-slide-gif src={EnvironmentConfigService.getInstance().get('gifExampleSrc')} alt="Slide Gif">
                         <p slot="header" style={{"font-size": "var(--font-size-very-small)", padding: "2px", "border-radius": "4px"}}>Gif with header</p>
                         <p slot="footer" style={{"font-size": "var(--font-size-very-small)", padding: "2px", "border-radius": "4px"}}>and footer</p>
                     </deckgo-slide-gif>
