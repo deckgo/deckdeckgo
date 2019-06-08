@@ -17,7 +17,7 @@ div.deckgo-tools {
   justify-content: center;
   align-items: center;
 
-  width: var(--deckgo-inline-editor-width, 300px);
+  width: var(--deckgo-inline-editor-width, inherit);
 
   transform: var(--deckgo-inline-editor-transform);
 
@@ -97,6 +97,7 @@ div.deckgo-tools {
 
     &[disabled] {
       color: var(--deckgo-inline-editor-button-color-disabled, #f4f5f8);
+      display: var(--deckgo-inline-editor-button-display-disabled, none);
     }
   }
 

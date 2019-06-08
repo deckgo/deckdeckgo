@@ -212,6 +212,11 @@ export class AppComponentsInlineEditor {
 <td>The color of the buttons when disabled</td>
 </tr>
 <tr>
+<td>--deckgo-inline-editor-button-display-disabled</td>
+<td>none</td>
+<td>Per default the disable elements on title elements are not displayed</td>
+</tr>
+<tr>
 <td>--deckgo-inline-editor-link-color</td>
 <td>#3880ff</td>
 <td>The color of the input field for the url</td>
@@ -223,7 +228,7 @@ export class AppComponentsInlineEditor {
 </tr>
 <tr>
 <td>--deckgo-inline-editor-width</td>
-<td>300px</td>
+<td>inherit</td>
 <td>The width of the toolbar</td>
 </tr>
 </tbody></table>
