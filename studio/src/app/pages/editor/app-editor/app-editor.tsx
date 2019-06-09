@@ -75,6 +75,9 @@ export class AppEditor {
     @State()
     private hideNavigation: boolean = false;
 
+    @State()
+    private slidesEditable: boolean = false;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.anonymousService = AnonymousService.getInstance();
@@ -125,6 +128,8 @@ export class AppEditor {
         this.busySubscription = this.busyService.watchSlideEditable().subscribe(async (slide: HTMLElement) => {
             // Hide actions footer till deck is editable
             this.hideFooterActions = false;
+
+            this.slidesEditable = true;
 
             await this.contentEditable(slide);
 
@@ -534,7 +539,7 @@ export class AppEditor {
         return [
             <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
             <ion-content class="ion-padding">
-                <main class={this.slidesFetched ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
+                <main class={this.slidesEditable ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
 
                     {this.renderLoading()}
 
