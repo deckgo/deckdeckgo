@@ -7,7 +7,7 @@ import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
-        tag: 'app-image',
+    tag: 'app-image',
     styleUrl: 'app-image.scss'
 })
 export class AppImage {
@@ -49,6 +49,10 @@ export class AppImage {
 
             resolve();
         });
+    }
+
+    private async closePopoverWithoutResults() {
+        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
     private async closePopover(action: ImageAction, image?: UnsplashPhoto | TenorGif) {
@@ -96,7 +100,10 @@ export class AppImage {
     }
 
     render() {
-        return [<div class="ion-padding"><h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2></div>,
+        return [<ion-toolbar class="ion-margin ion-padding-end">
+                <h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2>
+                <ion-anchor slot="end" onClick={() => this.closePopoverWithoutResults()}><ion-icon name="close"></ion-icon></ion-anchor>
+            </ion-toolbar>,
             <ion-list>
                 <app-deck-or-slide deckOrSlide={this.deckOrSlide} onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
 
@@ -130,7 +137,7 @@ export class AppImage {
         if (!this.deckOrSlide) {
             return undefined;
         } else {
-            return <ion-item class="action-button">
+            return <ion-item class="action-button ion-margin-bottom">
                 <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_BACKGROUND)} color="medium" fill="outline">
                     <ion-label class="ion-text-uppercase">Delete background</ion-label>
                 </ion-button>

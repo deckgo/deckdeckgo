@@ -19,7 +19,7 @@ export class AppEditorActions {
         this.mobile = DeckDeckGoUtils.isMobile();
     }
 
-    async closePopover(action: EditorAction) {
+    private async closePopover(action: EditorAction) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
             action: action
         });
