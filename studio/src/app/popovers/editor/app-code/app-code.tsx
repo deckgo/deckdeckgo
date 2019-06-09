@@ -59,6 +59,10 @@ export class AppCode {
         await this.initCurrentHiglight();
     }
 
+    private async closePopover() {
+        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+    }
+
     private initCurrentLanguage(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             this.currentLanguage = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
@@ -261,7 +265,10 @@ export class AppCode {
     }
 
     render() {
-        return [<div class="ion-padding"><h2>Code attributes</h2></div>,
+        return [<ion-toolbar class="ion-margin ion-padding-end">
+                <h2>Code attributes</h2>
+                <ion-anchor slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-anchor>
+            </ion-toolbar>,
             <ion-list>
                 <ion-item-divider><ion-label>Language</ion-label></ion-item-divider>
 

@@ -8,7 +8,7 @@ export class AppGetHelp {
 
     @Element() el: HTMLElement;
 
-    async closePopover() {
+    private async closePopover() {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 

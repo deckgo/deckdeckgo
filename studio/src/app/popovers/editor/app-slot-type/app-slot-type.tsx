@@ -22,16 +22,17 @@ export class AppSlideAdd {
         }
     }
 
-    async closePopover(type: SlotType) {
+    private async closePopover(type?: SlotType) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
             type: this.currentType !== type ? type : null
         });
     }
 
     render() {
-        return [<div class="ion-padding">
+        return [<ion-toolbar class="ion-margin ion-padding-end">
                 <h2>Toggle element type</h2>
-            </div>,
+                <ion-anchor slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-anchor>
+            </ion-toolbar>,
 
             <ion-list>
                 <a onClick={() => this.closePopover(SlotType.H1)} class={this.currentType === SlotType.H1 ? "current" : ""}><ion-item><h1>Title</h1></ion-item></a>

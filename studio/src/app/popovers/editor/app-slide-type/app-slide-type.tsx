@@ -38,7 +38,11 @@ export class AppSlideType {
         await this.closePopover(template, slide);
     }
 
-    async closePopover(template: SlideTemplate, slide?: any) {
+    private async closePopoverWithoutResults() {
+        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+    }
+
+    private async closePopover(template: SlideTemplate, slide?: any) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
             slide: slide,
             template: template
@@ -46,9 +50,10 @@ export class AppSlideType {
     }
 
     render() {
-        return [<div class="ion-padding title">
+        return [<ion-toolbar class="ion-margin ion-padding-end">
                 <h2>Add a slide</h2>
-            </div>,
+                <ion-anchor slot="end" onClick={() => this.closePopoverWithoutResults()}><ion-icon name="close"></ion-icon></ion-anchor>
+            </ion-toolbar>,
             <div class="container">
                 <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
                     <deckgo-slide-title>

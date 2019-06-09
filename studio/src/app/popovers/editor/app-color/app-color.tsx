@@ -34,6 +34,10 @@ export class AppColor {
         await this.backgroundPickerListener(false);
     }
 
+    private async closePopover() {
+        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+    }
+
     private async selectApplyToAllDeck($event: CustomEvent) {
         if ($event && $event.detail) {
             this.applyToAllDeck = $event.detail.value;
@@ -161,7 +165,10 @@ export class AppColor {
     };
 
     render() {
-        return [<div class="ion-padding"><h2>Color</h2></div>,
+        return [<ion-toolbar class="ion-margin ion-padding-end">
+                <h2>Color</h2>
+                <ion-anchor slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-anchor>
+            </ion-toolbar>,
             <ion-list>
                 <app-deck-or-slide deckOrSlide={this.deckOrSlide} onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
 

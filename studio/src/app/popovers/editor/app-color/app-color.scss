@@ -1,9 +1,5 @@
 app-color {
 
-  h2 {
-    color: var(--ion-color-primary);
-  }
-
   ion-list.list-ios {
     margin-bottom: 0;
     padding-top: 8px;
@@ -21,7 +17,6 @@ app-color {
         width: 100%;
       }
     }
-
   }
 
   input {
