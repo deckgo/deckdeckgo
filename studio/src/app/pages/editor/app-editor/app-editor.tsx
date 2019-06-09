@@ -127,6 +127,8 @@ export class AppEditor {
             this.hideFooterActions = false;
 
             await this.contentEditable(slide);
+
+            await this.showHelp();
         });
     }
 
@@ -512,6 +514,17 @@ export class AppEditor {
         });
     }
 
+    private showHelp(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+           const help: HTMLElement = this.el.querySelector('app-help');
+           if (help) {
+               await (help as any).displayHelp();
+           }
+
+           resolve();
+        });
+    }
+
     private stickyToolbarActivated($event: CustomEvent) {
         this.hideFooterActions = $event ? $event.detail : false;
         this.hideNavigation = $event ? DeckDeckGoUtils.isIOS() && $event.detail : false;
@@ -521,7 +534,6 @@ export class AppEditor {
         return [
             <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
             <ion-content class="ion-padding">
-                <app-help class={!this.slidesFetched ? 'hidden' : undefined}></app-help>
                 <main class={this.slidesFetched ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
 
                     {this.renderLoading()}
@@ -544,7 +556,8 @@ export class AppEditor {
                 <ion-toolbar>
                     <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
                         <app-add-slide-action
-                            onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}></app-add-slide-action>
+                            onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+                        </app-add-slide-action>
 
                         <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary" mode="md">
                             <ion-icon name="arrow-back"></ion-icon>
@@ -575,6 +588,10 @@ export class AppEditor {
                             <ion-icon name="more" md="md-more" ios="md-more"></ion-icon>
                             <ion-label>More</ion-label>
                         </ion-tab-button>
+                    </ion-buttons>
+
+                    <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
+                        <app-help></app-help>
                     </ion-buttons>
                 </ion-toolbar>
             </ion-footer>,

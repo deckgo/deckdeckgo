@@ -56,8 +56,11 @@ export namespace Components {
     'tags': string[];
   }
   interface AppFooter {}
+  interface AppGetHelp {}
   interface AppGif {}
-  interface AppHelp {}
+  interface AppHelp {
+    'displayHelp': () => Promise<void>;
+  }
   interface AppHome {}
   interface AppImage {
     'deckOrSlide': boolean;
@@ -211,6 +214,12 @@ declare global {
   var HTMLAppFooterElement: {
     prototype: HTMLAppFooterElement;
     new (): HTMLAppFooterElement;
+  };
+
+  interface HTMLAppGetHelpElement extends Components.AppGetHelp, HTMLStencilElement {}
+  var HTMLAppGetHelpElement: {
+    prototype: HTMLAppGetHelpElement;
+    new (): HTMLAppGetHelpElement;
   };
 
   interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
@@ -409,6 +418,7 @@ declare global {
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-card-tags': HTMLAppFeedCardTagsElement;
     'app-footer': HTMLAppFooterElement;
+    'app-get-help': HTMLAppGetHelpElement;
     'app-gif': HTMLAppGifElement;
     'app-help': HTMLAppHelpElement;
     'app-home': HTMLAppHomeElement;
@@ -494,6 +504,7 @@ declare namespace LocalJSX {
     'tags'?: string[];
   }
   interface AppFooter extends JSXBase.HTMLAttributes<HTMLAppFooterElement> {}
+  interface AppGetHelp extends JSXBase.HTMLAttributes<HTMLAppGetHelpElement> {}
   interface AppGif extends JSXBase.HTMLAttributes<HTMLAppGifElement> {}
   interface AppHelp extends JSXBase.HTMLAttributes<HTMLAppHelpElement> {}
   interface AppHome extends JSXBase.HTMLAttributes<HTMLAppHomeElement> {}
@@ -572,6 +583,7 @@ declare namespace LocalJSX {
     'app-feed-card': AppFeedCard;
     'app-feed-card-tags': AppFeedCardTags;
     'app-footer': AppFooter;
+    'app-get-help': AppGetHelp;
     'app-gif': AppGif;
     'app-help': AppHelp;
     'app-home': AppHome;

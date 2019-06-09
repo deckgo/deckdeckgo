@@ -1,3 +1,13 @@
+ion-popover {
+  ion-toolbar {
+    ion-anchor[slot="end"] {
+      margin-bottom: 56px;
+      cursor: pointer;
+      border-bottom-color: transparent;
+    }
+  }
+}
+
 ion-popover.popover-menu {
   div.popover-content {
     top: 0 !important;
