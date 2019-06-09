@@ -16,7 +16,7 @@
   "dependencies": {
     "@deckdeckgo/core": "^1.0.0-beta.38",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.16",
-    "@deckdeckgo/inline-editor": "^1.0.0-alpha.9",
+    "@deckdeckgo/inline-editor": "^1.0.0-alpha.10",
     "@deckdeckgo/lazy-img": "^1.0.0-alpha.7",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.8",
     "@deckdeckgo/remote": "^1.0.0-alpha.11",
