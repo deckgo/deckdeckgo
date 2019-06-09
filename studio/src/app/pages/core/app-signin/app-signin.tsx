@@ -298,7 +298,7 @@ export class AppSignIn {
             return undefined;
         } else {
             return <ion-buttons class="back">
-                <ion-button onClick={() => this.navigateBack()}>
+                <ion-button onClick={() => this.navigateBack()} color="primary">
                     <ion-icon name="close"></ion-icon>
                 </ion-button>
             </ion-buttons>;
