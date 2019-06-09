@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.14"></a>
+# 1.0.0-alpha.14 (2019-06-09)
+
+### Features
+
+* update documentation inline editor hidden not applicable elements instead of hidden
+
 <a name="1.0.0-alpha.13"></a>
 # 1.0.0-alpha.13 (2019-06-04)
 
