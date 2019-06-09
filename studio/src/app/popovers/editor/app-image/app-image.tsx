@@ -98,7 +98,7 @@ export class AppImage {
     render() {
         return [<div class="ion-padding"><h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2></div>,
             <ion-list>
-                {this.renderDeckOrSlide()}
+                <app-deck-or-slide deckOrSlide={this.deckOrSlide} onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
 
                 <ion-item class="ion-margin-top action-button">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_PHOTOS)} color="primary">
@@ -124,26 +124,6 @@ export class AppImage {
                 {this.renderImagesHistory()}
             </ion-list>
         ];
-    }
-
-    private renderDeckOrSlide() {
-        if (!this.deckOrSlide) {
-            return undefined;
-        } else{
-            return [
-                <ion-item-divider class="ion-padding-top"><ion-label>Apply change to</ion-label></ion-item-divider>,
-                <ion-radio-group onIonChange={($event) => this.selectApplyToAllDeck($event)}>
-                    <ion-item>
-                        <ion-label>Just this slide</ion-label>
-                        <ion-radio slot="start" value={false} checked mode="md"></ion-radio>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label>The all deck</ion-label>
-                        <ion-radio slot="start" value={true} mode="md"></ion-radio>
-                    </ion-item>
-                </ion-radio-group>
-            ]
-        }
     }
 
     private renderDeleteAction() {

@@ -1,0 +1,25 @@
+app-deck-or-slide {
+
+  ion-list.list-ios {
+    margin-bottom: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  ion-item {
+    --border-width: 0;
+    --inner-border-width: 0;
+  }
+
+  ion-item-divider {
+    --color: var(--ion-color-primary);
+    --background: inherit;
+    --ion-item-border-color: transparent;
+    --ion-padding: 0;
+
+    ion-label {
+      margin: 16px 0 4px;
+    }
+  }
+
+}
