@@ -78,6 +78,9 @@ export class AppEditor {
     @State()
     private slidesEditable: boolean = false;
 
+    @State()
+    private fullscreen: boolean = false;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.anonymousService = AnonymousService.getInstance();
@@ -135,6 +138,8 @@ export class AppEditor {
 
             await this.showHelp();
         });
+
+        this.fullscreen = DeckDeckGoUtils.isFullscreen();
     }
 
     async destroy() {
@@ -466,6 +471,10 @@ export class AppEditor {
 
             await (deck as any).toggleFullScreen();
 
+            setTimeout(() => {
+                this.fullscreen = DeckDeckGoUtils.isFullscreen();
+            }, 100);
+
             resolve();
         });
     }
@@ -580,8 +589,7 @@ export class AppEditor {
                         </ion-tab-button>
 
                         <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices" mode="md">
-                            <ion-icon name="expand"></ion-icon>
-                            <ion-label>Fullscreen</ion-label>
+                            {this.renderFullscreen()}
                         </ion-tab-button>
 
                         <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices" mode="md">
@@ -613,6 +621,20 @@ export class AppEditor {
             return undefined;
         } else {
             return <ion-spinner color="primary"></ion-spinner>;
+        }
+    }
+
+    private renderFullscreen() {
+        if (this.fullscreen) {
+            return [
+                <ion-icon name="contract"></ion-icon>,
+                <ion-label>Windowed</ion-label>
+            ];
+        } else {
+            return [
+                <ion-icon name="expand"></ion-icon>,
+                <ion-label>Fullscreen</ion-label>
+            ];
         }
     }
 }
