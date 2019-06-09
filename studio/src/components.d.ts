@@ -20,8 +20,16 @@ export namespace Components {
     'codeDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
   }
+  interface AppColor {
+    'background': string;
+    'color': string;
+    'deckOrSlide': boolean;
+    'selectedElement': HTMLElement;
+  }
   interface AppContact {}
-  interface AppDeckOrSlide {}
+  interface AppDeckOrSlide {
+    'deckOrSlide': boolean;
+  }
   interface AppDemo {}
   interface AppDeveloper {}
   interface AppEditor {
@@ -131,6 +139,12 @@ declare global {
   var HTMLAppCodeElement: {
     prototype: HTMLAppCodeElement;
     new (): HTMLAppCodeElement;
+  };
+
+  interface HTMLAppColorElement extends Components.AppColor, HTMLStencilElement {}
+  var HTMLAppColorElement: {
+    prototype: HTMLAppColorElement;
+    new (): HTMLAppColorElement;
   };
 
   interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {}
@@ -383,6 +397,7 @@ declare global {
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-avatar': HTMLAppAvatarElement;
     'app-code': HTMLAppCodeElement;
+    'app-color': HTMLAppColorElement;
     'app-contact': HTMLAppContactElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-demo': HTMLAppDemoElement;
@@ -439,8 +454,18 @@ declare namespace LocalJSX {
     'codeDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
   }
+  interface AppColor extends JSXBase.HTMLAttributes<HTMLAppColorElement> {
+    'background'?: string;
+    'color'?: string;
+    'deckOrSlide'?: boolean;
+    'onColorDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'selectedElement'?: HTMLElement;
+  }
   interface AppContact extends JSXBase.HTMLAttributes<HTMLAppContactElement> {}
-  interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {}
+  interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {
+    'deckOrSlide'?: boolean;
+    'onApplyTo'?: (event: CustomEvent<boolean>) => void;
+  }
   interface AppDemo extends JSXBase.HTMLAttributes<HTMLAppDemoElement> {}
   interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
   interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
@@ -535,6 +560,7 @@ declare namespace LocalJSX {
     'app-add-slide-action': AppAddSlideAction;
     'app-avatar': AppAvatar;
     'app-code': AppCode;
+    'app-color': AppColor;
     'app-contact': AppContact;
     'app-deck-or-slide': AppDeckOrSlide;
     'app-demo': AppDemo;
