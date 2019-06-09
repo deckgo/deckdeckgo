@@ -85,7 +85,7 @@ export class AppEditorToolbar {
         if (window) {
             window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
                 await this.moveToolbar();
-            }, 100));
+            }, 1000));
         }
     }
 
@@ -93,7 +93,7 @@ export class AppEditorToolbar {
         if (window) {
             window.removeEventListener('resize', DeckDeckGoUtils.debounce(async () => {
                 await this.moveToolbar();
-            }, 100));
+            }, 1000));
         }
     }
 
