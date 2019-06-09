@@ -17,7 +17,7 @@
     "@deckdeckgo/charts": "^1.0.0-alpha.7",
     "@deckdeckgo/core": "^1.0.0-beta.38",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.16",
-    "@deckdeckgo/inline-editor": "^1.0.0-alpha.9",
+    "@deckdeckgo/inline-editor": "^1.0.0-alpha.10",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.8",
     "@ionic/core": "^4.5.0-dev.201905311531.e014c6a",
     "rxjs": "^6.5.2"
