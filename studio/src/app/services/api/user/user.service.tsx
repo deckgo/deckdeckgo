@@ -40,7 +40,7 @@ export class UserService {
                     const apiUser: UserInfo = await this.createUserInfo(authUser);
 
                     try {
-                        await this.query(apiUser, authUser.token, '/users', 'POST');
+                        await this.post(apiUser, authUser.token);
                     } catch (err) {
                         this.errorService.error(err);
                     }
@@ -67,6 +67,14 @@ export class UserService {
 
             resolve();
         });
+    }
+
+    post(apiUser: UserInfo, token: string): Promise<User> {
+        return this.query(apiUser, token, '/users', 'POST');
+    }
+
+    put(apiUser: UserInfo | User, token: string, userId: string): Promise<User> {
+        return this.query(apiUser, token, `/users/${userId}`, 'PUT');
     }
 
     query(apiUserInfo: UserInfo | User, token: string, context: string, method: string): Promise<User> {
@@ -201,7 +209,7 @@ export class UserService {
 
                 try {
                     const apiUser: UserInfo = await this.createUserInfo(authUser);
-                    await this.query(apiUser, authUser.token, `/users/${user.id}`, 'PUT');
+                    await this.put(apiUser, authUser.token, user.id);
 
                     resolve();
                 } catch (err) {

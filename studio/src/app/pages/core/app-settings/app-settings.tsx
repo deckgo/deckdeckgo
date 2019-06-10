@@ -99,7 +99,7 @@ export class AppHome {
             }
 
             try {
-                await this.userService.query(this.user, this.authUser.token, `/users/${this.user.id}`, 'PUT');
+                await this.userService.put(this.user, this.authUser.token, this.user.id);
             } catch (err) {
                 this.errorService.error('Your changes couldn\'t be saved');
             }
