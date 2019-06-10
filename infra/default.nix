@@ -267,5 +267,7 @@ rec
           pkgs.moreutils
           pkgs.minio
         ];
+      LANG = "en_US.UTF-8";
+      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
     } script;
 }
