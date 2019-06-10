@@ -2,7 +2,7 @@
 
 variable "presentations-bucket-name" {
   type = "string"
-  default = "deckdeckgo-presentations"
+  default = "deckdeckgo-beta-presentations"
 }
 
 variable "deckdeckgo-io-cert-arn" {
@@ -10,7 +10,7 @@ variable "deckdeckgo-io-cert-arn" {
   default = "arn:aws:acm:us-east-1:610598948490:certificate/4a4693a2-5919-4012-9ea6-e657dcba377b"
 }
 
-resource "aws_s3_bucket" "deckdeckgo_presentations" {
+resource "aws_s3_bucket" "presentations" {
   bucket = "${var.presentations-bucket-name}"
 
   website {
@@ -33,7 +33,7 @@ EOF
 }
 
 output "presentations_endpoint" {
-  value = "${aws_s3_bucket.deckdeckgo_presentations.website_endpoint}"
+  value = "${aws_s3_bucket.presentations.website_endpoint}"
 }
 
 resource "aws_s3_bucket_object" "object" {
@@ -43,7 +43,7 @@ resource "aws_s3_bucket_object" "object" {
   etag = "${md5(file("index.html"))}"
   content_type = "text/html"
 
-  depends_on = [ "aws_s3_bucket.deckdeckgo_presentations" ]
+  depends_on = [ "aws_s3_bucket.presentations" ]
 }
 
 
@@ -57,11 +57,11 @@ resource "aws_cloudfront_distribution" "website_cdn" {
   enabled      = true
   price_class  = "PriceClass_200"
   http_version = "http1.1"
-  aliases = ["${aws_s3_bucket.deckdeckgo_presentations.bucket}.deckdeckgo.io"]
+  aliases = ["${aws_s3_bucket.presentations.bucket}.deckdeckgo.io"]
 
   origin {
-    domain_name = "${aws_s3_bucket.deckdeckgo_presentations.website_endpoint}"
-    origin_id   = "origin-bucket-${aws_s3_bucket.deckdeckgo_presentations.id}"
+    domain_name = "${aws_s3_bucket.presentations.website_endpoint}"
+    origin_id   = "origin-bucket-${aws_s3_bucket.presentations.id}"
     custom_origin_config {
       http_port = 80
       https_port = 443
@@ -75,7 +75,7 @@ resource "aws_cloudfront_distribution" "website_cdn" {
   default_cache_behavior {
     allowed_methods = ["GET", "HEAD"]
     cached_methods  = ["GET", "HEAD"]
-    target_origin_id = "origin-bucket-${aws_s3_bucket.deckdeckgo_presentations.id}"
+    target_origin_id = "origin-bucket-${aws_s3_bucket.presentations.id}"
 
     min_ttl          = "0"
     default_ttl      = "300"
@@ -105,13 +105,13 @@ resource "aws_cloudfront_distribution" "website_cdn" {
   }
 }
 
-data "aws_route53_zone" "deckdeckgo_presentations" {
+data "aws_route53_zone" "presentations" {
   name         = "deckdeckgo.io"
 }
 
 resource "aws_route53_record" "www_site" {
-  zone_id = "${data.aws_route53_zone.deckdeckgo_presentations.zone_id}"
-  name = "${aws_s3_bucket.deckdeckgo_presentations.bucket}"
+  zone_id = "${data.aws_route53_zone.presentations.zone_id}"
+  name = "${aws_s3_bucket.presentations.bucket}"
   type = "A"
   alias {
     name = "${aws_cloudfront_distribution.website_cdn.domain_name}"
