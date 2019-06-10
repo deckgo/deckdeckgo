@@ -99,8 +99,7 @@ export class AppHome {
             }
 
             try {
-                // TODO: Doesn't work yet, end up with a 405
-                await this.userService.query(this.user, this.authUser.token, 'PUT');
+                await this.userService.put(this.user, this.authUser.token, this.user.id);
             } catch (err) {
                 this.errorService.error('Your changes couldn\'t be saved');
             }
