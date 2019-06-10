@@ -31,10 +31,12 @@ dependencies:
     - swagger2
     - text
     - unliftio
+    - temporary
     - unordered-containers
     - wai
     - wai-cors
     - wai-lambda
+    - tar
 
 ghc-options:
     - -Wall
