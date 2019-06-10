@@ -17,7 +17,7 @@ resource "aws_lambda_function" "presenter" {
   environment {
     variables = {
       BUCKET_NAME = "${aws_s3_bucket.presentations.bucket}"
-      DECKGO_STARTER_DIST = "dist"
+      DECKGO_STARTER_DIST = "dist.tar"
       PGUSER = "${aws_db_instance.default.username}"
       PGHOST = "${aws_db_instance.default.address}"
       PGPORT = "${aws_db_instance.default.port}"

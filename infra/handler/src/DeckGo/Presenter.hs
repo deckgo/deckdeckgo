@@ -11,27 +11,31 @@ module DeckGo.Presenter where
 import Control.Lens hiding ((.=))
 import Control.Monad
 import Data.Bifunctor
+import Data.Char (isAscii, isAlphaNum)
 import Data.Function
 import Data.List (foldl')
 import Data.String
 import DeckGo.Handler
 import DeckGo.Prelude
-import qualified Hasql.Connection as HC
 import System.Environment
 import System.FilePath
 import UnliftIO
+import qualified Codec.Archive.Tar as Tar
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Digest.Pure.MD5 as MD5
 import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
+import qualified Data.Text.IO as T
+import qualified Hasql.Connection as HC
 import qualified Network.AWS as Aws
 import qualified Network.AWS.Data as Data
 import qualified Network.AWS.Data.Body as Body
 import qualified Network.AWS.S3 as S3
 import qualified Network.Mime as Mime
 import qualified System.Directory as Dir
+import qualified System.IO.Temp as Temp
 
 data Err = Err T.Text SomeException
   deriving (Show, Exception)
@@ -67,18 +71,32 @@ listPresentationObjects
 listPresentationObjects env bucket uname dname =
     listObjects env bucket (Just $ presentationPrefix uname dname)
 
-presentationFiles
+withPresentationFiles
   :: Username
   -> Deckname
-  -> IO [(FilePath, S3.ObjectKey, S3.ETag)]
-presentationFiles uname dname = do
+  -> ([(FilePath, S3.ObjectKey, S3.ETag)] -> IO a)
+  -> IO a
+withPresentationFiles uname dname act = do
     deckgoStarterDist <- getEnv "DECKGO_STARTER_DIST"
-    putStrLn "Listing files..."
-    files <- listDirectoryRecursive deckgoStarterDist
-    forM files $ \(fp, components) -> do
-      etag <- fileETag fp
-      let okey = mkObjectKey uname dname components
-      pure (fp, okey, etag)
+    Temp.withSystemTempDirectory "dist" $ \dir -> do
+      Tar.extract dir deckgoStarterDist
+      interpolateFile uname dname $ dir </> "index.html"
+      interpolateFile uname dname $ dir </> "manifest.json"
+      putStrLn "Listing files..."
+      files <- listDirectoryRecursive dir
+      files' <- forM files $ \(fp, components) -> do
+        etag <- fileETag fp
+        let okey = mkObjectKey uname dname components
+        pure (fp, okey, etag)
+      act files'
+
+interpolateFile :: Username -> Deckname -> FilePath -> IO ()
+interpolateFile uname dname fp = do
+    T.readFile fp >>= T.writeFile fp . interpol
+  where
+    interpol =
+      T.replace "{{DECKDECKGO_TITLE}}" (unDeckname dname) .
+      T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname)
 
 listObjects :: Aws.Env -> S3.BucketName -> Maybe T.Text -> IO [S3.Object]
 listObjects (fixupEnv' -> env) bname mpref = xif ([],Nothing) $ \f (es, ct) ->
@@ -128,17 +146,17 @@ deployPresentation (fixupEnv' -> env) uname dname = do
     putStrLn "Listing current objects"
     currentObjs <- listPresentationObjects env bucket uname dname
     putStrLn "Listing presentations files"
-    files <- presentationFiles uname dname
-    let
-      currentObjs' =
-        (\obj ->
-          (obj ^. S3.oKey, fixupS3ETag $ obj ^. S3.oETag)
-        ) <$> currentObjs
-      (toPut, toDelete) = diffObjects files currentObjs'
-    putStrLn $ "Deleting " <> show (length toDelete) <> " old files"
-    deleteObjects' env bucket toDelete
-    putStrLn $ "Uploading " <> show (length toPut) <> " new files"
-    putObjects env bucket toPut
+    withPresentationFiles uname dname $ \files -> do
+      let
+        currentObjs' =
+          (\obj ->
+            (obj ^. S3.oKey, fixupS3ETag $ obj ^. S3.oETag)
+          ) <$> currentObjs
+        (toPut, toDelete) = diffObjects files currentObjs'
+      putStrLn $ "Deleting " <> show (length toDelete) <> " old files"
+      deleteObjects' env bucket toDelete
+      putStrLn $ "Uploading " <> show (length toPut) <> " new files"
+      putObjects env bucket toPut
 
 putObjects
   :: Aws.Env
@@ -191,11 +209,23 @@ fixupEnv' = Aws.configure $ S3.s3
 
 presentationPrefix :: Username -> Deckname -> T.Text
 presentationPrefix uname dname =
-    unUsername uname <> "/" <>  unDeckname dname <> "/" -- TODO: deckname escaping
+    unUsername uname <> "/" <>  sanitizeDeckname dname <> "/"
 
 mkObjectKey :: Username -> Deckname -> [T.Text] -> S3.ObjectKey
 mkObjectKey uname dname components = S3.ObjectKey $
     presentationPrefix uname dname <> T.intercalate "/" components
+
+sanitizeDeckname :: Deckname -> T.Text
+sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
+  where
+    strip :: T.Text -> T.Text
+    strip = T.dropAround ( == '-' )
+    dropBadChars :: T.Text -> T.Text
+    dropBadChars = T.concatMap
+      $ \case
+        c | isAscii c && isAlphaNum c -> T.singleton c
+          | c == ' ' -> T.singleton '-'
+          | otherwise -> ""
 
 fileETag :: FilePath -> IO S3.ETag
 fileETag fp =
