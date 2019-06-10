@@ -217,11 +217,12 @@ export class AppSignIn {
 
             await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
 
-            forkJoin(
-                this.authService.watch().pipe(take(1)),
-                this.userService.watch().pipe(take(1)),
-                this.deckEditorService.watch().pipe(take(1))
-            ).subscribe(async ([authUser, user, deck]: [AuthUser, User, Deck]) => {
+            const observables = [];
+            observables.push(this.authService.watch().pipe(take(1)));
+            observables.push(this.userService.watch().pipe(take(1)));
+            observables.push(this.deckEditorService.watch().pipe(take(1)));
+
+            forkJoin(observables).subscribe(async ([authUser, user, deck]: [AuthUser, User, Deck]) => {
                 await set('deckdeckgo_redirect_info', {
                     deckId: deck ? deck.id : null,
                     userId: user ? user.id : null,
@@ -297,7 +298,7 @@ export class AppSignIn {
             return undefined;
         } else {
             return <ion-buttons class="back">
-                <ion-button onClick={() => this.navigateBack()}>
+                <ion-button onClick={() => this.navigateBack()} color="primary">
                     <ion-icon name="close"></ion-icon>
                 </ion-button>
             </ion-buttons>;

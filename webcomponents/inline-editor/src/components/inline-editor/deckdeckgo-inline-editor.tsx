@@ -1012,7 +1012,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private renderSelectionActions() {
-    const styleColor = this.color ? {'border-bottom': '2px solid ' + this.color} : {};
+    const styleColor = this.color ? {'background-color': this.color} : {};
 
     return [
       <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disabledTitle}
@@ -1028,8 +1028,8 @@ export class DeckdeckgoInlineEditor {
 
       <div class="separator"></div>,
 
-      <button onClick={() => this.openColorPicker()} class="color">
-        <span style={styleColor}>A</span>
+      <button onClick={() => this.openColorPicker()} class="pick-color">
+        <div style={styleColor}></div>
       </button>,
 
       <button
@@ -1048,8 +1048,7 @@ export class DeckdeckgoInlineEditor {
 
       <div class="separator"></div>,
 
-      <button
-        disabled={this.disabledTitle} onClick={() => this.toggleLink()} class={this.link ? "link active" : "link"}>
+      <button onClick={() => this.toggleLink()} class={this.link ? "link active" : "link"}>
         <div></div>
       </button>
     ];

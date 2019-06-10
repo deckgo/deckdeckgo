@@ -20,8 +20,16 @@ export namespace Components {
     'codeDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
   }
+  interface AppColor {
+    'background': string;
+    'color': string;
+    'deckOrSlide': boolean;
+    'selectedElement': HTMLElement;
+  }
   interface AppContact {}
-  interface AppDeckOrSlide {}
+  interface AppDeckOrSlide {
+    'deckOrSlide': boolean;
+  }
   interface AppDemo {}
   interface AppDeveloper {}
   interface AppEditor {
@@ -48,8 +56,11 @@ export namespace Components {
     'tags': string[];
   }
   interface AppFooter {}
+  interface AppGetHelp {}
   interface AppGif {}
-  interface AppHelp {}
+  interface AppHelp {
+    'displayHelp': () => Promise<void>;
+  }
   interface AppHome {}
   interface AppImage {
     'deckOrSlide': boolean;
@@ -133,6 +144,12 @@ declare global {
     new (): HTMLAppCodeElement;
   };
 
+  interface HTMLAppColorElement extends Components.AppColor, HTMLStencilElement {}
+  var HTMLAppColorElement: {
+    prototype: HTMLAppColorElement;
+    new (): HTMLAppColorElement;
+  };
+
   interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {}
   var HTMLAppContactElement: {
     prototype: HTMLAppContactElement;
@@ -197,6 +214,12 @@ declare global {
   var HTMLAppFooterElement: {
     prototype: HTMLAppFooterElement;
     new (): HTMLAppFooterElement;
+  };
+
+  interface HTMLAppGetHelpElement extends Components.AppGetHelp, HTMLStencilElement {}
+  var HTMLAppGetHelpElement: {
+    prototype: HTMLAppGetHelpElement;
+    new (): HTMLAppGetHelpElement;
   };
 
   interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
@@ -383,6 +406,7 @@ declare global {
     'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-avatar': HTMLAppAvatarElement;
     'app-code': HTMLAppCodeElement;
+    'app-color': HTMLAppColorElement;
     'app-contact': HTMLAppContactElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-demo': HTMLAppDemoElement;
@@ -394,6 +418,7 @@ declare global {
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-card-tags': HTMLAppFeedCardTagsElement;
     'app-footer': HTMLAppFooterElement;
+    'app-get-help': HTMLAppGetHelpElement;
     'app-gif': HTMLAppGifElement;
     'app-help': HTMLAppHelpElement;
     'app-home': HTMLAppHomeElement;
@@ -439,8 +464,18 @@ declare namespace LocalJSX {
     'codeDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
   }
+  interface AppColor extends JSXBase.HTMLAttributes<HTMLAppColorElement> {
+    'background'?: string;
+    'color'?: string;
+    'deckOrSlide'?: boolean;
+    'onColorDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'selectedElement'?: HTMLElement;
+  }
   interface AppContact extends JSXBase.HTMLAttributes<HTMLAppContactElement> {}
-  interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {}
+  interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {
+    'deckOrSlide'?: boolean;
+    'onApplyTo'?: (event: CustomEvent<boolean>) => void;
+  }
   interface AppDemo extends JSXBase.HTMLAttributes<HTMLAppDemoElement> {}
   interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
   interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
@@ -469,6 +504,7 @@ declare namespace LocalJSX {
     'tags'?: string[];
   }
   interface AppFooter extends JSXBase.HTMLAttributes<HTMLAppFooterElement> {}
+  interface AppGetHelp extends JSXBase.HTMLAttributes<HTMLAppGetHelpElement> {}
   interface AppGif extends JSXBase.HTMLAttributes<HTMLAppGifElement> {}
   interface AppHelp extends JSXBase.HTMLAttributes<HTMLAppHelpElement> {}
   interface AppHome extends JSXBase.HTMLAttributes<HTMLAppHomeElement> {}
@@ -535,6 +571,7 @@ declare namespace LocalJSX {
     'app-add-slide-action': AppAddSlideAction;
     'app-avatar': AppAvatar;
     'app-code': AppCode;
+    'app-color': AppColor;
     'app-contact': AppContact;
     'app-deck-or-slide': AppDeckOrSlide;
     'app-demo': AppDemo;
@@ -546,6 +583,7 @@ declare namespace LocalJSX {
     'app-feed-card': AppFeedCard;
     'app-feed-card-tags': AppFeedCardTags;
     'app-footer': AppFooter;
+    'app-get-help': AppGetHelp;
     'app-gif': AppGif;
     'app-help': AppHelp;
     'app-home': AppHome;

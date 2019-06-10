@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/inline-editor",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "description": "A WYSIWYG HTML Inline Editor Web Component",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "@stencil/core": "^1.0.0",
-    "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.2.3",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.0.0",
     "@stencil/utils": "0.0.5",
     "autoprefixer": "^9.6.0"
   },

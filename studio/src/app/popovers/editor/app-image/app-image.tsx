@@ -7,7 +7,7 @@ import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
-        tag: 'app-image',
+    tag: 'app-image',
     styleUrl: 'app-image.scss'
 })
 export class AppImage {
@@ -49,6 +49,10 @@ export class AppImage {
 
             resolve();
         });
+    }
+
+    private async closePopoverWithoutResults() {
+        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
     private async closePopover(action: ImageAction, image?: UnsplashPhoto | TenorGif) {
@@ -96,9 +100,12 @@ export class AppImage {
     }
 
     render() {
-        return [<div class="ion-padding"><h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2></div>,
+        return [<ion-toolbar class="ion-margin ion-padding-end">
+                <h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2>
+                <ion-anchor slot="end" onClick={() => this.closePopoverWithoutResults()}><ion-icon name="close"></ion-icon></ion-anchor>
+            </ion-toolbar>,
             <ion-list>
-                {this.renderDeckOrSlide()}
+                <app-deck-or-slide deckOrSlide={this.deckOrSlide} onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
 
                 <ion-item class="ion-margin-top action-button">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_PHOTOS)} color="primary">
@@ -126,31 +133,11 @@ export class AppImage {
         ];
     }
 
-    private renderDeckOrSlide() {
-        if (!this.deckOrSlide) {
-            return undefined;
-        } else{
-            return [
-                <ion-item-divider class="ion-padding-top"><ion-label>Apply change to</ion-label></ion-item-divider>,
-                <ion-radio-group onIonChange={($event) => this.selectApplyToAllDeck($event)}>
-                    <ion-item>
-                        <ion-label>Just this slide</ion-label>
-                        <ion-radio slot="start" value={false} checked mode="md"></ion-radio>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label>The all deck</ion-label>
-                        <ion-radio slot="start" value={true} mode="md"></ion-radio>
-                    </ion-item>
-                </ion-radio-group>
-            ]
-        }
-    }
-
     private renderDeleteAction() {
         if (!this.deckOrSlide) {
             return undefined;
         } else {
-            return <ion-item class="action-button">
+            return <ion-item class="action-button ion-margin-bottom">
                 <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_BACKGROUND)} color="medium" fill="outline">
                     <ion-label class="ion-text-uppercase">Delete background</ion-label>
                 </ion-button>

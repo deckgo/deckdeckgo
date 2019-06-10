@@ -1,6 +1,8 @@
-import {Component, State, h} from '@stencil/core';
+import {Component, h, Element, Method} from '@stencil/core';
 
 import {get, set} from 'idb-keyval';
+
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 @Component({
     tag: 'app-help',
@@ -8,28 +10,39 @@ import {get, set} from 'idb-keyval';
 })
 export class AppHelp {
 
-    @State()
-    private helpDisplayedOnce: boolean = true;
+    @Element() el: HTMLElement;
 
-    async componentWillLoad() {
-        this.helpDisplayedOnce = await get<boolean>('deckdeckgo_display_help');
+    @Method()
+    async displayHelp() {
+        const helpDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_help');
+
+        if (!helpDisplayedOnce) {
+            const button: HTMLIonTabButtonElement = this.el.querySelector('ion-tab-button.get-help-action');
+
+            if (button) {
+                button.click();
+            }
+        }
     }
 
-    private async close() {
-        this.helpDisplayedOnce = true;
-        await set('deckdeckgo_display_help', this.helpDisplayedOnce);
+    private async openGetHelp($event: UIEvent) {
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+            component: 'app-get-help',
+            event: $event,
+            mode: 'ios'
+        });
+
+        popover.onDidDismiss().then(async () => {
+            await set('deckdeckgo_display_help', true);
+        });
+
+        await popover.present();
     }
 
     render() {
-        if (!this.helpDisplayedOnce) {
-            return <aside>
-                <div>
-                    <p>We are in development, we need your help. Send us feedback on <a href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNjMyNTk2NTQwODk5LTAxZjAwZWQwODQyZDg1ZDA5ODhlOTE3OGMwZjhmYjY3NDRhZjViZTRiNWU3OGU3MjYyNjE1OWE3NzNkZmQ3ZWI" target="_blank">Slack</a>. You are awesome!</p>
-                    <button onClick={() => this.close()}><ion-icon name="close"></ion-icon></button>
-                </div>
-            </aside>
-        } else {
-            return undefined;
-        }
+        return <ion-tab-button onClick={($event: UIEvent) => this.openGetHelp($event)} color="primary" mode="md" class="get-help-action">
+            <ion-icon name="help"></ion-icon>
+            <ion-label>Help</ion-label>
+        </ion-tab-button>
     }
 }

@@ -1,5 +1,4 @@
-app-code {
-  @import "../../../../global/theme/editor/editor-info";
+app-deck-or-slide {
 
   ion-list.list-ios {
     margin-bottom: 0;
@@ -10,21 +9,6 @@ app-code {
   ion-item {
     --border-width: 0;
     --inner-border-width: 0;
-    
-    &.select {
-      ion-label:first-of-type {
-        display: none;
-      }
-
-      ion-select {
-        min-width: 100%;
-        padding-left: 0;
-      }
-    }
-
-    small {
-      color: var(--ion-color-medium);
-    }
   }
 
   ion-item-divider {
@@ -37,4 +21,5 @@ app-code {
       margin: 16px 0 4px;
     }
   }
+
 }

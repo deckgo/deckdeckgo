@@ -1,10 +1,6 @@
 app-image {
   @import "../../../../global/theme/editor/editor-info";
 
-  h2 {
-    color: var(--ion-color-primary);
-  }
-
   ion-list.list-ios {
     margin-bottom: 0;
     padding-top: 8px;
@@ -29,7 +25,7 @@ app-image {
   }
 
   ion-item-divider {
-    --color: var(--ion-color-primary);
+    --color: black;
     --background: inherit;
     --ion-item-border-color: transparent;
     --ion-padding: 0;

@@ -1,3 +1,11 @@
+<a name="1.0.0-alpha.10"></a>
+# 1.0.0-alpha.10 (2019-06-09)
+
+### Features
+
+* display an icon instead of A for the color picker
+* display elements not applicable per default hidden (instead of disabled)
+
 <a name="1.0.0-alpha.9"></a>
 # 1.0.0-alpha.9 (2019-06-04)
 

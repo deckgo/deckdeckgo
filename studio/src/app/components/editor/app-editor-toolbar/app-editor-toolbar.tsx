@@ -70,16 +70,10 @@ export class AppEditorToolbar {
     }
 
     async componentDidLoad() {
-        await this.colorPickerListener(true);
-        await this.backgroundPickerListener(true);
-
         this.initWindowResize();
     }
 
     async componentDidUnload() {
-        await this.colorPickerListener(false);
-        await this.backgroundPickerListener(false);
-
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
@@ -91,7 +85,7 @@ export class AppEditorToolbar {
         if (window) {
             window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
                 await this.moveToolbar();
-            }, 100));
+            }, 1000));
         }
     }
 
@@ -99,7 +93,7 @@ export class AppEditorToolbar {
         if (window) {
             window.removeEventListener('resize', DeckDeckGoUtils.debounce(async () => {
                 await this.moveToolbar();
-            }, 100));
+            }, 1000));
         }
     }
 
@@ -414,126 +408,6 @@ export class AppEditorToolbar {
         });
     }
 
-    // Color
-
-    private colorPickerListener(bind: boolean): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
-
-            if (!colorPicker) {
-                resolve();
-                return;
-            }
-
-            if (bind) {
-                colorPicker.addEventListener('change', this.selectColor, false);
-            } else {
-                colorPicker.removeEventListener('change', this.selectColor, true);
-            }
-
-
-            resolve();
-        });
-    }
-
-    private openColorPicker = (): Promise<void> => {
-        return new Promise<void>((resolve) => {
-            const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
-
-            if (!colorPicker) {
-                resolve();
-                return;
-            }
-
-            colorPicker.click();
-
-            resolve();
-        });
-    };
-
-    private selectColor = async ($event) => {
-        if (!this.selectedElement) {
-            return;
-        }
-
-        this.color = $event.target.value;
-
-        if (this.deckOrSlide) {
-            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-            element.style.setProperty('--color', $event.target.value);
-        } else {
-            this.selectedElement.style.color = $event.target.value;
-        }
-
-        await this.emitChange();
-    };
-
-    // Background
-
-    private backgroundPickerListener(bind: boolean): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
-
-            if (!backgroundPicker) {
-                resolve();
-                return;
-            }
-
-            if (bind) {
-                backgroundPicker.addEventListener('change', this.selectBackground, false);
-            } else {
-                backgroundPicker.removeEventListener('change', this.selectBackground, true);
-            }
-
-
-            resolve();
-        });
-    }
-
-    private openBackgroundPicker = (): Promise<void> => {
-        return new Promise<void>((resolve) => {
-            const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
-
-            if (!backgroundPicker) {
-                resolve();
-                return;
-            }
-
-            backgroundPicker.click();
-
-            resolve();
-        });
-    };
-
-    private selectBackground = async ($event) => {
-        if (!this.selectedElement) {
-            return;
-        }
-
-        this.background = $event.target.value;
-
-        if (this.deckOrSlide) {
-            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-            element.style.setProperty('--background', $event.target.value);
-        } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
-            const element: HTMLElement = this.selectedElement.parentElement;
-
-            if (this.selectedElement.getAttribute('slot') === 'start') {
-                element.style.setProperty('--slide-split-background-start', $event.target.value);
-            } else if (this.selectedElement.getAttribute('slot') === 'end') {
-                element.style.setProperty('--slide-split-background-end', $event.target.value);
-            } else {
-                this.selectedElement.style.background = $event.target.value;
-            }
-        } else {
-            this.selectedElement.style.background = $event.target.value;
-        }
-
-        await this.emitChange();
-    };
-
     private async openSlotType() {
         if (this.deckOrSlide) {
             return;
@@ -594,6 +468,11 @@ export class AppEditorToolbar {
 
             resolve();
         });
+    }
+
+    @Listen('colorDidChange')
+    async onColorDidChange(_element: HTMLElement) {
+        await this.emitChange();
     }
 
     private emitChange(): Promise<void> {
@@ -670,23 +549,17 @@ export class AppEditorToolbar {
         });
     }
 
-    private async openForDeckOrSlide($event: UIEvent, myFunction: Function) {
-        if (!this.deckOrSlide) {
-            await myFunction();
-            return;
-        }
-
+    private async openColor() {
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-deck-or-slide',
-            event: $event,
-            mode: 'ios'
-        });
-
-        popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail.data) {
-                this.applyToAllDeck = detail.data.deck;
-                await myFunction();
-            }
+            component: 'app-color',
+            componentProps: {
+                deckOrSlide: this.deckOrSlide,
+                color: this.color,
+                background: this.background,
+                selectedElement: this.selectedElement
+            },
+            mode: 'md',
+            cssClass: 'popover-menu'
         });
 
         await popover.present();
@@ -773,40 +646,24 @@ export class AppEditorToolbar {
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderSlotType()}
                 {this.renderPhotos()}
-                {this.renderActions()}
+                {this.renderColor()}
                 {this.renderCodeOptions()}
                 {this.renderDelete()}
-            </div>,
-            <input type="color" name="color-picker" value={this.color}></input>,
-            <input type="color" name="background-picker" value={this.background}></input>
+            </div>
         ];
     }
 
     private renderDelete() {
         return <a onClick={() => this.deleteElement()} title="Delete"
                   class={this.deckBusy && this.deckOrSlide ? "delete disabled" : "delete"}>
-            <ion-icon name="trash" ios="md-trash" md="md-trash"></ion-icon>
+            <ion-icon name="trash"></ion-icon>
         </a>
     }
 
-    private renderActions() {
-        const styleColor = {
-            'border-bottom': '2px solid ' + this.color
-        };
-
-        const styleBackground = {
-            'border-bottom': '2px solid ' + this.background
-        };
-
-        return [
-            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openBackgroundPicker)}
-               title="Background">
-                <ion-label style={styleBackground}>Bg</ion-label>
-            </a>,
-            <a onClick={(e: UIEvent) => this.openForDeckOrSlide(e, this.openColorPicker)} title="Color">
-                <ion-label style={styleColor}>A</ion-label>
-            </a>
-        ]
+    private renderColor() {
+        return <a onClick={() => this.openColor()} title="Color">
+            <ion-icon name="color-fill"></ion-icon>
+        </a>
     }
 
     private renderSlotType() {

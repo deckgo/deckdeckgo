@@ -16,7 +16,7 @@
   "dependencies": {
     "@deckdeckgo/core": "^1.0.0-beta.38",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.16",
-    "@deckdeckgo/inline-editor": "^1.0.0-alpha.9",
+    "@deckdeckgo/inline-editor": "^1.0.0-alpha.10",
     "@deckdeckgo/lazy-img": "^1.0.0-alpha.7",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.8",
     "@deckdeckgo/remote": "^1.0.0-alpha.11",
@@ -30,8 +30,8 @@
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.11",
     "@stencil/core": "^1.0.1",
-    "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.2.3",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.0.0",
     "autoprefixer": "^9.6.0",
     "rollup-plugin-replace": "^2.2.0",
     "workbox-build": "4.3.1"

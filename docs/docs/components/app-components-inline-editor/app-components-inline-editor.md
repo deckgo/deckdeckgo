@@ -93,9 +93,10 @@ The `<deckgo-inline-editor/>` could be styled using the following CSS4 variables
 | --deckgo-inline-editor-button-font-family | inherit | The buttons font family |
 | --deckgo-inline-editor-button-color-active | black | The color of the buttons when active |
 | --deckgo-inline-editor-button-color-disabled | #f4f5f8 | The color of the buttons when disabled  |
+| --deckgo-inline-editor-button-display-disabled | none | Per default the disable elements on title elements are not displayed |
 | --deckgo-inline-editor-link-color | #3880ff | The color of the input field for the url |
 | --deckgo-inline-editor-link-placeholder-color | #3880ff | The color of the placeholder of the input field for the url |
-| --deckgo-inline-editor-width | 300px | The width of the toolbar |
+| --deckgo-inline-editor-width | inherit | The width of the toolbar |
 
 Furthermore, the following variables are also available but only have an effects on mobile devices:
 
