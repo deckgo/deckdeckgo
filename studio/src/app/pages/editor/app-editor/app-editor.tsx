@@ -96,9 +96,9 @@ export class AppEditor {
         }
 
         // ionViewDidEnter and ionViewDidLeave, kind of
-        if ($event.detail.to && $event.detail.to.indexOf('editor') > -1) {
+        if ($event.detail.to && $event.detail.to.indexOf('/editor') === 0) {
             await this.init();
-        } else if ($event.detail.from && $event.detail.from.indexOf('editor') > -1) {
+        } else if ($event.detail.from && $event.detail.from.indexOf('/editor') === 0) {
             await this.destroy();
         }
     }
