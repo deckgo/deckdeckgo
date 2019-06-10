@@ -9,13 +9,14 @@
 module DeckGo.Presenter where
 
 import Control.Lens hiding ((.=))
-import Data.Bifunctor
 import Control.Monad
-import Data.String
+import Data.Bifunctor
 import Data.Function
 import Data.List (foldl')
+import Data.String
 import DeckGo.Handler
 import DeckGo.Prelude
+import qualified Hasql.Connection as HC
 import System.Environment
 import System.FilePath
 import UnliftIO
@@ -105,6 +106,20 @@ deleteObjects' (fixupEnv' -> env) bname okeys =
       Aws.send $ S3.deleteObject bname okey) >>= \case
         Right {} -> pure ()
         Left e -> error $ "Could not delete object: " <> show e
+
+-- TODO: sanitize deck name
+deployDeck :: Aws.Env -> HC.Connection -> DeckId -> IO ()
+deployDeck env conn deckId = do
+    deckGetDeckIdDB env deckId >>= \case
+      Nothing -> pure () -- TODO
+      Just deck -> do
+        iface <- liftIO $ getDbInterface conn
+        liftIO (fmap itemContent <$> dbGetUserById iface (deckOwnerId deck)) >>= \case
+          Nothing -> pure () -- TODO
+          Just user -> case userUsername user of
+            Nothing -> pure () -- TODO
+            Just uname ->
+              deployPresentation env uname (deckDeckname deck)
 
 deployPresentation :: Aws.Env -> Username -> Deckname -> IO ()
 deployPresentation (fixupEnv' -> env) uname dname = do
