@@ -252,21 +252,6 @@ data Deck = Deck
   , deckAttributes :: HMS.HashMap T.Text T.Text
   } deriving (Show, Eq)
 
-{-
-data Deck = Deck
-  { deckSlides :: [SlideId]
-  , deckOwnerId :: UserId
-  , deckAttributes :: HMS.HashMap T.Text T.Text
-  , deckTitle :: T.Text
-  , deckDescription :: Maybe T.Text
-  , deckAuthor :: Maybe T.Text
-  , deckHashTags :: [CI T.Text]
-  , deckPublicationDate :: Maybe UTCTime
-  } deriving (Show, Eq)
--}
-
--- /decks/<deck-id>/publish
-
 instance FromJSONObject Deck where
   parseJSONObject = \obj ->
     Deck
@@ -709,6 +694,34 @@ decksGet env fuid mUserId = do
       Left e -> do
         liftIO $ print e
         Servant.throwError Servant.err500
+
+-- | TODO: better errors + merge with decksGetDeckId
+deckGetDeckIdDB :: Aws.Env -> DeckId -> IO (Maybe Deck)
+deckGetDeckIdDB env deckId = do
+    res <- runAWS env $ Aws.send $ DynamoDB.getItem "Decks" &
+        DynamoDB.giKey .~ HMS.singleton "DeckId" (deckIdToAttributeValue deckId)
+
+    fmap itemContent <$> case res of
+      Right getItemResponse ->
+        case getItemResponse ^. DynamoDB.girsResponseStatus of
+          200 ->
+            case itemToDeck (getItemResponse ^. DynamoDB.girsItem) of
+              Nothing -> do
+                liftIO $ putStrLn $ "Could not parse response: " <> show getItemResponse
+                error "Could not parse"
+              Just deck -> pure (Just deck)
+
+          404 -> do
+            liftIO $ putStrLn $ "Item not found: " <> show getItemResponse
+            pure Nothing
+          s -> do
+            liftIO $
+              putStrLn $ "Unkown response status: " <> show s <>
+              " in response " <> show getItemResponse
+            error "Unknown response status"
+      Left e -> do
+        liftIO $ print e
+        error "Some error"
 
 decksGetDeckId :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler (Item DeckId Deck)
 decksGetDeckId env fuid deckId = do

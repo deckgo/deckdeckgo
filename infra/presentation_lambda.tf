@@ -18,6 +18,11 @@ resource "aws_lambda_function" "presenter" {
     variables = {
       BUCKET_NAME = "${aws_s3_bucket.deckdeckgo_presentations.bucket}"
       DECKGO_STARTER_DIST = "dist"
+      PGUSER = "${aws_db_instance.default.username}"
+      PGHOST = "${aws_db_instance.default.address}"
+      PGPORT = "${aws_db_instance.default.port}"
+      PGDATABASE = "${aws_db_instance.default.name}"
+      PGPASSWORD = "${aws_db_instance.default.password}"
     }
   }
 }
@@ -119,6 +124,27 @@ data "aws_iam_policy_document" "policy_for_lambda_presenter" {
     ]
 
     resources = [ "${aws_s3_bucket.deckdeckgo_presentations.arn}/*" ]
+  }
+
+  # Give access to DynamoDB
+  statement {
+    actions = [
+      "dynamodb:BatchGetItem",
+      "dynamodb:GetItem",
+      "dynamodb:UpdateItem",
+      "dynamodb:Query",
+      "dynamodb:Scan",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:PutItem",
+      "dynamodb:UpdateItem",
+      "dynamodb:DeleteItem",
+    ]
+
+    resources = [
+      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-decks.arn}",
+      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-slides.arn}",
+      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-users.arn}",
+    ]
   }
 
 }
