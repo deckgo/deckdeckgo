@@ -8,12 +8,10 @@ rec
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${handlerStatic}/bin/handler" main_hs
         cp ${./google-public-keys.json} google-public-keys.json
-        mkdir dist
-        cp -r ${deckdeckgo-starter-dist}/* dist
         mkdir $out
         ${pkgs.zip}/bin/zip \
           -r $out/function.zip \
-          main.js main_hs google-public-keys.json dist
+          main.js main_hs google-public-keys.json
       '';
 
   # TODO: move all other builders to this
@@ -43,9 +41,9 @@ rec
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${handlerStatic}/bin/presenter" main_hs
-        cp -r "${deckdeckgo-starter-dist}" dist
-        mkdir $out
-        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist
+        cp ${deckdeckgo-starter-dist}/dist.tar dist.tar
+        mkdir -p $out
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist.tar
       '';
 
   deckdeckgo-starter-dist =
@@ -58,7 +56,10 @@ rec
         cd _napalm-install
         patchShebangs node_modules/webpack/bin/webpack.js
         npm run build
-        mv dist $out
+        mkdir -p $out
+        pushd dist
+        tar -cvf $out/dist.tar *
+        popd
       '';
 
   devshell = if ! pkgs.lib.inNixShell then null else
@@ -147,7 +148,7 @@ rec
             AWS_DEFAULT_REGION=us-east-1 \
               AWS_ACCESS_KEY_ID=dummy \
               AWS_SECRET_ACCESS_KEY=dummy_key \
-              DECKGO_STARTER_DIST=${deckdeckgo-starter-dist} \
+              DECKGO_STARTER_DIST=${deckdeckgo-starter-dist}/dist.tar \
               ghci -Wall handler/app/Test.hs handler/src/DeckGo/*.hs
          }
 
@@ -250,7 +251,7 @@ rec
         AWS_DEFAULT_REGION=us-east-1 \
         AWS_ACCESS_KEY_ID=dummy \
         AWS_SECRET_ACCESS_KEY=dummy_key \
-        DECKGO_STARTER_DIST=${deckdeckgo-starter-dist} \
+        DECKGO_STARTER_DIST=${deckdeckgo-starter-dist}/dist.tar \
         TEST_TOKEN_PATH=${./token} ${handler}/bin/test
       echo "Tests were run"
 
