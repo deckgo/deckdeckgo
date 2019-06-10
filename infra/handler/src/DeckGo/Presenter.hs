@@ -11,6 +11,7 @@ module DeckGo.Presenter where
 import Control.Lens hiding ((.=))
 import Control.Monad
 import Data.Bifunctor
+import Data.Char (isAscii, isAlphaNum)
 import Data.Function
 import Data.List (foldl')
 import Data.String
@@ -191,11 +192,23 @@ fixupEnv' = Aws.configure $ S3.s3
 
 presentationPrefix :: Username -> Deckname -> T.Text
 presentationPrefix uname dname =
-    unUsername uname <> "/" <>  unDeckname dname <> "/" -- TODO: deckname escaping
+    unUsername uname <> "/" <>  sanitizeDeckname dname <> "/"
 
 mkObjectKey :: Username -> Deckname -> [T.Text] -> S3.ObjectKey
 mkObjectKey uname dname components = S3.ObjectKey $
     presentationPrefix uname dname <> T.intercalate "/" components
+
+sanitizeDeckname :: Deckname -> T.Text
+sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
+  where
+    strip :: T.Text -> T.Text
+    strip = T.dropAround ( == '-' )
+    dropBadChars :: T.Text -> T.Text
+    dropBadChars = T.concatMap
+      $ \case
+        c | isAscii c && isAlphaNum c -> T.singleton c
+          | c == ' ' -> T.singleton '-'
+          | otherwise -> ""
 
 fileETag :: FilePath -> IO S3.ETag
 fileETag fp =
