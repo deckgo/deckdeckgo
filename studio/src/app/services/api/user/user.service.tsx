@@ -1,4 +1,5 @@
 import {Observable, ReplaySubject} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 import {get, del, set} from 'idb-keyval';
 
@@ -35,17 +36,19 @@ export class UserService {
                 await this.signOut();
             } else {
                 const savedApiUserId: string = await get<string>('deckdeckgo_user_id');
-                if (!savedApiUserId) {
+                if (!savedApiUserId || savedApiUserId !== authUser.uid) {
                     const apiUser: UserInfo = await this.createUserInfo(authUser);
 
                     try {
-                        await this.query(apiUser, authUser.token, 'POST');
+                        await this.query(apiUser, authUser.token, '/users', 'POST');
                     } catch (err) {
                         this.errorService.error(err);
                     }
                 } else {
                     try {
                         await this.get(savedApiUserId);
+
+                        await this.updateMergedUser(authUser);
                     } catch (err) {
                         this.errorService.error(err);
                     }
@@ -59,18 +62,19 @@ export class UserService {
     signOut(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             this.apiUserSubject.next(null);
+
             await del('deckdeckgo_user_id');
 
             resolve();
         });
     }
 
-    query(apiUserInfo: UserInfo | User, token: string, method: string): Promise<User> {
+    query(apiUserInfo: UserInfo | User, token: string, context: string, method: string): Promise<User> {
         return new Promise<User>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
-                const rawResponse: Response = await fetch(apiUrl + '/users', {
+                const rawResponse: Response = await fetch(apiUrl + context, {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
@@ -172,6 +176,39 @@ export class UserService {
 
             resolve(apiUserInfo);
         });
+    }
+
+    // In case of successful merge, previous user who might have been an anonymous need to become a not anonymous one and get a user name
+    private updateMergedUser(authUser: AuthUser): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            if (!authUser) {
+                resolve();
+                return;
+            }
+
+            const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
+
+            if (!authUser || authUser.anonymous || !mergeInfo || !mergeInfo.anonymous || !mergeInfo.userId || !mergeInfo.userToken) {
+                resolve();
+                return;
+            }
+
+            this.watch().pipe(take(1)).subscribe(async (user: User) => {
+                if (!user || user.username) {
+                    resolve();
+                    return;
+                }
+
+                try {
+                    const apiUser: UserInfo = await this.createUserInfo(authUser);
+                    await this.query(apiUser, authUser.token, `/users/${user.id}`, 'PUT');
+
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+            });
+        })
     }
 
 }

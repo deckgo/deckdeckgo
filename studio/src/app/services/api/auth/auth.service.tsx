@@ -87,6 +87,11 @@ export class AuthService {
 
     async signOut() {
         await firebase.auth().signOut();
+
+        await this.userService.signOut();
+
+        await del('deckdeckgo_redirect');
+        await del('deckdeckgo_redirect_info');
     }
 
     signInAnonymous(): Promise<void> {

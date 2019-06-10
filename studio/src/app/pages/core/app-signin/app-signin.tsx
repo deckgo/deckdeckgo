@@ -8,7 +8,7 @@ import {filter, take} from 'rxjs/operators';
 
 import {del, get, set} from 'idb-keyval';
 
-import {User, UserInfo} from '../../../models/user';
+import {User} from '../../../models/user';
 import {AuthUser} from '../../../models/auth-user';
 import {Deck} from '../../../models/deck';
 
@@ -20,12 +20,6 @@ import {MergeService} from '../../../services/api/merge/merge.service';
 import {UserService} from '../../../services/api/user/user.service';
 import {AuthService} from '../../../services/api/auth/auth.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
-
-interface MergeInformation {
-    deckId: string;
-    userId: string;
-    userToken: string;
-}
 
 @Component({
     tag: 'app-signin',
@@ -83,11 +77,11 @@ export class AppSignIn {
 
         await Utils.injectJS(
             'firebase-ui-script',
-            'https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js'
+            'https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.js'
         );
         await Utils.injectCSS(
             'firebase-ui-css',
-            'https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css'
+            'https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.css'
         );
 
         const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
@@ -113,10 +107,8 @@ export class AppSignIn {
             credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
             autoUpgradeAnonymousUsers: true,
             callbacks: {
-                signInSuccessWithAuthResult: async (_authResult, _redirectUrl) => {
+                signInSuccessWithAuthResult: (_authResult, _redirectUrl) => {
                     this.signInInProgress = true;
-
-                    await this.navigateRedirect();
 
                     return true;
                 },
@@ -156,51 +148,36 @@ export class AppSignIn {
 
             const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
 
+            if (!mergeInfo || !mergeInfo.deckId || !mergeInfo.userToken || !mergeInfo.userId) {
+                await firebase.auth().signInWithCredential(cred);
+
+                resolve();
+                return;
+            }
+
             await this.userService.signOut();
 
             this.userService.watch().pipe(
-                filter((user: User) => user !== null && user !== undefined),
+                filter((user: User) => user !== null && user !== undefined && user.id && user.id !== mergeInfo.userId),
                 take(1)).subscribe(async (user: User) => {
 
-                if (user && mergeInfo && mergeInfo.deckId && mergeInfo.userToken && mergeInfo.userId) {
-                    // Merge deck to new user
-                    await this.mergeService.mergeDeck(mergeInfo.deckId, mergeInfo.userToken, user.id);
+                // Merge deck to new user
+                await this.mergeService.mergeDeck(mergeInfo.deckId, mergeInfo.userToken, user.id);
 
-                    // Delete previous anonymous user from our backend
-                    await this.userService.delete(mergeInfo.userId, mergeInfo.userToken);
+                // Delete previous anonymous user from our backend
+                await this.userService.delete(mergeInfo.userId, mergeInfo.userToken);
 
-                    // Delete previous anonymous user from Firebase
-                    if (this.firebaseUser) {
-                        await this.firebaseUser.delete();
-                    }
-
-                    if (user.anonymous) {
-                        // In case that would happen, if user merge in was created with the anonymous flag, set it to false now
-                        user.anonymous = false;
-
-                        this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
-                            if (authUser) {
-                                const apiUser: UserInfo = await this.userService.createUserInfo(authUser);
-                                await this.userService.query(apiUser, authUser.token, 'PUT');
-                            }
-
-                            await this.navigateRedirect();
-
-                            resolve();
-                        });
-                    } else {
-                        await this.navigateRedirect();
-
-                        resolve();
-                    }
-                } else {
-                    await this.navigateRedirect();
-
-                    resolve();
+                // Delete previous anonymous user from Firebase
+                if (this.firebaseUser) {
+                    await this.firebaseUser.delete();
                 }
+
+                await this.navigateRedirect();
+
+                resolve();
             });
 
-            await firebase.auth().signInAndRetrieveDataWithCredential(cred);
+            await firebase.auth().signInWithCredential(cred);
 
             resolve();
         });
@@ -210,7 +187,7 @@ export class AppSignIn {
         return new Promise<void>(async (resolve) => {
             const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
 
-            if (mergeInfo) {
+            if (mergeInfo && mergeInfo.userId && mergeInfo.userToken) {
                 resolve();
                 return;
             }
@@ -226,7 +203,8 @@ export class AppSignIn {
                 await set('deckdeckgo_redirect_info', {
                     deckId: deck ? deck.id : null,
                     userId: user ? user.id : null,
-                    userToken: authUser ? authUser.token : null
+                    userToken: authUser ? authUser.token : null,
+                    anonymous: authUser ? authUser.anonymous : true
                 });
 
                 resolve();
