@@ -86,6 +86,9 @@ export class AppSignIn {
 
         const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
 
+        const redirectUrl: string = await get<string>('deckdeckgo_redirect');
+        const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
+
         const signInOptions = [];
 
         signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
@@ -110,7 +113,11 @@ export class AppSignIn {
                 signInSuccessWithAuthResult: (_authResult, _redirectUrl) => {
                     this.signInInProgress = true;
 
-                    return true;
+                    // HACK: so signInSuccessWithAuthResult doesn't like promises, so we save the navigation information before and run the redirect not asynchronously
+                    // Ultimately I would like to transfer here the userService.updateMergedUser if async would be supported
+                    this.navigateRoot(redirectUrl, mergeInfo);
+
+                    return false;
                 },
                 // signInFailure callback must be provided to handle merge conflicts which
                 // occur when an existing credential is linked to an anonymous user.
@@ -149,7 +156,10 @@ export class AppSignIn {
             const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
 
             if (!mergeInfo || !mergeInfo.deckId || !mergeInfo.userToken || !mergeInfo.userId) {
+                // Should not happens but at least  don't get stuck
                 await firebase.auth().signInWithCredential(cred);
+
+                await this.navigateRedirect();
 
                 resolve();
                 return;
@@ -219,6 +229,10 @@ export class AppSignIn {
         await del('deckdeckgo_redirect');
         await del('deckdeckgo_redirect_info');
 
+        this.navigateRoot(redirectUrl, mergeInfo);
+    }
+
+    private navigateRoot(redirectUrl: string, mergeInfo: MergeInformation) {
         // TODO: That's ugly
         const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + (!mergeInfo || !mergeInfo.deckId || mergeInfo.deckId.trim() === '' || mergeInfo.deckId.trim() === '/' ? '' : '/' + mergeInfo.deckId);
 
@@ -227,7 +241,6 @@ export class AppSignIn {
             url: url,
             direction: NavDirection.ROOT
         });
-
     }
 
     async navigateBack() {

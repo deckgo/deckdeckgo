@@ -111,6 +111,10 @@ export class AppPublishDone {
                     whatsapp: {
                         socialShareUrl: this.publishedUrl
                     }
+                }, {
+                    copy: {
+                        socialShareUrl: this.publishedUrl
+                    }
                 }]
             };
 
@@ -163,6 +167,7 @@ export class AppPublishDone {
                 <ion-icon name="logo-linkedin" slot="linkedin" style={{color: "#0077b5", width: "1.4rem", height: "1.4rem"}}></ion-icon>
                 <ion-icon name="mail" slot="email" style={{color: "var(--ion-color-tertiary)", width: "1.4rem", height: "1.4rem"}}></ion-icon>
                 <ion-icon name="logo-whatsapp" slot="whatsapp" style={{color: "#25D366", width: "1.4rem", height: "1.4rem"}}></ion-icon>
+                <ion-icon name="copy" slot="copy" style={{width: "1.4rem", height: "1.4rem"}}></ion-icon>
             </web-social-share>
         ]
     }
