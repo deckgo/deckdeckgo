@@ -89,8 +89,6 @@ export class DeckEventsHandler {
         if (this.updateDeckTitleSubscription) {
             this.updateDeckTitleSubscription.unsubscribe();
         }
-
-        this.deckEditorService.next(null);
     }
 
     private onSlideDidLoad = async ($event: CustomEvent) => {
