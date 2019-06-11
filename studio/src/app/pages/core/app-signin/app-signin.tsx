@@ -156,7 +156,10 @@ export class AppSignIn {
             const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
 
             if (!mergeInfo || !mergeInfo.deckId || !mergeInfo.userToken || !mergeInfo.userId) {
+                // Should not happens but at least  don't get stuck
                 await firebase.auth().signInWithCredential(cred);
+
+                await this.navigateRedirect();
 
                 resolve();
                 return;
