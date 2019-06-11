@@ -99,6 +99,10 @@ export class AppEditorToolbar {
 
     @Listen('mouseInactivity', { target: 'document' })
     async inactivity($event: CustomEvent) {
+        if (!DeckDeckGoUtils.isFullscreen()) {
+            return;
+        }
+
         this.displayed = $event.detail;
 
         await this.blurSelectedElement();
