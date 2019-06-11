@@ -156,10 +156,14 @@ export class AppEditor {
         await this.updateInlineEditorListener();
 
         await this.remoteEventsHandler.init(this.el);
+
+        this.initWindowResize();
     }
 
     async componentDidUnload() {
         await this.remoteEventsHandler.destroy();
+
+        this.removeWindowResize();
     }
 
     private updateInlineEditorListener(): Promise<void> {
@@ -471,12 +475,24 @@ export class AppEditor {
 
             await (deck as any).toggleFullScreen();
 
-            setTimeout(() => {
-                this.fullscreen = DeckDeckGoUtils.isFullscreen();
-            }, 100);
-
             resolve();
         });
+    }
+
+    private initWindowResize() {
+        if (window) {
+            window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
+                this.fullscreen = DeckDeckGoUtils.isFullscreen();
+            }, 300));
+        }
+    }
+
+    private removeWindowResize() {
+        if (window) {
+            window.removeEventListener('resize', DeckDeckGoUtils.debounce(async () => {
+                this.fullscreen = DeckDeckGoUtils.isFullscreen();
+            }, 300));
+        }
     }
 
     private async signIn() {
@@ -628,7 +644,7 @@ export class AppEditor {
         if (this.fullscreen) {
             return [
                 <ion-icon name="contract"></ion-icon>,
-                <ion-label>Windowed</ion-label>
+                <ion-label>Exit fullscreen</ion-label>
             ];
         } else {
             return [
