@@ -1,15 +1,15 @@
 {
     "deckdeckgo-starter": {
         "homepage": "https://deckdeckgo.com",
-        "url": "https://github.com/deckgo/deckdeckgo-starter/archive/a0a734d4008d164ee5b9a4980ca1ad1ed468f663.tar.gz",
+        "url": "https://github.com/deckgo/deckdeckgo-starter/archive/9e8007d1d5aeee7a23119866633be104db1f5e86.tar.gz",
         "owner": "deckgo",
         "branch": "studio",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "repo": "deckdeckgo-starter",
         "type": "tarball",
-        "sha256": "1a921ggn9ml7m1nc9vlphgq3g6l5zf2l8fh2ih96zgyq0bv4p6s4",
+        "sha256": "171d67nnvzb7k4ssg6jvn4kmxwc2jnjsayizdhijm4pbkvdd26v9",
         "description": "The Progressive Web App alternative for simple presentations",
-        "rev": "a0a734d4008d164ee5b9a4980ca1ad1ed468f663"
+        "rev": "9e8007d1d5aeee7a23119866633be104db1f5e86"
     },
     "wai-lambda": {
         "url": "https://github.com/deckgo/wai-lambda/archive/7f139047addff89e9d30e55b7eebb07c0e846456.tar.gz",

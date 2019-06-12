@@ -11,9 +11,9 @@ module DeckGo.Presenter where
 import Control.Lens hiding ((.=))
 import Control.Monad
 import Data.Bifunctor
-import Data.Char (isAscii, isAlphaNum)
 import Data.Function
 import Data.List (foldl')
+import Data.Maybe
 import Data.String
 import DeckGo.Handler
 import DeckGo.Prelude
@@ -36,6 +36,7 @@ import qualified Network.AWS.S3 as S3
 import qualified Network.Mime as Mime
 import qualified System.Directory as Dir
 import qualified System.IO.Temp as Temp
+import qualified Text.HTML.TagSoup as TagSoup
 
 data Err = Err T.Text SomeException
   deriving (Show, Exception)
@@ -73,15 +74,16 @@ listPresentationObjects env bucket uname dname =
 
 withPresentationFiles
   :: Username
-  -> Deckname
+  -> Deck
+  -> [Slide]
   -> ([(FilePath, S3.ObjectKey, S3.ETag)] -> IO a)
   -> IO a
-withPresentationFiles uname dname act = do
+withPresentationFiles uname deck slides act = do
     deckgoStarterDist <- getEnv "DECKGO_STARTER_DIST"
     Temp.withSystemTempDirectory "dist" $ \dir -> do
       Tar.extract dir deckgoStarterDist
-      interpolateFile uname dname $ dir </> "index.html"
-      interpolateFile uname dname $ dir </> "manifest.json"
+      mapFile processIndex $ dir </> "index.html"
+      mapFile interpol $ dir </> "manifest.json"
       putStrLn "Listing files..."
       files <- listDirectoryRecursive dir
       files' <- forM files $ \(fp, components) -> do
@@ -89,14 +91,50 @@ withPresentationFiles uname dname act = do
         let okey = mkObjectKey uname dname components
         pure (fp, okey, etag)
       act files'
-
-interpolateFile :: Username -> Deckname -> FilePath -> IO ()
-interpolateFile uname dname fp = do
-    T.readFile fp >>= T.writeFile fp . interpol
   where
+    dname = deckDeckname deck
+    processIndex :: T.Text -> T.Text
+    processIndex =
+      TagSoup.renderTags . processTags deck slides . TagSoup.parseTags .
+      interpol
     interpol =
       T.replace "{{DECKDECKGO_TITLE}}" (unDeckname dname) .
-      T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname)
+      T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname) .
+      -- TODO: description
+      T.replace "{{DECKDECKGO_DESCRIPTION}}" "(no description given)" .
+      T.replace "{{DECKDECKGO_BASE_HREF}}"
+        ("/" <> presentationPrefix uname dname)
+
+mapFile :: (T.Text -> T.Text) -> FilePath -> IO ()
+mapFile f fp = do
+    T.readFile fp >>= T.writeFile fp . f
+
+type Tag = TagSoup.Tag T.Text
+
+processTags :: Deck -> [Slide] -> [Tag] -> [Tag]
+processTags deck slides = concatMap $ \case
+  TagSoup.TagOpen str (HMS.fromList -> attrs)
+    | str == "deckgo-deck" -> do
+        [ TagSoup.TagOpen str (HMS.toList (deckAttributes deck <> attrs)) ] <>
+          (concatMap slideTags slides) <>
+          (maybe [] (\dbg ->
+              [deckBackgroundTag dbg])
+            (deckDeckbackground deck))
+  t -> [t]
+
+deckBackgroundTag :: Deckbackground -> Tag
+deckBackgroundTag (unDeckbackground -> bg) = TagSoup.TagText bg
+
+slideTags :: Slide -> [Tag]
+slideTags slide =
+    [ TagSoup.TagOpen
+        ("deckgo-slide-" <> slideTemplate slide)
+        (HMS.toList (slideAttributes slide))
+    ] <> maybe [] TagSoup.parseTags (slideContent slide) <>
+    [ TagSoup.TagClose
+        ("deckgo-slide-" <> slideTemplate slide)
+    ]
+
 
 listObjects :: Aws.Env -> S3.BucketName -> Maybe T.Text -> IO [S3.Object]
 listObjects (fixupEnv' -> env) bname mpref = xif ([],Nothing) $ \f (es, ct) ->
@@ -136,17 +174,19 @@ deployDeck env conn deckId = do
           Nothing -> pure () -- TODO
           Just user -> case userUsername user of
             Nothing -> pure () -- TODO
-            Just uname ->
-              deployPresentation env uname (deckDeckname deck)
+            Just uname -> do
+              slides <- catMaybes <$> mapM (dbGetSlideById iface) (deckSlides deck)
+              deployPresentation env uname deck slides
 
-deployPresentation :: Aws.Env -> Username -> Deckname -> IO ()
-deployPresentation (fixupEnv' -> env) uname dname = do
+deployPresentation :: Aws.Env -> Username -> Deck -> [Slide] -> IO ()
+deployPresentation (fixupEnv' -> env) uname deck slides = do
     bucketName <- getEnv "BUCKET_NAME"
     let bucket = S3.BucketName (T.pack bucketName)
+    let dname = deckDeckname deck
     putStrLn "Listing current objects"
     currentObjs <- listPresentationObjects env bucket uname dname
     putStrLn "Listing presentations files"
-    withPresentationFiles uname dname $ \files -> do
+    withPresentationFiles uname deck slides $ \files -> do
       let
         currentObjs' =
           (\obj ->
@@ -207,25 +247,9 @@ fixupEnv' = Aws.configure $ S3.s3
       (Aws._svcEndpoint S3.s3 reg) & Aws.endpointHost .~ T.encodeUtf8 new
   }
 
-presentationPrefix :: Username -> Deckname -> T.Text
-presentationPrefix uname dname =
-    unUsername uname <> "/" <>  sanitizeDeckname dname <> "/"
-
 mkObjectKey :: Username -> Deckname -> [T.Text] -> S3.ObjectKey
 mkObjectKey uname dname components = S3.ObjectKey $
     presentationPrefix uname dname <> T.intercalate "/" components
-
-sanitizeDeckname :: Deckname -> T.Text
-sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
-  where
-    strip :: T.Text -> T.Text
-    strip = T.dropAround ( == '-' )
-    dropBadChars :: T.Text -> T.Text
-    dropBadChars = T.concatMap
-      $ \case
-        c | isAscii c && isAlphaNum c -> T.singleton c
-          | c == ' ' -> T.singleton '-'
-          | otherwise -> ""
 
 fileETag :: FilePath -> IO S3.ETag
 fileETag fp =

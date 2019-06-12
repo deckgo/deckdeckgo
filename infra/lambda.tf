@@ -21,6 +21,7 @@ resource "aws_lambda_function" "api" {
       QUEUE_NAME = "${aws_sqs_queue.presentation_deploy.name}"
       GOOGLE_PUBLIC_KEYS = "google-public-keys.json"
       FIREBASE_PROJECT_ID = "deckdeckgo-studio-beta"
+      DECKGO_PRESENTATIONS_URL = "${aws_route53_record.www_site.fqdn}"
     }
   }
 }
