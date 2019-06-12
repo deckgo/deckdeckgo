@@ -148,10 +148,11 @@ export class AppPublishEdit {
                         return;
                     }
 
-                    await this.deckService.publish(deck);
+                    const publishedUrl: string = await this.deckService.publish(deck);
 
-                    // TODO: URL and other data related to the published deck
-                    this.published.emit('https://deckdeckgo.com/youpi');
+                    // TODO: URL and Deck?
+                    // For the time being url but in the future...
+                    this.published.emit(publishedUrl);
 
                     this.publishing = false;
 
