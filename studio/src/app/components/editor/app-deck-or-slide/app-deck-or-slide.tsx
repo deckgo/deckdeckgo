@@ -10,7 +10,8 @@ export class AppDeckOrSlide {
     @Prop()
     deckOrSlide: boolean = false;
 
-    @Event() private applyTo: EventEmitter<boolean>;
+    @Event()
+    applyTo: EventEmitter<boolean>;
 
     private selectApplyToAllDeck($event: CustomEvent) {
         if ($event && $event.detail) {

@@ -85,8 +85,8 @@ export class AppImage {
     }
 
     private selectApplyToAllDeck($event: CustomEvent) {
-        if ($event && $event.detail) {
-            this.applyToAllDeck = $event.detail.value;
+        if ($event) {
+            this.applyToAllDeck = $event.detail;
         }
     }
 
