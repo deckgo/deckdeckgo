@@ -5,6 +5,14 @@
   <meta charset="utf-8">
   <title>DeckDeckGo</title>
 
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self';
+    img-src 'self' data: https://www.gstatic.com https://lh5.googleusercontent.com;
+    style-src 'self' 'unsafe-inline' https://cdn.firebase.com https://fonts.googleapis.com;
+    font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
+    script-src 'self' blob: 'sha256-Ot9IdMrOSXsgCrf7tkfYf8uFHMQvN3pjw/jRJMYYo7Q=' 'sha256-jOE9hUc/DLXii8bc2NNNsH8+5/infI2i5LpoUFTLpwg=' https://cdn.firebase.com https://apis.google.com;
+    connect-src 'self' <@API_URL@> https://www.googleapis.com https://securetoken.googleapis.com ws://localhost:3333/ https://raw.githubusercontent.com/PrismJS;
+    frame-src https://deckdeckgo.com https://*.deckdeckgo.com https://deckdeckgo-studio-beta.firebaseapp.com http://localhost:3333/~dev-server">
+
   <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="The open source web editor for presentations">
 
