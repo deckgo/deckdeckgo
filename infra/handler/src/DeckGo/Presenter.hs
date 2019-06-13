@@ -117,13 +117,15 @@ processTags deck slides = concatMap $ \case
     | str == "deckgo-deck" -> do
         [ TagSoup.TagOpen str (HMS.toList (deckAttributes deck <> attrs)) ] <>
           (concatMap slideTags slides) <>
-          (maybe [] (\dbg ->
-              [deckBackgroundTag dbg])
-            (deckDeckbackground deck))
+          (maybe [] deckBackgroundTags (deckDeckbackground deck))
   t -> [t]
 
-deckBackgroundTag :: Deckbackground -> Tag
-deckBackgroundTag (unDeckbackground -> bg) = TagSoup.TagText bg
+deckBackgroundTags :: Deckbackground -> [Tag]
+deckBackgroundTags (unDeckbackground -> bg) =
+    [ TagSoup.TagOpen "div" (HMS.toList $ HMS.singleton "slot" "background")
+    ] <> TagSoup.parseTags bg <>
+    [ TagSoup.TagClose "div"
+    ]
 
 slideTags :: Slide -> [Tag]
 slideTags slide =
