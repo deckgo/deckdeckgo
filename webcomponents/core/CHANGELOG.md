@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.39"></a>
+# 1.0.0-beta.39 (2019-06-14)
+
+### Features
+
+* add a click event on the pager
+
 <a name="1.0.0-beta.38"></a>
 # 1.0.0-beta.38 (2019-06-06)
 
