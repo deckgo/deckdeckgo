@@ -280,6 +280,11 @@ export class AppEditor {
         await (deck as any).slideTo(index, speed);
     }
 
+    @Listen('pagerClick', {target: 'document'})
+    async onPagerClick() {
+        await this.openSlideNavigate();
+    }
+
     private async openSlideNavigate() {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-slide-navigate'
