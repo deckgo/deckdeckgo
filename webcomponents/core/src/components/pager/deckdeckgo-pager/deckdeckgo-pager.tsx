@@ -49,7 +49,7 @@ export class DeckdeckgoPager {
   private renderText() {
     return [
       <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-percentage">{this.percentageProgression}%</text>,
-      <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-slides">{this.activeIndex + 1}/{this.length}</text>
+      <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-slides">{(this.length > 0 ? this.activeIndex + 1 : 0)}/{this.length}</text>
     ];
   }
 
