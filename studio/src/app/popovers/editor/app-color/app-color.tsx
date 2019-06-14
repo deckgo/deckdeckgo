@@ -39,8 +39,8 @@ export class AppColor {
     }
 
     private async selectApplyToAllDeck($event: CustomEvent) {
-        if ($event && $event.detail) {
-            this.applyToAllDeck = $event.detail.value;
+        if ($event) {
+            this.applyToAllDeck = $event.detail;
         }
     }
 

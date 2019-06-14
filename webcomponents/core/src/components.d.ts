@@ -288,6 +288,7 @@ declare namespace LocalJSX {
   interface DeckgoPager extends JSXBase.HTMLAttributes<HTMLDeckgoPagerElement> {
     'activeIndex'?: number;
     'length'?: number;
+    'onPagerClick'?: (event: CustomEvent<void>) => void;
   }
   interface DeckgoSlideAuthor extends JSXBase.HTMLAttributes<HTMLDeckgoSlideAuthorElement> {
     'customActions'?: boolean;

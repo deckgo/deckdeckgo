@@ -660,6 +660,11 @@ export class DeckdeckgoDeck {
   @Method()
   async blockSlide(block: boolean) {
     this.block = block;
+
+    // If we want to block, then we reset then previous start position as we don't want to start the slide to scroll when the blocking will be resolved
+    if (this.block) {
+      this.startX = null;
+    }
   }
 
   /* END: Manual sliding */

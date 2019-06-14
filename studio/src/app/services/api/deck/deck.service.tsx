@@ -4,6 +4,10 @@ import {Deck} from '../../../models/deck';
 
 import {AuthService} from '../auth/auth.service';
 
+interface DeckPublish {
+    url: string;
+}
+
 export class DeckService {
 
     private static instance: DeckService;
@@ -123,8 +127,8 @@ export class DeckService {
         });
     }
 
-    publish(deck: Deck): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
+    publish(deck: Deck): Promise<string> {
+        return new Promise<string>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -143,10 +147,9 @@ export class DeckService {
                     reject('Something went wrong while publishing the deck');
                     return;
                 }
+                const result: DeckPublish = await rawResponse.json();
 
-                await rawResponse.json();
-
-                resolve();
+                resolve(result ? result.url : null);
             } catch (err) {
                 reject(err);
             }

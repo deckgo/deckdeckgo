@@ -6,6 +6,7 @@ Also worth to notice that the pager inherits per default the document and deck d
 
 - [Deck](#app-deck-pager-deck)
 - [Customization](#app-deck-pager-customization)
+- [Events](#app-deck-pager-events) 
 
 ## Show or hide
 
@@ -37,5 +38,13 @@ The following style options are available to style the pager:
 | --pager-text-slides-display | hidden | Set to `block` to display a progression as slides' count (for example: 2/15) |
 
 Note: of course if you would display both `--pager-text-percentage-display` and `--pager-text-slides-display` it would be a weird display, use just one at once.
+
+# Events
+
+In case you would like to hook on the pager click, it triggers the following event:
+
+| Event                     | Emitted value | Description |
+| -------------------------- |-----------------|-----------------|
+| pagerClick | | Emitted when the user click on the pager. |
 
 [DeckDeckGo]: https://deckdeckgo.com

@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-docs",
-  "version": "1.0.0-alpha.14",
+  "version": "1.0.0-alpha.15",
   "description": "The Progressive Web App alternative for simple presentations",
   "license": "MIT",
   "files": [
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@deckdeckgo/charts": "^1.0.0-alpha.7",
-    "@deckdeckgo/core": "^1.0.0-beta.38",
+    "@deckdeckgo/core": "^1.0.0-beta.39",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.16",
     "@deckdeckgo/inline-editor": "^1.0.0-alpha.10",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.8",

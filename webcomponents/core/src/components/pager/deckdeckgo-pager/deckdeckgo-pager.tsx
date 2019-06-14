@@ -1,4 +1,4 @@
-import {Component, Prop, State, Watch, h} from '@stencil/core';
+import {Component, Prop, State, Watch, h, Event, EventEmitter, Host} from '@stencil/core';
 
 
 @Component({
@@ -14,6 +14,9 @@ export class DeckdeckgoPager {
   @State()
   private percentageProgression: number = 0;
 
+  @Event()
+  private pagerClick: EventEmitter<void>;
+
   @Watch('length')
   @Watch('activeIndex')
   calculateProgression() {
@@ -25,26 +28,28 @@ export class DeckdeckgoPager {
   render() {
     const ratio: string = '' + this.percentageProgression + ', 100';
 
-    return <svg viewBox="0 0 36 36" class="deckgo-pager-circular-chart">
-      <path class="deckgo-pager-circle-bg"
-            d="M18 2.0845
+    return <Host onClick={() => this.pagerClick.emit()}>
+      <svg viewBox="0 0 36 36" class="deckgo-pager-circular-chart">
+        <path class="deckgo-pager-circle-bg"
+              d="M18 2.0845
             a 15.9155 15.9155 0 0 1 0 31.831
             a 15.9155 15.9155 0 0 1 0 -31.831"
-      />
-      <path class="deckgo-pager-circle"
-            stroke-dasharray={ratio}
-            d="M18 2.0845
+        />
+        <path class="deckgo-pager-circle"
+              stroke-dasharray={ratio}
+              d="M18 2.0845
         a 15.9155 15.9155 0 0 1 0 31.831
         a 15.9155 15.9155 0 0 1 0 -31.831"
-      />
-      {this.renderText()}
-    </svg>
+        />
+        {this.renderText()}
+      </svg>
+    </Host>
   }
 
   private renderText() {
     return [
       <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-percentage">{this.percentageProgression}%</text>,
-      <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-slides">{this.activeIndex + 1}/{this.length}</text>
+      <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-slides">{(this.length > 0 ? this.activeIndex + 1 : 0)}/{this.length}</text>
     ];
   }
 

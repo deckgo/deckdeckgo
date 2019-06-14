@@ -36,6 +36,7 @@ export class AppDeckPager {
 <ul>
 <li><a href="#app-deck-pager-deck">Deck</a></li>
 <li><a href="#app-deck-pager-customization">Customization</a></li>
+<li><a href="#app-deck-pager-events">Events</a> </li>
 </ul>
 <h2 id="app-deck-pager-show-or-hide">Show or hide</h2>
 <p>To show or hide the pager, a CSS4 variable has to be set on the <code>&lt;deckgo-deck&gt;</code> element. Two more options are also available when set on this element.</p>
@@ -135,6 +136,22 @@ export class AppDeckPager {
 </tr>
 </tbody></table>
 <p>Note: of course if you would display both <code>--pager-text-percentage-display</code> and <code>--pager-text-slides-display</code> it would be a weird display, use just one at once.</p>
+<h1 id="app-deck-pager-events">Events</h1>
+<p>In case you would like to hook on the pager click, it triggers the following event:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Emitted value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pagerClick</td>
+<td></td>
+<td>Emitted when the user click on the pager.</td>
+</tr>
+</tbody></table>
 </main>
 
         <app-footer></app-footer>

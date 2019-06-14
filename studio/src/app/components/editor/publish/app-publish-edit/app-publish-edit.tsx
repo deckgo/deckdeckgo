@@ -148,10 +148,11 @@ export class AppPublishEdit {
                         return;
                     }
 
-                    await this.deckService.publish(deck);
+                    const publishedUrl: string = await this.deckService.publish(deck);
 
-                    // TODO: URL and other data related to the published deck
-                    this.published.emit('https://deckdeckgo.com/youpi');
+                    // TODO: URL and Deck?
+                    // For the time being url but in the future...
+                    this.published.emit(publishedUrl);
 
                     this.publishing = false;
 
@@ -240,9 +241,9 @@ export class AppPublishEdit {
 
     render() {
         return <article>
-            <h1>Publish</h1>
+            <h1>Share your presentation online</h1>
 
-            <p>Publish your presentation to <strong>share</strong> it with the world, your colleagues, friends and community.</p>
+            <p><strong>Publish</strong> your presentation to share it with the world, your colleagues, friends and community.</p>
 
             <p>DeckDeckGo will distribute it online as a modern <strong>app</strong>.</p>
 
