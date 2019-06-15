@@ -1,7 +1,8 @@
 import {Component, Element, Method, State, Event, EventEmitter, Listen, h} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
@@ -59,6 +60,9 @@ export class AppEditorToolbar {
 
     private elementResizeObserver: ResizeObserverConstructor;
 
+    private moveToolbarSubscription: Subscription;
+    private moveToolbarSubject: Subject<void> = new Subject();
+
     constructor() {
         this.busyService = BusyService.getInstance();
     }
@@ -66,6 +70,10 @@ export class AppEditorToolbar {
     async componentWillLoad() {
         this.subscription = this.busyService.watchDeckBusy().subscribe((busy: boolean) => {
             this.deckBusy = busy;
+        });
+
+        this.moveToolbarSubscription = this.moveToolbarSubject.pipe(debounceTime(250)).subscribe(async () => {
+            await this.moveToolbar();
         });
     }
 
@@ -78,22 +86,22 @@ export class AppEditorToolbar {
             this.subscription.unsubscribe();
         }
 
+        if (this.moveToolbarSubscription) {
+            this.moveToolbarSubscription.unsubscribe();
+        }
+
         this.removeWindowResize();
     }
 
     private initWindowResize() {
         if (window) {
-            window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
-                await this.moveToolbar();
-            }, 1000));
+            window.addEventListener('resize', () => this.moveToolbarSubject.next(), {passive: true});
         }
     }
 
     private removeWindowResize() {
         if (window) {
-            window.removeEventListener('resize', DeckDeckGoUtils.debounce(async () => {
-                await this.moveToolbar();
-            }, 1000));
+            window.removeEventListener('resize', () => this.moveToolbarSubject.next(), true);
         }
     }
 
@@ -530,7 +538,7 @@ export class AppEditorToolbar {
                 this.elementResizeObserver.observe(this.selectedElement);
             } else {
                 // Fallback, better  than nothing. It won't place the toolbar if the size on enter or delete  but at least if the content change like if list is toggled
-                this.selectedElement.addEventListener('focusout', DeckDeckGoUtils.debounce(async () => {await this.moveToolbar();}, 100));
+                this.selectedElement.addEventListener('focusout', () => this.moveToolbarSubject.next(), {passive: true});
             }
 
             resolve();
@@ -546,7 +554,7 @@ export class AppEditorToolbar {
                     this.elementResizeObserver.disconnect;
                 }
             } else {
-                this.selectedElement.removeEventListener('focusout', DeckDeckGoUtils.debounce(async () => {await this.moveToolbar();}, 100));
+                this.selectedElement.removeEventListener('focusout', () => this.moveToolbarSubject.next(), true);
             }
 
             resolve();

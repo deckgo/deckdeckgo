@@ -1,3 +1,21 @@
+<a name="1.0.0-beta.39-1"></a>
+# 1.0.0-beta.39-1 (2019-06-14)
+
+### Fix
+
+fix: don't track mouse movement if deck is triggered to be blocked
+
+<a name="1.0.0-beta.39"></a>
+# 1.0.0-beta.39 (2019-06-14)
+
+### Features
+
+* add a click event on the pager
+
+### Fix
+
+* display 0/0 not 1/0 in the pager when no slides
+
 <a name="1.0.0-beta.38"></a>
 # 1.0.0-beta.38 (2019-06-06)
 

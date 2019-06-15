@@ -54,7 +54,7 @@ export class AppPublish {
         if (this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '') {
             return <ion-title class="ion-text-uppercase">Published</ion-title>
         } else {
-            return <ion-title class="ion-text-uppercase">Ready to publish?</ion-title>
+            return <ion-title class="ion-text-uppercase">Ready to share?</ion-title>
         }
     }
 

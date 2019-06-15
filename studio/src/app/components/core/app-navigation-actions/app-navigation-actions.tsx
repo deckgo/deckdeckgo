@@ -107,7 +107,7 @@ export class AppNavigationActions {
     private renderPublishButton() {
         if (this.publish) {
             return <ion-button class="publish ion-padding-end" shape="round" onClick={() => this.actionPublish.emit()} mode="md">
-                <ion-label class="ion-text-uppercase">Ready to publish?</ion-label>
+                <ion-label class="ion-text-uppercase">Ready to share?</ion-label>
             </ion-button>;
         } else {
             return null;

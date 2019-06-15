@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.15"></a>
+# 1.0.0-alpha.15 (2019-06-14)
+
+### Features
+
+* new click pager event
+
 <a name="1.0.0-alpha.14"></a>
 # 1.0.0-alpha.14 (2019-06-09)
 

@@ -27,11 +27,11 @@ export class AppDeckOrSlide {
                 <ion-item-divider class="ion-padding-top"><ion-label>Apply change to</ion-label></ion-item-divider>,
                 <ion-radio-group onIonChange={($event) => this.selectApplyToAllDeck($event)}>
                     <ion-item>
-                        <ion-label>Just this slide</ion-label>
+                        <ion-label>This slide</ion-label>
                         <ion-radio slot="start" value={false} checked mode="md"></ion-radio>
                     </ion-item>
                     <ion-item>
-                        <ion-label>The all deck</ion-label>
+                        <ion-label>The presentation</ion-label>
                         <ion-radio slot="start" value={true} mode="md"></ion-radio>
                     </ion-item>
                 </ion-radio-group>

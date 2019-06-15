@@ -241,9 +241,9 @@ export class AppPublishEdit {
 
     render() {
         return <article>
-            <h1>Publish</h1>
+            <h1>Share your presentation online</h1>
 
-            <p>Publish your presentation to <strong>share</strong> it with the world, your colleagues, friends and community.</p>
+            <p><strong>Publish</strong> your presentation to share it with the world, your colleagues, friends and community.</p>
 
             <p>DeckDeckGo will distribute it online as a modern <strong>app</strong>.</p>
 
