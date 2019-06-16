@@ -39,14 +39,6 @@ deckgo-deck {
   }
 
   deckgo-slide-split {
-    --slide-split-padding-top: 64px;
-    --slide-split-padding-bottom: 64px;
-
-    @media screen and (max-width: 1024px) {
-      --slide-split-padding-top: 32px;
-      --slide-split-padding-bottom: 32px;
-    }
-
     deckgo-highlight-code {
       height: fit-content;
     }
