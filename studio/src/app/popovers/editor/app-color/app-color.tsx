@@ -20,7 +20,7 @@ export class AppColor {
     @Prop()
     selectedElement: HTMLElement;
 
-    @Event() private colorDidChange: EventEmitter<HTMLElement>;
+    @Event() colorDidChange: EventEmitter<HTMLElement>;
 
     private applyToAllDeck: boolean = false;
 
