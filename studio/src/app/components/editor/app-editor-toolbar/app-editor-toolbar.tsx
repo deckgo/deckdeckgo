@@ -105,7 +105,7 @@ export class AppEditorToolbar {
         }
     }
 
-    @Listen('mouseInactivity', { target: 'document' })
+    @Listen('mouseInactivity', {target: 'document'})
     async inactivity($event: CustomEvent) {
         if (!DeckDeckGoUtils.isFullscreen()) {
             return;
@@ -482,7 +482,7 @@ export class AppEditorToolbar {
         });
     }
 
-    @Listen('colorDidChange')
+    @Listen('colorDidChange', {target: 'document'})
     async onColorDidChange(_element: HTMLElement) {
         await this.emitChange();
     }
