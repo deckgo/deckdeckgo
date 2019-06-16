@@ -33,7 +33,7 @@ export class AppComponentsGif {
 
       if (gifElements) {
         gifElements.forEach(async (element: HTMLElement) => {
-          if (element.hasOwnProperty('lazyLoadContent')) {
+          if (element && 'lazyLoadContent' in element) {
             await (element as any).lazyLoadContent();
           }
         });

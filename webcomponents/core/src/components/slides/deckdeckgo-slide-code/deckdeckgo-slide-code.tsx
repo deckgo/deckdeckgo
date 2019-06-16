@@ -122,7 +122,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private scrollToNext(enter: boolean): Promise<boolean> {
     const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
-    if (element && element.hasOwnProperty('findNextAnchor')) {
+    if (element && 'findNextAnchor' in element) {
       return new Promise<boolean>(async (resolve) => {
         const nextAnchor: any = await (element as any).findNextAnchor(enter);
 
@@ -132,7 +132,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
           const previousScrollTop: number = container.scrollTop;
           container.scrollTop = nextAnchor.offsetTop;
 
-          if (element.hasOwnProperty('zoomCode')) {
+          if ('zoomCode' in element) {
             await (element as any).zoomCode(nextAnchor.hasLineZoom);
           }
 
@@ -152,7 +152,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return new Promise<void>(async (resolve) => {
       const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
-      if (element && element.hasOwnProperty('zoomCode')) {
+      if (element && 'zoomCode' in element) {
         await (element as any).zoomCode(zoom);
       }
 
