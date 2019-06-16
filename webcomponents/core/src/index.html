@@ -8,7 +8,8 @@
   <script type="module" src="/build/deckdeckgo.esm.js"></script>
   <script nomodule src="/build/deckdeckgo.js"></script>
 
-  <script src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code.js"></script>
+  <script type="module" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.js"></script>
 
 </head>
 <body style="margin: 0; overflow: hidden;">
@@ -126,7 +127,7 @@
     </div>
   </deckgo-slide-title>
 
-  <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+  <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
     <h1 slot="title">Code</h1>
   </deckgo-slide-code>
 
