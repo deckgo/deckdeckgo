@@ -9,7 +9,7 @@ export class DeckdeckgoDocsUtils {
       } else {
         elements.forEach(async (element: HTMLElement) => {
 
-          if (element.hasOwnProperty('load')) {
+          if (element && 'load' in element) {
             await await (element as any).load();
           }
         });

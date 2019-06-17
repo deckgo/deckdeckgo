@@ -8,13 +8,8 @@ deckgo-deck {
   --pager-text-slides-display: block;
 
   h1, h2, h3, section, deckgo-highlight-code {
-    width: 100%;
-    overflow: hidden;
-
     border-radius: 2px;
     border: 1px solid var(--ion-color-light);
-
-    padding: 8px;
   }
 
   h1 {
@@ -44,15 +39,7 @@ deckgo-deck {
   }
 
   deckgo-slide-split {
-    --slide-split-padding-top: 64px;
-    --slide-split-padding-bottom: 64px;
-
-    @media screen and (max-width: 1024px) {
-      --slide-split-padding-top: 32px;
-      --slide-split-padding-bottom: 32px;
-    }
-
-    section, deckgo-highlight-code {
+    deckgo-highlight-code {
       height: fit-content;
     }
   }
@@ -67,29 +54,5 @@ deckgo-deck {
 
   a {
     cursor: pointer;
-  }
-
-  > * div[slot="background"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  :not([slot="background"]) > deckgo-lazy-img {
-    --deckgo-lazy-img-padding: 16px;
-  }
-
-  [slot="background"] > deckgo-lazy-img {
-    min-width: 100%;
-    min-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    --deckgo-lazy-img-min-width: 100%;
   }
 }

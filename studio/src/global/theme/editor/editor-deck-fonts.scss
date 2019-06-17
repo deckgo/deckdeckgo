@@ -1,65 +1,73 @@
 // Synchro with https://github.com/deckgo/deckdeckgo-starter/blob/master/src/css/font.css
 
+deckgo-deck *:not(b), deckgo-deck h3, deckgo-deck h4, deckgo-deck h5, deckgo-deck h6 {
+  font-weight: 300;
+}
+
+deckgo-deck a, deckgo-deck strong {
+  font-weight: 500;
+}
+
+deckgo-deck h1 {
+  font-size: 3em;
+  min-height: 1.5em;
+}
+
+deckgo-deck h2 {
+  font-size: 2em;
+  min-height: 1.7em;
+}
+
+deckgo-deck h3 {
+  font-size: 1.4em;
+  min-height: 2em;
+}
+
+deckgo-deck code {
+  font-size: var(--deckgo-highlight-code-font-size);
+  font-family: var(--deckgo-highlight-code-font-family);
+}
+
+deckgo-deck section {
+  font-size: 1.4em;
+  min-height: 2em;
+}
+
+deckgo-deck section ol, deckgo-deck section ul {
+  font-size: inherit;
+}
+
+deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck h4, deckgo-deck h5, deckgo-deck h6 {
+  max-width: 100%
+}
+
 deckgo-deck {
-  *:not(b), h3, h4, h5, h6 {
-    font-weight: 300;
-  }
-
-  a, strong {
-    font-weight: 500;
-  }
-
-  h1 {
-    font-size: 3em;
-    min-height: 1.5em;
-  }
-
-  h2 {
-    font-size: 2em;
-    min-height: 1.7em;
-  }
-
-  h3 {
-    font-size: 1.4em;
-    min-height: 2em;
-  }
-
-  code {
-    font-size: var(--deckgo-highlight-code-font-size);
-    font-family: var(--deckgo-highlight-code-font-family);
-  }
-
-  section {
-    font-size: 1.4em;
-    min-height: 2em;
-
-    ol, ul {
-      font-size: inherit;
-    }
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    max-width: 100%
-  }
-
   --deckgo-highlight-code-font-family: Menlo, monospace;
   --deckgo-highlight-code-scroll: auto;
 
   --pager-text-size: 0.6rem;
+}
 
-  ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
-    font-size: 1em;
-  }
+deckgo-deck ion-label, deckgo-deck ion-label[text-wrap].sc-ion-label-md-h, deckgo-deck p {
+  font-size: 1em;
 }
 
 @media(max-width: 768px) {
-  deckgo-deck {
-    h1 {
-      font-size: 2.4em;
-    }
+  deckgo-deck h1 {
+    font-size: 2.4em;
+  }
 
-    h3 {
-      font-size: 1.2em;
-    }
+  deckgo-deck h3 {
+    font-size: 1.2em;
+  }
+}
+
+@media(min-width: 992px) {
+  deckgo-deck {
+    font-size: 32px;
+  }
+
+  deckgo-deck ion-label, deckgo-deck ion-label[text-wrap].sc-ion-label-md-h, deckgo-deck p {
+    font-size: 32px;
   }
 }

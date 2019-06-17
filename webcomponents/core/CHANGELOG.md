@@ -1,3 +1,17 @@
+<a name="1.0.0-beta.39-3"></a>
+# 1.0.0-beta.39-3 (2019-06-16)
+
+### Fix
+
+* post migration to Stencil One for the slide `code`
+
+<a name="1.0.0-beta.39-2"></a>
+# 1.0.0-beta.39-2 (2019-06-16)
+
+### Style
+
+* slide `split` height inherit CSS4 variables
+
 <a name="1.0.0-beta.39-1"></a>
 # 1.0.0-beta.39-1 (2019-06-14)
 

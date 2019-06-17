@@ -1,0 +1,43 @@
+// Synchro with https://github.com/deckgo/deckdeckgo-starter/blob/master/src/css/deck.css
+
+deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck deckgo-highlight-code {
+  width: 100%;
+
+  padding: 8px;
+}
+
+deckgo-slide-split {
+  --slide-split-padding-top: 64px;
+  --slide-split-padding-bottom: 64px;
+}
+
+@media screen and (max-width: 1024px) {
+  deckgo-slide-split {
+    --slide-split-padding-top: 32px;
+    --slide-split-padding-bottom: 32px;
+  }
+}
+
+deckgo-deck > * div[slot="background"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+deckgo-deck :not([slot="background"]) > deckgo-lazy-img {
+  --deckgo-lazy-img-padding: 16px;
+}
+
+deckgo-deck [slot="background"] > deckgo-lazy-img {
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --deckgo-lazy-img-min-width: 100%;
+}
