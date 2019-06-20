@@ -15,7 +15,6 @@ import {
   DefaultArcObject,
 } from 'd3-shape';
 
-
 export namespace Components {
   interface DeckgoBarChart {
     'draw': () => Promise<void>;
