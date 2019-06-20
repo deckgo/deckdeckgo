@@ -17,12 +17,20 @@
 </head>
 <body>
 
+  <deckgo-line-chart width="500" height="400" y-axis-domain="extent" date-pattern="dd.MM.yyyy" animation="true"
+                   src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-to-compare.csv"></deckgo-line-chart>
+
+  <div>
+    <button onclick="prev()">Prev</button>
+    <button onclick="next()">Next</button>
+  </div>
+
   <deckgo-pie-chart width="500" height="400" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv"></deckgo-pie-chart>
 
   <deckgo-pie-chart width="500" height="400" inner-radius="100" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart-single-column.csv"></deckgo-pie-chart>
 
   <deckgo-line-chart width="500" height="400" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
-                     src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-to-compare.csv"></deckgo-line-chart>
+                   src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-to-compare.csv"></deckgo-line-chart>
 
   <deckgo-line-chart width="500" height="400" smooth="false" ticks="5" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart.csv" date-pattern="dd.MM.yyyy"></deckgo-line-chart>
 
@@ -45,6 +53,21 @@
         elem[0].draw();
       }
     }
+
+    function prev() {
+      const elem = document.getElementsByTagName('deckgo-line-chart');
+      if (elem && elem.length > 0) {
+        elem[0].prev().then(() => {});
+      }
+    }
+
+    function next() {
+      const elem = document.getElementsByTagName('deckgo-line-chart');
+      if (elem && elem.length > 0) {
+        elem[0].next().then(() => {});
+      }
+    }
+
     </script>
 
   <div style="position: fixed; bottom: 0; right: 0;">

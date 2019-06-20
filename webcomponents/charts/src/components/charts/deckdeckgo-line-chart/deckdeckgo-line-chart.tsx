@@ -8,6 +8,8 @@ import {scaleLinear, scaleTime} from 'd3-scale';
 import {extent, max, min} from 'd3-array';
 import {Axis, axisBottom, axisLeft} from 'd3-axis';
 import {Area, area, curveMonotoneX} from 'd3-shape';
+import {transition} from 'd3-transition';
+import {easeLinear} from 'd3-ease';
 
 import {DeckdeckgoChart, DeckdeckgoChartUtils} from '../deckdeckgo-chart';
 
@@ -52,6 +54,15 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   @Prop() ticks: number;
   @Prop() grid: boolean = false;
 
+  @Prop() animation: boolean = false;
+  @Prop() animationDuration: number = 2000;
+
+  private svg: Selection<BaseType, any, HTMLElement, any>;
+  private x: any;
+  private y: any;
+
+  private data: DeckdeckgoLineChartData[];
+
   async componentDidLoad() {
     await this.draw();
   }
@@ -71,53 +82,71 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         return;
       }
 
-      let svg: Selection<BaseType, any, HTMLElement, any> = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
-      svg = svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
+      this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
+      this.svg = this.svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
 
-      const data: DeckdeckgoLineChartData[] = await this.fetchData();
+      this.data = await this.fetchData();
 
-      const hasComparisonData: boolean = data && data.length > 0 && data[0].compare !== null && !isNaN(data[0].compare);
-      const isXAxisNumber: boolean = data && data.length > 0 && typeof data[0].when === 'number';
+      const hasComparisonData: boolean = this.data && this.data.length > 0 && this.data[0].compare !== null && !isNaN(this.data[0].compare);
+      const isXAxisNumber: boolean = this.data && this.data.length > 0 && typeof this.data[0].when === 'number';
 
-      const {x, y} = await this.initAxis(data, hasComparisonData, isXAxisNumber);
+      await this.initAxis(hasComparisonData, isXAxisNumber);
 
-      await this.drawAxis(svg, x, y);
+      await this.drawAxis();
 
-      await this.drawLine(svg, x, y, data, false);
+      await this.drawLine(false);
 
-      if (hasComparisonData) {
-        await this.drawLine(svg, x, y, data, true);
+      if (hasComparisonData && !this.animation) {
+        await this.drawLine(true);
       }
 
       resolve();
     });
   }
 
-  private initAxis(data: DeckdeckgoLineChartData[], hasComparisonData: boolean, isXAxisNumber: boolean): Promise<any> {
-    return new Promise<any>((resolve) => {
-      let x: any = isXAxisNumber ? scaleLinear().range([0, this.width]) : scaleTime().range([0, this.width]);
-      let y: any = scaleLinear().range([this.height, 0]);
+  @Method()
+  async next() {
+    await this.prevNext(true);
+  }
 
-      x.domain(extent(data, (d: DeckdeckgoLineChartData) => d.when));
+  @Method()
+  async prev() {
+    await this.prevNext(false);
+  }
+
+  private async prevNext(compare: boolean) {
+    if (!this.animation) {
+      return;
+    }
+
+    await this.drawLine(compare);
+  }
+
+  private initAxis(hasComparisonData: boolean, isXAxisNumber: boolean): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.x = isXAxisNumber ? scaleLinear().range([0, this.width]) : scaleTime().range([0, this.width]);
+      this.y = scaleLinear().range([this.height, 0]);
+
+      this.x.domain(extent(this.data, (d: DeckdeckgoLineChartData) => d.when));
 
       if (this.yAxisDomain === DeckdeckgoLineChartAxisDomain.EXTENT) {
         if (hasComparisonData) {
-          y.domain([min(data, (d: DeckdeckgoLineChartData) => Math.min(d.value, d.compare)), max(data, (d: DeckdeckgoLineChartData) => Math.max(d.value, d.compare))]);
+          this.y.domain([min(this.data, (d: DeckdeckgoLineChartData) => Math.min(d.value, d.compare)), max(this.data, (d: DeckdeckgoLineChartData) => Math.max(d.value, d.compare))]);
         } else {
-          y.domain(extent(data, (d: DeckdeckgoLineChartData) => d.value));
+          this.y.domain(extent(this.data, (d: DeckdeckgoLineChartData) => d.value));
         }
       } else {
-        y.domain([0, max(data, (d: DeckdeckgoLineChartData) => d.compare ? Math.max(d.value, d.compare) : d.value)]);
+        this.y.domain([0, max(this.data, (d: DeckdeckgoLineChartData) => d.compare ? Math.max(d.value, d.compare) : d.value)]);
       }
 
-      resolve({x, y});
+      resolve();
     });
   }
 
-  private drawAxis(svg: Selection<BaseType, any, HTMLElement, any>, x: any, y: any): Promise<void> {
+  private drawAxis(): Promise<void> {
     return new Promise<void>((resolve) => {
-      const bottomAxis: Axis<any> = this.ticks > 0 ? axisBottom(x).ticks(this.ticks) : axisBottom(x);
-      const leftAxis: Axis<any> = this.ticks > 0 ? axisLeft(y).ticks(this.ticks) : axisLeft(y);
+      const bottomAxis: Axis<any> = this.ticks > 0 ? axisBottom(this.x).ticks(this.ticks) : axisBottom(this.x);
+      const leftAxis: Axis<any> = this.ticks > 0 ? axisLeft(this.y).ticks(this.ticks) : axisLeft(this.y);
 
       const styleClassAxisX: string = 'axis axis-x' + (this.grid ? ' axis-grid' : '');
       const styleClassAxisY: string = 'axis axis-y' + (this.grid ? ' axis-grid' : '');
@@ -127,12 +156,12 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         leftAxis.tickSize(-this.width).tickFormat(null);
       }
 
-      svg.append('g')
+      this.svg.append('g')
         .attr('class', styleClassAxisX)
         .attr('transform', 'translate(0,' + this.height + ')')
         .call(bottomAxis);
 
-      svg.append('g')
+      this.svg.append('g')
         .attr('class', styleClassAxisY)
         .call(leftAxis);
 
@@ -140,28 +169,51 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     })
   }
 
-  private drawLine(svg: Selection<BaseType, any, HTMLElement, any>, x: any, y: any, data: DeckdeckgoLineChartData[], compare: boolean): Promise<void> {
+  private drawLine(compare: boolean): Promise<void> {
     return new Promise<void>((resolve) => {
       let line: Area<DeckdeckgoLineChartData> = area<DeckdeckgoLineChartData>()
-        .x((d: DeckdeckgoLineChartData) => x(d.when));
+        .x((d: DeckdeckgoLineChartData) => this.x(d.when));
 
       if (this.area) {
-        line.y0(this.height).y1((d: DeckdeckgoLineChartData) => compare ? y(d.compare) : y(d.value));
+        line.y0(this.height).y1((d: DeckdeckgoLineChartData) => compare ? this.y(d.compare) : this.y(d.value));
       } else {
-        line.y((d: DeckdeckgoLineChartData) => compare ? y(d.compare) : y(d.value));
+        line.y((d: DeckdeckgoLineChartData) => compare ? this.y(d.compare) : this.y(d.value));
       }
 
       if (this.smooth) {
         line.curve(curveMonotoneX);
       }
 
-      svg.append('path')
-        .datum(data)
-        .attr('class', compare ? 'area-compare' : 'area')
-        .attr('d', line);
-
+      if (this.animation) {
+        this.drawAnimatedLine(compare, line);
+      } else {
+        this.drawInstantLine(compare, line);
+      }
+      
       resolve();
     })
+  }
+
+  private drawInstantLine(compare: boolean, line: Area<DeckdeckgoLineChartData>) {
+    this.svg.append('path')
+      .datum(this.data)
+      .attr('class', compare ? 'area-compare' : 'area')
+      .attr('d', line);
+  }
+
+  private drawAnimatedLine(compare: boolean, line: Area<DeckdeckgoLineChartData>) {
+    const t = transition();
+
+    const section: any = this.svg.selectAll('.area')
+      .data([this.data], (d: DeckdeckgoLineChartData) => { return compare ? this.y(d.compare) : this.y(d.value) });
+
+    section
+      .enter()
+      .append('path')
+      .attr('class','area')
+      .merge(section)
+      .transition(t).duration(this.animationDuration).ease(easeLinear)
+      .attr('d', line);
   }
 
   async fetchData(): Promise<DeckdeckgoLineChartData[]> {

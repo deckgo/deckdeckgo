@@ -28,6 +28,8 @@ export namespace Components {
     'width': number;
   }
   interface DeckgoLineChart {
+    'animation': boolean;
+    'animationDuration': number;
     'area': boolean;
     'datePattern': string;
     'draw': () => Promise<void>;
@@ -37,6 +39,8 @@ export namespace Components {
     'marginLeft': number;
     'marginRight': number;
     'marginTop': number;
+    'next': () => Promise<void>;
+    'prev': () => Promise<void>;
     'separator': string;
     'smooth': boolean;
     'src': string;
@@ -94,6 +98,8 @@ declare namespace LocalJSX {
     'width'?: number;
   }
   interface DeckgoLineChart extends JSXBase.HTMLAttributes<HTMLDeckgoLineChartElement> {
+    'animation'?: boolean;
+    'animationDuration'?: number;
     'area'?: boolean;
     'datePattern'?: string;
     'grid'?: boolean;
