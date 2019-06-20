@@ -16,6 +16,7 @@ ion-split-pane {
     ion-button {
       &.presentation, &.publish {
         --background: white;
+        --background-hover: white;
         --color: #000;
         --color-activated: var(--ion-color-tertiary);
       }
@@ -35,12 +36,14 @@ ion-split-pane {
       ion-button {
         &.publish {
           --background: var(--ion-color-tertiary);
+          --background-hover: var(--ion-color-tertiary);
           --color: white;
           --color-activated: var(--ion-color-secondary);
         }
 
         &.presentation {
           --background: var(--ion-color-primary);
+          --background-hover: var(--ion-color-primary);
           --color: white;
           --color-activated: var(--ion-color-secondary);
         }
