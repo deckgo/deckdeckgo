@@ -209,10 +209,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
     section
       .enter()
-      .append('path')
-      .attr('class','area')
-      .merge(section)
+      .append('path').merge(section)
       .transition(t).duration(this.animationDuration).ease(easeLinear)
+      .attr('class',`${compare ? 'area area-compare' : 'area'}`)
       .attr('d', line);
   }
 
