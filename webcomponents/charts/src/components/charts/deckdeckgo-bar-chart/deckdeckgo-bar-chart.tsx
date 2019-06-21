@@ -92,7 +92,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   private initAxis(data: DeckdeckgoBarChartData[]): Promise<any> {
     return new Promise<any>((resolve) => {
       let x0: any = scaleBand().rangeRound([0, this.width]).paddingInner(0.1);
-      ;
+
       let x1: any = scaleBand().padding(0.05);
       let y: any = scaleLinear().rangeRound([this.height, 0]);
 
