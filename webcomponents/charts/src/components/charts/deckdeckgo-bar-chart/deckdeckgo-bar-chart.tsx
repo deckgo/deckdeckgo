@@ -8,7 +8,7 @@ import {max} from 'd3-array';
 import {Axis, axisBottom, axisLeft} from 'd3-axis';
 
 interface DeckdeckgoBarChartDataValue {
-  key: any;
+  key: string;
   value: number;
 }
 
@@ -181,7 +181,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
             const tmp: number = parseInt(values[i]);
             if (!isNaN(tmp)) {
               dataValues.push({
-                key: 'bar' + i,
+                key: '' + i,
                 value: tmp
               })
             }
