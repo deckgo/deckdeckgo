@@ -37,6 +37,11 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   @Prop() marginLeft: number = 32;
   @Prop() marginRight: number = 32;
 
+  private svg: Selection<BaseType, any, HTMLElement, any>;
+  private x0: any;
+  private x1: any;
+  private y: any;
+
   async componentDidLoad() {
     await this.draw();
   }
@@ -56,32 +61,32 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         return;
       }
 
-      let svg: Selection<BaseType, any, HTMLElement, any> = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
-      svg = svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
+      this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
+      this.svg = this.svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
 
       const data: DeckdeckgoBarChartData[] = await this.fetchData();
 
-      const {x0, x1, y} = await this.initAxis(data);
+      await this.initAxis(data);
 
-      await this.drawAxis(svg, x0, y);
+      await this.drawAxis();
 
-      await this.drawBars(svg, x0, x1, y, data);
+      await this.drawBars(data);
 
       resolve();
     });
   }
 
-  private drawAxis(svg: Selection<BaseType, any, HTMLElement, any>, x: any, y: any): Promise<void> {
+  private drawAxis(): Promise<void> {
     return new Promise<void>((resolve) => {
-      const bottomAxis: Axis<any> = axisBottom(x);
-      const leftAxis: Axis<any> = axisLeft(y);
+      const bottomAxis: Axis<any> = axisBottom(this.x0);
+      const leftAxis: Axis<any> = axisLeft(this.y);
 
-      svg.append('g')
+      this.svg.append('g')
         .attr('class', 'axis axis-x')
         .attr('transform', 'translate(0,' + this.height + ')')
         .call(bottomAxis);
 
-      svg.append('g')
+      this.svg.append('g')
         .attr('class', 'axis axis-y')
         .call(leftAxis);
 
@@ -89,12 +94,12 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     })
   }
 
-  private initAxis(data: DeckdeckgoBarChartData[]): Promise<any> {
-    return new Promise<any>((resolve) => {
-      let x0: any = scaleBand().rangeRound([0, this.width]).paddingInner(0.1);
+  private initAxis(data: DeckdeckgoBarChartData[]): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.x0 = scaleBand().rangeRound([0, this.width]).paddingInner(0.1);
 
-      let x1: any = scaleBand().padding(0.05);
-      let y: any = scaleLinear().rangeRound([this.height, 0]);
+      this.x1 = scaleBand().padding(0.05);
+      this.y = scaleLinear().rangeRound([this.height, 0]);
 
       const categoriesNames = data.map((d) => {
         return d.label;
@@ -103,27 +108,27 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         return d.key;
       });
 
-      x0.domain(categoriesNames);
-      x1.domain(rateNames).rangeRound([0, x0.bandwidth()]);
-      y.domain([0, max(data, (categorie) => {
+      this.x0.domain(categoriesNames);
+      this.x1.domain(rateNames).rangeRound([0, this.x0.bandwidth()]);
+      this.y.domain([0, max(data, (categorie) => {
         return max(categorie.values, (d) => {
           return d.value;
         });
       })]);
 
-      resolve({x0, x1, y});
+      resolve();
     });
   }
 
-  private drawBars(svg: Selection<BaseType, any, HTMLElement, any>, x0: any, x1: any, y: any, data: DeckdeckgoBarChartData[]): Promise<void> {
+  private drawBars(data: DeckdeckgoBarChartData[]): Promise<void> {
     return new Promise<void>((resolve) => {
 
-      svg.append('g')
+      this.svg.append('g')
         .selectAll('g')
         .data(data)
         .enter().append('g')
         .attr('transform', (d) => {
-          return 'translate(' + x0(d.label) + ',0)';
+          return 'translate(' + this.x0(d.label) + ',0)';
         })
         .selectAll('rect')
         .data((d) => {
@@ -131,14 +136,14 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .enter().append('rect')
         .attr('x', (d) => {
-          return x1(d.key);
+          return this.x1(d.key);
         })
         .attr('y', (d) => {
-          return y(d.value);
+          return this.y(d.value);
         })
-        .attr('width', x1.bandwidth())
+        .attr('width', this.x1.bandwidth())
         .attr('height', (d) => {
-          return this.height - y(d.value);
+          return this.height - this.y(d.value);
         })
         .attr('style', (d) => {
           return 'fill: var(--deckgo-chart-fill-color-' + d.key + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
