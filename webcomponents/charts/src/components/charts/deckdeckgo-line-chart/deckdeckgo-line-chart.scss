@@ -10,20 +10,6 @@ text {
   shape-rendering: crispEdges;
 }
 
-.area {
-  fill: var(--deckgo-chart-fill-color, #3880ff);
-  fill-opacity: var(--deckgo-chart-fill-opacity);
-  stroke: var(--deckgo-chart-stroke);
-  stroke-width: var(--deckgo-chart-stroke-width);
-}
-
-.area-compare {
-  fill: var(--deckgo-chart-compare-fill-color, #0cd1e8);
-  fill-opacity: var(--deckgo-chart-compare-fill-opacity, 0.7);
-  stroke: var(--deckgo-chart-compare-stroke);
-  stroke-width: var(--deckgo-chart-compare-stroke-width);
-}
-
 .axis-grid line {
   stroke: var(--deckgo-chart-grid-stroke, #989aa2);
   stroke-opacity: var(--deckgo-chart-grid-stroke-opacity, 0.7);
