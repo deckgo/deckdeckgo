@@ -197,6 +197,10 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   private drawInstantLine(compare: boolean, line: Area<DeckdeckgoLineChartData>) {
     this.svg.append('path')
       .datum(this.data)
+      .style('fill', compare ? 'var(--deckgo-chart-compare-fill-color, #0cd1e8)' : 'var(--deckgo-chart-fill-color, #3880ff)')
+      .style('fill-opacity', compare ? 'var(--deckgo-chart-compare-fill-opacity, 0.7)' : 'var(--deckgo-chart-fill-opacity)')
+      .style('stroke', compare ? 'var(--deckgo-chart-compare-stroke)' : 'var(--deckgo-chart-stroke)')
+      .style('stroke-width', compare ? 'var(--deckgo-chart-compare-stroke-width)' : 'var(--deckgo-chart-stroke-width)')
       .attr('class', compare ? 'area-compare' : 'area')
       .attr('d', line);
   }
