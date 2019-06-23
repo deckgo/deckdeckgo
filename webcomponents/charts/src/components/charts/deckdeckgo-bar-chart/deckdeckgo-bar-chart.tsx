@@ -6,6 +6,7 @@ import {BaseType, Selection} from 'd3-selection';
 import {scaleBand, scaleLinear} from 'd3-scale';
 import {max} from 'd3-array';
 import {Axis, axisBottom, axisLeft} from 'd3-axis';
+import {transition} from 'd3-transition';
 
 interface DeckdeckgoBarChartDataValue {
   key: string;
@@ -37,10 +38,17 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   @Prop() marginLeft: number = 32;
   @Prop() marginRight: number = 32;
 
+  @Prop() animation: boolean = false;
+  @Prop() animationDuration: number = 1000;
+
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private x0: any;
   private x1: any;
   private y: any;
+
+  private data: DeckdeckgoBarChartData[];
+
+  private barDataIndex: number = 0;
 
   async componentDidLoad() {
     await this.draw();
@@ -64,16 +72,57 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
       this.svg = this.svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
 
-      const data: DeckdeckgoBarChartData[] = await this.fetchData();
+      this.data = await this.fetchData();
 
-      await this.initAxis(data);
+      if (!this.data || this.data.length <= 0) {
+        resolve();
+        return;
+      }
+
+      await this.initAxis();
 
       await this.drawAxis();
 
-      await this.drawBars(data);
+      await this.drawBars(0, 0);
 
       resolve();
     });
+  }
+
+  private async drawBars(index: number, animationDuration: number) {
+    if (this.animation) {
+      await this.drawAnimatedBars(index, animationDuration);
+    } else {
+      await this.drawInstantBars();
+    }
+  }
+
+  @Method()
+  async next() {
+    await this.prevNext(true);
+  }
+
+  @Method()
+  async prev() {
+    await this.prevNext(false);
+  }
+
+  private async prevNext(next: boolean) {
+    if (!this.animation) {
+      return;
+    }
+
+    if (!this.data || this.data.length <= 0) {
+      return;
+    }
+
+    if (next && this.barDataIndex + 1 < this.data.length) {
+      this.barDataIndex++;
+      await this.drawBars(this.barDataIndex, this.animationDuration);
+    } else if (!next && this.barDataIndex > 0) {
+      this.barDataIndex--;
+      await this.drawBars(this.barDataIndex, this.animationDuration);
+    }
   }
 
   private drawAxis(): Promise<void> {
@@ -94,24 +143,25 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     })
   }
 
-  private initAxis(data: DeckdeckgoBarChartData[]): Promise<void> {
+  private initAxis(): Promise<void> {
     return new Promise<void>((resolve) => {
-      this.x0 = scaleBand().rangeRound([0, this.width]).paddingInner(0.1);
+      this.x0 = scaleBand().rangeRound([0, this.width]);
 
       this.x1 = scaleBand().padding(0.05);
       this.y = scaleLinear().rangeRound([this.height, 0]);
 
-      const categoriesNames = data.map((d) => {
-        return d.label;
-      });
-      const rateNames = data[0].values.map((d) => {
+      const xDomains = this.data[0].values.map((d) => {
         return d.key;
       });
 
-      this.x0.domain(categoriesNames);
-      this.x1.domain(rateNames).rangeRound([0, this.x0.bandwidth()]);
-      this.y.domain([0, max(data, (categorie) => {
-        return max(categorie.values, (d) => {
+      if (this.animation) {
+        this.initAnimatedAxisX(xDomains);
+      } else {
+        this.initInstantAxisX(xDomains);
+      }
+
+      this.y.domain([0, max(this.data, (category) => {
+        return max(category.values, (d) => {
           return d.value;
         });
       })]);
@@ -120,12 +170,54 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     });
   }
 
-  private drawBars(data: DeckdeckgoBarChartData[]): Promise<void> {
+  private initAnimatedAxisX(xDomains: string[]) {
+    this.x0.domain(xDomains).padding(0.05);
+  }
+
+  private initInstantAxisX(xDomains: string[]) {
+    const categoriesNames = this.data.map((d) => {
+      return d.label;
+    });
+
+    this.x0.paddingInner(0.1).domain(categoriesNames);
+    this.x1.domain(xDomains).rangeRound([0, this.x0.bandwidth()]);
+  }
+
+  private drawAnimatedBars(index: number, animationDuration: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const t = transition();
+
+      const section: any = this.svg.selectAll('rect').data(this.data[index].values);
+
+      section
+        .enter()
+        .append('rect')
+        .merge(section)
+        .attr('style', (d) => {
+          return 'fill: var(--deckgo-chart-fill-color-' + d.key + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+        })
+        .transition(t).duration(animationDuration)
+        .attr('x', (d) => {
+          return this.x0(d.key);
+        })
+        .attr('y', (d) => {
+          return this.y(d.value);
+        })
+        .attr('width', this.x0.bandwidth())
+        .attr('height', (d) => {
+          return this.height - this.y(d.value);
+        });
+
+      resolve();
+    });
+  }
+
+  private drawInstantBars(): Promise<void> {
     return new Promise<void>((resolve) => {
 
       this.svg.append('g')
         .selectAll('g')
-        .data(data)
+        .data(this.data)
         .enter().append('g')
         .attr('transform', (d) => {
           return 'translate(' + this.x0(d.label) + ',0)';
@@ -150,7 +242,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         });
 
       resolve();
-    })
+    });
   }
 
   async fetchData(): Promise<DeckdeckgoBarChartData[]> {

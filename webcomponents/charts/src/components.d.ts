@@ -17,12 +17,16 @@ import {
 
 export namespace Components {
   interface DeckgoBarChart {
+    'animation': boolean;
+    'animationDuration': number;
     'draw': () => Promise<void>;
     'height': number;
     'marginBottom': number;
     'marginLeft': number;
     'marginRight': number;
     'marginTop': number;
+    'next': () => Promise<void>;
+    'prev': () => Promise<void>;
     'separator': string;
     'src': string;
     'width': number;
@@ -88,6 +92,8 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoBarChart extends JSXBase.HTMLAttributes<HTMLDeckgoBarChartElement> {
+    'animation'?: boolean;
+    'animationDuration'?: number;
     'height'?: number;
     'marginBottom'?: number;
     'marginLeft'?: number;

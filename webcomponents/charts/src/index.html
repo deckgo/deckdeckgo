@@ -21,11 +21,22 @@
                    src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv"></deckgo-line-chart>
 
   <div>
-    <button onclick="prev()">Prev</button>
-    <button onclick="next()">Next</button>
+    <button onclick="prev('deckgo-line-chart')">Prev</button>
+    <button onclick="next('deckgo-line-chart')">Next</button>
+  </div>
+
+  <deckgo-bar-chart animation="true" width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv" style="--deckgo-chart-fill-color-1: #3880ff; --deckgo-chart-fill-color-2: #0cd1e8; --deckgo-chart-fill-color-3: #7044ff;"></deckgo-bar-chart>
+
+  <div>
+    <button onclick="prev('deckgo-bar-chart')">Prev</button>
+    <button onclick="next('deckgo-bar-chart')">Next</button>
   </div>
 
   <deckgo-pie-chart width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"></deckgo-pie-chart>
+
+  <div>
+    <button onclick="draw()">Redraw</button>
+  </div>
 
   <deckgo-pie-chart width="500" height="400" inner-radius="100" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart-single-column.csv"></deckgo-pie-chart>
 
@@ -57,24 +68,20 @@
       }
     }
 
-    function prev() {
-      const elem = document.getElementsByTagName('deckgo-line-chart');
+    function prev(cmp) {
+      const elem = document.getElementsByTagName(cmp);
       if (elem && elem.length > 0) {
         elem[0].prev().then(() => {});
       }
     }
 
-    function next() {
-      const elem = document.getElementsByTagName('deckgo-line-chart');
+    function next(cmp) {
+      const elem = document.getElementsByTagName(cmp);
       if (elem && elem.length > 0) {
         elem[0].next().then(() => {});
       }
     }
 
     </script>
-
-  <div style="position: fixed; bottom: 0; right: 0;">
-    <button onclick="draw()">Draw</button>
-  </div>
 </body>
 </html>
