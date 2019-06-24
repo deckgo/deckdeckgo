@@ -50,7 +50,8 @@ However, if you are looking to use this Web Component as a standalone component,
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] Code from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
-<script src="https://unpkg.com/deckdeckgo-qrcode@latest/dist/deckdeckgo-qrcode.js"></script>
+<script type="module" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.js"></script>
 ```
 ### Install DeckDeckGo QR Code from NPM
 

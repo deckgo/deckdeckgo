@@ -66,7 +66,7 @@ export class AppComponentsHighlightCode {
 <h3 id="app-components-highlight-code-using-deckdeckgo-highlight-code-from-a-cdn">Using DeckDeckGo Highlight Code from a CDN</h3>
 <p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> Code from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;script src=&quot;https:&#47;&#47;unpkg.com&#47;deckdeckgo-highlight-code@latest&#47;dist&#47;deckdeckgo-highlight-code.js&quot;&gt;&lt;&#47;script&gt;</code>
+      <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;highlight-code@latest&#47;dist&#47;deckdeckgo-highlight-code&#47;deckdeckgo-highlight-code.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;highlight-code@latest&#47;dist&#47;deckdeckgo-highlight-code&#47;deckdeckgo-highlight-code.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-highlight-code-install-deckdeckgo-highlight-code-from-npm">Install DeckDeckGo Highlight Code from NPM</h3>
 <p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> - Highlight Code in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/highlight-code">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">

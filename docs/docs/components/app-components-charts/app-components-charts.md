@@ -146,7 +146,8 @@ However, if you are looking to use this Web Component as a standalone component,
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] charts from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
-<script src="https://unpkg.com/deckdeckgo-charts@latest/dist/deckdeckgo-charts.js"></script>
+<script type="module" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.js"></script>
 ```
 ### Install DeckDeckGo charts from NPM
 
