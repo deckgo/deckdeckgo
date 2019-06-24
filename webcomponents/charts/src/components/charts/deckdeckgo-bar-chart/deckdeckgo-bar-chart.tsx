@@ -125,6 +125,30 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     }
   }
 
+  @Method()
+  isBeginning(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!this.animation) {
+        resolve(true);
+        return;
+      }
+
+      resolve(this.barDataIndex === 0);
+    });
+  }
+
+  @Method()
+  isEnd(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!this.animation) {
+        resolve(true);
+        return;
+      }
+
+      resolve(this.barDataIndex === this.data.length - 1);
+    });
+  }
+
   private drawAxis(): Promise<void> {
     return new Promise<void>((resolve) => {
       const bottomAxis: Axis<any> = axisBottom(this.x0);

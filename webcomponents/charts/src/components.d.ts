@@ -14,6 +14,8 @@ export namespace Components {
     'animationDuration': number;
     'draw': () => Promise<void>;
     'height': number;
+    'isBeginning': () => Promise<boolean>;
+    'isEnd': () => Promise<boolean>;
     'marginBottom': number;
     'marginLeft': number;
     'marginRight': number;
@@ -32,6 +34,8 @@ export namespace Components {
     'draw': () => Promise<void>;
     'grid': boolean;
     'height': number;
+    'isBeginning': () => Promise<boolean>;
+    'isEnd': () => Promise<boolean>;
     'marginBottom': number;
     'marginLeft': number;
     'marginRight': number;
@@ -51,6 +55,8 @@ export namespace Components {
     'draw': () => Promise<void>;
     'height': number;
     'innerRadius': number;
+    'isBeginning': () => Promise<boolean>;
+    'isEnd': () => Promise<boolean>;
     'next': () => Promise<void>;
     'prev': () => Promise<void>;
     'range': string[];

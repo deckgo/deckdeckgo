@@ -116,6 +116,30 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
     }
   }
 
+  @Method()
+  isBeginning(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!this.animation) {
+        resolve(true);
+        return;
+      }
+
+      resolve(this.pieDataIndex === 0);
+    });
+  }
+
+  @Method()
+  isEnd(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!this.animation) {
+        resolve(true);
+        return;
+      }
+
+      resolve(this.pieDataIndex === this.data.length - 1);
+    });
+  }
+
   private async drawPie(index: number, animationDuration: number) {
     const pie: any[] = await this.createPieData(this.data[index]);
 

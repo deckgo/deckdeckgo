@@ -145,6 +145,30 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     }
   }
 
+  @Method()
+  isBeginning(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!this.animation) {
+        resolve(true);
+        return;
+      }
+
+      resolve(this.serieIndex === 0);
+    });
+  }
+
+  @Method()
+  isEnd(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!this.animation) {
+        resolve(true);
+        return;
+      }
+
+      resolve(this.serieIndex === this.series.length - 1);
+    });
+  }
+
   private initAxis(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const firstSerieData: DeckdeckgoLineChartData[] = this.series[0].data;
