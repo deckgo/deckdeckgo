@@ -280,8 +280,6 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
         }
       });
 
-      console.log(results);
-
       resolve(results);
     });
   }
