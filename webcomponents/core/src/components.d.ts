@@ -50,8 +50,10 @@ export namespace Components {
   }
   interface DeckgoSlideChart {
     'afterSwipe': () => Promise<void>;
+    'animation': boolean;
+    'animationDuration': number;
     'area': boolean;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'datePattern': string;
@@ -298,6 +300,8 @@ declare namespace LocalJSX {
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
   }
   interface DeckgoSlideChart extends JSXBase.HTMLAttributes<HTMLDeckgoSlideChartElement> {
+    'animation'?: boolean;
+    'animationDuration'?: number;
     'area'?: boolean;
     'customActions'?: boolean;
     'customBackground'?: boolean;

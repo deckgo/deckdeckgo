@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.40"></a>
+# 1.0.0-beta.40 (2019-06-24)
+
+### Features
+
+* update `chart` slide to support animation with reveal actions
+
 <a name="1.0.0-beta.39-3"></a>
 # 1.0.0-beta.39-3 (2019-06-16)
 

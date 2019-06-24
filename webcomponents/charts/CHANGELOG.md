@@ -1,3 +1,17 @@
+<a name="1.0.0-alpha.8"></a>
+# 1.0.0-alpha.8 (2019-06-24)
+
+### Features
+
+* animated charts: it is now possible to display several data in the same graphs. these could be displayed one after the others with a nice transition between these
+
+### Breaking
+
+* the styling (fill color, etc.) of the `line` and `bar` chart has been modified
+* per default, the labels of the axis of the  `line` and `bar` will be displayed
+
+Referer to the updated [documentation](https://docs.deckdeckgo.com) for more information.
+
 <a name="1.0.0-alpha.7"></a>
 # 1.0.0-alpha.7 (2019-06-04)
 

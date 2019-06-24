@@ -1,3 +1,11 @@
+<a name="1.0.0-alpha.17"></a>
+# 1.0.0-alpha.17 (2019-06-24)
+
+### Features
+
+* update `chart` slide
+* update `charts` components with the animated charts feature
+
 <a name="1.0.0-alpha.16"></a>
 # 1.0.0-alpha.16 (2019-06-16)
 

@@ -75,7 +75,7 @@ export class AppSlideChart {
 <p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
 <p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
 <h2 id="app-slide-chart-chart-components">Chart components</h2>
-<p>The slide &quot;Chart&quot; relies on the charts components <code>&lt;deckgo-pie-chart/&gt;</code>, <code>&lt;deckgo-line-chart/&gt;</code> and  <code>&lt;deckgo-bar-chart/&gt;</code> which are described in the components <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.</p>
+<p>The slide &quot;Chart&quot; relies on the charts components <code>&lt;deckgo-pie-chart/&gt;</code>, <code>&lt;deckgo-line-chart/&gt;</code> and  <code>&lt;deckgo-bar-chart/&gt;</code> which are described in the components <a href="/components/charts">documentation</a>.</p>
 <h2 id="app-slide-chart-installation">Installation</h2>
 <p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> charts components are provided in separate extra library. If you don&#39;t use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to add the <a href="https://deckdeckgo.com">DeckDeckGo</a> chart to your project, you will need to install and integrate it from a CDN or <a href="https://www.npmjs.com/package/@deckdeckgo/charts">npm</a> as described in its <a href="https://docs.deckdeckgo.com/components/charts">installation guide</a>.</p>
 <h2 id="app-slide-chart-attributes">Attributes</h2>
@@ -108,7 +108,7 @@ export class AppSlideChart {
 <td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
 </tr>
 </tbody></table>
-<p>Furthermore, this slide component offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts Web Component, see its <a href="https://docs.deckdeckgo.com/components/charts">documentation</a> for the details.</p>
+<p>Furthermore, this slide component offers the same attributes as the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts Web Component, see its <a href="/components/charts">documentation</a> for the details.</p>
 <h2 id="app-slide-chart-theming">Theming</h2>
 <p>The following theming options will affect this component if set on its host or parent.</p>
 <table>
@@ -156,17 +156,17 @@ export class AppSlideChart {
 </tr>
 <tr>
 <td>--slide-chart-margin-top</td>
-<td>32px</td>
+<td>0</td>
 <td>Margin top of the chart inside its container</td>
 </tr>
 <tr>
 <td>--slide-chart-margin-end</td>
-<td>96px</td>
+<td>32px</td>
 <td>Margin right of the chart inside its container</td>
 </tr>
 <tr>
 <td>--slide-chart-margin-bottom</td>
-<td>32px</td>
+<td>64px</td>
 <td>Margin bottom of the chart inside its container</td>
 </tr>
 <tr>
@@ -175,7 +175,7 @@ export class AppSlideChart {
 <td>Margin left of the chart inside its container</td>
 </tr>
 </tbody></table>
-<p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts Web Component, see its <a href="https://docs.deckdeckgo.com/components/charts">documentation</a> for the details.</p>
+<p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts Web Component, see its <a href="/components/charts">documentation</a> for the details.</p>
 </main>
 
         <app-footer></app-footer>
