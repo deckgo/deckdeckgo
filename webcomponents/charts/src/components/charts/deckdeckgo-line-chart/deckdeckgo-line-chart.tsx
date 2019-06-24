@@ -75,6 +75,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   @Watch('height')
   @Watch('src')
   async redraw() {
+    this.serieIndex = 0;
+
     await this.draw();
   }
 

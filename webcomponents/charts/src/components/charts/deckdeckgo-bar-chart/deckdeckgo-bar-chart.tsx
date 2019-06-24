@@ -58,6 +58,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   @Watch('height')
   @Watch('src')
   async redraw() {
+    this.barDataIndex = 0;
+
     await this.draw();
   }
 
