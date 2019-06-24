@@ -52,12 +52,15 @@ export class AppComponentsCharts {
 <li><a href="#app-components-chart-showcase">Showcase</a><ul>
 <li><a href="#app-components-chart-pie">Pie</a></li>
 <li><a href="#app-components-chart-donut">Donut</a></li>
+<li><a href="#app-components-chart-animated-pie">Animated pie</a></li>
 <li><a href="#app-components-chart-compare-two-graphs">Compare two graphs</a></li>
 <li><a href="#app-components-chart-line-and-area">Line and area</a></li>
 <li><a href="#app-components-chart-compare-two-lines-and-smoothing-effect">Compare two lines and smoothing effect</a></li>
 <li><a href="#app-components-chart-compare-two-lines-and-display-a-grid">Compare two lines and display a grid</a></li>
+<li><a href="#app-components-chart-animated-lines">Animated lines</a></li>
 <li><a href="#app-components-chart-bar">Bar</a></li>
 <li><a href="#app-components-chart-compare-multiple-bars">Compare multiple bars</a></li>
+<li><a href="#app-components-chart-animated-bars">Animated bars</a></li>
 </ul>
 </li>
 <li><a href="#app-components-chart-getting-started">Getting started</a><ul>
@@ -69,8 +72,7 @@ export class AppComponentsCharts {
 <li><a href="#app-components-chart-usage">Usage</a><ul>
 <li><a href="#app-components-chart-pie-usage">Pie usage</a><ul>
 <li><a href="#app-components-chart-csv">CSV</a><ul>
-<li><a href="#app-components-chart-single-column">Single column</a></li>
-<li><a href="#app-components-chart-two-columns">Two columns</a></li>
+<li><a href="#app-components-chart-example">Example</a></li>
 </ul>
 </li>
 <li><a href="#app-components-chart-properties">Properties</a></li>
@@ -82,7 +84,7 @@ export class AppComponentsCharts {
 <li><a href="#app-components-chart-line-usage">Line usage</a><ul>
 <li><a href="#app-components-chart-csv-1">CSV</a><ul>
 <li><a href="#app-components-chart-two-columns-1">Two columns</a></li>
-<li><a href="#app-components-chart-three-columns">Three columns</a></li>
+<li><a href="#app-components-chart-three-columns-or-more">Three columns or more</a></li>
 </ul>
 </li>
 <li><a href="#app-components-chart-properties-1">Properties</a></li>
@@ -191,13 +193,11 @@ export class AppComponentsCharts {
 <h3 id="app-components-charts-pie-usage">Pie usage</h3>
 <p>The <code>&lt;deckgo-pie-chart/&gt;</code> Web Component draw a Pie chart.</p>
 <h4 id="app-components-charts-csv">CSV</h4>
-<p>The csv file should contains one or two columns. The values could be provided as <code>number</code> or <code>percent</code>.</p>
-<h5 id="app-components-charts-single-column">Single column</h5>
-<p>If a single column is used, it should contains the values.</p>
-<deckgo-highlight-code language="javascript">
-      <code slot="code">60{'\n'}20{'\n'}20</code>
-    </deckgo-highlight-code><h5 id="app-components-charts-two-columns">Two columns</h5>
-<p>If two columns are provided, the first column should contains the description of the value.</p>
+<p>The csv file should contains at least two columns. The first one should be a label, which could be displayed or not, and the second one should be a value.</p>
+<p>If more than two columns are provided, all columns beside the first one will be interpreted as values for comparison, in case you would like to displayed multiple graphs.</p>
+<p>The values could be provided as <code>number</code> or <code>percent</code>.</p>
+<h5 id="app-components-charts-example">Example</h5>
+<p>In this example, the first column contains a label for the category and the second contains the value in percent.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">Wind;53.13%{'\n'}Solar:1.96%{'\n'}Geothermal;7.52%{'\n'}Landfill Gas;15.67%{'\n'}Biomass;14.79%{'\n'}Qualified Hydropower;6.93%</code>
     </deckgo-highlight-code><h4 id="app-components-charts-properties">Properties</h4>
@@ -261,6 +261,22 @@ export class AppComponentsCharts {
 <td><code>string</code></td>
 <td><code>&#39;;&#39;</code></td>
 </tr>
+<tr>
+<td><code>animation</code></td>
+<td><code>animation</code></td>
+<td></td>
+<td>Display multiple graphs and animate the transition between these</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>animationDuration</code></td>
+<td><code>animation-duration</code></td>
+<td></td>
+<td>Duration of the transition between graphs</td>
+<td><code>numer</code></td>
+<td><code>1000</code> (aka 1 second)</td>
+</tr>
 </tbody></table>
 <h4 id="app-components-charts-styling">Styling</h4>
 <p>The <code>&lt;deckgo-pie-chart/&gt;</code> could be styled using the following CSS4 variables:</p>
@@ -274,7 +290,7 @@ export class AppComponentsCharts {
 </thead>
 <tbody><tr>
 <td>--deckgo-chart-text-color</td>
-<td></td>
+<td>black</td>
 <td>The color of the labels</td>
 </tr>
 <tr>
@@ -289,9 +305,19 @@ export class AppComponentsCharts {
 </tr>
 </tbody></table>
 <h4 id="app-components-charts-methods">Methods</h4>
-<p>The <code>&lt;deckgo-pie-chart/&gt;</code> expose the following method in case you would like to redraw your chart, for example on resize of the window:</p>
+<p>The <code>&lt;deckgo-pie-chart/&gt;</code> expose the following methods.</p>
+<h5 id="app-components-charts-draw">Draw</h5>
+<p>In case you would like to redraw your chart, for example on resize of the window:</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">draw() =&gt; Promise&lt;void&gt;</code>
+      <code slot="code">draw(width?: number, height?: number) =&gt; Promise&lt;void&gt;</code>
+    </deckgo-highlight-code><h5 id="app-components-charts-next">Next</h5>
+<p>If you are using <code>animation</code>, this method is used to display the next data respectively the next chart.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">async next()</code>
+    </deckgo-highlight-code><h5 id="app-components-charts-previous">Previous</h5>
+<p>If you are using <code>animation</code>, this method is used to display the previous data respectively the previous chart.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">async prev()</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples">Examples</h4>
 <p>You could find other examples of pie charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
@@ -299,18 +325,19 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h3 id="app-components-charts-line-usage">Line usage</h3>
 <p>The <code>&lt;deckgo-line-chart/&gt;</code> Web Component draw a line chart.</p>
 <h4 id="app-components-charts-csv-1">CSV</h4>
-<p>The csv file should contains two or three columns.</p>
+<p>The csv file should contains two or multiple columns.</p>
 <p>The first column contains the values for the <code>x</code> axis. These should be provided as <code>date</code> or <code>number</code>.</p>
-<p>The second and third columns contains the values for the <code>y</code> axis. These should be provided as <code>number</code>.</p>
-<h5 id="app-components-charts-two-columns-1">Two columns</h5>
+<p>The second and other columns contains the values for the <code>y</code> axis. These should be provided as <code>number</code>.</p>
+<p>Use multiple columns in case you would like to compare multiple graphs.</p>
+<h5 id="app-components-charts-two-columns">Two columns</h5>
 <p>With dates as <code>x</code> axis:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">01.01.2018;5{'\n'}01.03.2018;10{'\n'}01.06.2018;8</code>
     </deckgo-highlight-code><p>With numbers as <code>x</code> axis:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">1;5{'\n'}2;10{'\n'}3;8</code>
-    </deckgo-highlight-code><h5 id="app-components-charts-three-columns">Three columns</h5>
-<p>The third columns is optional, it could be use in case you would like to plot two charts on the same graph. </p>
+    </deckgo-highlight-code><h5 id="app-components-charts-three-columns-or-more">Three columns or more</h5>
+<p>The third columns or any others is optional, it could be use in case you would like to plot multiple charts on the same graph or animate a transition between these. </p>
 <p>With dates as <code>x</code> axis:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">01.01.2018;5;4{'\n'}01.03.2018;10;3{'\n'}01.06.2018;8;19</code>
@@ -442,6 +469,22 @@ export class AppComponentsCharts {
 <td><code>string</code></td>
 <td><code>&#39;;&#39;</code></td>
 </tr>
+<tr>
+<td><code>animation</code></td>
+<td><code>animation</code></td>
+<td></td>
+<td>Display multiple graphs and animate the transition between these</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>animationDuration</code></td>
+<td><code>animation-duration</code></td>
+<td></td>
+<td>Duration of the transition between graphs</td>
+<td><code>numer</code></td>
+<td><code>1000</code> (aka 1 second)</td>
+</tr>
 </tbody></table>
 <h4 id="app-components-charts-styling-1">Styling</h4>
 <p>The <code>&lt;deckgo-line-chart/&gt;</code> could be styled using the following CSS4 variables:</p>
@@ -460,53 +503,13 @@ export class AppComponentsCharts {
 </tr>
 <tr>
 <td>--deckgo-chart-text-color</td>
-<td></td>
+<td>black</td>
 <td>The color of the labels</td>
 </tr>
 <tr>
 <td>--deckgo-chart-text-display</td>
 <td></td>
 <td>The display property of the labels</td>
-</tr>
-<tr>
-<td>--deckgo-chart-fill-color</td>
-<td>#3880ff</td>
-<td>The fill color of the area of the main chart</td>
-</tr>
-<tr>
-<td>--deckgo-chart-fill-opacity</td>
-<td></td>
-<td>The opacity of the area of the main chart</td>
-</tr>
-<tr>
-<td>--deckgo-chart-stroke</td>
-<td></td>
-<td>The stroke of the area of the main chart</td>
-</tr>
-<tr>
-<td>--deckgo-chart-stroke-width</td>
-<td></td>
-<td>The stroke width of the area of the main chart</td>
-</tr>
-<tr>
-<td>--deckgo-chart-compare-fill-color</td>
-<td>#0cd1e8</td>
-<td>The fill color of the area of the chart to compare</td>
-</tr>
-<tr>
-<td>--deckgo-chart-compare-fill-opacity</td>
-<td>0.7</td>
-<td>The opacity of the area of the chart to compare</td>
-</tr>
-<tr>
-<td>--deckgo-chart-compare-stroke</td>
-<td></td>
-<td>The stroke of the area of the chart to compare</td>
-</tr>
-<tr>
-<td>--deckgo-chart-compare-stroke-width</td>
-<td></td>
-<td>The stroke width of the area of the chart to compare</td>
 </tr>
 <tr>
 <td>--deckgo-chart-grid-stroke</td>
@@ -519,10 +522,51 @@ export class AppComponentsCharts {
 <td>The stroke opacity of the grid</td>
 </tr>
 </tbody></table>
+<p>Furthermore, for each generated charts, the following CSS4 variables could be applied:</p>
+<table>
+<thead>
+<tr>
+<th>CSS4 variable</th>
+<th>Default</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>--deckgo-chart-fill-color-index</td>
+<td>#3880ff</td>
+<td>The fill color of the area of the chart</td>
+</tr>
+<tr>
+<td>--deckgo-chart-fill-opacity-index</td>
+<td></td>
+<td>The opacity of the area of the chart</td>
+</tr>
+<tr>
+<td>--deckgo-chart-stroke-index</td>
+<td></td>
+<td>The stroke of the area of the chart</td>
+</tr>
+<tr>
+<td>--deckgo-chart-stroke-width-index</td>
+<td></td>
+<td>The stroke width of the area of the chart</td>
+</tr>
+</tbody></table>
+<p>Note: Replace <code>-index</code> with the index of the chart, for example: <code>--deckgo-chart-fill-color-1: red;</code></p>
 <h4 id="app-components-charts-methods-1">Methods</h4>
-<p>The <code>&lt;deckgo-line-chart/&gt;</code> expose the following method in case you would like to redraw your chart, for example on resize of the window:</p>
+<p>The <code>&lt;deckgo-line-chart/&gt;</code> expose the following methods.</p>
+<h5 id="app-components-charts-draw-1">Draw</h5>
+<p>In case you would like to redraw your chart, for example on resize of the window:</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">draw() =&gt; Promise&lt;void&gt;</code>
+      <code slot="code">draw(width?: number, height?: number) =&gt; Promise&lt;void&gt;</code>
+    </deckgo-highlight-code><h5 id="app-components-charts-next-1">Next</h5>
+<p>If you are using <code>animation</code>, this method is used to display the next data respectively the next chart.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">async next()</code>
+    </deckgo-highlight-code><h5 id="app-components-charts-previous-1">Previous</h5>
+<p>If you are using <code>animation</code>, this method is used to display the previous data respectively the previous chart.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">async prev()</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples-1">Examples</h4>
 <p>You could find other examples of line charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
@@ -530,7 +574,9 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h3 id="app-components-charts-bar-usage">Bar usage</h3>
 <p>The <code>&lt;deckgo-bar-chart/&gt;</code> Web Component draw a Bar chart.</p>
 <h4 id="app-components-charts-csv-2">CSV</h4>
-<p>The csv file should contains at lest two columns. The values could be provided as <code>number</code> or <code>percent</code>.</p>
+<p>The csv file should contains at least two columns. The first column should contains the labels. The other columns should contains values.</p>
+<p>Use multiple columns in case you would like to compare multiple graphs.</p>
+<p>The values could be provided as <code>number</code> or <code>percent</code>.</p>
 <h5 id="app-components-charts-multiple-columns">Multiple columns</h5>
 <p>The first column should contains the labels or groups used for the X axis. The other columns are the values use for the Y axis.</p>
 <deckgo-highlight-code language="javascript">
@@ -612,6 +658,22 @@ export class AppComponentsCharts {
 <td><code>string</code></td>
 <td><code>&#39;;&#39;</code></td>
 </tr>
+<tr>
+<td><code>animation</code></td>
+<td><code>animation</code></td>
+<td></td>
+<td>Display multiple graphs and animate the transition between these</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>animationDuration</code></td>
+<td><code>animation-duration</code></td>
+<td></td>
+<td>Duration of the transition between graphs</td>
+<td><code>numer</code></td>
+<td><code>1000</code> (aka 1 second)</td>
+</tr>
 </tbody></table>
 <h4 id="app-components-charts-styling-2">Styling</h4>
 <p>The <code>&lt;deckgo-bar-chart/&gt;</code> could be styled using the following CSS4 variables:</p>
@@ -649,30 +711,40 @@ export class AppComponentsCharts {
 <td>The display property of the labels</td>
 </tr>
 <tr>
-<td>--deckgo-chart-fill-color-barX</td>
+<td>--deckgo-chart-fill-color-bar-X</td>
 <td></td>
 <td>The fill color of the bar chart identified with index <code>X</code></td>
 </tr>
 <tr>
-<td>--deckgo-chart-fill-opacity-baxX</td>
+<td>--deckgo-chart-fill-opacity-bax-X</td>
 <td></td>
 <td>The opacity of the bar chart identified with index <code>X</code></td>
 </tr>
 <tr>
-<td>--deckgo-chart-stroke-barX</td>
+<td>--deckgo-chart-stroke-bar-X</td>
 <td></td>
 <td>The stroke of the bar chart identified with index <code>X</code></td>
 </tr>
 <tr>
-<td>--deckgo-chart-stroke-width-barX</td>
+<td>--deckgo-chart-stroke-width-bar-X</td>
 <td></td>
 <td>The stroke width of the chart identified with index <code>X</code></td>
 </tr>
 </tbody></table>
 <h4 id="app-components-charts-methods-2">Methods</h4>
-<p>The <code>&lt;deckgo-bar-chart/&gt;</code> expose the following method in case you would like to redraw your chart, for example on resize of the window:</p>
+<p>The <code>&lt;deckgo-bar-chart/&gt;</code> expose the following methods:</p>
+<h5 id="app-components-charts-draw-2">Draw</h5>
+<p>In case you would like to redraw your chart, for example on resize of the window:</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">draw() =&gt; Promise&lt;void&gt;</code>
+      <code slot="code">draw(width?: number, height?: number) =&gt; Promise&lt;void&gt;</code>
+    </deckgo-highlight-code><h5 id="app-components-charts-next-2">Next</h5>
+<p>If you are using <code>animation</code>, this method is used to display the next data respectively the next chart.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">async next()</code>
+    </deckgo-highlight-code><h5 id="app-components-charts-previous-2">Previous</h5>
+<p>If you are using <code>animation</code>, this method is used to display the previous data respectively the previous chart.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">async prev()</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples-2">Examples</h4>
 <p>You could find other examples of bar charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
