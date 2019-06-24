@@ -25,6 +25,20 @@ export class AppComponentsCharts {
     await DeckdeckgoDocsUtils.reloadCode(this.el);
   }
 
+  private async prev(cmpId: string) {
+    const elem = this.el.querySelector('#' + cmpId);
+    if (elem) {
+      await (elem as any).prev();
+    }
+  }
+
+  private async next(cmpId: string) {
+    const elem = this.el.querySelector('#' + cmpId);
+    if (elem) {
+      await (elem as any).next();
+    }
+  }
+
   render() {
     return [
       <app-navigation></app-navigation>,
@@ -98,7 +112,17 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h3 id="app-components-charts-pie">Pie</h3>
 <p><deckgo-pie-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"></deckgo-pie-chart></p>
 <h3 id="app-components-charts-donut">Donut</h3>
-<p><deckgo-pie-chart width={500} height={400} inner-radius={100} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart-single-column.csv"></deckgo-pie-chart></p>
+<p><deckgo-pie-chart width={500} height={400} inner-radius={100} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"></deckgo-pie-chart></p>
+<h3 id="app-components-charts-animated-pie">Animated pie</h3>
+<div>
+  <deckgo-pie-chart id="animatedPie" animation={true} width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"></deckgo-pie-chart>
+
+  <div>
+    <ion-button fill="outline" size="small" onClick={() => this.prev('animatedPie')}><ion-label>Prev</ion-label></ion-button>
+    <ion-button fill="outline" size="small" onClick={() => this.next('animatedPie')}><ion-label>Next</ion-label></ion-button>
+  </div>
+</div>
+
 <h3 id="app-components-charts-compare-two-graphs">Compare two graphs</h3>
 <p><deckgo-line-chart width={500} height={400} y-axis-domain="extent" date-pattern="dd.MM.yyyy" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv"></deckgo-line-chart></p>
 <h3 id="app-components-charts-line-and-area">Line and area</h3>
@@ -106,26 +130,46 @@ export class AppComponentsCharts {
 <h3 id="app-components-charts-compare-two-lines-and-smoothing-effect">Compare two lines and smoothing effect</h3>
 <div>
   <deckgo-line-chart width={500} height={400} area={false} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
-                    style={{'--deckgo-chart-fill-color': 'none', '--deckgo-chart-stroke': 'var(--ion-color-primary)', '--deckgo-chart-compare-fill-color': 'none', '--deckgo-chart-compare-fill-opacity': '1', '--deckgo-chart-compare-stroke': 'var(--ion-color-secondary)', '--deckgo-chart-compare-stroke-width': '3px'}}></deckgo-line-chart>
+                    style={{'--deckgo-chart-fill-color-0': 'none', '--deckgo-chart-stroke-0': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-fill-opacity-1': '1', '--deckgo-chart-stroke-1': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-1': '3px'}}></deckgo-line-chart>
 </div>
 
 <h3 id="app-components-charts-compare-two-lines-and-display-a-grid">Compare two lines and display a grid</h3>
 <div>
   <deckgo-line-chart width={500} height={400} smooth={false} area={false} grid={true} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
-                    style={{'--deckgo-chart-fill-color': 'none', '--deckgo-chart-stroke': 'var(--ion-color-primary)', '--deckgo-chart-compare-fill-color': 'none', '--deckgo-chart-compare-fill-opacity': '1', '--deckgo-chart-compare-stroke': 'var(--ion-color-secondary)', '--deckgo-chart-compare-stroke-width': '3px'}}></deckgo-line-chart>
+                    style={{'--deckgo-chart-fill-color-0': 'none', '--deckgo-chart-stroke-0': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-fill-opacity-1': '1', '--deckgo-chart-stroke-1': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-1': '3px'}}></deckgo-line-chart>
 </div>
 
+<h3 id="app-components-charts-animated-lines">Animated lines</h3>
+<div>
+  <deckgo-line-chart id="animatedLine" animation={true} y-axis-domain="extent" date-pattern="dd.MM.yyyy" width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv"></deckgo-line-chart>
+
+  <div>
+    <ion-button fill="outline" size="small" onClick={() => this.prev('animatedLine')}><ion-label>Prev</ion-label></ion-button>
+    <ion-button fill="outline" size="small" onClick={() => this.next('animatedLine')}><ion-label>Next</ion-label></ion-button>
+  </div>
+</div>
 
 <h3 id="app-components-charts-bar">Bar</h3>
 <div>
   <deckgo-bar-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
-                    style={{'--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-bar2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-bar3': 'var(--ion-color-tertiary)'}}></deckgo-bar-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}></deckgo-bar-chart>
 </div>
 
 <h3 id="app-components-charts-compare-multiple-bars">Compare multiple bars</h3>
 <div>
   <deckgo-bar-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv" 
-                    style={{'--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)'}}></deckgo-bar-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)'}}></deckgo-bar-chart>
+</div>
+
+<h3 id="app-components-charts-animated-bars">Animated bars</h3>
+<div>
+  <deckgo-bar-chart id="animatedBar" animation={true} width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+                      style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}></deckgo-bar-chart>
+
+  <div>
+    <ion-button fill="outline" size="small" onClick={() => this.prev('animatedBar')}><ion-label>Prev</ion-label></ion-button>
+    <ion-button fill="outline" size="small" onClick={() => this.next('animatedBar')}><ion-label>Next</ion-label></ion-button>
+  </div>
 </div>
 
 <h2 id="app-components-charts-getting-started">Getting started</h2>
