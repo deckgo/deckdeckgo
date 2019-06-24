@@ -40,7 +40,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
   @Prop() separator: string = ';';
 
   @Prop() animation: boolean = false;
-  @Prop() animationDuration: number = 2000;
+  @Prop() animationDuration: number = 1000;
 
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private myPath: Arc<any, DefaultArcObject>;
