@@ -34,7 +34,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   @Prop() separator: string = ';';
 
   @Prop() marginTop: number = 32;
-  @Prop() marginBottom: number = 32;
+  @Prop() marginBottom: number = 64;
   @Prop() marginLeft: number = 32;
   @Prop() marginRight: number = 32;
 
@@ -133,7 +133,10 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       this.svg.append('g')
         .attr('class', 'axis axis-x')
         .attr('transform', 'translate(0,' + this.height + ')')
-        .call(bottomAxis);
+        .call(bottomAxis)
+        .selectAll('text')
+        .attr('transform', 'translate(-10,0)rotate(-45)')
+        .style('text-anchor', 'end');
 
       this.svg.append('g')
         .attr('class', 'axis axis-y')
