@@ -55,6 +55,9 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
+  @Prop() animation: boolean = false;
+  @Prop() animationDuration: number = 1000;
+
   async componentDidLoad() {
     await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
 
@@ -66,9 +69,34 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(_enter: boolean): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      resolve(true)
+  beforeSwipe(enter: boolean): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+      if (!this.animation) {
+        resolve(true);
+        return;
+      }
+
+      const chart: HTMLElement = this.el.shadowRoot.querySelector(this.type === DeckdeckgoSlideChartType.LINE ? 'deckgo-line-chart' : (this.type === DeckdeckgoSlideChartType.BAR ? 'deckgo-bar-chart' : 'deckgo-pie-chart'));
+
+      if (!chart) {
+        resolve(true);
+        return;
+      }
+
+      const couldSwipe: boolean = enter ? await (chart as any).isEnd() : await (chart as any).isBeginning();
+
+      if (couldSwipe) {
+        resolve(true);
+        return;
+      }
+
+      if (enter) {
+        await (chart as any).next();
+      } else {
+        await (chart as any).prev();
+      }
+
+      resolve(false);
     });
   }
 
@@ -139,14 +167,17 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
                                 margin-top={this.marginTop} margin-bottom={this.marginBottom}
                                 margin-right={this.marginRight} margin-left={this.marginLeft}
                                 smooth={this.smooth} area={this.area} ticks={this.ticks}
-                                grid={this.grid}></deckgo-line-chart>
+                                grid={this.grid}
+                                animation={this.animation} animation-duration={this.animationDuration}></deckgo-line-chart>
     } else if (this.type === DeckdeckgoSlideChartType.BAR) {
       return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
                                 margin-top={this.marginTop} margin-bottom={this.marginBottom}
-                                margin-right={this.marginRight} margin-left={this.marginLeft}></deckgo-bar-chart>
+                                margin-right={this.marginRight} margin-left={this.marginLeft}
+                               animation={this.animation} animation-duration={this.animationDuration}></deckgo-bar-chart>
     } else {
       return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
-                               inner-radius={this.innerRadius} range={this.range}></deckgo-pie-chart>
+                               inner-radius={this.innerRadius} range={this.range}
+                               animation={this.animation} animation-duration={this.animationDuration}></deckgo-pie-chart>
     }
   }
 
