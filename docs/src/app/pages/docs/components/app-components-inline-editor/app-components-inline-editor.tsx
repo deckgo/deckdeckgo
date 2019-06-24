@@ -69,7 +69,7 @@ export class AppComponentsInlineEditor {
 <h3 id="app-components-inline-editor-using-from-a-cdn">Using from a CDN</h3>
 <p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> inline editor from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;script src=&quot;https:&#47;&#47;unpkg.com&#47;deckdeckgo-inline-editor@latest&#47;dist&#47;deckdeckgo-inline-editor.js&quot;&gt;&lt;&#47;script&gt;</code>
+      <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;inline-editor@latest&#47;dist&#47;deckdeckgo-inline-editor&#47;deckdeckgo-inline-editor.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;inline-editor@latest&#47;dist&#47;deckdeckgo-inline-editor&#47;deckdeckgo-inline-editor.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-inline-editor-install-from-npm">Install from NPM</h3>
 <p>Install it in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">

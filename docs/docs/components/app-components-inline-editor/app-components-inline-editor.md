@@ -42,7 +42,8 @@ To add the component to your web applications, it could be use directly in your 
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] inline editor from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
-<script src="https://unpkg.com/deckdeckgo-inline-editor@latest/dist/deckdeckgo-inline-editor.js"></script>
+<script type="module" src="https://unpkg.com/@deckdeckgo/inline-editor@latest/dist/deckdeckgo-inline-editor/deckdeckgo-inline-editor.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/inline-editor@latest/dist/deckdeckgo-inline-editor/deckdeckgo-inline-editor.js"></script>
 ```
 ### Install from NPM
 

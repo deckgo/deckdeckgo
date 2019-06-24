@@ -6,37 +6,42 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-import {
-  BaseType,
-  Selection,
-} from 'd3-selection';
-import {
-  Arc,
-  DefaultArcObject,
-} from 'd3-shape';
+
 
 export namespace Components {
   interface DeckgoBarChart {
-    'draw': () => Promise<void>;
+    'animation': boolean;
+    'animationDuration': number;
+    'draw': (width?: number, height?: number) => Promise<void>;
     'height': number;
+    'isBeginning': () => Promise<boolean>;
+    'isEnd': () => Promise<boolean>;
     'marginBottom': number;
     'marginLeft': number;
     'marginRight': number;
     'marginTop': number;
+    'next': () => Promise<void>;
+    'prev': () => Promise<void>;
     'separator': string;
     'src': string;
     'width': number;
   }
   interface DeckgoLineChart {
+    'animation': boolean;
+    'animationDuration': number;
     'area': boolean;
     'datePattern': string;
-    'draw': () => Promise<void>;
+    'draw': (width?: number, height?: number) => Promise<void>;
     'grid': boolean;
     'height': number;
+    'isBeginning': () => Promise<boolean>;
+    'isEnd': () => Promise<boolean>;
     'marginBottom': number;
     'marginLeft': number;
     'marginRight': number;
     'marginTop': number;
+    'next': () => Promise<void>;
+    'prev': () => Promise<void>;
     'separator': string;
     'smooth': boolean;
     'src': string;
@@ -45,9 +50,15 @@ export namespace Components {
     'yAxisDomain': string;
   }
   interface DeckgoPieChart {
-    'draw': () => Promise<void>;
+    'animation': boolean;
+    'animationDuration': number;
+    'draw': (width?: number, height?: number) => Promise<void>;
     'height': number;
     'innerRadius': number;
+    'isBeginning': () => Promise<boolean>;
+    'isEnd': () => Promise<boolean>;
+    'next': () => Promise<void>;
+    'prev': () => Promise<void>;
     'range': string[];
     'separator': string;
     'src': string;
@@ -84,6 +95,8 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoBarChart extends JSXBase.HTMLAttributes<HTMLDeckgoBarChartElement> {
+    'animation'?: boolean;
+    'animationDuration'?: number;
     'height'?: number;
     'marginBottom'?: number;
     'marginLeft'?: number;
@@ -94,6 +107,8 @@ declare namespace LocalJSX {
     'width'?: number;
   }
   interface DeckgoLineChart extends JSXBase.HTMLAttributes<HTMLDeckgoLineChartElement> {
+    'animation'?: boolean;
+    'animationDuration'?: number;
     'area'?: boolean;
     'datePattern'?: string;
     'grid'?: boolean;
@@ -110,6 +125,8 @@ declare namespace LocalJSX {
     'yAxisDomain'?: string;
   }
   interface DeckgoPieChart extends JSXBase.HTMLAttributes<HTMLDeckgoPieChartElement> {
+    'animation'?: boolean;
+    'animationDuration'?: number;
     'height'?: number;
     'innerRadius'?: number;
     'range'?: string[];

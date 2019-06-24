@@ -7,7 +7,7 @@ div.deckgo-slide {
 }
 
 div.deckgo-chart-container {
-  margin: var(--slide-chart-margin-top, 32px) var(--slide-chart-margin-end, 32px) var(--slide-chart-margin-bottom, 32px) var(--slide-chart-margin-start, 32px);
+  margin: var(--slide-chart-margin-top, 0) var(--slide-chart-margin-end, 32px) var(--slide-chart-margin-bottom, 64px) var(--slide-chart-margin-start, 32px);
 
   width: calc(var(--slide-width) - var(--slide-chart-margin-end, 64px) - var(--slide-chart-margin-start, 64px));
   height: calc(var(--slide-height) - var(--slide-chart-margin-top, 64px) - var(--slide-chart-margin-bottom, 64px));
