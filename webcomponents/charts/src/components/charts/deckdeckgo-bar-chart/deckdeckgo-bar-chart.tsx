@@ -280,7 +280,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
               dataValues.push({
                 key: '' + i,
                 value: tmp
-              })
+              });
             }
           }
 

@@ -32,6 +32,13 @@
     <button onclick="next('deckgo-bar-chart')">Next</button>
   </div>
 
+  <deckgo-pie-chart animation="true" width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv" style="--deckgo-chart-fill-color-1: #3880ff; --deckgo-chart-fill-color-2: #0cd1e8; --deckgo-chart-fill-color-3: #7044ff;"></deckgo-pie-chart>
+
+  <div>
+    <button onclick="prev('deckgo-pie-chart')">Prev</button>
+    <button onclick="next('deckgo-pie-chart')">Next</button>
+  </div>
+
   <deckgo-pie-chart width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"></deckgo-pie-chart>
 
   <div>
@@ -59,12 +66,12 @@
   <script type="text/javascript">
     function draw() {
       const elem = document.getElementsByTagName('deckgo-pie-chart');
-      if (elem && elem.length > 0) {
-        elem[0].width = 200;
-        elem[0].height = 200;
-        elem[0].range = ['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00'];
-        elem[0].stroke = "#ffffff";
-        elem[0].draw();
+      if (elem && elem.length > 1) {
+        elem[1].width = 200;
+        elem[1].height = 200;
+        elem[1].range = ['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00'];
+        elem[1].stroke = "#ffffff";
+        elem[1].draw();
       }
     }
 

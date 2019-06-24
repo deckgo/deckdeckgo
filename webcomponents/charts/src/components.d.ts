@@ -6,14 +6,7 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-import {
-  BaseType,
-  Selection,
-} from 'd3-selection';
-import {
-  Arc,
-  DefaultArcObject,
-} from 'd3-shape';
+
 
 export namespace Components {
   interface DeckgoBarChart {
@@ -53,9 +46,13 @@ export namespace Components {
     'yAxisDomain': string;
   }
   interface DeckgoPieChart {
+    'animation': boolean;
+    'animationDuration': number;
     'draw': () => Promise<void>;
     'height': number;
     'innerRadius': number;
+    'next': () => Promise<void>;
+    'prev': () => Promise<void>;
     'range': string[];
     'separator': string;
     'src': string;
@@ -122,6 +119,8 @@ declare namespace LocalJSX {
     'yAxisDomain'?: string;
   }
   interface DeckgoPieChart extends JSXBase.HTMLAttributes<HTMLDeckgoPieChartElement> {
+    'animation'?: boolean;
+    'animationDuration'?: number;
     'height'?: number;
     'innerRadius'?: number;
     'range'?: string[];
