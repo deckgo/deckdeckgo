@@ -63,7 +63,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
     this.initWindowResize();
 
-    await this.initSize();
+    await this.drawChart();
 
     this.slideDidLoad.emit();
   }
@@ -136,14 +136,18 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   }
 
   private onResizeContent = async () => {
+    await this.drawChart();
+  };
+
+  private async drawChart() {
     await this.initSize();
 
-    const element: HTMLElement = this.el.shadowRoot.querySelector(this.type === DeckdeckgoSlideChartType.LINE ? 'deckgo-line-chart' : 'deckgo-pie-chart');
+    const element: HTMLElement = this.el.shadowRoot.querySelector(this.type === DeckdeckgoSlideChartType.LINE ? 'deckgo-line-chart' : (this.type === DeckdeckgoSlideChartType.BAR ? 'deckgo-bar-chart' : 'deckgo-pie-chart'));
 
     if (element) {
       await (element as any).draw(this.chartWidth, this.chartHeight);
     }
-  };
+  }
 
   render() {
     return <Host class={{'deckgo-slide-container': true}}>

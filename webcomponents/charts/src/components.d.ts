@@ -12,7 +12,7 @@ export namespace Components {
   interface DeckgoBarChart {
     'animation': boolean;
     'animationDuration': number;
-    'draw': () => Promise<void>;
+    'draw': (width?: number, height?: number) => Promise<void>;
     'height': number;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;
@@ -31,7 +31,7 @@ export namespace Components {
     'animationDuration': number;
     'area': boolean;
     'datePattern': string;
-    'draw': () => Promise<void>;
+    'draw': (width?: number, height?: number) => Promise<void>;
     'grid': boolean;
     'height': number;
     'isBeginning': () => Promise<boolean>;
@@ -52,7 +52,7 @@ export namespace Components {
   interface DeckgoPieChart {
     'animation': boolean;
     'animationDuration': number;
-    'draw': () => Promise<void>;
+    'draw': (width?: number, height?: number) => Promise<void>;
     'height': number;
     'innerRadius': number;
     'isBeginning': () => Promise<boolean>;

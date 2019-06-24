@@ -27,8 +27,8 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
   @Element() el: HTMLElement;
 
-  @Prop() width: number;
-  @Prop() height: number;
+  @Prop({mutable: true}) width: number;
+  @Prop({mutable: true}) height: number;
 
   // Specify a number for a donut chart
   @Prop() innerRadius: number = 0;
@@ -53,22 +53,28 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
     await this.draw();
   }
 
-  @Watch('width')
-  @Watch('height')
   @Watch('src')
   async redraw() {
-    this.pieDataIndex = 0;
-
     await this.draw();
   }
 
   @Method()
-  draw(): Promise<void> {
+  draw(width?: number, height?: number): Promise<void> {
     return new Promise<void>(async (resolve) => {
+      if (width > 0) {
+        this.width = width;
+      }
+
+      if (height > 0) {
+        this.height = height;
+      }
+
       if (!this.width || !this.height || !this.src) {
         resolve();
         return;
       }
+
+      this.pieDataIndex = 0;
 
       this.svg = DeckdeckgoChartUtils.initSvg(this.el, this.width, this.height);
       this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.width / 2) + ',' + (this.height / 2) + ')');

@@ -36,8 +36,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
   @Element() el: HTMLElement;
 
-  @Prop() width: number;
-  @Prop() height: number;
+  @Prop({mutable: true}) width: number;
+  @Prop({mutable: true}) height: number;
 
   @Prop() src: string;
   @Prop() separator: string = ';';
@@ -71,22 +71,28 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     await this.draw();
   }
 
-  @Watch('width')
-  @Watch('height')
   @Watch('src')
   async redraw() {
-    this.serieIndex = 0;
-
     await this.draw();
   }
 
   @Method()
-  draw(): Promise<void> {
+  draw(width?: number, height?: number): Promise<void> {
     return new Promise<void>(async (resolve) => {
+      if (width > 0) {
+        this.width = width;
+      }
+
+      if (height > 0) {
+        this.height = height;
+      }
+
       if (!this.width || !this.height || !this.src) {
         resolve();
         return;
       }
+
+      this.serieIndex = 0;
 
       this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
       this.svg = this.svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
