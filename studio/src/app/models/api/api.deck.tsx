@@ -1,12 +1,12 @@
-export interface DeckAttributes {
+export interface ApiDeckAttributes {
     style?: string;
 }
 
-export interface Deck {
+export interface ApiDeck {
     id?: string;
     slides: string[];
     name: string;
     owner_id: string;
-    attributes?: DeckAttributes;
+    attributes?: ApiDeckAttributes;
     background?: string;
 }

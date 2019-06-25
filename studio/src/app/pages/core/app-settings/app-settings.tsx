@@ -5,8 +5,8 @@ import {filter, take} from 'rxjs/operators';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
-import {AuthUser} from '../../../models/auth-user';
-import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/data/auth-user';
+import {ApiUser} from '../../../models/api/api.user';
 
 import {UserUtils} from '../../../utils/core/user-utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
@@ -27,7 +27,7 @@ export class AppHome {
     private authUser: AuthUser;
 
     @State()
-    private user: User;
+    private user: ApiUser;
 
     @State()
     private valid: boolean = true;
@@ -57,8 +57,8 @@ export class AppHome {
         });
 
         this.userService.watch().pipe(
-            filter((user: User) => user !== null && user !== undefined && !user.anonymous),
-            take(1)).subscribe(async (user: User) => {
+            filter((user: ApiUser) => user !== null && user !== undefined && !user.anonymous),
+            take(1)).subscribe(async (user: ApiUser) => {
             this.user = user;
         });
     }

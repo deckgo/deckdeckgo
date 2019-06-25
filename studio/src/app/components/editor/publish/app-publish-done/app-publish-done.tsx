@@ -6,8 +6,8 @@ import 'web-social-share';
 
 import {GifService} from '../../../../services/tenor/gif/gif.service';
 
-import {Deck} from '../../../../models/deck';
-import {AuthUser} from '../../../../models/auth-user';
+import {ApiDeck} from '../../../../models/api/api.deck';
+import {AuthUser} from '../../../../models/data/auth-user';
 
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
 import {AuthService} from '../../../../services/data/auth/auth.service';
@@ -128,7 +128,7 @@ export class AppPublishDone {
 
     private getShareText(): Promise<string> {
         return new Promise<string>((resolve) => {
-            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
                 if (deck && deck.name && deck.name !== '') {
                     this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
                         if (authUser && !authUser.anonymous && authUser.name && authUser.name !== '') {

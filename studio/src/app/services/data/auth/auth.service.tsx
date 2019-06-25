@@ -9,7 +9,7 @@ import {get, set, del} from 'idb-keyval';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {AuthUser} from '../../../models/auth-user';
+import {AuthUser} from '../../../models/data/auth-user';
 
 import {ErrorService} from '../../core/error/error.service';
 import {ApiUserService} from '../../api/user/api.user.service';

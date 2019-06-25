@@ -1,7 +1,7 @@
 import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 import {Resources} from '../../../../utils/core/resources';
 import {debounceTime, take} from 'rxjs/operators';
-import {Deck} from '../../../../models/deck';
+import {ApiDeck} from '../../../../models/api/api.deck';
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
 import {ApiDeckService} from '../../../../services/api/deck/api.deck.service';
 import {ErrorService} from '../../../../services/core/error/error.service';
@@ -52,7 +52,7 @@ export class AppPublishEdit {
     }
 
     async componentWillLoad() {
-        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
             if (deck) {
                 this.caption = deck.name;
             }
@@ -106,7 +106,7 @@ export class AppPublishEdit {
             this.disablePublish = true;
 
             try {
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
                     if (!deck || !deck.id) {
                         this.disablePublish = false;
                         resolve();
@@ -115,7 +115,7 @@ export class AppPublishEdit {
 
                     deck.name = this.caption;
 
-                    const updatedDeck: Deck = await this.deckService.put(deck);
+                    const updatedDeck: ApiDeck = await this.deckService.put(deck);
                     this.deckEditorService.next(updatedDeck);
 
                     this.disablePublish = false;
@@ -140,7 +140,7 @@ export class AppPublishEdit {
             try {
                 this.publishing = true;
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
                     if (!deck || !deck.id) {
                         this.publishing = false;
 

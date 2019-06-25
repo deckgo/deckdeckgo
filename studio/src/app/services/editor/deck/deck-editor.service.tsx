@@ -1,10 +1,10 @@
 import {BehaviorSubject, Observable} from 'rxjs';
 
-import {Deck} from '../../../models/deck';
+import {ApiDeck} from '../../../models/api/api.deck';
 
 export class DeckEditorService {
 
-    private deckSubject: BehaviorSubject<Deck> = new BehaviorSubject(null);
+    private deckSubject: BehaviorSubject<ApiDeck> = new BehaviorSubject(null);
 
     private static instance: DeckEditorService;
 
@@ -19,11 +19,11 @@ export class DeckEditorService {
         return DeckEditorService.instance;
     }
 
-    watch(): Observable<Deck> {
+    watch(): Observable<ApiDeck> {
         return this.deckSubject.asObservable();
     }
 
-    next(deck: Deck) {
+    next(deck: ApiDeck) {
         this.deckSubject.next(deck);
     }
     

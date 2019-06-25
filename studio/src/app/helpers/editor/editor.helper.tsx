@@ -1,6 +1,6 @@
-import {Slide} from '../../models/slide';
+import {ApiSlide} from '../../models/api/api.slide';
 
-import {Deck} from '../../models/deck';
+import {ApiDeck} from '../../models/api/api.deck';
 
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 
@@ -41,7 +41,7 @@ export class EditorHelper {
             this.busyService.deckBusy(true);
 
             try {
-                const deck: Deck = await this.deckService.get(deckId);
+                const deck: ApiDeck = await this.deckService.get(deckId);
 
                 if (!deck) {
                     this.errorService.error('No deck could be fetched');
@@ -56,12 +56,12 @@ export class EditorHelper {
                     return;
                 }
 
-                const promises: Promise<Slide>[] = [];
+                const promises: Promise<ApiSlide>[] = [];
                 deck.slides.forEach((slideId: string) => {
                     promises.push(this.fetchSlide(deck.id, slideId));
                 });
 
-                let slides: Slide[] = [];
+                let slides: ApiSlide[] = [];
                 if (promises.length > 0) {
                     slides = await Promise.all(promises);
                 }
@@ -85,7 +85,7 @@ export class EditorHelper {
     private fetchSlide(deckId: string, slideId: string): Promise<any> {
         return new Promise<any>(async (resolve) => {
             try {
-                const slide: Slide = await this.slideService.get(deckId, slideId);
+                const slide: ApiSlide = await this.slideService.get(deckId, slideId);
                 const element: any = await ParseSlidesUtils.parseSlide(slide);
 
                 resolve(element);

@@ -8,9 +8,9 @@ import {filter, take} from 'rxjs/operators';
 
 import {del, get, set} from 'idb-keyval';
 
-import {User} from '../../../models/user';
-import {AuthUser} from '../../../models/auth-user';
-import {Deck} from '../../../models/deck';
+import {ApiUser} from '../../../models/api/api.user';
+import {AuthUser} from '../../../models/data/auth-user';
+import {ApiDeck} from '../../../models/api/api.deck';
 
 import {Utils} from '../../../utils/core/utils';
 
@@ -168,8 +168,8 @@ export class AppSignIn {
             await this.userService.signOut();
 
             this.userService.watch().pipe(
-                filter((user: User) => user !== null && user !== undefined && user.id && user.id !== mergeInfo.userId),
-                take(1)).subscribe(async (user: User) => {
+                filter((user: ApiUser) => user !== null && user !== undefined && user.id && user.id !== mergeInfo.userId),
+                take(1)).subscribe(async (user: ApiUser) => {
 
                 // Merge deck to new user
                 await this.mergeService.mergeDeck(mergeInfo.deckId, mergeInfo.userToken, user.id);
@@ -209,7 +209,7 @@ export class AppSignIn {
             observables.push(this.userService.watch().pipe(take(1)));
             observables.push(this.deckEditorService.watch().pipe(take(1)));
 
-            forkJoin(observables).subscribe(async ([authUser, user, deck]: [AuthUser, User, Deck]) => {
+            forkJoin(observables).subscribe(async ([authUser, user, deck]: [AuthUser, ApiUser, ApiDeck]) => {
                 await set('deckdeckgo_redirect_info', {
                     deckId: deck ? deck.id : null,
                     userId: user ? user.id : null,

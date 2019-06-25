@@ -3,8 +3,8 @@ import {take} from 'rxjs/operators';
 
 import {get, del, set} from 'idb-keyval';
 
-import {AuthUser} from '../../../models/auth-user';
-import {User, UserInfo} from '../../../models/user';
+import {AuthUser} from '../../../models/data/auth-user';
+import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
@@ -12,7 +12,7 @@ import {ErrorService} from '../../core/error/error.service';
 
 export class ApiUserService {
 
-    private apiUserSubject: ReplaySubject<User> = new ReplaySubject(1);
+    private apiUserSubject: ReplaySubject<ApiUser> = new ReplaySubject(1);
 
     private static instance: ApiUserService;
 
@@ -37,7 +37,7 @@ export class ApiUserService {
             } else {
                 const savedApiUserId: string = await get<string>('deckdeckgo_user_id');
                 if (!savedApiUserId || savedApiUserId !== authUser.uid) {
-                    const apiUser: UserInfo = await this.createUserInfo(authUser);
+                    const apiUser: ApiUserInfo = await this.createUserInfo(authUser);
 
                     try {
                         await this.post(apiUser, authUser.token);
@@ -69,16 +69,16 @@ export class ApiUserService {
         });
     }
 
-    post(apiUser: UserInfo, token: string): Promise<User> {
+    post(apiUser: ApiUserInfo, token: string): Promise<ApiUser> {
         return this.query(apiUser, token, '/users', 'POST');
     }
 
-    put(apiUser: UserInfo | User, token: string, userId: string): Promise<User> {
+    put(apiUser: ApiUserInfo | ApiUser, token: string, userId: string): Promise<ApiUser> {
         return this.query(apiUser, token, `/users/${userId}`, 'PUT');
     }
 
-    query(apiUserInfo: UserInfo | User, token: string, context: string, method: string): Promise<User> {
-        return new Promise<User>(async (resolve, reject) => {
+    query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser> {
+        return new Promise<ApiUser>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -97,7 +97,7 @@ export class ApiUserService {
                     return;
                 }
 
-                const persistedUser: User = await rawResponse.json();
+                const persistedUser: ApiUser = await rawResponse.json();
 
                 this.apiUserSubject.next(persistedUser);
 
@@ -110,8 +110,8 @@ export class ApiUserService {
         });
     }
 
-    private get(userId: string): Promise<User> {
-        return new Promise<User>(async (resolve, reject) => {
+    private get(userId: string): Promise<ApiUser> {
+        return new Promise<ApiUser>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -128,7 +128,7 @@ export class ApiUserService {
                     return;
                 }
 
-                const persistedUser: User = await rawResponse.json();
+                const persistedUser: ApiUser = await rawResponse.json();
 
                 this.apiUserSubject.next(persistedUser);
 
@@ -165,18 +165,18 @@ export class ApiUserService {
         });
     }
 
-    watch(): Observable<User> {
+    watch(): Observable<ApiUser> {
         return this.apiUserSubject.asObservable();
     }
 
-    createUserInfo(authUser: AuthUser): Promise<UserInfo> {
-        return new Promise<UserInfo>((resolve) => {
+    createUserInfo(authUser: AuthUser): Promise<ApiUserInfo> {
+        return new Promise<ApiUserInfo>((resolve) => {
             if (!authUser) {
                 resolve(null);
                 return;
             }
 
-            const apiUserInfo: UserInfo = {
+            const apiUserInfo: ApiUserInfo = {
                 anonymous: authUser.anonymous,
                 firebase_uid: authUser.uid,
                 email: authUser.anonymous ? null : authUser.email
@@ -201,14 +201,14 @@ export class ApiUserService {
                 return;
             }
 
-            this.watch().pipe(take(1)).subscribe(async (user: User) => {
+            this.watch().pipe(take(1)).subscribe(async (user: ApiUser) => {
                 if (!user || user.username) {
                     resolve();
                     return;
                 }
 
                 try {
-                    const apiUser: UserInfo = await this.createUserInfo(authUser);
+                    const apiUser: ApiUserInfo = await this.createUserInfo(authUser);
                     await this.put(apiUser, authUser.token, user.id);
 
                     resolve();

@@ -1,9 +1,9 @@
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
-import {Slide, SlideAttributes, SlideTemplate} from '../../../../models/slide';
-import {User} from '../../../../models/user';
-import {Deck, DeckAttributes} from '../../../../models/deck';
+import {ApiSlide, ApiSlideAttributes, ApiSlideTemplate} from '../../../../models/api/api.slide';
+import {ApiUser} from '../../../../models/api/api.user';
+import {ApiDeck, ApiDeckAttributes} from '../../../../models/api/api.deck';
 
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
@@ -183,12 +183,12 @@ export class DeckEventsHandler {
 
                 this.busyService.deckBusy(true);
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
                     if (!deck) {
                         deck = await this.createDeck();
                     }
 
-                    const persistedSlide: Slide = await this.postSlide(deck, slide);
+                    const persistedSlide: ApiSlide = await this.postSlide(deck, slide);
 
                     await this.updateDeckSlideList(persistedSlide);
 
@@ -204,9 +204,9 @@ export class DeckEventsHandler {
         });
     }
 
-    private postSlide(deck: Deck, slide: HTMLElement): Promise<Slide> {
-        return new Promise<Slide>(async (resolve) => {
-            const slidePost: Slide = {
+    private postSlide(deck: ApiDeck, slide: HTMLElement): Promise<ApiSlide> {
+        return new Promise<ApiSlide>(async (resolve) => {
+            const slidePost: ApiSlide = {
                 template: this.getSlideTemplate(slide)
             };
 
@@ -215,13 +215,13 @@ export class DeckEventsHandler {
                 slidePost.content = content
             }
 
-            const attributes: SlideAttributes = await this.getSlideAttributes(slide);
+            const attributes: ApiSlideAttributes = await this.getSlideAttributes(slide);
 
             if (attributes && Object.keys(attributes).length > 0) {
                 slidePost.attributes = attributes;
             }
 
-            const persistedSlide: Slide = await this.slideService.post(deck.id, slidePost);
+            const persistedSlide: ApiSlide = await this.slideService.post(deck.id, slidePost);
 
             if (persistedSlide && persistedSlide.id) {
                 slide.setAttribute('slide_id', persistedSlide.id);
@@ -233,17 +233,17 @@ export class DeckEventsHandler {
         });
     }
 
-    private createDeck(): Promise<Deck> {
-        return new Promise<Deck>(async (resolve, reject) => {
+    private createDeck(): Promise<ApiDeck> {
+        return new Promise<ApiDeck>(async (resolve, reject) => {
             try {
-                this.userService.watch().pipe(filter((user: User) => user !== null && user !== undefined), take(1)).subscribe(async (user: User) => {
-                    const deck: Deck = {
+                this.userService.watch().pipe(filter((user: ApiUser) => user !== null && user !== undefined), take(1)).subscribe(async (user: ApiUser) => {
+                    const deck: ApiDeck = {
                         slides: [],
                         name: `Presentation ${await Utils.getNow()}`,
                         owner_id: user.id
                     };
 
-                    const persistedDeck: Deck = await this.deckService.post(deck);
+                    const persistedDeck: ApiDeck = await this.deckService.post(deck);
                     this.deckEditorService.next(persistedDeck);
 
                     await this.updateNavigation(persistedDeck);
@@ -256,7 +256,7 @@ export class DeckEventsHandler {
         });
     }
 
-    private updateDeckSlideList(slide: Slide): Promise<void> {
+    private updateDeckSlideList(slide: ApiSlide): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
                 if (!slide || !slide.id) {
@@ -264,7 +264,7 @@ export class DeckEventsHandler {
                     return;
                 }
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
                     if (deck) {
                         if (!deck.slides || deck.slides.length <= 0) {
                             deck.slides = [];
@@ -272,7 +272,7 @@ export class DeckEventsHandler {
 
                         deck.slides.push(slide.id);
 
-                        const updatedDeck: Deck = await this.deckService.put(deck);
+                        const updatedDeck: ApiDeck = await this.deckService.put(deck);
                         this.deckEditorService.next(updatedDeck);
                     }
 
@@ -284,7 +284,7 @@ export class DeckEventsHandler {
         });
     }
 
-    private updateNavigation(deck: Deck): Promise<void> {
+    private updateNavigation(deck: ApiDeck): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!deck || !deck.id) {
                 resolve();
@@ -307,19 +307,19 @@ export class DeckEventsHandler {
 
                 this.busyService.deckBusy(true);
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: Deck) => {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: ApiDeck) => {
                     if (!currentDeck) {
                         resolve();
                         return;
                     }
 
-                    const attributes: DeckAttributes = await this.getDeckAttributes(deck);
+                    const attributes: ApiDeckAttributes = await this.getDeckAttributes(deck);
                     currentDeck.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : null;
 
                     const background: string = await this.getDeckBackground(deck);
                     currentDeck.background = background && background !== undefined && background !== '' ? background : null;
 
-                    const updatedDeck: Deck = await this.deckService.put(currentDeck);
+                    const updatedDeck: ApiDeck = await this.deckService.put(currentDeck);
                     this.deckEditorService.next(updatedDeck);
 
                     this.busyService.deckBusy(false);
@@ -344,7 +344,7 @@ export class DeckEventsHandler {
 
                 this.busyService.deckBusy(true);
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: Deck) => {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: ApiDeck) => {
                     if (!currentDeck) {
                         resolve();
                         return;
@@ -358,7 +358,7 @@ export class DeckEventsHandler {
 
                     currentDeck.name = title;
 
-                    const updatedDeck: Deck = await this.deckService.put(currentDeck);
+                    const updatedDeck: ApiDeck = await this.deckService.put(currentDeck);
                     this.deckEditorService.next(updatedDeck);
 
                     this.busyService.deckBusy(false);
@@ -387,7 +387,7 @@ export class DeckEventsHandler {
                     return;
                 }
 
-                const slideUpdate: Slide = {
+                const slideUpdate: ApiSlide = {
                     id: slide.getAttribute('slide_id'),
                     template: this.getSlideTemplate(slide)
                 };
@@ -397,13 +397,13 @@ export class DeckEventsHandler {
                     slideUpdate.content = content
                 }
 
-                const attributes: SlideAttributes = await this.getSlideAttributes(slide);
+                const attributes: ApiSlideAttributes = await this.getSlideAttributes(slide);
 
                 if (attributes && Object.keys(attributes).length > 0) {
                     slideUpdate.attributes = attributes;
                 }
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
                     if (deck) {
                         await this.slideService.put(deck.id, slideUpdate);
                     }
@@ -436,7 +436,7 @@ export class DeckEventsHandler {
 
                 const slideId: string = slide.getAttribute('slide_id');
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
                     if (deck) {
                         await this.slideService.delete(deck.id, slideId);
 
@@ -444,7 +444,7 @@ export class DeckEventsHandler {
                         if (deck.slides && deck.slides.indexOf(slideId) > -1) {
                             deck.slides.splice(deck.slides.indexOf(slideId), 1);
 
-                            const updatedDeck: Deck = await this.deckService.put(deck);
+                            const updatedDeck: ApiDeck = await this.deckService.put(deck);
                             this.deckEditorService.next(updatedDeck);
                         }
                     }
@@ -478,9 +478,9 @@ export class DeckEventsHandler {
         });
     }
 
-    private getSlideAttributes(slide: HTMLElement): Promise<SlideAttributes> {
-        return new Promise<SlideAttributes>((resolve) => {
-            let attributes: SlideAttributes = {};
+    private getSlideAttributes(slide: HTMLElement): Promise<ApiSlideAttributes> {
+        return new Promise<ApiSlideAttributes>((resolve) => {
+            let attributes: ApiSlideAttributes = {};
 
             if (slide.getAttribute('style')) {
                 attributes.style = slide.getAttribute('style');
@@ -498,9 +498,9 @@ export class DeckEventsHandler {
         })
     }
 
-    private getDeckAttributes(deck: HTMLElement): Promise<DeckAttributes> {
-        return new Promise<DeckAttributes>((resolve) => {
-            let attributes: DeckAttributes = {};
+    private getDeckAttributes(deck: HTMLElement): Promise<ApiDeckAttributes> {
+        return new Promise<ApiDeckAttributes>((resolve) => {
+            let attributes: ApiDeckAttributes = {};
 
             if (deck.getAttribute('style')) {
                 attributes.style = deck.getAttribute('style');
@@ -550,12 +550,12 @@ export class DeckEventsHandler {
         });
     }
 
-    private getSlideTemplate(slide: HTMLElement): SlideTemplate {
-        const templateKey: string = Object.keys(SlideTemplate).find((key: string) => {
-            return slide.nodeName.toLowerCase().indexOf(SlideTemplate[key]) > -1
+    private getSlideTemplate(slide: HTMLElement): ApiSlideTemplate {
+        const templateKey: string = Object.keys(ApiSlideTemplate).find((key: string) => {
+            return slide.nodeName.toLowerCase().indexOf(ApiSlideTemplate[key]) > -1
         });
 
-        return SlideTemplate[templateKey];
+        return ApiSlideTemplate[templateKey];
     }
 
     private slideToLastSlide(): Promise<void> {

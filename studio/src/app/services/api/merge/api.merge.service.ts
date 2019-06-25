@@ -1,5 +1,5 @@
 import {ApiDeckService} from '../deck/api.deck.service';
-import {Deck} from '../../../models/deck';
+import {ApiDeck} from '../../../models/api/api.deck';
 
 export class ApiMergeService {
     
@@ -28,7 +28,7 @@ export class ApiMergeService {
 
             const bearer: string = `Bearer ${userToken}`;
 
-            const deck: Deck = await this.deckService.get(deckId, bearer);
+            const deck: ApiDeck = await this.deckService.get(deckId, bearer);
 
             if (!deck) {
                 resolve();

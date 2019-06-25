@@ -3,8 +3,8 @@ import {Component, Prop, State, h} from '@stencil/core';
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 
-import {AuthUser} from '../../../models/auth-user';
-import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/data/auth-user';
+import {ApiUser} from '../../../models/api/api.user';
 
 import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {AuthService} from '../../../services/data/auth/auth.service';
@@ -28,7 +28,7 @@ export class AppUserInfo {
     private authUser: AuthUser;
 
     @State()
-    private user: User;
+    private user: ApiUser;
 
     constructor() {
         this.authService = AuthService.getInstance();
@@ -41,7 +41,7 @@ export class AppUserInfo {
         });
 
         this.userSubscription = this.userService.watch().pipe(
-            filter((user: User) => user && !user.anonymous)).subscribe(async (user: User) => {
+            filter((user: ApiUser) => user && !user.anonymous)).subscribe(async (user: ApiUser) => {
             this.user = user;
         });
     }

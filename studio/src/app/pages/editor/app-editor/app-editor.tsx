@@ -6,9 +6,9 @@ import {filter, take} from 'rxjs/operators';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
-import {AuthUser} from '../../../models/auth-user';
-import {Slide, SlideTemplate} from '../../../models/slide';
-import {Deck} from '../../../models/deck';
+import {AuthUser} from '../../../models/data/auth-user';
+import {ApiSlide, ApiSlideTemplate} from '../../../models/api/api.slide';
+import {ApiDeck} from '../../../models/api/api.deck';
 
 import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
@@ -193,7 +193,7 @@ export class AppEditor {
                 return;
             }
 
-            const slide: any = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
+            const slide: any = await CreateSlidesUtils.createSlide(ApiSlideTemplate.TITLE);
 
             await this.concatSlide(slide);
 
@@ -209,7 +209,7 @@ export class AppEditor {
             }
 
             const helper: EditorHelper = new EditorHelper();
-            const slides: Slide[] = await helper.loadDeckAndRetrieveSlides(this.deckId);
+            const slides: ApiSlide[] = await helper.loadDeckAndRetrieveSlides(this.deckId);
 
             if (slides && slides.length > 0) {
                 this.slides = [...slides];
@@ -223,7 +223,7 @@ export class AppEditor {
 
     private initDeckStyle(): Promise<void> {
         return new Promise<void>((resolve) => {
-            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
                 if (deck && deck.attributes && deck.attributes.style) {
                     this.style = await ParseStyleUtils.convertStyle(deck.attributes.style);
                 } else {
@@ -328,7 +328,7 @@ export class AppEditor {
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data) {
-                if (detail.data.template === SlideTemplate.GIF) {
+                if (detail.data.template === ApiSlideTemplate.GIF) {
                     await this.openGifPicker();
                 }
 

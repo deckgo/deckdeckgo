@@ -1,6 +1,6 @@
 import {take} from 'rxjs/operators';
 
-import {AuthUser} from '../../../models/auth-user';
+import {AuthUser} from '../../../models/data/auth-user';
 
 import {AuthService} from '../../data/auth/auth.service';
 

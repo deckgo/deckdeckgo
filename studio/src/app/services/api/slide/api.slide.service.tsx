@@ -1,4 +1,4 @@
-import {Slide} from '../../../models/slide';
+import {ApiSlide} from '../../../models/api/api.slide';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
@@ -23,11 +23,11 @@ export class ApiSlideService {
     }
 
 
-    post(deckId: string, slide: Slide): Promise<Slide> {
+    post(deckId: string, slide: ApiSlide): Promise<ApiSlide> {
         return this.query(slide, `/decks/${deckId}/slides`, 'POST');
     }
 
-    put(deckId: string, slide: Slide): Promise<Slide> {
+    put(deckId: string, slide: ApiSlide): Promise<ApiSlide> {
         return this.query(slide, `/decks/${deckId}/slides/${slide.id}`,'PUT');
     }
 
@@ -57,8 +57,8 @@ export class ApiSlideService {
         });
     }
 
-    private query(slide: Slide, context: string, method: string): Promise<Slide> {
-        return new Promise<Slide>(async (resolve, reject) => {
+    private query(slide: ApiSlide, context: string, method: string): Promise<ApiSlide> {
+        return new Promise<ApiSlide>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -77,7 +77,7 @@ export class ApiSlideService {
                     return;
                 }
 
-                const persistedSlide: Slide = await rawResponse.json();
+                const persistedSlide: ApiSlide = await rawResponse.json();
 
                 resolve(persistedSlide);
             } catch (err) {
@@ -86,8 +86,8 @@ export class ApiSlideService {
         });
     }
 
-    get(deckId: string, slideId: string): Promise<Slide> {
-        return new Promise<Slide>(async (resolve, reject) => {
+    get(deckId: string, slideId: string): Promise<ApiSlide> {
+        return new Promise<ApiSlide>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -105,7 +105,7 @@ export class ApiSlideService {
                     return;
                 }
 
-                const slide: Slide = await rawResponse.json();
+                const slide: ApiSlide = await rawResponse.json();
 
                 resolve(slide);
             } catch (err) {

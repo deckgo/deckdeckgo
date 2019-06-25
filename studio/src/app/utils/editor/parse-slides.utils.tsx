@@ -1,25 +1,25 @@
 import {h} from '@stencil/core';
 
-import {Slide, SlideTemplate} from '../../models/slide';
+import {ApiSlide, ApiSlideTemplate} from '../../models/api/api.slide';
 import {ParseStyleUtils} from './parse-style.utils';
 import {ParseElementsUtils} from './parse-elements.utils';
 
 export class ParseSlidesUtils {
 
-    static parseSlide(slide: Slide): Promise<any> {
+    static parseSlide(slide: ApiSlide): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!document || !slide || !slide.template) {
                 resolve(null);
                 return;
             }
 
-            if (SlideTemplate[slide.template.toUpperCase()] === SlideTemplate.TITLE) {
+            if (ApiSlideTemplate[slide.template.toUpperCase()] === ApiSlideTemplate.TITLE) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-title'));
-            } else if (SlideTemplate[slide.template.toUpperCase()] === SlideTemplate.CONTENT) {
+            } else if (ApiSlideTemplate[slide.template.toUpperCase()] === ApiSlideTemplate.CONTENT) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-content'));
-            } else if (SlideTemplate[slide.template.toUpperCase()] === SlideTemplate.SPLIT) {
+            } else if (ApiSlideTemplate[slide.template.toUpperCase()] === ApiSlideTemplate.SPLIT) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-split'));
-            } else if (SlideTemplate[slide.template.toUpperCase()] === SlideTemplate.GIF) {
+            } else if (ApiSlideTemplate[slide.template.toUpperCase()] === ApiSlideTemplate.GIF) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-gif'));
             } else {
                 resolve(null);
@@ -27,7 +27,7 @@ export class ParseSlidesUtils {
         });
     }
 
-    private static parseSlideElement(slide: Slide, slideTag: string): Promise<any> {
+    private static parseSlideElement(slide: ApiSlide, slideTag: string): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!document) {
                 resolve();

@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, Prop, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {AuthUser} from '../../../models/auth-user';
+import {AuthUser} from '../../../models/data/auth-user';
 
 import {Utils} from '../../../utils/core/utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
