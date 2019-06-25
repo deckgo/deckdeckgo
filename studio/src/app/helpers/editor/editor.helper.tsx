@@ -4,16 +4,16 @@ import {Deck} from '../../models/deck';
 
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 
-import {SlideService} from '../../services/api/slide/slide.service';
-import {DeckService} from '../../services/api/deck/deck.service';
+import {ApiSlideService} from '../../services/api/slide/api.slide.service';
+import {ApiDeckService} from '../../services/api/deck/api.deck.service';
 import {ErrorService} from '../../services/core/error/error.service';
 import {BusyService} from '../../services/editor/busy/busy.service';
 import {DeckEditorService} from '../../services/editor/deck/deck-editor.service';
 
 export class EditorHelper {
 
-    private slideService: SlideService;
-    private deckService: DeckService;
+    private slideService: ApiSlideService;
+    private deckService: ApiDeckService;
 
     private errorService: ErrorService;
     private busyService: BusyService;
@@ -21,8 +21,8 @@ export class EditorHelper {
     private deckEditorService: DeckEditorService;
 
     constructor() {
-        this.slideService = SlideService.getInstance();
-        this.deckService = DeckService.getInstance();
+        this.slideService = ApiSlideService.getInstance();
+        this.deckService = ApiDeckService.getInstance();
 
         this.errorService = ErrorService.getInstance();
         this.busyService = BusyService.getInstance();

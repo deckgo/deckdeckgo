@@ -6,7 +6,7 @@ import {filter} from 'rxjs/operators';
 import {AuthUser} from '../../../models/auth-user';
 import {User} from '../../../models/user';
 
-import {UserService} from '../../../services/api/user/user.service';
+import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {AuthService} from '../../../services/data/auth/auth.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class AppUserInfo {
     private authService: AuthService;
     private authSubscription: Subscription;
 
-    private userService: UserService;
+    private userService: ApiUserService;
     private userSubscription: Subscription;
 
     @State()
@@ -32,7 +32,7 @@ export class AppUserInfo {
 
     constructor() {
         this.authService = AuthService.getInstance();
-        this.userService = UserService.getInstance();
+        this.userService = ApiUserService.getInstance();
     }
 
     componentWillLoad() {

@@ -11,8 +11,8 @@ import {Utils} from '../../../utils/core/utils';
 
 import {AuthService} from '../../../services/data/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {DeckService} from '../../../services/api/deck/deck.service';
-import {UserService} from '../../../services/api/user/user.service';
+import {ApiDeckService} from '../../../services/api/deck/api.deck.service';
+import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
@@ -30,9 +30,9 @@ export class AppMenu {
     private navService: NavService;
 
     private userSubscription: Subscription;
-    private userService: UserService;
+    private userService: ApiUserService;
 
-    private deckService: DeckService;
+    private deckService: ApiDeckService;
 
     private deckSubscription: Subscription;
     private deckEditorService: DeckEditorService;
@@ -51,8 +51,8 @@ export class AppMenu {
         this.authService = AuthService.getInstance();
         this.navService = NavService.getInstance();
 
-        this.deckService = DeckService.getInstance();
-        this.userService = UserService.getInstance();
+        this.deckService = ApiDeckService.getInstance();
+        this.userService = ApiUserService.getInstance();
 
         this.deckEditorService = DeckEditorService.getInstance();
     }

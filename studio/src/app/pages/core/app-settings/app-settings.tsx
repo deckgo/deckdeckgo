@@ -11,7 +11,7 @@ import {User} from '../../../models/user';
 import {UserUtils} from '../../../utils/core/user-utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
-import {UserService} from '../../../services/api/user/user.service';
+import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {AuthService} from '../../../services/data/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ErrorService} from '../../../services/core/error/error.service';
@@ -33,7 +33,7 @@ export class AppHome {
     private valid: boolean = true;
 
     private authService: AuthService;
-    private userService: UserService;
+    private userService: ApiUserService;
 
     private navService: NavService;
 
@@ -43,7 +43,7 @@ export class AppHome {
 
     constructor() {
         this.authService = AuthService.getInstance();
-        this.userService = UserService.getInstance();
+        this.userService = ApiUserService.getInstance();
         this.navService = NavService.getInstance();
         this.errorService = ErrorService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();

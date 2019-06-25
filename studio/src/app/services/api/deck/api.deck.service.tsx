@@ -8,9 +8,9 @@ interface DeckPublish {
     url: string;
 }
 
-export class DeckService {
+export class ApiDeckService {
 
-    private static instance: DeckService;
+    private static instance: ApiDeckService;
 
     private authService: AuthService;
 
@@ -20,10 +20,10 @@ export class DeckService {
     }
 
     static getInstance() {
-        if (!DeckService.instance) {
-            DeckService.instance = new DeckService();
+        if (!ApiDeckService.instance) {
+            ApiDeckService.instance = new ApiDeckService();
         }
-        return DeckService.instance;
+        return ApiDeckService.instance;
     }
 
     post(deck: Deck): Promise<Deck> {

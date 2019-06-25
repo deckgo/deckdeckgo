@@ -12,7 +12,7 @@ import {EnvironmentConfigService} from '../../core/environment/environment-confi
 import {AuthUser} from '../../../models/auth-user';
 
 import {ErrorService} from '../../core/error/error.service';
-import {UserService} from '../../api/user/user.service';
+import {ApiUserService} from '../../api/user/api.user.service';
 
 export class AuthService {
 
@@ -20,14 +20,14 @@ export class AuthService {
 
     private errorService: ErrorService;
 
-    private userService: UserService;
+    private userService: ApiUserService;
 
     private static instance: AuthService;
 
     private constructor() {
         // Private constructor, singleton
         this.errorService = ErrorService.getInstance();
-        this.userService = UserService.getInstance();
+        this.userService = ApiUserService.getInstance();
     }
 
     static getInstance() {

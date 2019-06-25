@@ -1,22 +1,22 @@
-import {DeckService} from '../deck/deck.service';
+import {ApiDeckService} from '../deck/api.deck.service';
 import {Deck} from '../../../models/deck';
 
-export class MergeService {
+export class ApiMergeService {
     
-    private static instance: MergeService;
+    private static instance: ApiMergeService;
 
-    private deckService: DeckService;
+    private deckService: ApiDeckService;
 
     private constructor() {
         // Private constructor, singleton
-        this.deckService = DeckService.getInstance();
+        this.deckService = ApiDeckService.getInstance();
     }
 
     static getInstance() {
-        if (!MergeService.instance) {
-            MergeService.instance = new MergeService();
+        if (!ApiMergeService.instance) {
+            ApiMergeService.instance = new ApiMergeService();
         }
-        return MergeService.instance;
+        return ApiMergeService.instance;
     }
 
     mergeDeck(deckId: string, userToken: string, newUserId: string): Promise<void> {

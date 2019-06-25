@@ -3,9 +3,9 @@ import {EnvironmentUnsplashConfig} from '../../core/environment/environment-conf
 import {ErrorService} from '../../core/error/error.service';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-export class PhotoService {
+export class ApiPhotoService {
 
-    private static instance: PhotoService;
+    private static instance: ApiPhotoService;
 
     private errorService: ErrorService;
 
@@ -15,10 +15,10 @@ export class PhotoService {
     }
 
     static getInstance() {
-        if (!PhotoService.instance) {
-            PhotoService.instance = new PhotoService();
+        if (!ApiPhotoService.instance) {
+            ApiPhotoService.instance = new ApiPhotoService();
         }
-        return PhotoService.instance;
+        return ApiPhotoService.instance;
     }
 
     getPhotos(searchTerm: string, next: string | number): Promise<UnsplashSearchResponse> {

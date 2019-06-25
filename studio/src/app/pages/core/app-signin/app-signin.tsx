@@ -16,8 +16,8 @@ import {Utils} from '../../../utils/core/utils';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {MergeService} from '../../../services/api/merge/merge.service';
-import {UserService} from '../../../services/api/user/user.service';
+import {ApiMergeService} from '../../../services/api/merge/api.merge.service';
+import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {AuthService} from '../../../services/data/auth/auth.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
@@ -40,8 +40,8 @@ export class AppSignIn {
 
     private navService: NavService;
 
-    private mergeService: MergeService;
-    private userService: UserService;
+    private mergeService: ApiMergeService;
+    private userService: ApiUserService;
     private authService: AuthService;
 
     private firebaseUser: firebase.User;
@@ -50,8 +50,8 @@ export class AppSignIn {
 
     constructor() {
         this.navService = NavService.getInstance();
-        this.mergeService = MergeService.getInstance();
-        this.userService = UserService.getInstance();
+        this.mergeService = ApiMergeService.getInstance();
+        this.userService = ApiUserService.getInstance();
         this.authService = AuthService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
     }

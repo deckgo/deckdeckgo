@@ -8,24 +8,24 @@ import {Deck, DeckAttributes} from '../../../../models/deck';
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
 
-import {SlideService} from '../../../../services/api/slide/slide.service';
-import {DeckService} from '../../../../services/api/deck/deck.service';
+import {ApiSlideService} from '../../../../services/api/slide/api.slide.service';
+import {ApiDeckService} from '../../../../services/api/deck/api.deck.service';
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
-import {UserService} from '../../../../services/api/user/user.service';
+import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
 
 export class DeckEventsHandler {
 
     private el: HTMLElement;
 
-    private slideService: SlideService;
-    private deckService: DeckService;
+    private slideService: ApiSlideService;
+    private deckService: ApiDeckService;
 
     private errorService: ErrorService;
     private busyService: BusyService;
 
-    private userService: UserService;
+    private userService: ApiUserService;
 
     private updateSlideSubscription: Subscription;
     private updateSlideSubject: Subject<HTMLElement> = new Subject();
@@ -36,13 +36,13 @@ export class DeckEventsHandler {
     private updateDeckTitleSubject: Subject<string> = new Subject();
 
     constructor() {
-        this.slideService = SlideService.getInstance();
-        this.deckService = DeckService.getInstance();
+        this.slideService = ApiSlideService.getInstance();
+        this.deckService = ApiDeckService.getInstance();
 
         this.errorService = ErrorService.getInstance();
         this.busyService = BusyService.getInstance();
 
-        this.userService = UserService.getInstance();
+        this.userService = ApiUserService.getInstance();
 
         this.deckEditorService = DeckEditorService.getInstance();
     }

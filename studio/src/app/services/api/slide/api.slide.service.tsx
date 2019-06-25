@@ -4,9 +4,9 @@ import {EnvironmentConfigService} from '../../core/environment/environment-confi
 
 import {AuthService} from '../../data/auth/auth.service';
 
-export class SlideService {
+export class ApiSlideService {
 
-    private static instance: SlideService;
+    private static instance: ApiSlideService;
 
     private authService: AuthService;
 
@@ -16,10 +16,10 @@ export class SlideService {
     }
 
     static getInstance() {
-        if (!SlideService.instance) {
-            SlideService.instance = new SlideService();
+        if (!ApiSlideService.instance) {
+            ApiSlideService.instance = new ApiSlideService();
         }
-        return SlideService.instance;
+        return ApiSlideService.instance;
     }
 
 

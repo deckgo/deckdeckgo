@@ -10,11 +10,11 @@ import {EnvironmentConfigService} from '../../core/environment/environment-confi
 
 import {ErrorService} from '../../core/error/error.service';
 
-export class UserService {
+export class ApiUserService {
 
     private apiUserSubject: ReplaySubject<User> = new ReplaySubject(1);
 
-    private static instance: UserService;
+    private static instance: ApiUserService;
 
     private errorService: ErrorService;
 
@@ -24,10 +24,10 @@ export class UserService {
     }
 
     static getInstance() {
-        if (!UserService.instance) {
-            UserService.instance = new UserService();
+        if (!ApiUserService.instance) {
+            ApiUserService.instance = new ApiUserService();
         }
-        return UserService.instance;
+        return ApiUserService.instance;
     }
 
     authStateChanged(authUser: AuthUser): Promise<void> {

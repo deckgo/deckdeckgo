@@ -3,7 +3,7 @@ import {Resources} from '../../../../utils/core/resources';
 import {debounceTime, take} from 'rxjs/operators';
 import {Deck} from '../../../../models/deck';
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
-import {DeckService} from '../../../../services/api/deck/deck.service';
+import {ApiDeckService} from '../../../../services/api/deck/api.deck.service';
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {Subject, Subscription} from 'rxjs';
 
@@ -35,7 +35,7 @@ export class AppPublishEdit {
     private tags: string[] = [];
 
     private deckEditorService: DeckEditorService;
-    private deckService: DeckService;
+    private deckService: ApiDeckService;
 
     private errorService: ErrorService;
 
@@ -46,7 +46,7 @@ export class AppPublishEdit {
 
     constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
-        this.deckService = DeckService.getInstance();
+        this.deckService = ApiDeckService.getInstance();
 
         this.errorService = ErrorService.getInstance();
     }
