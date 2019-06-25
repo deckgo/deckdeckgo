@@ -4,7 +4,7 @@ import {take} from 'rxjs/operators';
 
 import 'web-social-share';
 
-import {GifService} from '../../../../services/api/gif/gif.service';
+import {GifService} from '../../../../services/tenor/gif/gif.service';
 
 import {Deck} from '../../../../models/deck';
 import {AuthUser} from '../../../../models/auth-user';
