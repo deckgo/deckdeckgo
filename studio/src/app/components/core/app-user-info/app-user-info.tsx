@@ -7,7 +7,7 @@ import {AuthUser} from '../../../models/auth-user';
 import {User} from '../../../models/user';
 
 import {UserService} from '../../../services/api/user/user.service';
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/data/auth/auth.service';
 
 @Component({
     tag: 'app-user-info',

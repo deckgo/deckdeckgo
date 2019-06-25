@@ -21,7 +21,7 @@ import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/data/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';

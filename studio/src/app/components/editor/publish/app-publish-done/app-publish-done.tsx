@@ -10,7 +10,7 @@ import {Deck} from '../../../../models/deck';
 import {AuthUser} from '../../../../models/auth-user';
 
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
-import {AuthService} from '../../../../services/api/auth/auth.service';
+import {AuthService} from '../../../../services/data/auth/auth.service';
 
 @Component({
     tag: 'app-publish-done',

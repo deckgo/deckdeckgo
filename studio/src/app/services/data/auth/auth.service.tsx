@@ -12,7 +12,7 @@ import {EnvironmentConfigService} from '../../core/environment/environment-confi
 import {AuthUser} from '../../../models/auth-user';
 
 import {ErrorService} from '../../core/error/error.service';
-import {UserService} from '../user/user.service';
+import {UserService} from '../../api/user/user.service';
 
 export class AuthService {
 

@@ -12,7 +12,7 @@ import {UserUtils} from '../../../utils/core/user-utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {UserService} from '../../../services/api/user/user.service';
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/data/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ErrorService} from '../../../services/core/error/error.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';

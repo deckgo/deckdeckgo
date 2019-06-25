@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {IonControllerUtils} from './utils/core/ion-controller-utils';
 
 import {ErrorService} from './services/core/error/error.service';
-import {AuthService} from './services/api/auth/auth.service';
+import {AuthService} from './services/data/auth/auth.service';
 
 import {NavDirection, NavParams, NavService} from './services/core/nav/nav.service';
 

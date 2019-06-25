@@ -2,7 +2,7 @@ import {Slide} from '../../../models/slide';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../../data/auth/auth.service';
 
 export class SlideService {
 

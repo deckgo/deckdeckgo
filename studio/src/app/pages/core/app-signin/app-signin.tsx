@@ -18,7 +18,7 @@ import {EnvironmentConfigService} from '../../../services/core/environment/envir
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {MergeService} from '../../../services/api/merge/merge.service';
 import {UserService} from '../../../services/api/user/user.service';
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/data/auth/auth.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({

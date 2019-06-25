@@ -7,7 +7,7 @@ import {AuthUser} from '../../../models/auth-user';
 import {Utils} from '../../../utils/core/utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/data/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 
 @Component({
