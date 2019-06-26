@@ -206,7 +206,9 @@ export class AppMenu {
 
             {this.renderPresentations()}
 
-            {this.renderSignOut()}
+            {this.renderHome()}
+
+            {this.renderSignInOut()}
 
         </ion-list>;
     }
@@ -228,6 +230,17 @@ export class AppMenu {
                 this.renderDecks()
             ];
         } else {
+            return undefined;
+        }
+    }
+
+    private renderSignInOut() {
+        if (Utils.isLoggedIn(this.authUser)) {
+            return <ion-item button class="signout" onClick={() => this.signOut()}>
+                <ion-icon name="log-out" slot="start"></ion-icon>
+                <ion-label>Sign out</ion-label>
+            </ion-item>;
+        } else {
             return <ion-item button onClick={() => this.signIn()}>
                 <ion-icon name="log-in" slot="start"></ion-icon>
                 <ion-label>Sign in</ion-label>
@@ -235,15 +248,11 @@ export class AppMenu {
         }
     }
 
-    private renderSignOut() {
-        if (Utils.isLoggedIn(this.authUser)) {
-            return <ion-item button class="signout" onClick={() => this.signOut()}>
-                <ion-icon name="log-out" slot="start"></ion-icon>
-                <ion-label>Sign out</ion-label>
-            </ion-item>;
-        } else {
-            return undefined;
-        }
+    private renderHome() {
+        return <ion-item button class="home" href="/" routerDirection="forward">
+            <ion-icon name="home" slot="start"></ion-icon>
+            <ion-label>Home</ion-label>
+        </ion-item>;
     }
 
     private renderDecksFilter() {

@@ -40,13 +40,6 @@ app-navigation {
   div[slot="end"] {
     z-index: 2;
   }
-
-  @media screen and (max-width: 720px) {
-    ion-anchor.logo {
-      display: none;
-    }
-  }
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -64,6 +57,16 @@ app-navigation {
 
       &:hover, &:active {
         border-bottom: 1px solid transparent;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 720px) {
+  ion-nav {
+    app-navigation {
+      ion-anchor.logo {
+        display: none;
       }
     }
   }

@@ -91,6 +91,7 @@ ion-menu {
 
         ion-item {
           --color: var(--ion-color-medium);
+          --background-activated: white;
 
           ion-icon {
             color: var(--ion-color-medium);
