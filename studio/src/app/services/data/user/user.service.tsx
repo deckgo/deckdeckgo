@@ -67,6 +67,10 @@ export class UserService {
                     updated_at: now
                 };
 
+                if (authUser && authUser.anonymous) {
+                    user.anonymous = authUser.anonymous;
+                }
+
                 await firestore.collection('users').doc(authUser.uid).set(user, {merge: true});
 
                 resolve({

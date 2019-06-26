@@ -8,7 +8,6 @@ import {filter, take} from 'rxjs/operators';
 
 import {del, get, set} from 'idb-keyval';
 
-import {User} from '../../../models/data/user';
 import {AuthUser} from '../../../models/auth/auth.user';
 import {Deck} from '../../../models/data/deck';
 
@@ -165,15 +164,13 @@ export class AppSignIn {
                 return;
             }
 
-            this.userService.watch().pipe(
-                filter((user: User) => user !== null && user !== undefined && user.id && user.id !== mergeInfo.userId),
-                take(1)).subscribe(async (user: User) => {
+            this.authService.watch().pipe(
+                filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && authUser.uid && authUser.uid !== mergeInfo.userId),
+                take(1)).subscribe(async (authUser: AuthUser) => {
 
-                // TODO: Probably won't work because of Firestore rules
                 // Merge deck to new user
-                await this.deckService.mergeDeck(mergeInfo.deckId, user.id);
+                await this.deckService.mergeDeck(mergeInfo.deckId, authUser.uid);
 
-                // TODO: Probably won't work because of Firestore rules
                 // Delete previous anonymous user from the database
                 await this.userService.delete(mergeInfo.userId);
 

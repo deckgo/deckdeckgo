@@ -4,9 +4,10 @@ export interface DeckAttributes {
 
 export interface DeckData {
     name: string;
-    owner_id: string;
     attributes?: DeckAttributes;
     background?: string;
+
+    owner_id: string;
 
     created_at?: firebase.firestore.Timestamp;
     updated_at?: firebase.firestore.Timestamp;

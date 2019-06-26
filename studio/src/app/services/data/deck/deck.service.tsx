@@ -100,24 +100,28 @@ export class DeckService {
     }
 
     mergeDeck(deckId: string, newUserId: string): Promise<void> {
-        return new Promise<void>(async (resolve) => {
+        return new Promise<void>(async (resolve, reject) => {
             if (!deckId || !newUserId) {
                 resolve();
                 return;
             }
 
-            const deck: Deck = await this.get(deckId);
+            try {
+                const deck: Deck = await this.get(deckId);
 
-            if (!deck || !deck.data) {
+                if (!deck || !deck.data) {
+                    resolve();
+                    return;
+                }
+
+                deck.data.owner_id = newUserId;
+
+                await this.update(deck);
+
                 resolve();
-                return;
+            } catch (err) {
+                reject(err);
             }
-
-            deck.data.owner_id = newUserId;
-
-            await this.update(deck);
-
-            resolve();
         });
     }
 }

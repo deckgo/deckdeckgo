@@ -234,10 +234,10 @@ export class DeckEventsHandler {
     private createDeck(): Promise<Deck> {
         return new Promise<Deck>(async (resolve, reject) => {
             try {
-                this.authService.watch().pipe(filter((user: AuthUser) => user !== null && user !== undefined), take(1)).subscribe(async (user: AuthUser) => {
+                this.authService.watch().pipe(filter((user: AuthUser) => user !== null && user !== undefined), take(1)).subscribe(async (authUser: AuthUser) => {
                     const deck: DeckData = {
                         name: `Presentation ${await Utils.getNow()}`,
-                        owner_id: user.uid
+                        owner_id: authUser.uid
                     };
 
                     const persistedDeck: Deck = await this.deckService.create(deck);
