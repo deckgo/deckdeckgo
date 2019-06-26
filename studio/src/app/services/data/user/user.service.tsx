@@ -42,9 +42,11 @@ export class UserService {
                 } else {
                     const user: UserData = snapshot.data() as UserData;
 
+                    const updatedUser: UserData = await this.updateAnonymousUser(authUser, user);
+
                     this.userSubject.next({
                         id: authUser.uid,
-                        data: user
+                        data: updatedUser
                     });
                 }
 
@@ -63,13 +65,10 @@ export class UserService {
                 const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
 
                 const user: UserData = {
+                    anonymous: authUser.anonymous,
                     created_at: now,
                     updated_at: now
                 };
-
-                if (authUser && authUser.anonymous) {
-                    user.anonymous = authUser.anonymous;
-                }
 
                 await firestore.collection('users').doc(authUser.uid).set(user, {merge: true});
 
@@ -83,10 +82,28 @@ export class UserService {
         });
     }
 
+    private updateAnonymousUser(authUser: AuthUser, user: UserData): Promise<UserData> {
+        return new Promise<UserData>(async (resolve, reject) => {
+            try {
+                if (user.anonymous !== authUser.anonymous) {
+                    const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+                    user.anonymous = authUser.anonymous;
+                    user.updated_at = firebase.firestore.Timestamp.now();
+
+                    await firestore.collection('users').doc(authUser.uid).set(user, {merge: true});
+                }
+
+                resolve(user);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
     watch(): Observable<User> {
         return this.userSubject.asObservable();
     }
-
 
     delete(userId: string): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
