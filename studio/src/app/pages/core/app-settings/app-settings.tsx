@@ -5,14 +5,14 @@ import {filter, take} from 'rxjs/operators';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
-import {AuthUser} from '../../../models/data/auth-user';
 import {ApiUser} from '../../../models/api/api.user';
+import {AuthUser} from '../../../models/auth/auth.user';
 
 import {UserUtils} from '../../../utils/core/user-utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {ApiUserService} from '../../../services/api/user/api.user.service';
-import {AuthService} from '../../../services/data/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ErrorService} from '../../../services/core/error/error.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
@@ -33,7 +33,7 @@ export class AppHome {
     private valid: boolean = true;
 
     private authService: AuthService;
-    private userService: ApiUserService;
+    private apiUserService: ApiUserService;
 
     private navService: NavService;
 
@@ -43,7 +43,7 @@ export class AppHome {
 
     constructor() {
         this.authService = AuthService.getInstance();
-        this.userService = ApiUserService.getInstance();
+        this.apiUserService = ApiUserService.getInstance();
         this.navService = NavService.getInstance();
         this.errorService = ErrorService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();
@@ -56,7 +56,7 @@ export class AppHome {
             this.authUser = authUser;
         });
 
-        this.userService.watch().pipe(
+        this.apiUserService.watch().pipe(
             filter((user: ApiUser) => user !== null && user !== undefined && !user.anonymous),
             take(1)).subscribe(async (user: ApiUser) => {
             this.user = user;
@@ -99,7 +99,7 @@ export class AppHome {
             }
 
             try {
-                await this.userService.put(this.user, this.authUser.token, this.user.id);
+                await this.apiUserService.put(this.user, this.authUser.token, this.user.id);
             } catch (err) {
                 this.errorService.error('Your changes couldn\'t be saved');
             }
@@ -132,7 +132,7 @@ export class AppHome {
 
                 await loading.present();
 
-                await this.userService.delete(this.user.id, this.authUser.token);
+                await this.apiUserService.delete(this.user.id, this.authUser.token);
 
                 const firebaseUser: firebase.User = firebase.auth().currentUser;
 

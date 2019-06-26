@@ -1,25 +1,25 @@
 import {h} from '@stencil/core';
 
-import {ApiSlide, ApiSlideTemplate} from '../../models/api/api.slide';
 import {ParseStyleUtils} from './parse-style.utils';
 import {ParseElementsUtils} from './parse-elements.utils';
+import {Slide, SlideTemplate} from '../../models/data/slide';
 
 export class ParseSlidesUtils {
 
-    static parseSlide(slide: ApiSlide): Promise<any> {
+    static parseSlide(slide: Slide): Promise<any> {
         return new Promise<any>(async (resolve) => {
-            if (!document || !slide || !slide.template) {
+            if (!document || !slide || !slide.data || !slide.data.template) {
                 resolve(null);
                 return;
             }
 
-            if (ApiSlideTemplate[slide.template.toUpperCase()] === ApiSlideTemplate.TITLE) {
+            if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.TITLE) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-title'));
-            } else if (ApiSlideTemplate[slide.template.toUpperCase()] === ApiSlideTemplate.CONTENT) {
+            } else if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.CONTENT) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-content'));
-            } else if (ApiSlideTemplate[slide.template.toUpperCase()] === ApiSlideTemplate.SPLIT) {
+            } else if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.SPLIT) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-split'));
-            } else if (ApiSlideTemplate[slide.template.toUpperCase()] === ApiSlideTemplate.GIF) {
+            } else if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.GIF) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-gif'));
             } else {
                 resolve(null);
@@ -27,7 +27,7 @@ export class ParseSlidesUtils {
         });
     }
 
-    private static parseSlideElement(slide: ApiSlide, slideTag: string): Promise<any> {
+    private static parseSlideElement(slide: Slide, slideTag: string): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!document) {
                 resolve();
@@ -36,15 +36,15 @@ export class ParseSlidesUtils {
 
             // Create a div to parse back to JSX its children
             const div = document.createElement('div');
-            div.innerHTML = slide.content;
+            div.innerHTML = slide.data.content;
 
             const content = await ParseElementsUtils.parseElements(div, true);
 
-            const style = slide.attributes ? await ParseStyleUtils.convertStyle(slide.attributes.style) : undefined;
+            const style = slide.data.attributes ? await ParseStyleUtils.convertStyle(slide.data.attributes.style) : undefined;
 
-            const src = slide.attributes && slide.attributes.src ? slide.attributes.src : undefined;
+            const src = slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined;
 
-            const customBackground = slide.attributes && slide.attributes.customBackground ? slide.attributes.customBackground : undefined;
+            const customBackground = slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined;
 
             const SlideElement: string = slideTag;
 

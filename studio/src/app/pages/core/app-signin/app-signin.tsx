@@ -8,18 +8,18 @@ import {filter, take} from 'rxjs/operators';
 
 import {del, get, set} from 'idb-keyval';
 
-import {ApiUser} from '../../../models/api/api.user';
-import {AuthUser} from '../../../models/data/auth-user';
-import {ApiDeck} from '../../../models/api/api.deck';
+import {User} from '../../../models/data/user';
+import {AuthUser} from '../../../models/auth/auth.user';
+import {Deck} from '../../../models/data/deck';
 
 import {Utils} from '../../../utils/core/utils';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {ApiMergeService} from '../../../services/api/merge/api.merge.service';
-import {ApiUserService} from '../../../services/api/user/api.user.service';
-import {AuthService} from '../../../services/data/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+import {UserService} from '../../../services/data/user/user.service';
+import {DeckService} from '../../../services/data/deck/deck.service';
 
 @Component({
     tag: 'app-signin',
@@ -40,9 +40,9 @@ export class AppSignIn {
 
     private navService: NavService;
 
-    private mergeService: ApiMergeService;
-    private userService: ApiUserService;
+    private userService: UserService;
     private authService: AuthService;
+    private deckService: DeckService;
 
     private firebaseUser: firebase.User;
 
@@ -50,8 +50,8 @@ export class AppSignIn {
 
     constructor() {
         this.navService = NavService.getInstance();
-        this.mergeService = ApiMergeService.getInstance();
-        this.userService = ApiUserService.getInstance();
+        this.deckService = DeckService.getInstance();
+        this.userService = UserService.getInstance();
         this.authService = AuthService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
     }
@@ -165,17 +165,17 @@ export class AppSignIn {
                 return;
             }
 
-            await this.userService.signOut();
-
             this.userService.watch().pipe(
-                filter((user: ApiUser) => user !== null && user !== undefined && user.id && user.id !== mergeInfo.userId),
-                take(1)).subscribe(async (user: ApiUser) => {
+                filter((user: User) => user !== null && user !== undefined && user.id && user.id !== mergeInfo.userId),
+                take(1)).subscribe(async (user: User) => {
 
+                // TODO: Probably won't work because of Firestore rules
                 // Merge deck to new user
-                await this.mergeService.mergeDeck(mergeInfo.deckId, mergeInfo.userToken, user.id);
+                await this.deckService.mergeDeck(mergeInfo.deckId, user.id);
 
-                // Delete previous anonymous user from our backend
-                await this.userService.delete(mergeInfo.userId, mergeInfo.userToken);
+                // TODO: Probably won't work because of Firestore rules
+                // Delete previous anonymous user from the database
+                await this.userService.delete(mergeInfo.userId);
 
                 // Delete previous anonymous user from Firebase
                 if (this.firebaseUser) {
@@ -209,7 +209,7 @@ export class AppSignIn {
             observables.push(this.userService.watch().pipe(take(1)));
             observables.push(this.deckEditorService.watch().pipe(take(1)));
 
-            forkJoin(observables).subscribe(async ([authUser, user, deck]: [AuthUser, ApiUser, ApiDeck]) => {
+            forkJoin(observables).subscribe(async ([authUser, user, deck]: [AuthUser,  User, Deck]) => {
                 await set('deckdeckgo_redirect_info', {
                     deckId: deck ? deck.id : null,
                     userId: user ? user.id : null,

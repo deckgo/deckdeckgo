@@ -2,7 +2,7 @@ import {EnvironmentConfigService} from '../../core/environment/environment-confi
 
 import {ApiDeck} from '../../../models/api/api.deck';
 
-import {AuthService} from '../../data/auth/auth.service';
+import {AuthService} from '../../auth/auth.service';
 
 interface DeckPublish {
     url: string;

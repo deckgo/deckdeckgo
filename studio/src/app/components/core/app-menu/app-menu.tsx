@@ -1,19 +1,16 @@
 import {Component, Element, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
 
-import {AuthUser} from '../../../models/data/auth-user';
-import {ApiDeck} from '../../../models/api/api.deck';
-import {ApiUser} from '../../../models/api/api.user';
+import {AuthUser} from '../../../models/auth/auth.user';
+import {Deck} from '../../../models/data/deck';
 
 import {Utils} from '../../../utils/core/utils';
 
-import {AuthService} from '../../../services/data/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {ApiDeckService} from '../../../services/api/deck/api.deck.service';
-import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+import {DeckService} from '../../../services/data/deck/deck.service';
 
 @Component({
     tag: 'app-menu',
@@ -29,10 +26,7 @@ export class AppMenu {
 
     private navService: NavService;
 
-    private userSubscription: Subscription;
-    private userService: ApiUserService;
-
-    private deckService: ApiDeckService;
+    private deckService: DeckService;
 
     private deckSubscription: Subscription;
     private deckEditorService: DeckEditorService;
@@ -40,10 +34,10 @@ export class AppMenu {
     @State()
     private authUser: AuthUser;
 
-    private decks: ApiDeck[] = null;
+    private decks: Deck[] = null;
 
     @State()
-    private filteredDecks: ApiDeck[] = null;
+    private filteredDecks: Deck[] = null;
 
     private skeletons: number[] = Array(3).fill(0);
 
@@ -51,22 +45,18 @@ export class AppMenu {
         this.authService = AuthService.getInstance();
         this.navService = NavService.getInstance();
 
-        this.deckService = ApiDeckService.getInstance();
-        this.userService = ApiUserService.getInstance();
+        this.deckService = DeckService.getInstance();
 
         this.deckEditorService = DeckEditorService.getInstance();
     }
 
     componentWillLoad() {
-        this.authSubscription = this.authService.watch().subscribe((authUser: AuthUser) => {
+        this.authSubscription = this.authService.watch().subscribe(async (authUser: AuthUser) => {
             this.authUser = authUser;
-        });
 
-        this.userSubscription = this.userService.watch().pipe(
-            filter((user: ApiUser) => user && !user.anonymous)).subscribe(async (user: ApiUser) => {
-            if (user) {
+            if (authUser && !authUser.anonymous) {
                 try {
-                    this.decks = await this.deckService.getUserDecks(user.id);
+                    this.decks = await this.deckService.getUserDecks(authUser.uid);
                     await this.filterDecks(null);
                 } catch (err) {
                     // TODO: print error?
@@ -81,7 +71,7 @@ export class AppMenu {
     }
 
     componentDidLoad() {
-        this.deckSubscription = this.deckEditorService.watch().subscribe(async (deck: ApiDeck) => {
+        this.deckSubscription = this.deckEditorService.watch().subscribe(async (deck: Deck) => {
             await this.updateDeckList(deck);
 
             const filter: string = await this.getCurrentFilter();
@@ -92,10 +82,6 @@ export class AppMenu {
     componentDidUnload() {
         if (this.authSubscription) {
             this.authSubscription.unsubscribe();
-        }
-
-        if (this.userSubscription) {
-            this.userSubscription.unsubscribe();
         }
 
         if (this.deckSubscription) {
@@ -119,9 +105,9 @@ export class AppMenu {
         });
     }
 
-    private updateDeckList(deck: ApiDeck): Promise<void> {
+    private updateDeckList(deck: Deck): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (!deck || !deck.id || !deck.name) {
+            if (!deck || !deck.id || !deck.data || !deck.data.name) {
                 resolve();
                 return;
             }
@@ -130,14 +116,14 @@ export class AppMenu {
                 this.decks = [];
             }
 
-            const index: number = this.decks.findIndex((filteredDeck: ApiDeck) => {
+            const index: number = this.decks.findIndex((filteredDeck: Deck) => {
                 return filteredDeck.id === deck.id;
             });
 
             if (index < 0) {
                 this.decks = [...this.decks, deck];
             } else {
-                this.decks[index].name = deck.name;
+                this.decks[index].data.name = deck.data.name;
                 this.decks = [...this.decks];
             }
 
@@ -169,8 +155,8 @@ export class AppMenu {
                 return;
             }
 
-            const matchingDecks: ApiDeck[] = this.decks.filter((matchDeck: ApiDeck) => {
-                return matchDeck.name && matchDeck.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+            const matchingDecks: Deck[] = this.decks.filter((matchDeck: Deck) => {
+                return matchDeck.data && matchDeck.data.name && matchDeck.data.name.toLowerCase().indexOf(value.toLowerCase()) > -1
             });
 
             this.filteredDecks = [...matchingDecks];
@@ -269,12 +255,12 @@ export class AppMenu {
     private renderDecks() {
         if (this.filteredDecks && this.filteredDecks.length > 0) {
             return (
-                this.filteredDecks.map((deck: ApiDeck) => {
+                this.filteredDecks.map((deck: Deck) => {
                     const url: string = `/editor/${deck.id}`;
 
                     return <ion-item href={url} routerDirection="root">
                         <ion-icon name="book" slot="start"></ion-icon>
-                        <ion-label>{deck.name}</ion-label>
+                        <ion-label>{deck.data.name}</ion-label>
                     </ion-item>
                 })
             );

@@ -2,7 +2,7 @@ import {ApiSlide} from '../../../models/api/api.slide';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {AuthService} from '../../data/auth/auth.service';
+import {AuthService} from '../../auth/auth.service';
 
 export class ApiSlideService {
 

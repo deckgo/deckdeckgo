@@ -7,12 +7,14 @@ import {take} from 'rxjs/operators';
 
 import {get, set, del} from 'idb-keyval';
 
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../core/environment/environment-config.service';
 
-import {AuthUser} from '../../../models/data/auth-user';
+import {AuthUser} from '../../models/auth/auth.user';
 
-import {ErrorService} from '../../core/error/error.service';
-import {ApiUserService} from '../../api/user/api.user.service';
+import {ErrorService} from '../core/error/error.service';
+
+import {ApiUserService} from '../api/user/api.user.service';
+import {UserService} from '../data/user/user.service';
 
 export class AuthService {
 
@@ -20,14 +22,17 @@ export class AuthService {
 
     private errorService: ErrorService;
 
-    private userService: ApiUserService;
+    private apiUserService: ApiUserService;
+
+    private firestoreUserService: UserService;
 
     private static instance: AuthService;
 
     private constructor() {
         // Private constructor, singleton
         this.errorService = ErrorService.getInstance();
-        this.userService = ApiUserService.getInstance();
+        this.apiUserService = ApiUserService.getInstance();
+        this.firestoreUserService = UserService.getInstance();
     }
 
     static getInstance() {
@@ -50,7 +55,7 @@ export class AuthService {
                     this.authUserSubject.next(null);
                     await del('deckdeckgo_auth_user');
 
-                    await this.userService.signOut();
+                    await this.apiUserService.signOut();
                 } else {
                     const tokenId: string = await firebaseUser.getIdToken();
 
@@ -74,10 +79,13 @@ export class AuthService {
                         authUser.photo_url = firebaseUser.providerData[0].photoURL;
                     }
 
+                    await this.firestoreUserService.create(authUser);
+
                     await set('deckdeckgo_auth_user', authUser);
+
                     this.authUserSubject.next(authUser);
 
-                    await this.userService.authStateChanged(authUser);
+                    await this.apiUserService.signIn(authUser);
                 }
             });
 
@@ -88,7 +96,7 @@ export class AuthService {
     async signOut() {
         await firebase.auth().signOut();
 
-        await this.userService.signOut();
+        await this.apiUserService.signOut();
 
         await del('deckdeckgo_redirect');
         await del('deckdeckgo_redirect_info');

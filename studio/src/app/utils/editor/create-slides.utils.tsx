@@ -1,6 +1,6 @@
 import {h} from '@stencil/core';
 
-import {ApiSlideTemplate} from '../../models/api/api.slide';
+import {SlideTemplate} from '../../models/data/slide';
 
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 
@@ -14,20 +14,20 @@ export enum SlotType {
 
 export class CreateSlidesUtils {
 
-    static createSlide(template: ApiSlideTemplate): Promise<any> {
+    static createSlide(template: SlideTemplate): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!document) {
                 resolve(null);
                 return;
             }
 
-            if (template === ApiSlideTemplate.TITLE) {
+            if (template === SlideTemplate.TITLE) {
                 resolve(await this.createSlideTitle());
-            } else if (template === ApiSlideTemplate.CONTENT) {
+            } else if (template === SlideTemplate.CONTENT) {
                 resolve(await this.createSlideContent());
-            } else if (template === ApiSlideTemplate.SPLIT) {
+            } else if (template === SlideTemplate.SPLIT) {
                 resolve(await this.createSlideSplit());
-            } else if (template === ApiSlideTemplate.GIF) {
+            } else if (template === SlideTemplate.GIF) {
                 resolve(await this.createSlideGif(EnvironmentConfigService.getInstance().get('gifExampleSrc')));
             } else {
                 resolve(null);

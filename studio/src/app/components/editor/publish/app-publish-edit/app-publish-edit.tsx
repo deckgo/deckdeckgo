@@ -1,11 +1,15 @@
 import {Component, Event, EventEmitter, h, State} from '@stencil/core';
-import {Resources} from '../../../../utils/core/resources';
-import {debounceTime, take} from 'rxjs/operators';
-import {ApiDeck} from '../../../../models/api/api.deck';
-import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
-import {ApiDeckService} from '../../../../services/api/deck/api.deck.service';
-import {ErrorService} from '../../../../services/core/error/error.service';
+
 import {Subject, Subscription} from 'rxjs';
+import {debounceTime, take} from 'rxjs/operators';
+
+import {Deck} from '../../../../models/data/deck';
+
+import {Resources} from '../../../../utils/core/resources';
+
+import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
+import {ErrorService} from '../../../../services/core/error/error.service';
+import {DeckService} from '../../../../services/data/deck/deck.service';
 
 @Component({
     tag: 'app-publish-edit',
@@ -35,30 +39,30 @@ export class AppPublishEdit {
     private tags: string[] = [];
 
     private deckEditorService: DeckEditorService;
-    private deckService: ApiDeckService;
+    private deckService: DeckService;
 
     private errorService: ErrorService;
 
-    private updateDeckSubsction: Subscription;
+    private updateDeckSubscription: Subscription;
     private updateDeckSubject: Subject<void> = new Subject();
 
     @Event() private published: EventEmitter<string>;
 
     constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
-        this.deckService = ApiDeckService.getInstance();
+        this.deckService = DeckService.getInstance();
 
         this.errorService = ErrorService.getInstance();
     }
 
     async componentWillLoad() {
-        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
-            if (deck) {
-                this.caption = deck.name;
+        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+            if (deck && deck.data) {
+                this.caption = deck.data.name;
             }
         });
 
-        this.updateDeckSubsction = this.updateDeckSubject.asObservable().pipe(debounceTime(500)).subscribe(async () => {
+        this.updateDeckSubscription = this.updateDeckSubject.asObservable().pipe(debounceTime(500)).subscribe(async () => {
             await this.updateDeck();
         });
     }
@@ -68,8 +72,8 @@ export class AppPublishEdit {
     }
 
     componentDidUnload() {
-        if (this.updateDeckSubsction) {
-            this.updateDeckSubsction.unsubscribe();
+        if (this.updateDeckSubscription) {
+            this.updateDeckSubscription.unsubscribe();
         }
     }
 
@@ -106,16 +110,16 @@ export class AppPublishEdit {
             this.disablePublish = true;
 
             try {
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
-                    if (!deck || !deck.id) {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    if (!deck || !deck.data || !deck.id) {
                         this.disablePublish = false;
                         resolve();
                         return;
                     }
 
-                    deck.name = this.caption;
+                    deck.data.name = this.caption;
 
-                    const updatedDeck: ApiDeck = await this.deckService.put(deck);
+                    const updatedDeck: Deck = await this.deckService.update(deck);
                     this.deckEditorService.next(updatedDeck);
 
                     this.disablePublish = false;
@@ -140,7 +144,7 @@ export class AppPublishEdit {
             try {
                 this.publishing = true;
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
                     if (!deck || !deck.id) {
                         this.publishing = false;
 
@@ -148,7 +152,8 @@ export class AppPublishEdit {
                         return;
                     }
 
-                    const publishedUrl: string = await this.deckService.publish(deck);
+                    // TODO: Publish
+                    const publishedUrl: string = 'hello'; // await this.deckService.publish(deck);
 
                     // TODO: URL and Deck?
                     // For the time being url but in the future...

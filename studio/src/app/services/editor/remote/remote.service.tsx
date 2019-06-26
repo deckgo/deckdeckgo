@@ -3,7 +3,7 @@ import {filter, take} from 'rxjs/operators';
 
 import {get, set} from 'idb-keyval';
 
-import {ApiDeck} from '../../../models/api/api.deck';
+import {Deck} from '../../../models/data/deck';
 
 import {DeckEditorService} from '../deck/deck-editor.service';
 
@@ -52,8 +52,8 @@ export class RemoteService {
 
     getRoom(): Promise<string> {
         return new Promise<string>((resolve) => {
-            this.deckEditorService.watch().pipe(filter((deck: ApiDeck) => deck && (deck.name && deck.name !== undefined && deck.name !== '')), take(1)).subscribe(async (deck: ApiDeck) => {
-                const roomName: string = deck.name.replace(/\.|#/g,'_');
+            this.deckEditorService.watch().pipe(filter((deck: Deck) => deck && deck.data && (deck.data.name && deck.data.name !== undefined && deck.data.name !== '')), take(1)).subscribe(async (deck: Deck) => {
+                const roomName: string = deck.data.name.replace(/\.|#/g,'_');
 
                 resolve(roomName);
             });

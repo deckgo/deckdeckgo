@@ -1,9 +1,8 @@
 import {Observable, ReplaySubject} from 'rxjs';
-import {take} from 'rxjs/operators';
 
-import {get, del, set} from 'idb-keyval';
+import {del, set} from 'idb-keyval';
 
-import {AuthUser} from '../../../models/data/auth-user';
+import {AuthUser} from '../../../models/auth/auth.user';
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
@@ -30,28 +29,27 @@ export class ApiUserService {
         return ApiUserService.instance;
     }
 
-    authStateChanged(authUser: AuthUser): Promise<void> {
+    signIn(authUser: AuthUser): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!authUser) {
                 await this.signOut();
             } else {
-                const savedApiUserId: string = await get<string>('deckdeckgo_user_id');
-                if (!savedApiUserId || savedApiUserId !== authUser.uid) {
-                    const apiUser: ApiUserInfo = await this.createUserInfo(authUser);
+                // Uf an
+                if (authUser.anonymous) {
+                    resolve();
+                    return;
+                }
 
-                    try {
+                try {
+                    const user: ApiUser = await this.get(authUser.uid);
+
+                    if (!user) {
+                        const apiUser: ApiUserInfo = await this.createUserInfo(authUser);
+
                         await this.post(apiUser, authUser.token);
-                    } catch (err) {
-                        this.errorService.error(err);
                     }
-                } else {
-                    try {
-                        await this.get(savedApiUserId);
-
-                        await this.updateMergedUser(authUser);
-                    } catch (err) {
-                        this.errorService.error(err);
-                    }
+                } catch (err) {
+                    this.errorService.error(err);
                 }
             }
 
@@ -184,39 +182,6 @@ export class ApiUserService {
 
             resolve(apiUserInfo);
         });
-    }
-
-    // In case of successful merge, previous user who might have been an anonymous need to become a not anonymous one and get a user name
-    private updateMergedUser(authUser: AuthUser): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            if (!authUser) {
-                resolve();
-                return;
-            }
-
-            const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
-
-            if (!authUser || authUser.anonymous || !mergeInfo || !mergeInfo.anonymous || !mergeInfo.userId || !mergeInfo.userToken) {
-                resolve();
-                return;
-            }
-
-            this.watch().pipe(take(1)).subscribe(async (user: ApiUser) => {
-                if (!user || user.username) {
-                    resolve();
-                    return;
-                }
-
-                try {
-                    const apiUser: ApiUserInfo = await this.createUserInfo(authUser);
-                    await this.put(apiUser, authUser.token, user.id);
-
-                    resolve();
-                } catch (err) {
-                    reject(err);
-                }
-            });
-        })
     }
 
 }

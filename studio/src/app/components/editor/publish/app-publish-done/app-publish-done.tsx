@@ -6,11 +6,11 @@ import 'web-social-share';
 
 import {GifService} from '../../../../services/tenor/gif/gif.service';
 
-import {ApiDeck} from '../../../../models/api/api.deck';
-import {AuthUser} from '../../../../models/data/auth-user';
+import {AuthUser} from '../../../../models/auth/auth.user';
+import {Deck} from '../../../../models/data/deck';
 
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
-import {AuthService} from '../../../../services/data/auth/auth.service';
+import {AuthService} from '../../../../services/auth/auth.service';
 
 @Component({
     tag: 'app-publish-done',
@@ -128,13 +128,13 @@ export class AppPublishDone {
 
     private getShareText(): Promise<string> {
         return new Promise<string>((resolve) => {
-            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: ApiDeck) => {
-                if (deck && deck.name && deck.name !== '') {
+            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                if (deck && deck.data && deck.data.name && deck.data.name !== '') {
                     this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
                         if (authUser && !authUser.anonymous && authUser.name && authUser.name !== '') {
-                            resolve(`"${deck.name}" by ${authUser.name} created with DeckDeckGo`);
+                            resolve(`"${deck.data.name}" by ${authUser.name} created with DeckDeckGo`);
                         } else {
-                            resolve(`"${deck.name}" created with DeckDeckGo`);
+                            resolve(`"${deck.data.name}" created with DeckDeckGo`);
                         }
                     });
                 } else {

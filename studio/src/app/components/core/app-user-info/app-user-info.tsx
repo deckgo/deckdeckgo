@@ -1,13 +1,12 @@
 import {Component, Prop, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
 
-import {AuthUser} from '../../../models/data/auth-user';
-import {ApiUser} from '../../../models/api/api.user';
+import {AuthUser} from '../../../models/auth/auth.user';
 
+import {AuthService} from '../../../services/auth/auth.service';
 import {ApiUserService} from '../../../services/api/user/api.user.service';
-import {AuthService} from '../../../services/data/auth/auth.service';
+import {ApiUser} from '../../../models/api/api.user';
 
 @Component({
     tag: 'app-user-info',
@@ -21,18 +20,18 @@ export class AppUserInfo {
     private authService: AuthService;
     private authSubscription: Subscription;
 
-    private userService: ApiUserService;
-    private userSubscription: Subscription;
+    private apiUserService: ApiUserService;
+    private apiUserSubscription: Subscription;
 
     @State()
     private authUser: AuthUser;
 
     @State()
-    private user: ApiUser;
+    private apiUser: ApiUser;
 
     constructor() {
         this.authService = AuthService.getInstance();
-        this.userService = ApiUserService.getInstance();
+        this.apiUserService = ApiUserService.getInstance();
     }
 
     componentWillLoad() {
@@ -40,9 +39,8 @@ export class AppUserInfo {
             this.authUser = authUser;
         });
 
-        this.userSubscription = this.userService.watch().pipe(
-            filter((user: ApiUser) => user && !user.anonymous)).subscribe(async (user: ApiUser) => {
-            this.user = user;
+        this.apiUserSubscription = this.apiUserService.watch().subscribe((user: ApiUser) => {
+            this.apiUser = user;
         });
     }
 
@@ -51,8 +49,8 @@ export class AppUserInfo {
             this.authSubscription.unsubscribe();
         }
 
-        if (this.userSubscription) {
-            this.userSubscription.unsubscribe();
+        if (this.apiUserSubscription) {
+            this.apiUserSubscription.unsubscribe();
         }
     }
 
@@ -63,7 +61,7 @@ export class AppUserInfo {
                     <ion-col size={'' + this.avatarColSize}><app-avatar src={this.authUser.photo_url}></app-avatar></ion-col>
                     <ion-col size={'' + (12 - this.avatarColSize)} class="user-info">
                         <ion-label>{this.authUser.name}</ion-label>
-                        <ion-label>{this.user && this.user.username ? '@' + this.user.username : undefined}</ion-label>
+                        <ion-label>{!this.authUser.anonymous && this.apiUser && this.apiUser.username ? '@' + this.apiUser.username : undefined}</ion-label>
                     </ion-col>
                 </ion-row>
             </ion-grid>

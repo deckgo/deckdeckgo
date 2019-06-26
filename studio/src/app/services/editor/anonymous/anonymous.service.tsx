@@ -1,8 +1,8 @@
 import {take} from 'rxjs/operators';
 
-import {AuthUser} from '../../../models/data/auth-user';
+import {AuthUser} from '../../../models/auth/auth.user';
 
-import {AuthService} from '../../data/auth/auth.service';
+import {AuthService} from '../../auth/auth.service';
 
 export class AnonymousService {
 

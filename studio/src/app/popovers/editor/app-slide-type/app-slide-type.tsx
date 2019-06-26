@@ -1,6 +1,6 @@
 import {Component, Element, h} from '@stencil/core';
 
-import {ApiSlideTemplate} from '../../../models/api/api.slide';
+import {SlideTemplate} from '../../../models/data/slide';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
@@ -33,7 +33,7 @@ export class AppSlideType {
         });
     }
 
-    private async addSlide(template: ApiSlideTemplate) {
+    private async addSlide(template: SlideTemplate) {
         const slide: any = await CreateSlidesUtils.createSlide(template);
         await this.closePopover(template, slide);
     }
@@ -42,7 +42,7 @@ export class AppSlideType {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
-    private async closePopover(template: ApiSlideTemplate, slide?: any) {
+    private async closePopover(template: SlideTemplate, slide?: any) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
             slide: slide,
             template: template
@@ -55,25 +55,25 @@ export class AppSlideType {
                 <ion-anchor slot="end" onClick={() => this.closePopoverWithoutResults()}><ion-icon name="close"></ion-icon></ion-anchor>
             </ion-toolbar>,
             <div class="container">
-                <div class="item" custom-tappable onClick={() => this.addSlide(ApiSlideTemplate.TITLE)}>
+                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
                     <deckgo-slide-title>
                         <h1 slot="title">Title</h1>
                         <p slot="content">Content</p>
                     </deckgo-slide-title>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.addSlide(ApiSlideTemplate.CONTENT)}>
+                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.CONTENT)}>
                     <deckgo-slide-content>
                         <h1 slot="title">Title</h1>
                         <p slot="content">Content</p>
                     </deckgo-slide-content>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.addSlide(ApiSlideTemplate.SPLIT)}>
+                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.SPLIT)}>
                     <deckgo-slide-split>
                         <p slot="start">Content</p>
                         <p slot="end">Content</p>
                     </deckgo-slide-split>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.closePopover(ApiSlideTemplate.GIF)}>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
                     <deckgo-slide-gif src={EnvironmentConfigService.getInstance().get('gifExampleSrc')} alt="Slide Gif">
                         <p slot="header" style={{"font-size": "var(--font-size-very-small)", padding: "2px", "border-radius": "4px"}}>Gif with header</p>
                         <p slot="footer" style={{"font-size": "var(--font-size-very-small)", padding: "2px", "border-radius": "4px"}}>and footer</p>
