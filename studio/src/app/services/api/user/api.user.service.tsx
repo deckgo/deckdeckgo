@@ -1,13 +1,9 @@
 import {Observable, ReplaySubject} from 'rxjs';
 
-import {del, set} from 'idb-keyval';
-
 import {AuthUser} from '../../../models/auth/auth.user';
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
-
-import {ErrorService} from '../../core/error/error.service';
 
 export class ApiUserService {
 
@@ -15,11 +11,8 @@ export class ApiUserService {
 
     private static instance: ApiUserService;
 
-    private errorService: ErrorService;
-
     private constructor() {
         // Private constructor, singleton
-        this.errorService = ErrorService.getInstance();
     }
 
     static getInstance() {
@@ -34,7 +27,7 @@ export class ApiUserService {
             if (!authUser) {
                 await this.signOut();
             } else {
-                // Uf an
+                // If anonymous do nothing
                 if (authUser.anonymous) {
                     resolve();
                     return;
@@ -49,7 +42,8 @@ export class ApiUserService {
                         await this.post(apiUser, authUser.token);
                     }
                 } catch (err) {
-                    this.errorService.error(err);
+                    // We don't display the error. The user could continue to work and edit his/her presentations.
+                    console.error(err);
                 }
             }
 
@@ -60,8 +54,6 @@ export class ApiUserService {
     signOut(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             this.apiUserSubject.next(null);
-
-            await del('deckdeckgo_user_id');
 
             resolve();
         });
@@ -99,8 +91,6 @@ export class ApiUserService {
 
                 this.apiUserSubject.next(persistedUser);
 
-                await set('deckdeckgo_user_id', persistedUser.id);
-
                 resolve(persistedUser);
             } catch (err) {
                 reject(err);
@@ -122,7 +112,8 @@ export class ApiUserService {
                 });
 
                 if (!rawResponse || !rawResponse.ok) {
-                    reject('Something went wrong while creating a user');
+                    // 404 if not found
+                    resolve(null);
                     return;
                 }
 
