@@ -206,13 +206,12 @@ export class AppSignIn {
 
             const observables = [];
             observables.push(this.authService.watch().pipe(take(1)));
-            observables.push(this.userService.watch().pipe(take(1)));
             observables.push(this.deckEditorService.watch().pipe(take(1)));
 
-            forkJoin(observables).subscribe(async ([authUser, user, deck]: [AuthUser,  User, Deck]) => {
+            forkJoin(observables).subscribe(async ([authUser, deck]: [AuthUser, Deck]) => {
                 await set('deckdeckgo_redirect_info', {
                     deckId: deck ? deck.id : null,
-                    userId: user ? user.id : null,
+                    userId: authUser ? authUser.uid : null,
                     userToken: authUser ? authUser.token : null,
                     anonymous: authUser ? authUser.anonymous : true
                 });
