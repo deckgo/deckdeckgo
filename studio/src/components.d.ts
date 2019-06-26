@@ -52,6 +52,7 @@ export namespace Components {
     'publication': Date;
   }
   interface AppFeedCardTags {
+    'disableRemove': boolean;
     'editable': boolean;
     'tags': string[];
   }
@@ -499,6 +500,7 @@ declare namespace LocalJSX {
     'publication'?: Date;
   }
   interface AppFeedCardTags extends JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement> {
+    'disableRemove'?: boolean;
     'editable'?: boolean;
     'onRemoveTag'?: (event: CustomEvent<string>) => void;
     'tags'?: string[];

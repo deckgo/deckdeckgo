@@ -45,7 +45,7 @@ export class PublishService {
     }
 
     // TODO: Move in a cloud functions?
-    publish(description: string): Promise<string> {
+    publish(description: string, tags: string[]): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             try {
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
@@ -67,7 +67,7 @@ export class PublishService {
 
                     const publishedUrl: string = await this.apiDeckService.publish(updatedApiDeck);
 
-                    await this.updateDeckMeta(deck, publishedUrl, description);
+                    await this.updateDeckMeta(deck, publishedUrl, description, tags);
 
                     resolve(publishedUrl);
                 });
@@ -77,7 +77,7 @@ export class PublishService {
         });
     }
 
-    private updateDeckMeta(deck: Deck, publishedUrl: string, description: string): Promise<void> {
+    private updateDeckMeta(deck: Deck, publishedUrl: string, description: string, tags: string[]): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
                 if (!publishedUrl || publishedUrl === undefined || publishedUrl === '') {
@@ -103,6 +103,12 @@ export class PublishService {
                     deck.data.meta.description = description;
                 } else {
                     deck.data.meta.description = firebase.firestore.FieldValue.delete();
+                }
+
+                if (!tags || tags.length <= 0) {
+                    deck.data.meta.tags = firebase.firestore.FieldValue.delete();
+                } else {
+                    deck.data.meta.tags = tags;
                 }
 
                 await this.deckService.update(deck);

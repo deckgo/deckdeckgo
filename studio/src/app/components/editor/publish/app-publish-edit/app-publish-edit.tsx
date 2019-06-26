@@ -92,6 +92,7 @@ export class AppPublishEdit {
 
             this.caption = deck.data.name;
             this.description = deck.data.meta && deck.data.meta.description ? (deck.data.meta.description as string) : await this.getFirstSlideContent();
+            this.tags = deck.data.meta && deck.data.meta.tags ? (deck.data.meta.tags as string[]) : [];
 
             resolve();
         });
@@ -170,7 +171,7 @@ export class AppPublishEdit {
             try {
                 this.publishing = true;
 
-                const publishedUrl: string = await this.publishService.publish(this.description);
+                const publishedUrl: string = await this.publishService.publish(this.description, this.tags);
 
                 this.published.emit(publishedUrl);
 
@@ -309,7 +310,7 @@ export class AppPublishEdit {
                                    onIonChange={() => this.onTagChange()}></ion-input>
                     </ion-item>
 
-                    <app-feed-card-tags tags={this.tags} editable={true} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
+                    <app-feed-card-tags tags={this.tags} editable={true} disable-remove={this.publishing} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
                 </ion-list>
 
                 <div class="ion-padding ion-text-center publish">

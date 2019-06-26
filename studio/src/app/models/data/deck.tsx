@@ -1,7 +1,11 @@
 export interface DeckMeta {
     title: string;
+
     description?: string | firebase.firestore.FieldValue;
+    tags?: string[] | firebase.firestore.FieldValue;
+
     pathname: string;
+
     published_at: firebase.firestore.Timestamp;
 }
 
