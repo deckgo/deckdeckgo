@@ -36,20 +36,18 @@ app-navigation {
 @media (prefers-color-scheme: dark) {
   app-navigation {
     ion-anchor {
+      color: var(--ion-color-primary);
+
+      &:hover, &:active {
+        color: var(--ion-color-primary);
+      }
+
+      div mark {
+        color: var(--ion-color-primary);
+      }
+
       &:hover, &:active {
         border-bottom: 1px solid transparent;
-      }
-    }
-  }
-}
-
-ion-split-pane {
-
-  &.split-pane-visible {
-    app-navigation {
-
-      ion-toolbar {
-        --min-height: 52px;
       }
     }
   }

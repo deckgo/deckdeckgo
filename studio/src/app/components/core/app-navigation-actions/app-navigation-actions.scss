@@ -8,50 +8,34 @@ app-navigation-actions {
   a {
     cursor: pointer;
   }
-}
 
-ion-split-pane {
-
-  app-navigation-actions {
-    ion-button {
-      &.presentation, &.publish {
-        --background: white;
-        --background-hover: white;
-        --color: #000;
-        --color-activated: var(--ion-color-tertiary);
-      }
+  ion-button {
+    &.publish {
+      --background: var(--ion-color-tertiary);
+      --background-hover: var(--ion-color-tertiary);
+      --color: white;
+      --color-activated: var(--ion-color-secondary);
     }
 
-    a.signin {
-      color: white;
-
-      &:hover, &:active {
-        color: white;
-      }
+    &.presentation {
+      --background: var(--ion-color-primary);
+      --background-hover: var(--ion-color-primary);
+      --color: white;
+      --color-activated: var(--ion-color-secondary);
     }
   }
 
-  &:not(.split-pane-visible) {
-    app-navigation-actions {
-      ion-button {
-        &.publish {
-          --background: var(--ion-color-tertiary);
-          --background-hover: var(--ion-color-tertiary);
-          --color: white;
-          --color-activated: var(--ion-color-secondary);
-        }
+  @media screen and (max-width: 540px) {
+    a.signin {
+      display: none;
+    }
+  }
+}
 
-        &.presentation {
-          --background: var(--ion-color-primary);
-          --background-hover: var(--ion-color-primary);
-          --color: white;
-          --color-activated: var(--ion-color-secondary);
-        }
-      }
-
-      a.signin {
-        display: none;
-      }
+@media (prefers-color-scheme: dark) {
+  app-navigation-actions {
+    a {
+      color: white;
     }
   }
 }

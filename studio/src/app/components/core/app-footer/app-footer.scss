@@ -5,6 +5,9 @@ app-footer {
     > ion-label {
       display: block;
       padding-bottom: 6px;
+
+      color: white;
+      font-weight: bold;
     }
 
     ion-anchor {
@@ -12,6 +15,14 @@ app-footer {
       display: block;
       width: max-content;
       font-weight: 300;
+
+      color: white;
+
+      &:hover, &.active {
+        color: white;
+
+        border-bottom-color: transparent;
+      }
     }
   }
 
@@ -20,25 +31,20 @@ app-footer {
   }
 }
 
-ion-split-pane {
+@media (prefers-color-scheme: dark) {
+  app-footer {
+    div {
+      > ion-label {
+        color: black;
+      }
 
-  &:not(.split-pane-visible) {
-    app-footer {
-      div {
-        > ion-label {
-          color: white;
-          font-weight: bold;
-        }
+      ion-anchor {
+        color: var(--ion-color-medium);
 
-        ion-anchor {
-          color: white;
-
-          &:hover, &.active {
-            color: var(--ion-color-secondary);
-          }
+        &:hover, &.active {
+          color: var(--ion-color-medium);
         }
       }
     }
   }
 }
-
