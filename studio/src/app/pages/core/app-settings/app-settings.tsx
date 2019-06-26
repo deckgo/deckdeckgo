@@ -16,6 +16,7 @@ import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ErrorService} from '../../../services/core/error/error.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+import {UserService} from '../../../services/data/user/user.service';
 
 @Component({
     tag: 'app-settings',
@@ -27,13 +28,14 @@ export class AppHome {
     private authUser: AuthUser;
 
     @State()
-    private user: ApiUser;
+    private apiUser: ApiUser;
 
     @State()
     private valid: boolean = true;
 
     private authService: AuthService;
     private apiUserService: ApiUserService;
+    private userService: UserService;
 
     private navService: NavService;
 
@@ -47,6 +49,7 @@ export class AppHome {
         this.navService = NavService.getInstance();
         this.errorService = ErrorService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();
+        this.userService = UserService.getInstance();
     }
 
     componentWillLoad() {
@@ -57,9 +60,9 @@ export class AppHome {
         });
 
         this.apiUserService.watch().pipe(
-            filter((user: ApiUser) => user !== null && user !== undefined && !user.anonymous),
-            take(1)).subscribe(async (user: ApiUser) => {
-            this.user = user;
+            filter((apiUser: ApiUser) => apiUser !== null && apiUser !== undefined && !apiUser.anonymous),
+            take(1)).subscribe(async (apiUser: ApiUser) => {
+            this.apiUser = apiUser;
         });
     }
 
@@ -84,11 +87,11 @@ export class AppHome {
     }
 
     private handleUsernameInput($event: CustomEvent<KeyboardEvent>) {
-        this.user.username = ($event.target as InputTargetEvent).value;
+        this.apiUser.username = ($event.target as InputTargetEvent).value;
     }
 
     private validateUsernameInput() {
-        this.valid = this.user && UserUtils.validUsername(this.user.username);
+        this.valid = this.apiUser && UserUtils.validUsername(this.apiUser.username);
     }
 
     private save(): Promise<void> {
@@ -99,7 +102,7 @@ export class AppHome {
             }
 
             try {
-                await this.apiUserService.put(this.user, this.authUser.token, this.user.id);
+                await this.apiUserService.put(this.apiUser, this.authUser.token, this.apiUser.id);
             } catch (err) {
                 this.errorService.error('Your changes couldn\'t be saved');
             }
@@ -112,7 +115,7 @@ export class AppHome {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-user-delete',
             componentProps: {
-                username: this.user.username
+                username: this.apiUser.username
             }
         });
 
@@ -132,7 +135,11 @@ export class AppHome {
 
                 await loading.present();
 
-                await this.apiUserService.delete(this.user.id, this.authUser.token);
+                // TODO: Delete decks and slides?
+
+                await this.apiUserService.delete(this.apiUser.id, this.authUser.token);
+
+                await this.userService.delete(this.authUser.uid);
 
                 const firebaseUser: firebase.User = firebase.auth().currentUser;
 
@@ -213,12 +220,12 @@ export class AppHome {
     }
 
     private renderUsername() {
-        if (this.user) {
+        if (this.apiUser) {
             return [<ion-item class="item-title">
                 <ion-label>Username</ion-label>
             </ion-item>,
                 <ion-item>
-                    <ion-input value={this.user.username} debounce={500} minlength={3} maxlength={32} required={true}
+                    <ion-input value={this.apiUser.username} debounce={500} minlength={3} maxlength={32} required={true}
                                input-mode="text"
                                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleUsernameInput(e)}
                                onIonChange={() => this.validateUsernameInput()}></ion-input>
@@ -229,7 +236,7 @@ export class AppHome {
     }
 
     private renderSubmitForm() {
-        if (this.user) {
+        if (this.apiUser) {
             return <ion-button type="submit" disabled={!this.valid} color="primary" shape="round">
                 <ion-label>Submit</ion-label>
             </ion-button>
@@ -239,7 +246,7 @@ export class AppHome {
     }
 
     private renderDangerZone() {
-        if (this.user && this.authUser) {
+        if (this.apiUser && this.authUser) {
             return [<h1 class="ion-padding-top ion-margin-top">Danger Zone</h1>,
                 <p>Once you delete your user, there is no going back. Please be certain.</p>,
                 <ion-button color="danger" shape="round" fill="outline" onClick={() => this.presentConfirmDelete()}>
