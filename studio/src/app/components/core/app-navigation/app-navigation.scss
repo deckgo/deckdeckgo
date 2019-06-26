@@ -1,5 +1,11 @@
 app-navigation {
 
+  ion-header {
+    ion-toolbar {
+      --background: inherit;
+    }
+  }
+
   ion-anchor {
     --color: white;
 
