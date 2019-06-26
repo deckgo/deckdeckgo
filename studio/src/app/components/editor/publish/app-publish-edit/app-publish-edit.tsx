@@ -12,6 +12,7 @@ import {ErrorService} from '../../../../services/core/error/error.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {ApiUser} from '../../../../models/api/api.user';
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
+import {PublishService} from '../../../../services/editor/publish/publish.service';
 
 @Component({
     tag: 'app-publish-edit',
@@ -53,6 +54,8 @@ export class AppPublishEdit {
     private apiUser: ApiUser;
     private apiUserService: ApiUserService;
 
+    private publishService: PublishService;
+
     constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
         this.deckService = DeckService.getInstance();
@@ -60,6 +63,8 @@ export class AppPublishEdit {
         this.errorService = ErrorService.getInstance();
 
         this.apiUserService = ApiUserService.getInstance();
+
+        this.publishService = PublishService.getInstance();
     }
 
     async componentWillLoad() {
@@ -153,29 +158,19 @@ export class AppPublishEdit {
     }
 
     private publish(): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             try {
                 this.publishing = true;
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                    if (!deck || !deck.id) {
-                        this.publishing = false;
+                const publishedUrl: string = await this.publishService.publish();
 
-                        resolve();
-                        return;
-                    }
+                // TODO: Save url in deck
+                // For the time being url but in the future...
+                this.published.emit(publishedUrl);
 
-                    // TODO: Publish
-                    const publishedUrl: string = 'hello'; // await this.deckService.publish(deck);
+                this.publishing = false;
 
-                    // TODO: URL and Deck?
-                    // For the time being url but in the future...
-                    this.published.emit(publishedUrl);
-
-                    this.publishing = false;
-
-                    resolve();
-                });
+                resolve();
             } catch (err) {
                 this.publishing = false;
                 this.errorService.error(err);

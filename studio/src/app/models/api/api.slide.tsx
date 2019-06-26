@@ -1,19 +1,8 @@
-export enum ApiSlideTemplate {
-    TITLE = 'title',
-    CONTENT = 'content',
-    SPLIT = 'split',
-    GIF = 'gif'
-}
-
-export interface ApiSlideAttributes {
-    style?: string;
-    src?: string;
-    customBackground?: string;
-}
+import {SlideAttributes, SlideTemplate} from '../data/slide';
 
 export interface ApiSlide {
     id?: string;
     content?: string;
-    template: ApiSlideTemplate,
-    attributes?: ApiSlideAttributes;
+    template: SlideTemplate,
+    attributes?: SlideAttributes;
 }

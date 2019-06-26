@@ -16,6 +16,8 @@ export interface SlideData {
     template: SlideTemplate,
     attributes?: SlideAttributes;
 
+    api_id?: string;
+
     created_at?: firebase.firestore.Timestamp;
     updated_at?: firebase.firestore.Timestamp;
 }

@@ -11,6 +11,8 @@ export interface DeckData {
 
     slides?: string[];
 
+    api_id?: string;
+
     created_at?: firebase.firestore.Timestamp;
     updated_at?: firebase.firestore.Timestamp;
 }
