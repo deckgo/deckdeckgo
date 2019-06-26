@@ -24,8 +24,6 @@ export class AppPopular {
 
                     <p class="ion-padding-top ion-padding-bottom">Edit your deck anywhere, display it everywhere.</p>
                 </ion-card-content>
-
-                <app-demo></app-demo>
             </ion-card>,
             <h1 class="ion-padding ion-margin-start ion-margin-end">We need your help!</h1>,
             <ion-card>

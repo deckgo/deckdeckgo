@@ -30,7 +30,6 @@ export namespace Components {
   interface AppDeckOrSlide {
     'deckOrSlide': boolean;
   }
-  interface AppDemo {}
   interface AppDeveloper {}
   interface AppEditor {
     'deckId': string;
@@ -161,12 +160,6 @@ declare global {
   var HTMLAppDeckOrSlideElement: {
     prototype: HTMLAppDeckOrSlideElement;
     new (): HTMLAppDeckOrSlideElement;
-  };
-
-  interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
-  var HTMLAppDemoElement: {
-    prototype: HTMLAppDemoElement;
-    new (): HTMLAppDemoElement;
   };
 
   interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
@@ -410,7 +403,6 @@ declare global {
     'app-color': HTMLAppColorElement;
     'app-contact': HTMLAppContactElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
-    'app-demo': HTMLAppDemoElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
@@ -477,7 +469,6 @@ declare namespace LocalJSX {
     'deckOrSlide'?: boolean;
     'onApplyTo'?: (event: CustomEvent<boolean>) => void;
   }
-  interface AppDemo extends JSXBase.HTMLAttributes<HTMLAppDemoElement> {}
   interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
   interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
     'deckId'?: string;
@@ -576,7 +567,6 @@ declare namespace LocalJSX {
     'app-color': AppColor;
     'app-contact': AppContact;
     'app-deck-or-slide': AppDeckOrSlide;
-    'app-demo': AppDemo;
     'app-developer': AppDeveloper;
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
