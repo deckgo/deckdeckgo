@@ -441,8 +441,17 @@ export class DeckEventsHandler {
                 const slideId: string = slide.getAttribute('slide_id');
 
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                    if (deck) {
+                    if (deck && deck.data) {
                         await this.slideService.delete(deck.id, slideId);
+
+                        // TODO: Ultimately should be moved in a Cloud Function
+                        // Update list of slide in the deck
+                        if (deck.data.slides && deck.data.slides.indexOf(slideId) > -1) {
+                            deck.data.slides.splice(deck.data.slides.indexOf(slideId), 1);
+
+                            const updatedDeck: Deck = await this.deckService.update(deck);
+                            this.deckEditorService.next(updatedDeck);
+                        }
                     }
 
                     await this.deleteSlideElement();
