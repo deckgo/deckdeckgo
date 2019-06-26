@@ -116,7 +116,6 @@ export class AppRoot {
                 </ion-router>
 
                 <ion-menu id="ion-menu" side="start" type="overlay" swipeGesture={false} contentId="menu-content">
-                    <app-navigation logo={true} menuToggle={false} user={false}></app-navigation>
                     <ion-content>
                         <ion-menu-toggle autoHide={false}>
                             <app-menu></app-menu>

@@ -72,7 +72,6 @@ export namespace Components {
   interface AppLogo {}
   interface AppMenu {}
   interface AppNavigation {
-    'logo': boolean;
     'menuToggle': boolean;
     'presentation': boolean;
     'publish': boolean;
@@ -512,7 +511,6 @@ declare namespace LocalJSX {
   interface AppLogo extends JSXBase.HTMLAttributes<HTMLAppLogoElement> {}
   interface AppMenu extends JSXBase.HTMLAttributes<HTMLAppMenuElement> {}
   interface AppNavigation extends JSXBase.HTMLAttributes<HTMLAppNavigationElement> {
-    'logo'?: boolean;
     'menuToggle'?: boolean;
     'presentation'?: boolean;
     'publish'?: boolean;
