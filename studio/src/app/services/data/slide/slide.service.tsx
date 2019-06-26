@@ -92,25 +92,4 @@ export class SlideService {
         });
     }
 
-    getSlides(deckId: string): Promise<Slide[]> {
-        return new Promise<Slide[]>(async (resolve, reject) => {
-            try {
-                const firestore: firebase.firestore.Firestore = firebase.firestore();
-
-                const snapshot: firebase.firestore.QuerySnapshot = await firestore.collection(`/decks/${deckId}/slides`)
-                    .orderBy('created_at', 'asc').get();
-
-                const slides: Slide[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
-                    return {
-                        id: documentSnapshot.id,
-                        data: documentSnapshot.data() as SlideData
-                    }
-                });
-
-                resolve(slides);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
 }

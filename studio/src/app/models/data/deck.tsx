@@ -9,6 +9,8 @@ export interface DeckData {
 
     owner_id: string;
 
+    slides?: string[];
+
     created_at?: firebase.firestore.Timestamp;
     updated_at?: firebase.firestore.Timestamp;
 }

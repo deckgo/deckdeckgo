@@ -50,17 +50,15 @@ export class EditorHelper {
                 }
 
                 this.deckEditorService.next(deck);
-                
-                const slides: Slide[] = await this.slideService.getSlides(deckId);
 
-                if (!slides || slides.length <= 0) {
+                if (!deck.data.slides || deck.data.slides.length <= 0) {
                     resolve([]);
                     return;
                 }
 
                 const promises: Promise<any>[] = [];
-                slides.forEach((slide: Slide) => {
-                    promises.push(this.parseSlide(slide));
+                deck.data.slides.forEach((slideId: string) => {
+                    promises.push(this.fetchSlide(deckId, slideId));
                 });
 
                 let parsedSlides: any[] = [];
@@ -84,9 +82,10 @@ export class EditorHelper {
         });
     }
 
-    private parseSlide(slide: Slide): Promise<any> {
+    private fetchSlide(deckId: string, slideId: string): Promise<any> {
         return new Promise<any>(async (resolve) => {
             try {
+                const slide: Slide = await this.slideService.get(deckId, slideId);
                 const element: any = await ParseSlidesUtils.parseSlide(slide);
 
                 resolve(element);
