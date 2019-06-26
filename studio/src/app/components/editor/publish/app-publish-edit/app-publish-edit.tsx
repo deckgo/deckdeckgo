@@ -69,9 +69,7 @@ export class AppPublishEdit {
 
     async componentWillLoad() {
         this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-            if (deck && deck.data) {
-                this.caption = deck.data.name;
-            }
+            await this.init(deck);
         });
 
         this.apiUserService.watch().pipe(
@@ -85,8 +83,18 @@ export class AppPublishEdit {
         });
     }
 
-    async componentDidLoad() {
-        this.description = await this.getFirstSlideContent();
+    private init(deck: Deck): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!deck || !deck.data) {
+                resolve();
+                return;
+            }
+
+            this.caption = deck.data.name;
+            this.description = deck.data.meta && deck.data.meta.description ? (deck.data.meta.description as string) : await this.getFirstSlideContent();
+
+            resolve();
+        });
     }
 
     componentDidUnload() {
@@ -162,10 +170,8 @@ export class AppPublishEdit {
             try {
                 this.publishing = true;
 
-                const publishedUrl: string = await this.publishService.publish();
+                const publishedUrl: string = await this.publishService.publish(this.description);
 
-                // TODO: Save url in deck
-                // For the time being url but in the future...
                 this.published.emit(publishedUrl);
 
                 this.publishing = false;
@@ -202,6 +208,10 @@ export class AppPublishEdit {
 
     private validCaption(title: string): boolean {
         return title && title !== undefined && title !== '' && title.length < Resources.Constants.DECK.TITLE_MAX_LENGTH;
+    }
+
+    private onDescriptionInput($event: CustomEvent<KeyboardEvent>) {
+        this.description = ($event.target as InputTargetEvent).value;
     }
 
     private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
@@ -284,7 +294,8 @@ export class AppPublishEdit {
                     </ion-item>
 
                     <ion-item>
-                        <ion-textarea rows={5} value={this.description} disabled={this.publishing}></ion-textarea>
+                        <ion-textarea rows={5} value={this.description} debounce={500} disabled={this.publishing}
+                                      onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onDescriptionInput(e)}></ion-textarea>
                     </ion-item>
 
                     <ion-item class="item-title">

@@ -1,3 +1,6 @@
+import {firebase} from '@firebase/app';
+import '@firebase/firestore';
+
 import {take} from 'rxjs/operators';
 
 import {Deck} from '../../../models/data/deck';
@@ -42,7 +45,7 @@ export class PublishService {
     }
 
     // TODO: Move in a cloud functions?
-    publish(): Promise<string> {
+    publish(description: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             try {
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
@@ -64,8 +67,47 @@ export class PublishService {
 
                     const publishedUrl: string = await this.apiDeckService.publish(updatedApiDeck);
 
+                    await this.updateDeckMeta(deck, publishedUrl, description);
+
                     resolve(publishedUrl);
                 });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    private updateDeckMeta(deck: Deck, publishedUrl: string, description: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                if (!publishedUrl || publishedUrl === undefined || publishedUrl === '') {
+                    resolve();
+                    return;
+                }
+
+                const url: URL = new URL(publishedUrl);
+                const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+
+                if (!deck.data.meta) {
+                    deck.data.meta = {
+                        title: deck.data.name,
+                        pathname: url.pathname,
+                        published_at: now
+                    };
+                } else {
+                    deck.data.meta.title = deck.data.name;
+                    deck.data.meta.pathname = url.pathname;
+                }
+
+                if (description && description !== undefined && description !== '') {
+                    deck.data.meta.description = description;
+                } else {
+                    deck.data.meta.description = firebase.firestore.FieldValue.delete();
+                }
+
+                await this.deckService.update(deck);
+
+                resolve();
             } catch (err) {
                 reject(err);
             }
@@ -177,14 +219,14 @@ export class PublishService {
             try {
                 const slide: Slide = await this.slideService.get(deck.id, slideId);
 
-                if (!slide || !slide.data)  {
+                if (!slide || !slide.data) {
                     reject('Missing slide for publishing');
                     return;
                 }
 
                 const apiSlide: ApiSlide = await this.createOrUpdateApiSlide(deck.data.api_id, slide);
 
-                if (!apiSlide)  {
+                if (!apiSlide) {
                     reject('Slide could not be created or updated');
                     return;
                 }

@@ -1,9 +1,17 @@
+export interface DeckMeta {
+    title: string;
+    description?: string | firebase.firestore.FieldValue;
+    pathname: string;
+    published_at: firebase.firestore.Timestamp;
+}
+
 export interface DeckAttributes {
     style?: string;
 }
 
 export interface DeckData {
     name: string;
+
     attributes?: DeckAttributes;
     background?: string;
 
@@ -12,6 +20,8 @@ export interface DeckData {
     slides?: string[];
 
     api_id?: string;
+
+    meta?: DeckMeta;
 
     created_at?: firebase.firestore.Timestamp;
     updated_at?: firebase.firestore.Timestamp;

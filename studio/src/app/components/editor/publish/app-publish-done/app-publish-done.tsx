@@ -151,7 +151,7 @@ export class AppPublishDone {
                     {this.renderGif()}
                 </div>
 
-                <h1>{this.keywords[this.keywordIndex]}! Your presentation has been published.</h1>
+                <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your presentation has been published.</h1>
 
                 <p>Time to <a onClick={() => this.openShare()}><strong>share</strong></a> it with the world, your colleagues, friends and community.</p>
 
