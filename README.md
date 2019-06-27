@@ -53,6 +53,7 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | ------- | ------- | ------- |:-----:|
 | **Backend** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-alpha.2&color=success) | [`README.md`](backend/README.md)
 | **CLI** | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo) | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg?color=success)](https://www.npmjs.com/package/create-deckdeckgo) | [`README.md`](cli/README.md)
+| **Cloud** | | | [`README.md`](cloud/README.md)
 | **Infrastructure** | | | [`README.md`](infra/README.md)
 | **Starter kit** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-beta.21&color=success) | [`Repo`](http://github.com/deckgo/deckdeckgo-starter/)
 | **WAI Lambda** | | | [`Repo`](https://github.com/deckgo/wai-lambda)
