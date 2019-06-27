@@ -1,9 +1,10 @@
 import {Component, h, State} from '@stencil/core';
 
+import {Subscription} from 'rxjs';
+
 import {Deck} from '../../../models/data/deck';
 
 import {FeedService} from '../../../services/data/feed/feed.service';
-import {Subscription} from 'rxjs';
 
 @Component({
     tag: 'app-feed',
