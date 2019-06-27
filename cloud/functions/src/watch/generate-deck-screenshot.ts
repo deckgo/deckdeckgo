@@ -1,6 +1,8 @@
 import {Change} from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
+import * as admin from 'firebase-admin';
+
 import * as puppeteer from 'puppeteer';
 
 import {DeckData} from '../model/deck';
@@ -23,9 +25,7 @@ export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
 
     try {
         const imageBuffer: string = await generateScreenshot(newValue);
-
-        // TODO
-        console.log(imageBuffer);
+        await saveScreenshot(newValue, imageBuffer);
     } catch (err) {
         console.error(err);
     }
@@ -103,6 +103,33 @@ function generateScreenshot(deckData: DeckData): Promise<string> {
             await browser.close();
 
             resolve(imageBuffer);
+        } catch (err) {
+            reject(err);
+        }
+    });
+}
+
+function saveScreenshot(deckData: DeckData, imageBuffer: string): Promise<string> {
+    return new Promise<string>(async (resolve, reject) => {
+        if (!imageBuffer || imageBuffer === undefined || imageBuffer === '') {
+            reject('No screenshot image');
+            return;
+        }
+
+        if (!deckData || !deckData.meta) {
+            reject('No deck or data');
+            return;
+        }
+
+        const bucket = admin.storage().bucket();
+
+        // TODO
+        const file = bucket.file('test.png');
+
+        try {
+            await file.save(imageBuffer);
+
+            resolve();
         } catch (err) {
             reject(err);
         }
