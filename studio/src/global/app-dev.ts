@@ -17,6 +17,7 @@ import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment
 setupDeckGoConfig({
     appUrl: 'http://localhost:3333',
     apiUrl: '<@API_URL@>',
+    presentationUrl: '<@PRESENTATION_URL@>',
     firebase: {
         apiKey: '<@FIREBASE_API_KEY@>',
         authDomain: '<@FIREBASE_AUTH_DOMAIN@>',

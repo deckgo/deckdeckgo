@@ -19,6 +19,7 @@ export interface EnvironmentUnsplashConfig {
 export interface EnvironmentConfig {
     appUrl: string;
     apiUrl: string;
+    presentationUrl: string;
     firebase: EnvironmentFirebaseConfig;
     tenor: EnvironmentTenorConfig;
     unsplash: EnvironmentUnsplashConfig;

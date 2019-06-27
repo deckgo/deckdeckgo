@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {Deck} from '../../../models/data/deck';
 
 import {FeedService} from '../../../services/data/feed/feed.service';
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 
 @Component({
     tag: 'app-feed',
@@ -17,6 +18,8 @@ export class AppFeed {
 
     @State()
     private decks: Deck[] = [];
+
+    private presentationUrl: string = EnvironmentConfigService.getInstance().get('presentationUrl');
 
     private subscription: Subscription;
 
@@ -57,7 +60,9 @@ export class AppFeed {
         if (this.decks && this.decks.length > 0) {
             return (
                 this.decks.map((deck: Deck, i: number) => {
-                    return <app-feed-card compact={i > 0} deck={deck}></app-feed-card>
+                    return <a href={this.presentationUrl + deck.data.meta.pathname} target="_blank">
+                        <app-feed-card compact={i > 0} deck={deck}></app-feed-card>
+                    </a>
                 })
             );
         } else {
