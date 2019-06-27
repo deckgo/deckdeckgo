@@ -44,7 +44,7 @@ export class GifService {
                 resolve(response.tags);
             } catch (err) {
                 this.errorService.error(err.message);
-                resolve(err);
+                resolve();
             }
         });
     }

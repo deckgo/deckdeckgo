@@ -1,10 +1,20 @@
 app-navigation {
 
+  ion-header {
+    ion-toolbar {
+      --background: inherit;
+    }
+  }
+
   ion-anchor {
-    --color: white;
+    color: black;
 
     &:hover, &:active {
-      color: white;
+      color: black;
+    }
+
+    div mark {
+      color: black;
     }
 
     div {
@@ -21,7 +31,7 @@ app-navigation {
       mark {
         background-color: transparent;
         font-style: italic;
-        color: white;
+        color: inherit;
         font-size: calc(var(--font-size-small) * 0.9);
       }
     }
@@ -30,12 +40,21 @@ app-navigation {
   div[slot="end"] {
     z-index: 2;
   }
-
 }
 
 @media (prefers-color-scheme: dark) {
   app-navigation {
     ion-anchor {
+      color: white;
+
+      &:hover, &:active {
+        color: white;
+      }
+
+      div mark {
+        color: white;
+      }
+
       &:hover, &:active {
         border-bottom: 1px solid transparent;
       }
@@ -43,13 +62,11 @@ app-navigation {
   }
 }
 
-ion-split-pane {
-
-  &.split-pane-visible {
+@media screen and (max-width: 720px) {
+  ion-nav {
     app-navigation {
-
-      ion-toolbar {
-        --min-height: 52px;
+      ion-anchor.logo {
+        display: none;
       }
     }
   }

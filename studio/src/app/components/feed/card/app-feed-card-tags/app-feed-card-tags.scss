@@ -7,6 +7,8 @@ app-feed-card-tags {
     overflow: hidden;
   }
 
+  height: 42px;
+
   div.chips {
     background: var(--card-tags-background, rgba(var(--ion-color-primary-rgb), 0.08));
     color: var(--card-tags-color, var(--ion-color-primary-shade));
@@ -32,6 +34,23 @@ app-feed-card-tags {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    button {
+      padding: 0;
+      border: none;
+      outline: none;
+      font: inherit;
+      color: inherit;
+      background: none;
+      display: inline-flex;
+
+      cursor: pointer;
+
+      &[disabled] {
+        color: rgba(var(--ion-color-tertiary-rgb), 0.2);
+        cursor: inherit;
+      }
     }
   }
 }

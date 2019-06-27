@@ -13,6 +13,7 @@ import {DeckService} from '../../../../services/data/deck/deck.service';
 import {ApiUser} from '../../../../models/api/api.user';
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
+import {FeedService} from '../../../../services/data/feed/feed.service';
 
 @Component({
     tag: 'app-publish-edit',
@@ -56,6 +57,8 @@ export class AppPublishEdit {
 
     private publishService: PublishService;
 
+    private feedService: FeedService;
+
     constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
         this.deckService = DeckService.getInstance();
@@ -65,13 +68,13 @@ export class AppPublishEdit {
         this.apiUserService = ApiUserService.getInstance();
 
         this.publishService = PublishService.getInstance();
+
+        this.feedService = FeedService.getInstance();
     }
 
     async componentWillLoad() {
         this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-            if (deck && deck.data) {
-                this.caption = deck.data.name;
-            }
+            await this.init(deck);
         });
 
         this.apiUserService.watch().pipe(
@@ -85,8 +88,19 @@ export class AppPublishEdit {
         });
     }
 
-    async componentDidLoad() {
-        this.description = await this.getFirstSlideContent();
+    private init(deck: Deck): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!deck || !deck.data) {
+                resolve();
+                return;
+            }
+
+            this.caption = deck.data.name;
+            this.description = deck.data.meta && deck.data.meta.description ? (deck.data.meta.description as string) : await this.getFirstSlideContent();
+            this.tags = deck.data.meta && deck.data.meta.tags ? (deck.data.meta.tags as string[]) : [];
+
+            resolve();
+        });
     }
 
     componentDidUnload() {
@@ -162,13 +176,14 @@ export class AppPublishEdit {
             try {
                 this.publishing = true;
 
-                const publishedUrl: string = await this.publishService.publish();
+                const publishedUrl: string = await this.publishService.publish(this.description, this.tags);
 
-                // TODO: Save url in deck
-                // For the time being url but in the future...
                 this.published.emit(publishedUrl);
 
                 this.publishing = false;
+
+                // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
+                await this.feedService.reset();
 
                 resolve();
             } catch (err) {
@@ -202,6 +217,18 @@ export class AppPublishEdit {
 
     private validCaption(title: string): boolean {
         return title && title !== undefined && title !== '' && title.length < Resources.Constants.DECK.TITLE_MAX_LENGTH;
+    }
+
+    private onDescriptionInput($event: CustomEvent<KeyboardEvent>) {
+        this.description = ($event.target as InputTargetEvent).value;
+    }
+
+    private validateDescriptionInput() {
+        this.valid = this.validDescription();
+    }
+
+    private validDescription(): boolean {
+        return !this.description || this.description === undefined || this.description === '' || this.description.length < Resources.Constants.DECK.DESCRIPTION_MAX_LENGTH;
     }
 
     private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
@@ -284,7 +311,10 @@ export class AppPublishEdit {
                     </ion-item>
 
                     <ion-item>
-                        <ion-textarea rows={5} value={this.description} disabled={this.publishing}></ion-textarea>
+                        <ion-textarea rows={5} value={this.description} debounce={500} disabled={this.publishing}
+                                      maxlength={Resources.Constants.DECK.DESCRIPTION_MAX_LENGTH}
+                                      onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onDescriptionInput(e)}
+                                      onIonChange={() => this.validateDescriptionInput()}></ion-textarea>
                     </ion-item>
 
                     <ion-item class="item-title">
@@ -298,7 +328,7 @@ export class AppPublishEdit {
                                    onIonChange={() => this.onTagChange()}></ion-input>
                     </ion-item>
 
-                    <app-feed-card-tags tags={this.tags} editable={true} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
+                    <app-feed-card-tags tags={this.tags} editable={true} disable-remove={this.publishing} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
                 </ion-list>
 
                 <div class="ion-padding ion-text-center publish">

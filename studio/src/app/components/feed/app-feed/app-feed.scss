@@ -1,5 +1,16 @@
 app-feed {
 
+  a,
+  a:link,
+  a:visited,
+  a:hover,
+  a:active{
+    text-decoration: none;
+
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+
   deckgo-lazy-img {
     min-height: 400px;
     display: block;
@@ -8,4 +19,5 @@ app-feed {
   ion-card[class*="sc-ion-card"] {
     --background: white;
   }
+
 }

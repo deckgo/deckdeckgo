@@ -1,16 +1,30 @@
 app-home {
   main {
     display: grid;
-    grid-template-columns: 2.5fr 1fr;
+    grid-template-columns: 1fr 2.5fr 1fr;
+    grid-column-gap: 16px;
     justify-items: center;
 
     app-feed {
       max-width: 720px;
+
+      grid-column-start: 2;
+      grid-column-end: 2;
+    }
+
+    app-popular {
+      grid-column-start: 3;
+      grid-column-end: 3;
     }
 
     @media (max-width: 1200px) {
       grid-template-columns: minmax(100px, max-content);
       justify-content: center;
+
+      app-feed {
+        grid-column-start: 1;
+        grid-column-end: 2;
+      }
 
       app-popular {
         display: none;

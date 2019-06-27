@@ -1,8 +1,12 @@
+import {firebase} from '@firebase/app';
+import '@firebase/firestore';
+
 import {take} from 'rxjs/operators';
 
-import {Deck} from '../../../models/data/deck';
+import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
 import {ApiDeck} from '../../../models/api/api.deck';
 import {Slide} from '../../../models/data/slide';
+import {User} from '../../../models/data/user';
 
 import {DeckEditorService} from '../deck/deck-editor.service';
 import {ApiDeckService} from '../../api/deck/api.deck.service';
@@ -10,6 +14,7 @@ import {ApiSlideService} from '../../api/slide/api.slide.service';
 import {ApiSlide} from '../../../models/api/api.slide';
 import {DeckService} from '../../data/deck/deck.service';
 import {SlideService} from '../../data/slide/slide.service';
+import {UserService} from '../../data/user/user.service';
 
 export class PublishService {
 
@@ -23,6 +28,8 @@ export class PublishService {
     private deckService: DeckService;
     private slideService: SlideService;
 
+    private userService: UserService;
+
     private constructor() {
         // Private constructor, singleton
         this.deckEditorService = DeckEditorService.getInstance();
@@ -32,6 +39,8 @@ export class PublishService {
 
         this.deckService = DeckService.getInstance();
         this.slideService = SlideService.getInstance();
+
+        this.userService = UserService.getInstance();
     }
 
     static getInstance() {
@@ -42,7 +51,7 @@ export class PublishService {
     }
 
     // TODO: Move in a cloud functions?
-    publish(): Promise<string> {
+    publish(description: string, tags: string[]): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             try {
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
@@ -64,7 +73,75 @@ export class PublishService {
 
                     const publishedUrl: string = await this.apiDeckService.publish(updatedApiDeck);
 
+                    await this.updateDeckMeta(deck, publishedUrl, description, tags);
+
                     resolve(publishedUrl);
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    private updateDeckMeta(deck: Deck, publishedUrl: string, description: string, tags: string[]): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                if (!publishedUrl || publishedUrl === undefined || publishedUrl === '') {
+                    resolve();
+                    return;
+                }
+
+                this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
+                    const url: URL = new URL(publishedUrl);
+                    const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+
+                    if (!deck.data.meta) {
+                        deck.data.meta = {
+                            title: deck.data.name,
+                            pathname: url.pathname,
+                            published: true,
+                            published_at: now,
+                            updated_at: now
+                        };
+                    } else {
+                        deck.data.meta.title = deck.data.name;
+                        deck.data.meta.pathname = url.pathname;
+                        deck.data.meta.updated_at = now;
+                    }
+
+                    if (description && description !== undefined && description !== '') {
+                        deck.data.meta.description = description;
+                    } else {
+                        deck.data.meta.description = firebase.firestore.FieldValue.delete();
+                    }
+
+                    if (!tags || tags.length <= 0) {
+                        deck.data.meta.tags = firebase.firestore.FieldValue.delete();
+                    } else {
+                        deck.data.meta.tags = tags;
+                    }
+
+                    if (user && user.data && user.data.name) {
+                        if (!deck.data.meta.author) {
+                            deck.data.meta.author = {
+                                name: user.data.name
+                            };
+                        } else {
+                            (deck.data.meta.author as DeckMetaAuthor).name = user.data.name
+                        }
+
+                        if (user.data.photo_url) {
+                            (deck.data.meta.author as DeckMetaAuthor).photo_url = user.data.photo_url;
+                        }
+                    } else {
+                        if (deck.data.meta.author) {
+                            deck.data.meta.author = firebase.firestore.FieldValue.delete();
+                        }
+                    }
+
+                    await this.deckService.update(deck);
+
+                    resolve();
                 });
             } catch (err) {
                 reject(err);
@@ -177,14 +254,14 @@ export class PublishService {
             try {
                 const slide: Slide = await this.slideService.get(deck.id, slideId);
 
-                if (!slide || !slide.data)  {
+                if (!slide || !slide.data) {
                     reject('Missing slide for publishing');
                     return;
                 }
 
                 const apiSlide: ApiSlide = await this.createOrUpdateApiSlide(deck.data.api_id, slide);
 
-                if (!apiSlide)  {
+                if (!apiSlide) {
                     reject('Slide could not be created or updated');
                     return;
                 }
