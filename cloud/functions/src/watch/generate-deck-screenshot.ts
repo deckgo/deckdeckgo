@@ -1,5 +1,7 @@
 import {DocumentSnapshot} from '@google-cloud/firestore';
 
+import * as puppeteer from 'puppeteer';
+
 import {Change} from 'firebase-functions';
 
 import {DeckData} from '../model/deck';
@@ -16,7 +18,7 @@ export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
     }
 
     try {
-        // TODO: Screenshot
+        await generateScreenshot(newValue);
     } catch (err) {
         console.error(err);
     }
@@ -64,4 +66,28 @@ function getDateObj(myDate: any): Date | null {
     }
 
     return myDate;
+}
+
+function generateScreenshot(deckData: DeckData): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+        const browser = await puppeteer.launch({args: ['--no-sandbox']});
+
+        const page = await browser.newPage();
+
+        // Screenshot size
+        await page.setViewport({width: 1024, height: 576});
+
+        await page.goto('https://deckdeckgo.com');
+
+        // Wait for the components/js elements to be loaded
+        await page.waitForFunction('document.querySelector("deckgo-deck  > *")');
+
+        const imageBuffer = await page.screenshot();
+
+        console.log(imageBuffer);
+
+        await browser.close();
+
+        resolve();
+    });
 }
