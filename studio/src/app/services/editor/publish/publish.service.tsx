@@ -92,6 +92,7 @@ export class PublishService {
                     deck.data.meta = {
                         title: deck.data.name,
                         pathname: url.pathname,
+                        published: true,
                         published_at: now
                     };
                 } else {

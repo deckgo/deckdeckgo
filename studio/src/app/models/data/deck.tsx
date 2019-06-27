@@ -6,6 +6,7 @@ export interface DeckMeta {
 
     pathname: string;
 
+    published: boolean;
     published_at: firebase.firestore.Timestamp;
 }
 

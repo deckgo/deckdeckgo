@@ -110,7 +110,7 @@ export class AuthService {
                 resolve();
             } catch (err) {
                 this.errorService.error(err.message);
-                resolve(err);
+                resolve();
             }
         });
     }

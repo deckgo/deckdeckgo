@@ -9,6 +9,9 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   EventEmitter,
 } from '@stencil/core';
+import {
+  Deck,
+} from './app/models/data/deck';
 
 export namespace Components {
   interface AppAbout {}
@@ -43,12 +46,8 @@ export namespace Components {
   }
   interface AppFeed {}
   interface AppFeedCard {
-    'author': string;
-    'caption': string;
     'compact': boolean;
-    'description': string;
-    'miniature': boolean;
-    'publication': Date;
+    'deck': Deck;
   }
   interface AppFeedCardTags {
     'disableRemove': boolean;
@@ -482,12 +481,8 @@ declare namespace LocalJSX {
   }
   interface AppFeed extends JSXBase.HTMLAttributes<HTMLAppFeedElement> {}
   interface AppFeedCard extends JSXBase.HTMLAttributes<HTMLAppFeedCardElement> {
-    'author'?: string;
-    'caption'?: string;
     'compact'?: boolean;
-    'description'?: string;
-    'miniature'?: boolean;
-    'publication'?: Date;
+    'deck'?: Deck;
   }
   interface AppFeedCardTags extends JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement> {
     'disableRemove'?: boolean;
