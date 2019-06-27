@@ -100,11 +100,13 @@ export class PublishService {
                             title: deck.data.name,
                             pathname: url.pathname,
                             published: true,
-                            published_at: now
+                            published_at: now,
+                            updated_at: now
                         };
                     } else {
                         deck.data.meta.title = deck.data.name;
                         deck.data.meta.pathname = url.pathname;
+                        deck.data.meta.updated_at = now;
                     }
 
                     if (description && description !== undefined && description !== '') {
