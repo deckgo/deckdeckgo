@@ -83,7 +83,10 @@ export class DeckService {
             try {
                 const firestore: firebase.firestore.Firestore = firebase.firestore();
 
-                const snapshot: firebase.firestore.QuerySnapshot = await firestore.collection('decks').where('owner_id', '==', userId).get();
+                const snapshot: firebase.firestore.QuerySnapshot = await firestore.collection('decks')
+                                .where('owner_id', '==', userId)
+                                .orderBy('created_at', 'desc')
+                                .get();
 
                 const decks: Deck[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
                     return {
@@ -94,6 +97,7 @@ export class DeckService {
 
                 resolve(decks);
             } catch (err) {
+                console.log(err);
                 reject(err);
             }
         });
