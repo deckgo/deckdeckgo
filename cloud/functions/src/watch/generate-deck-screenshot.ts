@@ -4,11 +4,16 @@ import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 import * as puppeteer from 'puppeteer';
 
 import {DeckData} from '../model/deck';
+import {Resources} from '../utils/resources';
 
 export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
     const newValue: DeckData = change.after.data() as DeckData;
 
     const previousValue: DeckData = change.before.data() as DeckData;
+
+    if (!newValue || !newValue.meta || !newValue.meta.published || !newValue.meta.pathname) {
+        return;
+    }
 
     const update: boolean = await needScreenshot(previousValue, newValue);
 
@@ -17,7 +22,10 @@ export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
     }
 
     try {
-        await generateScreenshot(newValue);
+        const imageBuffer: string = await generateScreenshot(newValue);
+
+        // TODO
+        console.log(imageBuffer);
     } catch (err) {
         console.error(err);
     }
@@ -67,10 +75,14 @@ function getDateObj(myDate: any): Date | null {
     return myDate;
 }
 
-function generateScreenshot(deckData: DeckData): Promise<boolean> {
-    return new Promise<boolean>(async (resolve, reject) => {
-
+function generateScreenshot(deckData: DeckData): Promise<string> {
+    return new Promise<string>(async (resolve, reject) => {
         try {
+            if (!deckData || !deckData.meta) {
+                reject('No deck or data');
+                return;
+            }
+
             const browser = await puppeteer.launch({args: ['--no-sandbox']});
 
             const page = await browser.newPage();
@@ -78,18 +90,19 @@ function generateScreenshot(deckData: DeckData): Promise<boolean> {
             // Screenshot size
             await page.setViewport({width: 1024, height: 576});
 
-            await page.goto('https://deckdeckgo.com');
+            await page.goto(Resources.Constants.PRESENTATION_URL + deckData.meta.pathname);
+
+            await (page as any)._client.send('ServiceWorker.enable');
+            await (page as any)._client.send('ServiceWorker.stopAllWorkers');
 
             // Wait for the components/js elements to be loaded
             await page.waitForFunction('document.querySelector("deckgo-deck  > *")');
 
-            await page.screenshot();
-
-            // const imageBuffer = await page.screenshot();
+            const imageBuffer: string = await page.screenshot();
 
             await browser.close();
 
-            resolve();
+            resolve(imageBuffer);
         } catch (err) {
             reject(err);
         }

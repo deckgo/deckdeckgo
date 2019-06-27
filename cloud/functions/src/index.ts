@@ -1,5 +1,9 @@
 import * as functions from 'firebase-functions';
 
-import {applyDeckUpdate} from './watch/watch-deck-update';
+import {applyWatchDeckWrite} from './watch/watch-deck-write';
 
-export const watchDeckUpdate = functions.firestore.document('decks/{deckId}').onUpdate(applyDeckUpdate);
+const runtimeOpts = {
+    memory: <const> '1GB'
+};
+
+export const watchDeckWrite = functions.runWith(runtimeOpts).firestore.document('decks/{deckId}').onWrite(applyWatchDeckWrite);
