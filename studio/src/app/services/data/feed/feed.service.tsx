@@ -108,11 +108,13 @@ export class FeedService {
         if (this.nextQueryAfter) {
             return firestore.collection('decks')
                     .where('meta.published', '==', true)
+                    .orderBy('meta.published_at', 'desc')
                     .startAfter(this.nextQueryAfter)
                     .limit(this.queryLimit).get();
         } else {
             return firestore.collection('decks')
                     .where('meta.published', '==', true)
+                    .orderBy('meta.published_at', 'desc')
                     .limit(this.queryLimit).get();
         }
     }
