@@ -90,7 +90,7 @@ function generateScreenshot(deckData: DeckData): Promise<string> {
             // Screenshot size
             await page.setViewport({width: 1024, height: 576});
 
-            await page.goto(Resources.Constants.PRESENTATION_URL + deckData.meta.pathname);
+            await page.goto(Resources.Constants.PRESENTATION.URL + deckData.meta.pathname);
 
             await (page as any)._client.send('ServiceWorker.enable');
             await (page as any)._client.send('ServiceWorker.stopAllWorkers');
@@ -116,15 +116,24 @@ function saveScreenshot(deckData: DeckData, imageBuffer: string): Promise<string
             return;
         }
 
-        if (!deckData || !deckData.meta) {
+        if (!deckData || !deckData.meta || !deckData.meta.pathname) {
             reject('No deck or data');
+            return;
+        }
+
+        const path: string[] = deckData.meta.pathname.split('/');
+
+        if (!path || path.length < 3) {
+            reject('Path not well formatted');
             return;
         }
 
         const bucket = admin.storage().bucket();
 
-        // TODO
-        const file = bucket.file('test.png');
+        // path[0] = ''
+        // path[1] = user
+        // path[2] = presentation-name
+        const file = bucket.file(`/${path[1]}/${Resources.Constants.PRESENTATION.FOLDER}/${path[2]}/${Resources.Constants.PRESENTATION.IMAGE}`);
 
         try {
             await file.save(imageBuffer);
