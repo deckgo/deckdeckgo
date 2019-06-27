@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.18"></a>
+# 1.0.0-alpha.18 (2019-06-27)
+
+### Features
+
+* new `lazy-img` component error image option
+
 <a name="1.0.0-alpha.17"></a>
 # 1.0.0-alpha.17 (2019-06-24)
 
