@@ -133,7 +133,7 @@ export class AppFeedCard {
             <deckgo-lazy-img img-src={this.screenshot}></deckgo-lazy-img>
 
             <ion-card-header>
-                <ion-card-title>{this.caption}</ion-card-title>
+                <ion-card-title class="ion-text-wrap">{this.caption}</ion-card-title>
 
                 {this.renderAuthor()}
             </ion-card-header>
