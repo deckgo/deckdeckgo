@@ -1,3 +1,8 @@
+export interface DeckMetaAuthor {
+    name: string;
+    photo_url?: string;
+}
+
 export interface DeckMeta {
     title: string;
 
@@ -5,6 +10,8 @@ export interface DeckMeta {
     tags?: string[] | firebase.firestore.FieldValue;
 
     pathname: string;
+
+    author?: DeckMetaAuthor | firebase.firestore.FieldValue;
 
     published: boolean;
     published_at: firebase.firestore.Timestamp;

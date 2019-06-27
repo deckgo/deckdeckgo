@@ -43,6 +43,18 @@ export class FeedService {
         return this.lastPageReached.asObservable();
     }
 
+    reset(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.nextQueryAfter = null;
+            this.decks = [];
+
+            this.lastPageReached.next(false);
+            this.decksSubject.next([]);
+
+            resolve();
+        });
+    }
+
     find(): Promise<void> {
         return new Promise<void>(async (resolve) => {
                this.watchLastPageReached().pipe(take(1)).subscribe(async (reached: boolean) => {

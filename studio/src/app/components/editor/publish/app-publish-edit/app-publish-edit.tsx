@@ -13,6 +13,7 @@ import {DeckService} from '../../../../services/data/deck/deck.service';
 import {ApiUser} from '../../../../models/api/api.user';
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
+import {FeedService} from '../../../../services/data/feed/feed.service';
 
 @Component({
     tag: 'app-publish-edit',
@@ -56,6 +57,8 @@ export class AppPublishEdit {
 
     private publishService: PublishService;
 
+    private feedService: FeedService;
+
     constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
         this.deckService = DeckService.getInstance();
@@ -65,6 +68,8 @@ export class AppPublishEdit {
         this.apiUserService = ApiUserService.getInstance();
 
         this.publishService = PublishService.getInstance();
+
+        this.feedService = FeedService.getInstance();
     }
 
     async componentWillLoad() {
@@ -177,6 +182,9 @@ export class AppPublishEdit {
 
                 this.publishing = false;
 
+                // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
+                await this.feedService.reset();
+
                 resolve();
             } catch (err) {
                 this.publishing = false;
@@ -213,6 +221,14 @@ export class AppPublishEdit {
 
     private onDescriptionInput($event: CustomEvent<KeyboardEvent>) {
         this.description = ($event.target as InputTargetEvent).value;
+    }
+
+    private validateDescriptionInput() {
+        this.valid = this.validDescription();
+    }
+
+    private validDescription(): boolean {
+        return !this.description || this.description === undefined || this.description === '' || this.description.length < Resources.Constants.DECK.DESCRIPTION_MAX_LENGTH;
     }
 
     private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
@@ -296,7 +312,9 @@ export class AppPublishEdit {
 
                     <ion-item>
                         <ion-textarea rows={5} value={this.description} debounce={500} disabled={this.publishing}
-                                      onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onDescriptionInput(e)}></ion-textarea>
+                                      maxlength={Resources.Constants.DECK.DESCRIPTION_MAX_LENGTH}
+                                      onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onDescriptionInput(e)}
+                                      onIonChange={() => this.validateDescriptionInput()}></ion-textarea>
                     </ion-item>
 
                     <ion-item class="item-title">

@@ -42,7 +42,7 @@ export class UserService {
                 } else {
                     const user: UserData = snapshot.data() as UserData;
 
-                    const updatedUser: UserData = await this.updateAnonymousUser(authUser, user);
+                    const updatedUser: UserData = await this.updateUser(authUser, user);
 
                     this.userSubject.next({
                         id: authUser.uid,
@@ -70,6 +70,14 @@ export class UserService {
                     updated_at: now
                 };
 
+                if (authUser.name) {
+                    user.name = authUser.name;
+                }
+
+                if (authUser.photo_url) {
+                    user.photo_url = authUser.photo_url;
+                }
+
                 await firestore.collection('users').doc(authUser.uid).set(user, {merge: true});
 
                 resolve({
@@ -82,13 +90,24 @@ export class UserService {
         });
     }
 
-    private updateAnonymousUser(authUser: AuthUser, user: UserData): Promise<UserData> {
+    private updateUser(authUser: AuthUser, user: UserData): Promise<UserData> {
         return new Promise<UserData>(async (resolve, reject) => {
             try {
-                if (user.anonymous !== authUser.anonymous) {
+                if (this.userNeedUpdate(authUser, user)) {
                     const firestore: firebase.firestore.Firestore = firebase.firestore();
 
-                    user.anonymous = authUser.anonymous;
+                    if (user.anonymous !== authUser.anonymous) {
+                        user.anonymous = authUser.anonymous;
+                    }
+
+                    if ((!user.name && authUser.name)) {
+                        user.name = authUser.name;
+                    }
+
+                    if ((!user.photo_url && authUser.photo_url)) {
+                        user.photo_url = authUser.photo_url;
+                    }
+
                     user.updated_at = firebase.firestore.Timestamp.now();
 
                     await firestore.collection('users').doc(authUser.uid).set(user, {merge: true});
@@ -99,6 +118,18 @@ export class UserService {
                 reject(err);
             }
         });
+    }
+
+    private userNeedUpdate(authUser: AuthUser, user: UserData): boolean {
+        if (user.anonymous !== authUser.anonymous) {
+            return true;
+        } else if (!user.name && authUser.name) {
+            return true;
+        } else if (!user.photo_url && authUser.photo_url) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     watch(): Observable<User> {

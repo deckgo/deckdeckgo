@@ -2,7 +2,7 @@ import {Component, Prop, State, h} from '@stencil/core';
 
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
-import {Deck} from '../../../../models/data/deck';
+import {Deck, DeckMetaAuthor} from '../../../../models/data/deck';
 
 @Component({
     tag: 'app-feed-card',
@@ -27,6 +27,9 @@ export class AppFeedCard {
     private author: string;
 
     @State()
+    private authorPhotoUrl: string;
+
+    @State()
     private formattedPublishedAt: string;
 
     @State()
@@ -46,6 +49,9 @@ export class AppFeedCard {
             this.caption = this.deck.data.meta.title;
             this.description = this.deck.data.meta.description ? (this.deck.data.meta.description as string) : undefined;
             this.tags = this.deck.data.meta.tags as string[];
+
+            this.author = this.deck.data.meta.author ? (this.deck.data.meta.author as DeckMetaAuthor).name : undefined;
+            this.authorPhotoUrl = this.deck.data.meta.author && (this.deck.data.meta.author as DeckMetaAuthor).photo_url ? (this.deck.data.meta.author as DeckMetaAuthor).photo_url : undefined;
 
             await this.formatPublication();
 
@@ -97,15 +103,31 @@ export class AppFeedCard {
             <ion-card-header>
                 <ion-card-title>{this.caption}</ion-card-title>
 
-                <app-feed-card-tags tags={this.tags}></app-feed-card-tags>
+                {this.renderAuthor()}
             </ion-card-header>
 
             <p class="content ion-padding-start ion-padding-end">{this.description}</p>
 
-            <p class="author ion-padding">
-                <ion-label>{this.author} | {this.formattedPublishedAt}</ion-label>
-            </p>
+            <app-feed-card-tags tags={this.tags} class="ion-margin"></app-feed-card-tags>
         </ion-card-content>
     }
 
+    private renderAuthor() {
+        if (this.author) {
+            return <p class="author ion-padding-top">
+                {this.renderAuthorAvatar()}
+                <ion-label>{this.author} | {this.formattedPublishedAt}</ion-label>
+            </p>
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderAuthorAvatar() {
+        if (this.authorPhotoUrl) {
+            return <app-avatar src={this.authorPhotoUrl}></app-avatar>
+        } else {
+            return undefined;
+        }
+    }
 }
