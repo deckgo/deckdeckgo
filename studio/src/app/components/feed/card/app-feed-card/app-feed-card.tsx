@@ -106,9 +106,9 @@ export class AppFeedCard {
                 {this.renderAuthor()}
             </ion-card-header>
 
-            <p class="content ion-padding-start ion-padding-end">{this.description}</p>
+            <p class="content ion-padding">{this.description}</p>
 
-            <app-feed-card-tags tags={this.tags} class="ion-margin"></app-feed-card-tags>
+            {this.renderTags()}
         </ion-card-content>
     }
 
@@ -126,6 +126,14 @@ export class AppFeedCard {
     private renderAuthorAvatar() {
         if (this.authorPhotoUrl) {
             return <app-avatar src={this.authorPhotoUrl}></app-avatar>
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderTags() {
+        if (this.tags && this.tags.length) {
+            return <app-feed-card-tags tags={this.tags} class="ion-margin"></app-feed-card-tags>;
         } else {
             return undefined;
         }
