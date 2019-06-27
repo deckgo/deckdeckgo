@@ -68,25 +68,30 @@ function getDateObj(myDate: any): Date | null {
 }
 
 function generateScreenshot(deckData: DeckData): Promise<boolean> {
-    return new Promise<boolean>(async (resolve) => {
-        const browser = await puppeteer.launch({args: ['--no-sandbox']});
+    return new Promise<boolean>(async (resolve, reject) => {
 
-        const page = await browser.newPage();
+        try {
+            const browser = await puppeteer.launch({args: ['--no-sandbox']});
 
-        // Screenshot size
-        await page.setViewport({width: 1024, height: 576});
+            const page = await browser.newPage();
 
-        await page.goto('https://deckdeckgo.com');
+            // Screenshot size
+            await page.setViewport({width: 1024, height: 576});
 
-        // Wait for the components/js elements to be loaded
-        await page.waitForFunction('document.querySelector("deckgo-deck  > *")');
+            await page.goto('https://deckdeckgo.com');
 
-        const imageBuffer = await page.screenshot();
+            // Wait for the components/js elements to be loaded
+            await page.waitForFunction('document.querySelector("deckgo-deck  > *")');
 
-        console.log(imageBuffer);
+            await page.screenshot();
 
-        await browser.close();
+            // const imageBuffer = await page.screenshot();
 
-        resolve();
+            await browser.close();
+
+            resolve();
+        } catch (err) {
+            reject(err);
+        }
     });
 }
