@@ -11,6 +11,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface DeckgoLazyImg {
     'imgAlt': string;
+    'imgErrorSrc': string;
     'imgSizes': string;
     'imgSrc': string;
     'imgSrcSet': string;
@@ -36,6 +37,7 @@ declare global {
 declare namespace LocalJSX {
   interface DeckgoLazyImg extends JSXBase.HTMLAttributes<HTMLDeckgoLazyImgElement> {
     'imgAlt'?: string;
+    'imgErrorSrc'?: string;
     'imgSizes'?: string;
     'imgSrc'?: string;
     'imgSrcSet'?: string;
