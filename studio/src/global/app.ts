@@ -24,7 +24,8 @@ setupDeckGoConfig({
         databaseURL: '<@FIREBASE_DATABASE_URL@>',
         projectId: '<@FIREBASE_PROJECT_ID@>',
         storageBucket: '<@FIREBASE_STORAGE_BUCKET@>',
-        messagingSenderId: '<@FIREBASE_MESSAGING_SENDER_ID@>'
+        messagingSenderId: '<@FIREBASE_MESSAGING_SENDER_ID@>',
+        storageUrl: '<@FIREBASE_STORAGE_URL@>'
     },
     tenor: {
         url: 'https://api.tenor.com/v1/',

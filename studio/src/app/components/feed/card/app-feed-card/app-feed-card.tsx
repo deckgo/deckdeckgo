@@ -4,6 +4,8 @@ import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
 import {Deck, DeckMetaAuthor} from '../../../../models/data/deck';
 
+import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
+
 @Component({
     tag: 'app-feed-card',
     styleUrl: 'app-feed-card.scss',
@@ -35,6 +37,9 @@ export class AppFeedCard {
     @State()
     private tags: string[] = [];
 
+    @State()
+    private screenshot: string;
+
     async componentWillLoad() {
         await this.init();
     }
@@ -55,6 +60,8 @@ export class AppFeedCard {
 
             await this.formatPublication();
 
+            await this.initScreenshot();
+
             resolve();
         });
     }
@@ -68,6 +75,31 @@ export class AppFeedCard {
 
             const options: DateTimeFormatOptions = {year: 'numeric', month: 'short', day: 'numeric'};
             this.formattedPublishedAt = new Intl.DateTimeFormat('en-US', options).format(this.getDateObj(this.deck.data.meta.published_at));
+
+            resolve();
+        });
+    }
+
+    private initScreenshot(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.deck.data.meta.pathname) {
+                resolve();
+                return;
+            }
+
+            const storageUrl: string = EnvironmentConfigService.getInstance().get('firebase').storageUrl;
+
+            const path: string[] = this.deck.data.meta.pathname.split('/');
+
+            if (!path || path.length < 3) {
+                resolve();
+                return;
+            }
+
+            // path[0] = ''
+            // path[1] = username
+            // path[2] = presentation name
+            this.screenshot = `${storageUrl}${path[1]}%2Fpresentations%2F${path[2]}%2Fdeckdeckgo.png?alt=media`;
 
             resolve();
         });
@@ -98,7 +130,7 @@ export class AppFeedCard {
 
     private renderCardContent() {
         return <ion-card-content class={this.compact ? "ion-no-padding compact" : "ion-no-padding"}>
-            <deckgo-lazy-img img-src="/assets/dummy.png"></deckgo-lazy-img>
+            <deckgo-lazy-img img-src={this.screenshot}></deckgo-lazy-img>
 
             <ion-card-header>
                 <ion-card-title>{this.caption}</ion-card-title>
