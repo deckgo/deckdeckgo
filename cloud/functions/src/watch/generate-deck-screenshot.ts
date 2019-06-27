@@ -1,8 +1,7 @@
-import {DocumentSnapshot} from '@google-cloud/firestore';
+import {Change} from 'firebase-functions';
+import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import * as puppeteer from 'puppeteer';
-
-import {Change} from 'firebase-functions';
 
 import {DeckData} from '../model/deck';
 
