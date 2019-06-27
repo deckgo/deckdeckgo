@@ -121,7 +121,7 @@ export class AppMenu {
             });
 
             if (index < 0) {
-                this.decks = [...this.decks, deck];
+                this.decks = [deck, ...this.decks];
             } else {
                 this.decks[index].data.name = deck.data.name;
                 this.decks = [...this.decks];
