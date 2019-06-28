@@ -1,3 +1,9 @@
+<a name="1.0.0-alpha.8"></a>
+# 1.0.0-alpha.8 (2019-06-27)
+
+* don't display alt while loading
+* add an `imgErrorSrc` which could be displayed in case the image would not be resolved
+
 <a name="1.0.0-alpha.7"></a>
 # 1.0.0-alpha.7 (2019-06-04)
 
