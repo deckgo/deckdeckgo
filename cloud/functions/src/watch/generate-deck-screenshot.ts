@@ -24,16 +24,8 @@ export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
     }
 
     try {
-        // TODO: Add a timeout as Cloudfare CDN takes a while the first time a new url is published (remove when solved)
-        let sameApiId: boolean = false;
-        if (previousValue && previousValue.api_id && newValue && newValue.api_id && previousValue.api_id === newValue.api_id) {
-            sameApiId = true;
-        }
-
-        setTimeout(async () => {
-            const imageBuffer: string = await generateScreenshot(newValue);
-            await saveScreenshot(newValue, imageBuffer);
-        }, sameApiId ? 0 : 10000);
+        const imageBuffer: string = await generateScreenshot(newValue);
+        await saveScreenshot(newValue, imageBuffer);
     } catch (err) {
         console.error(err);
     }
