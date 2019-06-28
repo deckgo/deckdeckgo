@@ -103,13 +103,7 @@ export class PublishService {
 
                     this.progress(0.80);
 
-                    await this.updateDeckMeta(deck, publishedUrl, description, tags);
-
-                    await this.refreshDeck(deck.id);
-
-                    this.progress(0.85);
-
-                    await this.delayCompletion(newApiId);
+                    await this.delayUpdateMeta(deck, publishedUrl, description, tags, newApiId);
 
                     resolve(publishedUrl);
                 });
@@ -121,15 +115,21 @@ export class PublishService {
     }
 
     // TODO: Cloudfare CDN takes a several time to populate a new URI
-    private delayCompletion(delay: boolean): Promise<void> {
+    private delayUpdateMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], delay: boolean): Promise<void> {
         return new Promise<void>((resolve) => {
             setTimeout(() => {
-                this.progress(0.9);
+                this.progress(0.85);
 
                 setTimeout(() => {
-                    this.progress(0.95);
+                    this.progress(0.9);
 
-                    setTimeout(() => {
+                    setTimeout(async () => {
+                        await this.updateDeckMeta(deck, publishedUrl, description, tags);
+
+                        this.progress(0.95);
+
+                        await this.refreshDeck(deck.id);
+
                         this.progressComplete();
 
                         setTimeout(() => {
