@@ -21,12 +21,9 @@ app-feed-card {
         display: block;
         height: 48vw;
         max-height: 400px;
-        --deckgo-lazy-img-height: 100%;
+        --deckgo-lazy-img-width: 100%;
+        --deckgo-lazy-img-height: auto;
       }
-    }
-
-    ion-card-header {
-      border-top: 1px solid var(--ion-color-light);
     }
 
     p.author {
