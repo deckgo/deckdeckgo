@@ -21,7 +21,12 @@ app-feed-card {
         display: block;
         height: 48vw;
         max-height: 400px;
+        --deckgo-lazy-img-height: 100%;
       }
+    }
+
+    ion-card-header {
+      border-top: 1px solid var(--ion-color-light);
     }
 
     p.author {

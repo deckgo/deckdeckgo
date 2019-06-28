@@ -130,7 +130,7 @@ export class AppFeedCard {
 
     private renderCardContent() {
         return <ion-card-content class={this.compact ? "ion-no-padding compact" : "ion-no-padding"}>
-            <deckgo-lazy-img img-src={this.screenshot}></deckgo-lazy-img>
+            <deckgo-lazy-img img-src={this.screenshot} img-error-src="./assets/img/screenshot-not-found.png"></deckgo-lazy-img>
 
             <ion-card-header>
                 <ion-card-title class="ion-text-wrap">{this.caption}</ion-card-title>
