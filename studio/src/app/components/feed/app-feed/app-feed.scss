@@ -16,10 +16,4 @@ app-feed {
   ion-card[class*="sc-ion-card"] {
     --background: white;
   }
-
-  app-feed-card:first-of-type {
-    ion-card {
-      margin-top: 0;
-    }
-  }
 }

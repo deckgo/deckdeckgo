@@ -123,7 +123,7 @@ export class AppFeedCard {
     }
 
     render() {
-        return <ion-card>
+        return <ion-card class="ion-margin-top">
             {this.renderCardContent()}
         </ion-card>
     }
