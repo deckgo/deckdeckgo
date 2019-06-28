@@ -16,6 +16,12 @@ app-feed-card {
         overflow: hidden;
         font-size: var(--font-size-h1);
       }
+
+      deckgo-lazy-img {
+        display: block;
+        height: 48vw;
+        max-height: 400px;
+      }
     }
 
     p.author {
