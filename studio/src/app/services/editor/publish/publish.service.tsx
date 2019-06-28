@@ -105,6 +105,8 @@ export class PublishService {
 
                     await this.updateDeckMeta(deck, publishedUrl, description, tags);
 
+                    await this.refreshDeck(deck.id);
+
                     this.progress(0.85);
 
                     await this.delayCompletion(newApiId);
@@ -139,6 +141,20 @@ export class PublishService {
                 }, delay ? 3500 : 0);
 
             }, delay ? 3500 : 0);
+        });
+    }
+
+    // Otherwise we gonna kept in memory references like firebase.firestore.FieldValue.delete instead of null values
+    private refreshDeck(deckId: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                const freshDeck: Deck = await this.deckService.get(deckId);
+                this.deckEditorService.next(freshDeck);
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
         });
     }
 
