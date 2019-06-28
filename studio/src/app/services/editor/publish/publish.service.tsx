@@ -1,6 +1,7 @@
 import {firebase} from '@firebase/app';
 import '@firebase/firestore';
 
+import {Observable, Subject} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
@@ -30,6 +31,8 @@ export class PublishService {
 
     private userService: UserService;
 
+    private progressSubject: Subject<number> = new Subject<number>();
+
     private constructor() {
         // Private constructor, singleton
         this.deckEditorService = DeckEditorService.getInstance();
@@ -50,36 +53,92 @@ export class PublishService {
         return PublishService.instance;
     }
 
+    watchProgress(): Observable<number> {
+        return this.progressSubject.asObservable();
+    }
+
+    private progress(progress: number) {
+        this.progressSubject.next(progress);
+    }
+
+    private progressComplete() {
+        this.progressSubject.next(1);
+    }
+
     // TODO: Move in a cloud functions?
     publish(description: string, tags: string[]): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             try {
+                this.progress(0);
+
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
                     if (!deck || !deck.id || !deck.data) {
+                        this.progressComplete();
                         reject('No deck found');
                         return;
                     }
 
                     const apiDeck: ApiDeck = await this.createOrUpdateApiDeck(deck);
 
-                    if (deck.data.api_id !== apiDeck.id) {
+                    this.progress(0.15);
+
+                    const newApiId: boolean = deck.data.api_id !== apiDeck.id;
+                    if (newApiId) {
                         deck.data.api_id = apiDeck.id;
 
                         deck = await this.deckService.update(deck);
                     }
 
+                    this.progress(0.3);
+
                     const apiSlideIds: string[] = await this.createOrUpdateApiSlides(deck);
+
+                    this.progress(0.5);
+
                     const updatedApiDeck: ApiDeck = await this.putApiDeckSlidesList(apiDeck, apiSlideIds);
+
+                    this.progress(0.65);
 
                     const publishedUrl: string = await this.apiDeckService.publish(updatedApiDeck);
 
+                    this.progress(0.80);
+
                     await this.updateDeckMeta(deck, publishedUrl, description, tags);
+
+                    this.progress(0.85);
+
+                    await this.delayCompletion(newApiId);
 
                     resolve(publishedUrl);
                 });
             } catch (err) {
+                this.progressComplete();
                 reject(err);
             }
+        });
+    }
+
+    // TODO: Cloudfare CDN takes a several time to populate a new URI
+    private delayCompletion(delay: boolean): Promise<void> {
+        return new Promise<void>((resolve) => {
+            setTimeout(() => {
+                this.progress(0.9);
+
+                setTimeout(() => {
+                    this.progress(0.95);
+
+                    setTimeout(() => {
+                        this.progressComplete();
+
+                        setTimeout(() => {
+                            resolve();
+                        }, 500);
+
+                    }, delay ? 3500 : 0);
+
+                }, delay ? 3500 : 0);
+
+            }, delay ? 3500 : 0);
         });
     }
 

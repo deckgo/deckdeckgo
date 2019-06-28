@@ -59,6 +59,11 @@ export class AppPublishEdit {
 
     private feedService: FeedService;
 
+    @State()
+    private progress: number = 0;
+
+    private progressSubscription: Subscription;
+
     constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
         this.deckService = DeckService.getInstance();
@@ -75,6 +80,10 @@ export class AppPublishEdit {
     async componentWillLoad() {
         this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
             await this.init(deck);
+        });
+
+        this.progressSubscription = this.publishService.watchProgress().subscribe((progress: number) => {
+            this.progress = progress;
         });
 
         this.apiUserService.watch().pipe(
@@ -106,6 +115,10 @@ export class AppPublishEdit {
     componentDidUnload() {
         if (this.updateDeckSubscription) {
             this.updateDeckSubscription.unsubscribe();
+        }
+
+        if (this.progressSubscription) {
+            this.progressSubscription.unsubscribe();
         }
     }
 
@@ -349,8 +362,8 @@ export class AppPublishEdit {
             </ion-button>
         } else {
             return <div class="publishing">
-                <ion-label>Publishing</ion-label>
-                <ion-spinner name="dots" color="tertiary"></ion-spinner>
+                <ion-progress-bar value={this.progress} color="tertiary"></ion-progress-bar>
+                <ion-label>Hang on, we are publishing your presentation</ion-label>
             </div>;
         }
     }
