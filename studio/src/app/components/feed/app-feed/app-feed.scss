@@ -1,5 +1,7 @@
 app-feed {
 
+  width: 100%;
+
   a,
   a:link,
   a:visited,
@@ -12,7 +14,6 @@ app-feed {
   }
 
   deckgo-lazy-img {
-    min-width: 100%;
     display: block;
   }
 

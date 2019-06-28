@@ -18,7 +18,7 @@ app-home {
     }
 
     @media (max-width: 1200px) {
-      grid-template-columns: minmax(100px, max-content);
+      grid-template-columns: minmax(100px, 720px);
       justify-content: center;
 
       app-feed {
