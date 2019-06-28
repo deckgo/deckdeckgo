@@ -7,6 +7,7 @@ app.firestore().settings({timestampsInSnapshots: true});
 import {applyWatchDeckWrite} from './watch/watch-deck-write';
 
 const runtimeOpts = {
+    timeoutSeconds: 120,
     memory: <const> '1GB'
 };
 
