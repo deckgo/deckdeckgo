@@ -75,6 +75,12 @@ export class AppComponentsLazyImg {
 <td>The attribute &quot;srcset&quot; (= multiple URI) to lazy load in case you would like to provide multiple images for responsiveness</td>
 </tr>
 <tr>
+<td>img-error-src</td>
+<td>string</td>
+<td></td>
+<td>An optional image which could be displayed in case the main image would not be resolved</td>
+</tr>
+<tr>
 <td>img-sizes</td>
 <td>string</td>
 <td></td>

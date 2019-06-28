@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, Watch, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, Watch, h, State} from '@stencil/core';
 
 @Component({
   tag: 'deckgo-lazy-img',
@@ -29,7 +29,13 @@ export class DeckdeckgoLazyImg {
   @Prop()
   observerThreshold: number | number[];
 
+  @Prop()
+  imgErrorSrc: string;
+
   private observer: IntersectionObserver;
+
+  @State()
+  private imgLoaded: boolean = false;
 
   async componentDidLoad() {
     await this.init();
@@ -120,7 +126,30 @@ export class DeckdeckgoLazyImg {
     });
   }
 
+  private loadError(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
+
+      if (!img) {
+        resolve();
+        return;
+      }
+
+      if (!this.imgErrorSrc || img.src === this.imgErrorSrc) {
+        resolve();
+        return;
+      }
+
+      if (img.src === this.imgSrc || img.srcset === this.imgSrcSet) {
+        img.src = this.imgErrorSrc;
+      }
+
+      resolve();
+    });
+  }
+
   render() {
-    return <img alt={this.imgAlt ? this.imgAlt : this.imgSrc} sizes={this.imgSizes ? this.imgSizes : undefined}/>;
+    return <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} sizes={this.imgSizes ? this.imgSizes : undefined}
+                onLoad={() => this.imgLoaded = true} onError={() => this.loadError()}/>;
   }
 }
