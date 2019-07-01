@@ -9,7 +9,7 @@ const configuration: RTCConfiguration = {
   iceServers: [
     {
       urls: 'turn:api.deckdeckgo.com:3478',
-      username: 'api.user.tsx',
+      username: 'user',
       credential: 'deckdeckgo'
     }
   ]
