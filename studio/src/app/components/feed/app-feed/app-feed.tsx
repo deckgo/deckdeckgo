@@ -19,9 +19,13 @@ export class AppFeed {
     @State()
     private decks: Deck[] = [];
 
+    @State()
+    private lastPageReached: boolean = false;
+
     private presentationUrl: string = EnvironmentConfigService.getInstance().get('presentationUrl');
 
     private subscription: Subscription;
+    private lastPageSubscription: Subscription;
 
     constructor() {
         this.feedService = FeedService.getInstance();
@@ -31,6 +35,10 @@ export class AppFeed {
         this.subscription = this.feedService.watchDecks().subscribe((decks: Deck[]) => {
             this.decks = decks;
         });
+
+        this.lastPageSubscription = this.feedService.watchLastPageReached().subscribe((lastPageReached: boolean) => {
+            this.lastPageReached = lastPageReached;
+        })
     }
 
     async componentDidLoad() {
@@ -41,18 +49,26 @@ export class AppFeed {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+
+        if (this.lastPageSubscription) {
+            this.lastPageSubscription.unsubscribe();
+        }
     }
 
-    // TODO: To be replaced with Inifite Scroll when Ionic bug will be solved
-    // https://github.com/ionic-team/ionic/issues/18632#issuecomment-506007810
-    private async findNextDecks() {
-        await this.feedService.find();
+    private async findNextDecks($event) {
+        setTimeout(async () => {
+            await this.feedService.find();
+            $event.target.complete();
+        }, 500);
     }
 
     render() {
         return [
             this.renderDecks(),
-            <ion-button onClick={() => this.findNextDecks()}>Next</ion-button>
+            <ion-infinite-scroll onIonInfinite={($event: CustomEvent) => this.findNextDecks($event)} disabled={this.lastPageReached}>
+                <ion-infinite-scroll-content>
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
         ]
     }
 
