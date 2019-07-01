@@ -1,6 +1,6 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {GifService} from '../../../services/api/gif/gif.service';
+import {GifService} from '../../../services/tenor/gif/gif.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({

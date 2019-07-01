@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-studio",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "author": "David Dal Busco",
   "description": "Develop your presentation with DeckDeckGo",
   "license": "AGPL-3.0-or-later",
@@ -17,7 +17,7 @@
     "@deckdeckgo/core": "^1.0.0-beta.39-3",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.16",
     "@deckdeckgo/inline-editor": "^1.0.0-alpha.10",
-    "@deckdeckgo/lazy-img": "^1.0.0-alpha.7",
+    "@deckdeckgo/lazy-img": "^1.0.0-alpha.8",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.8",
     "@deckdeckgo/remote": "^1.0.0-alpha.11",
     "@deckdeckgo/utils": "^1.0.0-alpha.2",

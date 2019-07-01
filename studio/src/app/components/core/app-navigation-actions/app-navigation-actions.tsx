@@ -2,12 +2,12 @@ import {Component, Event, EventEmitter, Prop, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {AuthUser} from '../../../models/auth-user';
+import {AuthUser} from '../../../models/auth/auth.user';
 
 import {Utils} from '../../../utils/core/utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 
 @Component({

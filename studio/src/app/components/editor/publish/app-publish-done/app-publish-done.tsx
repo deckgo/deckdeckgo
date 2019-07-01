@@ -4,13 +4,13 @@ import {take} from 'rxjs/operators';
 
 import 'web-social-share';
 
-import {GifService} from '../../../../services/api/gif/gif.service';
+import {GifService} from '../../../../services/tenor/gif/gif.service';
 
-import {Deck} from '../../../../models/deck';
-import {AuthUser} from '../../../../models/auth-user';
+import {AuthUser} from '../../../../models/auth/auth.user';
+import {Deck} from '../../../../models/data/deck';
 
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
-import {AuthService} from '../../../../services/api/auth/auth.service';
+import {AuthService} from '../../../../services/auth/auth.service';
 
 @Component({
     tag: 'app-publish-done',
@@ -129,12 +129,12 @@ export class AppPublishDone {
     private getShareText(): Promise<string> {
         return new Promise<string>((resolve) => {
             this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                if (deck && deck.name && deck.name !== '') {
+                if (deck && deck.data && deck.data.name && deck.data.name !== '') {
                     this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
                         if (authUser && !authUser.anonymous && authUser.name && authUser.name !== '') {
-                            resolve(`"${deck.name}" by ${authUser.name} created with DeckDeckGo`);
+                            resolve(`"${deck.data.name}" by ${authUser.name} created with DeckDeckGo`);
                         } else {
-                            resolve(`"${deck.name}" created with DeckDeckGo`);
+                            resolve(`"${deck.data.name}" created with DeckDeckGo`);
                         }
                     });
                 } else {
@@ -151,7 +151,7 @@ export class AppPublishDone {
                     {this.renderGif()}
                 </div>
 
-                <h1>{this.keywords[this.keywordIndex]}! Your presentation has been published.</h1>
+                <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your presentation has been published.</h1>
 
                 <p>Time to <a onClick={() => this.openShare()}><strong>share</strong></a> it with the world, your colleagues, friends and community.</p>
 

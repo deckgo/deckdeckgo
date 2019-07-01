@@ -1,16 +1,16 @@
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {Deck} from '../../../models/deck';
+import {ApiDeck} from '../../../models/api/api.deck';
 
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../../auth/auth.service';
 
 interface DeckPublish {
     url: string;
 }
 
-export class DeckService {
+export class ApiDeckService {
 
-    private static instance: DeckService;
+    private static instance: ApiDeckService;
 
     private authService: AuthService;
 
@@ -20,22 +20,22 @@ export class DeckService {
     }
 
     static getInstance() {
-        if (!DeckService.instance) {
-            DeckService.instance = new DeckService();
+        if (!ApiDeckService.instance) {
+            ApiDeckService.instance = new ApiDeckService();
         }
-        return DeckService.instance;
+        return ApiDeckService.instance;
     }
 
-    post(deck: Deck): Promise<Deck> {
+    post(deck: ApiDeck): Promise<ApiDeck> {
         return this.query(deck, '/decks', 'POST');
     }
 
-    put(deck: Deck, bearer?: string): Promise<Deck> {
+    put(deck: ApiDeck, bearer?: string): Promise<ApiDeck> {
         return this.query(deck, `/decks/${deck.id}`, 'PUT', bearer);
     }
 
-    private query(deck: Deck, context: string, method: string, bearer?: string): Promise<Deck> {
-        return new Promise<Deck>(async (resolve, reject) => {
+    private query(deck: ApiDeck, context: string, method: string, bearer?: string): Promise<ApiDeck> {
+        return new Promise<ApiDeck>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -58,7 +58,7 @@ export class DeckService {
                     return;
                 }
 
-                const persistedDeck: Deck = await rawResponse.json();
+                const persistedDeck: ApiDeck = await rawResponse.json();
 
                 resolve(persistedDeck);
             } catch (err) {
@@ -67,8 +67,8 @@ export class DeckService {
         });
     }
 
-    get(deckId: string, bearer?: string): Promise<Deck> {
-        return new Promise<Deck>(async (resolve, reject) => {
+    get(deckId: string, bearer?: string): Promise<ApiDeck> {
+        return new Promise<ApiDeck>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -90,7 +90,7 @@ export class DeckService {
                     return;
                 }
 
-                const deck: Deck = await rawResponse.json();
+                const deck: ApiDeck = await rawResponse.json();
 
                 resolve(deck);
             } catch (err) {
@@ -99,8 +99,8 @@ export class DeckService {
         });
     }
 
-    getUserDecks(userId: string): Promise<Deck[]> {
-        return new Promise<Deck[]>(async (resolve, reject) => {
+    getUserDecks(userId: string): Promise<ApiDeck[]> {
+        return new Promise<ApiDeck[]>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -118,7 +118,7 @@ export class DeckService {
                     return;
                 }
 
-                const persistedDecks: Deck[] = await rawResponse.json();
+                const persistedDecks: ApiDeck[] = await rawResponse.json();
 
                 resolve(persistedDecks);
             } catch (err) {
@@ -127,7 +127,7 @@ export class DeckService {
         });
     }
 
-    publish(deck: Deck): Promise<string> {
+    publish(deck: ApiDeck): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');

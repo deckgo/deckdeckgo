@@ -1,5 +1,6 @@
-import {AuthUser} from '../../models/auth-user';
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
+
+import {AuthUser} from '../../models/auth/auth.user';
 
 export class Utils {
 

@@ -1,57 +1,49 @@
 import {Observable, ReplaySubject} from 'rxjs';
-import {take} from 'rxjs/operators';
 
-import {get, del, set} from 'idb-keyval';
-
-import {AuthUser} from '../../../models/auth-user';
-import {User, UserInfo} from '../../../models/user';
+import {AuthUser} from '../../../models/auth/auth.user';
+import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {ErrorService} from '../../core/error/error.service';
+export class ApiUserService {
 
-export class UserService {
+    private apiUserSubject: ReplaySubject<ApiUser> = new ReplaySubject(1);
 
-    private apiUserSubject: ReplaySubject<User> = new ReplaySubject(1);
-
-    private static instance: UserService;
-
-    private errorService: ErrorService;
+    private static instance: ApiUserService;
 
     private constructor() {
         // Private constructor, singleton
-        this.errorService = ErrorService.getInstance();
     }
 
     static getInstance() {
-        if (!UserService.instance) {
-            UserService.instance = new UserService();
+        if (!ApiUserService.instance) {
+            ApiUserService.instance = new ApiUserService();
         }
-        return UserService.instance;
+        return ApiUserService.instance;
     }
 
-    authStateChanged(authUser: AuthUser): Promise<void> {
+    signIn(authUser: AuthUser): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!authUser) {
                 await this.signOut();
             } else {
-                const savedApiUserId: string = await get<string>('deckdeckgo_user_id');
-                if (!savedApiUserId || savedApiUserId !== authUser.uid) {
-                    const apiUser: UserInfo = await this.createUserInfo(authUser);
+                // If anonymous do nothing
+                if (authUser.anonymous) {
+                    resolve();
+                    return;
+                }
 
-                    try {
+                try {
+                    const user: ApiUser = await this.get(authUser.uid);
+
+                    if (!user) {
+                        const apiUser: ApiUserInfo = await this.createUserInfo(authUser);
+
                         await this.post(apiUser, authUser.token);
-                    } catch (err) {
-                        this.errorService.error(err);
                     }
-                } else {
-                    try {
-                        await this.get(savedApiUserId);
-
-                        await this.updateMergedUser(authUser);
-                    } catch (err) {
-                        this.errorService.error(err);
-                    }
+                } catch (err) {
+                    // We don't display the error. The user could continue to work and edit his/her presentations.
+                    console.error(err);
                 }
             }
 
@@ -63,22 +55,20 @@ export class UserService {
         return new Promise<void>(async (resolve) => {
             this.apiUserSubject.next(null);
 
-            await del('deckdeckgo_user_id');
-
             resolve();
         });
     }
 
-    post(apiUser: UserInfo, token: string): Promise<User> {
+    post(apiUser: ApiUserInfo, token: string): Promise<ApiUser> {
         return this.query(apiUser, token, '/users', 'POST');
     }
 
-    put(apiUser: UserInfo | User, token: string, userId: string): Promise<User> {
+    put(apiUser: ApiUserInfo | ApiUser, token: string, userId: string): Promise<ApiUser> {
         return this.query(apiUser, token, `/users/${userId}`, 'PUT');
     }
 
-    query(apiUserInfo: UserInfo | User, token: string, context: string, method: string): Promise<User> {
-        return new Promise<User>(async (resolve, reject) => {
+    query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser> {
+        return new Promise<ApiUser>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -97,11 +87,9 @@ export class UserService {
                     return;
                 }
 
-                const persistedUser: User = await rawResponse.json();
+                const persistedUser: ApiUser = await rawResponse.json();
 
                 this.apiUserSubject.next(persistedUser);
-
-                await set('deckdeckgo_user_id', persistedUser.id);
 
                 resolve(persistedUser);
             } catch (err) {
@@ -110,8 +98,8 @@ export class UserService {
         });
     }
 
-    private get(userId: string): Promise<User> {
-        return new Promise<User>(async (resolve, reject) => {
+    private get(userId: string): Promise<ApiUser> {
+        return new Promise<ApiUser>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -124,11 +112,12 @@ export class UserService {
                 });
 
                 if (!rawResponse || !rawResponse.ok) {
-                    reject('Something went wrong while creating a user');
+                    // 404 if not found
+                    resolve(null);
                     return;
                 }
 
-                const persistedUser: User = await rawResponse.json();
+                const persistedUser: ApiUser = await rawResponse.json();
 
                 this.apiUserSubject.next(persistedUser);
 
@@ -165,18 +154,18 @@ export class UserService {
         });
     }
 
-    watch(): Observable<User> {
+    watch(): Observable<ApiUser> {
         return this.apiUserSubject.asObservable();
     }
 
-    createUserInfo(authUser: AuthUser): Promise<UserInfo> {
-        return new Promise<UserInfo>((resolve) => {
+    createUserInfo(authUser: AuthUser): Promise<ApiUserInfo> {
+        return new Promise<ApiUserInfo>((resolve) => {
             if (!authUser) {
                 resolve(null);
                 return;
             }
 
-            const apiUserInfo: UserInfo = {
+            const apiUserInfo: ApiUserInfo = {
                 anonymous: authUser.anonymous,
                 firebase_uid: authUser.uid,
                 email: authUser.anonymous ? null : authUser.email
@@ -184,39 +173,6 @@ export class UserService {
 
             resolve(apiUserInfo);
         });
-    }
-
-    // In case of successful merge, previous user who might have been an anonymous need to become a not anonymous one and get a user name
-    private updateMergedUser(authUser: AuthUser): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            if (!authUser) {
-                resolve();
-                return;
-            }
-
-            const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
-
-            if (!authUser || authUser.anonymous || !mergeInfo || !mergeInfo.anonymous || !mergeInfo.userId || !mergeInfo.userToken) {
-                resolve();
-                return;
-            }
-
-            this.watch().pipe(take(1)).subscribe(async (user: User) => {
-                if (!user || user.username) {
-                    resolve();
-                    return;
-                }
-
-                try {
-                    const apiUser: UserInfo = await this.createUserInfo(authUser);
-                    await this.put(apiUser, authUser.token, user.id);
-
-                    resolve();
-                } catch (err) {
-                    reject(err);
-                }
-            });
-        })
     }
 
 }

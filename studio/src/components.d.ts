@@ -9,6 +9,9 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   EventEmitter,
 } from '@stencil/core';
+import {
+  Deck,
+} from './app/models/data/deck';
 
 export namespace Components {
   interface AppAbout {}
@@ -30,7 +33,6 @@ export namespace Components {
   interface AppDeckOrSlide {
     'deckOrSlide': boolean;
   }
-  interface AppDemo {}
   interface AppDeveloper {}
   interface AppEditor {
     'deckId': string;
@@ -44,14 +46,11 @@ export namespace Components {
   }
   interface AppFeed {}
   interface AppFeedCard {
-    'author': string;
-    'caption': string;
     'compact': boolean;
-    'description': string;
-    'miniature': boolean;
-    'publication': Date;
+    'deck': Deck;
   }
   interface AppFeedCardTags {
+    'disableRemove': boolean;
     'editable': boolean;
     'tags': string[];
   }
@@ -72,7 +71,6 @@ export namespace Components {
   interface AppLogo {}
   interface AppMenu {}
   interface AppNavigation {
-    'logo': boolean;
     'menuToggle': boolean;
     'presentation': boolean;
     'publish': boolean;
@@ -160,12 +158,6 @@ declare global {
   var HTMLAppDeckOrSlideElement: {
     prototype: HTMLAppDeckOrSlideElement;
     new (): HTMLAppDeckOrSlideElement;
-  };
-
-  interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
-  var HTMLAppDemoElement: {
-    prototype: HTMLAppDemoElement;
-    new (): HTMLAppDemoElement;
   };
 
   interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
@@ -409,7 +401,6 @@ declare global {
     'app-color': HTMLAppColorElement;
     'app-contact': HTMLAppContactElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
-    'app-demo': HTMLAppDemoElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
@@ -476,7 +467,6 @@ declare namespace LocalJSX {
     'deckOrSlide'?: boolean;
     'onApplyTo'?: (event: CustomEvent<boolean>) => void;
   }
-  interface AppDemo extends JSXBase.HTMLAttributes<HTMLAppDemoElement> {}
   interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
   interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
     'deckId'?: string;
@@ -491,14 +481,11 @@ declare namespace LocalJSX {
   }
   interface AppFeed extends JSXBase.HTMLAttributes<HTMLAppFeedElement> {}
   interface AppFeedCard extends JSXBase.HTMLAttributes<HTMLAppFeedCardElement> {
-    'author'?: string;
-    'caption'?: string;
     'compact'?: boolean;
-    'description'?: string;
-    'miniature'?: boolean;
-    'publication'?: Date;
+    'deck'?: Deck;
   }
   interface AppFeedCardTags extends JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement> {
+    'disableRemove'?: boolean;
     'editable'?: boolean;
     'onRemoveTag'?: (event: CustomEvent<string>) => void;
     'tags'?: string[];
@@ -519,7 +506,6 @@ declare namespace LocalJSX {
   interface AppLogo extends JSXBase.HTMLAttributes<HTMLAppLogoElement> {}
   interface AppMenu extends JSXBase.HTMLAttributes<HTMLAppMenuElement> {}
   interface AppNavigation extends JSXBase.HTMLAttributes<HTMLAppNavigationElement> {
-    'logo'?: boolean;
     'menuToggle'?: boolean;
     'presentation'?: boolean;
     'publish'?: boolean;
@@ -574,7 +560,6 @@ declare namespace LocalJSX {
     'app-color': AppColor;
     'app-contact': AppContact;
     'app-deck-or-slide': AppDeckOrSlide;
-    'app-demo': AppDemo;
     'app-developer': AppDeveloper;
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;

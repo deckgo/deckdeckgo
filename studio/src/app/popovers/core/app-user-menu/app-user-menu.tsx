@@ -1,6 +1,6 @@
 import {Component, Element, h} from '@stencil/core';
 
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 

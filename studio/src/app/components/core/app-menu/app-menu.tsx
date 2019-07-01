@@ -1,19 +1,16 @@
 import {Component, Element, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
 
-import {AuthUser} from '../../../models/auth-user';
-import {Deck} from '../../../models/deck';
-import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/auth/auth.user';
+import {Deck} from '../../../models/data/deck';
 
 import {Utils} from '../../../utils/core/utils';
 
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {DeckService} from '../../../services/api/deck/deck.service';
-import {UserService} from '../../../services/api/user/user.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+import {DeckService} from '../../../services/data/deck/deck.service';
 
 @Component({
     tag: 'app-menu',
@@ -28,9 +25,6 @@ export class AppMenu {
     private authSubscription: Subscription;
 
     private navService: NavService;
-
-    private userSubscription: Subscription;
-    private userService: UserService;
 
     private deckService: DeckService;
 
@@ -52,21 +46,17 @@ export class AppMenu {
         this.navService = NavService.getInstance();
 
         this.deckService = DeckService.getInstance();
-        this.userService = UserService.getInstance();
 
         this.deckEditorService = DeckEditorService.getInstance();
     }
 
     componentWillLoad() {
-        this.authSubscription = this.authService.watch().subscribe((authUser: AuthUser) => {
+        this.authSubscription = this.authService.watch().subscribe(async (authUser: AuthUser) => {
             this.authUser = authUser;
-        });
 
-        this.userSubscription = this.userService.watch().pipe(
-            filter((user: User) => user && !user.anonymous)).subscribe(async (user: User) => {
-            if (user) {
+            if (authUser && !authUser.anonymous) {
                 try {
-                    this.decks = await this.deckService.getUserDecks(user.id);
+                    this.decks = await this.deckService.getUserDecks(authUser.uid);
                     await this.filterDecks(null);
                 } catch (err) {
                     // TODO: print error?
@@ -94,10 +84,6 @@ export class AppMenu {
             this.authSubscription.unsubscribe();
         }
 
-        if (this.userSubscription) {
-            this.userSubscription.unsubscribe();
-        }
-
         if (this.deckSubscription) {
             this.deckSubscription.unsubscribe();
         }
@@ -121,7 +107,7 @@ export class AppMenu {
 
     private updateDeckList(deck: Deck): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (!deck || !deck.id || !deck.name) {
+            if (!deck || !deck.id || !deck.data || !deck.data.name) {
                 resolve();
                 return;
             }
@@ -135,9 +121,9 @@ export class AppMenu {
             });
 
             if (index < 0) {
-                this.decks = [...this.decks, deck];
+                this.decks = [deck, ...this.decks];
             } else {
-                this.decks[index].name = deck.name;
+                this.decks[index].data.name = deck.data.name;
                 this.decks = [...this.decks];
             }
 
@@ -170,7 +156,7 @@ export class AppMenu {
             }
 
             const matchingDecks: Deck[] = this.decks.filter((matchDeck: Deck) => {
-                return matchDeck.name && matchDeck.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+                return matchDeck.data && matchDeck.data.name && matchDeck.data.name.toLowerCase().indexOf(value.toLowerCase()) > -1
             });
 
             this.filteredDecks = [...matchingDecks];
@@ -220,7 +206,9 @@ export class AppMenu {
 
             {this.renderPresentations()}
 
-            {this.renderSignOut()}
+            {this.renderHome()}
+
+            {this.renderSignInOut()}
 
         </ion-list>;
     }
@@ -242,6 +230,17 @@ export class AppMenu {
                 this.renderDecks()
             ];
         } else {
+            return undefined;
+        }
+    }
+
+    private renderSignInOut() {
+        if (Utils.isLoggedIn(this.authUser)) {
+            return <ion-item button class="signout" onClick={() => this.signOut()}>
+                <ion-icon name="log-out" slot="start"></ion-icon>
+                <ion-label>Sign out</ion-label>
+            </ion-item>;
+        } else {
             return <ion-item button onClick={() => this.signIn()}>
                 <ion-icon name="log-in" slot="start"></ion-icon>
                 <ion-label>Sign in</ion-label>
@@ -249,15 +248,11 @@ export class AppMenu {
         }
     }
 
-    private renderSignOut() {
-        if (Utils.isLoggedIn(this.authUser)) {
-            return <ion-item button class="signout" onClick={() => this.signOut()}>
-                <ion-icon name="log-out" slot="start"></ion-icon>
-                <ion-label>Sign out</ion-label>
-            </ion-item>;
-        } else {
-            return undefined;
-        }
+    private renderHome() {
+        return <ion-item button class="home" href="/" routerDirection="forward">
+            <ion-icon name="home" slot="start"></ion-icon>
+            <ion-label>Home</ion-label>
+        </ion-item>;
     }
 
     private renderDecksFilter() {
@@ -274,7 +269,7 @@ export class AppMenu {
 
                     return <ion-item href={url} routerDirection="root">
                         <ion-icon name="book" slot="start"></ion-icon>
-                        <ion-label>{deck.name}</ion-label>
+                        <ion-label>{deck.data.name}</ion-label>
                     </ion-item>
                 })
             );

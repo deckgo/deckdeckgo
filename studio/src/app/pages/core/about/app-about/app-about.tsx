@@ -14,25 +14,15 @@ export class AppAbout {
                 <main class="ion-padding">
                     <h1>About DeckDeckGo</h1>
 
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col size="12" size-md="6">
-                                <h3 class="ion-padding-top">Edit anywhere, display everywhere</h3>
+                    <h3 class="ion-padding-top">Edit anywhere, display everywhere</h3>
 
-                                <p class="ion-padding-top">DeckDeckGo aims to be the open source web editor for presentations. It enables anyone with any type of devices (desktop, mobile or tablets) to easily create, present and share presentations for free.</p>
+                    <p class="ion-padding-top">DeckDeckGo aims to be the open source web editor for presentations. It enables anyone with any type of devices (desktop, mobile or tablets) to easily create, present and share presentations for free.</p>
 
-                                <p>What makes it different 🤔? Every presentations published with DeckDeckGo are standalone <strong>Progressive Web Apps</strong> 🚀</p>
+                    <p>What makes it different 🤔? Every presentations published with DeckDeckGo are standalone <strong>Progressive Web Apps</strong> 🚀</p>
 
-                                <p>Moreover, it is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
+                    <p>Moreover, it is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
 
-                                <p>DeckDeckGo was created with passion in 2019 in Zürich🇨🇭</p>
-                            </ion-col>
-
-                            <ion-col class="demo">
-                                <app-demo></app-demo>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
+                    <p>DeckDeckGo was created with passion in 2019 in Zürich🇨🇭</p>
 
                 </main>
 
