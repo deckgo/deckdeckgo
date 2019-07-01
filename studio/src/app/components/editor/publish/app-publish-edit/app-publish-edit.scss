@@ -24,11 +24,13 @@ app-publish-edit {
 
     div.publishing {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
 
       ion-label {
-        margin-right: 8px;
+        margin-top: 8px;
+        font-size: var(--font-size-small);
       }
     }
   }

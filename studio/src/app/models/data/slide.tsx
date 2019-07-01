@@ -11,9 +11,18 @@ export interface SlideAttributes {
     customBackground?: string;
 }
 
-export interface Slide {
-    id?: string;
+export interface SlideData {
     content?: string;
     template: SlideTemplate,
     attributes?: SlideAttributes;
+
+    api_id?: string;
+
+    created_at?: firebase.firestore.Timestamp;
+    updated_at?: firebase.firestore.Timestamp;
+}
+
+export interface Slide {
+    id: string;
+    data: SlideData;
 }

@@ -1,6 +1,6 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {PhotoService} from '../../../services/api/photo/photo.service';
+import {ApiPhotoService} from '../../../services/api/photo/api.photo.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
@@ -11,7 +11,7 @@ export class AppPhoto {
 
     @Element() el: HTMLElement;
 
-    private photoService: PhotoService;
+    private photoService: ApiPhotoService;
     private imageHistoryService: ImageHistoryService;
 
     @State()
@@ -34,7 +34,7 @@ export class AppPhoto {
     private searching: boolean = false;
 
     constructor() {
-        this.photoService = PhotoService.getInstance();
+        this.photoService = ApiPhotoService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();
     }
 

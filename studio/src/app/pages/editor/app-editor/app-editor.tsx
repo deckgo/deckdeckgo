@@ -6,9 +6,9 @@ import {filter, take} from 'rxjs/operators';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
-import {AuthUser} from '../../../models/auth-user';
-import {Slide, SlideTemplate} from '../../../models/slide';
-import {Deck} from '../../../models/deck';
+import {AuthUser} from '../../../models/auth/auth.user';
+import {SlideTemplate} from '../../../models/data/slide';
+import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
@@ -21,7 +21,7 @@ import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
@@ -209,7 +209,7 @@ export class AppEditor {
             }
 
             const helper: EditorHelper = new EditorHelper();
-            const slides: Slide[] = await helper.loadDeckAndRetrieveSlides(this.deckId);
+            const slides: any[] = await helper.loadDeckAndRetrieveSlides(this.deckId);
 
             if (slides && slides.length > 0) {
                 this.slides = [...slides];
@@ -224,13 +224,13 @@ export class AppEditor {
     private initDeckStyle(): Promise<void> {
         return new Promise<void>((resolve) => {
             this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                if (deck && deck.attributes && deck.attributes.style) {
-                    this.style = await ParseStyleUtils.convertStyle(deck.attributes.style);
+                if (deck && deck.data && deck.data.attributes && deck.data.attributes.style) {
+                    this.style = await ParseStyleUtils.convertStyle(deck.data.attributes.style);
                 } else {
                     this.style = undefined;
                 }
 
-                this.background = await ParseBackgroundUtils.convertBackground(deck.background);
+                this.background = await ParseBackgroundUtils.convertBackground(deck.data.background);
 
                 resolve();
             });
