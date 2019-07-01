@@ -62,7 +62,6 @@ export class AppRoot {
             message: error,
             showCloseButton: true,
             position: 'top',
-            closeButtonText: 'Ok, sh*t happens',
             color: 'danger',
             duration: 6000
         });
