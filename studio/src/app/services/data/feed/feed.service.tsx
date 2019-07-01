@@ -55,6 +55,17 @@ export class FeedService {
         });
     }
 
+    refresh(): Promise<void> {
+        return new Promise<void>(async  (resolve) => {
+            this.nextQueryAfter = null;
+            this.decks = [];
+
+            await this.find();
+
+            resolve();
+        });
+    }
+
     find(): Promise<void> {
         return new Promise<void>(async (resolve) => {
                this.watchLastPageReached().pipe(take(1)).subscribe(async (reached: boolean) => {
