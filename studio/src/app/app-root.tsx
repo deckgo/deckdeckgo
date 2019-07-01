@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {IonControllerUtils} from './utils/core/ion-controller-utils';
 
 import {ErrorService} from './services/core/error/error.service';
-import {AuthService} from './services/api/auth/auth.service';
+import {AuthService} from './services/auth/auth.service';
 
 import {NavDirection, NavParams, NavService} from './services/core/nav/nav.service';
 
@@ -62,7 +62,6 @@ export class AppRoot {
             message: error,
             showCloseButton: true,
             position: 'top',
-            closeButtonText: 'Ok, sh*t happens',
             color: 'danger',
             duration: 6000
         });
@@ -115,20 +114,17 @@ export class AppRoot {
                     <ion-route url="/newsletter" component="app-newsletter"/>
                 </ion-router>
 
-                <ion-split-pane when="lg" contentId="menu-content">
-                    <ion-menu id="ion-menu" side="start" type="push" swipeGesture={false} contentId="menu-content">
-                        <app-navigation logo={true} menuToggle={false} user={false}></app-navigation>
-                        <ion-content>
-                            <ion-menu-toggle autoHide={false}>
-                                <app-menu></app-menu>
+                <ion-menu id="ion-menu" side="start" type="overlay" swipeGesture={false} contentId="menu-content">
+                    <ion-content>
+                        <ion-menu-toggle autoHide={false}>
+                            <app-menu></app-menu>
 
-                                <app-footer></app-footer>
-                            </ion-menu-toggle>
-                        </ion-content>
-                    </ion-menu>
+                            <app-footer></app-footer>
+                        </ion-menu-toggle>
+                    </ion-content>
+                </ion-menu>
 
-                    <ion-nav id="menu-content"/>
-                </ion-split-pane>
+                <ion-nav id="menu-content"/>
 
                 <ion-modal-controller></ion-modal-controller>
                 <ion-popover-controller></ion-popover-controller>

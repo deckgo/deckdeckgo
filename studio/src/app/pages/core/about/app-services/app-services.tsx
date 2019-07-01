@@ -18,11 +18,11 @@ export class AppAbout {
 
                     <h2>Amazon</h2>
 
-                    <p>We use AWS <a href="https://aws.amazon.com/lambda/">Lambda</a>, <a href="https://aws.amazon.com/dynamodb/">DynamoDB</a>, <a href="https://aws.amazon.com/rds/">RDS</a>, <a href="https://aws.amazon.com/s3/">S3</a> and <a href="https://aws.amazon.com/sqs/">SQS</a> to save the data and publish the presentations as Progressive Web Apps online. The choice behind this is mostly the fact that we thought that the S3 solution was a good one for our purpose but beside that, it was also challenging to run Haskell Webapps on AWS Lambda.</p>
+                    <p>We use AWS <a href="https://aws.amazon.com/lambda/">Lambda</a>, <a href="https://aws.amazon.com/dynamodb/">DynamoDB</a>, <a href="https://aws.amazon.com/rds/">RDS</a>, <a href="https://aws.amazon.com/s3/">S3</a> and <a href="https://aws.amazon.com/sqs/">SQS</a> to save and publish the presentations as Progressive Web Apps online. The choice behind this is mostly the fact that we thought that the S3 solution was a good one for our purpose but beside that, it was also challenging to run Haskell Webapps on AWS Lambda.</p>
 
                     <h2>Google</h2>
 
-                    <p>We are using Google Firebase <a href="https://firebase.google.com/products/hosting/">Hosting</a> and <a href="https://firebase.google.com/products/auth/">Authentication</a>. Both feature are good matchs to serve and deploy easily Progressive Web Apps. Their Authentication is also interesting as it provides the social login we were looking for (like Email and Github).</p>
+                    <p>We are using <a href="https://firebase.google.com/products/firestore/">Firestore</a> to save your data and the presentations you are editing. We are also using Google Firebase <a href="https://firebase.google.com/products/hosting/">Hosting</a> and <a href="https://firebase.google.com/products/auth/">Authentication</a>. Both feature are good match to serve and deploy easily Progressive Web Apps. Their Authentication is also interesting as it provides the social login we were looking for (like Email and Github).</p>
 
                     <h2>Tenor and Unsplash</h2>
 

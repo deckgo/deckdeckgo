@@ -1,6 +1,6 @@
 import {h} from '@stencil/core';
 
-import {SlideTemplate} from '../../models/slide';
+import {SlideTemplate} from '../../models/data/slide';
 
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 

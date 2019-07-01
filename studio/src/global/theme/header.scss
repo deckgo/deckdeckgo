@@ -1,22 +1,3 @@
-ion-split-pane {
-
-  --ion-toolbar-background: var(--ion-color-primary);
-  color: white;
-
-  ion-header {
-    --deckgo-avatar-color: white;
-  }
-
-  &:not(.split-pane-visible) {
-    --ion-toolbar-background: transparent;
-
-    ion-header {
-      --deckgo-avatar-color: black;
-    }
-  }
-}
-
-
 ion-header {
   &[class*="header"]::after {
     background-image: none;
@@ -27,17 +8,5 @@ ion-header {
   ion-title {
     --deckgo-logo-margin-end: 6px;
     --deckgo-logo-size: 2rem
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  ion-split-pane {
-    --ion-toolbar-background: var(--ion-background-color);
-
-    &:not(.split-pane-visible) {
-      ion-header {
-        --deckgo-avatar-color: white;
-      }
-    }
   }
 }

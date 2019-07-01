@@ -1,12 +1,12 @@
-import {Slide} from '../../../models/slide';
+import {ApiSlide} from '../../../models/api/api.slide';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../../auth/auth.service';
 
-export class SlideService {
+export class ApiSlideService {
 
-    private static instance: SlideService;
+    private static instance: ApiSlideService;
 
     private authService: AuthService;
 
@@ -16,18 +16,18 @@ export class SlideService {
     }
 
     static getInstance() {
-        if (!SlideService.instance) {
-            SlideService.instance = new SlideService();
+        if (!ApiSlideService.instance) {
+            ApiSlideService.instance = new ApiSlideService();
         }
-        return SlideService.instance;
+        return ApiSlideService.instance;
     }
 
 
-    post(deckId: string, slide: Slide): Promise<Slide> {
+    post(deckId: string, slide: ApiSlide): Promise<ApiSlide> {
         return this.query(slide, `/decks/${deckId}/slides`, 'POST');
     }
 
-    put(deckId: string, slide: Slide): Promise<Slide> {
+    put(deckId: string, slide: ApiSlide): Promise<ApiSlide> {
         return this.query(slide, `/decks/${deckId}/slides/${slide.id}`,'PUT');
     }
 
@@ -57,8 +57,8 @@ export class SlideService {
         });
     }
 
-    private query(slide: Slide, context: string, method: string): Promise<Slide> {
-        return new Promise<Slide>(async (resolve, reject) => {
+    private query(slide: ApiSlide, context: string, method: string): Promise<ApiSlide> {
+        return new Promise<ApiSlide>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -77,7 +77,7 @@ export class SlideService {
                     return;
                 }
 
-                const persistedSlide: Slide = await rawResponse.json();
+                const persistedSlide: ApiSlide = await rawResponse.json();
 
                 resolve(persistedSlide);
             } catch (err) {
@@ -86,8 +86,8 @@ export class SlideService {
         });
     }
 
-    get(deckId: string, slideId: string): Promise<Slide> {
-        return new Promise<Slide>(async (resolve, reject) => {
+    get(deckId: string, slideId: string): Promise<ApiSlide> {
+        return new Promise<ApiSlide>(async (resolve, reject) => {
             try {
                 const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
 
@@ -105,7 +105,7 @@ export class SlideService {
                     return;
                 }
 
-                const slide: Slide = await rawResponse.json();
+                const slide: ApiSlide = await rawResponse.json();
 
                 resolve(slide);
             } catch (err) {

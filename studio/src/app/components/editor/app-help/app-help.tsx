@@ -25,11 +25,9 @@ export class AppHelp {
         }
     }
 
-    private async openGetHelp($event: UIEvent) {
+    private async openGetHelp() {
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-get-help',
-            event: $event,
-            mode: 'ios'
+            component: 'app-get-help'
         });
 
         popover.onDidDismiss().then(async () => {
@@ -40,7 +38,7 @@ export class AppHelp {
     }
 
     render() {
-        return <ion-tab-button onClick={($event: UIEvent) => this.openGetHelp($event)} color="primary" mode="md" class="get-help-action">
+        return <ion-tab-button onClick={() => this.openGetHelp()} color="primary" mode="md" class="get-help-action">
             <ion-icon name="help"></ion-icon>
             <ion-label>Help</ion-label>
         </ion-tab-button>

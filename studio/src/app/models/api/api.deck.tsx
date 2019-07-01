@@ -1,8 +1,6 @@
-export interface DeckAttributes {
-    style?: string;
-}
+import {DeckAttributes} from '../data/deck';
 
-export interface Deck {
+export interface ApiDeck {
     id?: string;
     slides: string[];
     name: string;

@@ -6,8 +6,6 @@ import {Component, Prop, h} from '@stencil/core';
   shadow: false
 })
 export class AppNavigation {
-
-  @Prop() logo: boolean = false;
   @Prop() menuToggle: boolean = true;
 
   @Prop() user: boolean = true;
@@ -27,16 +25,12 @@ export class AppNavigation {
   }
 
   private renderLogo() {
-    if (this.logo) {
-      return <ion-anchor onClick={() => this.closeMenu()} href="/" routerDirection="forward" slot="start">
-        <div>
-          <app-logo></app-logo>
-          <span class="ion-text-uppercase">DeckDeckGo <mark>BETA</mark></span>
-        </div>
-      </ion-anchor>;
-    } else {
-      return null;
-    }
+    return <ion-anchor onClick={() => this.closeMenu()} href="/" routerDirection="forward" class="logo">
+      <div>
+        <app-logo></app-logo>
+        <span class="ion-text-uppercase">DeckDeckGo <mark>BETA</mark></span>
+      </div>
+    </ion-anchor>;
   }
 
   private closeMenu(): Promise<void> {
