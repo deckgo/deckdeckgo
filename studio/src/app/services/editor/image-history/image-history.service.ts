@@ -1,7 +1,5 @@
 import {get, set, del} from 'idb-keyval';
 
-import {Reference} from '@firebase/storage-types';
-
 export class ImageHistoryService {
 
     private static instance: ImageHistoryService;
@@ -21,22 +19,22 @@ export class ImageHistoryService {
         return del('deckdeckgo_images');
     }
 
-    push(image: UnsplashPhoto | TenorGif | Reference): Promise<void> {
+    push(image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!image) {
                 resolve();
                 return;
             }
 
-            let images: (UnsplashPhoto | TenorGif | Reference)[] = await this.get();
+            let images: (UnsplashPhoto | TenorGif | StorageFile)[] = await this.get();
 
             if (!images) {
                 images = [];
             }
 
-            const index: number = images.findIndex((filteredPhoto: UnsplashPhoto | TenorGif | Reference) => {
-                if ('fullPath' in filteredPhoto) {
-                    return (filteredPhoto as Reference).fullPath === (image as Reference).fullPath;
+            const index: number = images.findIndex((filteredPhoto: UnsplashPhoto | TenorGif | StorageFile) => {
+                if (filteredPhoto.hasOwnProperty('downloadUrl')) {
+                    return (filteredPhoto as StorageFile).downloadUrl === (image as StorageFile).downloadUrl;
                 } else {
                     return (filteredPhoto as UnsplashPhoto | TenorGif).id === (image as UnsplashPhoto | TenorGif).id
                 }
@@ -59,7 +57,7 @@ export class ImageHistoryService {
         });
     }
 
-    get(): Promise<(UnsplashPhoto | TenorGif | Reference)[]> {
+    get(): Promise<(UnsplashPhoto | TenorGif | StorageFile)[]> {
         return get('deckdeckgo_images');
     }
 

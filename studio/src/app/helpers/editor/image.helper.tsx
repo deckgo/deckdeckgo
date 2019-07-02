@@ -11,7 +11,7 @@ export class ImageHelper {
         this.busyService = BusyService.getInstance();
     }
 
-    appendImage(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
+    appendImage(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile, deckOrSlide: boolean, applyToAllDeck: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!selectedElement || !image || !document) {
                 resolve();
@@ -73,7 +73,7 @@ export class ImageHelper {
         });
     }
 
-    private createImgElement(image: UnsplashPhoto | TenorGif): HTMLElement {
+    private createImgElement(image: UnsplashPhoto | TenorGif | StorageFile): HTMLElement {
         const img: HTMLElement = document.createElement('deckgo-lazy-img');
 
         if (image.hasOwnProperty('urls')) {
@@ -90,6 +90,12 @@ export class ImageHelper {
                 (img as any).imgSrc = gif.media[0].gif.url;
                 (img as any).imgAlt = gif.title;
             }
+        } else if (image.hasOwnProperty('downloadUrl')) {
+            // Storage image aka image uploaded by the user
+            const storageFile: StorageFile = image as StorageFile;
+
+            (img as any).imgSrc = storageFile.downloadUrl;
+            (img as any).imgAlt = storageFile.downloadUrl;
         }
 
         img.setAttribute('contentEditable', 'false');
@@ -97,7 +103,7 @@ export class ImageHelper {
         return img;
     }
 
-    private appendContentImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif): Promise<void> {
+    private appendContentImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>((resolve) => {
             const img: HTMLElement = this.createImgElement(image);
             selectedElement.appendChild(img);
@@ -112,7 +118,7 @@ export class ImageHelper {
         });
     }
 
-    private appendBackgroundImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif, applyToAllDeck: boolean): Promise<void> {
+    private appendBackgroundImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile, applyToAllDeck: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const element: HTMLElement = applyToAllDeck ? selectedElement.parentElement : selectedElement;
 

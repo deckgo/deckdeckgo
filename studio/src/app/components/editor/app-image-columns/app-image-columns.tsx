@@ -1,9 +1,5 @@
 import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 
-import {Reference} from '@firebase/storage-types';
-
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
-
 @Component({
     tag: 'app-image-columns',
     styleUrl: 'app-image-columns.scss',
@@ -12,14 +8,12 @@ import {EnvironmentConfigService} from '../../../services/core/environment/envir
 export class AppImageColumns {
 
     @Prop()
-    imagesOdd: (UnsplashPhoto | TenorGif | Reference)[];
+    imagesOdd: (UnsplashPhoto | TenorGif | StorageFile)[];
 
     @Prop()
-    imagesEven: (UnsplashPhoto | TenorGif | Reference)[];
+    imagesEven: (UnsplashPhoto | TenorGif | StorageFile)[];
 
-    @Event() private selectImage: EventEmitter<UnsplashPhoto | TenorGif | Reference>;
-
-    private storageUrl: string = EnvironmentConfigService.getInstance().get('firebase').storageUrl;
+    @Event() private selectImage: EventEmitter<UnsplashPhoto | TenorGif | StorageFile>;
 
     render() {
         if ((!this.imagesEven || this.imagesEven.length <= 0) && (!this.imagesOdd || this.imagesOdd.length <= 0)) {
@@ -36,17 +30,17 @@ export class AppImageColumns {
         }
     }
 
-    private renderImages(images: (UnsplashPhoto | TenorGif | Reference)[]) {
+    private renderImages(images: (UnsplashPhoto | TenorGif | StorageFile)[]) {
         if (images && images.length > 0) {
             return (
-                images.map((image: UnsplashPhoto | TenorGif | Reference) => {
+                images.map((image: UnsplashPhoto | TenorGif | StorageFile) => {
 
                     if (image.hasOwnProperty('urls')) {
                         return this.renderStockPhoto(image as UnsplashPhoto);
                     } else if (image.hasOwnProperty('media')) {
                         return this.renderGif(image as TenorGif);
-                    } else if ('fullPath' in image) {
-                        return this.renderCustomImage(image as Reference);
+                    } else if (image.hasOwnProperty('downloadUrl')) {
+                        return this.renderCustomImage(image as StorageFile);
                     } else {
                         return undefined;
                     }
@@ -94,12 +88,12 @@ export class AppImageColumns {
         }
     }
 
-    private renderCustomImage(reference: Reference) {
-        if (reference && reference.fullPath) {
-            return <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(reference)}>
+    private renderCustomImage(storageFile: StorageFile) {
+        if (storageFile && storageFile.downloadUrl) {
+            return <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(storageFile)}>
                 <div class="image-container">
-                    <deckgo-lazy-img imgSrc={`${this.storageUrl}${reference.fullPath.split('/').join('%2F')}?alt=media`}
-                                     imgAlt={`${this.storageUrl}${reference.fullPath}`}></deckgo-lazy-img>
+                    <deckgo-lazy-img imgSrc={storageFile.downloadUrl}
+                                     imgAlt={storageFile.downloadUrl}></deckgo-lazy-img>
                 </div>
             </div>
         } else {

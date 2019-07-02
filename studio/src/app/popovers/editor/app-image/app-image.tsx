@@ -1,7 +1,5 @@
 import {Component, Element, Prop, State, h} from '@stencil/core';
 
-import {Reference} from '@firebase/storage-types';
-
 import {ImageAction} from './image-action';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
@@ -24,10 +22,10 @@ export class AppImage {
     private imageHistoryService: ImageHistoryService;
 
     @State()
-    private imagesHistoryOdd: (UnsplashPhoto | TenorGif | Reference)[];
+    private imagesHistoryOdd: (UnsplashPhoto | TenorGif | StorageFile)[];
 
     @State()
-    private imagesHistoryEven: (UnsplashPhoto | TenorGif | Reference)[];
+    private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile)[];
 
     constructor() {
         this.imageHistoryService = ImageHistoryService.getInstance();
@@ -39,7 +37,7 @@ export class AppImage {
 
     private initImagesHistory(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const imagesHistory: (UnsplashPhoto | TenorGif | Reference)[] = await this.imageHistoryService.get();
+            const imagesHistory: (UnsplashPhoto | TenorGif | StorageFile)[] = await this.imageHistoryService.get();
 
             if (!imagesHistory || imagesHistory.length <= 0) {
                 resolve();
@@ -57,7 +55,7 @@ export class AppImage {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
-    private async closePopover(action: ImageAction, image?: UnsplashPhoto | TenorGif) {
+    private async closePopover(action: ImageAction, image?: UnsplashPhoto | TenorGif | StorageFile) {
         const data = {
             action: action
         };

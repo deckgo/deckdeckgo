@@ -630,7 +630,7 @@ export class AppEditorToolbar {
         await modal.present();
     }
 
-    private appendImage(image: UnsplashPhoto | TenorGif): Promise<void> {
+    private appendImage(image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
                 resolve();

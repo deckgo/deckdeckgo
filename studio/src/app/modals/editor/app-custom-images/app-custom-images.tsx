@@ -1,7 +1,5 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {ListResult, Reference} from '@firebase/storage-types';
-
 import {get, set} from 'idb-keyval';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
@@ -22,10 +20,10 @@ export class AppCustomImages {
     private imageHistoryService: ImageHistoryService;
 
     @State()
-    private imagesOdd: Reference[];
+    private imagesOdd: StorageFile[];
 
     @State()
-    private imagesEven: Reference[];
+    private imagesEven: StorageFile[];
 
     @State()
     private disableInfiniteScroll = false;
@@ -59,7 +57,7 @@ export class AppCustomImages {
                 return;
             }
 
-            const image: Reference = $event.detail;
+            const image: StorageFile = $event.detail;
 
             await this.imageHistoryService.push(image);
 
@@ -71,7 +69,7 @@ export class AppCustomImages {
 
     private search(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const list: ListResult = await this.storageService.getImages(this.paginationNext);
+            const list: StorageFilesList = await this.storageService.getImages(this.paginationNext);
 
             if (!list) {
                 resolve();

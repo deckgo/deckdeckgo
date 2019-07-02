@@ -66,8 +66,8 @@ export class StorageService {
         });
     }
 
-    getImages(next: string | null): Promise<ListResult | null> {
-        return new Promise<ListResult | null>((resolve) => {
+    getImages(next: string | null): Promise<StorageFilesList | null> {
+        return new Promise<StorageFilesList | null>((resolve) => {
             try {
                 this.apiUserService.watch().pipe(take(1)).subscribe(async (apiUser: ApiUser) => {
                     if (!apiUser || !apiUser.username || apiUser.username === '' || apiUser.username === undefined) {
@@ -88,11 +88,40 @@ export class StorageService {
 
                     const results: ListResult = await ref.list(options);
 
-                    resolve(results);
+                    resolve(this.toStorageFileList(results));
                 });
             } catch (err) {
                 resolve(null);
             }
         })
     }
+
+    private toStorageFileList(results: ListResult): Promise<StorageFilesList> {
+        return new Promise<StorageFilesList>(async (resolve) => {
+            if (!results || !results.items || results.items.length <= 0) {
+                resolve({
+                    items: [],
+                    nextPageToken: null
+                });
+                return;
+            }
+
+            const storageFiles: Promise<StorageFile>[] = results.items.map(this.toStorageFile);
+            const items: StorageFile[] = await Promise.all(storageFiles);
+
+            resolve({
+                items: items,
+                nextPageToken: results.nextPageToken
+            });
+        });
+    }
+
+    private toStorageFile(ref: Reference): Promise<StorageFile> {
+        return new Promise<StorageFile>(async (resolve) => {
+            resolve({
+                downloadUrl: await ref.getDownloadURL()
+            });
+        });
+    }
+
 }
