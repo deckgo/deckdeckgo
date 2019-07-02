@@ -59,6 +59,14 @@ export class AppCustomImages {
 
             const image: StorageFile = $event.detail;
 
+            await this.selectAndClose(image);
+
+            resolve();
+        });
+    }
+
+    private selectAndClose(image: StorageFile): Promise<void> {
+        return new Promise<void>(async (resolve) => {
             await this.imageHistoryService.push(image);
 
             await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(image);
@@ -154,7 +162,11 @@ export class AppCustomImages {
             }
 
             if (filePicker.files && filePicker.files.length > 0) {
-                await this.storageService.uploadImage(filePicker.files[0]);
+                const storageFile: StorageFile = await this.storageService.uploadImage(filePicker.files[0]);
+
+                if (storageFile) {
+                    await this.selectAndClose(storageFile);
+                }
             }
 
             resolve();

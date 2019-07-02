@@ -31,8 +31,8 @@ export class StorageService {
         return StorageService.instance;
     }
 
-    uploadImage(image: File): Promise<void> {
-        return new Promise<void>((resolve) => {
+    uploadImage(image: File): Promise<StorageFile> {
+        return new Promise<StorageFile>((resolve) => {
             try {
                 this.apiUserService.watch().pipe(take(1)).subscribe(async (apiUser: ApiUser) => {
                     if (!apiUser || !apiUser.username || apiUser.username === '' || apiUser.username === undefined) {
@@ -57,7 +57,9 @@ export class StorageService {
 
                     await ref.put(image);
 
-                    resolve();
+                    resolve({
+                        downloadUrl: await ref.getDownloadURL()
+                    });
                 });
             } catch (err) {
                 this.errorService.error(err.message);
