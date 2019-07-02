@@ -10,7 +10,7 @@ app-footer {
       font-weight: bold;
     }
 
-    ion-anchor {
+    ion-router-link {
       padding: 4px 0;
       display: block;
       width: max-content;
@@ -38,7 +38,7 @@ app-footer {
         color: black;
       }
 
-      ion-anchor {
+      ion-router-link {
         color: var(--ion-color-medium);
 
         &:hover, &.active {

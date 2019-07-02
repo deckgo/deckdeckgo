@@ -6,7 +6,7 @@ app-navigation {
     }
   }
 
-  ion-anchor {
+  ion-router-link {
     color: black;
 
     &:hover, &:active {
@@ -44,7 +44,7 @@ app-navigation {
 
 @media (prefers-color-scheme: dark) {
   app-navigation {
-    ion-anchor {
+    ion-router-link {
       color: white;
 
       &:hover, &:active {
@@ -65,7 +65,7 @@ app-navigation {
 @media screen and (max-width: 720px) {
   ion-nav {
     app-navigation {
-      ion-anchor.logo {
+      ion-router-link.logo {
         display: none;
       }
     }

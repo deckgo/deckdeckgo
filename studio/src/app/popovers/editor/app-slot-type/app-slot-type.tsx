@@ -31,7 +31,7 @@ export class AppSlideAdd {
     render() {
         return [<ion-toolbar class="ion-margin ion-padding-end">
                 <h2>Toggle section</h2>
-                <ion-anchor slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-anchor>
+                <ion-router-link slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-router-link>
             </ion-toolbar>,
 
             <ion-list>

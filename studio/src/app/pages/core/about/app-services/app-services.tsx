@@ -28,7 +28,7 @@ export class AppAbout {
 
                     <p>To provide a user friendly gifs and stock photos integration we have integrated the APIs provided by <a href="https://tenor.com/">Tenor</a>, which is owned by Google, and <a href="https://unsplash.com/">Unsplash</a>.</p>
 
-                    <p>All these services are covered in our <ion-anchor href="/privacy" routerDirection="forward">Privacy Policy</ion-anchor> and <ion-anchor href="/terms" routerDirection="forward">Terms of Services</ion-anchor>.</p>
+                    <p>All these services are covered in our <ion-router-link href="/privacy" routerDirection="forward">Privacy Policy</ion-router-link> and <ion-router-link href="/terms" routerDirection="forward">Terms of Services</ion-router-link>.</p>
 
                 </main>
             </ion-content>
