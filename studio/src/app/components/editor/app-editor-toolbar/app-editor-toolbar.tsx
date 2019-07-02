@@ -15,7 +15,6 @@ import {ImageHelper} from '../../../helpers/editor/image.helper';
 import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
-import {get, set} from 'idb-keyval';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 
 @Component({
@@ -658,28 +657,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const infoDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_custom_images');
-
-        if (!infoDisplayedOnce) {
-            await this.openCustomImagesPublicInfo();
-        } else {
-            await this.openImagesModal('app-custom-images');
-        }
-    }
-
-    private async openCustomImagesPublicInfo() {
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-info-images',
-            mode: 'ios'
-        });
-
-        popover.onDidDismiss().then(async () => {
-            await set('deckdeckgo_display_custom_images', true);
-
-            await this.openImagesModal('app-custom-images');
-        });
-
-        await popover.present();
+        await this.openImagesModal('app-custom-images');
     }
 
     private deleteBackground(): Promise<void> {

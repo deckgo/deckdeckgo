@@ -21,3 +21,10 @@ app-custom-images {
     }
   }
 }
+
+ion-alert.custom-images {
+  button[class*="sc-ion-alert"] {
+    color: black;
+  }
+}
+
