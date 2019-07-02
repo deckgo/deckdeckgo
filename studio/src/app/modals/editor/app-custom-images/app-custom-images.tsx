@@ -166,8 +166,6 @@ export class AppCustomImages {
                                   onSelectImage={($event: CustomEvent) => this.selectPhoto($event)}>
                 </app-image-columns>
 
-                <ion-button onClick={() => this.openFilePicker()}>Upload</ion-button>
-
                 <input type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.upload()}/>
 
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
@@ -177,7 +175,14 @@ export class AppCustomImages {
                         loadingText="Loading more data...">
                     </ion-infinite-scroll-content>
                 </ion-infinite-scroll>
-            </ion-content>
+            </ion-content>,
+            <ion-footer>
+                <ion-toolbar>
+                    <div>
+                        <ion-button onClick={() => this.openFilePicker()} shape="round" color="primary">Upload a new image</ion-button>
+                    </div>
+                </ion-toolbar>
+            </ion-footer>
         ];
     }
 

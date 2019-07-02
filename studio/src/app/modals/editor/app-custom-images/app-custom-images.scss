@@ -7,4 +7,17 @@ app-custom-images {
     --deckgo-images-min-height: 5rem;
     --deckgo-images-padding: 16px;
   }
+
+  input {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  ion-toolbar {
+    > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }

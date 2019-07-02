@@ -14,7 +14,7 @@ export class AppInfoImages {
 
     render() {
         return <div class="ion-padding">
-            <h2>Information about your images</h2>
+            <h2>About your images</h2>
             <p>Please note that currently all the images you would upload will be public.</p>
             <div class="ion-text-center ion-padding-top"><ion-button size="small" shape="round" color="primary" onClick={() => this.closePopover()}>Got it</ion-button></div>
         </div>
