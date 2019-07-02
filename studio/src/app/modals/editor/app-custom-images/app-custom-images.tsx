@@ -30,6 +30,9 @@ export class AppCustomImages {
 
     private paginationNext: string | null;
 
+    @State()
+    private uploading: boolean = false;
+
     constructor() {
         this.imageHistoryService = ImageHistoryService.getInstance();
         this.storageService = StorageService.getInstance();
@@ -53,6 +56,11 @@ export class AppCustomImages {
     private selectImage($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            if (this.uploading) {
                 resolve();
                 return;
             }
@@ -127,7 +135,7 @@ export class AppCustomImages {
         });
     }
 
-    private async uploadNewImage() {
+    async uploadNewImage() {
         const infoDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_custom_images');
 
         if (!infoDisplayedOnce) {
@@ -157,16 +165,21 @@ export class AppCustomImages {
             const filePicker: HTMLInputElement = this.el.querySelector('input');
 
             if (!filePicker) {
+                this.uploading = false;
                 resolve();
                 return;
             }
 
             if (filePicker.files && filePicker.files.length > 0) {
+                this.uploading = true;
+
                 const storageFile: StorageFile = await this.storageService.uploadImage(filePicker.files[0]);
 
                 if (storageFile) {
                     await this.selectAndClose(storageFile);
                 }
+
+                this.uploading = false;
             }
 
             resolve();
@@ -181,7 +194,10 @@ export class AppCustomImages {
             buttons: [
                 {
                     text: 'Cancel',
-                    role: 'cancel'
+                    role: 'cancel',
+                    handler: () => {
+                        this.uploading = false;
+                    }
                 }, {
                     text: 'Ok',
                     handler: async () => {
@@ -225,15 +241,26 @@ export class AppCustomImages {
             </ion-content>,
             <ion-footer>
                 <ion-toolbar>
-                    <div>
-                        <ion-button onClick={() => this.uploadNewImage()} shape="round" color="tertiary">
-                            <ion-icon name="cloud-upload" slot="start"></ion-icon>
-                            <ion-label>Upload a new image</ion-label>
-                        </ion-button>
+                    <div class={this.uploading ? 'uploading' : undefined}>
+                        {this.renderToolbarAction()}
                     </div>
                 </ion-toolbar>
             </ion-footer>
         ];
+    }
+
+    private renderToolbarAction() {
+        if (!this.uploading) {
+            return <ion-button onClick={() => this.uploadNewImage()} shape="round" color="tertiary">
+                <ion-icon name="cloud-upload" slot="start"></ion-icon>
+                <ion-label>Upload a new image</ion-label>
+            </ion-button>
+        } else {
+            return [
+                <ion-spinner color="tertiary"></ion-spinner>,
+                <ion-label class="ion-padding-start">Upload in progress</ion-label>
+            ];
+        }
     }
 
 }

@@ -18,6 +18,18 @@ app-custom-images {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      &.uploading {
+        ion-spinner {
+          height: 16px;
+          width: 16px;
+        }
+
+        ion-label {
+          padding-left: 8px;
+          font-size: var(--font-size-small);
+        }
+      }
     }
   }
 }
