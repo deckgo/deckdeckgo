@@ -256,7 +256,7 @@ export class AppMenu {
     }
 
     private renderDecksFilter() {
-        return <ion-searchbar debounce={500} animated placeholder="Filter your presentations"
+        return <ion-searchbar debounce={500} animated placeholder="Filter your presentations" onClick={($event) => $event.stopImmediatePropagation()}
                               onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
                               class="ion-no-padding ion-margin-top ion-margin-bottom"></ion-searchbar>;
     }
