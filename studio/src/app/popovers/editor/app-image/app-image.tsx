@@ -119,6 +119,12 @@ export class AppImage {
                     </ion-button>
                 </ion-item>
 
+                <ion-item class="action-button">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_CUSTOM)} color="tertiary">
+                        <ion-label class="ion-text-uppercase">Add one of your images</ion-label>
+                    </ion-button>
+                </ion-item>
+
                 {this.renderDeleteAction()}
 
                 <ion-item-divider class="ion-padding-top">
