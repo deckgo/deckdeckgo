@@ -22,10 +22,10 @@ export class AppImage {
     private imageHistoryService: ImageHistoryService;
 
     @State()
-    private imagesHistoryOdd: (UnsplashPhoto | TenorGif)[];
+    private imagesHistoryOdd: (UnsplashPhoto | TenorGif | StorageFile)[];
 
     @State()
-    private imagesHistoryEven: (UnsplashPhoto | TenorGif)[];
+    private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile)[];
 
     constructor() {
         this.imageHistoryService = ImageHistoryService.getInstance();
@@ -37,7 +37,7 @@ export class AppImage {
 
     private initImagesHistory(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const imagesHistory: (UnsplashPhoto | TenorGif)[] = await this.imageHistoryService.get();
+            const imagesHistory: (UnsplashPhoto | TenorGif | StorageFile)[] = await this.imageHistoryService.get();
 
             if (!imagesHistory || imagesHistory.length <= 0) {
                 resolve();
@@ -55,7 +55,7 @@ export class AppImage {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
-    private async closePopover(action: ImageAction, image?: UnsplashPhoto | TenorGif) {
+    private async closePopover(action: ImageAction, image?: UnsplashPhoto | TenorGif | StorageFile) {
         const data = {
             action: action
         };
@@ -116,6 +116,12 @@ export class AppImage {
                 <ion-item class="action-button">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_GIFS)} color="secondary">
                         <ion-label class="ion-text-uppercase">Add a gif</ion-label>
+                    </ion-button>
+                </ion-item>
+
+                <ion-item class="action-button">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_CUSTOM)} color="tertiary">
+                        <ion-label class="ion-text-uppercase">Add one of your images</ion-label>
                     </ion-button>
                 </ion-item>
 

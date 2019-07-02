@@ -67,4 +67,17 @@ export class AnonymousService {
         });
     }
 
+    couldAddCustomImages(): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            this.authService.watch().pipe(take(1)).subscribe((authUser: AuthUser) => {
+                if (!authUser) {
+                    resolve(false);
+                    return;
+                }
+
+                resolve(!authUser.anonymous);
+            });
+        });
+    }
+
 }
