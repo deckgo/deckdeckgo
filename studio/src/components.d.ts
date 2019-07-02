@@ -493,6 +493,7 @@ declare namespace LocalJSX {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }

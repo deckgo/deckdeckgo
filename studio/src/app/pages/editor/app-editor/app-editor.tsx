@@ -585,7 +585,7 @@ export class AppEditor {
                     </deckgo-deck>
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
-                <app-editor-toolbar></app-editor-toolbar>
+                <app-editor-toolbar onSignIn={() => this.signIn()}></app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <ion-toolbar>

@@ -16,6 +16,7 @@ import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
 import {get, set} from 'idb-keyval';
+import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -64,8 +65,13 @@ export class AppEditorToolbar {
     private moveToolbarSubscription: Subscription;
     private moveToolbarSubject: Subject<void> = new Subject();
 
+    private anonymousService: AnonymousService;
+
+    @Event() signIn: EventEmitter<void>;
+
     constructor() {
         this.busyService = BusyService.getInstance();
+        this.anonymousService = AnonymousService.getInstance();
     }
 
     async componentWillLoad() {
@@ -645,6 +651,13 @@ export class AppEditorToolbar {
     }
 
     private async openCustomImagesModal() {
+        const couldAddCustomImages: boolean = await this.anonymousService.couldAddCustomImages();
+
+        if (!couldAddCustomImages) {
+            this.signIn.emit();
+            return;
+        }
+
         const infoDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_custom_images');
 
         if (!infoDisplayedOnce) {
