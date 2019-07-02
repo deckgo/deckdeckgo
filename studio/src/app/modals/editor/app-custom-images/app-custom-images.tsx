@@ -229,6 +229,8 @@ export class AppCustomImages {
                                   onSelectImage={($event: CustomEvent) => this.selectImage($event)}>
                 </app-image-columns>
 
+                {this.renderImagesPlaceHolder()}
+
                 <input type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.upload()}/>
 
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
@@ -247,6 +249,19 @@ export class AppCustomImages {
                 </ion-toolbar>
             </ion-footer>
         ];
+    }
+
+    private renderImagesPlaceHolder() {
+        if ((!this.imagesOdd || this.imagesOdd.length <= 0) && (!this.imagesEven || this.imagesEven.length <= 0)) {
+            return <div class="photos-placeholder">
+                <div>
+                    <ion-icon name="images"></ion-icon>
+                    <ion-label class="ion-text-center">Your collection of images is empty</ion-label>
+                </div>
+            </div>
+        } else {
+            return undefined;
+        }
     }
 
     private renderToolbarAction() {
