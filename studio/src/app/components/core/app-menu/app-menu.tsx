@@ -196,6 +196,10 @@ export class AppMenu {
         return <ion-list>
             {this.renderUser()}
 
+            {this.renderHome()}
+
+            {this.renderSignInOut()}
+
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
                 <ion-button size="small" slot="end" shape="round" onClick={() => this.navigateEditor()} class="new ion-margin-end">
@@ -205,10 +209,6 @@ export class AppMenu {
             </ion-item-divider>
 
             {this.renderPresentations()}
-
-            {this.renderHome()}
-
-            {this.renderSignInOut()}
 
         </ion-list>;
     }
