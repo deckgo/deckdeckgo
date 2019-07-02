@@ -58,7 +58,8 @@ export class StorageService {
                     await ref.put(image);
 
                     resolve({
-                        downloadUrl: await ref.getDownloadURL()
+                        downloadUrl: await ref.getDownloadURL(),
+                        fullPath: ref.fullPath
                     });
                 });
             } catch (err) {
@@ -121,7 +122,8 @@ export class StorageService {
     private toStorageFile(ref: Reference): Promise<StorageFile> {
         return new Promise<StorageFile>(async (resolve) => {
             resolve({
-                downloadUrl: await ref.getDownloadURL()
+                downloadUrl: await ref.getDownloadURL(),
+                fullPath: ref.fullPath
             });
         });
     }

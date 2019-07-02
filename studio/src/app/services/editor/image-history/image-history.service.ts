@@ -33,8 +33,8 @@ export class ImageHistoryService {
             }
 
             const index: number = images.findIndex((filteredPhoto: UnsplashPhoto | TenorGif | StorageFile) => {
-                if (filteredPhoto.hasOwnProperty('downloadUrl')) {
-                    return (filteredPhoto as StorageFile).downloadUrl === (image as StorageFile).downloadUrl;
+                if (filteredPhoto.hasOwnProperty('fullPath')) {
+                    return (filteredPhoto as StorageFile).fullPath === (image as StorageFile).fullPath;
                 } else {
                     return (filteredPhoto as UnsplashPhoto | TenorGif).id === (image as UnsplashPhoto | TenorGif).id
                 }

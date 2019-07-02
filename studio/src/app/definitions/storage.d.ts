@@ -1,4 +1,5 @@
 interface StorageFile {
+    fullPath: string;
     downloadUrl: string;
 }
 
