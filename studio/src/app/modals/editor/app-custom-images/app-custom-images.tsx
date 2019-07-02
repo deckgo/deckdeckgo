@@ -2,6 +2,7 @@ import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import {ApiPhotoService} from '../../../services/api/photo/api.photo.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
     tag: 'app-custom-images',
@@ -10,6 +11,8 @@ import {ImageHistoryService} from '../../../services/editor/image-history/image-
 export class AppCustomImages {
 
     @Element() el: HTMLElement;
+
+    private storageService: StorageService;
 
     private photoService: ApiPhotoService;
     private imageHistoryService: ImageHistoryService;
@@ -30,12 +33,10 @@ export class AppCustomImages {
 
     private paginationNext: number = 1;
 
-    @State()
-    private searching: boolean = false;
-
     constructor() {
         this.photoService = ApiPhotoService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();
+        this.storageService = StorageService.getInstance();
     }
 
     async componentDidLoad() {
@@ -83,10 +84,6 @@ export class AppCustomImages {
         });
     }
 
-    private handleInput($event: CustomEvent<KeyboardEvent>) {
-        this.searchTerm = ($event.target as InputTargetEvent).value;
-    }
-
     private search(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.searchTerm || this.searchTerm.length <= 0) {
@@ -95,11 +92,7 @@ export class AppCustomImages {
                 return;
             }
 
-            this.searching = true;
-
             const unsplashResponse: UnsplashSearchResponse = await this.photoService.getPhotos(this.searchTerm, this.paginationNext);
-
-            this.searching = false;
 
             if (!unsplashResponse) {
                 resolve();
@@ -182,6 +175,38 @@ export class AppCustomImages {
         });
     }
 
+    private openFilePicker(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const filePicker: HTMLInputElement = this.el.querySelector('input');
+
+            if (!filePicker) {
+                resolve();
+                return;
+            }
+
+            filePicker.click();
+
+            resolve();
+        });
+    }
+
+    private upload(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const filePicker: HTMLInputElement = this.el.querySelector('input');
+
+            if (!filePicker) {
+                resolve();
+                return;
+            }
+
+            if (filePicker.files && filePicker.files.length > 0) {
+                await this.storageService.uploadImage(filePicker.files[0]);
+            }
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <ion-header>
@@ -199,7 +224,9 @@ export class AppCustomImages {
                                   onSelectImage={($event: CustomEvent) => this.selectPhoto($event)}>
                 </app-image-columns>
 
-                {this.renderPhotosPlaceHolder()}
+                <ion-button onClick={() => this.openFilePicker()}>Upload</ion-button>
+
+                <input type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.upload()}/>
 
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
                                      onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
@@ -208,42 +235,8 @@ export class AppCustomImages {
                         loadingText="Loading more data...">
                     </ion-infinite-scroll-content>
                 </ion-infinite-scroll>
-            </ion-content>,
-            <ion-footer>
-                <ion-toolbar>
-                    <ion-searchbar debounce={500} placeholder="Search" value={this.searchTerm}
-                                   onIonClear={() => this.clear()}
-                                   onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-                                   onIonChange={() => {
-                                       this.search()
-                                   }}></ion-searchbar>
-                </ion-toolbar>
-            </ion-footer>
+            </ion-content>
         ];
-    }
-
-    private renderPhotosPlaceHolder() {
-        if ((!this.photosOdd || this.photosOdd.length <= 0) && (!this.photosEven || this.photosEven.length <= 0)) {
-            return <div class="photos-placeholder">
-                <div>
-                    <ion-icon name="images"></ion-icon>
-                    <ion-label>Photos by Unsplash</ion-label>
-                    {this.renderPlaceHolderSearching()}
-                </div>
-            </div>
-        } else {
-            return undefined;
-        }
-    }
-
-    private renderPlaceHolderSearching() {
-        if (this.searching) {
-            return <p class="searching ion-margin-top">
-                Searching <ion-spinner color="medium"></ion-spinner>
-            </p>;
-        } else {
-            return undefined;
-        }
     }
 
 }
