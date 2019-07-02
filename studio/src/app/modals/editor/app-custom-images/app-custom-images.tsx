@@ -52,18 +52,18 @@ export class AppCustomImages {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private selectPhoto($event: CustomEvent): Promise<void> {
+    private selectImage($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!$event || !$event.detail) {
                 resolve();
                 return;
             }
 
-            const photo: Reference = $event.detail;
+            const image: Reference = $event.detail;
 
-            await this.imageHistoryService.push(photo);
+            await this.imageHistoryService.push(image);
 
-            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(photo);
+            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(image);
 
             resolve();
         });
@@ -200,7 +200,7 @@ export class AppCustomImages {
             </ion-header>,
             <ion-content class="ion-padding">
                 <app-image-columns imagesOdd={this.imagesOdd} imagesEven={this.imagesEven}
-                                  onSelectImage={($event: CustomEvent) => this.selectPhoto($event)}>
+                                  onSelectImage={($event: CustomEvent) => this.selectImage($event)}>
                 </app-image-columns>
 
                 <input type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.upload()}/>
