@@ -152,13 +152,13 @@ export class AppCustomImages {
     render() {
         return [
             <ion-header>
-                <ion-toolbar color="primary">
+                <ion-toolbar color="tertiary">
                     <ion-buttons slot="start">
                         <ion-button onClick={() => this.closeModal()}>
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Pick one of your images</ion-title>
+                    <ion-title class="ion-text-uppercase">Add one of your images</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
@@ -179,7 +179,10 @@ export class AppCustomImages {
             <ion-footer>
                 <ion-toolbar>
                     <div>
-                        <ion-button onClick={() => this.openFilePicker()} shape="round" color="primary">Upload a new image</ion-button>
+                        <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
+                            <ion-icon name="cloud-upload" slot="start"></ion-icon>
+                            <ion-label>Upload a new image</ion-label>
+                        </ion-button>
                     </div>
                 </ion-toolbar>
             </ion-footer>

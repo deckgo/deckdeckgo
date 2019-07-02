@@ -10,22 +10,6 @@ app-navigation-actions {
     cursor: pointer;
   }
 
-  ion-button {
-    &.publish {
-      --background: var(--ion-color-tertiary);
-      --background-hover: var(--ion-color-tertiary);
-      --color: white;
-      --color-activated: var(--ion-color-secondary);
-    }
-
-    &.presentation {
-      --background: var(--ion-color-primary);
-      --background-hover: var(--ion-color-primary);
-      --color: white;
-      --color-activated: var(--ion-color-secondary);
-    }
-  }
-
   @media screen and (max-width: 540px) {
     a.signin {
       display: none;
