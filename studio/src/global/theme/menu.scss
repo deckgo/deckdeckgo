@@ -47,6 +47,7 @@ ion-menu {
 
         --color: white;
         --background-activated: var(--ion-color-primary);
+        --background-hover: var(--ion-color-primary);
 
         ion-label {
           margin-top: 6px;
@@ -91,7 +92,9 @@ ion-menu {
 
         ion-item {
           --color: var(--ion-color-medium);
+
           --background-activated: white;
+          --background-hover: white;
 
           ion-icon {
             color: var(--ion-color-medium);
