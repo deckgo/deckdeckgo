@@ -675,6 +675,8 @@ export class AppEditorToolbar {
 
         popover.onDidDismiss().then(async () => {
             await set('deckdeckgo_display_custom_images', true);
+
+            await this.openImagesModal('app-custom-images');
         });
 
         await popover.present();
