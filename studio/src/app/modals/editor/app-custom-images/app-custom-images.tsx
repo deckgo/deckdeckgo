@@ -1,6 +1,7 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {ApiPhotoService} from '../../../services/api/photo/api.photo.service';
+import {ListResult, Reference} from '@firebase/storage-types';
+
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {StorageService} from '../../../services/storage/storage.service';
 
@@ -14,33 +15,28 @@ export class AppCustomImages {
 
     private storageService: StorageService;
 
-    private photoService: ApiPhotoService;
     private imageHistoryService: ImageHistoryService;
 
     @State()
-    private photosOdd: UnsplashPhoto[];
+    private imagesOdd: Reference[];
 
     @State()
-    private photosEven: UnsplashPhoto[];
-
-    @State()
-    private searchTerm: string;
-
-    private previousSearchTerm: string;
+    private imagesEven: Reference[];
 
     @State()
     private disableInfiniteScroll = false;
 
-    private paginationNext: number = 1;
+    private paginationNext: string | null;
 
     constructor() {
-        this.photoService = ApiPhotoService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();
         this.storageService = StorageService.getInstance();
     }
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
+
+        await this.search();
     }
 
     @Listen('popstate', { target: 'window' })
@@ -59,9 +55,7 @@ export class AppCustomImages {
                 return;
             }
 
-            const photo: UnsplashPhoto = $event.detail;
-
-            await this.photoService.registerDownload(photo.id);
+            const photo: Reference = $event.detail;
 
             await this.imageHistoryService.push(photo);
 
@@ -71,96 +65,44 @@ export class AppCustomImages {
         });
     }
 
-    private clear(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            this.photosOdd = null;
-            this.photosEven = null;
-
-            this.disableInfiniteScroll = false;
-
-            this.paginationNext = 1;
-
-            resolve();
-        });
-    }
-
     private search(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!this.searchTerm || this.searchTerm.length <= 0) {
-                await this.clear();
+            const list: ListResult = await this.storageService.getImages(this.paginationNext);
+
+            if (!list) {
                 resolve();
                 return;
             }
 
-            const unsplashResponse: UnsplashSearchResponse = await this.photoService.getPhotos(this.searchTerm, this.paginationNext);
-
-            if (!unsplashResponse) {
-                resolve();
-                return;
-            }
-
-            const photos: UnsplashPhoto[] = unsplashResponse.results;
-
-            if (!photos || photos.length <= 0) {
-                this.emptyPhotos();
+            if (!list.items || list.items.length <= 0) {
+                this.emptyImages();
 
                 resolve();
                 return;
             }
 
-            if (!this.photosOdd) {
-                this.photosOdd = [];
+            if (!this.imagesOdd) {
+                this.imagesOdd = [];
             }
 
-            if (!this.photosEven) {
-                this.photosEven = [];
+            if (!this.imagesEven) {
+                this.imagesEven = [];
             }
 
-            const newSearchTerm: boolean = !this.previousSearchTerm || this.searchTerm !== this.previousSearchTerm;
+            this.imagesOdd = [...this.imagesOdd, ...list.items.filter((_a, i) => !(i % 2))];
+            this.imagesEven = [...this.imagesEven, ...list.items.filter((_a, i) => i % 2)];
 
-            if (newSearchTerm) {
-                this.photosOdd = [];
-                this.photosEven = [];
-            }
+            this.paginationNext = list.nextPageToken;
 
-            this.photosOdd = [...this.photosOdd, ...photos.filter((_a, i) => !(i % 2))];
-            this.photosEven = [...this.photosEven, ...photos.filter((_a, i) => i % 2)];
-
-            if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
-                // We just put a small delay because of the repaint
-                setTimeout(async () => {
-                    await this.autoScrollToTop();
-                }, 100)
-            }
-
-            this.disableInfiniteScroll = this.paginationNext * 10 >= unsplashResponse.total;
-
-            this.paginationNext++;
-
-            this.previousSearchTerm = this.searchTerm;
+            this.disableInfiniteScroll = list.items.length < this.storageService.maxQueryResults;
 
             resolve();
         });
     }
 
-    private autoScrollToTop(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const content: HTMLIonContentElement = this.el.querySelector('ion-content');
-
-            if (!content) {
-                resolve();
-                return;
-            }
-
-            await content.scrollToTop();
-
-            resolve();
-        });
-    }
-
-    private emptyPhotos() {
-        this.photosOdd = [];
-        this.photosEven = [];
+    private emptyImages() {
+        this.imagesOdd = [];
+        this.imagesEven = [];
 
         this.disableInfiniteScroll = true;
     }
@@ -220,7 +162,7 @@ export class AppCustomImages {
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
-                <app-image-columns imagesOdd={this.photosOdd} imagesEven={this.photosEven}
+                <app-image-columns imagesOdd={this.imagesOdd} imagesEven={this.imagesEven}
                                   onSelectImage={($event: CustomEvent) => this.selectPhoto($event)}>
                 </app-image-columns>
 

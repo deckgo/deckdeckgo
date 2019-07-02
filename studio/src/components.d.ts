@@ -12,6 +12,9 @@ import {
 import {
   Deck,
 } from './app/models/data/deck';
+import {
+  Reference,
+} from '@firebase/storage-types';
 
 export namespace Components {
   interface AppAbout {}
@@ -66,8 +69,8 @@ export namespace Components {
     'deckOrSlide': boolean;
   }
   interface AppImageColumns {
-    'imagesEven': (UnsplashPhoto | TenorGif)[];
-    'imagesOdd': (UnsplashPhoto | TenorGif)[];
+    'imagesEven': (UnsplashPhoto | TenorGif | Reference)[];
+    'imagesOdd': (UnsplashPhoto | TenorGif | Reference)[];
   }
   interface AppInfoImages {}
   interface AppLogo {}
@@ -517,9 +520,9 @@ declare namespace LocalJSX {
     'deckOrSlide'?: boolean;
   }
   interface AppImageColumns extends JSXBase.HTMLAttributes<HTMLAppImageColumnsElement> {
-    'imagesEven'?: (UnsplashPhoto | TenorGif)[];
-    'imagesOdd'?: (UnsplashPhoto | TenorGif)[];
-    'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif>) => void;
+    'imagesEven'?: (UnsplashPhoto | TenorGif | Reference)[];
+    'imagesOdd'?: (UnsplashPhoto | TenorGif | Reference)[];
+    'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | Reference>) => void;
   }
   interface AppInfoImages extends JSXBase.HTMLAttributes<HTMLAppInfoImagesElement> {}
   interface AppLogo extends JSXBase.HTMLAttributes<HTMLAppLogoElement> {}

@@ -1,5 +1,6 @@
 import {firebase} from '@firebase/app';
 import '@firebase/storage';
+import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 
 import {take} from 'rxjs/operators';
 
@@ -14,6 +15,8 @@ export class StorageService {
 
     private apiUserService: ApiUserService;
     private errorService: ErrorService;
+
+    maxQueryResults: number = 20;
 
     private constructor() {
         // Private constructor, singleton
@@ -50,7 +53,7 @@ export class StorageService {
                         return;
                     }
 
-                    const ref = firebase.storage().ref(`${apiUser.username}/assets/images/${image.name}`);
+                    const ref: Reference = firebase.storage().ref(`${apiUser.username}/assets/images/${image.name}`);
 
                     await ref.put(image);
 
@@ -61,5 +64,35 @@ export class StorageService {
                 resolve();
             }
         });
+    }
+
+    getImages(next: string | null): Promise<ListResult | null> {
+        return new Promise<ListResult | null>((resolve) => {
+            try {
+                this.apiUserService.watch().pipe(take(1)).subscribe(async (apiUser: ApiUser) => {
+                    if (!apiUser || !apiUser.username || apiUser.username === '' || apiUser.username === undefined) {
+                        this.errorService.error('Not logged in.');
+                        resolve(null);
+                        return;
+                    }
+
+                    const ref = firebase.storage().ref(`${apiUser.username}/assets/images/`);
+
+                    let options: ListOptions = {
+                        maxResults: this.maxQueryResults
+                    };
+
+                    if (next) {
+                        options.pageToken = next
+                    }
+
+                    const results: ListResult = await ref.list(options);
+
+                    resolve(results);
+                });
+            } catch (err) {
+                resolve(null);
+            }
+        })
     }
 }

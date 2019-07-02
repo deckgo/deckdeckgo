@@ -1,5 +1,7 @@
 import {Component, Element, Prop, State, h} from '@stencil/core';
 
+import {Reference} from '@firebase/storage-types';
+
 import {ImageAction} from './image-action';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
@@ -22,10 +24,10 @@ export class AppImage {
     private imageHistoryService: ImageHistoryService;
 
     @State()
-    private imagesHistoryOdd: (UnsplashPhoto | TenorGif)[];
+    private imagesHistoryOdd: (UnsplashPhoto | TenorGif | Reference)[];
 
     @State()
-    private imagesHistoryEven: (UnsplashPhoto | TenorGif)[];
+    private imagesHistoryEven: (UnsplashPhoto | TenorGif | Reference)[];
 
     constructor() {
         this.imageHistoryService = ImageHistoryService.getInstance();
@@ -37,7 +39,7 @@ export class AppImage {
 
     private initImagesHistory(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const imagesHistory: (UnsplashPhoto | TenorGif)[] = await this.imageHistoryService.get();
+            const imagesHistory: (UnsplashPhoto | TenorGif | Reference)[] = await this.imageHistoryService.get();
 
             if (!imagesHistory || imagesHistory.length <= 0) {
                 resolve();
