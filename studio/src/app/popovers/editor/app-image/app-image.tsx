@@ -119,6 +119,12 @@ export class AppImage {
                     </ion-button>
                 </ion-item>
 
+                <ion-item class="action-button">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_CUSTOM)} color="tertiary">
+                        <ion-label class="ion-text-uppercase">Add one of your images</ion-label>
+                    </ion-button>
+                </ion-item>
+
                 {this.renderDeleteAction()}
 
                 <ion-item-divider class="ion-padding-top">
@@ -148,7 +154,7 @@ export class AppImage {
     private renderImagesHistory() {
         if (!this.imagesHistoryOdd && !this.imagesHistoryEven) {
             return <ion-item class="history-empty">
-                <ion-label class="ion-text-wrap"><small>You have not used any images so far</small></ion-label>
+                <ion-label class="ion-text-wrap"><small>You have not used any images so far.</small></ion-label>
             </ion-item>
         } else {
             return <div class="history-photos ion-padding">
