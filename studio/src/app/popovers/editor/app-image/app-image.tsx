@@ -102,7 +102,7 @@ export class AppImage {
     render() {
         return [<ion-toolbar class="ion-margin ion-padding-end">
                 <h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2>
-                <ion-anchor slot="end" onClick={() => this.closePopoverWithoutResults()}><ion-icon name="close"></ion-icon></ion-anchor>
+                <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}><ion-icon name="close"></ion-icon></ion-router-link>
             </ion-toolbar>,
             <ion-list>
                 <app-deck-or-slide deckOrSlide={this.deckOrSlide} onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
