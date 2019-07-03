@@ -1,4 +1,4 @@
-import {Component, Listen, State, h} from '@stencil/core';
+import {Component, Listen, State, h, Element} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 import {filter, take} from 'rxjs/operators';
 
@@ -18,12 +18,15 @@ import {ErrorService} from '../../../services/core/error/error.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {User} from '../../../models/data/user';
+import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
     tag: 'app-settings',
     styleUrl: 'app-settings.scss'
 })
 export class AppHome {
+
+    @Element() el: HTMLElement;
 
     @State()
     private authUser: AuthUser;
@@ -57,6 +60,10 @@ export class AppHome {
 
     private imageHistoryService: ImageHistoryService;
 
+    private profilePicture: File;
+
+    private storageService: StorageService;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.apiUserService = ApiUserService.getInstance();
@@ -64,6 +71,7 @@ export class AppHome {
         this.errorService = ErrorService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();
         this.userService = UserService.getInstance();
+        this.storageService = StorageService.getInstance();
     }
 
     componentWillLoad() {
@@ -155,6 +163,7 @@ export class AppHome {
             try {
                 this.saving = true;
 
+                await this.uploadProfilePicture();
                 await this.saveUser();
                 await this.saveApiUser();
 
@@ -203,6 +212,32 @@ export class AppHome {
                 await this.apiUserService.put(this.apiUser, this.authUser.token, this.apiUser.id);
             } catch (err) {
                 reject('Your username couldn\'t be saved');
+            }
+        });
+    }
+
+    private uploadProfilePicture(): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            if (!this.valid || !this.user || !this.user.data) {
+                resolve();
+                return;
+            }
+
+            if (!this.profilePicture) {
+                resolve();
+                return;
+            }
+
+            try {
+                const storageFile: StorageFile = await this.storageService.uploadImage(this.profilePicture);
+
+                if (storageFile) {
+                    this.user.data.photo_url = storageFile.downloadUrl;
+                }
+
+                resolve();
+            } catch (err) {
+                reject('Could not upload your profile picture!');
             }
         });
     }
@@ -259,6 +294,23 @@ export class AppHome {
         });
     }
 
+    private selectProfilePicture(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const filePicker: HTMLInputElement = this.el.querySelector('input#inputProfilePicture');
+
+            if (!filePicker) {
+                resolve();
+                return;
+            }
+
+            if (filePicker.files && filePicker.files.length > 0) {
+                this.profilePicture = filePicker.files[0];
+            }
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <app-navigation></app-navigation>,
@@ -291,15 +343,16 @@ export class AppHome {
     private renderUserContent() {
         return [
             <h1>Settings</h1>,
-            <form onSubmit={(e: Event) => this.handleSubmit(e)}>
-                <ion-list class="inputs-list">
-                    {this.renderName()}
-                    {this.renderEmail()}
-                    {this.renderUsername()}
-                </ion-list>
+                        <form onSubmit={(e: Event) => this.handleSubmit(e)}>
+                            <ion-list class="inputs-list">
+                                {this.renderName()}
+                                {this.renderUsername()}
+                                {this.renderEmail()}
+                                {this.renderUserAvatar()}
+                            </ion-list>
 
-                {this.renderSubmitForm()}
-            </form>
+                            {this.renderSubmitForm()}
+                        </form>
         ]
     }
 
@@ -370,6 +423,22 @@ export class AppHome {
                 <ion-button color="danger" shape="round" fill="outline" onClick={() => this.presentConfirmDelete()} disabled={this.saving}>
                     <ion-label>Delete my user</ion-label>
                 </ion-button>
+            ]
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderUserAvatar() {
+        if (this.user && this.user.data) {
+            return [
+                <ion-item class="item-title">
+                    <ion-label>Profile picture</ion-label>
+                </ion-item>,
+                <div class="avatar">
+                    <app-avatar src={this.user.data.photo_url}></app-avatar>
+                    <input id="inputProfilePicture" type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.selectProfilePicture()} disabled={this.saving}/>
+                </div>
             ]
         } else {
             return undefined;
