@@ -50,7 +50,7 @@ withEnv act = do
 
 withServer :: (Warp.Port -> IO a) -> IO a
 withServer act =
-    withEnv $ \env -> withS3 env $ withSQS env $ withDynamoDB env $
+    withPresURL $ withEnv $ \env -> withS3 env $ withSQS env $ withDynamoDB env $
       withPristineDB $ \conn -> do
         (port, socket) <- Warp.openFreePort
         let warpSettings = Warp.setPort port $ Warp.defaultSettings
@@ -64,6 +64,9 @@ withServer act =
           ) >>= \case
             Left () -> error "Server returned"
             Right a -> pure a
+  where
+    withPresURL =
+      bracket_ (setEnv "DECKGO_PRESENTATIONS_URL" "foo.bar.baz") (unsetEnv "DECKGO_PRESENTATIONS_URL")
 
 is'
   :: Aws.AsError a
@@ -204,10 +207,24 @@ main = do
 
 testPresDeploys :: IO ()
 testPresDeploys = withEnv $ \env -> withS3 env $ do
-    deployPresentation env (Username "josph") (Deckname "some-deck")
+    let someFirebaseId = FirebaseId "the-uid" -- from ./token
+    let someUserId = UserId someFirebaseId
+
+    let someSlide = Slide (Just "foo") "bar" HMS.empty
+        someSlideId = SlideId "foo-id"
+
+    let newDeck = Deck
+          { deckSlides = [ someSlideId ]
+          , deckDeckname = Deckname "bar"
+          , deckDeckbackground = Just (Deckbackground "bar")
+          , deckOwnerId = someUserId
+          , deckAttributes = HMS.singleton "foo" "bar"
+          }
+
+    deployPresentation env (Username "josph") newDeck [someSlide]
     -- XXX: tests the obj diffing by making sure we can upload a presentation
     -- twice without errors
-    deployPresentation env (Username "josph") (Deckname "some-deck")
+    deployPresentation env (Username "josph") newDeck [someSlide]
 
 testUsersGet :: IO ()
 testUsersGet = withPristineDB $ \conn -> do
@@ -388,9 +405,29 @@ testServer = withServer $ \port -> do
     Right users -> error $ "Expected 0 users, got: " <> show users
 
   runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
+    -- TODO: shouldn't this be a 404?
     Left e -> error $ "Expected decks, got error: " <> show e
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 decks, got: " <> show decks
+
+
+  let someUserInfo = UserInfo
+        { userInfoFirebaseId = someFirebaseId
+        , userInfoEmail = Just "patrick@foo.com" }
+      Right someUser = userInfoToUser someUserInfo
+
+  runClientM (usersPost' b someUserInfo) clientEnv >>= \case
+    Left e -> error $ "Expected user, got error: " <> show e
+    Right (Item userId user) ->
+      if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
+
+  runClientM (usersPost' b someUserInfo) clientEnv >>= \case
+    -- TODO: test that user is returned here, even on 409
+    Left (FailureResponse resp) ->
+      if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
+        error $ "Got unexpected response: " <> show resp
+    Left e -> error $ "Expected 409, got error: " <> show e
+    Right item -> error $ "Expected failure, got success: " <> show item
 
   deckId <- runClientM (decksPost' b someDeck) clientEnv >>= \case
     Left e -> error $ "Expected new deck, got error: " <> show e
@@ -416,7 +453,7 @@ testServer = withServer $ \port -> do
 
   runClientM (decksPostPublish' b deckId) clientEnv >>= \case
     Left e -> error $ "Expected publish, got error: " <> show e
-    Right () -> pure ()
+    Right {} -> pure ()
 
   runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
     Left e -> error $ "Expected decks, got error: " <> show e
@@ -456,24 +493,6 @@ testServer = withServer $ \port -> do
     Right decks ->
       unless (decks == []) (error $ "Expected no decks, got: " <> show decks)
 
-  let someUserInfo = UserInfo
-        { userInfoFirebaseId = someFirebaseId
-        , userInfoEmail = Just "patrick@foo.com" }
-      Right someUser = userInfoToUser someUserInfo
-
-  runClientM (usersPost' b someUserInfo) clientEnv >>= \case
-    Left e -> error $ "Expected user, got error: " <> show e
-    Right (Item userId user) ->
-      if user == someUser && userId == someUserId then pure () else (error $ "Expected same user, got: " <> show user)
-
-  runClientM (usersPost' b someUserInfo) clientEnv >>= \case
-    -- TODO: test that user is returned here, even on 409
-    Left (FailureResponse resp) ->
-      if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
-        error $ "Got unexpected response: " <> show resp
-    Left e -> error $ "Expected 409, got error: " <> show e
-    Right item -> error $ "Expected failure, got success: " <> show item
-
   -- TODO: test that creating user with token that has different user as sub
   -- fails
 
@@ -485,7 +504,7 @@ _usersDelete' :: T.Text -> UserId -> ClientM ()
 
 decksGet' :: T.Text -> Maybe UserId -> ClientM [Item DeckId Deck]
 decksGetDeckId' :: T.Text -> DeckId -> ClientM (Item DeckId Deck)
-decksPostPublish' :: T.Text -> DeckId -> ClientM ()
+decksPostPublish' :: T.Text -> DeckId -> ClientM PresResponse
 decksPost' :: T.Text -> Deck -> ClientM (Item DeckId Deck)
 decksPut' :: T.Text -> DeckId -> Deck -> ClientM (Item DeckId Deck)
 decksDelete' :: T.Text -> DeckId -> ClientM ()

@@ -29,6 +29,7 @@ dependencies:
     - servant-swagger
     - servant-swagger-ui
     - swagger2
+    - tagsoup
     - text
     - unliftio
     - temporary
