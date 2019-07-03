@@ -47,8 +47,8 @@ export class StorageService {
                         return;
                     }
 
-                    if (image.size > 2097152) {
-                        this.errorService.error('Image is too big (max. 2 Mb)');
+                    if (image.size > 10485760) {
+                        this.errorService.error('Image is too big (max. 10 Mb)');
                         resolve();
                         return;
                     }
