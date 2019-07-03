@@ -15,6 +15,7 @@ import {ImageHelper} from '../../../helpers/editor/image.helper';
 import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
+import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -63,8 +64,13 @@ export class AppEditorToolbar {
     private moveToolbarSubscription: Subscription;
     private moveToolbarSubject: Subject<void> = new Subject();
 
+    private anonymousService: AnonymousService;
+
+    @Event() signIn: EventEmitter<void>;
+
     constructor() {
         this.busyService = BusyService.getInstance();
+        this.anonymousService = AnonymousService.getInstance();
     }
 
     async componentWillLoad() {
@@ -601,6 +607,8 @@ export class AppEditorToolbar {
                     await this.appendImage(detail.data.image);
                 } else if (detail.data.action === ImageAction.OPEN_GIFS) {
                     await this.openImagesModal('app-gif');
+                } else if (detail.data.action === ImageAction.OPEN_CUSTOM) {
+                    await this.openCustomImagesModal();
                 }
             }
         });
@@ -622,7 +630,7 @@ export class AppEditorToolbar {
         await modal.present();
     }
 
-    private appendImage(image: UnsplashPhoto | TenorGif): Promise<void> {
+    private appendImage(image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
                 resolve();
@@ -639,6 +647,17 @@ export class AppEditorToolbar {
 
             resolve();
         });
+    }
+
+    private async openCustomImagesModal() {
+        const couldAddCustomImages: boolean = await this.anonymousService.couldAddCustomImages();
+
+        if (!couldAddCustomImages) {
+            this.signIn.emit();
+            return;
+        }
+
+        await this.openImagesModal('app-custom-images');
     }
 
     private deleteBackground(): Promise<void> {

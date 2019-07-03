@@ -13,7 +13,7 @@ app-user-menu {
   ion-item {
     --border-color: transparent;
 
-    ion-anchor {
+    ion-router-link {
       cursor: pointer;
       color: inherit;
       font-weight: inherit;

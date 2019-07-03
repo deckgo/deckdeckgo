@@ -207,13 +207,13 @@ export class AppGif {
     render() {
         return [
             <ion-header>
-                <ion-toolbar color="primary">
+                <ion-toolbar color="secondary">
                     <ion-buttons slot="start">
                         <ion-button onClick={() => this.closeModal()}>
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Pick a Gif</ion-title>
+                    <ion-title class="ion-text-uppercase">Add a Gif</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">

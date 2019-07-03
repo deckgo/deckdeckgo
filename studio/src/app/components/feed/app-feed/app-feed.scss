@@ -16,4 +16,10 @@ app-feed {
   ion-card[class*="sc-ion-card"] {
     --background: white;
   }
+
+  ion-infinite-scroll {
+    ion-spinner {
+      color: var(--ion-color-primary);
+    }
+  }
 }

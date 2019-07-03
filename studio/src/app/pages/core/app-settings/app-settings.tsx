@@ -187,7 +187,7 @@ export class AppHome {
         return [
             <h1>Oh, hi! Good to have you.</h1>,
             <p class="ion-padding-top">
-                <ion-anchor onClick={() => this.signIn()}>Sign in</ion-anchor>
+                <ion-router-link onClick={() => this.signIn()}>Sign in</ion-router-link>
                 to access your settings.</p>
         ]
     }

@@ -21,7 +21,7 @@
     "@deckdeckgo/qrcode": "^1.0.0-alpha.8",
     "@deckdeckgo/remote": "^1.0.0-alpha.11",
     "@deckdeckgo/utils": "^1.0.0-alpha.2",
-    "@ionic/core": "^4.6.0-dev.201906131724.645b9a9",
+    "@ionic/core": "^4.6.1-dev.201907011548.08daaeb",
     "firebase": "^6.1.0",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.2",

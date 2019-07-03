@@ -25,12 +25,12 @@ export class AppNavigation {
   }
 
   private renderLogo() {
-    return <ion-anchor onClick={() => this.closeMenu()} href="/" routerDirection="forward" class="logo">
+    return <ion-router-link onClick={() => this.closeMenu()} href="/" routerDirection="forward" class="logo">
       <div>
         <app-logo></app-logo>
         <span class="ion-text-uppercase">DeckDeckGo <mark>BETA</mark></span>
       </div>
-    </ion-anchor>;
+    </ion-router-link>;
   }
 
   private closeMenu(): Promise<void> {

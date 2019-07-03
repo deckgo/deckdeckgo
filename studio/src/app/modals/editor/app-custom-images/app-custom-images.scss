@@ -1,0 +1,66 @@
+app-custom-images {
+  ion-content {
+    --background: var(--ion-color-light);
+  }
+
+  app-image-columns {
+    --deckgo-images-min-height: 5rem;
+    --deckgo-images-padding: 16px;
+  }
+
+  input {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  ion-toolbar {
+    > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &.uploading {
+        ion-spinner {
+          height: 16px;
+          width: 16px;
+        }
+
+        ion-label {
+          padding-left: 8px;
+          font-size: var(--font-size-small);
+        }
+      }
+    }
+  }
+
+  div.photos-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      position: relative;
+
+      ion-icon {
+        font-size: 10rem;
+      }
+
+      ion-label, ion-icon {
+        color: var(--ion-color-medium);
+      }
+    }
+  }
+}
+
+ion-alert.custom-images {
+  button[class*="sc-ion-alert"] {
+    color: black;
+  }
+}
+

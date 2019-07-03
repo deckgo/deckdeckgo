@@ -191,7 +191,7 @@ export class AppPhoto {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Pick a photo</ion-title>
+                    <ion-title class="ion-text-uppercase">Add a stock photo</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
@@ -227,7 +227,7 @@ export class AppPhoto {
             return <div class="photos-placeholder">
                 <div>
                     <ion-icon name="images"></ion-icon>
-                    <ion-label>Photos by Unsplash</ion-label>
+                    <ion-label class="ion-text-center">Photos by Unsplash</ion-label>
                     {this.renderPlaceHolderSearching()}
                 </div>
             </div>

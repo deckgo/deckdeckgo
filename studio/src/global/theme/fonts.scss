@@ -55,7 +55,7 @@ p a,
 ul a,
 ol a,
 td a,
-ion-anchor {
+ion-router-link {
   text-decoration: none;
   transition: border 0.3s;
   border-bottom: 1px solid transparent;
@@ -66,7 +66,7 @@ p a:hover,
 ul a:hover,
 ol a:hover,
 td a:hover,
-ion-anchor:hover {
+ion-router-link:hover {
   border-bottom-color: var(--ion-color-primary);
 }
 

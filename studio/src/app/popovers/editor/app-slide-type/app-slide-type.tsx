@@ -52,7 +52,7 @@ export class AppSlideType {
     render() {
         return [<ion-toolbar class="ion-margin ion-padding-end">
                 <h2>Add a slide</h2>
-                <ion-anchor slot="end" onClick={() => this.closePopoverWithoutResults()}><ion-icon name="close"></ion-icon></ion-anchor>
+                <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}><ion-icon name="close"></ion-icon></ion-router-link>
             </ion-toolbar>,
             <div class="container">
                 <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>

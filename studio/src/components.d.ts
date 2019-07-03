@@ -30,6 +30,7 @@ export namespace Components {
     'selectedElement': HTMLElement;
   }
   interface AppContact {}
+  interface AppCustomImages {}
   interface AppDeckOrSlide {
     'deckOrSlide': boolean;
   }
@@ -65,9 +66,10 @@ export namespace Components {
     'deckOrSlide': boolean;
   }
   interface AppImageColumns {
-    'imagesEven': (UnsplashPhoto | TenorGif)[];
-    'imagesOdd': (UnsplashPhoto | TenorGif)[];
+    'imagesEven': (UnsplashPhoto | TenorGif | StorageFile)[];
+    'imagesOdd': (UnsplashPhoto | TenorGif | StorageFile)[];
   }
+  interface AppInfoImages {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppNavigation {
@@ -152,6 +154,12 @@ declare global {
   var HTMLAppContactElement: {
     prototype: HTMLAppContactElement;
     new (): HTMLAppContactElement;
+  };
+
+  interface HTMLAppCustomImagesElement extends Components.AppCustomImages, HTMLStencilElement {}
+  var HTMLAppCustomImagesElement: {
+    prototype: HTMLAppCustomImagesElement;
+    new (): HTMLAppCustomImagesElement;
   };
 
   interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
@@ -242,6 +250,12 @@ declare global {
   var HTMLAppImageColumnsElement: {
     prototype: HTMLAppImageColumnsElement;
     new (): HTMLAppImageColumnsElement;
+  };
+
+  interface HTMLAppInfoImagesElement extends Components.AppInfoImages, HTMLStencilElement {}
+  var HTMLAppInfoImagesElement: {
+    prototype: HTMLAppInfoImagesElement;
+    new (): HTMLAppInfoImagesElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
@@ -400,6 +414,7 @@ declare global {
     'app-code': HTMLAppCodeElement;
     'app-color': HTMLAppColorElement;
     'app-contact': HTMLAppContactElement;
+    'app-custom-images': HTMLAppCustomImagesElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-editor': HTMLAppEditorElement;
@@ -415,6 +430,7 @@ declare global {
     'app-home': HTMLAppHomeElement;
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
+    'app-info-images': HTMLAppInfoImagesElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-navigation': HTMLAppNavigationElement;
@@ -463,6 +479,7 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
   }
   interface AppContact extends JSXBase.HTMLAttributes<HTMLAppContactElement> {}
+  interface AppCustomImages extends JSXBase.HTMLAttributes<HTMLAppCustomImagesElement> {}
   interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {
     'deckOrSlide'?: boolean;
     'onApplyTo'?: (event: CustomEvent<boolean>) => void;
@@ -476,6 +493,7 @@ declare namespace LocalJSX {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
@@ -499,10 +517,11 @@ declare namespace LocalJSX {
     'deckOrSlide'?: boolean;
   }
   interface AppImageColumns extends JSXBase.HTMLAttributes<HTMLAppImageColumnsElement> {
-    'imagesEven'?: (UnsplashPhoto | TenorGif)[];
-    'imagesOdd'?: (UnsplashPhoto | TenorGif)[];
-    'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif>) => void;
+    'imagesEven'?: (UnsplashPhoto | TenorGif | StorageFile)[];
+    'imagesOdd'?: (UnsplashPhoto | TenorGif | StorageFile)[];
+    'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
   }
+  interface AppInfoImages extends JSXBase.HTMLAttributes<HTMLAppInfoImagesElement> {}
   interface AppLogo extends JSXBase.HTMLAttributes<HTMLAppLogoElement> {}
   interface AppMenu extends JSXBase.HTMLAttributes<HTMLAppMenuElement> {}
   interface AppNavigation extends JSXBase.HTMLAttributes<HTMLAppNavigationElement> {
@@ -559,6 +578,7 @@ declare namespace LocalJSX {
     'app-code': AppCode;
     'app-color': AppColor;
     'app-contact': AppContact;
+    'app-custom-images': AppCustomImages;
     'app-deck-or-slide': AppDeckOrSlide;
     'app-developer': AppDeveloper;
     'app-editor': AppEditor;
@@ -574,6 +594,7 @@ declare namespace LocalJSX {
     'app-home': AppHome;
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
+    'app-info-images': AppInfoImages;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-navigation': AppNavigation;

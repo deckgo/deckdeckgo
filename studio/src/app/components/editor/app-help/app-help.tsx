@@ -27,7 +27,8 @@ export class AppHelp {
 
     private async openGetHelp() {
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-get-help'
+            component: 'app-get-help',
+            mode: 'ios'
         });
 
         popover.onDidDismiss().then(async () => {

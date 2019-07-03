@@ -1,4 +1,12 @@
 app-home {
+  ion-refresher {
+    z-index: 1;
+
+    ion-icon, ion-spinner {
+      color: var(--ion-color-primary);
+    }
+  }
+
   main {
     display: grid;
     grid-template-columns: 1fr 2.5fr 1fr;

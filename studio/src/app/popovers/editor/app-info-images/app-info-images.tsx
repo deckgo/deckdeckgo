@@ -1,10 +1,10 @@
 import {Component, Element, h} from '@stencil/core';
 
 @Component({
-    tag: 'app-get-help',
-    styleUrl: 'app-get-help.scss'
+    tag: 'app-info-images',
+    styleUrl: 'app-info-images.scss'
 })
-export class AppGetHelp {
+export class AppInfoImages {
 
     @Element() el: HTMLElement;
 
@@ -14,9 +14,8 @@ export class AppGetHelp {
 
     render() {
         return <div class="ion-padding">
-            <h2>We are in development</h2>
-            <p>If you need help or have any feedback, reach us on <a href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNjMyNTk2NTQwODk5LTAxZjAwZWQwODQyZDg1ZDA5ODhlOTE3OGMwZjhmYjY3NDRhZjViZTRiNWU3OGU3MjYyNjE1OWE3NzNkZmQ3ZWI" target="_blank">Slack</a>.</p>
-            <p>Thank you in advance for your help 🙏</p>
+            <h2>About your images</h2>
+            <p>Please note that currently all the images you would upload will be public.</p>
             <div class="ion-text-center ion-padding-top"><ion-button size="small" shape="round" color="primary" onClick={() => this.closePopover()}>Got it</ion-button></div>
         </div>
     }
