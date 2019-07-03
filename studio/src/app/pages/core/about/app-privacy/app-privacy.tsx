@@ -13,7 +13,7 @@ export class AppAbout {
                 <main class="ion-padding">
                     <h1>Privacy Policy</h1>
 
-                    <p>Effective 17th March 2019</p>
+                    <p>Effective 3rd July 2019</p>
 
                     <p>This policy covers DeckDeckGo.</p>
 
@@ -43,9 +43,9 @@ export class AppAbout {
                     <ul class="ion-padding-start">
                         <li>Communications you send to us (for example, when you ask for support, send us questions or comments, or report a problem);</li>
                         <li>Information that you submit on or to DeckDeckGo in the form of reactions, comments, or messages to other users;</li>
-                        <li>The email address associated with your Twitter account, if you choose to sign up using your Twitter credentials. DeckDeckGo will also request permission to access additional information (these permissions are governed by Twitter’s privacy policies and can be managed through your Twitter privacy settings). We never post anything to your Twitter without your permission.</li>
+                        <li>The email address you would submit, if you choose to sign up using "Sign in with email".</li>
+                        <li>The email address associated with your Google account, if you choose to sign up using your Google credentials. DeckDeckGo will also request permission to access additional information (these permissions are governed by Google’s privacy policies and can be managed through your Google privacy settings). We never post anything to your Google without your permission.</li>
                         <li>The email address associated with your GitHub account, if you choose to sign up using your Github credentials. DeckDeckGo will also request permission to access additional information (these permissions are governed by GitHub’s privacy policies and can be managed through your GitHub privacy settings). We never post anything to your GitHub without your permission.</li>
-                        <li>The email address associated with your LinkedIn account, if you choose to sign up using your LinkedIn credentials. DeckDeckGo will also request permission to access additional information (these permissions are governed by LinkedIn’s privacy policies and can be managed through your LinkedIn privacy settings). We never post anything to your LinkedIn without your permission.</li>
                         <li>You also have the option to give us more information if you want to, and this may include “User Personal Information.”</li>
                     </ul>
 
