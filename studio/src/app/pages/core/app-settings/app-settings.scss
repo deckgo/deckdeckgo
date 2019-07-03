@@ -28,5 +28,9 @@ app-settings {
         padding-right: 8px;
       }
     }
+
+    p.info {
+      font-size: var(--font-size-small);
+    }
   }
 }

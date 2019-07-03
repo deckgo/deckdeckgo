@@ -352,7 +352,8 @@ export class AppHome {
                             </ion-list>
 
                             {this.renderSubmitForm()}
-                        </form>
+                        </form>,
+            <p class="info">Note that your update has no effect on the presentations you would have already published.</p>
         ]
     }
 
