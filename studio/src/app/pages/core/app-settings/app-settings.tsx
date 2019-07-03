@@ -139,6 +139,12 @@ export class AppHome {
         this.valid = this.validUsername && this.validName && this.validEmail;
     }
 
+    private toggleNewsletter($event: CustomEvent) {
+        if (this.user && this.user.data) {
+            this.user.data.newsletter = $event.detail.checked;
+        }
+    }
+
     private save(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.valid) {
@@ -304,7 +310,7 @@ export class AppHome {
             </ion-item>,
                 <ion-item>
                     <ion-input value={this.user.data.name} debounce={500} minlength={3} maxlength={64} required={true} input-mode="text" disabled={this.saving}
-                               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleNameInput(e)}
+                               onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
                                onIonChange={() => this.validateNameInput()}></ion-input>
                 </ion-item>];
         } else {
@@ -319,9 +325,13 @@ export class AppHome {
             </ion-item>,
                 <ion-item>
                     <ion-input value={this.user.data.email} debounce={500} minlength={3} maxlength={254} required={true} input-mode="text" disabled={this.saving}
-                               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleEmailInput(e)}
+                               onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleEmailInput($event)}
                                onIonChange={() => this.validateEmailInput()}></ion-input>
-                </ion-item>];
+                </ion-item>,
+            <div class="newsletter">
+                <ion-label>Send me newsletter emails</ion-label>
+                <ion-checkbox slot="end" value="pepperoni" checked={this.user.data.newsletter} disabled={this.saving} onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
+            </div>];
         } else {
             return undefined;
         }
@@ -335,7 +345,7 @@ export class AppHome {
                 <ion-item>
                     <ion-input value={this.apiUsername} debounce={500} minlength={3} maxlength={32} required={true} disabled={this.saving}
                                input-mode="text"
-                               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleUsernameInput(e)}
+                               onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
                                onIonChange={() => this.validateUsernameInput()}></ion-input>
                 </ion-item>];
         } else {

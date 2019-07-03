@@ -5,5 +5,17 @@ app-settings {
     ion-router-link {
       cursor: pointer;
     }
+
+    div.newsletter {
+      padding: 16px 8px 8px 8px;
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      ion-checkbox {
+        margin-left: 8px;
+      }
+    }
   }
 }
