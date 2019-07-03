@@ -358,76 +358,56 @@ export class AppHome {
     }
 
     private renderName() {
-        if (this.user && this.user.data) {
-            return [<ion-item class="item-title">
-                <ion-label>Name</ion-label>
-            </ion-item>,
-                <ion-item>
-                    <ion-input value={this.user.data.name} debounce={500} minlength={3} maxlength={64} required={true} input-mode="text" disabled={this.saving}
-                               onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
-                               onIonChange={() => this.validateNameInput()}></ion-input>
-                </ion-item>];
-        } else {
-            return undefined;
-        }
+        return [<ion-item class="item-title">
+            <ion-label>Name</ion-label>
+        </ion-item>,
+            <ion-item>
+                <ion-input value={this.user && this.user.data ? this.user.data.name : undefined} debounce={500} minlength={3} maxlength={64} required={true} input-mode="text" disabled={this.saving}
+                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
+                           onIonChange={() => this.validateNameInput()}></ion-input>
+            </ion-item>];
     }
 
     private renderEmail() {
-        if (this.user && this.user.data) {
-            return [<ion-item class="item-title">
-                <ion-label>Email</ion-label>
+        return [<ion-item class="item-title">
+            <ion-label>Email</ion-label>
+        </ion-item>,
+            <ion-item>
+                <ion-input value={this.user && this.user.data ? this.user.data.email : undefined} debounce={500} minlength={3} maxlength={254} required={true} input-mode="text" disabled={this.saving}
+                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleEmailInput($event)}
+                           onIonChange={() => this.validateEmailInput()}></ion-input>
             </ion-item>,
-                <ion-item>
-                    <ion-input value={this.user.data.email} debounce={500} minlength={3} maxlength={254} required={true} input-mode="text" disabled={this.saving}
-                               onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleEmailInput($event)}
-                               onIonChange={() => this.validateEmailInput()}></ion-input>
-                </ion-item>,
             <div class="newsletter">
                 <ion-label>Send me newsletter emails</ion-label>
                 <ion-checkbox slot="end" value="pepperoni" checked={this.user.data.newsletter} disabled={this.saving} onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
             </div>];
-        } else {
-            return undefined;
-        }
     }
 
     private renderUsername() {
-        if (this.apiUser) {
-            return [<ion-item class="item-title">
-                <ion-label>Username</ion-label>
-            </ion-item>,
-                <ion-item>
-                    <ion-input value={this.apiUsername} debounce={500} minlength={3} maxlength={32} required={true} disabled={this.saving}
-                               input-mode="text"
-                               onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
-                               onIonChange={() => this.validateUsernameInput()}></ion-input>
-                </ion-item>];
-        } else {
-            return undefined;
-        }
+        return [<ion-item class="item-title">
+            <ion-label>Username</ion-label>
+        </ion-item>,
+            <ion-item>
+                <ion-input value={this.apiUsername} debounce={500} minlength={3} maxlength={32} required={true} disabled={this.saving}
+                           input-mode="text"
+                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
+                           onIonChange={() => this.validateUsernameInput()}></ion-input>
+            </ion-item>];
     }
 
     private renderSubmitForm() {
-        if (this.apiUser && this.user) {
-            return <ion-button type="submit" disabled={!this.valid || this.saving} color="primary" shape="round">
-                <ion-label>Submit</ion-label>
-            </ion-button>
-        } else {
-            return undefined;
-        }
+        return <ion-button type="submit" disabled={!this.valid || this.saving || !this.apiUser || !this.user} color="primary" shape="round">
+            <ion-label>Submit</ion-label>
+        </ion-button>;
     }
 
     private renderDangerZone() {
-        if (this.apiUser && this.authUser) {
-            return [<h1 class="ion-padding-top ion-margin-top">Danger Zone</h1>,
-                <p>Once you delete your user, there is no going back. Please be certain.</p>,
-                <ion-button color="danger" shape="round" fill="outline" onClick={() => this.presentConfirmDelete()} disabled={this.saving}>
-                    <ion-label>Delete my user</ion-label>
-                </ion-button>
-            ]
-        } else {
-            return undefined;
-        }
+        return [<h1 class="ion-padding-top ion-margin-top">Danger Zone</h1>,
+            <p>Once you delete your user, there is no going back. Please be certain.</p>,
+            <ion-button color="danger" shape="round" fill="outline" onClick={() => this.presentConfirmDelete()} disabled={this.saving || !this.apiUser || !this.authUser}>
+                <ion-label>Delete my user</ion-label>
+            </ion-button>
+        ];
     }
 
     private renderUserAvatar() {
