@@ -23,6 +23,7 @@ ion-list[class*="list"].inputs-list  {
 
   ion-item {
     --background: transparent;
+    --background-focused: transparent;
 
     &.item-title {
       height: 38px;
