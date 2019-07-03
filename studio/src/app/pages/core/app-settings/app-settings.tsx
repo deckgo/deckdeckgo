@@ -7,6 +7,7 @@ import '@firebase/auth';
 
 import {ApiUser} from '../../../models/api/api.user';
 import {AuthUser} from '../../../models/auth/auth.user';
+import {User} from '../../../models/data/user';
 
 import {UserUtils} from '../../../utils/core/user-utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
@@ -17,7 +18,6 @@ import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ErrorService} from '../../../services/core/error/error.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {UserService} from '../../../services/data/user/user.service';
-import {User} from '../../../models/data/user';
 import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
@@ -229,7 +229,7 @@ export class AppHome {
             }
 
             try {
-                const storageFile: StorageFile = await this.storageService.uploadImage(this.profilePicture);
+                const storageFile: StorageFile = await this.storageService.uploadImage(this.profilePicture, 'avatars');
 
                 if (storageFile) {
                     this.user.data.photo_url = storageFile.downloadUrl;
