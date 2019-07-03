@@ -31,7 +31,7 @@ export class StorageService {
         return StorageService.instance;
     }
 
-    uploadImage(image: File): Promise<StorageFile> {
+    uploadImage(image: File, folder: string): Promise<StorageFile> {
         return new Promise<StorageFile>((resolve) => {
             try {
                 this.apiUserService.watch().pipe(take(1)).subscribe(async (apiUser: ApiUser) => {
@@ -47,13 +47,13 @@ export class StorageService {
                         return;
                     }
 
-                    if (image.size > 2097152) {
-                        this.errorService.error('Image is too big (max. 2 Mb)');
+                    if (image.size > 10485760) {
+                        this.errorService.error('Image is too big (max. 10 Mb)');
                         resolve();
                         return;
                     }
 
-                    const ref: Reference = firebase.storage().ref(`${apiUser.username}/assets/images/${image.name}`);
+                    const ref: Reference = firebase.storage().ref(`${apiUser.username}/assets/${folder}/${image.name}`);
 
                     await ref.put(image);
 

@@ -201,6 +201,9 @@ instance Aeson.ToJSON UserInfo where
 instance ToSchema (Item UserId User) where
   declareNamedSchema _ = pure $ NamedSchema (Just "UserWithId") mempty
 
+instance ToSchema PresResponse where
+  declareNamedSchema _ = pure $ NamedSchema (Just "PresResponse") mempty
+
 instance ToSchema User where
   declareNamedSchema _ = pure $ NamedSchema (Just "User") mempty
 
@@ -226,7 +229,7 @@ type DecksAPI =
     Protected :>
       Capture "deck_id" DeckId :>
       "publish" :>
-      Post '[JSON] () :<|>
+      Post '[JSON] PresResponse :<|> -- XXX
     Protected :> ReqBody '[JSON] Deck :> Post '[JSON] (Item DeckId Deck) :<|>
     Protected :>
       Capture "deck_id" DeckId :>
@@ -385,7 +388,7 @@ server env conn = serveUsers :<|> serveDecks :<|> serveSlides
     serveDecks =
       decksGet env :<|>
       decksGetDeckId env :<|>
-      decksPostPublish env :<|>
+      decksPostPublish env conn :<|>
       decksPost env :<|>
       decksPut env :<|>
       decksDelete env
@@ -760,8 +763,24 @@ decksGetDeckId env fuid deckId = do
 
     pure deck
 
-decksPostPublish :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
-decksPostPublish (fixupEnv -> env) _ deckId = do
+data PresResponse = PresResponse T.Text
+
+instance Aeson.ToJSON PresResponse where
+  toJSON (PresResponse t) = Aeson.object [ "url" .= t ]
+
+instance Aeson.FromJSON PresResponse where
+  parseJSON = Aeson.withObject "pres-response" $ \o ->
+    PresResponse <$> o .: "url"
+
+
+decksPostPublish
+  :: Aws.Env
+  -> HC.Connection
+  -> Firebase.UserId
+  -> DeckId
+  -> Servant.Handler PresResponse
+  -- TODO: AUTH!!!!
+decksPostPublish (fixupEnv -> env) conn _ deckId = do
 
     -- TODO: check auth
 
@@ -787,6 +806,23 @@ decksPostPublish (fixupEnv -> env) _ deckId = do
       Left e -> do
         liftIO $ print e
         Servant.throwError Servant.err500
+
+    presUrl <- liftIO (getEnv "DECKGO_PRESENTATIONS_URL")
+    liftIO (deckGetDeckIdDB env deckId) >>= \case
+      Nothing -> Servant.throwError Servant.err500
+      Just deck -> do
+        let dname = deckDeckname deck
+        iface <- liftIO $ getDbInterface conn
+        liftIO (fmap itemContent <$> dbGetUserById iface (deckOwnerId deck)) >>= \case
+          Nothing -> do
+            liftIO $ putStrLn "No User Id"
+            Servant.throwError Servant.err500
+          Just user -> case userUsername user of
+            Nothing -> do
+              liftIO $ putStrLn "No username"
+              Servant.throwError Servant.err500
+            Just uname ->
+              pure $ PresResponse $ "https://" <> T.pack presUrl <> "/" <> presentationPrefix uname dname
 
 fixupEnv :: Aws.Env -> Aws.Env
 fixupEnv = Aws.configure $ SQS.sqs
@@ -960,7 +996,13 @@ slidesPutStatement = Statement sql encoder decoder True
       contramap (Aeson.toJSON . slideAttributes . view _2) (HE.param HE.json)
     decoder = HD.unit
 
-slidesGetSlideId :: Aws.Env -> HC.Connection -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler (Item SlideId Slide)
+slidesGetSlideId
+  :: Aws.Env
+  -> HC.Connection
+  -> Firebase.UserId
+  -> DeckId
+  -> SlideId
+  -> Servant.Handler (Item SlideId Slide)
 slidesGetSlideId env conn fuid deckId slideId = do
 
     getDeck env deckId >>= \case
@@ -1452,3 +1494,20 @@ dynamoSet exprs = T.unwords exprs'
     (sts, removes) = foldr f ([], []) exprs
     f (Set l r) (ls, rs) = (ls <> [l <> " = " <> r], rs)
     f (Remove t ) (ls, rs) = (ls, rs <> [t])
+
+presentationPrefix :: Username -> Deckname -> T.Text
+presentationPrefix uname dname =
+    unUsername uname <> "/" <>  sanitizeDeckname dname <> "/"
+
+sanitizeDeckname :: Deckname -> T.Text
+sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
+  where
+    strip :: T.Text -> T.Text
+    strip = T.dropAround ( == '-' )
+    dropBadChars :: T.Text -> T.Text
+    dropBadChars = T.concatMap
+      $ \case
+        c | isAscii c && isAlphaNum c -> T.singleton c
+          | c == ' ' -> T.singleton '-'
+          | otherwise -> ""
+

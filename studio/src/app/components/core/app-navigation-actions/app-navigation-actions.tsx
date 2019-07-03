@@ -3,12 +3,14 @@ import {Component, Event, EventEmitter, Prop, State, h} from '@stencil/core';
 import {Subscription} from 'rxjs';
 
 import {AuthUser} from '../../../models/auth/auth.user';
+import {User} from '../../../models/data/user';
 
 import {Utils} from '../../../utils/core/utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {UserService} from '../../../services/data/user/user.service';
 
 @Component({
     tag: 'app-navigation-actions',
@@ -26,25 +28,40 @@ export class AppNavigationActions {
 
     private navService: NavService;
 
+    private userService: UserService;
+    private userSubscription: Subscription;
+
     @State()
     private authUser: AuthUser;
+
+    @State()
+    private photoUrl: string;
 
     @Event() private actionPublish: EventEmitter<void>;
 
     constructor() {
         this.authService = AuthService.getInstance();
         this.navService = NavService.getInstance();
+        this.userService = UserService.getInstance();
     }
 
     componentWillLoad() {
         this.subscription = this.authService.watch().subscribe((authUser: AuthUser) => {
             this.authUser = authUser;
         });
+
+        this.userSubscription = this.userService.watch().subscribe((user: User) => {
+            this.photoUrl = user && user.data ? user.data.photo_url : undefined;
+        });
     }
 
     componentDidUnload() {
         if (this.subscription) {
             this.subscription.unsubscribe();
+        }
+
+        if (this.userSubscription) {
+            this.userSubscription.unsubscribe();
         }
     }
 
@@ -85,9 +102,9 @@ export class AppNavigationActions {
     }
 
     private renderLoggedIn() {
-        if (Utils.isLoggedIn(this.authUser)) {
+        if (Utils.isLoggedIn(this.authUser) && this.photoUrl) {
             return <a class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)}>
-                <app-avatar src={this.authUser.photo_url}></app-avatar>
+                <app-avatar src={this.photoUrl}></app-avatar>
             </a>;
         } else {
             return undefined;
