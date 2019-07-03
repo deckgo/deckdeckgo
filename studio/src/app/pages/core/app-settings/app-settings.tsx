@@ -379,7 +379,7 @@ export class AppHome {
             </ion-item>,
             <div class="newsletter">
                 <ion-label>Send me newsletter emails</ion-label>
-                <ion-checkbox slot="end" value="pepperoni" checked={this.user.data.newsletter} disabled={this.saving} onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
+                <ion-checkbox slot="end" value="pepperoni" checked={this.user && this.user.data ? this.user.data.newsletter : false} disabled={this.saving} onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
             </div>];
     }
 
@@ -411,18 +411,14 @@ export class AppHome {
     }
 
     private renderUserAvatar() {
-        if (this.user && this.user.data) {
-            return [
-                <ion-item class="item-title">
-                    <ion-label>Profile picture</ion-label>
-                </ion-item>,
-                <div class="avatar">
-                    <app-avatar src={this.user.data.photo_url}></app-avatar>
-                    <input id="inputProfilePicture" type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.selectProfilePicture()} disabled={this.saving}/>
-                </div>
-            ]
-        } else {
-            return undefined;
-        }
+        return [
+            <ion-item class="item-title">
+                <ion-label>Profile picture</ion-label>
+            </ion-item>,
+            <div class="avatar">
+                <app-avatar src={this.user && this.user.data ? this.user.data.photo_url : undefined}></app-avatar>
+                <input id="inputProfilePicture" type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.selectProfilePicture()} disabled={this.saving}/>
+            </div>
+        ];
     }
 }
