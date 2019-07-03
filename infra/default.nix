@@ -7,11 +7,8 @@ rec
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${handlerStatic}/bin/handler" main_hs
-        cp ${./google-public-keys.json} google-public-keys.json
         mkdir $out
-        ${pkgs.zip}/bin/zip \
-          -r $out/function.zip \
-          main.js main_hs google-public-keys.json
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';
 
   # TODO: move all other builders to this
@@ -26,6 +23,21 @@ rec
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${unsplashProxyStatic}/bin/unsplash-proxy" main_hs
+        mkdir $out
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
+      '';
+
+  function-google-key-updater-path =
+    { path = builtins.seq
+        (builtins.readDir function-google-key-updater) "${function-google-key-updater}/function.zip";
+    } ;
+
+  function-google-key-updater =
+    pkgs.runCommand "build-lambda" {}
+      ''
+        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        # Can't be called 'main' otherwise lambda tries to load it
+        cp "${googleKeyUpdaterStatic}/bin/google-key-updater" main_hs
         mkdir $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';
@@ -156,6 +168,10 @@ rec
             ghci -Wall unsplash-proxy/Main.hs
          }
 
+         function repl_google_key_updater() {
+            ghci -Wall google-key-updater/Main.hs
+         }
+
          function repl() {
             repl_handler
          }
@@ -168,6 +184,9 @@ rec
 
   unsplashProxyStatic = pkgs.haskellPackagesStatic.unsplash-proxy;
   unsplashProxy = pkgs.haskellPackages.unsplash-proxy;
+
+  googleKeyUpdaterStatic = pkgs.haskellPackagesStatic.google-key-updater;
+  googleKeyUpdater = pkgs.haskellPackages.google-key-updater;
 
   dynamoJar = pkgs.runCommand "dynamodb-jar" { buildInputs = [ pkgs.gnutar ]; }
   ''
