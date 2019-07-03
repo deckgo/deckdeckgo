@@ -7,6 +7,8 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {AuthService} from '../../../services/auth/auth.service';
 import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {ApiUser} from '../../../models/api/api.user';
+import {UserService} from '../../../services/data/user/user.service';
+import {User} from '../../../models/data/user';
 
 @Component({
     tag: 'app-user-info',
@@ -23,15 +25,25 @@ export class AppUserInfo {
     private apiUserService: ApiUserService;
     private apiUserSubscription: Subscription;
 
+    private userService: UserService;
+    private userSubscription: Subscription;
+
     @State()
     private authUser: AuthUser;
 
     @State()
     private apiUser: ApiUser;
 
+    @State()
+    private name: string;
+
+    @State()
+    private photoUrl: string;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.apiUserService = ApiUserService.getInstance();
+        this.userService = UserService.getInstance();
     }
 
     componentWillLoad() {
@@ -41,6 +53,11 @@ export class AppUserInfo {
 
         this.apiUserSubscription = this.apiUserService.watch().subscribe((user: ApiUser) => {
             this.apiUser = user;
+        });
+
+        this.userSubscription = this.userService.watch().subscribe((user: User) => {
+            this.name = user && user.data ? user.data.name : undefined;
+            this.photoUrl = user && user.data ? user.data.photo_url : undefined;
         });
     }
 
@@ -52,15 +69,19 @@ export class AppUserInfo {
         if (this.apiUserSubscription) {
             this.apiUserSubscription.unsubscribe();
         }
+
+        if (this.userSubscription) {
+            this.userSubscription.unsubscribe();
+        }
     }
 
     render() {
         if (this.authUser) {
             return <ion-grid>
                 <ion-row class="ion-align-items-center">
-                    <ion-col size={'' + this.avatarColSize}><app-avatar src={this.authUser.photo_url}></app-avatar></ion-col>
+                    <ion-col size={'' + this.avatarColSize}><app-avatar src={this.photoUrl}></app-avatar></ion-col>
                     <ion-col size={'' + (12 - this.avatarColSize)} class="user-info">
-                        <ion-label>{this.authUser.name}</ion-label>
+                        <ion-label>{this.name}</ion-label>
                         <ion-label>{!this.authUser.anonymous && this.apiUser && this.apiUser.username ? '@' + this.apiUser.username : undefined}</ion-label>
                     </ion-col>
                 </ion-row>

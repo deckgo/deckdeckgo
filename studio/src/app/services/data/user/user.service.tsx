@@ -158,6 +158,8 @@ export class UserService {
             try {
                 await firestore.collection('users').doc(user.id).set(user.data, {merge: true});
 
+                this.userSubject.next(user);
+
                 resolve(user);
             } catch (err) {
                 reject(err);
@@ -171,6 +173,8 @@ export class UserService {
                 const firestore: firebase.firestore.Firestore = firebase.firestore();
 
                 await firestore.collection('users').doc(userId).delete();
+
+                this.userSubject.next(null);
 
                 resolve();
             } catch (err) {
