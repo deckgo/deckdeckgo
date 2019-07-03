@@ -17,6 +17,7 @@ import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ErrorService} from '../../../services/core/error/error.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {UserService} from '../../../services/data/user/user.service';
+import {User} from '../../../models/data/user';
 
 @Component({
     tag: 'app-settings',
@@ -28,14 +29,23 @@ export class AppHome {
     private authUser: AuthUser;
 
     @State()
+    private user: User;
+
+    @State()
     private apiUser: ApiUser;
 
     @State()
     private valid: boolean = true;
 
+    @State()
+    private apiUsername: string;
+
+    @State()
+    private saving: boolean = false;
+
     private authService: AuthService;
-    private apiUserService: ApiUserService;
     private userService: UserService;
+    private apiUserService: ApiUserService;
 
     private navService: NavService;
 
@@ -63,6 +73,14 @@ export class AppHome {
             filter((apiUser: ApiUser) => apiUser !== null && apiUser !== undefined && !apiUser.anonymous),
             take(1)).subscribe(async (apiUser: ApiUser) => {
             this.apiUser = apiUser;
+
+            this.apiUsername = this.apiUser.username;
+        });
+
+        this.userService.watch().pipe(
+            filter((user: User) => user !== null && user !== undefined && user.data && !user.data.anonymous),
+            take(1)).subscribe(async (user: User) => {
+            this.user = user;
         });
     }
 
@@ -87,11 +105,19 @@ export class AppHome {
     }
 
     private handleUsernameInput($event: CustomEvent<KeyboardEvent>) {
-        this.apiUser.username = ($event.target as InputTargetEvent).value;
+        this.apiUsername = ($event.target as InputTargetEvent).value;
     }
 
     private validateUsernameInput() {
-        this.valid = this.apiUser && UserUtils.validUsername(this.apiUser.username);
+        this.valid = this.valid && this.apiUser && UserUtils.validUsername(this.apiUser.username);
+    }
+
+    private handleNameInput($event: CustomEvent<KeyboardEvent>) {
+        this.user.data.name = ($event.target as InputTargetEvent).value;
+    }
+
+    private validateNameInput() {
+        this.valid = this.valid && this.user && this.user.data && UserUtils.validName(this.user.data.name);
     }
 
     private save(): Promise<void> {
@@ -102,12 +128,57 @@ export class AppHome {
             }
 
             try {
-                await this.apiUserService.put(this.apiUser, this.authUser.token, this.apiUser.id);
+                this.saving = true;
+
+                await this.saveUser();
+                await this.saveApiUser();
+
+                this.saving = false;
             } catch (err) {
-                this.errorService.error('Your changes couldn\'t be saved');
+                this.errorService.error(err);
+                this.saving = false;
             }
 
             resolve();
+        });
+    }
+
+    private saveUser(): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            if (!this.valid || !this.apiUser) {
+                resolve();
+                return;
+            }
+
+            try {
+                await this.userService.update(this.user);
+
+                resolve();
+            } catch (err) {
+                reject('Your changes couldn\'t be saved');
+            }
+        });
+    }
+
+    private saveApiUser(): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            if (!this.valid || !this.apiUser) {
+                resolve();
+                return;
+            }
+
+            if (this.apiUsername === this.apiUser.username) {
+                resolve();
+                return;
+            }
+
+            this.apiUser.username = this.apiUsername;
+
+            try {
+                await this.apiUserService.put(this.apiUser, this.authUser.token, this.apiUser.id);
+            } catch (err) {
+                reject('Your username couldn\'t be saved');
+            }
         });
     }
 
@@ -207,12 +278,14 @@ export class AppHome {
     }
 
     private renderName() {
-        if (this.authUser) {
+        if (this.user && this.user.data) {
             return [<ion-item class="item-title">
                 <ion-label>Name</ion-label>
             </ion-item>,
                 <ion-item>
-                    <ion-input value={this.authUser.name} required={true} input-mode="text" disabled={true}></ion-input>
+                    <ion-input value={this.user.data.name} debounce={500} minlength={3} maxlength={64} required={true} input-mode="text" disabled={this.saving}
+                               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleNameInput(e)}
+                               onIonChange={() => this.validateNameInput()}></ion-input>
                 </ion-item>];
         } else {
             return undefined;
@@ -225,7 +298,7 @@ export class AppHome {
                 <ion-label>Username</ion-label>
             </ion-item>,
                 <ion-item>
-                    <ion-input value={this.apiUser.username} debounce={500} minlength={3} maxlength={32} required={true}
+                    <ion-input value={this.apiUsername} debounce={500} minlength={3} maxlength={32} required={true} disabled={this.saving}
                                input-mode="text"
                                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleUsernameInput(e)}
                                onIonChange={() => this.validateUsernameInput()}></ion-input>
@@ -236,8 +309,8 @@ export class AppHome {
     }
 
     private renderSubmitForm() {
-        if (this.apiUser) {
-            return <ion-button type="submit" disabled={!this.valid} color="primary" shape="round">
+        if (this.apiUser && this.user) {
+            return <ion-button type="submit" disabled={!this.valid || this.saving} color="primary" shape="round">
                 <ion-label>Submit</ion-label>
             </ion-button>
         } else {
@@ -249,7 +322,7 @@ export class AppHome {
         if (this.apiUser && this.authUser) {
             return [<h1 class="ion-padding-top ion-margin-top">Danger Zone</h1>,
                 <p>Once you delete your user, there is no going back. Please be certain.</p>,
-                <ion-button color="danger" shape="round" fill="outline" onClick={() => this.presentConfirmDelete()}>
+                <ion-button color="danger" shape="round" fill="outline" onClick={() => this.presentConfirmDelete()} disabled={this.saving}>
                     <ion-label>Delete my user</ion-label>
                 </ion-button>
             ]

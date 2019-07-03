@@ -42,7 +42,7 @@ export class UserService {
                 } else {
                     const user: UserData = snapshot.data() as UserData;
 
-                    const updatedUser: UserData = await this.updateUser(authUser, user);
+                    const updatedUser: UserData = await this.updateUserWithAuthData(authUser, user);
 
                     this.userSubject.next({
                         id: authUser.uid,
@@ -66,12 +66,18 @@ export class UserService {
 
                 const user: UserData = {
                     anonymous: authUser.anonymous,
+                    newsletter: true,
                     created_at: now,
                     updated_at: now
                 };
 
                 if (authUser.name) {
                     user.name = authUser.name;
+                }
+
+                if (authUser.email) {
+                    user.email = authUser.email;
+                    user.newsletter = true;
                 }
 
                 if (authUser.photo_url) {
@@ -90,7 +96,7 @@ export class UserService {
         });
     }
 
-    private updateUser(authUser: AuthUser, user: UserData): Promise<UserData> {
+    private updateUserWithAuthData(authUser: AuthUser, user: UserData): Promise<UserData> {
         return new Promise<UserData>(async (resolve, reject) => {
             try {
                 if (this.userNeedUpdate(authUser, user)) {
@@ -100,8 +106,12 @@ export class UserService {
                         user.anonymous = authUser.anonymous;
                     }
 
-                    if ((!user.name && authUser.name)) {
+                    if (!user.name && authUser.name) {
                         user.name = authUser.name;
+                    }
+
+                    if (!user.email && authUser.email) {
+                        user.email = authUser.email;
                     }
 
                     if ((!user.photo_url && authUser.photo_url)) {
@@ -125,6 +135,8 @@ export class UserService {
             return true;
         } else if (!user.name && authUser.name) {
             return true;
+        } else if (!user.email && authUser.email) {
+            return true;
         } else if (!user.photo_url && authUser.photo_url) {
             return true;
         } else {
@@ -134,6 +146,23 @@ export class UserService {
 
     watch(): Observable<User> {
         return this.userSubject.asObservable();
+    }
+
+    update(user: User): Promise<User> {
+        return new Promise<User>(async (resolve, reject) => {
+            const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+            const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+            user.data.updated_at = now;
+
+            try {
+                await firestore.collection('users').doc(user.id).set(user.data, {merge: true});
+
+                resolve(user);
+            } catch (err) {
+                reject(err);
+            }
+        });
     }
 
     delete(userId: string): Promise<void> {
