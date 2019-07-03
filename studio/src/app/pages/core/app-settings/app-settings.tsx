@@ -37,6 +37,10 @@ export class AppHome {
     @State()
     private valid: boolean = true;
 
+    private validUsername: boolean = true;
+    private validName: boolean = true;
+    private validEmail: boolean = true;
+
     @State()
     private apiUsername: string;
 
@@ -109,7 +113,8 @@ export class AppHome {
     }
 
     private validateUsernameInput() {
-        this.valid = this.valid && this.apiUser && UserUtils.validUsername(this.apiUser.username);
+        this.validUsername = this.apiUser && UserUtils.validUsername(this.apiUser.username);
+        this.isValid();
     }
 
     private handleNameInput($event: CustomEvent<KeyboardEvent>) {
@@ -117,7 +122,21 @@ export class AppHome {
     }
 
     private validateNameInput() {
-        this.valid = this.valid && this.user && this.user.data && UserUtils.validName(this.user.data.name);
+        this.validName = this.user && this.user.data && UserUtils.validName(this.user.data.name);
+        this.isValid();
+    }
+
+    private handleEmailInput($event: CustomEvent<KeyboardEvent>) {
+        this.user.data.email = ($event.target as InputTargetEvent).value;
+    }
+
+    private validateEmailInput() {
+        this.validEmail = this.user && this.user.data && UserUtils.validEmail(this.user.data.email);
+        this.isValid();
+    }
+
+    private isValid() {
+        this.valid = this.validUsername && this.validName && this.validEmail;
     }
 
     private save(): Promise<void> {
@@ -269,6 +288,7 @@ export class AppHome {
             <form onSubmit={(e: Event) => this.handleSubmit(e)}>
                 <ion-list class="inputs-list">
                     {this.renderName()}
+                    {this.renderEmail()}
                     {this.renderUsername()}
                 </ion-list>
 
@@ -286,6 +306,21 @@ export class AppHome {
                     <ion-input value={this.user.data.name} debounce={500} minlength={3} maxlength={64} required={true} input-mode="text" disabled={this.saving}
                                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleNameInput(e)}
                                onIonChange={() => this.validateNameInput()}></ion-input>
+                </ion-item>];
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderEmail() {
+        if (this.user && this.user.data) {
+            return [<ion-item class="item-title">
+                <ion-label>Email</ion-label>
+            </ion-item>,
+                <ion-item>
+                    <ion-input value={this.user.data.email} debounce={500} minlength={3} maxlength={254} required={true} input-mode="text" disabled={this.saving}
+                               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleEmailInput(e)}
+                               onIonChange={() => this.validateEmailInput()}></ion-input>
                 </ion-item>];
         } else {
             return undefined;
