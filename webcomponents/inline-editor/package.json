@@ -4,7 +4,6 @@
   "description": "A WYSIWYG HTML Inline Editor Web Component",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
-  "unpkg": "dist/ionic.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "files": [
