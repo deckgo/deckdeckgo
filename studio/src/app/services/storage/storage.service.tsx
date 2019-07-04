@@ -31,7 +31,7 @@ export class StorageService {
         return StorageService.instance;
     }
 
-    uploadImage(image: File, folder: string): Promise<StorageFile> {
+    uploadImage(image: File, folder: string, maxSize: number): Promise<StorageFile> {
         return new Promise<StorageFile>((resolve) => {
             try {
                 this.apiUserService.watch().pipe(take(1)).subscribe(async (apiUser: ApiUser) => {
@@ -48,7 +48,7 @@ export class StorageService {
                     }
 
                     if (image.size > 10485760) {
-                        this.errorService.error('Image is too big (max. 10 Mb)');
+                        this.errorService.error(`Image is too big (max. ${maxSize / 1048576} Mb)`);
                         resolve();
                         return;
                     }
