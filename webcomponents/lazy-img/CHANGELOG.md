@@ -1,3 +1,8 @@
+<a name="1.0.0-alpha.9"></a>
+# 1.0.0-alpha.9 (2019-07-06)
+
+* add two new CSS variables for styling
+
 <a name="1.0.0-alpha.8"></a>
 # 1.0.0-alpha.8 (2019-06-27)
 
