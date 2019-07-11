@@ -39,4 +39,11 @@ app-image {
     --deckgo-images-padding: 4px;
     --deckgo-images-font-size: calc(var(--font-size-very-small) - 4px);
   }
+
+  ion-button.delete {
+    --color: var(--ion-color-medium);
+    --color-activated: var(--ion-color-medium);
+    --border-color: var(--ion-color-light);
+    --background-activated: white;
+  }
 }

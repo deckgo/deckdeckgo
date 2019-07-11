@@ -144,7 +144,7 @@ export class AppImage {
             return undefined;
         } else {
             return <ion-item class="action-button ion-margin-bottom">
-                <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_BACKGROUND)} color="medium" fill="outline">
+                <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_BACKGROUND)} fill="outline" class="delete">
                     <ion-label class="ion-text-uppercase">Delete background</ion-label>
                 </ion-button>
             </ion-item>;
