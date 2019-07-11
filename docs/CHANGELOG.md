@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.19"></a>
+# 1.0.0-alpha.19 (2019-07-11)
+
+### Fix
+
+* pre-rendering
+
 <a name="1.0.0-alpha.18"></a>
 # 1.0.0-alpha.18 (2019-06-27)
 

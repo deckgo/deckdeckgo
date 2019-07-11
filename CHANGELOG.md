@@ -1,6 +1,10 @@
 <a name="1.0.0-beta.49"></a>
 # [1.0.0-beta.49](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.49...v1.0.0-beta.49) (2019-07-11)
 
+### Applications
+
+* docs: v1.0.0-alpha.19 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 ### Web Components
 
 * qrcode: v1.0.0-alpha.9 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/qrcode/CHANGELOG.md))
