@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/qrcode",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "description": "A Web Component to generate QR code",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
@@ -19,11 +19,11 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "^1.0.0",
-    "@stencil/postcss": "^0.1.0",
-    "@stencil/sass": "^0.2.3",
+    "@stencil/core": "^1.1.6",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.0.1",
     "@stencil/utils": "0.0.5",
-    "autoprefixer": "^9.6.0"
+    "autoprefixer": "^9.6.1"
   },
   "repository": {
     "type": "git",

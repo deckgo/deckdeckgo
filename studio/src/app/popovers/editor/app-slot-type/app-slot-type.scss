@@ -11,6 +11,14 @@ app-slot-type {
     padding-bottom: 8px;
   }
 
+  ion-list {
+    ion-item {
+      p {
+        margin: 0;
+      }
+    }
+  }
+
   ion-item {
     --border-width: 0;
     --inner-border-width: 0;
