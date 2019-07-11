@@ -2,12 +2,15 @@ ion-menu {
   ion-content {
     ion-list {
       ion-searchbar[class*="sc-ion-searchbar"] {
-        padding-left: 0;
-
         --cancel-button-color: white;
         --clear-button-color: white;
         --icon-color: white;
         color: white;
+        --background: transparent;
+
+        div.sc-ion-searchbar-ios {
+          margin-left: 12px;
+        }
 
         input.searchbar-input[class*="sc-ion-searchbar"] {
           box-shadow: none;
