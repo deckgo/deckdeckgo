@@ -12,6 +12,9 @@ import {
 import {
   Deck,
 } from './app/models/data/deck';
+import {
+  MoreAction,
+} from './app/utils/editor/more-action';
 
 export namespace Components {
   interface AppAbout {}
@@ -77,6 +80,7 @@ export namespace Components {
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
+  interface AppMoreShareOptions {}
   interface AppNavigation {
     'menuToggle': boolean;
     'presentation': boolean;
@@ -286,6 +290,12 @@ declare global {
     new (): HTMLAppMoreActionsElement;
   };
 
+  interface HTMLAppMoreShareOptionsElement extends Components.AppMoreShareOptions, HTMLStencilElement {}
+  var HTMLAppMoreShareOptionsElement: {
+    prototype: HTMLAppMoreShareOptionsElement;
+    new (): HTMLAppMoreShareOptionsElement;
+  };
+
   interface HTMLAppNavigationElement extends Components.AppNavigation, HTMLStencilElement {}
   var HTMLAppNavigationElement: {
     prototype: HTMLAppNavigationElement;
@@ -468,6 +478,7 @@ declare global {
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-actions': HTMLAppMoreActionsElement;
+    'app-more-share-options': HTMLAppMoreShareOptionsElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-newsletter': HTMLAppNewsletterElement;
@@ -529,8 +540,10 @@ declare namespace LocalJSX {
   interface AppEditorActions extends JSXBase.HTMLAttributes<HTMLAppEditorActionsElement> {
     'fullscreen'?: boolean;
     'hideFooterActions'?: boolean;
+    'onActionPublish'?: (event: CustomEvent<void>) => void;
     'onAddSlide'?: (event: CustomEvent<any>) => void;
     'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
+    'onOpenShare'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideTo'?: (event: CustomEvent<number>) => void;
     'onToggleFullScreen'?: (event: CustomEvent<void>) => void;
@@ -572,6 +585,7 @@ declare namespace LocalJSX {
   interface AppLogo extends JSXBase.HTMLAttributes<HTMLAppLogoElement> {}
   interface AppMenu extends JSXBase.HTMLAttributes<HTMLAppMenuElement> {}
   interface AppMoreActions extends JSXBase.HTMLAttributes<HTMLAppMoreActionsElement> {}
+  interface AppMoreShareOptions extends JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement> {}
   interface AppNavigation extends JSXBase.HTMLAttributes<HTMLAppNavigationElement> {
     'menuToggle'?: boolean;
     'presentation'?: boolean;
@@ -606,7 +620,9 @@ declare namespace LocalJSX {
     'onOpenShare'?: (event: CustomEvent<void>) => void;
   }
   interface AppShareDeck extends JSXBase.HTMLAttributes<HTMLAppShareDeckElement> {}
-  interface AppShareOptions extends JSXBase.HTMLAttributes<HTMLAppShareOptionsElement> {}
+  interface AppShareOptions extends JSXBase.HTMLAttributes<HTMLAppShareOptionsElement> {
+    'onSelectedOption'?: (event: CustomEvent<MoreAction>) => void;
+  }
   interface AppSignin extends JSXBase.HTMLAttributes<HTMLAppSigninElement> {
     'redirect'?: string;
     'redirectId'?: string;
@@ -653,6 +669,7 @@ declare namespace LocalJSX {
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-more-actions': AppMoreActions;
+    'app-more-share-options': AppMoreShareOptions;
     'app-navigation': AppNavigation;
     'app-navigation-actions': AppNavigationActions;
     'app-newsletter': AppNewsletter;

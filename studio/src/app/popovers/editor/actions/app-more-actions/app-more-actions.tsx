@@ -2,7 +2,7 @@ import {Component, Element, State, h} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
-import {MoreAction} from './more-action';
+import {MoreAction} from '../../../../utils/editor/more-action';
 
 @Component({
     tag: 'app-more-actions',
@@ -25,13 +25,18 @@ export class AppMoreActions {
         });
     }
 
-    render() {
-        // TODO: Share when published
+    private async closeSharePopover($event: CustomEvent<MoreAction>) {
+        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
+            action: $event ? $event.detail : null
+        });
+    }
 
+    render() {
         return <div class="ion-padding">
             <a onClick={() => this.closePopover(MoreAction.JUMP_TO)}><p>Jump to slide</p></a>
             {this.renderFullscreenOption()}
             <a onClick={() => this.closePopover(MoreAction.REMOTE)}><p>Remote control</p></a>
+            <app-share-options onSelectedOption={($event: CustomEvent<MoreAction>) => this.closeSharePopover($event)}></app-share-options>
         </div>
     }
 

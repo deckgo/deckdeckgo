@@ -5,7 +5,7 @@ import {take} from 'rxjs/operators';
 
 import {Deck} from '../../../../models/data/deck';
 
-import {ShareOption} from '../../../../popovers/editor/app-share-options/share-option';
+import {MoreAction} from '../../../../utils/editor/more-action';
 
 import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 
@@ -50,16 +50,16 @@ export class AppShareAction {
         }
 
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-share-options',
+            component: 'app-more-share-options',
             event: $event,
             mode: 'ios'
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data) {
-                if (detail.data.action === ShareOption.SHARE) {
+                if (detail.data.action === MoreAction.SHARE) {
                     await this.openShare.emit();
-                } else if (detail.data.action === ShareOption.PUBLISH) {
+                } else if (detail.data.action === MoreAction.PUBLISH) {
                     this.actionPublish.emit();
                 }
             }

@@ -3,7 +3,7 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {SlideTemplate} from '../../../../models/data/slide';
 
-import {MoreAction} from '../../../../popovers/editor/app-more-actions/more-action';
+import {MoreAction} from '../../../../utils/editor/more-action';
 
 import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 import {AnonymousService} from '../../../../services/editor/anonymous/anonymous.service';
@@ -35,7 +35,11 @@ export class AppEditorActions {
 
     @Event() slideTo: EventEmitter<number>;
 
-    @Event() toggleFullScreen: EventEmitter<void>
+    @Event() toggleFullScreen: EventEmitter<void>;
+
+    @Event() private actionPublish: EventEmitter<void>;
+
+    @Event() private openShare: EventEmitter<void>;
 
     constructor() {
         this.anonymousService = AnonymousService.getInstance();
@@ -150,6 +154,10 @@ export class AppEditorActions {
                     await this.openSlideNavigate();
                 } else if (detail.data.action === MoreAction.REMOTE) {
                     await this.openRemoteControl();
+                } else if (detail.data.action === MoreAction.SHARE) {
+                    await this.openShare.emit();
+                } else if (detail.data.action === MoreAction.PUBLISH) {
+                    this.actionPublish.emit();
                 }
             }
         });

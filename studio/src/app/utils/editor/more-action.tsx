@@ -1,5 +1,7 @@
 export enum MoreAction {
     FULLSCREEN,
     JUMP_TO,
-    REMOTE
+    REMOTE,
+    SHARE,
+    PUBLISH
 }
