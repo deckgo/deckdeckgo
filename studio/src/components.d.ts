@@ -38,7 +38,12 @@ export namespace Components {
   interface AppEditor {
     'deckId': string;
   }
-  interface AppEditorActions {}
+  interface AppEditorActions {
+    'fullscreen': boolean;
+    'hideFooterActions': boolean;
+    'slides': any[];
+  }
+  interface AppEditorMoreActions {}
   interface AppEditorToolbar {
     'blurSelectedElement': () => Promise<void>;
     'hideToolbar': () => Promise<void>;
@@ -184,6 +189,12 @@ declare global {
   var HTMLAppEditorActionsElement: {
     prototype: HTMLAppEditorActionsElement;
     new (): HTMLAppEditorActionsElement;
+  };
+
+  interface HTMLAppEditorMoreActionsElement extends Components.AppEditorMoreActions, HTMLStencilElement {}
+  var HTMLAppEditorMoreActionsElement: {
+    prototype: HTMLAppEditorMoreActionsElement;
+    new (): HTMLAppEditorMoreActionsElement;
   };
 
   interface HTMLAppEditorToolbarElement extends Components.AppEditorToolbar, HTMLStencilElement {}
@@ -419,6 +430,7 @@ declare global {
     'app-developer': HTMLAppDeveloperElement;
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
+    'app-editor-more-actions': HTMLAppEditorMoreActionsElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
@@ -488,7 +500,17 @@ declare namespace LocalJSX {
   interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
     'deckId'?: string;
   }
-  interface AppEditorActions extends JSXBase.HTMLAttributes<HTMLAppEditorActionsElement> {}
+  interface AppEditorActions extends JSXBase.HTMLAttributes<HTMLAppEditorActionsElement> {
+    'fullscreen'?: boolean;
+    'hideFooterActions'?: boolean;
+    'onAddSlide'?: (event: CustomEvent<any>) => void;
+    'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
+    'onSignIn'?: (event: CustomEvent<void>) => void;
+    'onSlideTo'?: (event: CustomEvent<number>) => void;
+    'onToggleFullScreen'?: (event: CustomEvent<void>) => void;
+    'slides'?: any[];
+  }
+  interface AppEditorMoreActions extends JSXBase.HTMLAttributes<HTMLAppEditorMoreActionsElement> {}
   interface AppEditorToolbar extends JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement> {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
@@ -583,6 +605,7 @@ declare namespace LocalJSX {
     'app-developer': AppDeveloper;
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
+    'app-editor-more-actions': AppEditorMoreActions;
     'app-editor-toolbar': AppEditorToolbar;
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;

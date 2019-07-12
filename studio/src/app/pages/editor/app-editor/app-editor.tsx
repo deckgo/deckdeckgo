@@ -25,7 +25,6 @@ import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
-import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 import {BusyService} from '../../../services/editor/busy/busy.service';
 
 @Component({
@@ -256,121 +255,44 @@ export class AppEditor {
         }, 100);
     }
 
-    private async animatePrevNextSlide(next: boolean) {
+    private async animatePrevNextSlide($event: CustomEvent<boolean>) {
+        if (!$event) {
+            return;
+        }
+
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (!deck) {
             return;
         }
 
-        if (next) {
+        if ($event.detail) {
             await (deck as any).slideNext(false, false);
         } else {
             await (deck as any).slidePrev(false, false);
         }
     }
 
-    private async slideTo(index: number, speed?: number | undefined) {
+    private async slideTo($event: CustomEvent<number>) {
+        if (!$event) {
+            return;
+        }
+
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (!deck) {
             return;
         }
 
-        await (deck as any).slideTo(index, speed);
+        await (deck as any).slideTo($event.detail);
     }
 
-    @Listen('pagerClick', {target: 'document'})
-    async onPagerClick() {
-        await this.openSlideNavigate();
-    }
-
-    private async openSlideNavigate() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-slide-navigate'
-        });
-
-        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail.data >= 0) {
-                await this.slideTo(detail.data);
-            }
-        });
-
-        await modal.present();
-    }
-
-    private async openRemoteControl() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-remote'
-        });
-
-        await modal.present();
-    }
-
-    async onActionOpenSlideAdd($event: CustomEvent) {
-        if (!$event || !$event.detail) {
+    private async addSlide($event: CustomEvent<any>) {
+        if (!$event) {
             return;
         }
 
-        const couldAddSlide: boolean = await this.anonymousService.couldAddSlide(this.slides);
-
-        if (!couldAddSlide) {
-            await this.signIn();
-            return;
-        }
-
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-slide-type',
-            event: $event.detail,
-            mode: 'md',
-            cssClass: 'popover-menu'
-        });
-
-        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail && detail.data) {
-                if (detail.data.template === SlideTemplate.GIF) {
-                    await this.openGifPicker();
-                }
-
-                if (detail.data.slide) {
-                    await this.addSlide(detail.data.slide);
-                }
-            }
-        });
-
-        await popover.present();
-    }
-
-    private async addSlide(slide: any) {
-        await this.concatSlide(slide);
-    }
-
-    private async openGifPicker() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-gif'
-        });
-
-        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            await this.addSlideGif(detail.data);
-        });
-
-        await modal.present();
-    }
-
-    private addSlideGif(gif: TenorGif): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!gif || !gif.media || gif.media.length <= 0 || !gif.media[0].gif || !gif.media[0].gif.url) {
-                resolve();
-                return;
-            }
-
-            const url: string = gif.media[0].gif.url;
-            const slide: any = await CreateSlidesUtils.createSlideGif(url);
-
-            await this.addSlide(slide);
-
-            resolve();
-        });
+        await this.concatSlide($event.detail);
     }
 
     @Listen('actionPublish')
@@ -507,32 +429,6 @@ export class AppEditor {
         });
     }
 
-    async openDeckActions($event: UIEvent) {
-        if (!$event || !$event.detail) {
-            return;
-        }
-
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-editor-actions',
-            event: $event,
-            mode: 'ios'
-        });
-
-        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail && detail.data) {
-                if (detail.data.action === EditorAction.FULLSCREEN) {
-                    await this.toggleFullScreen();
-                } else if (detail.data.action === EditorAction.JUMP_TO) {
-                    await this.openSlideNavigate();
-                } else if (detail.data.action === EditorAction.REMOTE) {
-                    await this.openRemoteControl();
-                }
-            }
-        });
-
-        await popover.present();
-    }
-
     private contentEditable(slide: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!slide || slide.childElementCount <= 0) {
@@ -588,46 +484,12 @@ export class AppEditor {
                 <app-editor-toolbar onSignIn={() => this.signIn()}></app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
-                <ion-toolbar>
-                    <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
-                        <app-add-slide-action
-                            onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
-                        </app-add-slide-action>
-
-                        <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary" mode="md">
-                            <ion-icon name="arrow-back"></ion-icon>
-                            <ion-label>Previous</ion-label>
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={() => this.animatePrevNextSlide(true)} color="primary" mode="md">
-                            <ion-icon name="arrow-forward"></ion-icon>
-                            <ion-label>Next</ion-label>
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices" mode="md">
-                            <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
-                            <ion-label>Jump to</ion-label>
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices" mode="md">
-                            {this.renderFullscreen()}
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices" mode="md">
-                            <ion-icon name="phone-portrait"></ion-icon>
-                            <ion-label>Remote</ion-label>
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices" mode="md">
-                            <ion-icon name="more" md="md-more" ios="md-more"></ion-icon>
-                            <ion-label>More</ion-label>
-                        </ion-tab-button>
-                    </ion-buttons>
-
-                    <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
-                        <app-help></app-help>
-                    </ion-buttons>
-                </ion-toolbar>
+                <app-editor-actions hideFooterActions={this.hideFooterActions} fullscreen={this.fullscreen} slides={this.slides}
+                                    onSignIn={() => this.signIn()}
+                                    onAddSlide={($event: CustomEvent<any>) => this.addSlide($event)}
+                                    onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
+                                    onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
+                                    onToggleFullScreen={() => this.toggleFullScreen()}></app-editor-actions>
             </ion-footer>,
             <deckgo-inline-editor containers="h1,h2,h3,section" sticky-mobile="true"
                                   onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
@@ -642,20 +504,6 @@ export class AppEditor {
             return undefined;
         } else {
             return <ion-spinner color="primary"></ion-spinner>;
-        }
-    }
-
-    private renderFullscreen() {
-        if (this.fullscreen) {
-            return [
-                <ion-icon name="contract"></ion-icon>,
-                <ion-label>Exit fullscreen</ion-label>
-            ];
-        } else {
-            return [
-                <ion-icon name="expand"></ion-icon>,
-                <ion-label>Fullscreen</ion-label>
-            ];
         }
     }
 }
