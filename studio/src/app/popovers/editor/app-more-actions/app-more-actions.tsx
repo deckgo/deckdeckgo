@@ -2,13 +2,13 @@ import {Component, Element, State, h} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
-import {EditorMoreAction} from './editor-more-action';
+import {MoreAction} from './more-action';
 
 @Component({
-    tag: 'app-editor-more-actions',
-    styleUrl: 'app-editor-more-actions.scss'
+    tag: 'app-more-actions',
+    styleUrl: 'app-more-actions.scss'
 })
-export class AppEditorMoreActions {
+export class AppMoreActions {
 
     @Element() el: HTMLElement;
 
@@ -19,7 +19,7 @@ export class AppEditorMoreActions {
         this.mobile = DeckDeckGoUtils.isMobile();
     }
 
-    private async closePopover(action: EditorMoreAction) {
+    private async closePopover(action: MoreAction) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
             action: action
         });
@@ -29,15 +29,15 @@ export class AppEditorMoreActions {
         // TODO: Share when published
 
         return <div class="ion-padding">
-            <a onClick={() => this.closePopover(EditorMoreAction.JUMP_TO)}><p>Jump to slide</p></a>
+            <a onClick={() => this.closePopover(MoreAction.JUMP_TO)}><p>Jump to slide</p></a>
             {this.renderFullscreenOption()}
-            <a onClick={() => this.closePopover(EditorMoreAction.REMOTE)}><p>Remote control</p></a>
+            <a onClick={() => this.closePopover(MoreAction.REMOTE)}><p>Remote control</p></a>
         </div>
     }
 
     private renderFullscreenOption() {
         if (!this.mobile) {
-            return <a onClick={() => this.closePopover(EditorMoreAction.FULLSCREEN)}><p>Fullscreen</p></a>;
+            return <a onClick={() => this.closePopover(MoreAction.FULLSCREEN)}><p>Fullscreen</p></a>;
         } else {
             return undefined;
         }

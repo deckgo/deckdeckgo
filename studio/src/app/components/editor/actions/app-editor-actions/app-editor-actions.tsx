@@ -3,7 +3,7 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {SlideTemplate} from '../../../../models/data/slide';
 
-import {EditorMoreAction} from '../../../../popovers/editor/app-editor-more-actions/editor-more-action';
+import {MoreAction} from '../../../../popovers/editor/app-more-actions/more-action';
 
 import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 import {AnonymousService} from '../../../../services/editor/anonymous/anonymous.service';
@@ -137,18 +137,18 @@ export class AppEditorActions {
         }
 
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-editor-more-actions',
+            component: 'app-more-actions',
             event: $event,
             mode: 'ios'
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data) {
-                if (detail.data.action === EditorMoreAction.FULLSCREEN) {
+                if (detail.data.action === MoreAction.FULLSCREEN) {
                     await this.toggleFullScreen.emit();
-                } else if (detail.data.action === EditorMoreAction.JUMP_TO) {
+                } else if (detail.data.action === MoreAction.JUMP_TO) {
                     await this.openSlideNavigate();
-                } else if (detail.data.action === EditorMoreAction.REMOTE) {
+                } else if (detail.data.action === MoreAction.REMOTE) {
                     await this.openRemoteControl();
                 }
             }

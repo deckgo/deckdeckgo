@@ -1,4 +1,4 @@
-export enum EditorMoreAction {
+export enum MoreAction {
     FULLSCREEN,
     JUMP_TO,
     REMOTE
