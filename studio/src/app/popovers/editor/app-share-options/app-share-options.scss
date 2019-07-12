@@ -1,0 +1,10 @@
+app-share-options {
+  a {
+    color: inherit;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--ion-color-tertiary);
+    }
+  }
+}

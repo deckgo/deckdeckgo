@@ -1,5 +1,4 @@
 import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
-import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
@@ -312,10 +311,6 @@ export class AppEditor {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-publish',
             cssClass: 'fullscreen'
-        });
-
-        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-            // TODO Publish or publish from the modal and do nothing here?
         });
 
         await modal.present();

@@ -190,6 +190,8 @@ export class AppEditorActions {
                     <ion-label>Remote</ion-label>
                 </ion-tab-button>
 
+                <app-share-action class="wider-devices"></app-share-action>
+
                 <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices"
                                 mode="md">
                     <ion-icon name="more" md="md-more" ios="md-more"></ion-icon>

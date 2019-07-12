@@ -102,6 +102,11 @@ export namespace Components {
   interface AppRoot {}
   interface AppServices {}
   interface AppSettings {}
+  interface AppShareAction {}
+  interface AppShareDeck {
+    'openShare': () => Promise<void>;
+  }
+  interface AppShareOptions {}
   interface AppSignin {
     'redirect': string;
     'redirectId': string;
@@ -365,6 +370,24 @@ declare global {
     new (): HTMLAppSettingsElement;
   };
 
+  interface HTMLAppShareActionElement extends Components.AppShareAction, HTMLStencilElement {}
+  var HTMLAppShareActionElement: {
+    prototype: HTMLAppShareActionElement;
+    new (): HTMLAppShareActionElement;
+  };
+
+  interface HTMLAppShareDeckElement extends Components.AppShareDeck, HTMLStencilElement {}
+  var HTMLAppShareDeckElement: {
+    prototype: HTMLAppShareDeckElement;
+    new (): HTMLAppShareDeckElement;
+  };
+
+  interface HTMLAppShareOptionsElement extends Components.AppShareOptions, HTMLStencilElement {}
+  var HTMLAppShareOptionsElement: {
+    prototype: HTMLAppShareOptionsElement;
+    new (): HTMLAppShareOptionsElement;
+  };
+
   interface HTMLAppSigninElement extends Components.AppSignin, HTMLStencilElement {}
   var HTMLAppSigninElement: {
     prototype: HTMLAppSigninElement;
@@ -459,6 +482,9 @@ declare global {
     'app-root': HTMLAppRootElement;
     'app-services': HTMLAppServicesElement;
     'app-settings': HTMLAppSettingsElement;
+    'app-share-action': HTMLAppShareActionElement;
+    'app-share-deck': HTMLAppShareDeckElement;
+    'app-share-options': HTMLAppShareOptionsElement;
     'app-signin': HTMLAppSigninElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-slide-type': HTMLAppSlideTypeElement;
@@ -565,6 +591,7 @@ declare namespace LocalJSX {
   interface AppPrivacy extends JSXBase.HTMLAttributes<HTMLAppPrivacyElement> {}
   interface AppPublish extends JSXBase.HTMLAttributes<HTMLAppPublishElement> {}
   interface AppPublishDone extends JSXBase.HTMLAttributes<HTMLAppPublishDoneElement> {
+    'onOpenShare'?: (event: CustomEvent<void>) => void;
     'publishedUrl'?: string;
   }
   interface AppPublishEdit extends JSXBase.HTMLAttributes<HTMLAppPublishEditElement> {
@@ -574,6 +601,12 @@ declare namespace LocalJSX {
   interface AppRoot extends JSXBase.HTMLAttributes<HTMLAppRootElement> {}
   interface AppServices extends JSXBase.HTMLAttributes<HTMLAppServicesElement> {}
   interface AppSettings extends JSXBase.HTMLAttributes<HTMLAppSettingsElement> {}
+  interface AppShareAction extends JSXBase.HTMLAttributes<HTMLAppShareActionElement> {
+    'onActionPublish'?: (event: CustomEvent<void>) => void;
+    'onOpenShare'?: (event: CustomEvent<void>) => void;
+  }
+  interface AppShareDeck extends JSXBase.HTMLAttributes<HTMLAppShareDeckElement> {}
+  interface AppShareOptions extends JSXBase.HTMLAttributes<HTMLAppShareOptionsElement> {}
   interface AppSignin extends JSXBase.HTMLAttributes<HTMLAppSigninElement> {
     'redirect'?: string;
     'redirectId'?: string;
@@ -634,6 +667,9 @@ declare namespace LocalJSX {
     'app-root': AppRoot;
     'app-services': AppServices;
     'app-settings': AppSettings;
+    'app-share-action': AppShareAction;
+    'app-share-deck': AppShareDeck;
+    'app-share-options': AppShareOptions;
     'app-signin': AppSignin;
     'app-slide-navigate': AppSlideNavigate;
     'app-slide-type': AppSlideType;
