@@ -22,3 +22,7 @@ ion-popover.popover-menu {
     border-radius: 0;
   }
 }
+
+ion-popover.info {
+  --min-width: 300px;
+}

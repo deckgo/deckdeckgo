@@ -28,22 +28,7 @@ app-editor {
     overflow: hidden;
   }
 
-  ion-footer {
-    ion-tab-button {
-      ion-icon {
-        color: var(--ion-color-primary);
-      }
-    }
-
-    ion-buttons {
-      &.hidden {
-        visibility: hidden;
-      }
-    }
-  }
-
   deckgo-inline-editor {
-    --deckgo-inline-editor-button-mobile-color: var(--ion-color-dark);
     --deckgo-inline-editor-sticky-zindex: 10;
 
     --deckgo-inline-editor-mobile-background-top: var(--ion-color-primary);
@@ -66,26 +51,6 @@ app-editor {
   @media screen and (min-width: 1140px) {
     main {
       max-width: 960px;
-    }
-  }
-
-  @media screen and (max-width: 540px) {
-    ion-footer {
-      ion-tab-button {
-        &.wider-devices {
-          display: none;
-        }
-      }
-    }
-  }
-
-  @media screen and (min-width: 540px) {
-    ion-footer {
-      ion-tab-button {
-        &.small-devices {
-          display: none;
-        }
-      }
     }
   }
 }

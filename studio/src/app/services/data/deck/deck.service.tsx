@@ -97,7 +97,6 @@ export class DeckService {
 
                 resolve(decks);
             } catch (err) {
-                console.log(err);
                 reject(err);
             }
         });

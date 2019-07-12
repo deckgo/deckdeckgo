@@ -2,13 +2,12 @@ import {Component, h, Element, Method} from '@stencil/core';
 
 import {get, set} from 'idb-keyval';
 
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
+import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 
 @Component({
-    tag: 'app-help',
-    styleUrl: 'app-help.scss'
+    tag: 'app-help-action'
 })
-export class AppHelp {
+export class AppHelpAction {
 
     @Element() el: HTMLElement;
 
@@ -28,7 +27,8 @@ export class AppHelp {
     private async openGetHelp() {
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-get-help',
-            mode: 'ios'
+            mode: 'ios',
+            cssClass: 'info'
         });
 
         popover.onDidDismiss().then(async () => {
@@ -40,7 +40,7 @@ export class AppHelp {
 
     render() {
         return <ion-tab-button onClick={() => this.openGetHelp()} color="primary" mode="md" class="get-help-action">
-            <ion-icon name="help"></ion-icon>
+            <ion-icon name="help" md="md-help" ios="md-help"></ion-icon>
             <ion-label>Help</ion-label>
         </ion-tab-button>
     }
