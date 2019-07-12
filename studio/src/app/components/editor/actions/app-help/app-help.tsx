@@ -2,7 +2,7 @@ import {Component, h, Element, Method} from '@stencil/core';
 
 import {get, set} from 'idb-keyval';
 
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
+import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 
 @Component({
     tag: 'app-help',

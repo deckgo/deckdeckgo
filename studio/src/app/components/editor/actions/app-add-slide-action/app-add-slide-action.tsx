@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {BusyService} from '../../../services/editor/busy/busy.service';
+import {BusyService} from '../../../../services/editor/busy/busy.service';
 
 @Component({
     tag: 'app-add-slide-action',

@@ -1,13 +1,13 @@
 import {Component, Event, EventEmitter, h, Listen, Prop} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
-import {SlideTemplate} from '../../../models/data/slide';
+import {SlideTemplate} from '../../../../models/data/slide';
 
-import {EditorMoreAction} from '../../../popovers/editor/app-editor-more-actions/editor-more-action';
+import {EditorMoreAction} from '../../../../popovers/editor/app-editor-more-actions/editor-more-action';
 
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
-import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
-import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
+import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
+import {AnonymousService} from '../../../../services/editor/anonymous/anonymous.service';
+import {CreateSlidesUtils} from '../../../../utils/editor/create-slides.utils';
 
 @Component({
     tag: 'app-editor-actions',
