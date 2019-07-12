@@ -198,7 +198,7 @@ export class AppEditorActions {
             </ion-buttons>
 
             <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
-                <app-help></app-help>
+                <app-help-action></app-help-action>
             </ion-buttons>
         </ion-toolbar>
     }

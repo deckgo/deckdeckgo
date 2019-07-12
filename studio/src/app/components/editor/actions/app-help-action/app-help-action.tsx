@@ -5,10 +5,9 @@ import {get, set} from 'idb-keyval';
 import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 
 @Component({
-    tag: 'app-help',
-    styleUrl: 'app-help.scss'
+    tag: 'app-help-action'
 })
-export class AppHelp {
+export class AppHelpAction {
 
     @Element() el: HTMLElement;
 
