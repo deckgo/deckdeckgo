@@ -43,7 +43,6 @@ export namespace Components {
     'hideFooterActions': boolean;
     'slides': any[];
   }
-  interface AppEditorMoreActions {}
   interface AppEditorToolbar {
     'blurSelectedElement': () => Promise<void>;
     'hideToolbar': () => Promise<void>;
@@ -77,6 +76,7 @@ export namespace Components {
   interface AppInfoImages {}
   interface AppLogo {}
   interface AppMenu {}
+  interface AppMoreActions {}
   interface AppNavigation {
     'menuToggle': boolean;
     'presentation': boolean;
@@ -196,12 +196,6 @@ declare global {
     new (): HTMLAppEditorActionsElement;
   };
 
-  interface HTMLAppEditorMoreActionsElement extends Components.AppEditorMoreActions, HTMLStencilElement {}
-  var HTMLAppEditorMoreActionsElement: {
-    prototype: HTMLAppEditorMoreActionsElement;
-    new (): HTMLAppEditorMoreActionsElement;
-  };
-
   interface HTMLAppEditorToolbarElement extends Components.AppEditorToolbar, HTMLStencilElement {}
   var HTMLAppEditorToolbarElement: {
     prototype: HTMLAppEditorToolbarElement;
@@ -284,6 +278,12 @@ declare global {
   var HTMLAppMenuElement: {
     prototype: HTMLAppMenuElement;
     new (): HTMLAppMenuElement;
+  };
+
+  interface HTMLAppMoreActionsElement extends Components.AppMoreActions, HTMLStencilElement {}
+  var HTMLAppMoreActionsElement: {
+    prototype: HTMLAppMoreActionsElement;
+    new (): HTMLAppMoreActionsElement;
   };
 
   interface HTMLAppNavigationElement extends Components.AppNavigation, HTMLStencilElement {}
@@ -453,7 +453,6 @@ declare global {
     'app-developer': HTMLAppDeveloperElement;
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
-    'app-editor-more-actions': HTMLAppEditorMoreActionsElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
@@ -468,6 +467,7 @@ declare global {
     'app-info-images': HTMLAppInfoImagesElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
+    'app-more-actions': HTMLAppMoreActionsElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-newsletter': HTMLAppNewsletterElement;
@@ -536,7 +536,6 @@ declare namespace LocalJSX {
     'onToggleFullScreen'?: (event: CustomEvent<void>) => void;
     'slides'?: any[];
   }
-  interface AppEditorMoreActions extends JSXBase.HTMLAttributes<HTMLAppEditorMoreActionsElement> {}
   interface AppEditorToolbar extends JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement> {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
@@ -572,6 +571,7 @@ declare namespace LocalJSX {
   interface AppInfoImages extends JSXBase.HTMLAttributes<HTMLAppInfoImagesElement> {}
   interface AppLogo extends JSXBase.HTMLAttributes<HTMLAppLogoElement> {}
   interface AppMenu extends JSXBase.HTMLAttributes<HTMLAppMenuElement> {}
+  interface AppMoreActions extends JSXBase.HTMLAttributes<HTMLAppMoreActionsElement> {}
   interface AppNavigation extends JSXBase.HTMLAttributes<HTMLAppNavigationElement> {
     'menuToggle'?: boolean;
     'presentation'?: boolean;
@@ -638,7 +638,6 @@ declare namespace LocalJSX {
     'app-developer': AppDeveloper;
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
-    'app-editor-more-actions': AppEditorMoreActions;
     'app-editor-toolbar': AppEditorToolbar;
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;
@@ -653,6 +652,7 @@ declare namespace LocalJSX {
     'app-info-images': AppInfoImages;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
+    'app-more-actions': AppMoreActions;
     'app-navigation': AppNavigation;
     'app-navigation-actions': AppNavigationActions;
     'app-newsletter': AppNewsletter;
