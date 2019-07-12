@@ -61,8 +61,6 @@ export class AppShareDeck {
         return new Promise(async (resolve) => {
             const webSocialShare = this.el.shadowRoot.querySelector('web-social-share');
 
-            console.log(webSocialShare);
-
             if (!webSocialShare || !window) {
                 return;
             }

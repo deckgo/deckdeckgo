@@ -301,9 +301,9 @@ export class AppEditor {
             return;
         }
 
-        const couldAddSlide: boolean = await this.anonymousService.couldPublish(this.slides);
+        const couldPublish: boolean = await this.anonymousService.couldPublish(this.slides);
 
-        if (!couldAddSlide) {
+        if (!couldPublish) {
             await this.signIn();
             return;
         }

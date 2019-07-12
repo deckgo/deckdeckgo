@@ -26,9 +26,7 @@ export class AppMoreActions {
     }
 
     private async closeSharePopover($event: CustomEvent<MoreAction>) {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
-            action: $event ? $event.detail : null
-        });
+        await this.closePopover($event ? $event.detail : null);
     }
 
     render() {

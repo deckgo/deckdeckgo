@@ -93,8 +93,6 @@ export class AppRoot {
     async openShare() {
         const shareDeck: HTMLElement = this.el.querySelector('app-share-deck');
 
-        console.log(shareDeck);
-
         if (!shareDeck) {
             return;
         }
