@@ -23,6 +23,10 @@ export class AppMoreShareOptions {
     private deckEditorService: DeckEditorService;
     private subscription: Subscription;
 
+    constructor() {
+        this.deckEditorService = DeckEditorService.getInstance();
+    }
+
     componentWillLoad() {
         this.subscription = this.deckEditorService.watch().subscribe(async (deck: Deck) => {
             this.published = deck && deck.data && deck.data.meta && deck.data.meta.published;
@@ -44,7 +48,7 @@ export class AppMoreShareOptions {
 
     private renderUpdate() {
         if (this.published) {
-            return <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}><p>Update published presentation</p></a>;
+            return <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}><p>Update your published presentation</p></a>;
         } else {
             return undefined;
         }
