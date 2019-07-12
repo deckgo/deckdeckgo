@@ -185,7 +185,7 @@ export class AppEditorActions {
                 <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices"
                                 mode="md">
                     <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
-                    <ion-label>Jump to</ion-label>
+                    <ion-label>Go to slide</ion-label>
                 </ion-tab-button>
 
                 <ion-tab-button onClick={() => this.toggleFullScreen.emit()} color="primary" class="wider-devices" mode="md">
