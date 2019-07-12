@@ -51,14 +51,14 @@ export class AppPublishDone {
 
                 <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your presentation has been published.</h1>
 
-                <p>Time to <a onClick={() => this.openShare.emit()}><strong>share</strong></a> it with the world, your colleagues, friends and community.</p>
+                <p class="ion-text-center">It's time to <a onClick={() => this.openShare.emit()}>share</a> it with the world, your colleagues, friends and community.</p>
 
                 <ion-button color="tertiary" shape="round" onClick={() => this.openShare.emit()} class="ion-margin">
                     <ion-icon name="share" slot="start"></ion-icon>
                     <ion-label>Share</ion-label>
                 </ion-button>
 
-                <ion-label class="published-url ion-padding ion-text-center">Your presentation is available at the following address: <a href={this.publishedUrl} target="_blank">{this.publishedUrl}</a></ion-label>
+                <ion-label class="published-url ion-padding ion-text-center">Or <a href={this.publishedUrl} target="_blank">click here</a> to open it.</ion-label>
             </article>
     }
 

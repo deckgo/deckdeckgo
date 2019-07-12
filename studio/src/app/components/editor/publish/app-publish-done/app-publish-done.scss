@@ -21,6 +21,7 @@ app-publish-done {
 
     p {
       a {
+        color: var(--ion-color-tertiary);
         cursor: pointer;
 
         &:hover {
@@ -30,10 +31,15 @@ app-publish-done {
     }
 
     ion-label.published-url {
-      font-size: var(--font-size-very-small);
+      font-size: var(--font-size-small);
 
       a {
         color: var(--ion-color-tertiary);
+        text-decoration: none;
+
+        &:hover {
+          border-bottom: 1px solid var(--ion-color-tertiary);
+        }
       }
     }
   }
