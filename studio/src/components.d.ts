@@ -63,7 +63,7 @@ export namespace Components {
   interface AppFooter {}
   interface AppGetHelp {}
   interface AppGif {}
-  interface AppHelp {
+  interface AppHelpAction {
     'displayHelp': () => Promise<void>;
   }
   interface AppHome {}
@@ -239,10 +239,10 @@ declare global {
     new (): HTMLAppGifElement;
   };
 
-  interface HTMLAppHelpElement extends Components.AppHelp, HTMLStencilElement {}
-  var HTMLAppHelpElement: {
-    prototype: HTMLAppHelpElement;
-    new (): HTMLAppHelpElement;
+  interface HTMLAppHelpActionElement extends Components.AppHelpAction, HTMLStencilElement {}
+  var HTMLAppHelpActionElement: {
+    prototype: HTMLAppHelpActionElement;
+    new (): HTMLAppHelpActionElement;
   };
 
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
@@ -438,7 +438,7 @@ declare global {
     'app-footer': HTMLAppFooterElement;
     'app-get-help': HTMLAppGetHelpElement;
     'app-gif': HTMLAppGifElement;
-    'app-help': HTMLAppHelpElement;
+    'app-help-action': HTMLAppHelpActionElement;
     'app-home': HTMLAppHomeElement;
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
@@ -533,7 +533,7 @@ declare namespace LocalJSX {
   interface AppFooter extends JSXBase.HTMLAttributes<HTMLAppFooterElement> {}
   interface AppGetHelp extends JSXBase.HTMLAttributes<HTMLAppGetHelpElement> {}
   interface AppGif extends JSXBase.HTMLAttributes<HTMLAppGifElement> {}
-  interface AppHelp extends JSXBase.HTMLAttributes<HTMLAppHelpElement> {}
+  interface AppHelpAction extends JSXBase.HTMLAttributes<HTMLAppHelpActionElement> {}
   interface AppHome extends JSXBase.HTMLAttributes<HTMLAppHomeElement> {}
   interface AppImage extends JSXBase.HTMLAttributes<HTMLAppImageElement> {
     'deckOrSlide'?: boolean;
@@ -613,7 +613,7 @@ declare namespace LocalJSX {
     'app-footer': AppFooter;
     'app-get-help': AppGetHelp;
     'app-gif': AppGif;
-    'app-help': AppHelp;
+    'app-help-action': AppHelpAction;
     'app-home': AppHome;
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
