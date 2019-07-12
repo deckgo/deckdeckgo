@@ -1,5 +1,7 @@
-import {Component, Event, EventEmitter, h, Listen, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Listen, Method, Prop} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
+
+import {get, set} from 'idb-keyval';
 
 import {SlideTemplate} from '../../../../models/data/slide';
 
@@ -15,6 +17,8 @@ import {CreateSlidesUtils} from '../../../../utils/editor/create-slides.utils';
     shadow: false
 })
 export class AppEditorActions {
+
+    @Element() el: HTMLElement;
 
     @Prop()
     hideFooterActions: boolean = true;
@@ -45,6 +49,17 @@ export class AppEditorActions {
         this.anonymousService = AnonymousService.getInstance();
     }
 
+    @Method()
+    displayHelp(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const help: HTMLElement = this.el.querySelector('app-help-action');
+            if (help) {
+                await (help as any).displayHelp();
+            }
+
+            resolve();
+        });
+    }
 
     async onActionOpenSlideAdd($event: CustomEvent) {
         if (!$event || !$event.detail) {
@@ -149,7 +164,7 @@ export class AppEditorActions {
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data) {
                 if (detail.data.action === MoreAction.FULLSCREEN) {
-                    await this.toggleFullScreen.emit();
+                    await this.toggleFullScreenMode();
                 } else if (detail.data.action === MoreAction.JUMP_TO) {
                     await this.openSlideNavigate();
                 } else if (detail.data.action === MoreAction.REMOTE) {
@@ -160,6 +175,36 @@ export class AppEditorActions {
                     this.actionPublish.emit();
                 }
             }
+        });
+
+        await popover.present();
+    }
+
+    private toggleFullScreenMode(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            await this.toggleFullScreen.emit();
+
+            await this.openFullscreenInfo();
+
+            resolve();
+        });
+    }
+
+    private async openFullscreenInfo() {
+        const infoDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_fullscreen_info');
+
+        if (infoDisplayedOnce) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+            component: 'app-fullscreen-info',
+            mode: 'ios',
+            cssClass: 'info'
+        });
+
+        popover.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+            await set('deckdeckgo_display_fullscreen_info', true);
         });
 
         await popover.present();
@@ -188,7 +233,7 @@ export class AppEditorActions {
                     <ion-label>Go to slide</ion-label>
                 </ion-tab-button>
 
-                <ion-tab-button onClick={() => this.toggleFullScreen.emit()} color="primary" class="wider-devices" mode="md">
+                <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices" mode="md">
                     {this.renderFullscreen()}
                 </ion-tab-button>
 

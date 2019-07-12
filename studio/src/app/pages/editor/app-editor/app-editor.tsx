@@ -442,9 +442,10 @@ export class AppEditor {
 
     private showHelp(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-           const help: HTMLElement = this.el.querySelector('app-help');
-           if (help) {
-               await (help as any).displayHelp();
+           const actions: HTMLElement = this.el.querySelector('app-editor-actions');
+
+           if (actions) {
+               await (actions as any).displayHelp();
            }
 
            resolve();

@@ -42,6 +42,7 @@ export namespace Components {
     'deckId': string;
   }
   interface AppEditorActions {
+    'displayHelp': () => Promise<void>;
     'fullscreen': boolean;
     'hideFooterActions': boolean;
     'slides': any[];
@@ -63,6 +64,7 @@ export namespace Components {
     'tags': string[];
   }
   interface AppFooter {}
+  interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
   interface AppHelpAction {
@@ -228,6 +230,12 @@ declare global {
   var HTMLAppFooterElement: {
     prototype: HTMLAppFooterElement;
     new (): HTMLAppFooterElement;
+  };
+
+  interface HTMLAppFullscreenInfoElement extends Components.AppFullscreenInfo, HTMLStencilElement {}
+  var HTMLAppFullscreenInfoElement: {
+    prototype: HTMLAppFullscreenInfoElement;
+    new (): HTMLAppFullscreenInfoElement;
   };
 
   interface HTMLAppGetHelpElement extends Components.AppGetHelp, HTMLStencilElement {}
@@ -468,6 +476,7 @@ declare global {
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-card-tags': HTMLAppFeedCardTagsElement;
     'app-footer': HTMLAppFooterElement;
+    'app-fullscreen-info': HTMLAppFullscreenInfoElement;
     'app-get-help': HTMLAppGetHelpElement;
     'app-gif': HTMLAppGifElement;
     'app-help-action': HTMLAppHelpActionElement;
@@ -569,6 +578,7 @@ declare namespace LocalJSX {
     'tags'?: string[];
   }
   interface AppFooter extends JSXBase.HTMLAttributes<HTMLAppFooterElement> {}
+  interface AppFullscreenInfo extends JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement> {}
   interface AppGetHelp extends JSXBase.HTMLAttributes<HTMLAppGetHelpElement> {}
   interface AppGif extends JSXBase.HTMLAttributes<HTMLAppGifElement> {}
   interface AppHelpAction extends JSXBase.HTMLAttributes<HTMLAppHelpActionElement> {}
@@ -659,6 +669,7 @@ declare namespace LocalJSX {
     'app-feed-card': AppFeedCard;
     'app-feed-card-tags': AppFeedCardTags;
     'app-footer': AppFooter;
+    'app-fullscreen-info': AppFullscreenInfo;
     'app-get-help': AppGetHelp;
     'app-gif': AppGif;
     'app-help-action': AppHelpAction;
