@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "docs": "tsc --p ./scripts && node ./.deckgo/markdown-to-html",
-    "build": "npm run docs && stencil build",
+    "build": "npm run docs && stencil build --prerender",
     "start": "npm run docs && stencil build --dev --watch --serve",
     "test": "npm run docs && stencil test --spec --e2e",
     "test.watch": "npm run docs && stencil test --spec --e2e --watch"
