@@ -27,8 +27,6 @@ ion-split-pane {
 
           ion-item {
             --color: white;
-
-            --background-activated: var(--ion-color-primary);
           }
         }
 
@@ -123,6 +121,11 @@ ion-split-pane {
 
       ion-content {
         ion-list {
+          ion-item, ion-item-divider {
+            --background-hover: var(--ion-color-secondary);
+            --background-activated: var(--ion-color-secondary);
+          }
+
           ion-item-divider {
             --color: var(--ion-color-light);
           }

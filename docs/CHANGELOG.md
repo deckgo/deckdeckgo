@@ -4,6 +4,7 @@
 ### Features
 
 * add new component social option `dev`
+* style menu hover in dark mode
 
 <a name="1.0.0-alpha.19"></a>
 # 1.0.0-alpha.19 (2019-07-11)
