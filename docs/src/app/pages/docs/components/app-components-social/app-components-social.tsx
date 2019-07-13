@@ -87,6 +87,12 @@ export class AppComponentsSocial {
 <td>Your Medium username. It will be concatenated automatically with <code>https://medium.com/@</code></td>
 </tr>
 <tr>
+<td>dev</td>
+<td>string</td>
+<td></td>
+<td>Your Dev username. It will be concatenated automatically with <code>https://dev.to/</code></td>
+</tr>
+<tr>
 <td>github</td>
 <td>string</td>
 <td></td>

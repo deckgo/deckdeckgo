@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.41"></a>
+# 1.0.0-beta.41 (2019-06-13)
+
+### Features
+
+* add `dev.to` to the social component
+
 <a name="1.0.0-beta.40"></a>
 # 1.0.0-beta.40 (2019-06-24)
 
