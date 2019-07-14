@@ -6,7 +6,7 @@ rec
       ''
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
-        cp "${handlerStatic}/bin/handler" main_hs
+        cp "${handler}/bin/handler" main_hs
         mkdir $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';
@@ -22,7 +22,7 @@ rec
       ''
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
-        cp "${unsplashProxyStatic}/bin/unsplash-proxy" main_hs
+        cp "${unsplashProxy}/bin/unsplash-proxy" main_hs
         mkdir $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';
@@ -37,7 +37,7 @@ rec
       ''
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
-        cp "${googleKeyUpdaterStatic}/bin/google-key-updater" main_hs
+        cp "${googleKeyUpdater}/bin/google-key-updater" main_hs
         mkdir $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';
@@ -52,7 +52,7 @@ rec
       ''
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
-        cp "${handlerStatic}/bin/presenter" main_hs
+        cp "${handler}/bin/presenter" main_hs
         cp ${deckdeckgo-starter-dist}/dist.tar dist.tar
         mkdir -p $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist.tar
@@ -61,7 +61,7 @@ rec
   deckdeckgo-starter-dist =
     with
       { napalm = import pkgs.sources.napalm { inherit pkgs;} ; };
-    pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs-10_x ]; }
+    pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs-12_x ]; }
       ''
         cp -r ${napalm.buildPackage pkgs.sources.deckdeckgo-starter {}}/* .
         chmod +w -R _napalm-install
@@ -179,13 +179,10 @@ rec
         '';
      });
 
-  handlerStatic = pkgs.haskellPackagesStatic.deckdeckgo-handler;
   handler = pkgs.haskellPackages.deckdeckgo-handler;
 
-  unsplashProxyStatic = pkgs.haskellPackagesStatic.unsplash-proxy;
   unsplashProxy = pkgs.haskellPackages.unsplash-proxy;
 
-  googleKeyUpdaterStatic = pkgs.haskellPackagesStatic.google-key-updater;
   googleKeyUpdater = pkgs.haskellPackages.google-key-updater;
 
   dynamoJar = pkgs.runCommand "dynamodb-jar" { buildInputs = [ pkgs.gnutar ]; }

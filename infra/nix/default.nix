@@ -1,80 +1,86 @@
 {}:
 with rec
 { sources = import ./sources.nix;
-  pkgs = import sources.nixpkgs {};
-  wai-lambda = pkgs.callPackage "${sources.wai-lambda}/nix/packages.nix" {};
-  surveyor = pkgs.callPackage ../surveyor {};
-
-  pkgsStatic =
-    (import "${sources.static-haskell-nix}/survey"
-      { overlays = [ ] ; normalPkgs = import sources.nixpkgs {}; }).pkgs;
-
-  haskellOverride = isStaticBuild:
-    { overrides = self: super:
-      with rec
-        { pkgs' = if isStaticBuild then pkgsStatic.pkgsMusl else pkgs;
-          mkPackage = name: path:
-          with
-            { addStaticLinkerFlagsWithPkgconfig =
-                haskellDrv:
-                pkgConfigNixPackages:
-                pkgconfigFlagsString:
-                  pkgs'.haskell.lib.overrideCabal (pkgs'.haskell.lib.appendConfigureFlag haskellDrv [
-                    "--ld-option=--start-group"
-                  ]) (old: {
-                    preConfigure = builtins.concatStringsSep "\n" [
-                      (old.preConfigure or "")
-                      ''
-                        set -e
-                        configureFlags+=$(for flag in $(pkg-config --static ${pkgconfigFlagsString}); do echo -n " --ld-option=$flag"; done)
-                      ''
-                    ];
-                    libraryPkgconfigDepends = (old.libraryPkgconfigDepends or []) ++ pkgConfigNixPackages;
-                  });
-            };
-            { "${name}" =
-                with
-                  { drv =
-                    super.callCabal2nix name (pkgs'.lib.cleanSource path) {};
-                  };
-                with pkgs'.haskell.lib;
-                disableLibraryProfiling (
-                disableExecutableProfiling (
-                failOnAllWarnings (
-                  # TODO: _AND_ is executable that depends on openssl
-                  if isStaticBuild
-                  then
-                    let
-                      openssl_static = pkgs'.openssl.override { static = true; };
-                      in addStaticLinkerFlagsWithPkgconfig drv [openssl_static ] "--libs openssl"
-                  else drv
-              )));
-            };
-        };
-
-      super //
-        mkPackage "deckdeckgo-handler" ../handler //
-        ( mkPackage "wai-lambda" wai-lambda.wai-lambda-source ) //
-        ( mkPackage "firebase-login" ../firebase-login ) //
-        ( mkPackage "unsplash-proxy" ../unsplash-proxy ) //
-        ( mkPackage "google-key-updater" ../google-key-updater ) //
-        { jose = super.callCabal2nix "jose" sources.hs-jose {}; } //
-        { port-utils = super.callCabal2nix "port-utils" sources.port-utils {}; } ;
+  pkgs_ = import sources.nixpkgs {};
+  mkPackage = pkgs: hsuper: name: path:
+    with
+    { addStaticLinkerFlagsWithPkgconfig =
+        haskellDrv:
+        pkgConfigNixPackages:
+        pkgconfigFlagsString:
+        pkgs.haskell.lib.overrideCabal
+          (pkgs.haskell.lib.appendConfigureFlag haskellDrv
+            [ "--ld-option=-Wl,--start-group" ]
+          )
+          (old:
+            { preConfigure =
+                builtins.concatStringsSep "\n"
+                  [ (old.preConfigure or "")
+                    ''
+                      set -e
+                      configureFlags+=$(for flag in $(pkg-config --static ${pkgconfigFlagsString}); do echo -n " --ld-option=$flag"; done)
+                    ''
+                  ];
+              libraryPkgconfigDepends =
+                (old.libraryPkgconfigDepends or []) ++
+                pkgConfigNixPackages;
+            }
+          );
     };
-  normalHaskellPackages = pkgsStatic.pkgsMusl.haskellPackages.override
-    (haskellOverride true);
+    { ${name} =
+        with { drv = hsuper.callCabal2nix name (pkgs.lib.cleanSource path) {}; };
+        with pkgs.haskell.lib;
+        disableLibraryProfiling (
+        disableExecutableProfiling (
+          with { openssl_static = pkgs.openssl.override { static = true; }; };
+          addStaticLinkerFlagsWithPkgconfig drv [ openssl_static ]
+            "--libs openssl"
+        ));
+    };
 
-  haskellPackages = pkgs.haskellPackages.override
-    (haskellOverride false);
 
-  haskellPackagesStatic =
-    (import "${sources.static-haskell-nix}/survey"
-      { overlays = [ ] ; normalPkgs = pkgs; inherit normalHaskellPackages; }
-    ).haskellPackages;
+  pkgs = import sources.nixpkgs
+    { overlays =
+        [ (_: pkgs: pkgs.lib.recursiveUpdate pkgs
+            { haskell = pkgs.lib.recursiveUpdate pkgs.haskell
+              { packages = pkgs.lib.recursiveUpdate pkgs.haskell.packages
+                { ghc864 = pkgs.haskell.packages.ghc864.override
+                  (old:
+                    { overrides =
+                        pkgs.lib.composeExtensions
+                        (old.overrides or (_: _: {}))
+                        (hself: hsuper:
+                          mkPackage pkgs hsuper "deckdeckgo-handler"
+                            ../handler //
+                          mkPackage pkgs hsuper "firebase-login"
+                            ../firebase-login //
+                          mkPackage pkgs hsuper "unsplash-proxy"
+                            ../unsplash-proxy //
+                          mkPackage pkgs hsuper "wai-lambda"
+                            wai-lambda.wai-lambda-source //
+                          mkPackage pkgs hsuper "google-key-updater"
+                            ../google-key-updater
+                        );
+                    }
+                  );
+                };
+              };
+
+              nix = pkgs_.nix;
+              git = pkgs_.git;
+              subversion = pkgs_.subversion;
+            }
+          )
+        ];
+    };
+
+  wai-lambda = pkgs.callPackage "${sources.wai-lambda}/nix/packages.nix" {};
+
+  survey = import ~/static-haskell-nix/survey
+    { normalPkgs = pkgs; };
+
+  haskellPackages =
+    survey.pkgsWithStaticHaskellBinaries.haskellPackages;
 };
 
-pkgs //
-{ inherit haskellPackagesStatic haskellPackages sources wai-lambda;
-  inherit (surveyor) surveyor;
-  inherit (import sources.niv {}) niv;
-}
+pkgs // { inherit haskellPackages sources wai-lambda; }
