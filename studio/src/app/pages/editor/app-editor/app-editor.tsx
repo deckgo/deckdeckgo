@@ -363,6 +363,12 @@ export class AppEditor {
                 return;
             }
 
+            // Click on the pager
+            if (!($event.target as HTMLElement).nodeName || ($event.target as HTMLElement).nodeName.toLowerCase() === 'deckgo-deck') {
+                resolve();
+                return;
+            }
+
             const element: HTMLElement = $event.target as HTMLElement;
 
             await this.touchToolbar(element);

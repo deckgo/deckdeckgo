@@ -388,6 +388,11 @@ export class AppEditorToolbar {
         });
     }
 
+    @Listen('pagerClick', {target: 'document'})
+    async onPagerClick() {
+        await this.hideToolbar();
+    }
+
     @Method()
     hideToolbar(): Promise<void> {
         return new Promise<void>(async (resolve) => {
