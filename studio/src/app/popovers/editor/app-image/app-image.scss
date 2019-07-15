@@ -1,6 +1,10 @@
 app-image {
   @import "../../../../global/theme/editor/editor-info";
 
+  ion-toolbar {
+    padding: 16px;
+  }
+
   ion-list.list-ios {
     margin-bottom: 0;
     padding-top: 8px;
