@@ -439,7 +439,13 @@ export class AppEditor {
 
             const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
             elements.forEach((e: HTMLElement) => {
-                e.setAttribute(e.nodeName && e.nodeName.toLowerCase() === SlotType.CODE ? 'editable' : 'contentEditable', '');
+                if (e.nodeName) {
+                    if (e.nodeName.toLowerCase() === SlotType.CODE) {
+                        e.setAttribute('editable', '');
+                    } else if (e.nodeName.toLowerCase() !== SlotType.SOCIAL) {
+                        e.setAttribute('contentEditable', '');
+                    }
+                }
             });
 
             resolve();
