@@ -332,7 +332,7 @@ export class AppCode {
     }
 
     render() {
-        return [<ion-toolbar class="ion-margin ion-padding-end">
+        return [<ion-toolbar>
                 <h2>Code attributes</h2>
                 <ion-router-link slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-router-link>
             </ion-toolbar>,
