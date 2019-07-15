@@ -63,10 +63,14 @@ app-slide-type {
     }
 
     deckgo-slide-author {
-      --slide-author-padding-top: 4px;
+      --slide-author-padding-top: 18px;
       --slide-author-padding-bottom: 4px;
       --slide-author-padding-start: 8px;
       --slide-author-padding-end: 16px;
+
+      @media screen and (max-width: 1024px) {
+        --slide-author-padding-top: 4px;
+      }
     }
 
     h1, p {
@@ -104,6 +108,12 @@ app-slide-type {
 
     deckgo-slide-author {
       --slide-author-social-padding-top: 8px;
+
+      @media screen and (max-width: 768px) {
+        p:nth-child(n+6) {
+          display: none;
+        }
+      }
 
       p {
         min-height: inherit;
