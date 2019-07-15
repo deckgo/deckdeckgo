@@ -28,4 +28,12 @@ deckgo-deck {
     }
   }
 
+  deckgo-slide-author {
+    h1, h2, h3, section {
+      &:empty:not(:focus):after {
+        content: "Click to tell something about yourself";
+      }
+    }
+  }
+
 }

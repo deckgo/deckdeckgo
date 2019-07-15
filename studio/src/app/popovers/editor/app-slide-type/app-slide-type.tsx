@@ -21,6 +21,8 @@ export class AppSlideType {
     @State()
     private photoUrl: string;
 
+    private user: User;
+
     private userService: UserService;
 
     constructor() {
@@ -31,6 +33,7 @@ export class AppSlideType {
         this.userService.watch().pipe(
             filter((user: User) => user !== null && user !== undefined && user.data && !user.data.anonymous),
             take(1)).subscribe(async (user: User) => {
+            this.user = user;
             this.photoUrl = user && user.data && user.data.photo_url ? user.data.photo_url : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg';
         });
     }
@@ -63,7 +66,7 @@ export class AppSlideType {
     }
 
     private async addSlide(template: SlideTemplate) {
-        const slide: any = await CreateSlidesUtils.createSlide(template);
+        const slide: any = await CreateSlidesUtils.createSlide(template, this.user);
         await this.closePopover(template, slide);
     }
 
@@ -125,7 +128,12 @@ export class AppSlideType {
                                          img-alt="Author">
                         <p slot="title">Author</p>
                         <p slot="author">About you</p>
-                        <p slot="social-link">Your social links</p>
+                        <p slot="social-link">Twitter</p>
+                        <p slot="social-link">LinkedIn</p>
+                        <p slot="social-link">Dev</p>
+                        <p slot="social-link">Medium</p>
+                        <p slot="social-link">Github</p>
+                        <p slot="social-link">Web</p>
                     </deckgo-slide-author>
                 </div>
             </div>

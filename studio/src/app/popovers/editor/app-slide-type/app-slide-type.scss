@@ -63,14 +63,10 @@ app-slide-type {
     }
 
     deckgo-slide-author {
-      --slide-author-padding-top: 18px;
+      --slide-author-padding-top: 12px;
       --slide-author-padding-bottom: 4px;
       --slide-author-padding-start: 8px;
       --slide-author-padding-end: 16px;
-
-      p {
-        min-height: inherit;
-      }
     }
 
     h1, p {
@@ -103,6 +99,17 @@ app-slide-type {
       p {
         min-height: inherit;
         width: inherit;
+      }
+    }
+
+    deckgo-slide-author {
+      p {
+        min-height: inherit;
+        margin: 0;
+
+        &[slot="social-link"] {
+          font-size: calc(var(--font-size-very-small) * 0.6);
+        }
       }
     }
   }
