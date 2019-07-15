@@ -1,5 +1,15 @@
+<a name="1.0.0-beta.50"></a>
+# [1.0.0-beta.50](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.49...v1.0.0-beta.50) (2019-07-13)
+
+### Applications
+
+* docs: v1.0.0-alpha.20 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
+### Web Components
+
+
 <a name="1.0.0-beta.49"></a>
-# [1.0.0-beta.49](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.49...v1.0.0-beta.49) (2019-07-11)
+# [1.0.0-beta.49](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.48-1...v1.0.0-beta.49) (2019-07-11)
 
 ### Applications
 
@@ -24,6 +34,8 @@
 * docs: v1.0.0-alpha.18 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 
 ### Web Components
+
+* core: v1.0.0-beta.41 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 
 * lazy-img: v1.0.0-alpha.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
 

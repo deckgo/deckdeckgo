@@ -8,7 +8,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build",
+    "build": "stencil build --prerender",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watch"
@@ -25,7 +25,7 @@
     "firebase": "^6.2.4",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.2",
-    "web-social-share": "^6.0.0"
+    "web-social-share": "^6.1.0"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.11",

@@ -3,6 +3,12 @@ app-publish-edit {
     margin-bottom: 0;
   }
 
+  ion-list.list-ios {
+    margin-bottom: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
   app-feed-card-tags {
     --card-tags-background: rgba(var(--ion-color-tertiary-rgb), 0.08);
     --card-tags-color: var(--ion-color-tertiary-shade);

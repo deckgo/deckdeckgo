@@ -8,7 +8,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build",
+    "build": "stencil build --prerender",
     "start": "stencil build --watch --serve",
     "dev": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",

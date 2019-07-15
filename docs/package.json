@@ -8,14 +8,14 @@
   ],
   "scripts": {
     "docs": "tsc --p ./scripts && node ./.deckgo/markdown-to-html",
-    "build": "npm run docs && stencil build",
+    "build": "npm run docs && stencil build --prerender",
     "start": "npm run docs && stencil build --dev --watch --serve",
     "test": "npm run docs && stencil test --spec --e2e",
     "test.watch": "npm run docs && stencil test --spec --e2e --watch"
   },
   "dependencies": {
     "@deckdeckgo/charts": "^1.0.0-alpha.8",
-    "@deckdeckgo/core": "^1.0.0-beta.40",
+    "@deckdeckgo/core": "^1.0.0-beta.41",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.16",
     "@deckdeckgo/inline-editor": "^1.0.0-alpha.10",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.9",

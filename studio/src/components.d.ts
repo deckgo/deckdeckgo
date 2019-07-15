@@ -12,6 +12,9 @@ import {
 import {
   Deck,
 } from './app/models/data/deck';
+import {
+  MoreAction,
+} from './app/utils/editor/more-action';
 
 export namespace Components {
   interface AppAbout {}
@@ -38,7 +41,12 @@ export namespace Components {
   interface AppEditor {
     'deckId': string;
   }
-  interface AppEditorActions {}
+  interface AppEditorActions {
+    'displayHelp': () => Promise<void>;
+    'fullscreen': boolean;
+    'hideFooterActions': boolean;
+    'slides': any[];
+  }
   interface AppEditorToolbar {
     'blurSelectedElement': () => Promise<void>;
     'hideToolbar': () => Promise<void>;
@@ -56,9 +64,10 @@ export namespace Components {
     'tags': string[];
   }
   interface AppFooter {}
+  interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
-  interface AppHelp {
+  interface AppHelpAction {
     'displayHelp': () => Promise<void>;
   }
   interface AppHome {}
@@ -72,6 +81,8 @@ export namespace Components {
   interface AppInfoImages {}
   interface AppLogo {}
   interface AppMenu {}
+  interface AppMoreActions {}
+  interface AppMoreShareOptions {}
   interface AppNavigation {
     'menuToggle': boolean;
     'presentation': boolean;
@@ -97,6 +108,11 @@ export namespace Components {
   interface AppRoot {}
   interface AppServices {}
   interface AppSettings {}
+  interface AppShareAction {}
+  interface AppShareDeck {
+    'openShare': () => Promise<void>;
+  }
+  interface AppShareOptions {}
   interface AppSignin {
     'redirect': string;
     'redirectId': string;
@@ -216,6 +232,12 @@ declare global {
     new (): HTMLAppFooterElement;
   };
 
+  interface HTMLAppFullscreenInfoElement extends Components.AppFullscreenInfo, HTMLStencilElement {}
+  var HTMLAppFullscreenInfoElement: {
+    prototype: HTMLAppFullscreenInfoElement;
+    new (): HTMLAppFullscreenInfoElement;
+  };
+
   interface HTMLAppGetHelpElement extends Components.AppGetHelp, HTMLStencilElement {}
   var HTMLAppGetHelpElement: {
     prototype: HTMLAppGetHelpElement;
@@ -228,10 +250,10 @@ declare global {
     new (): HTMLAppGifElement;
   };
 
-  interface HTMLAppHelpElement extends Components.AppHelp, HTMLStencilElement {}
-  var HTMLAppHelpElement: {
-    prototype: HTMLAppHelpElement;
-    new (): HTMLAppHelpElement;
+  interface HTMLAppHelpActionElement extends Components.AppHelpAction, HTMLStencilElement {}
+  var HTMLAppHelpActionElement: {
+    prototype: HTMLAppHelpActionElement;
+    new (): HTMLAppHelpActionElement;
   };
 
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
@@ -268,6 +290,18 @@ declare global {
   var HTMLAppMenuElement: {
     prototype: HTMLAppMenuElement;
     new (): HTMLAppMenuElement;
+  };
+
+  interface HTMLAppMoreActionsElement extends Components.AppMoreActions, HTMLStencilElement {}
+  var HTMLAppMoreActionsElement: {
+    prototype: HTMLAppMoreActionsElement;
+    new (): HTMLAppMoreActionsElement;
+  };
+
+  interface HTMLAppMoreShareOptionsElement extends Components.AppMoreShareOptions, HTMLStencilElement {}
+  var HTMLAppMoreShareOptionsElement: {
+    prototype: HTMLAppMoreShareOptionsElement;
+    new (): HTMLAppMoreShareOptionsElement;
   };
 
   interface HTMLAppNavigationElement extends Components.AppNavigation, HTMLStencilElement {}
@@ -354,6 +388,24 @@ declare global {
     new (): HTMLAppSettingsElement;
   };
 
+  interface HTMLAppShareActionElement extends Components.AppShareAction, HTMLStencilElement {}
+  var HTMLAppShareActionElement: {
+    prototype: HTMLAppShareActionElement;
+    new (): HTMLAppShareActionElement;
+  };
+
+  interface HTMLAppShareDeckElement extends Components.AppShareDeck, HTMLStencilElement {}
+  var HTMLAppShareDeckElement: {
+    prototype: HTMLAppShareDeckElement;
+    new (): HTMLAppShareDeckElement;
+  };
+
+  interface HTMLAppShareOptionsElement extends Components.AppShareOptions, HTMLStencilElement {}
+  var HTMLAppShareOptionsElement: {
+    prototype: HTMLAppShareOptionsElement;
+    new (): HTMLAppShareOptionsElement;
+  };
+
   interface HTMLAppSigninElement extends Components.AppSignin, HTMLStencilElement {}
   var HTMLAppSigninElement: {
     prototype: HTMLAppSigninElement;
@@ -424,15 +476,18 @@ declare global {
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-card-tags': HTMLAppFeedCardTagsElement;
     'app-footer': HTMLAppFooterElement;
+    'app-fullscreen-info': HTMLAppFullscreenInfoElement;
     'app-get-help': HTMLAppGetHelpElement;
     'app-gif': HTMLAppGifElement;
-    'app-help': HTMLAppHelpElement;
+    'app-help-action': HTMLAppHelpActionElement;
     'app-home': HTMLAppHomeElement;
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
     'app-info-images': HTMLAppInfoImagesElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
+    'app-more-actions': HTMLAppMoreActionsElement;
+    'app-more-share-options': HTMLAppMoreShareOptionsElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-newsletter': HTMLAppNewsletterElement;
@@ -447,6 +502,9 @@ declare global {
     'app-root': HTMLAppRootElement;
     'app-services': HTMLAppServicesElement;
     'app-settings': HTMLAppSettingsElement;
+    'app-share-action': HTMLAppShareActionElement;
+    'app-share-deck': HTMLAppShareDeckElement;
+    'app-share-options': HTMLAppShareOptionsElement;
     'app-signin': HTMLAppSigninElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
     'app-slide-type': HTMLAppSlideTypeElement;
@@ -488,7 +546,18 @@ declare namespace LocalJSX {
   interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
     'deckId'?: string;
   }
-  interface AppEditorActions extends JSXBase.HTMLAttributes<HTMLAppEditorActionsElement> {}
+  interface AppEditorActions extends JSXBase.HTMLAttributes<HTMLAppEditorActionsElement> {
+    'fullscreen'?: boolean;
+    'hideFooterActions'?: boolean;
+    'onActionPublish'?: (event: CustomEvent<void>) => void;
+    'onAddSlide'?: (event: CustomEvent<any>) => void;
+    'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
+    'onOpenShare'?: (event: CustomEvent<void>) => void;
+    'onSignIn'?: (event: CustomEvent<void>) => void;
+    'onSlideTo'?: (event: CustomEvent<number>) => void;
+    'onToggleFullScreen'?: (event: CustomEvent<void>) => void;
+    'slides'?: any[];
+  }
   interface AppEditorToolbar extends JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement> {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
@@ -509,9 +578,10 @@ declare namespace LocalJSX {
     'tags'?: string[];
   }
   interface AppFooter extends JSXBase.HTMLAttributes<HTMLAppFooterElement> {}
+  interface AppFullscreenInfo extends JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement> {}
   interface AppGetHelp extends JSXBase.HTMLAttributes<HTMLAppGetHelpElement> {}
   interface AppGif extends JSXBase.HTMLAttributes<HTMLAppGifElement> {}
-  interface AppHelp extends JSXBase.HTMLAttributes<HTMLAppHelpElement> {}
+  interface AppHelpAction extends JSXBase.HTMLAttributes<HTMLAppHelpActionElement> {}
   interface AppHome extends JSXBase.HTMLAttributes<HTMLAppHomeElement> {}
   interface AppImage extends JSXBase.HTMLAttributes<HTMLAppImageElement> {
     'deckOrSlide'?: boolean;
@@ -524,6 +594,8 @@ declare namespace LocalJSX {
   interface AppInfoImages extends JSXBase.HTMLAttributes<HTMLAppInfoImagesElement> {}
   interface AppLogo extends JSXBase.HTMLAttributes<HTMLAppLogoElement> {}
   interface AppMenu extends JSXBase.HTMLAttributes<HTMLAppMenuElement> {}
+  interface AppMoreActions extends JSXBase.HTMLAttributes<HTMLAppMoreActionsElement> {}
+  interface AppMoreShareOptions extends JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement> {}
   interface AppNavigation extends JSXBase.HTMLAttributes<HTMLAppNavigationElement> {
     'menuToggle'?: boolean;
     'presentation'?: boolean;
@@ -543,6 +615,7 @@ declare namespace LocalJSX {
   interface AppPrivacy extends JSXBase.HTMLAttributes<HTMLAppPrivacyElement> {}
   interface AppPublish extends JSXBase.HTMLAttributes<HTMLAppPublishElement> {}
   interface AppPublishDone extends JSXBase.HTMLAttributes<HTMLAppPublishDoneElement> {
+    'onOpenShare'?: (event: CustomEvent<void>) => void;
     'publishedUrl'?: string;
   }
   interface AppPublishEdit extends JSXBase.HTMLAttributes<HTMLAppPublishEditElement> {
@@ -552,6 +625,14 @@ declare namespace LocalJSX {
   interface AppRoot extends JSXBase.HTMLAttributes<HTMLAppRootElement> {}
   interface AppServices extends JSXBase.HTMLAttributes<HTMLAppServicesElement> {}
   interface AppSettings extends JSXBase.HTMLAttributes<HTMLAppSettingsElement> {}
+  interface AppShareAction extends JSXBase.HTMLAttributes<HTMLAppShareActionElement> {
+    'onActionPublish'?: (event: CustomEvent<void>) => void;
+    'onOpenShare'?: (event: CustomEvent<void>) => void;
+  }
+  interface AppShareDeck extends JSXBase.HTMLAttributes<HTMLAppShareDeckElement> {}
+  interface AppShareOptions extends JSXBase.HTMLAttributes<HTMLAppShareOptionsElement> {
+    'onSelectedOption'?: (event: CustomEvent<MoreAction>) => void;
+  }
   interface AppSignin extends JSXBase.HTMLAttributes<HTMLAppSigninElement> {
     'redirect'?: string;
     'redirectId'?: string;
@@ -588,15 +669,18 @@ declare namespace LocalJSX {
     'app-feed-card': AppFeedCard;
     'app-feed-card-tags': AppFeedCardTags;
     'app-footer': AppFooter;
+    'app-fullscreen-info': AppFullscreenInfo;
     'app-get-help': AppGetHelp;
     'app-gif': AppGif;
-    'app-help': AppHelp;
+    'app-help-action': AppHelpAction;
     'app-home': AppHome;
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
     'app-info-images': AppInfoImages;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
+    'app-more-actions': AppMoreActions;
+    'app-more-share-options': AppMoreShareOptions;
     'app-navigation': AppNavigation;
     'app-navigation-actions': AppNavigationActions;
     'app-newsletter': AppNewsletter;
@@ -611,6 +695,9 @@ declare namespace LocalJSX {
     'app-root': AppRoot;
     'app-services': AppServices;
     'app-settings': AppSettings;
+    'app-share-action': AppShareAction;
+    'app-share-deck': AppShareDeck;
+    'app-share-options': AppShareOptions;
     'app-signin': AppSignin;
     'app-slide-navigate': AppSlideNavigate;
     'app-slide-type': AppSlideType;

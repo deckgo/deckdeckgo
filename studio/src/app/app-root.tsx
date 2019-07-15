@@ -1,4 +1,4 @@
-import {Build, Component, Element, h} from '@stencil/core';
+import {Build, Component, Element, h, Listen} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -89,6 +89,17 @@ export class AppRoot {
         }
     }
 
+    @Listen('openShare', {target: 'document'})
+    async openShare() {
+        const shareDeck: HTMLElement = this.el.querySelector('app-share-deck');
+
+        if (!shareDeck) {
+            return;
+        }
+
+        await (shareDeck as any).openShare();
+    }
+
     render() {
         return ([
             <ion-app>
@@ -125,6 +136,8 @@ export class AppRoot {
                 </ion-menu>
 
                 <ion-nav id="menu-content"/>
+
+                <app-share-deck></app-share-deck>
 
                 <ion-modal-controller></ion-modal-controller>
                 <ion-popover-controller></ion-popover-controller>

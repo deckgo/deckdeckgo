@@ -80,7 +80,7 @@ export class AppSlideNavigate {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Jump to slide</ion-title>
+                    <ion-title class="ion-text-uppercase">Go to slide</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">

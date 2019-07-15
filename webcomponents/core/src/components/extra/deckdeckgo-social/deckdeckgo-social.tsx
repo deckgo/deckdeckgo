@@ -14,6 +14,7 @@ export class DeckdeckgoSocial implements DeckdeckgoExtra {
   @Prop() twitter: string;
   @Prop() linkedin: string;
   @Prop() medium: string;
+  @Prop() dev: string;
   @Prop() github: string;
   @Prop() fullUrl: string;
 
@@ -21,6 +22,7 @@ export class DeckdeckgoSocial implements DeckdeckgoExtra {
     this.concatTwitterUrl();
     this.concatLinkedinUrl();
     this.concatMediumUrl();
+    this.concatDevUrl();
     this.concatGithubUrl();
     this.concatFullUrl();
   }
@@ -57,6 +59,15 @@ export class DeckdeckgoSocial implements DeckdeckgoExtra {
     }
 
     this.url = 'https://medium.com/@' + this.medium;
+  }
+
+  @Watch('dev')
+  concatDevUrl() {
+    if (!this.dev) {
+      return;
+    }
+
+    this.url = 'https://dev.to/' + this.dev ;
   }
 
   @Watch('github')

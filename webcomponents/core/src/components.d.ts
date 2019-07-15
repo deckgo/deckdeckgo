@@ -145,6 +145,7 @@ export namespace Components {
     'width': number;
   }
   interface DeckgoSocial {
+    'dev': string;
     'fullUrl': string;
     'github': string;
     'lazyLoadContent': () => Promise<void>;
@@ -378,6 +379,7 @@ declare namespace LocalJSX {
     'width'?: number;
   }
   interface DeckgoSocial extends JSXBase.HTMLAttributes<HTMLDeckgoSocialElement> {
+    'dev'?: string;
     'fullUrl'?: string;
     'github'?: string;
     'linkedin'?: string;

@@ -44,6 +44,7 @@ This component offers the following options which could be set using attributes:
 | twitter | string |  | Your Twitter username. It will be concatenated automatically with `https://twitter.com/` |
 | linkedin | string |  | Your Linkedin username. It will be concatenated automatically with `https://www.linkedin.com/in/` |
 | medium | string |  | Your Medium username. It will be concatenated automatically with `https://medium.com/@` |
+| dev | string |  | Your Dev username. It will be concatenated automatically with `https://dev.to/` |
 | github | string |  | Your Github username. It will be concatenated automatically with `https://github.com/` |
 | fullUrl | string |  | In case you would like to provide the URI of your choice |
 
