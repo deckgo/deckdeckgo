@@ -154,42 +154,42 @@ export class CreateSlidesUtils {
 
                 if (userSocial.twitter && userSocial.twitter !== '' && userSocial.twitter !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} twitter={user.data.social.twitter}>
-                        <ion-icon src="/assets/icons/ionicons/twitter.svg" area-label="Twitter"></ion-icon>
+                        <deckgo-lazy-img img-src="/assets/icons/ionicons/twitter.svg" img-alt="Twitter"></deckgo-lazy-img>
                         Twitter
                     </deckgo-social>);
                 }
 
                 if (userSocial.linkedin && userSocial.linkedin !== '' && userSocial.linkedin !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} linkedin={user.data.social.linkedin}>
-                        <ion-icon src="/assets/icons/ionicons/linkedin.svg" area-label="LinkedIn"></ion-icon>
+                        <deckgo-lazy-img img-src="/assets/icons/ionicons/linkedin.svg" img-alt="LinkedIn"></deckgo-lazy-img>
                         LinkedIn
                     </deckgo-social>);
                 }
 
                 if (userSocial.dev && userSocial.dev !== '' && userSocial.dev !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} dev={user.data.social.dev}>
-                        <ion-icon src="/assets/icons/dev.svg" area-label="Dev"></ion-icon>
+                        <deckgo-lazy-img img-src="/assets/icons/dev.svg" img-alt="Dev"></deckgo-lazy-img>
                         Dev
                     </deckgo-social>);
                 }
 
                 if (userSocial.medium && userSocial.medium !== '' && userSocial.medium !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} medium={user.data.social.medium}>
-                        <ion-icon src="/assets/icons/medium.svg" area-label="Medium"></ion-icon>
+                        <deckgo-lazy-img img-src="/assets/icons/medium.svg" img-alt="Medium"></deckgo-lazy-img>
                         Medium
                     </deckgo-social>);
                 }
 
                 if (userSocial.github && userSocial.github !== '' && userSocial.github !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} github={user.data.social.github}>
-                        <ion-icon src="/assets/icons/ionicons/github.svg" area-label="GitHub"></ion-icon>
+                        <deckgo-lazy-img img-src="/assets/icons/ionicons/github.svg" img-alt="GitHub"></deckgo-lazy-img>
                         GitHub
                     </deckgo-social>);
                 }
 
                 if (userSocial.custom && userSocial.custom !== '' && userSocial.custom !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} fullUrl={user.data.social.custom}>
-                        <ion-icon src="/assets/icons/ionicons/globe.svg" area-label="Web"></ion-icon>
+                        <deckgo-lazy-img img-src="/assets/icons/ionicons/globe.svg" img-alt="Web"></deckgo-lazy-img>
                         Web
                     </deckgo-social>);
                 }

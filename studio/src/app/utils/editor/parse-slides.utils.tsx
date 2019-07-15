@@ -21,6 +21,8 @@ export class ParseSlidesUtils {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-split'));
             } else if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.GIF) {
                 resolve(await this.parseSlideElement(slide, 'deckgo-slide-gif'));
+            } else if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.AUTHOR) {
+                resolve(await this.parseSlideElement(slide, 'deckgo-slide-author'));
             } else {
                 resolve(null);
             }
@@ -46,10 +48,13 @@ export class ParseSlidesUtils {
 
             const customBackground = slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined;
 
+            const imgSrc = slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined;
+            const imgAlt = slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined;
+
             const SlideElement: string = slideTag;
 
             // @ts-ignore
-            const result: any = <SlideElement slide_id={slide.id} style={style} src={src} custom-background={customBackground}>
+            const result: any = <SlideElement slide_id={slide.id} style={style} src={src} custom-background={customBackground} img-src={imgSrc} img-alt={imgAlt}>
                 {content}
             </SlideElement>;
 

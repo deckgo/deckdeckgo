@@ -499,6 +499,14 @@ export class DeckEventsHandler {
                 attributes.customBackground = '' + true;
             }
 
+            if ((slide as any).imgSrc) {
+                attributes.imgSrc = (slide as any).imgSrc;
+            }
+
+            if ((slide as any).imgAlt) {
+                attributes.imgAlt = (slide as any).imgAlt;
+            }
+
             resolve(attributes);
         })
     }

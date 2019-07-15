@@ -18,6 +18,17 @@ deckgo-slide-split {
   }
 }
 
+deckgo-deck deckgo-social {
+  display: flex;
+}
+
+deckgo-deck deckgo-social deckgo-lazy-img {
+  --deckgo-lazy-img-width: 2rem;
+  --deckgo-lazy-img-height: auto;
+  --deckgo-lazy-img-vertical-align: top;
+  --deckgo-lazy-img-padding: 4px;
+}
+
 deckgo-deck > * div[slot="background"] {
   position: absolute;
   top: 0;
@@ -29,7 +40,7 @@ deckgo-deck > * div[slot="background"] {
   align-items: center;
 }
 
-deckgo-deck :not([slot="background"]) > deckgo-lazy-img {
+deckgo-deck :not([slot="background"]):not([slot="social-link"]) > deckgo-lazy-img {
   --deckgo-lazy-img-padding: 16px;
 }
 

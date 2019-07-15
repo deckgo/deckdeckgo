@@ -10,6 +10,8 @@ export interface SlideAttributes {
     style?: string;
     src?: string;
     customBackground?: string;
+    imgSrc?: string;
+    imgAlt?: string;
 }
 
 export interface SlideData {
