@@ -63,7 +63,7 @@ app-slide-type {
     }
 
     deckgo-slide-author {
-      --slide-author-padding-top: 12px;
+      --slide-author-padding-top: 4px;
       --slide-author-padding-bottom: 4px;
       --slide-author-padding-start: 8px;
       --slide-author-padding-end: 16px;
@@ -103,6 +103,8 @@ app-slide-type {
     }
 
     deckgo-slide-author {
+      --slide-author-social-padding-top: 8px;
+
       p {
         min-height: inherit;
         margin: 0;
