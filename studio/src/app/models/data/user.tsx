@@ -17,6 +17,8 @@ export interface UserData {
 
     social?: UserSocial;
 
+    bio?: string;
+
     created_at: firebase.firestore.Timestamp;
     updated_at: firebase.firestore.Timestamp;
 }

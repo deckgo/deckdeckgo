@@ -128,14 +128,20 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title">Author</h1>;
 
-            const author = <section slot="author"></section>;
+            const name: string = user && user.data && user.data.name && user.data.name !== undefined && user.data.name !== '' ? user.data.name : undefined;
+            const bio: string = user && user.data && user.data.bio && user.data.bio !== undefined && user.data.bio !== '' ? user.data.bio : undefined;
+
+            const author = <section slot="author">
+                {name !== undefined ? <div>{name}{bio ? <div><br/></div> : undefined}</div> : undefined}
+                {bio !== undefined ? <div><small>{bio}</small></div> : undefined}
+            </section>;
 
             const imgSrc: string = user && user.data && user.data.photo_url ? user.data.photo_url : undefined;
-            const name: string = user && user.data && user.data.name ? user.data.name : 'Author';
+            const imgAlt: string = user && user.data && user.data.name ? user.data.name : 'Author';
 
             const links = await this.createSocialLinks(user);
 
-            const slide: any = <deckgo-slide-author img-src={imgSrc} img-alt={name}>
+            const slide: any = <deckgo-slide-author img-src={imgSrc} img-alt={imgAlt}>
                 {title}
                 {author}
                 {links}

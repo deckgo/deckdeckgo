@@ -207,6 +207,10 @@ export class AppHome {
         }
     }
 
+    private handleSummaryInput($event: CustomEvent<KeyboardEvent>) {
+        this.user.data.bio = ($event.target as InputTargetEvent).value;
+    }
+
     private save(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.valid) {
@@ -406,6 +410,8 @@ export class AppHome {
 
                             {this.renderUserAvatar()}
 
+                            {this.renderSummary()}
+
                             {this.renderSocial()}
 
                             {this.renderSubmitForm()}
@@ -477,6 +483,19 @@ export class AppHome {
                 <input id="inputProfilePicture" type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.selectProfilePicture()} disabled={this.saving}/>
             </div>
         </ion-list>;
+    }
+
+    private renderSummary() {
+        return <ion-list class="inputs-list">
+            <ion-item class="item-title">
+                <ion-label>Summary</ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-textarea rows={5} value={this.user && this.user.data ? this.user.data.bio : undefined} debounce={500} disabled={this.saving}
+                              maxlength={254} placeholder="Your short biography or how do you introduce yourself"
+                              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleSummaryInput(e)}></ion-textarea>
+            </ion-item>
+        </ion-list>
     }
 
     private renderSocial() {
