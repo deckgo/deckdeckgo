@@ -9,8 +9,7 @@ export class AppFooter {
 
     render() {
         return [
-            <hr class="ion-margin"/>,
-            <div class="ion-padding-start ion-padding-end ion-margin-bottom">
+            <div class="ion-padding-start ion-padding-end ion-margin-bottom footer-container">
                 <ion-label class="ion-padding-top">DeckDeckGo</ion-label>
 
                 <ion-router-link href="/about" routerDirection="forward">
