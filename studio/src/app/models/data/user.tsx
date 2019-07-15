@@ -1,3 +1,12 @@
+export interface UserSocial {
+    twitter?: string;
+    linkedin?: string;
+    dev?: string;
+    medium?: string;
+    github?: string;
+    custom?: string;
+}
+
 export interface UserData {
     anonymous: boolean;
 
@@ -5,6 +14,8 @@ export interface UserData {
     email?: string;
     newsletter?: boolean;
     photo_url?: string;
+
+    social?: UserSocial;
 
     created_at: firebase.firestore.Timestamp;
     updated_at: firebase.firestore.Timestamp;

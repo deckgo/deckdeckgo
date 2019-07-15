@@ -64,6 +64,24 @@ export class AppHome {
 
     private storageService: StorageService;
 
+    @State()
+    private twitter: string = undefined;
+
+    @State()
+    private linkedin: string = undefined;
+
+    @State()
+    private dev: string = undefined;
+
+    @State()
+    private medium: string = undefined;
+
+    @State()
+    private github: string = undefined;
+
+    @State()
+    private custom: string = undefined;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.apiUserService = ApiUserService.getInstance();
@@ -93,7 +111,25 @@ export class AppHome {
             filter((user: User) => user !== null && user !== undefined && user.data && !user.data.anonymous),
             take(1)).subscribe(async (user: User) => {
             this.user = user;
+
+            await this.initSocial();
         });
+    }
+
+    private initSocial(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.user || !this.user.data || !this.user.data.social) {
+                resolve();
+                return;
+            }
+
+            this.twitter = this.user.data.social.twitter;
+            this.linkedin = this.user.data.social.linkedin;
+            this.dev = this.user.data.social.dev;
+            this.medium = this.user.data.social.medium;
+            this.github = this.user.data.social.github;
+            this.custom = this.user.data.social.custom;
+        })
     }
 
     private async signIn() {
@@ -150,6 +186,24 @@ export class AppHome {
     private toggleNewsletter($event: CustomEvent) {
         if (this.user && this.user.data) {
             this.user.data.newsletter = $event.detail.checked;
+        }
+    }
+
+    private handleSocialInput($event: CustomEvent<KeyboardEvent>, key: string) {
+        if (this.user && this.user.data) {
+            if (!this.user.data.social) {
+                this.user.data.social = {};
+            }
+
+            const value: string = ($event.target as InputTargetEvent).value;
+
+            if (!value || value === '') {
+                this.user.data.social[key] = null;
+                this[key] = undefined;
+            } else {
+                this.user.data.social[key] = value;
+                this[key] = value;
+            }
         }
     }
 
@@ -348,8 +402,11 @@ export class AppHome {
                                 {this.renderName()}
                                 {this.renderUsername()}
                                 {this.renderEmail()}
-                                {this.renderUserAvatar()}
                             </ion-list>
+
+                            {this.renderUserAvatar()}
+
+                            {this.renderSocial()}
 
                             {this.renderSubmitForm()}
                         </form>,
@@ -396,13 +453,13 @@ export class AppHome {
     }
 
     private renderSubmitForm() {
-        return <ion-button type="submit" disabled={!this.valid || this.saving || !this.apiUser || !this.user} color="primary" shape="round">
+        return <ion-button type="submit" class="ion-margin-top" disabled={!this.valid || this.saving || !this.apiUser || !this.user} color="primary" shape="round">
             <ion-label>Submit</ion-label>
         </ion-button>;
     }
 
     private renderDangerZone() {
-        return [<h1 class="ion-padding-top ion-margin-top">Danger Zone</h1>,
+        return [<h1 class="danger-zone">Danger Zone</h1>,
             <p>Once you delete your user, there is no going back. Please be certain.</p>,
             <ion-button color="danger" shape="round" fill="outline" onClick={() => this.presentConfirmDelete()} disabled={this.saving || !this.apiUser || !this.authUser}>
                 <ion-label>Delete my user</ion-label>
@@ -411,14 +468,91 @@ export class AppHome {
     }
 
     private renderUserAvatar() {
-        return [
+        return <ion-list class="inputs-list">
             <ion-item class="item-title">
                 <ion-label>Profile picture</ion-label>
-            </ion-item>,
+            </ion-item>
             <div class="avatar">
                 <app-avatar src={this.user && this.user.data ? this.user.data.photo_url : undefined}></app-avatar>
                 <input id="inputProfilePicture" type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.selectProfilePicture()} disabled={this.saving}/>
             </div>
-        ];
+        </ion-list>;
+    }
+
+    private renderSocial() {
+        return <ion-list class="inputs-list">
+            {this.renderTwitter()}
+            {this.renderLinkedIn()}
+            {this.renderDev()}
+            {this.renderMedium()}
+            {this.renderGithub()}
+            {this.renderCustom()}
+        </ion-list>
+    }
+
+    private renderTwitter() {
+        return [<ion-item class="item-title">
+                <ion-label>Twitter</ion-label>
+            </ion-item>,
+            <p><small>https://twiter.com/<strong>{this.twitter ? this.twitter : 'yourusername'}</strong></small></p>,
+            <ion-item>
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.twitter : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'twitter')}></ion-input>
+            </ion-item>];
+    }
+
+    private renderLinkedIn() {
+        return [<ion-item class="item-title">
+            <ion-label>LinkedIn</ion-label>
+        </ion-item>,
+            <p><small>https://www.linkedin.com/in/<strong>{this.linkedin ? this.linkedin : 'yourusername'}</strong></small></p>,
+            <ion-item>
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.linkedin : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'linkedin')}></ion-input>
+            </ion-item>];
+    }
+
+    private renderDev() {
+        return [<ion-item class="item-title">
+            <ion-label>Dev.to</ion-label>
+        </ion-item>,
+            <p><small>https://dev.to/<strong>{this.dev ? this.dev : 'yourusername'}</strong></small></p>,
+            <ion-item>
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.dev : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'dev')}></ion-input>
+            </ion-item>];
+    }
+
+    private renderMedium() {
+        return [<ion-item class="item-title">
+            <ion-label>Medium</ion-label>
+        </ion-item>,
+            <p><small>https://medium.com/@<strong>{this.medium ? this.medium : 'yourusername'}</strong></small></p>,
+            <ion-item>
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.medium : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'medium')}></ion-input>
+            </ion-item>];
+    }
+
+    private renderGithub() {
+        return [<ion-item class="item-title">
+            <ion-label>GitHub</ion-label>
+        </ion-item>,
+            <p><small>https://github.com/<strong>{this.github ? this.github : 'yourusername'}</strong></small></p>,
+            <ion-item>
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.github : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'github')}></ion-input>
+            </ion-item>];
+    }
+
+    private renderCustom() {
+        return [<ion-item class="item-title">
+            <ion-label>Custom</ion-label>
+        </ion-item>,
+            <p><small>Your website or any custom url (for example: <strong>{this.custom ? this.custom : 'https://yourwebsite.com'}</strong>)</small></p>,
+            <ion-item>
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.custom : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}></ion-input>
+            </ion-item>];
     }
 }
