@@ -61,7 +61,7 @@ rec
   deckdeckgo-starter-dist =
     with
       { napalm = import pkgs.sources.napalm { inherit pkgs;} ; };
-    pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs-12_x ]; }
+    pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs ]; }
       ''
         cp -r ${napalm.buildPackage pkgs.sources.deckdeckgo-starter {}}/* .
         chmod +w -R _napalm-install
@@ -79,7 +79,9 @@ rec
       { pkg = pkgs.haskellPackages.developPackage { root = ./handler; } ; };
     pkg.overrideAttrs(attr: {
       buildInputs = with pkgs;
-        [ niv terraform awscli postgresql moreutils minio ];
+        [ terraform awscli postgresql moreutils minio ];
+      LANG = "en_US.UTF-8";
+      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
       shellHook =
       let
         pgutil = pkgs.callPackage ./pgutil.nix {};

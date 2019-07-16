@@ -6,18 +6,21 @@
        pg_pid=""
        set -euo pipefail
 
+       # TODO: explain what's happening here
        LOCAL_PGHOST=$PGHOST
        LOCAL_PGPORT=$PGPORT
        LOCAL_PGDATABASE=$PGDATABASE
        LOCAL_PGUSER=$PGUSER
        LOCAL_PGPASSWORD=$PGPASSWORD
 
-       unset PGHOST PGPORT PGDATABASE PGUSER PGPASSWORD
+       unset PGUSER PGPASSWORD
 
        initdb -D .pgdata
 
+       echo "unix_socket_directories = '$(mktemp -d)'" >> .pgdata/postgresql.conf
+
        # TODO: port
-       pg_ctl -D ".pgdata" -w start || echo pg_ctl failed
+       pg_ctl -D ".pgdata" -w start || (echo pg_ctl failed; exit 1)
 
        until psql postgres -c "SELECT 1" > /dev/null 2>&1 ; do
            echo waiting for pg

@@ -41,10 +41,10 @@
         "homepage": "",
         "owner": "nmattia",
         "repo": "napalm",
-        "rev": "bd7f348a478bd79c30b898cc800d47a1cd4541b5",
-        "sha256": "002y6ds57zpjqizq497amc791iqmbydm574xla6k7ad4x0ka86rx",
+        "rev": "0331a5b586a186c966f816d434bd5c1ecfa16089",
+        "sha256": "14nlqmmv3xx4cf3r9kcw2xbfgpddppw27ygp8s3r0bbccgwcp9gi",
         "type": "tarball",
-        "url": "https://github.com/nmattia/napalm/archive/bd7f348a478bd79c30b898cc800d47a1cd4541b5.tar.gz",
+        "url": "https://github.com/nmattia/napalm/archive/0331a5b586a186c966f816d434bd5c1ecfa16089.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {

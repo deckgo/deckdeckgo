@@ -38,7 +38,6 @@ with rec
         ));
     };
 
-
   pkgs = import sources.nixpkgs
     { overlays =
         [ (_: pkgs: pkgs.lib.recursiveUpdate pkgs
@@ -66,9 +65,22 @@ with rec
                 };
               };
 
+              # for cabal2nix
               nix = pkgs_.nix;
               git = pkgs_.git;
               subversion = pkgs_.subversion;
+            }
+          )
+
+          (_: pkgs:
+            {
+              # Fails during tests
+              go_1_12 = pkgs.go_1_12.overrideAttrs (_:
+                { doCheck = false; }
+                );
+
+              # for napalm
+              nodejs = pkgs.nodejs-12_x;
             }
           )
         ];
@@ -76,7 +88,7 @@ with rec
 
   wai-lambda = pkgs.callPackage "${sources.wai-lambda}/nix/packages.nix" {};
 
-  survey = import ~/static-haskell-nix/survey
+  survey = import "${sources.static-haskell-nix}/survey"
     { normalPkgs = pkgs; };
 
   haskellPackages =
