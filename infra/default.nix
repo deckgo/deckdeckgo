@@ -261,9 +261,7 @@ rec
       ${pgutil.start_pg}
 
       echo "Running tests"
-      NIX_REDIRECTS=/etc/protocols=${pkgs.iana-etc}/etc/protocols \
-        LD_PRELOAD="${pkgs.libredirect}/lib/libredirect.so" \
-        GOOGLE_PUBLIC_KEYS="${pkgs.writeText "google-x509" (builtins.toJSON googleResp)}" \
+      GOOGLE_PUBLIC_KEYS="${pkgs.writeText "google-x509" (builtins.toJSON googleResp)}" \
         FIREBASE_PROJECT_ID="my-project-id" \
         FIREBASE_PROJECT_ID="my-project-id" \
         AWS_DEFAULT_REGION=us-east-1 \
