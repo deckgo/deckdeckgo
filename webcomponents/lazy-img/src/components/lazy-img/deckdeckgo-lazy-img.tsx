@@ -1,4 +1,6 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, Watch, h, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, Watch, h, State, Host} from '@stencil/core';
+
+import {getSvgContent} from '../utils/request';
 
 @Component({
   tag: 'deckgo-lazy-img',
@@ -32,6 +34,15 @@ export class DeckdeckgoLazyImg {
   @Prop()
   imgErrorSrc: string;
 
+  @Prop({reflectToAttr: true})
+  svgSrc: string;
+
+  @Prop({reflectToAttr: true})
+  ariaLabel: string;
+
+  @State()
+  private svgContent: string;
+
   private observer: IntersectionObserver;
 
   @State()
@@ -49,29 +60,25 @@ export class DeckdeckgoLazyImg {
   }
 
   private async init() {
-    const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
-
-    if (img) {
-      if (window && 'IntersectionObserver' in window) {
-        await this.deferLoad(img);
-      } else {
-        await this.loadImmediately(img);
-      }
+    if (window && 'IntersectionObserver' in window) {
+      await this.deferLoad();
+    } else {
+      await this.loadImmediately();
     }
   }
 
-  private loadImmediately(img: HTMLImageElement): Promise<void> {
-    return this.load(img);
+  private loadImmediately(): Promise<void> {
+    return this.load();
   }
 
-  private deferLoad(img: HTMLImageElement): Promise<void> {
+  private deferLoad(): Promise<void> {
     return new Promise<void>((resolve) => {
       this.observer = new IntersectionObserver(this.onIntersection, {
         rootMargin: this.observerRootMargin,
         threshold: this.observerThreshold
       });
 
-      this.observer.observe(img);
+      this.observer.observe(this.el.shadowRoot.host);
 
       resolve();
     });
@@ -80,11 +87,7 @@ export class DeckdeckgoLazyImg {
   @Method()
   lazyLoad(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
-
-      if (img) {
-        await this.load(img);
-      }
+      await this.load();
 
       resolve();
     });
@@ -105,21 +108,52 @@ export class DeckdeckgoLazyImg {
           this.observer.disconnect();
         }
 
-        await this.load(entry.target);
+        await this.load();
       }
 
       resolve();
     });
   }
 
-  private load(img: HTMLImageElement | Element): Promise<void> {
+  private load(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (this.svgSrc) {
+        await this.loadSvg();
+      } else {
+        await this.loadImg();
+      }
+
+      resolve();
+    });
+  }
+
+  private loadImg(): Promise<void> {
     return new Promise<void>((resolve) => {
+      const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
+
+      if (!img) {
+        resolve();
+        return;
+      }
+
       if (this.imgSrc) {
         img.setAttribute('src', this.imgSrc);
       }
 
       if (this.imgSrcSet) {
         img.setAttribute('srcset', this.imgSrcSet);
+      }
+
+      resolve();
+    });
+  }
+
+  private loadSvg(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      try {
+        this.svgContent = await getSvgContent(this.svgSrc);
+      } catch (err) {
+        console.error(err);
       }
 
       resolve();
@@ -149,7 +183,15 @@ export class DeckdeckgoLazyImg {
   }
 
   render() {
-    return <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} sizes={this.imgSizes ? this.imgSizes : undefined}
-                onLoad={() => this.imgLoaded = true} onError={() => this.loadError()}/>;
+    if (this.svgContent) {
+      return <Host>
+        <div innerHTML={this.svgContent}></div>
+      </Host>
+    } else {
+      return <Host>
+        <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} sizes={this.imgSizes ? this.imgSizes : undefined}
+             onLoad={() => this.imgLoaded = true} onError={() => this.loadError()}/>
+      </Host>;
+    }
   }
 }
