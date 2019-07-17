@@ -491,8 +491,8 @@ export class AppHome {
                 <ion-label>Summary</ion-label>
             </ion-item>
             <ion-item>
-                <ion-textarea rows={5} value={this.user && this.user.data ? this.user.data.bio : undefined} debounce={500} disabled={this.saving}
-                              maxlength={254} placeholder="Your short biography or how do you introduce yourself"
+                <ion-textarea rows={3} value={this.user && this.user.data ? this.user.data.bio : undefined} debounce={500} disabled={this.saving}
+                              maxlength={192} placeholder="Your short biography or how do you introduce yourself"
                               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleSummaryInput(e)}></ion-textarea>
             </ion-item>
         </ion-list>
@@ -515,7 +515,7 @@ export class AppHome {
             </ion-item>,
             <p><small>https://twiter.com/<strong>{this.twitter ? this.twitter : 'yourusername'}</strong></small></p>,
             <ion-item>
-                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.twitter : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.twitter : undefined} debounce={500} maxlength={128} input-mode="text" disabled={this.saving}
                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'twitter')}></ion-input>
             </ion-item>];
     }
@@ -526,7 +526,7 @@ export class AppHome {
         </ion-item>,
             <p><small>https://www.linkedin.com/in/<strong>{this.linkedin ? this.linkedin : 'yourusername'}</strong></small></p>,
             <ion-item>
-                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.linkedin : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.linkedin : undefined} debounce={500} maxlength={128} input-mode="text" disabled={this.saving}
                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'linkedin')}></ion-input>
             </ion-item>];
     }
@@ -537,7 +537,7 @@ export class AppHome {
         </ion-item>,
             <p><small>https://dev.to/<strong>{this.dev ? this.dev : 'yourusername'}</strong></small></p>,
             <ion-item>
-                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.dev : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.dev : undefined} debounce={500} maxlength={128} input-mode="text" disabled={this.saving}
                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'dev')}></ion-input>
             </ion-item>];
     }
@@ -548,7 +548,7 @@ export class AppHome {
         </ion-item>,
             <p><small>https://medium.com/@<strong>{this.medium ? this.medium : 'yourusername'}</strong></small></p>,
             <ion-item>
-                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.medium : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.medium : undefined} debounce={500} maxlength={128} input-mode="text" disabled={this.saving}
                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'medium')}></ion-input>
             </ion-item>];
     }
@@ -559,7 +559,7 @@ export class AppHome {
         </ion-item>,
             <p><small>https://github.com/<strong>{this.github ? this.github : 'yourusername'}</strong></small></p>,
             <ion-item>
-                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.github : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.github : undefined} debounce={500} maxlength={128} input-mode="text" disabled={this.saving}
                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'github')}></ion-input>
             </ion-item>];
     }
@@ -570,7 +570,7 @@ export class AppHome {
         </ion-item>,
             <p><small>Your website or any custom url (for example: <strong>{this.custom ? this.custom : 'https://yourwebsite.com'}</strong>)</small></p>,
             <ion-item>
-                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.custom : undefined} debounce={500} maxlength={254} input-mode="text" disabled={this.saving}
+                <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.custom : undefined} debounce={500} maxlength={128} input-mode="text" disabled={this.saving}
                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}></ion-input>
             </ion-item>];
     }
