@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.21"></a>
+# 1.0.0-alpha.21 (2019-07-17)
+
+### Features
+
+* add new option `SVG` to component `lazy-img`
+
 <a name="1.0.0-alpha.20"></a>
 # 1.0.0-alpha.20 (2019-07-13)
 

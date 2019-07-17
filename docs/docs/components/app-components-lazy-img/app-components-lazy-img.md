@@ -4,6 +4,8 @@ The "Lazy Image" component is a dead simple component to lazy load images.
 
 It leverages the IntersectionObserver API to lazy load images and also allows you to trigger "manually" their loading.
 
+An `<img/>` tag is per default use to display the image but optionally it could parse `SVG` too.
+
 ## Table of contents
 
 - [Usage](#app-components-lazy-img-usage)
@@ -38,6 +40,8 @@ This component offers the following options which could be set using attributes:
 | img-error-src | string |  | An optional image which could be displayed in case the main image would not be resolved |
 | img-sizes | string |  | The set of media conditions to indicates what image size would be best to choose |
 | img-alt | string |  | The image alternate text |
+| svg-src | string |  | The SVG image source (= URI) to lazy load and to parse (no `<img/>` tag will be use to render the svg) |
+| aria-label | string |  | If you are using the above SVG option, provide the accessibility information using this attribute |
 | observer-root-margin | string | 100px 0px | A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
 | observer-threshold | number or number[] |  | Either a single number or an array of numbers between 0.0 and 1.0, specifying a ratio of intersection area to total bounding box area for the observed target. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
 

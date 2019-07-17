@@ -33,6 +33,7 @@ export class AppComponentsLazyImg {
         <main><h1 id="app-components-lazy-img-lazy-image">Lazy Image</h1>
 <p>The &quot;Lazy Image&quot; component is a dead simple component to lazy load images.</p>
 <p>It leverages the IntersectionObserver API to lazy load images and also allows you to trigger &quot;manually&quot; their loading.</p>
+<p>An <code>&lt;img/&gt;</code> tag is per default use to display the image but optionally it could parse <code>SVG</code> too.</p>
 <h2 id="app-components-lazy-img-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-components-lazy-img-usage">Usage</a><ul>
@@ -91,6 +92,18 @@ export class AppComponentsLazyImg {
 <td>string</td>
 <td></td>
 <td>The image alternate text</td>
+</tr>
+<tr>
+<td>svg-src</td>
+<td>string</td>
+<td></td>
+<td>The SVG image source (= URI) to lazy load and to parse (no <code>&lt;img/&gt;</code> tag will be use to render the svg)</td>
+</tr>
+<tr>
+<td>aria-label</td>
+<td>string</td>
+<td></td>
+<td>If you are using the above SVG option, provide the accessibility information using this attribute</td>
 </tr>
 <tr>
 <td>observer-root-margin</td>
