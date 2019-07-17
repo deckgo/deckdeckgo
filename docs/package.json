@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-docs",
-  "version": "1.0.0-alpha.19",
+  "version": "1.0.0-alpha.21",
   "description": "The Progressive Web App alternative for simple presentations",
   "license": "MIT",
   "files": [
@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "docs": "tsc --p ./scripts && node ./.deckgo/markdown-to-html",
-    "build": "npm run docs && stencil build --prerender",
+    "build": "npm run docs && stencil build",
     "start": "npm run docs && stencil build --dev --watch --serve",
     "test": "npm run docs && stencil test --spec --e2e",
     "test.watch": "npm run docs && stencil test --spec --e2e --watch"

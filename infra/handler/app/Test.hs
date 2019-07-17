@@ -52,14 +52,18 @@ withServer :: (Warp.Port -> IO a) -> IO a
 withServer act =
     withPresURL $ withEnv $ \env -> withS3 env $ withSQS env $ withDynamoDB env $
       withPristineDB $ \conn -> do
+        putStrLn "Server environment loaded, finding port"
         (port, socket) <- Warp.openFreePort
         let warpSettings = Warp.setPort port $ Warp.defaultSettings
         settings <- getFirebaseSettings
+        putStrLn "Starting server"
         race
           (Warp.runSettingsSocket warpSettings socket $
             DeckGo.Handler.application settings env conn)
           (do
-            Socket.wait "localhost" port
+            putStrLn "Waiting for server..."
+            Socket.wait "0.0.0.0" port
+            putStrLn "Server ready!"
             act port
           ) >>= \case
             Left () -> error "Server returned"
