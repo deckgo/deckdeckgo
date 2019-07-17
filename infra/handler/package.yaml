@@ -13,6 +13,8 @@ dependencies:
     - base
     - bytestring
     - contravariant
+    - conduit
+    - conduit-extra
     - directory
     - filepath
     - firebase-login
@@ -24,6 +26,7 @@ dependencies:
     - mtl
     - pureMD5
     - random
+    - resourcet
     - servant
     - servant-server
     - servant-swagger

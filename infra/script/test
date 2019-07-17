@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # vim: filetype=sh
 
-nix-build --no-link
+nix-build --no-link --sandbox --max-jobs 20
