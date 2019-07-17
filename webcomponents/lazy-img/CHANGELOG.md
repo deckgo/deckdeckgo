@@ -1,3 +1,8 @@
+<a name="1.0.0-alpha.10"></a>
+# 1.0.0-alpha.10 (2019-07-17)
+
+* optionally, parse SVG instead of using such images in `<img/>` tags
+
 <a name="1.0.0-alpha.9"></a>
 # 1.0.0-alpha.9 (2019-07-06)
 
