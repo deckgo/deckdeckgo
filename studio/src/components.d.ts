@@ -638,7 +638,9 @@ declare namespace LocalJSX {
     'redirectId'?: string;
   }
   interface AppSlideNavigate extends JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement> {}
-  interface AppSlideType extends JSXBase.HTMLAttributes<HTMLAppSlideTypeElement> {}
+  interface AppSlideType extends JSXBase.HTMLAttributes<HTMLAppSlideTypeElement> {
+    'onSignIn'?: (event: CustomEvent<void>) => void;
+  }
   interface AppSlotType extends JSXBase.HTMLAttributes<HTMLAppSlotTypeElement> {
     'selectedElement'?: HTMLElement;
   }

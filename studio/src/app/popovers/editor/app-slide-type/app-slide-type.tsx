@@ -1,4 +1,4 @@
-import {Component, Element, h, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, State} from '@stencil/core';
 import {take} from 'rxjs/operators';
 
 import {SlideTemplate} from '../../../models/data/slide';
@@ -9,6 +9,7 @@ import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {UserService} from '../../../services/data/user/user.service';
+import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 
 @Component({
     tag: 'app-slide-type',
@@ -24,9 +25,13 @@ export class AppSlideType {
     private user: User;
 
     private userService: UserService;
+    private anonymousService: AnonymousService;
+
+    @Event() signIn: EventEmitter<void>;
 
     constructor() {
         this.userService = UserService.getInstance();
+        this.anonymousService = AnonymousService.getInstance();
     }
 
     async componentWillLoad() {
@@ -65,6 +70,14 @@ export class AppSlideType {
     }
 
     private async addSlide(template: SlideTemplate) {
+        const isAnonymous: boolean = await this.anonymousService.isAnonymous();
+
+        if (isAnonymous) {
+            this.signIn.emit();
+            await this.closePopover(null);
+            return;
+        }
+
         const slide: any = await CreateSlidesUtils.createSlide(template, this.user);
         await this.closePopover(template, slide);
     }

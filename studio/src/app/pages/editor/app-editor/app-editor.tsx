@@ -423,7 +423,8 @@ export class AppEditor {
         }
     }
 
-    private async signIn() {
+    @Listen('signIn', {target: 'document'})
+    async signIn() {
         this.navService.navigate({
             url: '/signin' + (window && window.location ? window.location.pathname : ''),
             direction: NavDirection.FORWARD
@@ -489,7 +490,7 @@ export class AppEditor {
                     </deckgo-deck>
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
-                <app-editor-toolbar onSignIn={() => this.signIn()}></app-editor-toolbar>
+                <app-editor-toolbar></app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <app-editor-actions hideFooterActions={this.hideFooterActions} fullscreen={this.fullscreen} slides={this.slides}

@@ -268,14 +268,12 @@ export class AppSignIn {
         if (this.redirect === 'editor') {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
-                <p class="ion-text-center ion-padding">Sign in to add more slides, to use your own images, to share your presentation and to
-                    get soon a personalized feed of recommendations.</p>
+                <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor like adding more slides, uploading and using your own images, using the author template or being able to share your presentation as an app.</p>
             ]
         } else {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Welcome back.</h1>,
-                <p class="ion-text-center ion-padding">Sign in to share your presentation and to get soon a
-                    personalized feed of recommendations.</p>
+                <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to be able to share your presentation as an app.</p>
             ]
         }
     }
