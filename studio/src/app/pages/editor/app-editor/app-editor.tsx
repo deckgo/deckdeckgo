@@ -25,6 +25,7 @@ import {AnonymousService} from '../../../services/editor/anonymous/anonymous.ser
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {BusyService} from '../../../services/editor/busy/busy.service';
+import {ItemReorderEventDetail} from '@ionic/core';
 
 @Component({
     tag: 'app-editor',
@@ -87,7 +88,7 @@ export class AppEditor {
         this.busyService = BusyService.getInstance();
     }
 
-    @Listen('ionRouteDidChange', { target: 'window' })
+    @Listen('ionRouteDidChange', {target: 'window'})
     async onRouteDidChange($event: CustomEvent) {
         if (!$event || !$event.detail) {
             return;
@@ -479,6 +480,37 @@ export class AppEditor {
         this.hideNavigation = $event ? DeckDeckGoUtils.isIOS() && $event.detail : false;
     }
 
+    @Listen('reorder', {target: 'document'})
+    async onReorderSlides($event: CustomEvent<ItemReorderEventDetail>) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        await this.reorderSlides($event.detail);
+    }
+
+    private reorderSlides(detail: ItemReorderEventDetail): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!detail) {
+                resolve();
+                return;
+            }
+
+            if (detail.from < 0 || detail.to < 0 || !this.slides || detail.to >= this.slides.length || detail.from === detail.to) {
+                resolve();
+                return;
+            }
+
+            this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
+            this.slides = [...this.slides];
+
+            // Finish the reorder and position the item in the DOM based on where the gesture ended. This method can also be called directly by the reorder group
+            detail.complete();
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
@@ -502,7 +534,8 @@ export class AppEditor {
                 <app-editor-toolbar></app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
-                <app-editor-actions hideFooterActions={this.hideFooterActions} fullscreen={this.fullscreen} slides={this.slides}
+                <app-editor-actions hideFooterActions={this.hideFooterActions} fullscreen={this.fullscreen}
+                                    slides={this.slides}
                                     onSignIn={() => this.signIn()}
                                     onAddSlide={($event: CustomEvent<any>) => this.addSlide($event)}
                                     onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}

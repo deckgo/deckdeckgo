@@ -1,4 +1,5 @@
-import {Component, Listen, Element, State, h} from '@stencil/core';
+import {Component, Listen, Element, State, h, EventEmitter, Event} from '@stencil/core';
+import {ItemReorderEventDetail} from '@ionic/core';
 
 @Component({
     tag: 'app-slide-navigate',
@@ -10,6 +11,8 @@ export class AppSlideNavigate {
 
     @State()
     slides: string[];
+
+    @Event() private reorder: EventEmitter<ItemReorderEventDetail>;
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
@@ -26,7 +29,7 @@ export class AppSlideNavigate {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private async jumpToSlide(index: number) {
+    async jumpToSlide(index: number) {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(index);
     }
 
@@ -71,6 +74,19 @@ export class AppSlideNavigate {
         });
     }
 
+    private onReorder($event: CustomEvent<ItemReorderEventDetail>): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!$event) {
+                resolve();
+                return;
+            }
+
+            this.reorder.emit($event.detail);
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <ion-header>
@@ -84,9 +100,9 @@ export class AppSlideNavigate {
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
-                <ion-list>
+                <ion-reorder-group onIonItemReorder={($event: CustomEvent<ItemReorderEventDetail>) => this.onReorder($event)} disabled={!this.slides || this.slides.length <= 1}>
                     {this.renderSlides()}
-                </ion-list>
+                </ion-reorder-group>
             </ion-content>
         ];
     }
@@ -100,6 +116,7 @@ export class AppSlideNavigate {
 
                     return <ion-item ion-item button onClick={() => this.jumpToSlide(i)}>
                         <ion-label>{text}</ion-label>
+                        <ion-reorder slot="end"></ion-reorder>
                     </ion-item>
                 })
             );

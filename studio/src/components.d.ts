@@ -15,6 +15,9 @@ import {
 import {
   MoreAction,
 } from './app/utils/editor/more-action';
+import {
+  ItemReorderEventDetail,
+} from '@ionic/core';
 
 export namespace Components {
   interface AppAbout {}
@@ -637,7 +640,9 @@ declare namespace LocalJSX {
     'redirect'?: string;
     'redirectId'?: string;
   }
-  interface AppSlideNavigate extends JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement> {}
+  interface AppSlideNavigate extends JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement> {
+    'onReorder'?: (event: CustomEvent<ItemReorderEventDetail>) => void;
+  }
   interface AppSlotType extends JSXBase.HTMLAttributes<HTMLAppSlotTypeElement> {
     'selectedElement'?: HTMLElement;
   }
