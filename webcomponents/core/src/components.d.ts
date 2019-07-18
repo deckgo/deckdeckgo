@@ -6,6 +6,9 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
+import {
+  DeckdeckgoSlideDefinition,
+} from '@deckdeckgo/types';
 
 
 export namespace Components {
@@ -17,6 +20,7 @@ export namespace Components {
     'embedded': boolean;
     'getActiveIndex': () => Promise<number>;
     'getLength': () => Promise<number>;
+    'getSlidesDefinition': () => Promise<DeckdeckgoSlideDefinition[]>;
     'initSlideSize': () => Promise<void>;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;

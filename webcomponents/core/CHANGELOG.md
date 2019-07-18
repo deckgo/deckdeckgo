@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.42"></a>
+# 1.0.0-beta.42 (2019-06-18)
+
+### Features
+
+* add a new function to query the slide definitions which could be used to update the remote connection
+
 <a name="1.0.0-beta.41"></a>
 # 1.0.0-beta.41 (2019-06-13)
 

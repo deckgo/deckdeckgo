@@ -403,38 +403,67 @@ export class DeckdeckgoDeck {
 
   private afterSlidesDidLoad(): Promise<void> {
     return new Promise<void>(async (resolve) => {
+      const slidesDefinition: DeckdeckgoSlideDefinition[] = await this.getSlidesDefinition();
+
+      if (slidesDefinition && slidesDefinition.length > 0) {
+        this.slidesDidLoad.emit(slidesDefinition);
+
+        await this.onAllSlidesDidLoadLazyAndClone();
+      }
+
+      resolve();
+    });
+  }
+
+  private onAllSlidesDidLoadLazyAndClone(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
       const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
+      const promises: Promise<void>[] = [];
+      promises.push(this.lazyLoadFirstSlides());
+      promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
+      promises.push(DeckdeckgoDeckBackgroundUtils.cloneAndLoadBackground(this.el, filteredSlides, this.cloneBackground));
+
+      await Promise.all(promises);
+
+      resolve();
+    });
+  }
+
+  @Method()
+  getSlidesDefinition(): Promise<DeckdeckgoSlideDefinition[]> {
+    return new Promise<DeckdeckgoSlideDefinition[] | null>(async (resolve) => {
       const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
+
+      if (!loadedSlides || loadedSlides.length <= 0) {
+        resolve(null);
+        return;
+      }
+
+      const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
       const definedSlidesLength: number = filteredSlides ? filteredSlides.length : 0;
 
       // Are all slides loaded?
-      if (filteredSlides && loadedSlides && loadedSlides.length === definedSlidesLength && definedSlidesLength === this.length) {
-        const orderedSlidesTagNames: DeckdeckgoSlideDefinition[] = [];
-
-        Array.from(loadedSlides).forEach((slide: HTMLElement) => {
-          const notes: HTMLElement = slide.querySelector('[slot=\'notes\']');
-          const title: HTMLElement = slide.querySelector('[slot=\'title\']');
-
-          orderedSlidesTagNames.push({
-            name: slide.tagName,
-            title: title ? title.innerHTML : null,
-            notes: notes ? notes.innerHTML : null
-          });
-        });
-
-        this.slidesDidLoad.emit(orderedSlidesTagNames);
-
-        const promises: Promise<void>[] = [];
-        promises.push(this.lazyLoadFirstSlides());
-        promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
-        promises.push(DeckdeckgoDeckBackgroundUtils.cloneAndLoadBackground(this.el, filteredSlides, this.cloneBackground));
-
-        await Promise.all(promises);
+      if (loadedSlides.length !== definedSlidesLength) {
+        resolve(null);
+        return;
       }
 
-      resolve();
+      const orderedSlidesTagNames: DeckdeckgoSlideDefinition[] = [];
+
+      Array.from(loadedSlides).forEach((slide: HTMLElement) => {
+        const notes: HTMLElement = slide.querySelector('[slot=\'notes\']');
+        const title: HTMLElement = slide.querySelector('[slot=\'title\']');
+
+        orderedSlidesTagNames.push({
+          name: slide.tagName,
+          title: title ? title.innerHTML : null,
+          notes: notes ? notes.innerHTML : null
+        });
+      });
+
+      resolve(orderedSlidesTagNames);
     });
   }
 
