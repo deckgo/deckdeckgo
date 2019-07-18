@@ -505,6 +505,8 @@ export class AppEditor {
                     return;
                 }
 
+                await this.remoteEventsHandler.updateRemoteSlidesOnMutation();
+
                 this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
                 this.slides = [...this.slides];
             } catch (err) {
