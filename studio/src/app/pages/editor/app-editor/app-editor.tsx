@@ -1,5 +1,7 @@
 import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 
+import {ItemReorderEventDetail} from '@ionic/core';
+
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
@@ -25,7 +27,6 @@ import {AnonymousService} from '../../../services/editor/anonymous/anonymous.ser
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {BusyService} from '../../../services/editor/busy/busy.service';
-import {ItemReorderEventDetail} from '@ionic/core';
 
 @Component({
     tag: 'app-editor',
@@ -490,19 +491,25 @@ export class AppEditor {
     }
 
     private reorderSlides(detail: ItemReorderEventDetail): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             if (!detail) {
                 resolve();
                 return;
             }
 
-            if (detail.from < 0 || detail.to < 0 || !this.slides || detail.to >= this.slides.length || detail.from === detail.to) {
-                resolve();
-                return;
-            }
+            try {
+                await this.deckEventsHandler.updateDeckSlidesOrder(detail);
 
-            this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
-            this.slides = [...this.slides];
+                if (detail.from < 0 || detail.to < 0 || !this.slides || detail.to >= this.slides.length || detail.from === detail.to) {
+                    resolve();
+                    return;
+                }
+
+                this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
+                this.slides = [...this.slides];
+            } catch (err) {
+                // We ignore the error here
+            }
 
             // Finish the reorder and position the item in the DOM based on where the gesture ended. This method can also be called directly by the reorder group
             detail.complete();
