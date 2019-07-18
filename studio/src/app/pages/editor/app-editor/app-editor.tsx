@@ -244,7 +244,9 @@ export class AppEditor {
     async inactivity($event: CustomEvent) {
         this.presenting = !$event.detail;
 
-        await this.editorEventsHandler.selectDeck();
+        if (!this.presenting) {
+            await this.hideToolbar();
+        }
 
         // Wait a bit for the display/repaint of the footer
         setTimeout(async () => {
@@ -323,6 +325,21 @@ export class AppEditor {
                 return;
             }
 
+            await toolbar.hideToolbar();
+
+            resolve();
+        });
+    }
+
+    private onSlideChangeHideToolbar(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+
+            if (!toolbar) {
+                resolve();
+                return;
+            }
+
             const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
             if (!deck) {
@@ -363,6 +380,12 @@ export class AppEditor {
 
             // Click on the pager
             if (!($event.target as HTMLElement).nodeName || ($event.target as HTMLElement).nodeName.toLowerCase() === 'deckgo-deck') {
+                resolve();
+                return;
+            }
+
+            // Need to move a bit the mouse first to detect that we want to edit, otherwise we might select the deck with a click without displaying the toolbar footer
+            if (this.fullscreen && this.presenting) {
                 resolve();
                 return;
             }
@@ -467,9 +490,9 @@ export class AppEditor {
                     <deckgo-deck embedded={true} style={this.style}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
-                                 onSlideNextDidChange={() => this.hideToolbar()}
-                                 onSlidePrevDidChange={() => this.hideToolbar()}
-                                 onSlideToChange={() => this.hideToolbar()}
+                                 onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}
+                                 onSlidePrevDidChange={() => this.onSlideChangeHideToolbar()}
+                                 onSlideToChange={() => this.onSlideChangeHideToolbar()}
                                  onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}>
                         {this.slides}
                         {this.background}
