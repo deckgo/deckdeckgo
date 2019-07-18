@@ -6,12 +6,9 @@ rec
       ''
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
-        cp "${handlerStatic}/bin/handler" main_hs
-        cp ${./google-public-keys.json} google-public-keys.json
+        cp "${handler}/bin/handler" main_hs
         mkdir $out
-        ${pkgs.zip}/bin/zip \
-          -r $out/function.zip \
-          main.js main_hs google-public-keys.json
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';
 
   # TODO: move all other builders to this
@@ -25,7 +22,22 @@ rec
       ''
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
-        cp "${unsplashProxyStatic}/bin/unsplash-proxy" main_hs
+        cp "${unsplashProxy}/bin/unsplash-proxy" main_hs
+        mkdir $out
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
+      '';
+
+  function-google-key-updater-path =
+    { path = builtins.seq
+        (builtins.readDir function-google-key-updater) "${function-google-key-updater}/function.zip";
+    } ;
+
+  function-google-key-updater =
+    pkgs.runCommand "build-lambda" {}
+      ''
+        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        # Can't be called 'main' otherwise lambda tries to load it
+        cp "${googleKeyUpdater}/bin/google-key-updater" main_hs
         mkdir $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';
@@ -40,7 +52,7 @@ rec
       ''
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
-        cp "${handlerStatic}/bin/presenter" main_hs
+        cp "${handler}/bin/presenter" main_hs
         cp ${deckdeckgo-starter-dist}/dist.tar dist.tar
         mkdir -p $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist.tar
@@ -49,7 +61,7 @@ rec
   deckdeckgo-starter-dist =
     with
       { napalm = import pkgs.sources.napalm { inherit pkgs;} ; };
-    pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs-10_x ]; }
+    pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs ]; }
       ''
         cp -r ${napalm.buildPackage pkgs.sources.deckdeckgo-starter {}}/* .
         chmod +w -R _napalm-install
@@ -67,7 +79,9 @@ rec
       { pkg = pkgs.haskellPackages.developPackage { root = ./handler; } ; };
     pkg.overrideAttrs(attr: {
       buildInputs = with pkgs;
-        [ niv terraform awscli postgresql moreutils minio ];
+        [ terraform awscli postgresql moreutils minio ];
+      LANG = "en_US.UTF-8";
+      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
       shellHook =
       let
         pgutil = pkgs.callPackage ./pgutil.nix {};
@@ -156,6 +170,10 @@ rec
             ghci -Wall unsplash-proxy/Main.hs
          }
 
+         function repl_google_key_updater() {
+            ghci -Wall google-key-updater/Main.hs
+         }
+
          function repl() {
             repl_handler
          }
@@ -163,11 +181,11 @@ rec
         '';
      });
 
-  handlerStatic = pkgs.haskellPackagesStatic.deckdeckgo-handler;
   handler = pkgs.haskellPackages.deckdeckgo-handler;
 
-  unsplashProxyStatic = pkgs.haskellPackagesStatic.unsplash-proxy;
   unsplashProxy = pkgs.haskellPackages.unsplash-proxy;
+
+  googleKeyUpdater = pkgs.haskellPackages.google-key-updater;
 
   dynamoJar = pkgs.runCommand "dynamodb-jar" { buildInputs = [ pkgs.gnutar ]; }
   ''
@@ -243,9 +261,7 @@ rec
       ${pgutil.start_pg}
 
       echo "Running tests"
-      NIX_REDIRECTS=/etc/protocols=${pkgs.iana-etc}/etc/protocols \
-        LD_PRELOAD="${pkgs.libredirect}/lib/libredirect.so" \
-        GOOGLE_PUBLIC_KEYS="${pkgs.writeText "google-x509" (builtins.toJSON googleResp)}" \
+      GOOGLE_PUBLIC_KEYS="${pkgs.writeText "google-x509" (builtins.toJSON googleResp)}" \
         FIREBASE_PROJECT_ID="my-project-id" \
         FIREBASE_PROJECT_ID="my-project-id" \
         AWS_DEFAULT_REGION=us-east-1 \
