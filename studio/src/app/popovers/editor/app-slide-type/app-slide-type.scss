@@ -51,8 +51,6 @@ app-slide-type {
     }
 
     deckgo-slide-gif {
-      --slide-width: 216px;
-      --slide-height: 110px;
       --border-radius: 8px;
       --padding: 0;
 
@@ -62,14 +60,18 @@ app-slide-type {
       --slide-padding-start: 0;
     }
 
+    deckgo-slide-gif, deckgo-slide-author {
+      --slide-width: 216px;
+      --slide-height: 110px;
+    }
+
     deckgo-slide-author {
       --slide-author-padding-top: 18px;
-      --slide-author-padding-bottom: 4px;
       --slide-author-padding-start: 8px;
       --slide-author-padding-end: 16px;
 
-      @media screen and (max-width: 1024px) {
-        --slide-author-padding-top: 4px;
+      @media screen and (min-width: 1024px) {
+        --slide-author-padding-top: 54px;
       }
     }
 

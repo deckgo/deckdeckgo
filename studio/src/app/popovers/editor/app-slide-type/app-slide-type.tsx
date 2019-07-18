@@ -1,5 +1,5 @@
 import {Component, Element, h, State} from '@stencil/core';
-import {filter, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 
 import {SlideTemplate} from '../../../models/data/slide';
 
@@ -31,7 +31,6 @@ export class AppSlideType {
 
     async componentWillLoad() {
         this.userService.watch().pipe(
-            filter((user: User) => user !== null && user !== undefined && user.data && !user.data.anonymous),
             take(1)).subscribe(async (user: User) => {
             this.user = user;
             this.photoUrl = user && user.data && user.data.photo_url ? user.data.photo_url : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg';
@@ -127,7 +126,7 @@ export class AppSlideType {
                                          img-src={this.photoUrl}
                                          img-alt="Author">
                         <p slot="title">Author</p>
-                        <p slot="author">About you</p>
+                        <p slot="author">About yourself</p>
                         <p slot="social-link">Twitter</p>
                         <p slot="social-link">LinkedIn</p>
                         <p slot="social-link">Dev</p>
