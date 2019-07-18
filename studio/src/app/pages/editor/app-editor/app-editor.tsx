@@ -133,8 +133,6 @@ export class AppEditor {
             this.slidesEditable = true;
 
             await this.contentEditable(slide);
-
-            await this.showHelp();
         });
 
         this.fullscreen = DeckDeckGoUtils.isFullscreen();
@@ -450,18 +448,6 @@ export class AppEditor {
             });
 
             resolve();
-        });
-    }
-
-    private showHelp(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-           const actions: HTMLElement = this.el.querySelector('app-editor-actions');
-
-           if (actions) {
-               await (actions as any).displayHelp();
-           }
-
-           resolve();
         });
     }
 

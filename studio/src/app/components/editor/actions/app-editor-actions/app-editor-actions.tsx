@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Listen, Method, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Listen, Prop} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {get, set} from 'idb-keyval';
@@ -47,18 +47,6 @@ export class AppEditorActions {
 
     constructor() {
         this.anonymousService = AnonymousService.getInstance();
-    }
-
-    @Method()
-    displayHelp(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const help: HTMLElement = this.el.querySelector('app-help-action');
-            if (help) {
-                await (help as any).displayHelp();
-            }
-
-            resolve();
-        });
     }
 
     async onActionOpenSlideAdd($event: CustomEvent) {

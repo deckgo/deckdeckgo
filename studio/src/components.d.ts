@@ -43,7 +43,6 @@ export namespace Components {
     'deckId': string;
   }
   interface AppEditorActions {
-    'displayHelp': () => Promise<void>;
     'fullscreen': boolean;
     'hideFooterActions': boolean;
     'slides': any[];
@@ -68,9 +67,7 @@ export namespace Components {
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
-  interface AppHelpAction {
-    'displayHelp': () => Promise<void>;
-  }
+  interface AppHelpAction {}
   interface AppHome {}
   interface AppImage {
     'deckOrSlide': boolean;
