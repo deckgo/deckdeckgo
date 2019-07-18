@@ -70,6 +70,12 @@ export class AppSlideType {
     }
 
     private async addSlide(template: SlideTemplate) {
+        const slide: any = await CreateSlidesUtils.createSlide(template, this.user);
+        await this.closePopover(template, slide);
+    }
+
+    // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
+    private async addRestrictedSlide(template: SlideTemplate) {
         const isAnonymous: boolean = await this.anonymousService.isAnonymous();
 
         if (isAnonymous) {
@@ -134,7 +140,7 @@ export class AppSlideType {
                         }}>and footer</p>
                     </deckgo-slide-gif>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.AUTHOR)}>
+                <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
                     <deckgo-slide-author class="showcase"
                                          img-src={this.photoUrl}
                                          img-alt="Author">
