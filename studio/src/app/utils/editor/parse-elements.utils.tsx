@@ -71,7 +71,8 @@ export class ParseElementsUtils {
     private static isElementContentEditable(element: HTMLElement, attributes: any): boolean {
         return attributes.slot &&
             attributes.slot !== 'background' &&
-            (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.CODE));
+            (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.CODE)) &&
+            (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-social' && element.nodeName.toLowerCase() !== SlotType.SOCIAL));
     }
 
 }

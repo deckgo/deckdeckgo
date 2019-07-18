@@ -2,13 +2,16 @@ export enum SlideTemplate {
     TITLE = 'title',
     CONTENT = 'content',
     SPLIT = 'split',
-    GIF = 'gif'
+    GIF = 'gif',
+    AUTHOR = 'author'
 }
 
 export interface SlideAttributes {
     style?: string;
     src?: string;
     customBackground?: string;
+    imgSrc?: string;
+    imgAlt?: string;
 }
 
 export interface SlideData {

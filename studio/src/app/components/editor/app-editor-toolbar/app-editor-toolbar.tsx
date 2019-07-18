@@ -655,9 +655,9 @@ export class AppEditorToolbar {
     }
 
     private async openCustomImagesModal() {
-        const couldAddCustomImages: boolean = await this.anonymousService.couldAddCustomImages();
+        const isAnonymous: boolean = await this.anonymousService.isAnonymous();
 
-        if (!couldAddCustomImages) {
+        if (isAnonymous) {
             this.signIn.emit();
             return;
         }

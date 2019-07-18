@@ -8,7 +8,7 @@ main {
 
   deckgo-deck > *:not(deckgo-slide-gif) {
     // Skeleton for new slides
-    > [slot]:not([contentEditable]):not([editable]):not([slot="background"]) {
+    > [slot]:not([contentEditable]):not([editable]):not([slot="background"]):not([slot="social-link"]) {
       position: relative;
 
       background: var(--ion-color-light);

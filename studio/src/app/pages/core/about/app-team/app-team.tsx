@@ -28,11 +28,11 @@ export class AppTeam {
                                 </a>
 
                                 <a href="https://medium.com/@david.dalbusco">
-                                    <ion-icon src="./assets/img/medium-icon.svg" area-label="Medium"></ion-icon>
+                                    <ion-icon src="./assets/icons/medium.svg" area-label="Medium"></ion-icon>
                                 </a>
 
                                 <a href="https://dev.to/daviddalbusco">
-                                    <ion-icon src="./assets/img/dev-icon.svg" area-label="Dev"></ion-icon>
+                                    <ion-icon src="./assets/icons/dev.svg" area-label="Dev"></ion-icon>
                                 </a>
 
                                 <a href="http://github.com/peterpeterparker">

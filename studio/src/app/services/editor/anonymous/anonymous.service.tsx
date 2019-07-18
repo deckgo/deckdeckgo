@@ -67,15 +67,15 @@ export class AnonymousService {
         });
     }
 
-    couldAddCustomImages(): Promise<boolean> {
+    isAnonymous(): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             this.authService.watch().pipe(take(1)).subscribe((authUser: AuthUser) => {
                 if (!authUser) {
-                    resolve(false);
+                    resolve(true);
                     return;
                 }
 
-                resolve(!authUser.anonymous);
+                resolve(authUser.anonymous);
             });
         });
     }

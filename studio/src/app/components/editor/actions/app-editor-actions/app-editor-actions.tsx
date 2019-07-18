@@ -74,7 +74,7 @@ export class AppEditorActions {
         }
 
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-slide-type',
+            component: 'app-create-slide',
             event: $event.detail,
             mode: 'md',
             cssClass: 'popover-menu'
