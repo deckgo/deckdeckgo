@@ -1,7 +1,11 @@
 app-slide-navigate {
-  ion-list {
+  ion-reorder-group {
     ion-item {
       --border-color: transparent;
     }
+  }
+
+  p {
+    font-size: var(--font-size-very-small);
   }
 }

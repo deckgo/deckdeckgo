@@ -31,7 +31,7 @@ export class AppMoreActions {
 
     render() {
         return <div class="ion-padding">
-            <a onClick={() => this.closePopover(MoreAction.JUMP_TO)}><p>Go to slide</p></a>
+            <a onClick={() => this.closePopover(MoreAction.JUMP_TO)}><p>Slides</p></a>
             {this.renderFullscreenOption()}
             <a onClick={() => this.closePopover(MoreAction.REMOTE)}><p>Remote control</p></a>
             <app-share-options onSelectedOption={($event: CustomEvent<MoreAction>) => this.closeSharePopover($event)}></app-share-options>
