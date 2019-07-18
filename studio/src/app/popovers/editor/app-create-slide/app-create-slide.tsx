@@ -12,10 +12,10 @@ import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 
 @Component({
-    tag: 'app-slide-type',
-    styleUrl: 'app-slide-type.scss'
+    tag: 'app-create-slide',
+    styleUrl: 'app-create-slide.scss'
 })
-export class AppSlideType {
+export class AppCreateSlide {
 
     @Element() el: HTMLElement;
 
