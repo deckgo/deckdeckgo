@@ -13,16 +13,8 @@ export class ParseSlidesUtils {
                 return;
             }
 
-            if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.TITLE) {
-                resolve(await this.parseSlideElement(slide, 'deckgo-slide-title'));
-            } else if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.CONTENT) {
-                resolve(await this.parseSlideElement(slide, 'deckgo-slide-content'));
-            } else if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.SPLIT) {
-                resolve(await this.parseSlideElement(slide, 'deckgo-slide-split'));
-            } else if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.GIF) {
-                resolve(await this.parseSlideElement(slide, 'deckgo-slide-gif'));
-            } else if (SlideTemplate[slide.data.template.toUpperCase()] === SlideTemplate.AUTHOR) {
-                resolve(await this.parseSlideElement(slide, 'deckgo-slide-author'));
+            if (SlideTemplate[slide.data.template.toUpperCase()]) {
+                resolve(await this.parseSlideElement(slide, `deckgo-slide-${SlideTemplate[slide.data.template.toUpperCase()].toLowerCase()}`));
             } else {
                 resolve(null);
             }
