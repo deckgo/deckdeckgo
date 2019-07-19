@@ -15,6 +15,9 @@ import {
 import {
   MoreAction,
 } from './app/utils/editor/more-action';
+import {
+  ItemReorderEventDetail,
+} from '@ionic/core';
 
 export namespace Components {
   interface AppAbout {}
@@ -33,6 +36,7 @@ export namespace Components {
     'selectedElement': HTMLElement;
   }
   interface AppContact {}
+  interface AppCreateSlide {}
   interface AppCustomImages {}
   interface AppDeckOrSlide {
     'deckOrSlide': boolean;
@@ -42,7 +46,6 @@ export namespace Components {
     'deckId': string;
   }
   interface AppEditorActions {
-    'displayHelp': () => Promise<void>;
     'fullscreen': boolean;
     'hideFooterActions': boolean;
     'slides': any[];
@@ -67,9 +70,7 @@ export namespace Components {
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
-  interface AppHelpAction {
-    'displayHelp': () => Promise<void>;
-  }
+  interface AppHelpAction {}
   interface AppHome {}
   interface AppImage {
     'deckOrSlide': boolean;
@@ -118,7 +119,6 @@ export namespace Components {
     'redirectId': string;
   }
   interface AppSlideNavigate {}
-  interface AppSlideType {}
   interface AppSlotType {
     'selectedElement': HTMLElement;
   }
@@ -170,6 +170,12 @@ declare global {
   var HTMLAppContactElement: {
     prototype: HTMLAppContactElement;
     new (): HTMLAppContactElement;
+  };
+
+  interface HTMLAppCreateSlideElement extends Components.AppCreateSlide, HTMLStencilElement {}
+  var HTMLAppCreateSlideElement: {
+    prototype: HTMLAppCreateSlideElement;
+    new (): HTMLAppCreateSlideElement;
   };
 
   interface HTMLAppCustomImagesElement extends Components.AppCustomImages, HTMLStencilElement {}
@@ -418,12 +424,6 @@ declare global {
     new (): HTMLAppSlideNavigateElement;
   };
 
-  interface HTMLAppSlideTypeElement extends Components.AppSlideType, HTMLStencilElement {}
-  var HTMLAppSlideTypeElement: {
-    prototype: HTMLAppSlideTypeElement;
-    new (): HTMLAppSlideTypeElement;
-  };
-
   interface HTMLAppSlotTypeElement extends Components.AppSlotType, HTMLStencilElement {}
   var HTMLAppSlotTypeElement: {
     prototype: HTMLAppSlotTypeElement;
@@ -466,6 +466,7 @@ declare global {
     'app-code': HTMLAppCodeElement;
     'app-color': HTMLAppColorElement;
     'app-contact': HTMLAppContactElement;
+    'app-create-slide': HTMLAppCreateSlideElement;
     'app-custom-images': HTMLAppCustomImagesElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-developer': HTMLAppDeveloperElement;
@@ -507,7 +508,6 @@ declare global {
     'app-share-options': HTMLAppShareOptionsElement;
     'app-signin': HTMLAppSigninElement;
     'app-slide-navigate': HTMLAppSlideNavigateElement;
-    'app-slide-type': HTMLAppSlideTypeElement;
     'app-slot-type': HTMLAppSlotTypeElement;
     'app-team': HTMLAppTeamElement;
     'app-terms': HTMLAppTermsElement;
@@ -537,6 +537,9 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
   }
   interface AppContact extends JSXBase.HTMLAttributes<HTMLAppContactElement> {}
+  interface AppCreateSlide extends JSXBase.HTMLAttributes<HTMLAppCreateSlideElement> {
+    'onSignIn'?: (event: CustomEvent<void>) => void;
+  }
   interface AppCustomImages extends JSXBase.HTMLAttributes<HTMLAppCustomImagesElement> {}
   interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {
     'deckOrSlide'?: boolean;
@@ -637,8 +640,9 @@ declare namespace LocalJSX {
     'redirect'?: string;
     'redirectId'?: string;
   }
-  interface AppSlideNavigate extends JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement> {}
-  interface AppSlideType extends JSXBase.HTMLAttributes<HTMLAppSlideTypeElement> {}
+  interface AppSlideNavigate extends JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement> {
+    'onReorder'?: (event: CustomEvent<ItemReorderEventDetail>) => void;
+  }
   interface AppSlotType extends JSXBase.HTMLAttributes<HTMLAppSlotTypeElement> {
     'selectedElement'?: HTMLElement;
   }
@@ -659,6 +663,7 @@ declare namespace LocalJSX {
     'app-code': AppCode;
     'app-color': AppColor;
     'app-contact': AppContact;
+    'app-create-slide': AppCreateSlide;
     'app-custom-images': AppCustomImages;
     'app-deck-or-slide': AppDeckOrSlide;
     'app-developer': AppDeveloper;
@@ -700,7 +705,6 @@ declare namespace LocalJSX {
     'app-share-options': AppShareOptions;
     'app-signin': AppSignin;
     'app-slide-navigate': AppSlideNavigate;
-    'app-slide-type': AppSlideType;
     'app-slot-type': AppSlotType;
     'app-team': AppTeam;
     'app-terms': AppTerms;

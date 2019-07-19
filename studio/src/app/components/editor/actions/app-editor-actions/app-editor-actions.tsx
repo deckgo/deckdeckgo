@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Listen, Method, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Listen, Prop} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {get, set} from 'idb-keyval';
@@ -49,18 +49,6 @@ export class AppEditorActions {
         this.anonymousService = AnonymousService.getInstance();
     }
 
-    @Method()
-    displayHelp(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const help: HTMLElement = this.el.querySelector('app-help-action');
-            if (help) {
-                await (help as any).displayHelp();
-            }
-
-            resolve();
-        });
-    }
-
     async onActionOpenSlideAdd($event: CustomEvent) {
         if (!$event || !$event.detail) {
             return;
@@ -74,7 +62,7 @@ export class AppEditorActions {
         }
 
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-slide-type',
+            component: 'app-create-slide',
             event: $event.detail,
             mode: 'md',
             cssClass: 'popover-menu'
@@ -229,8 +217,8 @@ export class AppEditorActions {
 
                 <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices"
                                 mode="md">
-                    <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
-                    <ion-label>Go to slide</ion-label>
+                    <ion-icon src="/assets/icons/ionicons/list.svg"></ion-icon>
+                    <ion-label>Slides</ion-label>
                 </ion-tab-button>
 
                 <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices" mode="md">

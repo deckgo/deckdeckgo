@@ -1,6 +1,4 @@
-import {Component, h, Element, Method} from '@stencil/core';
-
-import {get, set} from 'idb-keyval';
+import {Component, h, Element} from '@stencil/core';
 
 import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 
@@ -11,28 +9,11 @@ export class AppHelpAction {
 
     @Element() el: HTMLElement;
 
-    @Method()
-    async displayHelp() {
-        const helpDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_help');
-
-        if (!helpDisplayedOnce) {
-            const button: HTMLIonTabButtonElement = this.el.querySelector('ion-tab-button.get-help-action');
-
-            if (button) {
-                button.click();
-            }
-        }
-    }
-
     private async openGetHelp() {
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-get-help',
             mode: 'ios',
             cssClass: 'info'
-        });
-
-        popover.onDidDismiss().then(async () => {
-            await set('deckdeckgo_display_help', true);
         });
 
         await popover.present();

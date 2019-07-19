@@ -1,3 +1,5 @@
+import {ItemReorderEventDetail} from '@ionic/core';
+
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
@@ -499,6 +501,14 @@ export class DeckEventsHandler {
                 attributes.customBackground = '' + true;
             }
 
+            if ((slide as any).imgSrc) {
+                attributes.imgSrc = (slide as any).imgSrc;
+            }
+
+            if ((slide as any).imgAlt) {
+                attributes.imgAlt = (slide as any).imgAlt;
+            }
+
             resolve(attributes);
         })
     }
@@ -605,6 +615,35 @@ export class DeckEventsHandler {
             await (deck as any).initSlideSize();
 
             resolve();
+        });
+    }
+
+    updateDeckSlidesOrder(detail: ItemReorderEventDetail): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                if (!detail) {
+                    reject('No new order provided for the slides');
+                    return;
+                }
+
+                if (detail.from < 0 || detail.to < 0 || detail.from === detail.to) {
+                    reject('The new order provided for the slides is not valid');
+                    return;
+                }
+
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    if (deck && deck.data && deck.data.slides && detail.to < deck.data.slides.length) {
+                        deck.data.slides.splice(detail.to, 0, ...deck.data.slides.splice(detail.from, 1));
+
+                        const updatedDeck: Deck = await this.deckService.update(deck);
+                        this.deckEditorService.next(updatedDeck);
+                    }
+
+                    resolve();
+                });
+            } catch (err) {
+                reject(err);
+            }
         });
     }
 }

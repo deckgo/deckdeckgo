@@ -1,5 +1,7 @@
 import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 
+import {ItemReorderEventDetail} from '@ionic/core';
+
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
@@ -87,7 +89,7 @@ export class AppEditor {
         this.busyService = BusyService.getInstance();
     }
 
-    @Listen('ionRouteDidChange', { target: 'window' })
+    @Listen('ionRouteDidChange', {target: 'window'})
     async onRouteDidChange($event: CustomEvent) {
         if (!$event || !$event.detail) {
             return;
@@ -133,8 +135,6 @@ export class AppEditor {
             this.slidesEditable = true;
 
             await this.contentEditable(slide);
-
-            await this.showHelp();
         });
 
         this.fullscreen = DeckDeckGoUtils.isFullscreen();
@@ -246,7 +246,9 @@ export class AppEditor {
     async inactivity($event: CustomEvent) {
         this.presenting = !$event.detail;
 
-        await this.editorEventsHandler.selectDeck();
+        if (!this.presenting) {
+            await this.hideToolbar();
+        }
 
         // Wait a bit for the display/repaint of the footer
         setTimeout(async () => {
@@ -325,6 +327,21 @@ export class AppEditor {
                 return;
             }
 
+            await toolbar.hideToolbar();
+
+            resolve();
+        });
+    }
+
+    private onSlideChangeHideToolbar(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+
+            if (!toolbar) {
+                resolve();
+                return;
+            }
+
             const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
             if (!deck) {
@@ -365,6 +382,12 @@ export class AppEditor {
 
             // Click on the pager
             if (!($event.target as HTMLElement).nodeName || ($event.target as HTMLElement).nodeName.toLowerCase() === 'deckgo-deck') {
+                resolve();
+                return;
+            }
+
+            // Need to move a bit the mouse first to detect that we want to edit, otherwise we might select the deck with a click without displaying the toolbar footer
+            if (this.fullscreen && this.presenting) {
                 resolve();
                 return;
             }
@@ -423,7 +446,8 @@ export class AppEditor {
         }
     }
 
-    private async signIn() {
+    @Listen('signIn', {target: 'document'})
+    async signIn() {
         this.navService.navigate({
             url: '/signin' + (window && window.location ? window.location.pathname : ''),
             direction: NavDirection.FORWARD
@@ -439,28 +463,61 @@ export class AppEditor {
 
             const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
             elements.forEach((e: HTMLElement) => {
-                e.setAttribute(e.nodeName && e.nodeName.toLowerCase() === SlotType.CODE ? 'editable' : 'contentEditable', '');
+                if (e.nodeName) {
+                    if (e.nodeName.toLowerCase() === SlotType.CODE) {
+                        e.setAttribute('editable', '');
+                    } else if (e.nodeName.toLowerCase() !== SlotType.SOCIAL) {
+                        e.setAttribute('contentEditable', '');
+                    }
+                }
             });
 
             resolve();
         });
     }
 
-    private showHelp(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-           const actions: HTMLElement = this.el.querySelector('app-editor-actions');
-
-           if (actions) {
-               await (actions as any).displayHelp();
-           }
-
-           resolve();
-        });
-    }
-
     private stickyToolbarActivated($event: CustomEvent) {
         this.hideFooterActions = $event ? $event.detail : false;
         this.hideNavigation = $event ? DeckDeckGoUtils.isIOS() && $event.detail : false;
+    }
+
+    @Listen('reorder', {target: 'document'})
+    async onReorderSlides($event: CustomEvent<ItemReorderEventDetail>) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        await this.reorderSlides($event.detail);
+    }
+
+    private reorderSlides(detail: ItemReorderEventDetail): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!detail) {
+                resolve();
+                return;
+            }
+
+            try {
+                await this.deckEventsHandler.updateDeckSlidesOrder(detail);
+
+                if (detail.from < 0 || detail.to < 0 || !this.slides || detail.to >= this.slides.length || detail.from === detail.to) {
+                    resolve();
+                    return;
+                }
+
+                await this.remoteEventsHandler.updateRemoteSlidesOnMutation();
+
+                this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
+                this.slides = [...this.slides];
+            } catch (err) {
+                // We ignore the error here
+            }
+
+            // Finish the reorder and position the item in the DOM based on where the gesture ended. This method can also be called directly by the reorder group
+            detail.complete();
+
+            resolve();
+        });
     }
 
     render() {
@@ -474,19 +531,20 @@ export class AppEditor {
                     <deckgo-deck embedded={true} style={this.style}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
-                                 onSlideNextDidChange={() => this.hideToolbar()}
-                                 onSlidePrevDidChange={() => this.hideToolbar()}
-                                 onSlideToChange={() => this.hideToolbar()}
+                                 onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}
+                                 onSlidePrevDidChange={() => this.onSlideChangeHideToolbar()}
+                                 onSlideToChange={() => this.onSlideChangeHideToolbar()}
                                  onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}>
                         {this.slides}
                         {this.background}
                     </deckgo-deck>
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
-                <app-editor-toolbar onSignIn={() => this.signIn()}></app-editor-toolbar>
+                <app-editor-toolbar></app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
-                <app-editor-actions hideFooterActions={this.hideFooterActions} fullscreen={this.fullscreen} slides={this.slides}
+                <app-editor-actions hideFooterActions={this.hideFooterActions} fullscreen={this.fullscreen}
+                                    slides={this.slides}
                                     onSignIn={() => this.signIn()}
                                     onAddSlide={($event: CustomEvent<any>) => this.addSlide($event)}
                                     onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}

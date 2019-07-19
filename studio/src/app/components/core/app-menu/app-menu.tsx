@@ -197,7 +197,7 @@ export class AppMenu {
             {this.renderUser()}
 
             {this.renderHome()}
-
+            {this.renderSettings()}
             {this.renderSignInOut()}
 
             <ion-item-divider>
@@ -229,6 +229,17 @@ export class AppMenu {
                 this.renderDecksFilter(),
                 this.renderDecks()
             ];
+        } else {
+            return this.renderEmptyDeckItem();
+        }
+    }
+
+    private renderSettings() {
+        if (Utils.isLoggedIn(this.authUser)) {
+            return <ion-item button class="home" href="/settings" routerDirection="forward">
+                <ion-icon name="settings" slot="start"></ion-icon>
+                <ion-label>Settings</ion-label>
+            </ion-item>;
         } else {
             return undefined;
         }
@@ -274,14 +285,16 @@ export class AppMenu {
                 })
             );
         } else if (this.filteredDecks && this.filteredDecks.length === 0) {
-            return (
-                <ion-item>
-                    <ion-label>No presentations 😔</ion-label>
-                </ion-item>
-            )
+            return this.renderEmptyDeckItem();
         } else {
             return this.renderSkeletons();
         }
+    }
+
+    private renderEmptyDeckItem() {
+        return <ion-item>
+            <ion-label>It's time to create your first presentation 😉</ion-label>
+        </ion-item>;
     }
 
     private renderSkeletons() {

@@ -2,6 +2,10 @@ app-footer {
   div {
     font-size: var(--font-size-small);
 
+    &.footer-container {
+      margin-top: 32px;
+    }
+
     > ion-label {
       display: block;
       padding-bottom: 6px;
@@ -24,10 +28,6 @@ app-footer {
         border-bottom-color: transparent;
       }
     }
-  }
-
-  hr {
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
   }
 }
 

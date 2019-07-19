@@ -239,7 +239,7 @@ export class RemoteEventsHandler {
 
             deckgoRemoteElement.slides = $event.detail;
 
-            await this.updateRemoteSlides($event);
+            await this.updateRemoteSlidesOnSlidesDidLoad($event);
 
             resolve();
         });
@@ -392,7 +392,7 @@ export class RemoteEventsHandler {
         });
     }
 
-    private updateRemoteSlides($event: CustomEvent): Promise<void> {
+    private updateRemoteSlidesOnSlidesDidLoad($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
@@ -409,6 +409,46 @@ export class RemoteEventsHandler {
                 return;
             }
 
+            await this.updateRemoteSlides();
+
+            resolve();
+        });
+    }
+
+    updateRemoteSlidesOnMutation(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck || !deck.hasChildNodes()) {
+                resolve();
+                return;
+            }
+
+            const observer: MutationObserver = new MutationObserver(async (_mutations: MutationRecord[], _observer: MutationObserver) => {
+
+                const slidesDefinition: any[] = await (deck as any).getSlidesDefinition();
+
+                if (slidesDefinition && slidesDefinition.length > 0) {
+                    const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+
+                    if (deckgoRemoteElement) {
+                        deckgoRemoteElement.slides = slidesDefinition;
+
+                        await this.updateRemoteSlides();
+                    }
+                }
+
+                observer.disconnect();
+            });
+
+            observer.observe(deck, {childList: true, subtree: true});
+
+            resolve();
+        });
+    }
+
+    private updateRemoteSlides(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
             if (!deckgoRemoteElement) {

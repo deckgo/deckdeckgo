@@ -1,4 +1,4 @@
-app-slide-type {
+app-create-slide {
   ion-toolbar {
     padding: 16px;
   }
@@ -51,8 +51,6 @@ app-slide-type {
     }
 
     deckgo-slide-gif {
-      --slide-width: 216px;
-      --slide-height: 110px;
       --border-radius: 8px;
       --padding: 0;
 
@@ -60,6 +58,21 @@ app-slide-type {
       --slide-padding-bottom: 0;
       --slide-padding-end: 0;
       --slide-padding-start: 0;
+    }
+
+    deckgo-slide-gif, deckgo-slide-author {
+      --slide-width: 216px;
+      --slide-height: 110px;
+    }
+
+    deckgo-slide-author {
+      --slide-author-padding-top: 16px;
+      --slide-author-padding-start: 8px;
+      --slide-author-padding-end: 16px;
+
+      @media screen and (min-width: 1024px) {
+        --slide-author-padding-top: 54px;
+      }
     }
 
     h1, p {
@@ -92,6 +105,25 @@ app-slide-type {
       p {
         min-height: inherit;
         width: inherit;
+      }
+    }
+
+    deckgo-slide-author {
+      --slide-author-social-padding-top: 8px;
+
+      @media screen and (max-width: 768px) {
+        p:nth-child(n+6) {
+          display: none;
+        }
+      }
+
+      p {
+        min-height: inherit;
+        margin: 0;
+
+        &[slot="social-link"] {
+          font-size: calc(var(--font-size-very-small) * 0.6);
+        }
       }
     }
   }
