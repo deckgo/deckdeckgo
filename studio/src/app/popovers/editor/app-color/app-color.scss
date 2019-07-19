@@ -1,27 +1,6 @@
 app-color {
 
-  ion-toolbar {
-    padding: 16px;
-  }
-
-  ion-list.list-ios {
-    margin-bottom: 0;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-
-  ion-item {
-    --border-width: 0;
-    --inner-border-width: 0;
-
-    &.action-button {
-      --min-height: 42px;
-
-      ion-button {
-        width: 100%;
-      }
-    }
-  }
+  @import "../../../../global/theme/editor/editor-popover";
 
   input {
     visibility: hidden;
