@@ -33,6 +33,8 @@ export class CreateSlidesUtils {
                 resolve(await this.createSlideGif(EnvironmentConfigService.getInstance().get('gifExampleSrc')));
             } else if (template === SlideTemplate.AUTHOR) {
                 resolve(await this.createSlideAuthor(user));
+            } else if (template === SlideTemplate.YOUTUBE) {
+                resolve(await this.createSlideYoutube());
             } else {
                 resolve(null);
             }
@@ -202,6 +204,23 @@ export class CreateSlidesUtils {
             }
 
             resolve(links);
+        });
+    }
+
+    static createSlideYoutube(src: string = undefined): Promise<any> {
+        return new Promise<any>((resolve) => {
+            if (!document) {
+                resolve();
+                return;
+            }
+
+            const title = <h1 slot="title"></h1>;
+
+            const slide: any = <deckgo-slide-youtube src={src}>
+                {title}
+            </deckgo-slide-youtube>;
+
+            resolve(slide);
         });
     }
 

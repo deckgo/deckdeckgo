@@ -1,0 +1,9 @@
+app-youtube {
+  ion-content {
+    --background: var(--ion-color-light);
+
+    ion-list {
+      --ion-item-background: transparent;
+    }
+  }
+}

@@ -43,6 +43,9 @@ export class AppEditorToolbar {
     @State()
     private code: boolean = false;
 
+    @State()
+    private youtube: boolean = false;
+
     private applyToAllDeck: boolean = false;
 
     @Event() private blockSlide: EventEmitter<boolean>;
@@ -206,6 +209,10 @@ export class AppEditorToolbar {
 
     private isElementCode(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-highlight-code';
+    }
+
+    private isElementYoutubeSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-youtube';
     }
 
     private cleanOnPaste = async ($event) => {
@@ -472,6 +479,27 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openYoutube() {
+        if (!this.youtube) {
+            return;
+        }
+
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+            component: 'app-youtube',
+            componentProps: {
+                selectedElement: this.selectedElement
+            }
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data && this.selectedElement && this.youtube) {
+                await this.updateYoutube(detail.data);
+            }
+        });
+
+        await modal.present();
+    }
+
     private toggleSlotType(type: SlotType): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
@@ -522,6 +550,7 @@ export class AppEditorToolbar {
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
             this.code = this.isElementCode(element);
+            this.youtube = this.isElementYoutubeSlide(element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
@@ -677,12 +706,38 @@ export class AppEditorToolbar {
         });
     }
 
+    private updateYoutube(youtubeUrl: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.youtube) {
+                resolve();
+                return;
+            }
+
+            if (!youtubeUrl || youtubeUrl === undefined || youtubeUrl === '') {
+                resolve();
+                return;
+            }
+
+            // Just in case
+            if (!this.isElementYoutubeSlide(this.selectedElement)) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.setAttribute('src', youtubeUrl);
+            this.slideDidChange.emit(this.selectedElement);
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderSlotType()}
                 {this.renderPhotos()}
                 {this.renderColor()}
+                {this.renderYoutube()}
                 {this.renderCodeOptions()}
                 {this.renderDelete()}
             </div>
@@ -726,6 +781,16 @@ export class AppEditorToolbar {
         return <a onClick={() => this.openBackground()} title="Background">
             <ion-icon name="images"></ion-icon>
         </a>
+    }
+
+    private renderYoutube() {
+        if (this.deckOrSlide && this.youtube) {
+            return <a onClick={() => this.openYoutube()} title="Modify Youtube url">
+                <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+        } else {
+            return undefined;
+        }
     }
 
 }

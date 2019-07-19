@@ -131,6 +131,9 @@ export namespace Components {
     'avatarColSize': number;
   }
   interface AppUserMenu {}
+  interface AppYoutube {
+    'selectedElement': HTMLElement;
+  }
 }
 
 declare global {
@@ -459,6 +462,12 @@ declare global {
     prototype: HTMLAppUserMenuElement;
     new (): HTMLAppUserMenuElement;
   };
+
+  interface HTMLAppYoutubeElement extends Components.AppYoutube, HTMLStencilElement {}
+  var HTMLAppYoutubeElement: {
+    prototype: HTMLAppYoutubeElement;
+    new (): HTMLAppYoutubeElement;
+  };
   interface HTMLElementTagNameMap {
     'app-about': HTMLAppAboutElement;
     'app-add-slide-action': HTMLAppAddSlideActionElement;
@@ -514,6 +523,7 @@ declare global {
     'app-user-delete': HTMLAppUserDeleteElement;
     'app-user-info': HTMLAppUserInfoElement;
     'app-user-menu': HTMLAppUserMenuElement;
+    'app-youtube': HTMLAppYoutubeElement;
   }
 }
 
@@ -655,6 +665,9 @@ declare namespace LocalJSX {
     'avatarColSize'?: number;
   }
   interface AppUserMenu extends JSXBase.HTMLAttributes<HTMLAppUserMenuElement> {}
+  interface AppYoutube extends JSXBase.HTMLAttributes<HTMLAppYoutubeElement> {
+    'selectedElement'?: HTMLElement;
+  }
 
   interface IntrinsicElements {
     'app-about': AppAbout;
@@ -711,6 +724,7 @@ declare namespace LocalJSX {
     'app-user-delete': AppUserDelete;
     'app-user-info': AppUserInfo;
     'app-user-menu': AppUserMenu;
+    'app-youtube': AppYoutube;
   }
 }
 

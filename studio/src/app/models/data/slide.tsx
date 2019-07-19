@@ -3,7 +3,8 @@ export enum SlideTemplate {
     CONTENT = 'content',
     SPLIT = 'split',
     GIF = 'gif',
-    AUTHOR = 'author'
+    AUTHOR = 'author',
+    YOUTUBE = 'youtube'
 }
 
 export interface SlideAttributes {

@@ -16,7 +16,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() src: string;
+  @Prop({reflectToAttr: true}) src: string;
   @Prop() width: number;
   @Prop() height: number;
 

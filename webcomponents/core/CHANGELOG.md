@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.43"></a>
+# 1.0.0-beta.43 (2019-06-19)
+
+### Features
+
+* watch `deckgo-youtube` property `src` to refresh video
+* reflect attribute `src` in `deckgo-slide-youtube`
+
 <a name="1.0.0-beta.42"></a>
 # 1.0.0-beta.42 (2019-06-18)
 
