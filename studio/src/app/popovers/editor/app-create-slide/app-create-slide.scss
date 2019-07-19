@@ -28,11 +28,11 @@ app-create-slide {
       --slide-padding-top: 4px;
       --slide-padding-end: 4px;
 
-      h1 {
+      p[slot="title"] {
         margin-top: 22px;
       }
 
-      p {
+      p[slot="content"] {
         min-height: 36px;
       }
     }
@@ -75,22 +75,39 @@ app-create-slide {
       }
     }
 
-    h1, p {
+    p {
       width: 100%;
       border-radius: 4px;
       margin: 2px;
       padding: 2px;
     }
 
-    h1 {
+    p {
       font-size: var(--font-size-small);
       border: 1px dashed var(--ion-color-tertiary);
     }
 
-    p {
+    p[slot="content"], p[slot="author"] {
       font-size: var(--font-size-very-small);
-      border: 1px dashed var(--ion-color-tertiary);
-      min-height: 74px;
+    }
+
+    p[slot="content"] {
+      min-height: 68px;
+    }
+
+    deckgo-slide-content {
+      &.gif {
+        p[slot="content"] {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          ion-icon {
+            font-size: 3.4rem;
+            color: var(--ion-color-youtube);
+          }
+        }
+      }
     }
 
     deckgo-slide-split {

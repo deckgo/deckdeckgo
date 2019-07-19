@@ -109,13 +109,13 @@ export class AppCreateSlide {
             <div class="container ion-margin-bottom">
                 <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
                     <deckgo-slide-title class="showcase">
-                        <h1 slot="title">Title</h1>
+                        <p slot="title">Title</p>
                         <p slot="content">Content</p>
                     </deckgo-slide-title>
                 </div>
                 <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.CONTENT)}>
                     <deckgo-slide-content class="showcase">
-                        <h1 slot="title">Title</h1>
+                        <p slot="title">Title</p>
                         <p slot="content">Content</p>
                     </deckgo-slide-content>
                 </div>
@@ -153,6 +153,14 @@ export class AppCreateSlide {
                         <p slot="social-link">Github</p>
                         <p slot="social-link">Web</p>
                     </deckgo-slide-author>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
+                    <deckgo-slide-content class="showcase gif">
+                        <p slot="title">Youtube</p>
+                        <p slot="content">
+                            <ion-icon name="logo-youtube"></ion-icon>
+                        </p>
+                    </deckgo-slide-content>
                 </div>
             </div>
         ];

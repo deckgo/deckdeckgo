@@ -72,6 +72,8 @@ export class AppEditorActions {
             if (detail && detail.data) {
                 if (detail.data.template === SlideTemplate.GIF) {
                     await this.openGifPicker();
+                } else if (detail.data.template === SlideTemplate.YOUTUBE) {
+                    await this.openYoutube();
                 }
 
                 if (detail.data.slide) {
@@ -95,6 +97,18 @@ export class AppEditorActions {
         await modal.present();
     }
 
+    private async openYoutube() {
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+            component: 'app-youtube'
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            await this.addSlideYoutube(detail.data);
+        });
+
+        await modal.present();
+    }
+
     private addSlideGif(gif: TenorGif): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!gif || !gif.media || gif.media.length <= 0 || !gif.media[0].gif || !gif.media[0].gif.url) {
@@ -104,6 +118,21 @@ export class AppEditorActions {
 
             const url: string = gif.media[0].gif.url;
             const slide: any = await CreateSlidesUtils.createSlideGif(url);
+
+            await this.addSlide.emit(slide);
+
+            resolve();
+        });
+    }
+
+    private addSlideYoutube(youtubeUrl: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!youtubeUrl || youtubeUrl === undefined || youtubeUrl === '') {
+                resolve();
+                return;
+            }
+
+            const slide: any = await CreateSlidesUtils.createSlideYoutube(youtubeUrl);
 
             await this.addSlide.emit(slide);
 
