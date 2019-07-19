@@ -1,4 +1,4 @@
-import {Component, Element, h, Listen, State} from '@stencil/core';
+import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 @Component({
     tag: 'app-youtube',
     styleUrl: 'app-youtube.scss'
@@ -9,6 +9,15 @@ export class AppYoutube {
 
     @State()
     private youtubeUrl: string;
+
+    @Prop()
+    selectedElement: HTMLElement;
+
+    componentWillLoad() {
+        if (this.selectedElement) {
+            this.youtubeUrl = this.selectedElement.getAttribute('src');
+        }
+    }
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);

@@ -131,7 +131,9 @@ export namespace Components {
     'avatarColSize': number;
   }
   interface AppUserMenu {}
-  interface AppYoutube {}
+  interface AppYoutube {
+    'selectedElement': HTMLElement;
+  }
 }
 
 declare global {
@@ -663,7 +665,9 @@ declare namespace LocalJSX {
     'avatarColSize'?: number;
   }
   interface AppUserMenu extends JSXBase.HTMLAttributes<HTMLAppUserMenuElement> {}
-  interface AppYoutube extends JSXBase.HTMLAttributes<HTMLAppYoutubeElement> {}
+  interface AppYoutube extends JSXBase.HTMLAttributes<HTMLAppYoutubeElement> {
+    'selectedElement'?: HTMLElement;
+  }
 
   interface IntrinsicElements {
     'app-about': AppAbout;
