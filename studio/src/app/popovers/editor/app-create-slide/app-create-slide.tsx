@@ -154,7 +154,7 @@ export class AppCreateSlide {
                         <p slot="social-link">Web</p>
                     </deckgo-slide-author>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.YOUTUBE)}>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
                     <deckgo-slide-content class="showcase gif">
                         <p slot="title">Youtube</p>
                         <p slot="content">

@@ -207,7 +207,7 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideYoutube(): Promise<any> {
+    static createSlideYoutube(src: string = undefined): Promise<any> {
         return new Promise<any>((resolve) => {
             if (!document) {
                 resolve();
@@ -216,7 +216,7 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title"></h1>;
 
-            const slide: any = <deckgo-slide-youtube>
+            const slide: any = <deckgo-slide-youtube src={src}>
                 {title}
             </deckgo-slide-youtube>;
 
