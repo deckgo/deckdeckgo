@@ -54,7 +54,7 @@ export class ParseSlidesUtils {
             const SlideElement: string = slideTag;
 
             // @ts-ignore
-            const result: any = <SlideElement slide_id={slide.id} style={style} src={src} custom-background={customBackground} img-src={imgSrc} img-alt={imgAlt}>
+            const result: any = <SlideElement key={slide.id} slide_id={slide.id} style={style} src={src} custom-background={customBackground} img-src={imgSrc} img-alt={imgAlt}>
                 {content}
             </SlideElement>;
 
