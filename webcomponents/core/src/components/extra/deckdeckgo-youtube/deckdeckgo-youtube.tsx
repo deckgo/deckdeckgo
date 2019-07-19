@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop, h} from '@stencil/core';
+import {Component, Element, Method, Prop, h, Watch} from '@stencil/core';
 
 import {DeckdeckgoExtra} from '../deckdeckgo-extra';
 
@@ -61,6 +61,11 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
     return this.createIFrame();
   }
 
+  @Watch('src')
+  async onSrcUpdate() {
+    await this.createIFrame();
+  }
+
   private createIFrame(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.src) {
@@ -70,9 +75,13 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
 
       const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
 
-      if (iframe) {
+      if (iframe && !iframe.parentElement) {
         resolve();
         return;
+      }
+
+      if (iframe) {
+        iframe.parentElement.removeChild(iframe);
       }
 
       const element: HTMLIFrameElement = document.createElement('iframe');
