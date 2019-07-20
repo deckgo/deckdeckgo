@@ -148,6 +148,8 @@ export class AppEditor {
         if (this.busySubscription) {
             this.busySubscription.unsubscribe();
         }
+
+        this.deckEditorService.next(null);
     }
 
     async componentDidLoad() {
