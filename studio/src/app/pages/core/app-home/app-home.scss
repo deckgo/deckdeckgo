@@ -21,8 +21,15 @@ app-home {
     }
 
     app-popular {
-      grid-column-start: 3;
-      grid-column-end: 3;
+      &.description {
+        grid-column-start: 1;
+        grid-column-end: 1;
+      }
+
+      &.help {
+        grid-column-start: 3;
+        grid-column-end: 3;
+      }
     }
 
     @media (max-width: 1200px) {
