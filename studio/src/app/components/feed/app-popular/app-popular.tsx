@@ -20,7 +20,7 @@ export class AppPopular {
 
                     <p class="ion-padding-top">Every presentations published with DeckDeckGo are standalone <strong>apps</strong> 🚀</p>
 
-                    <p class="ion-padding-top">Moreover, it is also an online community for sharing presentations, slides and talks about your interests and ideas.</p>
+                    <p class="ion-padding-top">Moreover, it would be incredible if it would become an online community for sharing presentations, slides and talks about your interests and ideas.</p>
 
                     <p class="ion-padding-top ion-padding-bottom">Edit your deck anywhere, display it everywhere.</p>
                 </ion-card-content>
