@@ -1,35 +1,36 @@
 variable "meta-bucket-name" {
-  type = "string"
+  type    = string
   default = "deckdeckgo-beta-meta"
 }
 
 resource "aws_s3_bucket" "meta" {
-  bucket = "${var.meta-bucket-name}"
+  bucket = var.meta-bucket-name
 }
 
-
 resource "aws_lambda_function" "google_key_updater" {
-  function_name    = "deckdeckgo-google-key-updater-lambda"
-  filename         = "${data.external.build-function-google-key-updater.result.path}"
+  function_name = "deckdeckgo-google-key-updater-lambda"
+  filename      = data.external.build-function-google-key-updater.result.path
 
   # TODO: need a big *ss timeout on this one
-  timeout          = 5
-  handler          = "main.handler"
-  runtime          = "nodejs8.10"
+  timeout = 5
+  handler = "main.handler"
+  runtime = "nodejs8.10"
 
-  role             = "${aws_iam_role.iam_for_lambda_google_key_updater.arn}"
+  role = aws_iam_role.iam_for_lambda_google_key_updater.arn
 
   environment {
     variables = {
-      META_BUCKET_NAME = "${aws_s3_bucket.meta.bucket}"
+      META_BUCKET_NAME = aws_s3_bucket.meta.bucket
     }
   }
 }
 
 data "external" "build-function-google-key-updater" {
   program = [
-    "nix", "eval",
-    "(import ./default.nix).function-google-key-updater-path", "--json"
+    "nix",
+    "eval",
+    "(import ./default.nix).function-google-key-updater-path",
+    "--json",
   ]
 }
 
@@ -55,23 +56,21 @@ EOF
 }
 
 #resource "aws_lambda_event_source_mapping" "google_key_updater" {
-  #event_source_arn = "${aws_sqs_queue.presentation_deploy.arn}"
-  #enabled          = true
-  #function_name    = "${aws_lambda_function.presenter.function_name}"
-  #batch_size       = 1
+#event_source_arn = "${aws_sqs_queue.presentation_deploy.arn}"
+#enabled          = true
+#function_name    = "${aws_lambda_function.presenter.function_name}"
+#batch_size       = 1
 #}
-
 
 # TODO: needed as well, but later on, when we actually hit PG
 #resource "aws_iam_role_policy_attachment" "role_attach_lambdavpc" {
-  #role = "${aws_iam_role.iam_for_lambda.name}"
-  #policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+#role = "${aws_iam_role.iam_for_lambda.name}"
+#policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 #}
 
 # XXX: looks like Lambda needs to be redeploy for the policy to take effect
 # TODO: auto redeploy on policy change
 data "aws_iam_policy_document" "policy_for_lambda_google_key_updater" {
-
   # Give access to CloudWatch
   statement {
     actions = [
@@ -79,7 +78,7 @@ data "aws_iam_policy_document" "policy_for_lambda_google_key_updater" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["${aws_cloudwatch_log_group.google-key-updater.arn}"]
+    resources = [aws_cloudwatch_log_group.google-key-updater.arn]
   }
 
   # Give access to CloudWatch
@@ -89,19 +88,19 @@ data "aws_iam_policy_document" "policy_for_lambda_google_key_updater" {
       "ec2:CreateNetworkInterface",
       "ec2:AttachNetworkInterface",
       "ec2:DescribeNetworkInterfaces",
-      "ec2:DeleteNetworkInterface"
+      "ec2:DeleteNetworkInterface",
     ]
 
-    resources = [ "*" ]
+    resources = ["*"]
   }
 
   # TODO
   #statement {
-    #actions = [
-      #"s3:ListBucket",
-    #]
+  #actions = [
+  #"s3:ListBucket",
+  #]
 
-    #resources = [ "${aws_s3_bucket.presentations.arn}" ]
+  #resources = [ "${aws_s3_bucket.presentations.arn}" ]
   #}
 
   statement {
@@ -110,38 +109,38 @@ data "aws_iam_policy_document" "policy_for_lambda_google_key_updater" {
       "s3:DeleteObject",
     ]
 
-    resources = [ "${aws_s3_bucket.meta.arn}/*" ]
+    resources = ["${aws_s3_bucket.meta.arn}/*"]
   }
-
 }
 
 resource "aws_iam_role_policy" "policy_for_lambda_google_key_updater" {
-  name   = "deckdeckgo-google-key-updater-lambda-policy"
-  role   = "${aws_iam_role.iam_for_lambda_google_key_updater.id}"
-  policy = "${data.aws_iam_policy_document.policy_for_lambda_google_key_updater.json}"
+  name = "deckdeckgo-google-key-updater-lambda-policy"
+  role = aws_iam_role.iam_for_lambda_google_key_updater.id
+  policy = data.aws_iam_policy_document.policy_for_lambda_google_key_updater.json
 }
 
 resource "aws_cloudwatch_log_group" "google-key-updater" {
-  name              = "/aws/lambda/${aws_lambda_function.google_key_updater.function_name}"
+  name = "/aws/lambda/${aws_lambda_function.google_key_updater.function_name}"
   retention_in_days = "7"
 }
 
 resource "aws_cloudwatch_event_rule" "every_five_minutes" {
-    name = "every-five-minutes"
-    description = "Fires every five minutes"
-    schedule_expression = "rate(5 minutes)"
+  name = "every-five-minutes"
+  description = "Fires every five minutes"
+  schedule_expression = "rate(5 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "update_google_keys_every_five_minutes" {
-    rule = "${aws_cloudwatch_event_rule.every_five_minutes.name}"
-    target_id = "google_key_updater"
-    arn = "${aws_lambda_function.google_key_updater.arn}"
+  rule = aws_cloudwatch_event_rule.every_five_minutes.name
+  target_id = "google_key_updater"
+  arn = aws_lambda_function.google_key_updater.arn
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_call_google_key_updater" {
-    statement_id = "AllowExecutionFromCloudWatch"
-    action = "lambda:InvokeFunction"
-    function_name = "${aws_lambda_function.google_key_updater.function_name}"
-    principal = "events.amazonaws.com"
-    source_arn = "${aws_cloudwatch_event_rule.every_five_minutes.arn}"
+  statement_id = "AllowExecutionFromCloudWatch"
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.google_key_updater.function_name
+  principal = "events.amazonaws.com"
+  source_arn = aws_cloudwatch_event_rule.every_five_minutes.arn
 }
+
