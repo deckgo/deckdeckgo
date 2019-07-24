@@ -78,7 +78,7 @@ function getDateObj(myDate: any): Date | null {
 function generateScreenshot(deckData: DeckData): Promise<string> {
     return new Promise<string>(async (resolve, reject) => {
         try {
-            if (!deckData || !deckData.meta) {
+            if (!deckData || !deckData.meta || !deckData.meta.pathname) {
                 reject('No deck or data');
                 return;
             }
@@ -90,7 +90,11 @@ function generateScreenshot(deckData: DeckData): Promise<string> {
             // Screenshot size
             await page.setViewport({width: 1024, height: 576});
 
-            await page.goto(Resources.Constants.PRESENTATION.URL + deckData.meta.pathname);
+            let pathname: string = deckData.meta.pathname;
+            pathname += pathname.endsWith('/') ? '' : '/';
+
+            // ?screenshot = no navigation and action displayed in the presentation
+            await page.goto(Resources.Constants.PRESENTATION.URL + pathname + '?screenshot');
 
             await (page as any)._client.send('ServiceWorker.enable');
             await (page as any)._client.send('ServiceWorker.stopAllWorkers');

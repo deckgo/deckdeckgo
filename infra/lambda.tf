@@ -1,27 +1,27 @@
 resource "aws_lambda_function" "api" {
-  function_name    = "deckdeckgo-handler-lambda"
-  filename         = "${data.external.build-function.result.path}"
-  handler          = "main.handler"
-  runtime          = "nodejs8.10"
+  function_name = "deckdeckgo-handler-lambda"
+  filename      = data.external.build-function.result.path
+  handler       = "main.handler"
+  runtime       = "nodejs8.10"
 
-  role             = "${aws_iam_role.iam_for_lambda.arn}"
+  role = aws_iam_role.iam_for_lambda.arn
 
   vpc_config {
-    subnet_ids = ["${aws_default_subnet.default.id}"]
-    security_group_ids = ["${aws_default_security_group.default.id}"]
+    subnet_ids         = [aws_default_subnet.default.id]
+    security_group_ids = [aws_default_security_group.default.id]
   }
 
   environment {
     variables = {
-      PGUSER = "${aws_db_instance.default.username}"
-      PGHOST = "${aws_db_instance.default.address}"
-      PGPORT = "${aws_db_instance.default.port}"
-      PGDATABASE = "${aws_db_instance.default.name}"
-      PGPASSWORD = "${aws_db_instance.default.password}"
-      QUEUE_NAME = "${aws_sqs_queue.presentation_deploy.name}"
-      FIREBASE_PROJECT_ID = "deckdeckgo-studio-beta"
-      DECKGO_PRESENTATIONS_URL = "${aws_route53_record.www_site.fqdn}"
-      META_BUCKET_NAME = "${aws_s3_bucket.meta.bucket}"
+      PGUSER                   = aws_db_instance.default.username
+      PGHOST                   = aws_db_instance.default.address
+      PGPORT                   = aws_db_instance.default.port
+      PGDATABASE               = aws_db_instance.default.name
+      PGPASSWORD               = aws_db_instance.default.password
+      QUEUE_NAME               = aws_sqs_queue.presentation_deploy.name
+      FIREBASE_PROJECT_ID      = "deckdeckgo-studio-beta"
+      DECKGO_PRESENTATIONS_URL = aws_route53_record.www_site.fqdn
+      META_BUCKET_NAME         = aws_s3_bucket.meta.bucket
     }
   }
 }
@@ -44,25 +44,26 @@ resource "aws_iam_role" "iam_for_lambda" {
   ]
 }
 EOF
-}
 
+}
 
 data "external" "build-function" {
   program = [
-    "nix", "eval",
-    "(import ./default.nix).function-handler-path", "--json"
+    "nix",
+    "eval",
+    "(import ./default.nix).function-handler-path",
+    "--json",
   ]
 }
 
 resource "aws_iam_role_policy_attachment" "role_attach_lambdavpc" {
-  role = "${aws_iam_role.iam_for_lambda.name}"
+  role = aws_iam_role.iam_for_lambda.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 # XXX: looks like Lambda needs to be redeploy for the policy to take effect
 # TODO: auto redeploy on policy change
 data "aws_iam_policy_document" "policy_for_lambda" {
-
   # Give access to CloudWatch
   statement {
     actions = [
@@ -70,7 +71,7 @@ data "aws_iam_policy_document" "policy_for_lambda" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["${aws_cloudwatch_log_group.lambda-api.arn}"]
+    resources = [aws_cloudwatch_log_group.lambda-api.arn]
   }
 
   # Give access to SQS
@@ -80,7 +81,7 @@ data "aws_iam_policy_document" "policy_for_lambda" {
       "sqs:GetQueueURL",
     ]
 
-    resources = ["${aws_sqs_queue.presentation_deploy.arn}"]
+    resources = [aws_sqs_queue.presentation_deploy.arn]
   }
 
   # Allow reading the keys from the meta bucket
@@ -89,7 +90,7 @@ data "aws_iam_policy_document" "policy_for_lambda" {
       "s3:GetObject",
     ]
 
-    resources = [ "${aws_s3_bucket.meta.arn}/*" ]
+    resources = ["${aws_s3_bucket.meta.arn}/*"]
   }
 
   # Give access to DynamoDB
@@ -107,20 +108,21 @@ data "aws_iam_policy_document" "policy_for_lambda" {
     ]
 
     resources = [
-      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-decks.arn}",
-      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-slides.arn}",
-      "${aws_dynamodb_table.deckdeckgo-test-dynamodb-table-users.arn}",
+      aws_dynamodb_table.deckdeckgo-test-dynamodb-table-decks.arn,
+      aws_dynamodb_table.deckdeckgo-test-dynamodb-table-slides.arn,
+      aws_dynamodb_table.deckdeckgo-test-dynamodb-table-users.arn,
     ]
   }
 }
 
 resource "aws_iam_role_policy" "policy_for_lambda" {
-  name   = "deckdeckgo-handler-lambda-policy"
-  role   = "${aws_iam_role.iam_for_lambda.id}"
-  policy = "${data.aws_iam_policy_document.policy_for_lambda.json}"
+  name = "deckdeckgo-handler-lambda-policy"
+  role = aws_iam_role.iam_for_lambda.id
+  policy = data.aws_iam_policy_document.policy_for_lambda.json
 }
 
 resource "aws_cloudwatch_log_group" "lambda-api" {
-  name              = "/aws/lambda/${aws_lambda_function.api.function_name}"
+  name = "/aws/lambda/${aws_lambda_function.api.function_name}"
   retention_in_days = "7"
 }
+

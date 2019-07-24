@@ -41,9 +41,11 @@ export class AppHome {
                 {this.renderRefresher()}
 
                 <main>
+                    <app-popular description={true}></app-popular>
+
                     <app-feed></app-feed>
 
-                    <app-popular></app-popular>
+                    <app-popular help={true}></app-popular>
                 </main>
 
             </ion-content>

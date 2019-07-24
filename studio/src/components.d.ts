@@ -98,7 +98,10 @@ export namespace Components {
   interface AppNewsletter {}
   interface AppOpensource {}
   interface AppPhoto {}
-  interface AppPopular {}
+  interface AppPopular {
+    'description': boolean;
+    'help': boolean;
+  }
   interface AppPrivacy {}
   interface AppPublish {}
   interface AppPublishDone {
@@ -624,7 +627,10 @@ declare namespace LocalJSX {
   interface AppNewsletter extends JSXBase.HTMLAttributes<HTMLAppNewsletterElement> {}
   interface AppOpensource extends JSXBase.HTMLAttributes<HTMLAppOpensourceElement> {}
   interface AppPhoto extends JSXBase.HTMLAttributes<HTMLAppPhotoElement> {}
-  interface AppPopular extends JSXBase.HTMLAttributes<HTMLAppPopularElement> {}
+  interface AppPopular extends JSXBase.HTMLAttributes<HTMLAppPopularElement> {
+    'description'?: boolean;
+    'help'?: boolean;
+  }
   interface AppPrivacy extends JSXBase.HTMLAttributes<HTMLAppPrivacyElement> {}
   interface AppPublish extends JSXBase.HTMLAttributes<HTMLAppPublishElement> {}
   interface AppPublishDone extends JSXBase.HTMLAttributes<HTMLAppPublishDoneElement> {
