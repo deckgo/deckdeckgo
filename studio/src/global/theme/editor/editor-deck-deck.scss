@@ -1,5 +1,10 @@
 // Synchro with https://github.com/deckgo/deckdeckgo-starter/blob/master/src/css/deck.css
 
+deckgo-deck {
+  --background: white;
+  --color: black;
+}
+
 deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck deckgo-highlight-code {
   width: 100%;
 
