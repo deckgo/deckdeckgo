@@ -6,6 +6,7 @@ license: AGPL-3
 dependencies:
     - aeson
     - amazonka
+    - amazonka-cloudfront
     - amazonka-core
     - amazonka-dynamodb
     - amazonka-s3
@@ -34,6 +35,7 @@ dependencies:
     - swagger2
     - tagsoup
     - text
+    - time
     - unliftio
     - temporary
     - unordered-containers
@@ -70,6 +72,13 @@ executables:
             - deckdeckgo-handler
             - servant-swagger
             - servant-swagger-ui
+
+    # The API
+    dirty:
+        main: app/Dirty.hs
+        dependencies:
+            - warp
+            - deckdeckgo-handler
 
     test:
         main: app/Test.hs

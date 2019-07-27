@@ -58,6 +58,21 @@ rec
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist.tar
       '';
 
+  function-dirty-path =
+    { path = builtins.seq
+        (builtins.readDir function-dirty) "${function-dirty}/function.zip";
+    } ;
+
+  function-dirty =
+    pkgs.runCommand "build-lambda-dirty" {}
+      ''
+        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        # Can't be called 'main' otherwise lambda tries to load it
+        cp "${handler}/bin/dirty" main_hs
+        mkdir -p $out
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
+      '';
+
   deckdeckgo-starter-dist =
     with
       { napalm = import pkgs.sources.napalm { inherit pkgs;} ; };

@@ -822,7 +822,11 @@ decksPostPublish (fixupEnv -> env) conn _ deckId = do
               liftIO $ putStrLn "No username"
               Servant.throwError Servant.err500
             Just uname ->
-              pure $ PresResponse $ "https://" <> T.pack presUrl <> "/" <> presentationPrefix uname dname
+              pure $ PresResponse $
+                "https://" <>
+                T.pack presUrl <>
+                "/" <>
+                presentationPrefix uname dname
 
 fixupEnv :: Aws.Env -> Aws.Env
 fixupEnv = Aws.configure $ SQS.sqs
@@ -1427,6 +1431,11 @@ migrate = do
           | v == maxBound -> pure ()
           | v > maxBound -> error "V greater than maxbound"
           | v < maxBound -> migrateFrom (succ v)
+          | True -> error $ unwords
+              [ "impossible:"
+              , "version must be equal to,"
+              , "greater than or smaller than maxBound."
+              ]
 
 getDbInterface :: HC.Connection -> IO DbInterface
 getDbInterface conn = do
@@ -1495,6 +1504,7 @@ dynamoSet exprs = T.unwords exprs'
     f (Set l r) (ls, rs) = (ls <> [l <> " = " <> r], rs)
     f (Remove t ) (ls, rs) = (ls, rs <> [t])
 
+-- TODO: what happens when the deckname is "-" ?
 presentationPrefix :: Username -> Deckname -> T.Text
 presentationPrefix uname dname =
     unUsername uname <> "/" <>  sanitizeDeckname dname <> "/"
@@ -1510,4 +1520,3 @@ sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
         c | isAscii c && isAlphaNum c -> T.singleton c
           | c == ' ' -> T.singleton '-'
           | otherwise -> ""
-

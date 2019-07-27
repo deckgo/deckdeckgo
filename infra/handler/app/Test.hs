@@ -210,7 +210,7 @@ main = do
       ]
 
 testPresDeploys :: IO ()
-testPresDeploys = withEnv $ \env -> withS3 env $ do
+testPresDeploys = withQueueName $ withEnv $ \env -> withSQS env $ withS3 env $ do
     let someFirebaseId = FirebaseId "the-uid" -- from ./token
     let someUserId = UserId someFirebaseId
 
@@ -229,6 +229,10 @@ testPresDeploys = withEnv $ \env -> withS3 env $ do
     -- XXX: tests the obj diffing by making sure we can upload a presentation
     -- twice without errors
     deployPresentation env (Username "josph") newDeck [someSlide]
+  where
+    testQueueName = "the-queue"
+    withQueueName =
+      bracket_ (setEnv "QUEUE_NAME" testQueueName) (unsetEnv "QUEUE_NAME")
 
 testUsersGet :: IO ()
 testUsersGet = withPristineDB $ \conn -> do
