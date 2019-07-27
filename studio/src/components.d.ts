@@ -56,6 +56,7 @@ export namespace Components {
     'touch': (element: HTMLElement) => Promise<void>;
     'unSelect': () => Promise<void>;
   }
+  interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
     'compact': boolean;
@@ -218,6 +219,12 @@ declare global {
   var HTMLAppEditorToolbarElement: {
     prototype: HTMLAppEditorToolbarElement;
     new (): HTMLAppEditorToolbarElement;
+  };
+
+  interface HTMLAppFaqElement extends Components.AppFaq, HTMLStencilElement {}
+  var HTMLAppFaqElement: {
+    prototype: HTMLAppFaqElement;
+    new (): HTMLAppFaqElement;
   };
 
   interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
@@ -485,6 +492,7 @@ declare global {
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
+    'app-faq': HTMLAppFaqElement;
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-card-tags': HTMLAppFeedCardTagsElement;
@@ -582,6 +590,7 @@ declare namespace LocalJSX {
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
+  interface AppFaq extends JSXBase.HTMLAttributes<HTMLAppFaqElement> {}
   interface AppFeed extends JSXBase.HTMLAttributes<HTMLAppFeedElement> {}
   interface AppFeedCard extends JSXBase.HTMLAttributes<HTMLAppFeedCardElement> {
     'compact'?: boolean;
@@ -689,6 +698,7 @@ declare namespace LocalJSX {
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
     'app-editor-toolbar': AppEditorToolbar;
+    'app-faq': AppFaq;
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;
     'app-feed-card-tags': AppFeedCardTags;
