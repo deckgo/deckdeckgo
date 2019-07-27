@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.44"></a>
+# 1.0.0-beta.44 (Not released yet)
+
+### Features
+
+* handle Youtube short URL ([#204](https://github.com/deckgo/deckdeckgo/issues/204))
+
 <a name="1.0.0-beta.43"></a>
 # 1.0.0-beta.43 (2019-06-19)
 
