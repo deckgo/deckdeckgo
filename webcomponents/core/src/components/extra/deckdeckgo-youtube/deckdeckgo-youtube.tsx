@@ -117,7 +117,12 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
   private formatSrc(): string {
     // Direct URL can't be embedded, like https://www.youtube.com/watch?v=oUOjJIfPIjw
     const url: URL = new URL(this.src);
-    const videoId: string = url.searchParams.get('v');
+    const host: string = url.host;
+    let videoId: string = url.searchParams.get('v');
+    if (host === 'youtu.be') {
+      // For shortened url
+      videoId = url.pathname.split('/')[1];
+    }
     if (videoId) {
       // In such a case return a link which could be embedded
       return 'https://www.youtube.com/embed/' + videoId + '?enablejsapi=1';
