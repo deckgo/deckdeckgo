@@ -76,4 +76,3 @@ resource "aws_vpc_endpoint" "sqs" {
 
   private_dns_enabled = true
 }
-

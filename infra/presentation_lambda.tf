@@ -16,6 +16,7 @@ resource "aws_lambda_function" "presenter" {
 
   environment {
     variables = {
+      QUEUE_NAME               = aws_sqs_queue.dirty.name
       BUCKET_NAME         = aws_s3_bucket.presentations.bucket
       DECKGO_STARTER_DIST = "dist.tar"
       PGUSER              = aws_db_instance.default.username
@@ -96,7 +97,7 @@ data "aws_iam_policy_document" "policy_for_lambda_presenter" {
     resources = ["*"]
   }
 
-  # Give access to CloudWatch
+  # Give access to SQS
   statement {
     actions = [
       "sqs:ReceiveMessage",
@@ -105,6 +106,16 @@ data "aws_iam_policy_document" "policy_for_lambda_presenter" {
     ]
 
     resources = [aws_sqs_queue.presentation_deploy.arn]
+  }
+
+
+  statement {
+    actions = [
+      "sqs:SendMessage",
+      "sqs:GetQueueURL",
+    ]
+
+    resources = [aws_sqs_queue.dirty.arn]
   }
 
   # Give access to CloudWatch

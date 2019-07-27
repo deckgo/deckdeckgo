@@ -10,11 +10,14 @@ module DeckGo.Presenter where
 
 import Control.Lens hiding ((.=))
 import Control.Monad
+import qualified Network.AWS.SQS as SQS
+import qualified Data.Aeson as Aeson
 import Data.Bifunctor
 import Data.Function
 import Data.List (foldl')
 import Data.Maybe
 import Data.String
+-- import Data.Time.Clock (getCurrentTime)
 import DeckGo.Handler
 import DeckGo.Prelude
 import System.Environment
@@ -33,6 +36,7 @@ import qualified Network.AWS as Aws
 import qualified Network.AWS.Data as Data
 import qualified Network.AWS.Data.Body as Body
 import qualified Network.AWS.S3 as S3
+-- import qualified Network.AWS.CloudFront as CloudFront
 import qualified Network.Mime as Mime
 import qualified System.Directory as Dir
 import qualified System.IO.Temp as Temp
@@ -167,7 +171,7 @@ deleteObjects' (fixupEnv' -> env) bname okeys =
 
 -- TODO: sanitize deck name
 deployDeck :: Aws.Env -> HC.Connection -> DeckId -> IO ()
-deployDeck env conn deckId = do
+deployDeck (fixupEnv'' -> env) conn deckId = do
     deckGetDeckIdDB env deckId >>= \case
       Nothing -> pure () -- TODO
       Just deck -> do
@@ -180,6 +184,14 @@ deployDeck env conn deckId = do
               slides <- catMaybes <$> mapM (dbGetSlideById iface) (deckSlides deck)
               deployPresentation env uname deck slides
 
+fixupEnv'' :: Aws.Env -> Aws.Env
+fixupEnv'' = Aws.configure $ SQS.sqs
+  { Aws._svcEndpoint = \reg -> do
+      let new = "sqs." <> Data.toText reg <> ".amazonaws.com"
+      (Aws._svcEndpoint SQS.sqs reg) & Aws.endpointHost .~ T.encodeUtf8 new
+  }
+
+
 deployPresentation :: Aws.Env -> Username -> Deck -> [Slide] -> IO ()
 deployPresentation (fixupEnv' -> env) uname deck slides = do
     bucketName <- getEnv "BUCKET_NAME"
@@ -188,6 +200,9 @@ deployPresentation (fixupEnv' -> env) uname deck slides = do
     putStrLn "Listing current objects"
     currentObjs <- listPresentationObjects env bucket uname dname
     putStrLn "Listing presentations files"
+
+
+
     withPresentationFiles uname deck slides $ \files -> do
       let
         currentObjs' =
@@ -199,6 +214,29 @@ deployPresentation (fixupEnv' -> env) uname deck slides = do
       deleteObjects' env bucket toDelete
       putStrLn $ "Uploading " <> show (length toPut) <> " new files"
       putObjects env bucket toPut
+
+    queueName <- liftIO $ T.pack <$> getEnv "QUEUE_NAME"
+
+    -- TODO: cleaner error handling down here
+
+    liftIO $ putStrLn $ "Forwarding to queue: " <> T.unpack queueName
+    queueUrl <- runAWS env (Aws.send $ SQS.getQueueURL queueName) >>= \case
+      Right e -> pure $ e ^. SQS.gqursQueueURL
+      Left e -> do
+        liftIO $ print e
+        error "Failed"
+
+    liftIO $ print queueUrl
+
+    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl $
+      T.decodeUtf8 $ BL.toStrict $ Aeson.encode (presentationPrefix uname dname)
+
+    case res of
+      Right r -> do
+        liftIO $ print r
+      Left e -> do
+        liftIO $ print e
+        error "Failed!!"
 
 putObjects
   :: Aws.Env
