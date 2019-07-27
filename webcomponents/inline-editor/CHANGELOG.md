@@ -1,3 +1,8 @@
+<a name="1.0.0-alpha.11"></a>
+# 1.0.0-alpha.11 (Not yet released)
+
+* fix close image processing toolbar if document or any other elements is clicked
+
 <a name="1.0.0-alpha.10"></a>
 # 1.0.0-alpha.10 (2019-06-09)
 
