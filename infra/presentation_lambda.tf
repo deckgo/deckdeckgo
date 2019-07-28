@@ -16,7 +16,7 @@ resource "aws_lambda_function" "presenter" {
 
   environment {
     variables = {
-      QUEUE_NAME               = aws_sqs_queue.dirty.name
+      QUEUE_NAME          = aws_sqs_queue.dirty.name
       BUCKET_NAME         = aws_s3_bucket.presentations.bucket
       DECKGO_STARTER_DIST = "dist.tar"
       PGUSER              = aws_db_instance.default.username
