@@ -114,29 +114,25 @@ export class PublishService {
         });
     }
 
-    // TODO: Cloudfare CDN takes a several time to populate a new URI
+    // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
+    // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
     private delayUpdateMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], delay: boolean): Promise<void> {
         return new Promise<void>((resolve) => {
             setTimeout(() => {
-                this.progress(0.85);
+                this.progress(0.9);
 
-                setTimeout(() => {
-                    this.progress(0.9);
+                setTimeout(async () => {
+                    await this.updateDeckMeta(deck, publishedUrl, description, tags);
 
-                    setTimeout(async () => {
-                        await this.updateDeckMeta(deck, publishedUrl, description, tags);
+                    this.progress(0.95);
 
-                        this.progress(0.95);
+                    await this.refreshDeck(deck.id);
 
-                        await this.refreshDeck(deck.id);
+                    this.progressComplete();
 
-                        this.progressComplete();
-
-                        setTimeout(() => {
-                            resolve();
-                        }, 500);
-
-                    }, delay ? 3500 : 0);
+                    setTimeout(() => {
+                        resolve();
+                    }, 500);
 
                 }, delay ? 3500 : 0);
 
