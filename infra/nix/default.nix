@@ -30,12 +30,13 @@ with rec
     { ${name} =
         with { drv = hsuper.callCabal2nix name (pkgs.lib.cleanSource path) {}; };
         with pkgs.haskell.lib;
+        failOnAllWarnings (
         disableLibraryProfiling (
         disableExecutableProfiling (
           with { openssl_static = pkgs.openssl.override { static = true; }; };
           addStaticLinkerFlagsWithPkgconfig drv [ openssl_static ]
             "--libs openssl"
-        ));
+        )));
     };
 
   pkgs = import sources.nixpkgs
