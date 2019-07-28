@@ -111,6 +111,8 @@ export class AppRoot {
 
                     <ion-route url="/settings" component="app-settings"/>
 
+                    <ion-route url="/dashboard" component="app-dashboard"/>
+
                     <ion-route url="/signin" component="app-signin"/>
                     <ion-route url="/signin/:redirect" component="app-signin"/>
 

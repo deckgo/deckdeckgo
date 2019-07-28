@@ -8,16 +8,8 @@ ion-menu {
         color: white;
         --background: transparent;
 
-        div.sc-ion-searchbar-ios {
-          margin-left: 12px;
-        }
-
         input.searchbar-input[class*="sc-ion-searchbar"] {
-          box-shadow: none;
           font-size: var(--font-size-small);
-
-          -webkit-padding-start: 48px;
-          padding-inline-start: 48px;
         }
       }
 
