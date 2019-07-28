@@ -5,7 +5,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE DataKinds #-}
 
-
 module Main (main) where
 
 import qualified Network.AWS.Data.Body as Body
@@ -22,7 +21,7 @@ import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
-import qualified Network.AWS as Aws
+import qualified Network.AWS as AWS
 import qualified Network.AWS.S3 as S3
 import qualified Network.HTTP.Simple as HTTP
 import qualified Network.Wai.Handler.Lambda as Lambda
@@ -33,14 +32,13 @@ main = do
     hSetBuffering stdout LineBuffering
 
     liftIO $ putStrLn "Booting..."
-    env <- Aws.newEnv Aws.Discover
+    env <- AWS.newEnv AWS.Discover
 
     bucketName <- getEnv "META_BUCKET_NAME"
     let bucket = S3.BucketName (T.pack bucketName)
     putStrLn $ "Bucket is: " <> show bucket
 
     liftIO $ putStrLn "Booted!"
-
 
     putStrLn "entering loop..."
     forever $ do
@@ -60,7 +58,7 @@ main = do
           let okey = "google-public-keys"
 
           runAWS env (
-            Aws.send $ S3.putObject bucket okey body
+            AWS.send $ S3.putObject bucket okey body
             ) >>= \case
               Right {} -> do
                 putStrLn $ "uploaded new keys"
@@ -79,25 +77,11 @@ decodeInput parseEvent =
         (,) <$>
           obj .: "responseFile" <*>
           (obj .: "request" >>= parseEvent)
--- main = putStrLn "hello!"
--- main =
-    -- runAWS env (
-      -- Aws.send $ S3.putObject bucket okey body
-      -- ) >>= \case
-        -- Right {} -> do
-          -- putStrLn $ "uploaded new keys"
-        -- Left e -> error $ "Error in put: " <> show e
-  -- where
-    -- okey = undefined
-    -- bucket = undefined
-    -- body = undefined
-    -- env = undefined
 
-
-runAWS :: MonadIO m => Aws.Env -> Aws.AWS a -> m (Either SomeException a)
+runAWS :: MonadIO m => AWS.Env -> AWS.AWS a -> m (Either SomeException a)
 runAWS env =
     liftIO .
     tryAny .
-    Aws.runResourceT .
-    Aws.runAWS env .
-    Aws.within Aws.NorthVirginia
+    AWS.runResourceT .
+    AWS.runAWS env .
+    AWS.within AWS.NorthVirginia

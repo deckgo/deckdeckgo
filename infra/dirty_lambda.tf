@@ -2,12 +2,17 @@ resource "aws_lambda_function" "dirty" {
   function_name = "deckdeckgo-dirty-lambda"
   filename      = data.external.build-function-dirty.result.path
 
-  # TODO: need a big *ss timeout on this one
   timeout = 5
   handler = "main.handler"
   runtime = "nodejs8.10"
 
   role = aws_iam_role.iam_for_lambda_dirty.arn
+
+  environment {
+    variables = {
+      CLOUDFRONT_DISTRIBUTION_ID = aws_cloudfront_distribution.website_cdn.id
+    }
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "dirty" {

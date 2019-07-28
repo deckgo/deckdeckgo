@@ -18,8 +18,7 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-import qualified Hasql.Connection as Hasql
-import qualified Network.AWS as Aws
+import qualified Network.AWS.Extended as AWS
 import qualified Network.AWS.CloudFront as CloudFront
 import qualified Network.Wai.Handler.Lambda as Lambda
 
@@ -29,7 +28,7 @@ main = do
     hSetBuffering stdout LineBuffering
 
     liftIO $ putStrLn "Booting..."
-    env <- Aws.newEnv Aws.Discover
+    env <- AWS.newEnv
 
     liftIO $ putStrLn "Booted!"
 
@@ -45,20 +44,20 @@ main = do
           when (length presPrefixes /= 1) $
             putStrLn $
               "Warning: got " <> show (length presPrefixes) <> "deck IDs"
-          -- conn <- getPostgresqlConnection
           forM_ presPrefixes (dirtyPres env)
           Lambda.writeFileAtomic fp (BL.toStrict $ Aeson.encode ())
         Left e -> error $ show e
 
-dirtyPres :: Aws.Env -> T.Text -> IO ()
+dirtyPres :: AWS.Env -> T.Text -> IO ()
 dirtyPres env presPrefix = do
     res <- timeout (5*1000*1000) dirty
     print res
   where
     dirty = do
       now <- getCurrentTime
-      runAWS env $ Aws.send $ CloudFront.createInvalidation
-        "E2D979P0TT1UFC" $ -- TODO: env var
+      distributionId <- T.pack <$> getEnv "CLOUDFRONT_DISTRIBUTION_ID"
+      runAWS env $ AWS.send $ CloudFront.createInvalidation
+        distributionId $
         CloudFront.invalidationBatch
           (CloudFront.paths 1 & CloudFront.pItems .~ [ "/" <> presPrefix <> "*" ])
           (tshow now)
@@ -82,21 +81,3 @@ parseSQSRequest = Aeson.withObject "request" $ \o -> do
       case  Aeson.decodeStrict (T.encodeUtf8 jsonEncodedBody) of
         Nothing -> mzero
         Just path -> pure path
-
-getPostgresqlConnection :: IO Hasql.Connection
-getPostgresqlConnection = do
-    user <- getEnv "PGUSER"
-    password <- getEnv "PGPASSWORD"
-    host <- getEnv "PGHOST"
-    db <- getEnv "PGDATABASE"
-    port <- getEnv "PGPORT"
-    Hasql.acquire (
-      Hasql.settings
-        (BS8.pack host)
-        (read port)
-        (BS8.pack user)
-        (BS8.pack password)
-        (BS8.pack db)
-      ) >>= \case
-        Left e -> error (show e)
-        Right c -> pure c

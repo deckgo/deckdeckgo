@@ -32,8 +32,7 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Data.Text.IO as T
 import qualified Hasql.Connection as HC
-import qualified Network.AWS as Aws
-import qualified Network.AWS.Data as Data
+import qualified Network.AWS as AWS
 import qualified Network.AWS.Data.Body as Body
 import qualified Network.AWS.S3 as S3
 -- import qualified Network.AWS.CloudFront as CloudFront
@@ -68,7 +67,7 @@ diffObjects news0 (HMS.fromList -> olds0) = second HMS.keys $
       ) ([], olds0) news0
 
 listPresentationObjects
-  :: Aws.Env
+  :: AWS.Env
   -> S3.BucketName
   -> Username
   -> Deckname
@@ -142,9 +141,9 @@ slideTags slide =
     ]
 
 
-listObjects :: Aws.Env -> S3.BucketName -> Maybe T.Text -> IO [S3.Object]
-listObjects (fixupEnv' -> env) bname mpref = xif ([],Nothing) $ \f (es, ct) ->
-    runAWS env (Aws.send $ S3.listObjectsV2 bname &
+listObjects :: AWS.Env -> S3.BucketName -> Maybe T.Text -> IO [S3.Object]
+listObjects env bname mpref = xif ([],Nothing) $ \f (es, ct) ->
+    runAWS env (AWS.send $ S3.listObjectsV2 bname &
       S3.lovContinuationToken .~ ct &
       S3.lovPrefix .~ mpref
       ) >>= \case
@@ -156,22 +155,22 @@ listObjects (fixupEnv' -> env) bname mpref = xif ([],Nothing) $ \f (es, ct) ->
           _ -> pure (es <> objs)
       Left e -> err "Could not list objects" e
 
-deleteObjects :: Aws.Env -> S3.BucketName -> Maybe T.Text -> IO ()
-deleteObjects (fixupEnv' -> env) bname mpref = do
+deleteObjects :: AWS.Env -> S3.BucketName -> Maybe T.Text -> IO ()
+deleteObjects env bname mpref = do
     es <- listObjects env bname mpref
     putStrLn $ "Deleting " <> show (length es) <> " objects..."
     deleteObjects' env bname $ map (^. S3.oKey) es
 
-deleteObjects' :: Aws.Env -> S3.BucketName -> [S3.ObjectKey] -> IO ()
-deleteObjects' (fixupEnv' -> env) bname okeys =
+deleteObjects' :: AWS.Env -> S3.BucketName -> [S3.ObjectKey] -> IO ()
+deleteObjects' env bname okeys =
     forConcurrentlyN_ 10 okeys $ \okey -> runAWS env (
-      Aws.send $ S3.deleteObject bname okey) >>= \case
+      AWS.send $ S3.deleteObject bname okey) >>= \case
         Right {} -> pure ()
         Left e -> error $ "Could not delete object: " <> show e
 
 -- TODO: sanitize deck name
-deployDeck :: Aws.Env -> HC.Connection -> DeckId -> IO ()
-deployDeck (fixupEnv'' -> env) conn deckId = do
+deployDeck :: AWS.Env -> HC.Connection -> DeckId -> IO ()
+deployDeck env conn deckId = do
     deckGetDeckIdDB env deckId >>= \case
       Nothing -> pure () -- TODO
       Just deck -> do
@@ -184,16 +183,8 @@ deployDeck (fixupEnv'' -> env) conn deckId = do
               slides <- catMaybes <$> mapM (dbGetSlideById iface) (deckSlides deck)
               deployPresentation env uname deck slides
 
-fixupEnv'' :: Aws.Env -> Aws.Env
-fixupEnv'' = Aws.configure $ SQS.sqs
-  { Aws._svcEndpoint = \reg -> do
-      let new = "sqs." <> Data.toText reg <> ".amazonaws.com"
-      (Aws._svcEndpoint SQS.sqs reg) & Aws.endpointHost .~ T.encodeUtf8 new
-  }
-
-
-deployPresentation :: Aws.Env -> Username -> Deck -> [Slide] -> IO ()
-deployPresentation (fixupEnv' -> env) uname deck slides = do
+deployPresentation :: AWS.Env -> Username -> Deck -> [Slide] -> IO ()
+deployPresentation env uname deck slides = do
     bucketName <- getEnv "BUCKET_NAME"
     let bucket = S3.BucketName (T.pack bucketName)
     let dname = deckDeckname deck
@@ -220,7 +211,7 @@ deployPresentation (fixupEnv' -> env) uname deck slides = do
     -- TODO: cleaner error handling down here
 
     liftIO $ putStrLn $ "Forwarding to queue: " <> T.unpack queueName
-    queueUrl <- runAWS env (Aws.send $ SQS.getQueueURL queueName) >>= \case
+    queueUrl <- runAWS env (AWS.send $ SQS.getQueueURL queueName) >>= \case
       Right e -> pure $ e ^. SQS.gqursQueueURL
       Left e -> do
         liftIO $ print e
@@ -228,7 +219,7 @@ deployPresentation (fixupEnv' -> env) uname deck slides = do
 
     liftIO $ print queueUrl
 
-    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl $
+    res <- runAWS env $ AWS.send $ SQS.sendMessage queueUrl $
       T.decodeUtf8 $ BL.toStrict $ Aeson.encode (presentationPrefix uname dname)
 
     case res of
@@ -239,21 +230,21 @@ deployPresentation (fixupEnv' -> env) uname deck slides = do
         error "Failed!!"
 
 putObjects
-  :: Aws.Env
+  :: AWS.Env
   -> S3.BucketName
   -> [(FilePath, S3.ObjectKey, S3.ETag)]
   -> IO ()
 putObjects env bucket objs = forConcurrentlyN_ 10 objs $ putObject env bucket
 
 putObject
-  :: Aws.Env
+  :: AWS.Env
   -> S3.BucketName
   -> (FilePath, S3.ObjectKey, S3.ETag)
   -> IO ()
-putObject (fixupEnv' -> env) bucket (fp, okey, etag) = do
+putObject env bucket (fp, okey, etag) = do
     body <- Body.toBody <$> BS.readFile fp
     runAWS env (
-      Aws.send $ S3.putObject bucket okey body &
+      AWS.send $ S3.putObject bucket okey body &
           -- XXX: partial, though technically should never fail
           S3.poContentType .~ inferContentType (T.pack fp)
       ) >>= \case
@@ -276,16 +267,6 @@ fixupS3ETag (S3.ETag etag) =
       T.dropWhileEnd (== '"') $
       T.dropWhile (== '"') $
       T.decodeUtf8 etag
-
--- | Transforms the request to hit the region-specific S3, otherwise this
--- doesn't go through the VPC endpoint.
--- TODO: move this to 'fixupEnv'
-fixupEnv' :: Aws.Env -> Aws.Env
-fixupEnv' = Aws.configure $ S3.s3
-  { Aws._svcEndpoint = \reg -> do
-      let new = "s3." <> Data.toText reg <> ".amazonaws.com"
-      (Aws._svcEndpoint S3.s3 reg) & Aws.endpointHost .~ T.encodeUtf8 new
-  }
 
 mkObjectKey :: Username -> Deckname -> [T.Text] -> S3.ObjectKey
 mkObjectKey uname dname components = S3.ObjectKey $

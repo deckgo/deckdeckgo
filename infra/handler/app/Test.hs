@@ -27,7 +27,7 @@ import qualified Data.Text as T
 import qualified Data.Text.IO as T
 import qualified Hasql.Connection as HC
 import qualified Hasql.Session as HS
-import qualified Network.AWS as Aws
+import qualified Network.AWS.Extended as AWS
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.AWS.SQS as SQS
 import qualified Network.HTTP.Client as HTTPClient
@@ -39,13 +39,13 @@ import qualified Test.Tasty as Tasty
 import qualified Test.Tasty.HUnit as Tasty
 import qualified Network.AWS.S3 as S3
 
-withEnv :: (Aws.Env -> IO a) -> IO a
+withEnv :: (AWS.Env -> IO a) -> IO a
 withEnv act = do
     mgr <- HTTPClient.newManager HTTPClient.tlsManagerSettings
             { HTTPClient.managerModifyRequest =
                 pure . rerouteDynamoDB . rerouteSQS . rerouteS3
             }
-    env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
+    env <- AWS.newEnv <&> AWS.envManager .~ mgr
     act env
 
 withServer :: (Warp.Port -> IO a) -> IO a
@@ -73,21 +73,21 @@ withServer act =
       bracket_ (setEnv "DECKGO_PRESENTATIONS_URL" "foo.bar.baz") (unsetEnv "DECKGO_PRESENTATIONS_URL")
 
 is'
-  :: Aws.AsError a
-  => Getting (First Aws.ServiceError) a Aws.ServiceError
+  :: AWS.AsError a
+  => Getting (First AWS.ServiceError) a AWS.ServiceError
   -> a
   -> Bool
 is' prsm v = is _Just $ v ^? prsm
 
-withDynamoDB :: Aws.Env -> IO a -> IO a
+withDynamoDB :: AWS.Env -> IO a -> IO a
 withDynamoDB env act = do
     putStrLn "Deleting old DynamoDB table (if exists)"
-    runAWS env (Aws.send $ DynamoDB.deleteTable "Decks") >>= \case
+    runAWS env (AWS.send $ DynamoDB.deleteTable "Decks") >>= \case
       Left e
         | is' DynamoDB._ResourceNotFoundException e -> pure ()
         | otherwise -> error $ "Could not delete table: " <> show e
       Right {} -> xif (100 * 1000) $ \f delay -> do
-        runAWS env (Aws.send $ DynamoDB.describeTable "Decks") >>= \case
+        runAWS env (AWS.send $ DynamoDB.describeTable "Decks") >>= \case
           Left e
             | is' DynamoDB._TableNotFoundException e -> pure ()
             | is' DynamoDB._ResourceNotFoundException e -> pure ()
@@ -96,7 +96,7 @@ withDynamoDB env act = do
             threadDelay delay
             f (delay * 2)
     putStrLn "Creating DynamoDB table"
-    runAWS env (Aws.send $
+    runAWS env (AWS.send $
       DynamoDB.createTable
         "Decks"
         (DynamoDB.keySchemaElement "DeckId" DynamoDB.Hash :| [])
@@ -106,7 +106,7 @@ withDynamoDB env act = do
       ) >>= \case
       Left e -> error $ show e
       Right {} -> xif (100 * 1000) $ \f delay -> do
-        runAWS env (Aws.send $ DynamoDB.describeTable "Decks") >>= \case
+        runAWS env (AWS.send $ DynamoDB.describeTable "Decks") >>= \case
           Left e -> error $ show e
           Right r -> do
             tst <- pure $ do
@@ -121,10 +121,10 @@ withDynamoDB env act = do
               _ -> error $ "Unexpected table: " <> show r
     act
 
-withSQS :: Aws.Env -> IO a -> IO a
+withSQS :: AWS.Env -> IO a -> IO a
 withSQS env act = withQueueName $ do
-    runAWS env (Aws.send $ SQS.getQueueURL ttestQueueName) >>= \case
-      Right r -> runAWS env (Aws.send $
+    runAWS env (AWS.send $ SQS.getQueueURL ttestQueueName) >>= \case
+      Right r -> runAWS env (AWS.send $
           SQS.deleteQueue ttestQueueName & SQS.dqQueueURL .~ (r ^. SQS.gqursQueueURL)
           ) >>= \case
         Left e -> error $ "Could not delete queue: " <> show e
@@ -136,7 +136,7 @@ withSQS env act = withQueueName $ do
 
     putStrLn $ "Creating " <> testQueueName
 
-    runAWS env (Aws.send $ SQS.createQueue ttestQueueName) >>= \case
+    runAWS env (AWS.send $ SQS.createQueue ttestQueueName) >>= \case
       Left e -> error $ "Could not create queue: " <> show e
       Right {} -> pure ()
     act
@@ -146,7 +146,7 @@ withSQS env act = withQueueName $ do
     withQueueName =
       bracket_ (setEnv "QUEUE_NAME" testQueueName) (unsetEnv "QUEUE_NAME")
 
-withS3 :: Aws.Env -> IO a -> IO a
+withS3 :: AWS.Env -> IO a -> IO a
 withS3 env act = do
     let bucket = S3.BucketName bucketName
     putStrLn "Emptying bucket, if exists"
@@ -157,7 +157,7 @@ withS3 env act = do
         | otherwise -> error $ T.unpack msg <> ": " <> show e
 
     putStrLn "Deleting bucket, if exists"
-    runAWS env (Aws.send $ S3.deleteBucket bucket) >>= \case
+    runAWS env (AWS.send $ S3.deleteBucket bucket) >>= \case
       Right {} -> pure ()
       Left e
         | is' S3._NoSuchBucket e -> pure ()
@@ -165,7 +165,7 @@ withS3 env act = do
 
     putStrLn "Creating bucket"
 
-    runAWS env (Aws.send $ S3.createBucket bucket) >>= \case
+    runAWS env (AWS.send $ S3.createBucket bucket) >>= \case
       Right {} -> pure ()
       Left e -> error $ "Could not create bucket: " <> show e
     withBucketName act
