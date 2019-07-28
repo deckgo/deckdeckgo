@@ -57,7 +57,7 @@ resource "aws_cloudfront_distribution" "website_cdn" {
   enabled = true
   price_class = "PriceClass_200"
   http_version = "http1.1"
-  aliases = ["${aws_s3_bucket.presentations.bucket}.deckdeckgo.io"]
+  aliases =  ["${aws_s3_bucket.presentations.bucket}.deckdeckgo.io", "beta.deckdeckgo.io"]
 
   origin {
     domain_name = aws_s3_bucket.presentations.website_endpoint
@@ -109,9 +109,9 @@ data "aws_route53_zone" "presentations" {
   name = "deckdeckgo.io"
 }
 
-resource "aws_route53_record" "www_site" {
+resource "aws_route53_record" "www_site_beta" {
   zone_id = data.aws_route53_zone.presentations.zone_id
-  name = aws_s3_bucket.presentations.bucket
+  name = "beta.deckdeckgo.io"
   type = "A"
   alias {
     name = aws_cloudfront_distribution.website_cdn.domain_name
@@ -121,7 +121,7 @@ resource "aws_route53_record" "www_site" {
 }
 
 output "presentations_fqdn" {
-  value = aws_route53_record.www_site.fqdn
+  value = aws_route53_record.www_site_beta.fqdn
 }
 
 output "cloudfront_endpoint" {
