@@ -1,6 +1,10 @@
 <a name="1.0.0-beta.44"></a>
 # 1.0.0-beta.44 (Not released yet)
 
+### Fix
+
+* on iOS sometimes `screen.width` is the property to use to determine the screen size, sometime it's `window.innerWidth` ([#212](https://github.com/deckgo/deckdeckgo/issues/212))
+
 ### Features
 
 * handle Youtube short URL ([#204](https://github.com/deckgo/deckdeckgo/issues/204))
