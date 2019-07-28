@@ -554,7 +554,7 @@ declare namespace LocalJSX {
     'background'?: string;
     'color'?: string;
     'deckOrSlide'?: boolean;
-    'onColorDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onColorDidChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppContact extends JSXBase.HTMLAttributes<HTMLAppContactElement> {}
