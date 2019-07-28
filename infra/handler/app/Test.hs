@@ -181,6 +181,8 @@ withPristineDB act = do
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS username") conn
     putStrLn "DROP TABLE IF EXISTS account CASCADE"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS account CASCADE") conn
+    putStrLn "DROP TABLE IF EXISTS deck_slide"
+    void $ HS.run (HS.sql "DROP TABLE IF EXISTS deck_slide") conn
     putStrLn "DROP TABLE IF EXISTS slide"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS slide") conn
     putStrLn "DROP TABLE IF EXISTS db_meta"

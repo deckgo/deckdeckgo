@@ -1195,7 +1195,8 @@ itemToDeck
   -> Maybe (Item DeckId Deck)
 itemToDeck item = do
     deckId <- HMS.lookup "DeckId" item >>= deckIdFromAttributeValue
-    deckSlides <- HMS.lookup "DeckSlides" item >>= deckSlidesFromAttributeValue
+    deckSlides <- pure []
+    -- deckSlides <- HMS.lookup "DeckSlides" item >>= deckSlidesFromAttributeValue
     deckDeckname <- HMS.lookup "DeckName" item >>= deckNameFromAttributeValue
 
     deckDeckbackground <- case HMS.lookup "DeckBackground" item of
@@ -1302,6 +1303,7 @@ data DbVersion
   = DbVersion0
   | DbVersion1
   | DbVersion2
+  | DbVersion3
   deriving stock (Enum, Bounded, Ord, Eq)
 
 -- | Migrates from ver to latest
@@ -1364,6 +1366,20 @@ migrateFrom = \frm -> do
             , ");"
             ]
           ) HE.unit HD.unit True
+      DbVersion3 -> do
+        HS.statement () $ Statement
+          (BS8.unwords -- A deck's slides
+            [ "CREATE TABLE deck_slide ("
+                -- TODO: once the decks are in PG, addd:
+                --   REFERENCES deck(id)
+            ,   "deck_id TEXT,"
+            ,   "slide_id TEXT REFERENCES slide(id),"
+
+                -- make sure we don't associate a deck with a slide twice
+            ,   "CONSTRAINT deck_slide_pkey PRIMARY KEY (deck_id, slide_id)"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
 
 readDbVersion :: HS.Session (Either String (Maybe DbVersion))
 readDbVersion = do
@@ -1406,6 +1422,7 @@ dbVersionToText = \case
   DbVersion0 -> "0"
   DbVersion1 -> "1"
   DbVersion2 -> "2"
+  DbVersion3 -> "3"
 
 dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
