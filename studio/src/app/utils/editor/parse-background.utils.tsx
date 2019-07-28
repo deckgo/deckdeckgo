@@ -4,7 +4,7 @@ import {ParseElementsUtils} from './parse-elements.utils';
 
 export class ParseBackgroundUtils {
 
-    static convertBackground(background: string): Promise<any> {
+    static convertBackground(background: string, contentEditable: boolean): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!background || background === undefined || background === '') {
                 resolve(undefined);
@@ -15,7 +15,7 @@ export class ParseBackgroundUtils {
             div.setAttribute('slot', 'background');
             div.innerHTML = background;
 
-            const content = await ParseElementsUtils.parseElements(div, true);
+            const content = await ParseElementsUtils.parseElements(div, true, contentEditable);
 
             resolve(<div slot="background">
                 {content}

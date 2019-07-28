@@ -5,7 +5,7 @@ import {SlotType} from './create-slides.utils';
 
 export class ParseElementsUtils {
 
-    static parseElements(element: HTMLElement, root: boolean): Promise<any> {
+    static parseElements(element: HTMLElement, root: boolean, contentEditable: boolean): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!element) {
                 resolve(undefined);
@@ -23,18 +23,18 @@ export class ParseElementsUtils {
                 const elements: HTMLElement[] = Array.prototype.slice.call(element.childNodes);
 
                 for (const elem of elements) {
-                    const result = await this.parseElements(elem, false);
+                    const result = await this.parseElements(elem, false, contentEditable);
                     results.push(result);
                 }
 
-                resolve(root ? results : await this.parseElement(element, results));
+                resolve(root ? results : await this.parseElement(element, results, contentEditable));
             } else {
-                resolve(await this.parseElement(element, element.textContent));
+                resolve(await this.parseElement(element, element.textContent, contentEditable));
             }
         });
     }
 
-    private static parseElement(element: HTMLElement, content: any): Promise<any> {
+    private static parseElement(element: HTMLElement, content: any, contentEditable: boolean): Promise<any> {
         return new Promise<any>(async (resolve) => {
             const Elem: string = element.nodeName;
 
@@ -43,7 +43,7 @@ export class ParseElementsUtils {
                 attributes.style = await ParseStyleUtils.convertStyle(attributes.style);
             }
 
-            if (this.isElementContentEditable(element, attributes)) {
+            if (contentEditable && this.isElementContentEditable(element, attributes)) {
                 attributes['contenteditable'] = true;
             }
 

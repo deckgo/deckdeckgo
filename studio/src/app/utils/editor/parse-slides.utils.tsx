@@ -6,7 +6,7 @@ import {Slide, SlideTemplate} from '../../models/data/slide';
 
 export class ParseSlidesUtils {
 
-    static parseSlide(slide: Slide): Promise<any> {
+    static parseSlide(slide: Slide, contentEditable: boolean): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!document || !slide || !slide.data || !slide.data.template) {
                 resolve(null);
@@ -14,14 +14,14 @@ export class ParseSlidesUtils {
             }
 
             if (SlideTemplate[slide.data.template.toUpperCase()]) {
-                resolve(await this.parseSlideElement(slide, `deckgo-slide-${SlideTemplate[slide.data.template.toUpperCase()].toLowerCase()}`));
+                resolve(await this.parseSlideElement(slide, `deckgo-slide-${SlideTemplate[slide.data.template.toUpperCase()].toLowerCase()}`, contentEditable));
             } else {
                 resolve(null);
             }
         });
     }
 
-    private static parseSlideElement(slide: Slide, slideTag: string): Promise<any> {
+    private static parseSlideElement(slide: Slide, slideTag: string, contentEditable: boolean): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!document) {
                 resolve();
@@ -32,7 +32,7 @@ export class ParseSlidesUtils {
             const div = document.createElement('div');
             div.innerHTML = slide.data.content;
 
-            const content = await ParseElementsUtils.parseElements(div, true);
+            const content = await ParseElementsUtils.parseElements(div, true, contentEditable);
 
             const style = slide.data.attributes ? await ParseStyleUtils.convertStyle(slide.data.attributes.style) : undefined;
 
