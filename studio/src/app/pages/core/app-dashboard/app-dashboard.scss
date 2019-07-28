@@ -1,0 +1,20 @@
+app-dashboard {
+  main {
+    background: white;
+
+    a,
+    a:link,
+    a:visited,
+    a:hover,
+    a:active{
+      text-decoration: none;
+
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+
+    ion-card[class*="sc-ion-card"] {
+      --background: white;
+    }
+  }
+}

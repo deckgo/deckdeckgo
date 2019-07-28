@@ -38,6 +38,7 @@ export namespace Components {
   interface AppContact {}
   interface AppCreateSlide {}
   interface AppCustomImages {}
+  interface AppDashboard {}
   interface AppDeckOrSlide {
     'deckOrSlide': boolean;
   }
@@ -189,6 +190,12 @@ declare global {
   var HTMLAppCustomImagesElement: {
     prototype: HTMLAppCustomImagesElement;
     new (): HTMLAppCustomImagesElement;
+  };
+
+  interface HTMLAppDashboardElement extends Components.AppDashboard, HTMLStencilElement {}
+  var HTMLAppDashboardElement: {
+    prototype: HTMLAppDashboardElement;
+    new (): HTMLAppDashboardElement;
   };
 
   interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
@@ -487,6 +494,7 @@ declare global {
     'app-contact': HTMLAppContactElement;
     'app-create-slide': HTMLAppCreateSlideElement;
     'app-custom-images': HTMLAppCustomImagesElement;
+    'app-dashboard': HTMLAppDashboardElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-editor': HTMLAppEditorElement;
@@ -562,6 +570,7 @@ declare namespace LocalJSX {
     'onSignIn'?: (event: CustomEvent<void>) => void;
   }
   interface AppCustomImages extends JSXBase.HTMLAttributes<HTMLAppCustomImagesElement> {}
+  interface AppDashboard extends JSXBase.HTMLAttributes<HTMLAppDashboardElement> {}
   interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {
     'deckOrSlide'?: boolean;
     'onApplyTo'?: (event: CustomEvent<boolean>) => void;
@@ -693,6 +702,7 @@ declare namespace LocalJSX {
     'app-contact': AppContact;
     'app-create-slide': AppCreateSlide;
     'app-custom-images': AppCustomImages;
+    'app-dashboard': AppDashboard;
     'app-deck-or-slide': AppDeckOrSlide;
     'app-developer': AppDeveloper;
     'app-editor': AppEditor;
