@@ -17,9 +17,9 @@ resource "aws_lambda_function" "dirty" {
 
 resource "aws_lambda_event_source_mapping" "dirty" {
   event_source_arn = aws_sqs_queue.dirty.arn
-  enabled = true
-  function_name = aws_lambda_function.dirty.function_name
-  batch_size = 1
+  enabled          = true
+  function_name    = aws_lambda_function.dirty.function_name
+  batch_size       = 1
 }
 
 data "external" "build-function-dirty" {

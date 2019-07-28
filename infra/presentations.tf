@@ -57,7 +57,7 @@ resource "aws_cloudfront_distribution" "website_cdn" {
   enabled = true
   price_class = "PriceClass_200"
   http_version = "http1.1"
-  aliases =  ["${aws_s3_bucket.presentations.bucket}.deckdeckgo.io", "beta.deckdeckgo.io"]
+  aliases = ["${aws_s3_bucket.presentations.bucket}.deckdeckgo.io", "beta.deckdeckgo.io"]
 
   origin {
     domain_name = aws_s3_bucket.presentations.website_endpoint
