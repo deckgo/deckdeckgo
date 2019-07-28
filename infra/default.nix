@@ -174,11 +174,12 @@ rec
          }
 
          function repl_handler() {
+            shopt -s globstar
             AWS_DEFAULT_REGION=us-east-1 \
               AWS_ACCESS_KEY_ID=dummy \
               AWS_SECRET_ACCESS_KEY=dummy_key \
               DECKGO_STARTER_DIST=${deckdeckgo-starter-dist}/dist.tar \
-              ghci -Wall handler/app/Test.hs handler/src/DeckGo/*.hs
+              ghci -Wall handler/app/Test.hs handler/src/**/*.hs
          }
 
          function repl_unsplash() {

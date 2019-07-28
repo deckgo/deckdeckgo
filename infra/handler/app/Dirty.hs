@@ -18,7 +18,7 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-import qualified Network.AWS as Aws
+import qualified Network.AWS.Extended as Aws
 import qualified Network.AWS.CloudFront as CloudFront
 import qualified Network.Wai.Handler.Lambda as Lambda
 
@@ -28,7 +28,7 @@ main = do
     hSetBuffering stdout LineBuffering
 
     liftIO $ putStrLn "Booting..."
-    env <- Aws.newEnv Aws.Discover
+    env <- Aws.newEnv
 
     liftIO $ putStrLn "Booted!"
 

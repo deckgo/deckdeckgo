@@ -27,7 +27,7 @@ import qualified Data.Text as T
 import qualified Data.Text.IO as T
 import qualified Hasql.Connection as HC
 import qualified Hasql.Session as HS
-import qualified Network.AWS as Aws
+import qualified Network.AWS.Extended as Aws
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.AWS.SQS as SQS
 import qualified Network.HTTP.Client as HTTPClient
@@ -45,7 +45,7 @@ withEnv act = do
             { HTTPClient.managerModifyRequest =
                 pure . rerouteDynamoDB . rerouteSQS . rerouteS3
             }
-    env <- Aws.newEnv Aws.Discover <&> Aws.envManager .~ mgr
+    env <- Aws.newEnv <&> Aws.envManager .~ mgr
     act env
 
 withServer :: (Warp.Port -> IO a) -> IO a

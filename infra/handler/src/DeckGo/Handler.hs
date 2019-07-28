@@ -62,7 +62,6 @@ import qualified Hasql.Decoders as HD
 import qualified Hasql.Encoders as HE
 import qualified Hasql.Session as HS
 import qualified Network.AWS as Aws
-import qualified Network.AWS.Data as Data
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.AWS.SQS as SQS
 import qualified Network.Wai as Wai
@@ -780,7 +779,7 @@ decksPostPublish
   -> DeckId
   -> Servant.Handler PresResponse
   -- TODO: AUTH!!!!
-decksPostPublish (fixupEnv -> env) conn _ deckId = do
+decksPostPublish env conn _ deckId = do
 
     -- TODO: check auth
 
@@ -827,13 +826,6 @@ decksPostPublish (fixupEnv -> env) conn _ deckId = do
                 T.pack presUrl <>
                 "/" <>
                 presentationPrefix uname dname
-
-fixupEnv :: Aws.Env -> Aws.Env
-fixupEnv = Aws.configure $ SQS.sqs
-  { Aws._svcEndpoint = \reg -> do
-      let new = "sqs." <> Data.toText reg <> ".amazonaws.com"
-      (Aws._svcEndpoint SQS.sqs reg) & Aws.endpointHost .~ T.encodeUtf8 new
-  }
 
 decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (Item DeckId Deck)
 decksPost env fuid deck = do

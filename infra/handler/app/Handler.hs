@@ -7,7 +7,7 @@ import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Char8 as BS8
 import Data.Conduit.Binary as C
 import qualified DeckGo.Handler
-import qualified Network.AWS as Aws
+import qualified Network.AWS.Extended as Aws
 import qualified Network.HTTP.Types as HTTP
 import qualified Network.Wai as Wai
 import qualified Network.Wai.Handler.Lambda as Lambda
@@ -28,7 +28,7 @@ main = do
     hSetBuffering stdout LineBuffering
 
     liftIO $ putStrLn "Booting..."
-    env <- Aws.newEnv Aws.Discover
+    env <- Aws.newEnv
 
     liftIO $ putStrLn "Booted!"
 
@@ -37,19 +37,9 @@ main = do
 
     Lambda.run $ cors $ DeckGo.Handler.application settings env conn
 
--- | Transforms the request to hit the region-specific S3, otherwise this
--- doesn't go through the VPC endpoint.
--- TODO: move this to 'fixupEnv'
-fixupEnv' :: Aws.Env -> Aws.Env
-fixupEnv' = Aws.configure $ S3.s3
-  { Aws._svcEndpoint = \reg -> do
-      let new = "s3." <> Data.toText reg <> ".amazonaws.com"
-      (Aws._svcEndpoint S3.s3 reg) & Aws.endpointHost .~ T.encodeUtf8 new
-  }
-
 -- TODO: factor out
 getFirebaseSettings :: Aws.Env -> IO Firebase.FirebaseLoginSettings
-getFirebaseSettings (fixupEnv' -> env) = do
+getFirebaseSettings env = do
     pid <- getEnv "FIREBASE_PROJECT_ID"
 
     metaBucketName <- getEnv "META_BUCKET_NAME"
