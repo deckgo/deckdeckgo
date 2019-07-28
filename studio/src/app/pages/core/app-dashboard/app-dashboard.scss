@@ -15,6 +15,14 @@ app-dashboard {
 
     deckgo-deck {
       --pager-display: none;
+
+      --font-size-very-small: 4px;
+      --font-size-small: 8px;
+      --font-size-normal: 10px;
+
+      --font-size-h1: 18px;
+      --font-size-h2: 10px;
+      --font-size-h3: 7px;
     }
 
     ion-searchbar[class*="sc-ion-searchbar"] {
