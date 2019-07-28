@@ -16,8 +16,6 @@ import qualified Hasql.Connection as Hasql
 import System.Environment (getEnv)
 import qualified Servant.Auth.Firebase as Firebase
 import qualified Data.Text as T
-import qualified Data.Text.Encoding as T
-import qualified Network.AWS.Data as Data
 import qualified Network.AWS.S3 as S3
 import Control.Lens
 import Control.Monad.Trans.Resource
