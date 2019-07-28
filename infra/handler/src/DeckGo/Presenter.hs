@@ -17,7 +17,6 @@ import Data.Function
 import Data.List (foldl')
 import Data.Maybe
 import Data.String
--- import Data.Time.Clock (getCurrentTime)
 import DeckGo.Handler
 import DeckGo.Prelude
 import System.Environment
@@ -35,7 +34,6 @@ import qualified Hasql.Connection as HC
 import qualified Network.AWS as AWS
 import qualified Network.AWS.Data.Body as Body
 import qualified Network.AWS.S3 as S3
--- import qualified Network.AWS.CloudFront as CloudFront
 import qualified Network.Mime as Mime
 import qualified System.Directory as Dir
 import qualified System.IO.Temp as Temp
