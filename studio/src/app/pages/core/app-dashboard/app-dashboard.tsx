@@ -4,13 +4,22 @@ import {filter, take} from 'rxjs/operators';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 import {Deck} from '../../../models/data/deck';
-
-import {DeckUtils} from '../../../utils/core/deck-utils';
+import {Slide} from '../../../models/data/slide';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {DeckService} from '../../../services/data/deck/deck.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
+import {SlideService} from '../../../services/data/slide/slide.service';
+import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
+import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
+
+interface DeckAndFirstSlide {
+    deck: Deck;
+    slide: any;
+    style: any;
+    background: any;
+}
 
 @Component({
     tag: 'app-dashboard',
@@ -22,21 +31,22 @@ export class AppDashboard {
     private authUser: AuthUser;
 
     @State()
-    private filteredDecks: Deck[] = null;
+    private filteredDecks: DeckAndFirstSlide[] = null;
 
     private authService: AuthService;
 
     private navService: NavService;
+
     private deckService: DeckService;
+    private slideService: SlideService;
 
     private decks: Deck[] = null;
-
-    private presentationUrl: string = EnvironmentConfigService.getInstance().get('presentationUrl');
 
     constructor() {
         this.authService = AuthService.getInstance();
         this.navService = NavService.getInstance();
         this.deckService = DeckService.getInstance();
+        this.slideService = SlideService.getInstance();
     }
 
     componentWillLoad() {
@@ -46,7 +56,54 @@ export class AppDashboard {
             this.authUser = authUser;
 
             this.decks = await this.deckService.getUserDecks(authUser.uid);
-            this.filteredDecks = await DeckUtils.filterDecks(null, this.decks);
+            this.filteredDecks = await this.fetchFirstSlides();
+        });
+    }
+
+    private fetchFirstSlides(): Promise<DeckAndFirstSlide[]> {
+        return new Promise<DeckAndFirstSlide[]>(async (resolve) => {
+            if (!this.decks || this.decks.length <= 0) {
+                resolve([]);
+                return;
+            }
+
+            const promises = [];
+            this.decks.forEach((deck: Deck) => {
+                if (deck && deck.data && deck.data.slides && deck.data.slides.length >= 1) {
+                    promises.push(this.initDeckAndFirstSlide(deck, deck.data.slides[0]));
+                }
+            });
+
+            const results: DeckAndFirstSlide[] = await Promise.all(promises);
+
+            resolve(results);
+        });
+    }
+
+    private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
+        return new Promise<DeckAndFirstSlide>(async (resolve) => {
+            try {
+                const slide: Slide = await this.slideService.get(deck.id, slideId);
+                const element: any = await ParseSlidesUtils.parseSlide(slide);
+
+                let style: any;
+                if (deck.data && deck.data.attributes && deck.data.attributes.style) {
+                    style = await ParseStyleUtils.convertStyle(deck.data.attributes.style);
+                } else {
+                    style = undefined;
+                }
+
+                const background: any = await ParseBackgroundUtils.convertBackground(deck.data.background);
+
+                resolve({
+                    deck: deck,
+                    slide: element,
+                    style: style,
+                    background: background
+                });
+            } catch (err) {
+                resolve(undefined);
+            }
         });
     }
 
@@ -57,12 +114,13 @@ export class AppDashboard {
         });
     }
 
-    private async filterDecksOnChange(e: CustomEvent) {
-        if (e && e.detail) {
-            this.filteredDecks = await DeckUtils.filterDecks(e.detail.value, this.decks);
-        } else {
-            this.filteredDecks = await DeckUtils.filterDecks(null, this.decks);
-        }
+    private async filterDecksOnChange(_e: CustomEvent) {
+        // TODO:
+        // if (e && e.detail) {
+        //     this.filteredDecks = await DeckUtils.filterDecks(e.detail.value, this.decks);
+        // } else {
+        //     this.filteredDecks = await DeckUtils.filterDecks(null, this.decks);
+        // }
     }
 
     render() {
@@ -114,25 +172,34 @@ export class AppDashboard {
 
     private renderDecks() {
         if (this.filteredDecks && this.filteredDecks.length > 0) {
-            return (
-                this.filteredDecks.map((deck: Deck) => {
-                    return this.renderDeck(deck);
-                })
-            );
+            return <div class="container">
+                {this.renderDecksCards()}
+            </div>
         } else {
             return this.renderEmptyDecks();
         }
     }
 
-    private renderDeck(deck: Deck) {
-        if (!deck || !deck.data) {
+    private renderDecksCards() {
+        return (
+            this.filteredDecks.map((deck: DeckAndFirstSlide) => {
+                const url: string = `/editor/${deck.deck.id}`;
+
+                return <ion-card class="item ion-no-margin" href={url} routerDirection="root">
+                    {this.renderDeck(deck)}
+                </ion-card>;
+            })
+        );
+    }
+
+    private renderDeck(deck: DeckAndFirstSlide) {
+        if (!deck) {
             return undefined;
-        } else if (deck.data.meta && deck.data.meta.published) {
-            return <a key={deck.id} href={this.presentationUrl + deck.data.meta.pathname} target="_blank">
-                <app-feed-card deck={deck}></app-feed-card>
-            </a>
         } else {
-            return <app-feed-card key={deck.id} deck={deck}></app-feed-card>
+            return <deckgo-deck embedded={true} keyboard={false} style={deck.style}>
+                {deck.slide}
+                {deck.background}
+            </deckgo-deck>
         }
     }
 

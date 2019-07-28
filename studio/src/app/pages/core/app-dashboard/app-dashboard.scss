@@ -13,8 +13,37 @@ app-dashboard {
       cursor: pointer;
     }
 
-    ion-card[class*="sc-ion-card"] {
-      --background: white;
+    deckgo-deck {
+      --pager-display: none;
+    }
+
+    div.container {
+      display: grid;
+      grid-gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-auto-rows: 250px 150px;
+      grid-auto-flow: dense;
+
+      ion-card.item {
+        position: relative;
+
+        width: 100%;
+        height: 100%;
+
+        overflow: hidden;
+      }
+
+      @media screen and (min-width: 540px) {
+        ion-card.item {
+          &:first-child {
+            grid-area: 1 / 1 / span 2 / span 2;
+          }
+
+          &:nth-child(3n) {
+            grid-column: span 2;
+          }
+        }
+      }
     }
   }
 }

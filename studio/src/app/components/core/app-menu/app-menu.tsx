@@ -6,7 +6,6 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {Deck} from '../../../models/data/deck';
 
 import {Utils} from '../../../utils/core/utils';
-import {DeckUtils} from '../../../utils/core/deck-utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
@@ -58,14 +57,16 @@ export class AppMenu {
             if (authUser && !authUser.anonymous) {
                 try {
                     this.decks = await this.deckService.getUserDecks(authUser.uid);
+                    await this.filterDecks(null);
                 } catch (err) {
+                    // TODO: print error?
                     this.decks = [];
+                    await this.filterDecks(null);
                 }
             } else {
                 this.decks = [];
+                await this.filterDecks(null);
             }
-
-            this.filteredDecks = await DeckUtils.filterDecks(null, this.decks);
         });
     }
 
@@ -74,7 +75,7 @@ export class AppMenu {
             await this.updateDeckList(deck);
 
             const filter: string = await this.getCurrentFilter();
-            this.filteredDecks = await DeckUtils.filterDecks(filter, this.decks);
+            await this.filterDecks(filter);
         });
     }
 
@@ -132,10 +133,36 @@ export class AppMenu {
 
     private async filterDecksOnChange(e: CustomEvent) {
         if (e && e.detail) {
-            this.filteredDecks = await DeckUtils.filterDecks(e.detail.value, this.decks);
+            await this.filterDecks(e.detail.value);
         } else {
-            this.filteredDecks = await DeckUtils.filterDecks(null, this.decks);
+            await this.filterDecks(null);
         }
+    }
+
+    private filterDecks(value: string): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!value || value === undefined || value === '') {
+                this.filteredDecks = this.decks ? [...this.decks] : null;
+
+                resolve();
+                return;
+            }
+
+            if (!this.decks || this.decks.length <= 0) {
+                this.filteredDecks = this.decks ? [...this.decks] : null;
+
+                resolve();
+                return;
+            }
+
+            const matchingDecks: Deck[] = this.decks.filter((matchDeck: Deck) => {
+                return matchDeck.data && matchDeck.data.name && matchDeck.data.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+            });
+
+            this.filteredDecks = [...matchingDecks];
+
+            resolve();
+        });
     }
 
     private getCurrentFilter(): Promise<string> {
