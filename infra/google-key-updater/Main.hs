@@ -5,7 +5,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE DataKinds #-}
 
-
 module Main (main) where
 
 import qualified Network.AWS.Data.Body as Body
@@ -40,7 +39,6 @@ main = do
     putStrLn $ "Bucket is: " <> show bucket
 
     liftIO $ putStrLn "Booted!"
-
 
     putStrLn "entering loop..."
     forever $ do
@@ -79,20 +77,6 @@ decodeInput parseEvent =
         (,) <$>
           obj .: "responseFile" <*>
           (obj .: "request" >>= parseEvent)
--- main = putStrLn "hello!"
--- main =
-    -- runAWS env (
-      -- Aws.send $ S3.putObject bucket okey body
-      -- ) >>= \case
-        -- Right {} -> do
-          -- putStrLn $ "uploaded new keys"
-        -- Left e -> error $ "Error in put: " <> show e
-  -- where
-    -- okey = undefined
-    -- bucket = undefined
-    -- body = undefined
-    -- env = undefined
-
 
 runAWS :: MonadIO m => Aws.Env -> Aws.AWS a -> m (Either SomeException a)
 runAWS env =
