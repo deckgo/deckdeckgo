@@ -32,7 +32,7 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Data.Text.IO as T
 import qualified Hasql.Connection as HC
-import qualified Network.AWS as Aws
+import qualified Network.AWS as AWS
 import qualified Network.AWS.Data.Body as Body
 import qualified Network.AWS.S3 as S3
 -- import qualified Network.AWS.CloudFront as CloudFront
@@ -67,7 +67,7 @@ diffObjects news0 (HMS.fromList -> olds0) = second HMS.keys $
       ) ([], olds0) news0
 
 listPresentationObjects
-  :: Aws.Env
+  :: AWS.Env
   -> S3.BucketName
   -> Username
   -> Deckname
@@ -141,9 +141,9 @@ slideTags slide =
     ]
 
 
-listObjects :: Aws.Env -> S3.BucketName -> Maybe T.Text -> IO [S3.Object]
+listObjects :: AWS.Env -> S3.BucketName -> Maybe T.Text -> IO [S3.Object]
 listObjects env bname mpref = xif ([],Nothing) $ \f (es, ct) ->
-    runAWS env (Aws.send $ S3.listObjectsV2 bname &
+    runAWS env (AWS.send $ S3.listObjectsV2 bname &
       S3.lovContinuationToken .~ ct &
       S3.lovPrefix .~ mpref
       ) >>= \case
@@ -155,21 +155,21 @@ listObjects env bname mpref = xif ([],Nothing) $ \f (es, ct) ->
           _ -> pure (es <> objs)
       Left e -> err "Could not list objects" e
 
-deleteObjects :: Aws.Env -> S3.BucketName -> Maybe T.Text -> IO ()
+deleteObjects :: AWS.Env -> S3.BucketName -> Maybe T.Text -> IO ()
 deleteObjects env bname mpref = do
     es <- listObjects env bname mpref
     putStrLn $ "Deleting " <> show (length es) <> " objects..."
     deleteObjects' env bname $ map (^. S3.oKey) es
 
-deleteObjects' :: Aws.Env -> S3.BucketName -> [S3.ObjectKey] -> IO ()
+deleteObjects' :: AWS.Env -> S3.BucketName -> [S3.ObjectKey] -> IO ()
 deleteObjects' env bname okeys =
     forConcurrentlyN_ 10 okeys $ \okey -> runAWS env (
-      Aws.send $ S3.deleteObject bname okey) >>= \case
+      AWS.send $ S3.deleteObject bname okey) >>= \case
         Right {} -> pure ()
         Left e -> error $ "Could not delete object: " <> show e
 
 -- TODO: sanitize deck name
-deployDeck :: Aws.Env -> HC.Connection -> DeckId -> IO ()
+deployDeck :: AWS.Env -> HC.Connection -> DeckId -> IO ()
 deployDeck env conn deckId = do
     deckGetDeckIdDB env deckId >>= \case
       Nothing -> pure () -- TODO
@@ -183,7 +183,7 @@ deployDeck env conn deckId = do
               slides <- catMaybes <$> mapM (dbGetSlideById iface) (deckSlides deck)
               deployPresentation env uname deck slides
 
-deployPresentation :: Aws.Env -> Username -> Deck -> [Slide] -> IO ()
+deployPresentation :: AWS.Env -> Username -> Deck -> [Slide] -> IO ()
 deployPresentation env uname deck slides = do
     bucketName <- getEnv "BUCKET_NAME"
     let bucket = S3.BucketName (T.pack bucketName)
@@ -211,7 +211,7 @@ deployPresentation env uname deck slides = do
     -- TODO: cleaner error handling down here
 
     liftIO $ putStrLn $ "Forwarding to queue: " <> T.unpack queueName
-    queueUrl <- runAWS env (Aws.send $ SQS.getQueueURL queueName) >>= \case
+    queueUrl <- runAWS env (AWS.send $ SQS.getQueueURL queueName) >>= \case
       Right e -> pure $ e ^. SQS.gqursQueueURL
       Left e -> do
         liftIO $ print e
@@ -219,7 +219,7 @@ deployPresentation env uname deck slides = do
 
     liftIO $ print queueUrl
 
-    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl $
+    res <- runAWS env $ AWS.send $ SQS.sendMessage queueUrl $
       T.decodeUtf8 $ BL.toStrict $ Aeson.encode (presentationPrefix uname dname)
 
     case res of
@@ -230,21 +230,21 @@ deployPresentation env uname deck slides = do
         error "Failed!!"
 
 putObjects
-  :: Aws.Env
+  :: AWS.Env
   -> S3.BucketName
   -> [(FilePath, S3.ObjectKey, S3.ETag)]
   -> IO ()
 putObjects env bucket objs = forConcurrentlyN_ 10 objs $ putObject env bucket
 
 putObject
-  :: Aws.Env
+  :: AWS.Env
   -> S3.BucketName
   -> (FilePath, S3.ObjectKey, S3.ETag)
   -> IO ()
 putObject env bucket (fp, okey, etag) = do
     body <- Body.toBody <$> BS.readFile fp
     runAWS env (
-      Aws.send $ S3.putObject bucket okey body &
+      AWS.send $ S3.putObject bucket okey body &
           -- XXX: partial, though technically should never fail
           S3.poContentType .~ inferContentType (T.pack fp)
       ) >>= \case

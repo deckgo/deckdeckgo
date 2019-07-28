@@ -18,7 +18,7 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-import qualified Network.AWS.Extended as Aws
+import qualified Network.AWS.Extended as AWS
 import qualified Network.AWS.CloudFront as CloudFront
 import qualified Network.Wai.Handler.Lambda as Lambda
 
@@ -28,7 +28,7 @@ main = do
     hSetBuffering stdout LineBuffering
 
     liftIO $ putStrLn "Booting..."
-    env <- Aws.newEnv
+    env <- AWS.newEnv
 
     liftIO $ putStrLn "Booted!"
 
@@ -48,7 +48,7 @@ main = do
           Lambda.writeFileAtomic fp (BL.toStrict $ Aeson.encode ())
         Left e -> error $ show e
 
-dirtyPres :: Aws.Env -> T.Text -> IO ()
+dirtyPres :: AWS.Env -> T.Text -> IO ()
 dirtyPres env presPrefix = do
     res <- timeout (5*1000*1000) dirty
     print res
@@ -56,7 +56,7 @@ dirtyPres env presPrefix = do
     dirty = do
       now <- getCurrentTime
       distributionId <- T.pack <$> getEnv "CLOUDFRONT_DISTRIBUTION_ID"
-      runAWS env $ Aws.send $ CloudFront.createInvalidation
+      runAWS env $ AWS.send $ CloudFront.createInvalidation
         distributionId $
         CloudFront.invalidationBatch
           (CloudFront.paths 1 & CloudFront.pItems .~ [ "/" <> presPrefix <> "*" ])

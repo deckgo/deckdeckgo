@@ -18,7 +18,7 @@ import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Hasql.Connection as Hasql
-import qualified Network.AWS.Extended as Aws
+import qualified Network.AWS.Extended as AWS
 import qualified Network.Wai.Handler.Lambda as Lambda
 
 main :: IO ()
@@ -27,7 +27,7 @@ main = do
     hSetBuffering stdout LineBuffering
 
     liftIO $ putStrLn "Booting..."
-    env <- Aws.newEnv
+    env <- AWS.newEnv
 
     liftIO $ putStrLn "Booted!"
 

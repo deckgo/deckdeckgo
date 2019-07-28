@@ -7,7 +7,7 @@ import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Char8 as BS8
 import Data.Conduit.Binary as C
 import qualified DeckGo.Handler
-import qualified Network.AWS.Extended as Aws
+import qualified Network.AWS.Extended as AWS
 import qualified Network.HTTP.Types as HTTP
 import qualified Network.Wai as Wai
 import qualified Network.Wai.Handler.Lambda as Lambda
@@ -26,7 +26,7 @@ main = do
     hSetBuffering stdout LineBuffering
 
     liftIO $ putStrLn "Booting..."
-    env <- Aws.newEnv
+    env <- AWS.newEnv
 
     liftIO $ putStrLn "Booted!"
 
@@ -36,7 +36,7 @@ main = do
     Lambda.run $ cors $ DeckGo.Handler.application settings env conn
 
 -- TODO: factor out
-getFirebaseSettings :: Aws.Env -> IO Firebase.FirebaseLoginSettings
+getFirebaseSettings :: AWS.Env -> IO Firebase.FirebaseLoginSettings
 getFirebaseSettings env = do
     pid <- getEnv "FIREBASE_PROJECT_ID"
 
@@ -44,14 +44,14 @@ getFirebaseSettings env = do
     let metaBucket = S3.BucketName (T.pack metaBucketName)
     putStrLn $ "META Bucket is: " <> show metaBucket
 
-    let fetchKeys = Aws.runResourceT $ do
+    let fetchKeys = AWS.runResourceT $ do
           let okey = "google-public-keys"
 
           runAWS' env (
-            Aws.send $ S3.getObject metaBucket okey
+            AWS.send $ S3.getObject metaBucket okey
             ) >>= \case
               Right gors -> do
-                keysRaw <- (gors ^. S3.gorsBody) `Aws.sinkBody` C.sinkLbs
+                keysRaw <- (gors ^. S3.gorsBody) `AWS.sinkBody` C.sinkLbs
                 liftIO $ putStrLn $ "got new keys"
                 case Aeson.decode keysRaw of
                   Nothing -> error "Could not decode key file"
@@ -97,8 +97,8 @@ methods =
 
 runAWS'
   :: (MonadResource m, MonadIO m, MonadUnliftIO m)
-  => Aws.Env -> Aws.AWS a -> m (Either SomeException a)
+  => AWS.Env -> AWS.AWS a -> m (Either SomeException a)
 runAWS' env =
     tryAny .
-    Aws.runAWS env .
-    Aws.within Aws.NorthVirginia
+    AWS.runAWS env .
+    AWS.within AWS.NorthVirginia
