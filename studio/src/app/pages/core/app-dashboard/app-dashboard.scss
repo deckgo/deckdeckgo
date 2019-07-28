@@ -17,6 +17,15 @@ app-dashboard {
       --pager-display: none;
     }
 
+    ion-searchbar[class*="sc-ion-searchbar"] {
+      --background: var(--ion-color-light);
+      background: var(--ion-color-light);
+      border: 1px solid #dedede;
+      border-radius: 4px;
+
+      --placeholder-opacity: 0.33;
+    }
+
     div.container {
       display: grid;
       grid-gap: 16px;

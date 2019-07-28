@@ -33,14 +33,14 @@ export class AppDashboard {
     @State()
     private filteredDecks: DeckAndFirstSlide[] = null;
 
+    private decks: DeckAndFirstSlide[] = null;
+
     private authService: AuthService;
 
     private navService: NavService;
 
     private deckService: DeckService;
     private slideService: SlideService;
-
-    private decks: Deck[] = null;
 
     constructor() {
         this.authService = AuthService.getInstance();
@@ -55,20 +55,21 @@ export class AppDashboard {
             take(1)).subscribe(async (authUser: AuthUser) => {
             this.authUser = authUser;
 
-            this.decks = await this.deckService.getUserDecks(authUser.uid);
-            this.filteredDecks = await this.fetchFirstSlides();
+            const userDecks: Deck[] = await this.deckService.getUserDecks(authUser.uid);
+            this.decks = await this.fetchFirstSlides(userDecks);
+            await this.filterDecks(null);
         });
     }
 
-    private fetchFirstSlides(): Promise<DeckAndFirstSlide[]> {
+    private fetchFirstSlides(decks: Deck[]): Promise<DeckAndFirstSlide[]> {
         return new Promise<DeckAndFirstSlide[]>(async (resolve) => {
-            if (!this.decks || this.decks.length <= 0) {
+            if (!decks || decks.length <= 0) {
                 resolve([]);
                 return;
             }
 
             const promises = [];
-            this.decks.forEach((deck: Deck) => {
+            decks.forEach((deck: Deck) => {
                 if (deck && deck.data && deck.data.slides && deck.data.slides.length >= 1) {
                     promises.push(this.initDeckAndFirstSlide(deck, deck.data.slides[0]));
                 }
@@ -107,6 +108,32 @@ export class AppDashboard {
         });
     }
 
+    private filterDecks(value: string): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!value || value === undefined || value === '') {
+                this.filteredDecks = this.decks ? [...this.decks] : null;
+
+                resolve();
+                return;
+            }
+
+            if (!this.decks || this.decks.length <= 0) {
+                this.filteredDecks = this.decks ? [...this.decks] : null;
+
+                resolve();
+                return;
+            }
+
+            const matchingDecks: DeckAndFirstSlide[] = this.decks.filter((matchDeck: DeckAndFirstSlide) => {
+                return matchDeck.deck && matchDeck.deck.data && matchDeck.deck.data.name && matchDeck.deck.data.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+            });
+
+            this.filteredDecks = [...matchingDecks];
+
+            resolve();
+        });
+    }
+
     private async signIn() {
         this.navService.navigate({
             url: '/signin' + (window && window.location ? window.location.pathname : ''),
@@ -114,13 +141,12 @@ export class AppDashboard {
         });
     }
 
-    private async filterDecksOnChange(_e: CustomEvent) {
-        // TODO:
-        // if (e && e.detail) {
-        //     this.filteredDecks = await DeckUtils.filterDecks(e.detail.value, this.decks);
-        // } else {
-        //     this.filteredDecks = await DeckUtils.filterDecks(null, this.decks);
-        // }
+    private async filterDecksOnChange(e: CustomEvent) {
+        if (e && e.detail) {
+            await this.filterDecks(e.detail.value);
+        } else {
+            await this.filterDecks(null);
+        }
     }
 
     render() {
@@ -160,14 +186,10 @@ export class AppDashboard {
     }
 
     private renderDecksFilter() {
-        if (this.filteredDecks && this.filteredDecks.length > 0) {
-            return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
-                                  onClick={($event) => $event.stopImmediatePropagation()}
-                                  onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
-                                  class="ion-no-padding ion-margin-top ion-margin-bottom"></ion-searchbar>;
-        } else {
-            return undefined;
-        }
+        return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
+                              onClick={($event) => $event.stopImmediatePropagation()}
+                              onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
+                              class="ion-no-padding ion-margin-top ion-margin-bottom"></ion-searchbar>;
     }
 
     private renderDecks() {
@@ -176,7 +198,7 @@ export class AppDashboard {
                 {this.renderDecksCards()}
             </div>
         } else {
-            return this.renderEmptyDecks();
+            return undefined;
         }
     }
 
@@ -203,7 +225,4 @@ export class AppDashboard {
         }
     }
 
-    private renderEmptyDecks() {
-        return <p>It's time to create your first presentation 😉</p>;
-    }
 }

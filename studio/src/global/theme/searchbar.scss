@@ -1,0 +1,12 @@
+ion-searchbar[class*="sc-ion-searchbar"] {
+  div.sc-ion-searchbar-ios {
+    margin-left: 12px;
+  }
+
+  input.searchbar-input[class*="sc-ion-searchbar"] {
+    box-shadow: none;
+
+    -webkit-padding-start: 48px;
+    padding-inline-start: 48px;
+  }
+}
