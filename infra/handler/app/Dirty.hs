@@ -55,8 +55,9 @@ dirtyPres env presPrefix = do
   where
     dirty = do
       now <- getCurrentTime
+      distributionId <- T.pack <$> getEnv "CLOUDFRONT_DISTRIBUTION_ID"
       runAWS env $ Aws.send $ CloudFront.createInvalidation
-        "E2D979P0TT1UFC" $ -- TODO: env var
+        distributionId $
         CloudFront.invalidationBatch
           (CloudFront.paths 1 & CloudFront.pItems .~ [ "/" <> presPrefix <> "*" ])
           (tshow now)

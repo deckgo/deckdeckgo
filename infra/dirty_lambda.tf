@@ -7,6 +7,12 @@ resource "aws_lambda_function" "dirty" {
   runtime = "nodejs8.10"
 
   role = aws_iam_role.iam_for_lambda_dirty.arn
+
+  environment {
+    variables = {
+      CLOUDFRONT_DISTRIBUTION_ID = aws_cloudfront_distribution.website_cdn.id
+    }
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "dirty" {
