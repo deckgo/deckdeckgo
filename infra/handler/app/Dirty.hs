@@ -18,7 +18,6 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-import qualified Hasql.Connection as Hasql
 import qualified Network.AWS as Aws
 import qualified Network.AWS.CloudFront as CloudFront
 import qualified Network.Wai.Handler.Lambda as Lambda
@@ -45,7 +44,6 @@ main = do
           when (length presPrefixes /= 1) $
             putStrLn $
               "Warning: got " <> show (length presPrefixes) <> "deck IDs"
-          -- conn <- getPostgresqlConnection
           forM_ presPrefixes (dirtyPres env)
           Lambda.writeFileAtomic fp (BL.toStrict $ Aeson.encode ())
         Left e -> error $ show e
@@ -82,21 +80,3 @@ parseSQSRequest = Aeson.withObject "request" $ \o -> do
       case  Aeson.decodeStrict (T.encodeUtf8 jsonEncodedBody) of
         Nothing -> mzero
         Just path -> pure path
-
-getPostgresqlConnection :: IO Hasql.Connection
-getPostgresqlConnection = do
-    user <- getEnv "PGUSER"
-    password <- getEnv "PGPASSWORD"
-    host <- getEnv "PGHOST"
-    db <- getEnv "PGDATABASE"
-    port <- getEnv "PGPORT"
-    Hasql.acquire (
-      Hasql.settings
-        (BS8.pack host)
-        (read port)
-        (BS8.pack user)
-        (BS8.pack password)
-        (BS8.pack db)
-      ) >>= \case
-        Left e -> error (show e)
-        Right c -> pure c

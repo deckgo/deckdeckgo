@@ -2,7 +2,6 @@ resource "aws_lambda_function" "dirty" {
   function_name = "deckdeckgo-dirty-lambda"
   filename      = data.external.build-function-dirty.result.path
 
-  # TODO: need a big *ss timeout on this one
   timeout = 5
   handler = "main.handler"
   runtime = "nodejs8.10"
