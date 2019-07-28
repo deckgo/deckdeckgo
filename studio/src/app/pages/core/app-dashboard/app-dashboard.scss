@@ -14,6 +14,9 @@ app-dashboard {
     }
 
     deckgo-deck {
+      --background: white;
+      --color: black;
+
       --pager-display: none;
 
       --font-size-very-small: 4px;
@@ -23,6 +26,14 @@ app-dashboard {
       --font-size-h1: 18px;
       --font-size-h2: 10px;
       --font-size-h3: 7px;
+
+      --slide-width: 100%;
+      --slide-height: 100%;
+
+      --slide-padding-top-default: 0;
+      --slide-padding-end-default: 0;
+      --slide-padding-bottom-default: 0;
+      --slide-padding-start-default: 0;
     }
 
     ion-searchbar[class*="sc-ion-searchbar"] {
@@ -37,30 +48,23 @@ app-dashboard {
     div.container {
       display: grid;
       grid-gap: 16px;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      grid-auto-rows: 250px 150px;
-      grid-auto-flow: dense;
+      grid-template-columns: repeat(auto-fill, 1fr);
 
       ion-card.item {
         position: relative;
 
         width: 100%;
-        height: 100%;
+        height: 24vh;
 
-        overflow: hidden;
+        @media screen and (min-width: 540px) {
+          height: 38vh;
+        }
       }
 
       @media screen and (min-width: 540px) {
-        ion-card.item {
-          &:first-child {
-            grid-area: 1 / 1 / span 2 / span 2;
-          }
-
-          &:nth-child(3n) {
-            grid-column: span 2;
-          }
-        }
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
       }
+
     }
   }
 }
