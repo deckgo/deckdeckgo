@@ -1,8 +1,8 @@
-import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
+import { Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host } from '@stencil/core';
 
 import Prism from 'prismjs';
 
-import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
+import { DeckdeckgoHighlightCodeAnchor } from '../declarations/deckdeckgo-highlight-code-anchor';
 
 @Component({
   tag: 'deckgo-highlight-code',
@@ -22,9 +22,10 @@ export class DeckdeckgoHighlightCode {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  @Prop({reflectToAttr: true}) language: string = 'javascript';
+  @Prop({ reflectToAttr: true }) language: string = 'javascript';
 
-  @Prop({reflectToAttr: true}) highlightLines: string;
+  @Prop({ reflectToAttr: true }) highlightLines: string;
+  @Prop() lineNumbers: boolean = true;
 
   @Prop() editable: boolean = false;
 
@@ -42,7 +43,7 @@ export class DeckdeckgoHighlightCode {
     }
   }
 
-  @Listen('prismLanguageLoaded', {target: 'document'})
+  @Listen('prismLanguageLoaded', { target: 'document' })
   async languageLoaded($event: CustomEvent) {
     if (!$event || !$event.detail) {
       return;
@@ -178,9 +179,23 @@ export class DeckdeckgoHighlightCode {
 
       if (container) {
         try {
-          const highlightedCode: string = Prism.highlight(code, Prism.languages[this.language], this.language);
+          if (this.lineNumbers) {
+            // split the code on linebreaks
+            const regEx = RegExp(/\n(?!$)/g); // 
+            const match = code.split(regEx);
+            match.forEach(m => {
+              let div: HTMLElement = document.createElement('div');
+              div.classList.add('deckgo-highlight-code-line-number');
 
-          container.children[0].innerHTML = highlightedCode;
+              let highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
+              div.innerHTML = highlight;
+              container.children[0].appendChild(div);
+            });
+          }else{
+            container.children[0].innerHTML = Prism.highlight(code, Prism.languages[this.language], this.language);
+          }
+
+
 
           await this.addAnchors();
 
@@ -388,7 +403,7 @@ export class DeckdeckgoHighlightCode {
       if (slottedCode) {
         setTimeout(() => {
           slottedCode.setAttribute('contentEditable', 'true');
-          slottedCode.addEventListener('blur', this.applyCode, {once: true});
+          slottedCode.addEventListener('blur', this.applyCode, { once: true });
           slottedCode.addEventListener('keydown', this.catchNewLine);
 
           slottedCode.focus();
@@ -458,10 +473,10 @@ export class DeckdeckgoHighlightCode {
 
   render() {
     return (
-      <Host class={{'deckgo-highlight-code-edit': this.editing}}>
+      <Host class={{ 'deckgo-highlight-code-edit': this.editing }}>
         <div class="deckgo-highlight-code-container"
-             onMouseDown={() => this.edit()}
-             onTouchStart={() => this.edit()}>
+          onMouseDown={() => this.edit()}
+          onTouchStart={() => this.edit()}>
           <code></code>
           <slot name="code"></slot>
         </div>
