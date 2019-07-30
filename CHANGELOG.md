@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.52"></a>
+# [1.0.0-beta.52](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.51-2...v1.0.0-beta.52) (2019-07-30)
+
+### Web Components
+
+* inline-editor: v1.0.0-alpha.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+
 <a name="1.0.0-beta.51-2"></a>
 # [1.0.0-beta.51-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.51-1...v1.0.0-beta.51-2) (2019-07-19)
 
