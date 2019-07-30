@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@deckdeckgo/core": "^1.0.0-beta.44",
-    "@deckdeckgo/highlight-code": "^1.0.0-alpha.17",
+    "@deckdeckgo/highlight-code": "^1.0.0-alpha.17-1",
     "@deckdeckgo/inline-editor": "^1.0.0-alpha.11",
     "@deckdeckgo/lazy-img": "^1.0.0-alpha.10",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.9",
