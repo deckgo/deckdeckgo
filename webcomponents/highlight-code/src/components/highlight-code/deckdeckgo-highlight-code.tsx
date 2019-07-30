@@ -114,6 +114,11 @@ export class DeckdeckgoHighlightCode {
     });
   }
 
+  @Watch('lineNumbers')
+  async onLineNumbersChange() {
+    await this.fetchOrParse();
+  }
+
   @Method()
   load(): Promise<void> {
     return new Promise<void>(async (resolve) => {
