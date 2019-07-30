@@ -23,6 +23,7 @@
     "rxjs": "^6.5.2"
   },
   "devDependencies": {
+    "@deckdeckgo/types": "^1.0.0-alpha.11",
     "@stencil/core": "^1.2.2",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",
