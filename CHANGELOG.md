@@ -1,6 +1,10 @@
 <a name="1.0.0-beta.52"></a>
 # [1.0.0-beta.52](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.51-2...v1.0.0-beta.52) (2019-07-30)
 
+### Applications
+
+* docs: v1.0.0-alpha.22 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 ### Web Components
 
 * core: v1.0.0-beta.44 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
