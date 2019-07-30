@@ -179,11 +179,11 @@ export class DeckdeckgoHighlightCode {
       if (container) {
         try {
           if (this.lineNumbers) {
-            // clear the container first 
+            // clear the container first
             container.children[0].innerHTML = '';
-            
+
             // split the code on linebreaks
-            const regEx = RegExp(/\n(?!$)/g); // 
+            const regEx = RegExp(/\n(?!$)/g); //
             const match = code.split(regEx);
             match.forEach(m => {
               let div: HTMLElement = document.createElement('div');
@@ -197,13 +197,11 @@ export class DeckdeckgoHighlightCode {
             container.children[0].innerHTML = Prism.highlight(code, Prism.languages[this.language], this.language);
           }
 
-
-
           await this.addAnchors();
 
           setTimeout(async () => {
             await this.addHighlight();
-          }, 0);
+          }, 100);
 
           resolve();
         } catch (err) {
