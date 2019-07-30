@@ -13,7 +13,7 @@
 
 <h1>Editable:</h1>
 
-<deckgo-highlight-code language="java" editable="true" highlight-lines="0,2 6,6">
+<deckgo-highlight-code language="java" editable="true" highlight-lines="0,2 6,6" line-numbers="true">
   <code slot="code">interface NumericTest {
     boolean computeTest(int n);
     }
@@ -38,12 +38,12 @@
 
 <h1>From src:</h1>
 
-<deckgo-highlight-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx">
+<deckgo-highlight-code line-numbers="true" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx">
 </deckgo-highlight-code>
 
 <h1>Typescript</h1>
 
-<deckgo-highlight-code language="typescript" highlight-lines="1,1" style="--deckgo-highlight-code-line-background: lightgrey;">
+<deckgo-highlight-code language="typescript" highlight-lines="1,1" line-numbers="true" style="--deckgo-highlight-code-line-background: lightgrey;">
   <code slot="code">@Method()
 isMobile(): Promise&lt;boolean> {
   return new Promise&lt;boolean>((resolve) => {
@@ -71,7 +71,7 @@ isMobile(): Promise&lt;boolean> {
     }</code>
 </deckgo-highlight-code>
 
-<deckgo-highlight-code language="bash">
+<deckgo-highlight-code language="bash" line-numbers="true">
   <code slot="code">npm init deckdeckgo</code>
 </deckgo-highlight-code>
 
@@ -88,7 +88,7 @@ isMobile(): Promise&lt;boolean> {
 </deckgo-highlight-code>
 
 <h1>Without line numbers</h1>
-<deckgo-highlight-code language="java" line-numbers="false" highlight-lines="0,2 6,6">
+<deckgo-highlight-code language="java" highlight-lines="0,2 6,6">
   <code slot="code">interface NumericTest {
     boolean computeTest(int n);
     }

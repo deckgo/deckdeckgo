@@ -25,7 +25,7 @@ export class DeckdeckgoHighlightCode {
   @Prop({ reflectToAttr: true }) language: string = 'javascript';
 
   @Prop({ reflectToAttr: true }) highlightLines: string;
-  @Prop() lineNumbers: boolean = true;
+  @Prop({ reflectToAttr: true }) lineNumbers: boolean = false;
 
   @Prop() editable: boolean = false;
 
