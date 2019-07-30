@@ -61,8 +61,7 @@ import qualified Hasql.Connection as HC
 import qualified Hasql.Decoders as HD
 import qualified Hasql.Encoders as HE
 import qualified Hasql.Session as HS
-import qualified Network.AWS as Aws
-import qualified Network.AWS.Data as Data
+import qualified Network.AWS as AWS
 import qualified Network.AWS.DynamoDB as DynamoDB
 import qualified Network.AWS.SQS as SQS
 import qualified Network.Wai as Wai
@@ -367,7 +366,7 @@ api = Proxy
 
 application
   :: Firebase.FirebaseLoginSettings
-  -> Aws.Env
+  -> AWS.Env
   -> HC.Connection
   -> Wai.Application
 application settings env conn =
@@ -376,7 +375,7 @@ application settings env conn =
       (settings :. Servant.EmptyContext)
       (server env conn)
 
-server :: Aws.Env -> HC.Connection -> Servant.Server API
+server :: AWS.Env -> HC.Connection -> Servant.Server API
 server env conn = serveUsers :<|> serveDecks :<|> serveSlides
   where
     serveUsers =
@@ -668,7 +667,7 @@ usersDeleteStatement = Statement sql encoder decoder True
 
 -- DECKS
 
-decksGet :: Aws.Env -> Firebase.UserId -> Maybe UserId -> Servant.Handler [Item DeckId Deck]
+decksGet :: AWS.Env -> Firebase.UserId -> Maybe UserId -> Servant.Handler [Item DeckId Deck]
 decksGet env fuid mUserId = do
 
     userId <- case mUserId of
@@ -683,7 +682,7 @@ decksGet env fuid mUserId = do
         [ "Client asking for decks as another user", show (fuid, userId) ]
       Servant.throwError Servant.err403
 
-    res <- runAWS env $ Aws.send $ DynamoDB.scan "Decks" &
+    res <- runAWS env $ AWS.send $ DynamoDB.scan "Decks" &
             DynamoDB.sFilterExpression .~ Just "DeckOwnerId = :o" &
             DynamoDB.sExpressionAttributeValues .~ HMS.singleton ":o" (userIdToAttributeValue userId)
 
@@ -699,9 +698,9 @@ decksGet env fuid mUserId = do
         Servant.throwError Servant.err500
 
 -- | TODO: better errors + merge with decksGetDeckId
-deckGetDeckIdDB :: Aws.Env -> DeckId -> IO (Maybe Deck)
+deckGetDeckIdDB :: AWS.Env -> DeckId -> IO (Maybe Deck)
 deckGetDeckIdDB env deckId = do
-    res <- runAWS env $ Aws.send $ DynamoDB.getItem "Decks" &
+    res <- runAWS env $ AWS.send $ DynamoDB.getItem "Decks" &
         DynamoDB.giKey .~ HMS.singleton "DeckId" (deckIdToAttributeValue deckId)
 
     fmap itemContent <$> case res of
@@ -726,10 +725,10 @@ deckGetDeckIdDB env deckId = do
         liftIO $ print e
         error "Some error"
 
-decksGetDeckId :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler (Item DeckId Deck)
+decksGetDeckId :: AWS.Env -> Firebase.UserId -> DeckId -> Servant.Handler (Item DeckId Deck)
 decksGetDeckId env fuid deckId = do
 
-    res <- runAWS env $ Aws.send $ DynamoDB.getItem "Decks" &
+    res <- runAWS env $ AWS.send $ DynamoDB.getItem "Decks" &
         DynamoDB.giKey .~ HMS.singleton "DeckId" (deckIdToAttributeValue deckId)
 
     deck@Item{itemContent} <- case res of
@@ -774,13 +773,13 @@ instance Aeson.FromJSON PresResponse where
 
 
 decksPostPublish
-  :: Aws.Env
+  :: AWS.Env
   -> HC.Connection
   -> Firebase.UserId
   -> DeckId
   -> Servant.Handler PresResponse
   -- TODO: AUTH!!!!
-decksPostPublish (fixupEnv -> env) conn _ deckId = do
+decksPostPublish env conn _ deckId = do
 
     -- TODO: check auth
 
@@ -789,7 +788,7 @@ decksPostPublish (fixupEnv -> env) conn _ deckId = do
     queueName <- liftIO $ T.pack <$> getEnv "QUEUE_NAME"
 
     liftIO $ putStrLn $ "Forwarding to queue: " <> T.unpack queueName
-    queueUrl <- runAWS env (Aws.send $ SQS.getQueueURL queueName) >>= \case
+    queueUrl <- runAWS env (AWS.send $ SQS.getQueueURL queueName) >>= \case
       Right e -> pure $ e ^. SQS.gqursQueueURL
       Left e -> do
         liftIO $ print e
@@ -797,7 +796,7 @@ decksPostPublish (fixupEnv -> env) conn _ deckId = do
 
     liftIO $ print queueUrl
 
-    res <- runAWS env $ Aws.send $ SQS.sendMessage queueUrl $
+    res <- runAWS env $ AWS.send $ SQS.sendMessage queueUrl $
       T.decodeUtf8 $ BL.toStrict $ Aeson.encode deckId
 
     case res of
@@ -822,16 +821,13 @@ decksPostPublish (fixupEnv -> env) conn _ deckId = do
               liftIO $ putStrLn "No username"
               Servant.throwError Servant.err500
             Just uname ->
-              pure $ PresResponse $ "https://" <> T.pack presUrl <> "/" <> presentationPrefix uname dname
+              pure $ PresResponse $
+                "https://" <>
+                T.pack presUrl <>
+                "/" <>
+                presentationPrefix uname dname
 
-fixupEnv :: Aws.Env -> Aws.Env
-fixupEnv = Aws.configure $ SQS.sqs
-  { Aws._svcEndpoint = \reg -> do
-      let new = "sqs." <> Data.toText reg <> ".amazonaws.com"
-      (Aws._svcEndpoint SQS.sqs reg) & Aws.endpointHost .~ T.encodeUtf8 new
-  }
-
-decksPost :: Aws.Env -> Firebase.UserId -> Deck -> Servant.Handler (Item DeckId Deck)
+decksPost :: AWS.Env -> Firebase.UserId -> Deck -> Servant.Handler (Item DeckId Deck)
 decksPost env fuid deck = do
 
     let ownerId = deckOwnerId deck
@@ -843,7 +839,7 @@ decksPost env fuid deck = do
 
     deckId <- liftIO $ DeckId <$> newId
 
-    res <- runAWS env $ Aws.send $ DynamoDB.putItem "Decks" &
+    res <- runAWS env $ AWS.send $ DynamoDB.putItem "Decks" &
         DynamoDB.piItem .~ deckToItem deckId deck
 
     case res of
@@ -854,7 +850,7 @@ decksPost env fuid deck = do
 
     pure $ Item deckId deck
 
-decksPut :: Aws.Env -> Firebase.UserId -> DeckId -> Deck -> Servant.Handler (Item DeckId Deck)
+decksPut :: AWS.Env -> Firebase.UserId -> DeckId -> Deck -> Servant.Handler (Item DeckId Deck)
 decksPut env fuid deckId deck = do
 
     getDeck env deckId >>= \case
@@ -868,7 +864,7 @@ decksPut env fuid deckId deck = do
             [ "Deck was PUTed", show deck, "but requester is not the owner", show fuid ]
           Servant.throwError Servant.err404
 
-    res <- runAWS env $ Aws.send $ DynamoDB.updateItem "Decks" &
+    res <- runAWS env $ AWS.send $ DynamoDB.updateItem "Decks" &
         DynamoDB.uiUpdateExpression .~ Just
           (dynamoSet $
             (if isJust (deckDeckbackground deck)
@@ -892,7 +888,7 @@ decksPut env fuid deckId deck = do
 
     pure $ Item deckId deck
 
-decksDelete :: Aws.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
+decksDelete :: AWS.Env -> Firebase.UserId -> DeckId -> Servant.Handler ()
 decksDelete env fuid deckId = do
 
     getDeck env deckId >>= \case
@@ -906,7 +902,7 @@ decksDelete env fuid deckId = do
             [ "Deck was DELETEd", show deckId, "but requester is not the owner", show fuid ]
           Servant.throwError Servant.err404
 
-    res <- runAWS env $ Aws.send $ DynamoDB.deleteItem "Decks" &
+    res <- runAWS env $ AWS.send $ DynamoDB.deleteItem "Decks" &
         DynamoDB.diKey .~ HMS.singleton "DeckId"
           (deckIdToAttributeValue deckId)
 
@@ -921,10 +917,10 @@ decksDelete env fuid deckId = do
 -- If the deck is not found, returns Nothing
 -- If the deck can't be parsed, throws a 500.
 -- If the response status is not 200, throws a 500.
-getDeck :: Aws.Env -> DeckId -> Servant.Handler (Maybe Deck)
+getDeck :: AWS.Env -> DeckId -> Servant.Handler (Maybe Deck)
 getDeck env deckId = do
 
-    res <- runAWS env $ Aws.send $ DynamoDB.getItem "Decks" &
+    res <- runAWS env $ AWS.send $ DynamoDB.getItem "Decks" &
         DynamoDB.giKey .~ HMS.singleton "DeckId" (deckIdToAttributeValue deckId)
 
     mItem <- case res of
@@ -997,7 +993,7 @@ slidesPutStatement = Statement sql encoder decoder True
     decoder = HD.unit
 
 slidesGetSlideId
-  :: Aws.Env
+  :: AWS.Env
   -> HC.Connection
   -> Firebase.UserId
   -> DeckId
@@ -1067,7 +1063,7 @@ slidesDeleteStatement = Statement sql encoder decoder True
     decoder = HD.unit
 
 slidesPost
-  :: Aws.Env
+  :: AWS.Env
   -> HC.Connection
   -> Firebase.UserId
   -> DeckId
@@ -1096,7 +1092,7 @@ slidesPost env conn fuid deckId slide = do
     pure $ Item slideId slide
 
 slidesPut
-  :: Aws.Env
+  :: AWS.Env
   -> HC.Connection
   -> Firebase.UserId
   -> DeckId
@@ -1130,7 +1126,7 @@ slidesPut env conn fuid deckId slideId slide = do
 
     pure $ Item slideId slide
 
-slidesDelete :: Aws.Env -> HC.Connection -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler ()
+slidesDelete :: AWS.Env -> HC.Connection -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler ()
 slidesDelete env conn fuid deckId slideId = do
 
     getDeck env deckId >>= \case
@@ -1427,6 +1423,11 @@ migrate = do
           | v == maxBound -> pure ()
           | v > maxBound -> error "V greater than maxbound"
           | v < maxBound -> migrateFrom (succ v)
+          | True -> error $ unwords
+              [ "impossible:"
+              , "version must be equal to,"
+              , "greater than or smaller than maxBound."
+              ]
 
 getDbInterface :: HC.Connection -> IO DbInterface
 getDbInterface conn = do
@@ -1456,13 +1457,13 @@ getDbInterface conn = do
 
 -- AUX
 
-runAWS :: MonadIO m => Aws.Env -> Aws.AWS a -> m (Either SomeException a)
+runAWS :: MonadIO m => AWS.Env -> AWS.AWS a -> m (Either SomeException a)
 runAWS env =
     liftIO .
     tryAny .
-    Aws.runResourceT .
-    Aws.runAWS env .
-    Aws.within Aws.NorthVirginia
+    AWS.runResourceT .
+    AWS.runAWS env .
+    AWS.within AWS.NorthVirginia
 
 randomString :: Int -> [Char] -> IO String
 randomString len allowedChars =
@@ -1495,6 +1496,7 @@ dynamoSet exprs = T.unwords exprs'
     f (Set l r) (ls, rs) = (ls <> [l <> " = " <> r], rs)
     f (Remove t ) (ls, rs) = (ls, rs <> [t])
 
+-- TODO: what happens when the deckname is "-" ?
 presentationPrefix :: Username -> Deckname -> T.Text
 presentationPrefix uname dname =
     unUsername uname <> "/" <>  sanitizeDeckname dname <> "/"
@@ -1510,4 +1512,3 @@ sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
         c | isAscii c && isAlphaNum c -> T.singleton c
           | c == ' ' -> T.singleton '-'
           | otherwise -> ""
-

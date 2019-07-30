@@ -58,6 +58,21 @@ rec
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist.tar
       '';
 
+  function-dirty-path =
+    { path = builtins.seq
+        (builtins.readDir function-dirty) "${function-dirty}/function.zip";
+    } ;
+
+  function-dirty =
+    pkgs.runCommand "build-lambda-dirty" {}
+      ''
+        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        # Can't be called 'main' otherwise lambda tries to load it
+        cp "${handler}/bin/dirty" main_hs
+        mkdir -p $out
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
+      '';
+
   deckdeckgo-starter-dist =
     with
       { napalm = import pkgs.sources.napalm { inherit pkgs;} ; };
@@ -159,11 +174,12 @@ rec
          }
 
          function repl_handler() {
+            shopt -s globstar
             AWS_DEFAULT_REGION=us-east-1 \
               AWS_ACCESS_KEY_ID=dummy \
               AWS_SECRET_ACCESS_KEY=dummy_key \
               DECKGO_STARTER_DIST=${deckdeckgo-starter-dist}/dist.tar \
-              ghci -Wall handler/app/Test.hs handler/src/DeckGo/*.hs
+              ghci -Wall handler/app/Test.hs handler/src/**/*.hs
          }
 
          function repl_unsplash() {

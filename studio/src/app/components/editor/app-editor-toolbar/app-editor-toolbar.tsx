@@ -522,7 +522,11 @@ export class AppEditorToolbar {
     }
 
     @Listen('colorDidChange', {target: 'document'})
-    async onColorDidChange(_element: HTMLElement) {
+    async onColorDidChange($event: CustomEvent) {
+        if ($event) {
+            this.applyToAllDeck = $event.detail;
+        }
+
         await this.emitChange();
     }
 

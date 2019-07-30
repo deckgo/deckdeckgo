@@ -1,3 +1,34 @@
+<a name="1.0.0-beta.52-2"></a>
+# [1.0.0-beta.52-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.52-1...v1.0.0-beta.52-2) (2019-07-30)
+
+### Applications
+
+* docs: v1.0.0-alpha.22-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
+### Web Components
+
+* highlight-code: v1.0.0-alpha.17-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+
+<a name="1.0.0-beta.52-1"></a>
+# [1.0.0-beta.52-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.52...v1.0.0-beta.52-1) (2019-07-30)
+
+### Web Components
+
+* highlight-code: v1.0.0-alpha.17-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+
+<a name="1.0.0-beta.52"></a>
+# [1.0.0-beta.52](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.51-2...v1.0.0-beta.52) (2019-07-30)
+
+### Applications
+
+* docs: v1.0.0-alpha.22 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
+### Web Components
+
+* core: v1.0.0-beta.44 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+* highlight-code: v1.0.0-alpha.17 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+* inline-editor: v1.0.0-alpha.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+
 <a name="1.0.0-beta.51-2"></a>
 # [1.0.0-beta.51-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.51-1...v1.0.0-beta.51-2) (2019-07-19)
 

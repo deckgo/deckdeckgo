@@ -67,7 +67,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
   }
 
   private createIFrame(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (!this.src) {
         resolve();
         return;
@@ -95,7 +95,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
       element.setAttributeNode(allow);
       element.setAttributeNode(allowFullScreen);
 
-      element.src = this.formatSrc();
+      element.src = await this.formatSrc();
       element.width = '' + this.width;
       element.height = '' + this.height;
       element.frameBorder = '0';
@@ -114,17 +114,44 @@ export class DeckdeckgoYoutube implements DeckdeckgoExtra {
     });
   }
 
-  private formatSrc(): string {
-    // Direct URL can't be embedded, like https://www.youtube.com/watch?v=oUOjJIfPIjw
-    const url: URL = new URL(this.src);
-    const videoId: string = url.searchParams.get('v');
-    if (videoId) {
-      // In such a case return a link which could be embedded
-      return 'https://www.youtube.com/embed/' + videoId + '?enablejsapi=1';
-    } else {
-      // Otherwise we try the provided url
-      return this.src;
-    }
+  private formatSrc(): Promise<string> {
+    return new Promise<string>(async (resolve) => {
+      // Direct URL can't be embedded, like https://www.youtube.com/watch?v=oUOjJIfPIjw or https://youtu.be/e63Cgln6Yag
+      const videoId: string = await this.findVideoId();
+
+      if (videoId) {
+        // In such a case return a link which could be embedded
+        resolve('https://www.youtube.com/embed/' + videoId + '?enablejsapi=1');
+      } else {
+        // Otherwise we try the provided url
+        resolve(this.src);
+      }
+    });
+  }
+
+  private findVideoId(): Promise<string> {
+    return new Promise<string>((resolve) => {
+      const url: URL = new URL(this.src);
+      let videoId: string = url.searchParams.get('v');
+
+      if (!videoId) {
+        const host: string = url.host;
+        if (host === 'youtu.be') {
+          // For shortened url
+          const pathname: string = url.pathname;
+
+          if (pathname) {
+            const split: string[] = url.pathname.split('/');
+
+            if (split && split.length >= 2) {
+              videoId = url.pathname.split('/')[1];
+            }
+          }
+        }
+      }
+
+      resolve(videoId);
+    });
   }
 
   @Method()

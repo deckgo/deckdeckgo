@@ -86,7 +86,7 @@ export class EditorHelper {
         return new Promise<any>(async (resolve) => {
             try {
                 const slide: Slide = await this.slideService.get(deckId, slideId);
-                const element: any = await ParseSlidesUtils.parseSlide(slide);
+                const element: any = await ParseSlidesUtils.parseSlide(slide, true);
 
                 resolve(element);
             } catch (err) {

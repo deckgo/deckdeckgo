@@ -230,7 +230,7 @@ export class AppEditor {
                     this.style = undefined;
                 }
 
-                this.background = await ParseBackgroundUtils.convertBackground(deck.data.background);
+                this.background = await ParseBackgroundUtils.convertBackground(deck.data.background, true);
 
                 resolve();
             });

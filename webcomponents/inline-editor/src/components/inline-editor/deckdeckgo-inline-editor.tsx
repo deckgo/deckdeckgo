@@ -166,6 +166,8 @@ export class DeckdeckgoInlineEditor {
 
   private mousedown = async ($event: MouseEvent) => {
     if (this.toolsActivated) {
+      await this.resetImageToolbarActions($event);
+
       return;
     }
 
@@ -176,6 +178,8 @@ export class DeckdeckgoInlineEditor {
 
   private touchstart = async ($event: TouchEvent) => {
     if (this.toolsActivated) {
+      await this.resetImageToolbarActions($event);
+
       return;
     }
 
@@ -183,6 +187,25 @@ export class DeckdeckgoInlineEditor {
 
     await this.displayImageActions($event);
   };
+
+  private resetImageToolbarActions($event: MouseEvent | TouchEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (this.toolbarActions !== ToolbarActions.IMAGE) {
+        resolve();
+        return;
+      }
+
+      if ($event && $event.target && ($event.target instanceof HTMLElement)) {
+        const target: HTMLElement = $event.target as HTMLElement;
+
+        if (target && target.nodeName && target.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
+          await this.reset(false);
+        }
+      }
+
+      resolve();
+    });
+  }
 
   private displayImageActions($event: MouseEvent | TouchEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {

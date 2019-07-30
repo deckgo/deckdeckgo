@@ -73,6 +73,7 @@ The `<deckgo-highlight-code/>` expose the following properties:
 | `hideAnchor` | `hide-anchor` | Set this attribute to `false` in case you would like to actually display the anchor value too            | `boolean` | `true`                |
 | `language`   | `language`    |  Define the language to be used for the syntax highlighting. The list of [supported languages](https://prismjs.com/#languages-list) is defined by [Prism.js](https://prismjs.com/#languages-list)            | `string`  | `'javascript'`        |
 | `highlightLines` | `highlight-lines` | If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with space. For example: "3,5 8,9 13,13 14,17" | `string`  |            |
+| `lineNumbers`    | `line-numbers`    | Display the number of the lines of code | `boolean` | `false`               |
 | `editable` | `editable` | In case you would like to set the code component as being editable. | `boolean` | `false`                | 
 
 ### Styling
@@ -91,6 +92,7 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 | --deckgo-highlight-code-font-size |  | The size of the font for the code |
 | --deckgo-highlight-code-font-family | monospace | The family of the font for the code |
 | --deckgo-highlight-code-line-background | #3880ff | The background of the lines you wish to highlight |
+| --deckgo-highlight-code-line-numbers | #999999  | The color of the line numbers and divider |
 | --deckgo-highlight-code-line-padding |  | A padding for each lines you wish to highlight |
 | --deckgo-highlight-code-line-border-top |  | The border-top property of the lines you wish to highlight |
 | --deckgo-highlight-code-direction | ltr | The direction of the displayed code |

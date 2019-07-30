@@ -2,9 +2,10 @@
 {-# LANGUAGE LambdaCase #-}
 
 import Control.Monad
+import Control.Lens
 import Data.Aeson ((.:))
 import DeckGo.Handler
-import DeckGo.Presenter
+import Data.Time.Clock (getCurrentTime)
 import System.Environment (getEnv)
 import UnliftIO
 import qualified Data.Aeson as Aeson
@@ -17,8 +18,8 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-import qualified Hasql.Connection as Hasql
 import qualified Network.AWS.Extended as AWS
+import qualified Network.AWS.CloudFront as CloudFront
 import qualified Network.Wai.Handler.Lambda as Lambda
 
 main :: IO ()
@@ -36,15 +37,30 @@ main = do
       line <- BS8.getLine
       putStrLn $ "Got line!: " <> show line
       case decodeInput parseSQSRequest line of
-        Right (fp, deckIds) -> do
+        Right (fp, presPrefixes) -> do
           putStrLn $ "Got input!"
-          putStrLn $ "deck ids: " <> concatMap (T.unpack . unDeckId) deckIds
-          when (length deckIds /= 1) $
-            putStrLn $ "Warning: got " <> show (length deckIds) <> "deck IDs"
-          conn <- getPostgresqlConnection
-          forM_ deckIds (deployDeck env conn)
+          putStrLn $
+            "presentation prefixes: " <> concatMap T.unpack presPrefixes
+          when (length presPrefixes /= 1) $
+            putStrLn $
+              "Warning: got " <> show (length presPrefixes) <> "deck IDs"
+          forM_ presPrefixes (dirtyPres env)
           Lambda.writeFileAtomic fp (BL.toStrict $ Aeson.encode ())
         Left e -> error $ show e
+
+dirtyPres :: AWS.Env -> T.Text -> IO ()
+dirtyPres env presPrefix = do
+    res <- timeout (5*1000*1000) dirty
+    print res
+  where
+    dirty = do
+      now <- getCurrentTime
+      distributionId <- T.pack <$> getEnv "CLOUDFRONT_DISTRIBUTION_ID"
+      runAWS env $ AWS.send $ CloudFront.createInvalidation
+        distributionId $
+        CloudFront.invalidationBatch
+          (CloudFront.paths 1 & CloudFront.pItems .~ [ "/" <> presPrefix <> "*" ])
+          (tshow now)
 
 decodeInput
   :: (Aeson.Value -> Aeson.Parser a)
@@ -57,29 +73,11 @@ decodeInput parseEvent =
           obj .: "responseFile" <*>
           (obj .: "request" >>= parseEvent)
 
-parseSQSRequest :: Aeson.Value -> Aeson.Parser [DeckId]
+parseSQSRequest :: Aeson.Value -> Aeson.Parser [T.Text]
 parseSQSRequest = Aeson.withObject "request" $ \o -> do
     records <- o .: "Records"
     forM records $ Aeson.withObject "record" $ \o' -> do
       jsonEncodedBody <- o' .: "body"
       case  Aeson.decodeStrict (T.encodeUtf8 jsonEncodedBody) of
         Nothing -> mzero
-        Just deckId -> pure deckId
-
-getPostgresqlConnection :: IO Hasql.Connection
-getPostgresqlConnection = do
-    user <- getEnv "PGUSER"
-    password <- getEnv "PGPASSWORD"
-    host <- getEnv "PGHOST"
-    db <- getEnv "PGDATABASE"
-    port <- getEnv "PGPORT"
-    Hasql.acquire (
-      Hasql.settings
-        (BS8.pack host)
-        (read port)
-        (BS8.pack user)
-        (BS8.pack password)
-        (BS8.pack db)
-      ) >>= \case
-        Left e -> error (show e)
-        Right c -> pure c
+        Just path -> pure path

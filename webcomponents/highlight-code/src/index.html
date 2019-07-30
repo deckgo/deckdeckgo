@@ -13,7 +13,7 @@
 
 <h1>Editable:</h1>
 
-<deckgo-highlight-code language="java" editable="true" highlight-lines="0,2 6,6">
+<deckgo-highlight-code language="java" editable="true" highlight-lines="0,2 6,6" line-numbers="true">
   <code slot="code">interface NumericTest {
     boolean computeTest(int n);
     }
@@ -30,6 +30,17 @@
     }</code>
 </deckgo-highlight-code>
 
+<script type="text/javascript">
+    function toggleLineNumbers() {
+        const elem = document.getElementsByTagName('deckgo-highlight-code');
+        if (elem && elem.length > 0) {
+            elem[0].lineNumbers = !elem[0].lineNumbers;
+        }
+    }
+</script>
+
+<button onclick="toggleLineNumbers()">Toggle line numbers</button>
+
 <h1>Editable empty:</h1>
 
 <deckgo-highlight-code language="java" editable="true">
@@ -38,18 +49,31 @@
 
 <h1>From src:</h1>
 
-<deckgo-highlight-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx">
+<script type="text/javascript">
+    function toggleSrcLineNumbers() {
+        const elem = document.getElementById('deckGoCode');
+        if (elem) {
+            elem.lineNumbers = !elem.lineNumbers;
+        }
+    }
+</script>
+
+<button onclick="toggleSrcLineNumbers()" style="margin-bottom: 16px;">Toggle fetched line numbers</button>
+
+<deckgo-highlight-code line-numbers="true" id="deckGoCode"
+                       src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx">
 </deckgo-highlight-code>
 
 <h1>Typescript</h1>
 
-<deckgo-highlight-code language="typescript" highlight-lines="1,1" style="--deckgo-highlight-code-line-background: lightgrey;">
+<deckgo-highlight-code language="typescript" highlight-lines="1,1" line-numbers="true"
+                       style="--deckgo-highlight-code-line-background: lightgrey;">
   <code slot="code">@Method()
-isMobile(): Promise&lt;boolean> {
-  return new Promise&lt;boolean>((resolve) => {
+    isMobile(): Promise&lt;boolean> {
+    return new Promise&lt;boolean>((resolve) => {
     resolve(DeckdeckgoUtils.isMobile());
-  });
-}</code>
+    });
+    }</code>
 </deckgo-highlight-code>
 
 <h1>Plain code and java language:</h1>
@@ -71,7 +95,7 @@ isMobile(): Promise&lt;boolean> {
     }</code>
 </deckgo-highlight-code>
 
-<deckgo-highlight-code language="bash">
+<deckgo-highlight-code language="bash" line-numbers="true">
   <code slot="code">npm init deckdeckgo</code>
 </deckgo-highlight-code>
 
@@ -79,7 +103,8 @@ isMobile(): Promise&lt;boolean> {
   <code slot="code">Cool, let's kick start a new DeckDeckGo presentation
 
     ? What's your project name (will be use to create a new folder)? (deckdeckgo)
-    ? What's your presentation name (max. 45 characters, will be use for meta tags and manifest information)? (DeckDeckGo)
+    ? What's your presentation name (max. 45 characters, will be use for meta tags and manifest information)?
+    (DeckDeckGo)
     ? What's your presentation about (its description)? (Create a lightweight presentation using Web Components 🚀)
     ? What's your name (will be use for the author meta information)? (David)
     ? What method do you want to use to edit your presentation? (Use arrow keys)
@@ -87,5 +112,22 @@ isMobile(): Promise&lt;boolean> {
     Markdown</code>
 </deckgo-highlight-code>
 
+<h1>Without line numbers</h1>
+<deckgo-highlight-code language="java" highlight-lines="0,2 6,6">
+  <code slot="code">interface NumericTest {
+    boolean computeTest(int n);
+    }
+
+    public static void main(String args[]) {
+    NumericTest isEven = (n) -> (n % 2) == 0;
+    NumericTest isNegative = (n) -> (n < 0);
+
+    // Output: false
+    System.out.println(isEven.computeTest(5));
+
+    // Output: true
+    System.out.println(isNegative.computeTest(-5));
+    }</code>
+</deckgo-highlight-code>
 </body>
 </html>

@@ -20,6 +20,7 @@ export namespace Components {
     'hideAnchor': boolean;
     'highlightLines': string;
     'language': string;
+    'lineNumbers': boolean;
     'load': () => Promise<void>;
     'src': string;
     'zoomCode': (zoom: boolean) => Promise<void>;
@@ -47,6 +48,7 @@ declare namespace LocalJSX {
     'hideAnchor'?: boolean;
     'highlightLines'?: string;
     'language'?: string;
+    'lineNumbers'?: boolean;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onPrismLanguageLoaded'?: (event: CustomEvent<string>) => void;
     'src'?: string;

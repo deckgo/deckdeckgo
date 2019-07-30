@@ -10,6 +10,7 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot = true
 }
 
+# TODO: terraform-provider-secret
 data "external" "postgres-password" {
   program = [
     "${path.module}/script/postgres-password",

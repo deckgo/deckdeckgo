@@ -1,7 +1,12 @@
 app-user-menu {
 
-  ion-list {
-    border-top: 1px solid var(--ion-color-light);
+  ion-grid {
+    margin-top: 12px;
+  }
+
+  hr {
+    background: var(--ion-color-light);
+    width: 80%;
   }
 
   ion-list.list-ios {
@@ -12,16 +17,20 @@ app-user-menu {
 
   ion-item {
     --border-color: transparent;
+    cursor: pointer;
+    --min-height: 36px;
 
     ion-router-link {
-      cursor: pointer;
       color: inherit;
       font-weight: inherit;
 
       &:hover, &.active {
-        color: var(--ion-color-primary);
         border-bottom: 1px solid transparent;
       }
+    }
+
+    &:hover, &.active {
+      color: var(--ion-color-primary);
     }
   }
 }

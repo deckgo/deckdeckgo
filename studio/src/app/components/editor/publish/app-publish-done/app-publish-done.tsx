@@ -29,7 +29,7 @@ export class AppPublishDone {
         this.gifService = GifService.getInstance();
     }
 
-    async componentDidLoad() {
+    async componentWillLoad() {
         await this.initRandomGifUrl();
     }
 
@@ -63,9 +63,9 @@ export class AppPublishDone {
     }
 
     private renderGif() {
-        if (this.gif && this.gif.media && this.gif.media.length > 0 && this.gif.media[0].tinygif && this.gif.media[0].tinygif.url) {
-            return <deckgo-lazy-img imgSrc={this.gif.media[0].tinygif.url}
-                                    imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].tinygif.url}></deckgo-lazy-img>
+        if (this.gif && this.gif.media && this.gif.media.length > 0 && this.gif.media[0].nanogif && this.gif.media[0].nanogif.url) {
+            return <deckgo-lazy-img imgSrc={this.gif.media[0].nanogif.url}
+                                    imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].nanogif.url}></deckgo-lazy-img>
         } else {
             return undefined;
         }

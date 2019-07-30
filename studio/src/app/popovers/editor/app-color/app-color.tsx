@@ -20,7 +20,7 @@ export class AppColor {
     @Prop()
     selectedElement: HTMLElement;
 
-    @Event() colorDidChange: EventEmitter<HTMLElement>;
+    @Event() colorDidChange: EventEmitter<boolean>;
 
     private applyToAllDeck: boolean = false;
 
@@ -96,7 +96,7 @@ export class AppColor {
             this.selectedElement.style.color = $event.target.value;
         }
 
-        await this.colorDidChange.emit(this.selectedElement);
+        this.colorDidChange.emit(this.applyToAllDeck);
     };
 
     // Background
@@ -161,7 +161,7 @@ export class AppColor {
             this.selectedElement.style.background = $event.target.value;
         }
 
-        await this.colorDidChange.emit(this.selectedElement);
+        this.colorDidChange.emit(this.applyToAllDeck);
     };
 
     render() {

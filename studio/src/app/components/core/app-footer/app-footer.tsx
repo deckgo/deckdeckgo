@@ -28,6 +28,10 @@ export class AppFooter {
                     <ion-label>Contact</ion-label>
                 </ion-router-link>
 
+                <ion-router-link href="/faq" routerDirection="forward">
+                    <ion-label>FAQ</ion-label>
+                </ion-router-link>
+
                 <ion-label class="ion-padding-top">Developers</ion-label>
 
                 <ion-router-link href="/opensource" routerDirection="forward">

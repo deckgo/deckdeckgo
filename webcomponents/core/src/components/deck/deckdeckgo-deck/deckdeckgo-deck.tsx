@@ -118,9 +118,9 @@ export class DeckdeckgoDeck {
       }
 
       if (DeckDeckGoUtils.isIOS()) {
-        slider.style.setProperty('--slide-width', '' + screen.width + 'px');
+        slider.style.setProperty('--slide-width', `${screen.width > window.innerWidth ? screen.width : window.innerWidth}px`);
       } else {
-        slider.style.setProperty('--slide-width', '' + window.innerWidth + 'px');
+        slider.style.setProperty('--slide-width', `${window.innerWidth}px`);
       }
 
       resolve();

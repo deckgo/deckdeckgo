@@ -55,19 +55,6 @@ EOF
 
 }
 
-#resource "aws_lambda_event_source_mapping" "google_key_updater" {
-#event_source_arn = "${aws_sqs_queue.presentation_deploy.arn}"
-#enabled          = true
-#function_name    = "${aws_lambda_function.presenter.function_name}"
-#batch_size       = 1
-#}
-
-# TODO: needed as well, but later on, when we actually hit PG
-#resource "aws_iam_role_policy_attachment" "role_attach_lambdavpc" {
-#role = "${aws_iam_role.iam_for_lambda.name}"
-#policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
-#}
-
 # XXX: looks like Lambda needs to be redeploy for the policy to take effect
 # TODO: auto redeploy on policy change
 data "aws_iam_policy_document" "policy_for_lambda_google_key_updater" {
@@ -93,15 +80,6 @@ data "aws_iam_policy_document" "policy_for_lambda_google_key_updater" {
 
     resources = ["*"]
   }
-
-  # TODO
-  #statement {
-  #actions = [
-  #"s3:ListBucket",
-  #]
-
-  #resources = [ "${aws_s3_bucket.presentations.arn}" ]
-  #}
 
   statement {
     actions = [
