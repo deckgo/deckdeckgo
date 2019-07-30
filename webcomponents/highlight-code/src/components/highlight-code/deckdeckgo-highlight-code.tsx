@@ -250,7 +250,6 @@ export class DeckdeckgoHighlightCode {
       if (this.highlightLines && this.highlightLines.length > 0) {
 
         const rows: number[] = await this.findRowsToHighlight();
-
         if (rows && rows.length > 0) {
           const containerCode: HTMLElement = this.el.shadowRoot.querySelector('code');
 

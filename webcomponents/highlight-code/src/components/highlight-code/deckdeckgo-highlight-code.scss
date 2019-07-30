@@ -39,7 +39,7 @@ div.deckgo-highlight-code-container {
   text-align: var(--deckgo-highlight-code-text-align, start);
 
   code {
-    overflow-y: var(--deckgo-highlight-code-scroll, scroll);;
+    overflow-y: var(--deckgo-highlight-code-scroll, scroll);
 
     white-space: pre-wrap;
 
@@ -54,7 +54,7 @@ div.deckgo-highlight-code-container {
       counter-increment: linenumber;
       position: relative;
       padding-left: 3.5em;
-
+      
       &:before {
         content: counter(linenumber);
         min-height: 1rem;
@@ -62,6 +62,7 @@ div.deckgo-highlight-code-container {
         position: absolute;
         left: 0;
         width: 2.5em;
+        background: var(--deckgo-highlight-code-background, white);
         border-right: 1px solid var(--deckgo-highlight-code-line-number, #999);
         color: var(--deckgo-highlight-code-line-divider, #999);
         }
@@ -75,9 +76,8 @@ div.deckgo-highlight-code-container {
       visibility: hidden;
     }
 
-    span.deckgo-highlight-code-line {
+    .deckgo-highlight-code-line {
       background: var(--deckgo-highlight-code-line-background, #3880ff);
-      padding: var(--deckgo-highlight-code-line-padding);
       border-top: var(--deckgo-highlight-code-line-border-top);
       border-bottom: var(--deckgo-highlight-code-line-border-bottom);
     }
@@ -147,25 +147,3 @@ div.deckgo-highlight-code-container {
     }
   }
 }
-
-// code { 
-//   counter-reset: linenumber;
-//   white-space: pre-wrap;
-
-// & > div {
-//   counter-increment: linenumber;
-//   position: relative;
-//   padding-left: 3.5em;
-
-//   &:before {
-//     content: counter(linenumber);
-//     min-height: 1rem;
-//     display: inline-block;
-//     position: absolute;
-//     left: 0;
-//     width: 2.5em;
-//     border-right: 1px solid #999;
-//     color: #999;
-//     }
-//   }
-// }
