@@ -73,6 +73,7 @@ The `<deckgo-highlight-code/>` expose the following properties:
 | `hideAnchor` | `hide-anchor` | Set this attribute to `false` in case you would like to actually display the anchor value too            | `boolean` | `true`                |
 | `language`   | `language`    |  Define the language to be used for the syntax highlighting. The list of [supported languages](https://prismjs.com/#languages-list) is defined by [Prism.js](https://prismjs.com/#languages-list)            | `string`  | `'javascript'`        |
 | `highlightLines` | `highlight-lines` | If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with space. For example: "3,5 8,9 13,13 14,17" | `string`  |            |
+| `lineNumbers`    | `line-numbers`    | Display the number of the lines of code | `boolean` | `false`               |
 | `editable` | `editable` | In case you would like to set the code component as being editable. | `boolean` | `false`                | 
 
 ### Styling
