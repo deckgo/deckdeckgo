@@ -57,12 +57,13 @@ div.deckgo-highlight-code-container {
 
       &:before {
         content: counter(linenumber);
-        min-height: 1rem;
         display: inline-block;
         position: absolute;
+        top: 0;
+        bottom: 0;
         left: 0;
         width: 2.5em;
-        background: var(--deckgo-highlight-code-background, white);
+        background: inherit;
         border-right: 1px solid var(--deckgo-highlight-code-line-numbers, #999);
         color: var(--deckgo-highlight-code-line-numbers, #999);
       }
