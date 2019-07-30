@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.17"></a>
+# 1.0.0-alpha.17 (2019-07-30)
+
+### Features
+
+* display optional line numbers [#115](https://github.com/deckgo/deckdeckgo/issues/115)
+
 <a name="1.0.0-alpha.16"></a>
 # 1.0.0-alpha.16 (2019-06-04)
 
