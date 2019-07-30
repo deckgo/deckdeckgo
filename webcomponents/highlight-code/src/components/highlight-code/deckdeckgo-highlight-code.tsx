@@ -174,12 +174,14 @@ export class DeckdeckgoHighlightCode {
 
   private parseCode(code: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-highlight-code-container');
 
       if (container) {
         try {
           if (this.lineNumbers) {
+            // clear the container first 
+            container.children[0].innerHTML = '';
+            
             // split the code on linebreaks
             const regEx = RegExp(/\n(?!$)/g); // 
             const match = code.split(regEx);
