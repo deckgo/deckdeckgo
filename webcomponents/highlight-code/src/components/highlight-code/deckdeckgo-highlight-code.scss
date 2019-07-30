@@ -54,7 +54,7 @@ div.deckgo-highlight-code-container {
       counter-increment: linenumber;
       position: relative;
       padding-left: 3.5em;
-      
+
       &:before {
         content: counter(linenumber);
         min-height: 1rem;
@@ -63,9 +63,9 @@ div.deckgo-highlight-code-container {
         left: 0;
         width: 2.5em;
         background: var(--deckgo-highlight-code-background, white);
-        border-right: 1px solid var(--deckgo-highlight-code-line-number, #999);
-        color: var(--deckgo-highlight-code-line-divider, #999);
-        }
+        border-right: 1px solid var(--deckgo-highlight-code-line-numbers, #999);
+        color: var(--deckgo-highlight-code-line-numbers, #999);
+      }
     }
 
     div:empty {
