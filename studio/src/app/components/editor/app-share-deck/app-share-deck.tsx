@@ -136,11 +136,11 @@ export class AppShareDeck {
 
     render() {
         return <web-social-share show={false}>
-            <ion-icon name="logo-twitter" slot="twitter" style={{color: "#00aced", width: "1.4rem", height: "1.4rem"}}></ion-icon>
-            <ion-icon name="logo-linkedin" slot="linkedin" style={{color: "#0077b5", width: "1.4rem", height: "1.4rem"}}></ion-icon>
-            <ion-icon name="mail" slot="email" style={{color: "var(--ion-color-tertiary)", width: "1.4rem", height: "1.4rem"}}></ion-icon>
-            <ion-icon name="logo-whatsapp" slot="whatsapp" style={{color: "#25D366", width: "1.4rem", height: "1.4rem"}}></ion-icon>
-            <ion-icon name="copy" slot="copy" style={{width: "1.4rem", height: "1.4rem"}}></ion-icon>
+            <ion-icon name="logo-twitter" slot="twitter" style={{color: "#00aced", "font-size": "1.6rem", "display": "block"}}></ion-icon>
+            <ion-icon name="logo-linkedin" slot="linkedin" style={{color: "#0077b5", "font-size": "1.6rem", "display": "block"}}></ion-icon>
+            <ion-icon name="mail" slot="email" style={{color: "var(--ion-color-tertiary)", "font-size": "1.6rem", "display": "block"}}></ion-icon>
+            <ion-icon name="logo-whatsapp" slot="whatsapp" style={{color: "#25D366", "font-size": "1.6rem", "display": "block"}}></ion-icon>
+            <ion-icon name="copy" slot="copy" style={{"font-size": "1.6rem", "display": "block"}}></ion-icon>
         </web-social-share>
     }
 
