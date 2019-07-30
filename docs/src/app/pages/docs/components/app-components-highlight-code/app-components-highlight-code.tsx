@@ -205,14 +205,9 @@ export class AppComponentsHighlightCode {
 <td>The background of the lines you wish to highlight</td>
 </tr>
 <tr>
-<td>--deckgo-highlight-code-line-divider</td>
+<td>--deckgo-highlight-code-line-numbers</td>
 <td>#999999</td>
-<td>The color of the line numbers</td>
-</tr>
-<tr>
-<td>--deckgo-highlight-code-line-number</td>
-<td>#999999</td>
-<td>The color of the divider between line numbers and code</td>
+<td>The color of the line numbers and divider</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-line-padding</td>
