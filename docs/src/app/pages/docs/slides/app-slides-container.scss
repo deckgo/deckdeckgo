@@ -41,5 +41,11 @@ div.container {
     --slide-author-padding-end: 4px;
     --slide-author-padding-start: 4px;
     --slide-author-padding-bottom: 4px;
+
+    *[slot] {
+      border: 1px solid var(--ion-color-primary);
+      border-radius: 2px;
+      width: 100%;
+    }
   }
 }
