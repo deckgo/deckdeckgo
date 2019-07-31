@@ -46,18 +46,22 @@ div.container {
       border-radius: 2px;
       width: 100%;
       padding: 8px;
+    }
+
+    h1[slot], div[slot="author"] {
+      border: 1px dashed var(--ion-color-primary);
 
       @media (prefers-color-scheme: dark) {
         border: 1px dashed var(--ion-color-light);
       }
     }
 
-    h1[slot], div[slot="author"] {
-      border: 1px dashed var(--ion-color-primary);
-    }
-
     h2[slot], p[slot] {
       border: 1px dashed var(--ion-color-tertiary);
+
+      @media (prefers-color-scheme: dark) {
+        border: 1px dashed var(--ion-color-secondary);
+      }
     }
 
     deckgo-slide-split {
