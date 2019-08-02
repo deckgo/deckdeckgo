@@ -109,19 +109,19 @@ export class AppImage {
 
                 <ion-item class="ion-margin-top action-button">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_PHOTOS)} color="primary">
-                        <ion-label class="ion-text-uppercase">Add a stock photo</ion-label>
+                        <ion-label class="ion-text-uppercase">Stock photo</ion-label>
                     </ion-button>
                 </ion-item>
 
                 <ion-item class="action-button">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_GIFS)} color="secondary">
-                        <ion-label class="ion-text-uppercase">Add a gif</ion-label>
+                        <ion-label class="ion-text-uppercase">Gif</ion-label>
                     </ion-button>
                 </ion-item>
 
                 <ion-item class="action-button">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_CUSTOM)} color="tertiary">
-                        <ion-label class="ion-text-uppercase">Add one of your images</ion-label>
+                        <ion-label class="ion-text-uppercase">Your images</ion-label>
                     </ion-button>
                 </ion-item>
 

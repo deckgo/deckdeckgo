@@ -221,7 +221,7 @@ export class AppCustomImages {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Add one of your images</ion-title>
+                    <ion-title class="ion-text-uppercase">Your images</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">

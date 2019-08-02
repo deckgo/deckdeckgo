@@ -213,7 +213,7 @@ export class AppGif {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Add a Gif</ion-title>
+                    <ion-title class="ion-text-uppercase">Gif</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
