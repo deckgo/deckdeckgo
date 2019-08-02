@@ -739,8 +739,8 @@ export class AppEditorToolbar {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderSlotType()}
-                {this.renderPhotos()}
                 {this.renderColor()}
+                {this.renderPhotos()}
                 {this.renderYoutube()}
                 {this.renderCodeOptions()}
                 {this.renderDelete()}
