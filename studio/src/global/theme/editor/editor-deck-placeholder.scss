@@ -13,8 +13,9 @@ deckgo-deck {
   }
 
   > * > deckgo-lazy-img {
-    &:empty {
+    &:not([img-src]) {
       background: var(--ion-color-light);
+      position: relative;
 
       &::after {
         content: "Select an image.";
