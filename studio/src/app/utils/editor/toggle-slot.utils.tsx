@@ -8,7 +8,7 @@ export class ToggleSlotUtils {
                 resolve();
                 return;
             }
-            
+
             if (!document) {
                 resolve();
                 return;
@@ -16,7 +16,8 @@ export class ToggleSlotUtils {
 
             const element: HTMLElement = document.createElement(type.toString());
 
-            await this.copyAttributes(selectedElement, element, type);
+            await this.copyAttributes(selectedElement, element);
+            await this.updateContentEditable(element, type);
 
             const currentContainer: HTMLElement = this.getSlotContainer(selectedElement);
 
@@ -29,22 +30,16 @@ export class ToggleSlotUtils {
                     container.appendChild(e);
                 });
             }
-            
+
             resolve(element);
         });
     }
 
-    private static copyAttributes(selectedElement: HTMLElement, element: HTMLElement, type: SlotType): Promise<void> {
+    private static copyAttributes(selectedElement: HTMLElement, element: HTMLElement): Promise<void> {
         return new Promise<void>((resolve) => {
             if (selectedElement.attributes && selectedElement.attributes.length) {
                 for (let i: number = 0; i < selectedElement.attributes.length; i++) {
-                    if (selectedElement.attributes[i].name && selectedElement.attributes[i].name.toLowerCase() === 'contenteditable' && type === SlotType.CODE) {
-                        element.setAttribute('editable', selectedElement.attributes[i].value);
-                    } else if (selectedElement.attributes[i].name && selectedElement.attributes[i].name.toLowerCase() === 'editable' && type !== SlotType.CODE) {
-                        element.setAttribute('contenteditable', selectedElement.attributes[i].value);
-                    } else {
-                        element.setAttribute(selectedElement.attributes[i].name, selectedElement.attributes[i].value);
-                    }
+                    element.setAttribute(selectedElement.attributes[i].name, selectedElement.attributes[i].value);
                 }
             }
 
@@ -65,11 +60,31 @@ export class ToggleSlotUtils {
         return code;
     }
 
-    private static getSlotContainer(selectedElement: HTMLElement):HTMLElement {
+    private static getSlotContainer(selectedElement: HTMLElement): HTMLElement {
         if (selectedElement.firstChild && selectedElement.firstChild instanceof HTMLElement && selectedElement.firstChild.nodeName && selectedElement.firstChild.nodeName.toLowerCase() === 'code') {
             return selectedElement.firstChild;
         } else {
             return selectedElement;
         }
+    }
+
+    private static updateContentEditable(selectedElement: HTMLElement, type: SlotType): Promise<void> {
+        return new Promise<void>((resolve) => {
+
+            console.log(selectedElement, type === SlotType.CODE);
+
+            if (type === SlotType.IMG || type === SlotType.SOCIAL) {
+                selectedElement.removeAttribute('editable');
+                selectedElement.removeAttribute('contenteditable');
+            } else if (type === SlotType.CODE) {
+                selectedElement.setAttribute('editable', 'true');
+                selectedElement.removeAttribute('contenteditable');
+            } else {
+                selectedElement.setAttribute('contenteditable', 'true');
+                selectedElement.removeAttribute('editable');
+            }
+
+            resolve();
+        });
     }
 }
