@@ -188,6 +188,11 @@ export class AppComponentsLazyImg {
 <td></td>
 <td>In case you would like to specify a border radius for the image</td>
 </tr>
+<tr>
+<td>--deckgo-lazy-img-object-fit</td>
+<td></td>
+<td>The property object-fit of the image</td>
+</tr>
 </tbody></table>
 <h3 id="app-components-lazy-img-methods">Methods</h3>
 <p>This component also export an async method <code>lazyLoad()</code> in case you would like to trigger &quot;manually&quot; the loading of the image.</p>
