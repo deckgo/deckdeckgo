@@ -91,11 +91,53 @@ export class AppComponentsInlineEditor {
 </tr>
 </thead>
 <tbody><tr>
-<td><code>mobile</code></td>
-<td><code>mobile</code></td>
-<td>The mobile mode is automatically recognize, but just it case you would like to &quot;force&quot; it</td>
+<td><code>attachTo</code></td>
+<td><code>attach-to</code></td>
+<td>Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document.</td>
+<td><code>HTMLElement</code></td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><code>containers</code></td>
+<td><code>containers</code></td>
+<td>A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color.</td>
+<td><code>string</code></td>
+<td><code>&#39;h1,h2,h3,h4,h5,h6,div&#39;</code></td>
+</tr>
+<tr>
+<td><code>imgAnchor</code></td>
+<td><code>img-anchor</code></td>
+<td>The type of element to attach the image toolbar.</td>
+<td><code>string</code></td>
+<td><code>&#39;img&#39;</code></td>
+</tr>
+<tr>
+<td><code>imgEditable</code></td>
+<td><code>img-editable</code></td>
+<td>Per default, the component will not consider images as editable. Turn this option to <code>true</code> to activate the edition of images.</td>
 <td><code>boolean</code></td>
-<td><code>false</code> or <code>true</code> according the device</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>imgPropertyCssFloat</code></td>
+<td><code>img-property-css-float</code></td>
+<td>In case you would like to use a specific property to specify the <code>float</code> on your image.</td>
+<td><code>string</code></td>
+<td><code>&#39;cssFloat&#39;</code></td>
+</tr>
+<tr>
+<td><code>imgPropertyWidth</code></td>
+<td><code>img-property-width</code></td>
+<td>In case you would like to use a specific property to specify the <code>width</code> on your image.</td>
+<td><code>string</code></td>
+<td><code>&#39;width&#39;</code></td>
+</tr>
+<tr>
+<td><code>mobile</code></td>
+<td><code>mobile</code></td>
+<td>The mobile mode is automatically recognize, but just it case you would like to &quot;force&quot; it.</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
 </tr>
 <tr>
 <td><code>stickyDesktop</code></td>
@@ -110,20 +152,6 @@ export class AppComponentsInlineEditor {
 <td>Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top.</td>
 <td><code>boolean</code></td>
 <td><code>false</code></td>
-</tr>
-<tr>
-<td><code>attachTo</code></td>
-<td><code>attach-to</code></td>
-<td>Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document</td>
-<td><code>HTMLElement</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>containers</code></td>
-<td><code>containers</code></td>
-<td>A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color</td>
-<td><code>string</code></td>
-<td><code>h1,h2,h3,h4,h5,h6,div</code></td>
 </tr>
 </tbody></table>
 <h3 id="app-components-inline-editor-styling">Styling</h3>

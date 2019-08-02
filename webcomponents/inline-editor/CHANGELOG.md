@@ -1,3 +1,8 @@
+<a name="1.0.0-alpha.12"></a>
+# 1.0.0-alpha.12 (Not released yet)
+
+* images will not be considered, per default, as editable anymore. to turn this feature on, use the property `img-editable`
+
 <a name="1.0.0-alpha.11"></a>
 # 1.0.0-alpha.11 (2019-07-30)
 

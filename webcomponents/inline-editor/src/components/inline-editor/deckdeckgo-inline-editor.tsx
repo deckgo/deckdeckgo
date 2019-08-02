@@ -113,6 +113,9 @@ export class DeckdeckgoInlineEditor {
 
   private iOSTimerScroll: number;
 
+  @Prop()
+  imgEditable: boolean = false;
+
   async componentWillLoad() {
     await this.attachListener();
   }
@@ -209,6 +212,11 @@ export class DeckdeckgoInlineEditor {
 
   private displayImageActions($event: MouseEvent | TouchEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
+      if (!this.imgEditable) {
+        resolve();
+        return;
+      }
+
       const isAnchorImg: boolean = await this.isAnchorImage();
       if (!isAnchorImg) {
         resolve();

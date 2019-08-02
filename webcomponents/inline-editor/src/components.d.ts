@@ -13,6 +13,7 @@ export namespace Components {
     'attachTo': HTMLElement;
     'containers': string;
     'imgAnchor': string;
+    'imgEditable': boolean;
     'imgPropertyCssFloat': string;
     'imgPropertyWidth': string;
     'mobile': boolean;
@@ -40,6 +41,7 @@ declare namespace LocalJSX {
     'attachTo'?: HTMLElement;
     'containers'?: string;
     'imgAnchor'?: string;
+    'imgEditable'?: boolean;
     'imgPropertyCssFloat'?: string;
     'imgPropertyWidth'?: string;
     'mobile'?: boolean;
