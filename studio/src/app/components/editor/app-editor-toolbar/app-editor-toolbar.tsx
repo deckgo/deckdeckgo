@@ -46,6 +46,9 @@ export class AppEditorToolbar {
     @State()
     private youtube: boolean = false;
 
+    @State()
+    private image: boolean = false;
+
     private applyToAllDeck: boolean = false;
 
     @Event() private blockSlide: EventEmitter<boolean>;
@@ -214,6 +217,10 @@ export class AppEditorToolbar {
 
     private isElementYoutubeSlide(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-youtube';
+    }
+
+    private isElementImage(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img';
     }
 
     private cleanOnPaste = async ($event) => {
@@ -556,6 +563,7 @@ export class AppEditorToolbar {
             this.deckOrSlide = this.isElementSlideOrDeck(element);
             this.code = this.isElementCode(element);
             this.youtube = this.isElementYoutubeSlide(element);
+            this.image = this.isElementImage(element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
@@ -622,7 +630,7 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openBackground() {
+    private async openImage() {
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-image',
             componentProps: {
@@ -743,7 +751,7 @@ export class AppEditorToolbar {
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderSlotType()}
                 {this.renderColor()}
-                {this.renderPhotos()}
+                {this.renderImages()}
                 {this.renderYoutube()}
                 {this.renderCodeOptions()}
                 {this.renderDelete()}
@@ -784,10 +792,14 @@ export class AppEditorToolbar {
         }
     }
 
-    private renderPhotos() {
-        return <a onClick={() => this.openBackground()} title="Background">
-            <ion-icon name="images"></ion-icon>
-        </a>
+    private renderImages() {
+        if (!this.image && !this.deckOrSlide) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.openImage()} title={this.deckOrSlide ? 'Background' : 'Image'}>
+                <ion-icon name="images"></ion-icon>
+            </a>
+        }
     }
 
     private renderYoutube() {
