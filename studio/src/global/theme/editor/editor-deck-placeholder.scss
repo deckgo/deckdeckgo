@@ -16,6 +16,7 @@ deckgo-deck {
     &:not([img-src]) {
       background: var(--ion-color-light);
       position: relative;
+      height: 50%;
 
       &::after {
         content: "Select an image.";
@@ -33,6 +34,12 @@ deckgo-deck {
     h1, h2, h3 {
       &:empty:not(:focus):after {
         content: "Click to add content";
+      }
+    }
+
+    deckgo-lazy-img {
+      &:not([img-src]) {
+        height: 100%;
       }
     }
   }

@@ -36,7 +36,7 @@ deckgo-deck deckgo-social deckgo-lazy-img {
 
 deckgo-deck deckgo-lazy-img[slot] {
   width: 100%;
-  height: 100%;
+  height: auto;
   --deckgo-lazy-img-width: 100%;
   --deckgo-lazy-img-height: auto;
   --deckgo-lazy-img-vertical-align: top;
