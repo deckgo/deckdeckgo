@@ -27,6 +27,10 @@ deckgo-deck deckgo-social {
   display: flex;
 }
 
+deckgo-deck deckgo-highlight-code {
+  margin: 8px 0;
+}
+
 deckgo-deck deckgo-social deckgo-lazy-img {
   --deckgo-lazy-img-width: 2rem;
   --deckgo-lazy-img-height: auto;
