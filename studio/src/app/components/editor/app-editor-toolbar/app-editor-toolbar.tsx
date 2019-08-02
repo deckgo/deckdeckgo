@@ -761,9 +761,13 @@ export class AppEditorToolbar {
     }
 
     private renderColor() {
-        return <a onClick={() => this.openColor()} title="Color">
-            <ion-icon name="color-fill"></ion-icon>
-        </a>
+        if (this.image) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.openColor()} title="Color">
+                <ion-icon name="color-fill"></ion-icon>
+            </a>
+        }
     }
 
     private renderSlotType() {
