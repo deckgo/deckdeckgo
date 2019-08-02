@@ -229,7 +229,7 @@ export class AppImage {
                 {this.renderImageSize()}
                 {this.renderImageAlignment()}
 
-                <ion-item class="ion-margin-top action-button">
+                <ion-item class="action-button action-button-margin">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_PHOTOS)}
                                 color="primary">
                         <ion-label class="ion-text-uppercase">Stock photo</ion-label>

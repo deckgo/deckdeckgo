@@ -14,7 +14,6 @@ deckgo-deck {
 
   > * > deckgo-lazy-img {
     &:not([img-src]) {
-      background: var(--ion-color-light);
       position: relative;
       height: 50%;
       --deckgo-lazy-img-width: auto;
