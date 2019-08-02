@@ -6,6 +6,10 @@ app-image {
     &.history-empty {
       --color: var(--ion-color-medium);
     }
+
+    &.action-button:first-of-type {
+      margin-top: 24px;
+    }
   }
 
   app-image-columns {

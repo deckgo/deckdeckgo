@@ -13,6 +13,12 @@ enum ImageSize {
     ORIGINAL = '100%'
 }
 
+enum ImageAlignment {
+    START = 'flex-start',
+    CENTER = 'center',
+    END = 'flex-end'
+}
+
 @Component({
     tag: 'app-image',
     styleUrl: 'app-image.scss'
@@ -41,7 +47,10 @@ export class AppImage {
     private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile)[];
 
     @State()
-    private currentImageSize: ImageSize = undefined;
+    private currentImageSize: ImageSize;
+
+    @State()
+    private currentImageAlignment: ImageAlignment;
 
     constructor() {
         this.imageHistoryService = ImageHistoryService.getInstance();
@@ -51,6 +60,7 @@ export class AppImage {
         await this.initImagesHistory();
 
         this.currentImageSize = await this.initImageSize();
+        this.currentImageAlignment = await this.initImageAlignment();
     }
 
     private initImagesHistory(): Promise<void> {
@@ -84,6 +94,23 @@ export class AppImage {
                 resolve(ImageSize.LARGE);
             } else {
                 resolve(ImageSize.ORIGINAL);
+            }
+        });
+    }
+
+    private initImageAlignment(): Promise<ImageAlignment> {
+        return new Promise<ImageAlignment>((resolve) => {
+            if (!this.selectedElement || !this.selectedElement.style) {
+                resolve(null);
+                return;
+            }
+
+            if (this.selectedElement.style.getPropertyValue('justify-content') === 'center') {
+                resolve(ImageAlignment.CENTER);
+            } else if (this.selectedElement.style.getPropertyValue('justify-content') === 'flext-end') {
+                resolve(ImageAlignment.END);
+            } else {
+                resolve(ImageAlignment.START);
             }
         });
     }
@@ -150,12 +177,36 @@ export class AppImage {
                 return;
             }
 
-            this.selectedElement.style.removeProperty('--deckgo-lazy-img-width');
-
             if (this.currentImageSize === ImageSize.ORIGINAL) {
                 this.selectedElement.style.removeProperty('--deckgo-lazy-img-width');
             } else {
                 this.selectedElement.style.setProperty('--deckgo-lazy-img-width', this.currentImageSize);
+            }
+
+            this.imgDidChange.emit(this.selectedElement);
+
+            resolve();
+        });
+    }
+
+    private toggleImageAlignment($event: CustomEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            this.currentImageAlignment = $event.detail.value;
+
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (this.currentImageAlignment === ImageAlignment.START) {
+                this.selectedElement.style.removeProperty('justify-content');
+            } else {
+                this.selectedElement.style.setProperty('justify-content', this.currentImageAlignment);
             }
 
             this.imgDidChange.emit(this.selectedElement);
@@ -176,8 +227,9 @@ export class AppImage {
                                    onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
 
                 {this.renderImageSize()}
+                {this.renderImageAlignment()}
 
-                <ion-item class="ion-margin-top ion-padding-top action-button">
+                <ion-item class="ion-margin-top action-button">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_PHOTOS)}
                                 color="primary">
                         <ion-label class="ion-text-uppercase">Stock photo</ion-label>
@@ -257,6 +309,30 @@ export class AppImage {
                         <ion-select-option value={ImageSize.MEDIUM}>Medium</ion-select-option>
                         <ion-select-option value={ImageSize.LARGE}>Large</ion-select-option>
                         <ion-select-option value={ImageSize.ORIGINAL}>Original</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            ]
+        }
+    }
+
+    private renderImageAlignment() {
+        if (this.deckOrSlide) {
+            return undefined;
+        } else {
+            return [
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>Alignment</ion-label>
+                </ion-item-divider>,
+
+                <ion-item class="select">
+                    <ion-label>Alignment</ion-label>
+
+                    <ion-select value={this.currentImageAlignment} placeholder="Align the image"
+                                onIonChange={(e: CustomEvent) => this.toggleImageAlignment(e)}
+                                class="ion-padding-start ion-padding-end">
+                        <ion-select-option value={ImageAlignment.START}>Start</ion-select-option>
+                        <ion-select-option value={ImageAlignment.CENTER}>Center</ion-select-option>
+                        <ion-select-option value={ImageAlignment.END}>End</ion-select-option>
                     </ion-select>
                 </ion-item>
             ]

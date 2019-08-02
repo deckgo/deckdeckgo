@@ -17,15 +17,15 @@ deckgo-deck {
       background: var(--ion-color-light);
       position: relative;
       height: 50%;
+      --deckgo-lazy-img-width: auto;
 
       &::after {
-        content: "Select an image.";
+        content: "Select an image";
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
         font-size: 2em;
-        min-height: 1.7em;
       }
     }
   }
