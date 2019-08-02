@@ -165,8 +165,6 @@ export class AppEditorToolbar {
             // In case of slot deckgo-lazy-img, if user doesn't have yet defined a src for the image, we display the image picker/popover first instead of the toolbar
             if (this.isImgNotDefined(element)) {
                 await this.openImage();
-                resolve();
-                return;
             }
 
             await this.displayToolbar(selected);
