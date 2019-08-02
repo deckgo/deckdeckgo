@@ -468,7 +468,7 @@ export class AppEditor {
                 if (e.nodeName) {
                     if (e.nodeName.toLowerCase() === SlotType.CODE) {
                         e.setAttribute('editable', '');
-                    } else if (e.nodeName.toLowerCase() !== SlotType.SOCIAL) {
+                    } else if (e.nodeName.toLowerCase() !== SlotType.SOCIAL && e.nodeName.toLowerCase() !== SlotType.IMG) {
                         e.setAttribute('contentEditable', '');
                     }
                 }

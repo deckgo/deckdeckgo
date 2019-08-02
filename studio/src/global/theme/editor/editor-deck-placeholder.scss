@@ -12,6 +12,22 @@ deckgo-deck {
     }
   }
 
+  deckgo-lazy-img {
+    &:empty {
+      background: var(--ion-color-light);
+
+      &::after {
+        content: "Select an image.";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2em;
+        min-height: 1.7em;
+      }
+    }
+  }
+
   deckgo-slide-split {
     h1, h2, h3 {
       &:empty:not(:focus):after {
