@@ -12,7 +12,7 @@ deckgo-deck {
     }
   }
 
-  deckgo-lazy-img {
+  > * > deckgo-lazy-img {
     &:empty {
       background: var(--ion-color-light);
 
