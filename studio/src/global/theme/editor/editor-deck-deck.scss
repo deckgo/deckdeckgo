@@ -53,10 +53,6 @@ deckgo-deck > * div[slot="background"] {
   align-items: center;
 }
 
-deckgo-deck :not([slot="background"]):not([slot="social-link"]) > deckgo-lazy-img {
-  --deckgo-lazy-img-padding: 16px;
-}
-
 deckgo-deck [slot="background"] > deckgo-lazy-img {
   min-width: 100%;
   min-height: 100%;
