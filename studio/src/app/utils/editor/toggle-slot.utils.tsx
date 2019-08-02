@@ -17,6 +17,7 @@ export class ToggleSlotUtils {
             const element: HTMLElement = document.createElement(type.toString());
 
             await this.copyAttributes(selectedElement, element);
+            await this.cleanAttributes(element, type);
             await this.updateContentEditable(element, type);
 
             const currentContainer: HTMLElement = this.getSlotContainer(selectedElement);
@@ -79,6 +80,19 @@ export class ToggleSlotUtils {
             } else {
                 selectedElement.setAttribute('contenteditable', 'true');
                 selectedElement.removeAttribute('editable');
+            }
+
+            resolve();
+        });
+    }
+
+    private static cleanAttributes(selectedElement: HTMLElement, type: SlotType): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (type!== SlotType.IMG && type !== SlotType.SOCIAL) {
+                selectedElement.removeAttribute('img-src');
+                selectedElement.removeAttribute('img-alt');
+                selectedElement.style.removeProperty('justify-content');
+                selectedElement.style.removeProperty('--deckgo-lazy-img-width');
             }
 
             resolve();
