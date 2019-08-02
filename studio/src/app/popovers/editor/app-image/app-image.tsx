@@ -1,10 +1,17 @@
-import {Component, Element, Prop, State, h} from '@stencil/core';
+import {Component, Element, Prop, State, h, EventEmitter} from '@stencil/core';
 
 import {ImageAction} from './image-action';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+
+enum ImageSize {
+    SMALL = '25%',
+    MEDIUM = '50%',
+    LARGE = '75%',
+    ORIGINAL = '100%'
+}
 
 @Component({
     tag: 'app-image',
@@ -15,7 +22,13 @@ export class AppImage {
     @Element() el: HTMLElement;
 
     @Prop()
+    selectedElement: HTMLElement;
+
+    @Prop()
     deckOrSlide: boolean = false;
+
+    @Prop()
+    imgDidChange: EventEmitter<HTMLElement>;
 
     private applyToAllDeck: boolean = false;
 
@@ -27,12 +40,17 @@ export class AppImage {
     @State()
     private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile)[];
 
+    @State()
+    private currentImageSize: ImageSize = undefined;
+
     constructor() {
         this.imageHistoryService = ImageHistoryService.getInstance();
     }
 
     async componentWillLoad() {
         await this.initImagesHistory();
+
+        this.currentImageSize = await this.initImageSize();
     }
 
     private initImagesHistory(): Promise<void> {
@@ -48,6 +66,25 @@ export class AppImage {
             this.imagesHistoryOdd = [...imagesHistory.filter((_a, i) => !(i % 2))];
 
             resolve();
+        });
+    }
+
+    private initImageSize(): Promise<ImageSize> {
+        return new Promise<ImageSize>((resolve) => {
+            if (!this.selectedElement || !this.selectedElement.style) {
+                resolve(null);
+                return;
+            }
+
+            if (this.selectedElement.style.getPropertyValue('--deckgo-lazy-img-width') === '25%') {
+                resolve(ImageSize.SMALL);
+            } else if (this.selectedElement.style.getPropertyValue('--deckgo-lazy-img-width') === '50%') {
+                resolve(ImageSize.MEDIUM);
+            } else if (this.selectedElement.style.getPropertyValue('--deckgo-lazy-img-width') === '75%') {
+                resolve(ImageSize.LARGE);
+            } else {
+                resolve(ImageSize.ORIGINAL);
+            }
         });
     }
 
@@ -99,35 +136,71 @@ export class AppImage {
         return await alert.present();
     }
 
+    private toggleImageSize($event: CustomEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            this.currentImageSize = $event.detail.value;
+
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.style.removeProperty('--deckgo-lazy-img-width');
+
+            if (this.currentImageSize === ImageSize.ORIGINAL) {
+                this.selectedElement.style.removeProperty('--deckgo-lazy-img-width');
+            } else {
+                this.selectedElement.style.setProperty('--deckgo-lazy-img-width', this.currentImageSize);
+            }
+
+            this.imgDidChange.emit(this.selectedElement);
+
+            resolve();
+        });
+    }
+
     render() {
         return [<ion-toolbar>
-                <h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2>
-                <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}><ion-icon name="close"></ion-icon></ion-router-link>
-            </ion-toolbar>,
+            <h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2>
+            <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
+                <ion-icon name="close"></ion-icon>
+            </ion-router-link>
+        </ion-toolbar>,
             <ion-list>
-                <app-deck-or-slide deckOrSlide={this.deckOrSlide} onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
+                <app-deck-or-slide deckOrSlide={this.deckOrSlide}
+                                   onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
 
-                <ion-item class="ion-margin-top action-button">
-                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_PHOTOS)} color="primary">
+                {this.renderImageSize()}
+
+                <ion-item class="ion-margin-top ion-padding-top action-button">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_PHOTOS)}
+                                color="primary">
                         <ion-label class="ion-text-uppercase">Stock photo</ion-label>
                     </ion-button>
                 </ion-item>
 
                 <ion-item class="action-button">
-                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_GIFS)} color="secondary">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_GIFS)}
+                                color="secondary">
                         <ion-label class="ion-text-uppercase">Gif</ion-label>
                     </ion-button>
                 </ion-item>
 
                 <ion-item class="action-button">
-                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_CUSTOM)} color="tertiary">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_CUSTOM)}
+                                color="tertiary">
                         <ion-label class="ion-text-uppercase">Your images</ion-label>
                     </ion-button>
                 </ion-item>
 
                 {this.renderDeleteAction()}
 
-                <ion-item-divider class="ion-padding-top">
+                <ion-item-divider class="ion-padding-top ion-margin-top">
                     <ion-label>History</ion-label>
                     <button slot="end" class="info" onClick={() => this.presentHistoryInfo()}>
                         <ion-icon name="help"></ion-icon>
@@ -144,7 +217,8 @@ export class AppImage {
             return undefined;
         } else {
             return <ion-item class="action-button ion-margin-bottom">
-                <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_BACKGROUND)} fill="outline" class="delete">
+                <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_BACKGROUND)}
+                            fill="outline" class="delete">
                     <ion-label class="ion-text-uppercase">Delete background</ion-label>
                 </ion-button>
             </ion-item>;
@@ -158,8 +232,34 @@ export class AppImage {
             </ion-item>
         } else {
             return <div class="history-photos ion-padding">
-                <app-image-columns imagesOdd={this.imagesHistoryOdd} imagesEven={this.imagesHistoryEven} onSelectImage={($event: CustomEvent) => this.selectImageFromHistory($event)}></app-image-columns>
+                <app-image-columns imagesOdd={this.imagesHistoryOdd} imagesEven={this.imagesHistoryEven}
+                                   onSelectImage={($event: CustomEvent) => this.selectImageFromHistory($event)}></app-image-columns>
             </div>
+        }
+    }
+
+    private renderImageSize() {
+        if (this.deckOrSlide) {
+            return undefined;
+        } else {
+            return [
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>Size</ion-label>
+                </ion-item-divider>,
+
+                <ion-item class="select">
+                    <ion-label>Size</ion-label>
+
+                    <ion-select value={this.currentImageSize} placeholder="Select an image size"
+                                onIonChange={(e: CustomEvent) => this.toggleImageSize(e)}
+                                class="ion-padding-start ion-padding-end">
+                        <ion-select-option value={ImageSize.SMALL}>Small</ion-select-option>
+                        <ion-select-option value={ImageSize.MEDIUM}>Medium</ion-select-option>
+                        <ion-select-option value={ImageSize.LARGE}>Large</ion-select-option>
+                        <ion-select-option value={ImageSize.ORIGINAL}>Original</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            ]
         }
     }
 }

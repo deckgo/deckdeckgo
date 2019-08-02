@@ -76,6 +76,8 @@ export namespace Components {
   interface AppHome {}
   interface AppImage {
     'deckOrSlide': boolean;
+    'imgDidChange': EventEmitter<HTMLElement>;
+    'selectedElement': HTMLElement;
   }
   interface AppImageColumns {
     'imagesEven': (UnsplashPhoto | TenorGif | StorageFile)[];
@@ -595,6 +597,7 @@ declare namespace LocalJSX {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
@@ -619,6 +622,8 @@ declare namespace LocalJSX {
   interface AppHome extends JSXBase.HTMLAttributes<HTMLAppHomeElement> {}
   interface AppImage extends JSXBase.HTMLAttributes<HTMLAppImageElement> {
     'deckOrSlide'?: boolean;
+    'imgDidChange'?: EventEmitter<HTMLElement>;
+    'selectedElement'?: HTMLElement;
   }
   interface AppImageColumns extends JSXBase.HTMLAttributes<HTMLAppImageColumnsElement> {
     'imagesEven'?: (UnsplashPhoto | TenorGif | StorageFile)[];

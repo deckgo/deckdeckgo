@@ -55,6 +55,7 @@ export class AppEditorToolbar {
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
     @Event() private codeDidChange: EventEmitter<HTMLElement>;
+    @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
     private subscription: Subscription;
     private busyService: BusyService;
@@ -625,7 +626,9 @@ export class AppEditorToolbar {
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-image',
             componentProps: {
-                deckOrSlide: this.deckOrSlide
+                selectedElement: this.selectedElement,
+                deckOrSlide: this.deckOrSlide,
+                imgDidChange: this.imgDidChange
             },
             mode: 'md',
             cssClass: 'popover-menu'

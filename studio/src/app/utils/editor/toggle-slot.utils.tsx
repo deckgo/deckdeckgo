@@ -70,9 +70,6 @@ export class ToggleSlotUtils {
 
     private static updateContentEditable(selectedElement: HTMLElement, type: SlotType): Promise<void> {
         return new Promise<void>((resolve) => {
-
-            console.log(selectedElement, type === SlotType.CODE);
-
             if (type === SlotType.IMG || type === SlotType.SOCIAL) {
                 selectedElement.removeAttribute('editable');
                 selectedElement.removeAttribute('contenteditable');
