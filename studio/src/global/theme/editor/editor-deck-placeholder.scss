@@ -20,7 +20,7 @@ deckgo-deck {
       --deckgo-lazy-img-width: auto;
 
       &::after {
-        content: "Select an image";
+        content: "Click to add an image";
         position: absolute;
         left: 50%;
         top: 50%;

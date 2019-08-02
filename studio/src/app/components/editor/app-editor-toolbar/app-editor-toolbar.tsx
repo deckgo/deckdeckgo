@@ -1,4 +1,4 @@
-import {Component, Element, Method, State, Event, EventEmitter, Listen, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Listen, Method, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Subject, Subscription} from 'rxjs';
@@ -162,12 +162,24 @@ export class AppEditorToolbar {
 
             await this.initSelectedElement(selected);
 
+            // In case of slot deckgo-lazy-img, if user doesn't have yet defined a src for the image, we display the image picker/popover first instead of the toolbar
+            if (this.isImgNotDefined(element)) {
+                await this.openImage();
+                resolve();
+                return;
+            }
+
             await this.displayToolbar(selected);
 
             this.blockSlide.emit(!this.deckOrSlide);
 
             resolve();
         });
+    }
+
+    private isImgNotDefined(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img' &&
+            !element.hasAttribute('img-src')
     }
 
     @Method()
@@ -320,24 +332,6 @@ export class AppEditorToolbar {
             const style: CSSStyleDeclaration = window.getComputedStyle(element);
             this.color = style.color;
             this.background = style.backgroundColor;
-
-            const colorPicker: HTMLElement = this.el.querySelector('input[name=\'color-picker\']');
-
-            if (!colorPicker) {
-                resolve();
-                return;
-            }
-
-            await this.setToolbarPosition(element, colorPicker, 38);
-
-            const backgroundPicker: HTMLElement = this.el.querySelector('input[name=\'background-picker\']');
-
-            if (!backgroundPicker) {
-                resolve();
-                return;
-            }
-
-            await this.setToolbarPosition(element, backgroundPicker, 78);
 
             resolve();
         });
