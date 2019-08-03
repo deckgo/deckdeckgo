@@ -113,7 +113,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
-    <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+    <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-code>
   </deckgo-deck>

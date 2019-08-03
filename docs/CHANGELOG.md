@@ -1,3 +1,17 @@
+<a name="1.0.0-alpha.22"></a>
+# 1.0.0-alpha.23 (Not released but published)
+
+### Features
+
+* improve demo slides in the documentation ([#199](https://github.com/deckgo/deckdeckgo/issues/199))
+
+<a name="1.0.0-alpha.22"></a>
+# 1.0.0-alpha.22 (2019-07-30)
+
+### Features
+
+* add new `lineNumbers` option and relative CSS4 variables to the component `highlight-code`
+
 <a name="1.0.0-alpha.21"></a>
 # 1.0.0-alpha.21 (2019-07-17)
 
