@@ -1,8 +1,8 @@
-import { Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host } from '@stencil/core';
+import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
 import Prism from 'prismjs';
 
-import { DeckdeckgoHighlightCodeAnchor } from '../declarations/deckdeckgo-highlight-code-anchor';
+import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
 
 @Component({
   tag: 'deckgo-highlight-code',
@@ -22,10 +22,9 @@ export class DeckdeckgoHighlightCode {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  @Prop({ reflectToAttr: true }) language: string = 'javascript';
+  @Prop({reflectToAttr: true}) language: string = 'javascript';
 
-  @Prop({ reflectToAttr: true }) highlightLines: string;
-  @Prop({ reflectToAttr: true }) lineNumbers: boolean = false;
+  @Prop({reflectToAttr: true}) highlightLines: string;
 
   @Prop() editable: boolean = false;
 
@@ -43,7 +42,7 @@ export class DeckdeckgoHighlightCode {
     }
   }
 
-  @Listen('prismLanguageLoaded', { target: 'document' })
+  @Listen('prismLanguageLoaded', {target: 'document'})
   async languageLoaded($event: CustomEvent) {
     if (!$event || !$event.detail) {
       return;
@@ -114,11 +113,6 @@ export class DeckdeckgoHighlightCode {
     });
   }
 
-  @Watch('lineNumbers')
-  async onLineNumbersChange() {
-    await this.fetchOrParse();
-  }
-
   @Method()
   load(): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -179,34 +173,20 @@ export class DeckdeckgoHighlightCode {
 
   private parseCode(code: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
+
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-highlight-code-container');
 
       if (container) {
         try {
-          if (this.lineNumbers) {
-            // clear the container first
-            container.children[0].innerHTML = '';
+          const highlightedCode: string = Prism.highlight(code, Prism.languages[this.language], this.language);
 
-            // split the code on linebreaks
-            const regEx = RegExp(/\n(?!$)/g); //
-            const match = code.split(regEx);
-            match.forEach(m => {
-              let div: HTMLElement = document.createElement('div');
-              div.classList.add('deckgo-highlight-code-line-number');
-
-              let highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
-              div.innerHTML = highlight;
-              container.children[0].appendChild(div);
-            });
-          }else{
-            container.children[0].innerHTML = Prism.highlight(code, Prism.languages[this.language], this.language);
-          }
+          container.children[0].innerHTML = highlightedCode;
 
           await this.addAnchors();
 
           setTimeout(async () => {
             await this.addHighlight();
-          }, 100);
+          }, 0);
 
           resolve();
         } catch (err) {
@@ -253,6 +233,7 @@ export class DeckdeckgoHighlightCode {
       if (this.highlightLines && this.highlightLines.length > 0) {
 
         const rows: number[] = await this.findRowsToHighlight();
+
         if (rows && rows.length > 0) {
           const containerCode: HTMLElement = this.el.shadowRoot.querySelector('code');
 
@@ -407,7 +388,7 @@ export class DeckdeckgoHighlightCode {
       if (slottedCode) {
         setTimeout(() => {
           slottedCode.setAttribute('contentEditable', 'true');
-          slottedCode.addEventListener('blur', this.applyCode, { once: true });
+          slottedCode.addEventListener('blur', this.applyCode, {once: true});
           slottedCode.addEventListener('keydown', this.catchNewLine);
 
           slottedCode.focus();
@@ -477,10 +458,10 @@ export class DeckdeckgoHighlightCode {
 
   render() {
     return (
-      <Host class={{ 'deckgo-highlight-code-edit': this.editing }}>
+      <Host class={{'deckgo-highlight-code-edit': this.editing}}>
         <div class="deckgo-highlight-code-container"
-          onMouseDown={() => this.edit()}
-          onTouchStart={() => this.edit()}>
+             onMouseDown={() => this.edit()}
+             onTouchStart={() => this.edit()}>
           <code></code>
           <slot name="code"></slot>
         </div>

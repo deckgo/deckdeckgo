@@ -22,12 +22,12 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.11",
-    "@stencil/core": "^1.2.2",
+    "@stencil/core": "^1.0.0",
     "@stencil/dev-server": "0.0.18",
-    "@stencil/postcss": "^1.0.1",
-    "@stencil/sass": "^1.0.1",
+    "@stencil/postcss": "^0.1.0",
+    "@stencil/sass": "^0.2.3",
     "@stencil/utils": "0.0.5",
-    "autoprefixer": "^9.6.1"
+    "autoprefixer": "^9.6.0"
   },
   "repository": {
     "type": "git",
