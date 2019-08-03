@@ -10,6 +10,7 @@ import {
   DeckdeckgoSlideDefinition,
 } from '@deckdeckgo/types';
 
+
 export namespace Components {
   interface DeckgoDeck {
     'blockSlide': (block: boolean) => Promise<void>;
@@ -114,6 +115,8 @@ export namespace Components {
     * Seconds input for the timer.
     */
     'seconds': number;
+    'start': () => Promise<void>;
+    'stop': () => Promise<void>;
   }
   interface DeckgoSlideGif {
     'afterSwipe': () => Promise<void>;
@@ -462,5 +465,3 @@ declare module "@stencil/core" {
     interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
   }
 }
-
-

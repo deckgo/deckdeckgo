@@ -130,13 +130,6 @@ export class AppComponentsHighlightCode {
 <td></td>
 </tr>
 <tr>
-<td><code>lineNumbers</code></td>
-<td><code>line-numbers</code></td>
-<td>Display the number of the lines of code</td>
-<td><code>boolean</code></td>
-<td><code>false</code></td>
-</tr>
-<tr>
 <td><code>editable</code></td>
 <td><code>editable</code></td>
 <td>In case you would like to set the code component as being editable.</td>
@@ -203,11 +196,6 @@ export class AppComponentsHighlightCode {
 <td>--deckgo-highlight-code-line-background</td>
 <td>#3880ff</td>
 <td>The background of the lines you wish to highlight</td>
-</tr>
-<tr>
-<td>--deckgo-highlight-code-line-numbers</td>
-<td>#999999</td>
-<td>The color of the line numbers and divider</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-line-padding</td>

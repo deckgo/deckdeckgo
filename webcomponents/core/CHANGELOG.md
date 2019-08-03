@@ -1,5 +1,5 @@
 <a name="1.0.0-beta.44"></a>
-# 1.0.0-beta.44 (2019-07-30)
+# 1.0.0-beta.44 (Not released yet)
 
 ### Fix
 

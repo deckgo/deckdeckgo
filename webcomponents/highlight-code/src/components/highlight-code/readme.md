@@ -15,7 +15,6 @@
 | `hideAnchor`     | `hide-anchor`     |             | `boolean` | `true`                |
 | `highlightLines` | `highlight-lines` |             | `string`  | `undefined`           |
 | `language`       | `language`        |             | `string`  | `'javascript'`        |
-| `lineNumbers`    | `line-numbers`    |             | `boolean` | `false`               |
 | `src`            | `src`             |             | `string`  | `undefined`           |
 
 

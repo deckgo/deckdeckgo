@@ -12,8 +12,7 @@ enum CodeColorType {
     OPERATOR,
     KEYWORD,
     FUNCTION,
-    REGEX,
-    LINE_NUMBERS
+    REGEX
 }
 
 enum CodeFontSize {
@@ -60,9 +59,6 @@ export class AppCode {
     @State()
     private currentFontSize: CodeFontSize = undefined;
 
-    @State()
-    private lineNumbers: boolean = false;
-
     constructor() {
         this.prismService = PrismService.getInstance();
     }
@@ -83,7 +79,6 @@ export class AppCode {
             this.currentLanguage = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
             this.codeColor = await this.initColor();
             this.currentFontSize = await this.initFontSize();
-            this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
 
             resolve();
         });
@@ -211,8 +206,6 @@ export class AppCode {
             return '--deckgo-highlight-code-token-function';
         } else if (this.codeColorType === CodeColorType.REGEX) {
             return '--deckgo-highlight-code-token-regex';
-        } else if (this.codeColorType === CodeColorType.LINE_NUMBERS) {
-            return '--deckgo-highlight-code-line-numbers';
         } else {
             return '--deckgo-highlight-code-token-comment';
         }
@@ -239,8 +232,6 @@ export class AppCode {
                 resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') : '#DD4A68');
             } else if (this.codeColorType === CodeColorType.REGEX) {
                 resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') : '#EE9900');
-            } else if (this.codeColorType === CodeColorType.LINE_NUMBERS) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') : '#999');
             } else {
                 resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') : '#999999');
             }
@@ -340,57 +331,28 @@ export class AppCode {
         });
     }
 
-    private toggleLineNumbers($event: CustomEvent): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!this.selectedElement) {
-                resolve();
-                return;
-            }
-
-            if (!$event || !$event.detail) {
-                resolve();
-                return;
-            }
-
-            this.selectedElement.setAttribute('line-numbers', $event.detail.checked);
-
-            this.emitCodeDidChange();
-
-            resolve();
-        });
-    }
-
     render() {
         return [<ion-toolbar>
-            <h2>Code attributes</h2>
-            <ion-router-link slot="end" onClick={() => this.closePopover()}>
-                <ion-icon name="close"></ion-icon>
-            </ion-router-link>
-        </ion-toolbar>,
+                <h2>Code attributes</h2>
+                <ion-router-link slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-router-link>
+            </ion-toolbar>,
             <ion-list>
-                <ion-item-divider>
-                    <ion-label>Language</ion-label>
-                </ion-item-divider>
+                <ion-item-divider><ion-label>Language</ion-label></ion-item-divider>
 
                 <ion-item class="select">
                     <ion-label>Language</ion-label>
-                    <ion-select value={this.currentLanguage}
-                                onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)}
-                                class="ion-padding-start ion-padding-end" interfaceOptions={{backdropDismiss: false}}>
+                    <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)} class="ion-padding-start ion-padding-end" interfaceOptions={{backdropDismiss: false}}>
                         {this.renderSelectOptions()}
                     </ion-select>
                 </ion-item>
 
-                <ion-item-divider class="ion-padding-top">
-                    <ion-label>Font size</ion-label>
-                </ion-item-divider>
+                <ion-item-divider class="ion-padding-top"><ion-label>Font size</ion-label></ion-item-divider>
 
                 <ion-item class="select">
                     <ion-label>Size</ion-label>
 
                     <ion-select value={this.currentFontSize} placeholder="Select a font size"
-                                onIonChange={(e: CustomEvent) => this.toggleFontSize(e)}
-                                class="ion-padding-start ion-padding-end">
+                                onIonChange={(e: CustomEvent) => this.toggleFontSize(e)} class="ion-padding-start ion-padding-end">
                         <ion-select-option value={CodeFontSize.VERY_SMALL}>Very small</ion-select-option>
                         <ion-select-option value={CodeFontSize.SMALL}>Small</ion-select-option>
                         <ion-select-option value={CodeFontSize.NORMAL}>Normal</ion-select-option>
@@ -399,26 +361,13 @@ export class AppCode {
                     </ion-select>
                 </ion-item>
 
-                <ion-item-divider>
-                    <ion-label>Lines</ion-label>
-                </ion-item-divider>
-
-                <ion-item>
-                    <ion-label>Display line numbers</ion-label>
-                    <ion-checkbox slot="end" value="pepperoni" checked={this.lineNumbers}
-                                  onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
-                </ion-item>
-
-                <ion-item-divider class="ion-padding-top">
-                    <ion-label>Colors</ion-label>
-                </ion-item-divider>
+                <ion-item-divider class="ion-padding-top"><ion-label>Colors</ion-label></ion-item-divider>
 
                 <ion-item class="select">
                     <ion-label>Apply color to</ion-label>
 
                     <ion-select value={this.codeColorType} placeholder="Select a category"
-                                onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
-                                class="ion-padding-start ion-padding-end">
+                                onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
                         <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
                         <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
                         <ion-select-option value={CodeColorType.KEYWORD}>Keywords</ion-select-option>
@@ -427,14 +376,12 @@ export class AppCode {
                         <ion-select-option value={CodeColorType.PROPERTY}>Properties</ion-select-option>
                         <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
                         <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
-                        <ion-select-option value={CodeColorType.LINE_NUMBERS}>Line numbers</ion-select-option>
                     </ion-select>
                 </ion-item>
 
                 <ion-item disabled={this.codeColorType === undefined}>
                     <ion-label>Color</ion-label>
-                    <input type="color" value={this.codeColor}
-                           onChange={(e) => this.selectColor(e, this.setCodeColor)}></input>
+                    <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e, this.setCodeColor)}></input>
                 </ion-item>
 
                 <ion-item-divider class="ion-padding-top">
@@ -447,15 +394,14 @@ export class AppCode {
                 <ion-item class="with-padding">
                     <ion-input value={this.highlightLines} placeholder="List your lines here" debounce={500}
                                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-                               onIonChange={() => this.highlightSelectedLines()}></ion-input>
+                                onIonChange={() => this.highlightSelectedLines()}></ion-input>
                 </ion-item>
 
                 <ion-item disabled={!this.highlightLines}>
                     <ion-label>Color</ion-label>
-                    <input type="color" value={this.highlightColor}
-                           onChange={(e) => this.selectColor(e, this.setHighlightColor)}></input>
+                    <input type="color" value={this.highlightColor} onChange={(e) => this.selectColor(e, this.setHighlightColor)}></input>
                 </ion-item>
-            </ion-list>]
+        </ion-list>]
     }
 
     private renderSelectOptions() {

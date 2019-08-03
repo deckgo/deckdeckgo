@@ -1,7 +1,13 @@
 @import "../deckdeckgo-slide";
 
-// Variables
-$lato: 'Lato';
+// Custom properties
+// --countdown-base-size : Initial component base size. 
+// --clock-background-color : Clock's background color
+// --clock-foreground-color : Clock's digits' color
+
+:host {
+  font-size: var(--countdown-base-size, 16px);
+}
 
 // Title and content
 ::slotted([slot=title]),
@@ -16,139 +22,105 @@ div.deckgo-slide {
   align-items: center;
 }
 
-a {
-  text-decoration: none;
-  color: #1a1a1a;
-}
-
 // Countdown
 .countdown {
   display: flex;
 
   .time-container {
-    float: left;
-    margin-right: 45px;
+    margin-right: 2.82em;
     text-align: center;
 
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
-  .count-title {
-    display: block;
-    margin-bottom: 15px;
-    font: normal 0.94em $lato;
-    color: #1a1a1a;
-    text-transform: uppercase;
-  }
-
-  .figure {
-    position: relative;
-    float: left;
-    height: 110px;
-    width: 100px;
-    margin-right: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .2), inset 2px 4px 0 0 rgba(255, 255, 255, .08);
-
-    &:last-child {
-      margin-right: 0;
+    .count-title {
+      display: block;
+      margin-bottom: .94em;
+      margin-top: .94em;
+      font-style: normal;
+      font-variant-ligatures: normal;
+      font-variant-caps: normal;
+      font-variant-numeric: normal;
+      font-variant-east-asian: normal;
+      font-weight: normal;
+      font-stretch: normal;
+      font-size: 0.94em;
+      line-height: normal;
+      color: #1a1a1a;
+      text-transform: uppercase;
     }
 
-    > span {
-      position: absolute;
-      left: 0;
-      right: 0;
-      margin: auto;
-      font: normal 5.94em/107px $lato;
-      font-weight: 700;
-      color: #de4848;
-    }
+    .figure-container {
+      display: flex;
 
-    .top,
-    .bottom-back {
-      &:after {
-        content: "";
-        position: absolute;
-        z-index: -1;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-        border-bottom: 1px solid rgba(0, 0, 0, .1);
-      }
-    }
+      .figure {
+        position: relative;
+        float: left;
+        height: 6.87em;
+        width: 6.25em;
+        margin-right: .625em;
+        background-color: var(--clock-background-color, #fff);
+        border-radius: 0.5em;
+        box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .2), inset 2px 4px 0 0 rgba(255, 255, 255, .08);
 
-    .top {
-      z-index: 3;
-      background-color: #f7f7f7;
-      transform-origin: 50% 100%;
-      -webkit-transform-origin: 50% 100%;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      transform: 200px;
-      perspective: 200px;
-    }
+        &:last-child {
+          margin-right: 0;
+        }
 
-    .bottom {
-      z-index: 1;
+        > span {
+          position: absolute;
+          left: 0;
+          right: 0;
+          margin: auto;
+          font-style: normal;
+          font-variant-ligatures: normal;
+          font-variant-caps: normal;
+          font-variant-numeric: normal;
+          font-variant-east-asian: normal;
+          font-weight: 700;
+          font-stretch: normal;
+          font-size: 5.94em;
+          line-height: 1.15em;
+          font-weight: 700;
+          color: var(--clock-foreground-color, #de4848);
+        }
 
-      &:before {
-        content: "";
-        position: absolute;
-        display: block;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 50%;
-        background-color: rgba(0, 0, 0, .02);
-      }
-    }
+        .top {
+          z-index: 3;
+          background-color: var(--clock-background-color, #fff);
+          transform-origin: 50% 100%;
+          -webkit-transform-origin: 50% 100%;
+          border-top-left-radius: .625em;
+          border-top-right-radius: .625em;
+          transform: 12.5em;
+          perspective: 12.5em;
+          height: 50%;
+          overflow: hidden;
+          backface-visibility: hidden;
 
-    .bottom-back {
-      z-index: 2;
-      top: 0;
-      height: 50%;
-      overflow: hidden;
-      background-color: #f7f7f7;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
+          &:after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            border-bottom: 1px solid rgba(0, 0, 0, .1);
+          }
+        }
 
-      span {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-      }
-    }
+        .bottom {
+          z-index: 1;
 
-    .top,
-    .top-back {
-      height: 50%;
-      overflow: hidden;
-      backface-visibility: hidden;
-    }
-
-    .top-back {
-      z-index: 4;
-      bottom: 0;
-      background-color: #fff;
-      -webkit-transform-origin: 50% 0;
-      transform-origin: 50% 0;
-      transform: rotateX(180deg);
-      perspective: 200px;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-
-      span {
-        position: absolute;
-        top: -100%;
-        left: 0;
-        right: 0;
-        margin: auto;
+          &:before {
+            content: "";
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: rgba(0, 0, 0, .02);
+          }
+        }
       }
     }
   }
