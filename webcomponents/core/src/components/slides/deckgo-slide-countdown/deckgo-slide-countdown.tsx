@@ -1,5 +1,4 @@
 import { Component, Method, Prop, h, Watch, Event, EventEmitter, Host } from '@stencil/core';
-import { TweenMax, Power3 } from 'gsap';
 
 import { DeckdeckgoSlide } from '../deckdeckgo-slide';
 
@@ -30,6 +29,23 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
    */
   @Prop()
   public seconds = 0;
+
+  @Method()
+  public async start(): Promise<void> {
+
+    this.stop();
+
+    this.init();
+    this.startCountdown();
+
+  }
+
+  @Method()
+  public async stop(): Promise<void> {
+
+    this.clearUp();
+
+  }
 
   @Watch('hours')
   hoursChangeHandler(newValue: number, _oldValue: number) {
@@ -274,37 +290,13 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
 
     const topElem = figureElem.querySelector('.top');
     const bottomElem = figureElem.querySelector('.bottom');
-    const topBackElem = figureElem.querySelector('.top-back');
-    const bottomBackElem = figureElem.querySelector('.bottom-back');
 
     if (topElem.innerHTML === value) {
       return;
     }
 
-    topBackElem.querySelector('span').innerHTML = value;
-    bottomBackElem.querySelector('span').innerHTML = value;
-
-    TweenMax.to(topElem, 0.8, {
-      rotationX: '-180deg',
-      transformPerspective: 300,
-      ease: Power3.easeOut,
-      onComplete: () => {
-
-        topElem.innerHTML = value;
-
-        bottomElem.innerHTML = value;
-
-        TweenMax.set(topElem, { rotationX: 0 });
-
-      }
-    });
-
-    TweenMax.to(topBackElem, 0.8, {
-      rotationX: 0,
-      transformPerspective: 300,
-      ease: Power3.easeOut,
-      clearProps: 'all'
-    });
+    topElem.innerHTML = value;
+    bottomElem.innerHTML = value;
 
   }
 
@@ -316,53 +308,38 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
 
         <span class="count-title">Hours</span>
 
-        <div class="figure hours tens">
-          <span class="top">0</span>
-          <span class="top-back">
-            <span>0</span>
-          </span>
-          <span class="bottom">0</span>
-          <span class="bottom-back">
-            <span>0</span>
-          </span>
+        <div class="figure-container">
+
+          <div class="figure hours tens">
+            <span class="top">0</span>
+            <span class="bottom">0</span>
+          </div>
+
+          <div class="figure hours unit">
+            <span class="top">0</span>
+            <span class="bottom">0</span>
+          </div>
+
         </div>
 
-        <div class="figure hours unit">
-          <span class="top">0</span>
-          <span class="top-back">
-            <span>0</span>
-          </span>
-          <span class="bottom">0</span>
-          <span class="bottom-back">
-            <span>0</span>
-          </span>
-        </div>
       </div>
 
       <div class="time-container min" ref={(elem) => this.mMinutesElement = elem}>
 
         <span class="count-title">Minutes</span>
 
-        <div class="figure min tens">
-          <span class="top">0</span>
-          <span class="top-back">
-            <span>0</span>
-          </span>
-          <span class="bottom">0</span>
-          <span class="bottom-back">
-            <span>0</span>
-          </span>
-        </div>
+        <div class="figure-container">
 
-        <div class="figure min unit">
-          <span class="top">0</span>
-          <span class="top-back">
-            <span>0</span>
-          </span>
-          <span class="bottom">0</span>
-          <span class="bottom-back">
-            <span>0</span>
-          </span>
+          <div class="figure min tens">
+            <span class="top">0</span>
+            <span class="bottom">0</span>
+          </div>
+
+          <div class="figure min unit">
+            <span class="top">0</span>
+            <span class="bottom">0</span>
+          </div>
+
         </div>
 
       </div>
@@ -371,26 +348,18 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
 
         <span class="count-title">Seconds</span>
 
-        <div class="figure sec tens">
-          <span class="top">0</span>
-          <span class="top-back">
-            <span>0</span>
-          </span>
-          <span class="bottom">0</span>
-          <span class="bottom-back">
-            <span>0</span>
-          </span>
-        </div>
+        <div class="figure-container">
 
-        <div class="figure sec unit">
-          <span class="top">0</span>
-          <span class="top-back">
-            <span>0</span>
-          </span>
-          <span class="bottom">0</span>
-          <span class="bottom-back">
-            <span>0</span>
-          </span>
+          <div class="figure sec tens">
+            <span class="top">0</span>
+            <span class="bottom">0</span>
+          </div>
+
+          <div class="figure sec unit">
+            <span class="top">0</span>
+            <span class="bottom">0</span>
+          </div>
+
         </div>
 
       </div>
