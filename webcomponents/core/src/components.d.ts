@@ -101,18 +101,9 @@ export namespace Components {
   interface DeckgoSlideCountdown {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
-    /**
-    * Hours input for the timer.
-    */
     'hours': number;
     'lazyLoadContent': () => Promise<void>;
-    /**
-    * Minutes input for the timer.
-    */
     'minutes': number;
-    /**
-    * Seconds input for the timer.
-    */
     'seconds': number;
     'start': () => Promise<void>;
     'stop': () => Promise<void>;
@@ -372,18 +363,9 @@ declare namespace LocalJSX {
     'revealShowFirst'?: boolean;
   }
   interface DeckgoSlideCountdown extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCountdownElement> {
-    /**
-    * Hours input for the timer.
-    */
     'hours'?: number;
-    /**
-    * Minutes input for the timer.
-    */
     'minutes'?: number;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    /**
-    * Seconds input for the timer.
-    */
     'seconds'?: number;
   }
   interface DeckgoSlideGif extends JSXBase.HTMLAttributes<HTMLDeckgoSlideGifElement> {
