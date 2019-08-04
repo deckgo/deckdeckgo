@@ -166,6 +166,20 @@ export class AppSlidesConcept {
   </deckgo-deck>
 </div>
 
+<ul>
+<li>Slide: <a href="/slides/countdown">Countdown</a></li>
+</ul>
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-countdown hours="1" minutes="0" seconds="5">
+        <h1 slot="title">slot="title"</h1>
+        <p slot="hours">slot="hours"</p>
+        <p slot="minutes">slot="minutes"</p>
+        <p slot="seconds">slot="seconds"</p>
+    </deckgo-slide-countdown>
+  </deckgo-deck>
+</div>
+
 <h2 id="app-slides-concept-note">Note</h2>
 <p>If you would miss or need further templates, don&#39;t hesitate to open an issue and/or submit a PR, it would be my pleasure to add more options.</p>
 </main>

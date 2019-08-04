@@ -90,6 +90,7 @@ export class AppRoot {
           <ion-route url="/slides/code" component="app-slide-code"/>
           <ion-route url="/slides/author" component="app-slide-author"/>
           <ion-route url="/slides/qrcode" component="app-slide-qrcode"/>
+          <ion-route url="/slides/countdown" component="app-slide-countdown"/>
 
           <ion-route url="/components" component="app-concept"/>
           <ion-route url="/components/charts" component="app-components-charts"/>
@@ -157,6 +158,7 @@ export class AppRoot {
                     <ion-item href="/slides/code" routerDirection="forward"><ion-label>Code</ion-label></ion-item>
                     <ion-item href="/slides/author" routerDirection="forward"><ion-label>Author</ion-label></ion-item>
                     <ion-item href="/slides/qrcode" routerDirection="forward"><ion-label>QR Code</ion-label></ion-item>
+                    <ion-item href="/slides/countdown" routerDirection="forward"><ion-label>Countdown</ion-label></ion-item>
 
                     <ion-item-divider>
                       <ion-label>Components</ion-label>
