@@ -65,14 +65,15 @@ export class AppSlideCountdown {
 <p>The &quot;Countdown&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-countdown/&gt;</code>.</p>
 <h3 id="app-slide-countdown-usage-1">Usage</h3>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-deck&gt;{'\n'}    &lt;deckgo-slide-countdown hours=&quot;1&quot; minutes=&quot;0&quot; seconds=&quot;5&quot;&gt;{'\n'}        &lt;h1 slot=&quot;title&quot;&gt;My presentation starts at&lt;&#47;h1&gt;{'\n'}        &lt;p slot=&quot;hours&quot;&gt;Hours&lt;&#47;p&gt;{'\n'}        &lt;p slot=&quot;minutes&quot;&gt;Minutes&lt;&#47;p&gt;{'\n'}        &lt;p slot=&quot;seconds&quot;&gt;Seconds&lt;&#47;p&gt;{'\n'}    &lt;&#47;deckgo-slide-countdown&gt;{'\n'}&lt;&#47;deckgo-deck&gt;  </code>
+      <code slot="code">&lt;deckgo-deck&gt;{'\n'}    &lt;deckgo-slide-countdown until=&quot;2019-08-05T23:25:59.000+02:00&quot;&gt;{'\n'}        &lt;h1 slot=&quot;title&quot;&gt;My presentation starts at&lt;&#47;h1&gt;{'\n'}        &lt;p slot=&quot;days&quot;&gt;Days&lt;&#47;p&gt;{'\n'}        &lt;p slot=&quot;hours&quot;&gt;Hours&lt;&#47;p&gt;{'\n'}        &lt;p slot=&quot;minutes&quot;&gt;Minutes&lt;&#47;p&gt;{'\n'}        &lt;p slot=&quot;seconds&quot;&gt;Seconds&lt;&#47;p&gt;{'\n'}    &lt;&#47;deckgo-slide-countdown&gt;{'\n'}&lt;&#47;deckgo-deck&gt;  </code>
     </deckgo-highlight-code><h3 id="app-slide-countdown-slots">Slots</h3>
-<p>The slots <code>title</code> as well as <code>hours</code>, <code>minutes</code> and <code>seconds</code> are optional.</p>
+<p>The slots <code>title</code> as well as <code>days</code>, <code>hours</code>, <code>minutes</code> and <code>seconds</code> are optional.</p>
 <h3 id="app-slide-countdown-notes">Notes</h3>
 <p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
 <p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
 <h2 id="app-slide-countdown-attributes">Attributes</h2>
-<p>The time until your presentation should be provided to render the countdown. This amount of time should at least be given in seconds (max. 59). For that purpose, this components exposes the following attributes:</p>
+<p>The time until your presentation should be provided to render the countdown. This value could be either passed through attributes <code>days</code>, <code>hours</code>, <code>minutes</code> and <code>seconds</code> or as a particular date using <code>until</code>. </p>
+<p>This components exposes the following attributes:</p>
 <table>
 <thead>
 <tr>
@@ -83,6 +84,12 @@ export class AppSlideCountdown {
 </tr>
 </thead>
 <tbody><tr>
+<td>days</td>
+<td>number</td>
+<td>0</td>
+<td>The amount of days before your presentations (max. 99 will be displayed)</td>
+</tr>
+<tr>
 <td>hours</td>
 <td>number</td>
 <td>0</td>
@@ -101,6 +108,12 @@ export class AppSlideCountdown {
 <td>The amount of seconds before your presentations (max. 59)</td>
 </tr>
 <tr>
+<td>until</td>
+<td>string</td>
+<td></td>
+<td>A specific date and time until when your presentation will start</td>
+</tr>
+<tr>
 <td>custom-background</td>
 <td>boolean</td>
 <td>false</td>
@@ -113,6 +126,7 @@ export class AppSlideCountdown {
 <td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
 </tr>
 </tbody></table>
+<p>If you would provide a date using <code>until</code>, note that the format should be provided as a valid and parsable date. See <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/parse">Date.parse()</a> for more information about the format.</p>
 <h3 id="app-slide-countdown-example-without-any-slots">Example without any slots</h3>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-qrcode hours=&quot;0&quot; minutes=&quot;10&quot; seconds=&quot;45&quot;&gt;{'\n'}  &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;  </code>
