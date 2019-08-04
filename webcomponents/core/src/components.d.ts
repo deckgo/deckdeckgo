@@ -103,6 +103,7 @@ export namespace Components {
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'days': number;
     'hours': number;
     'lazyLoadContent': () => Promise<void>;
     'minutes': number;
@@ -368,6 +369,7 @@ declare namespace LocalJSX {
   interface DeckgoSlideCountdown extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCountdownElement> {
     'customActions'?: boolean;
     'customBackground'?: boolean;
+    'days'?: number;
     'hours'?: number;
     'minutes'?: number;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
