@@ -101,12 +101,15 @@ export namespace Components {
   interface DeckgoSlideCountdown {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'hours': number;
     'lazyLoadContent': () => Promise<void>;
     'minutes': number;
     'seconds': number;
     'start': () => Promise<void>;
     'stop': () => Promise<void>;
+    'until': string;
   }
   interface DeckgoSlideGif {
     'afterSwipe': () => Promise<void>;
@@ -363,10 +366,13 @@ declare namespace LocalJSX {
     'revealShowFirst'?: boolean;
   }
   interface DeckgoSlideCountdown extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCountdownElement> {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'hours'?: number;
     'minutes'?: number;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'seconds'?: number;
+    'until'?: string;
   }
   interface DeckgoSlideGif extends JSXBase.HTMLAttributes<HTMLDeckgoSlideGifElement> {
     'alt'?: string;
