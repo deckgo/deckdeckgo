@@ -11,19 +11,19 @@ deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck
   padding: 8px;
 }
 
+deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck deckgo-highlight-code, deckgo-deck deckgo-lazy-img[slot] {
+  margin: 16px 0;
+}
+
 deckgo-slide-split {
   --slide-split-padding-top: 64px;
   --slide-split-padding-bottom: 64px;
 }
 
-deckgo-deck deckgo-slide-split h1, deckgo-deck deckgo-slide-split h2, deckgo-deck deckgo-slide-split h3, deckgo-deck deckgo-slide-split section {
-  margin: 0;
-}
-
 @media screen and (max-width: 1024px) {
   deckgo-slide-split {
-    --slide-split-padding-top: 32px;
-    --slide-split-padding-bottom: 32px;
+    --slide-split-padding-top: 16px;
+    --slide-split-padding-bottom: 16px;
   }
 }
 
