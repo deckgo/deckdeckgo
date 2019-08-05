@@ -47,12 +47,10 @@ deckgo-deck deckgo-lazy-img[slot] {
   height: auto;
   max-height: 100%;
 
-  --deckgo-lazy-img-width: 100%;
-  --deckgo-lazy-img-height: auto;
+  --deckgo-lazy-img-width: auto;
+  --deckgo-lazy-img-height: 100%;
   --deckgo-lazy-img-vertical-align: top;
   --deckgo-lazy-img-object-fit: contain;
-
-  display: inline-flex;
 }
 
 deckgo-deck > * div[slot="background"] {
