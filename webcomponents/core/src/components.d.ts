@@ -98,6 +98,20 @@ export namespace Components {
     'reveal': boolean;
     'revealShowFirst': boolean;
   }
+  interface DeckgoSlideCountdown {
+    'afterSwipe': () => Promise<void>;
+    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
+    'days': number;
+    'hours': number;
+    'lazyLoadContent': () => Promise<void>;
+    'minutes': number;
+    'seconds': number;
+    'start': () => Promise<void>;
+    'stop': () => Promise<void>;
+    'until': string;
+  }
   interface DeckgoSlideGif {
     'afterSwipe': () => Promise<void>;
     'alt': string;
@@ -213,6 +227,12 @@ declare global {
     new (): HTMLDeckgoSlideContentElement;
   };
 
+  interface HTMLDeckgoSlideCountdownElement extends Components.DeckgoSlideCountdown, HTMLStencilElement {}
+  var HTMLDeckgoSlideCountdownElement: {
+    prototype: HTMLDeckgoSlideCountdownElement;
+    new (): HTMLDeckgoSlideCountdownElement;
+  };
+
   interface HTMLDeckgoSlideGifElement extends Components.DeckgoSlideGif, HTMLStencilElement {}
   var HTMLDeckgoSlideGifElement: {
     prototype: HTMLDeckgoSlideGifElement;
@@ -262,6 +282,7 @@ declare global {
     'deckgo-slide-chart': HTMLDeckgoSlideChartElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
     'deckgo-slide-content': HTMLDeckgoSlideContentElement;
+    'deckgo-slide-countdown': HTMLDeckgoSlideCountdownElement;
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
     'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement;
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
@@ -345,6 +366,16 @@ declare namespace LocalJSX {
     'reveal'?: boolean;
     'revealShowFirst'?: boolean;
   }
+  interface DeckgoSlideCountdown extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCountdownElement> {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
+    'days'?: number;
+    'hours'?: number;
+    'minutes'?: number;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'seconds'?: number;
+    'until'?: string;
+  }
   interface DeckgoSlideGif extends JSXBase.HTMLAttributes<HTMLDeckgoSlideGifElement> {
     'alt'?: string;
     'customActions'?: boolean;
@@ -404,6 +435,7 @@ declare namespace LocalJSX {
     'deckgo-slide-chart': DeckgoSlideChart;
     'deckgo-slide-code': DeckgoSlideCode;
     'deckgo-slide-content': DeckgoSlideContent;
+    'deckgo-slide-countdown': DeckgoSlideCountdown;
     'deckgo-slide-gif': DeckgoSlideGif;
     'deckgo-slide-qrcode': DeckgoSlideQrcode;
     'deckgo-slide-split': DeckgoSlideSplit;
