@@ -36,8 +36,9 @@ The "Countdown" slide's Web Component could be integrated using the tag `<deckgo
 
 ```
 <deckgo-deck>
-    <deckgo-slide-countdown hours="1" minutes="0" seconds="5">
+    <deckgo-slide-countdown until="2019-08-05T23:25:59.000+02:00">
         <h1 slot="title">My presentation starts at</h1>
+        <p slot="days">Days</p>
         <p slot="hours">Hours</p>
         <p slot="minutes">Minutes</p>
         <p slot="seconds">Seconds</p>
@@ -47,7 +48,7 @@ The "Countdown" slide's Web Component could be integrated using the tag `<deckgo
 
 ### Slots
 
-The slots `title` as well as `hours`, `minutes` and `seconds` are optional.
+The slots `title` as well as `days`, `hours`, `minutes` and `seconds` are optional.
 
 ### Notes
 
@@ -57,15 +58,21 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 ## Attributes
 
-The time until your presentation should be provided to render the countdown. This amount of time should at least be given in seconds (max. 59). For that purpose, this components exposes the following attributes:
+The time until your presentation should be provided to render the countdown. This value could be either passed through attributes `days`, `hours`, `minutes` and `seconds` or as a particular date using `until`. 
+
+This components exposes the following attributes:
                                                                                                                                                                                                                                                         
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |-----------------|-----------------|-----------------|
+| days | number | 0 | The amount of days before your presentations (max. 99 will be displayed) |
 | hours | number | 0 | The amount of hours before your presentations (max. 23) |
 | minutes | number | 0 | The amount of minutes before your presentations (max. 59) |
 | seconds | number | 0 | The amount of seconds before your presentations (max. 59) |
+| until | string | | A specific date and time until when your presentation will start |
 | custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
 | custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+
+If you would provide a date using `until`, note that the format should be provided as a valid and parsable date. See [Date.parse()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/parse) for more information about the format.
 
 ### Example without any slots
 
