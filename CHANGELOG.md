@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.53-1"></a>
+# [1.0.0-beta.53-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.53...v1.0.0-beta.53-1) (2019-08-06)
+
+### Applications
+
+* docs: v1.0.0-alpha.23-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
+### Web Components
+
+* core: v1.0.0-beta.45-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+
 <a name="1.0.0-beta.53"></a>
 # [1.0.0-beta.53](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.52-3...v1.0.0-beta.53) (2019-08-06)
 
