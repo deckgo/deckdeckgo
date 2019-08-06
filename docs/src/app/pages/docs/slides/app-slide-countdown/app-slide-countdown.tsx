@@ -183,18 +183,23 @@ export class AppSlideCountdown {
 <td>The bottom padding of the displayed time container</td>
 </tr>
 <tr>
-<td>--slide-countdown-digits-width</td>
-<td>16em</td>
-<td>The width of two displayed digit (Example: 16:00:00, 16em is the width of a digits 00 or 16) including spacing</td>
+<td>--slide-countdown-digits-max-width</td>
+<td>36em</td>
+<td>The max width of the container containing all digits</td>
+</tr>
+<tr>
+<td>--slide-countdown-digits-minmax-width</td>
+<td>12em</td>
+<td>The grid minmax value of one of the three columns of digits</td>
 </tr>
 <tr>
 <td>--slide-countdown-digits-width</td>
-<td>6em</td>
-<td>The width of the (two) digits</td>
+<td>4em</td>
+<td>The width of one of the (two) digits</td>
 </tr>
 <tr>
 <td>--slide-countdown-digits-height</td>
-<td></td>
+<td>4m</td>
 <td>The height of the (two) digits</td>
 </tr>
 <tr>
@@ -219,7 +224,7 @@ export class AppSlideCountdown {
 </tr>
 <tr>
 <td>--slide-countdown-digits-font-size</td>
-<td>5em</td>
+<td>3em</td>
 <td>The border-radius of the (two) digits</td>
 </tr>
 <tr>

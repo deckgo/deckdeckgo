@@ -96,14 +96,15 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
 | --slide-countdown-container-padding-bottom | 64px | The bottom padding of the displayed time container |
-| --slide-countdown-digits-width | 16em | The width of two displayed digit (Example: 16:00:00, 16em is the width of a digits 00 or 16) including spacing |
-| --slide-countdown-digits-width  | 6em | The width of the (two) digits |
-| --slide-countdown-digits-height |  | The height of the (two) digits |
+| --slide-countdown-digits-max-width  | 36em | The max width of the container containing all digits |
+| --slide-countdown-digits-minmax-width  | 12em | The grid minmax value of one of the three columns of digits |
+| --slide-countdown-digits-width  | 4em | The width of one of the (two) digits |
+| --slide-countdown-digits-height | 4m | The height of the (two) digits |
 | --slide-countdown-digits-background |  | The background color of the (two) digits |
 | --slide-countdown-digits-border-radius |  | The border-radius of the (two) digits |
 | --slide-countdown-digits-box-shadow | 0 3px 4px 0 rgba(0, 0, 0, .2), inset 2px 4px 0 0 rgba(255, 255, 255, .08) | The box-shadow of the (two) digits |
 | --slide-countdown-digit-margin-right | 0.625em | The space between two digits |
-| --slide-countdown-digits-font-size | 5em | The border-radius of the (two) digits |
+| --slide-countdown-digits-font-size | 3em | The border-radius of the (two) digits |
 | --slide-countdown-digits-font-weight |  | The font-weight of the (two) digits |
 | --slide-countdown-digits-color |  | The color of the (two) digits |
 
