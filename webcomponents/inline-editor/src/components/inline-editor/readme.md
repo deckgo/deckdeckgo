@@ -9,7 +9,7 @@
 
 | Property              | Attribute                | Description | Type          | Default                   |
 | --------------------- | ------------------------ | ----------- | ------------- | ------------------------- |
-| `attachTo`            | `attach-to`                       |             | `HTMLElement` | `undefined`               |
+| `attachTo`            | --                       |             | `HTMLElement` | `undefined`               |
 | `containers`          | `containers`             |             | `string`      | `'h1,h2,h3,h4,h5,h6,div'` |
 | `imgAnchor`           | `img-anchor`             |             | `string`      | `'img'`                   |
 | `imgEditable`         | `img-editable`           |             | `boolean`     | `false`                   |
