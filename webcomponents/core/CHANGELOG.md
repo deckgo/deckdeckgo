@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.44"></a>
-# 1.0.0-beta.45 (Not released yet)
+<a name="1.0.0-beta.45"></a>
+# 1.0.0-beta.45 (2019-08-06)
 
 ### Features
 
