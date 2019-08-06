@@ -29,7 +29,7 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
  
 </div>
 
-<deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor>
+<deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable={true}></deckgo-inline-editor>
 
 ## Getting started
 

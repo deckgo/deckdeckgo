@@ -62,7 +62,7 @@ export class AppComponentsInlineEditor {
 
 </div>
 
-<p><deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor></p>
+<p><deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable={true}></deckgo-inline-editor></p>
 <h2 id="app-components-inline-editor-getting-started">Getting started</h2>
 <p>This Web Component is an inline WYSIWYG HTML Editor, It creates a floating editor bar or a sticky footer bar that shows up when you select a piece of text of your page.</p>
 <p>To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a>.</p>
