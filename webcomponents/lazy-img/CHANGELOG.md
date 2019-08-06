@@ -1,3 +1,8 @@
+<a name="1.0.0-alpha.11"></a>
+# 1.0.0-alpha.11 (Not released)
+
+* add a CSS variable for the property `object-fit`
+
 <a name="1.0.0-alpha.10"></a>
 # 1.0.0-alpha.10 (2019-07-17)
 

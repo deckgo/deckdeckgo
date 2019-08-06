@@ -65,13 +65,17 @@ The `<deckgo-inline-editor/>` should be added once only in your page. It will in
 
 The `<deckgo-inline-editor/>` expose the following properties:
 
-| Property              | Attribute               | Description | Type      | Default     |
-| --------------------- | ----------------------- | ----------- | --------- | ----------- |
-| `mobile`              | `mobile`                | The mobile mode is automatically recognize, but just it case you would like to "force" it            | `boolean` | `false` or `true` according the device    |
-| `stickyDesktop`       | `sticky-desktop`        | Use a sticky footer toolbar on desktop            | `boolean` | `false`     |
-| `stickyMobile`        | `sticky-mobile`         | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top.     | `boolean` | `false`     |
-| `attachTo`            | `attach-to`             | Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document | `HTMLElement` |     |
-| `containers`            | `containers`             | A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color | `string` |   `h1,h2,h3,h4,h5,h6,div`  |
+| Property              | Attribute                | Description | Type          | Default                   |
+| --------------------- | ------------------------ | ----------- | ------------- | ------------------------- |
+| `attachTo`            | `attach-to`              | Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document. | `HTMLElement` | `undefined`               |
+| `containers`          | `containers`             | A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color. | `string`      | `'h1,h2,h3,h4,h5,h6,div'` |
+| `imgAnchor`           | `img-anchor`             | The type of element to attach the image toolbar. | `string`      | `'img'`                   |
+| `imgEditable`         | `img-editable`           | Per default, the component will not consider images as editable. Turn this option to `true` to activate the edition of images. | `boolean`     | `false`                   |
+| `imgPropertyCssFloat` | `img-property-css-float` | In case you would like to use a specific property to specify the `float` on your image. | `string`      | `'cssFloat'`              |
+| `imgPropertyWidth`    | `img-property-width`     | In case you would like to use a specific property to specify the `width` on your image. | `string`      | `'width'`                 |
+| `mobile`              | `mobile`                 | The mobile mode is automatically recognize, but just it case you would like to "force" it. | `boolean`     | `false`                   |
+| `stickyDesktop`       | `sticky-desktop`         | Use a sticky footer toolbar on desktop | `boolean`     | `false`                   |
+| `stickyMobile`        | `sticky-mobile`          | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top. | `boolean`     | `false`                   |
 
 ### Styling
 

@@ -1,9 +1,10 @@
-<a name="1.0.0-alpha.22"></a>
-# 1.0.0-alpha.23 (Not released but published)
+<a name="1.0.0-alpha.23"></a>
+# 1.0.0-alpha.23 (Not released yet)
 
 ### Features
 
 * improve demo slides in the documentation ([#199](https://github.com/deckgo/deckdeckgo/issues/199))
+* add new attributes to the component `inline-editor`
 
 <a name="1.0.0-alpha.22"></a>
 # 1.0.0-alpha.22 (2019-07-30)

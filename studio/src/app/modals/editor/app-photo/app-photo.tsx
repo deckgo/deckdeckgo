@@ -191,7 +191,7 @@ export class AppPhoto {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Add a stock photo</ion-title>
+                    <ion-title class="ion-text-uppercase">Stock photo</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">

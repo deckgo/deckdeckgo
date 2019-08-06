@@ -63,6 +63,7 @@ The following theming options will affect this component if set on its host or p
 | --deckgo-lazy-img-vertical-align | | Image vertical alignment |
 | --deckgo-lazy-img-display | | The display property of the image |
 | --deckgo-lazy-img-border-radius | | In case you would like to specify a border radius for the image |
+| --deckgo-lazy-img-object-fit  | | The property object-fit of the image |
 
 ### Methods
 
