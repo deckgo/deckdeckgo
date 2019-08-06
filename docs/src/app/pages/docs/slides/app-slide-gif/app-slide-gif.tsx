@@ -1,4 +1,4 @@
-import {Component, Element, h} from '@stencil/core';
+import {Component, Element, h, Listen} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -24,6 +24,13 @@ export class AppSlideGif {
 
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.reloadCode(this.el);
+  }
+
+  @Listen('slidesDidLoad')
+  async onSlidesDidLoad($event: CustomEvent) {
+    if ($event) {
+      await DeckdeckgoDocsUtils.initSlideSize($event.target as HTMLElement);
+    }
   }
 
   render() {

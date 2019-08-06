@@ -60,4 +60,15 @@ export class DeckdeckgoDocsUtils {
     }
   }
 
+  static initSlideSize(deck: HTMLElement): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!deck) {
+        return;
+      }
+
+      await (deck as any).initSlideSize();
+
+      resolve();
+    });
+  }
 }
