@@ -14,10 +14,10 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/core": "^1.0.0-beta.44",
+    "@deckdeckgo/core": "^1.0.0-beta.45",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.17-3",
-    "@deckdeckgo/inline-editor": "file:../webcomponents/inline-editor/deckdeckgo-inline-editor-1.0.0-alpha.12.tgz",
-    "@deckdeckgo/lazy-img": "file:../webcomponents/lazy-img/deckdeckgo-lazy-img-1.0.0-alpha.11.tgz",
+    "@deckdeckgo/inline-editor": "^1.0.0-alpha.12",
+    "@deckdeckgo/lazy-img": "^1.0.0-alpha.11",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.9",
     "@deckdeckgo/remote": "^1.0.0-alpha.11",
     "@deckdeckgo/utils": "^1.0.0-alpha.2",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.11",
-    "@stencil/core": "^1.2.2",
+    "@stencil/core": "^1.2.3",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",
     "autoprefixer": "^9.6.1",
