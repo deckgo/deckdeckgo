@@ -14,7 +14,7 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/core": "^1.0.0-beta.45",
+    "@deckdeckgo/core": "^1.0.0-beta.45-2",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.17-3",
     "@deckdeckgo/inline-editor": "^1.0.0-alpha.12",
     "@deckdeckgo/lazy-img": "^1.0.0-alpha.12",
