@@ -4,6 +4,7 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
 
 export class ApiUserService {
 
@@ -70,9 +71,9 @@ export class ApiUserService {
     query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser> {
         return new Promise<ApiUser>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-                const rawResponse: Response = await fetch(apiUrl + context, {
+                const rawResponse: Response = await fetch(config.apiUrl + context, {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
@@ -101,9 +102,9 @@ export class ApiUserService {
     private get(userId: string): Promise<ApiUser> {
         return new Promise<ApiUser>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-                const rawResponse: Response = await fetch(apiUrl + `/users/${userId}`, {
+                const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -131,9 +132,9 @@ export class ApiUserService {
     delete(userId: string, token: string): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-                const rawResponse: Response = await fetch(apiUrl + `/users/${userId}`, {
+                const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',

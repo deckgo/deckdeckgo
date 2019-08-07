@@ -15,9 +15,12 @@ import '@deckdeckgo/lazy-img';
 import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment/environment-config';
 
 setupDeckGoConfig({
-    appUrl: 'http://@deckdeckgo/studio-beta.firebaseapp.com',
-    apiUrl: '<@API_URL@>',
-    presentationUrl: '<@PRESENTATION_URL@>',
+    deckdeckgo: {
+        appUrl: 'http://@deckdeckgo/studio-beta.firebaseapp.com',
+        apiUrl: '<@API_URL@>',
+        presentationUrl: '<@PRESENTATION_URL@>',
+        globalAssetsUrl: 'https://deckdeckgo.com/assets'
+    },
     firebase: {
         apiKey: '<@FIREBASE_API_KEY@>',
         authDomain: '<@FIREBASE_AUTH_DOMAIN@>',
