@@ -1,4 +1,4 @@
-import {Component, Element, h} from '@stencil/core';
+import {Component, Element, h, Listen} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -24,6 +24,13 @@ export class AppSlidesConcept {
 
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.reloadCode(this.el);
+  }
+
+  @Listen('slidesDidLoad')
+  async onSlidesDidLoad($event: CustomEvent) {
+    if ($event) {
+      await DeckdeckgoDocsUtils.initSlideSize($event.target as HTMLElement);
+    }
   }
 
   render() {
@@ -163,6 +170,20 @@ export class AppSlidesConcept {
         <h1 slot="title">slot="title"</h1>
         <p slot="content">slot="content"</p>
     </deckgo-slide-qrcode>
+  </deckgo-deck>
+</div>
+
+<ul>
+<li>Slide: <a href="/slides/countdown">Countdown</a></li>
+</ul>
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-countdown hours={1} minutes={0} seconds={5}>
+        <h1 slot="title">slot="title"</h1>
+        <p slot="hours">slot="hours"</p>
+        <p slot="minutes">slot="minutes"</p>
+        <p slot="seconds">slot="seconds"</p>
+    </deckgo-slide-countdown>
   </deckgo-deck>
 </div>
 

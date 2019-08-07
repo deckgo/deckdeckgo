@@ -57,6 +57,7 @@ export namespace Components {
   interface AppSlideChart {}
   interface AppSlideCode {}
   interface AppSlideContent {}
+  interface AppSlideCountdown {}
   interface AppSlideGif {}
   interface AppSlideQrcode {}
   interface AppSlideSplit {}
@@ -320,6 +321,12 @@ declare global {
     new (): HTMLAppSlideContentElement;
   };
 
+  interface HTMLAppSlideCountdownElement extends Components.AppSlideCountdown, HTMLStencilElement {}
+  var HTMLAppSlideCountdownElement: {
+    prototype: HTMLAppSlideCountdownElement;
+    new (): HTMLAppSlideCountdownElement;
+  };
+
   interface HTMLAppSlideGifElement extends Components.AppSlideGif, HTMLStencilElement {}
   var HTMLAppSlideGifElement: {
     prototype: HTMLAppSlideGifElement;
@@ -398,6 +405,7 @@ declare global {
     'app-slide-chart': HTMLAppSlideChartElement;
     'app-slide-code': HTMLAppSlideCodeElement;
     'app-slide-content': HTMLAppSlideContentElement;
+    'app-slide-countdown': HTMLAppSlideCountdownElement;
     'app-slide-gif': HTMLAppSlideGifElement;
     'app-slide-qrcode': HTMLAppSlideQrcodeElement;
     'app-slide-split': HTMLAppSlideSplitElement;
@@ -456,6 +464,7 @@ declare namespace LocalJSX {
   interface AppSlideChart extends JSXBase.HTMLAttributes<HTMLAppSlideChartElement> {}
   interface AppSlideCode extends JSXBase.HTMLAttributes<HTMLAppSlideCodeElement> {}
   interface AppSlideContent extends JSXBase.HTMLAttributes<HTMLAppSlideContentElement> {}
+  interface AppSlideCountdown extends JSXBase.HTMLAttributes<HTMLAppSlideCountdownElement> {}
   interface AppSlideGif extends JSXBase.HTMLAttributes<HTMLAppSlideGifElement> {}
   interface AppSlideQrcode extends JSXBase.HTMLAttributes<HTMLAppSlideQrcodeElement> {}
   interface AppSlideSplit extends JSXBase.HTMLAttributes<HTMLAppSlideSplitElement> {}
@@ -506,6 +515,7 @@ declare namespace LocalJSX {
     'app-slide-chart': AppSlideChart;
     'app-slide-code': AppSlideCode;
     'app-slide-content': AppSlideContent;
+    'app-slide-countdown': AppSlideCountdown;
     'app-slide-gif': AppSlideGif;
     'app-slide-qrcode': AppSlideQrcode;
     'app-slide-split': AppSlideSplit;

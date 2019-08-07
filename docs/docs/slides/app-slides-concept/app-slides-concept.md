@@ -121,7 +121,6 @@ In the previous example, the presentation contains two slides. The first slide u
 
 * Slide: [Author](/slides/author)
 
-
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
@@ -141,6 +140,19 @@ In the previous example, the presentation contains two slides. The first slide u
         <h1 slot="title">slot="title"</h1>
         <p slot="content">slot="content"</p>
     </deckgo-slide-qrcode>
+  </deckgo-deck>
+</div>
+
+* Slide: [Countdown](/slides/countdown)
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-countdown hours={1} minutes={0} seconds={5}>
+        <h1 slot="title">slot="title"</h1>
+        <p slot="hours">slot="hours"</p>
+        <p slot="minutes">slot="minutes"</p>
+        <p slot="seconds">slot="seconds"</p>
+    </deckgo-slide-countdown>
   </deckgo-deck>
 </div>
 

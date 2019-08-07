@@ -14,10 +14,10 @@ div.deckgo-countdown-container {
   padding-bottom: var(--slide-countdown-container-padding-bottom, 64px);
 
   width: inherit;
-  max-width: calc(3 * var(--slide-countdown-digits-width, 16em));
+  max-width: var(--slide-countdown-digits-max-width, 36em);
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--slide-countdown-digits-width, 16em), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--slide-countdown-digits-minmax-width, 12em), 1fr));
 
   div.time-container {
     display: flex;
@@ -30,20 +30,25 @@ div.deckgo-countdown-container {
       text-align: center;
 
       div.figure {
-        width: var(--slide-countdown-digit-width, 6em);
-        height: var(--slide-countdown-digit-height);
-        background-color: var(--clock-background-color, #fff);
-        border-radius: var(--slide-countdown-digit-border-radius, 0.5em);
-        box-shadow: var(--slide-countdown-digit-box-shadow, 0 3px 4px 0 rgba(0, 0, 0, .2), inset 2px 4px 0 0 rgba(255, 255, 255, .08));
+        width: var(--slide-countdown-digits-width, 4em);
+        height: var(--slide-countdown-digits-height, 4em);
+        background: var(--slide-countdown-digits-background, #fff);
+        border-radius: var(--slide-countdown-digits-border-radius, 0.5em);
+        box-shadow: var(--slide-countdown-digits-box-shadow, 0 3px 4px 0 rgba(0, 0, 0, .2), inset 2px 4px 0 0 rgba(255, 255, 255, .08));
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
 
         &:first-of-type {
           margin-right: var(--slide-countdown-digit-margin-right, 0.625em);
         }
 
         > span {
-          font-size: var(--slide-countdown-digit-font-size, 5em);
-          font-weight: var(--slide-countdown-digit-font-weight);
-          color: var(--slide-countdown-digit-font-color);
+          font-size: var(--slide-countdown-digits-font-size, 3em);
+          font-weight: var(--slide-countdown-digits-font-weight);
+          color: var(--slide-countdown-digits-color);
         }
       }
     }

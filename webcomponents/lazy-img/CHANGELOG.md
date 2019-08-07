@@ -1,3 +1,15 @@
+<a name="1.0.0-alpha.12"></a>
+# 1.0.0-alpha.12 (2019-08-07)
+
+### Features
+
+* `lazy-img` component now lazy load images using native lazy-loading
+
+<a name="1.0.0-alpha.11"></a>
+# 1.0.0-alpha.11 (2019-08-06)
+
+* add a CSS variable for the property `object-fit`
+
 <a name="1.0.0-alpha.10"></a>
 # 1.0.0-alpha.10 (2019-07-17)
 

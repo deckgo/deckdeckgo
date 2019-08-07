@@ -1,4 +1,4 @@
-import {Component, Element, Method, State, Event, EventEmitter, Listen, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Listen, Method, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Subject, Subscription} from 'rxjs';
@@ -46,6 +46,9 @@ export class AppEditorToolbar {
     @State()
     private youtube: boolean = false;
 
+    @State()
+    private image: boolean = false;
+
     private applyToAllDeck: boolean = false;
 
     @Event() private blockSlide: EventEmitter<boolean>;
@@ -55,6 +58,7 @@ export class AppEditorToolbar {
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
     @Event() private codeDidChange: EventEmitter<HTMLElement>;
+    @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
     private subscription: Subscription;
     private busyService: BusyService;
@@ -158,12 +162,22 @@ export class AppEditorToolbar {
 
             await this.initSelectedElement(selected);
 
+            // In case of slot deckgo-lazy-img, if user doesn't have yet defined a src for the image, we display the image picker/popover first instead of the toolbar
+            if (this.isImgNotDefined(element)) {
+                await this.openImage();
+            }
+
             await this.displayToolbar(selected);
 
             this.blockSlide.emit(!this.deckOrSlide);
 
             resolve();
         });
+    }
+
+    private isImgNotDefined(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img' &&
+            !element.hasAttribute('img-src')
     }
 
     @Method()
@@ -213,6 +227,10 @@ export class AppEditorToolbar {
 
     private isElementYoutubeSlide(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-youtube';
+    }
+
+    private isElementImage(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img';
     }
 
     private cleanOnPaste = async ($event) => {
@@ -312,24 +330,6 @@ export class AppEditorToolbar {
             const style: CSSStyleDeclaration = window.getComputedStyle(element);
             this.color = style.color;
             this.background = style.backgroundColor;
-
-            const colorPicker: HTMLElement = this.el.querySelector('input[name=\'color-picker\']');
-
-            if (!colorPicker) {
-                resolve();
-                return;
-            }
-
-            await this.setToolbarPosition(element, colorPicker, 38);
-
-            const backgroundPicker: HTMLElement = this.el.querySelector('input[name=\'background-picker\']');
-
-            if (!backgroundPicker) {
-                resolve();
-                return;
-            }
-
-            await this.setToolbarPosition(element, backgroundPicker, 78);
 
             resolve();
         });
@@ -555,6 +555,7 @@ export class AppEditorToolbar {
             this.deckOrSlide = this.isElementSlideOrDeck(element);
             this.code = this.isElementCode(element);
             this.youtube = this.isElementYoutubeSlide(element);
+            this.image = this.isElementImage(element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
@@ -621,11 +622,13 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openBackground() {
+    private async openImage() {
         const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
             component: 'app-image',
             componentProps: {
-                deckOrSlide: this.deckOrSlide
+                selectedElement: this.selectedElement,
+                deckOrSlide: this.deckOrSlide,
+                imgDidChange: this.imgDidChange
             },
             mode: 'md',
             cssClass: 'popover-menu'
@@ -739,8 +742,8 @@ export class AppEditorToolbar {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderSlotType()}
-                {this.renderPhotos()}
                 {this.renderColor()}
+                {this.renderImages()}
                 {this.renderYoutube()}
                 {this.renderCodeOptions()}
                 {this.renderDelete()}
@@ -781,10 +784,14 @@ export class AppEditorToolbar {
         }
     }
 
-    private renderPhotos() {
-        return <a onClick={() => this.openBackground()} title="Background">
-            <ion-icon name="images"></ion-icon>
-        </a>
+    private renderImages() {
+        if (!this.image && !this.deckOrSlide) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.openImage()} title={this.deckOrSlide ? 'Background' : 'Image'}>
+                <ion-icon name="images"></ion-icon>
+            </a>
+        }
     }
 
     private renderYoutube() {

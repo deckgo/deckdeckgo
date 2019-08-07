@@ -7,8 +7,12 @@ deckgo-deck {
 
 deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck deckgo-highlight-code {
   width: 100%;
-
   padding: 8px;
+  overflow: hidden;
+}
+
+deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck deckgo-highlight-code, deckgo-deck deckgo-lazy-img[slot] {
+  margin: 16px 0;
 }
 
 deckgo-slide-split {
@@ -18,8 +22,8 @@ deckgo-slide-split {
 
 @media screen and (max-width: 1024px) {
   deckgo-slide-split {
-    --slide-split-padding-top: 32px;
-    --slide-split-padding-bottom: 32px;
+    --slide-split-padding-top: 16px;
+    --slide-split-padding-bottom: 16px;
   }
 }
 
@@ -27,11 +31,26 @@ deckgo-deck deckgo-social {
   display: flex;
 }
 
+deckgo-deck deckgo-highlight-code {
+  margin: 8px 0;
+}
+
 deckgo-deck deckgo-social deckgo-lazy-img {
   --deckgo-lazy-img-width: 2rem;
   --deckgo-lazy-img-height: auto;
   --deckgo-lazy-img-vertical-align: top;
   --deckgo-lazy-img-padding: 0 8px 0 0;
+}
+
+deckgo-deck deckgo-lazy-img[slot] {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+
+  --deckgo-lazy-img-width: auto;
+  --deckgo-lazy-img-height: 100%;
+  --deckgo-lazy-img-vertical-align: top;
+  --deckgo-lazy-img-object-fit: contain;
 }
 
 deckgo-deck > * div[slot="background"] {
@@ -43,10 +62,6 @@ deckgo-deck > * div[slot="background"] {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-deckgo-deck :not([slot="background"]):not([slot="social-link"]) > deckgo-lazy-img {
-  --deckgo-lazy-img-padding: 16px;
 }
 
 deckgo-deck [slot="background"] > deckgo-lazy-img {

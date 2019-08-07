@@ -39,6 +39,7 @@ export class AppSlideAdd {
                 <a onClick={() => this.closePopover(SlotType.H2)} class={this.currentType === SlotType.H2 ? "current" : ""}><ion-item><h2>Large title</h2></ion-item></a>
                 <a onClick={() => this.closePopover(SlotType.H3)} class={this.currentType === SlotType.H3 ? "current" : ""}><ion-item><h3>Small title</h3></ion-item></a>
                 <a onClick={() => this.closePopover(SlotType.SECTION)} class={this.currentType === SlotType.SECTION ? "current" : ""}><ion-item><p>Paragraph</p></ion-item></a>
+                <a onClick={() => this.closePopover(SlotType.IMG)} class={this.currentType === SlotType.IMG ? "current" : ""}><ion-item><p>Image</p></ion-item></a>
                 <a onClick={() => this.closePopover(SlotType.CODE)} class={this.currentType === SlotType.CODE ? "current" : ""}><ion-item><p>Code</p></ion-item></a>
             </ion-list>
         ]

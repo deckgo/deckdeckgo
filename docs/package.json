@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-docs",
-  "version": "1.0.0-alpha.22-1",
+  "version": "1.0.0-alpha.24",
   "description": "The Progressive Web App alternative for simple presentations",
   "license": "MIT",
   "files": [
@@ -15,21 +15,21 @@
   },
   "dependencies": {
     "@deckdeckgo/charts": "^1.0.0-alpha.8",
-    "@deckdeckgo/core": "^1.0.0-beta.44",
-    "@deckdeckgo/highlight-code": "^1.0.0-alpha.17",
-    "@deckdeckgo/inline-editor": "^1.0.0-alpha.11",
+    "@deckdeckgo/core": "^1.0.0-beta.45",
+    "@deckdeckgo/highlight-code": "^1.0.0-alpha.17-3",
+    "@deckdeckgo/inline-editor": "^1.0.0-alpha.12",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.9",
     "@ionic/core": "^4.7.1",
     "rxjs": "^6.5.2"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.11",
-    "@stencil/core": "^1.2.2",
+    "@stencil/core": "^1.2.3",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",
     "@types/glob": "^7.1.1",
     "@types/marked": "^0.6.5",
-    "@types/node": "^12.6.8",
+    "@types/node": "^12.6.9",
     "autoprefixer": "^9.6.1",
     "glob": "^7.1.4",
     "marked": "^0.7.0",

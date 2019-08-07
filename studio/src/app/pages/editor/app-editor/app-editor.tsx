@@ -468,7 +468,7 @@ export class AppEditor {
                 if (e.nodeName) {
                     if (e.nodeName.toLowerCase() === SlotType.CODE) {
                         e.setAttribute('editable', '');
-                    } else if (e.nodeName.toLowerCase() !== SlotType.SOCIAL) {
+                    } else if (e.nodeName.toLowerCase() !== SlotType.SOCIAL && e.nodeName.toLowerCase() !== SlotType.IMG) {
                         e.setAttribute('contentEditable', '');
                     }
                 }
@@ -555,8 +555,7 @@ export class AppEditor {
             </ion-footer>,
             <deckgo-inline-editor containers="h1,h2,h3,section" sticky-mobile="true"
                                   onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
-                                  img-anchor="deckgo-lazy-img" img-property-width="--deckgo-lazy-img-width"
-                                  img-property-css-float="--deckgo-lazy-img-float">
+                                  img-anchor="deckgo-lazy-img">
             </deckgo-inline-editor>
         ];
     }

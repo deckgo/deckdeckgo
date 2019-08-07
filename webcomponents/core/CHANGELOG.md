@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.45"></a>
+# 1.0.0-beta.45 (2019-08-06)
+
+### Features
+
+* add a new template `countdown` ([#45](https://github.com/deckgo/deckdeckgo/issues/45) and [#217](https://github.com/deckgo/deckdeckgo/issues/217))
+
 <a name="1.0.0-beta.44"></a>
 # 1.0.0-beta.44 (2019-07-30)
 

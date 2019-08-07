@@ -13,6 +13,9 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
   slideDidLoad: EventEmitter<void>;
 
   @Prop()
+  days = 0;
+
+  @Prop()
   hours = 0;
 
   @Prop()
@@ -20,6 +23,12 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
 
   @Prop()
   seconds = 0;
+
+  @Prop()
+  until: string;
+
+  @State()
+  private mDays = 0;
 
   @State()
   private mHours = 0;
@@ -97,11 +106,45 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
    */
   private init(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      this.mTotalSeconds = ((this.hours * 60 * 60) + (this.minutes * 60) + this.seconds);
+      if (this.until && this.until !== undefined && this.until !== '') {
+        const startAt: Date = new Date(this.until);
+        const now: Date = new Date();
 
+        if (startAt && startAt.getTime() > now.getTime()) {
+
+          let diff: number = (startAt.getTime() - now.getTime()) / (60 * 60 * 1000);
+
+          if (diff >= 24) {
+            const diffHours: number = diff / 24;
+
+            this.mDays = diffHours >= 99 ? 99 : Math.floor(diffHours);
+            this.mHours = Math.floor((diffHours % 1) * 24);
+          } else {
+            this.mDays = 0;
+            this.mHours = Math.floor(diff);
+          }
+
+          diff = (diff % 1) * 60;
+
+          this.mMinutes = Math.floor(diff);
+
+          diff = (diff % 1) * 60;
+
+          this.mSeconds = Math.floor(diff);
+
+          this.mTotalSeconds = ((this.mDays * 24 * 60 * 60) + (this.mHours * 60 * 60) + (this.mMinutes * 60) + this.mSeconds);
+
+          resolve();
+          return;
+        }
+      }
+
+      this.mDays = this.days;
       this.mHours = this.hours;
       this.mMinutes = this.minutes;
       this.mSeconds = this.seconds;
+
+      this.mTotalSeconds = ((this.mDays * 24 * 60 * 60) + (this.mHours * 60 * 60) + (this.mMinutes * 60) + this.mSeconds);
 
       resolve();
     })
@@ -150,11 +193,7 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
     return <Host class={{'deckgo-slide-container': true}}>
       <div class="deckgo-slide">
         <slot name="title"></slot>
-        <div class="deckgo-countdown-container">
-          {this.renderCountdown('hours', this.mHours)}
-          {this.renderCountdown('minutes', this.mMinutes)}
-          {this.renderCountdown('seconds', this.mSeconds)}
-        </div>
+        {this.renderCountdown()}
         <slot name="notes"></slot>
         <slot name="actions"></slot>
         <slot name="background"></slot>
@@ -162,14 +201,30 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
     </Host>
   }
 
-  private renderCountdown(slotName: string, value: number) {
+  private renderCountdown() {
+    if (this.mDays >= 1) {
+      return <div class="deckgo-countdown-container">
+        {this.renderCountdownTime('days', this.mDays)}
+        {this.renderCountdownTime('hours', this.mHours)}
+        {this.renderCountdownTime('minutes', this.mMinutes)}
+      </div>
+    } else {
+      return <div class="deckgo-countdown-container">
+        {this.renderCountdownTime('hours', this.mHours)}
+        {this.renderCountdownTime('minutes', this.mMinutes)}
+        {this.renderCountdownTime('seconds', this.mSeconds)}
+      </div>
+    }
+  }
+
+  private renderCountdownTime(slotName: string, value: number) {
     return <div class="time-container">
       <slot name={slotName}></slot>
 
       <div class="figure-container">
 
         <div class="figure tens">
-          <span>{`${value > 10 ? Math.floor(value / 10) % 10 : 0}`}</span>
+          <span>{`${value >= 10 ? Math.floor(value / 10) % 10 : 0}`}</span>
         </div>
 
         <div class="figure unit">

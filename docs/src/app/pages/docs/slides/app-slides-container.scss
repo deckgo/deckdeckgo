@@ -69,5 +69,11 @@ div.container {
         height: fit-content;
       }
     }
+
+    deckgo-slide-countdown {
+      --slide-countdown-digits-height: 2em;
+      --slide-countdown-digits-font-size: 1.4em;
+      --slide-countdown-container-padding-bottom: 16px;
+    }
   }
 }

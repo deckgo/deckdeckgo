@@ -1,9 +1,19 @@
-<a name="1.0.0-alpha.22"></a>
-# 1.0.0-alpha.23 (Not released but published)
+<a name="1.0.0-alpha.24"></a>
+# 1.0.0-alpha.24 (2019-08-07)
+
+### Features
+
+* `lazy-img` component now lazy load images using native lazy-loading
+
+<a name="1.0.0-alpha.23"></a>
+# 1.0.0-alpha.23 (2019-08-06)
 
 ### Features
 
 * improve demo slides in the documentation ([#199](https://github.com/deckgo/deckdeckgo/issues/199))
+* add new attributes to the component `inline-editor`
+* add new template `deckgo-slide-countdown`
+* add new attribute to the component `lazy-img`
 
 <a name="1.0.0-alpha.22"></a>
 # 1.0.0-alpha.22 (2019-07-30)

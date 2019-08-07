@@ -23,4 +23,6 @@ img, svg {
   display: var(--deckgo-lazy-img-display);
 
   border-radius: var(--deckgo-lazy-img-border-radius);
+
+  object-fit: var(--deckgo-lazy-img-object-fit);
 }

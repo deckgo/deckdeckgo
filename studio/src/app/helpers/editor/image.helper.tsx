@@ -73,9 +73,7 @@ export class ImageHelper {
         });
     }
 
-    private createImgElement(image: UnsplashPhoto | TenorGif | StorageFile): HTMLElement {
-        const img: HTMLElement = document.createElement('deckgo-lazy-img');
-
+    private updateDeckgoLazyImgAttributes(img: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): HTMLElement {
         if (image.hasOwnProperty('urls')) {
             // Unsplash
             const photo: UnsplashPhoto = image as UnsplashPhoto;
@@ -105,12 +103,15 @@ export class ImageHelper {
 
     private appendContentImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>((resolve) => {
-            const img: HTMLElement = this.createImgElement(image);
-            selectedElement.appendChild(img);
+            if (selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === 'deckgo-lazy-img') {
+                selectedElement = this.updateDeckgoLazyImgAttributes(selectedElement, image);
+            } else {
+                const deckgoImg: HTMLElement = document.createElement('deckgo-lazy-img');
 
-            // If no spacer is added, no cursor will be displayed if the content editable element is selected
-            const zeroWidthSpacer: Text = document.createTextNode('\u200B');
-            selectedElement.appendChild(zeroWidthSpacer);
+                const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
+
+                selectedElement.appendChild(img);
+            }
 
             this.slideDidChange.emit(selectedElement.parentElement);
 
@@ -136,7 +137,9 @@ export class ImageHelper {
             const div: HTMLElement = document.createElement('div');
             div.setAttribute('slot', 'background');
 
-            const img: HTMLElement = this.createImgElement(image);
+            const deckgoImg: HTMLElement = document.createElement('deckgo-lazy-img');
+
+            const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
             div.appendChild(img);
 
             element.appendChild(div);
