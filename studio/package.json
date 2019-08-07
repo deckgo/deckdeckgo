@@ -17,7 +17,7 @@
     "@deckdeckgo/core": "^1.0.0-beta.45",
     "@deckdeckgo/highlight-code": "^1.0.0-alpha.17-3",
     "@deckdeckgo/inline-editor": "^1.0.0-alpha.12",
-    "@deckdeckgo/lazy-img": "^1.0.0-alpha.11",
+    "@deckdeckgo/lazy-img": "^1.0.0-alpha.12",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.9",
     "@deckdeckgo/remote": "^1.0.0-alpha.11",
     "@deckdeckgo/utils": "^1.0.0-alpha.2",
