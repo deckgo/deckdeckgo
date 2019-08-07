@@ -2,7 +2,7 @@
 
 The "Lazy Image" component is a dead simple component to lazy load images.
 
-It leverages the IntersectionObserver API to lazy load images and also allows you to trigger "manually" their loading.
+It leverages the native lazy-loading when available and the IntersectionObserver API as fallback to lazy load images. It also allows you to trigger "manually" their loading.
 
 An `<img/>` tag is per default use to display the image but optionally it could parse `SVG` too.
 
@@ -44,6 +44,7 @@ This component offers the following options which could be set using attributes:
 | aria-label | string |  | If you are using the above SVG option, provide the accessibility information using this attribute |
 | observer-root-margin | string | 100px 0px | A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
 | observer-threshold | number or number[] |  | Either a single number or an array of numbers between 0.0 and 1.0, specifying a ratio of intersection area to total bounding box area for the observed target. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
+| intrinsicsize | string | An intrinsicsize for the native lazy-loading (see [Native lazy-loading for the web](https://web.dev/native-lazy-loading))
 
 ### Theming
 
@@ -76,7 +77,7 @@ await element.lazyLoad();
 
 ### Fallback
 
-In case the browsers would not support the Intersection Observer, images are going to be loaded without any delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded. 
+In case the browser would not support the native native lazy-loading or the Intersection Observer API, images are going to be loaded without any delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded. 
 
 ### Trying it out
 

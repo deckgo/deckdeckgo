@@ -32,7 +32,7 @@ export class AppComponentsLazyImg {
       <ion-content class="ion-padding">
         <main><h1 id="app-components-lazy-img-lazy-image">Lazy Image</h1>
 <p>The &quot;Lazy Image&quot; component is a dead simple component to lazy load images.</p>
-<p>It leverages the IntersectionObserver API to lazy load images and also allows you to trigger &quot;manually&quot; their loading.</p>
+<p>It leverages the native lazy-loading when available and the IntersectionObserver API as fallback to lazy load images. It also allows you to trigger &quot;manually&quot; their loading.</p>
 <p>An <code>&lt;img/&gt;</code> tag is per default use to display the image but optionally it could parse <code>SVG</code> too.</p>
 <h2 id="app-components-lazy-img-table-of-contents">Table of contents</h2>
 <ul>
@@ -117,6 +117,12 @@ export class AppComponentsLazyImg {
 <td></td>
 <td>Either a single number or an array of numbers between 0.0 and 1.0, specifying a ratio of intersection area to total bounding box area for the observed target. <a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver">More info.</a></td>
 </tr>
+<tr>
+<td>intrinsicsize</td>
+<td>string</td>
+<td>An intrinsicsize for the native lazy-loading (see <a href="https://web.dev/native-lazy-loading">Native lazy-loading for the web</a>)</td>
+<td></td>
+</tr>
 </tbody></table>
 <h3 id="app-components-lazy-img-theming">Theming</h3>
 <p>The following theming options will affect this component if set on its host or parent.</p>
@@ -199,7 +205,7 @@ export class AppComponentsLazyImg {
 <deckgo-highlight-code language="javascript">
       <code slot="code">const element = document.querySelector(&#039;deckgo-lazy-img&#039;);{'\n'}await element.lazyLoad();</code>
     </deckgo-highlight-code><h3 id="app-components-lazy-img-fallback">Fallback</h3>
-<p>In case the browsers would not support the Intersection Observer, images are going to be loaded without any delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded. </p>
+<p>In case the browser would not support the native native lazy-loading or the Intersection Observer API, images are going to be loaded without any delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded. </p>
 <h3 id="app-components-lazy-img-trying-it-out">Trying it out</h3>
 <p>This component lazy load images when these are not presented in the viewport. If you would use this component in a simple test containing only a couple of images, respectively no content or no real use case where the images are effectively offscreen, assign a default height to components in order to ensure that some are effectively placed outside of the window <a href="https://github.com/deckgo/deckdeckgo/issues/128#issuecomment-493979841">[#128]</a>.</p>
 </main>
