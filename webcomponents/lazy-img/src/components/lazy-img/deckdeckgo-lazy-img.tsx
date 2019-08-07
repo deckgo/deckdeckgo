@@ -13,16 +13,16 @@ export class DeckdeckgoLazyImg {
 
   @Event() lazyImgDidLoad: EventEmitter;
 
-  @Prop({reflectToAttr: true})
+  @Prop({reflect: true})
   imgSrc: string;
 
-  @Prop({reflectToAttr: true})
+  @Prop({reflect: true})
   imgSrcSet: string;
 
-  @Prop({reflectToAttr: true})
+  @Prop({reflect: true})
   imgAlt: string;
 
-  @Prop({reflectToAttr: true})
+  @Prop({reflect: true})
   imgSizes: string;
 
   @Prop()
@@ -34,11 +34,14 @@ export class DeckdeckgoLazyImg {
   @Prop()
   imgErrorSrc: string;
 
-  @Prop({reflectToAttr: true})
+  @Prop({reflect: true})
   svgSrc: string;
 
-  @Prop({reflectToAttr: true})
+  @Prop({reflect: true})
   ariaLabel: string;
+
+  @Prop()
+  intrinsicsize: string;
 
   @State()
   private svgContent: string;
@@ -60,8 +63,11 @@ export class DeckdeckgoLazyImg {
   }
 
   private async init() {
-    if (window && 'IntersectionObserver' in window) {
-      await this.deferLoad();
+    if ('loading' in HTMLImageElement.prototype) {
+      // In this case, loadImmediately apply the attributes but the platform will takes care of lazy loading the images
+      await this.loadImmediately();
+    } else if (window && 'IntersectionObserver' in window) {
+      await this.deferIntersectionObserverLoad();
     } else {
       await this.loadImmediately();
     }
@@ -71,7 +77,7 @@ export class DeckdeckgoLazyImg {
     return this.load();
   }
 
-  private deferLoad(): Promise<void> {
+  private deferIntersectionObserverLoad(): Promise<void> {
     return new Promise<void>((resolve) => {
       this.observer = new IntersectionObserver(this.onIntersection, {
         rootMargin: this.observerRootMargin,
@@ -189,9 +195,14 @@ export class DeckdeckgoLazyImg {
       </Host>
     } else {
       return <Host>
-        <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} sizes={this.imgSizes ? this.imgSizes : undefined}
-             onLoad={() => this.imgLoaded = true} onError={() => this.loadError()}/>
+        {this.renderImage()}
       </Host>;
     }
+  }
+
+  private renderImage() {
+    // @ts-ignore
+    return <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} loading="lazy" sizes={this.imgSizes ? this.imgSizes : undefined} intrinsicsize={this.intrinsicsize}
+                onLoad={() => this.imgLoaded = true} onError={() => this.loadError()}/>
   }
 }

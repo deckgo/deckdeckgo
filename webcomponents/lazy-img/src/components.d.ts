@@ -16,6 +16,7 @@ export namespace Components {
     'imgSizes': string;
     'imgSrc': string;
     'imgSrcSet': string;
+    'intrinsicsize': string;
     'lazyLoad': () => Promise<void>;
     'observerRootMargin': string;
     'observerThreshold': number | number[];
@@ -44,6 +45,7 @@ declare namespace LocalJSX {
     'imgSizes'?: string;
     'imgSrc'?: string;
     'imgSrcSet'?: string;
+    'intrinsicsize'?: string;
     'observerRootMargin'?: string;
     'observerThreshold'?: number | number[];
     'onLazyImgDidLoad'?: (event: CustomEvent<any>) => void;
