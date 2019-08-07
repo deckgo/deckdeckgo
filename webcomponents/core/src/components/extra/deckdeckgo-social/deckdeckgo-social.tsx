@@ -11,12 +11,12 @@ export class DeckdeckgoSocial implements DeckdeckgoExtra {
 
   @State() url: string;
 
-  @Prop() twitter: string;
-  @Prop() linkedin: string;
-  @Prop() medium: string;
-  @Prop() dev: string;
-  @Prop() github: string;
-  @Prop() fullUrl: string;
+  @Prop({reflect: true}) twitter: string;
+  @Prop({reflect: true}) linkedin: string;
+  @Prop({reflect: true}) medium: string;
+  @Prop({reflect: true}) dev: string;
+  @Prop({reflect: true}) github: string;
+  @Prop({reflect: true}) fullUrl: string;
 
   componentDidLoad() {
     this.concatTwitterUrl();
