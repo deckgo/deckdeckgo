@@ -293,8 +293,6 @@ export class DeckdeckgoHighlightCode {
 
               const rowsIndexToCompare: number = editElement.offsetHeight > offsetHeight ? (rowIndex + 1) : rowIndex;
 
-              console.log(rowIndex);
-
               if (rows.indexOf(rowsIndexToCompare) > -1) {
                 editElement.classList.add('deckgo-highlight-code-line');
               }
