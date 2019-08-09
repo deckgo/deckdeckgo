@@ -46,6 +46,7 @@ declare namespace LocalJSX {
     'imgPropertyWidth'?: string;
     'mobile'?: boolean;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onLinkCreated'?: (event: CustomEvent<HTMLElement>) => void;
     'onStickyToolbarActivated'?: (event: CustomEvent<boolean>) => void;
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;

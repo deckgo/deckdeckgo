@@ -1,3 +1,8 @@
+<a name="1.0.0-alpha.13"></a>
+# 1.0.0-alpha.13 (Not released yet)
+
+* trigger an event `linkCreated` when a link is created
+
 <a name="1.0.0-alpha.12"></a>
 # 1.0.0-alpha.12 (2019-08-06)
 

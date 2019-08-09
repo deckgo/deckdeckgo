@@ -337,6 +337,11 @@ export class AppComponentsInlineEditor {
 <td><code>CustomEvent&lt;HTMLElement&gt;</code></td>
 </tr>
 <tr>
+<td><code>linkCreated</code></td>
+<td>Triggered when a link is created by the user using this component</td>
+<td></td>
+</tr>
+<tr>
 <td><code>stickyToolbarActivated</code></td>
 <td>Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it.</td>
 <td><code>CustomEvent&lt;boolean&gt;</code></td>
