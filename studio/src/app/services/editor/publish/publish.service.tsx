@@ -68,10 +68,10 @@ export class PublishService {
     // TODO: Move in a cloud functions?
     publish(description: string, tags: string[]): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            try {
-                this.progress(0);
+            this.progress(0);
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                try {
                     if (!deck || !deck.id || !deck.data) {
                         this.progressComplete();
                         reject('No deck found');
@@ -106,11 +106,11 @@ export class PublishService {
                     await this.delayUpdateMeta(deck, publishedUrl, description, tags, newApiId);
 
                     resolve(publishedUrl);
-                });
-            } catch (err) {
-                this.progressComplete();
-                reject(err);
-            }
+                } catch (err) {
+                    this.progressComplete();
+                    reject(err);
+                }
+            });
         });
     }
 
