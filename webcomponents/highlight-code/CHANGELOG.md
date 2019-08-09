@@ -4,6 +4,7 @@
 ## Fix
 
 * the component displayed line numbers from 1 but the highlight used to expect line numbers from 0. this is now fixed, highlight will also begin with 1.
+* add empty lines if line numbers has to be displayed to avoid sizing problem regarding font-size
 
 <a name="1.0.0-alpha.17"></a>
 # 1.0.0-alpha.17 (2019-07-30)

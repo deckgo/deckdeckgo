@@ -194,8 +194,11 @@ export class DeckdeckgoHighlightCode {
               let div: HTMLElement = document.createElement('div');
               div.classList.add('deckgo-highlight-code-line-number');
 
-              let highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
-              div.innerHTML = highlight;
+              const highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
+
+              // If empty, use \u200B as zero width text spacer
+              div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
+
               container.children[0].appendChild(div);
             });
           }else{
