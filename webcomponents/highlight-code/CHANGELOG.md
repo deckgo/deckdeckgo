@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.18"></a>
+# 1.0.0-alpha.18 (Not released yet)
+
+## Fix
+
+* the component displayed line numbers from 1 but the highlight used to expect line numbers from 0. this is now fixed, highlight will also begin with 1.
+
 <a name="1.0.0-alpha.17"></a>
 # 1.0.0-alpha.17 (2019-07-30)
 

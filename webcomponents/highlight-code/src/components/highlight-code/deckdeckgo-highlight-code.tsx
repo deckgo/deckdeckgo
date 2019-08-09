@@ -259,7 +259,7 @@ export class DeckdeckgoHighlightCode {
           if (containerCode && containerCode.hasChildNodes()) {
             const elements: HTMLElement[] = Array.prototype.slice.call(containerCode.childNodes);
 
-            let rowIndex: number = -1;
+            let rowIndex: number = 0;
             let lastOffsetTop: number = -1;
             let offsetHeight: number = -1;
 
@@ -292,6 +292,8 @@ export class DeckdeckgoHighlightCode {
               offsetHeight = offsetHeight === -1 || offsetHeight > editElement.offsetHeight ? editElement.offsetHeight : offsetHeight;
 
               const rowsIndexToCompare: number = editElement.offsetHeight > offsetHeight ? (rowIndex + 1) : rowIndex;
+
+              console.log(rowIndex);
 
               if (rows.indexOf(rowsIndexToCompare) > -1) {
                 editElement.classList.add('deckgo-highlight-code-line');
