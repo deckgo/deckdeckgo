@@ -1,5 +1,5 @@
 <a name="1.0.0-alpha.18"></a>
-# 1.0.0-alpha.18 (Not released yet)
+# 1.0.0-alpha.18 (2019-08-09)
 
 ## Features
 
