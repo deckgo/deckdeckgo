@@ -1,4 +1,19 @@
-import {Component, h, Element, Prop, Method, State, Host} from '@stencil/core';
+import { Component, h, Element, Prop, Method, State, Host, FunctionalComponent } from '@stencil/core';
+
+const arrayOf = (len: number) => new Array(len).fill(0).map((_, i) => i);
+
+const RevealNthChild: FunctionalComponent<{ index: number }> = ({ index }) => {
+  if (index === 0) return null;
+  return (
+    <style class={`deckgo-reveal-${index}`}>{`
+      ::slotted(*:nth-child(-n+${index})) {
+        visibility: initial;
+        opacity: 1;
+        transform: none;
+      };
+    `}</style>
+  );
+}
 
 @Component({
   tag: 'deckgo-reveal',
@@ -21,19 +36,10 @@ export class DeckdeckgoReveal {
       this.visibleIndex++;
 
       const elements: Node[] = Array.from(this.el.childNodes).filter((node: Node) => {
-        return node && node.nodeType !== 3;
+        return node && node.nodeType !== node.TEXT_NODE;
       });
 
       this.visible = elements && elements.length <= this.visibleIndex;
-
-      const style: HTMLStyleElement = document.createElement('style');
-      style.className = `display-${this.visibleIndex}`;
-      style.innerHTML = `::slotted(*:nth-child(-n+${this.visibleIndex})) {
-        visibility: initial;
-        opacity: 1;
-        transform: none;
-      }`;
-      this.el.shadowRoot.appendChild(style);
 
       resolve();
     });
@@ -42,14 +48,6 @@ export class DeckdeckgoReveal {
   @Method()
   hide(): Promise<void> {
     return new Promise<void>((resolve) => {
-      const target: Node = Array.from(this.el.shadowRoot.childNodes).find((node: Node) => {
-        return node instanceof HTMLStyleElement && node.className === `display-${this.visibleIndex}`;
-      });
-
-      if (target) {
-        this.el.shadowRoot.removeChild(target);
-      }
-
       this.visibleIndex--;
 
       this.visible = this.visibleIndex !== 0;
@@ -60,6 +58,7 @@ export class DeckdeckgoReveal {
 
   render() {
     return <Host>
+      {arrayOf(this.visibleIndex + 1).map(index => <RevealNthChild index={index} />)}
       <slot/>
     </Host>
   }
