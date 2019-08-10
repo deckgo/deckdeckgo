@@ -26,6 +26,7 @@ export namespace Components {
     'isMobile': () => Promise<boolean>;
     'keyboard': boolean;
     'loadBackground': () => Promise<void>;
+    'reveal': boolean;
     'slideNext': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
@@ -49,7 +50,7 @@ export namespace Components {
   }
   interface DeckgoSlideAuthor {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'imgAlt': string;
@@ -61,7 +62,7 @@ export namespace Components {
     'animation': boolean;
     'animationDuration': number;
     'area': boolean;
-    'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'datePattern': string;
@@ -86,7 +87,7 @@ export namespace Components {
     'afterSwipe': () => Promise<void>;
     'anchor': string;
     'anchorZoom': string;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'hideAnchor': boolean;
@@ -96,14 +97,14 @@ export namespace Components {
   }
   interface DeckgoSlideContent {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
   }
   interface DeckgoSlideCountdown {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'days': number;
@@ -118,7 +119,7 @@ export namespace Components {
   interface DeckgoSlideGif {
     'afterSwipe': () => Promise<void>;
     'alt': string;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'fullscreen': boolean;
@@ -127,7 +128,7 @@ export namespace Components {
   }
   interface DeckgoSlideQrcode {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'content': string;
     'customActions': boolean;
     'customBackground': boolean;
@@ -135,21 +136,21 @@ export namespace Components {
   }
   interface DeckgoSlideSplit {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
   }
   interface DeckgoSlideTitle {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
   }
   interface DeckgoSlideYoutube {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'height': number;
@@ -311,6 +312,7 @@ declare namespace LocalJSX {
     'onSlideToChange'?: (event: CustomEvent<number>) => void;
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
     'onSlidesDidLoad'?: (event: CustomEvent<any>) => void;
+    'reveal'?: boolean;
   }
   interface DeckgoGif extends JSXBase.HTMLAttributes<HTMLDeckgoGifElement> {
     'alt'?: string;
