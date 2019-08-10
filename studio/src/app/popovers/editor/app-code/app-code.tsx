@@ -405,7 +405,7 @@ export class AppCode {
 
                 <ion-item>
                     <ion-label>Display line numbers</ion-label>
-                    <ion-checkbox slot="end" value="pepperoni" checked={this.lineNumbers}
+                    <ion-checkbox slot="end" checked={this.lineNumbers}
                                   onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
                 </ion-item>
 
