@@ -77,23 +77,67 @@
     <h2 slot="content">Url provided as short Url</h2>
   </deckgo-slide-youtube>
 
-  <deckgo-slide-content reveal="true">
-    <h1 slot="title">DeckDeckGo - Reveal</h1>
+  <deckgo-slide-title>
+    <h1 slot="title">Reveal as slot</h1>
+    <deckgo-reveal slot="content">
+      <p>
+        Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+        <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+      </p>
+
+      <p>
+        Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+        <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+      </p>
+
+      <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+    </deckgo-reveal>
+
+  </deckgo-slide-title>
+
+  <deckgo-slide-title>
+    <h1 slot="title">Reveal inside slot</h1>
     <div slot="content">
-      <ul>
+      <deckgo-reveal>
+        <p>
+          Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+        </p>
+      </deckgo-reveal>
+
+      <deckgo-reveal>
+        <p>
+          Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+        </p>
+      </deckgo-reveal>
+
+      <p>
+        Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+        <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+      </p>
+    </div>
+
+  </deckgo-slide-title>
+
+  <deckgo-slide-content>
+    <h1 slot="title">Reveal after element</h1>
+    <div slot="content" contenteditable="true">
+      <ol>
         <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
         <li><strong>Ionic</strong> components and icons to create your content</li>
         <li><strong>Style</strong> your presentation quickly</li>
         <li>Lightweight and <strong>lazy</strong> loaded images</li>
         <li>Bundles the presentation with an <strong>offline</strong> support</li>
-      </ul>
+      </ol>
 
-      <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-
-
-      <p>
+      <deckgo-reveal>
         <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-      </p>
+
+        <p>
+          <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+        </p>
+      </deckgo-reveal>
     </div>
   </deckgo-slide-content>
 
@@ -108,19 +152,6 @@
     </div>
   </deckgo-slide-split>
 
-  <deckgo-slide-split reveal="true">
-    <div slot="start">
-      <p>Hello World 1 <a href="https://ionicframework.com">Ionic</a> 🚀</p>
-      <p>Cool</p>
-    </div>
-    <div slot="end">
-      <p>Cool</p>
-      <p>Cool cool</p>
-      <p>Cool cool cool</p>
-      <p>Cool beans</p>
-    </div>
-  </deckgo-slide-split>
-
   <deckgo-slide-title>
     <h1 slot="title">Not reveal list</h1>
     <ul slot="content">
@@ -128,18 +159,6 @@
       <li>Feta</li>
       <li>Gruyère</li>
     </ul>
-  </deckgo-slide-title>
-
-  <deckgo-slide-title reveal="true" reveal-show-first="true">
-    <h1 slot="title">Reveal list</h1>
-    <div slot="content">
-      <ul>
-        <li>Blue cheese</li>
-        <li>Feta</li>
-        <li>Gruyère</li>
-      </ul>
-      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-    </div>
   </deckgo-slide-title>
 
   <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
