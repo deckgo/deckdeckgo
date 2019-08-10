@@ -55,6 +55,8 @@ export class DeckdeckgoDeck {
 
   @Event() mouseInactivity: EventEmitter<boolean>;
 
+  @Prop() reveal: boolean = true;
+
   async componentWillLoad() {
     await this.initRtl();
   }
@@ -600,7 +602,7 @@ export class DeckdeckgoDeck {
         // If we find no slide, we are cool something went wrong but the talk/show must go on
         resolve(true);
       } else {
-        const result: boolean = await (slide as any).beforeSwipe(enter);
+        const result: boolean = await (slide as any).beforeSwipe(enter, this.reveal);
         resolve(result);
       }
     });

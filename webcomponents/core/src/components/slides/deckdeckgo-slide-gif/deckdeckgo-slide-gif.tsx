@@ -31,7 +31,7 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(_enter: boolean): Promise<boolean> {
+  beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       resolve(true)
     });

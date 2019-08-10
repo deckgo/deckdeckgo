@@ -42,6 +42,11 @@ export namespace Components {
     'activeIndex': number;
     'length': number;
   }
+  interface DeckgoReveal {
+    'display': () => Promise<void>;
+    'hide': () => Promise<void>;
+    'visible': boolean;
+  }
   interface DeckgoSlideAuthor {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean) => Promise<boolean>;
@@ -95,8 +100,6 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
-    'reveal': boolean;
-    'revealShowFirst': boolean;
   }
   interface DeckgoSlideCountdown {
     'afterSwipe': () => Promise<void>;
@@ -136,8 +139,6 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
-    'reveal': boolean;
-    'revealShowFirst': boolean;
   }
   interface DeckgoSlideTitle {
     'afterSwipe': () => Promise<void>;
@@ -145,8 +146,6 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'lazyLoadContent': () => Promise<void>;
-    'reveal': boolean;
-    'revealShowFirst': boolean;
   }
   interface DeckgoSlideYoutube {
     'afterSwipe': () => Promise<void>;
@@ -201,6 +200,12 @@ declare global {
   var HTMLDeckgoPagerElement: {
     prototype: HTMLDeckgoPagerElement;
     new (): HTMLDeckgoPagerElement;
+  };
+
+  interface HTMLDeckgoRevealElement extends Components.DeckgoReveal, HTMLStencilElement {}
+  var HTMLDeckgoRevealElement: {
+    prototype: HTMLDeckgoRevealElement;
+    new (): HTMLDeckgoRevealElement;
   };
 
   interface HTMLDeckgoSlideAuthorElement extends Components.DeckgoSlideAuthor, HTMLStencilElement {}
@@ -278,6 +283,7 @@ declare global {
     'deckgo-deck': HTMLDeckgoDeckElement;
     'deckgo-gif': HTMLDeckgoGifElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
+    'deckgo-reveal': HTMLDeckgoRevealElement;
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
     'deckgo-slide-chart': HTMLDeckgoSlideChartElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
@@ -316,6 +322,9 @@ declare namespace LocalJSX {
     'activeIndex'?: number;
     'length'?: number;
     'onPagerClick'?: (event: CustomEvent<void>) => void;
+  }
+  interface DeckgoReveal extends JSXBase.HTMLAttributes<HTMLDeckgoRevealElement> {
+    'visible'?: boolean;
   }
   interface DeckgoSlideAuthor extends JSXBase.HTMLAttributes<HTMLDeckgoSlideAuthorElement> {
     'customActions'?: boolean;
@@ -363,8 +372,6 @@ declare namespace LocalJSX {
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'reveal'?: boolean;
-    'revealShowFirst'?: boolean;
   }
   interface DeckgoSlideCountdown extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCountdownElement> {
     'customActions'?: boolean;
@@ -394,15 +401,11 @@ declare namespace LocalJSX {
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'reveal'?: boolean;
-    'revealShowFirst'?: boolean;
   }
   interface DeckgoSlideTitle extends JSXBase.HTMLAttributes<HTMLDeckgoSlideTitleElement> {
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'reveal'?: boolean;
-    'revealShowFirst'?: boolean;
   }
   interface DeckgoSlideYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoSlideYoutubeElement> {
     'customActions'?: boolean;
@@ -431,6 +434,7 @@ declare namespace LocalJSX {
     'deckgo-deck': DeckgoDeck;
     'deckgo-gif': DeckgoGif;
     'deckgo-pager': DeckgoPager;
+    'deckgo-reveal': DeckgoReveal;
     'deckgo-slide-author': DeckgoSlideAuthor;
     'deckgo-slide-chart': DeckgoSlideChart;
     'deckgo-slide-code': DeckgoSlideCode;

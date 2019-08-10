@@ -59,7 +59,7 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(_enter: boolean): Promise<boolean> {
+  beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return Promise.resolve(true);
   }
 
