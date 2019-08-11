@@ -5,10 +5,6 @@ deckgo-deck {
   --color: black;
 }
 
-deckgo-deck deckgo-reveal {
-  width: 100%;
-}
-
 deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck deckgo-highlight-code {
   width: 100%;
   padding: 8px;
@@ -75,4 +71,12 @@ deckgo-deck [slot="background"] > deckgo-lazy-img {
   justify-content: center;
   align-items: center;
   --deckgo-lazy-img-min-width: 100%;
+}
+
+deckgo-slide-split deckgo-reveal > * {
+  height: calc(100% - 32px);
+}
+
+deckgo-deck deckgo-reveal {
+  width: 100%;
 }
