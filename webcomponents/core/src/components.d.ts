@@ -48,7 +48,15 @@ export namespace Components {
     'allElementsRevealed': boolean;
     'hide': () => Promise<void>;
     'hideAll': () => Promise<void>;
-    'list': string;
+    'reveal': () => Promise<void>;
+    'revealAll': () => Promise<void>;
+  }
+  interface DeckgoRevealList {
+    'allElementsHidden': boolean;
+    'allElementsRevealed': boolean;
+    'hide': () => Promise<void>;
+    'hideAll': () => Promise<void>;
+    'listTag': string;
     'reveal': () => Promise<void>;
     'revealAll': () => Promise<void>;
   }
@@ -233,6 +241,12 @@ declare global {
     new (): HTMLDeckgoRevealElement;
   };
 
+  interface HTMLDeckgoRevealListElement extends Components.DeckgoRevealList, HTMLStencilElement {}
+  var HTMLDeckgoRevealListElement: {
+    prototype: HTMLDeckgoRevealListElement;
+    new (): HTMLDeckgoRevealListElement;
+  };
+
   interface HTMLDeckgoSlideAuthorElement extends Components.DeckgoSlideAuthor, HTMLStencilElement {}
   var HTMLDeckgoSlideAuthorElement: {
     prototype: HTMLDeckgoSlideAuthorElement;
@@ -309,6 +323,7 @@ declare global {
     'deckgo-gif': HTMLDeckgoGifElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-reveal': HTMLDeckgoRevealElement;
+    'deckgo-reveal-list': HTMLDeckgoRevealListElement;
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
     'deckgo-slide-chart': HTMLDeckgoSlideChartElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
@@ -352,7 +367,11 @@ declare namespace LocalJSX {
   interface DeckgoReveal extends JSXBase.HTMLAttributes<HTMLDeckgoRevealElement> {
     'allElementsHidden'?: boolean;
     'allElementsRevealed'?: boolean;
-    'list'?: string;
+  }
+  interface DeckgoRevealList extends JSXBase.HTMLAttributes<HTMLDeckgoRevealListElement> {
+    'allElementsHidden'?: boolean;
+    'allElementsRevealed'?: boolean;
+    'listTag'?: string;
   }
   interface DeckgoSlideAuthor extends JSXBase.HTMLAttributes<HTMLDeckgoSlideAuthorElement> {
     'customActions'?: boolean;
@@ -463,6 +482,7 @@ declare namespace LocalJSX {
     'deckgo-gif': DeckgoGif;
     'deckgo-pager': DeckgoPager;
     'deckgo-reveal': DeckgoReveal;
+    'deckgo-reveal-list': DeckgoRevealList;
     'deckgo-slide-author': DeckgoSlideAuthor;
     'deckgo-slide-chart': DeckgoSlideChart;
     'deckgo-slide-code': DeckgoSlideCode;

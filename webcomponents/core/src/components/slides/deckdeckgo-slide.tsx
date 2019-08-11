@@ -17,17 +17,17 @@ export class DeckdeckgoSlideUtils {
 
   private static showRevealElement(el: HTMLElement): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
 
       let couldSwipe: boolean = true;
 
       if (elements) {
         const nextElement: HTMLElement = Array.from(elements).find((element: HTMLElement) => {
-          return !(element as HTMLDeckgoRevealElement).allElementsRevealed;
+          return !(element as HTMLDeckgoRevealElement | HTMLDeckgoRevealListElement).allElementsRevealed;
         });
 
         if (nextElement) {
-          await (nextElement as HTMLDeckgoRevealElement).reveal();
+          await (nextElement as HTMLDeckgoRevealElement | HTMLDeckgoRevealListElement).reveal();
           couldSwipe = false;
         }
       }
@@ -38,17 +38,17 @@ export class DeckdeckgoSlideUtils {
 
   private static hideRevealElement(el: HTMLElement): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
 
       let couldSwipe: boolean = true;
 
       if (elements) {
         const nextElement: HTMLElement = Array.from(elements).reverse().find((element: HTMLElement) => {
-          return !(element as HTMLDeckgoRevealElement).allElementsHidden;
+          return !(element as HTMLDeckgoRevealElement | HTMLDeckgoRevealListElement).allElementsHidden;
         });
 
         if (nextElement) {
-          await (nextElement as HTMLDeckgoRevealElement).hide();
+          await (nextElement as HTMLDeckgoRevealElement | HTMLDeckgoRevealListElement).hide();
           couldSwipe = false;
         }
       }
@@ -59,7 +59,7 @@ export class DeckdeckgoSlideUtils {
 
   static showAllRevealElements(el: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
 
       if (elements && elements.length > 0) {
         const promises = [];
@@ -77,7 +77,7 @@ export class DeckdeckgoSlideUtils {
 
   static hideAllRevealElements(el: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal');
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
 
       if (elements && elements.length > 0) {
         const promises = [];
