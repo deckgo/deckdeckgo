@@ -427,7 +427,8 @@ export class DeckdeckgoDeck {
       promises.push(DeckdeckgoDeckBackgroundUtils.cloneAndLoadBackground(this.el, filteredSlides, this.cloneBackground));
 
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
-      if (!this.reveal) {
+      // Or we display also all reveal elements on mobile devices as there is no keyboard on mobile device to reveal elements
+      if (!this.reveal || DeckDeckGoUtils.isMobile()) {
         promises.push(this.revealAllContent());
       }
 
