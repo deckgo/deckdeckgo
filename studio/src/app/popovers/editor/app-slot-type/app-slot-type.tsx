@@ -23,8 +23,6 @@ export class AppSlideAdd {
 
             if (element.nodeName && element.nodeName !== '') {
                 this.currentType = await this.initSlotType(element.nodeName.toLowerCase());
-
-                console.log(this.currentType);
             }
         }
     }
