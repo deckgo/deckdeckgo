@@ -5,7 +5,7 @@ deckgo-deck {
 
   --pager-text-slides-display: block;
 
-  h1, h2, h3, section, deckgo-highlight-code, deckgo-lazy-img[slot] {
+  h1, h2, h3, section, deckgo-highlight-code {
     border-radius: 2px;
     border: 1px solid var(--ion-color-light);
   }
