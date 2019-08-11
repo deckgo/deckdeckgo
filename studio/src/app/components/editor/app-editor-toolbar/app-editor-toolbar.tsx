@@ -177,7 +177,7 @@ export class AppEditorToolbar {
     }
 
     private isImgNotDefined(element: HTMLElement): boolean {
-        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img' &&
+        return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG &&
             !element.hasAttribute('img-src')
     }
 
@@ -231,7 +231,7 @@ export class AppEditorToolbar {
     }
 
     private isElementImage(element: HTMLElement): boolean {
-        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img';
+        return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG;
     }
 
     private cleanOnPaste = async ($event) => {

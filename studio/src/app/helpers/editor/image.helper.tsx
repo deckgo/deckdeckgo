@@ -1,6 +1,8 @@
 import {EventEmitter} from '@stencil/core';
 
 import {BusyService} from '../../services/editor/busy/busy.service';
+import {SlotType} from '../../utils/editor/create-slides.utils';
+import {RevealSlotUtils} from '../../utils/editor/reveal-slot.utils';
 
 export class ImageHelper {
 
@@ -103,14 +105,17 @@ export class ImageHelper {
 
     private appendContentImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === 'deckgo-lazy-img') {
-                selectedElement = this.updateDeckgoLazyImgAttributes(selectedElement, image);
+
+            let element: HTMLElement = RevealSlotUtils.isNodeReveal(selectedElement) ? selectedElement.firstElementChild as HTMLElement : selectedElement;
+
+            if (element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG) {
+                element = this.updateDeckgoLazyImgAttributes(element, image);
             } else {
-                const deckgoImg: HTMLElement = document.createElement('deckgo-lazy-img');
+                const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
                 const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
 
-                selectedElement.appendChild(img);
+                element.appendChild(img);
             }
 
             this.slideDidChange.emit(selectedElement.parentElement);
@@ -137,7 +142,7 @@ export class ImageHelper {
             const div: HTMLElement = document.createElement('div');
             div.setAttribute('slot', 'background');
 
-            const deckgoImg: HTMLElement = document.createElement('deckgo-lazy-img');
+            const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
             const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
             div.appendChild(img);
