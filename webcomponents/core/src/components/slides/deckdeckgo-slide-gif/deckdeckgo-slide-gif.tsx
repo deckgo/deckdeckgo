@@ -47,6 +47,16 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
 
+  @Method()
+  revealContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
   @Listen('gifLoaded')
   onGifLoaded($event: CustomEvent) {
     this.loaded = $event && $event.detail;

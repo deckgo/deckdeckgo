@@ -274,10 +274,26 @@ public static void main(String args[]) {
     });
   }
 
+  function toggleReveal() {
+      return new Promise(async (resolve) => {
+          const deck = document.getElementById('slider');
+
+          if (!deck) {
+              resolve();
+              return;
+          }
+
+          deck.reveal = !deck.reveal;
+
+          resolve();
+      });
+  }
+
   document.addEventListener('pagerClick', function() { console.log('Pager clicked'); });
 </script>
 
 <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
+  <button onclick="toggleReveal()">Toggle deck reveal</button>
   <button onclick="updateVideo()">Update video</button>
   <button onclick="toggleVideo()">Toggle video</button>
   <button onclick="slidePrev()">Prev</button>

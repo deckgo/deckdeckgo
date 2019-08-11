@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h} from '@stencil/core';
+import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h, Watch} from '@stencil/core';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
@@ -410,14 +410,14 @@ export class DeckdeckgoDeck {
       if (slidesDefinition && slidesDefinition.length > 0) {
         this.slidesDidLoad.emit(slidesDefinition);
 
-        await this.onAllSlidesDidLoadLazyAndClone();
+        await this.onAllSlidesDidLoad();
       }
 
       resolve();
     });
   }
 
-  private onAllSlidesDidLoadLazyAndClone(): Promise<void> {
+  private onAllSlidesDidLoad(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
@@ -425,6 +425,11 @@ export class DeckdeckgoDeck {
       promises.push(this.lazyLoadFirstSlides());
       promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
       promises.push(DeckdeckgoDeckBackgroundUtils.cloneAndLoadBackground(this.el, filteredSlides, this.cloneBackground));
+
+      // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
+      if (!this.reveal) {
+        promises.push(this.revealAllContent());
+      }
 
       await Promise.all(promises);
 
@@ -841,6 +846,76 @@ export class DeckdeckgoDeck {
   }
 
   /* END: Utils */
+
+  /* BEGIN: Reveal */
+
+  @Watch('reveal')
+  async onRevealChange() {
+    if (!this.reveal) {
+      await this.revealAllContent();
+    } else {
+      await this.redoRevealContent();
+    }
+  }
+
+  private revealAllContent(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const promises = [];
+
+      for (let i = 0; i < this.length; i++) {
+        promises.push(this.revealContent(i));
+      }
+
+      await Promise.all(promises);
+
+      resolve();
+    });
+  }
+
+  private redoRevealContent(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      // If we switch back to standard mode, reveal previous slide and hide the "reveal" content of this and next slides
+      const promises = [];
+
+      for (let i = 0; i < this.length; i++) {
+        if (i < this.activeIndex) {
+          promises.push(this.revealContent(i));
+        } else {
+          promises.push(this.hideContent(i));
+        }
+      }
+
+      await Promise.all(promises);
+
+      resolve();
+    });
+  }
+
+  private revealContent(index: number): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+      if (slide) {
+        await (slide as any).revealContent();
+      }
+
+      resolve();
+    });
+  }
+
+  private hideContent(index: number): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+      if (slide) {
+        await (slide as any).hideContent();
+      }
+
+      resolve();
+    });
+  }
+
+  /* END: Reveal */
 
   render() {
     return [

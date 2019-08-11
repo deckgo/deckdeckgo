@@ -77,6 +77,16 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
   }
 
   @Method()
+  revealContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
   async start() {
     await this.startCountdown();
   }

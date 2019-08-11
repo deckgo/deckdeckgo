@@ -530,7 +530,7 @@ export class AppEditor {
 
                     {this.renderLoading()}
 
-                    <deckgo-deck embedded={true} style={this.style}
+                    <deckgo-deck embedded={true} style={this.style} reveal={this.fullscreen}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}

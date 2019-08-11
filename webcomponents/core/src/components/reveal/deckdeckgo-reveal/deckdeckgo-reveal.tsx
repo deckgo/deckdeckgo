@@ -36,12 +36,10 @@ export class DeckdeckgoReveal {
 
   @Method()
   reveal(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       this.visibleIndex++;
 
-      const elements: Node[] = Array.from(this.el.childNodes).filter((node: Node) => {
-        return node && node.nodeType !== node.TEXT_NODE;
-      });
+      const elements: Node[] = await this.findChildren();
 
       this.allElementsRevealed = elements && elements.length <= this.visibleIndex;
       this.allElementsHidden = false;
@@ -60,6 +58,42 @@ export class DeckdeckgoReveal {
 
       resolve();
     });
+  }
+
+  @Method()
+  revealAll(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const elements: Node[] = await this.findChildren();
+
+      this.visibleIndex =  elements ? elements.length : 0;
+
+      this.allElementsRevealed = true;
+      this.allElementsHidden = false;
+
+      resolve();
+    });
+  }
+
+  @Method()
+  hideAll(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.visibleIndex = 0;
+
+      this.allElementsHidden = true;
+      this.allElementsRevealed = false;
+
+      resolve();
+    });
+  }
+
+  private findChildren(): Promise<Node[]> {
+    return new Promise<Node[]>((resolve) => {
+      const elements: Node[] = Array.from(this.el.childNodes).filter((node: Node) => {
+        return node && node.nodeType !== node.TEXT_NODE;
+      });
+
+      resolve(elements);
+    })
   }
 
   render() {

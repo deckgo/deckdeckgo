@@ -38,6 +38,16 @@ export class DeckdeckgoSlideTitle implements DeckdeckgoSlide {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
 
+  @Method()
+  revealContent(): Promise<void> {
+    return DeckdeckgoSlideUtils.showAllRevealElements(this.el);
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return DeckdeckgoSlideUtils.hideAllRevealElements(this.el);
+  }
+
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <div class="deckgo-slide">

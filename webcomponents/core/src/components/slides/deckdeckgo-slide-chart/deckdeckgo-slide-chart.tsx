@@ -110,6 +110,16 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
   }
 
+  @Method()
+  revealContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
   private initSize(): Promise<void> {
     return new Promise<void>((resolve) => {
       // If width and height, use them otherwise full size

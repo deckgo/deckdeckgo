@@ -119,6 +119,16 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return DeckdeckgoSlideUtils.afterSwipe();
   }
 
+  @Method()
+  revealContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
   private scrollToNext(enter: boolean): Promise<boolean> {
     const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 

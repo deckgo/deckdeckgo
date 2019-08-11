@@ -47,16 +47,20 @@ export namespace Components {
     'allElementsHidden': boolean;
     'allElementsRevealed': boolean;
     'hide': () => Promise<void>;
+    'hideAll': () => Promise<void>;
     'reveal': () => Promise<void>;
+    'revealAll': () => Promise<void>;
   }
   interface DeckgoSlideAuthor {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'imgAlt': string;
     'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideChart {
     'afterSwipe': () => Promise<void>;
@@ -69,6 +73,7 @@ export namespace Components {
     'datePattern': string;
     'grid': boolean;
     'height': number;
+    'hideContent': () => Promise<void>;
     'innerRadius': number;
     'lazyLoadContent': () => Promise<void>;
     'marginBottom': number;
@@ -76,6 +81,7 @@ export namespace Components {
     'marginRight': number;
     'marginTop': number;
     'range': string[];
+    'revealContent': () => Promise<void>;
     'separator': string;
     'smooth': boolean;
     'src': string;
@@ -92,8 +98,10 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'hideAnchor': boolean;
+    'hideContent': () => Promise<void>;
     'language': string;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
     'src': string;
   }
   interface DeckgoSlideContent {
@@ -101,7 +109,9 @@ export namespace Components {
     'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideCountdown {
     'afterSwipe': () => Promise<void>;
@@ -109,9 +119,11 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'days': number;
+    'hideContent': () => Promise<void>;
     'hours': number;
     'lazyLoadContent': () => Promise<void>;
     'minutes': number;
+    'revealContent': () => Promise<void>;
     'seconds': number;
     'start': () => Promise<void>;
     'stop': () => Promise<void>;
@@ -124,7 +136,9 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'fullscreen': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
     'src': string;
   }
   interface DeckgoSlideQrcode {
@@ -133,21 +147,27 @@ export namespace Components {
     'content': string;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideSplit {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideTitle {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideYoutube {
     'afterSwipe': () => Promise<void>;
@@ -155,9 +175,11 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'height': number;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
     'pause': () => Promise<void>;
     'play': () => Promise<void>;
+    'revealContent': () => Promise<void>;
     'src': string;
     'toggle': () => Promise<void>;
     'width': number;

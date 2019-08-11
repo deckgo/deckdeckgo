@@ -7,6 +7,10 @@ export interface DeckdeckgoSlide {
   afterSwipe(): Promise<void>;
 
   lazyLoadContent(): Promise<void>;
+
+  revealContent(): Promise<void>;
+
+  hideContent(): Promise<void>;
 }
 
 export class DeckdeckgoSlideUtils {
@@ -50,6 +54,42 @@ export class DeckdeckgoSlideUtils {
       }
 
       resolve(couldSwipe);
+    });
+  }
+
+  static showAllRevealElements(el: HTMLElement): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal');
+
+      if (elements && elements.length > 0) {
+        const promises = [];
+
+        for (const element of  Array.from(elements)) {
+          promises.push((element as any).revealAll());
+        }
+
+        await Promise.all(promises);
+      }
+
+      resolve();
+    });
+  }
+
+  static hideAllRevealElements(el: HTMLElement): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal');
+
+      if (elements && elements.length > 0) {
+        const promises = [];
+
+        for (const element of  Array.from(elements)) {
+          promises.push((element as any).hideAll());
+        }
+
+        await Promise.all(promises);
+      }
+
+      resolve();
     });
   }
 

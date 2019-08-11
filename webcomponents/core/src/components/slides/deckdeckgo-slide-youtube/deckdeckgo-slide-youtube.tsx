@@ -71,6 +71,16 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   }
 
   @Method()
+  revealContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
   async play() {
     await this.playPauseVideo(true);
   }

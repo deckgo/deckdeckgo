@@ -89,6 +89,16 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
     });
   }
 
+  @Method()
+  revealContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <div class="deckgo-slide">
