@@ -1,4 +1,5 @@
 import {ToggleSlotUtils} from './toggle-slot.utils';
+import {SlotType} from './create-slides.utils';
 
 export class RevealSlotUtils {
 
@@ -19,7 +20,7 @@ export class RevealSlotUtils {
                 return;
             }
 
-            const element: HTMLElement = reveal ? document.createElement('deckgo-reveal') : selectedElement.firstElementChild as HTMLElement;
+            const element: HTMLElement = reveal ? document.createElement(SlotType.REVEAL) : selectedElement.firstElementChild as HTMLElement;
             await ToggleSlotUtils.copyAttributes(selectedElement, element);
 
             if (reveal) {
@@ -42,6 +43,6 @@ export class RevealSlotUtils {
     }
 
     static isNodeReveal(selectedElement: HTMLElement): boolean {
-        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === 'deckgo-reveal';
+        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.REVEAL;
     }
 }

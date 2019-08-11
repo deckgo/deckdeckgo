@@ -14,7 +14,8 @@ export enum SlotType {
     H3 = 'h3',
     IMG = 'deckgo-lazy-img',
     CODE = 'deckgo-highlight-code',
-    SOCIAL = 'deckgo-social'
+    SOCIAL = 'deckgo-social',
+    REVEAL = 'deckgo-reveal'
 }
 
 export class CreateSlidesUtils {

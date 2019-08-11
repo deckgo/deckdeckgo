@@ -23,17 +23,7 @@ export class ToggleSlotUtils {
             await this.cleanAttributes(element, type);
             await this.updateContentEditable(element, type);
 
-            const currentContainer: HTMLElement = this.getSlotContainer(reveal ? selectedElement.firstElementChild as HTMLElement : selectedElement);
-
-            const container: HTMLElement = this.createSlotContainer(element, type);
-
-            if (currentContainer.childNodes && currentContainer.childNodes.length > 0) {
-                const elements: HTMLElement[] = Array.prototype.slice.call(currentContainer.childNodes);
-
-                elements.forEach((e: HTMLElement) => {
-                    container.appendChild(e);
-                });
-            }
+            await this.copyContent(selectedElement, element, type, reveal);
 
             if (reveal) {
                 const revealElement: HTMLElement = await RevealSlotUtils.toggleReveal(element, true);
@@ -105,5 +95,43 @@ export class ToggleSlotUtils {
 
             resolve();
         });
+    }
+
+    private static copyContent(selectedElement: HTMLElement, element: HTMLElement, type: SlotType, reveal: boolean): Promise<void> {
+        return new Promise<void>((resolve) => {
+            // We don't copy content if the target is an image
+            if (type === SlotType.IMG || type === SlotType.SOCIAL) {
+                resolve();
+                return;
+            }
+
+            const currentContainer: HTMLElement = this.getSlotContainer(reveal ? selectedElement.firstElementChild as HTMLElement : selectedElement);
+
+            // We don't copy content if the source is an image
+            if (this.isNodeImage(currentContainer) || this.isNodeSocial(currentContainer)) {
+                resolve();
+                return;
+            }
+
+            const container: HTMLElement = this.createSlotContainer(element, type);
+
+            if (currentContainer.childNodes && currentContainer.childNodes.length > 0) {
+                const elements: HTMLElement[] = Array.prototype.slice.call(currentContainer.childNodes);
+
+                elements.forEach((e: HTMLElement) => {
+                    container.appendChild(e);
+                });
+            }
+
+            resolve();
+        });
+    }
+
+    private static isNodeImage(selectedElement: HTMLElement): boolean {
+        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.IMG;
+    }
+
+    private static isNodeSocial(selectedElement: HTMLElement): boolean {
+        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.SOCIAL;
     }
 }
