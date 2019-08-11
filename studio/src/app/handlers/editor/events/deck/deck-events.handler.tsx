@@ -16,6 +16,7 @@ import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.se
 import {AuthService} from '../../../../services/auth/auth.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
+import {RevealSlotUtils} from '../../../../utils/editor/reveal-slot.utils';
 
 export class DeckEventsHandler {
 
@@ -147,7 +148,11 @@ export class DeckEventsHandler {
 
         const element: HTMLElement = $event.target as HTMLElement;
 
-        const parent: HTMLElement = element.parentElement;
+        let parent: HTMLElement = element.parentElement;
+
+        if (RevealSlotUtils.isNodeReveal(parent)) {
+            parent = parent.parentElement;
+        }
 
         if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
             return;
