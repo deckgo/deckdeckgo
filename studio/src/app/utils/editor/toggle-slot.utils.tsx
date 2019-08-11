@@ -34,7 +34,7 @@ export class ToggleSlotUtils {
         });
     }
 
-    static copyAttributes(selectedElement: HTMLElement, element: HTMLElement): Promise<void> {
+    private static copyAttributes(selectedElement: HTMLElement, element: HTMLElement): Promise<void> {
         return new Promise<void>((resolve) => {
             if (selectedElement.attributes && selectedElement.attributes.length) {
                 for (let i: number = 0; i < selectedElement.attributes.length; i++) {
@@ -99,16 +99,10 @@ export class ToggleSlotUtils {
 
     private static copyContent(selectedElement: HTMLElement, element: HTMLElement, type: SlotType, reveal: boolean): Promise<void> {
         return new Promise<void>((resolve) => {
-            // We don't copy content if the target is an image
-            if (type === SlotType.IMG || type === SlotType.SOCIAL) {
-                resolve();
-                return;
-            }
-
             const currentContainer: HTMLElement = this.getSlotContainer(reveal ? selectedElement.firstElementChild as HTMLElement : selectedElement);
 
-            // We don't copy content if the source is an image
-            if (this.isNodeImage(currentContainer) || this.isNodeSocial(currentContainer)) {
+            // We don't copy content if the source is an image and target not or the contrary
+            if ((this.isNodeImage(currentContainer) || this.isNodeSocial(currentContainer)) && (type === SlotType.IMG || type === SlotType.SOCIAL)) {
                 resolve();
                 return;
             }

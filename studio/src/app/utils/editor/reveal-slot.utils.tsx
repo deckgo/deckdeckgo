@@ -1,4 +1,3 @@
-import {ToggleSlotUtils} from './toggle-slot.utils';
 import {SlotType} from './create-slides.utils';
 
 export class RevealSlotUtils {
@@ -21,17 +20,10 @@ export class RevealSlotUtils {
             }
 
             const element: HTMLElement = reveal ? document.createElement(SlotType.REVEAL) : selectedElement.firstElementChild as HTMLElement;
-            await ToggleSlotUtils.copyAttributes(selectedElement, element);
+
+            this.moveSpecificAttributes(selectedElement, element);
 
             if (reveal) {
-                const attributeNames: string[] = selectedElement.getAttributeNames();
-                if (attributeNames && attributeNames.length > 0) {
-                    for (const attributeName of attributeNames) {
-                        if (attributeName && attributeName.toLowerCase() !== 'contenteditable') {
-                            selectedElement.removeAttribute(attributeName);
-                        }
-                    }
-                }
                 element.appendChild(selectedElement.cloneNode(true));
 
                 (element as any).reveal();
@@ -40,6 +32,22 @@ export class RevealSlotUtils {
             resolve(element);
 
         });
+    }
+
+    private static moveSpecificAttributes(selectedElement: HTMLElement, element: HTMLElement) {
+        if (selectedElement.hasAttribute('slot')) {
+            element.setAttribute('slot', selectedElement.getAttribute('slot'));
+            selectedElement.removeAttribute('slot');
+        }
+
+        if (selectedElement.hasAttribute('style')) {
+            element.setAttribute('style', selectedElement.getAttribute('style'));
+            selectedElement.removeAttribute('style');
+        }
+
+        if (selectedElement.hasAttribute('contenteditable')) {
+            element.setAttribute('contenteditable', selectedElement.getAttribute('contenteditable'));
+        }
     }
 
     static isNodeReveal(selectedElement: HTMLElement): boolean {
