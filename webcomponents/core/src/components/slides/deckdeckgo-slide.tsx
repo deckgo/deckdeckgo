@@ -19,11 +19,11 @@ export class DeckdeckgoSlideUtils {
 
       if (elements) {
         const nextElement: HTMLElement = Array.from(elements).find((element: HTMLElement) => {
-          return !(element as HTMLDeckgoRevealElement).visible;
+          return !(element as HTMLDeckgoRevealElement).allElementsRevealed;
         });
 
         if (nextElement) {
-          await (nextElement as HTMLDeckgoRevealElement).display();
+          await (nextElement as HTMLDeckgoRevealElement).reveal();
           couldSwipe = false;
         }
       }
@@ -40,7 +40,7 @@ export class DeckdeckgoSlideUtils {
 
       if (elements) {
         const nextElement: HTMLElement = Array.from(elements).reverse().find((element: HTMLElement) => {
-          return (element as HTMLDeckgoRevealElement).visible;
+          return !(element as HTMLDeckgoRevealElement).allElementsHidden;
         });
 
         if (nextElement) {

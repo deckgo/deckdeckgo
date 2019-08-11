@@ -44,9 +44,10 @@ export namespace Components {
     'length': number;
   }
   interface DeckgoReveal {
-    'display': () => Promise<void>;
+    'allElementsHidden': boolean;
+    'allElementsRevealed': boolean;
     'hide': () => Promise<void>;
-    'visible': boolean;
+    'reveal': () => Promise<void>;
   }
   interface DeckgoSlideAuthor {
     'afterSwipe': () => Promise<void>;
@@ -326,7 +327,8 @@ declare namespace LocalJSX {
     'onPagerClick'?: (event: CustomEvent<void>) => void;
   }
   interface DeckgoReveal extends JSXBase.HTMLAttributes<HTMLDeckgoRevealElement> {
-    'visible'?: boolean;
+    'allElementsHidden'?: boolean;
+    'allElementsRevealed'?: boolean;
   }
   interface DeckgoSlideAuthor extends JSXBase.HTMLAttributes<HTMLDeckgoSlideAuthorElement> {
     'customActions'?: boolean;

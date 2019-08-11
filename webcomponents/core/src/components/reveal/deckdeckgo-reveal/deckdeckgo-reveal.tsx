@@ -1,9 +1,10 @@
-import { Component, h, Element, Prop, Method, State, Host, FunctionalComponent } from '@stencil/core';
+import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent} from '@stencil/core';
 
-const arrayOf = (len: number) => new Array(len).fill(0).map((_, i) => i);
+const RevealNthChild: FunctionalComponent<{ index: number }> = ({index}) => {
+  if (index === 0) {
+    return undefined;
+  }
 
-const RevealNthChild: FunctionalComponent<{ index: number }> = ({ index }) => {
-  if (index === 0) return null;
   return (
     <style class={`deckgo-reveal-${index}`}>{`
       ::slotted(*:nth-child(-n+${index})) {
@@ -13,7 +14,7 @@ const RevealNthChild: FunctionalComponent<{ index: number }> = ({ index }) => {
       };
     `}</style>
   );
-}
+};
 
 @Component({
   tag: 'deckgo-reveal',
@@ -25,13 +26,16 @@ export class DeckdeckgoReveal {
   @Element() el: HTMLElement;
 
   @Prop()
-  visible: boolean = false;
+  allElementsRevealed: boolean = false;
+
+  @Prop()
+  allElementsHidden: boolean = false;
 
   @State()
   private visibleIndex: number = 0;
 
   @Method()
-  display(): Promise<void> {
+  reveal(): Promise<void> {
     return new Promise<void>((resolve) => {
       this.visibleIndex++;
 
@@ -39,7 +43,8 @@ export class DeckdeckgoReveal {
         return node && node.nodeType !== node.TEXT_NODE;
       });
 
-      this.visible = elements && elements.length <= this.visibleIndex;
+      this.allElementsRevealed = elements && elements.length <= this.visibleIndex;
+      this.allElementsHidden = false;
 
       resolve();
     });
@@ -50,7 +55,8 @@ export class DeckdeckgoReveal {
     return new Promise<void>((resolve) => {
       this.visibleIndex--;
 
-      this.visible = this.visibleIndex !== 0;
+      this.allElementsHidden = this.visibleIndex === 0;
+      this.allElementsRevealed = false;
 
       resolve();
     });
@@ -58,7 +64,7 @@ export class DeckdeckgoReveal {
 
   render() {
     return <Host>
-      {arrayOf(this.visibleIndex + 1).map(index => <RevealNthChild index={index} />)}
+      {<RevealNthChild index={this.visibleIndex}/>}
       <slot/>
     </Host>
   }
