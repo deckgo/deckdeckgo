@@ -11,6 +11,7 @@ import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {ImageHelper} from '../../../helpers/editor/image.helper';
+import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
 
 import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
@@ -461,6 +462,29 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openReveal() {
+        if (this.deckOrSlide) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+            component: 'app-reveal',
+            componentProps: {
+                selectedElement: this.selectedElement
+            },
+            mode: 'md',
+            cssClass: 'popover-menu'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                await this.toggleReveal(detail.data.reveal);
+            }
+        });
+
+        await popover.present();
+    }
+
     private async openCode() {
         if (!this.code) {
             return;
@@ -508,6 +532,34 @@ export class AppEditorToolbar {
             }
 
             const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement, type);
+
+            await this.replaceSlot(element);
+
+            resolve();
+        });
+    }
+
+    private toggleReveal(reveal: boolean): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, reveal);
+
+            await this.replaceSlot(element);
+
+            resolve();
+        });
+    }
+
+    private replaceSlot(element: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement || !element) {
+                resolve();
+                return;
+            }
 
             this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
 
@@ -742,6 +794,7 @@ export class AppEditorToolbar {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderSlotType()}
+                {this.renderReveal()}
                 {this.renderColor()}
                 {this.renderImages()}
                 {this.renderYoutube()}
@@ -801,6 +854,16 @@ export class AppEditorToolbar {
             </a>
         } else {
             return undefined;
+        }
+    }
+
+    private renderReveal() {
+        if (this.deckOrSlide || this.code || this.youtube) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.openReveal()} title="Edit element animation">
+                <ion-icon name="videocam"></ion-icon>
+            </a>
         }
     }
 

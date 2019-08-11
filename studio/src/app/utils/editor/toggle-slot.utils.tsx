@@ -5,12 +5,12 @@ export class ToggleSlotUtils {
     static toggleSlotType(selectedElement: HTMLElement, type: SlotType): Promise<HTMLElement> {
         return new Promise<HTMLElement>(async (resolve) => {
             if (!selectedElement || !selectedElement.parentElement) {
-                resolve();
+                resolve(null);
                 return;
             }
 
             if (!document) {
-                resolve();
+                resolve(null);
                 return;
             }
 
@@ -36,7 +36,7 @@ export class ToggleSlotUtils {
         });
     }
 
-    private static copyAttributes(selectedElement: HTMLElement, element: HTMLElement): Promise<void> {
+    static copyAttributes(selectedElement: HTMLElement, element: HTMLElement): Promise<void> {
         return new Promise<void>((resolve) => {
             if (selectedElement.attributes && selectedElement.attributes.length) {
                 for (let i: number = 0; i < selectedElement.attributes.length; i++) {
