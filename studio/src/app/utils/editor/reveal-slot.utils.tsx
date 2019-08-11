@@ -44,10 +44,6 @@ export class RevealSlotUtils {
             element.setAttribute('style', selectedElement.getAttribute('style'));
             selectedElement.removeAttribute('style');
         }
-
-        if (selectedElement.hasAttribute('contenteditable')) {
-            element.setAttribute('contenteditable', selectedElement.getAttribute('contenteditable'));
-        }
     }
 
     static isNodeReveal(selectedElement: HTMLElement): boolean {

@@ -5,12 +5,15 @@ const RevealNthChild: FunctionalComponent<{ index: number }> = ({index}) => {
     return undefined;
   }
 
+  // Note: "transition: none;" is needed otherwise, the content won't be editable if set as such!
+
   return (
     <style class={`deckgo-reveal-${index}`}>{`
       ::slotted(*:nth-child(-n+${index})) {
         visibility: initial;
         opacity: 1;
         transform: none;
+        transition: none;
       };
     `}</style>
   );
