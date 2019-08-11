@@ -4,7 +4,7 @@ export class RevealSlotUtils {
 
     static toggleReveal(selectedElement: HTMLElement, reveal: boolean): Promise<HTMLElement> {
         return new Promise<HTMLElement>(async (resolve) => {
-            if (!selectedElement || !selectedElement.parentElement) {
+            if (!selectedElement) {
                 resolve(null);
                 return;
             }

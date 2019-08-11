@@ -1,4 +1,5 @@
 import {SlotType} from './create-slides.utils';
+import {RevealSlotUtils} from './reveal-slot.utils';
 
 export class ToggleSlotUtils {
 
@@ -16,11 +17,13 @@ export class ToggleSlotUtils {
 
             const element: HTMLElement = document.createElement(type.toString());
 
+            const reveal: boolean = RevealSlotUtils.isNodeReveal(selectedElement);
+
             await this.copyAttributes(selectedElement, element);
             await this.cleanAttributes(element, type);
             await this.updateContentEditable(element, type);
 
-            const currentContainer: HTMLElement = this.getSlotContainer(selectedElement);
+            const currentContainer: HTMLElement = this.getSlotContainer(reveal ? selectedElement.firstElementChild as HTMLElement : selectedElement);
 
             const container: HTMLElement = this.createSlotContainer(element, type);
 
@@ -32,7 +35,12 @@ export class ToggleSlotUtils {
                 });
             }
 
-            resolve(element);
+            if (reveal) {
+                const revealElement: HTMLElement = await RevealSlotUtils.toggleReveal(element, true);
+                resolve(revealElement);
+            } else {
+                resolve(element);
+            }
         });
     }
 
