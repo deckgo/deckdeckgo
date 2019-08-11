@@ -2,6 +2,7 @@ import {h} from '@stencil/core';
 
 import {ParseStyleUtils} from './parse-style.utils';
 import {SlotType} from './create-slides.utils';
+import {RevealSlotUtils} from './reveal-slot.utils';
 
 export class ParseElementsUtils {
 
@@ -43,8 +44,10 @@ export class ParseElementsUtils {
                 attributes.style = await ParseStyleUtils.convertStyle(attributes.style);
             }
 
-            if (contentEditable && this.isElementContentEditable(element, attributes)) {
+            if (contentEditable && this.isContentEditable(element, attributes)) {
                 attributes['contenteditable'] = true;
+            } else if (contentEditable && RevealSlotUtils.isNodeReveal(element) && element.firstElementChild) {
+                element.firstElementChild.setAttribute('contenteditable', `${true}`);
             }
 
             resolve(<Elem {...attributes}>{content}</Elem>);
@@ -64,12 +67,16 @@ export class ParseElementsUtils {
             }, {});
     }
 
-    private static isElementContentEditable(element: HTMLElement, attributes: any): boolean {
+    private static isContentEditable(element: HTMLElement, attributes: any): boolean {
         return attributes.slot &&
             attributes.slot !== 'background' &&
-            (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.CODE)) &&
-            (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-social' && element.nodeName.toLowerCase() !== SlotType.SOCIAL)) &&
-            (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-lazy-img' && element.nodeName.toLowerCase() !== SlotType.IMG));
+            this.isElementContentEditable(element);
     }
 
+    static isElementContentEditable(element: HTMLElement): boolean {
+        return (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.CODE)) &&
+            (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-social' && element.nodeName.toLowerCase() !== SlotType.SOCIAL)) &&
+            (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-lazy-img' && element.nodeName.toLowerCase() !== SlotType.IMG)) &&
+            (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-reveal' && element.nodeName.toLowerCase() !== SlotType.REVEAL));
+    }
 }

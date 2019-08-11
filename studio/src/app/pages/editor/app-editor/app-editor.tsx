@@ -27,6 +27,8 @@ import {AnonymousService} from '../../../services/editor/anonymous/anonymous.ser
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {BusyService} from '../../../services/editor/busy/busy.service';
+import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
+import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
 
 @Component({
     tag: 'app-editor',
@@ -468,8 +470,10 @@ export class AppEditor {
                 if (e.nodeName) {
                     if (e.nodeName.toLowerCase() === SlotType.CODE) {
                         e.setAttribute('editable', '');
-                    } else if (e.nodeName.toLowerCase() !== SlotType.SOCIAL && e.nodeName.toLowerCase() !== SlotType.IMG) {
+                    } else if (ParseElementsUtils.isElementContentEditable(e)) {
                         e.setAttribute('contentEditable', '');
+                    } else if (RevealSlotUtils.isNodeReveal(e) && e.firstElementChild) {
+                        e.firstElementChild.setAttribute('contentEditable', '');
                     }
                 }
             });
