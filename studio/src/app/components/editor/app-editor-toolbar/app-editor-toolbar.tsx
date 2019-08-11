@@ -605,9 +605,11 @@ export class AppEditorToolbar {
         return new Promise<void>(async (resolve) => {
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
-            this.code = this.isElementCode(element);
+
             this.youtube = this.isElementYoutubeSlide(element);
-            this.image = this.isElementImage(element);
+
+            this.code = this.isElementCode(RevealSlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
+            this.image = this.isElementImage(RevealSlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);

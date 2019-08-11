@@ -1,6 +1,7 @@
 import {Component, Element, Prop, State, h} from '@stencil/core';
 
 import {SlotType} from '../../../utils/editor/create-slides.utils';
+import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
 
 @Component({
     tag: 'app-slot-type',
@@ -16,10 +17,26 @@ export class AppSlideAdd {
     @State()
     private currentType: SlotType;
 
-    componentWillLoad() {
-        if (this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName !== '') {
-            this.currentType = this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase() === SlotType.CODE ? SlotType.CODE : SlotType[this.selectedElement.nodeName];
+    async componentWillLoad() {
+        if (this.selectedElement) {
+            const element: HTMLElement = RevealSlotUtils.isNodeReveal(this.selectedElement) ? this.selectedElement.firstElementChild as HTMLElement : this.selectedElement;
+
+            if (element.nodeName && element.nodeName !== '') {
+                this.currentType = await this.initSlotType(element.nodeName.toLowerCase());
+
+                console.log(this.currentType);
+            }
         }
+    }
+
+    private initSlotType(type: string): Promise<SlotType> {
+        return new Promise<SlotType>((resolve) => {
+            const templateKey: string = Object.keys(SlotType).find((key: string) => {
+                return type === SlotType[key];
+            });
+
+            resolve(SlotType[templateKey]);
+        });
     }
 
     private async closePopover(type?: SlotType) {
