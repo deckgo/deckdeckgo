@@ -43,6 +43,9 @@ export class DeckdeckgoSlideUtils {
       let couldSwipe: boolean = true;
 
       if (elements) {
+
+        console.log(Array.from(elements).reverse());
+
         const nextElement: HTMLElement = Array.from(elements).reverse().find((element: HTMLElement) => {
           return !(element as HTMLDeckgoRevealElement).allElementsHidden;
         });
@@ -82,7 +85,7 @@ export class DeckdeckgoSlideUtils {
       if (elements && elements.length > 0) {
         const promises = [];
 
-        for (const element of  Array.from(elements)) {
+        for (const element of Array.from(elements)) {
           promises.push((element as any).hideAll());
         }
 

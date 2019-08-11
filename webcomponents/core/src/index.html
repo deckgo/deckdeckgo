@@ -122,14 +122,23 @@
 
   <deckgo-slide-content>
     <h1 slot="title">Reveal after element</h1>
-    <div slot="content" contenteditable="true">
-      <ol>
+
+    <div slot="content">
+      <deckgo-reveal list="ul" style="list-style-type: square;" contenteditable="true">
         <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
         <li><strong>Ionic</strong> components and icons to create your content</li>
         <li><strong>Style</strong> your presentation quickly</li>
         <li>Lightweight and <strong>lazy</strong> loaded images</li>
         <li>Bundles the presentation with an <strong>offline</strong> support</li>
-      </ol>
+      </deckgo-reveal>
+
+      <deckgo-reveal list="ol">
+        <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
+        <li><strong>Ionic</strong> components and icons to create your content</li>
+        <li><strong>Style</strong> your presentation quickly</li>
+        <li>Lightweight and <strong>lazy</strong> loaded images</li>
+        <li>Bundles the presentation with an <strong>offline</strong> support</li>
+      </deckgo-reveal>
 
       <deckgo-reveal>
         <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>

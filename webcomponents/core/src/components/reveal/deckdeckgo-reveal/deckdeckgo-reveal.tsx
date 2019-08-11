@@ -1,4 +1,4 @@
-import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent} from '@stencil/core';
+import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent, Listen} from '@stencil/core';
 
 const RevealNthChild: FunctionalComponent<{ index: number }> = ({index}) => {
   if (index === 0) {
@@ -9,7 +9,7 @@ const RevealNthChild: FunctionalComponent<{ index: number }> = ({index}) => {
 
   return (
     <style class={`deckgo-reveal-${index}`}>{`
-      ::slotted(*:nth-child(-n+${index})) {
+      :host(:not(.deckgo-reveal-all)) ::slotted(*:nth-child(-n+${index})) {
         visibility: initial;
         opacity: 1;
         transform: none;
@@ -32,10 +32,16 @@ export class DeckdeckgoReveal {
   allElementsRevealed: boolean = false;
 
   @Prop()
-  allElementsHidden: boolean = false;
+  allElementsHidden: boolean = true;
+
+  @Prop()
+  list: string;
 
   @State()
   private visibleIndex: number = 0;
+
+  @State()
+  private focused: boolean = false;
 
   @Method()
   reveal(): Promise<void> {
@@ -99,11 +105,39 @@ export class DeckdeckgoReveal {
     })
   }
 
+  @Listen('focus')
+  onFocus() {
+    this.focused = true;
+  }
+
+  @Listen('blur')
+  onBlur() {
+    this.focused = false;
+  }
+
   render() {
-    return <Host>
+    return <Host class={{
+        'deckgo-reveal-all': this.focused
+      }}>
       {<RevealNthChild index={this.visibleIndex}/>}
-      <slot/>
+      {this.renderContent()}
     </Host>
+  }
+
+  private renderContent() {
+    if (this.list) {
+      return this.renderList();
+    } else {
+      return <slot/>;
+    }
+  }
+
+  private renderList() {
+    const Element: string = this.list;
+
+    return <Element>
+      <slot/>
+    </Element>
   }
 
 }

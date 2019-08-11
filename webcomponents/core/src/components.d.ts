@@ -48,6 +48,7 @@ export namespace Components {
     'allElementsRevealed': boolean;
     'hide': () => Promise<void>;
     'hideAll': () => Promise<void>;
+    'list': string;
     'reveal': () => Promise<void>;
     'revealAll': () => Promise<void>;
   }
@@ -351,6 +352,7 @@ declare namespace LocalJSX {
   interface DeckgoReveal extends JSXBase.HTMLAttributes<HTMLDeckgoRevealElement> {
     'allElementsHidden'?: boolean;
     'allElementsRevealed'?: boolean;
+    'list'?: string;
   }
   interface DeckgoSlideAuthor extends JSXBase.HTMLAttributes<HTMLDeckgoSlideAuthorElement> {
     'customActions'?: boolean;
