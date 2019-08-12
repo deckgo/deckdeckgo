@@ -7,6 +7,8 @@ import 'web-social-share';
 import {Deck} from '../../../models/data/deck';
 import {AuthUser} from '../../../models/auth/auth.user';
 
+import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
+
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {AuthService} from '../../../services/auth/auth.service';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -124,8 +126,8 @@ export class AppShareDeck {
         return new Promise<string>((resolve) => {
             this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
                 if (deck && deck.data && deck.data.meta && deck.data.meta.pathname && deck.data.meta.pathname !== '') {
-                    const presentationUrl: string = EnvironmentConfigService.getInstance().get('presentationUrl');
-                    resolve(presentationUrl + deck.data.meta.pathname);
+                    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+                    resolve(config.presentationUrl + deck.data.meta.pathname);
                 } else {
                     // Should not happens
                     resolve('https://deckdeckgo.com');

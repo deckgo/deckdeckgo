@@ -17,10 +17,15 @@ export interface EnvironmentUnsplashConfig {
     url: string;
 }
 
-export interface EnvironmentConfig {
+export interface EnvironmentDeckDeckGoConfig {
     appUrl: string;
     apiUrl: string;
     presentationUrl: string;
+    globalAssetsUrl: string
+}
+
+export interface EnvironmentConfig {
+    deckdeckgo: EnvironmentDeckDeckGoConfig;
     firebase: EnvironmentFirebaseConfig;
     tenor: EnvironmentTenorConfig;
     unsplash: EnvironmentUnsplashConfig;

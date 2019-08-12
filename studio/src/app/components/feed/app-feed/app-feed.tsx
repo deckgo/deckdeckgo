@@ -22,7 +22,7 @@ export class AppFeed {
     @State()
     private lastPageReached: boolean = false;
 
-    private presentationUrl: string = EnvironmentConfigService.getInstance().get('presentationUrl');
+    private presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
 
     private subscription: Subscription;
     private lastPageSubscription: Subscription;

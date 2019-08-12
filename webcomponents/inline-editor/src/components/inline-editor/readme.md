@@ -25,6 +25,7 @@
 | Event                    | Description | Type                       |
 | ------------------------ | ----------- | -------------------------- |
 | `imgDidChange`           |             | `CustomEvent<HTMLElement>` |
+| `linkCreated`            |             | `CustomEvent<HTMLElement>` |
 | `stickyToolbarActivated` |             | `CustomEvent<boolean>`     |
 
 

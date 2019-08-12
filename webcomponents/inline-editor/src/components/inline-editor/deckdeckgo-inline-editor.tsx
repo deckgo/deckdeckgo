@@ -102,6 +102,8 @@ export class DeckdeckgoInlineEditor {
 
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
+  @Event() private linkCreated: EventEmitter<HTMLElement>;
+
   @Prop()
   imgAnchor: string = 'img';
 
@@ -805,6 +807,8 @@ export class DeckdeckgoInlineEditor {
 
         target.parentElement.replaceChild(a, target);
       }
+
+      this.linkCreated.emit(container as HTMLElement);
 
       this.toolbarActions = ToolbarActions.SELECTION;
 

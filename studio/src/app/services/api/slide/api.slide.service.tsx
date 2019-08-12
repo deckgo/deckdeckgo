@@ -1,8 +1,9 @@
 import {ApiSlide} from '../../../models/api/api.slide';
 
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
 
 import {AuthService} from '../../auth/auth.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 export class ApiSlideService {
 
@@ -34,9 +35,9 @@ export class ApiSlideService {
     delete(deckId: string, slide_id: string): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-                const rawResponse: Response = await fetch(apiUrl + `/decks/${deckId}/slides/` + slide_id, {
+                const rawResponse: Response = await fetch(config.apiUrl + `/decks/${deckId}/slides/` + slide_id, {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
@@ -60,9 +61,9 @@ export class ApiSlideService {
     private query(slide: ApiSlide, context: string, method: string): Promise<ApiSlide> {
         return new Promise<ApiSlide>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-                const rawResponse: Response = await fetch(apiUrl + context, {
+                const rawResponse: Response = await fetch(config.apiUrl + context, {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
@@ -89,9 +90,9 @@ export class ApiSlideService {
     get(deckId: string, slideId: string): Promise<ApiSlide> {
         return new Promise<ApiSlide>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-                const rawResponse: Response = await fetch(apiUrl + `/decks/${deckId}/slides/${slideId}`, {
+                const rawResponse: Response = await fetch(config.apiUrl + `/decks/${deckId}/slides/${slideId}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',

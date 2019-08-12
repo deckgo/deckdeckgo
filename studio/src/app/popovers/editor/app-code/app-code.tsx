@@ -278,7 +278,7 @@ export class AppCode {
 
     private async presentHighlightInfo() {
         const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
-            message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 0,2 7,7 13,15<br/><br/>Which would highlight lines 0 to 2, line 7 and lines 13 to 15.',
+            message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 1,2 7,7 13,15<br/><br/>Which would highlight lines 1 to 2, line 7 and lines 13 to 15.',
             buttons: ['Ok']
         });
 
@@ -405,7 +405,7 @@ export class AppCode {
 
                 <ion-item>
                     <ion-label>Display line numbers</ion-label>
-                    <ion-checkbox slot="end" value="pepperoni" checked={this.lineNumbers}
+                    <ion-checkbox slot="end" checked={this.lineNumbers}
                                   onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
                 </ion-item>
 

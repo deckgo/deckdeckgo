@@ -14,22 +14,22 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/core": "^1.0.0-beta.45",
-    "@deckdeckgo/highlight-code": "^1.0.0-alpha.17-3",
-    "@deckdeckgo/inline-editor": "^1.0.0-alpha.12",
+    "@deckdeckgo/core": "^1.0.0-beta.45-2",
+    "@deckdeckgo/highlight-code": "^1.0.0-alpha.18",
+    "@deckdeckgo/inline-editor": "^1.0.0-alpha.13",
     "@deckdeckgo/lazy-img": "^1.0.0-alpha.12",
     "@deckdeckgo/qrcode": "^1.0.0-alpha.9",
     "@deckdeckgo/remote": "^1.0.0-alpha.11",
     "@deckdeckgo/utils": "^1.0.0-alpha.2",
-    "@ionic/core": "^4.7.1",
-    "firebase": "^6.2.4",
+    "@ionic/core": "^4.7.4",
+    "firebase": "^6.3.5",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.2",
     "web-social-share": "^6.2.0"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.11",
-    "@stencil/core": "^1.2.3",
+    "@stencil/core": "^1.2.4",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",
     "autoprefixer": "^9.6.1",

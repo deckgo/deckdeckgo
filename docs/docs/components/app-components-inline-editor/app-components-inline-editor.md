@@ -127,6 +127,7 @@ The event `input` will be automatically triggered when the content will be modif
 | Event          | Description | Type                       |
 | -------------- | ----------- | -------------------------- |
 | `imgDidChange` | Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element. | `CustomEvent<HTMLElement>` |
+| `linkCreated` | Triggered when a link is created by the user using this component |
 | `stickyToolbarActivated` | Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it. | `CustomEvent<boolean>` | 
 
 ### Methods

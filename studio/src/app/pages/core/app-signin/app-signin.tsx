@@ -12,6 +12,7 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {Deck} from '../../../models/data/deck';
 
 import {Utils} from '../../../utils/core/utils';
+import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
@@ -83,7 +84,9 @@ export class AppSignIn {
             'https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.css'
         );
 
-        const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
+        const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+        const appUrl: string = deckDeckGoConfig.appUrl;
 
         const redirectUrl: string = await get<string>('deckdeckgo_redirect');
         const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');

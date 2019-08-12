@@ -190,23 +190,29 @@ export class DeckdeckgoHighlightCode {
             // split the code on linebreaks
             const regEx = RegExp(/\n(?!$)/g); //
             const match = code.split(regEx);
-            match.forEach(m => {
+            match.forEach((m, idx, array) => {
+              // On last element
+              if (idx === array.length - 1){
+                this.attachHighlightObserver(container);
+              }
+
               let div: HTMLElement = document.createElement('div');
               div.classList.add('deckgo-highlight-code-line-number');
 
-              let highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
-              div.innerHTML = highlight;
+              const highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
+
+              // If empty, use \u200B as zero width text spacer
+              div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
+
               container.children[0].appendChild(div);
             });
           }else{
+            this.attachHighlightObserver(container);
+
             container.children[0].innerHTML = Prism.highlight(code, Prism.languages[this.language], this.language);
           }
 
           await this.addAnchors();
-
-          setTimeout(async () => {
-            await this.addHighlight();
-          }, 100);
 
           resolve();
         } catch (err) {
@@ -214,6 +220,24 @@ export class DeckdeckgoHighlightCode {
         }
       }
     });
+  }
+
+  private attachHighlightObserver(container: HTMLElement) {
+    if (window && 'ResizeObserver' in window) {
+      // @ts-ignore
+      const observer: ResizeObserver = new ResizeObserver(async (_entries) => {
+        await this.addHighlight();
+
+        observer.disconnect();
+      });
+
+      observer.observe(container);
+    } else {
+       // Back in my days...
+      setTimeout(async () => {
+        await this.addHighlight();
+      }, 100);
+    }
   }
 
   private addAnchors(): Promise<void> {
@@ -253,13 +277,14 @@ export class DeckdeckgoHighlightCode {
       if (this.highlightLines && this.highlightLines.length > 0) {
 
         const rows: number[] = await this.findRowsToHighlight();
+
         if (rows && rows.length > 0) {
           const containerCode: HTMLElement = this.el.shadowRoot.querySelector('code');
 
           if (containerCode && containerCode.hasChildNodes()) {
             const elements: HTMLElement[] = Array.prototype.slice.call(containerCode.childNodes);
 
-            let rowIndex: number = -1;
+            let rowIndex: number = 0;
             let lastOffsetTop: number = -1;
             let offsetHeight: number = -1;
 

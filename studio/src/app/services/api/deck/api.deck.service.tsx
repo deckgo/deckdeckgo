@@ -2,6 +2,8 @@ import {EnvironmentConfigService} from '../../core/environment/environment-confi
 
 import {ApiDeck} from '../../../models/api/api.deck';
 
+import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
+
 import {AuthService} from '../../auth/auth.service';
 
 interface DeckPublish {
@@ -37,13 +39,13 @@ export class ApiDeckService {
     private query(deck: ApiDeck, context: string, method: string, bearer?: string): Promise<ApiDeck> {
         return new Promise<ApiDeck>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
                 if (!bearer) {
                     bearer = await this.authService.getBearer();
                 }
 
-                const rawResponse: Response = await fetch(apiUrl + context, {
+                const rawResponse: Response = await fetch(config.apiUrl + context, {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
@@ -70,13 +72,13 @@ export class ApiDeckService {
     get(deckId: string, bearer?: string): Promise<ApiDeck> {
         return new Promise<ApiDeck>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
                 if (!bearer) {
                     bearer = await this.authService.getBearer();
                 }
 
-                const rawResponse: Response = await fetch(apiUrl + `/decks/${deckId}`, {
+                const rawResponse: Response = await fetch(config.apiUrl + `/decks/${deckId}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -102,9 +104,9 @@ export class ApiDeckService {
     getUserDecks(userId: string): Promise<ApiDeck[]> {
         return new Promise<ApiDeck[]>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-                const rawResponse: Response = await fetch(apiUrl + '/decks/?owner_id=' + userId, {
+                const rawResponse: Response = await fetch(config.apiUrl + '/decks/?owner_id=' + userId, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -130,11 +132,11 @@ export class ApiDeckService {
     publish(deck: ApiDeck): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
             try {
-                const apiUrl: string = EnvironmentConfigService.getInstance().get('apiUrl');
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
                 const bearer: string = await this.authService.getBearer();
 
-                const rawResponse: Response = await fetch(apiUrl + `/decks/${deck.id}/publish`, {
+                const rawResponse: Response = await fetch(config.apiUrl + `/decks/${deck.id}/publish`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

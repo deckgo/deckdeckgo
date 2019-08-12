@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.45-2"></a>
+# 1.0.0-beta.45-2 (2019-08-07)
+
+### Features
+
+* expose attributes social for studio
+
 <a name="1.0.0-beta.45"></a>
 # 1.0.0-beta.45 (2019-08-06)
 

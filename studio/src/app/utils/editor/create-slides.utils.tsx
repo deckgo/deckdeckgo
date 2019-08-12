@@ -2,6 +2,8 @@ import {h} from '@stencil/core';
 
 import {SlideTemplate} from '../../models/data/slide';
 
+import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
+
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 import {User, UserSocial} from '../../models/data/user';
 
@@ -161,44 +163,46 @@ export class CreateSlidesUtils {
             if (user && user.data && user.data.social) {
                 const userSocial: UserSocial = user.data.social;
 
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
                 if (userSocial.twitter && userSocial.twitter !== '' && userSocial.twitter !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} twitter={user.data.social.twitter}>
-                        <deckgo-lazy-img svg-src="/assets/icons/ionicons/twitter.svg" aria-label="Twitter"></deckgo-lazy-img>
+                        <deckgo-lazy-img svg-src={`${config.globalAssetsUrl}/icons/ionicons/twitter.svg`} aria-label="Twitter"></deckgo-lazy-img>
                         Twitter
                     </deckgo-social>);
                 }
 
                 if (userSocial.linkedin && userSocial.linkedin !== '' && userSocial.linkedin !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} linkedin={user.data.social.linkedin}>
-                        <deckgo-lazy-img svg-src="/assets/icons/ionicons/linkedin.svg" aria-label="LinkedIn"></deckgo-lazy-img>
+                        <deckgo-lazy-img svg-src={`${config.globalAssetsUrl}/icons/ionicons/linkedin.svg`} aria-label="LinkedIn"></deckgo-lazy-img>
                         LinkedIn
                     </deckgo-social>);
                 }
 
                 if (userSocial.dev && userSocial.dev !== '' && userSocial.dev !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} dev={user.data.social.dev}>
-                        <deckgo-lazy-img svg-src="/assets/icons/dev.svg" aria-label="Dev"></deckgo-lazy-img>
+                        <deckgo-lazy-img svg-src={`${config.globalAssetsUrl}/icons/dev.svg`} aria-label="Dev"></deckgo-lazy-img>
                         Dev
                     </deckgo-social>);
                 }
 
                 if (userSocial.medium && userSocial.medium !== '' && userSocial.medium !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} medium={user.data.social.medium}>
-                        <deckgo-lazy-img svg-src="/assets/icons/medium.svg" aria-label="Medium"></deckgo-lazy-img>
+                        <deckgo-lazy-img svg-src={`${config.globalAssetsUrl}/icons/medium.svg`} aria-label="Medium"></deckgo-lazy-img>
                         Medium
                     </deckgo-social>);
                 }
 
                 if (userSocial.github && userSocial.github !== '' && userSocial.github !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} github={user.data.social.github}>
-                        <deckgo-lazy-img svg-src="/assets/icons/ionicons/github.svg" aria-label="GitHub"></deckgo-lazy-img>
+                        <deckgo-lazy-img svg-src={`${config.globalAssetsUrl}/icons/ionicons/github.svg`} aria-label="GitHub"></deckgo-lazy-img>
                         GitHub
                     </deckgo-social>);
                 }
 
                 if (userSocial.custom && userSocial.custom !== '' && userSocial.custom !== undefined) {
                     links.push(<deckgo-social slot={`social-link`} fullUrl={user.data.social.custom}>
-                        <deckgo-lazy-img svg-src="/assets/icons/ionicons/globe.svg" aria-label="Web"></deckgo-lazy-img>
+                        <deckgo-lazy-img svg-src={`${config.globalAssetsUrl}/icons/ionicons/globe.svg`} aria-label="Web"></deckgo-lazy-img>
                         Web
                     </deckgo-social>);
                 }

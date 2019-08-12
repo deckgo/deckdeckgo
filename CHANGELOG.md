@@ -1,5 +1,24 @@
+<a name="1.0.0-beta.54-2"></a>
+# [1.0.0-beta.54-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.54-1...v1.0.0-beta.54-2) (2019-08-09)
+
+### Applications
+
+* docs: v1.0.0-alpha.24-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
+### Web Components
+
+* highlight-code: v1.0.0-alpha.18 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+* inline-editor: v1.0.0-alpha.13 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+
+<a name="1.0.0-beta.54-1"></a>
+# [1.0.0-beta.54-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.54...v1.0.0-beta.54-1) (2019-08-07)
+
+### Web Components
+
+* core: v1.0.0-beta.45-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+
 <a name="1.0.0-beta.54"></a>
-# [1.0.0-beta.54](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.54...v1.0.0-beta.54) (2019-08-07)
+# [1.0.0-beta.54](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.53-1...v1.0.0-beta.54) (2019-08-07)
 
 ### Applications
 

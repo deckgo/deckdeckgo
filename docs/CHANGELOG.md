@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.24-1"></a>
+# 1.0.0-alpha.24-1 (2019-08-09)
+
+### Features
+
+* add `linkCreated` to inline editor component
+
 <a name="1.0.0-alpha.24"></a>
 # 1.0.0-alpha.24 (2019-08-07)
 
