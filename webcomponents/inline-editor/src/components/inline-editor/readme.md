@@ -15,6 +15,7 @@
 | `imgEditable`         | `img-editable`           |             | `boolean`     | `false`                   |
 | `imgPropertyCssFloat` | `img-property-css-float` |             | `string`      | `'cssFloat'`              |
 | `imgPropertyWidth`    | `img-property-width`     |             | `string`      | `'width'`                 |
+| `list`                | `list`                   |             | `boolean`     | `true`                    |
 | `mobile`              | `mobile`                 |             | `boolean`     | `false`                   |
 | `stickyDesktop`       | `sticky-desktop`         |             | `boolean`     | `false`                   |
 | `stickyMobile`        | `sticky-mobile`          |             | `boolean`     | `false`                   |

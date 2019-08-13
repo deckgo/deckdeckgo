@@ -557,9 +557,9 @@ export class AppEditor {
                                     onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
                                     onToggleFullScreen={() => this.toggleFullScreen()}></app-editor-actions>
             </ion-footer>,
-            <deckgo-inline-editor containers="h1,h2,h3,section,deckgo-reveal" sticky-mobile="true"
+            <deckgo-inline-editor containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul" sticky-mobile="true"
                                   onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
-                                  img-anchor="deckgo-lazy-img">
+                                  img-anchor="deckgo-lazy-img" list={false}>
             </deckgo-inline-editor>
         ];
     }
