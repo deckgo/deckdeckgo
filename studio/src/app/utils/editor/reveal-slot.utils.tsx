@@ -14,7 +14,10 @@ export class RevealSlotUtils {
                 return;
             }
 
-            if (this.isNodeReveal(selectedElement) === reveal) {
+            const sameReveal: boolean = this.isNodeReveal(selectedElement) === reveal;
+            const sameRevealList: boolean = this.isNodeRevealList(selectedElement) === reveal;
+
+            if ((sameReveal && sameRevealList) || (sameReveal && sameRevealList)) {
                 resolve(null);
                 return;
             }
@@ -64,9 +67,7 @@ export class RevealSlotUtils {
     }
 
     static isNodeReveal(selectedElement: HTMLElement): boolean {
-        return selectedElement && selectedElement.nodeName &&
-            (selectedElement.nodeName.toLowerCase() === SlotType.REVEAL ||
-                selectedElement.nodeName.toLowerCase() === SlotType.REVEAL_LIST);
+        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.REVEAL;
     }
 
     static isNodeRevealList(selectedElement: HTMLElement): boolean {

@@ -17,7 +17,7 @@ export class AppSlideAdd {
     private currentReveal: boolean = false;
 
     componentWillLoad() {
-        this.currentReveal = RevealSlotUtils.isNodeReveal(this.selectedElement);
+        this.currentReveal = RevealSlotUtils.isNodeReveal(this.selectedElement) || RevealSlotUtils.isNodeRevealList(this.selectedElement);
     }
 
     private async closePopover(reveal: boolean) {
