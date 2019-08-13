@@ -86,7 +86,7 @@ export class ToggleSlotUtils {
 
     private static cleanAttributes(selectedElement: HTMLElement, type: SlotType): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (type!== SlotType.IMG && type !== SlotType.SOCIAL) {
+            if (type !== SlotType.IMG && type !== SlotType.SOCIAL) {
                 selectedElement.removeAttribute('img-src');
                 selectedElement.removeAttribute('img-alt');
                 selectedElement.style.removeProperty('justify-content');
@@ -98,8 +98,8 @@ export class ToggleSlotUtils {
     }
 
     private static copyContent(selectedElement: HTMLElement, element: HTMLElement, type: SlotType, reveal: boolean): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const currentContainer: HTMLElement = this.getSlotContainer(reveal ? selectedElement.firstElementChild as HTMLElement : selectedElement);
+        return new Promise<void>(async (resolve) => {
+            const currentContainer: HTMLElement = this.getSlotContainer(reveal && !RevealSlotUtils.isNodeRevealList(selectedElement) ? selectedElement.firstElementChild as HTMLElement : selectedElement);
 
             // We don't copy content if the source is an image and target not or the contrary
             if ((this.isNodeImage(currentContainer) || this.isNodeSocial(currentContainer)) && (type === SlotType.IMG || type === SlotType.SOCIAL)) {
@@ -109,6 +109,55 @@ export class ToggleSlotUtils {
 
             const container: HTMLElement = this.createSlotContainer(element, type);
 
+            if (type === SlotType.OL || type === SlotType.UL) {
+                await this.copyContentToList(container, currentContainer);
+
+                resolve();
+                return;
+            }
+
+            if (RevealSlotUtils.isNodeList(currentContainer)) {
+                await this.copyContentFromList(container, currentContainer);
+
+                resolve();
+                return;
+            }
+
+            await this.copyContentChildren(container, currentContainer);
+
+            resolve();
+        });
+    }
+
+    private static copyContentToList(container: HTMLElement, currentContainer: HTMLElement): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const element: HTMLElement = document.createElement('li');
+
+            if (currentContainer.innerText && currentContainer.innerText !== undefined && currentContainer.innerText !== '') {
+                element.innerHTML = currentContainer.innerText;
+            } else {
+                // If no spacer is added, then on focus the cursor will be placed on the parent and not on the li
+                // Trade of, because of that, the css:empty will not work
+                const zeroWidthSpacer: Text = document.createTextNode('\u200B');
+                element.appendChild(zeroWidthSpacer);
+            }
+
+            container.appendChild(element);
+
+            resolve();
+        });
+    }
+
+    private static copyContentFromList(container: HTMLElement, currentContainer: HTMLElement): Promise<void> {
+        return new Promise<void>((resolve) => {
+            container.innerText = currentContainer.innerText;
+
+            resolve();
+        });
+    }
+
+    private static copyContentChildren(container: HTMLElement, currentContainer: HTMLElement): Promise<void> {
+        return new Promise<void>((resolve) => {
             if (currentContainer.childNodes && currentContainer.childNodes.length > 0) {
                 const elements: HTMLElement[] = Array.prototype.slice.call(currentContainer.childNodes);
 
@@ -128,4 +177,5 @@ export class ToggleSlotUtils {
     private static isNodeSocial(selectedElement: HTMLElement): boolean {
         return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.SOCIAL;
     }
+
 }

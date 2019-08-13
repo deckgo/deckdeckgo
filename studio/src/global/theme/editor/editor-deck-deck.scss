@@ -7,13 +7,13 @@ deckgo-deck {
 
 /* Content (see also reveal for margin) */
 
-deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck deckgo-highlight-code {
+deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck ol, deckgo-deck ul, deckgo-deck deckgo-reveal-list, deckgo-deck deckgo-highlight-code {
   width: 100%;
   padding: 8px;
   overflow: hidden;
 }
 
-deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck deckgo-highlight-code, deckgo-deck deckgo-lazy-img[slot] {
+deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck ol, deckgo-deck ul, deckgo-deck deckgo-reveal-list, deckgo-deck deckgo-highlight-code, deckgo-deck deckgo-lazy-img[slot] {
   margin: 16px 0;
 }
 
@@ -98,4 +98,17 @@ deckgo-deck deckgo-reveal {
 
 deckgo-deck deckgo-reveal h1, deckgo-deck deckgo-reveal h2, deckgo-deck deckgo-reveal h3, deckgo-deck deckgo-reveal section, deckgo-deck deckgo-reveal deckgo-highlight-code, deckgo-deck deckgo-reveal deckgo-lazy-img[slot] {
   margin: 0;
+}
+
+ol, ul, deckgo-reveal-list {
+  list-style-position: inside;
+  --reveal-list-style-position: inside;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
 }

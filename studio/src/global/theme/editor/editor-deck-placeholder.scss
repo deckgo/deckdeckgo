@@ -12,6 +12,12 @@ deckgo-deck {
     }
   }
 
+  ol li, ul li {
+    &:empty:not(:focus):after {
+      content: "Click to add content";
+    }
+  }
+
   > * > deckgo-lazy-img, > * > deckgo-reveal deckgo-lazy-img {
     &:not([img-src]) {
       position: relative;

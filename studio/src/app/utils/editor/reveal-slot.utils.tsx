@@ -19,14 +19,31 @@ export class RevealSlotUtils {
                 return;
             }
 
-            const element: HTMLElement = reveal ? document.createElement(SlotType.REVEAL) : selectedElement.firstElementChild as HTMLElement;
+            const list: boolean = this.isNodeList(selectedElement);
 
-            this.moveSpecificAttributes(selectedElement, element);
+            let element: HTMLElement;
+
+            if (list) {
+                element = reveal ? document.createElement(SlotType.REVEAL_LIST) : document.createElement(SlotType.OL);
+
+                // In case of deckgo-reveal-list the contenteditable should be set on the host not the slot
+                element.setAttribute('contenteditable', '');
+
+                this.moveSpecificAttributes(selectedElement, element);
+
+                element.append(...Array.from(selectedElement.children));
+            } else {
+                element = reveal ? document.createElement(SlotType.REVEAL) : selectedElement.firstElementChild as HTMLElement;
+
+                this.moveSpecificAttributes(selectedElement, element);
+
+                if (reveal) {
+                    element.appendChild(selectedElement.cloneNode(true));
+                }
+            }
 
             if (reveal) {
-                element.appendChild(selectedElement.cloneNode(true));
-
-                (element as any).reveal();
+                (element as any).revealAll();
             }
 
             resolve(element);
@@ -47,6 +64,19 @@ export class RevealSlotUtils {
     }
 
     static isNodeReveal(selectedElement: HTMLElement): boolean {
-        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.REVEAL;
+        return selectedElement && selectedElement.nodeName &&
+            (selectedElement.nodeName.toLowerCase() === SlotType.REVEAL ||
+                selectedElement.nodeName.toLowerCase() === SlotType.REVEAL_LIST);
+    }
+
+    static isNodeRevealList(selectedElement: HTMLElement): boolean {
+        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.REVEAL_LIST;
+    }
+
+    static isNodeList(selectedElement: HTMLElement): boolean {
+        return selectedElement && selectedElement.nodeName &&
+            (selectedElement.nodeName.toLowerCase() === SlotType.OL ||
+                selectedElement.nodeName.toLowerCase() === SlotType.UL ||
+                selectedElement.nodeName.toLowerCase() === SlotType.REVEAL_LIST);
     }
 }

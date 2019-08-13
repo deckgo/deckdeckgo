@@ -103,8 +103,10 @@ export class DeckdeckgoRevealList {
   }
 
   @Listen('blur')
-  onBlur() {
+  async onBlur() {
     this.focused = false;
+
+    await this.revealAll();
   }
 
   render() {

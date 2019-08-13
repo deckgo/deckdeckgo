@@ -7,12 +7,23 @@
   }
 }
 
-ul, li, dl {
+ul, ol, dl {
   list-style: var(--reveal-list-style);
   list-style-image: var(--reveal-list-style-image);
   list-style-position: var(--reveal-list-style-position);
-  list-style-type: var(--reveal-list-style-type);
   margin: var(--reveal-list-margin);
   padding: var(--reveal-list-padding);
   background: var(--reveal-list-background);
+}
+
+ul {
+  list-style-type: var(--reveal-list-style-type, disc);
+}
+
+ol {
+  list-style-type: var(--reveal-list-style-type, decimal);
+}
+
+dl {
+  list-style-type: var(--reveal-list-style-type, none);
 }
