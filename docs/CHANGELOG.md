@@ -1,3 +1,10 @@
+<a name="1.0.0-alpha.25"></a>
+# 1.0.0-alpha.25 (Not release yet)
+
+### Breaking Changes
+
+* add new components `<deckgo-reveal/>` and `<deckgo-reveal-list/>` to make elements and texts appear one line at a time
+
 <a name="1.0.0-alpha.24-1"></a>
 # 1.0.0-alpha.24-1 (2019-08-09)
 
