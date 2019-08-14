@@ -110,7 +110,11 @@ export class ToggleSlotUtils {
             const container: HTMLElement = this.createSlotContainer(element, type);
 
             if (type === SlotType.OL || type === SlotType.UL) {
-                await this.copyContentToList(container, currentContainer);
+                if (RevealSlotUtils.isNodeList(currentContainer)) {
+                    await this.copyContentChildren(container, currentContainer);
+                } else {
+                    await this.copyContentToList(container, currentContainer);
+                }
 
                 resolve();
                 return;

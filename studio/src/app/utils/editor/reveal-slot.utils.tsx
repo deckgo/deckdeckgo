@@ -22,27 +22,12 @@ export class RevealSlotUtils {
                 return;
             }
 
-            const list: boolean = this.isNodeList(selectedElement);
-
             let element: HTMLElement;
 
-            if (list) {
-                element = reveal ? document.createElement(SlotType.REVEAL_LIST) : document.createElement(SlotType.OL);
-
-                // In case of deckgo-reveal-list the contenteditable should be set on the host not the slot
-                element.setAttribute('contenteditable', '');
-
-                this.moveSpecificAttributes(selectedElement, element);
-
-                element.append(...Array.from(selectedElement.children));
+            if (this.isNodeList(selectedElement)) {
+                element = await this.toggleRevealList(reveal, selectedElement);
             } else {
-                element = reveal ? document.createElement(SlotType.REVEAL) : selectedElement.firstElementChild as HTMLElement;
-
-                this.moveSpecificAttributes(selectedElement, element);
-
-                if (reveal) {
-                    element.appendChild(selectedElement.cloneNode(true));
-                }
+                element = await this.toggleRevealElement(reveal, selectedElement);
             }
 
             if (reveal) {
@@ -51,6 +36,45 @@ export class RevealSlotUtils {
 
             resolve(element);
 
+        });
+    }
+
+    private static toggleRevealElement(reveal: boolean, selectedElement: HTMLElement): Promise<HTMLElement> {
+        return new Promise<HTMLElement>((resolve) => {
+            const element: HTMLElement = reveal ? document.createElement(SlotType.REVEAL) : selectedElement.firstElementChild as HTMLElement;
+
+            this.moveSpecificAttributes(selectedElement, element);
+
+            if (reveal) {
+                element.appendChild(selectedElement.cloneNode(true));
+            }
+
+            resolve(element);
+        });
+    }
+
+    private static toggleRevealList(reveal: boolean, selectedElement: HTMLElement): Promise<HTMLElement> {
+        return new Promise<HTMLElement>((resolve) => {
+            let element: HTMLElement;
+
+            if (reveal) {
+                element = document.createElement(SlotType.REVEAL_LIST);
+
+                if (selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.UL) {
+                    element.setAttribute('list-tag', SlotType.UL);
+                }
+            } else {
+                element = selectedElement.getAttribute('list-tag') === SlotType.UL ? document.createElement(SlotType.UL) : document.createElement(SlotType.OL);
+            }
+
+            // In case of deckgo-reveal-list the contenteditable should be set on the host not the slot
+            element.setAttribute('contenteditable', '');
+
+            this.moveSpecificAttributes(selectedElement, element);
+
+            element.append(...Array.from(selectedElement.children));
+
+            resolve(element);
         });
     }
 

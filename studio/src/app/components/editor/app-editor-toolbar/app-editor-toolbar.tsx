@@ -50,6 +50,9 @@ export class AppEditorToolbar {
     @State()
     private image: boolean = false;
 
+    @State()
+    private list: SlotType;
+
     private applyToAllDeck: boolean = false;
 
     @Event() private blockSlide: EventEmitter<boolean>;
@@ -228,6 +231,18 @@ export class AppEditorToolbar {
 
     private isElementYoutubeSlide(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-youtube';
+    }
+
+    private isElementList(element: HTMLElement): SlotType {
+        if (!RevealSlotUtils.isNodeList(element)) {
+            return undefined;
+        }
+
+        if (RevealSlotUtils.isNodeRevealList(element)) {
+            return element && element.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
+        } else {
+            return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.OL ? SlotType.OL : SlotType.UL;
+        }
     }
 
     private isElementImage(element: HTMLElement): boolean {
@@ -611,6 +626,8 @@ export class AppEditorToolbar {
             this.code = this.isElementCode(RevealSlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
             this.image = this.isElementImage(RevealSlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
 
+            this.list = this.isElementList(element);
+
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
 
@@ -792,12 +809,51 @@ export class AppEditorToolbar {
         });
     }
 
+    private toggleList(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.list) {
+                resolve();
+                return;
+            }
+
+            const destinationListType: SlotType = this.list === SlotType.UL ? SlotType.OL : SlotType.UL;
+
+            if (RevealSlotUtils.isNodeRevealList(this.selectedElement)) {
+                await this.updateRevealListAttribute(destinationListType);
+            } else {
+                await this.toggleSlotType(destinationListType)
+            }
+
+            this.list = destinationListType;
+
+            resolve();
+        });
+    }
+
+    private updateRevealListAttribute(type: SlotType): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.setAttribute('list-tag', type);
+
+            await this.emitChange();
+
+            await this.hideToolbar();
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderSlotType()}
                 {this.renderReveal()}
                 {this.renderColor()}
+                {this.renderList()}
                 {this.renderImages()}
                 {this.renderYoutube()}
                 {this.renderCodeOptions()}
@@ -869,4 +925,17 @@ export class AppEditorToolbar {
         }
     }
 
+    private renderList() {
+        if (this.deckOrSlide || !this.list) {
+            return undefined;
+        } else if (this.list === SlotType.OL) {
+            return <a onClick={() => this.toggleList()} title="Toggle to an unordered list">
+                <ion-icon src="/assets/icons/ionicons/ios-list.svg"></ion-icon>
+            </a>
+        } else {
+            return <a onClick={() => this.toggleList()} title="Toggle to an ordered list">
+                <ion-icon src="/assets/icons/list-ol.svg"></ion-icon>
+            </a>
+        }
+    }
 }
