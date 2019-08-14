@@ -89,18 +89,6 @@ export class AppSlideContent {
 </tr>
 </thead>
 <tbody><tr>
-<td>reveal</td>
-<td>boolean</td>
-<td>false</td>
-<td>Hide the slotted elements <code>li</code>, <code>p</code> an <code>img</code> and display them when navigating using <code>slideNext()</code> or <code>slidePrev()</code> (see <a href="/doc/features/navigation.md">documention</a>)</td>
-</tr>
-<tr>
-<td>reveal-show-first</td>
-<td>boolean</td>
-<td>false</td>
-<td>Show the first elements which would be hidden if <code>reveal</code> is set to <code>true</code></td>
-</tr>
-<tr>
 <td>custom-background</td>
 <td>boolean</td>
 <td>false</td>
