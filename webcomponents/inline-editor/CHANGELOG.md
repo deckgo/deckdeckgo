@@ -1,5 +1,5 @@
 <a name="1.0.0-alpha.14"></a>
-# 1.0.0-alpha.14 (Not released yet)
+# 1.0.0-alpha.14 (2019-08-15)
 
 * add an overall option to not display the toggle list options
 * new style property `--deckgo-inline-editor-sticky-height)` for the toolbar height if sticky
