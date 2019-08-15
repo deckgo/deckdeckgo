@@ -10,13 +10,14 @@ import {Slide, SlideAttributes, SlideData, SlideTemplate} from '../../../../mode
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
 
+import {RevealSlotUtils} from '../../../../utils/editor/reveal-slot.utils';
+
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
 import {AuthService} from '../../../../services/auth/auth.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
-import {RevealSlotUtils} from '../../../../utils/editor/reveal-slot.utils';
 
 export class DeckEventsHandler {
 

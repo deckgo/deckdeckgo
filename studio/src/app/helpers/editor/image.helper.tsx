@@ -1,8 +1,9 @@
 import {EventEmitter} from '@stencil/core';
 
-import {BusyService} from '../../services/editor/busy/busy.service';
 import {SlotType} from '../../utils/editor/create-slides.utils';
 import {RevealSlotUtils} from '../../utils/editor/reveal-slot.utils';
+
+import {BusyService} from '../../services/editor/busy/busy.service';
 
 export class ImageHelper {
 
@@ -118,7 +119,13 @@ export class ImageHelper {
                 element.appendChild(img);
             }
 
-            this.slideDidChange.emit(selectedElement.parentElement);
+            let parent: HTMLElement = element.parentElement;
+
+            if (RevealSlotUtils.isNodeReveal(parent)) {
+                parent = parent.parentElement;
+            }
+
+            this.slideDidChange.emit(parent);
 
             resolve();
         });

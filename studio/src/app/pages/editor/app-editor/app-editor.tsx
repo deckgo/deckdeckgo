@@ -22,13 +22,14 @@ import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
+import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
+import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
+
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {BusyService} from '../../../services/editor/busy/busy.service';
-import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
-import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
 
 @Component({
     tag: 'app-editor',
