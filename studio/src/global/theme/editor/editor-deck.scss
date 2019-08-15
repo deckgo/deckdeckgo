@@ -25,7 +25,6 @@ deckgo-deck {
   section {
     min-height: calc(var(--font-size-normal) + 4px);
     margin-top: 16px;
-    overflow: auto;
   }
 
   deckgo-highlight-code {
@@ -33,12 +32,6 @@ deckgo-deck {
 
     code[slot] {
       min-height: 26px;
-    }
-  }
-
-  deckgo-slide-split {
-    deckgo-highlight-code {
-      height: fit-content;
     }
   }
 

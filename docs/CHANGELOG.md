@@ -5,6 +5,10 @@
 
 * add new components `<deckgo-reveal/>` and `<deckgo-reveal-list/>` to make elements and texts appear one line at a time
 
+### Features
+
+* add new CSS4 variables to the `highlight-code` component
+
 <a name="1.0.0-alpha.24-1"></a>
 # 1.0.0-alpha.24-1 (2019-08-09)
 

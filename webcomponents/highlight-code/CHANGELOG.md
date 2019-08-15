@@ -1,3 +1,8 @@
+<a name="1.0.0-alpha.19"></a>
+# 1.0.0-alpha.19 (Not released yet)
+
+* add some CSS4 variables to style the code's container
+
 <a name="1.0.0-alpha.18"></a>
 # 1.0.0-alpha.18 (2019-08-09)
 

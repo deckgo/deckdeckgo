@@ -38,6 +38,7 @@ deckgo-deck {
         top: 50%;
         transform: translate(-50%, -50%);
         width: 100%;
+        text-align: center;
       }
     }
   }
@@ -46,12 +47,6 @@ deckgo-deck {
     h1, h2, h3 {
       &:empty:not(:focus):after {
         content: "Click to add content";
-      }
-    }
-
-    deckgo-lazy-img {
-      &:not([img-src]) {
-        height: 100%;
       }
     }
   }

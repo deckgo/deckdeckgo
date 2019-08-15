@@ -19,6 +19,23 @@ deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck
 
 /* Slide split */
 
+deckgo-slide-split > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  word-break: break-word;
+}
+
+deckgo-slide-split > deckgo-highlight-code {
+  --deckgo-highlight-code-container-width: 100%;
+  --deckgo-highlight-code-container-height: 100%;
+  --deckgo-highlight-code-container-display: flex;
+  --deckgo-highlight-code-container-justify-content: center;
+  --deckgo-highlight-code-container-align-items: center;
+  --deckgo-highlight-code-container-flex-direction: column;
+}
+
 deckgo-slide-split {
   --slide-split-padding-top: 64px;
   --slide-split-padding-bottom: 64px;
@@ -35,12 +52,6 @@ deckgo-slide-split {
 
 deckgo-deck deckgo-social {
   display: flex;
-}
-
-/* Code */
-
-deckgo-deck deckgo-highlight-code {
-  margin: 8px 0;
 }
 
 /* Images */
