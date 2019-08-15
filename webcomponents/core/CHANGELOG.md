@@ -1,5 +1,5 @@
 <a name="1.0.0-beta.46"></a>
-# 1.0.0-beta.46 (Not released yet)
+# 1.0.0-beta.46 (2019-08-15)
 
 ### Breaking Changes
 
