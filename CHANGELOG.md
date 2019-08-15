@@ -5,6 +5,10 @@
 
 * core: v1.0.0-beta.46 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 
+### Applications
+
+* docs: v1.0.0-alpha.25 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 ### Web Components
 
 * highlight-code: v1.0.0-alpha.19 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))

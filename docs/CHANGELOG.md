@@ -1,5 +1,5 @@
 <a name="1.0.0-alpha.25"></a>
-# 1.0.0-alpha.25 (Not release yet)
+# 1.0.0-alpha.25 (2019-08-15)
 
 ### Breaking Changes
 
