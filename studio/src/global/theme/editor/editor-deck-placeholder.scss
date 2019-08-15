@@ -18,6 +18,11 @@ deckgo-deck {
     }
   }
 
+  > * > deckgo-lazy-img, > * > deckgo-reveal.img {
+    border-radius: 2px;
+    border: 1px solid var(--ion-color-light);
+  }
+
   > * > deckgo-lazy-img, > * > deckgo-reveal deckgo-lazy-img {
     &:not([img-src]) {
       position: relative;
@@ -25,9 +30,6 @@ deckgo-deck {
       font-size: 2em;
       min-height: 1.7em;
       display: block;
-
-      border-radius: 2px;
-      border: 1px solid var(--ion-color-light);
 
       &::after {
         content: "Click to add an image";

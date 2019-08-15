@@ -49,6 +49,13 @@ export class RevealSlotUtils {
                 element.appendChild(selectedElement.cloneNode(true));
             }
 
+            // For styling purpose, we need to identify reveal element with images
+            if (this.isNodeImage(selectedElement)) {
+                element.classList.add('img');
+            } else {
+                element.classList.remove('img');
+            }
+
             resolve(element);
         });
     }
@@ -103,5 +110,9 @@ export class RevealSlotUtils {
             (selectedElement.nodeName.toLowerCase() === SlotType.OL ||
                 selectedElement.nodeName.toLowerCase() === SlotType.UL ||
                 selectedElement.nodeName.toLowerCase() === SlotType.REVEAL_LIST);
+    }
+
+    static isNodeImage(selectedElement: HTMLElement): boolean {
+        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.IMG;
     }
 }

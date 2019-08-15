@@ -46,7 +46,7 @@
 
     &.idle {
       deckgo-deck {
-        h1, h2, h3, section, ol, ul, deckgo-reveal-list, deckgo-highlight-code, deckgo-lazy-img[slot] {
+        h1, h2, h3, section, ol, ul, deckgo-reveal-list, deckgo-highlight-code, deckgo-lazy-img, deckgo-reveal.img {
           border: 1px solid transparent;
         }
       }

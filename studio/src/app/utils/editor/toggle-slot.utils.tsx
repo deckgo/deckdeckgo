@@ -102,7 +102,7 @@ export class ToggleSlotUtils {
             const currentContainer: HTMLElement = this.getSlotContainer(reveal && !RevealSlotUtils.isNodeRevealList(selectedElement) ? selectedElement.firstElementChild as HTMLElement : selectedElement);
 
             // We don't copy content if the source is an image and target not or the contrary
-            if ((this.isNodeImage(currentContainer) || this.isNodeSocial(currentContainer)) && (type === SlotType.IMG || type === SlotType.SOCIAL)) {
+            if ((RevealSlotUtils.isNodeImage(currentContainer) || this.isNodeSocial(currentContainer)) && (type === SlotType.IMG || type === SlotType.SOCIAL)) {
                 resolve();
                 return;
             }
@@ -172,10 +172,6 @@ export class ToggleSlotUtils {
 
             resolve();
         });
-    }
-
-    private static isNodeImage(selectedElement: HTMLElement): boolean {
-        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.IMG;
     }
 
     private static isNodeSocial(selectedElement: HTMLElement): boolean {
