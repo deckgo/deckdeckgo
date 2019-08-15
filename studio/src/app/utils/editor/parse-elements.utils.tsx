@@ -45,9 +45,11 @@ export class ParseElementsUtils {
             }
 
             if (contentEditable && this.isContentEditable(element, attributes)) {
-                attributes['contenteditable'] = true;
-            } else if (contentEditable && SlotUtils.isNodeReveal(element) && element.firstElementChild) {
-                element.firstElementChild.setAttribute('contenteditable', `${true}`);
+                if (contentEditable && SlotUtils.isNodeReveal(element) && element.firstElementChild) {
+                    element.firstElementChild.setAttribute('contenteditable', `${true}`);
+                } else {
+                    attributes['contenteditable'] = true;
+                }
             }
 
             resolve(<Elem {...attributes}>{content}</Elem>);
@@ -68,9 +70,7 @@ export class ParseElementsUtils {
     }
 
     private static isContentEditable(element: HTMLElement, attributes: any): boolean {
-        return attributes.slot &&
-            attributes.slot !== 'background' &&
-            this.isElementContentEditable(element);
+        return attributes.slot !== undefined && attributes.slot !== 'background' && this.isElementContentEditable(element);
     }
 
     static isElementContentEditable(element: HTMLElement): boolean {
