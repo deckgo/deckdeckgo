@@ -10,6 +10,8 @@ import {Slide, SlideAttributes, SlideData, SlideTemplate} from '../../../../mode
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
 
+import {SlotUtils} from '../../../../utils/editor/slot.utils';
+
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
@@ -147,7 +149,11 @@ export class DeckEventsHandler {
 
         const element: HTMLElement = $event.target as HTMLElement;
 
-        const parent: HTMLElement = element.parentElement;
+        let parent: HTMLElement = element.parentElement;
+
+        if (SlotUtils.isNodeReveal(parent)) {
+            parent = parent.parentElement;
+        }
 
         if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
             return;

@@ -77,6 +77,7 @@ export class AppRoot {
           <ion-route url="/edit/lazy" component="app-edit-lazy-loading"/>
           <ion-route url="/edit/theming" component="app-edit-theming"/>
           <ion-route url="/edit/fonts" component="app-edit-fonts"/>
+          <ion-route url="/edit/reveal" component="app-edit-reveal"/>
           <ion-route url="/edit/rtl" component="app-edit-rtl"/>
 
           <ion-route url="/slides" component="app-concept"/>
@@ -143,6 +144,7 @@ export class AppRoot {
                     <ion-item href="/edit/lazy" routerDirection="forward"><ion-label>Lazy loading</ion-label></ion-item>
                     <ion-item href="/edit/theming" routerDirection="forward"><ion-label>Theming</ion-label></ion-item>
                     <ion-item href="/edit/fonts" routerDirection="forward"><ion-label>Fonts</ion-label></ion-item>
+                    <ion-item href="/edit/reveal" routerDirection="forward"><ion-label>Reveal</ion-label></ion-item>
                     <ion-item href="/edit/rtl" routerDirection="forward"><ion-label>RTL</ion-label></ion-item>
 
                     <ion-item-divider>

@@ -279,6 +279,36 @@ export class AppComponentsHighlightCode {
 <td>scroll</td>
 <td>In case you would like to change the scroll property of the shadowed code block</td>
 </tr>
+<tr>
+<td>--deckgo-highlight-code-container-width</td>
+<td></td>
+<td>The attribute width of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-height</td>
+<td></td>
+<td>The attribute height of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-display</td>
+<td></td>
+<td>The attribute display of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-justify-content</td>
+<td></td>
+<td>The attribute justify-content of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-flex-direction</td>
+<td></td>
+<td>The attribute flex-direction of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-align-items</td>
+<td></td>
+<td>The attribute align-items of the code&#39;s container</td>
+</tr>
 </tbody></table>
 <h3 id="app-components-highlight-code-methods">Methods</h3>
 <p>The <code>&lt;deckgo-highlight-code/&gt;</code> expose the following methods:</p>

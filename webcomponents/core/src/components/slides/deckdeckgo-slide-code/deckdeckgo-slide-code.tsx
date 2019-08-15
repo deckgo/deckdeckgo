@@ -102,7 +102,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(_enter: boolean): Promise<boolean> {
+  beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       const couldSwipe: boolean = await this.scrollToNext(_enter);
 
@@ -117,6 +117,16 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   @Method()
   afterSwipe(): Promise<void> {
     return DeckdeckgoSlideUtils.afterSwipe();
+  }
+
+  @Method()
+  revealContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return Promise.resolve();
   }
 
   private scrollToNext(enter: boolean): Promise<boolean> {

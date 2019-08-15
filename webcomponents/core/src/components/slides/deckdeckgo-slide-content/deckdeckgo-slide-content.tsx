@@ -14,9 +14,6 @@ export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() reveal: boolean = false;
-  @Prop() revealShowFirst: boolean = false;
-
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
@@ -24,15 +21,11 @@ export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
     await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
-
-    if (this.reveal) {
-      await DeckdeckgoSlideUtils.hideRevealElements(this.el, this.revealShowFirst);
-    }
   }
 
   @Method()
-  beforeSwipe(enter: boolean): Promise<boolean> {
-    return DeckdeckgoSlideUtils.beforeSwipe(this.el, enter, this.reveal);
+  beforeSwipe(enter: boolean, reveal: boolean): Promise<boolean> {
+    return DeckdeckgoSlideUtils.beforeSwipe(this.el, enter, reveal);
   }
 
   @Method()
@@ -43,6 +36,16 @@ export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
   @Method()
   lazyLoadContent(): Promise<void> {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+  }
+
+  @Method()
+  revealContent(): Promise<void> {
+    return DeckdeckgoSlideUtils.showAllRevealElements(this.el);
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return DeckdeckgoSlideUtils.hideAllRevealElements(this.el);
   }
 
   render() {

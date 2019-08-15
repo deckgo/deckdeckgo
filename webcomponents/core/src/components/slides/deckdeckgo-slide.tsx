@@ -1,59 +1,33 @@
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
-
 import {DeckdeckgoDeckUtils} from '../utils/deckdeckgo-deck-utils';
 import {DeckdeckgoExtraUtils} from '../extra/deckdeckgo-extra';
 
 export interface DeckdeckgoSlide {
-  beforeSwipe(_enter: boolean): Promise<boolean>;
+  beforeSwipe(enter: boolean, _reveal: boolean): Promise<boolean>;
 
   afterSwipe(): Promise<void>;
 
   lazyLoadContent(): Promise<void>;
+
+  revealContent(): Promise<void>;
+
+  hideContent(): Promise<void>;
 }
 
 export class DeckdeckgoSlideUtils {
 
-  static hideRevealElements(el: HTMLElement, revealShowFirst: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      // No keyboard on mobile device to reveal elements
-      if (DeckDeckGoUtils.isMobile()) {
-        resolve();
-        return;
-      }
-
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealShowFirst ? '[slot] li:not(:first-child), [slot] > p:not(:first-child), [slot] > span:not(:first-child), [slot] > img:not(:first-child), [slot] > deckgo-lazy-img:not(:first-child)' : '[slot] li, [slot] > p, [slot] > span, [slot] > img, [slot] > deckgo-lazy-img');
-
-      if (!elements) {
-        resolve();
-      } else {
-        Array.from(elements).forEach((element: HTMLElement) => {
-          element.style.setProperty('visibility', 'hidden');
-          element.style.setProperty('transform', 'var(--slide-reveal-transform)');
-          element.style.setProperty('opacity', '0');
-
-          element.classList.add('deckgo-reveal');
-          element.style.setProperty('transition', 'all var(--slide-reveal-duration) cubic-bezier(0.23, 1, 0.320, 1)');
-
-        });
-      }
-    });
-  }
-
   private static showRevealElement(el: HTMLElement): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] li, [slot] > p, [slot] > span, [slot] > img, [slot] > deckgo-lazy-img');
+    return new Promise<boolean>(async (resolve) => {
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
 
       let couldSwipe: boolean = true;
 
       if (elements) {
         const nextElement: HTMLElement = Array.from(elements).find((element: HTMLElement) => {
-          return element.style.getPropertyValue('visibility') === 'hidden';
+          return !(element as HTMLDeckgoRevealElement | HTMLDeckgoRevealListElement).allElementsRevealed;
         });
 
         if (nextElement) {
-          nextElement.style.setProperty('visibility', 'initial');
-          nextElement.style.setProperty('opacity', '1');
-          nextElement.style.setProperty('transform', 'none');
+          await (nextElement as HTMLDeckgoRevealElement | HTMLDeckgoRevealListElement).reveal();
           couldSwipe = false;
         }
       }
@@ -63,26 +37,59 @@ export class DeckdeckgoSlideUtils {
   }
 
   private static hideRevealElement(el: HTMLElement): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] li, [slot] > p, [slot] > span, [slot] > img, [slot] > deckgo-lazy-img');
+    return new Promise<boolean>(async (resolve) => {
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
 
       let couldSwipe: boolean = true;
 
       if (elements) {
         const nextElement: HTMLElement = Array.from(elements).reverse().find((element: HTMLElement) => {
-          const property: string = element.style.getPropertyValue('visibility');
-          return !property || property === 'initial';
+          return !(element as HTMLDeckgoRevealElement | HTMLDeckgoRevealListElement).allElementsHidden;
         });
 
         if (nextElement) {
-          nextElement.style.setProperty('visibility', 'hidden');
-          nextElement.style.setProperty('transform', 'var(--slide-reveal-transform)');
-          nextElement.style.setProperty('opacity', '0');
+          await (nextElement as HTMLDeckgoRevealElement | HTMLDeckgoRevealListElement).hide();
           couldSwipe = false;
         }
       }
 
       resolve(couldSwipe);
+    });
+  }
+
+  static showAllRevealElements(el: HTMLElement): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
+
+      if (elements && elements.length > 0) {
+        const promises = [];
+
+        for (const element of  Array.from(elements)) {
+          promises.push((element as any).revealAll());
+        }
+
+        await Promise.all(promises);
+      }
+
+      resolve();
+    });
+  }
+
+  static hideAllRevealElements(el: HTMLElement): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
+
+      if (elements && elements.length > 0) {
+        const promises = [];
+
+        for (const element of Array.from(elements)) {
+          promises.push((element as any).hideAll());
+        }
+
+        await Promise.all(promises);
+      }
+
+      resolve();
     });
   }
 

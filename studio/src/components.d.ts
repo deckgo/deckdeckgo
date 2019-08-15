@@ -113,6 +113,9 @@ export namespace Components {
   }
   interface AppPublishEdit {}
   interface AppRemote {}
+  interface AppReveal {
+    'selectedElement': HTMLElement;
+  }
   interface AppRoot {}
   interface AppServices {}
   interface AppSettings {}
@@ -398,6 +401,12 @@ declare global {
     new (): HTMLAppRemoteElement;
   };
 
+  interface HTMLAppRevealElement extends Components.AppReveal, HTMLStencilElement {}
+  var HTMLAppRevealElement: {
+    prototype: HTMLAppRevealElement;
+    new (): HTMLAppRevealElement;
+  };
+
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
@@ -530,6 +539,7 @@ declare global {
     'app-publish-done': HTMLAppPublishDoneElement;
     'app-publish-edit': HTMLAppPublishEditElement;
     'app-remote': HTMLAppRemoteElement;
+    'app-reveal': HTMLAppRevealElement;
     'app-root': HTMLAppRootElement;
     'app-services': HTMLAppServicesElement;
     'app-settings': HTMLAppSettingsElement;
@@ -664,6 +674,9 @@ declare namespace LocalJSX {
     'onPublished'?: (event: CustomEvent<string>) => void;
   }
   interface AppRemote extends JSXBase.HTMLAttributes<HTMLAppRemoteElement> {}
+  interface AppReveal extends JSXBase.HTMLAttributes<HTMLAppRevealElement> {
+    'selectedElement'?: HTMLElement;
+  }
   interface AppRoot extends JSXBase.HTMLAttributes<HTMLAppRootElement> {}
   interface AppServices extends JSXBase.HTMLAttributes<HTMLAppServicesElement> {}
   interface AppSettings extends JSXBase.HTMLAttributes<HTMLAppSettingsElement> {}
@@ -741,6 +754,7 @@ declare namespace LocalJSX {
     'app-publish-done': AppPublishDone;
     'app-publish-edit': AppPublishEdit;
     'app-remote': AppRemote;
+    'app-reveal': AppReveal;
     'app-root': AppRoot;
     'app-services': AppServices;
     'app-settings': AppSettings;

@@ -26,6 +26,7 @@ export namespace Components {
     'isMobile': () => Promise<boolean>;
     'keyboard': boolean;
     'loadBackground': () => Promise<void>;
+    'reveal': boolean;
     'slideNext': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
@@ -42,26 +43,46 @@ export namespace Components {
     'activeIndex': number;
     'length': number;
   }
+  interface DeckgoReveal {
+    'allElementsHidden': boolean;
+    'allElementsRevealed': boolean;
+    'hide': () => Promise<void>;
+    'hideAll': () => Promise<void>;
+    'reveal': () => Promise<void>;
+    'revealAll': () => Promise<void>;
+  }
+  interface DeckgoRevealList {
+    'allElementsHidden': boolean;
+    'allElementsRevealed': boolean;
+    'hide': () => Promise<void>;
+    'hideAll': () => Promise<void>;
+    'listTag': string;
+    'reveal': () => Promise<void>;
+    'revealAll': () => Promise<void>;
+  }
   interface DeckgoSlideAuthor {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'imgAlt': string;
     'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideChart {
     'afterSwipe': () => Promise<void>;
     'animation': boolean;
     'animationDuration': number;
     'area': boolean;
-    'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'datePattern': string;
     'grid': boolean;
     'height': number;
+    'hideContent': () => Promise<void>;
     'innerRadius': number;
     'lazyLoadContent': () => Promise<void>;
     'marginBottom': number;
@@ -69,6 +90,7 @@ export namespace Components {
     'marginRight': number;
     'marginTop': number;
     'range': string[];
+    'revealContent': () => Promise<void>;
     'separator': string;
     'smooth': boolean;
     'src': string;
@@ -81,32 +103,36 @@ export namespace Components {
     'afterSwipe': () => Promise<void>;
     'anchor': string;
     'anchorZoom': string;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'hideAnchor': boolean;
+    'hideContent': () => Promise<void>;
     'language': string;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
     'src': string;
   }
   interface DeckgoSlideContent {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
-    'reveal': boolean;
-    'revealShowFirst': boolean;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideCountdown {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'days': number;
+    'hideContent': () => Promise<void>;
     'hours': number;
     'lazyLoadContent': () => Promise<void>;
     'minutes': number;
+    'revealContent': () => Promise<void>;
     'seconds': number;
     'start': () => Promise<void>;
     'stop': () => Promise<void>;
@@ -115,48 +141,54 @@ export namespace Components {
   interface DeckgoSlideGif {
     'afterSwipe': () => Promise<void>;
     'alt': string;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'fullscreen': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
     'src': string;
   }
   interface DeckgoSlideQrcode {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'content': string;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideSplit {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
-    'reveal': boolean;
-    'revealShowFirst': boolean;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideTitle {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
-    'reveal': boolean;
-    'revealShowFirst': boolean;
+    'revealContent': () => Promise<void>;
   }
   interface DeckgoSlideYoutube {
     'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean) => Promise<boolean>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'height': number;
+    'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
     'pause': () => Promise<void>;
     'play': () => Promise<void>;
+    'revealContent': () => Promise<void>;
     'src': string;
     'toggle': () => Promise<void>;
     'width': number;
@@ -201,6 +233,18 @@ declare global {
   var HTMLDeckgoPagerElement: {
     prototype: HTMLDeckgoPagerElement;
     new (): HTMLDeckgoPagerElement;
+  };
+
+  interface HTMLDeckgoRevealElement extends Components.DeckgoReveal, HTMLStencilElement {}
+  var HTMLDeckgoRevealElement: {
+    prototype: HTMLDeckgoRevealElement;
+    new (): HTMLDeckgoRevealElement;
+  };
+
+  interface HTMLDeckgoRevealListElement extends Components.DeckgoRevealList, HTMLStencilElement {}
+  var HTMLDeckgoRevealListElement: {
+    prototype: HTMLDeckgoRevealListElement;
+    new (): HTMLDeckgoRevealListElement;
   };
 
   interface HTMLDeckgoSlideAuthorElement extends Components.DeckgoSlideAuthor, HTMLStencilElement {}
@@ -278,6 +322,8 @@ declare global {
     'deckgo-deck': HTMLDeckgoDeckElement;
     'deckgo-gif': HTMLDeckgoGifElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
+    'deckgo-reveal': HTMLDeckgoRevealElement;
+    'deckgo-reveal-list': HTMLDeckgoRevealListElement;
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
     'deckgo-slide-chart': HTMLDeckgoSlideChartElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
@@ -305,6 +351,7 @@ declare namespace LocalJSX {
     'onSlideToChange'?: (event: CustomEvent<number>) => void;
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
     'onSlidesDidLoad'?: (event: CustomEvent<any>) => void;
+    'reveal'?: boolean;
   }
   interface DeckgoGif extends JSXBase.HTMLAttributes<HTMLDeckgoGifElement> {
     'alt'?: string;
@@ -316,6 +363,15 @@ declare namespace LocalJSX {
     'activeIndex'?: number;
     'length'?: number;
     'onPagerClick'?: (event: CustomEvent<void>) => void;
+  }
+  interface DeckgoReveal extends JSXBase.HTMLAttributes<HTMLDeckgoRevealElement> {
+    'allElementsHidden'?: boolean;
+    'allElementsRevealed'?: boolean;
+  }
+  interface DeckgoRevealList extends JSXBase.HTMLAttributes<HTMLDeckgoRevealListElement> {
+    'allElementsHidden'?: boolean;
+    'allElementsRevealed'?: boolean;
+    'listTag'?: string;
   }
   interface DeckgoSlideAuthor extends JSXBase.HTMLAttributes<HTMLDeckgoSlideAuthorElement> {
     'customActions'?: boolean;
@@ -363,8 +419,6 @@ declare namespace LocalJSX {
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'reveal'?: boolean;
-    'revealShowFirst'?: boolean;
   }
   interface DeckgoSlideCountdown extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCountdownElement> {
     'customActions'?: boolean;
@@ -394,15 +448,11 @@ declare namespace LocalJSX {
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'reveal'?: boolean;
-    'revealShowFirst'?: boolean;
   }
   interface DeckgoSlideTitle extends JSXBase.HTMLAttributes<HTMLDeckgoSlideTitleElement> {
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'reveal'?: boolean;
-    'revealShowFirst'?: boolean;
   }
   interface DeckgoSlideYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoSlideYoutubeElement> {
     'customActions'?: boolean;
@@ -431,6 +481,8 @@ declare namespace LocalJSX {
     'deckgo-deck': DeckgoDeck;
     'deckgo-gif': DeckgoGif;
     'deckgo-pager': DeckgoPager;
+    'deckgo-reveal': DeckgoReveal;
+    'deckgo-reveal-list': DeckgoRevealList;
     'deckgo-slide-author': DeckgoSlideAuthor;
     'deckgo-slide-chart': DeckgoSlideChart;
     'deckgo-slide-code': DeckgoSlideCode;

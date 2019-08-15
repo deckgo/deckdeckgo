@@ -38,6 +38,13 @@ div.deckgo-highlight-code-container {
   direction: var(--deckgo-highlight-code-direction, ltr);
   text-align: var(--deckgo-highlight-code-text-align, start);
 
+  width: var(--deckgo-highlight-code-container-width);
+  height: var(--deckgo-highlight-code-container-height);
+  display: var(--deckgo-highlight-code-container-display);
+  justify-content: var(--deckgo-highlight-code-container-justify-content);
+  flex-direction: var(--deckgo-highlight-code-container-flex-direction);
+  align-items: var(--deckgo-highlight-code-container-align-items);
+
   code {
     overflow-y: var(--deckgo-highlight-code-scroll, scroll);
 

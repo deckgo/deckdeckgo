@@ -27,7 +27,7 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(_enter: boolean): Promise<boolean> {
+  beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       resolve(true)
     });
@@ -41,6 +41,16 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Method()
   lazyLoadContent(): Promise<void> {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+  }
+
+  @Method()
+  revealContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return Promise.resolve();
   }
 
   render() {

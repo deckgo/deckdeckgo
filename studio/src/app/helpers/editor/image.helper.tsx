@@ -1,5 +1,8 @@
 import {EventEmitter} from '@stencil/core';
 
+import {SlotType} from '../../utils/editor/slot-type';
+import {SlotUtils} from '../../utils/editor/slot.utils';
+
 import {BusyService} from '../../services/editor/busy/busy.service';
 
 export class ImageHelper {
@@ -103,17 +106,26 @@ export class ImageHelper {
 
     private appendContentImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === 'deckgo-lazy-img') {
-                selectedElement = this.updateDeckgoLazyImgAttributes(selectedElement, image);
+
+            let element: HTMLElement = SlotUtils.isNodeReveal(selectedElement) ? selectedElement.firstElementChild as HTMLElement : selectedElement;
+
+            if (element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG) {
+                element = this.updateDeckgoLazyImgAttributes(element, image);
             } else {
-                const deckgoImg: HTMLElement = document.createElement('deckgo-lazy-img');
+                const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
                 const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
 
-                selectedElement.appendChild(img);
+                element.appendChild(img);
             }
 
-            this.slideDidChange.emit(selectedElement.parentElement);
+            let parent: HTMLElement = element.parentElement;
+
+            if (SlotUtils.isNodeReveal(parent)) {
+                parent = parent.parentElement;
+            }
+
+            this.slideDidChange.emit(parent);
 
             resolve();
         });
@@ -137,7 +149,7 @@ export class ImageHelper {
             const div: HTMLElement = document.createElement('div');
             div.setAttribute('slot', 'background');
 
-            const deckgoImg: HTMLElement = document.createElement('deckgo-lazy-img');
+            const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
             const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
             div.appendChild(img);
