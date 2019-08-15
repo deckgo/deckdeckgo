@@ -6,12 +6,14 @@ import {debounceTime} from 'rxjs/operators';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
-import {SlotType} from '../../../utils/editor/create-slides.utils';
-import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {ImageHelper} from '../../../helpers/editor/image.helper';
+
+import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
+import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
@@ -234,11 +236,11 @@ export class AppEditorToolbar {
     }
 
     private isElementList(element: HTMLElement): SlotType {
-        if (!RevealSlotUtils.isNodeList(element)) {
+        if (!SlotUtils.isNodeList(element)) {
             return undefined;
         }
 
-        if (RevealSlotUtils.isNodeRevealList(element)) {
+        if (SlotUtils.isNodeRevealList(element)) {
             return element && element.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
         } else {
             return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.OL ? SlotType.OL : SlotType.UL;
@@ -623,8 +625,8 @@ export class AppEditorToolbar {
 
             this.youtube = this.isElementYoutubeSlide(element);
 
-            this.code = this.isElementCode(RevealSlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
-            this.image = this.isElementImage(RevealSlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
+            this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
+            this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
 
             this.list = this.isElementList(element);
 
@@ -818,7 +820,7 @@ export class AppEditorToolbar {
 
             const destinationListType: SlotType = this.list === SlotType.UL ? SlotType.OL : SlotType.UL;
 
-            if (RevealSlotUtils.isNodeRevealList(this.selectedElement)) {
+            if (SlotUtils.isNodeRevealList(this.selectedElement)) {
                 await this.updateRevealListAttribute(destinationListType);
             } else {
                 await this.toggleSlotType(destinationListType)

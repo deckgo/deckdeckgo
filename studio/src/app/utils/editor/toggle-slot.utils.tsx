@@ -1,5 +1,6 @@
-import {SlotType} from './create-slides.utils';
 import {RevealSlotUtils} from './reveal-slot.utils';
+import {SlotType} from './slot-type';
+import {SlotUtils} from './slot.utils';
 
 export class ToggleSlotUtils {
 
@@ -17,7 +18,7 @@ export class ToggleSlotUtils {
 
             const element: HTMLElement = document.createElement(type.toString());
 
-            const reveal: boolean = RevealSlotUtils.isNodeReveal(selectedElement);
+            const reveal: boolean = SlotUtils.isNodeReveal(selectedElement);
 
             await this.copyAttributes(selectedElement, element);
             await this.cleanAttributes(element, type);
@@ -99,10 +100,10 @@ export class ToggleSlotUtils {
 
     private static copyContent(selectedElement: HTMLElement, element: HTMLElement, type: SlotType, reveal: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const currentContainer: HTMLElement = this.getSlotContainer(reveal && !RevealSlotUtils.isNodeRevealList(selectedElement) ? selectedElement.firstElementChild as HTMLElement : selectedElement);
+            const currentContainer: HTMLElement = this.getSlotContainer(reveal && !SlotUtils.isNodeRevealList(selectedElement) ? selectedElement.firstElementChild as HTMLElement : selectedElement);
 
             // We don't copy content if the source is an image and target not or the contrary
-            if ((RevealSlotUtils.isNodeImage(currentContainer) || this.isNodeSocial(currentContainer)) && (type === SlotType.IMG || type === SlotType.SOCIAL)) {
+            if ((SlotUtils.isNodeImage(currentContainer) || SlotUtils.isNodeSocial(currentContainer)) && (type === SlotType.IMG || type === SlotType.SOCIAL)) {
                 resolve();
                 return;
             }
@@ -110,7 +111,7 @@ export class ToggleSlotUtils {
             const container: HTMLElement = this.createSlotContainer(element, type);
 
             if (type === SlotType.OL || type === SlotType.UL) {
-                if (RevealSlotUtils.isNodeList(currentContainer)) {
+                if (SlotUtils.isNodeList(currentContainer)) {
                     await this.copyContentChildren(container, currentContainer);
                 } else {
                     await this.copyContentToList(container, currentContainer);
@@ -120,7 +121,7 @@ export class ToggleSlotUtils {
                 return;
             }
 
-            if (RevealSlotUtils.isNodeList(currentContainer)) {
+            if (SlotUtils.isNodeList(currentContainer)) {
                 await this.copyContentFromList(container, currentContainer);
 
                 resolve();
@@ -172,10 +173,6 @@ export class ToggleSlotUtils {
 
             resolve();
         });
-    }
-
-    private static isNodeSocial(selectedElement: HTMLElement): boolean {
-        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.SOCIAL;
     }
 
 }

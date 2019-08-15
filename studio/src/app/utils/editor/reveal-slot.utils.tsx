@@ -1,4 +1,5 @@
-import {SlotType} from './create-slides.utils';
+import {SlotUtils} from './slot.utils';
+import {SlotType} from './slot-type';
 
 export class RevealSlotUtils {
 
@@ -14,8 +15,8 @@ export class RevealSlotUtils {
                 return;
             }
 
-            const sameReveal: boolean = this.isNodeReveal(selectedElement) === reveal;
-            const sameRevealList: boolean = this.isNodeRevealList(selectedElement) === reveal;
+            const sameReveal: boolean = SlotUtils.isNodeReveal(selectedElement) === reveal;
+            const sameRevealList: boolean = SlotUtils.isNodeRevealList(selectedElement) === reveal;
 
             if ((sameReveal && sameRevealList) || (sameReveal && sameRevealList)) {
                 resolve(null);
@@ -24,7 +25,7 @@ export class RevealSlotUtils {
 
             let element: HTMLElement;
 
-            if (this.isNodeList(selectedElement)) {
+            if (SlotUtils.isNodeList(selectedElement)) {
                 element = await this.toggleRevealList(reveal, selectedElement);
             } else {
                 element = await this.toggleRevealElement(reveal, selectedElement);
@@ -50,7 +51,7 @@ export class RevealSlotUtils {
             }
 
             // For styling purpose, we need to identify reveal element with images
-            if (this.isNodeImage(selectedElement)) {
+            if (SlotUtils.isNodeImage(selectedElement)) {
                 element.classList.add('img');
             } else {
                 element.classList.remove('img');
@@ -95,24 +96,5 @@ export class RevealSlotUtils {
             element.setAttribute('style', selectedElement.getAttribute('style'));
             selectedElement.removeAttribute('style');
         }
-    }
-
-    static isNodeReveal(selectedElement: HTMLElement): boolean {
-        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.REVEAL;
-    }
-
-    static isNodeRevealList(selectedElement: HTMLElement): boolean {
-        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.REVEAL_LIST;
-    }
-
-    static isNodeList(selectedElement: HTMLElement): boolean {
-        return selectedElement && selectedElement.nodeName &&
-            (selectedElement.nodeName.toLowerCase() === SlotType.OL ||
-                selectedElement.nodeName.toLowerCase() === SlotType.UL ||
-                selectedElement.nodeName.toLowerCase() === SlotType.REVEAL_LIST);
-    }
-
-    static isNodeImage(selectedElement: HTMLElement): boolean {
-        return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.IMG;
     }
 }

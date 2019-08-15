@@ -1,7 +1,7 @@
 import {EventEmitter} from '@stencil/core';
 
-import {SlotType} from '../../utils/editor/create-slides.utils';
-import {RevealSlotUtils} from '../../utils/editor/reveal-slot.utils';
+import {SlotType} from '../../utils/editor/slot-type';
+import {SlotUtils} from '../../utils/editor/slot.utils';
 
 import {BusyService} from '../../services/editor/busy/busy.service';
 
@@ -107,7 +107,7 @@ export class ImageHelper {
     private appendContentImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>((resolve) => {
 
-            let element: HTMLElement = RevealSlotUtils.isNodeReveal(selectedElement) ? selectedElement.firstElementChild as HTMLElement : selectedElement;
+            let element: HTMLElement = SlotUtils.isNodeReveal(selectedElement) ? selectedElement.firstElementChild as HTMLElement : selectedElement;
 
             if (element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG) {
                 element = this.updateDeckgoLazyImgAttributes(element, image);
@@ -121,7 +121,7 @@ export class ImageHelper {
 
             let parent: HTMLElement = element.parentElement;
 
-            if (RevealSlotUtils.isNodeReveal(parent)) {
+            if (SlotUtils.isNodeReveal(parent)) {
                 parent = parent.parentElement;
             }
 

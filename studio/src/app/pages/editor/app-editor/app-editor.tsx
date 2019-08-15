@@ -11,7 +11,7 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
 import {Deck} from '../../../models/data/deck';
 
-import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
@@ -23,7 +23,8 @@ import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
 import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
-import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
+import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -474,7 +475,7 @@ export class AppEditor {
                         e.setAttribute('editable', '');
                     } else if (ParseElementsUtils.isElementContentEditable(e)) {
                         e.setAttribute('contentEditable', '');
-                    } else if (RevealSlotUtils.isNodeReveal(e) && e.firstElementChild) {
+                    } else if (SlotUtils.isNodeReveal(e) && e.firstElementChild) {
                         e.firstElementChild.setAttribute('contentEditable', '');
                     }
                 }

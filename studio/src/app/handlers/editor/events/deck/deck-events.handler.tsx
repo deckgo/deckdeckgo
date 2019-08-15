@@ -10,7 +10,7 @@ import {Slide, SlideAttributes, SlideData, SlideTemplate} from '../../../../mode
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
 
-import {RevealSlotUtils} from '../../../../utils/editor/reveal-slot.utils';
+import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
@@ -151,7 +151,7 @@ export class DeckEventsHandler {
 
         let parent: HTMLElement = element.parentElement;
 
-        if (RevealSlotUtils.isNodeReveal(parent)) {
+        if (SlotUtils.isNodeReveal(parent)) {
             parent = parent.parentElement;
         }
 

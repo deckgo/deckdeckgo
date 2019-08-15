@@ -1,6 +1,6 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
 
-import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 @Component({
     tag: 'app-reveal',
@@ -17,7 +17,7 @@ export class AppSlideAdd {
     private currentReveal: boolean = false;
 
     componentWillLoad() {
-        this.currentReveal = RevealSlotUtils.isNodeReveal(this.selectedElement) || RevealSlotUtils.isNodeRevealList(this.selectedElement);
+        this.currentReveal = SlotUtils.isNodeReveal(this.selectedElement) || SlotUtils.isNodeRevealList(this.selectedElement);
     }
 
     private async closePopover(reveal: boolean) {

@@ -1,8 +1,8 @@
 import {h} from '@stencil/core';
 
 import {ParseStyleUtils} from './parse-style.utils';
-import {SlotType} from './create-slides.utils';
-import {RevealSlotUtils} from './reveal-slot.utils';
+import {SlotType} from './slot-type';
+import {SlotUtils} from './slot.utils';
 
 export class ParseElementsUtils {
 
@@ -46,7 +46,7 @@ export class ParseElementsUtils {
 
             if (contentEditable && this.isContentEditable(element, attributes)) {
                 attributes['contenteditable'] = true;
-            } else if (contentEditable && RevealSlotUtils.isNodeReveal(element) && element.firstElementChild) {
+            } else if (contentEditable && SlotUtils.isNodeReveal(element) && element.firstElementChild) {
                 element.firstElementChild.setAttribute('contenteditable', `${true}`);
             }
 

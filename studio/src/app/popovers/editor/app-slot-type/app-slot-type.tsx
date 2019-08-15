@@ -1,7 +1,7 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
 
-import {SlotType} from '../../../utils/editor/create-slides.utils';
-import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
+import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 @Component({
     tag: 'app-slot-type',
@@ -19,7 +19,7 @@ export class AppSlideAdd {
 
     async componentWillLoad() {
         if (this.selectedElement) {
-            if (RevealSlotUtils.isNodeRevealList(this.selectedElement)) {
+            if (SlotUtils.isNodeRevealList(this.selectedElement)) {
                 await this.initCurrentTypeList();
             } else {
                 await this.initCurrentType();
@@ -29,7 +29,7 @@ export class AppSlideAdd {
 
     private initCurrentType(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const element: HTMLElement = RevealSlotUtils.isNodeReveal(this.selectedElement) ? this.selectedElement.firstElementChild as HTMLElement : this.selectedElement;
+            const element: HTMLElement = SlotUtils.isNodeReveal(this.selectedElement) ? this.selectedElement.firstElementChild as HTMLElement : this.selectedElement;
 
             if (element.nodeName && element.nodeName !== '') {
                 this.currentType = await this.initSlotType(element.nodeName.toLowerCase());
