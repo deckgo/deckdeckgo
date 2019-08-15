@@ -15,6 +15,7 @@ deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck
 deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck ol, deckgo-deck ul, deckgo-deck deckgo-reveal-list, deckgo-deck deckgo-highlight-code, deckgo-deck deckgo-lazy-img[slot] {
   margin: 16px 0;
   overflow: scroll;
+  outline: none;
 }
 
 /* Slide split */
