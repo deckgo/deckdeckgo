@@ -6,11 +6,14 @@ import {debounceTime} from 'rxjs/operators';
 
 import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
-import {SlotType} from '../../../utils/editor/create-slides.utils';
-import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {ImageHelper} from '../../../helpers/editor/image.helper';
+
+import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
+import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
+import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
@@ -48,6 +51,9 @@ export class AppEditorToolbar {
 
     @State()
     private image: boolean = false;
+
+    @State()
+    private list: SlotType;
 
     private applyToAllDeck: boolean = false;
 
@@ -176,7 +182,7 @@ export class AppEditorToolbar {
     }
 
     private isImgNotDefined(element: HTMLElement): boolean {
-        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img' &&
+        return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG &&
             !element.hasAttribute('img-src')
     }
 
@@ -229,8 +235,20 @@ export class AppEditorToolbar {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-youtube';
     }
 
+    private isElementList(element: HTMLElement): SlotType {
+        if (!SlotUtils.isNodeList(element)) {
+            return undefined;
+        }
+
+        if (SlotUtils.isNodeRevealList(element)) {
+            return element && element.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
+        } else {
+            return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.OL ? SlotType.OL : SlotType.UL;
+        }
+    }
+
     private isElementImage(element: HTMLElement): boolean {
-        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img';
+        return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG;
     }
 
     private cleanOnPaste = async ($event) => {
@@ -461,6 +479,29 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openReveal() {
+        if (this.deckOrSlide) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+            component: 'app-reveal',
+            componentProps: {
+                selectedElement: this.selectedElement
+            },
+            mode: 'md',
+            cssClass: 'popover-menu'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                await this.toggleReveal(detail.data.reveal);
+            }
+        });
+
+        await popover.present();
+    }
+
     private async openCode() {
         if (!this.code) {
             return;
@@ -509,6 +550,34 @@ export class AppEditorToolbar {
 
             const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement, type);
 
+            await this.replaceSlot(element);
+
+            resolve();
+        });
+    }
+
+    private toggleReveal(reveal: boolean): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, reveal);
+
+            await this.replaceSlot(element);
+
+            resolve();
+        });
+    }
+
+    private replaceSlot(element: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement || !element) {
+                resolve();
+                return;
+            }
+
             this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
 
             await this.initSelectedElement(element);
@@ -553,9 +622,13 @@ export class AppEditorToolbar {
         return new Promise<void>(async (resolve) => {
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
-            this.code = this.isElementCode(element);
+
             this.youtube = this.isElementYoutubeSlide(element);
-            this.image = this.isElementImage(element);
+
+            this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
+            this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
+
+            this.list = this.isElementList(element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
@@ -738,11 +811,51 @@ export class AppEditorToolbar {
         });
     }
 
+    private toggleList(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.list) {
+                resolve();
+                return;
+            }
+
+            const destinationListType: SlotType = this.list === SlotType.UL ? SlotType.OL : SlotType.UL;
+
+            if (SlotUtils.isNodeRevealList(this.selectedElement)) {
+                await this.updateRevealListAttribute(destinationListType);
+            } else {
+                await this.toggleSlotType(destinationListType)
+            }
+
+            this.list = destinationListType;
+
+            resolve();
+        });
+    }
+
+    private updateRevealListAttribute(type: SlotType): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.setAttribute('list-tag', type);
+
+            await this.emitChange();
+
+            await this.hideToolbar();
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderSlotType()}
+                {this.renderReveal()}
                 {this.renderColor()}
+                {this.renderList()}
                 {this.renderImages()}
                 {this.renderYoutube()}
                 {this.renderCodeOptions()}
@@ -804,4 +917,27 @@ export class AppEditorToolbar {
         }
     }
 
+    private renderReveal() {
+        if (this.deckOrSlide || this.code || this.youtube) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.openReveal()} title="Edit element animation">
+                <ion-icon name="videocam"></ion-icon>
+            </a>
+        }
+    }
+
+    private renderList() {
+        if (this.deckOrSlide || !this.list) {
+            return undefined;
+        } else if (this.list === SlotType.OL) {
+            return <a onClick={() => this.toggleList()} title="Toggle to an unordered list">
+                <ion-icon src="/assets/icons/ionicons/ios-list.svg"></ion-icon>
+            </a>
+        } else {
+            return <a onClick={() => this.toggleList()} title="Toggle to an ordered list">
+                <ion-icon src="/assets/icons/list-ol.svg"></ion-icon>
+            </a>
+        }
+    }
 }

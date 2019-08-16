@@ -12,11 +12,24 @@ deckgo-deck {
     }
   }
 
-  > * > deckgo-lazy-img {
+  ol li, ul li {
+    &:empty:not(:focus):after {
+      content: "Click to add content";
+    }
+  }
+
+  > * > deckgo-lazy-img, > * > deckgo-reveal.img {
+    border-radius: 2px;
+    border: 1px solid var(--ion-color-light);
+  }
+
+  > * > deckgo-lazy-img, > * > deckgo-reveal deckgo-lazy-img {
     &:not([img-src]) {
       position: relative;
-      height: 50%;
       --deckgo-lazy-img-width: auto;
+      font-size: 2em;
+      min-height: 1.7em;
+      display: block;
 
       &::after {
         content: "Click to add an image";
@@ -24,7 +37,8 @@ deckgo-deck {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        font-size: 1.4em;
+        width: 100%;
+        text-align: center;
       }
     }
   }
@@ -33,12 +47,6 @@ deckgo-deck {
     h1, h2, h3 {
       &:empty:not(:focus):after {
         content: "Click to add content";
-      }
-    }
-
-    deckgo-lazy-img {
-      &:not([img-src]) {
-        height: 100%;
       }
     }
   }

@@ -1,0 +1,29 @@
+:host(:not(.deckgo-reveal-all)) {
+  ::slotted(*) {
+    visibility: hidden;
+    opacity: 0;
+    transform: var(--reveal-transform, translateX(-4px));
+    transition: all var(--reveal-duration, 200ms) cubic-bezier(0.23, 1, 0.320, 1);
+  }
+}
+
+ul, ol, dl {
+  list-style: var(--reveal-list-style);
+  list-style-image: var(--reveal-list-style-image);
+  list-style-position: var(--reveal-list-style-position);
+  margin: var(--reveal-list-margin);
+  padding: var(--reveal-list-padding);
+  background: var(--reveal-list-background);
+}
+
+ul {
+  list-style-type: var(--reveal-list-style-type, disc);
+}
+
+ol {
+  list-style-type: var(--reveal-list-style-type, decimal);
+}
+
+dl {
+  list-style-type: var(--reveal-list-style-type, none);
+}

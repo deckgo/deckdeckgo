@@ -1,3 +1,24 @@
+<a name="1.0.0-beta.46"></a>
+# 1.0.0-beta.46 (2019-08-15)
+
+### Breaking Changes
+
+* add new components `<deckgo-reveal/>` and `<deckgo-reveal-list/>` to make elements and texts appear one line at a time ([#224](https://github.com/deckgo/deckdeckgo/issues/224))
+
+#### But why?
+
+There are two main reasons behind the above breaking change:
+
+1. More flexibility. With this new approach of the "reveal" effect, you could decide which elements should or should not be revealed respectively the option doesn't apply anymore on a all slide. It's now totally up to you.
+
+2. In our upcoming editor, we had to obfuscate the "reveal" states of the elements in order to not save them in the database such information as it is not related to the deck itself but only information related to the current state of the presentation.
+
+#### How to migrate?
+
+1. Remove all attributes `reveal="true"` you would have set on any of your slides
+
+2. Wrap the new above components around your elements, which should appear one at a time, as highlighted in the new [documentation](https://docs.deckdeckgo.com/edit/reveal).  
+
 <a name="1.0.0-beta.45-2"></a>
 # 1.0.0-beta.45-2 (2019-08-07)
 
@@ -87,7 +108,7 @@ fix: don't track mouse movement if deck is triggered to be blocked
 <a name="1.0.0-beta.38"></a>
 # 1.0.0-beta.38 (2019-06-06)
 
-### Breaking changes
+### Breaking Changes
 
 * hide pager progression with a CSS4 variable
 
@@ -363,7 +384,7 @@ fix: don't track mouse movement if deck is triggered to be blocked
 <a name="1.0.0-beta.7"></a>
 # [1.0.0-beta.7](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2018-11-28)
 
-### Breaking changes
+### Breaking Changes
 
 * event `slideNextStart` renamed to `slideNextDidChange` ([#90df088](https://github.com/deckgo/deckdeckgo/commit/90df0889345c15a3969a92cec00e90e4a3e79649))
 * event `slidePrevStart` renamed to `slidePrevDidChange` ([#90df088](https://github.com/deckgo/deckdeckgo/commit/90df0889345c15a3969a92cec00e90e4a3e79649))

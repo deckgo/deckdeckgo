@@ -11,7 +11,7 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
 import {Deck} from '../../../models/data/deck';
 
-import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
@@ -21,6 +21,10 @@ import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote
 import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
+
+import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
+import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -426,6 +430,7 @@ export class AppEditor {
                 return;
             }
 
+            await this.editorEventsHandler.selectDeck();
             await (deck as any).toggleFullScreen();
 
             resolve();
@@ -468,8 +473,10 @@ export class AppEditor {
                 if (e.nodeName) {
                     if (e.nodeName.toLowerCase() === SlotType.CODE) {
                         e.setAttribute('editable', '');
-                    } else if (e.nodeName.toLowerCase() !== SlotType.SOCIAL && e.nodeName.toLowerCase() !== SlotType.IMG) {
+                    } else if (ParseElementsUtils.isElementContentEditable(e)) {
                         e.setAttribute('contentEditable', '');
+                    } else if (SlotUtils.isNodeReveal(e) && e.firstElementChild) {
+                        e.firstElementChild.setAttribute('contentEditable', '');
                     }
                 }
             });
@@ -530,7 +537,7 @@ export class AppEditor {
 
                     {this.renderLoading()}
 
-                    <deckgo-deck embedded={true} style={this.style}
+                    <deckgo-deck embedded={true} style={this.style} reveal={this.fullscreen && this.presenting}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}
@@ -553,9 +560,9 @@ export class AppEditor {
                                     onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
                                     onToggleFullScreen={() => this.toggleFullScreen()}></app-editor-actions>
             </ion-footer>,
-            <deckgo-inline-editor containers="h1,h2,h3,section" sticky-mobile="true"
+            <deckgo-inline-editor containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul" sticky-mobile="true"
                                   onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
-                                  img-anchor="deckgo-lazy-img">
+                                  img-anchor="deckgo-lazy-img" list={false}>
             </deckgo-inline-editor>
         ];
     }

@@ -16,6 +16,7 @@ export namespace Components {
     'imgEditable': boolean;
     'imgPropertyCssFloat': string;
     'imgPropertyWidth': string;
+    'list': boolean;
     'mobile': boolean;
     'reset': (clearSelection: boolean, blurActiveElement?: boolean) => Promise<void>;
     'stickyDesktop': boolean;
@@ -44,6 +45,7 @@ declare namespace LocalJSX {
     'imgEditable'?: boolean;
     'imgPropertyCssFloat'?: string;
     'imgPropertyWidth'?: string;
+    'list'?: boolean;
     'mobile'?: boolean;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onLinkCreated'?: (event: CustomEvent<HTMLElement>) => void;

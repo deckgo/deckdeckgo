@@ -88,18 +88,6 @@ export class AppConcept {
 </tr>
 </thead>
 <tbody><tr>
-<td>reveal</td>
-<td>boolean</td>
-<td>false</td>
-<td>Hide the slotted elements <code>li</code>, <code>p</code> an <code>img</code> and display them when navigating using <code>slideNext()</code> or <code>slidePrev()</code> (see <a href="/doc/features/navigation.md">documention</a>)</td>
-</tr>
-<tr>
-<td>reveal-show-first</td>
-<td>boolean</td>
-<td>false</td>
-<td>Show the first elements which would be hidden if <code>reveal</code> is set to <code>true</code></td>
-</tr>
-<tr>
 <td>custom-background</td>
 <td>boolean</td>
 <td>false</td>
@@ -114,7 +102,7 @@ export class AppConcept {
 </tbody></table>
 <h3 id="app-slide-content-example">Example</h3>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-content reveal=&quot;true&quot; reveal-show-first=&quot;true&quot;&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;Something related to my topic&lt;&#47;h1&gt;{'\n'}    &lt;ul slot=&quot;content&quot;&gt;{'\n'}      &lt;li&gt;Cool&lt;&#47;li&gt;{'\n'}      &lt;li&gt;Beans&lt;&#47;li&gt;{'\n'}    &lt;&#47;ul&gt;{'\n'}  &lt;&#47;deckgo-slide-content&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
+      <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-content&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;Something related to my topic&lt;&#47;h1&gt;{'\n'}    &lt;ul slot=&quot;content&quot;&gt;{'\n'}      &lt;li&gt;Cool&lt;&#47;li&gt;{'\n'}      &lt;li&gt;Beans&lt;&#47;li&gt;{'\n'}    &lt;&#47;ul&gt;{'\n'}  &lt;&#47;deckgo-slide-content&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
     </deckgo-highlight-code><h2 id="app-slide-content-theming">Theming</h2>
 <p>The following theming options will affect this component if set on its host or parent.</p>
 <table>

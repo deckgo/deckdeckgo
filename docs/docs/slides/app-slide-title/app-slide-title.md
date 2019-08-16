@@ -78,8 +78,6 @@ This component offers the following options which could be set using attributes:
 
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |-----------------|-----------------|-----------------|
-| reveal | boolean | false | Hide the slotted elements `li`, `p` an `img` and display them when navigating using `slideNext()` or `slidePrev()` (see [documention](/doc/features/navigation.md)) |
-| reveal-show-first | boolean | false | Show the first elements which would be hidden if `reveal` is set to `true` |
 | custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
 | custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
 
@@ -87,7 +85,7 @@ This component offers the following options which could be set using attributes:
 
 ```
 <deckgo-deck>
-  <deckgo-slide-title reveal="true" reveal-show-first="true">
+  <deckgo-slide-title>
     <h1 slot="title">My presentation title</h1>
     <ul slot="content">
       <li>Hello</li>

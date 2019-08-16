@@ -28,6 +28,7 @@ export namespace Components {
   interface AppEditFonts {}
   interface AppEditLazyLoading {}
   interface AppEditMarkdown {}
+  interface AppEditReveal {}
   interface AppEditRtl {}
   interface AppEditTheming {}
   interface AppFooter {
@@ -181,6 +182,12 @@ declare global {
   var HTMLAppEditMarkdownElement: {
     prototype: HTMLAppEditMarkdownElement;
     new (): HTMLAppEditMarkdownElement;
+  };
+
+  interface HTMLAppEditRevealElement extends Components.AppEditReveal, HTMLStencilElement {}
+  var HTMLAppEditRevealElement: {
+    prototype: HTMLAppEditRevealElement;
+    new (): HTMLAppEditRevealElement;
   };
 
   interface HTMLAppEditRtlElement extends Components.AppEditRtl, HTMLStencilElement {}
@@ -382,6 +389,7 @@ declare global {
     'app-edit-fonts': HTMLAppEditFontsElement;
     'app-edit-lazy-loading': HTMLAppEditLazyLoadingElement;
     'app-edit-markdown': HTMLAppEditMarkdownElement;
+    'app-edit-reveal': HTMLAppEditRevealElement;
     'app-edit-rtl': HTMLAppEditRtlElement;
     'app-edit-theming': HTMLAppEditThemingElement;
     'app-footer': HTMLAppFooterElement;
@@ -435,6 +443,7 @@ declare namespace LocalJSX {
   interface AppEditFonts extends JSXBase.HTMLAttributes<HTMLAppEditFontsElement> {}
   interface AppEditLazyLoading extends JSXBase.HTMLAttributes<HTMLAppEditLazyLoadingElement> {}
   interface AppEditMarkdown extends JSXBase.HTMLAttributes<HTMLAppEditMarkdownElement> {}
+  interface AppEditReveal extends JSXBase.HTMLAttributes<HTMLAppEditRevealElement> {}
   interface AppEditRtl extends JSXBase.HTMLAttributes<HTMLAppEditRtlElement> {}
   interface AppEditTheming extends JSXBase.HTMLAttributes<HTMLAppEditThemingElement> {}
   interface AppFooter extends JSXBase.HTMLAttributes<HTMLAppFooterElement> {
@@ -492,6 +501,7 @@ declare namespace LocalJSX {
     'app-edit-fonts': AppEditFonts;
     'app-edit-lazy-loading': AppEditLazyLoading;
     'app-edit-markdown': AppEditMarkdown;
+    'app-edit-reveal': AppEditReveal;
     'app-edit-rtl': AppEditRtl;
     'app-edit-theming': AppEditTheming;
     'app-footer': AppFooter;

@@ -69,7 +69,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(enter: boolean): Promise<boolean> {
+  beforeSwipe(enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       if (!this.animation) {
         resolve(true);
@@ -108,6 +108,16 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Method()
   lazyLoadContent(): Promise<void> {
     return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+  }
+
+  @Method()
+  revealContent(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @Method()
+  hideContent(): Promise<void> {
+    return Promise.resolve();
   }
 
   private initSize(): Promise<void> {

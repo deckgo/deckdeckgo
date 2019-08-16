@@ -118,6 +118,9 @@ export class DeckdeckgoInlineEditor {
   @Prop()
   imgEditable: boolean = false;
 
+  @Prop()
+  list: boolean = true;
+
   async componentWillLoad() {
     await this.attachListener();
   }
@@ -1067,19 +1070,7 @@ export class DeckdeckgoInlineEditor {
         <div style={styleColor}></div>
       </button>,
 
-      <button
-        disabled={this.disabledTitle}
-        onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
-        class={this.orderedList ? "ordered-list active" : "ordered-list"}>
-        <div></div>
-      </button>,
-
-      <button
-        disabled={this.disabledTitle}
-        onClick={(e: UIEvent) => this.toggleList(e, 'insertUnorderedList')}
-        class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
-        <div></div>
-      </button>,
+      (this.renderList()),
 
       <div class="separator"></div>,
 
@@ -1087,6 +1078,28 @@ export class DeckdeckgoInlineEditor {
         <div></div>
       </button>
     ];
+  }
+
+  private renderList() {
+    if (this.list) {
+      return [
+        <button
+          disabled={this.disabledTitle}
+          onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
+          class={this.orderedList ? "ordered-list active" : "ordered-list"}>
+          <div></div>
+        </button>,
+
+        <button
+          disabled={this.disabledTitle}
+          onClick={(e: UIEvent) => this.toggleList(e, 'insertUnorderedList')}
+          class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
+          <div></div>
+        </button>
+      ]
+    } else {
+      return undefined;
+    }
   }
 
   private renderImageActions() {

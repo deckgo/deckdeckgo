@@ -31,6 +31,8 @@ div.deckgo-tools {
     border-radius: 0;
 
     z-index: var(--deckgo-inline-editor-sticky-zindex);
+
+    height: var(--deckgo-inline-editor-sticky-height, 56px);
   }
 
   div.separator {

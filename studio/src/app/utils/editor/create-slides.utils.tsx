@@ -7,16 +7,6 @@ import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/envir
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 import {User, UserSocial} from '../../models/data/user';
 
-export enum SlotType {
-    SECTION = 'section',
-    H1 = 'h1',
-    H2 = 'h2',
-    H3 = 'h3',
-    IMG = 'deckgo-lazy-img',
-    CODE = 'deckgo-highlight-code',
-    SOCIAL = 'deckgo-social'
-}
-
 export class CreateSlidesUtils {
 
     static createSlide(template: SlideTemplate, user?: User): Promise<any> {

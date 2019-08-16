@@ -5,7 +5,7 @@ deckgo-deck {
 
   --pager-text-slides-display: block;
 
-  h1, h2, h3, section, deckgo-highlight-code, deckgo-lazy-img[slot] {
+  h1, h2, h3, section, ol, ul, deckgo-reveal-list, deckgo-highlight-code {
     border-radius: 2px;
     border: 1px solid var(--ion-color-light);
   }
@@ -25,7 +25,6 @@ deckgo-deck {
   section {
     min-height: calc(var(--font-size-normal) + 4px);
     margin-top: 16px;
-    overflow: auto;
   }
 
   deckgo-highlight-code {
@@ -34,20 +33,6 @@ deckgo-deck {
     code[slot] {
       min-height: 26px;
     }
-  }
-
-  deckgo-slide-split {
-    deckgo-highlight-code {
-      height: fit-content;
-    }
-  }
-
-  ol, ul {
-    list-style-position: inside;
-  }
-
-  ul {
-    list-style-type: disc;
   }
 
   a {
