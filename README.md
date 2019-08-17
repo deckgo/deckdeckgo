@@ -48,6 +48,13 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | **Types** | [`@deckdeckgo/types`](https://www.npmjs.com/package/@deckdeckgo/types) | [![version](https://img.shields.io/npm/v/@deckdeckgo/types/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/types) | [`README.md`](webcomponents/types/README.md)
 | **Utils** | [`@deckdeckgo/utils`](https://www.npmjs.com/package/@deckdeckgo/utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/utils) | [`README.md`](webcomponents/utils/README.md)
 
+## Web Components - Slides/Templates
+
+| Project | Package | Version | Links |
+| ------- | ------- | ------- |:-----:|
+| **Title** | [`@deckdeckgo/slide-title`](https://www.npmjs.com/package/@deckdeckgo/slide-title) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-title/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-title) | [`README.md`](webcomponents/slides/title/README.md)
+| **Utils** | [`@deckdeckgo/slide-utils`](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [`README.md`](webcomponents/slides/utils/README.md)
+
 ## Others
 | Project | Package | Version | Links |
 | ------- | ------- | ------- |:-----:|
