@@ -1,6 +1,6 @@
-# DeckDeckGo - Slide "Title"
+# DeckDeckGo - Slide "Content"
 
-This component is the slide/template "Title" of [DeckDeckGo].
+This component is the slide/template "Content" of [DeckDeckGo].
 
 It is developed with [Stencil](https://stenciljs.com).
 

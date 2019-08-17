@@ -113,15 +113,6 @@ export namespace Components {
     'revealContent': () => Promise<void>;
     'src': string;
   }
-  interface DeckgoSlideContent {
-    'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
-    'customActions': boolean;
-    'customBackground': boolean;
-    'hideContent': () => Promise<void>;
-    'lazyLoadContent': () => Promise<void>;
-    'revealContent': () => Promise<void>;
-  }
   interface DeckgoSlideCountdown {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
@@ -256,12 +247,6 @@ declare global {
     new (): HTMLDeckgoSlideCodeElement;
   };
 
-  interface HTMLDeckgoSlideContentElement extends Components.DeckgoSlideContent, HTMLStencilElement {}
-  var HTMLDeckgoSlideContentElement: {
-    prototype: HTMLDeckgoSlideContentElement;
-    new (): HTMLDeckgoSlideContentElement;
-  };
-
   interface HTMLDeckgoSlideCountdownElement extends Components.DeckgoSlideCountdown, HTMLStencilElement {}
   var HTMLDeckgoSlideCountdownElement: {
     prototype: HTMLDeckgoSlideCountdownElement;
@@ -312,7 +297,6 @@ declare global {
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
     'deckgo-slide-chart': HTMLDeckgoSlideChartElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
-    'deckgo-slide-content': HTMLDeckgoSlideContentElement;
     'deckgo-slide-countdown': HTMLDeckgoSlideCountdownElement;
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
     'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement;
@@ -399,11 +383,6 @@ declare namespace LocalJSX {
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'src'?: string;
   }
-  interface DeckgoSlideContent extends JSXBase.HTMLAttributes<HTMLDeckgoSlideContentElement> {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-  }
   interface DeckgoSlideCountdown extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCountdownElement> {
     'customActions'?: boolean;
     'customBackground'?: boolean;
@@ -465,7 +444,6 @@ declare namespace LocalJSX {
     'deckgo-slide-author': DeckgoSlideAuthor;
     'deckgo-slide-chart': DeckgoSlideChart;
     'deckgo-slide-code': DeckgoSlideCode;
-    'deckgo-slide-content': DeckgoSlideContent;
     'deckgo-slide-countdown': DeckgoSlideCountdown;
     'deckgo-slide-gif': DeckgoSlideGif;
     'deckgo-slide-qrcode': DeckgoSlideQrcode;
