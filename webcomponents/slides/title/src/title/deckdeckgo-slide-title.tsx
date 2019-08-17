@@ -1,7 +1,6 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
-import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
+import {DeckdeckgoSlide, DeckdeckgoDeckUtils, DeckdeckgoSlideUtils} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-title',

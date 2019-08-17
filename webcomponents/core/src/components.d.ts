@@ -169,15 +169,6 @@ export namespace Components {
     'lazyLoadContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
   }
-  interface DeckgoSlideTitle {
-    'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
-    'customActions': boolean;
-    'customBackground': boolean;
-    'hideContent': () => Promise<void>;
-    'lazyLoadContent': () => Promise<void>;
-    'revealContent': () => Promise<void>;
-  }
   interface DeckgoSlideYoutube {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
@@ -295,12 +286,6 @@ declare global {
     new (): HTMLDeckgoSlideSplitElement;
   };
 
-  interface HTMLDeckgoSlideTitleElement extends Components.DeckgoSlideTitle, HTMLStencilElement {}
-  var HTMLDeckgoSlideTitleElement: {
-    prototype: HTMLDeckgoSlideTitleElement;
-    new (): HTMLDeckgoSlideTitleElement;
-  };
-
   interface HTMLDeckgoSlideYoutubeElement extends Components.DeckgoSlideYoutube, HTMLStencilElement {}
   var HTMLDeckgoSlideYoutubeElement: {
     prototype: HTMLDeckgoSlideYoutubeElement;
@@ -332,7 +317,6 @@ declare global {
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
     'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement;
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
-    'deckgo-slide-title': HTMLDeckgoSlideTitleElement;
     'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement;
     'deckgo-social': HTMLDeckgoSocialElement;
     'deckgo-youtube': HTMLDeckgoYoutubeElement;
@@ -449,11 +433,6 @@ declare namespace LocalJSX {
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
   }
-  interface DeckgoSlideTitle extends JSXBase.HTMLAttributes<HTMLDeckgoSlideTitleElement> {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-  }
   interface DeckgoSlideYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoSlideYoutubeElement> {
     'customActions'?: boolean;
     'customBackground'?: boolean;
@@ -491,7 +470,6 @@ declare namespace LocalJSX {
     'deckgo-slide-gif': DeckgoSlideGif;
     'deckgo-slide-qrcode': DeckgoSlideQrcode;
     'deckgo-slide-split': DeckgoSlideSplit;
-    'deckgo-slide-title': DeckgoSlideTitle;
     'deckgo-slide-youtube': DeckgoSlideYoutube;
     'deckgo-social': DeckgoSocial;
     'deckgo-youtube': DeckgoYoutube;
