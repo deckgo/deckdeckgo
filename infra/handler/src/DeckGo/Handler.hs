@@ -412,10 +412,8 @@ usersGetStatement :: Statement () [Item UserId User]
 usersGetStatement = Statement sql encoder decoder True
   where
     sql = BS8.unwords
-      [ "SELECT account.id, account.firebase_id, username.id"
+      [ "SELECT account.id, account.firebase_id, account.username"
       ,   "FROM account"
-      ,   "LEFT JOIN username"
-      ,     "ON username.account = account.id"
       ]
     encoder = HE.unit
     decoder = HD.rowList $
@@ -441,10 +439,8 @@ usersGetUserIdStatement :: Statement UserId (Maybe (Item UserId User))
 usersGetUserIdStatement = Statement sql encoder decoder True
   where
     sql = BS8.unwords
-      [ "SELECT account.id, account.firebase_id, username.id"
+      [ "SELECT account.id, account.firebase_id, account.username"
       ,   "FROM account"
-      ,   "LEFT JOIN username"
-      ,     "ON username.account = account.id"
       ,   "WHERE account.id = $1"
       ]
     encoder = contramap
@@ -532,8 +528,8 @@ usersPostStatement = Statement sql encoder decoder True
   where
     sql = BS8.unwords
       [ "INSERT INTO account"
-      ,   "(id, firebase_id)"
-      ,   "VALUES ($1, $2)"
+      ,   "(id, firebase_id, username)"
+      ,   "VALUES ($1, $2, NULL)"
       ,   "ON CONFLICT DO NOTHING"
       ]
     encoder =
@@ -543,15 +539,12 @@ usersPostStatement = Statement sql encoder decoder True
       contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text)
     decoder = HD.rowsAffected
 
+-- TODO: deal with conflict error
 usersPostStatement' :: Statement (Username, UserId) Int64
 usersPostStatement' = Statement sql encoder decoder True
   where
     sql = BS8.unwords
-      [ "INSERT INTO username"
-      ,   "(id, account)"
-      ,   "VALUES ($1, $2)"
-      ,   "ON CONFLICT (id) DO NOTHING"
-      ]
+      [ "UPDATE account SET username = $1 WHERE id = $2" ]
     encoder =
       contramap
         (unUsername . view _1)
@@ -565,8 +558,7 @@ usersPostStatement'' :: Statement Username () -- TODO: check was deleted?
 usersPostStatement'' = Statement sql encoder decoder True
   where
     sql = BS8.unwords
-      [ "DELETE FROM username"
-      ,   "WHERE id = $1"
+      [ "UPDATE account SET username = NULL WHERE id = $1"
       ]
     encoder =
       contramap
@@ -1302,6 +1294,7 @@ data DbVersion
   = DbVersion0
   | DbVersion1
   | DbVersion2
+  | DbVersion3
   deriving stock (Enum, Bounded, Ord, Eq)
 
 -- | Migrates from ver to latest
@@ -1309,6 +1302,7 @@ migrateFrom :: DbVersion -> HS.Session ()
 migrateFrom = \frm -> do
     liftIO $ putStrLn $ "Migration: " <>
       show (dbVersionToText <$> [frm ..maxBound])
+    HS.sql "BEGIN"
     forM_ [frm .. maxBound] $ \ver -> do
       migrateTo ver
       HS.statement (dbVersionToText ver) $ Statement
@@ -1317,6 +1311,7 @@ migrateFrom = \frm -> do
           , "ON CONFLICT (key) DO UPDATE SET value = $1"
           ]
         ) (HE.param HE.text) HD.unit True
+    HS.sql "COMMIT"
   where
     -- | Migrates from (ver -1) to ver
     migrateTo :: DbVersion -> HS.Session ()
@@ -1354,6 +1349,29 @@ migrateFrom = \frm -> do
             ]
           ) HE.unit HD.unit True
       DbVersion2 -> do
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE slide ("
+            ,   "id TEXT UNIQUE NOT NULL,"
+            ,   "content TEXT,"
+            ,   "template TEXT,"
+            ,   "attributes JSON"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+      DbVersion3 -> do
+        HS.sql "DROP TABLE IF EXISTS username"
+        HS.sql "DROP TABLE IF EXISTS account CASCADE"
+        HS.sql "DROP TABLE IF EXISTS slide"
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE account ("
+            ,   "id TEXT UNIQUE,"
+            ,   "firebase_id TEXT UNIQUE,"
+            ,   "username TEXT UNIQUE NULL"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE slide ("
@@ -1406,6 +1424,7 @@ dbVersionToText = \case
   DbVersion0 -> "0"
   DbVersion1 -> "1"
   DbVersion2 -> "2"
+  DbVersion3 -> "3"
 
 dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
