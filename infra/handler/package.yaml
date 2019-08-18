@@ -8,7 +8,6 @@ dependencies:
     - amazonka
     - amazonka-cloudfront
     - amazonka-core
-    - amazonka-dynamodb
     - amazonka-s3
     - amazonka-sqs
     - base
