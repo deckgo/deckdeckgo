@@ -204,8 +204,7 @@ export class AppPhoto {
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
                                      onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
                     <ion-infinite-scroll-content
-                        loadingSpinner="bubbles"
-                        loadingText="Loading more data...">
+                        loadingText="Loading more photos...">
                     </ion-infinite-scroll-content>
                 </ion-infinite-scroll>
             </ion-content>,
