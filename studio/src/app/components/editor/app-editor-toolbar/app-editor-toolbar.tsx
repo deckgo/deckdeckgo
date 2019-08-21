@@ -882,7 +882,7 @@ export class AppEditorToolbar {
             return undefined;
         } else {
             return <a onClick={() => this.openSlotType()} title="Toggle element type">
-                <ion-label>T</ion-label>
+                <ion-label><ion-icon name="add" md="md-add" ios="md-add"></ion-icon></ion-label>
             </a>
         }
     }
@@ -922,7 +922,7 @@ export class AppEditorToolbar {
             return undefined;
         } else {
             return <a onClick={() => this.openReveal()} title="Edit element animation">
-                <ion-icon name="videocam"></ion-icon>
+                <ion-icon src="/assets/icons/album.svg"></ion-icon>
             </a>
         }
     }
