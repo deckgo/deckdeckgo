@@ -149,6 +149,16 @@ export class AppDashboard {
         }
     }
 
+    private blockSlide($event: CustomEvent): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if ($event && $event.target) {
+                ($event.target as any).blockSlide(true);
+            }
+
+            resolve();
+        })
+    }
+
     render() {
         return [
             <app-navigation presentation={true}></app-navigation>,
@@ -218,7 +228,7 @@ export class AppDashboard {
         if (!deck) {
             return undefined;
         } else {
-            return <deckgo-deck embedded={true} keyboard={false} style={deck.style}>
+            return <deckgo-deck embedded={true} keyboard={false} style={deck.style} onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
                 {deck.slide}
                 {deck.background}
             </deckgo-deck>
