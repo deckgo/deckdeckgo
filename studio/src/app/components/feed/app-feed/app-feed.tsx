@@ -22,6 +22,9 @@ export class AppFeed {
     @State()
     private lastPageReached: boolean = false;
 
+    @State()
+    private decksFetched: boolean = false;
+
     private presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
 
     private subscription: Subscription;
@@ -34,6 +37,7 @@ export class AppFeed {
     async componentWillLoad() {
         this.subscription = this.feedService.watchDecks().subscribe((decks: Deck[]) => {
             this.decks = decks;
+            this.decksFetched = true;
         });
 
         this.lastPageSubscription = this.feedService.watchLastPageReached().subscribe((lastPageReached: boolean) => {
@@ -82,7 +86,15 @@ export class AppFeed {
                 })
             );
         } else {
+            return this.renderLoading();
+        }
+    }
+
+    private renderLoading() {
+        if (this.decksFetched) {
             return undefined;
+        } else {
+            return <ion-spinner class="loading" color="primary"></ion-spinner>;
         }
     }
 }
