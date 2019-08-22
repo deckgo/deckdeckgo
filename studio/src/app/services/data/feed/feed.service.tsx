@@ -76,7 +76,6 @@ export class FeedService {
 
                   await this.findNext();
 
-
                   resolve();
                });
         });

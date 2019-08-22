@@ -27,12 +27,16 @@ export class AppTeam {
                                     <ion-icon name="logo-twitter" area-label="Twitter"></ion-icon>
                                 </a>
 
-                                <a href="https://medium.com/@david.dalbusco">
-                                    <ion-icon src="./assets/icons/medium.svg" area-label="Medium"></ion-icon>
+                                <a href="https://daviddalbusco.com">
+                                    <ion-icon name="globe" area-label="Personal blog and website"></ion-icon>
                                 </a>
 
                                 <a href="https://dev.to/daviddalbusco">
                                     <ion-icon src="./assets/icons/dev.svg" area-label="Dev"></ion-icon>
+                                </a>
+
+                                <a href="https://medium.com/@david.dalbusco">
+                                    <ion-icon src="./assets/icons/medium.svg" area-label="Medium"></ion-icon>
                                 </a>
 
                                 <a href="http://github.com/peterpeterparker">
@@ -54,7 +58,7 @@ export class AppTeam {
                                 </a>
 
                                 <a href="https://nmattia.com">
-                                    <ion-icon name="globe" area-label="Personal website"></ion-icon>
+                                    <ion-icon name="globe" area-label="Personal blog and website"></ion-icon>
                                 </a>
 
                                 <a href="https://github.com/nmattia">

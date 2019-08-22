@@ -224,8 +224,7 @@ export class AppGif {
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
                                      onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
                     <ion-infinite-scroll-content
-                        loadingSpinner="bubbles"
-                        loadingText="Loading more data...">
+                        loadingText="Loading more Gifs...">
                     </ion-infinite-scroll-content>
                 </ion-infinite-scroll>
             </ion-content>,
