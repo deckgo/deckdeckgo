@@ -98,6 +98,9 @@ deckgo-deck [slot="background"] > deckgo-lazy-img {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 0;
+  --deckgo-lazy-img-height: auto;
+  --deckgo-lazy-img-width: 100%;
   --deckgo-lazy-img-min-width: 100%;
 }
 
