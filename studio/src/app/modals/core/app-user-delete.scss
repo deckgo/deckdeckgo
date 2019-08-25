@@ -2,4 +2,16 @@ app-user-delete {
   strong {
     color: var(--ion-color-danger);
   }
+
+  p {
+    a {
+      color: black;
+      cursor: pointer;
+
+      &:hover {
+        border-bottom-color: black;
+      }
+    }
+  }
 }
+

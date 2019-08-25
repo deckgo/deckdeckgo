@@ -1,5 +1,6 @@
 import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 import {UserUtils} from '../../utils/core/user-utils';
+import {NavDirection, NavService} from '../../services/core/nav/nav.service';
 
 @Component({
     tag: 'app-user-delete',
@@ -17,8 +18,12 @@ export class AppUserDelete {
 
     private inputUsername: string;
 
+    private navService: NavService;
+
     async componentDidLoad() {
         history.pushState({modal: true}, null);
+
+        this.navService = NavService.getInstance();
     }
 
     @Listen('popstate', { target: 'window' })
@@ -48,6 +53,15 @@ export class AppUserDelete {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(true);
     }
 
+    private async navigateContact() {
+        await this.closeModal();
+
+        this.navService.navigate({
+            url: '/contact',
+            direction: NavDirection.FORWARD
+        });
+    }
+
     render() {
         return [
             <ion-header>
@@ -62,6 +76,8 @@ export class AppUserDelete {
             </ion-header>,
             <ion-content class="ion-padding">
                 <p>This action cannot be undone. This will permanently delete your user <strong>{this.username}</strong>.</p>
+
+                <p>Note that we are not currently deleting your presentations automatically. If you wish to unpublish them, drop us a message on one of our <a onClick={() => this.navigateContact()}>contact</a> channels.</p>
 
                 <form onSubmit={(e: Event) => this.handleSubmit(e)}>
                     <p class="ion-no-margin">Please type your username to confirm.</p>
