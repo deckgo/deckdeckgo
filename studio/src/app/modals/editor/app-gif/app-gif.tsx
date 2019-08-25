@@ -37,6 +37,9 @@ export class AppGif {
 
     private imageHistoryService: ImageHistoryService;
 
+    @State()
+    private searching: boolean = false;
+
     constructor() {
         this.gifService = GifService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();
@@ -78,7 +81,11 @@ export class AppGif {
 
     private fetchCategories(): Promise<void> {
         return new Promise<void>(async (resolve) => {
+            this.searching = true;
+
             const categories: TenorCategory[] = await this.gifService.getCategories();
+
+            this.searching = false;
 
             if (!categories || categories.length <= 0) {
                 resolve();
@@ -104,7 +111,11 @@ export class AppGif {
                 return;
             }
 
+            this.searching = true;
+
             const tenorResponse: TenorSearchResponse = await this.gifService.getGifs(this.searchTerm, this.paginationNext);
+
+            this.searching = false;
 
             if (!tenorResponse) {
                 this.emptyGifs();
@@ -174,6 +185,8 @@ export class AppGif {
 
     private clear(): Promise<void> {
         return new Promise<void>((resolve) => {
+            this.searchTerm = undefined;
+
             this.gifsOdd = null;
             this.gifsEven = null;
 
@@ -209,9 +222,7 @@ export class AppGif {
             <ion-header>
                 <ion-toolbar color="secondary">
                     <ion-buttons slot="start">
-                        <ion-button onClick={() => this.closeModal()}>
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
+                        {this.renderCloseButton()}
                     </ion-buttons>
                     <ion-title class="ion-text-uppercase">Gif</ion-title>
                 </ion-toolbar>
@@ -237,6 +248,18 @@ export class AppGif {
                 </ion-toolbar>
             </ion-footer>
         ];
+    }
+
+    private renderCloseButton() {
+        if ((this.gifsEven || this.gifsOdd) && !this.searching) {
+            return <ion-button onClick={() => this.clear()}>
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>;
+        } else {
+            return <ion-button onClick={() => this.closeModal()}>
+                <ion-icon name="close"></ion-icon>
+            </ion-button>;
+        }
     }
 
     private renderCategories() {

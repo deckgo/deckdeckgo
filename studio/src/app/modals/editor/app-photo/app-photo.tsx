@@ -72,6 +72,8 @@ export class AppPhoto {
 
     private clear(): Promise<void> {
         return new Promise<void>((resolve) => {
+            this.searchTerm = undefined;
+
             this.photosOdd = null;
             this.photosEven = null;
 
@@ -187,9 +189,7 @@ export class AppPhoto {
             <ion-header>
                 <ion-toolbar color="primary">
                     <ion-buttons slot="start">
-                        <ion-button onClick={() => this.closeModal()}>
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
+                        {this.renderCloseButton()}
                     </ion-buttons>
                     <ion-title class="ion-text-uppercase">Stock photo</ion-title>
                 </ion-toolbar>
@@ -219,6 +219,18 @@ export class AppPhoto {
                 </ion-toolbar>
             </ion-footer>
         ];
+    }
+
+    private renderCloseButton() {
+        if (!this.searchTerm || this.searchTerm.length <= 0 || this.searching) {
+            return <ion-button onClick={() => this.closeModal()}>
+                <ion-icon name="close"></ion-icon>
+            </ion-button>;
+        } else {
+            return <ion-button onClick={() => this.clear()}>
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>;
+        }
     }
 
     private renderPhotosPlaceHolder() {
