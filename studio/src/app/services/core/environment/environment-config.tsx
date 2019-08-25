@@ -6,6 +6,7 @@ export interface EnvironmentFirebaseConfig {
     projectId: string;
     messagingSenderId: string;
     storageUrl: string;
+    appId: string;
 }
 
 export interface EnvironmentTenorConfig {
