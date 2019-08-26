@@ -1,6 +1,6 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
-import {DeckdeckgoSlide, DeckdeckgoDeckUtils, DeckdeckgoSlideUtils} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, beforeSwipe, lazyLoadContent, hideAllRevealElements, showAllRevealElements} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-content',
@@ -17,34 +17,34 @@ export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
-    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
+    await hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
   }
 
   @Method()
   beforeSwipe(enter: boolean, reveal: boolean): Promise<boolean> {
-    return DeckdeckgoSlideUtils.beforeSwipe(this.el, enter, reveal);
+    return beforeSwipe(this.el, enter, reveal);
   }
 
   @Method()
   afterSwipe(): Promise<void> {
-    return DeckdeckgoSlideUtils.afterSwipe();
+    return afterSwipe();
   }
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+    return lazyLoadContent(this.el);
   }
 
   @Method()
   revealContent(): Promise<void> {
-    return DeckdeckgoSlideUtils.showAllRevealElements(this.el);
+    return showAllRevealElements(this.el);
   }
 
   @Method()
   hideContent(): Promise<void> {
-    return DeckdeckgoSlideUtils.hideAllRevealElements(this.el);
+    return hideAllRevealElements(this.el);
   }
 
   render() {

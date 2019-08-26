@@ -1,31 +1,27 @@
-export class DeckdeckgoComponentUtils {
+export function lazyLoadComponentContent(el: HTMLElement, tag: string): Promise<void> {
+  return new Promise<void>(async (resolve) => {
+    const promises: void[] = [];
 
-  static lazyLoadContent(el: HTMLElement, tag: string): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const promises: void[] = [];
+    const elements: HTMLElement[] = getAllElements(el, tag);
 
-      const elements: HTMLElement[] = this.getAllElements(el, tag);
+    if (elements && elements.length > 0) {
 
-      if (elements && elements.length > 0) {
+      elements.forEach((element: HTMLElement) => {
+        promises.push((element as any).lazyLoadContent());
+      });
 
-        elements.forEach((element: HTMLElement) => {
-          promises.push((element as any).lazyLoadContent());
-        });
-
-        await Promise.all(promises);
-
-        resolve();
-      }
+      await Promise.all(promises);
 
       resolve();
-    });
-  }
+    }
 
-  private static getAllElements(el: HTMLElement, tag: string): HTMLElement[] {
-    const allSlottedElements: NodeListOf<HTMLElement> = el.querySelectorAll(tag);
-    const allShadowsElements: NodeListOf<HTMLElement> | [] = el.shadowRoot ? el.shadowRoot.querySelectorAll(tag) : [];
+    resolve();
+  });
+}
 
-    return Array.from(allSlottedElements).concat(Array.from(allShadowsElements));
-  }
+function getAllElements(el: HTMLElement, tag: string): HTMLElement[] {
+  const allSlottedElements: NodeListOf<HTMLElement> = el.querySelectorAll(tag);
+  const allShadowsElements: NodeListOf<HTMLElement> | [] = el.shadowRoot ? el.shadowRoot.querySelectorAll(tag) : [];
 
+  return Array.from(allSlottedElements).concat(Array.from(allShadowsElements));
 }
