@@ -253,7 +253,7 @@ export class AppPublishEdit {
     }
 
     private onTagChange() {
-        if (this.tag && this.tag !== undefined && this.tag !== null && this.tag.length  > 3) {
+        if (this.tag && this.tag !== undefined && this.tag !== null && this.tag.length >= 3) {
             if (this.tag.charAt(0) === '#') {
                 this.tag = this.tag.substr(1);
             }
