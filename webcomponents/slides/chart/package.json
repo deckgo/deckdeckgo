@@ -1,7 +1,7 @@
 {
-  "name": "@deckdeckgo/slide-title",
+  "name": "@deckdeckgo/slide-chart",
   "version": "1.0.0-alpha.1",
-  "description": "The Title template is a simple slide which display a title and content centered in the middle of the presentation",
+  "description": "The Chart template is handy to plot and animate charts in your presentations",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/title/index.js",
+  "unpkg": "dist/chart/index.js",
   "files": [
     "dist/",
     "README.md",
@@ -48,7 +48,8 @@
     "presentation",
     "slides",
     "slideshow",
-    "talk"
+    "talk",
+    "d3js"
   ],
   "dependencies": {}
 }

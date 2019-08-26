@@ -1,9 +1,6 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
-
-import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent, debounce} from '@deckdeckgo/slide-utils';
 
 enum DeckdeckgoSlideChartType {
   LINE = 'line',
@@ -59,7 +56,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Prop() animationDuration: number = 1000;
 
   async componentDidLoad() {
-    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
+    await hideLazyLoadImages(this.el);
 
     this.initWindowResize();
 
@@ -102,12 +99,12 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   @Method()
   afterSwipe(): Promise<void> {
-    return DeckdeckgoSlideUtils.afterSwipe();
+    return afterSwipe();
   }
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+    return lazyLoadContent(this.el);
   }
 
   @Method()
@@ -141,7 +138,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', DeckDeckGoUtils.debounce(this.onResizeContent));
+      window.addEventListener('resize', debounce(this.onResizeContent));
     }
   }
 

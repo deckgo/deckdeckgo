@@ -60,45 +60,6 @@ export namespace Components {
     'reveal': () => Promise<void>;
     'revealAll': () => Promise<void>;
   }
-  interface DeckgoSlideAuthor {
-    'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-    'customActions': boolean;
-    'customBackground': boolean;
-    'hideContent': () => Promise<void>;
-    'imgAlt': string;
-    'imgSrc': string;
-    'lazyLoadContent': () => Promise<void>;
-    'revealContent': () => Promise<void>;
-  }
-  interface DeckgoSlideChart {
-    'afterSwipe': () => Promise<void>;
-    'animation': boolean;
-    'animationDuration': number;
-    'area': boolean;
-    'beforeSwipe': (enter: boolean, _reveal: boolean) => Promise<boolean>;
-    'customActions': boolean;
-    'customBackground': boolean;
-    'datePattern': string;
-    'grid': boolean;
-    'height': number;
-    'hideContent': () => Promise<void>;
-    'innerRadius': number;
-    'lazyLoadContent': () => Promise<void>;
-    'marginBottom': number;
-    'marginLeft': number;
-    'marginRight': number;
-    'marginTop': number;
-    'range': string[];
-    'revealContent': () => Promise<void>;
-    'separator': string;
-    'smooth': boolean;
-    'src': string;
-    'ticks': number;
-    'type': string;
-    'width': number;
-    'yAxisDomain': string;
-  }
   interface DeckgoSlideCode {
     'afterSwipe': () => Promise<void>;
     'anchor': string;
@@ -229,18 +190,6 @@ declare global {
     new (): HTMLDeckgoRevealListElement;
   };
 
-  interface HTMLDeckgoSlideAuthorElement extends Components.DeckgoSlideAuthor, HTMLStencilElement {}
-  var HTMLDeckgoSlideAuthorElement: {
-    prototype: HTMLDeckgoSlideAuthorElement;
-    new (): HTMLDeckgoSlideAuthorElement;
-  };
-
-  interface HTMLDeckgoSlideChartElement extends Components.DeckgoSlideChart, HTMLStencilElement {}
-  var HTMLDeckgoSlideChartElement: {
-    prototype: HTMLDeckgoSlideChartElement;
-    new (): HTMLDeckgoSlideChartElement;
-  };
-
   interface HTMLDeckgoSlideCodeElement extends Components.DeckgoSlideCode, HTMLStencilElement {}
   var HTMLDeckgoSlideCodeElement: {
     prototype: HTMLDeckgoSlideCodeElement;
@@ -294,8 +243,6 @@ declare global {
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-reveal': HTMLDeckgoRevealElement;
     'deckgo-reveal-list': HTMLDeckgoRevealListElement;
-    'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
-    'deckgo-slide-chart': HTMLDeckgoSlideChartElement;
     'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
     'deckgo-slide-countdown': HTMLDeckgoSlideCountdownElement;
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
@@ -340,37 +287,6 @@ declare namespace LocalJSX {
     'allElementsHidden'?: boolean;
     'allElementsRevealed'?: boolean;
     'listTag'?: string;
-  }
-  interface DeckgoSlideAuthor extends JSXBase.HTMLAttributes<HTMLDeckgoSlideAuthorElement> {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'imgAlt'?: string;
-    'imgSrc'?: string;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-  }
-  interface DeckgoSlideChart extends JSXBase.HTMLAttributes<HTMLDeckgoSlideChartElement> {
-    'animation'?: boolean;
-    'animationDuration'?: number;
-    'area'?: boolean;
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'datePattern'?: string;
-    'grid'?: boolean;
-    'height'?: number;
-    'innerRadius'?: number;
-    'marginBottom'?: number;
-    'marginLeft'?: number;
-    'marginRight'?: number;
-    'marginTop'?: number;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'range'?: string[];
-    'separator'?: string;
-    'smooth'?: boolean;
-    'src'?: string;
-    'ticks'?: number;
-    'type'?: string;
-    'width'?: number;
-    'yAxisDomain'?: string;
   }
   interface DeckgoSlideCode extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCodeElement> {
     'anchor'?: string;
@@ -441,8 +357,6 @@ declare namespace LocalJSX {
     'deckgo-pager': DeckgoPager;
     'deckgo-reveal': DeckgoReveal;
     'deckgo-reveal-list': DeckgoRevealList;
-    'deckgo-slide-author': DeckgoSlideAuthor;
-    'deckgo-slide-chart': DeckgoSlideChart;
     'deckgo-slide-code': DeckgoSlideCode;
     'deckgo-slide-countdown': DeckgoSlideCountdown;
     'deckgo-slide-gif': DeckgoSlideGif;

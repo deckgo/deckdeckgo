@@ -24,7 +24,6 @@
   "devDependencies": {
     "@deckdeckgo/slide-utils": "file:../utils",
     "@stencil/core": "^1.2.5",
-    "@stencil/dev-server": "0.0.18",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",
     "@stencil/utils": "0.0.5",
