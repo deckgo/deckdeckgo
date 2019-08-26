@@ -42,6 +42,7 @@ export class AppFeed {
 
         this.lastPageSubscription = this.feedService.watchLastPageReached().subscribe((lastPageReached: boolean) => {
             this.lastPageReached = lastPageReached;
+            this.decksFetched = true;
         })
     }
 
