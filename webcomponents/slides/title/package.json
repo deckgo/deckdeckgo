@@ -9,7 +9,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/title/title.js",
+  "unpkg": "dist/title/index.js",
   "files": [
     "dist/",
     "README.md",
