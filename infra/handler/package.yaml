@@ -12,6 +12,7 @@ dependencies:
     - amazonka-sqs
     - base
     - bytestring
+    - cases
     - contravariant
     - conduit
     - conduit-extra

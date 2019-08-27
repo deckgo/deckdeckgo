@@ -222,7 +222,7 @@ type DecksAPI =
     Protected :> QueryParam "owner_id" UserId :> Get '[JSON] [Item DeckId Deck] :<|>
     Protected :>
       Capture "deck_id" DeckId :>
-      Get '[JSON] Deck :<|>
+      Get '[JSON] (Item DeckId Deck) :<|>
     Protected :>
       Capture "deck_id" DeckId :>
       "publish" :>
@@ -810,7 +810,7 @@ decksGetDeckId
     :: HC.Connection
     -> Firebase.UserId
     -> DeckId
-    -> Servant.Handler Deck
+    -> Servant.Handler (Item DeckId Deck)
 decksGetDeckId conn fuid deckId = do
 
     iface <- liftIO $ getDbInterface conn
@@ -827,7 +827,7 @@ decksGetDeckId conn fuid deckId = do
         [ "Deck was found", show deck, "but requester is not the owner", show fuid ]
       Servant.throwError Servant.err404
 
-    pure deck
+    pure (Item deckId deck)
 
 decksDeleteSession :: DeckId -> HS.Session ()
 decksDeleteSession did = do
@@ -1209,6 +1209,7 @@ data DbVersion
   | DbVersion1
   | DbVersion2
   | DbVersion3
+  | DbVersion4
   deriving stock (Enum, Bounded, Ord, Eq)
 
 -- | Migrates from ver to latest
@@ -1309,6 +1310,43 @@ migrateFrom = \frm -> do
             , ");"
             ]
           ) HE.unit HD.unit True
+      DbVersion4 -> do
+        HS.sql "DROP TABLE IF EXISTS username"
+        HS.sql "DROP TABLE IF EXISTS account CASCADE"
+        HS.sql "DROP TABLE IF EXISTS slide"
+        HS.sql "DROP TABLE IF EXISTS deck"
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE account ("
+            ,   "id TEXT PRIMARY KEY,"
+            ,   "firebase_id TEXT UNIQUE,"
+            ,   "username TEXT UNIQUE NULL"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE deck ("
+            ,   "id TEXT PRIMARY KEY,"
+            ,   "name TEXT NOT NULL,"
+            ,   "background TEXT NULL,"
+            ,   "owner TEXT NOT NULL REFERENCES account (id),"
+            ,   "attributes JSON"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE slide ("
+            ,   "id TEXT PRIMARY KEY,"
+            ,   "deck TEXT NOT NULL REFERENCES deck (id) ON DELETE CASCADE,"
+            ,   "index INT2 NULL,"
+            ,   "content TEXT," -- TODO: is any of this nullable?
+            ,   "template TEXT,"
+            ,   "attributes JSON"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
 
 readDbVersion :: HS.Session (Either String (Maybe DbVersion))
 readDbVersion = do
@@ -1352,6 +1390,7 @@ dbVersionToText = \case
   DbVersion1 -> "1"
   DbVersion2 -> "2"
   DbVersion3 -> "3"
+  DbVersion4 -> "4"
 
 dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
