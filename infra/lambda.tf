@@ -19,7 +19,7 @@ resource "aws_lambda_function" "api" {
       PGDATABASE               = aws_db_instance.default.name
       PGPASSWORD               = aws_db_instance.default.password
       QUEUE_NAME               = aws_sqs_queue.presentation_deploy.name
-      FIREBASE_PROJECT_ID      = "deckdeckgo-studio-beta"
+      FIREBASE_PROJECT_ID      = "deckdeckgo-studio-prod"
       DECKGO_PRESENTATIONS_URL = aws_route53_record.www_site_beta.fqdn
       META_BUCKET_NAME         = aws_s3_bucket.meta.bucket
     }

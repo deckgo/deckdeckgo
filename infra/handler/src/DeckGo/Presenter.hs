@@ -10,6 +10,7 @@ module DeckGo.Presenter where
 
 import Control.Lens hiding ((.=))
 import Control.Monad
+import qualified Cases
 import qualified Network.AWS.SQS as SQS
 import qualified Data.Aeson as Aeson
 import Data.Bifunctor
@@ -101,6 +102,8 @@ withPresentationFiles uname deck slides act = do
     interpol =
       T.replace "{{DECKDECKGO_TITLE}}" (unDeckname dname) .
       T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname) .
+      T.replace "{{DECKDECKGO_USERNAME}}" (unUsername uname) .
+      T.replace "{{DECKDECKGO_DECKNAME}}" (sanitizeDeckname dname) .
       -- TODO: description
       T.replace "{{DECKDECKGO_DESCRIPTION}}" "(no description given)" .
       T.replace "{{DECKDECKGO_BASE_HREF}}"
@@ -132,7 +135,7 @@ slideTags :: Slide -> [Tag]
 slideTags slide =
     [ TagSoup.TagOpen
         ("deckgo-slide-" <> slideTemplate slide)
-        (HMS.toList (slideAttributes slide))
+        (first Cases.spinalize <$> HMS.toList (slideAttributes slide))
     ] <> maybe [] TagSoup.parseTags (slideContent slide) <>
     [ TagSoup.TagClose
         ("deckgo-slide-" <> slideTemplate slide)
