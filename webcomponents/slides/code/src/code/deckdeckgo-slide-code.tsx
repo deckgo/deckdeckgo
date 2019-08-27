@@ -1,9 +1,6 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
-
-import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent, isMobile} from '@deckdeckgo/slide-utils';
 
 enum DeckdeckgoSlideCodeAction {
   SWIPE,
@@ -40,11 +37,11 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   componentWillLoad() {
-    this.mobile = DeckDeckGoUtils.isMobile();
+    this.mobile = isMobile();
   }
 
   async componentDidLoad() {
-    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
+    await hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
 
@@ -70,7 +67,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private showInfo(): Promise<void> {
     return new Promise<void>((resolve) => {
       // Only on mobile devices
-      if (DeckDeckGoUtils.isMobile()) {
+      if (isMobile()) {
         const info: HTMLElement = this.el.querySelector('[slot=\'info\']');
 
         if (info) {
@@ -85,7 +82,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   private hideInfo(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       // Only on mobile devices
-      if (DeckDeckGoUtils.isMobile()) {
+      if (isMobile()) {
         const info: HTMLElement = this.el.querySelector('[slot=\'info\']');
 
         if (info && info.classList.contains('deckgo-show-info')) {
@@ -116,7 +113,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Method()
   afterSwipe(): Promise<void> {
-    return DeckdeckgoSlideUtils.afterSwipe();
+    return afterSwipe();
   }
 
   @Method()
@@ -177,7 +174,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+    return lazyLoadContent(this.el);
   }
 
   private switchAction(): Promise<void> {

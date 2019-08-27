@@ -60,20 +60,6 @@ export namespace Components {
     'reveal': () => Promise<void>;
     'revealAll': () => Promise<void>;
   }
-  interface DeckgoSlideCode {
-    'afterSwipe': () => Promise<void>;
-    'anchor': string;
-    'anchorZoom': string;
-    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-    'customActions': boolean;
-    'customBackground': boolean;
-    'hideAnchor': boolean;
-    'hideContent': () => Promise<void>;
-    'language': string;
-    'lazyLoadContent': () => Promise<void>;
-    'revealContent': () => Promise<void>;
-    'src': string;
-  }
   interface DeckgoSlideCountdown {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
@@ -166,12 +152,6 @@ declare global {
     new (): HTMLDeckgoRevealListElement;
   };
 
-  interface HTMLDeckgoSlideCodeElement extends Components.DeckgoSlideCode, HTMLStencilElement {}
-  var HTMLDeckgoSlideCodeElement: {
-    prototype: HTMLDeckgoSlideCodeElement;
-    new (): HTMLDeckgoSlideCodeElement;
-  };
-
   interface HTMLDeckgoSlideCountdownElement extends Components.DeckgoSlideCountdown, HTMLStencilElement {}
   var HTMLDeckgoSlideCountdownElement: {
     prototype: HTMLDeckgoSlideCountdownElement;
@@ -207,7 +187,6 @@ declare global {
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-reveal': HTMLDeckgoRevealElement;
     'deckgo-reveal-list': HTMLDeckgoRevealListElement;
-    'deckgo-slide-code': HTMLDeckgoSlideCodeElement;
     'deckgo-slide-countdown': HTMLDeckgoSlideCountdownElement;
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
     'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement;
@@ -249,17 +228,6 @@ declare namespace LocalJSX {
     'allElementsHidden'?: boolean;
     'allElementsRevealed'?: boolean;
     'listTag'?: string;
-  }
-  interface DeckgoSlideCode extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCodeElement> {
-    'anchor'?: string;
-    'anchorZoom'?: string;
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'hideAnchor'?: boolean;
-    'language'?: string;
-    'onScrolling'?: (event: CustomEvent<boolean>) => void;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'src'?: string;
   }
   interface DeckgoSlideCountdown extends JSXBase.HTMLAttributes<HTMLDeckgoSlideCountdownElement> {
     'customActions'?: boolean;
@@ -306,7 +274,6 @@ declare namespace LocalJSX {
     'deckgo-pager': DeckgoPager;
     'deckgo-reveal': DeckgoReveal;
     'deckgo-reveal-list': DeckgoRevealList;
-    'deckgo-slide-code': DeckgoSlideCode;
     'deckgo-slide-countdown': DeckgoSlideCountdown;
     'deckgo-slide-gif': DeckgoSlideGif;
     'deckgo-slide-qrcode': DeckgoSlideQrcode;
