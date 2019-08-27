@@ -112,15 +112,6 @@ export namespace Components {
     'lazyLoadContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
   }
-  interface DeckgoSlideSplit {
-    'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
-    'customActions': boolean;
-    'customBackground': boolean;
-    'hideContent': () => Promise<void>;
-    'lazyLoadContent': () => Promise<void>;
-    'revealContent': () => Promise<void>;
-  }
   interface DeckgoSocial {
     'dev': string;
     'fullUrl': string;
@@ -199,12 +190,6 @@ declare global {
     new (): HTMLDeckgoSlideQrcodeElement;
   };
 
-  interface HTMLDeckgoSlideSplitElement extends Components.DeckgoSlideSplit, HTMLStencilElement {}
-  var HTMLDeckgoSlideSplitElement: {
-    prototype: HTMLDeckgoSlideSplitElement;
-    new (): HTMLDeckgoSlideSplitElement;
-  };
-
   interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
   var HTMLDeckgoSocialElement: {
     prototype: HTMLDeckgoSocialElement;
@@ -226,7 +211,6 @@ declare global {
     'deckgo-slide-countdown': HTMLDeckgoSlideCountdownElement;
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
     'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement;
-    'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
     'deckgo-social': HTMLDeckgoSocialElement;
     'deckgo-youtube': HTMLDeckgoYoutubeElement;
   }
@@ -301,11 +285,6 @@ declare namespace LocalJSX {
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
   }
-  interface DeckgoSlideSplit extends JSXBase.HTMLAttributes<HTMLDeckgoSlideSplitElement> {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-  }
   interface DeckgoSocial extends JSXBase.HTMLAttributes<HTMLDeckgoSocialElement> {
     'dev'?: string;
     'fullUrl'?: string;
@@ -331,7 +310,6 @@ declare namespace LocalJSX {
     'deckgo-slide-countdown': DeckgoSlideCountdown;
     'deckgo-slide-gif': DeckgoSlideGif;
     'deckgo-slide-qrcode': DeckgoSlideQrcode;
-    'deckgo-slide-split': DeckgoSlideSplit;
     'deckgo-social': DeckgoSocial;
     'deckgo-youtube': DeckgoYoutube;
   }
