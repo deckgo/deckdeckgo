@@ -1,9 +1,6 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
-
-import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, lazyLoadContent, debounce} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-youtube',
@@ -31,7 +28,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
-    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
+    await hideLazyLoadImages(this.el);
 
     this.initWindowResize();
 
@@ -61,7 +58,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   @Method()
   lazyLoadContent(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      await DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+      await lazyLoadContent(this.el);
 
       await this.initSize();
       await this.resizeContent();
@@ -97,7 +94,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
 
   private playPauseVideo(play: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const element: HTMLDeckgoYoutubeElement = this.el.shadowRoot.querySelector('deckgo-youtube');
+      const element: any = this.el.shadowRoot.querySelector('deckgo-youtube');
 
       if (!element) {
         resolve();
@@ -149,7 +146,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', DeckDeckGoUtils.debounce(this.onResizeContent));
+      window.addEventListener('resize', debounce(this.onResizeContent));
     }
   }
 
@@ -160,7 +157,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlide {
   };
 
   private async resizeContent() {
-    const element: HTMLDeckgoYoutubeElement = this.el.shadowRoot.querySelector('deckgo-youtube');
+    const element: any = this.el.shadowRoot.querySelector('deckgo-youtube');
 
     if (element) {
       await element.updateIFrame(this.videoWidth, this.videoHeight);

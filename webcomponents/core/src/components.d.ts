@@ -121,21 +121,6 @@ export namespace Components {
     'lazyLoadContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
   }
-  interface DeckgoSlideYoutube {
-    'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-    'customActions': boolean;
-    'customBackground': boolean;
-    'height': number;
-    'hideContent': () => Promise<void>;
-    'lazyLoadContent': () => Promise<void>;
-    'pause': () => Promise<void>;
-    'play': () => Promise<void>;
-    'revealContent': () => Promise<void>;
-    'src': string;
-    'toggle': () => Promise<void>;
-    'width': number;
-  }
   interface DeckgoSocial {
     'dev': string;
     'fullUrl': string;
@@ -220,12 +205,6 @@ declare global {
     new (): HTMLDeckgoSlideSplitElement;
   };
 
-  interface HTMLDeckgoSlideYoutubeElement extends Components.DeckgoSlideYoutube, HTMLStencilElement {}
-  var HTMLDeckgoSlideYoutubeElement: {
-    prototype: HTMLDeckgoSlideYoutubeElement;
-    new (): HTMLDeckgoSlideYoutubeElement;
-  };
-
   interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
   var HTMLDeckgoSocialElement: {
     prototype: HTMLDeckgoSocialElement;
@@ -248,7 +227,6 @@ declare global {
     'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
     'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement;
     'deckgo-slide-split': HTMLDeckgoSlideSplitElement;
-    'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement;
     'deckgo-social': HTMLDeckgoSocialElement;
     'deckgo-youtube': HTMLDeckgoYoutubeElement;
   }
@@ -328,14 +306,6 @@ declare namespace LocalJSX {
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
   }
-  interface DeckgoSlideYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoSlideYoutubeElement> {
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'height'?: number;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'src'?: string;
-    'width'?: number;
-  }
   interface DeckgoSocial extends JSXBase.HTMLAttributes<HTMLDeckgoSocialElement> {
     'dev'?: string;
     'fullUrl'?: string;
@@ -362,7 +332,6 @@ declare namespace LocalJSX {
     'deckgo-slide-gif': DeckgoSlideGif;
     'deckgo-slide-qrcode': DeckgoSlideQrcode;
     'deckgo-slide-split': DeckgoSlideSplit;
-    'deckgo-slide-youtube': DeckgoSlideYoutube;
     'deckgo-social': DeckgoSocial;
     'deckgo-youtube': DeckgoYoutube;
   }
