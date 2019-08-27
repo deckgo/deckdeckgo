@@ -1,6 +1,6 @@
 import {Component, Method, Prop, h, Event, EventEmitter, Host, State} from '@stencil/core';
 
-import {DeckdeckgoSlide} from '../deckdeckgo-slide';
+import {DeckdeckgoSlide} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-countdown',
