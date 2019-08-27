@@ -1,14 +1,13 @@
 import {Component, Element, Prop, Method, State, Event, EventEmitter, h, Host} from '@stencil/core';
 
-import {DeckdeckgoExtra} from '../deckdeckgo-extra';
-import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
+import {DeckdeckgoComponent, hideLazyLoadImages, lazyLoadImages} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-gif',
   styleUrl: 'deckdeckgo-gif.scss',
   shadow: true
 })
-export class DeckdeckgoGif implements DeckdeckgoExtra {
+export class DeckdeckgoGif implements DeckdeckgoComponent {
 
   @Element() el: HTMLElement;
 
@@ -22,7 +21,7 @@ export class DeckdeckgoGif implements DeckdeckgoExtra {
   @Event() gifLoaded: EventEmitter<boolean>;
 
   async componentDidLoad() {
-    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
+    await hideLazyLoadImages(this.el);
 
     const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
 
@@ -36,7 +35,7 @@ export class DeckdeckgoGif implements DeckdeckgoExtra {
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return DeckdeckgoDeckUtils.lazyLoadImages(this.el);
+    return lazyLoadImages(this.el);
   }
 
   render() {

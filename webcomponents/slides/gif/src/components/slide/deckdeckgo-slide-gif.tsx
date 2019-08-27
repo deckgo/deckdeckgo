@@ -1,7 +1,6 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, Listen, State, h, Host} from '@stencil/core';
 
-import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-gif',
@@ -25,7 +24,7 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
-    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
+    await hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
   }
@@ -39,12 +38,12 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
 
   @Method()
   afterSwipe(): Promise<void> {
-    return DeckdeckgoSlideUtils.afterSwipe();
+    return afterSwipe();
   }
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return DeckdeckgoSlideUtils.lazyLoadContent(this.el);
+    return lazyLoadContent(this.el);
   }
 
   @Method()

@@ -1,4 +1,4 @@
-@import "../deckdeckgo-slide";
+@import "./deckdeckgo-slide";
 
 :host(.deckgo-slide-container-fullscreen) {
   ::slotted([slot="title"]) {

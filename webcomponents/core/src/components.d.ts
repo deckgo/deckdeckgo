@@ -33,12 +33,6 @@ export namespace Components {
     'toggleFullScreen': () => Promise<void>;
     'toggleKeyboardAssist': (state: boolean) => Promise<void>;
   }
-  interface DeckgoGif {
-    'alt': string;
-    'fullscreen': boolean;
-    'lazyLoadContent': () => Promise<void>;
-    'src': string;
-  }
   interface DeckgoPager {
     'activeIndex': number;
     'length': number;
@@ -59,18 +53,6 @@ export namespace Components {
     'listTag': string;
     'reveal': () => Promise<void>;
     'revealAll': () => Promise<void>;
-  }
-  interface DeckgoSlideGif {
-    'afterSwipe': () => Promise<void>;
-    'alt': string;
-    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-    'customActions': boolean;
-    'customBackground': boolean;
-    'fullscreen': boolean;
-    'hideContent': () => Promise<void>;
-    'lazyLoadContent': () => Promise<void>;
-    'revealContent': () => Promise<void>;
-    'src': string;
   }
   interface DeckgoSlideQrcode {
     'afterSwipe': () => Promise<void>;
@@ -112,12 +94,6 @@ declare global {
     new (): HTMLDeckgoDeckElement;
   };
 
-  interface HTMLDeckgoGifElement extends Components.DeckgoGif, HTMLStencilElement {}
-  var HTMLDeckgoGifElement: {
-    prototype: HTMLDeckgoGifElement;
-    new (): HTMLDeckgoGifElement;
-  };
-
   interface HTMLDeckgoPagerElement extends Components.DeckgoPager, HTMLStencilElement {}
   var HTMLDeckgoPagerElement: {
     prototype: HTMLDeckgoPagerElement;
@@ -134,12 +110,6 @@ declare global {
   var HTMLDeckgoRevealListElement: {
     prototype: HTMLDeckgoRevealListElement;
     new (): HTMLDeckgoRevealListElement;
-  };
-
-  interface HTMLDeckgoSlideGifElement extends Components.DeckgoSlideGif, HTMLStencilElement {}
-  var HTMLDeckgoSlideGifElement: {
-    prototype: HTMLDeckgoSlideGifElement;
-    new (): HTMLDeckgoSlideGifElement;
   };
 
   interface HTMLDeckgoSlideQrcodeElement extends Components.DeckgoSlideQrcode, HTMLStencilElement {}
@@ -161,11 +131,9 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement;
-    'deckgo-gif': HTMLDeckgoGifElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-reveal': HTMLDeckgoRevealElement;
     'deckgo-reveal-list': HTMLDeckgoRevealListElement;
-    'deckgo-slide-gif': HTMLDeckgoSlideGifElement;
     'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement;
     'deckgo-social': HTMLDeckgoSocialElement;
     'deckgo-youtube': HTMLDeckgoYoutubeElement;
@@ -186,12 +154,6 @@ declare namespace LocalJSX {
     'onSlidesDidLoad'?: (event: CustomEvent<any>) => void;
     'reveal'?: boolean;
   }
-  interface DeckgoGif extends JSXBase.HTMLAttributes<HTMLDeckgoGifElement> {
-    'alt'?: string;
-    'fullscreen'?: boolean;
-    'onGifLoaded'?: (event: CustomEvent<boolean>) => void;
-    'src'?: string;
-  }
   interface DeckgoPager extends JSXBase.HTMLAttributes<HTMLDeckgoPagerElement> {
     'activeIndex'?: number;
     'length'?: number;
@@ -205,14 +167,6 @@ declare namespace LocalJSX {
     'allElementsHidden'?: boolean;
     'allElementsRevealed'?: boolean;
     'listTag'?: string;
-  }
-  interface DeckgoSlideGif extends JSXBase.HTMLAttributes<HTMLDeckgoSlideGifElement> {
-    'alt'?: string;
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'fullscreen'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'src'?: string;
   }
   interface DeckgoSlideQrcode extends JSXBase.HTMLAttributes<HTMLDeckgoSlideQrcodeElement> {
     'content'?: string;
@@ -237,11 +191,9 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'deckgo-deck': DeckgoDeck;
-    'deckgo-gif': DeckgoGif;
     'deckgo-pager': DeckgoPager;
     'deckgo-reveal': DeckgoReveal;
     'deckgo-reveal-list': DeckgoRevealList;
-    'deckgo-slide-gif': DeckgoSlideGif;
     'deckgo-slide-qrcode': DeckgoSlideQrcode;
     'deckgo-social': DeckgoSocial;
     'deckgo-youtube': DeckgoYoutube;
