@@ -22,8 +22,5 @@ export const config: Config = {
     postcss({
       plugins: [autoprefixer()]
     })
-  ],
-  devServer: {
-    port: 3334
-  }
+  ]
 };
