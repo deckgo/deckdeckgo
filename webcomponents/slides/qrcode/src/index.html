@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+
+  <title>DeckDeckGo - Slide QR Code Template</title>
+
+  <script type="module" src="/build/deckdeckgo-slide-qrcode.esm.js"></script>
+  <script nomodule src="/build/deckdeckgo-slide-qrcode.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.js"></script>
+
+</head>
+<body style="margin: 0; overflow: hidden;">
+
+<deckgo-deck>
+  <deckgo-slide-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-color-fill: black;">
+    <h1 slot="title">QR Code</h1>
+    <p slot="content">Display a QR code to let your audience get your slides as a PWA without any delay</p>
+  </deckgo-slide-qrcode>
+</deckgo-deck>
+
+</body>
+</html>

@@ -1,9 +1,6 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
-
-import {DeckdeckgoSlide, DeckdeckgoSlideUtils} from '../deckdeckgo-slide';
-import {DeckdeckgoDeckUtils} from '../../utils/deckdeckgo-deck-utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent, debounce} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-qrcode',
@@ -22,7 +19,7 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
-    await DeckdeckgoDeckUtils.hideLazyLoadImages(this.el);
+    await hideLazyLoadImages(this.el);
 
     this.initWindowResize();
 
@@ -31,7 +28,7 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', DeckDeckGoUtils.debounce(this.onResizeContent));
+      window.addEventListener('resize', debounce(this.onResizeContent));
     }
   }
 
@@ -73,14 +70,14 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
 
   @Method()
   afterSwipe(): Promise<void> {
-    return DeckdeckgoSlideUtils.afterSwipe();
+    return afterSwipe();
   }
 
   @Method()
   lazyLoadContent(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const promises = [];
-      promises.push(DeckdeckgoSlideUtils.lazyLoadContent(this.el));
+      promises.push(lazyLoadContent(this.el));
       promises.push(this.initQRCodeSize());
 
       await Promise.all(promises);

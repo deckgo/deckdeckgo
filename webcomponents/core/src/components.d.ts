@@ -54,16 +54,6 @@ export namespace Components {
     'reveal': () => Promise<void>;
     'revealAll': () => Promise<void>;
   }
-  interface DeckgoSlideQrcode {
-    'afterSwipe': () => Promise<void>;
-    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-    'content': string;
-    'customActions': boolean;
-    'customBackground': boolean;
-    'hideContent': () => Promise<void>;
-    'lazyLoadContent': () => Promise<void>;
-    'revealContent': () => Promise<void>;
-  }
   interface DeckgoSocial {
     'dev': string;
     'fullUrl': string;
@@ -112,12 +102,6 @@ declare global {
     new (): HTMLDeckgoRevealListElement;
   };
 
-  interface HTMLDeckgoSlideQrcodeElement extends Components.DeckgoSlideQrcode, HTMLStencilElement {}
-  var HTMLDeckgoSlideQrcodeElement: {
-    prototype: HTMLDeckgoSlideQrcodeElement;
-    new (): HTMLDeckgoSlideQrcodeElement;
-  };
-
   interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
   var HTMLDeckgoSocialElement: {
     prototype: HTMLDeckgoSocialElement;
@@ -134,7 +118,6 @@ declare global {
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-reveal': HTMLDeckgoRevealElement;
     'deckgo-reveal-list': HTMLDeckgoRevealListElement;
-    'deckgo-slide-qrcode': HTMLDeckgoSlideQrcodeElement;
     'deckgo-social': HTMLDeckgoSocialElement;
     'deckgo-youtube': HTMLDeckgoYoutubeElement;
   }
@@ -168,12 +151,6 @@ declare namespace LocalJSX {
     'allElementsRevealed'?: boolean;
     'listTag'?: string;
   }
-  interface DeckgoSlideQrcode extends JSXBase.HTMLAttributes<HTMLDeckgoSlideQrcodeElement> {
-    'content'?: string;
-    'customActions'?: boolean;
-    'customBackground'?: boolean;
-    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-  }
   interface DeckgoSocial extends JSXBase.HTMLAttributes<HTMLDeckgoSocialElement> {
     'dev'?: string;
     'fullUrl'?: string;
@@ -194,7 +171,6 @@ declare namespace LocalJSX {
     'deckgo-pager': DeckgoPager;
     'deckgo-reveal': DeckgoReveal;
     'deckgo-reveal-list': DeckgoRevealList;
-    'deckgo-slide-qrcode': DeckgoSlideQrcode;
     'deckgo-social': DeckgoSocial;
     'deckgo-youtube': DeckgoYoutube;
   }
