@@ -538,7 +538,7 @@ testServer = withServer $ \port -> do
 
   runClientM (decksGetDeckId' b deckId) clientEnv >>= \case
     Left e -> error $ "Expected decks, got error: " <> show e
-    Right deck ->
+    Right (Item _deckId deck) ->
       if deck == newDeck then pure () else (error $ "Expected get deck, got: " <> show deck)
 
   let updatedSlide = Slide Nothing "quux" HMS.empty
@@ -579,7 +579,7 @@ _usersPut' :: T.Text -> UserId -> UserInfo -> ClientM (Item UserId User)
 _usersDelete' :: T.Text -> UserId -> ClientM ()
 
 decksGet' :: T.Text -> Maybe UserId -> ClientM [Item DeckId Deck]
-decksGetDeckId' :: T.Text -> DeckId -> ClientM Deck
+decksGetDeckId' :: T.Text -> DeckId -> ClientM (Item DeckId Deck)
 decksPostPublish' :: T.Text -> DeckId -> ClientM PresResponse
 decksPost' :: T.Text -> Deck -> ClientM (Item DeckId Deck)
 decksPut' :: T.Text -> DeckId -> Deck -> ClientM (Item DeckId Deck)

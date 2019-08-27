@@ -222,7 +222,7 @@ type DecksAPI =
     Protected :> QueryParam "owner_id" UserId :> Get '[JSON] [Item DeckId Deck] :<|>
     Protected :>
       Capture "deck_id" DeckId :>
-      Get '[JSON] Deck :<|>
+      Get '[JSON] (Item DeckId Deck) :<|>
     Protected :>
       Capture "deck_id" DeckId :>
       "publish" :>
@@ -810,7 +810,7 @@ decksGetDeckId
     :: HC.Connection
     -> Firebase.UserId
     -> DeckId
-    -> Servant.Handler Deck
+    -> Servant.Handler (Item DeckId Deck)
 decksGetDeckId conn fuid deckId = do
 
     iface <- liftIO $ getDbInterface conn
@@ -827,7 +827,7 @@ decksGetDeckId conn fuid deckId = do
         [ "Deck was found", show deck, "but requester is not the owner", show fuid ]
       Servant.throwError Servant.err404
 
-    pure deck
+    pure (Item deckId deck)
 
 decksDeleteSession :: DeckId -> HS.Session ()
 decksDeleteSession did = do
