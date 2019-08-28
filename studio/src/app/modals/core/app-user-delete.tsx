@@ -77,8 +77,6 @@ export class AppUserDelete {
             <ion-content class="ion-padding">
                 <p>This action cannot be undone. This will permanently delete your user <strong>{this.username}</strong>.</p>
 
-                <p>Note that we are not currently deleting your presentations automatically. If you wish to unpublish them, drop us a message on one of our <a onClick={() => this.navigateContact()}>contact</a> channels.</p>
-
                 <form onSubmit={(e: Event) => this.handleSubmit(e)}>
                     <p class="ion-no-margin">Please type your username to confirm.</p>
 
@@ -92,6 +90,8 @@ export class AppUserDelete {
                         <ion-label>I understand, delete my user</ion-label>
                     </ion-button>
                 </form>
+
+                <p class="ion-padding-top note">Please note that currently, your presentations are not automatically deleted. If you wish to delete or unpublish them, drop us a message on one of our <a onClick={() => this.navigateContact()}>contact</a> channels.</p>
             </ion-content>
         ];
     }
