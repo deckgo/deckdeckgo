@@ -1,13 +1,13 @@
 import {Component, Element, Method, Prop, h, Watch} from '@stencil/core';
 
-import {DeckdeckgoExtra} from '../deckdeckgo-extra';
+import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-youtube',
   styleUrl: 'deckdeckgo-youtube.scss',
   shadow: true
 })
-export class DeckdeckgoYoutube implements DeckdeckgoExtra {
+export class DeckdeckgoYoutube implements DeckdeckgoComponent {
 
   @Element() el: HTMLElement;
 

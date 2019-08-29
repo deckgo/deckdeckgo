@@ -63,16 +63,6 @@ export namespace Components {
     'medium': string;
     'twitter': string;
   }
-  interface DeckgoYoutube {
-    'frameTitle': string;
-    'height': number;
-    'lazyLoadContent': () => Promise<void>;
-    'pause': () => Promise<void>;
-    'play': () => Promise<void>;
-    'src': string;
-    'updateIFrame': (width: number, height: number) => Promise<void>;
-    'width': number;
-  }
 }
 
 declare global {
@@ -107,19 +97,12 @@ declare global {
     prototype: HTMLDeckgoSocialElement;
     new (): HTMLDeckgoSocialElement;
   };
-
-  interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {}
-  var HTMLDeckgoYoutubeElement: {
-    prototype: HTMLDeckgoYoutubeElement;
-    new (): HTMLDeckgoYoutubeElement;
-  };
   interface HTMLElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-reveal': HTMLDeckgoRevealElement;
     'deckgo-reveal-list': HTMLDeckgoRevealListElement;
     'deckgo-social': HTMLDeckgoSocialElement;
-    'deckgo-youtube': HTMLDeckgoYoutubeElement;
   }
 }
 
@@ -159,12 +142,6 @@ declare namespace LocalJSX {
     'medium'?: string;
     'twitter'?: string;
   }
-  interface DeckgoYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoYoutubeElement> {
-    'frameTitle'?: string;
-    'height'?: number;
-    'src'?: string;
-    'width'?: number;
-  }
 
   interface IntrinsicElements {
     'deckgo-deck': DeckgoDeck;
@@ -172,7 +149,6 @@ declare namespace LocalJSX {
     'deckgo-reveal': DeckgoReveal;
     'deckgo-reveal-list': DeckgoRevealList;
     'deckgo-social': DeckgoSocial;
-    'deckgo-youtube': DeckgoYoutube;
   }
 }
 

@@ -24,6 +24,16 @@ export namespace Components {
     'toggle': () => Promise<void>;
     'width': number;
   }
+  interface DeckgoYoutube {
+    'frameTitle': string;
+    'height': number;
+    'lazyLoadContent': () => Promise<void>;
+    'pause': () => Promise<void>;
+    'play': () => Promise<void>;
+    'src': string;
+    'updateIFrame': (width: number, height: number) => Promise<void>;
+    'width': number;
+  }
 }
 
 declare global {
@@ -34,8 +44,15 @@ declare global {
     prototype: HTMLDeckgoSlideYoutubeElement;
     new (): HTMLDeckgoSlideYoutubeElement;
   };
+
+  interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {}
+  var HTMLDeckgoYoutubeElement: {
+    prototype: HTMLDeckgoYoutubeElement;
+    new (): HTMLDeckgoYoutubeElement;
+  };
   interface HTMLElementTagNameMap {
     'deckgo-slide-youtube': HTMLDeckgoSlideYoutubeElement;
+    'deckgo-youtube': HTMLDeckgoYoutubeElement;
   }
 }
 
@@ -48,9 +65,16 @@ declare namespace LocalJSX {
     'src'?: string;
     'width'?: number;
   }
+  interface DeckgoYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoYoutubeElement> {
+    'frameTitle'?: string;
+    'height'?: number;
+    'src'?: string;
+    'width'?: number;
+  }
 
   interface IntrinsicElements {
     'deckgo-slide-youtube': DeckgoSlideYoutube;
+    'deckgo-youtube': DeckgoYoutube;
   }
 }
 
