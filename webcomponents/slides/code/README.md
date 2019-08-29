@@ -1,6 +1,6 @@
-# DeckDeckGo - Slide "Title"
+# DeckDeckGo - Slide "Code"
 
-This component is the slide/template "Title" of [DeckDeckGo].
+This component is the slide/template "Code" of [DeckDeckGo].
 
 It is developed with [Stencil](https://stenciljs.com).
 
@@ -15,7 +15,7 @@ To develop and run this Web Component locally, proceed as following:
 
 ```
 git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/slides/title
+cd deckdeckgo/webcomponents/slides/code
 npm install
 npm run start
 ```

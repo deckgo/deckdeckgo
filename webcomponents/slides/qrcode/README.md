@@ -1,4 +1,4 @@
-# DeckDeckGo - Slide "Author"
+# DeckDeckGo - Slide "QR Code"
 
 This component is the slide/template "Author" of [DeckDeckGo].
 
