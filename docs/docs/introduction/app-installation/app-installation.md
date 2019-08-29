@@ -6,6 +6,10 @@ However, the [DeckDeckGo] core component, could be installed in any project too.
 
 If you wish to do so, use it directly in your project from a CDN, using a simple script include, or install it from [npm](https://www.npmjs.com/package/@deckdeckgo/core).
 
+> Installing the core component as displayed below will "only" install the "engine" of [DeckDeckGo] respectively its core doesn't contains any slides.
+>
+> Splitting the core and the templates has for goal to reduce as much as possible the dependencies and amount of external code needed in your project. Therefore, it has for ultimate goal to unleash the best performances for your presentation.
+
 ## Table of contents
 
 - [Using DeckDeckGo from a CDN](#app-installation-using-deckdeckgo-from-a-cdn)
@@ -32,5 +36,20 @@ npm install @deckdeckgo/core
 ## Framework integration
 
 The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` the component:
+
+### Import
+
+```
+import '@deckdeckgo/core';
+```
+
+### Loader
+
+```
+import { defineCustomElements as deckDeckGoElements } from '@deckdeckgo/core/dist/loader';
+deckDeckGoElements(window);
+```
 
 [DeckDeckGo]: https://deckdeckgo.com

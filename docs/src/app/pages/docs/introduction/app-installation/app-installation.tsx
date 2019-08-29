@@ -35,6 +35,10 @@ export class AppInstallation {
 <p>To create easily your PWA presentation and to enjoy all the options, I suggest you to create your slides using the CLI and the starter kit as described in the <a href="/docs/introduction">previous chapter</a>.</p>
 <p>However, the <a href="https://deckdeckgo.com">DeckDeckGo</a> core component, could be installed in any project too.</p>
 <p>If you wish to do so, use it directly in your project from a CDN, using a simple script include, or install it from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a>.</p>
+<blockquote>
+<p>Installing the core component as displayed below will &quot;only&quot; install the &quot;engine&quot; of <a href="https://deckdeckgo.com">DeckDeckGo</a> respectively its core doesn&#39;t contains any slides.</p>
+<p>Splitting the core and the templates has for goal to reduce as much as possible the dependencies and amount of external code needed in your project. Therefore, it has for ultimate goal to unleash the best performances for your presentation.</p>
+</blockquote>
 <h2 id="app-installation-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-installation-using-deckdeckgo-from-a-cdn">Using DeckDeckGo from a CDN</a></li>
@@ -51,7 +55,14 @@ export class AppInstallation {
       <code slot="code">npm install @deckdeckgo&#47;core</code>
     </deckgo-highlight-code><h2 id="app-installation-framework-integration">Framework integration</h2>
 <p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
-</main>
+<p>That being said, commonly, you might either <code>import</code> or <code>load</code> the component:</p>
+<h3 id="app-installation-import">Import</h3>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#039;@deckdeckgo&#47;core&#039;;</code>
+    </deckgo-highlight-code><h3 id="app-installation-loader">Loader</h3>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#123; defineCustomElements as deckDeckGoElements &#125; from &#039;@deckdeckgo&#47;core&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoElements(window);</code>
+    </deckgo-highlight-code></main>
 
         <app-footer></app-footer>
       </ion-content>
