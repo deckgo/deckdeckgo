@@ -51,5 +51,7 @@
     "talk",
     "d3js"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "@deckdeckgo/utils": "file:../../utils"
+  }
 }

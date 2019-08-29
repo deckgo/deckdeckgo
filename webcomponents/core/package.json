@@ -18,7 +18,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0-alpha.2"
+    "@deckdeckgo/utils": "file:../utils"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-alpha.11",

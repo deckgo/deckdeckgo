@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
 
-import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent, isMobile} from '@deckdeckgo/slide-utils';
+import {isMobile} from '@deckdeckgo/utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 enum DeckdeckgoSlideCodeAction {
   SWIPE,

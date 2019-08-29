@@ -12,6 +12,9 @@
     "url": "https://github.com/deckgo/deckdeckgo"
   },
   "homepage": "https://deckdeckgo.com",
+  "dependencies": {
+    "@deckdeckgo/utils": "file:../../utils"
+  },
   "devDependencies": {
     "typescript": "^3.5.1"
   },

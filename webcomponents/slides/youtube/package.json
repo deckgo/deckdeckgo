@@ -50,5 +50,7 @@
     "slideshow",
     "talk"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "@deckdeckgo/utils": "file:../../utils"
+  }
 }

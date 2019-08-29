@@ -15,8 +15,9 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/core": "^1.0.0-beta.38",
-    "@deckdeckgo/utils": "^1.0.0-alpha.2",
+    "@deckdeckgo/core": "file:../webcomponents/core",
+    "@deckdeckgo/slide-title": "file:../webcomponents/slides/title",
+    "@deckdeckgo/utils": "file:../webcomponents/utils",
     "@ionic/core": "^4.5.0-dev.201905311531.e014c6a",
     "date-fns": "^2.0.0-alpha.26",
     "idb-keyval": "^3.2.0",

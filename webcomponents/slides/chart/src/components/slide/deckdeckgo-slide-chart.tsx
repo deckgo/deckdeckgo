@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
 
-import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent, debounce} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
+import {debounce} from '@deckdeckgo/utils';
 
 enum DeckdeckgoSlideChartType {
   LINE = 'line',
