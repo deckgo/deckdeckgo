@@ -64,6 +64,8 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 
 ## Utils for the Web Components
 
+| Project | Package | Version | Links |
+| ------- | ------- | ------- |:-----:|
 | **Slide Utils** | [`@deckdeckgo/slide-utils`](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [`README.md`](webcomponents/slides/utils/README.md)
 | **Utils** | [`@deckdeckgo/utils`](https://www.npmjs.com/package/@deckdeckgo/utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/utils) | [`README.md`](webcomponents/utils/README.md)
 
