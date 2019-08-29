@@ -15,7 +15,7 @@ To develop and run this Web Component locally, proceed as following:
 
 ```
 git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/slides/title
+cd deckdeckgo/webcomponents/slides/content
 npm install
 npm run start
 ```
