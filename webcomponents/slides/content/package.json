@@ -9,7 +9,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/content/index.js",
+  "unpkg": "dist/deckdeckgo-slide-content/deckdeckgo-slide-content.js",
   "files": [
     "dist/",
     "README.md",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@deckdeckgo/slide-utils": "file:../utils",
-    "@stencil/core": "^1.2.5",
+    "@stencil/core": "^1.3.1",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",
     "@stencil/utils": "0.0.5",

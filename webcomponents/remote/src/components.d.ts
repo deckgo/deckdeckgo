@@ -14,7 +14,6 @@ import {
   ConnectionState,
 } from './services/communication/communication.service';
 
-
 export namespace Components {
   interface DeckgoRemote {
     'autoConnect': boolean;
