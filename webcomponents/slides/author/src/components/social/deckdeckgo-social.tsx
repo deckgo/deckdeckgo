@@ -1,13 +1,13 @@
 import {Component, Method, Prop, State, Watch, h} from '@stencil/core';
 
-import {DeckdeckgoExtra} from '../deckdeckgo-extra';
+import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-social',
   styleUrl: 'deckdeckgo-social.scss',
   shadow: true
 })
-export class DeckdeckgoSocial implements DeckdeckgoExtra {
+export class DeckdeckgoSocial implements DeckdeckgoComponent {
 
   @State() url: string;
 
