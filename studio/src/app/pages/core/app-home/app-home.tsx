@@ -1,6 +1,6 @@
 import {Component, h, State} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {isMobile} from '@deckdeckgo/utils';
 
 import {FeedService} from '../../../services/data/feed/feed.service';
 
@@ -20,7 +20,7 @@ export class AppHome {
     }
 
     componentWillLoad() {
-        this.mobile = DeckDeckGoUtils.isMobile();
+        this.mobile = isMobile();
     }
 
     private async refreshFeed($event) {

@@ -4,7 +4,7 @@ import {OverlayEventDetail} from '@ionic/core';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {isFullscreen} from '@deckdeckgo/utils';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
@@ -144,7 +144,7 @@ export class AppEditorToolbar {
 
     @Listen('mouseInactivity', {target: 'document'})
     async inactivity($event: CustomEvent) {
-        if (!DeckDeckGoUtils.isFullscreen()) {
+        if (!isFullscreen()) {
             return;
         }
 

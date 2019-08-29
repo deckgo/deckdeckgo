@@ -20,6 +20,15 @@ export namespace Components {
     'lazyLoadContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
   }
+  interface DeckgoSocial {
+    'dev': string;
+    'fullUrl': string;
+    'github': string;
+    'lazyLoadContent': () => Promise<void>;
+    'linkedin': string;
+    'medium': string;
+    'twitter': string;
+  }
 }
 
 declare global {
@@ -30,8 +39,15 @@ declare global {
     prototype: HTMLDeckgoSlideAuthorElement;
     new (): HTMLDeckgoSlideAuthorElement;
   };
+
+  interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
+  var HTMLDeckgoSocialElement: {
+    prototype: HTMLDeckgoSocialElement;
+    new (): HTMLDeckgoSocialElement;
+  };
   interface HTMLElementTagNameMap {
     'deckgo-slide-author': HTMLDeckgoSlideAuthorElement;
+    'deckgo-social': HTMLDeckgoSocialElement;
   }
 }
 
@@ -43,9 +59,18 @@ declare namespace LocalJSX {
     'imgSrc'?: string;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
   }
+  interface DeckgoSocial extends JSXBase.HTMLAttributes<HTMLDeckgoSocialElement> {
+    'dev'?: string;
+    'fullUrl'?: string;
+    'github'?: string;
+    'linkedin'?: string;
+    'medium'?: string;
+    'twitter'?: string;
+  }
 
   interface IntrinsicElements {
     'deckgo-slide-author': DeckgoSlideAuthor;
+    'deckgo-social': DeckgoSocial;
   }
 }
 

@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
-import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent, debounce} from '@deckdeckgo/slide-utils';
+import {debounce} from '@deckdeckgo/utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-qrcode',

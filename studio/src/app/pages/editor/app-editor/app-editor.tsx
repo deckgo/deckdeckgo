@@ -5,7 +5,7 @@ import {ItemReorderEventDetail} from '@ionic/core';
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {isFullscreen, isMobile, debounce, isIOS} from '@deckdeckgo/utils';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
@@ -141,7 +141,7 @@ export class AppEditor {
             await this.contentEditable(slide);
         });
 
-        this.fullscreen = DeckDeckGoUtils.isFullscreen();
+        this.fullscreen = isFullscreen();
     }
 
     async destroy() {
@@ -381,7 +381,7 @@ export class AppEditor {
                 return;
             }
 
-            if ($event instanceof MouseEvent && DeckDeckGoUtils.isMobile()) {
+            if ($event instanceof MouseEvent && isMobile()) {
                 resolve();
                 return;
             }
@@ -439,16 +439,16 @@ export class AppEditor {
 
     private initWindowResize() {
         if (window) {
-            window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
-                this.fullscreen = DeckDeckGoUtils.isFullscreen();
+            window.addEventListener('resize', debounce(async () => {
+                this.fullscreen = isFullscreen();
             }, 300));
         }
     }
 
     private removeWindowResize() {
         if (window) {
-            window.removeEventListener('resize', DeckDeckGoUtils.debounce(async () => {
-                this.fullscreen = DeckDeckGoUtils.isFullscreen();
+            window.removeEventListener('resize', debounce(async () => {
+                this.fullscreen = isFullscreen();
             }, 300));
         }
     }
@@ -487,7 +487,7 @@ export class AppEditor {
 
     private stickyToolbarActivated($event: CustomEvent) {
         this.hideFooterActions = $event ? $event.detail : false;
-        this.hideNavigation = $event ? DeckDeckGoUtils.isIOS() && $event.detail : false;
+        this.hideNavigation = $event ? isIOS() && $event.detail : false;
     }
 
     @Listen('reorder', {target: 'document'})
