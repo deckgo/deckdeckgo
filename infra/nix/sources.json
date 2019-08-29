@@ -5,16 +5,10 @@
         "homepage": "https://deckdeckgo.com",
         "owner": "deckgo",
         "repo": "deckdeckgo-starter",
-        "rev": "b52b2f0dcb4213492f37afe1d962ba6d13fd3f97",
-        "sha256": "186dvy7nswsyixh79fcbzir1v30cspl24wkj9m4xa5g9hwypkncz",
+        "rev": "6b52258cfe6a7813ffc2a28041b4692a5056a01e",
+        "sha256": "1afjaqmh7pis7561q4vay4yla51li2qi82f0j82yrp91vlj1c54h",
         "type": "tarball",
-        "url": "https://github.com/deckgo/deckdeckgo-starter/archive/b52b2f0dcb4213492f37afe1d962ba6d13fd3f97.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "dynamodb": {
-        "sha256": "0hrwxg4igyll40y7l1s0icg55g247fl8cjs4rrcpjf8d7m0bb09j",
-        "type": "file",
-        "url": "https://s3.eu-central-1.amazonaws.com/dynamodb-local-frankfurt/dynamodb_local_2019-02-07.tar.gz",
+        "url": "https://github.com/deckgo/deckdeckgo-starter/archive/6b52258cfe6a7813ffc2a28041b4692a5056a01e.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "elasticmq": {
