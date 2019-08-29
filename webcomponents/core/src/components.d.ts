@@ -54,15 +54,6 @@ export namespace Components {
     'reveal': () => Promise<void>;
     'revealAll': () => Promise<void>;
   }
-  interface DeckgoSocial {
-    'dev': string;
-    'fullUrl': string;
-    'github': string;
-    'lazyLoadContent': () => Promise<void>;
-    'linkedin': string;
-    'medium': string;
-    'twitter': string;
-  }
 }
 
 declare global {
@@ -91,18 +82,11 @@ declare global {
     prototype: HTMLDeckgoRevealListElement;
     new (): HTMLDeckgoRevealListElement;
   };
-
-  interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {}
-  var HTMLDeckgoSocialElement: {
-    prototype: HTMLDeckgoSocialElement;
-    new (): HTMLDeckgoSocialElement;
-  };
   interface HTMLElementTagNameMap {
     'deckgo-deck': HTMLDeckgoDeckElement;
     'deckgo-pager': HTMLDeckgoPagerElement;
     'deckgo-reveal': HTMLDeckgoRevealElement;
     'deckgo-reveal-list': HTMLDeckgoRevealListElement;
-    'deckgo-social': HTMLDeckgoSocialElement;
   }
 }
 
@@ -134,21 +118,12 @@ declare namespace LocalJSX {
     'allElementsRevealed'?: boolean;
     'listTag'?: string;
   }
-  interface DeckgoSocial extends JSXBase.HTMLAttributes<HTMLDeckgoSocialElement> {
-    'dev'?: string;
-    'fullUrl'?: string;
-    'github'?: string;
-    'linkedin'?: string;
-    'medium'?: string;
-    'twitter'?: string;
-  }
 
   interface IntrinsicElements {
     'deckgo-deck': DeckgoDeck;
     'deckgo-pager': DeckgoPager;
     'deckgo-reveal': DeckgoReveal;
     'deckgo-reveal-list': DeckgoRevealList;
-    'deckgo-social': DeckgoSocial;
   }
 }
 
