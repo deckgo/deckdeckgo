@@ -1,6 +1,6 @@
 import {Component, Element, Method, Prop, State, Watch, EventEmitter, Event, h} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {unifyEvent} from '@deckdeckgo/utils';
 
 // Types
 import {DeckdeckgoDrawAction, DeckdeckgoEventType, DeckdeckgoEventEmitter} from '@deckdeckgo/types';
@@ -141,8 +141,8 @@ export class AppDraw {
     private startEvent = (e: MouseEvent) => {
         this.emit(DeckdeckgoEventType.START_DRAWING, e);
 
-        this.startX = DeckDeckGoUtils.unifyEvent(e).clientX - this.leftOffset;
-        this.startY = DeckDeckGoUtils.unifyEvent(e).clientY - this.heightOffset;
+        this.startX = unifyEvent(e).clientX - this.leftOffset;
+        this.startY = unifyEvent(e).clientY - this.heightOffset;
 
         this.drawEvents = true;
     };
@@ -160,8 +160,8 @@ export class AppDraw {
 
         this.emit(DeckdeckgoEventType.DRAW, e);
 
-        const toX: number = DeckDeckGoUtils.unifyEvent(e).clientX - this.leftOffset;
-        const toY: number = DeckDeckGoUtils.unifyEvent(e).clientY - this.heightOffset;
+        const toX: number = unifyEvent(e).clientX - this.leftOffset;
+        const toY: number = unifyEvent(e).clientY - this.heightOffset;
 
         this.draw(toX, toY);
     };
@@ -226,8 +226,8 @@ export class AppDraw {
             type: type,
             emitter: DeckdeckgoEventEmitter.APP,
             action: this.action,
-            clientX: DeckDeckGoUtils.unifyEvent(e).clientX,
-            clientY: DeckDeckGoUtils.unifyEvent(e).clientY - this.heightOffset,
+            clientX: unifyEvent(e).clientX,
+            clientY: unifyEvent(e).clientY - this.heightOffset,
             windowWidth: this.width,
             windowHeight: this.height,
             color: this.color

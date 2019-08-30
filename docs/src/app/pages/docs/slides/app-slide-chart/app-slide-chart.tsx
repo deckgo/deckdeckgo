@@ -43,6 +43,12 @@ export class AppSlideChart {
 <h2 id="app-slide-chart-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-slide-chart-layout">Layout</a></li>
+<li><a href="#app-slide-chart-installation">Installation</a><ul>
+<li><a href="#app-slide-chart-from-a-cdn">From a CDN</a></li>
+<li><a href="#app-slide-chart-from-npm">From NPM</a></li>
+<li><a href="#app-slide-chart-framework-integration">Framework integration</a></li>
+</ul>
+</li>
 <li><a href="#app-slide-chart-usage">Usage</a><ul>
 <li><a href="#app-slide-chart-slots">Slots</a></li>
 <li><a href="#app-slide-chart-notes">Notes</a></li>
@@ -72,7 +78,29 @@ export class AppSlideChart {
   </deckgo-deck>
 </div>
 
-<h2 id="app-slide-chart-usage">Usage</h2>
+<h2 id="app-slide-chart-installation">Installation</h2>
+<p>This template could be added to your presentation using the following methods.</p>
+<blockquote>
+<p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+</blockquote>
+<h3 id="app-slide-chart-from-a-cdn">From a CDN</h3>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-chart@latest&#47;dist&#47;deckdeckgo-slide-chart&#47;deckdeckgo-slide-chart.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-chart@latest&#47;dist&#47;deckdeckgo-slide-chart&#47;deckdeckgo-slide-chart.js&quot;&gt;&lt;&#47;script&gt;</code>
+    </deckgo-highlight-code><h3 id="app-slide-chart-from-npm">From NPM</h3>
+<p>To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:</p>
+<deckgo-highlight-code language="bash">
+      <code slot="code">npm install @deckdeckgo&#47;slide-chart</code>
+    </deckgo-highlight-code><h3 id="app-slide-chart-framework-integration">Framework integration</h3>
+<p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
+<p>That being said, commonly, you might either <code>import</code> or <code>load</code> it:</p>
+<h4 id="app-slide-chart-import">Import</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#039;@deckdeckgo&#47;slide-chart&#039;;</code>
+    </deckgo-highlight-code><h4 id="app-slide-chart-loader">Loader</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#123; defineCustomElements as deckDeckGoSlideElement &#125; from &#039;@deckdeckgo&#47;slide-chart&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoSlideElement(window);</code>
+    </deckgo-highlight-code><h2 id="app-slide-chart-usage">Usage</h2>
 <p>The &quot;Chart&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-chart/&gt;</code>.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-slide-chart src=&quot;.&#47;assets&#47;csv&#47;data-pie-chart.csv&quot;&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;My Pie chart&lt;&#47;h1&gt;{'\n'}&lt;&#47;deckgo-slide-chart&gt;</code>
@@ -83,7 +111,7 @@ export class AppSlideChart {
 <p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
 <h2 id="app-slide-chart-chart-components">Chart components</h2>
 <p>The slide &quot;Chart&quot; relies on the charts components <code>&lt;deckgo-pie-chart/&gt;</code>, <code>&lt;deckgo-line-chart/&gt;</code> and  <code>&lt;deckgo-bar-chart/&gt;</code> which are described in the components <a href="/components/charts">documentation</a>.</p>
-<h2 id="app-slide-chart-installation">Installation</h2>
+<h2 id="app-slide-chart-installation-1">Installation</h2>
 <p>The <a href="https://deckdeckgo.com">DeckDeckGo</a> charts components are provided in separate extra library. If you don&#39;t use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to add the <a href="https://deckdeckgo.com">DeckDeckGo</a> chart to your project, you will need to install and integrate it from a CDN or <a href="https://www.npmjs.com/package/@deckdeckgo/charts">npm</a> as described in its <a href="https://docs.deckdeckgo.com/components/charts">installation guide</a>.</p>
 <h2 id="app-slide-chart-attributes">Attributes</h2>
 <p>This component offers the following options which could be set using attributes:</p>

@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.1"></a>
+# 1.0.0-beta.1 (2019-08-30)
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-beta.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`) but there is still a UX/design improvement I would like to develop for the remote ([#228](https://github.com/deckgo/deckdeckgo/issues/228))
+
 <a name="1.0.0-alpha.12"></a>
 # 1.0.0-alpha.12 (2019-06-06)
 

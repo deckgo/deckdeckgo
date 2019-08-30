@@ -35,7 +35,7 @@ export class AppComponentsInlineEditor {
 <h2 id="app-components-inline-editor-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-components-inline-editor-showcase">Showcase</a></li>
-<li><a href="#app-components-inline-editor-getting-started">Getting started</a><ul>
+<li><a href="#app-components-inline-editor-installation">Installation</a><ul>
 <li><a href="#app-components-from-a-cdn">Using from a CDN</a></li>
 <li><a href="#app-components-from-npm">Install from NPM</a></li>
 <li><a href="#app-components-inline-editor-framework-integration">Framework integration</a></li>
@@ -63,9 +63,11 @@ export class AppComponentsInlineEditor {
 </div>
 
 <p><deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable={true}></deckgo-inline-editor></p>
-<h2 id="app-components-inline-editor-getting-started">Getting started</h2>
-<p>This Web Component is an inline WYSIWYG HTML Editor, It creates a floating editor bar or a sticky footer bar that shows up when you select a piece of text of your page.</p>
-<p>To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a>.</p>
+<h2 id="app-components-inline-editor-installation">Installation</h2>
+<p>This component could be added to your web application using the following methods.</p>
+<blockquote>
+<p>If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+</blockquote>
 <h3 id="app-components-inline-editor-using-from-a-cdn">Using from a CDN</h3>
 <p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> inline editor from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
@@ -76,7 +78,14 @@ export class AppComponentsInlineEditor {
       <code slot="code">npm install @deckdeckgo&#47;inline-editor</code>
     </deckgo-highlight-code><h3 id="app-components-inline-editor-framework-integration">Framework integration</h3>
 <p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
-<h2 id="app-components-inline-editor-usage">Usage</h2>
+<p>That being said, commonly, you might either <code>import</code> or <code>load</code> it:</p>
+<h4 id="app-components-inline-editor-import">Import</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#039;@deckdeckgo&#47;inline-editor&#039;;</code>
+    </deckgo-highlight-code><h4 id="app-components-inline-editor-loader">Loader</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#123; defineCustomElements as deckDeckGoElement &#125; from &#039;@deckdeckgo&#47;inline-editor&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoElement(window);</code>
+    </deckgo-highlight-code><h2 id="app-components-inline-editor-usage">Usage</h2>
 <p>The <code>&lt;deckgo-inline-editor/&gt;</code> should be added once only in your page. It will interact with all elements of types <code>p</code>, <code>h1</code>, <code>h2</code>  and <code>h3</code>, or other <code>containers</code> you would define, which are set as <code>contenteditable</code>.</p>
 <h3 id="app-components-inline-editor-properties">Properties</h3>
 <p>The <code>&lt;deckgo-inline-editor/&gt;</code> expose the following properties:</p>

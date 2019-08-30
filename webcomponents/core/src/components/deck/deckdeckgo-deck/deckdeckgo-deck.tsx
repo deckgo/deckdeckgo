@@ -1,6 +1,6 @@
 import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h, Watch} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {isIOS, unifyEvent, isMobile, isFullscreen, debounce} from '@deckdeckgo/utils';
 
 import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
@@ -81,11 +81,11 @@ export class DeckdeckgoDeck {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
+      window.addEventListener('resize', debounce(async () => {
         await this.initSlideSize();
         await this.slideTo(this.activeIndex);
 
-        const toggleFullscreen: boolean = DeckDeckGoUtils.isFullscreen();
+        const toggleFullscreen: boolean = isFullscreen();
         await this.hideOrClearMouseCursorTimer(toggleFullscreen);
         await this.showHideActionsSlot(toggleFullscreen);
       }, 100));
@@ -119,7 +119,7 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      if (DeckDeckGoUtils.isIOS()) {
+      if (isIOS()) {
         slider.style.setProperty('--slide-width', `${screen.width > window.innerWidth ? screen.width : window.innerWidth}px`);
       } else {
         slider.style.setProperty('--slide-width', `${window.innerWidth}px`);
@@ -239,7 +239,7 @@ export class DeckdeckgoDeck {
   }
 
   private start(e: Event) {
-    this.startX = DeckDeckGoUtils.unifyEvent(e).clientX;
+    this.startX = unifyEvent(e).clientX;
   }
 
   private async move(e: Event) {
@@ -370,7 +370,7 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      const currentX: number = DeckDeckGoUtils.unifyEvent(e).clientX;
+      const currentX: number = unifyEvent(e).clientX;
 
       if (this.startX === currentX) {
         resolve(null);
@@ -428,7 +428,7 @@ export class DeckdeckgoDeck {
 
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
       // Or we display also all reveal elements on mobile devices as there is no keyboard on mobile device to reveal elements
-      if (!this.reveal || DeckDeckGoUtils.isMobile()) {
+      if (!this.reveal || isMobile()) {
         promises.push(this.revealAllContent());
       }
 
@@ -842,7 +842,7 @@ export class DeckdeckgoDeck {
   @Method()
   isMobile(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      resolve(DeckDeckGoUtils.isMobile());
+      resolve(isMobile());
     });
   }
 

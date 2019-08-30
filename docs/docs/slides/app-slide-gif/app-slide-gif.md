@@ -5,6 +5,10 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 ## Table of contents
 
 - [Layout](#app-slide-gif-layout)
+- [Installation](#app-slide-gif-installation)
+  - [From a CDN](#app-slide-gif-from-a-cdn)
+  - [From NPM](#app-slide-gif-from-npm)
+  - [Framework integration](#app-slide-gif-framework-integration)
 - [For images too](#app-slide-gif-for-images-too)
 - [Usage](#app-slide-gif-usage)
   - [Slots](#app-slide-gif-slots)
@@ -24,6 +28,48 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
     </deckgo-slide-gif>
   </deckgo-deck>
 </div>
+
+## Installation
+
+This template could be added to your presentation using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+ 
+### From a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/slide-gif@latest/dist/deckdeckgo-slide-gif/deckdeckgo-slide-gif.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-gif@latest/dist/deckdeckgo-slide-gif/deckdeckgo-slide-gif.js"></script>
+```
+
+### From NPM
+
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+
+```bash
+npm install @deckdeckgo/slide-gif
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/slide-gif';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-gif/dist/loader';
+deckDeckGoSlideElement(window);
+```
 
 ## For images too
 

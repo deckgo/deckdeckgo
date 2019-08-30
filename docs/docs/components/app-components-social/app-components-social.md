@@ -5,6 +5,7 @@ The "Social" component allows you to easily add a social link to your presentati
 ## Table of contents
 
 - [Showcase](#app-components-social-showcase)
+- [Installation](#app-components-social-installation)
 - [Usage](#app-components-social-usage)
   - [Slots](#app-components-social-slots)
   - [Attributes](#app-components-social-attributes)
@@ -19,6 +20,12 @@ The "Social" component allows you to easily add a social link to your presentati
 <p>
   <deckgo-social github="fluster/deckdeckgo"><ion-icon slot="icon" name="logo-github"></ion-icon> DeckDeckGo on Github</deckgo-social>
 </p>
+
+## Installation
+
+This component is part of the "Author" template. Therefore, if you would like to use it, install the related slide as described in its [installation](/slides/author) chapter.
+
+> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
 
 ## Usage
 

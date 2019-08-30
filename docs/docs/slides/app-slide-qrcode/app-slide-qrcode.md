@@ -5,6 +5,10 @@ The "QR code" slide is an handy slide in case you would like to display a QR cod
 ## Table of contents
 
 - [Layout](#app-slide-qrcode-layout)
+- [Installation](#app-slide-qrcode-installation)
+  - [From a CDN](#app-slide-qrcode-from-a-cdn)
+  - [From NPM](#app-slide-qrcode-from-npm)
+  - [Framework integration](#app-slide-qrcode-framework-integration)
 - [Usage](#app-slide-qrcode-usage)
   - [Usage](#app-slide-qrcode-usage-1)
   - [Slots](#app-slide-qrcode-slots)
@@ -25,6 +29,48 @@ The "QR code" slide is an handy slide in case you would like to display a QR cod
     </deckgo-slide-qrcode>
   </deckgo-deck>
 </div>
+
+## Installation
+
+This template could be added to your presentation using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+ 
+### From a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/slide-qrcode@latest/dist/deckdeckgo-slide-qrcode/deckdeckgo-slide-qrcode.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-qrcode@latest/dist/deckdeckgo-slide-qrcode/deckdeckgo-slide-qrcode.js"></script>
+```
+
+### From NPM
+
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+
+```bash
+npm install @deckdeckgo/slide-qrcode
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/slide-qrcode';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-qrcode/dist/loader';
+deckDeckGoSlideElement(window);
+```
 
 ## Usage
 

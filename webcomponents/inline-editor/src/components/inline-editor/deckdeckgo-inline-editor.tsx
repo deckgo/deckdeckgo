@@ -1,6 +1,6 @@
 import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method, h} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {isMobile, isIOS, unifyEvent} from '@deckdeckgo/utils';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
@@ -129,7 +129,7 @@ export class DeckdeckgoInlineEditor {
     await this.colorPickerListener(true);
 
     if (!this.mobile) {
-      this.mobile = DeckDeckGoUtils.isMobile();
+      this.mobile = isMobile();
     }
   }
 
@@ -365,8 +365,8 @@ export class DeckdeckgoInlineEditor {
       const tools: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-tools');
 
       if (tools) {
-        let top: number = DeckDeckGoUtils.unifyEvent(this.anchorEvent).clientY;
-        let left: number = DeckDeckGoUtils.unifyEvent(this.anchorEvent).clientX;
+        let top: number = unifyEvent(this.anchorEvent).clientY;
+        let left: number = unifyEvent(this.anchorEvent).clientX;
 
         if (this.mobile) {
           top = top + 40;
@@ -374,7 +374,7 @@ export class DeckdeckgoInlineEditor {
           top = top + 10;
         }
 
-        const innerWidth: number = DeckDeckGoUtils.isIOS() ? screen.width : window.innerWidth;
+        const innerWidth: number = isIOS() ? screen.width : window.innerWidth;
 
         if (innerWidth > 0 && left > innerWidth - 340) {
           left = innerWidth - 340;
@@ -390,7 +390,7 @@ export class DeckdeckgoInlineEditor {
 
   private handlePositionIOS(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!DeckDeckGoUtils.isIOS() || !this.anchorEvent) {
+      if (!isIOS() || !this.anchorEvent) {
         resolve();
         return;
       }
@@ -406,7 +406,7 @@ export class DeckdeckgoInlineEditor {
 
   private setStickyPositionIOS(): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (!this.stickyMobile || !DeckDeckGoUtils.isIOS() || !window) {
+      if (!this.stickyMobile || !isIOS() || !window) {
         resolve();
         return;
       }
@@ -849,7 +849,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private isSticky(): boolean {
-    const mobile: boolean = DeckDeckGoUtils.isMobile();
+    const mobile: boolean = isMobile();
 
     return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile);
   }
@@ -1152,7 +1152,7 @@ export class DeckdeckgoInlineEditor {
   hostData() {
     return {
       class: {
-        'deckgo-tools-ios': DeckDeckGoUtils.isIOS()
+        'deckgo-tools-ios': isIOS()
       }
     }
   }
