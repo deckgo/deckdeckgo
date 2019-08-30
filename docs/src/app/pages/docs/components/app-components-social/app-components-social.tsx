@@ -35,6 +35,7 @@ export class AppComponentsSocial {
 <h2 id="app-components-social-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-components-social-showcase">Showcase</a></li>
+<li><a href="#app-components-social-installation">Installation</a></li>
 <li><a href="#app-components-social-usage">Usage</a><ul>
 <li><a href="#app-components-social-slots">Slots</a></li>
 <li><a href="#app-components-social-attributes">Attributes</a></li>
@@ -51,6 +52,11 @@ export class AppComponentsSocial {
   <deckgo-social github="fluster/deckdeckgo"><ion-icon slot="icon" name="logo-github"></ion-icon> DeckDeckGo on Github</deckgo-social>
 </p>
 
+<h2 id="app-components-social-installation">Installation</h2>
+<p>This component is part of the &quot;Author&quot; template. Therefore, if you would like to use it, install the related slide as described in its <a href="/slides/author">installation</a> chapter.</p>
+<blockquote>
+<p>If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+</blockquote>
 <h2 id="app-components-social-usage">Usage</h2>
 <p>The &quot;Social&quot; Web Component could be integrated using the tag <code>&lt;deckgo-social/&gt;</code>.</p>
 <deckgo-highlight-code language="javascript">
