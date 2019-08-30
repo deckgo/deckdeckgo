@@ -8,13 +8,58 @@ An `<img/>` tag is per default use to display the image but optionally it could 
 
 ## Table of contents
 
+- [Installation](#app-components-lazy-img-installation)
+	- [Using from a CDN](#app-components-from-a-cdn)
+	- [Install from NPM](#app-components-from-npm)
+	- [Framework integration](#app-components-lazy-img-framework-integration)
 - [Usage](#app-components-lazy-img-usage)
   - [Slots](#app-components-lazy-img-slots)
   - [Attributes](#app-components-lazy-img-attributes)
   - [Theming](#app-components-lazy-img-theming)
   - [Methods](#app-components-lazy-img-methods)
-- [Fallback]((#app-components-lazy-img-fallback)
+- [Fallbacks]((#app-components-lazy-img-fallbacks)
 - [Trying it out](#app-components-lazy-img-trying-it-out)
+
+## Installation
+
+This component could be added to your web application using the following methods.
+
+> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
+
+### Using from a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy image component from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/lazy-img@latest/dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/lazy-img@latest/dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.js"></script>
+```
+### Install from NPM
+
+Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
+
+```bash
+npm install @deckdeckgo/lazy-img
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/lazy-img';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/lazy-img/dist/loader';
+deckDeckGoElement(window);
+```
 
 ## Usage
 
@@ -75,7 +120,7 @@ const element = document.querySelector('deckgo-lazy-img');
 await element.lazyLoad();
 ```
 
-### Fallback
+### Fallbacks
 
 In case the browser would not support the native native lazy-loading or the Intersection Observer API, images are going to be loaded without any delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded. 
 

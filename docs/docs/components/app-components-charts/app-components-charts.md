@@ -18,7 +18,7 @@ To create and draw the charts, this project is using [D3js](https://d3js.org).
 	- [Bar](#app-components-chart-bar)
 	- [Compare multiple bars](#app-components-chart-compare-multiple-bars)
 	- [Animated bars](#app-components-chart-animated-bars)
-- [Getting started](#app-components-chart-getting-started)
+- [Installation](#app-components-chart-installation)
 	- [Using DeckDeckGo charts from a CDN](#app-components-chart-using-deckdeckgo-charts-from-a-cdn)
 	- [Install DeckDeckGo charts from NPM](#app-components-chart-install-deckdeckgo-charts-from-npm)
 	- [Framework integration](#app-components-chart-framework-integration)
@@ -135,13 +135,11 @@ npm run start
   </div>
 </div>
 
-## Getting started
+## Installation
 
-To create easily your PWA presentation and to enjoy all the options, I suggest you to create your slides using the CLI as described in the [Getting started chapter](/docs/introduction).
+This component could be added to your web application using the following methods.
 
-Doing so you will use the [DeckDeckGo] starter kit which already includes this Web Component.
-
-However, if you are looking to use this Web Component as a standalone component, to add a charts to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/@deckdeckgo/charts).
+> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
 
 ### Using DeckDeckGo charts from a CDN
 
@@ -162,6 +160,21 @@ npm install @deckdeckgo/charts
 ### Framework integration
 
 The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/charts';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/charts/dist/loader';
+deckDeckGoElement(window);
+```
 
 ## Usage
 
