@@ -44,6 +44,11 @@ export class AppSlidesConcept {
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-title&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;The first slide&lt;&#47;h1&gt;{'\n'}    &lt;p slot=&quot;content&quot;&gt;{'\n'}      Hello World 🚀{'\n'}    &lt;&#47;p&gt;{'\n'}  &lt;&#47;deckgo-slide-title&gt;{'\n'}{'\n'}  &lt;deckgo-slide-content&gt;{'\n'}      &lt;h1 slot=&quot;title&quot;&gt;The second slide&lt;&#47;h1&gt;{'\n'}  &lt;&#47;deckgo-slide-content&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
     </deckgo-highlight-code><p>In the previous example, the presentation contains two slides. The first slide use the template <code>deckgo-slide-title</code> and the second slide use the template <code>deckgo-slide-content</code>.</p>
+<h1 id="app-slides-concept-installation">Installation</h1>
+<p>The core component of <a href="https://deckdeckgo.com">DeckDeckGo</a> (<code>&lt;deckgo-deck/&gt;</code>) does not contain any slides, these have to be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.</p>
+<blockquote>
+<p>If you are using the Starter Kit, per default, all our templates, these listed here behind, are pre-installed and pre-imported.</p>
+</blockquote>
 <h1 id="app-slides-concept-templates">Templates</h1>
 <p><a href="https://deckdeckgo.com">DeckDeckGo</a> provide the following templates:</p>
 <ul>
@@ -187,8 +192,6 @@ export class AppSlidesConcept {
   </deckgo-deck>
 </div>
 
-<h2 id="app-slides-concept-note">Note</h2>
-<p>If you would miss or need further templates, don&#39;t hesitate to open an issue and/or submit a PR, it would be my pleasure to add more options.</p>
 </main>
 
         <app-footer></app-footer>

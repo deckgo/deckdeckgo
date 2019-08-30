@@ -43,6 +43,12 @@ export class AppSlideAuthor {
 <h2 id="app-slide-author-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-slide-author-layout">Layout</a></li>
+<li><a href="#app-slide-author-installation">Installation</a><ul>
+<li><a href="#app-slide-author-from-a-cdn">From a CDN</a></li>
+<li><a href="#app-slide-author-from-npm">From NPM</a></li>
+<li><a href="#app-slide-author-framework-integration">Framework integration</a></li>
+</ul>
+</li>
 <li><a href="#app-slide-author-usage">Usage</a><ul>
 <li><a href="#app-slide-author-slots">Slots</a></li>
 <li><a href="#app-slide-author-notes">Notes</a></li>
@@ -67,7 +73,29 @@ export class AppSlideAuthor {
   </deckgo-deck>
 </div>
 
-<h2 id="app-slide-author-usage">Usage</h2>
+<h2 id="app-slide-author-installation">Installation</h2>
+<p>This template could be added to your presentation using the following methods.</p>
+<blockquote>
+<p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+</blockquote>
+<h3 id="app-slide-author-from-a-cdn">From a CDN</h3>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-author@latest&#47;dist&#47;deckdeckgo-slide-author&#47;deckdeckgo-slide-author.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-author@latest&#47;dist&#47;deckdeckgo-slide-author&#47;deckdeckgo-slide-author.js&quot;&gt;&lt;&#47;script&gt;</code>
+    </deckgo-highlight-code><h3 id="app-slide-author-from-npm">From NPM</h3>
+<p>To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:</p>
+<deckgo-highlight-code language="bash">
+      <code slot="code">npm install @deckdeckgo&#47;slide-author</code>
+    </deckgo-highlight-code><h3 id="app-slide-author-framework-integration">Framework integration</h3>
+<p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
+<p>That being said, commonly, you might either <code>import</code> or <code>load</code> it:</p>
+<h4 id="app-slide-author-import">Import</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#039;@deckdeckgo&#47;slide-author&#039;;</code>
+    </deckgo-highlight-code><h4 id="app-slide-author-loader">Loader</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#123; defineCustomElements as deckDeckGoSlideElement &#125; from &#039;@deckdeckgo&#47;slide-author&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoSlideElement(window);</code>
+    </deckgo-highlight-code><h2 id="app-slide-author-usage">Usage</h2>
 <p>The &quot;Author&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-author/&gt;</code>.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-author img-src=&quot;&#47;assets&#47;author.jpeg&quot; img-alt=&quot;My self&quot;&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;Author&lt;&#47;h1&gt;{'\n'}    &lt;div slot=&quot;author&quot;&gt;{'\n'}      &lt;h2&gt;David&lt;&#47;h2&gt;{'\n'}      &lt;p&gt;Something about me&lt;&#47;p&gt;{'\n'}    &lt;&#47;div&gt;{'\n'}    &lt;div slot=&quot;social-link&quot;&gt;&lt;deckgo-social twitter=&quot;daviddalbusco&quot;&gt;twitter&lt;&#47;deckgo-social&gt;&lt;&#47;div&gt;{'\n'}  &lt;&#47;deckgo-slide-author&gt;{'\n'}&lt;&#47;deckgo-deck&gt;  </code>

@@ -21,6 +21,12 @@ The parent deck should be declared using the tag `<deckgo-deck/>` and each slide
 
 In the previous example, the presentation contains two slides. The first slide use the template `deckgo-slide-title` and the second slide use the template `deckgo-slide-content`.
 
+# Installation
+
+The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slides, these have to be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.
+
+> If you are using the Starter Kit, per default, all our templates, these listed here behind, are pre-installed and pre-imported.
+
 # Templates
 
 [DeckDeckGo] provide the following templates:
@@ -155,9 +161,5 @@ In the previous example, the presentation contains two slides. The first slide u
     </deckgo-slide-countdown>
   </deckgo-deck>
 </div>
-
-## Note
-
-If you would miss or need further templates, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more options.
 
 [DeckDeckGo]: https://deckdeckgo.com 

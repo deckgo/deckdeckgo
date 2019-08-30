@@ -44,6 +44,12 @@ export class AppSlideCountdown {
 <h2 id="app-slide-countdown-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-slide-countdown-layout">Layout</a></li>
+<li><a href="#app-slide-countdown-installation">Installation</a><ul>
+<li><a href="#app-slide-countdown-from-a-cdn">From a CDN</a></li>
+<li><a href="#app-slide-countdown-from-npm">From NPM</a></li>
+<li><a href="#app-slide-countdown-framework-integration">Framework integration</a></li>
+</ul>
+</li>
 <li><a href="#app-slide-countdown-usage">Usage</a><ul>
 <li><a href="#app-slide-countdown-usage-1">Usage</a></li>
 <li><a href="#app-slide-countdown-slots">Slots</a></li>
@@ -68,7 +74,29 @@ export class AppSlideCountdown {
   </deckgo-deck>
 </div>
 
-<h2 id="app-slide-countdown-usage">Usage</h2>
+<h2 id="app-slide-countdown-installation">Installation</h2>
+<p>This template could be added to your presentation using the following methods.</p>
+<blockquote>
+<p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+</blockquote>
+<h3 id="app-slide-countdown-from-a-cdn">From a CDN</h3>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-countdown@latest&#47;dist&#47;deckdeckgo-slide-countdown&#47;deckdeckgo-slide-countdown.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-countdown@latest&#47;dist&#47;deckdeckgo-slide-countdown&#47;deckdeckgo-slide-countdown.js&quot;&gt;&lt;&#47;script&gt;</code>
+    </deckgo-highlight-code><h3 id="app-slide-countdown-from-npm">From NPM</h3>
+<p>To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:</p>
+<deckgo-highlight-code language="bash">
+      <code slot="code">npm install @deckdeckgo&#47;slide-countdown</code>
+    </deckgo-highlight-code><h3 id="app-slide-countdown-framework-integration">Framework integration</h3>
+<p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
+<p>That being said, commonly, you might either <code>import</code> or <code>load</code> it:</p>
+<h4 id="app-slide-countdown-import">Import</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#039;@deckdeckgo&#47;slide-countdown&#039;;</code>
+    </deckgo-highlight-code><h4 id="app-slide-countdown-loader">Loader</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#123; defineCustomElements as deckDeckGoSlideElement &#125; from &#039;@deckdeckgo&#47;slide-countdown&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoSlideElement(window);</code>
+    </deckgo-highlight-code><h2 id="app-slide-countdown-usage">Usage</h2>
 <p>The &quot;Countdown&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-countdown/&gt;</code>.</p>
 <h3 id="app-slide-countdown-usage-1">Usage</h3>
 <deckgo-highlight-code language="javascript">

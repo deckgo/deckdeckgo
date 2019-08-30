@@ -5,6 +5,10 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
 ## Table of contents
 
 - [Layout](#app-slide-youtube-layout)
+- [Installation](#app-slide-youtube-installation)
+  - [From a CDN](#app-slide-youtube-from-a-cdn)
+  - [From NPM](#app-slide-youtube-from-npm)
+  - [Framework integration](#app-slide-youtube-framework-integration)
 - [Usage](#app-slide-youtube-usage)
   - [Slots](#app-slide-youtube-slots)
   - [Notes](#app-slide-youtube-notes)
@@ -24,6 +28,48 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
     </deckgo-slide-youtube>
   </deckgo-deck>
 </div>
+
+## Installation
+
+This template could be added to your presentation using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+ 
+### From a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/slide-youtube@latest/dist/deckdeckgo-slide-youtube/deckdeckgo-slide-youtube.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-youtube@latest/dist/deckdeckgo-slide-youtube/deckdeckgo-slide-youtube.js"></script>
+```
+
+### From NPM
+
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+
+```bash
+npm install @deckdeckgo/slide-youtube
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/slide-youtube';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-youtube/dist/loader';
+deckDeckGoSlideElement(window);
+```
 
 ## Usage
 
