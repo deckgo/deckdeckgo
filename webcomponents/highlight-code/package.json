@@ -34,12 +34,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deckgo/deckdeckgo-highlight-code.git"
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
   },
   "author": "David Dal Busco",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/deckgo/deckdeckgo-highlight-code"
+    "url": "https://github.com/deckgo/deckdeckgo"
   },
   "homepage": "https://deckdeckgo.com",
   "keywords": [
