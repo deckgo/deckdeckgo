@@ -4,14 +4,12 @@
 
 module Main (main) where
 
-import Control.Concurrent
 import Control.Lens
 import Control.Lens.Extras (is)
 import Control.Monad
+import Data.List (sortOn)
 import Data.Monoid (First)
-import Data.List.NonEmpty
 import DeckGo.Handler
-import DeckGo.Prelude
 import DeckGo.Presenter
 import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Network.HTTP.Types as HTTP
@@ -28,7 +26,7 @@ import qualified Data.Text.IO as T
 import qualified Hasql.Connection as HC
 import qualified Hasql.Session as HS
 import qualified Network.AWS.Extended as AWS
-import qualified Network.AWS.DynamoDB as DynamoDB
+import qualified Network.AWS.S3 as S3
 import qualified Network.AWS.SQS as SQS
 import qualified Network.HTTP.Client as HTTPClient
 import qualified Network.HTTP.Client.TLS as HTTPClient
@@ -37,20 +35,19 @@ import qualified Network.Wai.Handler.Warp as Warp
 import qualified Servant.Auth.Firebase as Firebase
 import qualified Test.Tasty as Tasty
 import qualified Test.Tasty.HUnit as Tasty
-import qualified Network.AWS.S3 as S3
 
 withEnv :: (AWS.Env -> IO a) -> IO a
 withEnv act = do
     mgr <- HTTPClient.newManager HTTPClient.tlsManagerSettings
             { HTTPClient.managerModifyRequest =
-                pure . rerouteDynamoDB . rerouteSQS . rerouteS3
+                pure . rerouteSQS . rerouteS3
             }
     env <- AWS.newEnv <&> AWS.envManager .~ mgr
     act env
 
 withServer :: (Warp.Port -> IO a) -> IO a
 withServer act =
-    withPresURL $ withEnv $ \env -> withS3 env $ withSQS env $ withDynamoDB env $
+    withPresURL $ withEnv $ \env -> withS3 env $ withSQS env $
       withPristineDB $ \conn -> do
         putStrLn "Server environment loaded, finding port"
         (port, socket) <- Warp.openFreePort
@@ -79,48 +76,6 @@ is'
   -> Bool
 is' prsm v = is _Just $ v ^? prsm
 
-withDynamoDB :: AWS.Env -> IO a -> IO a
-withDynamoDB env act = do
-    putStrLn "Deleting old DynamoDB table (if exists)"
-    runAWS env (AWS.send $ DynamoDB.deleteTable "Decks") >>= \case
-      Left e
-        | is' DynamoDB._ResourceNotFoundException e -> pure ()
-        | otherwise -> error $ "Could not delete table: " <> show e
-      Right {} -> xif (100 * 1000) $ \f delay -> do
-        runAWS env (AWS.send $ DynamoDB.describeTable "Decks") >>= \case
-          Left e
-            | is' DynamoDB._TableNotFoundException e -> pure ()
-            | is' DynamoDB._ResourceNotFoundException e -> pure ()
-            | otherwise -> error $ "Could not describeTable: " <> show e
-          Right {} -> do
-            threadDelay delay
-            f (delay * 2)
-    putStrLn "Creating DynamoDB table"
-    runAWS env (AWS.send $
-      DynamoDB.createTable
-        "Decks"
-        (DynamoDB.keySchemaElement "DeckId" DynamoDB.Hash :| [])
-        (DynamoDB.provisionedThroughput 1 1) &
-          DynamoDB.ctAttributeDefinitions .~
-            [DynamoDB.attributeDefinition "DeckId" DynamoDB.S]
-      ) >>= \case
-      Left e -> error $ show e
-      Right {} -> xif (100 * 1000) $ \f delay -> do
-        runAWS env (AWS.send $ DynamoDB.describeTable "Decks") >>= \case
-          Left e -> error $ show e
-          Right r -> do
-            tst <- pure $ do
-              tb <- r ^. DynamoDB.drsTable
-              tst <- tb ^. DynamoDB.tdTableStatus
-              pure tst
-            case tst of
-              Just DynamoDB.TSCreating -> do
-                threadDelay delay
-                f (delay * 2)
-              Just DynamoDB.TSActive -> pure ()
-              _ -> error $ "Unexpected table: " <> show r
-    act
-
 withSQS :: AWS.Env -> IO a -> IO a
 withSQS env act = withQueueName $ do
     runAWS env (AWS.send $ SQS.getQueueURL ttestQueueName) >>= \case
@@ -130,7 +85,6 @@ withSQS env act = withQueueName $ do
         Left e -> error $ "Could not delete queue: " <> show e
         Right {} -> pure ()
       Left e
-        | is' DynamoDB._ResourceNotFoundException e -> pure ()
         | is' SQS._QueueDoesNotExist e -> pure ()
         | otherwise -> error $ "Could not get queue URL: " <> show e
 
@@ -183,6 +137,8 @@ withPristineDB act = do
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS account CASCADE") conn
     putStrLn "DROP TABLE IF EXISTS slide"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS slide") conn
+    putStrLn "DROP TABLE IF EXISTS deck"
+    void $ HS.run (HS.sql "DROP TABLE IF EXISTS deck") conn
     putStrLn "DROP TABLE IF EXISTS db_meta"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS db_meta") conn
     act conn
@@ -198,6 +154,12 @@ main = do
               , Tasty.testCase "get by id" testUsersGetByUserId
               , Tasty.testCase "delete" testUsersDelete
               , Tasty.testCase "update" testUsersUpdate
+              ]
+          , Tasty.testGroup "decks"
+              [ Tasty.testCase "create" testDecksCreate
+              , Tasty.testCase "update" testDecksUpdate
+              , Tasty.testCase "get by id" testDecksGetById
+              , Tasty.testCase "get all" testDecksGetAll
               ]
           , Tasty.testGroup "slides"
               [ Tasty.testCase "get" testSlidesGet
@@ -338,51 +300,158 @@ testUsersUpdate = withPristineDB $ \conn -> do
         else error "bad user"
       Nothing -> error "Got no users"
 
+withDeck
+  :: DbInterface
+  -> (DeckId -> Deck -> IO ())
+  -> IO ()
+withDeck iface act = do
+    let someFirebaseId = FirebaseId "foo"
+        someUserId = UserId someFirebaseId
+        someUser = User
+          { userFirebaseId = someFirebaseId
+          , userUsername = Just (Username "patrick")
+          }
+    dbCreateUser iface someUserId someUser >>= \case
+      Left () -> error "Encountered error"
+      Right () -> pure ()
+
+    let someDeckId = DeckId "bar"
+        someDeck = Deck
+          { deckSlides = []
+          , deckDeckname = Deckname "Some deck!!"
+          , deckDeckbackground  = Nothing
+          , deckOwnerId  = someUserId
+          , deckAttributes = HMS.singleton "foo" "bar"
+          }
+    dbCreateDeck iface someDeckId someDeck
+    act someDeckId someDeck
+
+testDecksGetAll :: IO ()
+testDecksGetAll = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
+    let someFirebaseId = FirebaseId "foo"
+        someUserId = UserId someFirebaseId
+        someUser = User
+          { userFirebaseId = someFirebaseId
+          , userUsername = Just (Username "patrick")
+          }
+    dbCreateUser iface someUserId someUser >>= \case
+      Left () -> error "Encountered error"
+      Right () -> pure ()
+
+    someDecks <- forM [(0 :: Int) .. 10] $ \i -> do
+      let someDeckId = DeckId $ "bar-" <> tshow i
+          someDeck = Deck
+            { deckSlides = []
+            , deckDeckname = Deckname $ "Some deck!! - " <> tshow i
+            , deckDeckbackground  = Nothing
+            , deckOwnerId  = someUserId
+            , deckAttributes = HMS.singleton "foo" "bar"
+            }
+      dbCreateDeck iface someDeckId someDeck
+      pure someDeckId
+
+    dbGetAllDecks iface >>= \case
+      decks -> unless
+        (sortOn unDeckId (itemId <$> decks) == sortOn unDeckId someDecks) $
+        error "Bad decks"
+
+testDecksCreate :: IO ()
+testDecksCreate = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
+    withDeck iface $ \someDeckId someDeck -> do
+      dbGetDeckById iface someDeckId >>= \case
+        Nothing -> error "couldn't find deck"
+        Just deck -> unless (deck == someDeck) $ error "Bad deck"
+
+testDecksGetById :: IO ()
+testDecksGetById = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
+    withDeck iface $ \someDeckId someDeck -> do
+      slides <- forM [(0 :: Int)..10] $ \i -> do
+        let someSlideId = SlideId $ "foo-" <> tshow i
+            someSlide = Slide
+              { slideContent = Nothing
+              , slideTemplate = "The template"
+              , slideAttributes = HMS.singleton "foo" "bar"
+              }
+        dbCreateSlide iface someSlideId someDeckId someSlide
+        pure someSlideId
+      let someDeck' = someDeck { deckSlides = slides }
+      dbUpdateDeck iface someDeckId someDeck'
+      dbGetDeckById iface someDeckId >>= \case
+        Nothing -> error "couldn't find deck"
+        Just deck -> unless (deck == someDeck') $ error $ unlines
+          [ "Bad deck\n"
+          , show someDeck'
+          , show deck
+          ]
+
+testDecksUpdate :: IO ()
+testDecksUpdate = withPristineDB $ \conn -> do
+    iface <- getDbInterface conn
+    withDeck iface $ \someDeckId someDeck -> do
+      let someSlideId = SlideId "foo"
+          someSlide = Slide
+            { slideContent = Nothing
+            , slideTemplate = "The template"
+            , slideAttributes = HMS.singleton "foo" "bar"
+            }
+      dbCreateSlide iface someSlideId someDeckId someSlide
+
+      let someDeck' = someDeck { deckSlides = [ someSlideId ] }
+
+      dbUpdateDeck iface someDeckId someDeck'
+
 testSlidesGet :: IO ()
 testSlidesGet = withPristineDB $ \conn -> do
     iface <- getDbInterface conn
-    let someSlideId = SlideId "foo"
-        someSlide = Slide
-          { slideContent = Nothing
-          , slideTemplate = "The template"
-          , slideAttributes = HMS.singleton "foo" "bar"
-          }
-    dbCreateSlide iface someSlideId someSlide
-    dbGetSlideById iface someSlideId >>= \case
-      Nothing -> error "couldn't find slide"
-      Just slide -> unless (slide == someSlide) $ error "Bad slide"
+    withDeck iface $ \someDeckId _someDeck -> do
+      let someSlideId = SlideId "foo"
+          someSlide = Slide
+            { slideContent = Nothing
+            , slideTemplate = "The template"
+            , slideAttributes = HMS.singleton "foo" "bar"
+            }
+      dbCreateSlide iface someSlideId someDeckId someSlide
+      dbGetSlideById iface someSlideId >>= \case
+        Nothing -> error "couldn't find slide"
+        Just slide -> unless (slide == someSlide) $ error "Bad slide"
 
 testSlidesCreate :: IO ()
 testSlidesCreate = withPristineDB $ \conn -> do
     iface <- getDbInterface conn
-    let someSlideId = SlideId "foo"
-        someSlide = Slide
-          { slideContent = Nothing
-          , slideTemplate = "The template"
-          , slideAttributes = HMS.singleton "foo" "bar"
-          }
-    dbCreateSlide iface someSlideId someSlide
+    withDeck iface $ \someDeckId _someDeck -> do
+      let someSlideId = SlideId "foo"
+          someSlide = Slide
+            { slideContent = Nothing
+            , slideTemplate = "The template"
+            , slideAttributes = HMS.singleton "foo" "bar"
+            }
+      dbCreateSlide iface someSlideId someDeckId someSlide
 
 testSlidesUpdate :: IO ()
 testSlidesUpdate = withPristineDB $ \conn -> do
     iface <- getDbInterface conn
-    let someSlideId = SlideId "foo"
-        someSlide = Slide
-          { slideContent = Nothing
-          , slideTemplate = "The template"
-          , slideAttributes = HMS.singleton "foo" "bar"
-          }
-    dbCreateSlide iface someSlideId someSlide
+    withDeck iface $ \someDeckId _someDeck -> do
+      let someSlideId = SlideId "foo"
+          someSlide = Slide
+            { slideContent = Nothing
+            , slideTemplate = "The template"
+            , slideAttributes = HMS.singleton "foo" "bar"
+            }
+      dbCreateSlide iface someSlideId someDeckId someSlide
 
-    let someOtherSlide = Slide
-          { slideContent = Just "Some content"
-          , slideTemplate = "The template"
-          , slideAttributes = HMS.singleton "foo" "baz"
-          }
+      let someOtherSlide = Slide
+            { slideContent = Just "Some content"
+            , slideTemplate = "The template"
+            , slideAttributes = HMS.singleton "foo" "baz"
+            }
 
-    dbUpdateSlide iface someSlideId someOtherSlide
-
-    -- TODO: test result of "GET"
+      dbUpdateSlide iface someSlideId someOtherSlide
+      dbGetSlideById iface someSlideId >>= \case
+        Nothing -> error "couldn't find slide"
+        Just slide -> unless (slide == someOtherSlide) $ error "Bad slide"
 
 getTokenPath :: IO FilePath
 getTokenPath =
@@ -417,7 +486,6 @@ testServer = withServer $ \port -> do
     Left e -> error $ "Expected decks, got error: " <> show e
     Right [] -> pure ()
     Right decks -> error $ "Expected 0 decks, got: " <> show decks
-
 
   let someUserInfo = UserInfo
         { userInfoFirebaseId = someFirebaseId
@@ -470,8 +538,8 @@ testServer = withServer $ \port -> do
 
   runClientM (decksGetDeckId' b deckId) clientEnv >>= \case
     Left e -> error $ "Expected decks, got error: " <> show e
-    Right deck ->
-      if deck == (Item deckId newDeck) then pure () else (error $ "Expected get deck, got: " <> show deck)
+    Right (Item _deckId deck) ->
+      if deck == newDeck then pure () else (error $ "Expected get deck, got: " <> show deck)
 
   let updatedSlide = Slide Nothing "quux" HMS.empty
 
@@ -543,17 +611,6 @@ slidesDelete' :: T.Text -> DeckId -> SlideId -> ClientM ()
   slidesDelete'
   )
   ) = client api
-
-rerouteDynamoDB :: HTTPClient.Request -> HTTPClient.Request
-rerouteDynamoDB req =
-    case HTTPClient.host req of
-      "dynamodb.us-east-1.amazonaws.com" ->
-        req
-          { HTTPClient.host = "127.0.0.1"
-          , HTTPClient.port = 8123 -- TODO: read from Env
-          , HTTPClient.secure = False
-          }
-      _ -> req
 
 rerouteSQS :: HTTPClient.Request -> HTTPClient.Request
 rerouteSQS req =

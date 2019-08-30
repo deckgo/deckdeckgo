@@ -8,6 +8,8 @@ import {DeckDeckGoUtils} from '@deckdeckgo/utils';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
+import {Deck} from '../../../models/data/deck';
+
 import {ImageHelper} from '../../../helpers/editor/image.helper';
 
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
@@ -19,6 +21,7 @@ import {ImageAction} from '../../../popovers/editor/app-image/image-action';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -81,9 +84,16 @@ export class AppEditorToolbar {
 
     @Event() signIn: EventEmitter<void>;
 
+    private deckEditorSubscription: Subscription;
+    private deckEditorService: DeckEditorService;
+
+    @State()
+    private deckPublished: boolean = false;
+
     constructor() {
         this.busyService = BusyService.getInstance();
         this.anonymousService = AnonymousService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentWillLoad() {
@@ -93,6 +103,10 @@ export class AppEditorToolbar {
 
         this.moveToolbarSubscription = this.moveToolbarSubject.pipe(debounceTime(250)).subscribe(async () => {
             await this.moveToolbar();
+        });
+
+        this.deckEditorSubscription = this.deckEditorService.watch().subscribe(async (deck: Deck) => {
+            this.deckPublished = deck && deck.data && deck.data.meta && deck.data.meta.published;
         });
     }
 
@@ -107,6 +121,10 @@ export class AppEditorToolbar {
 
         if (this.moveToolbarSubscription) {
             this.moveToolbarSubscription.unsubscribe();
+        }
+
+        if (this.deckEditorSubscription) {
+            this.deckEditorSubscription.unsubscribe();
         }
 
         this.removeWindowResize();
@@ -865,10 +883,15 @@ export class AppEditorToolbar {
     }
 
     private renderDelete() {
-        return <a onClick={() => this.deleteElement()} title="Delete"
-                  class={this.deckBusy && this.deckOrSlide ? "delete disabled" : "delete"}>
-            <ion-icon name="trash"></ion-icon>
-        </a>
+        if (this.deckOrSlide && this.deckPublished) {
+            // TODO: (#243) Currently we can't delete a published slide
+            return <span style={{"margin-left": "auto"}}></span>;
+        } else {
+            return <a onClick={() => this.deleteElement()} title="Delete"
+                      class={this.deckBusy && this.deckOrSlide ? "delete disabled" : "delete"}>
+                <ion-icon name="trash"></ion-icon>
+            </a>
+        }
     }
 
     private renderColor() {

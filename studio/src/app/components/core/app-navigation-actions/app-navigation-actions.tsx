@@ -37,6 +37,9 @@ export class AppNavigationActions {
     @State()
     private photoUrl: string;
 
+    @State()
+    private photoUrlLoaded: boolean = false;
+
     @Event() private actionPublish: EventEmitter<void>;
 
     constructor() {
@@ -52,6 +55,7 @@ export class AppNavigationActions {
 
         this.userSubscription = this.userService.watch().subscribe((user: User) => {
             this.photoUrl = user && user.data ? user.data.photo_url : undefined;
+            this.photoUrlLoaded = true;
         });
     }
 
@@ -102,7 +106,7 @@ export class AppNavigationActions {
     }
 
     private renderLoggedIn() {
-        if (Utils.isLoggedIn(this.authUser)) {
+        if (Utils.isLoggedIn(this.authUser) && this.photoUrlLoaded) {
             return <a class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)}>
                 <app-avatar src={this.photoUrl}></app-avatar>
             </a>;

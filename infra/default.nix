@@ -113,16 +113,6 @@ rec
          function start_services() {
            load_pg
            ${pgutil.start_pg} || echo "PG start failed"
-           if [ ! -f .dynamodb.pid ]; then
-            echo "Starting dynamodb"
-            java \
-              -Djava.library.path=${dynamoJar}/DynamoDBLocal_lib \
-              -jar ${dynamoJar}/DynamoDBLocal.jar \
-              -sharedDb -port 8123 &
-            echo $! > .dynamodb.pid
-           else
-            echo "Looks like dynamo is already running"
-           fi
            if [ ! -f .sqs.pid ]; then
             echo "Starting SQS"
             java \
@@ -148,13 +138,6 @@ rec
 
          function stop_services() {
            ${pgutil.stop_pg}
-           if [ -f .dynamodb.pid ]; then
-            echo "Killing dynamodb"
-            kill $(cat .dynamodb.pid)
-            rm .dynamodb.pid
-           else
-            echo "Looks like dynamodb is not running"
-           fi
            if [ -f .sqs.pid ]; then
             echo "Killing SQS"
             kill $(cat .sqs.pid)
@@ -203,13 +186,6 @@ rec
 
   googleKeyUpdater = pkgs.haskellPackages.google-key-updater;
 
-  dynamoJar = pkgs.runCommand "dynamodb-jar" { buildInputs = [ pkgs.gnutar ]; }
-  ''
-  mkdir -p $out
-  cd $out
-  tar -xvf ${pkgs.sources.dynamodb}
-  '';
-
   publicKey = builtins.readFile ./public.cer;
 
   swaggerUi = pkgs.runCommand "swagger-ui" {}
@@ -237,23 +213,12 @@ rec
       export AWS_ACCESS_KEY_ID=dummy
       export AWS_SECRET_ACCESS_KEY=dummy_key
 
-      # Set up DynamoDB
-      java \
-        -Djava.library.path=${dynamoJar}/DynamoDBLocal_lib \
-        -jar ${dynamoJar}/DynamoDBLocal.jar \
-        -sharedDb -port 8123 &
-
       java \
         -jar ${pkgs.sources.elasticmq} &
 
       MINIO_ACCESS_KEY=dummy \
         MINIO_SECRET_KEY=dummy_key \
         minio server --address localhost:9000 $(mktemp -d) &
-
-      while ! nc -z 127.0.0.1 8123; do
-        echo waiting for DynamoDB
-        sleep 1
-      done
 
       while ! nc -z 127.0.0.1 9324; do
         echo waiting for SQS
