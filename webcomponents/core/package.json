@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/core",
-  "version": "1.0.0-beta.46",
+  "version": "1.0.0-rc.1",
   "description": "Add a presentation to your web application using HTML and Web Components",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

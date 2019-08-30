@@ -1,6 +1,6 @@
 {
   "name": "create-deckdeckgo",
-  "version": "1.0.0-beta.11",
+  "version": "1.0.0-rc.1",
   "description": "Quickly create a new DeckDeckGo presentation: npm init deckdeckgo",
   "main": "dist/index.js",
   "scripts": {

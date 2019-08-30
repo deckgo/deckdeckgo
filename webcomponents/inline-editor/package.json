@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/inline-editor",
-  "version": "1.0.0-alpha.14",
+  "version": "1.0.0-rc.1",
   "description": "A WYSIWYG HTML Inline Editor Web Component",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

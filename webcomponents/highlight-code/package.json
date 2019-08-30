@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/highlight-code",
-  "version": "1.0.0-alpha.19",
+  "version": "1.0.0-rc.1",
   "description": "A Web Component to highlight your code",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

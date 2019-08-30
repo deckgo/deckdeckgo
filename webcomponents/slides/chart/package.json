@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-chart",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-rc.1",
   "description": "The Chart template is handy to plot and animate charts in your presentations",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-title",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-rc.1",
   "description": "The Title template is a simple slide which display a title and content centered in the middle of the presentation",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
