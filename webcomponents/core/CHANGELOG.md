@@ -1,3 +1,31 @@
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Breaking Changes
+
+* extract slides and extra components to separate components ([#230](https://github.com/deckgo/deckdeckgo/issues/230))
+
+#### But why?
+
+These are the reasons behind the above breaking change:
+
+* more flexibility
+
+* better performances
+
+With this change, you will now be able to include in your web project only the selected slides/templates you would like.
+Doing so, even if already every web components were lazy loaded and only loaded when needed, this could now help to even minimize the dependencies and therefore reduce the size of the bundle of your application.
+
+Note that per default, the `starter kit` will embed all slides/templates, therefore this change is going to be transparent for all new presentations you would create.
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
 <a name="1.0.0-beta.46"></a>
 # 1.0.0-beta.46 (2019-08-15)
 
