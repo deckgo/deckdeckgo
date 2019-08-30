@@ -7,6 +7,10 @@ This slide could be for example use for the every slides of your presentation wh
 ## Table of contents
 
 - [Layout](#app-slide-content-layout)
+- [Installation](#app-slide-content-installation)
+  - [From a CDN](#app-slide-content-from-a-cdn)
+  - [From NPM](#app-slide-content-from-npm)
+  - [Framework integration](#app-slide-content-framework-integration)
 - [Usage](#app-slide-content-usage)
   - [Slots](#app-slide-content-slots)
   - [Notes](#app-slide-content-notes)
@@ -26,6 +30,48 @@ This slide could be for example use for the every slides of your presentation wh
       </deckgo-slide-content>
   </deckgo-deck>
 </div>
+
+## Installation
+
+This template could be added to your presentation using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+ 
+### From a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/slide-content@latest/dist/deckdeckgo-slide-content/deckdeckgo-slide-content.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-content@latest/dist/deckdeckgo-slide-content/deckdeckgo-slide-content.js"></script>
+```
+
+### From NPM
+
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+
+```bash
+npm install @deckdeckgo/slide-content
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/slide-content';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-content/dist/loader';
+deckDeckGoSlideElement(window);
+```
 
 ## Usage
 

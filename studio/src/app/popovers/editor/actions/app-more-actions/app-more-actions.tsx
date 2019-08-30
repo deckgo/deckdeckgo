@@ -1,6 +1,6 @@
 import {Component, Element, State, h} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {isMobile} from '@deckdeckgo/utils';
 
 import {MoreAction} from '../../../../utils/editor/more-action';
 
@@ -16,7 +16,7 @@ export class AppMoreActions {
     private mobile: boolean = false;
 
     componentWillLoad() {
-        this.mobile = DeckDeckGoUtils.isMobile();
+        this.mobile = isMobile();
     }
 
     private async closePopover(action: MoreAction) {

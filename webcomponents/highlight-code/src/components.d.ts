@@ -10,7 +10,6 @@ import {
   DeckdeckgoHighlightCodeAnchor,
 } from './components/declarations/deckdeckgo-highlight-code-anchor';
 
-
 export namespace Components {
   interface DeckgoHighlightCode {
     'anchor': string;

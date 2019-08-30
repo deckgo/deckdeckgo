@@ -1,3 +1,18 @@
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Features
+
+* `@deckdeckgo/utils` isn't a singleton anymore but a collections of stateless functions
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
 <a name="1.0.0-alpha.14"></a>
 # 1.0.0-alpha.14 (2019-08-15)
 

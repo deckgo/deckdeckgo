@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
 <a name="1.0.0-alpha.11"></a>
 # 1.0.0-alpha.11 (2019-05-26)
 

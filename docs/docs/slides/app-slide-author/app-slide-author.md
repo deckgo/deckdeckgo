@@ -5,6 +5,10 @@ The "Author" slide let you introduce the author of the presentation.
 ## Table of contents
 
 - [Layout](#app-slide-author-layout)
+- [Installation](#app-slide-author-installation)
+  - [From a CDN](#app-slide-author-from-a-cdn)
+  - [From NPM](#app-slide-author-from-npm)
+  - [Framework integration](#app-slide-author-framework-integration)
 - [Usage](#app-slide-author-usage)
   - [Slots](#app-slide-author-slots)
   - [Notes](#app-slide-author-notes)
@@ -25,6 +29,48 @@ The "Author" slide let you introduce the author of the presentation.
     </deckgo-slide-author>
   </deckgo-deck>
 </div>
+
+## Installation
+
+This template could be added to your presentation using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+ 
+### From a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/slide-author@latest/dist/deckdeckgo-slide-author/deckdeckgo-slide-author.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-author@latest/dist/deckdeckgo-slide-author/deckdeckgo-slide-author.js"></script>
+```
+
+### From NPM
+
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+
+```bash
+npm install @deckdeckgo/slide-author
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/slide-author';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-author/dist/loader';
+deckDeckGoSlideElement(window);
+```
 
 ## Usage
 

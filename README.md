@@ -46,6 +46,27 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | **QR-Code** | [`@deckdeckgo/qrcode`](https://www.npmjs.com/package/@deckdeckgo/qrcode) | [![version](https://img.shields.io/npm/v/@deckdeckgo/qrcode/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/qrcode) | [`README.md`](webcomponents/qrcode/README.md)
 | **Remote** | [`@deckdeckgo/remote`](https://www.npmjs.com/package/@deckdeckgo/remote) | [![version](https://img.shields.io/npm/v/@deckdeckgo/remote/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/remote) | [`README.md`](webcomponents/remote/README.md)
 | **Types** | [`@deckdeckgo/types`](https://www.npmjs.com/package/@deckdeckgo/types) | [![version](https://img.shields.io/npm/v/@deckdeckgo/types/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/types) | [`README.md`](webcomponents/types/README.md)
+
+## Web Components - Slides/Templates
+
+| Project | Package | Version | Links |
+| ------- | ------- | ------- |:-----:|
+| **Author** | [`@deckdeckgo/slide-author`](https://www.npmjs.com/package/@deckdeckgo/slide-author) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-author/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-author) | [`README.md`](webcomponents/slides/author/README.md)
+| **Chart** | [`@deckdeckgo/slide-chart`](https://www.npmjs.com/package/@deckdeckgo/slide-chart) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-chart/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-chart) | [`README.md`](webcomponents/slides/chart/README.md)
+| **Code** | [`@deckdeckgo/slide-code`](https://www.npmjs.com/package/@deckdeckgo/slide-code) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-code/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-code) | [`README.md`](webcomponents/slides/code/README.md)
+| **Content** | [`@deckdeckgo/slide-content`](https://www.npmjs.com/package/@deckdeckgo/slide-content) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-content/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-content) | [`README.md`](webcomponents/slides/content/README.md)
+| **Countdown** | [`@deckdeckgo/slide-countdown`](https://www.npmjs.com/package/@deckdeckgo/slide-countdown) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-countdown/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-countdown) | [`README.md`](webcomponents/slides/countdown/README.md)
+| **Gif** | [`@deckdeckgo/slide-gif`](https://www.npmjs.com/package/@deckdeckgo/slide-gif) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-gif/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-gif) | [`README.md`](webcomponents/slides/gif/README.md)
+| **QR Code** | [`@deckdeckgo/slide-qrcode`](https://www.npmjs.com/package/@deckdeckgo/slide-qrcode) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-qrcode/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-qrcode) | [`README.md`](webcomponents/slides/qrcode/README.md)
+| **Split** | [`@deckdeckgo/slide-split`](https://www.npmjs.com/package/@deckdeckgo/slide-split) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-split/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-split) | [`README.md`](webcomponents/slides/split/README.md)
+| **Title** | [`@deckdeckgo/slide-title`](https://www.npmjs.com/package/@deckdeckgo/slide-title) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-title/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-title) | [`README.md`](webcomponents/slides/title/README.md)
+| **Youtube** | [`@deckdeckgo/slide-youtube`](https://www.npmjs.com/package/@deckdeckgo/slide-youtube) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-youtube/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-youtube) | [`README.md`](webcomponents/slides/youtube/README.md)
+
+## Utils for the Web Components
+
+| Project | Package | Version | Links |
+| ------- | ------- | ------- |:-----:|
+| **Slide Utils** | [`@deckdeckgo/slide-utils`](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [`README.md`](webcomponents/slides/utils/README.md)
 | **Utils** | [`@deckdeckgo/utils`](https://www.npmjs.com/package/@deckdeckgo/utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/utils) | [`README.md`](webcomponents/utils/README.md)
 
 ## Others

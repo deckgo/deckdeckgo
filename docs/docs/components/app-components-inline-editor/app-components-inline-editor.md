@@ -5,7 +5,7 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 ## Table of contents
 
 - [Showcase](#app-components-inline-editor-showcase)
-- [Getting started](#app-components-inline-editor-getting-started)
+- [Installation](#app-components-inline-editor-installation)
 	- [Using from a CDN](#app-components-from-a-cdn)
 	- [Install from NPM](#app-components-from-npm)
 	- [Framework integration](#app-components-inline-editor-framework-integration)
@@ -31,11 +31,11 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 
 <deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable={true}></deckgo-inline-editor>
 
-## Getting started
+## Installation
 
-This Web Component is an inline WYSIWYG HTML Editor, It creates a floating editor bar or a sticky footer bar that shows up when you select a piece of text of your page.
+This component could be added to your web application using the following methods.
 
-To add the component to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode).
+> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
 
 ### Using from a CDN
 
@@ -56,6 +56,21 @@ npm install @deckdeckgo/inline-editor
 ### Framework integration
 
 The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/inline-editor';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/inline-editor/dist/loader';
+deckDeckGoElement(window);
+```
 
 ## Usage
 

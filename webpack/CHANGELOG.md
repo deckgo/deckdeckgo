@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
 <a name="1.0.0-alpha.6"></a>
 # [1.0.0-alpha.6](https://github.com/deckgo/deckdeckgo-webpack-plugins/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2019-01-23)
 

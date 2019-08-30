@@ -7,6 +7,10 @@ It could be handy, for example when you organize a meetup, to display a countdow
 ## Table of contents
 
 - [Layout](#app-slide-countdown-layout)
+- [Installation](#app-slide-countdown-installation)
+  - [From a CDN](#app-slide-countdown-from-a-cdn)
+  - [From NPM](#app-slide-countdown-from-npm)
+  - [Framework integration](#app-slide-countdown-framework-integration)
 - [Usage](#app-slide-countdown-usage)
   - [Usage](#app-slide-countdown-usage-1)
   - [Slots](#app-slide-countdown-slots)
@@ -27,6 +31,48 @@ It could be handy, for example when you organize a meetup, to display a countdow
     </deckgo-slide-countdown>
   </deckgo-deck>
 </div>
+
+## Installation
+
+This template could be added to your presentation using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+ 
+### From a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.js"></script>
+```
+
+### From NPM
+
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+
+```bash
+npm install @deckdeckgo/slide-countdown
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/slide-countdown';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-countdown/dist/loader';
+deckDeckGoSlideElement(window);
+```
 
 ## Usage
 
