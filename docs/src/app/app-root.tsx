@@ -71,90 +71,88 @@ export class AppRoot {
           <ion-route url="/misc/contact" component="app-misc-contact"/>
         </ion-router>
 
-        <ion-split-pane when="lg" contentId="menu-content">
-          <ion-menu side="start" type="push" swipeGesture={false} contentId="menu-content">
-            <app-navigation logo={true} menuToggle={false} navigation={false}></app-navigation>
-            <ion-content>
-              <ion-menu-toggle autoHide={false}>
-                <ion-list>
-                  <ion-item-group>
-                    <ion-item-divider>
-                      <ion-label>Introduction</ion-label>
-                    </ion-item-divider>
-                    <ion-item detail={false} href="/docs/introduction" routerDirection="forward"><ion-label>Getting started</ion-label></ion-item>
-                    <ion-item detail={false} href="/docs/installation" routerDirection="forward"><ion-label>Installation</ion-label></ion-item>
-                    <ion-item detail={false} href="/docs/running" routerDirection="forward"><ion-label>Running</ion-label></ion-item>
-                    <ion-item detail={false} href="/docs/publishing" routerDirection="forward"><ion-label>Publishing</ion-label></ion-item>
-                    <ion-item detail={false} href="/docs/remote" routerDirection="forward"><ion-label>Remote control</ion-label></ion-item>
+        <ion-menu side="start" type="push" swipeGesture={false} contentId="menu-content">
+          <app-navigation logo={true} menuToggle={false} navigation={false}></app-navigation>
+          <ion-content>
+            <ion-menu-toggle autoHide={false}>
+              <ion-list>
+                <ion-item-group>
+                  <ion-item-divider>
+                    <ion-label>Introduction</ion-label>
+                  </ion-item-divider>
+                  <ion-item detail={false} href="/docs/introduction" routerDirection="forward"><ion-label>Getting started</ion-label></ion-item>
+                  <ion-item detail={false} href="/docs/installation" routerDirection="forward"><ion-label>Installation</ion-label></ion-item>
+                  <ion-item detail={false} href="/docs/running" routerDirection="forward"><ion-label>Running</ion-label></ion-item>
+                  <ion-item detail={false} href="/docs/publishing" routerDirection="forward"><ion-label>Publishing</ion-label></ion-item>
+                  <ion-item detail={false} href="/docs/remote" routerDirection="forward"><ion-label>Remote control</ion-label></ion-item>
 
-                    <ion-item-divider>
-                      <ion-label>Edit</ion-label>
-                    </ion-item-divider>
-                    <ion-item detail={false} href="/edit/default" routerDirection="forward"><ion-label>HTML</ion-label></ion-item>
-                    <ion-item detail={false} href="/edit/markdown" routerDirection="forward"><ion-label>Markdown</ion-label></ion-item>
-                    <ion-item detail={false} href="/edit/lazy" routerDirection="forward"><ion-label>Lazy loading</ion-label></ion-item>
-                    <ion-item detail={false} href="/edit/theming" routerDirection="forward"><ion-label>Theming</ion-label></ion-item>
-                    <ion-item detail={false} href="/edit/fonts" routerDirection="forward"><ion-label>Fonts</ion-label></ion-item>
-                    <ion-item detail={false} href="/edit/reveal" routerDirection="forward"><ion-label>Reveal</ion-label></ion-item>
-                    <ion-item detail={false} href="/edit/rtl" routerDirection="forward"><ion-label>RTL</ion-label></ion-item>
+                  <ion-item-divider>
+                    <ion-label>Edit</ion-label>
+                  </ion-item-divider>
+                  <ion-item detail={false} href="/edit/default" routerDirection="forward"><ion-label>HTML</ion-label></ion-item>
+                  <ion-item detail={false} href="/edit/markdown" routerDirection="forward"><ion-label>Markdown</ion-label></ion-item>
+                  <ion-item detail={false} href="/edit/lazy" routerDirection="forward"><ion-label>Lazy loading</ion-label></ion-item>
+                  <ion-item detail={false} href="/edit/theming" routerDirection="forward"><ion-label>Theming</ion-label></ion-item>
+                  <ion-item detail={false} href="/edit/fonts" routerDirection="forward"><ion-label>Fonts</ion-label></ion-item>
+                  <ion-item detail={false} href="/edit/reveal" routerDirection="forward"><ion-label>Reveal</ion-label></ion-item>
+                  <ion-item detail={false} href="/edit/rtl" routerDirection="forward"><ion-label>RTL</ion-label></ion-item>
 
-                    <ion-item-divider>
-                      <ion-label>Slides</ion-label>
-                    </ion-item-divider>
-                    <ion-item detail={false} href="/slides/concept" routerDirection="forward"><ion-label>Concept</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/title" routerDirection="forward"><ion-label>Title</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/content" routerDirection="forward"><ion-label>Content</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/split" routerDirection="forward"><ion-label>Split</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/gif" routerDirection="forward"><ion-label>Gif</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/chart" routerDirection="forward"><ion-label>Chart</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/youtube" routerDirection="forward"><ion-label>Youtube</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/code" routerDirection="forward"><ion-label>Code</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/author" routerDirection="forward"><ion-label>Author</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/qrcode" routerDirection="forward"><ion-label>QR Code</ion-label></ion-item>
-                    <ion-item detail={false} href="/slides/countdown" routerDirection="forward"><ion-label>Countdown</ion-label></ion-item>
+                  <ion-item-divider>
+                    <ion-label>Slides</ion-label>
+                  </ion-item-divider>
+                  <ion-item detail={false} href="/slides/concept" routerDirection="forward"><ion-label>Concept</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/title" routerDirection="forward"><ion-label>Title</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/content" routerDirection="forward"><ion-label>Content</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/split" routerDirection="forward"><ion-label>Split</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/gif" routerDirection="forward"><ion-label>Gif</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/chart" routerDirection="forward"><ion-label>Chart</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/youtube" routerDirection="forward"><ion-label>Youtube</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/code" routerDirection="forward"><ion-label>Code</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/author" routerDirection="forward"><ion-label>Author</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/qrcode" routerDirection="forward"><ion-label>QR Code</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/countdown" routerDirection="forward"><ion-label>Countdown</ion-label></ion-item>
 
-                    <ion-item-divider>
-                      <ion-label>Components</ion-label>
-                    </ion-item-divider>
-                    <ion-item detail={false} href="/components/charts" routerDirection="forward"><ion-label>Charts</ion-label></ion-item>
-                    <ion-item detail={false} href="/components/gif" routerDirection="forward"><ion-label>Gif</ion-label></ion-item>
-                    <ion-item detail={false} href="/components/code" routerDirection="forward"><ion-label>Highlight Code</ion-label></ion-item>
-                    <ion-item detail={false} href="/components/lazy-img" routerDirection="forward"><ion-label>Lazy Image</ion-label></ion-item>
-                    <ion-item detail={false} href="/components/qrcode" routerDirection="forward"><ion-label>QR Code</ion-label></ion-item>
-                    <ion-item detail={false} href="/components/social" routerDirection="forward"><ion-label>Social</ion-label></ion-item>
-                    <ion-item detail={false} href="/components/inline-editor" routerDirection="forward"><ion-label>WYSIWYG inline editor</ion-label></ion-item>
-                    <ion-item detail={false} href="/components/youtube" routerDirection="forward"><ion-label>Youtube</ion-label></ion-item>
+                  <ion-item-divider>
+                    <ion-label>Components</ion-label>
+                  </ion-item-divider>
+                  <ion-item detail={false} href="/components/charts" routerDirection="forward"><ion-label>Charts</ion-label></ion-item>
+                  <ion-item detail={false} href="/components/gif" routerDirection="forward"><ion-label>Gif</ion-label></ion-item>
+                  <ion-item detail={false} href="/components/code" routerDirection="forward"><ion-label>Highlight Code</ion-label></ion-item>
+                  <ion-item detail={false} href="/components/lazy-img" routerDirection="forward"><ion-label>Lazy Image</ion-label></ion-item>
+                  <ion-item detail={false} href="/components/qrcode" routerDirection="forward"><ion-label>QR Code</ion-label></ion-item>
+                  <ion-item detail={false} href="/components/social" routerDirection="forward"><ion-label>Social</ion-label></ion-item>
+                  <ion-item detail={false} href="/components/inline-editor" routerDirection="forward"><ion-label>WYSIWYG inline editor</ion-label></ion-item>
+                  <ion-item detail={false} href="/components/youtube" routerDirection="forward"><ion-label>Youtube</ion-label></ion-item>
 
-                    <ion-item-divider>
-                      <ion-label>Deck</ion-label>
-                    </ion-item-divider>
-                    <ion-item detail={false} href="/deck/navigation" routerDirection="forward"><ion-label>Navigation</ion-label></ion-item>
-                    <ion-item detail={false} href="/deck/pager" routerDirection="forward"><ion-label>Pager</ion-label></ion-item>
-                    <ion-item detail={false} href="/deck/size" routerDirection="forward"><ion-label>Size</ion-label></ion-item>
-                    <ion-item detail={false} href="/deck/extra" routerDirection="forward"><ion-label>Extra</ion-label></ion-item>
-                    <ion-item detail={false} href="/deck/events" routerDirection="forward"><ion-label>Events</ion-label></ion-item>
-                    <ion-item detail={false} href="/deck/background" routerDirection="forward"><ion-label>Background</ion-label></ion-item>
-                    <ion-item detail={false} href="/deck/actions" routerDirection="forward"><ion-label>Actions</ion-label></ion-item>
+                  <ion-item-divider>
+                    <ion-label>Deck</ion-label>
+                  </ion-item-divider>
+                  <ion-item detail={false} href="/deck/navigation" routerDirection="forward"><ion-label>Navigation</ion-label></ion-item>
+                  <ion-item detail={false} href="/deck/pager" routerDirection="forward"><ion-label>Pager</ion-label></ion-item>
+                  <ion-item detail={false} href="/deck/size" routerDirection="forward"><ion-label>Size</ion-label></ion-item>
+                  <ion-item detail={false} href="/deck/extra" routerDirection="forward"><ion-label>Extra</ion-label></ion-item>
+                  <ion-item detail={false} href="/deck/events" routerDirection="forward"><ion-label>Events</ion-label></ion-item>
+                  <ion-item detail={false} href="/deck/background" routerDirection="forward"><ion-label>Background</ion-label></ion-item>
+                  <ion-item detail={false} href="/deck/actions" routerDirection="forward"><ion-label>Actions</ion-label></ion-item>
 
-                    <ion-item-divider>
-                      <ion-label>Miscellaneous</ion-label>
-                    </ion-item-divider>
-                    <ion-item detail={false} href="/misc/collections" routerDirection="forward"><ion-label>Collections</ion-label></ion-item>
-                    <ion-item detail={false} href="/misc/opensource" routerDirection="forward"><ion-label>Open source</ion-label></ion-item>
-                    <ion-item detail={false} href="/misc/logo" routerDirection="forward"><ion-label>Logo</ion-label></ion-item>
-                    <ion-item detail={false} href="/misc/backstory" routerDirection="forward"><ion-label>Backstory</ion-label></ion-item>
-                    <ion-item detail={false} href="/misc/contact" routerDirection="forward"><ion-label>Contact</ion-label></ion-item>
+                  <ion-item-divider>
+                    <ion-label>Miscellaneous</ion-label>
+                  </ion-item-divider>
+                  <ion-item detail={false} href="/misc/collections" routerDirection="forward"><ion-label>Collections</ion-label></ion-item>
+                  <ion-item detail={false} href="/misc/opensource" routerDirection="forward"><ion-label>Open source</ion-label></ion-item>
+                  <ion-item detail={false} href="/misc/logo" routerDirection="forward"><ion-label>Logo</ion-label></ion-item>
+                  <ion-item detail={false} href="/misc/backstory" routerDirection="forward"><ion-label>Backstory</ion-label></ion-item>
+                  <ion-item detail={false} href="/misc/contact" routerDirection="forward"><ion-label>Contact</ion-label></ion-item>
 
-                  </ion-item-group>
-                </ion-list>
-              </ion-menu-toggle>
+                </ion-item-group>
+              </ion-list>
+            </ion-menu-toggle>
 
-              <app-menu-footer class="ion-padding"></app-menu-footer>
-            </ion-content>
-          </ion-menu>
+            <app-menu-footer class="ion-padding"></app-menu-footer>
+          </ion-content>
+        </ion-menu>
 
-          <ion-nav id="menu-content"/>
-        </ion-split-pane>
+        <ion-nav id="menu-content"/>
 
         <ion-menu-controller></ion-menu-controller>
         <ion-modal-controller></ion-modal-controller>

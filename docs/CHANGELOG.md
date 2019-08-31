@@ -3,7 +3,7 @@
 
 ### Features
 
-* always display `ion-split-menu` in order to be able to `prerender` the documentation ([#59](https://github.com/deckgo/deckdeckgo/issues/59))
+* remove `ion-split-pane` in order to be able to `prerender` the documentation ([#59](https://github.com/deckgo/deckdeckgo/issues/59))
 
 ### Libs
 
