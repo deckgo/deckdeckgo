@@ -1,23 +1,9 @@
-import {Component, Element, h} from '@stencil/core';
-
-import {MenuService} from '../../../../services/menu/menu.service';
+import {Component, h} from '@stencil/core';
 
 @Component({
   tag: 'app-edit-default'
 })
 export class AppEditDefault {
-
-  @Element() el: HTMLElement;
-
-  private menuService: MenuService;
-
-  constructor() {
-    this.menuService = MenuService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.menuService.enable();
-  }
 
   render() {
     return [

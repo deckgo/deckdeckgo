@@ -1,6 +1,10 @@
 <a name="1.0.0-rc.1"></a>
 # 1.0.0-rc.1 (2019-08-31)
 
+### Features
+
+* always display `ion-split-menu` in order to be able to `prerender` the documentation ([#59](https://github.com/deckgo/deckdeckgo/issues/59))
+
 ### Libs
 
 * update to most recent dependencies

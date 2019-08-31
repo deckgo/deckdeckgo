@@ -128,6 +128,7 @@ ion-split-pane {
 
           ion-item-divider {
             --color: var(--ion-color-light);
+            --background: inherit;
           }
 
           ion-item {
