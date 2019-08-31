@@ -83,7 +83,6 @@ export namespace Components {
     'imagesEven': (UnsplashPhoto | TenorGif | StorageFile)[];
     'imagesOdd': (UnsplashPhoto | TenorGif | StorageFile)[];
   }
-  interface AppInfoImages {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
@@ -305,12 +304,6 @@ declare global {
     new (): HTMLAppImageColumnsElement;
   };
 
-  interface HTMLAppInfoImagesElement extends Components.AppInfoImages, HTMLStencilElement {}
-  var HTMLAppInfoImagesElement: {
-    prototype: HTMLAppInfoImagesElement;
-    new (): HTMLAppInfoImagesElement;
-  };
-
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
   var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
@@ -523,7 +516,6 @@ declare global {
     'app-home': HTMLAppHomeElement;
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
-    'app-info-images': HTMLAppInfoImagesElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-actions': HTMLAppMoreActionsElement;
@@ -640,7 +632,6 @@ declare namespace LocalJSX {
     'imagesOdd'?: (UnsplashPhoto | TenorGif | StorageFile)[];
     'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
   }
-  interface AppInfoImages extends JSXBase.HTMLAttributes<HTMLAppInfoImagesElement> {}
   interface AppLogo extends JSXBase.HTMLAttributes<HTMLAppLogoElement> {}
   interface AppMenu extends JSXBase.HTMLAttributes<HTMLAppMenuElement> {}
   interface AppMoreActions extends JSXBase.HTMLAttributes<HTMLAppMoreActionsElement> {}
@@ -738,7 +729,6 @@ declare namespace LocalJSX {
     'app-home': AppHome;
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
-    'app-info-images': AppInfoImages;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-more-actions': AppMoreActions;
