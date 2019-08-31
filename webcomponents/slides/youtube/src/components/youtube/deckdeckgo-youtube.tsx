@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop, h, Watch} from '@stencil/core';
+import {Component, Element, Method, Prop, h, Watch, State} from '@stencil/core';
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
@@ -17,6 +17,9 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
   @Prop() height: number;
 
   @Prop() frameTitle: string;
+
+  @State()
+  private loading: boolean = false;
 
   async componentDidLoad() {
     await this.addPreconnectLink();
@@ -73,12 +76,19 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
         return;
       }
 
+      if (this.loading) {
+        resolve();
+        return;
+      }
+
       const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
 
       if (iframe && !iframe.parentElement) {
         resolve();
         return;
       }
+
+      this.loading = true;
 
       if (iframe) {
         iframe.parentElement.removeChild(iframe);
@@ -109,6 +119,8 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
       }
 
       div.appendChild(element);
+
+      this.loading = false;
 
       resolve();
     });
