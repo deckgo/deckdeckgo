@@ -3,6 +3,10 @@ app-navigation {
     color: inherit;
   }
 
+  ion-toolbar[class*="ios"]:last-child {
+    --border-width: 0;
+  }
+
   div[slot="end"] {
     z-index: 2;
 

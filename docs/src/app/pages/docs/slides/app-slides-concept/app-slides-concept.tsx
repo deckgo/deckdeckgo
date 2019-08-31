@@ -2,8 +2,6 @@ import {Component, Element, h, Listen} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
-import {MenuService} from '../../../../services/menu/menu.service';
-
 @Component({
   tag: 'app-slides-concept',
   styleUrl: 'app-slides-concept.scss'
@@ -11,16 +9,6 @@ import {MenuService} from '../../../../services/menu/menu.service';
 export class AppSlidesConcept {
 
   @Element() el: HTMLElement;
-
-  private menuService: MenuService;
-
-  constructor() {
-    this.menuService = MenuService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.menuService.enable();
-  }
 
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.reloadCode(this.el);

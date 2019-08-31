@@ -25,7 +25,7 @@ export class AppNavigation {
 
   private renderLogo() {
     if (this.logo) {
-      return <ion-title slot="start">
+      return <ion-title slot="start" class="ion-no-padding ion-margin-start ion-margin-end">
         <a href="/">
           <app-logo></app-logo>
           <span>DeckDeckGo</span>
@@ -65,7 +65,6 @@ export class AppNavigation {
           <ion-icon name="more"></ion-icon>
         </ion-button>
         <div class="links">
-          <a href="/docs" padding-start padding-end>Docs</a>
           <a href="https://deckdeckgo.com" padding-start padding-end>Demo</a>
           <a href="https://github.com/deckgo" padding-start padding-end>Github</a>
         </div>
