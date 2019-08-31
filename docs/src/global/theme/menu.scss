@@ -8,9 +8,12 @@ ion-menu {
 
   ion-content {
     ion-list {
+      ion-item-divider, ion-item {
+        --color: white;
+      }
+
       ion-item-divider {
         border: 0;
-        --color: var(--ion-color-dark);
         font-size: var(--font-size-small);
         font-weight: bold;
 
@@ -21,7 +24,6 @@ ion-menu {
 
       ion-item {
         --border-color: transparent;
-        --color: var(--ion-color-medium);
         --padding-start: 32px;
         --min-height: inherit;
         font-size: var(--font-size-small);
