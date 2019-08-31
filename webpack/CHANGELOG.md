@@ -1,5 +1,9 @@
 <a name="1.0.0-rc.1"></a>
-# 1.0.0-rc.1 (2019-08-30)
+# 1.0.0-rc.1 (2019-08-31)
+
+### Libs
+
+* update to most recent dependencies
 
 ### Note about v1.0.0-rc.1
 

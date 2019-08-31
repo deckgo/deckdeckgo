@@ -10,8 +10,8 @@
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
-    "@types/node": "^10.12.12",
-    "typescript": "^3.1.6"
+    "@types/node": "^12.7.3",
+    "typescript": "^3.5.3"
   },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -24,9 +24,9 @@
     "README.md"
   ],
   "dependencies": {
-    "colorette": "^1.0.7",
-    "jsdom": "^13.1.0",
-    "remarkable": "^1.7.1"
+    "colorette": "^1.1.0",
+    "jsdom": "^15.1.1",
+    "remarkable": "^2.0.0"
   },
   "keywords": [
     "webpack",
