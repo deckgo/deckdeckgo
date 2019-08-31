@@ -38,7 +38,7 @@
 ### Others
 
 * cli: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cli/CHANGELOG.md))
-* webpack: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
+* webpack: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
 
 ### Note
 
