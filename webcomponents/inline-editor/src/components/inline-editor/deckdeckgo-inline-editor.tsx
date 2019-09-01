@@ -1,6 +1,6 @@
 import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method, h} from '@stencil/core';
 
-import {isMobile, isIOS, unifyEvent} from '@deckdeckgo/utils';
+import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
@@ -79,6 +79,11 @@ export class DeckdeckgoInlineEditor {
   @State()
   private toolsActivated: boolean = false;
 
+  @State()
+  private displayToolsActivated: boolean = false;
+
+  private debounceDisplayToolsActivated: Function;
+
   private selection: Selection = null;
 
   private anchorLink: AnchorLink = null;
@@ -121,6 +126,16 @@ export class DeckdeckgoInlineEditor {
   @Prop()
   list: boolean = true;
 
+  constructor() {
+    this.resetDisplayToolsActivated();
+  }
+
+  private resetDisplayToolsActivated() {
+    this.debounceDisplayToolsActivated = debounce(() => {
+      this.displayToolsActivated = true;
+    });
+  }
+
   async componentWillLoad() {
     await this.attachListener();
   }
@@ -153,8 +168,8 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>((resolve) => {
       const listenerElement: HTMLElement | Document = this.attachTo ? this.attachTo : document;
       if (listenerElement) {
-        listenerElement.addEventListener('mousedown', this.mousedown, {passive: true});
-        listenerElement.addEventListener('touchstart', this.touchstart, {passive: true});
+        listenerElement.addEventListener('mousedown', this.startSelection, {passive: true});
+        listenerElement.addEventListener('touchstart', this.startSelection, {passive: true});
       }
 
       resolve();
@@ -164,34 +179,28 @@ export class DeckdeckgoInlineEditor {
   private detachListener(listenerElement: HTMLElement | Document): Promise<void> {
     return new Promise<void>((resolve) => {
       if (listenerElement) {
-        listenerElement.removeEventListener('mousedown', this.mousedown);
-        listenerElement.removeEventListener('touchstart', this.touchstart);
+        listenerElement.removeEventListener('mousedown', this.startSelection);
+        listenerElement.removeEventListener('touchstart', this.startSelection);
       }
 
       resolve();
     });
   }
 
-  private mousedown = async ($event: MouseEvent) => {
+  private startSelection = async ($event: MouseEvent | TouchEvent) => {
+    if (this.toolbarActions !== ToolbarActions.IMAGE) {
+      this.anchorEvent = $event;
+    }
+
     if (this.toolsActivated) {
       await this.resetImageToolbarActions($event);
 
       return;
     }
 
-    this.anchorEvent = $event;
-
-    await this.displayImageActions($event);
-  };
-
-  private touchstart = async ($event: TouchEvent) => {
-    if (this.toolsActivated) {
-      await this.resetImageToolbarActions($event);
-
-      return;
+    if (this.toolbarActions === ToolbarActions.IMAGE) {
+      this.anchorEvent = $event;
     }
-
-    this.anchorEvent = $event;
 
     await this.displayImageActions($event);
   };
@@ -411,7 +420,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if(this.iOSTimerScroll > 0) {
+      if (this.iOSTimerScroll > 0) {
         clearTimeout(this.iOSTimerScroll);
       }
 
@@ -609,6 +618,8 @@ export class DeckdeckgoInlineEditor {
       }
 
       await this.setToolsActivated(false);
+
+      this.resetDisplayToolsActivated();
 
       this.selection = null;
 
@@ -858,6 +869,12 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       this.toolsActivated = activated;
 
+      if (activated) {
+        this.debounceDisplayToolsActivated();
+      } else {
+        this.displayToolsActivated = false;
+      }
+
       if (this.isSticky()) {
         this.stickyToolbarActivated.emit(this.toolsActivated);
       }
@@ -1020,7 +1037,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   render() {
-    let classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
+    let classNames: string = this.displayToolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
 
     if (this.isSticky()) {
       classNames += ' deckgo-tools-sticky';

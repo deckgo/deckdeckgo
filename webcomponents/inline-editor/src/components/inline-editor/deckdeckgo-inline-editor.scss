@@ -1,6 +1,9 @@
 div.deckgo-tools {
   position: absolute;
   visibility: hidden;
+  opacity: 0;
+
+  animation: 0s ease 0s 1 normal none running none;
 
   pointer-events: none;
 
@@ -135,9 +138,8 @@ div.deckgo-tools {
   }
 
   &.deckgo-tools-activated {
-    transition: top 75ms ease-out, left 75ms ease-out;
-    animation: pop-upwards 180ms forwards linear;
     visibility: visible;
+    opacity: 1;
   }
 
   &.deckgo-tools-mobile {
