@@ -1,6 +1,9 @@
 <a name="1.0.0-rc.11"></a>
 # [1.0.0-rc.11](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.10...v1.0.0-11) (2019-09-01)
 
+### Applications
+* studio: v1.0.0-beta.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
 ### Web Components
 * inline-editor: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
