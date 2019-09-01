@@ -638,6 +638,11 @@ export class AppEditorToolbar {
 
     private initSelectedElement(element: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
+            // If needed, remove highlight on previous element
+            if (!element && this.selectedElement) {
+                await this.highlightElement(false);
+            }
+
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
 
@@ -652,6 +657,26 @@ export class AppEditorToolbar {
                 element.addEventListener('paste', this.cleanOnPaste, false);
 
                 await this.attachMoveToolbarOnElement();
+
+                await this.highlightElement(true);
+            }
+
+            resolve();
+        });
+    }
+
+    private highlightElement(highlight: boolean): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            // No highlight on deck
+            if (!this.selectedElement || this.deckOrSlide) {
+                resolve();
+                return;
+            }
+
+            if (highlight) {
+                this.selectedElement.setAttribute('highlighted', '');
+            } else {
+                this.selectedElement.removeAttribute('highlighted');
             }
 
             resolve();
