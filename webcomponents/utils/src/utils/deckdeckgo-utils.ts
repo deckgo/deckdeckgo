@@ -3,14 +3,16 @@ export function unifyEvent(e: any): any {
 }
 
 export function debounce(func: Function, timeout?: number) {
-    let timer: number;
-    return ($args: any) => {
+    let timer: number | undefined;
+
+    return (...args: any[]) => {
+        const next = () => func(...args);
+
         if (timer) {
             clearTimeout(timer);
         }
 
-        // @ts-ignore
-        timer = setTimeout(func, timeout > 0 ? timeout : 300, $args);
+        timer = setTimeout(next, timeout && timeout > 0 ? timeout : 300);
     };
 }
 
