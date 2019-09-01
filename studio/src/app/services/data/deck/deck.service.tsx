@@ -85,7 +85,7 @@ export class DeckService {
 
                 const snapshot: firebase.firestore.QuerySnapshot = await firestore.collection('decks')
                                 .where('owner_id', '==', userId)
-                                .orderBy('created_at', 'desc')
+                                .orderBy('updated_at', 'desc')
                                 .get();
 
                 const decks: Deck[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
