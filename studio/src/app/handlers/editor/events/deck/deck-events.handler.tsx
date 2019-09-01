@@ -567,6 +567,7 @@ export class DeckEventsHandler {
 
             let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable="false"|contenteditable/gi, '');
             result = result.replace(/editable=""|editable="true"|editable/gi, '');
+            result = result.replace(/highlighted=""|highlighted="true"|highlighted/gi, '');
             result = result.replace(/hydrated/gi, '');
             result = result.replace(/class=""/g, '');
 

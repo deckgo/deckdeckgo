@@ -96,5 +96,9 @@ export class RevealSlotUtils {
             element.setAttribute('style', selectedElement.getAttribute('style'));
             selectedElement.removeAttribute('style');
         }
+
+        if (selectedElement.hasAttribute('highlighted')) {
+            selectedElement.removeAttribute('highlighted');
+        }
     }
 }
