@@ -1,3 +1,9 @@
+<a name="1.0.0-rc.11"></a>
+# [1.0.0-rc.11](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.10...v1.0.0-11) (2019-09-01)
+
+### Others
+* utils: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/utils/CHANGELOG.md))
+
 <a name="1.0.0-rc.10"></a>
 # [1.0.0-rc.10](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.9...v1.0.0-10) (2019-08-30)
 
