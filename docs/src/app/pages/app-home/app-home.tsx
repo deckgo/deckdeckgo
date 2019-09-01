@@ -1,26 +1,14 @@
 import {Component, h} from '@stencil/core';
 
-import {MenuService} from '../../services/menu/menu.service';
-
 @Component({
   tag: 'app-home',
   styleUrl: 'app-home.scss'
 })
 export class AppHome {
 
-  private menuService: MenuService;
-
-  constructor() {
-    this.menuService = MenuService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.menuService.disable();
-  }
-
   render() {
     return [
-      <app-navigation logo={true}></app-navigation>,
+      <app-navigation></app-navigation>,
 
       <ion-content>
         <main class="ion-padding">

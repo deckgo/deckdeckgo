@@ -1,4 +1,4 @@
-import {Component, h} from '@stencil/core';
+import {Build, Component, h} from '@stencil/core';
 
 import {TimerService} from './services/timer/timer.service';
 import {AccelerometerService} from './services/accelerometer/accelerometer.service';
@@ -19,7 +19,10 @@ export class AppRoot {
 
     async componentDidLoad() {
         await this.timerService.restart();
-        await this.accelerometerService.init();
+
+        if (Build.isBrowser) {
+            await this.accelerometerService.init();
+        }
     }
 
     componentDidUnload() {

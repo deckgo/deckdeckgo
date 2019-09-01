@@ -102,14 +102,14 @@ export class ToggleSlotUtils {
         return new Promise<void>(async (resolve) => {
             const currentContainer: HTMLElement = this.getSlotContainer(reveal && !SlotUtils.isNodeRevealList(selectedElement) ? selectedElement.firstElementChild as HTMLElement : selectedElement);
 
+            const container: HTMLElement = this.createSlotContainer(element, type);
+
             // We don't copy content if the source or the destination is an image
             if ((SlotUtils.isNodeImage(currentContainer) || SlotUtils.isNodeSocial(currentContainer)) ||
                 (type === SlotType.IMG || type === SlotType.SOCIAL)) {
                 resolve();
                 return;
             }
-
-            const container: HTMLElement = this.createSlotContainer(element, type);
 
             if (type === SlotType.OL || type === SlotType.UL) {
                 if (SlotUtils.isNodeList(currentContainer)) {

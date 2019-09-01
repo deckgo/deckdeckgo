@@ -18,6 +18,11 @@ Doing so, even if already every web components were lazy loaded and only loaded 
 
 Note that per default, the `starter kit` will embed all slides/templates, therefore this change is going to be transparent for all new presentations you would create.
 
+### Features
+
+* `pager` color per default black
+* `pager` change its color, if not explicitly specified, to match the `--background` color of the `slide` or the `deck` if provided
+
 ### Libs
 
 * update to most recent dependencies

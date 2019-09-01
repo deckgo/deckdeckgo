@@ -189,7 +189,7 @@ export class AppCustomImages {
     private async openCustomImagesPublicInfo() {
         const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
             header: 'About your images',
-            message: 'Please note that currently, all the images you would upload, will be made public.',
+            message: 'Please note that currently, all the images you would upload, will be publicly visible on the internet.',
             cssClass: 'custom-images',
             buttons: [
                 {

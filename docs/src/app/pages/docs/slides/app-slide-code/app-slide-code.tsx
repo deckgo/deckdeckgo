@@ -2,8 +2,6 @@ import {Component, Element, h, Listen} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
-import {MenuService} from '../../../../services/menu/menu.service';
-
 @Component({
   tag: 'app-slide-code',
   styleUrl: 'app-slides-code.scss'
@@ -11,16 +9,6 @@ import {MenuService} from '../../../../services/menu/menu.service';
 export class AppSlideCode {
 
   @Element() el: HTMLElement;
-
-  private menuService: MenuService;
-
-  constructor() {
-    this.menuService = MenuService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.menuService.enable();
-  }
 
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.reloadCode(this.el);
@@ -68,7 +56,7 @@ export class AppSlideCode {
 <h2 id="app-slide-code-layout">Layout</h2>
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
-    <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+    <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/code/src/components/slide/deckdeckgo-slide-code.tsx">
           <h1 slot="title">slot="title"</h1>
         </deckgo-slide-code>
   </deckgo-deck>

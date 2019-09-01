@@ -201,7 +201,7 @@ export class DeckEventsHandler {
                     const persistedSlide: Slide = await this.postSlide(deck, slide);
 
                     // TODO: Ultimately, when using reactive data, move this to a Cloud Function
-                    await this.updateDeckSlideList(persistedSlide);
+                    await this.updateDeckSlideList(deck, persistedSlide);
 
                     this.busyService.deckBusy(false);
 
@@ -270,28 +270,29 @@ export class DeckEventsHandler {
         });
     }
 
-    private updateDeckSlideList(slide: Slide): Promise<void> {
+    private updateDeckSlideList(deck: Deck, slide: Slide): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
+                if (!deck && !deck.data) {
+                    reject('Missing deck to add the slide to the list');
+                    return;
+                }
+
                 if (!slide || !slide.id || !slide.data) {
                     reject('Missing slide to create or update the deck');
                     return;
                 }
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                    if (deck && deck.data) {
-                        if (!deck.data.slides || deck.data.slides.length <= 0) {
-                            deck.data.slides = [];
-                        }
+                if (!deck.data.slides || deck.data.slides.length <= 0) {
+                    deck.data.slides = [];
+                }
 
-                        deck.data.slides.push(slide.id);
+                deck.data.slides.push(slide.id);
 
-                        const updatedDeck: Deck = await this.deckService.update(deck);
-                        this.deckEditorService.next(updatedDeck);
-                    }
+                const updatedDeck: Deck = await this.deckService.update(deck);
+                this.deckEditorService.next(updatedDeck);
 
-                    resolve();
-                });
+                resolve();
             } catch (err) {
                 reject(err);
             }
