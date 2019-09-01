@@ -430,6 +430,9 @@ export class AppEditor {
                 return;
             }
 
+            // Per default, when we switch to the fullscreen mode, we want to present the presentation not edit it
+            this.presenting = !this.fullscreen;
+
             await this.editorEventsHandler.selectDeck();
             await (deck as any).toggleFullScreen();
 
