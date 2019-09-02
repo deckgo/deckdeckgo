@@ -430,9 +430,6 @@ export class AppEditor {
                 return;
             }
 
-            // Per default, when we switch to the fullscreen mode, we want to present the presentation not edit it
-            this.presenting = !this.fullscreen;
-
             await this.editorEventsHandler.selectDeck();
             await (deck as any).toggleFullScreen();
 
@@ -442,19 +439,22 @@ export class AppEditor {
 
     private initWindowResize() {
         if (window) {
-            window.addEventListener('resize', debounce(async () => {
-                this.fullscreen = isFullscreen();
-            }, 300));
+            window.addEventListener('resize', debounce(this.onWindowResize));
         }
     }
 
     private removeWindowResize() {
         if (window) {
-            window.removeEventListener('resize', debounce(async () => {
-                this.fullscreen = isFullscreen();
-            }, 300));
+            window.removeEventListener('resize', debounce(this.onWindowResize));
         }
     }
+
+    private onWindowResize = () => {
+        this.fullscreen = isFullscreen();
+
+        // Per default, when we switch to the fullscreen mode, we want to present the presentation not edit it
+        this.presenting = this.fullscreen;
+    };
 
     @Listen('signIn', {target: 'document'})
     async signIn() {
