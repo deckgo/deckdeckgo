@@ -1,3 +1,11 @@
+<a name="1.0.0-rc.11"-1></a>
+# [1.0.0-rc.11-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11...v1.0.0-11-1) (2019-09-02)
+
+### Others
+
+* starter kit: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+* webpack: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
+
 <a name="1.0.0-rc.11"></a>
 # [1.0.0-rc.11](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.10...v1.0.0-11) (2019-09-01)
 
