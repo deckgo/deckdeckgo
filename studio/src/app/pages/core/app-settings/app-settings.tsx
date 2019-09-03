@@ -513,7 +513,7 @@ export class AppHome {
         return [<ion-item class="item-title">
                 <ion-label>Twitter</ion-label>
             </ion-item>,
-            <p><small>https://twiter.com/<strong>{this.twitter ? this.twitter : 'yourusername'}</strong></small></p>,
+            <p><small>https://twitter.com/<strong>{this.twitter ? this.twitter : 'yourusername'}</strong></small></p>,
             <ion-item>
                 <ion-input value={this.user && this.user.data && this.user.data.social ? this.user.data.social.twitter : undefined} debounce={500} maxlength={128} input-mode="text" disabled={this.saving}
                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'twitter')}></ion-input>
