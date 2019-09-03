@@ -26,6 +26,7 @@ deckgo-slide-split > *:not([slot="title"]) {
   align-items: center;
   justify-content: center;
   word-break: break-word;
+  text-align: center;
 }
 
 deckgo-slide-split > deckgo-highlight-code {
