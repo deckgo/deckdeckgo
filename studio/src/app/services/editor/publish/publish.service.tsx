@@ -304,7 +304,8 @@ export class PublishService {
             try {
                 const apiSlideIds: string[] = [];
 
-                for (const slideId in deck.data.slides) {
+                for (let i: number = 0; i < deck.data.slides.length; i++) {
+                    const slideId: string = deck.data.slides[i];
                     const apiSlideId: string = await this.fetchAndCreateOrUpdateSlide(deck, slideId);
                     apiSlideIds.push(apiSlideId);
                 }
