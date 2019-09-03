@@ -605,6 +605,7 @@ export class DeckEventsHandler {
             result = result.replace(/editable=""|editable="true"|editable/gi, '');
             result = result.replace(/highlighted=""|highlighted="true"|highlighted/gi, '');
             result = result.replace(/hydrated/gi, '');
+            result = result.replace(/deckgo-reveal-all/gi, '');
             result = result.replace(/class=""/g, '');
 
             if (!slide.hasAttribute('custom-background')) {
