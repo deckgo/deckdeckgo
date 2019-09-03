@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-09-01)
+
+### Fix
+
+* debounce the display of the toolbar (useful in case of dragged selection)
+
 <a name="1.0.0-rc.1"></a>
 # 1.0.0-rc.1 (2019-08-30)
 

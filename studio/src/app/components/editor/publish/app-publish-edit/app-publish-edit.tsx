@@ -15,6 +15,10 @@ import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 import {FeedService} from '../../../../services/data/feed/feed.service';
 
+interface CustomInputEvent extends KeyboardEvent {
+    data: string | null;
+}
+
 @Component({
     tag: 'app-publish-edit',
     styleUrl: 'app-publish-edit.scss'
@@ -246,17 +250,45 @@ export class AppPublishEdit {
 
     private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
         return new Promise<void>((resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            if (($event.detail as CustomInputEvent).data === ' ' || ($event.detail as CustomInputEvent).data === ',') {
+                this.addTag();
+                resolve();
+                return;
+            }
+
             this.tag = ($event.target as InputTargetEvent).value;
 
             resolve();
         });
     }
 
-    private onTagChange() {
+    private onTagInputKeyUp($event: KeyboardEvent): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!$event) {
+                resolve();
+                return;
+            }
+
+            if ($event.code === 'Enter') {
+                this.addTag();
+            }
+
+            resolve();
+        });
+    }
+
+    private addTag() {
         if (this.tag && this.tag !== undefined && this.tag !== null && this.tag.length >= 3) {
             if (this.tag.charAt(0) === '#') {
                 this.tag = this.tag.substr(1);
             }
+
+            this.tag = this.tag.replace(' ', '');
 
             if (this.tags && this.tags.indexOf(this.tag) === -1) {
                 this.tags = [...this.tags, this.tag.trim()];
@@ -305,7 +337,7 @@ export class AppPublishEdit {
             <p class="meta-text">But first, edit or review your presentation's title and summary and add or change tags (up to 5) to
                 make your presentation more inviting to readers.</p>
 
-            <form onSubmit={(e: Event) => this.handleSubmit(e)}>
+            <form onSubmit={(e: Event) => this.handleSubmit(e)} onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}>
                 <ion-list class="inputs-list">
                     <ion-item class="item-title">
                         <ion-label>Title</ion-label>
@@ -337,8 +369,8 @@ export class AppPublishEdit {
                     <ion-item>
                         <ion-input debounce={500} input-mode="text" value={this.tag} placeholder="Add a tag..."
                                    disabled={!this.tags || this.tags.length >= 5 || this.publishing}
-                                   onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}
-                                   onIonChange={() => this.onTagChange()}></ion-input>
+                                   onKeyUp={($event: KeyboardEvent) => this.onTagInputKeyUp($event)}
+                                   onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}></ion-input>
                     </ion-item>
 
                     <app-feed-card-tags tags={this.tags} editable={true} disable-remove={this.publishing} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>

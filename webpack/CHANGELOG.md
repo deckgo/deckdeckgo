@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-2"></a>
+# 1.0.0-rc.1-2 (2019-09-02)
+
+### Fix
+
+* fix `remarkable` import for runtime
+
 <a name="1.0.0-rc.1-1"></a>
 # 1.0.0-rc.1-1 (2019-08-31)
 

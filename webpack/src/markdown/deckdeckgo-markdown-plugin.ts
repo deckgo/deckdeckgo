@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
-const Remarkable = require('remarkable');
+const {Remarkable} = require('remarkable');
 const {replaceEntities, escapeHtml, unescapeMd} = require('remarkable');
 
 const util = require('util');
@@ -303,7 +303,7 @@ class DeckDeckGoMarkdownPlugin {
 
         return result;
     }
-    
+
     private renderLineWithoutFormatting(line: string): string {
         return this.escapeUnsafe(line) + '\n';
     }

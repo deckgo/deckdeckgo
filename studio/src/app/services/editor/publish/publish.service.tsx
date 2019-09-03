@@ -301,18 +301,14 @@ export class PublishService {
                 return;
             }
 
-            const promises: Promise<any>[] = [];
-            deck.data.slides.forEach((slideId: string) => {
-                promises.push(this.fetchAndCreateOrUpdateSlide(deck, slideId));
-            });
-
-            if (!promises || promises.length <= 0) {
-                resolve([]);
-                return;
-            }
-
             try {
-                const apiSlideIds: string[] = await Promise.all(promises);
+                const apiSlideIds: string[] = [];
+
+                for (const slideId in deck.data.slides) {
+                    const apiSlideId: string = await this.fetchAndCreateOrUpdateSlide(deck, slideId);
+                    apiSlideIds.push(apiSlideId);
+                }
+
                 resolve(apiSlideIds);
             } catch (err) {
                 reject(err);

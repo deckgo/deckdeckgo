@@ -59,7 +59,6 @@ export class AppMenu {
                     this.decks = await this.deckService.getUserDecks(authUser.uid);
                     await this.filterDecks(null);
                 } catch (err) {
-                    // TODO: print error?
                     this.decks = [];
                     await this.filterDecks(null);
                 }
@@ -120,12 +119,17 @@ export class AppMenu {
                 return filteredDeck.id === deck.id;
             });
 
-            if (index < 0) {
-                this.decks = [deck, ...this.decks];
-            } else {
-                this.decks[index].data.name = deck.data.name;
-                this.decks = [...this.decks];
+            // New deck has been updated? If not, we don't have to update the list
+            if (index >= 0 && this.decks[index].data.updated_at && deck.data.updated_at && this.decks[index].data.updated_at.isEqual(deck.data.updated_at)) {
+                resolve();
+                return;
             }
+
+            if (index >= 0) {
+                this.decks.splice(index, 1);
+            }
+
+            this.decks = [deck, ...this.decks];
 
             resolve();
         });
