@@ -76,7 +76,7 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | **CLI** | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo) | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg?color=success)](https://www.npmjs.com/package/create-deckdeckgo) | [`README.md`](cli/README.md)
 | **Cloud** | | | [`README.md`](cloud/README.md)
 | **Infrastructure** | | | [`README.md`](infra/README.md)
-| **Starter kit** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-rc.1-1&color=success) | [`Repo`](http://github.com/deckgo/deckdeckgo-starter/)
+| **Starter kit** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-rc.1-3&color=success) | [`Repo`](http://github.com/deckgo/deckdeckgo-starter/)
 | **WAI Lambda** | | | [`Repo`](https://github.com/deckgo/wai-lambda)
 | **Webpack plugins** | [`deckdeckgo-webpack-plugins`](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [![version](https://img.shields.io/npm/v/deckdeckgo-webpack-plugins/latest.svg?color=success)](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [`README.md`](webpack/README.md) 
 

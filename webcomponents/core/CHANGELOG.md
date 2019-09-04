@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-09-04)
+
+### Features
+
+* slide height on mobile devices ([#300](https://github.com/deckgo/deckdeckgo/issues/300))
+
 <a name="1.0.0-rc.1"></a>
 # 1.0.0-rc.1 (2019-08-30)
 
