@@ -52,9 +52,9 @@ export class RevealSlotUtils {
 
             // For styling purpose, we need to identify reveal element with images
             if (SlotUtils.isNodeImage(selectedElement)) {
-                element.classList.add('img');
+                element.setAttribute('img', '');
             } else {
-                element.classList.remove('img');
+                element.removeAttribute('img');
             }
 
             resolve(element);
