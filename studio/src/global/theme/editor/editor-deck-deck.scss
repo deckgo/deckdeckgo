@@ -65,7 +65,7 @@ deckgo-deck deckgo-social deckgo-lazy-img {
   --deckgo-lazy-img-padding: 0 8px 0 0;
 }
 
-deckgo-deck deckgo-reveal.img {
+deckgo-deck deckgo-reveal[img] {
   height: 100%;
   flex: 1;
 }

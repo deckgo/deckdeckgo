@@ -604,9 +604,7 @@ export class DeckEventsHandler {
             let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable="false"|contenteditable/gi, '');
             result = result.replace(/editable=""|editable="true"|editable/gi, '');
             result = result.replace(/highlighted=""|highlighted="true"|highlighted/gi, '');
-            result = result.replace(/hydrated/gi, '');
-            result = result.replace(/deckgo-reveal-all/gi, '');
-            result = result.replace(/class=""/g, '');
+            result = result.replace(/class="[a-zA-Z0-9:;\.\s\(\)\-\,]*"/gi, '');
 
             if (!slide.hasAttribute('custom-background')) {
                 result = result.replace(/<div slot="background">(.*?)<\/div>/g, '');
