@@ -1213,6 +1213,7 @@ data DbVersion
   | DbVersion3
   | DbVersion4
   | DbVersion5
+  | DbVersion6
   deriving stock (Enum, Bounded, Ord, Eq)
 
 -- | Migrates from ver to latest
@@ -1387,6 +1388,43 @@ migrateFrom = \frm -> do
             , ");"
             ]
           ) HE.unit HD.unit True
+      DbVersion6 -> do
+        HS.sql "DROP TABLE IF EXISTS username"
+        HS.sql "DROP TABLE IF EXISTS account CASCADE"
+        HS.sql "DROP TABLE IF EXISTS slide"
+        HS.sql "DROP TABLE IF EXISTS deck"
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE account ("
+            ,   "id TEXT PRIMARY KEY,"
+            ,   "firebase_id TEXT UNIQUE,"
+            ,   "username TEXT UNIQUE NULL"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE deck ("
+            ,   "id TEXT PRIMARY KEY,"
+            ,   "name TEXT NOT NULL,"
+            ,   "background TEXT NULL,"
+            ,   "owner TEXT NOT NULL REFERENCES account (id) ON DELETE CASCADE,"
+            ,   "attributes JSON"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE slide ("
+            ,   "id TEXT PRIMARY KEY,"
+            ,   "deck TEXT NOT NULL REFERENCES deck (id) ON DELETE CASCADE,"
+            ,   "index INT2 NULL,"
+            ,   "content TEXT," -- TODO: is any of this nullable?
+            ,   "template TEXT,"
+            ,   "attributes JSON"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
 
 readDbVersion :: HS.Session (Either String (Maybe DbVersion))
 readDbVersion = do
@@ -1432,6 +1470,7 @@ dbVersionToText = \case
   DbVersion3 -> "3"
   DbVersion4 -> "4"
   DbVersion5 -> "5"
+  DbVersion6 -> "6"
 
 dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
