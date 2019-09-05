@@ -103,7 +103,7 @@ type UsersAPI =
       Post '[JSON] (Item UserId User) :<|>
     Protected :>
       Capture "user_id" UserId :>
-      ReqBody '[JSON] UserInfo :> Put '[JSON] (Item UserId User) :<|>
+      ReqBody '[JSON] User :> Put '[JSON] (Item UserId User) :<|>
     Protected :> Capture "user_id" UserId :> Delete '[JSON] ()
 
 newtype Username = Username { unUsername :: T.Text }
@@ -160,6 +160,9 @@ instance FromJSONObject UserInfo where
         )
         )
 
+instance Aeson.FromJSON User where
+  parseJSON = Aeson.withObject "User" parseJSONObject
+
 instance FromJSONObject User where
   parseJSONObject = \obj ->
     User
@@ -181,6 +184,9 @@ instance ToJSONObject UserInfo where
     , "email" .= userInfoEmail uinfo
     , "firebase_uid" .= userInfoFirebaseId uinfo
     ]
+
+instance Aeson.ToJSON User where
+  toJSON = Aeson.Object . toJSONObject
 
 instance Aeson.FromJSON UserInfo where
   parseJSON = Aeson.withObject "UserInfo" parseJSONObject
@@ -568,25 +574,21 @@ usersPut
   :: HC.Connection
   -> Firebase.UserId
   -> UserId
-  -> UserInfo
+  -> User
   -> Servant.Handler (Item UserId User)
-usersPut conn fuid userId uinfo = do
+usersPut conn fuid userId user = do
 
     when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
       liftIO $ putStrLn $ unwords
-        [ "User is trying to update another uinfo:", show (fuid, userId, uinfo) ]
+        [ "User is trying to update another uinfo:", show (fuid, userId, user) ]
       Servant.throwError Servant.err404
 
-    when (Firebase.unUserId fuid /= unFirebaseId (userInfoFirebaseId uinfo)) $ do
+    when (Firebase.unUserId fuid /= unFirebaseId (userFirebaseId user)) $ do
       liftIO $ putStrLn $ unwords
-        [ "Client used the wrong uinfo ID on uinfo", show (fuid, userId, uinfo) ]
+        [ "Client used the wrong uinfo ID on uinfo", show (fuid, userId, user) ]
       Servant.throwError Servant.err400
 
     iface <- liftIO $ getDbInterface conn
-    user <- case userInfoToUser uinfo of
-      Left e -> Servant.throwError Servant.err400
-        { Servant.errBody = BL.fromStrict $ T.encodeUtf8 e }
-      Right user -> pure user
     liftIO (dbUpdateUser iface userId user) >>= \case
       UserUpdateOk -> pure $ Item userId user -- TODO: check # of affected rows
       e -> do -- TODO: handle not found et al.

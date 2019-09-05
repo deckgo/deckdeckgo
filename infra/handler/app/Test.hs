@@ -575,7 +575,7 @@ testServer = withServer $ \port -> do
 usersGet' :: ClientM [Item UserId User]
 _usersGetUserId' :: UserId -> ClientM (Item UserId User)
 usersPost' :: T.Text -> UserInfo -> ClientM (Item UserId User)
-_usersPut' :: T.Text -> UserId -> UserInfo -> ClientM (Item UserId User)
+_usersPut' :: T.Text -> UserId -> User -> ClientM (Item UserId User)
 _usersDelete' :: T.Text -> UserId -> ClientM ()
 
 decksGet' :: T.Text -> Maybe UserId -> ClientM [Item DeckId Deck]
