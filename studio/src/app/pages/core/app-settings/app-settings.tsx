@@ -268,6 +268,8 @@ export class AppHome {
 
             try {
                 await this.apiUserService.put(this.apiUser, this.authUser.token, this.apiUser.id);
+
+                resolve();
             } catch (err) {
                 reject('Your username couldn\'t be saved');
             }
