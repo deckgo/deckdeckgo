@@ -484,6 +484,7 @@ export class AppHome {
                 <app-avatar src={this.user && this.user.data ? this.user.data.photo_url : undefined}></app-avatar>
                 <input id="inputProfilePicture" type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.selectProfilePicture()} disabled={this.saving}/>
             </div>
+            <p><small>Tips: if you would update your profile picture, ideally use a <strong>square</strong> image for that purpose</small></p>
         </ion-list>;
     }
 
