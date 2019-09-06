@@ -326,8 +326,6 @@ export class AppHome {
 
                 await loading.present();
 
-                // TODO: Delete decks and slides?
-
                 await this.apiUserService.delete(this.apiUser.id, this.authUser.token);
 
                 await this.userService.delete(this.authUser.uid);
