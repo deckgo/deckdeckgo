@@ -43,3 +43,5 @@ result-*
 
 config.dev*.json
 config.prod.json
+
+set-env-configuration.sh
