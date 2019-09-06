@@ -33,6 +33,8 @@ main = do
     settings <- getFirebaseSettings env
     conn <- getPostgresqlConnection
 
+    putStrLn "Connection acquired, starting lambda..."
+
     Lambda.run $ cors $ DeckGo.Handler.application settings env conn
 
 -- TODO: factor out
@@ -65,11 +67,13 @@ getFirebaseSettings env = do
 
 getPostgresqlConnection :: IO Hasql.Connection
 getPostgresqlConnection = do
+    putStrLn "Reading connection info..."
     user <- getEnv "PGUSER"
     password <- getEnv "PGPASSWORD"
     host <- getEnv "PGHOST"
     db <- getEnv "PGDATABASE"
     port <- getEnv "PGPORT"
+    putStrLn "Acquiring connection..."
     Hasql.acquire (
       Hasql.settings
         (BS8.pack host)
