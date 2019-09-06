@@ -127,6 +127,7 @@ export class AppSignIn {
             }
         };
 
+        // @ts-ignore
         window['firebase'] = firebase;
 
         await this.saveRedirect();

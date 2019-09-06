@@ -419,6 +419,9 @@ export class DeckEventsHandler {
                 const content: string = await this.cleanSlideContent(slide);
                 if (content && content.length > 0) {
                     slideUpdate.data.content = content
+                } else {
+                    // @ts-ignore
+                    slideUpdate.data.content = firebase.firestore.FieldValue.delete();
                 }
 
                 const attributes: SlideAttributes = await this.getSlideAttributes(slide);
