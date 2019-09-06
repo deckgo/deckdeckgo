@@ -42,3 +42,9 @@ export interface DeckData {
     created_at?: firestore.Timestamp;
     updated_at?: firestore.Timestamp;
 }
+
+export interface Deck {
+    id: string;
+    data: DeckData;
+    ref: firestore.DocumentReference;
+}
