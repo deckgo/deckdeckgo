@@ -1,4 +1,4 @@
-import {Component, Element, State, h} from '@stencil/core';
+import {Component, Element, State, h, Listen} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -104,6 +104,20 @@ export class AppMenu {
         });
     }
 
+    @Listen('deckDeleted', {target: 'window'})
+    async onDeckDeleted($event: CustomEvent) {
+        if (!$event || !$event.detail || $event.detail === undefined || $event.detail === '') {
+            return;
+        }
+
+        const deckId: string = $event.detail;
+
+        await this.removeFromDeckList(deckId);
+
+        const filter: string = await this.getCurrentFilter();
+        await this.filterDecks(filter);
+    }
+
     private updateDeckList(deck: Deck): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!deck || !deck.id || !deck.data || !deck.data.name) {
@@ -130,6 +144,30 @@ export class AppMenu {
             }
 
             this.decks = [deck, ...this.decks];
+
+            resolve();
+        });
+    }
+
+    public removeFromDeckList(deckId: string): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.decks || this.decks.length <= 0) {
+                resolve();
+                return;
+            }
+
+            const index: number = this.decks.findIndex((filteredDeck: Deck) => {
+                return filteredDeck.id === deckId;
+            });
+
+            if (index < 0) {
+                resolve();
+                return;
+            }
+
+            this.decks.splice(index, 1);
+
+            this.decks = [...this.decks];
 
             resolve();
         });
@@ -282,7 +320,7 @@ export class AppMenu {
                 this.filteredDecks.map((deck: Deck) => {
                     const url: string = `/editor/${deck.id}`;
 
-                    return <ion-item href={url} routerDirection="root">
+                    return <ion-item href={url} routerDirection="root" key={deck.id}>
                         <ion-icon name="book" slot="start"></ion-icon>
                         <ion-label>{deck.data.name}</ion-label>
                     </ion-item>
