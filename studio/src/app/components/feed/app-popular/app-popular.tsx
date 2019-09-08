@@ -51,9 +51,9 @@ export class AppPopular {
             return [<h1 class="ion-padding ion-margin-start ion-margin-end">We need your help!</h1>,
                 <ion-card>
                     <ion-card-content>
-                        <p>We are in development, we need your help to improve DeckDeckGo.</p>
+                        <p>We need your help to improve DeckDeckGo 🙏</p>
 
-                        <p class="ion-padding-top">Send us your feedbacks and ideas via <a href="mailto:hello@deckdeckgo.com">email</a>, <a href="https://twitter.com/deckdeckgo">Twitter</a> or on <a href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY" target="_blank">Slack</a>.</p>
+                        <p class="ion-padding-top">Send us your feedback and ideas on <a href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY" target="_blank">Slack</a>, via <a href="mailto:hello@deckdeckgo.com">email</a> or on <a href="https://twitter.com/deckdeckgo">Twitter</a>.</p>
 
                         <p class="ion-padding-top">You are awesome!</p>
                     </ion-card-content>
