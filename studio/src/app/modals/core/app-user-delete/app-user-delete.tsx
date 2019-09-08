@@ -1,6 +1,6 @@
 import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
-import {UserUtils} from '../../utils/core/user-utils';
-import {NavDirection, NavService} from '../../services/core/nav/nav.service';
+import {UserUtils} from '../../../utils/core/user-utils';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 
 @Component({
     tag: 'app-user-delete',
@@ -91,7 +91,7 @@ export class AppUserDelete {
                     </ion-button>
                 </form>
 
-                <p class="ion-padding-top note">Please note that currently, your presentations are not automatically deleted. If you wish to delete or unpublish them, drop us a message on one of our <a onClick={() => this.navigateContact()}>contact</a> channels.</p>
+                <p class="ion-padding-top note">Please note that currently, your presentations are not automatically removed from internet. If you wish to unpublish them, drop us a message on one of our <a onClick={() => this.navigateContact()}>contact</a> channels.</p>
             </ion-content>
         ];
     }

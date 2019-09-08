@@ -326,15 +326,17 @@ export class AppHome {
 
                 await loading.present();
 
-                // TODO: Delete decks and slides?
-
-                await this.apiUserService.delete(this.apiUser.id, this.authUser.token);
-
-                await this.userService.delete(this.authUser.uid);
-
                 const firebaseUser: firebase.User = firebase.auth().currentUser;
 
                 if (firebaseUser) {
+                    // We need the user token to access the API, therefore delete it here first
+                    await this.apiUserService.delete(this.apiUser.id, this.authUser.token);
+
+                    // Then delete the user
+                    await this.userService.delete(this.authUser.uid);
+
+                    // Decks and slides are delete with a cloud function triggered on auth.delete
+
                     await firebaseUser.delete();
                 }
 

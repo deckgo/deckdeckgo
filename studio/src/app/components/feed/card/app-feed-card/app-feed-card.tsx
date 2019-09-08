@@ -82,7 +82,7 @@ export class AppFeedCard {
 
     private initScreenshot(): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (!this.deck.data.meta.pathname) {
+            if (!this.deck.data.meta.pathname || !this.deck.data.owner_id || this.deck.data.owner_id === undefined || this.deck.data.owner_id === '') {
                 resolve();
                 return;
             }
@@ -99,7 +99,7 @@ export class AppFeedCard {
             // path[0] = ''
             // path[1] = username
             // path[2] = presentation name
-            this.screenshot = `${storageUrl}${path[1]}%2Fpresentations%2F${path[2]}%2Fdeckdeckgo.png?alt=media`;
+            this.screenshot = `${storageUrl}${this.deck.data.owner_id}%2Fpresentations%2F${path[2]}%2Fdeckdeckgo.png?alt=media`;
 
             resolve();
         });

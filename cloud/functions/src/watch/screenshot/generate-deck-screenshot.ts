@@ -5,8 +5,8 @@ import * as admin from 'firebase-admin';
 
 import * as puppeteer from 'puppeteer';
 
-import {DeckData} from '../model/deck';
-import {Resources} from '../utils/resources';
+import {DeckData} from '../../model/deck';
+import {Resources} from '../../utils/resources';
 
 export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
     const newValue: DeckData = change.after.data() as DeckData;
@@ -14,6 +14,10 @@ export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
     const previousValue: DeckData = change.before.data() as DeckData;
 
     if (!newValue || !newValue.meta || !newValue.meta.published || !newValue.meta.pathname) {
+        return;
+    }
+
+    if (!newValue.owner_id || newValue.owner_id === undefined || newValue.owner_id === '') {
         return;
     }
 
@@ -137,7 +141,7 @@ function saveScreenshot(deckData: DeckData, imageBuffer: string): Promise<string
         // path[0] = ''
         // path[1] = user
         // path[2] = presentation-name
-        const file = bucket.file(`/${path[1]}/${Resources.Constants.PRESENTATION.FOLDER}/${path[2]}/${Resources.Constants.PRESENTATION.IMAGE}`);
+        const file = bucket.file(`/${deckData.owner_id}/${Resources.Constants.PRESENTATION.FOLDER}/${path[2]}/${Resources.Constants.PRESENTATION.IMAGE}`);
 
         try {
             await file.save(imageBuffer);

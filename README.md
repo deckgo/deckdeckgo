@@ -8,7 +8,7 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](http
 
 - [Getting Started](#getting-started)
 - [Documentation](#documentation)
-- [Example](#example)
+- [Contributing](#contributing)
 - [Progressive Web Apps](#progressive-web-apps)
 - [Web Components](#web-components)
 - [Others](#others)
@@ -21,9 +21,9 @@ Start you new presentation by following the quick  👉 [Getting Started guide](
 
 The developers' documentation is available online at [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com).
 
-## Example
-   
-The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full featured presentation developed with [DeckDeckGo].
+## Contributing
+
+Are you interested to contribute to our open source project? That would be awesome 👍 Have a look to our contributing [guide](CONTRIBUTING.md) to get started.
 
 ## Progressive Web Apps
 
@@ -31,7 +31,7 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | ------- | ------- | ------- |:-----:|
 | **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.1&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Remote control** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.1&color=success)](https://deckdeckgo.app) | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
-| **Studio** | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.2&color=orange) | | [`README.md`](studio/README.md)
+| **Studio** | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.3&color=orange) | | [`README.md`](studio/README.md)
 | **Website** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.1&color=success)](https://deckdeckgo.com) | [https://deckdeckgo.com](https://deckdeckgo.com) | [`Repo`](https://github.com/deckgo/deckdeckgo-website/)
 
 ## Web Components
@@ -74,7 +74,7 @@ The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full
 | ------- | ------- | ------- |:-----:|
 | **Backend** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-alpha.2&color=success) | [`README.md`](backend/README.md)
 | **CLI** | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo) | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg?color=success)](https://www.npmjs.com/package/create-deckdeckgo) | [`README.md`](cli/README.md)
-| **Cloud** | | | [`README.md`](cloud/README.md)
+| **Cloud** | | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.1&color=orange) | [`README.md`](cloud/README.md)
 | **Infrastructure** | | | [`README.md`](infra/README.md)
 | **Starter kit** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-rc.1-3&color=success) | [`Repo`](http://github.com/deckgo/deckdeckgo-starter/)
 | **WAI Lambda** | | | [`Repo`](https://github.com/deckgo/wai-lambda)
