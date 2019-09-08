@@ -74,7 +74,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | ------- | ------- | ------- |:-----:|
 | **Backend** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-alpha.2&color=success) | [`README.md`](backend/README.md)
 | **CLI** | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo) | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg?color=success)](https://www.npmjs.com/package/create-deckdeckgo) | [`README.md`](cli/README.md)
-| **Cloud** | | | [`README.md`](cloud/README.md)
+| **Cloud** | | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.1&color=orange) | [`README.md`](cloud/README.md)
 | **Infrastructure** | | | [`README.md`](infra/README.md)
 | **Starter kit** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-rc.1-3&color=success) | [`Repo`](http://github.com/deckgo/deckdeckgo-starter/)
 | **WAI Lambda** | | | [`Repo`](https://github.com/deckgo/wai-lambda)
