@@ -19,6 +19,7 @@ interface DeckAndFirstSlide {
     slide: any;
     style: any;
     background: any;
+    deleted: boolean;
 }
 
 @Component({
@@ -100,7 +101,8 @@ export class AppDashboard {
                     deck: deck,
                     slide: element,
                     style: style,
-                    background: background
+                    background: background,
+                    deleted: false
                 });
             } catch (err) {
                 resolve(undefined);
@@ -159,10 +161,35 @@ export class AppDashboard {
         })
     }
 
-    private navigateDeck(url: string) {
+    private navigateDeck(deck: DeckAndFirstSlide) {
+        if (!deck || !deck.deck || !deck.deck.id || deck.deck.id === undefined || deck.deck.id === '') {
+            return;
+        }
+
+        if (deck.deleted) {
+            return;
+        }
+
+        const url: string = `/editor/${deck.deck.id}`;
+
         this.navService.navigate({
             url: url,
             direction: NavDirection.ROOT
+        });
+    }
+
+    private displayDeckDeleted(deck: DeckAndFirstSlide): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!deck || !deck.deck) {
+                resolve();
+                return;
+            }
+
+            deck.deleted = true;
+
+            await this.filterDecks(null);
+
+            resolve();
         });
     }
 
@@ -222,12 +249,12 @@ export class AppDashboard {
     private renderDecksCards() {
         return (
             this.filteredDecks.map((deck: DeckAndFirstSlide) => {
-                const url: string = `/editor/${deck.deck.id}`;
+                const deckClass: string = `item ion-no-margin ${deck.deleted ? 'deleted' : ''}`;
 
-                return <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(url)}>
+                return <ion-card class={deckClass} onClick={() => this.navigateDeck(deck)}>
                     {this.renderDeck(deck)}
 
-                    <app-delete-deck-action deck={deck.deck}></app-delete-deck-action>
+                    {this.renderDeckDeleteAction(deck)}
                 </ion-card>;
             })
         );
@@ -241,6 +268,14 @@ export class AppDashboard {
                 {deck.slide}
                 {deck.background}
             </deckgo-deck>
+        }
+    }
+
+    private renderDeckDeleteAction(deck: DeckAndFirstSlide) {
+        if (!deck || deck.deleted) {
+            return undefined;
+        } else {
+            return <app-delete-deck-action deck={deck.deck} onDeckDeleted={() => this.displayDeckDeleted(deck)}></app-delete-deck-action>
         }
     }
 

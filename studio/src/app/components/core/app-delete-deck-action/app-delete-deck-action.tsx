@@ -1,4 +1,4 @@
-import {Component, h, Prop} from '@stencil/core';
+import {Component, Event, EventEmitter, h, Prop} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Deck} from '../../../models/data/deck';
@@ -17,6 +17,8 @@ export class AppDeleteDeckAction {
     @Prop() deck: Deck;
 
     private deckService: DeckService;
+
+    @Event() deckDeleted: EventEmitter<void>;
 
     constructor() {
         this.deckService = DeckService.getInstance();
@@ -58,6 +60,8 @@ export class AppDeleteDeckAction {
             await loading.present();
 
             await this.deckService.delete(this.deck.id);
+
+            this.deckDeleted.emit();
 
             await loading.dismiss();
 
