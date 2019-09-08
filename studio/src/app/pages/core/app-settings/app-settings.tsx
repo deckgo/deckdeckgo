@@ -332,7 +332,10 @@ export class AppHome {
                     // We need the user token to access the API, therefore delete it here first
                     await this.apiUserService.delete(this.apiUser.id, this.authUser.token);
 
-                    // Editor data and user are deleted with a cloud function triggered on auth.delete event
+                    // Then delete the user
+                    await this.userService.delete(this.authUser.uid);
+
+                    // Decks and slides are delete with a cloud function triggered on auth.delete
 
                     await firebaseUser.delete();
                 }
