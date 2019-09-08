@@ -1,3 +1,29 @@
+<a name="1.0.0-beta.3"></a>
+# 1.0.0-beta.3 (2019-09-08)
+
+### Breaking changes
+
+* use uid as storage root folder instead of username (as the username could change) ([#310](https://github.com/deckgo/deckdeckgo/issues/310))
+
+### Features
+
+* on the dashboard, add new actions to delete presentations on demand ([#314](https://github.com/deckgo/deckdeckgo/issues/314))
+* delete decks, slides and storage when user delete his/her account ([#310](https://github.com/deckgo/deckdeckgo/issues/310))
+* add a contributing documentation page ([#304](https://github.com/deckgo/deckdeckgo/issues/304))
+* in studio and starter, align text center ([#293](https://github.com/deckgo/deckdeckgo/issues/293))
+* caret color ([#285](https://github.com/deckgo/deckdeckgo/issues/285))
+
+### Fix
+
+* change username not resolving and clearing its value ([#298](https://github.com/deckgo/deckdeckgo/issues/298))
+* reflect slide deletion to the publishing ([#243](https://github.com/deckgo/deckdeckgo/issues/243))
+* weird publishing issue ([#289](https://github.com/deckgo/deckdeckgo/issues/289))
+* delete header and footer on `<deckgo-slide-gif/>` template ([#307](https://github.com/deckgo/deckdeckgo/issues/307))
+* word "hydrated" couldn't be used in a presetnation ([#302](https://github.com/deckgo/deckdeckgo/issues/302))
+* twitter url typo ([#297](https://github.com/deckgo/deckdeckgo/issues/297))
+* don't persist `deckgo-reveal-list` status ([#295](https://github.com/deckgo/deckdeckgo/pull/295))
+* toggle full screen using the keyboard "Escape" key ([#287](https://github.com/deckgo/deckdeckgo/issues/287)) 
+
 <a name="1.0.0-beta.2"></a>
 # 1.0.0-beta.2 (2019-08-30)
 

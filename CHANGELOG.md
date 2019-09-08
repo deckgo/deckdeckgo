@@ -1,4 +1,10 @@
-<a name="1.0.0-rc.11"-2></a>
+<a name="1.0.0-rc.12"></a>
+# [1.0.0-rc.12](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11-2...v1.0.0-12) (2019-09-08)
+
+### Applications
+* studio: v1.0.0-beta.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+<a name="1.0.0-rc.11-2"></a>
 # [1.0.0-rc.11-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11-1...v1.0.0-11-2) (2019-09-04)
 
 ### Web Components
@@ -11,7 +17,7 @@
 
 * starter kit: v1.0.0-rc.1-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
-<a name="1.0.0-rc.11"-1></a>
+<a name="1.0.0-rc.11-1"></a>
 # [1.0.0-rc.11-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11...v1.0.0-11-1) (2019-09-02)
 
 ### Others
