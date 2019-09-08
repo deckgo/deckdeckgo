@@ -7,7 +7,7 @@
 
 ### Features
 
-* on the dashboard, add new actions to delete presentations on demand ([#314](https://github.com/deckgo/deckdeckgo/issues/314))
+* on the dashboard, add new actions to delete presentations on demand ([#314](https://github.com/deckgo/deckdeckgo/issues/314) and [#322](https://github.com/deckgo/deckdeckgo/issues/322))
 * delete decks, slides and storage when user delete his/her account ([#310](https://github.com/deckgo/deckdeckgo/issues/310))
 * add a contributing documentation page ([#304](https://github.com/deckgo/deckdeckgo/issues/304))
 * in studio and starter, align text center ([#293](https://github.com/deckgo/deckdeckgo/issues/293))
