@@ -1,16 +1,13 @@
-import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
-
-import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
-export async function deleteUserStorage(snap: DocumentSnapshot, context: functions.EventContext) {
-    const userId: string = context.params.userId;
-
-    if (!userId || userId === undefined || userId === '') {
+export async function deleteUserStorage(userRecord: admin.auth.UserRecord) {
+    if (!userRecord || !userRecord.uid || userRecord.uid === undefined || userRecord.uid === '') {
         return;
     }
 
     try {
+        const userId: string = userRecord.uid;
+
         await deleteStorage(userId);
     } catch (err) {
         console.error(err);

@@ -166,20 +166,4 @@ export class UserService {
             }
         });
     }
-
-    delete(userId: string): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                const firestore: firebase.firestore.Firestore = firebase.firestore();
-
-                await firestore.collection('users').doc(userId).delete();
-
-                this.userSubject.next(null);
-
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
 }

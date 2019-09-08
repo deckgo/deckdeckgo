@@ -1,24 +1,21 @@
-import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
-import {EventContext} from 'firebase-functions';
-
 import * as admin from 'firebase-admin';
 
-import {Deck, DeckData} from '../model/deck';
-import {Slide} from '../model/slide';
+import {Deck, DeckData} from '../../model/deck';
+import {Slide} from '../../model/slide';
 
 interface DeckSlides {
     deckId: string;
     slides: Slide[] | null;
 }
 
-export async function deleteDecksSlides(snap: DocumentSnapshot, context: EventContext) {
-    const userId: string = context.params.userId;
-
-    if (!userId || userId === undefined || userId === '') {
+export async function deleteDecksSlides(userRecord: admin.auth.UserRecord) {
+    if (!userRecord || !userRecord.uid || userRecord.uid === undefined || userRecord.uid === '') {
         return;
     }
 
     try {
+        const userId: string = userRecord.uid;
+
         const decks: Deck[] | null = await findDecks(userId);
 
         if (!decks || decks.length <= 0) {

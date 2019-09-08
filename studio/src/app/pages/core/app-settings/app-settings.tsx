@@ -326,13 +326,14 @@ export class AppHome {
 
                 await loading.present();
 
-                await this.apiUserService.delete(this.apiUser.id, this.authUser.token);
-
-                await this.userService.delete(this.authUser.uid);
-
                 const firebaseUser: firebase.User = firebase.auth().currentUser;
 
                 if (firebaseUser) {
+                    // We need the user token to access the API, therefore delete it here first
+                    await this.apiUserService.delete(this.apiUser.id, this.authUser.token);
+
+                    // Editor data and user are deleted with a cloud function triggered on auth.delete event
+
                     await firebaseUser.delete();
                 }
 

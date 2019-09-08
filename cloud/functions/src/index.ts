@@ -14,4 +14,4 @@ const runtimeOpts = {
 
 export const watchDeckWrite = functions.runWith(runtimeOpts).firestore.document('decks/{deckId}').onWrite(applyWatchDeckWrite);
 
-export const watchDeleteUser = functions.firestore.document('users/{userId}').onDelete(applyWatchUserDelete);
+export const watchDeleteUser = functions.auth.user().onDelete(applyWatchUserDelete);
