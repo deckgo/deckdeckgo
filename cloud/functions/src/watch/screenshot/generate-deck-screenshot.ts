@@ -17,6 +17,10 @@ export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
         return;
     }
 
+    if (!newValue.owner_id || newValue.owner_id === undefined || newValue.owner_id === '') {
+        return;
+    }
+
     const update: boolean = await needScreenshot(previousValue, newValue);
 
     if (!update) {
@@ -137,7 +141,7 @@ function saveScreenshot(deckData: DeckData, imageBuffer: string): Promise<string
         // path[0] = ''
         // path[1] = user
         // path[2] = presentation-name
-        const file = bucket.file(`/${path[1]}/${Resources.Constants.PRESENTATION.FOLDER}/${path[2]}/${Resources.Constants.PRESENTATION.IMAGE}`);
+        const file = bucket.file(`/${deckData.owner_id}/${Resources.Constants.PRESENTATION.FOLDER}/${path[2]}/${Resources.Constants.PRESENTATION.IMAGE}`);
 
         try {
             await file.save(imageBuffer);
