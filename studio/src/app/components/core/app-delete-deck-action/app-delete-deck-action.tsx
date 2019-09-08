@@ -18,7 +18,7 @@ export class AppDeleteDeckAction {
 
     private deckService: DeckService;
 
-    @Event() deckDeleted: EventEmitter<void>;
+    @Event() deckDeleted: EventEmitter<string>;
 
     constructor() {
         this.deckService = DeckService.getInstance();
@@ -61,7 +61,7 @@ export class AppDeleteDeckAction {
 
             await this.deckService.delete(this.deck.id);
 
-            this.deckDeleted.emit();
+            this.deckDeleted.emit(this.deck.id);
 
             await loading.dismiss();
 

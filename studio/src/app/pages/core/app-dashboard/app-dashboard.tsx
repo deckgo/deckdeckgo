@@ -19,7 +19,6 @@ interface DeckAndFirstSlide {
     slide: any;
     style: any;
     background: any;
-    deleted: boolean;
 }
 
 @Component({
@@ -101,8 +100,7 @@ export class AppDashboard {
                     deck: deck,
                     slide: element,
                     style: style,
-                    background: background,
-                    deleted: false
+                    background: background
                 });
             } catch (err) {
                 resolve(undefined);
@@ -166,10 +164,6 @@ export class AppDashboard {
             return;
         }
 
-        if (deck.deleted) {
-            return;
-        }
-
         const url: string = `/editor/${deck.deck.id}`;
 
         this.navService.navigate({
@@ -178,14 +172,30 @@ export class AppDashboard {
         });
     }
 
-    private displayDeckDeleted(deck: DeckAndFirstSlide): Promise<void> {
+    private removeDeletedDeck($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!deck || !deck.deck) {
+            if (!$event || !$event.detail || $event.detail === undefined || $event.detail === '') {
                 resolve();
                 return;
             }
 
-            deck.deleted = true;
+            const deckId: string = $event.detail;
+
+            if (!this.decks || this.decks.length < 0) {
+                resolve();
+                return;
+            }
+
+            const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
+                return matchDeck.deck && matchDeck.deck.id === deckId
+            });
+
+            if (index < 0) {
+                resolve();
+                return;
+            }
+
+            this.decks.splice(index, 1);
 
             await this.filterDecks(null);
 
@@ -216,8 +226,7 @@ export class AppDashboard {
         return <main class="ion-padding">
             <h1>Oh, hi! Good to have you.</h1>
             <p class="ion-padding-top">
-                <ion-router-link onClick={() => this.signIn()}>Sign in</ion-router-link>
-                to access your presentations.</p>
+                <ion-router-link onClick={() => this.signIn()}>Sign in</ion-router-link> to access to your presentations.</p>
         </main>
     }
 
@@ -249,12 +258,10 @@ export class AppDashboard {
     private renderDecksCards() {
         return (
             this.filteredDecks.map((deck: DeckAndFirstSlide) => {
-                const deckClass: string = `item ion-no-margin ${deck.deleted ? 'deleted' : ''}`;
-
-                return <ion-card class={deckClass} onClick={() => this.navigateDeck(deck)}>
+                return <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(deck)} key={deck.deck.id}>
                     {this.renderDeck(deck)}
 
-                    {this.renderDeckDeleteAction(deck)}
+                    <app-delete-deck-action deck={deck.deck} onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}></app-delete-deck-action>
                 </ion-card>;
             })
         );
@@ -268,14 +275,6 @@ export class AppDashboard {
                 {deck.slide}
                 {deck.background}
             </deckgo-deck>
-        }
-    }
-
-    private renderDeckDeleteAction(deck: DeckAndFirstSlide) {
-        if (!deck || deck.deleted) {
-            return undefined;
-        } else {
-            return <app-delete-deck-action deck={deck.deck} onDeckDeleted={() => this.displayDeckDeleted(deck)}></app-delete-deck-action>
         }
     }
 
