@@ -138,7 +138,7 @@ export class AppFeedCard {
                 {this.renderAuthor()}
             </ion-card-header>
 
-            <p class="content ion-padding">{this.description}</p>
+            <p class="content ion-padding-start ion-padding-end ion-padding-bottom">{this.description}</p>
 
             {this.renderTags()}
         </ion-card-content>
@@ -165,7 +165,7 @@ export class AppFeedCard {
 
     private renderTags() {
         if (this.tags && this.tags.length) {
-            return <app-feed-card-tags tags={this.tags} class="ion-margin"></app-feed-card-tags>;
+            return <app-feed-card-tags tags={this.tags} class="ion-margin-start ion-margin-end ion-margin-bottom"></app-feed-card-tags>;
         } else {
             return undefined;
         }
