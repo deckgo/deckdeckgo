@@ -103,6 +103,7 @@ withPresentationFiles uname deck slides act = do
       T.replace "{{DECKDECKGO_TITLE}}" (unDeckname dname) .
       T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname) .
       T.replace "{{DECKDECKGO_USERNAME}}" (unUsername uname) .
+      T.replace "{{DECKDECKGO_USER_ID}}" (unFirebaseId . unUserId $ deckOwnerId deck) .
       T.replace "{{DECKDECKGO_DECKNAME}}" (sanitizeDeckname dname) .
       -- TODO: description
       T.replace "{{DECKDECKGO_DESCRIPTION}}" "(no description given)" .
