@@ -8,7 +8,7 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](http
 
 - [Getting Started](#getting-started)
 - [Documentation](#documentation)
-- [Example](#example)
+- [Contributing](#contributing)
 - [Progressive Web Apps](#progressive-web-apps)
 - [Web Components](#web-components)
 - [Others](#others)
@@ -21,9 +21,9 @@ Start you new presentation by following the quick  👉 [Getting Started guide](
 
 The developers' documentation is available online at [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com).
 
-## Example
-   
-The [DeckDeckGo website](https://github.com/deckgo/deckdeckgo-website) is a full featured presentation developed with [DeckDeckGo].
+## Contributing
+
+Are you interested to contribute to our open source project? That would be awesome 👍 Have a look to our contributing [guide](CONTRIBUTING.md) to get started.
 
 ## Progressive Web Apps
 

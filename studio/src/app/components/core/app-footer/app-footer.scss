@@ -28,6 +28,17 @@ app-footer {
         border-bottom-color: transparent;
       }
     }
+
+    div.social {
+      ion-icon {
+        color: white;
+        font-size: 1rem;
+
+        &:not(last-of-type) {
+          margin-right: 4px;
+        }
+      }
+    }
   }
 }
 
@@ -42,6 +53,12 @@ app-footer {
         color: var(--ion-color-medium);
 
         &:hover, &.active {
+          color: var(--ion-color-medium);
+        }
+      }
+
+      div.social {
+        ion-icon {
           color: var(--ion-color-medium);
         }
       }
