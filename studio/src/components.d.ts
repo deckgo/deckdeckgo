@@ -39,8 +39,15 @@ export namespace Components {
   interface AppCreateSlide {}
   interface AppCustomImages {}
   interface AppDashboard {}
+  interface AppDeckDelete {
+    'deckName': string;
+    'published': string;
+  }
   interface AppDeckOrSlide {
     'deckOrSlide': boolean;
+  }
+  interface AppDeleteDeckAction {
+    'deck': Deck;
   }
   interface AppDeveloper {}
   interface AppEditor {
@@ -202,10 +209,22 @@ declare global {
     new (): HTMLAppDashboardElement;
   };
 
+  interface HTMLAppDeckDeleteElement extends Components.AppDeckDelete, HTMLStencilElement {}
+  var HTMLAppDeckDeleteElement: {
+    prototype: HTMLAppDeckDeleteElement;
+    new (): HTMLAppDeckDeleteElement;
+  };
+
   interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
   var HTMLAppDeckOrSlideElement: {
     prototype: HTMLAppDeckOrSlideElement;
     new (): HTMLAppDeckOrSlideElement;
+  };
+
+  interface HTMLAppDeleteDeckActionElement extends Components.AppDeleteDeckAction, HTMLStencilElement {}
+  var HTMLAppDeleteDeckActionElement: {
+    prototype: HTMLAppDeleteDeckActionElement;
+    new (): HTMLAppDeleteDeckActionElement;
   };
 
   interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
@@ -499,7 +518,9 @@ declare global {
     'app-create-slide': HTMLAppCreateSlideElement;
     'app-custom-images': HTMLAppCustomImagesElement;
     'app-dashboard': HTMLAppDashboardElement;
+    'app-deck-delete': HTMLAppDeckDeleteElement;
     'app-deck-or-slide': HTMLAppDeckOrSlideElement;
+    'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
@@ -575,9 +596,17 @@ declare namespace LocalJSX {
   }
   interface AppCustomImages extends JSXBase.HTMLAttributes<HTMLAppCustomImagesElement> {}
   interface AppDashboard extends JSXBase.HTMLAttributes<HTMLAppDashboardElement> {}
+  interface AppDeckDelete extends JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement> {
+    'deckName'?: string;
+    'published'?: string;
+  }
   interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {
     'deckOrSlide'?: boolean;
     'onApplyTo'?: (event: CustomEvent<boolean>) => void;
+  }
+  interface AppDeleteDeckAction extends JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement> {
+    'deck'?: Deck;
+    'onDeckDeleted'?: (event: CustomEvent<void>) => void;
   }
   interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
   interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
@@ -712,7 +741,9 @@ declare namespace LocalJSX {
     'app-create-slide': AppCreateSlide;
     'app-custom-images': AppCustomImages;
     'app-dashboard': AppDashboard;
+    'app-deck-delete': AppDeckDelete;
     'app-deck-or-slide': AppDeckOrSlide;
+    'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
