@@ -5,8 +5,8 @@ import * as admin from 'firebase-admin';
 
 import * as puppeteer from 'puppeteer';
 
-import {DeckData} from '../model/deck';
-import {Resources} from '../utils/resources';
+import {DeckData} from '../../model/deck';
+import {Resources} from '../../utils/resources';
 
 export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
     const newValue: DeckData = change.after.data() as DeckData;

@@ -5,6 +5,7 @@ const app: admin.app.App = admin.initializeApp();
 app.firestore().settings({timestampsInSnapshots: true});
 
 import {applyWatchDeckWrite} from './watch/watch-deck-write';
+import {applyWatchUserDelete} from './watch/watch-user-delete';
 
 const runtimeOpts = {
     timeoutSeconds: 120,
@@ -12,3 +13,5 @@ const runtimeOpts = {
 };
 
 export const watchDeckWrite = functions.runWith(runtimeOpts).firestore.document('decks/{deckId}').onWrite(applyWatchDeckWrite);
+
+export const watchDeleteUser = functions.auth.user().onDelete(applyWatchUserDelete);

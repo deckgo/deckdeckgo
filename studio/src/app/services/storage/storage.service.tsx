@@ -4,16 +4,16 @@ import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 
 import {take} from 'rxjs/operators';
 
-import {ApiUser} from '../../models/api/api.user';
+import {AuthUser} from '../../models/auth/auth.user';
 
 import {ErrorService} from '../core/error/error.service';
-import {ApiUserService} from '../api/user/api.user.service';
+import {AuthService} from '../auth/auth.service';
 
 export class StorageService {
 
     private static instance: StorageService;
 
-    private apiUserService: ApiUserService;
+    private authService: AuthService;
     private errorService: ErrorService;
 
     maxQueryResults: number = 20;
@@ -21,7 +21,7 @@ export class StorageService {
     private constructor() {
         // Private constructor, singleton
         this.errorService = ErrorService.getInstance();
-        this.apiUserService = ApiUserService.getInstance();
+        this.authService = AuthService.getInstance();
     }
 
     static getInstance() {
@@ -34,8 +34,8 @@ export class StorageService {
     uploadImage(image: File, folder: string, maxSize: number): Promise<StorageFile> {
         return new Promise<StorageFile>((resolve) => {
             try {
-                this.apiUserService.watch().pipe(take(1)).subscribe(async (apiUser: ApiUser) => {
-                    if (!apiUser || !apiUser.username || apiUser.username === '' || apiUser.username === undefined) {
+                this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
+                    if (!authUser || !authUser.uid || authUser.uid === '' || authUser.uid === undefined) {
                         this.errorService.error('Not logged in.');
                         resolve();
                         return;
@@ -53,7 +53,7 @@ export class StorageService {
                         return;
                     }
 
-                    const ref: Reference = firebase.storage().ref(`${apiUser.username}/assets/${folder}/${image.name}`);
+                    const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${folder}/${image.name}`);
 
                     await ref.put(image);
 
@@ -72,14 +72,14 @@ export class StorageService {
     getImages(next: string | null): Promise<StorageFilesList | null> {
         return new Promise<StorageFilesList | null>((resolve) => {
             try {
-                this.apiUserService.watch().pipe(take(1)).subscribe(async (apiUser: ApiUser) => {
-                    if (!apiUser || !apiUser.username || apiUser.username === '' || apiUser.username === undefined) {
+                this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
+                    if (!authUser || !authUser.uid || authUser.uid === '' || authUser.uid === undefined) {
                         this.errorService.error('Not logged in.');
                         resolve(null);
                         return;
                     }
 
-                    const ref = firebase.storage().ref(`${apiUser.username}/assets/images/`);
+                    const ref = firebase.storage().ref(`${authUser.uid}/assets/images/`);
 
                     let options: ListOptions = {
                         maxResults: this.maxQueryResults
