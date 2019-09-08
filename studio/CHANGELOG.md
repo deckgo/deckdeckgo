@@ -12,6 +12,7 @@
 * add a contributing documentation page ([#304](https://github.com/deckgo/deckdeckgo/issues/304))
 * in studio and starter, align text center ([#293](https://github.com/deckgo/deckdeckgo/issues/293))
 * caret color ([#285](https://github.com/deckgo/deckdeckgo/issues/285))
+* improve tags style ([#324](https://github.com/deckgo/deckdeckgo/issues/324))
 
 ### Fix
 
