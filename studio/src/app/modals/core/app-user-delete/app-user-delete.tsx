@@ -1,6 +1,6 @@
 import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
-import {UserUtils} from '../../utils/core/user-utils';
-import {NavDirection, NavService} from '../../services/core/nav/nav.service';
+import {UserUtils} from '../../../utils/core/user-utils';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 
 @Component({
     tag: 'app-user-delete',

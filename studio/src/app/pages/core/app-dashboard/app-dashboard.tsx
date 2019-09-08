@@ -159,6 +159,13 @@ export class AppDashboard {
         })
     }
 
+    private navigateDeck(url: string) {
+        this.navService.navigate({
+            url: url,
+            direction: NavDirection.ROOT
+        });
+    }
+
     render() {
         return [
             <app-navigation presentation={true}></app-navigation>,
@@ -217,8 +224,10 @@ export class AppDashboard {
             this.filteredDecks.map((deck: DeckAndFirstSlide) => {
                 const url: string = `/editor/${deck.deck.id}`;
 
-                return <ion-card class="item ion-no-margin" href={url} routerDirection="root">
+                return <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(url)}>
                     {this.renderDeck(deck)}
+
+                    <app-delete-deck-action deck={deck.deck}></app-delete-deck-action>
                 </ion-card>;
             })
         );

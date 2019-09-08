@@ -56,8 +56,16 @@ app-dashboard {
         width: 100%;
         height: 24vh;
 
+        cursor: pointer;
+
         @media screen and (min-width: 540px) {
           height: 38vh;
+        }
+
+        app-delete-deck-action {
+          position: absolute;
+          top: 0;
+          right: 0;
         }
       }
 
