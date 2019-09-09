@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.3-1"></a>
+# 1.0.0-beta.3-1 (2019-09-09)
+
+### Fix
+
+* workaround to resize `ion-app`
+* highlight lines of code in Chrome
+
 <a name="1.0.0-beta.3"></a>
 # 1.0.0-beta.3 (2019-09-08)
 
