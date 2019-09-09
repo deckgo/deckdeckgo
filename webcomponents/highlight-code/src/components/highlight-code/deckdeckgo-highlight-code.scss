@@ -40,7 +40,7 @@ div.deckgo-highlight-code-container {
 
   width: var(--deckgo-highlight-code-container-width);
   height: var(--deckgo-highlight-code-container-height);
-  display: var(--deckgo-highlight-code-container-display);
+  display: var(--deckgo-highlight-code-container-display, block);
   justify-content: var(--deckgo-highlight-code-container-justify-content);
   flex-direction: var(--deckgo-highlight-code-container-flex-direction);
   align-items: var(--deckgo-highlight-code-container-align-items);
