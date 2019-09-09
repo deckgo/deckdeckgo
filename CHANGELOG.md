@@ -1,3 +1,13 @@
+<a name="1.0.0-rc.12-1"></a>
+# [1.0.0-rc.12-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12...v1.0.0-12-1) (2019-09-09)
+
+### Applications
+* studio: v1.0.0-beta.3-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Web Components
+* highlight-code: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+* slide-gif: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/gif/CHANGELOG.md))
+
 <a name="1.0.0-rc.12"></a>
 # [1.0.0-rc.12](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11-2...v1.0.0-12) (2019-09-08)
 
