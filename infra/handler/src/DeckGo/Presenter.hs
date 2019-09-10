@@ -101,6 +101,7 @@ withPresentationFiles uname deck slides act = do
       interpol
     interpol =
       T.replace "{{DECKDECKGO_TITLE}}" (unDeckname dname) .
+      T.replace "{{DECKDECKGO_TITLE_SHORT}}" (T.take 12 $ unDeckname dname) .
       T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname) .
       T.replace "{{DECKDECKGO_USERNAME}}" (unUsername uname) .
       T.replace "{{DECKDECKGO_USER_ID}}" (unFirebaseId . unUserId $ deckOwnerId deck) .
