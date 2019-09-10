@@ -38,7 +38,7 @@ export class AppFeedCardTags {
                     return (
                         <div class="chips">
                             {this.renderCloseTags(tag)}
-                            <ion-label>{tag}</ion-label>
+                            <ion-label>{this.editable ? '' : '#'}{tag}</ion-label>
                         </div>
                     )
                 })

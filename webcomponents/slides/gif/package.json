@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-gif",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.1-1",
   "description": "The Gif template lets you show a fullscreen gif referenced by a simple local or remote url",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

@@ -33,7 +33,7 @@ div.deckgo-gif {
 
   div.deckgo-gif {
     width: var(--slide-width);
-    height: var(--slide-height);
+    height: var(--slide-gif-height, 100vh);
 
     --width: var(--slide-width);
 

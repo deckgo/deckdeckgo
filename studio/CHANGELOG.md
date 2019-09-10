@@ -1,17 +1,26 @@
+<a name="1.0.0-beta.3-1"></a>
+# 1.0.0-beta.3-1 (2019-09-09)
+
+### Fix
+
+* workaround to resize `ion-app`
+* highlight lines of code in Chrome
+
 <a name="1.0.0-beta.3"></a>
 # 1.0.0-beta.3 (2019-09-08)
 
 ### Breaking changes
 
-* use uid as storage root folder instead of username (as the username could change) ([#310](https://github.com/deckgo/deckdeckgo/issues/310))
+* use uid as storage root folder instead of username (as the username could change) ([#310](https://github.com/deckgo/deckdeckgo/issues/310) and [#319](https://github.com/deckgo/deckdeckgo/issues/319))
 
 ### Features
 
-* on the dashboard, add new actions to delete presentations on demand ([#314](https://github.com/deckgo/deckdeckgo/issues/314))
+* on the dashboard, add new actions to delete presentations on demand ([#314](https://github.com/deckgo/deckdeckgo/issues/314) and [#322](https://github.com/deckgo/deckdeckgo/issues/322))
 * delete decks, slides and storage when user delete his/her account ([#310](https://github.com/deckgo/deckdeckgo/issues/310))
 * add a contributing documentation page ([#304](https://github.com/deckgo/deckdeckgo/issues/304))
 * in studio and starter, align text center ([#293](https://github.com/deckgo/deckdeckgo/issues/293))
 * caret color ([#285](https://github.com/deckgo/deckdeckgo/issues/285))
+* improve tags style ([#324](https://github.com/deckgo/deckdeckgo/issues/324))
 
 ### Fix
 

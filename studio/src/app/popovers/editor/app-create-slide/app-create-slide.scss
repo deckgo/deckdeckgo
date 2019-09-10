@@ -62,6 +62,13 @@ app-create-slide {
 
     deckgo-slide-gif, deckgo-slide-author {
       --slide-width: 216px;
+    }
+
+    deckgo-slide-gif, deckgo-slide-author {
+      --slide-gif-height: 110px;
+    }
+
+    deckgo-slide-author {
       --slide-height: 110px;
     }
 

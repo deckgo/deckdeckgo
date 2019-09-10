@@ -606,7 +606,7 @@ declare namespace LocalJSX {
   }
   interface AppDeleteDeckAction extends JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement> {
     'deck'?: Deck;
-    'onDeckDeleted'?: (event: CustomEvent<void>) => void;
+    'onDeckDeleted'?: (event: CustomEvent<string>) => void;
   }
   interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
   interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
