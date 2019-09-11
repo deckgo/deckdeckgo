@@ -3,6 +3,9 @@ import {ItemReorderEventDetail} from '@ionic/core';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
+import {firebase} from '@firebase/app';
+import '@firebase/firestore';
+
 import {AuthUser} from '../../../../models/auth/auth.user';
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
 import {Slide, SlideAttributes, SlideData, SlideTemplate} from '../../../../models/data/slide';
