@@ -11,13 +11,15 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface DeckgoSlideBigImg {
     'afterSwipe': () => Promise<void>;
+    'axis': 'x' | 'y';
     'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'hideContent': () => Promise<void>;
+    'imgDivisions': string;
+    'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
-    'src': string;
   }
 }
 
@@ -36,10 +38,12 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlideBigImg extends JSXBase.HTMLAttributes<HTMLDeckgoSlideBigImgElement> {
+    'axis'?: 'x' | 'y';
     'customActions'?: boolean;
     'customBackground'?: boolean;
+    'imgDivisions'?: string;
+    'imgSrc'?: string;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
-    'src'?: string;
   }
 
   interface IntrinsicElements {

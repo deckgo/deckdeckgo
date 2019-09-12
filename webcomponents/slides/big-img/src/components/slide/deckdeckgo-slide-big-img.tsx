@@ -1,6 +1,16 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Method, Prop, h, Host } from '@stencil/core';
 
-import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, beforeSwipe, lazyLoadContent, hideAllRevealElements, showAllRevealElements} from '@deckdeckgo/slide-utils';
+import {
+  DeckdeckgoSlide,
+  hideLazyLoadImages,
+  afterSwipe,
+  beforeSwipe,
+  lazyLoadContent,
+  hideAllRevealElements,
+  showAllRevealElements
+} from '@deckdeckgo/slide-utils';
+
+const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 @Component({
   tag: 'deckgo-slide-big-img',
@@ -8,27 +18,85 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, beforeSwipe, lazyLoadCo
   shadow: true
 })
 export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
-
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
-  @Prop() src: string = '';
+  @Prop({ reflectToAttr: true }) customActions: boolean = false;
+  @Prop({ reflectToAttr: true }) customBackground: boolean = false;
+  @Prop() imgSrc: string = '';
+  @Prop() imgDivisions: string = '';
+  @Prop() axis: 'x' | 'y' = 'x';
 
-  private image: HTMLElement;
+  private crop: HTMLElement;
+  private bigImg: HTMLElement;
+  private currentStep: number = -1;
+
+  private get divisions(): number[] {
+    return this.imgDivisions.split(';').map(str => {
+      const num = parseInt(str);
+      if (isNaN(num)) {
+        return 0;
+      }
+      return num;
+    });
+  }
 
   async componentDidLoad() {
-    this.image = this.el.shadowRoot.querySelector('.image');
-    this.image.style.backgroundImage = `url(${this.src})`;
+    this.crop = this.el.shadowRoot.querySelector('.crop');
+    this.bigImg = this.el.shadowRoot.querySelector('.big-image');
+    this.bigImg.style[this.axis == 'x' ? 'height' : 'width'] = '100%';
+
+    this.next();
 
     this.slideDidLoad.emit();
   }
 
+  private next() {
+    this.prevNext(true);
+  }
+
+  private prev() {
+    this.prevNext(false);
+  }
+
+  private prevNext(next: boolean) {
+    this.currentStep = this.currentStep + (next ? 1 : -1);
+    const previousSize = this.currentStep === 0 ? 0 : this.divisions[this.currentStep - 1];
+    const heightOrWidth = this.axis === 'x' ? 'width' : 'height';
+    const clientHeightOrWidth = this.bigImg[`client${capitalize(heightOrWidth)}`];
+    const naturalHeightOrWidht = this.bigImg[`natural${capitalize(heightOrWidth)}`];
+    const sizeFactor = clientHeightOrWidth / naturalHeightOrWidht;
+    this.crop.style[heightOrWidth] = (this.divisions[this.currentStep] - previousSize) * sizeFactor + 'px';
+    this.bigImg.style[`margin${this.axis === 'x' ? 'Left' : 'Top'}`] = -(previousSize * sizeFactor) + 'px';
+  }
+
+  private isEnd(): boolean {
+    return this.currentStep === this.divisions.length;
+  }
+
+  private isBeginning(): boolean {
+    return this.currentStep === 0;
+  }
+
   @Method()
   beforeSwipe(enter: boolean, reveal: boolean): Promise<boolean> {
-    return beforeSwipe(this.el, enter, reveal);
+    return new Promise<boolean>(async resolve => {
+      const couldSwipe: boolean = enter ? this.isEnd() : this.isBeginning();
+
+      if (couldSwipe) {
+        resolve(true);
+        return;
+      }
+
+      if (enter) {
+        await this.next();
+      } else {
+        await this.prev();
+      }
+
+      resolve(false);
+    });
   }
 
   @Method()
@@ -52,11 +120,14 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   }
 
   render() {
-    return <Host class={{'deckgo-slide-container': true}}>
-    <div class="deckgo-slide">
-      <div class="image"></div>
-    </div>
-  </Host>;
+    return (
+      <Host class={{ 'deckgo-slide-container': true }}>
+        <div class="deckgo-slide">
+          <div class="crop">
+            <img class="big-image" data-src={this.imgSrc} alt={} />
+          </div>
+        </div>
+      </Host>
+    );
   }
-
 }
