@@ -75,7 +75,8 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
     const clientHeightOrWidth = this.bigImg[`client${capitalize(heightOrWidth)}`];
     const naturalHeightOrWidht = this.bigImg[`natural${capitalize(heightOrWidth)}`];
     const sizeFactor = clientHeightOrWidth / naturalHeightOrWidht;
-    this.crop.style[heightOrWidth] = (this.divisions[this.currentStep] - previousSize) * sizeFactor + 'px';
+    const currentEnd = this.isEnd() ? naturalHeightOrWidht : this.divisions[this.currentStep];
+    this.crop.style[heightOrWidth] = (currentEnd - previousSize) * sizeFactor + 'px';
     this.bigImg.style[`margin${this.axis === 'x' ? 'Left' : 'Top'}`] = -(previousSize * sizeFactor) + 'px';
   }
 
