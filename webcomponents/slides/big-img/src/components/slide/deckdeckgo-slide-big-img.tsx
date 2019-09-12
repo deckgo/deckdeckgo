@@ -59,25 +59,33 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   }
 
   private prevNext(next: boolean) {
+    const axisDimension = this.axis === 'x' ? 'width' : 'height';
+    const perpendicularAxisDimension = this.axis === 'y' ? 'width' : 'height';
+
     if (next && this.currentStep === -1) {
-      this.bigImg.style[this.axis == 'x' ? 'height' : 'width'] = '100%';
+      this.bigImg.style[perpendicularAxisDimension] = '100%';
       this.bigImg.classList.add('cropped');
     }
     if (!next && this.currentStep === 0) {
       this.bigImg.classList.remove('cropped');
-      this.bigImg.style[this.axis == 'x' ? 'height' : 'width'] = '';
+      this.bigImg.style[perpendicularAxisDimension] = '';
       this.crop.style.height = '';
       this.crop.style.width = '';
     }
+
     this.currentStep = this.currentStep + (next ? 1 : -1);
-    const previousSize = this.currentStep === 0 ? 0 : this.divisions[this.currentStep - 1];
-    const heightOrWidth = this.axis === 'x' ? 'width' : 'height';
-    const clientHeightOrWidth = this.bigImg[`client${capitalize(heightOrWidth)}`];
-    const naturalHeightOrWidht = this.bigImg[`natural${capitalize(heightOrWidth)}`];
-    const sizeFactor = clientHeightOrWidth / naturalHeightOrWidht;
-    const currentEnd = this.isEnd() ? naturalHeightOrWidht : this.divisions[this.currentStep];
-    this.crop.style[heightOrWidth] = (currentEnd - previousSize) * sizeFactor + 'px';
-    this.bigImg.style[`margin${this.axis === 'x' ? 'Left' : 'Top'}`] = -(previousSize * sizeFactor) + 'px';
+
+    const previousNaturalDivision = this.currentStep === 0 ? 0 : this.divisions[this.currentStep - 1];
+
+    const imgClientLength = this.bigImg[`client${capitalize(axisDimension)}`];
+    const imgNaturalLength = this.bigImg[`natural${capitalize(axisDimension)}`];
+
+    const lengthFactor = imgClientLength / imgNaturalLength;
+
+    const currentNaturalDivision = this.isEnd() ? imgNaturalLength : this.divisions[this.currentStep];
+
+    this.crop.style[axisDimension] = (currentNaturalDivision - previousNaturalDivision) * lengthFactor + 'px';
+    this.bigImg.style[`margin${this.axis === 'x' ? 'Left' : 'Top'}`] = -(previousNaturalDivision * lengthFactor) + 'px';
   }
 
   private isEnd(): boolean {
