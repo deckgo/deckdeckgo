@@ -4,7 +4,6 @@ import {
   DeckdeckgoSlide,
   hideLazyLoadImages,
   afterSwipe,
-  beforeSwipe,
   lazyLoadContent,
   hideAllRevealElements,
   showAllRevealElements
@@ -43,6 +42,8 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   }
 
   async componentDidLoad() {
+    await hideLazyLoadImages(this.el);
+
     this.crop = this.el.shadowRoot.querySelector('.crop');
     this.bigImg = this.el.shadowRoot.querySelector('.big-image');
 
@@ -87,7 +88,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   }
 
   @Method()
-  beforeSwipe(enter: boolean, reveal: boolean): Promise<boolean> {
+  beforeSwipe(enter: boolean): Promise<boolean> {
     return new Promise<boolean>(async resolve => {
       const couldSwipe: boolean = !this.divisions[0] || (enter ? this.isEnd() : this.isBeginning());
 
@@ -131,7 +132,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
       <Host class={{ 'deckgo-slide-container': true }}>
         <div class="deckgo-slide">
           <div class="crop">
-            <img class="big-image" data-src={this.imgSrc} alt={} />
+            <img class="big-image" data-src={this.imgSrc} />
           </div>
         </div>
       </Host>

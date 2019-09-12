@@ -12,7 +12,7 @@ export namespace Components {
   interface DeckgoSlideBigImg {
     'afterSwipe': () => Promise<void>;
     'axis': 'x' | 'y';
-    'beforeSwipe': (enter: boolean, reveal: boolean) => Promise<boolean>;
+    'beforeSwipe': (enter: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'hideContent': () => Promise<void>;
