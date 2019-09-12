@@ -45,9 +45,6 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   async componentDidLoad() {
     this.crop = this.el.shadowRoot.querySelector('.crop');
     this.bigImg = this.el.shadowRoot.querySelector('.big-image');
-    this.bigImg.style[this.axis == 'x' ? 'height' : 'width'] = '100%';
-
-    this.next();
 
     this.slideDidLoad.emit();
   }
@@ -61,6 +58,16 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   }
 
   private prevNext(next: boolean) {
+    if (next && this.currentStep === -1) {
+      this.bigImg.style[this.axis == 'x' ? 'height' : 'width'] = '100%';
+      this.bigImg.classList.add('cropped');
+    }
+    if (!next && this.currentStep === 0) {
+      this.bigImg.classList.remove('cropped');
+      this.bigImg.style[this.axis == 'x' ? 'height' : 'width'] = '';
+      this.crop.style.height = '';
+      this.crop.style.width = '';
+    }
     this.currentStep = this.currentStep + (next ? 1 : -1);
     const previousSize = this.currentStep === 0 ? 0 : this.divisions[this.currentStep - 1];
     const heightOrWidth = this.axis === 'x' ? 'width' : 'height';
@@ -76,13 +83,13 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   }
 
   private isBeginning(): boolean {
-    return this.currentStep === 0;
+    return this.currentStep === -1;
   }
 
   @Method()
   beforeSwipe(enter: boolean, reveal: boolean): Promise<boolean> {
     return new Promise<boolean>(async resolve => {
-      const couldSwipe: boolean = enter ? this.isEnd() : this.isBeginning();
+      const couldSwipe: boolean = !this.divisions[0] || (enter ? this.isEnd() : this.isBeginning());
 
       if (couldSwipe) {
         resolve(true);
