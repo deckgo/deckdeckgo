@@ -62,18 +62,18 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
     const axisDimension = this.axis === 'x' ? 'width' : 'height';
     const perpendicularAxisDimension = this.axis === 'y' ? 'width' : 'height';
 
-    if (next && this.currentStep === -1) {
+    this.currentStep = this.currentStep + (next ? 1 : -1);
+    
+    if (this.currentStep !== -1 ) {
+      this.crop.style[perpendicularAxisDimension] = '100%';
       this.bigImg.style[perpendicularAxisDimension] = '100%';
       this.bigImg.classList.add('cropped');
-    }
-    if (!next && this.currentStep === 0) {
+    } else {
       this.bigImg.classList.remove('cropped');
       this.bigImg.style[perpendicularAxisDimension] = '';
-      this.crop.style.height = '';
-      this.crop.style.width = '';
+      this.crop.style[axisDimension] = '';
+      this.crop.style[perpendicularAxisDimension] = '';
     }
-
-    this.currentStep = this.currentStep + (next ? 1 : -1);
 
     const previousNaturalDivision = this.currentStep === 0 ? 0 : this.divisions[this.currentStep - 1];
 
