@@ -29,7 +29,7 @@ Are you interested to contribute to our open source project? That would be aweso
 
 | Project | Version | Online | Links |
 | ------- | ------- | ------- |:-----:|
-| **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.1&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
+| **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.1-1&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Remote control** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.1&color=success)](https://deckdeckgo.app) | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
 | **Studio** | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.3-1&color=orange) | | [`README.md`](studio/README.md)
 | **Website** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.1&color=success)](https://deckdeckgo.com) | [https://deckdeckgo.com](https://deckdeckgo.com) | [`Repo`](https://github.com/deckgo/deckdeckgo-website/)
