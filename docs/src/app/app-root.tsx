@@ -37,6 +37,7 @@ export class AppRoot {
           <ion-route url="/slides/content" component="app-slide-content"/>
           <ion-route url="/slides/split" component="app-slide-split"/>
           <ion-route url="/slides/gif" component="app-slide-gif"/>
+          <ion-route url="/slides/bigimg" component="app-slide-big-img"/>
           <ion-route url="/slides/chart" component="app-slide-chart"/>
           <ion-route url="/slides/youtube" component="app-slide-youtube"/>
           <ion-route url="/slides/code" component="app-slide-code"/>
@@ -105,6 +106,7 @@ export class AppRoot {
                   <ion-item detail={false} href="/slides/content" routerDirection="forward"><ion-label>Content</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/split" routerDirection="forward"><ion-label>Split</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/gif" routerDirection="forward"><ion-label>Gif</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/bigimg" routerDirection="forward"><ion-label>Big Image</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/chart" routerDirection="forward"><ion-label>Chart</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/youtube" routerDirection="forward"><ion-label>Youtube</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/code" routerDirection="forward"><ion-label>Code</ion-label></ion-item>

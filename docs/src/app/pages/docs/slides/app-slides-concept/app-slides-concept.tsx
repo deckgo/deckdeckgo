@@ -98,6 +98,19 @@ export class AppSlidesConcept {
 </div>
 
 <ul>
+<li>Slide: <a href="/slides/bigimg">Big Image</a></li>
+</ul>
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-big-img
+             img-src="https://raw.githubusercontent.com/noelmace/deckdeckgo/big-img/webcomponents/slides/big-img/showcase/big-deckdeckgo.jpg"
+             img-divisions="500;1100;1700"
+             axis="y">
+    </deckgo-slide-big-img>
+  </deckgo-deck>
+</div>
+
+<ul>
 <li>Slide: <a href="/slides/chart">Chart</a></li>
 </ul>
 <div class="container ion-margin">
