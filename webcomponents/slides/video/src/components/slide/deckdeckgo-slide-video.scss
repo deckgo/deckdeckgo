@@ -1,0 +1,12 @@
+@import "./deckdeckgo-slide";
+
+div.deckgo-slide {
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  margin: 0 0;
+
+  ::slotted(video) {
+    height: 100%;
+  }
+}
