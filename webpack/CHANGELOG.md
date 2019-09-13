@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-09-13)
+
+### Features
+
+* path to markdown input file optional respectively could be specified. default remains `src/index.md` ([#309](https://github.com/deckgo/deckdeckgo/issues/309))
+
 <a name="1.0.0-rc.1-2"></a>
 # 1.0.0-rc.1-2 (2019-09-02)
 
