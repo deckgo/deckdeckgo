@@ -20,6 +20,7 @@ export namespace Components {
     'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
+    'reverse': boolean;
   }
 }
 
@@ -44,6 +45,7 @@ declare namespace LocalJSX {
     'imgDivisions'?: string;
     'imgSrc'?: string;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'reverse'?: boolean;
   }
 
   interface IntrinsicElements {

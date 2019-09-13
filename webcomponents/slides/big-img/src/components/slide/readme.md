@@ -14,6 +14,7 @@
 | `customBackground` | `custom-background` |             | `boolean`    | `false` |
 | `imgDivisions`     | `img-divisions`     |             | `string`     | `''`    |
 | `imgSrc`           | `img-src`           |             | `string`     | `''`    |
+| `reverse`          | `reverse`           |             | `boolean`    | `false` |
 
 
 ## Events

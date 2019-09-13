@@ -26,6 +26,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   @Prop() imgSrc: string = '';
   @Prop() imgDivisions: string = '';
   @Prop() axis: 'x' | 'y' = 'x';
+  @Prop() reverse: boolean = false;
 
   private crop: HTMLElement;
   private bigImg: HTMLElement;
@@ -63,45 +64,52 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
     const perpendicularAxisDimension = this.axis === 'y' ? 'width' : 'height';
     const axisMarginStart = `margin${this.axis === 'x' ? 'Left' : 'Top'}`;
 
-    this.currentStep = this.currentStep + (next ? 1 : -1);
-
-    if (this.currentStep !== -1 ) {
-      this.crop.style[perpendicularAxisDimension] = '100%';
-      this.bigImg.style[perpendicularAxisDimension] = '100%';
-      this.bigImg.classList.add('cropped');
+    if (this.currentStep === -1 && next) {
+      this.currentStep = this.reverse ? this.divisions.length : 0;
+    } else if (this.currentStep === this.divisions.length && !next && this.reverse) {
+      this.currentStep = -1;
     } else {
+      this.currentStep = this.currentStep + (this.reverse ? -1 : 1) * (next ? 1 : -1);
+    }
+
+    if (this.currentStep === -1) {
       this.bigImg.classList.remove('cropped');
+      this.bigImg.style[axisMarginStart] = '';
       this.bigImg.style[perpendicularAxisDimension] = '';
       this.crop.style[axisDimension] = '';
       this.crop.style[perpendicularAxisDimension] = '';
-    }
+    } else {
+      this.crop.style[perpendicularAxisDimension] = '100%';
+      this.bigImg.style[perpendicularAxisDimension] = '100%';
+      this.bigImg.classList.add('cropped');
 
-    const previousNaturalDivision = this.currentStep === 0 ? 0 : this.divisions[this.currentStep - 1];
+      const previousNaturalDivision = this.currentStep === 0 ? 0 : this.divisions[this.currentStep - 1];
 
-    const calcCrop = () => {
-      const imgClientLength = this.bigImg[`client${capitalize(axisDimension)}`];
-      const imgNaturalLength = this.bigImg[`natural${capitalize(axisDimension)}`];
-      const lengthFactor = imgClientLength / imgNaturalLength;
-      const currentNaturalDivision = this.isEnd() ? imgNaturalLength : this.divisions[this.currentStep];
-      return {
-        length: (currentNaturalDivision - previousNaturalDivision) * lengthFactor,
-        shift: -(previousNaturalDivision * lengthFactor)
+      const calcCrop = () => {
+        const imgClientLength = this.bigImg[`client${capitalize(axisDimension)}`];
+        const imgNaturalLength = this.bigImg[`natural${capitalize(axisDimension)}`];
+        const lengthFactor = imgClientLength / imgNaturalLength;
+        const currentNaturalDivision = this.currentStep === this.divisions.length ? imgNaturalLength : this.divisions[this.currentStep];
+        return {
+          length: (currentNaturalDivision - previousNaturalDivision) * lengthFactor,
+          shift: -(previousNaturalDivision * lengthFactor)
+        };
+      };
+
+      let crop = calcCrop();
+
+      if (crop.length > this.el.shadowRoot.querySelector('.deckgo-slide').clientHeight) {
+        this.crop.style[perpendicularAxisDimension] = '';
+        crop = calcCrop();
       }
+
+      this.crop.style[axisDimension] = crop.length + 'px';
+      this.bigImg.style[axisMarginStart] = crop.shift + 'px';
     }
-
-    let crop = calcCrop();
-
-    if (crop.length > this.el.shadowRoot.querySelector('.deckgo-slide').clientHeight) {
-      this.crop.style[perpendicularAxisDimension] = '';
-      crop = calcCrop();
-    }
-
-    this.crop.style[axisDimension] = crop.length + 'px';
-    this.bigImg.style[axisMarginStart] = crop.shift + 'px';
   }
 
   private isEnd(): boolean {
-    return this.currentStep === this.divisions.length;
+    return this.reverse ? this.currentStep === 0 : this.currentStep === this.divisions.length;
   }
 
   private isBeginning(): boolean {
