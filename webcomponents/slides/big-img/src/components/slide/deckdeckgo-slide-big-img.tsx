@@ -61,9 +61,10 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   private prevNext(next: boolean) {
     const axisDimension = this.axis === 'x' ? 'width' : 'height';
     const perpendicularAxisDimension = this.axis === 'y' ? 'width' : 'height';
+    const axisMarginStart = `margin${this.axis === 'x' ? 'Left' : 'Top'}`;
 
     this.currentStep = this.currentStep + (next ? 1 : -1);
-    
+
     if (this.currentStep !== -1 ) {
       this.crop.style[perpendicularAxisDimension] = '100%';
       this.bigImg.style[perpendicularAxisDimension] = '100%';
@@ -77,15 +78,26 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
 
     const previousNaturalDivision = this.currentStep === 0 ? 0 : this.divisions[this.currentStep - 1];
 
-    const imgClientLength = this.bigImg[`client${capitalize(axisDimension)}`];
-    const imgNaturalLength = this.bigImg[`natural${capitalize(axisDimension)}`];
+    const calcCrop = () => {
+      const imgClientLength = this.bigImg[`client${capitalize(axisDimension)}`];
+      const imgNaturalLength = this.bigImg[`natural${capitalize(axisDimension)}`];
+      const lengthFactor = imgClientLength / imgNaturalLength;
+      const currentNaturalDivision = this.isEnd() ? imgNaturalLength : this.divisions[this.currentStep];
+      return {
+        length: (currentNaturalDivision - previousNaturalDivision) * lengthFactor,
+        shift: -(previousNaturalDivision * lengthFactor)
+      }
+    }
 
-    const lengthFactor = imgClientLength / imgNaturalLength;
+    let crop = calcCrop();
 
-    const currentNaturalDivision = this.isEnd() ? imgNaturalLength : this.divisions[this.currentStep];
+    if (crop.length > this.el.shadowRoot.querySelector('.deckgo-slide').clientHeight) {
+      this.crop.style[perpendicularAxisDimension] = '';
+      crop = calcCrop();
+    }
 
-    this.crop.style[axisDimension] = (currentNaturalDivision - previousNaturalDivision) * lengthFactor + 'px';
-    this.bigImg.style[`margin${this.axis === 'x' ? 'Left' : 'Top'}`] = -(previousNaturalDivision * lengthFactor) + 'px';
+    this.crop.style[axisDimension] = crop.length + 'px';
+    this.bigImg.style[axisMarginStart] = crop.shift + 'px';
   }
 
   private isEnd(): boolean {
