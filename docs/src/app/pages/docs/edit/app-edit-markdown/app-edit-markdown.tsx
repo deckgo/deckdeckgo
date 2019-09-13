@@ -62,7 +62,6 @@ export class AppEditMarkdown {
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-slide-title&gt;{'\n'}  &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'}  &lt;div slot=&quot;content&quot;&gt;{'\n'}    &lt;p&gt;Hello World 🚀&lt;&#47;p&gt;{'\n'}  &lt;&#47;div&gt;{'\n'}  &lt;div slot=&quot;notes&quot;&gt;{'\n'}    I should not forget to think about that during my talk{'\n'}{'\n'}    ...and say hello to mum{'\n'}  &lt;&#47;div&gt;{'\n'}&lt;&#47;deckgo-slide-title&gt;</code>
     </deckgo-highlight-code><h3 id="app-edit-markdown-options">Options</h3>
-<h3 id="app-edit-markdown-options-1">Options</h3>
 <p><code>src/index.md</code> is used as default source file to generate your presentation. If you wish, you could provide an alternative path.</p>
 <p>For that purpose, edit the <code>webpack.config.js</code> at the root of the your presentation&#39;s project and provide a custom path like for example the following:</p>
 <deckgo-highlight-code language="javascript">

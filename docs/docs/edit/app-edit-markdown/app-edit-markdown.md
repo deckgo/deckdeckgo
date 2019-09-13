@@ -108,9 +108,6 @@ will be parsed into:
 
 ### Options
 
-
-### Options
-
 `src/index.md` is used as default source file to generate your presentation. If you wish, you could provide an alternative path.
 
 For that purpose, edit the `webpack.config.js` at the root of the your presentation's project and provide a custom path like for example the following:
