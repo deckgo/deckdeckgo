@@ -62,6 +62,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | **Split** | [`@deckdeckgo/slide-split`](https://www.npmjs.com/package/@deckdeckgo/slide-split) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-split/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-split) | [`README.md`](webcomponents/slides/split/README.md)
 | **Title** | [`@deckdeckgo/slide-title`](https://www.npmjs.com/package/@deckdeckgo/slide-title) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-title/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-title) | [`README.md`](webcomponents/slides/title/README.md)
 | **Youtube** | [`@deckdeckgo/slide-youtube`](https://www.npmjs.com/package/@deckdeckgo/slide-youtube) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-youtube/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-youtube) | [`README.md`](webcomponents/slides/youtube/README.md)
+| **Video** | [`@deckdeckgo/slide-video`](https://www.npmjs.com/package/@deckdeckgo/slide-video) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-video/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-video) | [`README.md`](webcomponents/slides/video/README.md)
 
 ## Utils for the Web Components
 
