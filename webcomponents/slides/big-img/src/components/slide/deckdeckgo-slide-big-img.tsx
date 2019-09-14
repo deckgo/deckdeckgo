@@ -53,12 +53,20 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
     this.slideDidLoad.emit();
   }
 
-  private next() {
-    this.prevNext(true);
+  private next(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.prevNext(true);
+
+      resolve();
+    });
   }
 
-  private prev() {
-    this.prevNext(false);
+  private prev(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.prevNext(false);
+
+      resolve();
+    });
   }
 
   private prevNext(next: boolean) {
