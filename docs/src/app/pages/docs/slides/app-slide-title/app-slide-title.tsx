@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-title',
-  styleUrl: 'app-slides-title.scss'
+  styleUrl: 'app-slide-title.scss'
 })
 export class AppSlideTitle {
 

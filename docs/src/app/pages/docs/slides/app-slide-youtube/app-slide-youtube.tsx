@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-youtube',
-  styleUrl: 'app-slides-youtube.scss'
+  styleUrl: 'app-slide-youtube.scss'
 })
 export class AppSlideYoutube {
 
