@@ -1,14 +1,14 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
-import {DeckdeckgoSlide, hideLazyLoadImages, lazyLoadContent} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoSlidePlay, hideLazyLoadImages, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-video',
   styleUrl: 'deckdeckgo-slide-video.scss',
   shadow: true
 })
-export class DeckdeckgoSlideVideo implements DeckdeckgoSlide {
+export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
