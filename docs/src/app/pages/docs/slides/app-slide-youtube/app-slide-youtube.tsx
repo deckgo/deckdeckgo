@@ -48,6 +48,7 @@ export class AppSlideYoutube {
 <li><a href="#app-slide-youtube-methods">Methods</a><ul>
 <li><a href="#app-slide-youtube-play-the-video">Play the video</a></li>
 <li><a href="#app-slide-youtube-pause-the-video">Pause the video</a></li>
+<li><a href="#app-slide-youtube-toggle-the-video">Toggle the video</a></li>
 </ul>
 </li>
 </ul>

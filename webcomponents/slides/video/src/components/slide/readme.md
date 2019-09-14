@@ -50,6 +50,16 @@ Type: `Promise<boolean>`
 
 
 
+### `getVideo() => Promise<HTMLMediaElement>`
+
+
+
+#### Returns
+
+Type: `Promise<HTMLMediaElement>`
+
+
+
 ### `hideContent() => Promise<void>`
 
 

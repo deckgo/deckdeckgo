@@ -27,6 +27,7 @@ The "Video" slide let you add your own video or for example a Gif as MPEG-4 (MP4
   <deckgo-deck embedded={true}>
     <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
       <h1 slot="title">A Gif as video</h1>
+      <button slot="actions" onClick={() => this.playPauseVideo()}>Play/pause</button>
     </deckgo-slide-video>
   </deckgo-deck>
 </div>

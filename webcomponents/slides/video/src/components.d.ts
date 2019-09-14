@@ -15,6 +15,7 @@ export namespace Components {
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'getVideo': () => Promise<HTMLMediaElement>;
     'height': number;
     'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;

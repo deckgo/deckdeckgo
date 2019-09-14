@@ -29,6 +29,7 @@
     "@deckdeckgo/slide-qrcode": "^1.0.0-rc.1",
     "@deckdeckgo/slide-split": "^1.0.0-rc.1",
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
+    "@deckdeckgo/slide-video": "file:../webcomponents/slides/video",
     "@deckdeckgo/slide-youtube": "^1.0.0-rc.1",
     "@ionic/core": "^4.8.1",
     "rxjs": "^6.5.2"
