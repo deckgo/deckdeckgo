@@ -9,7 +9,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-big-img/deckdeckgo-slide-big-img.js",
+  "unpkg": "dist/deckdeckgo-slide-video/deckdeckgo-slide-video.js",
   "files": [
     "dist/",
     "README.md",
@@ -22,7 +22,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "file:../utils",
+    "@deckdeckgo/slide-utils": "^1.0.0-rc.2",
     "@deckdeckgo/utils": "^1.0.0-rc.1-1"
   },
   "devDependencies": {
