@@ -16,3 +16,7 @@ div.deckgo-slide {
     }
   }
 }
+
+::slotted([slot="title"]) {
+  display: none;
+}
