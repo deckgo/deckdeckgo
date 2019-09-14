@@ -1,16 +1,7 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, h, Host } from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} from '@stencil/core';
 
-import {
-  DeckdeckgoSlide,
-  hideLazyLoadImages,
-  afterSwipe,
-  lazyLoadContent,
-  hideAllRevealElements,
-  showAllRevealElements
-} from '@deckdeckgo/slide-utils';
-
-const isVideoPlaying = (video: HTMLVideoElement): boolean =>
-  !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
+import {debounce} from '@deckdeckgo/utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-video',
@@ -22,78 +13,185 @@ export class DeckdeckgoSlideVideo implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({ reflectToAttr: true }) customActions: boolean = false;
-  @Prop({ reflectToAttr: true }) customBackground: boolean = false;
+  @Prop({reflectToAttr: true}) customActions: boolean = false;
+  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
-  private video: HTMLVideoElement;
-  private videoPlayed = false;
+  @Prop({reflectToAttr: true}) src: string;
+  @Prop() type: string = 'video/mp4';
+
+  @Prop() muted: boolean = true;
+  @Prop() playsinline: boolean = true;
+  @Prop() loop: boolean = false;
+  @Prop() autoplay: boolean = false;
+
+  @Prop() width: number;
+  @Prop() height: number;
+
+  @State() videoWidth: number;
+  @State() videoHeight: number;
+
+  private isPlaying: boolean = false;
+
+  @State() alignCenter: boolean = false;
+
+  componentWillLoad() {
+    this.isPlaying = this.autoplay;
+  }
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
-    this.video = this.el.querySelector('video');
+    this.initWindowResize();
+
+    await this.initSize();
+
+    this.alignCenter = await this.initCenterAlign();
 
     this.slideDidLoad.emit();
   }
 
-  /**
-   * play when swipping forward
-   * always show previous slide when swipping backward
-   * reset when leaving the slide
-   * only show next slide if video was played and then paused or ended
-   */
+  private initCenterAlign(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
+      const content: HTMLElement = this.el.querySelector('[slot=\'content\']');
+
+      resolve(!title || !content);
+    });
+  }
+
   @Method()
-  async beforeSwipe(enter: boolean): Promise<boolean> {
-    const videoPlaying = isVideoPlaying(this.video);
-
-    const couldSwipe: boolean = !enter || (this.videoPlayed && !videoPlaying);
-
-    if (couldSwipe) {
-      this.video.pause();
-      this.video.currentTime = 0;
-      this.videoPlayed = false;
-      // FIXME: can't exit slide sometimes ¯\_(ツ)_/¯
-      // this may be caused by how this promise is prioritized by the deck given the promised stay resolved with true in this case
-      return true;
-    }
-
-    if (!videoPlaying) {
-      this.video.play();
-      this.videoPlayed = true;
-    } else {
-      this.video.pause();
-    }
-
-    return false;
+  beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      resolve(true);
+    });
   }
 
   @Method()
   afterSwipe(): Promise<void> {
-    return afterSwipe();
+    return new Promise<void>(async (resolve) => {
+      // Stop video after swipe to prev or next slide
+      await this.playPauseVideo(false);
+      resolve();
+    });
   }
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return lazyLoadContent(this.el);
+    return new Promise<void>(async (resolve) => {
+      await lazyLoadContent(this.el);
+
+      await this.initSize();
+      await this.resizeContent();
+
+      resolve();
+    });
   }
 
   @Method()
   revealContent(): Promise<void> {
-    return showAllRevealElements(this.el);
+    return Promise.resolve();
   }
 
   @Method()
   hideContent(): Promise<void> {
-    return hideAllRevealElements(this.el);
+    return Promise.resolve();
+  }
+
+  @Method()
+  async play() {
+    await this.playPauseVideo(true);
+  }
+
+  @Method()
+  async pause() {
+    await this.playPauseVideo(false);
+  }
+
+  @Method()
+  async toggle() {
+    await this.playPauseVideo(!this.isPlaying);
+  }
+
+  private playPauseVideo(play: boolean): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const element: any = this.el.shadowRoot.querySelector('video');
+
+      if (!element) {
+        resolve();
+        return;
+      }
+
+      if (play) {
+        await element.play();
+      } else {
+        await element.pause();
+      }
+
+      this.isPlaying = play;
+
+      resolve();
+    })
+  }
+
+  private initSize(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      // If width and height, use them otherwise full size
+      if (this.width > 0 && this.height > 0) {
+        this.videoWidth = this.width;
+        this.videoHeight = this.height;
+      } else {
+        const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-video-container');
+
+        if (container) {
+          this.videoWidth = container.clientWidth;
+          this.videoHeight = container.clientHeight;
+        }
+      }
+
+      resolve();
+    });
+  }
+
+  private initWindowResize() {
+    if (window) {
+      window.addEventListener('resize', debounce(this.onResizeContent));
+    }
+  }
+
+  private onResizeContent = async () => {
+    await this.initSize();
+
+    await this.resizeContent();
+  };
+
+  private async resizeContent() {
+    const element: any = this.el.shadowRoot.querySelector('deckgo-youtube');
+
+    if (element) {
+      await element.updateIFrame(this.videoWidth, this.videoHeight);
+    }
   }
 
   render() {
-    return (
-      <Host class={{ 'deckgo-slide-container': true }}>
-        <div class="deckgo-slide">
-          <slot></slot>
+    return <Host class={{
+      'deckgo-slide-container': true,
+      'deckgo-slide-video-centered': this.alignCenter
+    }}>
+      <div class="deckgo-slide">
+        <slot name="title"></slot>
+        <slot name="content"></slot>
+        <div class="deckgo-video-container">
+          <video
+            width={this.videoWidth} height={this.videoHeight}
+            muted={this.muted} playsinline={this.playsinline} loop={this.loop} autoplay={this.autoplay}
+            onEnded={() => this.isPlaying = false}>
+            <source src={this.src} type={this.type}/>
+          </video>
         </div>
-      </Host>
-    );
+        <slot name="notes"></slot>
+        <slot name="actions"></slot>
+        <slot name="background"></slot>
+      </div>
+    </Host>;
   }
 }

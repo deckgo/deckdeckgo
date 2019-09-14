@@ -11,15 +11,23 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface DeckgoSlideVideo {
     'afterSwipe': () => Promise<void>;
-    /**
-    * play when swipping forward always show previous slide when swipping backward reset when leaving the slide only show next slide if video was played and then paused or ended
-    */
-    'beforeSwipe': (enter: boolean) => Promise<boolean>;
+    'autoplay': boolean;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'height': number;
     'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
+    'loop': boolean;
+    'muted': boolean;
+    'pause': () => Promise<void>;
+    'play': () => Promise<void>;
+    'playsinline': boolean;
     'revealContent': () => Promise<void>;
+    'src': string;
+    'toggle': () => Promise<void>;
+    'type': string;
+    'width': number;
   }
 }
 
@@ -38,9 +46,17 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlideVideo extends JSXBase.HTMLAttributes<HTMLDeckgoSlideVideoElement> {
+    'autoplay'?: boolean;
     'customActions'?: boolean;
     'customBackground'?: boolean;
+    'height'?: number;
+    'loop'?: boolean;
+    'muted'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'playsinline'?: boolean;
+    'src'?: string;
+    'type'?: string;
+    'width'?: number;
   }
 
   interface IntrinsicElements {

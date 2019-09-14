@@ -7,10 +7,18 @@
 
 ## Properties
 
-| Property           | Attribute           | Description | Type      | Default |
-| ------------------ | ------------------- | ----------- | --------- | ------- |
-| `customActions`    | `custom-actions`    |             | `boolean` | `false` |
-| `customBackground` | `custom-background` |             | `boolean` | `false` |
+| Property           | Attribute           | Description | Type      | Default       |
+| ------------------ | ------------------- | ----------- | --------- | ------------- |
+| `autoplay`         | `autoplay`          |             | `boolean` | `false`       |
+| `customActions`    | `custom-actions`    |             | `boolean` | `false`       |
+| `customBackground` | `custom-background` |             | `boolean` | `false`       |
+| `height`           | `height`            |             | `number`  | `undefined`   |
+| `loop`             | `loop`              |             | `boolean` | `false`       |
+| `muted`            | `muted`             |             | `boolean` | `true`        |
+| `playsinline`      | `playsinline`       |             | `boolean` | `true`        |
+| `src`              | `src`               |             | `string`  | `undefined`   |
+| `type`             | `type`              |             | `string`  | `'video/mp4'` |
+| `width`            | `width`             |             | `number`  | `undefined`   |
 
 
 ## Events
@@ -32,12 +40,9 @@ Type: `Promise<void>`
 
 
 
-### `beforeSwipe(enter: boolean) => Promise<boolean>`
+### `beforeSwipe(_enter: boolean, _reveal: boolean) => Promise<boolean>`
 
-play when swipping forward
-always show previous slide when swipping backward
-reset when leaving the slide
-only show next slide if video was played and then paused or ended
+
 
 #### Returns
 
@@ -65,7 +70,37 @@ Type: `Promise<void>`
 
 
 
+### `pause() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `play() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `revealContent() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `toggle() => Promise<void>`
 
 
 
