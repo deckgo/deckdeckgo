@@ -20,6 +20,7 @@
     "@deckdeckgo/inline-editor": "^1.0.0-rc.1",
     "@deckdeckgo/qrcode": "^1.0.0-rc.1",
     "@deckdeckgo/slide-author": "^1.0.0-rc.1",
+    "@deckdeckgo/slide-big-img": "file:../webcomponents/slides/big-img",
     "@deckdeckgo/slide-chart": "^1.0.0-rc.1",
     "@deckdeckgo/slide-code": "^1.0.0-rc.1",
     "@deckdeckgo/slide-content": "^1.0.0-rc.1",

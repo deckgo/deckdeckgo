@@ -16,6 +16,7 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'hideContent': () => Promise<void>;
+    'imgAlt': string;
     'imgDivisions': string;
     'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
@@ -42,6 +43,7 @@ declare namespace LocalJSX {
     'axis'?: 'x' | 'y';
     'customActions'?: boolean;
     'customBackground'?: boolean;
+    'imgAlt'?: string;
     'imgDivisions'?: string;
     'imgSrc'?: string;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;

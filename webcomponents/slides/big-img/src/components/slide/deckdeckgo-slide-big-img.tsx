@@ -26,6 +26,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   @Prop() imgSrc: string = '';
+  @Prop() imgAlt: string;
   @Prop() imgDivisions: string = '';
   @Prop() axis: 'x' | 'y' = 'x';
   @Prop() reverse: boolean = false;
@@ -172,7 +173,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
         <div class="deckgo-slide">
           <slot name="title"></slot>
           <div class="deckgo-big-img-container crop">
-            <img class="big-image" data-src={this.imgSrc}/>
+            <img class="big-image" data-src={this.imgSrc} alt={this.imgAlt}/>
             <slot name="notes"></slot>
             <slot name="actions"></slot>
             <slot name="background"></slot>

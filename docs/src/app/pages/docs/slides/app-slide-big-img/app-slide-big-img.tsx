@@ -27,7 +27,7 @@ export class AppSlideBigImg {
 
       <ion-content class="ion-padding">
         <main><h1 id="app-slide-big-img-slide-big-image">Slide: Big Image</h1>
-<p>If you would like to display a fullscreen image in your presentation and select specific part of it to display them on following slides, the &quot;Big Image&quot; slide is the one you are looking for.   </p>
+<p>If you would like to display a fullscreen image in your presentation and select specific part of it, in order to to zoom in/highlight them, the &quot;Big Image&quot; slide is the one you are looking for.   </p>
 <h2 id="app-slide-big-img-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-slide-bigimg-layout">Layout</a></li>
@@ -49,9 +49,10 @@ export class AppSlideBigImg {
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-big-img
-             img-src="https://raw.githubusercontent.com/noelmace/deckdeckgo/big-img/webcomponents/slides/big-img/showcase/big-deckdeckgo.jpg"
-             img-divisions="500;1100;1700"
-             axis="y">
+        img-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/big-img/showcase/big-deckdeckgo.jpg"
+        img-divisions="500;1100;1700"
+        axis="y"
+    >
     </deckgo-slide-big-img>
   </deckgo-deck>
 </div>
@@ -83,7 +84,7 @@ export class AppSlideBigImg {
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-slide-big-img{'\n'}     img-src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;noelmace&#47;deckdeckgo&#47;big-img&#47;webcomponents&#47;slides&#47;big-img&#47;showcase&#47;big-deckdeckgo.jpg&quot;{'\n'}     img-divisions=&quot;500;1100;1700&quot;{'\n'}     axis=&quot;y&quot;&gt;{'\n'}&lt;&#47;deckgo-slide-big-img&gt;</code>
     </deckgo-highlight-code><h3 id="app-slide-big-img-slots">Slots</h3>
-<p>No slots are currently available in order to display additional information on this template.</p>
+<p>The slots <code>title</code> is optional (it is not displayed but could be use for the navigation). Otherwise no particular slots are currently available in order to display additional information on this template.</p>
 <h3 id="app-slide-big-img-notes">Notes</h3>
 <p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
 <p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
@@ -123,6 +124,12 @@ export class AppSlideBigImg {
 <td>The axis which should be used to apply the division.</td>
 </tr>
 <tr>
+<td>reverse</td>
+<td>boolean</td>
+<td>false</td>
+<td>In which order should the specific part be highlighted.</td>
+</tr>
+<tr>
 <td>custom-actions</td>
 <td>boolean</td>
 <td>false</td>
@@ -130,7 +137,7 @@ export class AppSlideBigImg {
 </tr>
 </tbody></table>
 <h2 id="app-slide-big-img-theming">Theming</h2>
-<p>No particular theming options are currently available.</p>
+<p>No particular theming options are currently available for this template.</p>
 </main>
 
         <app-footer></app-footer>

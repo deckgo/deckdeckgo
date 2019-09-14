@@ -1,6 +1,6 @@
 # Slide: Big Image
 
-If you would like to display a fullscreen image in your presentation and select specific part of it to display them on following slides, the "Big Image" slide is the one you are looking for.   
+If you would like to display a fullscreen image in your presentation and select specific part of it, in order to to zoom in/highlight them, the "Big Image" slide is the one you are looking for.   
 
 ## Table of contents
 
@@ -20,9 +20,10 @@ If you would like to display a fullscreen image in your presentation and select 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-big-img
-             img-src="https://raw.githubusercontent.com/noelmace/deckdeckgo/big-img/webcomponents/slides/big-img/showcase/big-deckdeckgo.jpg"
-             img-divisions="500;1100;1700"
-             axis="y">
+        img-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/big-img/showcase/big-deckdeckgo.jpg"
+        img-divisions="500;1100;1700"
+        axis="y"
+    >
     </deckgo-slide-big-img>
   </deckgo-deck>
 </div>
@@ -83,7 +84,7 @@ The "Big Image" slide's Web Component could be integrated using the tag `<deckgo
 
 ### Slots
 
-No slots are currently available in order to display additional information on this template.
+The slots `title` is optional (it is not displayed but could be use for the navigation). Otherwise no particular slots are currently available in order to display additional information on this template.
 
 ### Notes
 
@@ -101,10 +102,11 @@ This component offers the following options which could be set using attributes:
 | img-alt | string |  | An optional accessibility alt for the image. |
 | img-divisions | string |  | A list of anchors for the divisions of the image (in pixels). |
 | axis | 'x' or 'y' |  | The axis which should be used to apply the division. |
+| reverse | boolean | false | In which order should the specific part be highlighted. |
 | custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
 
 ## Theming
 
-No particular theming options are currently available.
+No particular theming options are currently available for this template.
 
 [DeckDeckGo]: https://deckdeckgo.com

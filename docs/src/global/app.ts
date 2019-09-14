@@ -12,6 +12,7 @@ import '@deckdeckgo/slide-qrcode';
 import '@deckdeckgo/slide-split';
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-youtube';
+import '@deckdeckgo/slide-big-img';
 
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/charts';
