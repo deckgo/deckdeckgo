@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-big-img',
-  styleUrl: 'app-slides-big-img.scss'
+  styleUrl: 'app-slide-big-img.scss'
 })
 export class AppSlideBigImg {
 
@@ -147,6 +147,41 @@ export class AppSlideBigImg {
 </tr>
 </thead>
 <tbody><tr>
+<td>--background</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>--color</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>--slide-padding-top</td>
+<td>16px</td>
+<td>Padding top of the all slide</td>
+</tr>
+<tr>
+<td>--slide-padding-end</td>
+<td>32px</td>
+<td>Padding right of the all slide</td>
+</tr>
+<tr>
+<td>--slide-padding-bottom</td>
+<td>16px</td>
+<td>Padding bottom of the all slide</td>
+</tr>
+<tr>
+<td>--slide-padding-start</td>
+<td>32px</td>
+<td>Padding left of the all slide</td>
+</tr>
+<tr>
+<td>--zIndex</td>
+<td>1</td>
+<td>The z-index of the slide</td>
+</tr>
+<tr>
 <td>--slide-img-max-width</td>
 <td></td>
 <td>A maximal width value for the image. Useful in case you would like to display your deck in a container respectively not full window/screen.</td>

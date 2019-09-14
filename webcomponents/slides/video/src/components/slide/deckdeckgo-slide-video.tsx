@@ -1,49 +1,68 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlidePlay, hideLazyLoadImages, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 @Component({
-  tag: 'deckgo-slide-youtube',
-  styleUrl: 'deckdeckgo-slide-youtube.scss',
+  tag: 'deckgo-slide-video',
+  styleUrl: 'deckdeckgo-slide-video.scss',
   shadow: true
 })
-export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
-
+export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
 
+  @Prop({reflectToAttr: true}) customActions: boolean = false;
+  @Prop({reflectToAttr: true}) customBackground: boolean = false;
+
   @Prop({reflectToAttr: true}) src: string;
+  @Prop() type: string = 'video/mp4';
+
+  @Prop() muted: boolean = true;
+  @Prop() playsinline: boolean = true;
+  @Prop() loop: boolean = false;
+  @Prop() autoplay: boolean = false;
+
   @Prop() width: number;
   @Prop() height: number;
 
   @State() videoWidth: number;
   @State() videoHeight: number;
 
-  @State() frameTitle: string;
-
   private isPlaying: boolean = false;
 
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
+  @State() alignCenter: boolean = false;
+
+  componentWillLoad() {
+    this.isPlaying = this.autoplay;
+  }
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
     this.initWindowResize();
 
-    await this.initFrameTitle();
-
     await this.initSize();
 
+    this.alignCenter = await this.initCenterAlign();
+
     this.slideDidLoad.emit();
+  }
+
+  private initCenterAlign(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
+      const content: HTMLElement = this.el.querySelector('[slot=\'content\']');
+
+      resolve(!title || !content);
+    });
   }
 
   @Method()
   beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      resolve(true)
+      resolve(true);
     });
   }
 
@@ -93,9 +112,14 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
     await this.playPauseVideo(!this.isPlaying);
   }
 
+  @Method()
+  async getVideo(): Promise<HTMLMediaElement> {
+    return this.el.shadowRoot.querySelector('video');
+  }
+
   private playPauseVideo(play: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const element: any = this.el.shadowRoot.querySelector('deckgo-youtube');
+      const element: any = this.el.shadowRoot.querySelector('video');
 
       if (!element) {
         resolve();
@@ -110,20 +134,8 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
 
       this.isPlaying = play;
 
-        resolve();
-    })
-  }
-
-  private initFrameTitle(): Promise<string> {
-    return new Promise<string>((resolve) => {
-      const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
-
-      if (title) {
-        this.frameTitle = title.innerHTML;
-      }
-
       resolve();
-    });
+    })
   }
 
   private initSize(): Promise<void> {
@@ -133,7 +145,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
         this.videoWidth = this.width;
         this.videoHeight = this.height;
       } else {
-        const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-youtube-container');
+        const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-video-container');
 
         if (container) {
           this.videoWidth = container.clientWidth;
@@ -166,22 +178,25 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   }
 
   render() {
-    return <Host class={{'deckgo-slide-container': true}}>
+    return <Host class={{
+      'deckgo-slide-container': true,
+      'deckgo-slide-video-centered': this.alignCenter
+    }}>
       <div class="deckgo-slide">
         <slot name="title"></slot>
         <slot name="content"></slot>
-        <div class="deckgo-youtube-container">
-          {this.renderVideo()}
+        <div class="deckgo-video-container">
+          <video
+            width={this.videoWidth} height={this.videoHeight}
+            muted={this.muted} playsinline={this.playsinline} loop={this.loop} autoplay={this.autoplay}
+            onEnded={() => this.isPlaying = false}>
+            <source src={this.src} type={this.type}/>
+          </video>
         </div>
         <slot name="notes"></slot>
         <slot name="actions"></slot>
         <slot name="background"></slot>
       </div>
-    </Host>
+    </Host>;
   }
-
-  private renderVideo() {
-    return <deckgo-youtube src={this.src} width={this.videoWidth} height={this.videoHeight} frame-title={this.frameTitle}></deckgo-youtube>
-  }
-
 }

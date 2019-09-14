@@ -40,6 +40,7 @@ export class AppRoot {
           <ion-route url="/slides/bigimg" component="app-slide-big-img"/>
           <ion-route url="/slides/chart" component="app-slide-chart"/>
           <ion-route url="/slides/youtube" component="app-slide-youtube"/>
+          <ion-route url="/slides/video" component="app-slide-video"/>
           <ion-route url="/slides/code" component="app-slide-code"/>
           <ion-route url="/slides/author" component="app-slide-author"/>
           <ion-route url="/slides/qrcode" component="app-slide-qrcode"/>
@@ -109,6 +110,7 @@ export class AppRoot {
                   <ion-item detail={false} href="/slides/bigimg" routerDirection="forward"><ion-label>Big Image</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/chart" routerDirection="forward"><ion-label>Chart</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/youtube" routerDirection="forward"><ion-label>Youtube</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/video" routerDirection="forward"><ion-label>Video</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/code" routerDirection="forward"><ion-label>Code</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/author" routerDirection="forward"><ion-label>Author</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/qrcode" routerDirection="forward"><ion-label>QR Code</ion-label></ion-item>

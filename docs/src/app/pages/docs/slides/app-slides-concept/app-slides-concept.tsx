@@ -21,6 +21,21 @@ export class AppSlidesConcept {
     }
   }
 
+  playPauseVideo(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const element: any = this.el.querySelector('deckgo-slide-video');
+
+      if (!element) {
+        resolve();
+        return;
+      }
+
+      await element.toggle();
+
+      resolve();
+    })
+  }
+
   render() {
     return [
       <app-navigation></app-navigation>,
@@ -140,6 +155,18 @@ export class AppSlidesConcept {
     <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-youtube>
+  </deckgo-deck>
+</div>
+
+<ul>
+<li>Slide: <a href="/slides/video">Video</a></li>
+</ul>
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
+      <h1 slot="title">A Gif as video</h1>
+      <button slot="actions" onClick={() => this.playPauseVideo()}>Play/pause</button>
+    </deckgo-slide-video>
   </deckgo-deck>
 </div>
 

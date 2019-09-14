@@ -64,6 +64,7 @@ export namespace Components {
   interface AppSlideQrcode {}
   interface AppSlideSplit {}
   interface AppSlideTitle {}
+  interface AppSlideVideo {}
   interface AppSlideYoutube {}
   interface AppSlidesConcept {}
 }
@@ -365,6 +366,12 @@ declare global {
     new (): HTMLAppSlideTitleElement;
   };
 
+  interface HTMLAppSlideVideoElement extends Components.AppSlideVideo, HTMLStencilElement {}
+  var HTMLAppSlideVideoElement: {
+    prototype: HTMLAppSlideVideoElement;
+    new (): HTMLAppSlideVideoElement;
+  };
+
   interface HTMLAppSlideYoutubeElement extends Components.AppSlideYoutube, HTMLStencilElement {}
   var HTMLAppSlideYoutubeElement: {
     prototype: HTMLAppSlideYoutubeElement;
@@ -426,6 +433,7 @@ declare global {
     'app-slide-qrcode': HTMLAppSlideQrcodeElement;
     'app-slide-split': HTMLAppSlideSplitElement;
     'app-slide-title': HTMLAppSlideTitleElement;
+    'app-slide-video': HTMLAppSlideVideoElement;
     'app-slide-youtube': HTMLAppSlideYoutubeElement;
     'app-slides-concept': HTMLAppSlidesConceptElement;
   }
@@ -487,6 +495,7 @@ declare namespace LocalJSX {
   interface AppSlideQrcode extends JSXBase.HTMLAttributes<HTMLAppSlideQrcodeElement> {}
   interface AppSlideSplit extends JSXBase.HTMLAttributes<HTMLAppSlideSplitElement> {}
   interface AppSlideTitle extends JSXBase.HTMLAttributes<HTMLAppSlideTitleElement> {}
+  interface AppSlideVideo extends JSXBase.HTMLAttributes<HTMLAppSlideVideoElement> {}
   interface AppSlideYoutube extends JSXBase.HTMLAttributes<HTMLAppSlideYoutubeElement> {}
   interface AppSlidesConcept extends JSXBase.HTMLAttributes<HTMLAppSlidesConceptElement> {}
 
@@ -540,6 +549,7 @@ declare namespace LocalJSX {
     'app-slide-qrcode': AppSlideQrcode;
     'app-slide-split': AppSlideSplit;
     'app-slide-title': AppSlideTitle;
+    'app-slide-video': AppSlideVideo;
     'app-slide-youtube': AppSlideYoutube;
     'app-slides-concept': AppSlidesConcept;
   }

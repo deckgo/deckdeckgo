@@ -111,6 +111,13 @@ The following theming options will affect this component if set on its host or p
 
 | CSS4 variable                      | Default | Note |
 | -------------------------- |-----------------|-----------------|
+| --background |  |  |
+| --color |  |  |
+| --slide-padding-top | 16px | Padding top of the all slide |
+| --slide-padding-end | 32px | Padding right of the all slide |
+| --slide-padding-bottom | 16px | Padding bottom of the all slide |
+| --slide-padding-start | 32px | Padding left of the all slide |
+| --zIndex | 1 | The z-index of the slide |
 | --slide-img-max-width |  | A maximal width value for the image. Useful in case you would like to display your deck in a container respectively not full window/screen. |
 
 [DeckDeckGo]: https://deckdeckgo.com
