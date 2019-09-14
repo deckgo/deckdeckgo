@@ -6,13 +6,21 @@ div.deckgo-slide {
   align-items: center;
   margin: 0 0;
 
-  .crop {
+  .deckgo-big-img-container {
     overflow: hidden;
     text-align: center;
 
-    .big-image:not(.cropped) {
-      max-width: 100%;
-      max-height: 100%;
+    img {
+      max-width: var(--slide-img-max-width);
+
+      &:not(.cropped) {
+        max-width: 100%;
+        max-height: 100%;
+      }
     }
   }
+}
+
+::slotted([slot="title"]) {
+  display: none;
 }

@@ -55,6 +55,7 @@ export namespace Components {
   interface AppRoot {}
   interface AppRunning {}
   interface AppSlideAuthor {}
+  interface AppSlideBigImg {}
   interface AppSlideChart {}
   interface AppSlideCode {}
   interface AppSlideContent {}
@@ -310,6 +311,12 @@ declare global {
     new (): HTMLAppSlideAuthorElement;
   };
 
+  interface HTMLAppSlideBigImgElement extends Components.AppSlideBigImg, HTMLStencilElement {}
+  var HTMLAppSlideBigImgElement: {
+    prototype: HTMLAppSlideBigImgElement;
+    new (): HTMLAppSlideBigImgElement;
+  };
+
   interface HTMLAppSlideChartElement extends Components.AppSlideChart, HTMLStencilElement {}
   var HTMLAppSlideChartElement: {
     prototype: HTMLAppSlideChartElement;
@@ -410,6 +417,7 @@ declare global {
     'app-root': HTMLAppRootElement;
     'app-running': HTMLAppRunningElement;
     'app-slide-author': HTMLAppSlideAuthorElement;
+    'app-slide-big-img': HTMLAppSlideBigImgElement;
     'app-slide-chart': HTMLAppSlideChartElement;
     'app-slide-code': HTMLAppSlideCodeElement;
     'app-slide-content': HTMLAppSlideContentElement;
@@ -470,6 +478,7 @@ declare namespace LocalJSX {
   interface AppRoot extends JSXBase.HTMLAttributes<HTMLAppRootElement> {}
   interface AppRunning extends JSXBase.HTMLAttributes<HTMLAppRunningElement> {}
   interface AppSlideAuthor extends JSXBase.HTMLAttributes<HTMLAppSlideAuthorElement> {}
+  interface AppSlideBigImg extends JSXBase.HTMLAttributes<HTMLAppSlideBigImgElement> {}
   interface AppSlideChart extends JSXBase.HTMLAttributes<HTMLAppSlideChartElement> {}
   interface AppSlideCode extends JSXBase.HTMLAttributes<HTMLAppSlideCodeElement> {}
   interface AppSlideContent extends JSXBase.HTMLAttributes<HTMLAppSlideContentElement> {}
@@ -522,6 +531,7 @@ declare namespace LocalJSX {
     'app-root': AppRoot;
     'app-running': AppRunning;
     'app-slide-author': AppSlideAuthor;
+    'app-slide-big-img': AppSlideBigImg;
     'app-slide-chart': AppSlideChart;
     'app-slide-code': AppSlideCode;
     'app-slide-content': AppSlideContent;

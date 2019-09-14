@@ -7,14 +7,15 @@
 
 ## Properties
 
-| Property           | Attribute           | Description | Type         | Default |
-| ------------------ | ------------------- | ----------- | ------------ | ------- |
-| `axis`             | `axis`              |             | `"x" \| "y"` | `'x'`   |
-| `customActions`    | `custom-actions`    |             | `boolean`    | `false` |
-| `customBackground` | `custom-background` |             | `boolean`    | `false` |
-| `imgDivisions`     | `img-divisions`     |             | `string`     | `''`    |
-| `imgSrc`           | `img-src`           |             | `string`     | `''`    |
-| `reverse`          | `reverse`           |             | `boolean`    | `false` |
+| Property           | Attribute           | Description | Type         | Default     |
+| ------------------ | ------------------- | ----------- | ------------ | ----------- |
+| `axis`             | `axis`              |             | `"x" \| "y"` | `'x'`       |
+| `customActions`    | `custom-actions`    |             | `boolean`    | `false`     |
+| `customBackground` | `custom-background` |             | `boolean`    | `false`     |
+| `imgAlt`           | `img-alt`           |             | `string`     | `undefined` |
+| `imgDivisions`     | `img-divisions`     |             | `string`     | `''`        |
+| `imgSrc`           | `img-src`           |             | `string`     | `''`        |
+| `reverse`          | `reverse`           |             | `boolean`    | `false`     |
 
 
 ## Events

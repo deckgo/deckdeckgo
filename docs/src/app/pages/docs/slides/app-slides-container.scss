@@ -75,5 +75,9 @@ div.container {
       --slide-countdown-digits-font-size: 1.4em;
       --slide-countdown-container-padding-bottom: 16px;
     }
+
+    deckgo-slide-big-img {
+      --slide-img-max-width: 400px;
+    }
   }
 }
