@@ -137,7 +137,21 @@ export class AppSlideBigImg {
 </tr>
 </tbody></table>
 <h2 id="app-slide-big-img-theming">Theming</h2>
-<p>No particular theming options are currently available for this template.</p>
+<p>The following theming options will affect this component if set on its host or parent.</p>
+<table>
+<thead>
+<tr>
+<th>CSS4 variable</th>
+<th>Default</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>--slide-img-max-width</td>
+<td></td>
+<td>A maximal width value for the image. Useful in case you would like to display your deck in a container respectively not full window/screen.</td>
+</tr>
+</tbody></table>
 </main>
 
         <app-footer></app-footer>

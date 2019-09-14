@@ -48,8 +48,8 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
-    this.crop = this.el.shadowRoot.querySelector('.crop');
-    this.bigImg = this.el.shadowRoot.querySelector('.big-image');
+    this.crop = this.el.shadowRoot.querySelector('.deckgo-big-img-container');
+    this.bigImg = this.el.shadowRoot.querySelector('img');
 
     this.slideDidLoad.emit();
   }
@@ -109,7 +109,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
 
       let crop = calcCrop();
 
-      if (crop.length > this.el.shadowRoot.querySelector('.deckgo-slide').clientHeight) {
+      if (crop.length > this.el.shadowRoot.querySelector('.deckgo-big-img-container').clientHeight) {
         this.crop.style[perpendicularAxisDimension] = '';
         crop = calcCrop();
       }
@@ -172,8 +172,8 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
       <Host class={{'deckgo-slide-container': true}}>
         <div class="deckgo-slide">
           <slot name="title"></slot>
-          <div class="deckgo-big-img-container crop">
-            <img class="big-image" data-src={this.imgSrc} alt={this.imgAlt}/>
+          <div class="deckgo-big-img-container">
+            <img data-src={this.imgSrc} alt={this.imgAlt}/>
             <slot name="notes"></slot>
             <slot name="actions"></slot>
             <slot name="background"></slot>

@@ -107,6 +107,10 @@ This component offers the following options which could be set using attributes:
 
 ## Theming
 
-No particular theming options are currently available for this template.
+The following theming options will affect this component if set on its host or parent.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |-----------------|-----------------|
+| --slide-img-max-width |  | A maximal width value for the image. Useful in case you would like to display your deck in a container respectively not full window/screen. |
 
 [DeckDeckGo]: https://deckdeckgo.com
