@@ -1,0 +1,18 @@
+@import "./deckdeckgo-slide";
+
+div.deckgo-slide {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0;
+
+  .crop {
+    overflow: hidden;
+    text-align: center;
+
+    .big-image:not(.cropped) {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}
