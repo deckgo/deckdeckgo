@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, h, Host } from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
 import {
   DeckdeckgoSlide,
@@ -17,12 +17,14 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
   shadow: true
 })
 export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
+
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({ reflectToAttr: true }) customActions: boolean = false;
-  @Prop({ reflectToAttr: true }) customBackground: boolean = false;
+  @Prop({reflectToAttr: true}) customActions: boolean = false;
+  @Prop({reflectToAttr: true}) customBackground: boolean = false;
+
   @Prop() imgSrc: string = '';
   @Prop() imgDivisions: string = '';
   @Prop() axis: 'x' | 'y' = 'x';
@@ -158,10 +160,14 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
 
   render() {
     return (
-      <Host class={{ 'deckgo-slide-container': true }}>
+      <Host class={{'deckgo-slide-container': true}}>
         <div class="deckgo-slide">
-          <div class="crop">
-            <img class="big-image" data-src={this.imgSrc} />
+          <slot name="title"></slot>
+          <div class="deckgo-big-img-container crop">
+            <img class="big-image" data-src={this.imgSrc}/>
+            <slot name="notes"></slot>
+            <slot name="actions"></slot>
+            <slot name="background"></slot>
           </div>
         </div>
       </Host>
