@@ -112,6 +112,11 @@ export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
     await this.playPauseVideo(!this.isPlaying);
   }
 
+  @Method()
+  async getVideo(): Promise<HTMLMediaElement> {
+    return this.el.shadowRoot.querySelector('video');
+  }
+
   private playPauseVideo(play: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const element: any = this.el.shadowRoot.querySelector('video');
