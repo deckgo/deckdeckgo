@@ -2,7 +2,7 @@
   "name": "deckdeckgo-studio",
   "version": "1.0.0-beta.3-1",
   "author": "David Dal Busco",
-  "description": "Develop your presentation with DeckDeckGo",
+  "description": "The web open source editor for presentations",
   "license": "AGPL-3.0-or-later",
   "files": [
     "dist/"

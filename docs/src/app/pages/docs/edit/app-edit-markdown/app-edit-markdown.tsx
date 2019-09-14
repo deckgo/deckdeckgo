@@ -27,6 +27,7 @@ export class AppEditMarkdown {
 <li><a href="#app-edit-markdown-example">Example</a></li>
 <li><a href="#app-edit-markdown-attributes">Attributes</a></li>
 <li><a href="#app-edit-markdown-notes">Notes</a></li>
+<li><a href="#app-edit-markdown-options">Options</a></li>
 </ul>
 </li>
 <li><a href="#app-edit-markdown-summary">Summary</a></li>
@@ -60,6 +61,11 @@ export class AppEditMarkdown {
     </deckgo-highlight-code><p>will be parsed into:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-slide-title&gt;{'\n'}  &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'}  &lt;div slot=&quot;content&quot;&gt;{'\n'}    &lt;p&gt;Hello World 🚀&lt;&#47;p&gt;{'\n'}  &lt;&#47;div&gt;{'\n'}  &lt;div slot=&quot;notes&quot;&gt;{'\n'}    I should not forget to think about that during my talk{'\n'}{'\n'}    ...and say hello to mum{'\n'}  &lt;&#47;div&gt;{'\n'}&lt;&#47;deckgo-slide-title&gt;</code>
+    </deckgo-highlight-code><h3 id="app-edit-markdown-options">Options</h3>
+<p><code>src/index.md</code> is used as default source file to generate your presentation. If you wish, you could provide an alternative path.</p>
+<p>For that purpose, edit the <code>webpack.config.js</code> at the root of the your presentation&#39;s project and provide a custom path like for example the following:</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">new DeckDeckGoMarkdownPlugin(&#123;src: &#039;&#47;Users&#47;david&#47;mypresentation&#47;src&#47;hello.md&#039;&#125;)</code>
     </deckgo-highlight-code><h2 id="app-edit-markdown-summary">Summary</h2>
 <p>When you choose Markdown, you edit your slides in <code>index.md</code> and use standard Markdown except the extra tags <code>---</code> to declare your slides and <code>***</code> if you wish to add notes. </p>
 </main>

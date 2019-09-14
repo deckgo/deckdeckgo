@@ -18,6 +18,7 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
 - [Methods](#app-slide-youtube-methods)
   - [Play the video](#app-slide-youtube-play-the-video)
   - [Pause the video](#app-slide-youtube-pause-the-video)
+  - [Toggle the video](#app-slide-youtube-toggle-the-video)
 
 ## Layout
 

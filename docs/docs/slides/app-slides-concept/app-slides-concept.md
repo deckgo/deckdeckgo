@@ -85,19 +85,32 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
+* Slide: [Big Image](/slides/bigimg)
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-big-img
+             img-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/big-img/showcase/big-deckdeckgo-h.jpg"
+             img-divisions="900;1500;2200"
+             axis="x"
+             reverse>
+    </deckgo-slide-big-img>
+  </deckgo-deck>
+</div>
+
 * Slide: [Chart](/slides/chart)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
-    <deckgo-slide-chart width={200} height={100} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv">
+    <deckgo-slide-chart width={200} height={100} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-chart>
     <deckgo-slide-chart width={200} height={100} type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
-                        src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-to-compare.csv">
+                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-chart>
     <deckgo-slide-chart width={200} height={100}
-                        type="bar" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-bar-chart-to-compare.csv"
+                        type="bar" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
                         style={{'--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-bar2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-bar3': 'var(--ion-color-tertiary)'}}
                         >
       <h1 slot="title">slot="title"</h1>
@@ -112,6 +125,17 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
     <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-youtube>
+  </deckgo-deck>
+</div>
+
+* Slide: [Video](/slides/video)
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
+      <h1 slot="title">A Gif as video</h1>
+      <button slot="actions" onClick={() => this.playPauseVideo()}>Play/pause</button>
+    </deckgo-slide-video>
   </deckgo-deck>
 </div>
 

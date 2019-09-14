@@ -42,7 +42,7 @@ export class AppFeed {
 
         this.lastPageSubscription = this.feedService.watchLastPageReached().subscribe((lastPageReached: boolean) => {
             this.lastPageReached = lastPageReached;
-            this.decksFetched = true;
+            this.decksFetched = lastPageReached;
         })
     }
 
@@ -95,7 +95,9 @@ export class AppFeed {
         if (this.decksFetched) {
             return undefined;
         } else {
-            return <ion-spinner class="loading" color="primary"></ion-spinner>;
+            return <div class="spinner">
+                <ion-spinner color="primary"></ion-spinner>
+            </div>;
         }
     }
 }

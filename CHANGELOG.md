@@ -1,3 +1,34 @@
+<a name="1.0.0-rc.13"></a>
+# [1.0.0-rc.13](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-2...v1.0.0-13) (2019-09-14)
+
+### Applications
+
+* docs: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
+### New: Web Components
+
+* slide-video: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/video/CHANGELOG.md))
+* slide-big-img: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/big-img/CHANGELOG.md))
+
+### Web Components
+
+* slide-youtube: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/youtube/CHANGELOG.md))
+
+### Others
+
+* slide-utils: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/utils/CHANGELOG.md))
+
+<a name="1.0.0-rc.12-2"></a>
+# [1.0.0-rc.12-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-1...v1.0.0-12-2) (2019-09-13)
+
+### Applications
+
+* docs: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
+### Others
+
+* webpack: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
+
 <a name="1.0.0-rc.12-1"></a>
 # [1.0.0-rc.12-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12...v1.0.0-12-1) (2019-09-09)
 

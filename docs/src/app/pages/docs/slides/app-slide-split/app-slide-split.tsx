@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-split',
-  styleUrl: 'app-slides-split.scss'
+  styleUrl: 'app-slide-split.scss'
 })
 export class AppSlideContent {
 

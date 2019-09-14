@@ -9,6 +9,7 @@ If you wish, you could edit your [DeckDeckGo] presentation using Markdown. This 
     - [Example](#app-edit-markdown-example)
     - [Attributes](#app-edit-markdown-attributes)
     - [Notes](#app-edit-markdown-notes)
+    - [Options](#app-edit-markdown-options)
 - [Summary](#app-edit-markdown-summary)
 
 ## Introduction
@@ -103,6 +104,16 @@ will be parsed into:
     ...and say hello to mum
   </div>
 </deckgo-slide-title>
+```
+
+### Options
+
+`src/index.md` is used as default source file to generate your presentation. If you wish, you could provide an alternative path.
+
+For that purpose, edit the `webpack.config.js` at the root of the your presentation's project and provide a custom path like for example the following:
+
+```
+new DeckDeckGoMarkdownPlugin({src: '/Users/david/mypresentation/src/hello.md'})
 ```
 
 ## Summary

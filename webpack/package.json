@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-webpack-plugins",
-  "version": "1.0.0-rc.1-2",
+  "version": "1.0.0-rc.2",
   "author": "David Dal Busco",
   "description": "A collection of Webpack plugins to create a DeckDeckGo presentation",
   "license": "MIT",
