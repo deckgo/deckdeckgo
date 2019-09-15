@@ -10,7 +10,7 @@ import {
     DeckdeckgoEventType,
     DeckdeckgoEventSlides,
     DeckdeckgoEventSlideTo,
-    DeckdeckgoSlideAction, DeckdeckgoSlideDefinition
+    DeckdeckgoSlideAction, DeckdeckgoSlideDefinition, DeckdeckgoEventSlideAction
 } from '@deckdeckgo/types';
 
 // Utils
@@ -89,6 +89,8 @@ export class AppRemote {
                     await this.slideTo(index, speed);
                 } else if ($event.type === DeckdeckgoEventType.DELETE_SLIDE) {
                     await this.deleteSlide();
+                } else if ($event.type === DeckdeckgoEventType.SLIDE_ACTION) {
+                    this.action = ($event as DeckdeckgoEventSlideAction).action;
                 }
             }
         });
