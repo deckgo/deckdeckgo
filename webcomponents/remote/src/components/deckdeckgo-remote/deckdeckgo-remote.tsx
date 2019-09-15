@@ -9,7 +9,7 @@ import {
   DeckdeckgoEventType,
   DeckdeckgoEventEmitter,
   DeckdeckgoDrawAction,
-  DeckdeckgoSlideDefinition
+  DeckdeckgoSlideDefinition, DeckdeckgoSlideAction
 } from '@deckdeckgo/types';
 
 // Services
@@ -310,6 +310,24 @@ export class DeckdeckgoRemote {
       emitter: DeckdeckgoEventEmitter.DECK,
       index: index,
       speed: speed
+    });
+  }
+
+  @Method()
+  async play() {
+    this.communicationService.emit({
+      type: DeckdeckgoEventType.SLIDE_ACTION,
+      emitter: DeckdeckgoEventEmitter.DECK,
+      action: DeckdeckgoSlideAction.PLAY
+    });
+  }
+
+  @Method()
+  async pause() {
+    this.communicationService.emit({
+      type: DeckdeckgoEventType.SLIDE_ACTION,
+      emitter: DeckdeckgoEventEmitter.DECK,
+      action: DeckdeckgoSlideAction.PAUSE
     });
   }
 
