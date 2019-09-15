@@ -150,6 +150,22 @@ This method will delete the current slide in the remote app.
 await deck.deleteSlide();
 ```
 
+### Play
+
+This method will tell the remote app that the play action was performed in the deck.
+
+```
+await deck.play();
+```
+
+### Play
+
+This method will tell the remote app that the pause action was performed in the deck.
+
+```
+await deck.pause();
+```
+
 ## License
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
