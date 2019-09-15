@@ -14,6 +14,7 @@
 ### Others
 
 * types: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* starter kit: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.0.0-rc.13"></a>
 # [1.0.0-rc.13](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-2...v1.0.0-13) (2019-09-14)
