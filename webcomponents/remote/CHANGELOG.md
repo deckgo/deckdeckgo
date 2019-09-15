@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-09-15)
+
+### Libs
+
+* update `@deckdeckgo/types` last definition
+
 <a name="1.0.0-rc.1"></a>
 # 1.0.0-rc.1 (2019-08-30)
 
