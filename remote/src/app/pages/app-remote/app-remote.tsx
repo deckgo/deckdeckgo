@@ -45,7 +45,7 @@ export class AppRemote {
 
     @State() drawing: boolean = false;
 
-    @State() youtubeAction: DeckdeckgoSlideAction;
+    @State() action: DeckdeckgoSlideAction;
 
     private acceleratorSubscription: Subscription;
     private acceleratorInitSubscription: Subscription;
@@ -207,7 +207,7 @@ export class AppRemote {
     private async afterSwipe() {
         await this.setActiveIndex();
 
-        this.youtubeAction = null;
+        this.action = null;
     }
 
     private setActiveIndex(): Promise<void> {
@@ -367,15 +367,15 @@ export class AppRemote {
         });
     }
 
-    private emitYoutubeAction(e: UIEvent) {
+    private emitAction(e: UIEvent) {
         e.stopPropagation();
 
-        this.youtubeAction = this.youtubeAction === DeckdeckgoSlideAction.YOUTUBE_PLAY ? DeckdeckgoSlideAction.YOUTUBE_PAUSE : DeckdeckgoSlideAction.YOUTUBE_PLAY;
+        this.action = this.action === DeckdeckgoSlideAction.PLAY ? DeckdeckgoSlideAction.PAUSE : DeckdeckgoSlideAction.PLAY;
 
         this.communicationService.emit({
             type: DeckdeckgoEventType.SLIDE_ACTION,
             emitter: DeckdeckgoEventEmitter.APP,
-            action: this.youtubeAction
+            action: this.action
         });
     }
 
@@ -636,12 +636,14 @@ export class AppRemote {
     }
 
     private renderExtraActions() {
-        if (this.slides && this.slides[this.slideIndex].name === 'deckgo-slide-youtube'.toUpperCase()) {
+        if (this.slides &&
+            (this.slides[this.slideIndex].name === 'deckgo-slide-youtube'.toUpperCase() ||
+             this.slides[this.slideIndex].name === 'deckgo-slide-big-img'.toUpperCase())) {
 
-            const icon: string = this.youtubeAction === DeckdeckgoSlideAction.YOUTUBE_PLAY ? 'pause' : 'play';
+            const icon: string = this.action === DeckdeckgoSlideAction.PLAY ? 'pause' : 'play';
 
             return (
-                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.emitYoutubeAction(e)}>
+                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.emitAction(e)}>
                     <ion-icon name={icon}></ion-icon>
                 </ion-fab-button>
             )
