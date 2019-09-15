@@ -1,3 +1,19 @@
+<a name="1.0.0-rc.13-1"></a>
+# [1.0.0-rc.13-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13...v1.0.0-13-1) (2019-09-15)
+
+### Applications
+
+* studio: v1.0.0-beta.3-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+* remote: v1.0.0-beta.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+
+### Web Components
+
+* remote: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
+
+### Others
+
+* types: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+
 <a name="1.0.0-rc.13"></a>
 # [1.0.0-rc.13](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-2...v1.0.0-13) (2019-09-14)
 
@@ -33,9 +49,11 @@
 # [1.0.0-rc.12-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12...v1.0.0-12-1) (2019-09-09)
 
 ### Applications
+
 * studio: v1.0.0-beta.3-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
+
 * highlight-code: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 * slide-gif: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/gif/CHANGELOG.md))
 
@@ -43,6 +61,7 @@
 # [1.0.0-rc.12](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11-2...v1.0.0-12) (2019-09-08)
 
 ### Applications
+
 * studio: v1.0.0-beta.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Others
@@ -53,9 +72,11 @@
 # [1.0.0-rc.11-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11-1...v1.0.0-11-2) (2019-09-04)
 
 ### Web Components
+
 * core: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 
 ### Applications
+
 * website: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
 
 ### Others
@@ -74,12 +95,15 @@
 # [1.0.0-rc.11](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.10...v1.0.0-11) (2019-09-01)
 
 ### Applications
+
 * studio: v1.0.0-beta.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
+
 * inline-editor: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
 ### Others
+
 * utils: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.10"></a>
@@ -93,7 +117,7 @@
 ### Applications
 
 * docs: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
-* remote: v1.0.0-beta.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+* remote: v1.0.0-beta.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 * studio: v1.0.0-beta.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 * website: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
 

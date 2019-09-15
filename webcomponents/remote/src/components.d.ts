@@ -24,6 +24,8 @@ export namespace Components {
     'length': number;
     'moveDraw': (leftOffset: number, transitionDuration: string) => Promise<void>;
     'nextSlide': () => Promise<void>;
+    'pause': () => Promise<void>;
+    'play': () => Promise<void>;
     'prevSlide': () => Promise<void>;
     'room': string;
     'server': string;

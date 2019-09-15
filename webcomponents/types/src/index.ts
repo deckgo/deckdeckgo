@@ -4,8 +4,8 @@ export enum DeckdeckgoDrawAction {
 }
 
 export enum DeckdeckgoSlideAction {
-    YOUTUBE_PLAY = 'youtube_play',
-    YOUTUBE_PAUSE = 'youtube_pause'
+    PLAY = 'play',
+    PAUSE = 'pause'
 }
 
 export interface DeckdeckgoSlideDefinition {

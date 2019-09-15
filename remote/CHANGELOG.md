@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.2"></a>
+# 1.0.0-beta.2 (2019-09-15)
+
+### Features
+
+* support `play` and `pause` for the youtube and big-img slides
+* update `play` and `pause` if performed in the deck
+
 <a name="1.0.0-beta.1"></a>
 # 1.0.0-beta.1 (2019-08-30)
 
