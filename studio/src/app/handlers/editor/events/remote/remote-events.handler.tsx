@@ -199,7 +199,7 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            if ($event.detail.action === 'youtube_pause') {
+            if ($event.detail.action === 'pause') {
                 await youtubeSlideElement.pause();
             } else {
                 await youtubeSlideElement.play();

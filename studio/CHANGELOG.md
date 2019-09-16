@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.3-2"></a>
+# 1.0.0-beta.3-2 (2019-09-15)
+
+### Refactoring
+
+* remote event `youtube_pause` renamed to `pause`
+
 <a name="1.0.0-beta.3-1"></a>
 # 1.0.0-beta.3-1 (2019-09-09)
 

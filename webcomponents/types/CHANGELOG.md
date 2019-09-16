@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-09-15)
+
+### Breaking Changes
+
+* slide actions `YOUTUBE_PLAY` and `YOUTUBE_PAUSE` renamed to `PLAY` and `PAUSE`
+
 <a name="1.0.0-rc.1"></a>
 # 1.0.0-rc.1 (2019-08-30)
 

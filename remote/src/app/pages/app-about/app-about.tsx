@@ -38,7 +38,7 @@ export class AppAbout {
                     </a>
                 </div>
 
-                <p class="ion-padding-top">DeckDeckGo is developed by <a href="https://twitter.com/daviddalbusco">David Dal Busco</a> and <a href="https://twitter.com/nasmattia">Nicolas Mattia</a> - v1.0.0-beta.1</p>
+                <p class="ion-padding-top">DeckDeckGo is developed by <a href="https://twitter.com/daviddalbusco">David Dal Busco</a> and <a href="https://twitter.com/nasmattia">Nicolas Mattia</a> - v1.0.0-beta.2</p>
 
             </ion-content>
         ];
