@@ -157,7 +157,7 @@ export class AppFeedCard {
 
     private renderAuthorAvatar() {
         if (this.authorPhotoUrl) {
-            return <app-avatar src={this.authorPhotoUrl}></app-avatar>
+            return <app-avatar src={this.authorPhotoUrl} aria-label={this.author}></app-avatar>
         } else {
             return undefined;
         }

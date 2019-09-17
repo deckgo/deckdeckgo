@@ -107,7 +107,7 @@ export class AppNavigationActions {
 
     private renderLoggedIn() {
         if (Utils.isLoggedIn(this.authUser) && this.photoUrlLoaded) {
-            return <a class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)}>
+            return <a class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)} aria-label="Open menu">
                 <app-avatar src={this.photoUrl}></app-avatar>
             </a>;
         } else {

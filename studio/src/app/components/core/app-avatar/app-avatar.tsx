@@ -9,15 +9,16 @@ import {Component, Prop, h} from '@stencil/core';
 export class AppAvatar {
 
     @Prop() src: string;
+    @Prop() ariaLabel: string;
 
     render() {
         if (this.src) {
             return <ion-avatar>
-                <img src={this.src}/>
+                <img src={this.src} alt={this.ariaLabel}/>
             </ion-avatar>
         } else {
             return <ion-avatar>
-                <ion-icon name="person" md="md-person" ios="md-person"></ion-icon>
+                <ion-icon name="person" md="md-person" ios="md-person" aria-label={this.ariaLabel}></ion-icon>
             </ion-avatar>
         }
     }

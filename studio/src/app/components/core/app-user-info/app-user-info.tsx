@@ -79,7 +79,7 @@ export class AppUserInfo {
         if (this.authUser) {
             return <ion-grid>
                 <ion-row class="ion-align-items-center">
-                    <ion-col size={'' + this.avatarColSize}><app-avatar src={this.photoUrl}></app-avatar></ion-col>
+                    <ion-col size={'' + this.avatarColSize}><app-avatar src={this.photoUrl} aria-hidden="true"></app-avatar></ion-col>
                     <ion-col size={'' + (12 - this.avatarColSize)} class="user-info">
                         <ion-label>{this.name}</ion-label>
                         <ion-label>{!this.authUser.anonymous && this.apiUser && this.apiUser.username ? '@' + this.apiUser.username : undefined}</ion-label>
