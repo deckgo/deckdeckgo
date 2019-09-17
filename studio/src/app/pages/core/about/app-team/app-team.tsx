@@ -16,7 +16,7 @@ export class AppTeam {
 
                     <div class="team">
                         <div>
-                            <app-avatar src="https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg"></app-avatar>
+                            <app-avatar src="https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg" aria-label="David Dal Busco"></app-avatar>
 
                             <h2>David Dal Busco</h2>
 
@@ -46,7 +46,7 @@ export class AppTeam {
                         </div>
 
                         <div>
-                            <app-avatar src="https://pbs.twimg.com/profile_images/588789970690658305/Ru9JiWks_400x400.png"></app-avatar>
+                            <app-avatar src="https://pbs.twimg.com/profile_images/588789970690658305/Ru9JiWks_400x400.png" arial-label="Nicolas Mattia"></app-avatar>
 
                             <h2>Nicolas Mattia</h2>
 
