@@ -23,6 +23,7 @@ export namespace Components {
   interface AppAbout {}
   interface AppAddSlideAction {}
   interface AppAvatar {
+    'ariaLabel': string;
     'src': string;
   }
   interface AppCode {
@@ -577,6 +578,7 @@ declare namespace LocalJSX {
     'onActionOpenSlideAdd'?: (event: CustomEvent<UIEvent>) => void;
   }
   interface AppAvatar extends JSXBase.HTMLAttributes<HTMLAppAvatarElement> {
+    'ariaLabel'?: string;
     'src'?: string;
   }
   interface AppCode extends JSXBase.HTMLAttributes<HTMLAppCodeElement> {

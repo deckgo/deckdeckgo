@@ -483,7 +483,7 @@ export class AppHome {
                 <ion-label>Profile picture</ion-label>
             </ion-item>
             <div class="avatar">
-                <app-avatar src={this.user && this.user.data ? this.user.data.photo_url : undefined}></app-avatar>
+                <app-avatar src={this.user && this.user.data ? this.user.data.photo_url : undefined} aria-label="Profile picture"></app-avatar>
                 <input id="inputProfilePicture" type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.selectProfilePicture()} disabled={this.saving}/>
             </div>
             <p><small>Tips: if you would update your profile picture, ideally use a <strong>square</strong> image for that purpose</small></p>
