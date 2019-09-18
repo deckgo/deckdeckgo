@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
@@ -36,36 +37,57 @@ import Control.Monad
 import Control.Monad.Except
 import Data.Aeson ((.=), (.:), (.!=), (.:?))
 import Data.Bifunctor
+import Data.Char
 import Data.Int
 import Data.List (find)
+import Data.List (foldl')
 import Data.Maybe
 import Data.Proxy
-import Data.Swagger
+import Data.String
+import Data.Swagger hiding (Tag)
+import DeckGo.Prelude
 import GHC.Generics
 import Hasql.Statement (Statement(..))
 import Servant (Context ((:.)))
 import Servant.API
 import Servant.Auth.Firebase (Protected)
-import UnliftIO
-import Data.Char
 import System.Environment
+import System.FilePath
+import UnliftIO
+import qualified Cases
+import qualified Codec.Archive.Tar as Tar
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
+import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BL
+-- import qualified Data.ByteString.Lazy as BL
+import qualified Data.Digest.Pure.MD5 as MD5
 import qualified Data.HashMap.Strict as HMS
+-- import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
+-- import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
+-- import qualified Data.Text.Encoding as T
+import qualified Data.Text.IO as T
 import qualified Hasql.Connection as HC
+-- import qualified Hasql.Connection as HC
 import qualified Hasql.Decoders as HD
 import qualified Hasql.Encoders as HE
 import qualified Hasql.Session as HS
 import qualified Network.AWS as AWS
+-- import qualified Network.AWS as AWS
+import qualified Network.AWS.Data.Body as Body
+import qualified Network.AWS.S3 as S3
 import qualified Network.AWS.SQS as SQS
+import qualified Network.Mime as Mime
 import qualified Network.Wai as Wai
 import qualified Servant as Servant
 import qualified Servant.Auth.Firebase as Firebase
+import qualified System.Directory as Dir
+import qualified System.IO.Temp as Temp
 import qualified System.Random as Random
+import qualified Text.HTML.TagSoup as TagSoup
 
 newtype BucketName = BucketName { unBucketName :: T.Text }
 
@@ -355,10 +377,86 @@ instance Aeson.FromJSON Slide where
 instance Aeson.ToJSON Slide where
   toJSON = Aeson.Object . toJSONObject
 
+-- PRESENTATIONS
+
+type PresentationsAPI =
+    Protected :>
+      ReqBody '[JSON] PresentationInfo :>
+      Post '[JSON] (Item PresentationId PresentationResult) :<|>
+    Protected :>
+      Capture "presentation_id" PresentationId :>
+      ReqBody '[JSON] PresentationInfo :>
+      Put '[JSON] (Item PresentationId PresentationResult)
+
+instance ToSchema (Item PresentationId PresentationResult) where
+  declareNamedSchema _ = pure $ NamedSchema (Just "PresentationWithId") mempty
+
+instance ToSchema PresentationInfo where
+  declareNamedSchema _ = pure $ NamedSchema (Just "Presentation") mempty
+
+-- instance ToParamSchema (Item PresentationId Presentation) where
+  -- toParamSchema _ = mempty
+
+newtype PresentationId = PresentationId { unPresentationId :: T.Text }
+  deriving newtype
+    ( Aeson.FromJSON
+    , Aeson.ToJSON
+    , FromHttpApiData
+    , ToHttpApiData
+    , Show
+    , Eq
+    )
+  deriving stock
+    ( Generic )
+
+instance ToParamSchema PresentationId
+
+data PresentationInfo = PresentationInfo
+  { presentationName :: Deckname
+  , presentationOwner :: UserId
+  , presentationBackground :: Maybe Deckbackground
+  , presentationAttributes :: HMS.HashMap T.Text T.Text
+  , presentationSlides :: [Slide]
+  } deriving (Show, Eq)
+
+data PresentationResult = PresentationResult
+  { presentationUrl :: T.Text
+  } deriving (Show, Eq)
+
+instance ToJSONObject PresentationInfo where
+  toJSONObject = undefined -- \obj ->
+
+instance FromJSONObject PresentationInfo where
+  parseJSONObject = \obj ->
+    PresentationInfo <$>
+      obj .: "name" <*>
+      obj .: "owner_id" <*>
+      obj .:? "background" <*>
+      obj .:? "attributes" .!= HMS.empty <*>
+      obj .: "slides"
+
+instance FromJSONObject PresentationResult where
+  parseJSONObject = undefined -- \obj ->
+
+instance ToJSONObject PresentationResult where
+  toJSONObject pres = HMS.fromList
+    [ "url" .= presentationUrl pres
+    ]
+
+instance Aeson.ToJSON PresentationInfo where
+  toJSON = Aeson.Object . toJSONObject
+instance Aeson.FromJSON PresentationInfo where
+  parseJSON = Aeson.withObject "Presentation" parseJSONObject
+instance Aeson.ToJSON PresentationResult where
+  toJSON = Aeson.Object . toJSONObject
+instance Aeson.FromJSON PresentationResult where
+  parseJSON = Aeson.withObject "Presentation" parseJSONObject
+
 type API = "api" :> (
     "users" :> UsersAPI :<|>
     "decks" :> DecksAPI :<|>
-    "decks" :> SlidesAPI
+    "decks" :> SlidesAPI :<|>
+    "presentations" :> PresentationsAPI
     )
 
 api :: Proxy API
@@ -380,7 +478,11 @@ application settings env conn =
       (server env conn)
 
 server :: AWS.Env -> HC.Connection -> Servant.Server API
-server env conn = serveUsers :<|> serveDecks :<|> serveSlides
+server env conn =
+    serveUsers :<|>
+    serveDecks :<|>
+    serveSlides :<|>
+    servePresentations
   where
     serveUsers =
       usersGet conn :<|>
@@ -400,6 +502,78 @@ server env conn = serveUsers :<|> serveDecks :<|> serveSlides
       slidesPost conn :<|>
       slidesPut conn :<|>
       slidesDelete conn
+    servePresentations =
+      presentationsPost env conn :<|>
+      presentationsPut env conn
+
+presentationsPost
+  :: AWS.Env -> HC.Connection
+  -> Firebase.UserId
+  -> PresentationInfo
+  -> Servant.Handler (Item PresentationId PresentationResult)
+presentationsPost env conn _userId pinfo = do
+    liftIO $ print pinfo
+    iface <- liftIO $ getDbInterface conn
+    user <- liftIO (dbGetUserById iface (presentationOwner pinfo)) >>= \case
+      Nothing -> Servant.throwError Servant.err404
+      Just u -> pure u
+
+    let userId = presentationOwner pinfo
+
+    uname <- case userUsername (itemContent user) of
+      Nothing -> error "User has no name"
+      Just uname -> pure uname
+
+    liftIO $ deployPresentation env uname pinfo
+
+    presId <- liftIO $ PresentationId <$> newId
+    let presName = presentationPrefix uname (presentationName pinfo)
+
+    -- something fishy going on here
+    let presName' = sanitizeDeckname (presentationName pinfo)
+
+    presUrl <- do
+      purl <- liftIO (getEnv "DECKGO_PRESENTATIONS_URL")
+      pure $ "https://" <> T.pack purl <> "/" <> presName
+
+    -- TODO: make unique
+    liftIO (dbCreatePresentation iface presId presName' presUrl userId)
+
+    pure $ Item
+      { itemId = presId
+      , itemContent = PresentationResult { presentationUrl = presUrl }
+      }
+
+presentationsPut
+  :: AWS.Env -> HC.Connection
+  -> Firebase.UserId
+  -> PresentationId
+  -> PresentationInfo
+  -> Servant.Handler (Item PresentationId PresentationResult)
+presentationsPut env conn _uid pid pinfo = do
+    liftIO $ print pinfo
+    iface <- liftIO $ getDbInterface conn
+
+    user <- liftIO (dbGetUserById iface (presentationOwner pinfo)) >>= \case
+      Nothing -> Servant.throwError Servant.err404
+      Just u -> pure u
+
+    uname <- case userUsername (itemContent user) of
+      Nothing -> error "User has no name"
+      Just uname -> pure uname
+
+    (presName, presUrl) <- liftIO (dbGetPresentationById iface pid) >>= \case
+      Nothing -> Servant.throwError Servant.err404
+      Just res -> pure res
+
+    -- XXX: huge hack because we know we stored the "correct" presentation name
+    let pinfo' = pinfo { presentationName = Deckname presName }
+    liftIO $ deployPresentation env uname pinfo'
+
+    pure $ Item
+      { itemId = pid
+      , itemContent = PresentationResult { presentationUrl = presUrl }
+      }
 
 -- USERS
 
@@ -656,6 +830,49 @@ usersDeleteStatement = Statement sql encoder decoder True
         (unFirebaseId . unUserId)
         (HE.param HE.text)
     decoder = HD.unit -- TODO: affected rows
+
+-- PRESENTATIONS
+
+
+presentationsPostSession :: PresentationId -> T.Text -> T.Text -> UserId -> HS.Session ()
+presentationsPostSession pid pnam purl uid = do
+    liftIO $ putStrLn "Creating presentation in DB"
+    HS.statement (pid, pnam, purl, uid) presentationsPostStatement
+
+presentationsPostStatement :: Statement (PresentationId, T.Text, T.Text, UserId) ()
+presentationsPostStatement = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "INSERT INTO presentation"
+      ,   "(id, name, url, owner)"
+      ,   "VALUES ($1, $2, $3, $4)"
+      ]
+    encoder =
+      contramap (unPresentationId . view _1) (HE.param HE.text) <>
+      contramap (view _2) (HE.param HE.text) <>
+      contramap (view _3) (HE.param HE.text) <>
+      contramap
+        (unFirebaseId . unUserId . view _4)
+        (HE.param HE.text)
+    decoder = HD.unit
+
+presentationsGetByIdSession :: PresentationId -> HS.Session (Maybe (T.Text, T.Text))
+presentationsGetByIdSession pid = do
+    liftIO $ putStrLn $ "Getting presentation by id"
+    HS.statement pid presentationsGetByIdStatement
+
+presentationsGetByIdStatement :: Statement PresentationId (Maybe (T.Text, T.Text))
+presentationsGetByIdStatement = Statement sql encoder decoder True
+  where
+    sql = BS8.unwords
+      [ "SELECT name, url, owner FROM presentation"
+      ,   "WHERE id = $1"
+      ]
+    encoder = contramap unPresentationId (HE.param HE.text)
+    decoder = HD.rowMaybe $ (,) <$>
+      HD.column HD.text <*>
+      HD.column HD.text -- <*>
+      -- TODO: return user ID
 
 -- DECKS
 
@@ -1204,6 +1421,10 @@ data DbInterface = DbInterface
   , dbCreateSlide :: SlideId -> DeckId -> Slide -> IO ()
   , dbUpdateSlide :: SlideId -> Slide -> IO ()
   , dbDeleteSlide :: SlideId -> IO () -- TODO: either () () for not found
+
+  -- TODO: dbCreateSlide: if duplicated, no error !?
+  , dbCreatePresentation :: PresentationId -> T.Text -> T.Text -> UserId -> IO ()
+  , dbGetPresentationById :: PresentationId -> IO (Maybe (T.Text, T.Text))
   }
 
 data DbVersion
@@ -1214,6 +1435,7 @@ data DbVersion
   | DbVersion4
   | DbVersion5
   | DbVersion6
+  | DbVersion7
   deriving stock (Enum, Bounded, Ord, Eq)
 
 -- | Migrates from ver to latest
@@ -1425,6 +1647,17 @@ migrateFrom = \frm -> do
             , ");"
             ]
           ) HE.unit HD.unit True
+      DbVersion7 -> do
+        HS.statement () $ Statement
+          (BS8.unwords
+            [ "CREATE TABLE presentation ("
+            ,   "id TEXT PRIMARY KEY,"
+            ,   "name TEXT NOT NULL,"
+            ,   "url TEXT NOT NULL,"
+            ,   "owner TEXT NOT NULL REFERENCES account (id) ON DELETE CASCADE"
+            , ");"
+            ]
+          ) HE.unit HD.unit True
 
 readDbVersion :: HS.Session (Either String (Maybe DbVersion))
 readDbVersion = do
@@ -1471,6 +1704,7 @@ dbVersionToText = \case
   DbVersion4 -> "4"
   DbVersion5 -> "5"
   DbVersion6 -> "6"
+  DbVersion7 -> "7"
 
 dbVersionFromText :: T.Text -> Maybe DbVersion
 dbVersionFromText t =
@@ -1519,6 +1753,9 @@ getDbInterface conn = do
       , dbCreateSlide = \sid did s -> wrap (slidesPostSession sid did s)
       , dbUpdateSlide = \sid s -> wrap (slidesPutSession sid s)
       , dbDeleteSlide = \sid -> wrap (slidesDeleteSession sid)
+
+      , dbCreatePresentation = \pid pname purl uid  -> wrap (presentationsPostSession pid pname purl uid)
+      , dbGetPresentationById = \pid -> wrap (presentationsGetByIdSession pid)
       }
   where
     wrap :: forall b. HS.Session b -> IO b
@@ -1554,7 +1791,7 @@ tshow = T.pack . show
 -- TODO: what happens when the deckname is "-" ?
 presentationPrefix :: Username -> Deckname -> T.Text
 presentationPrefix uname dname =
-    unUsername uname <> "/" <>  sanitizeDeckname dname <> "/"
+    unUsername uname <> "/" <> sanitizeDeckname dname <> "/"
 
 sanitizeDeckname :: Deckname -> T.Text
 sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
@@ -1567,3 +1804,298 @@ sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
         c | isAscii c && isAlphaNum c -> T.singleton c
           | c == ' ' -> T.singleton '-'
           | otherwise -> ""
+
+data Err = Err T.Text SomeException
+  deriving (Show, Exception)
+
+err :: T.Text -> SomeException -> IO a
+err msg e = throwIO $ Err msg e
+
+-- | Diffs the bucket objects.
+-- Returns:
+--  * fst: the files to add
+--  * snd: the files to delete
+diffObjects
+  :: [(FilePath, S3.ObjectKey, S3.ETag)]
+  -> [(S3.ObjectKey, S3.ETag)]
+  -> ([(FilePath, S3.ObjectKey, S3.ETag)], [S3.ObjectKey])
+diffObjects news0 (HMS.fromList -> olds0) = second HMS.keys $
+    foldl' (
+      \(news, olds) obj@(_fp, okey, etag) -> do
+          case HMS.lookup okey olds of
+            Nothing -> (obj : news, olds)
+            Just etag' ->
+              if etag' == etag
+              then (news, HMS.delete okey olds)
+              else (obj : news, olds)
+      ) ([], olds0) news0
+
+listPresentationObjects
+  :: AWS.Env
+  -> S3.BucketName
+  -> Username
+  -> Deckname
+  -> IO [S3.Object]
+listPresentationObjects env bucket uname dname =
+    listObjects env bucket (Just $ presentationPrefix uname dname)
+
+withPresentationFiles
+  :: Username
+  -> PresentationInfo
+  -- -> Deck
+  -- -> [Slide
+  -> ([(FilePath, S3.ObjectKey, S3.ETag)] -> IO a)
+  -> IO a
+withPresentationFiles uname presentationInfo act = do
+    deckgoStarterDist <- getEnv "DECKGO_STARTER_DIST"
+    Temp.withSystemTempDirectory "dist" $ \dir -> do
+      Tar.extract dir deckgoStarterDist
+      mapFile processIndex $ dir </> "index.html"
+      mapFile interpol $ dir </> "manifest.json"
+      putStrLn "Listing files..."
+      files <- listDirectoryRecursive dir
+      files' <- forM files $ \(fp, components) -> do
+        etag <- fileETag fp
+        let okey = mkObjectKey uname dname components
+        pure (fp, okey, etag)
+      act files'
+  where
+    dname = presentationName presentationInfo
+    processIndex :: T.Text -> T.Text
+    processIndex =
+      TagSoup.renderTags . processTags presentationInfo . TagSoup.parseTags .
+      interpol
+    interpol =
+      T.replace "{{DECKDECKGO_TITLE}}" (unDeckname dname) .
+      T.replace "{{DECKDECKGO_TITLE_SHORT}}" (T.take 12 $ unDeckname dname) .
+      T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname) .
+      T.replace "{{DECKDECKGO_USERNAME}}" (unUsername uname) .
+      T.replace "{{DECKDECKGO_USER_ID}}"
+        (unFirebaseId . unUserId $ presentationOwner presentationInfo) .
+      T.replace "{{DECKDECKGO_DECKNAME}}" (sanitizeDeckname dname) .
+      -- TODO: description
+      T.replace "{{DECKDECKGO_DESCRIPTION}}" "(no description given)" .
+      T.replace "{{DECKDECKGO_BASE_HREF}}"
+        ("/" <> presentationPrefix uname dname)
+
+mapFile :: (T.Text -> T.Text) -> FilePath -> IO ()
+mapFile f fp = do
+    T.readFile fp >>= T.writeFile fp . f
+
+type Tag = TagSoup.Tag T.Text
+
+processTags :: PresentationInfo -> [Tag] -> [Tag]
+processTags presentationInfo = concatMap $ \case
+  TagSoup.TagOpen str (HMS.fromList -> attrs)
+    | str == "deckgo-deck" -> do
+        [ TagSoup.TagOpen str (HMS.toList (presentationAttributes presentationInfo <> attrs)) ] <>
+          (concatMap slideTags (presentationSlides presentationInfo)) <>
+          (maybe [] deckBackgroundTags (presentationBackground presentationInfo))
+  t -> [t]
+
+deckBackgroundTags :: Deckbackground -> [Tag]
+deckBackgroundTags (unDeckbackground -> bg) =
+    [ TagSoup.TagOpen "div" (HMS.toList $ HMS.singleton "slot" "background")
+    ] <> TagSoup.parseTags bg <>
+    [ TagSoup.TagClose "div"
+    ]
+
+slideTags :: Slide -> [Tag]
+slideTags slide =
+    [ TagSoup.TagOpen
+        ("deckgo-slide-" <> slideTemplate slide)
+        (first Cases.spinalize <$> HMS.toList (slideAttributes slide))
+    ] <> maybe [] TagSoup.parseTags (slideContent slide) <>
+    [ TagSoup.TagClose
+        ("deckgo-slide-" <> slideTemplate slide)
+    ]
+
+
+listObjects :: AWS.Env -> S3.BucketName -> Maybe T.Text -> IO [S3.Object]
+listObjects env bname mpref = xif ([],Nothing) $ \f (es, ct) ->
+    runAWS env (AWS.send $ S3.listObjectsV2 bname &
+      S3.lovContinuationToken .~ ct &
+      S3.lovPrefix .~ mpref
+      ) >>= \case
+      Right r -> do
+        putStrLn "Listed objects..."
+        let objs = r ^. S3.lovrsContents
+        case (r ^. S3.lovrsIsTruncated, r ^. S3.lovrsNextContinuationToken) of
+          (Just True, Just ct') -> f (es <> objs, Just ct')
+          _ -> pure (es <> objs)
+      Left e -> err "Could not list objects" e
+
+deleteObjects :: AWS.Env -> S3.BucketName -> Maybe T.Text -> IO ()
+deleteObjects env bname mpref = do
+    es <- listObjects env bname mpref
+    putStrLn $ "Deleting " <> show (length es) <> " objects..."
+    deleteObjects' env bname $ map (^. S3.oKey) es
+
+deleteObjects' :: AWS.Env -> S3.BucketName -> [S3.ObjectKey] -> IO ()
+deleteObjects' env bname okeys =
+    forConcurrentlyN_ 10 okeys $ \okey -> runAWS env (
+      AWS.send $ S3.deleteObject bname okey) >>= \case
+        Right {} -> pure ()
+        Left e -> error $ "Could not delete object: " <> show e
+
+-- TODO: sanitize deck name
+deployDeck :: AWS.Env -> HC.Connection -> DeckId -> IO ()
+deployDeck env conn deckId = do
+    iface <- liftIO $ getDbInterface conn
+    dbGetDeckById iface deckId >>= \case
+      Nothing -> pure () -- TODO
+      Just deck -> do
+        liftIO (fmap itemContent <$> dbGetUserById iface (deckOwnerId deck)) >>= \case
+          Nothing -> pure () -- TODO
+          Just user -> case userUsername user of
+            Nothing -> pure () -- TODO
+            Just uname -> do
+              slides <- catMaybes <$> mapM (dbGetSlideById iface) (deckSlides deck)
+              deployPresentation env uname $ deckToPres deck slides
+
+deckToPres :: Deck -> [Slide] -> PresentationInfo
+deckToPres deck slides = PresentationInfo
+    { presentationName = deckDeckname deck
+    , presentationOwner = deckOwnerId deck
+    , presentationBackground = deckDeckbackground deck
+    , presentationAttributes = deckAttributes deck
+    , presentationSlides = slides
+    }
+
+deployPresentation :: AWS.Env -> Username -> PresentationInfo -> IO ()
+deployPresentation env uname presentationInfo = do
+    bucketName <- getEnv "BUCKET_NAME"
+    let bucket = S3.BucketName (T.pack bucketName)
+    let dname = presentationName presentationInfo
+    putStrLn "Listing current objects"
+    currentObjs <- listPresentationObjects env bucket uname dname
+    putStrLn "Listing presentations files"
+
+
+
+    withPresentationFiles uname presentationInfo $ \files -> do
+      let
+        currentObjs' =
+          (\obj ->
+            (obj ^. S3.oKey, fixupS3ETag $ obj ^. S3.oETag)
+          ) <$> currentObjs
+        (toPut, toDelete) = diffObjects files currentObjs'
+      putStrLn $ "Deleting " <> show (length toDelete) <> " old files"
+      deleteObjects' env bucket toDelete
+      putStrLn $ "Uploading " <> show (length toPut) <> " new files"
+      putObjects env bucket toPut
+
+    queueName <- liftIO $ T.pack <$> getEnv "QUEUE_NAME"
+
+    -- TODO: cleaner error handling down here
+
+    liftIO $ putStrLn $ "Forwarding to queue: " <> T.unpack queueName
+    queueUrl <- runAWS env (AWS.send $ SQS.getQueueURL queueName) >>= \case
+      Right e -> pure $ e ^. SQS.gqursQueueURL
+      Left e -> do
+        liftIO $ print e
+        error "Failed"
+
+    liftIO $ print queueUrl
+
+    res <- runAWS env $ AWS.send $ SQS.sendMessage queueUrl $
+      T.decodeUtf8 $ BL.toStrict $ Aeson.encode (presentationPrefix uname dname)
+
+    case res of
+      Right r -> do
+        liftIO $ print r
+      Left e -> do
+        liftIO $ print e
+        error "Failed!!"
+
+putObjects
+  :: AWS.Env
+  -> S3.BucketName
+  -> [(FilePath, S3.ObjectKey, S3.ETag)]
+  -> IO ()
+putObjects env bucket objs = forConcurrentlyN_ 10 objs $ putObject env bucket
+
+putObject
+  :: AWS.Env
+  -> S3.BucketName
+  -> (FilePath, S3.ObjectKey, S3.ETag)
+  -> IO ()
+putObject env bucket (fp, okey, etag) = do
+    body <- Body.toBody <$> BS.readFile fp
+    runAWS env (
+      AWS.send $ S3.putObject bucket okey body &
+          -- XXX: partial, though technically should never fail
+          S3.poContentType .~ inferContentType (T.pack fp)
+      ) >>= \case
+        Right r -> do
+          putStrLn $ "Copied: " <> fp <> " to " <> show okey <> " with ETag " <> show etag
+          case r ^. S3.porsETag of
+            Just (fixupS3ETag -> s3ETag) ->
+              when (etag /= s3ETag) $ do
+                putStrLn $ "Warning: mismatched MD5: expected : actual: " <>
+                  show etag <> " : " <> show s3ETag
+            Nothing -> putStrLn "Warning: no ETag"
+        Left e -> error $ "Error in put: " <> show e
+
+-- | Some of the ETags we receive from S3 are surrounded with /"/ chars so we
+-- strip them
+fixupS3ETag :: S3.ETag -> S3.ETag
+fixupS3ETag (S3.ETag etag) =
+    S3.ETag $
+      T.encodeUtf8 $
+      T.dropWhileEnd (== '"') $
+      T.dropWhile (== '"') $
+      T.decodeUtf8 etag
+
+mkObjectKey :: Username -> Deckname -> [T.Text] -> S3.ObjectKey
+mkObjectKey uname dname components = S3.ObjectKey $
+    presentationPrefix uname dname <> T.intercalate "/" components
+
+fileETag :: FilePath -> IO S3.ETag
+fileETag fp =
+    -- XXX: The 'show' step is very import, it's what converts the Digest to
+    -- the Hex representation
+    (fromString . show . MD5.md5) <$> BL.readFile fp
+
+inferContentType :: T.Text -> Maybe T.Text
+inferContentType = Just . T.decodeUtf8 .
+    Mime.mimeByExt Mime.defaultMimeMap Mime.defaultMimeType
+
+listDirectoryRecursive :: FilePath -> IO [(FilePath, [T.Text])]
+listDirectoryRecursive = fix $ \f dir -> do
+    -- XXX: /so/ not tail recursive
+    (dirs, fs) <- Dir.listDirectory dir >>=
+      mapM (\component -> pure (dir </> component, [T.pack component])) >>=
+      partitionM (Dir.doesDirectoryExist . fst)
+    fs' <- concatMapM
+      (\(dir', components) -> fmap (second (components <>)) <$> (f dir'))
+      dirs
+    pure (fs <> fs')
+
+-- Data.List for Monad
+
+-- | A version of 'partition' that works with a monadic predicate.
+--
+-- > partitionM (Just . even) [1,2,3] == Just ([2], [1,3])
+-- > partitionM (const Nothing) [1,2,3] == Nothing
+partitionM :: Monad m => (a -> m Bool) -> [a] -> m ([a], [a])
+partitionM _ [] = return ([], [])
+partitionM f (x:xs) = do
+    res <- f x
+    (as,bs) <- partitionM f xs
+    return ([x | res]++as, [x | not res]++bs)
+
+-- | A version of 'concatMap' that works with a monadic predicate.
+concatMapM :: Monad m => (a -> m [b]) -> [a] -> m [b]
+{-# INLINE concatMapM #-}
+concatMapM act = foldr f (return [])
+    where f x xs = do x' <- act x; if null x' then xs else do xs' <- xs; return $ x' ++xs'
+
+forConcurrentlyN_
+  :: (MonadUnliftIO m) => Int -> [a] -> (a -> m b) -> m ()
+forConcurrentlyN_ n xs act = forConcurrently_ (nChunks n xs) (mapM_ act)
+
+nChunks :: Int -> [a] -> [[a]]
+nChunks n xs = HMS.elems $ snd $ foldl'
+    (\(i, m) v -> (i+1, HMS.insertWith (<>) (i `mod` n) [v] m) )
+    (0, HMS.empty) xs

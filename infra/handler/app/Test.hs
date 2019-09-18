@@ -10,7 +10,7 @@ import Control.Monad
 import Data.List (sortOn)
 import Data.Monoid (First)
 import DeckGo.Handler
-import DeckGo.Presenter
+-- import DeckGo.Presenter
 import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Network.HTTP.Types as HTTP
 import Servant.API
@@ -137,6 +137,8 @@ withPristineDB act = do
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS account CASCADE") conn
     putStrLn "DROP TABLE IF EXISTS slide"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS slide") conn
+    putStrLn "DROP TABLE IF EXISTS presentation"
+    void $ HS.run (HS.sql "DROP TABLE IF EXISTS presentation") conn
     putStrLn "DROP TABLE IF EXISTS deck"
     void $ HS.run (HS.sql "DROP TABLE IF EXISTS deck") conn
     putStrLn "DROP TABLE IF EXISTS db_meta"
@@ -187,10 +189,10 @@ testPresDeploys = withQueueName $ withEnv $ \env -> withSQS env $ withS3 env $ d
           , deckAttributes = HMS.singleton "foo" "bar"
           }
 
-    deployPresentation env (Username "josph") newDeck [someSlide]
+    deployPresentation env (Username "josph") $ deckToPres newDeck [someSlide]
     -- XXX: tests the obj diffing by making sure we can upload a presentation
     -- twice without errors
-    deployPresentation env (Username "josph") newDeck [someSlide]
+    deployPresentation env (Username "josph") $ deckToPres newDeck [someSlide]
   where
     testQueueName = "the-queue"
     withQueueName =
@@ -589,6 +591,8 @@ slidesGetSlideId' :: T.Text -> DeckId -> SlideId -> ClientM (Item SlideId Slide)
 slidesPost' :: T.Text -> DeckId -> Slide -> ClientM (Item SlideId Slide)
 slidesPut' :: T.Text -> DeckId -> SlideId -> Slide -> ClientM (Item SlideId Slide)
 slidesDelete' :: T.Text -> DeckId -> SlideId -> ClientM ()
+_presentationsPost' :: T.Text -> PresentationInfo -> ClientM (Item PresentationId PresentationResult)
+_presentationsPut' :: T.Text -> PresentationId -> PresentationInfo -> ClientM (Item PresentationId PresentationResult)
 ((
   usersGet' :<|>
   _usersGetUserId' :<|>
@@ -609,6 +613,10 @@ slidesDelete' :: T.Text -> DeckId -> SlideId -> ClientM ()
   slidesPost' :<|>
   slidesPut' :<|>
   slidesDelete'
+  ) :<|>
+  (
+  _presentationsPost' :<|>
+  _presentationsPut'
   )
   ) = client api
 

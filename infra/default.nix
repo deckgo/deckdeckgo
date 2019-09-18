@@ -7,8 +7,9 @@ rec
         cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${handler}/bin/handler" main_hs
+        cp ${deckdeckgo-starter-dist}/dist.tar dist.tar
         mkdir $out
-        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist.tar
       '';
 
   # TODO: move all other builders to this

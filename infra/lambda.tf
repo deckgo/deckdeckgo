@@ -1,6 +1,7 @@
 resource "aws_lambda_function" "api" {
   function_name = "deckdeckgo-handler-lambda"
   filename      = data.external.build-function.result.path
+  timeout = 60
   handler       = "main.handler"
   runtime       = "nodejs8.10"
 
@@ -18,10 +19,12 @@ resource "aws_lambda_function" "api" {
       PGPORT                   = aws_db_instance.default.port
       PGDATABASE               = aws_db_instance.default.name
       PGPASSWORD               = aws_db_instance.default.password
-      QUEUE_NAME               = aws_sqs_queue.presentation_deploy.name
+      QUEUE_NAME               = aws_sqs_queue.dirty.name
       FIREBASE_PROJECT_ID      = "deckdeckgo-studio-prod"
       DECKGO_PRESENTATIONS_URL = aws_route53_record.www_site_beta.fqdn
       META_BUCKET_NAME         = aws_s3_bucket.meta.bucket
+      BUCKET_NAME         = aws_s3_bucket.presentations.bucket
+      DECKGO_STARTER_DIST = "dist.tar"
     }
   }
 }
@@ -84,6 +87,15 @@ data "aws_iam_policy_document" "policy_for_lambda" {
     resources = [aws_sqs_queue.presentation_deploy.arn]
   }
 
+  statement {
+    actions = [
+      "sqs:SendMessage",
+      "sqs:GetQueueURL",
+    ]
+
+    resources = [aws_sqs_queue.dirty.arn]
+  }
+
   # Allow reading the keys from the meta bucket
   statement {
     actions = [
@@ -112,6 +124,25 @@ data "aws_iam_policy_document" "policy_for_lambda" {
       aws_dynamodb_table.deckdeckgo-test-dynamodb-table-slides.arn,
       aws_dynamodb_table.deckdeckgo-test-dynamodb-table-users.arn,
     ]
+  }
+
+
+  # Give access to CloudWatch
+  statement {
+    actions = [
+      "s3:ListBucket",
+    ]
+
+    resources = [aws_s3_bucket.presentations.arn]
+  }
+
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:DeleteObject",
+    ]
+
+    resources = ["${aws_s3_bucket.presentations.arn}/*"]
   }
 }
 
