@@ -9,13 +9,15 @@ import {ApiDeck} from '../../../models/api/api.deck';
 import {Slide} from '../../../models/data/slide';
 import {User} from '../../../models/data/user';
 
-import {DeckEditorService} from '../deck/deck-editor.service';
-import {ApiDeckService} from '../../api/deck/api.deck.service';
-import {ApiSlideService} from '../../api/slide/api.slide.service';
+import {ApiPresentation} from '../../../models/api/api.presentation';
 import {ApiSlide} from '../../../models/api/api.slide';
+
 import {DeckService} from '../../data/deck/deck.service';
 import {SlideService} from '../../data/slide/slide.service';
 import {UserService} from '../../data/user/user.service';
+import {DeckEditorService} from '../deck/deck-editor.service';
+
+import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
 
 export class PublishService {
 
@@ -23,8 +25,7 @@ export class PublishService {
 
     private deckEditorService: DeckEditorService;
 
-    private apiDeckService: ApiDeckService;
-    private apiSlideService: ApiSlideService;
+    private apiPresentationService: ApiPresentationService;
 
     private deckService: DeckService;
     private slideService: SlideService;
@@ -37,8 +38,7 @@ export class PublishService {
         // Private constructor, singleton
         this.deckEditorService = DeckEditorService.getInstance();
 
-        this.apiDeckService = ApiDeckService.getInstance();
-        this.apiSlideService = ApiSlideService.getInstance();
+        this.apiPresentationService = ApiPresentationService.getInstance();
 
         this.deckService = DeckService.getInstance();
         this.slideService = SlideService.getInstance();
@@ -78,30 +78,32 @@ export class PublishService {
                         return;
                     }
 
-                    const apiDeck: ApiDeck = await this.createOrUpdateApiDeck(deck);
+                    const apiDeck: ApiDeck = await this.convertDeck(deck);
 
-                    this.progress(0.15);
+                    this.progress(0.25);
 
-                    const newApiId: boolean = deck.data.api_id !== apiDeck.id;
+                    const apiDeckPublish: ApiPresentation = await this.publishDeck(deck, apiDeck);
+
+                    this.progress(0.50);
+
+                    if (!apiDeckPublish || !apiDeckPublish.id || !apiDeckPublish.url) {
+                        this.progressComplete();
+                        reject('Publish failed');
+                        return;
+                    }
+
+                    this.progress(0.75);
+
+                    const newApiId: boolean = deck.data.api_id !== apiDeckPublish.id;
                     if (newApiId) {
-                        deck.data.api_id = apiDeck.id;
+                        deck.data.api_id = apiDeckPublish.id;
 
                         deck = await this.deckService.update(deck);
                     }
 
-                    this.progress(0.3);
-
-                    const apiSlideIds: string[] = await this.createOrUpdateApiSlides(deck);
-
-                    this.progress(0.5);
-
-                    const updatedApiDeck: ApiDeck = await this.putApiDeckSlidesList(apiDeck, apiSlideIds);
-
-                    this.progress(0.65);
-
-                    const publishedUrl: string = await this.apiDeckService.publish(updatedApiDeck);
-
                     this.progress(0.80);
+
+                    const publishedUrl: string = apiDeckPublish.url;
 
                     await this.delayUpdateMeta(deck, publishedUrl, description, tags, newApiId);
 
@@ -111,6 +113,95 @@ export class PublishService {
                     reject(err);
                 }
             });
+        });
+    }
+
+    private publishDeck(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
+        return new Promise<ApiPresentation>(async (resolve, reject) => {
+            try {
+                const apiDeckPublish: ApiPresentation = await this.createOrUpdatePublish(deck, apiDeck);
+
+                resolve(apiDeckPublish);
+            } catch (err) {
+                reject (err);
+            }
+        })
+    }
+
+    private createOrUpdatePublish(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
+        if (deck.data.api_id) {
+            return this.apiPresentationService.put(apiDeck);
+        } else {
+            return this.apiPresentationService.post(apiDeck);
+        }
+    }
+
+    private convertDeck(deck: Deck): Promise<ApiDeck> {
+        return new Promise<ApiDeck>(async (resolve, reject) => {
+            try {
+                const apiSlides: ApiSlide[] = await this.convertSlides(deck);
+
+                const apiDeck: ApiDeck = {
+                    name: deck.data.name,
+                    owner_id: deck.data.owner_id,
+                    attributes: deck.data.attributes,
+                    background: deck.data.background,
+                    slides: apiSlides
+                };
+
+                resolve(apiDeck);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    private convertSlides(deck: Deck): Promise<ApiSlide[]> {
+        return new Promise<ApiSlide[]>(async (resolve, reject) => {
+            if (!deck.data.slides || deck.data.slides.length <= 0) {
+                resolve([]);
+                return;
+            }
+
+            try {
+                const promises: Promise<ApiSlide>[] = [];
+
+                for (let i: number = 0; i < deck.data.slides.length; i++) {
+                    const slideId: string = deck.data.slides[i];
+
+                    promises.push(this.convertSlide(deck, slideId));
+                }
+
+                if (!promises || promises.length <= 0) {
+                    resolve([]);
+                    return;
+                }
+
+                const slides: ApiSlide[] = await Promise.all(promises);
+
+                resolve(slides);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    private convertSlide(deck: Deck, slideId: string): Promise<ApiSlide> {
+        return new Promise<ApiSlide>(async (resolve, reject) => {
+            const slide: Slide = await this.slideService.get(deck.id, slideId);
+
+            if (!slide || !slide.data) {
+                reject('Missing slide for publishing');
+                return;
+            }
+
+            const apiSlide: ApiSlide = {
+                template: slide.data.template,
+                content: slide.data.content,
+                attributes: slide.data.attributes
+            };
+
+            resolve(apiSlide);
         });
     }
 
@@ -214,189 +305,6 @@ export class PublishService {
 
                     resolve();
                 });
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    private createOrUpdateApiDeck(deck: Deck): Promise<ApiDeck> {
-        return new Promise<ApiDeck>(async (resolve, reject) => {
-            try {
-                let persistedApiDeck: ApiDeck;
-
-                if (deck.data.api_id && deck.data.api_id !== undefined && deck.data.api_id !== '') {
-                    const currentDeck: ApiDeck = await this.apiDeckService.get(deck.data.api_id);
-
-                    if (!currentDeck) {
-                        persistedApiDeck = await this.postApiDeck(deck);
-                    } else {
-                        persistedApiDeck = await this.putApiDeck(currentDeck, deck);
-                    }
-                } else {
-                    persistedApiDeck = await this.postApiDeck(deck);
-                }
-
-                resolve(persistedApiDeck);
-            } catch (err) {
-                reject(err);
-            }
-        })
-    }
-
-    private putApiDeck(currentDeck: ApiDeck, deck: Deck): Promise<ApiDeck> {
-        return new Promise<ApiDeck>(async (resolve, reject) => {
-            try {
-                currentDeck.name = deck.data.name;
-                currentDeck.attributes = deck.data.attributes;
-                currentDeck.background = deck.data.background;
-
-                const persistedDeck: ApiDeck = await this.apiDeckService.put(currentDeck);
-
-                resolve(persistedDeck);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    private postApiDeck(deck: Deck): Promise<ApiDeck> {
-        return new Promise<ApiDeck>(async (resolve, reject) => {
-            try {
-                const apiDeck: ApiDeck = {
-                    slides: [],
-                    name: deck.data.name,
-                    owner_id: deck.data.owner_id,
-                    attributes: deck.data.attributes,
-                    background: deck.data.background
-                };
-
-                const persistedDeck: ApiDeck = await this.apiDeckService.post(apiDeck);
-
-                resolve(persistedDeck);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    private putApiDeckSlidesList(apiDeck: ApiDeck, apiSlideIds: string[]): Promise<ApiDeck> {
-        return new Promise<ApiDeck>(async (resolve, reject) => {
-            try {
-                apiDeck.slides = apiSlideIds;
-
-                const persistedDeck: ApiDeck = await this.apiDeckService.put(apiDeck);
-
-                resolve(persistedDeck);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    private createOrUpdateApiSlides(deck: Deck): Promise<string[]> {
-        return new Promise<string[]>(async (resolve, reject) => {
-            if (!deck.data.slides || deck.data.slides.length <= 0) {
-                resolve([]);
-                return;
-            }
-
-            try {
-                const apiSlideIds: string[] = [];
-
-                for (let i: number = 0; i < deck.data.slides.length; i++) {
-                    const slideId: string = deck.data.slides[i];
-                    const apiSlideId: string = await this.fetchAndCreateOrUpdateSlide(deck, slideId);
-                    apiSlideIds.push(apiSlideId);
-                }
-
-                resolve(apiSlideIds);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    private fetchAndCreateOrUpdateSlide(deck: Deck, slideId: string): Promise<string> {
-        return new Promise<string>(async (resolve, reject) => {
-            try {
-                const slide: Slide = await this.slideService.get(deck.id, slideId);
-
-                if (!slide || !slide.data) {
-                    reject('Missing slide for publishing');
-                    return;
-                }
-
-                const apiSlide: ApiSlide = await this.createOrUpdateApiSlide(deck.data.api_id, slide);
-
-                if (!apiSlide) {
-                    reject('Slide could not be created or updated');
-                    return;
-                }
-
-                if (slide.data.api_id !== apiSlide.id) {
-                    slide.data.api_id = apiSlide.id;
-                    await this.slideService.update(deck.id, slide);
-                }
-
-                resolve(apiSlide.id);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    private createOrUpdateApiSlide(apiDeckId: string, slide: Slide): Promise<ApiSlide> {
-        return new Promise<ApiSlide>(async (resolve, reject) => {
-            try {
-                let persistedApiSlide: ApiSlide;
-
-                if (slide.data.api_id && slide.data.api_id !== undefined && slide.data.api_id !== '') {
-                    const currentSlide: ApiSlide = await this.apiSlideService.get(apiDeckId, slide.data.api_id);
-
-                    if (!currentSlide) {
-                        persistedApiSlide = await this.postApiSlide(apiDeckId, slide);
-                    } else {
-                        persistedApiSlide = await this.putApiSlide(apiDeckId, currentSlide, slide);
-                    }
-                } else {
-                    persistedApiSlide = await this.postApiSlide(apiDeckId, slide);
-                }
-
-                resolve(persistedApiSlide);
-            } catch (err) {
-                reject(err);
-            }
-        })
-    }
-
-    private putApiSlide(apiDeckId: string, currentSlide: ApiSlide, slide: Slide): Promise<ApiSlide> {
-        return new Promise<ApiSlide>(async (resolve, reject) => {
-            try {
-                currentSlide.content = slide.data.content;
-                currentSlide.attributes = slide.data.attributes;
-
-                const persistedSlide: ApiSlide = await this.apiSlideService.put(apiDeckId, currentSlide);
-
-                resolve(persistedSlide);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    private postApiSlide(apiDeckId: string, slide: Slide): Promise<ApiSlide> {
-        return new Promise<ApiSlide>(async (resolve, reject) => {
-            try {
-                const apiSlide: ApiSlide = {
-                    template: slide.data.template,
-                    content: slide.data.content,
-                    attributes: slide.data.attributes
-                };
-
-                const persistedSlide: ApiSlide = await this.apiSlideService.post(apiDeckId, apiSlide);
-
-                resolve(persistedSlide);
             } catch (err) {
                 reject(err);
             }

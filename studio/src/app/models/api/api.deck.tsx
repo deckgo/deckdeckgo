@@ -1,8 +1,9 @@
 import {DeckAttributes} from '../data/deck';
+import {ApiSlide} from './api.slide';
 
 export interface ApiDeck {
     id?: string;
-    slides: string[];
+    slides: ApiSlide[];
     name: string;
     owner_id: string;
     attributes?: DeckAttributes;
