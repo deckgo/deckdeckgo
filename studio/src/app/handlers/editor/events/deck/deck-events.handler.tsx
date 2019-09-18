@@ -21,7 +21,6 @@ import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.se
 import {AuthService} from '../../../../services/auth/auth.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
-import {ApiSlideService} from '../../../../services/api/slide/api.slide.service';
 
 export class DeckEventsHandler {
 
@@ -43,8 +42,6 @@ export class DeckEventsHandler {
     private deckService: DeckService;
     private slideService: SlideService;
 
-    private apiSlideService: ApiSlideService;
-
     constructor() {
         this.errorService = ErrorService.getInstance();
         this.busyService = BusyService.getInstance();
@@ -55,8 +52,6 @@ export class DeckEventsHandler {
 
         this.deckService = DeckService.getInstance();
         this.slideService = SlideService.getInstance();
-
-        this.apiSlideService = ApiSlideService.getInstance();
     }
 
     init(el: HTMLElement): Promise<void> {
@@ -471,15 +466,12 @@ export class DeckEventsHandler {
                         const slide: Slide = await this.slideService.get(deck.id, slideId);
 
                         if (slide && slide.data) {
-                            // 1. If needed, delete slide in the API
-                            await this.deleteApiSlide(deck, slide);
+                            // TODO: no rush but ultimately maybe should we move step 1. and 2. below in a cloud function?
 
-                            // TODO: no rush but ultimately maybe should we move step 2. and 3. below in a cloud function?
-
-                            // 2. Delete the slide in Firestore
+                            // 1. Delete the slide in Firestore
                             await this.slideService.delete(deck.id, slideId);
 
-                            // 3. Update list of slide in the deck (in Firestore)
+                            // 2. Update list of slide in the deck (in Firestore)
                             if (deck.data.slides && deck.data.slides.indexOf(slideId) > -1) {
                                 deck.data.slides.splice(deck.data.slides.indexOf(slideId), 1);
 
@@ -499,28 +491,6 @@ export class DeckEventsHandler {
                 this.errorService.error(err);
                 this.busyService.deckBusy(false);
                 resolve();
-            }
-        });
-    }
-
-    private deleteApiSlide(deck: Deck, slide: Slide): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            if (!deck.data.api_id || deck.data.api_id === undefined || deck.data.api_id === '') {
-                resolve();
-                return;
-            }
-
-            if (!slide.data.api_id || slide.data.api_id === undefined || slide.data.api_id === '') {
-                resolve();
-                return;
-            }
-
-            try {
-                await this.apiSlideService.delete(deck.data.api_id, slide.data.api_id);
-
-                resolve();
-            } catch (err) {
-                reject(err);
             }
         });
     }
