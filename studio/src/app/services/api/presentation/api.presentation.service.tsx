@@ -30,8 +30,8 @@ export class ApiPresentationService {
         return this.query(deck, '/presentations', 'POST');
     }
 
-    put(deck: ApiDeck, bearer?: string): Promise<ApiPresentation> {
-        return this.query(deck, `/presentations/${deck.id}`, 'PUT', bearer);
+    put(apiDeckId: string, deck: ApiDeck, bearer?: string): Promise<ApiPresentation> {
+        return this.query(deck, `/presentations/${apiDeckId}`, 'PUT', bearer);
     }
 
     private query(deck: ApiDeck, context: string, method: string, bearer?: string): Promise<ApiPresentation> {

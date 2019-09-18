@@ -130,7 +130,7 @@ export class PublishService {
 
     private createOrUpdatePublish(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
         if (deck.data.api_id) {
-            return this.apiPresentationService.put(apiDeck);
+            return this.apiPresentationService.put(deck.data.api_id, apiDeck);
         } else {
             return this.apiPresentationService.post(apiDeck);
         }
