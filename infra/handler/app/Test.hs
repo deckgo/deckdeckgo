@@ -175,10 +175,13 @@ testPresDeploys = withQueueName $ withEnv $ \env -> withSQS env $ withS3 env $ d
           , presentationBackground = Nothing
           }
 
-    deployPresentation env (Username "josph") somePres
+    let uname = Username "josph"
+    let psname = sanitizePresentationName (presentationName somePres)
+
+    deployPresentation env uname psname somePres
     -- XXX: tests the obj diffing by making sure we can upload a presentation
     -- twice without errors
-    deployPresentation env (Username "josph") somePres
+    deployPresentation env uname psname somePres
   where
     testQueueName = "the-queue"
     withQueueName =

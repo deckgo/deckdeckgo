@@ -233,7 +233,7 @@ instance ToSchema UserInfo where
 instance ToParamSchema (Item UserId UserInfo) where
   toParamSchema _ = mempty
 
-newtype PresentationName = PresentationName { unPresentatinName :: T.Text }
+newtype PresentationName = PresentationName { unPresentationName :: T.Text }
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
@@ -413,31 +413,29 @@ presentationsPost env conn _userId pinfo = do
 
     liftIO $ putStrLn $ "Got user: " <> show uname
 
-    liftIO $ deployPresentation env uname pinfo
+    let psname = sanitizePresentationName (presentationName pinfo)
+
+    liftIO $ deployPresentation env uname psname pinfo
 
     presId <- liftIO $ PresentationId <$> newId
 
-    let presName = presentationPrefix uname (presentationName pinfo)
-
-    -- something fishy going on here
-    let presName' = sanitizePresentationName (presentationName pinfo)
-
-    liftIO $ putStrLn $ unwords
-      [ "Presentation info:"
-      , show (presId, presName')
-      ]
-
     presUrl <- do
       purl <- liftIO (getEnv "DECKGO_PRESENTATIONS_URL")
-      pure $ "https://" <> T.pack purl <> "/" <> presName
+      pure $ mconcat
+        [ "https://"
+        , T.pack purl
+        , "/"
+        , unPresentationPrefix $
+            presentationPrefix uname psname
+        ]
 
     liftIO $ putStrLn $ unwords
       [ "Presentation info:"
-      , show (presId, presName')
+      , show (presUrl, presId, psname)
       ]
 
     -- TODO: make unique
-    liftIO (dbCreatePresentation iface presId presName' presUrl userId)
+    liftIO (dbCreatePresentation iface presId psname presUrl userId)
 
     pure $ Item
       { itemId = presId
@@ -483,11 +481,7 @@ presentationsPut env conn _uid pid pinfo = do
 
     liftIO $ putStrLn $ "Got presentation: " <> show (presName, presUrl)
 
-    -- XXX: huge hack because we know we stored the "correct" presentation name
-    let pinfo' = pinfo { presentationName = PresentationName presName }
-
-    liftIO $ putStrLn $ "Updated presentation info: " <> show pinfo
-    liftIO $ deployPresentation env uname pinfo'
+    liftIO $ deployPresentation env uname presName pinfo
 
     pure $ Item
       { itemId = pid
@@ -753,12 +747,12 @@ usersDeleteStatement = Statement sql encoder decoder True
 -- PRESENTATIONS
 
 
-presentationsPostSession :: PresentationId -> T.Text -> T.Text -> UserId -> HS.Session ()
+presentationsPostSession :: PresentationId -> PresShortname -> T.Text -> UserId -> HS.Session ()
 presentationsPostSession pid pnam purl uid = do
     liftIO $ putStrLn "Creating presentation in DB"
     HS.statement (pid, pnam, purl, uid) presentationsPostStatement
 
-presentationsPostStatement :: Statement (PresentationId, T.Text, T.Text, UserId) ()
+presentationsPostStatement :: Statement (PresentationId, PresShortname, T.Text, UserId) ()
 presentationsPostStatement = Statement sql encoder decoder True
   where
     sql = BS8.unwords
@@ -768,19 +762,19 @@ presentationsPostStatement = Statement sql encoder decoder True
       ]
     encoder =
       contramap (unPresentationId . view _1) (HE.param HE.text) <>
-      contramap (view _2) (HE.param HE.text) <>
+      contramap (unPresShortname . view _2) (HE.param HE.text) <>
       contramap (view _3) (HE.param HE.text) <>
       contramap
         (unFirebaseId . unUserId . view _4)
         (HE.param HE.text)
     decoder = HD.unit
 
-presentationsGetByIdSession :: PresentationId -> HS.Session (Maybe (T.Text, T.Text))
+presentationsGetByIdSession :: PresentationId -> HS.Session (Maybe (PresShortname, T.Text))
 presentationsGetByIdSession pid = do
     liftIO $ putStrLn $ "Getting presentation by id"
     HS.statement pid presentationsGetByIdStatement
 
-presentationsGetByIdStatement :: Statement PresentationId (Maybe (T.Text, T.Text))
+presentationsGetByIdStatement :: Statement PresentationId (Maybe (PresShortname, T.Text))
 presentationsGetByIdStatement = Statement sql encoder decoder True
   where
     sql = BS8.unwords
@@ -789,7 +783,7 @@ presentationsGetByIdStatement = Statement sql encoder decoder True
       ]
     encoder = contramap unPresentationId (HE.param HE.text)
     decoder = HD.rowMaybe $ (,) <$>
-      HD.column HD.text <*>
+      (PresShortname <$> HD.column HD.text) <*>
       HD.column HD.text -- <*>
       -- TODO: return user ID
 
@@ -814,8 +808,8 @@ data DbInterface = DbInterface
   , dbDeleteUser :: UserId -> IO (Either () ())
 
   -- TODO: dbCreateSlide: if duplicated, no error !?
-  , dbCreatePresentation :: PresentationId -> T.Text -> T.Text -> UserId -> IO ()
-  , dbGetPresentationById :: PresentationId -> IO (Maybe (T.Text, T.Text))
+  , dbCreatePresentation :: PresentationId -> PresShortname -> T.Text -> UserId -> IO ()
+  , dbGetPresentationById :: PresentationId -> IO (Maybe (PresShortname, T.Text))
   }
 
 data DbVersion
@@ -1167,13 +1161,16 @@ newId = randomText 32 (['0' .. '9'] <> ['a' .. 'z'])
 tshow :: Show a => a -> T.Text
 tshow = T.pack . show
 
--- TODO: what happens when the deckname is "-" ?
-presentationPrefix :: Username -> PresentationName -> T.Text
-presentationPrefix uname pname =
-    unUsername uname <> "/" <> sanitizePresentationName pname <> "/"
+newtype PresentationPrefix = PresentationPrefix { unPresentationPrefix :: T.Text }
 
-sanitizePresentationName :: PresentationName -> T.Text
-sanitizePresentationName = T.toLower . strip . dropBadChars . unPresentatinName
+-- TODO: what happens when the deckname is "-" ?
+presentationPrefix :: Username -> PresShortname -> PresentationPrefix
+presentationPrefix uname psname =
+    PresentationPrefix $
+      unUsername uname <> "/" <> unPresShortname psname <> "/"
+
+sanitizePresentationName :: PresentationName -> PresShortname
+sanitizePresentationName = PresShortname . T.toLower . strip . dropBadChars . unPresentationName
   where
     strip :: T.Text -> T.Text
     strip = T.dropAround ( == '-' )
@@ -1213,18 +1210,18 @@ diffObjects news0 (HMS.fromList -> olds0) = second HMS.keys $
 listPresentationObjects
   :: AWS.Env
   -> S3.BucketName
-  -> Username
-  -> PresentationName
+  -> PresentationPrefix
   -> IO [S3.Object]
-listPresentationObjects env bucket uname pname =
-    listObjects env bucket (Just $ presentationPrefix uname pname)
+listPresentationObjects env bucket pprefix =
+    listObjects env bucket (Just $ unPresentationPrefix pprefix)
 
 withPresentationFiles
   :: Username
+  -> PresShortname
   -> PresentationInfo
   -> ([(FilePath, S3.ObjectKey, S3.ETag)] -> IO a)
   -> IO a
-withPresentationFiles uname presentationInfo act = do
+withPresentationFiles uname psname presentationInfo act = do
     deckgoStarterDist <- getEnv "DECKGO_STARTER_DIST"
     Temp.withSystemTempDirectory "dist" $ \dir -> do
       Tar.extract dir deckgoStarterDist
@@ -1234,7 +1231,7 @@ withPresentationFiles uname presentationInfo act = do
       files <- listDirectoryRecursive dir
       files' <- forM files $ \(fp, components) -> do
         etag <- fileETag fp
-        let okey = mkObjectKey uname pname components
+        let okey = mkObjectKey uname psname components
         pure (fp, okey, etag)
       act files'
   where
@@ -1244,17 +1241,17 @@ withPresentationFiles uname presentationInfo act = do
       TagSoup.renderTags . processTags presentationInfo . TagSoup.parseTags .
       interpol
     interpol =
-      T.replace "{{DECKDECKGO_TITLE}}" (unPresentatinName pname) .
-      T.replace "{{DECKDECKGO_TITLE_SHORT}}" (T.take 12 $ unPresentatinName pname) .
+      T.replace "{{DECKDECKGO_TITLE}}" (unPresentationName pname) .
+      T.replace "{{DECKDECKGO_TITLE_SHORT}}" (T.take 12 $ unPresentationName pname) .
       T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname) .
       T.replace "{{DECKDECKGO_USERNAME}}" (unUsername uname) .
       T.replace "{{DECKDECKGO_USER_ID}}"
         (unFirebaseId . unUserId $ presentationOwner presentationInfo) .
-      T.replace "{{DECKDECKGO_DECKNAME}}" (sanitizePresentationName pname) .
+      T.replace "{{DECKDECKGO_DECKNAME}}" (unPresShortname psname) .
       -- TODO: description
       T.replace "{{DECKDECKGO_DESCRIPTION}}" "(no description given)" .
       T.replace "{{DECKDECKGO_BASE_HREF}}"
-        ("/" <> presentationPrefix uname pname)
+        ("/" <> unPresentationPrefix (presentationPrefix uname psname))
 
 mapFile :: (T.Text -> T.Text) -> FilePath -> IO ()
 mapFile f fp = do
@@ -1317,16 +1314,24 @@ deleteObjects' env bname okeys =
         Right {} -> pure ()
         Left e -> error $ "Could not delete object: " <> show e
 
-deployPresentation :: AWS.Env -> Username -> PresentationInfo -> IO ()
-deployPresentation env uname presentationInfo = do
+newtype PresShortname = PresShortname { unPresShortname :: T.Text }
+    deriving (Show)
+
+deployPresentation
+  :: AWS.Env
+  -> Username
+  -> PresShortname
+  -> PresentationInfo
+  -> IO ()
+deployPresentation env uname psname presentationInfo = do
+    let pprefix = presentationPrefix uname psname
     bucketName <- getEnv "BUCKET_NAME"
     let bucket = S3.BucketName (T.pack bucketName)
-    let pname = presentationName presentationInfo
     putStrLn "Listing current objects"
-    currentObjs <- listPresentationObjects env bucket uname pname
+    currentObjs <- listPresentationObjects env bucket pprefix
     putStrLn "Listing presentations files"
 
-    withPresentationFiles uname presentationInfo $ \files -> do
+    withPresentationFiles uname psname presentationInfo $ \files -> do
       let
         currentObjs' =
           (\obj ->
@@ -1352,7 +1357,8 @@ deployPresentation env uname presentationInfo = do
     liftIO $ print queueUrl
 
     res <- runAWS env $ AWS.send $ SQS.sendMessage queueUrl $
-      T.decodeUtf8 $ BL.toStrict $ Aeson.encode (presentationPrefix uname pname)
+      T.decodeUtf8 $ BL.toStrict $ Aeson.encode $
+        unPresentationPrefix pprefix
 
     case res of
       Right r -> do
@@ -1400,9 +1406,9 @@ fixupS3ETag (S3.ETag etag) =
       T.dropWhile (== '"') $
       T.decodeUtf8 etag
 
-mkObjectKey :: Username -> PresentationName -> [T.Text] -> S3.ObjectKey
+mkObjectKey :: Username -> PresShortname -> [T.Text] -> S3.ObjectKey
 mkObjectKey uname pname components = S3.ObjectKey $
-    presentationPrefix uname pname <> T.intercalate "/" components
+    unPresentationPrefix (presentationPrefix uname pname) <> T.intercalate "/" components
 
 fileETag :: FilePath -> IO S3.ETag
 fileETag fp =
