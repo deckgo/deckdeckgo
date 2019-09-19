@@ -7,10 +7,8 @@ module Main (main) where
 import Control.Lens
 import Control.Lens.Extras (is)
 import Control.Monad
-import Data.List (sortOn)
 import Data.Monoid (First)
 import DeckGo.Handler
--- import DeckGo.Presenter
 import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Network.HTTP.Types as HTTP
 import Servant.API
@@ -157,17 +155,6 @@ main = do
               , Tasty.testCase "delete" testUsersDelete
               , Tasty.testCase "update" testUsersUpdate
               ]
-          , Tasty.testGroup "decks"
-              [ Tasty.testCase "create" testDecksCreate
-              , Tasty.testCase "update" testDecksUpdate
-              , Tasty.testCase "get by id" testDecksGetById
-              , Tasty.testCase "get all" testDecksGetAll
-              ]
-          , Tasty.testGroup "slides"
-              [ Tasty.testCase "get" testSlidesGet
-              , Tasty.testCase "create" testSlidesCreate
-              , Tasty.testCase "update" testSlidesUpdate
-              ]
           ]
       , Tasty.testCase "presentation" testPresDeploys
       , Tasty.testCase "server" testServer
@@ -179,20 +166,19 @@ testPresDeploys = withQueueName $ withEnv $ \env -> withSQS env $ withS3 env $ d
     let someUserId = UserId someFirebaseId
 
     let someSlide = Slide (Just "foo") "bar" HMS.empty
-        someSlideId = SlideId "foo-id"
 
-    let newDeck = Deck
-          { deckSlides = [ someSlideId ]
-          , deckDeckname = Deckname "bar"
-          , deckDeckbackground = Just (Deckbackground "bar")
-          , deckOwnerId = someUserId
-          , deckAttributes = HMS.singleton "foo" "bar"
+    let somePres = PresentationInfo
+          { presentationName = Deckname "some-pres"
+          , presentationSlides = [someSlide]
+          , presentationOwner = someUserId
+          , presentationAttributes = HMS.empty
+          , presentationBackground = Nothing
           }
 
-    deployPresentation env (Username "josph") $ deckToPres newDeck [someSlide]
+    deployPresentation env (Username "josph") somePres
     -- XXX: tests the obj diffing by making sure we can upload a presentation
     -- twice without errors
-    deployPresentation env (Username "josph") $ deckToPres newDeck [someSlide]
+    deployPresentation env (Username "josph") somePres
   where
     testQueueName = "the-queue"
     withQueueName =
@@ -302,159 +288,6 @@ testUsersUpdate = withPristineDB $ \conn -> do
         else error "bad user"
       Nothing -> error "Got no users"
 
-withDeck
-  :: DbInterface
-  -> (DeckId -> Deck -> IO ())
-  -> IO ()
-withDeck iface act = do
-    let someFirebaseId = FirebaseId "foo"
-        someUserId = UserId someFirebaseId
-        someUser = User
-          { userFirebaseId = someFirebaseId
-          , userUsername = Just (Username "patrick")
-          }
-    dbCreateUser iface someUserId someUser >>= \case
-      Left () -> error "Encountered error"
-      Right () -> pure ()
-
-    let someDeckId = DeckId "bar"
-        someDeck = Deck
-          { deckSlides = []
-          , deckDeckname = Deckname "Some deck!!"
-          , deckDeckbackground  = Nothing
-          , deckOwnerId  = someUserId
-          , deckAttributes = HMS.singleton "foo" "bar"
-          }
-    dbCreateDeck iface someDeckId someDeck
-    act someDeckId someDeck
-
-testDecksGetAll :: IO ()
-testDecksGetAll = withPristineDB $ \conn -> do
-    iface <- getDbInterface conn
-    let someFirebaseId = FirebaseId "foo"
-        someUserId = UserId someFirebaseId
-        someUser = User
-          { userFirebaseId = someFirebaseId
-          , userUsername = Just (Username "patrick")
-          }
-    dbCreateUser iface someUserId someUser >>= \case
-      Left () -> error "Encountered error"
-      Right () -> pure ()
-
-    someDecks <- forM [(0 :: Int) .. 10] $ \i -> do
-      let someDeckId = DeckId $ "bar-" <> tshow i
-          someDeck = Deck
-            { deckSlides = []
-            , deckDeckname = Deckname $ "Some deck!! - " <> tshow i
-            , deckDeckbackground  = Nothing
-            , deckOwnerId  = someUserId
-            , deckAttributes = HMS.singleton "foo" "bar"
-            }
-      dbCreateDeck iface someDeckId someDeck
-      pure someDeckId
-
-    dbGetAllDecks iface >>= \case
-      decks -> unless
-        (sortOn unDeckId (itemId <$> decks) == sortOn unDeckId someDecks) $
-        error "Bad decks"
-
-testDecksCreate :: IO ()
-testDecksCreate = withPristineDB $ \conn -> do
-    iface <- getDbInterface conn
-    withDeck iface $ \someDeckId someDeck -> do
-      dbGetDeckById iface someDeckId >>= \case
-        Nothing -> error "couldn't find deck"
-        Just deck -> unless (deck == someDeck) $ error "Bad deck"
-
-testDecksGetById :: IO ()
-testDecksGetById = withPristineDB $ \conn -> do
-    iface <- getDbInterface conn
-    withDeck iface $ \someDeckId someDeck -> do
-      slides <- forM [(0 :: Int)..10] $ \i -> do
-        let someSlideId = SlideId $ "foo-" <> tshow i
-            someSlide = Slide
-              { slideContent = Nothing
-              , slideTemplate = "The template"
-              , slideAttributes = HMS.singleton "foo" "bar"
-              }
-        dbCreateSlide iface someSlideId someDeckId someSlide
-        pure someSlideId
-      let someDeck' = someDeck { deckSlides = slides }
-      dbUpdateDeck iface someDeckId someDeck'
-      dbGetDeckById iface someDeckId >>= \case
-        Nothing -> error "couldn't find deck"
-        Just deck -> unless (deck == someDeck') $ error $ unlines
-          [ "Bad deck\n"
-          , show someDeck'
-          , show deck
-          ]
-
-testDecksUpdate :: IO ()
-testDecksUpdate = withPristineDB $ \conn -> do
-    iface <- getDbInterface conn
-    withDeck iface $ \someDeckId someDeck -> do
-      let someSlideId = SlideId "foo"
-          someSlide = Slide
-            { slideContent = Nothing
-            , slideTemplate = "The template"
-            , slideAttributes = HMS.singleton "foo" "bar"
-            }
-      dbCreateSlide iface someSlideId someDeckId someSlide
-
-      let someDeck' = someDeck { deckSlides = [ someSlideId ] }
-
-      dbUpdateDeck iface someDeckId someDeck'
-
-testSlidesGet :: IO ()
-testSlidesGet = withPristineDB $ \conn -> do
-    iface <- getDbInterface conn
-    withDeck iface $ \someDeckId _someDeck -> do
-      let someSlideId = SlideId "foo"
-          someSlide = Slide
-            { slideContent = Nothing
-            , slideTemplate = "The template"
-            , slideAttributes = HMS.singleton "foo" "bar"
-            }
-      dbCreateSlide iface someSlideId someDeckId someSlide
-      dbGetSlideById iface someSlideId >>= \case
-        Nothing -> error "couldn't find slide"
-        Just slide -> unless (slide == someSlide) $ error "Bad slide"
-
-testSlidesCreate :: IO ()
-testSlidesCreate = withPristineDB $ \conn -> do
-    iface <- getDbInterface conn
-    withDeck iface $ \someDeckId _someDeck -> do
-      let someSlideId = SlideId "foo"
-          someSlide = Slide
-            { slideContent = Nothing
-            , slideTemplate = "The template"
-            , slideAttributes = HMS.singleton "foo" "bar"
-            }
-      dbCreateSlide iface someSlideId someDeckId someSlide
-
-testSlidesUpdate :: IO ()
-testSlidesUpdate = withPristineDB $ \conn -> do
-    iface <- getDbInterface conn
-    withDeck iface $ \someDeckId _someDeck -> do
-      let someSlideId = SlideId "foo"
-          someSlide = Slide
-            { slideContent = Nothing
-            , slideTemplate = "The template"
-            , slideAttributes = HMS.singleton "foo" "bar"
-            }
-      dbCreateSlide iface someSlideId someDeckId someSlide
-
-      let someOtherSlide = Slide
-            { slideContent = Just "Some content"
-            , slideTemplate = "The template"
-            , slideAttributes = HMS.singleton "foo" "baz"
-            }
-
-      dbUpdateSlide iface someSlideId someOtherSlide
-      dbGetSlideById iface someSlideId >>= \case
-        Nothing -> error "couldn't find slide"
-        Just slide -> unless (slide == someOtherSlide) $ error "Bad slide"
-
 getTokenPath :: IO FilePath
 getTokenPath =
     lookupEnv "TEST_TOKEN_PATH" >>= \case
@@ -470,24 +303,11 @@ testServer = withServer $ \port -> do
   let clientEnv = mkClientEnv manager' (BaseUrl Http "localhost" port "")
   let someFirebaseId = FirebaseId "the-uid" -- from ./token
   let someUserId = UserId someFirebaseId
-  let someDeck = Deck
-        { deckSlides = []
-        , deckDeckname = Deckname "foo"
-        , deckDeckbackground = Nothing
-        , deckOwnerId = someUserId
-        , deckAttributes = HMS.empty
-        }
 
   runClientM usersGet' clientEnv >>= \case
     Left e -> error $ "Expected users, got error: " <> show e
     Right [] -> pure ()
     Right users -> error $ "Expected 0 users, got: " <> show users
-
-  runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
-    -- TODO: shouldn't this be a 404?
-    Left e -> error $ "Expected decks, got error: " <> show e
-    Right [] -> pure ()
-    Right decks -> error $ "Expected 0 decks, got: " <> show decks
 
   let someUserInfo = UserInfo
         { userInfoFirebaseId = someFirebaseId
@@ -507,69 +327,6 @@ testServer = withServer $ \port -> do
     Left e -> error $ "Expected 409, got error: " <> show e
     Right item -> error $ "Expected failure, got success: " <> show item
 
-  deckId <- runClientM (decksPost' b someDeck) clientEnv >>= \case
-    Left e -> error $ "Expected new deck, got error: " <> show e
-    Right (Item deckId _) -> pure deckId
-
-  let someSlide = Slide (Just "foo") "bar" HMS.empty
-
-  slideId <- runClientM (slidesPost' b deckId someSlide) clientEnv >>= \case
-    Left e -> error $ "Expected new slide, got error: " <> show e
-    Right (Item slideId _) -> pure slideId
-
-  let newDeck = Deck
-        { deckSlides = [ slideId ]
-        , deckDeckname = Deckname "bar"
-        , deckDeckbackground = Just (Deckbackground "bar")
-        , deckOwnerId = someUserId
-        , deckAttributes = HMS.singleton "foo" "bar"
-        }
-
-  runClientM (decksPut' b deckId newDeck) clientEnv >>= \case
-    Left e -> error $ "Expected updated deck, got error: " <> show e
-    Right {} -> pure ()
-
-  runClientM (decksPostPublish' b deckId) clientEnv >>= \case
-    Left e -> error $ "Expected publish, got error: " <> show e
-    Right {} -> pure ()
-
-  runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
-    Left e -> error $ "Expected decks, got error: " <> show e
-    Right decks ->
-      if decks == [Item deckId newDeck] then pure () else (error $ "Expected updated decks, got: " <> show decks)
-
-  runClientM (decksGetDeckId' b deckId) clientEnv >>= \case
-    Left e -> error $ "Expected decks, got error: " <> show e
-    Right (Item _deckId deck) ->
-      if deck == newDeck then pure () else (error $ "Expected get deck, got: " <> show deck)
-
-  let updatedSlide = Slide Nothing "quux" HMS.empty
-
-  runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
-    Left e -> error $ "Expected new slide, got error: " <> show e
-    Right {} -> pure ()
-
-  runClientM (slidesPut' b deckId slideId updatedSlide) clientEnv >>= \case
-    Left e -> error $ "Expected new slide, got error: " <> show e
-    Right {} -> pure ()
-
-  runClientM (slidesGetSlideId' b deckId slideId) clientEnv >>= \case
-    Left e -> error $ "Expected updated slide, got error: " <> show e
-    Right slide ->
-      if slide == (Item slideId updatedSlide) then pure () else (error $ "Expected updated slide, got: " <> show slide)
-
-  runClientM (slidesDelete' b deckId slideId) clientEnv >>= \case
-    Left e -> error $ "Expected slide delete, got error: " <> show e
-    Right {} -> pure ()
-
-  runClientM (decksDelete' b deckId) clientEnv >>= \case
-    Left e -> error $ "Expected deck delete, got error: " <> show e
-    Right {} -> pure ()
-
-  runClientM (decksGet' b (Just someUserId)) clientEnv >>= \case
-    Left e -> error $ "Expected no decks, got error: " <> show e
-    Right decks ->
-      unless (decks == []) (error $ "Expected no decks, got: " <> show decks)
 
   -- TODO: test that creating user with token that has different user as sub
   -- fails
@@ -580,17 +337,6 @@ usersPost' :: T.Text -> UserInfo -> ClientM (Item UserId User)
 _usersPut' :: T.Text -> UserId -> User -> ClientM (Item UserId User)
 _usersDelete' :: T.Text -> UserId -> ClientM ()
 
-decksGet' :: T.Text -> Maybe UserId -> ClientM [Item DeckId Deck]
-decksGetDeckId' :: T.Text -> DeckId -> ClientM (Item DeckId Deck)
-decksPostPublish' :: T.Text -> DeckId -> ClientM PresResponse
-decksPost' :: T.Text -> Deck -> ClientM (Item DeckId Deck)
-decksPut' :: T.Text -> DeckId -> Deck -> ClientM (Item DeckId Deck)
-decksDelete' :: T.Text -> DeckId -> ClientM ()
-
-slidesGetSlideId' :: T.Text -> DeckId -> SlideId -> ClientM (Item SlideId Slide)
-slidesPost' :: T.Text -> DeckId -> Slide -> ClientM (Item SlideId Slide)
-slidesPut' :: T.Text -> DeckId -> SlideId -> Slide -> ClientM (Item SlideId Slide)
-slidesDelete' :: T.Text -> DeckId -> SlideId -> ClientM ()
 _presentationsPost' :: T.Text -> PresentationInfo -> ClientM (Item PresentationId PresentationResult)
 _presentationsPut' :: T.Text -> PresentationId -> PresentationInfo -> ClientM (Item PresentationId PresentationResult)
 ((
@@ -599,20 +345,6 @@ _presentationsPut' :: T.Text -> PresentationId -> PresentationInfo -> ClientM (I
   usersPost' :<|>
   _usersPut' :<|>
   _usersDelete'
-  ) :<|>
-  (
-  decksGet' :<|>
-  decksGetDeckId' :<|>
-  decksPostPublish' :<|>
-  decksPost' :<|>
-  decksPut' :<|>
-  decksDelete'
-  ) :<|>
-  (
-  slidesGetSlideId' :<|>
-  slidesPost' :<|>
-  slidesPut' :<|>
-  slidesDelete'
   ) :<|>
   (
   _presentationsPost' :<|>

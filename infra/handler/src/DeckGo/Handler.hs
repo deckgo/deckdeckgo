@@ -21,15 +21,12 @@
 
 module DeckGo.Handler where
 
--- TODO: created_at, updated_at
 -- TODO: nullable slide content
--- TODO: improve swagger description
 -- TODO: feed API
 
 -- TODO: check permissions
 -- TODO: TTL on anonymous users
--- TODO: enforce uniqueness on deck_name (per user)
--- TODO: return 500 on all DB errors
+-- TODO: get rid of anonymous users
 
 import Control.Applicative
 import Control.Lens hiding ((.=))
@@ -61,22 +58,16 @@ import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BL
--- import qualified Data.ByteString.Lazy as BL
 import qualified Data.Digest.Pure.MD5 as MD5
 import qualified Data.HashMap.Strict as HMS
--- import qualified Data.HashMap.Strict as HMS
 import qualified Data.Text as T
--- import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
--- import qualified Data.Text.Encoding as T
 import qualified Data.Text.IO as T
 import qualified Hasql.Connection as HC
--- import qualified Hasql.Connection as HC
 import qualified Hasql.Decoders as HD
 import qualified Hasql.Encoders as HE
 import qualified Hasql.Session as HS
 import qualified Network.AWS as AWS
--- import qualified Network.AWS as AWS
 import qualified Network.AWS.Data.Body as Body
 import qualified Network.AWS.S3 as S3
 import qualified Network.AWS.SQS as SQS
@@ -88,8 +79,6 @@ import qualified System.Directory as Dir
 import qualified System.IO.Temp as Temp
 import qualified System.Random as Random
 import qualified Text.HTML.TagSoup as TagSoup
-
-newtype BucketName = BucketName { unBucketName :: T.Text }
 
 ------------------------------------------------------------------------------
 -- API
@@ -244,26 +233,6 @@ instance ToSchema UserInfo where
 instance ToParamSchema (Item UserId UserInfo) where
   toParamSchema _ = mempty
 
--- DECKS
-
-type DecksAPI =
-    Protected :> QueryParam "owner_id" UserId :> Get '[JSON] [Item DeckId Deck] :<|>
-    Protected :>
-      Capture "deck_id" DeckId :>
-      Get '[JSON] (Item DeckId Deck) :<|>
-    Protected :>
-      Capture "deck_id" DeckId :>
-      "publish" :>
-      Post '[JSON] PresResponse :<|> -- XXX
-    Protected :> ReqBody '[JSON] Deck :> Post '[JSON] (Item DeckId Deck) :<|>
-    Protected :>
-      Capture "deck_id" DeckId :>
-      ReqBody '[JSON] Deck :> Put '[JSON] (Item DeckId Deck) :<|>
-    Protected :> Capture "deck_id" DeckId :> Delete '[JSON] ()
-
-newtype DeckId = DeckId { unDeckId :: T.Text }
-  deriving newtype (Aeson.FromJSON, Aeson.ToJSON, FromHttpApiData, ToHttpApiData, Show, Eq)
-
 newtype Deckname = Deckname { unDeckname :: T.Text }
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
@@ -272,85 +241,10 @@ newtype Deckbackground = Deckbackground { unDeckbackground :: T.Text }
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
-data Deck = Deck
-  { deckSlides :: [SlideId]
-  , deckDeckname :: Deckname
-  , deckDeckbackground :: Maybe Deckbackground
-  , deckOwnerId :: UserId
-  , deckAttributes :: HMS.HashMap T.Text T.Text
-  } deriving (Show, Eq)
-
-instance FromJSONObject Deck where
-  parseJSONObject = \obj ->
-    Deck
-      <$> obj .: "slides"
-      <*> obj .: "name"
-      <*> obj .:? "background"
-      <*> obj .: "owner_id"
-      <*> obj .:? "attributes" .!= HMS.empty
-
-instance ToJSONObject Deck where
-  toJSONObject deck = HMS.fromList
-    [ "slides" .= deckSlides deck
-    , "name" .= deckDeckname deck
-    , "background" .= deckDeckbackground deck
-    , "owner_id" .= deckOwnerId deck
-    , "attributes" .= deckAttributes deck
-    ]
-
-instance Aeson.FromJSON Deck where
-  parseJSON = Aeson.withObject "Deck" parseJSONObject
-instance Aeson.ToJSON Deck where
-  toJSON = Aeson.Object . toJSONObject
-
-instance ToSchema (Item DeckId Deck) where
-  declareNamedSchema _ = pure $ NamedSchema (Just "DeckWithId") mempty
-
-instance ToSchema Deck where
-  declareNamedSchema _ = pure $ NamedSchema (Just "Deck") mempty
-
-instance ToParamSchema (Item DeckId Deck) where
-  toParamSchema _ = mempty
-
-instance ToParamSchema DeckId where
-  toParamSchema _ = mempty
-
 -- SLIDES
-
-type SlidesAPI =
-    Protected :> Capture "deck_id" DeckId :> "slides" :>
-      Capture "slide_id" SlideId :> Get '[JSON] (Item SlideId Slide) :<|>
-    Protected :> Capture "deck_id" DeckId :> "slides" :>
-      ReqBody '[JSON] Slide :> Post '[JSON] (Item SlideId Slide) :<|>
-    Protected :> Capture "deck_id" DeckId :> "slides" :>
-      Capture "slide_id" SlideId :>
-      ReqBody '[JSON] Slide :>
-      Put '[JSON] (Item SlideId Slide) :<|>
-    Protected :> Capture "deck_id" DeckId :> "slides" :>
-      Capture "slide_id" SlideId :> Delete '[JSON] ()
-
-instance ToSchema (Item SlideId Slide) where
-  declareNamedSchema _ = pure $ NamedSchema (Just "SlideWithId") mempty
 
 instance ToSchema Slide where
   declareNamedSchema _ = pure $ NamedSchema (Just "Slide") mempty
-
-instance ToParamSchema (Item SlideId Slide) where
-  toParamSchema _ = mempty
-
-newtype SlideId = SlideId { unSlideId :: T.Text }
-  deriving newtype
-    ( Aeson.FromJSON
-    , Aeson.ToJSON
-    , FromHttpApiData
-    , ToHttpApiData
-    , Show
-    , Eq
-    )
-  deriving stock
-    ( Generic )
-
-instance ToParamSchema SlideId
 
 data Slide = Slide
   { slideContent :: Maybe T.Text
@@ -454,8 +348,6 @@ instance Aeson.FromJSON PresentationResult where
 
 type API = "api" :> (
     "users" :> UsersAPI :<|>
-    "decks" :> DecksAPI :<|>
-    "decks" :> SlidesAPI :<|>
     "presentations" :> PresentationsAPI
     )
 
@@ -480,8 +372,6 @@ application settings env conn =
 server :: AWS.Env -> HC.Connection -> Servant.Server API
 server env conn =
     serveUsers :<|>
-    serveDecks :<|>
-    serveSlides :<|>
     servePresentations
   where
     serveUsers =
@@ -490,18 +380,6 @@ server env conn =
       usersPost conn :<|>
       usersPut conn :<|>
       usersDelete conn
-    serveDecks =
-      decksGet conn :<|>
-      decksGetDeckId conn :<|>
-      decksPostPublish env conn :<|>
-      decksPost conn :<|>
-      decksPut conn :<|>
-      decksDelete conn
-    serveSlides =
-      slidesGetSlideId conn :<|>
-      slidesPost conn :<|>
-      slidesPut conn :<|>
-      slidesDelete conn
     servePresentations =
       presentationsPost env conn :<|>
       presentationsPut env conn
@@ -512,29 +390,51 @@ presentationsPost
   -> PresentationInfo
   -> Servant.Handler (Item PresentationId PresentationResult)
 presentationsPost env conn _userId pinfo = do
-    liftIO $ print pinfo
+    liftIO $ putStrLn $ unwords
+      [ "POST presentation"
+      , show pinfo
+      , show _userId
+      ]
+
     iface <- liftIO $ getDbInterface conn
     user <- liftIO (dbGetUserById iface (presentationOwner pinfo)) >>= \case
-      Nothing -> Servant.throwError Servant.err404
+      Nothing -> do
+        liftIO $ putStrLn "Presentation user does not exist in DB"
+        Servant.throwError Servant.err404
       Just u -> pure u
 
     let userId = presentationOwner pinfo
 
     uname <- case userUsername (itemContent user) of
-      Nothing -> error "User has no name"
+      Nothing -> do
+        liftIO $ putStrLn "User is anonymous"
+        Servant.throwError Servant.err422
       Just uname -> pure uname
+
+    liftIO $ putStrLn $ "Got user: " <> show uname
 
     liftIO $ deployPresentation env uname pinfo
 
     presId <- liftIO $ PresentationId <$> newId
+
     let presName = presentationPrefix uname (presentationName pinfo)
 
     -- something fishy going on here
     let presName' = sanitizeDeckname (presentationName pinfo)
 
+    liftIO $ putStrLn $ unwords
+      [ "Presentation info:"
+      , show (presId, presName')
+      ]
+
     presUrl <- do
       purl <- liftIO (getEnv "DECKGO_PRESENTATIONS_URL")
       pure $ "https://" <> T.pack purl <> "/" <> presName
+
+    liftIO $ putStrLn $ unwords
+      [ "Presentation info:"
+      , show (presId, presName')
+      ]
 
     -- TODO: make unique
     liftIO (dbCreatePresentation iface presId presName' presUrl userId)
@@ -551,23 +451,42 @@ presentationsPut
   -> PresentationInfo
   -> Servant.Handler (Item PresentationId PresentationResult)
 presentationsPut env conn _uid pid pinfo = do
+    liftIO $ putStrLn $ unwords
+      [ "PUT presentation"
+      , show pinfo
+      , "(" <> show pid <> ")"
+      , show _uid
+      ]
+
     liftIO $ print pinfo
     iface <- liftIO $ getDbInterface conn
 
     user <- liftIO (dbGetUserById iface (presentationOwner pinfo)) >>= \case
-      Nothing -> Servant.throwError Servant.err404
+      Nothing -> do
+        liftIO $ putStrLn "Presentation user does not exist in DB"
+        Servant.throwError Servant.err404
       Just u -> pure u
 
     uname <- case userUsername (itemContent user) of
-      Nothing -> error "User has no name"
+      Nothing -> do
+        liftIO $ putStrLn "User is anonymous"
+        Servant.throwError Servant.err422
       Just uname -> pure uname
 
+    liftIO $ putStrLn $ "Got user: " <> show uname
+
     (presName, presUrl) <- liftIO (dbGetPresentationById iface pid) >>= \case
-      Nothing -> Servant.throwError Servant.err404
+      Nothing -> do
+        liftIO $ putStrLn "Presentation does not exist in DB"
+        Servant.throwError Servant.err404
       Just res -> pure res
+
+    liftIO $ putStrLn $ "Got presentation: " <> show (presName, presUrl)
 
     -- XXX: huge hack because we know we stored the "correct" presentation name
     let pinfo' = pinfo { presentationName = Deckname presName }
+
+    liftIO $ putStrLn $ "Updated presentation info: " <> show pinfo
     liftIO $ deployPresentation env uname pinfo'
 
     pure $ Item
@@ -874,195 +793,6 @@ presentationsGetByIdStatement = Statement sql encoder decoder True
       HD.column HD.text -- <*>
       -- TODO: return user ID
 
--- DECKS
-
-decksGetSession :: HS.Session [Item DeckId Deck]
-decksGetSession = do
-    HS.statement () decksGetStatement
-
-decksGetStatement :: Statement () [Item DeckId Deck]
-decksGetStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "SELECT"
-      ,   "id,"
-      ,   "array(SELECT id FROM slide WHERE deck = deck.id ORDER BY index),"
-      ,   "name,"
-      ,   "background,"
-      ,   "owner,"
-      ,   "attributes"
-      ,   "FROM deck"
-      ]
-    encoder = HE.unit
-    decoder = HD.rowList $ Item <$>
-      (DeckId <$> HD.column HD.text) <*>
-      ( Deck <$>
-      (let listArray = (HD.array . HD.dimension replicateM . HD.element)
-        in HD.column (listArray (SlideId <$> HD.text))) <*>
-      (Deckname <$> (HD.column HD.text)) <*>
-      ((fmap Deckbackground) <$> (HD.nullableColumn HD.text)) <*>
-      ((UserId . FirebaseId) <$> HD.column HD.text) <*>
-      HD.column (HD.jsonBytes (\bs ->
-        first T.pack (Aeson.eitherDecode $ BL.fromStrict bs)
-        ))
-      )
-
-decksPostSession :: DeckId -> Deck -> HS.Session ()
-decksPostSession did d = do
-    liftIO $ putStrLn "Creating deck in DB"
-    HS.sql "BEGIN"
-    HS.statement (did, d) decksPostStatement
-    unless (deckSlides d == []) $
-      error "A fresh deck cannot have slides"
-    HS.sql "COMMIT"
-
-decksPostStatement :: Statement (DeckId, Deck) ()
-decksPostStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "INSERT INTO deck"
-      ,   "(id, name, background, owner, attributes)"
-      ,   "VALUES ($1, $2, $3, $4, $5)"
-      ]
-    encoder =
-      contramap (unDeckId . view _1) (HE.param HE.text) <>
-      contramap (unDeckname . deckDeckname . view _2) (HE.param HE.text) <>
-      contramap
-        (fmap unDeckbackground . deckDeckbackground . view _2)
-        (HE.nullableParam HE.text) <>
-      contramap
-        (unFirebaseId . unUserId . deckOwnerId . view _2)
-        (HE.param HE.text) <>
-      contramap (Aeson.toJSON . deckAttributes . view _2) (HE.param HE.json)
-    decoder = HD.unit
-
-decksPutSession :: DeckId -> Deck -> HS.Session ()
-decksPutSession did d = do
-    liftIO $ putStrLn "Creating deck in DB"
-    HS.sql "BEGIN"
-    HS.statement (did, d) decksPutStatement
-    forM_ (zip (deckSlides d) [0..]) $ \(sid, idx) ->
-      HS.statement (sid, idx) slideReindexStatement
-    HS.sql "COMMIT"
-
-decksPutStatement :: Statement (DeckId, Deck) ()
-decksPutStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "UPDATE deck"
-      ,   "SET name = $2, background = $3, owner = $4, attributes = $5"
-      ,   "WHERE id = $1"
-      ]
-    encoder =
-      contramap (unDeckId . view _1) (HE.param HE.text) <>
-      contramap (unDeckname . deckDeckname . view _2) (HE.param HE.text) <>
-      contramap
-        (fmap unDeckbackground . deckDeckbackground . view _2)
-        (HE.nullableParam HE.text) <>
-      contramap
-        (unFirebaseId . unUserId . deckOwnerId . view _2)
-        (HE.param HE.text) <>
-      contramap (Aeson.toJSON . deckAttributes . view _2) (HE.param HE.json)
-    decoder = HD.unit
-
-slideReindexStatement :: Statement (SlideId, Int16 {- the slide index -}) ()
-slideReindexStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "UPDATE slide"
-      ,   "SET index = $2"
-      ,   "WHERE id = $1"
-      ]
-    encoder =
-      contramap (unSlideId . view _1) (HE.param HE.text) <>
-      contramap (view _2) (HE.param HE.int2)
-    decoder = HD.unit
-
-decksGetByIdSession :: DeckId -> HS.Session (Maybe Deck)
-decksGetByIdSession did = do
-    liftIO $ putStrLn $ "Getting deck by id"
-    HS.statement did decksGetByIdStatement
-
-decksGetByIdStatement :: Statement DeckId (Maybe Deck)
-decksGetByIdStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "SELECT"
-      ,   "array(SELECT id FROM slide WHERE deck = $1 ORDER BY index),"
-      ,   "name,"
-      ,   "background,"
-      ,   "owner,"
-      ,   "attributes"
-      ,   "FROM deck WHERE id = $1"
-      ]
-    encoder = contramap unDeckId (HE.param HE.text)
-    decoder = HD.rowMaybe $ Deck <$>
-      (let listArray = (HD.array . HD.dimension replicateM . HD.element)
-        in HD.column (listArray (SlideId <$> HD.text))) <*>
-      (Deckname <$> (HD.column HD.text)) <*>
-      ((fmap Deckbackground) <$> (HD.nullableColumn HD.text)) <*>
-      ((UserId . FirebaseId) <$> HD.column HD.text) <*>
-      HD.column (HD.jsonBytes (\bs ->
-        first T.pack (Aeson.eitherDecode $ BL.fromStrict bs)
-        ))
-
-decksGet :: HC.Connection -> Firebase.UserId -> Maybe UserId -> Servant.Handler [Item DeckId Deck]
-decksGet conn fuid mUserId = do
-
-    userId <- case mUserId of
-      Nothing -> do
-        liftIO $ putStrLn $ unwords
-          [ "No user specified when GETting decks:", show fuid ]
-        Servant.throwError Servant.err400
-      Just userId -> pure userId
-
-    when (Firebase.unUserId fuid /= unFirebaseId (unUserId userId)) $ do
-      liftIO $ putStrLn $ unwords
-        [ "Client asking for decks as another user", show (fuid, userId) ]
-      Servant.throwError Servant.err403
-    iface <- liftIO $ getDbInterface conn
-
-    liftIO $ dbGetAllDecks iface
-
--- TODO: auth?
-decksGetDeckId
-    :: HC.Connection
-    -> Firebase.UserId
-    -> DeckId
-    -> Servant.Handler (Item DeckId Deck)
-decksGetDeckId conn fuid deckId = do
-
-    iface <- liftIO $ getDbInterface conn
-    deck <- liftIO (dbGetDeckById iface deckId) >>= \case
-      Nothing -> do
-        liftIO $ putStrLn $ "Deck not found: " <> show deckId
-        Servant.throwError Servant.err404
-      Just d -> pure d
-
-    let ownerId = deckOwnerId deck
-
-    when (Firebase.unUserId fuid /= unFirebaseId (unUserId ownerId)) $ do
-      liftIO $ putStrLn $ unwords $
-        [ "Deck was found", show deck, "but requester is not the owner", show fuid ]
-      Servant.throwError Servant.err404
-
-    pure (Item deckId deck)
-
-decksDeleteSession :: DeckId -> HS.Session ()
-decksDeleteSession did = do
-    liftIO $ putStrLn $ "Deleting deck by id"
-    HS.statement did decksDeleteStatement
-
-decksDeleteStatement :: Statement DeckId ()
-decksDeleteStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "DELETE FROM deck"
-      ,   "WHERE id = $1"
-      ]
-    encoder = contramap unDeckId (HE.param HE.text)
-    decoder = HD.unit
-
 data PresResponse = PresResponse T.Text
 
 instance Aeson.ToJSON PresResponse where
@@ -1071,334 +801,6 @@ instance Aeson.ToJSON PresResponse where
 instance Aeson.FromJSON PresResponse where
   parseJSON = Aeson.withObject "pres-response" $ \o ->
     PresResponse <$> o .: "url"
-
-
-decksPostPublish
-  :: AWS.Env
-  -> HC.Connection
-  -> Firebase.UserId
-  -> DeckId
-  -> Servant.Handler PresResponse
-  -- TODO: AUTH!!!!
-decksPostPublish env conn _ deckId = do
-
-    -- TODO: check auth
-
-    liftIO $ putStrLn "Your PRESENTATION WAS PUBLISHED!!!!"
-
-    queueName <- liftIO $ T.pack <$> getEnv "QUEUE_NAME"
-
-    liftIO $ putStrLn $ "Forwarding to queue: " <> T.unpack queueName
-    queueUrl <- runAWS env (AWS.send $ SQS.getQueueURL queueName) >>= \case
-      Right e -> pure $ e ^. SQS.gqursQueueURL
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
-
-    liftIO $ print queueUrl
-
-    res <- runAWS env $ AWS.send $ SQS.sendMessage queueUrl $
-      T.decodeUtf8 $ BL.toStrict $ Aeson.encode deckId
-
-    case res of
-      Right r -> do
-        liftIO $ print r
-      Left e -> do
-        liftIO $ print e
-        Servant.throwError Servant.err500
-
-    presUrl <- liftIO (getEnv "DECKGO_PRESENTATIONS_URL")
-    iface <- liftIO $ getDbInterface conn
-    liftIO (dbGetDeckById iface deckId) >>= \case
-      Nothing -> Servant.throwError Servant.err500
-      Just deck -> do
-        let dname = deckDeckname deck
-        liftIO (fmap itemContent <$> dbGetUserById iface (deckOwnerId deck)) >>= \case
-          Nothing -> do
-            liftIO $ putStrLn "No User Id"
-            Servant.throwError Servant.err500
-          Just user -> case userUsername user of
-            Nothing -> do
-              liftIO $ putStrLn "No username"
-              Servant.throwError Servant.err500
-            Just uname ->
-              pure $ PresResponse $
-                "https://" <>
-                T.pack presUrl <>
-                "/" <>
-                presentationPrefix uname dname
-
-decksPost
-  :: HC.Connection
-  -> Firebase.UserId
-  -> Deck
-  -> Servant.Handler (Item DeckId Deck)
-decksPost conn fuid deck = do
-
-    let ownerId = deckOwnerId deck
-
-    when (Firebase.unUserId fuid /= unFirebaseId (unUserId ownerId)) $ do
-      liftIO $ putStrLn $ unwords $
-        [ "Deck was POSTed", show deck, "but requester is not the owner", show fuid ]
-      Servant.throwError Servant.err400
-
-    deckId <- liftIO $ DeckId <$> newId
-
-    iface <- liftIO $ getDbInterface conn
-
-    liftIO $ dbCreateDeck iface deckId deck
-
-    pure $ Item deckId deck
-
-decksPut
-    :: HC.Connection
-    -> Firebase.UserId
-    -> DeckId
-    -> Deck
-    -> Servant.Handler (Item DeckId Deck)
-decksPut conn fuid deckId deck = do
-
-    getDeck conn deckId >>= \case
-      Nothing ->  do
-        liftIO $ putStrLn $ unwords
-          [ "Trying to PUT", show deckId, "but deck doesn't exist." ]
-        Servant.throwError Servant.err404
-      Just Deck{deckOwnerId} -> do
-        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Deck was PUTed", show deck, "but requester is not the owner", show fuid ]
-          Servant.throwError Servant.err404
-
-    iface <- liftIO $ getDbInterface conn
-
-    liftIO $ dbUpdateDeck iface deckId deck
-
-    pure $ Item deckId deck
-
-decksDelete :: HC.Connection -> Firebase.UserId -> DeckId -> Servant.Handler ()
-decksDelete conn fuid deckId = do
-
-    getDeck conn deckId >>= \case
-      Nothing ->  do
-        liftIO $ putStrLn $ unwords
-          [ "Trying to DELETE", show deckId, "but deck doesn't exist." ]
-        Servant.throwError Servant.err404
-      Just Deck{deckOwnerId} -> do
-        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Deck was DELETEd", show deckId, "but requester is not the owner", show fuid ]
-          Servant.throwError Servant.err404
-
-    iface <- liftIO $ getDbInterface conn
-
-    liftIO $ dbDeleteDeck iface deckId
-
--- | Reads a Deck from the database.
-getDeck :: HC.Connection -> DeckId -> Servant.Handler (Maybe Deck)
-getDeck conn deckId = do
-
-    iface <- liftIO $ getDbInterface conn
-
-    liftIO $ dbGetDeckById iface deckId
-
--- SLIDES
-
-slidesPostSession :: SlideId -> DeckId -> Slide -> HS.Session ()
-slidesPostSession sid did s = do
-    liftIO $ putStrLn "Creating slide in DB"
-    HS.statement (sid, did, s) slidesPostStatement
-
-slidesPostStatement :: Statement (SlideId, DeckId, Slide) ()
-slidesPostStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "INSERT INTO slide"
-      ,   "(id, deck, content, template, attributes)"
-      ,   "VALUES ($1, $2, $3, $4, $5)"
-      ]
-    encoder =
-      contramap (unSlideId . view _1) (HE.param HE.text) <>
-      contramap (unDeckId . view _2) (HE.param HE.text) <>
-      contramap (slideContent . view _3) (HE.nullableParam HE.text) <>
-      contramap (slideTemplate . view _3) (HE.param HE.text) <>
-      contramap (Aeson.toJSON . slideAttributes . view _3) (HE.param HE.json)
-    decoder = HD.unit
-
-slidesPutSession :: SlideId -> Slide -> HS.Session ()
-slidesPutSession sid s = do
-    liftIO $ putStrLn "Updating slide in DB"
-    HS.statement (sid, s) slidesPutStatement
-
-slidesPutStatement :: Statement (SlideId, Slide) ()
-slidesPutStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "UPDATE slide"
-      ,   "SET content = $2, template = $3, attributes = $4"
-      ,   "WHERE id = $1"
-      ]
-    encoder =
-      contramap (unSlideId . view _1) (HE.param HE.text) <>
-      contramap (slideContent . view _2) (HE.nullableParam HE.text) <>
-      contramap (slideTemplate . view _2) (HE.param HE.text) <>
-      contramap (Aeson.toJSON . slideAttributes . view _2) (HE.param HE.json)
-    decoder = HD.unit
-
-slidesGetSlideId
-  :: HC.Connection
-  -> Firebase.UserId
-  -> DeckId
-  -> SlideId
-  -> Servant.Handler (Item SlideId Slide)
-slidesGetSlideId conn fuid deckId slideId = do
-
-    getDeck conn deckId >>= \case
-      Nothing ->  do
-        liftIO $ putStrLn $ unwords
-          [ "Trying to GET slide", show slideId, "of deck",  show deckId
-          , "but deck doesn't exist." ]
-        Servant.throwError Servant.err404
-      Just deck@Deck{deckOwnerId, deckSlides} -> do
-        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Trying to GET slide", show slideId, "of deck", show deck
-            , "but requester is not the owner", show fuid ]
-          Servant.throwError Servant.err404
-
-        unless (slideId `elem` deckSlides) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Trying to GET slide", show slideId, "of deck", show deck
-            , "but slide doesn't belong to deck owned by", show fuid ]
-          Servant.throwError Servant.err404
-
-
-    iface <- liftIO $ getDbInterface conn
-
-    liftIO (dbGetSlideById iface slideId) >>= \case
-      Nothing -> Servant.throwError Servant.err404
-      Just slide -> pure $ Item slideId slide
-
-slidesGetByIdSession :: SlideId -> HS.Session (Maybe Slide)
-slidesGetByIdSession sid = do
-    liftIO $ putStrLn $ "Getting slide by id"
-    HS.statement sid slidesGetByIdStatement
-
-slidesGetByIdStatement :: Statement SlideId (Maybe Slide)
-slidesGetByIdStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "SELECT content, template, attributes FROM slide"
-      ,   "WHERE id = $1"
-      ]
-    encoder = contramap unSlideId (HE.param HE.text)
-    decoder = HD.rowMaybe $ Slide <$>
-      HD.nullableColumn HD.text <*>
-      HD.column HD.text <*>
-      HD.column (HD.jsonBytes (\bs ->
-        first T.pack (Aeson.eitherDecode $ BL.fromStrict bs)
-        ))
-
-slidesDeleteSession :: SlideId -> HS.Session ()
-slidesDeleteSession sid = do
-    liftIO $ putStrLn $ "Deleting slide by id"
-    HS.statement sid slidesDeleteStatement
-
-slidesDeleteStatement :: Statement SlideId ()
-slidesDeleteStatement = Statement sql encoder decoder True
-  where
-    sql = BS8.unwords
-      [ "DELETE FROM slide"
-      ,   "WHERE id = $1"
-      ]
-    encoder = contramap unSlideId (HE.param HE.text)
-    decoder = HD.unit
-
-slidesPost
-  :: HC.Connection
-  -> Firebase.UserId
-  -> DeckId
-  -> Slide -- TODO: slide index
-  -> Servant.Handler (Item SlideId Slide)
-slidesPost conn fuid deckId slide = do
-    iface <- liftIO $ getDbInterface conn
-
-    getDeck conn deckId >>= \case
-      Nothing ->  do
-        liftIO $ putStrLn $ unwords
-          [ "Trying to POST slide", show slide, "of deck",  show deckId
-          , "but deck doesn't exist." ]
-        Servant.throwError Servant.err404
-      Just deck@Deck{deckOwnerId} -> do
-        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Trying to POST slide", show slide, "of deck", show deck
-            , "but requester is not the owner", show fuid ]
-          Servant.throwError Servant.err404
-
-    slideId <- liftIO $ SlideId <$> newId
-
-    liftIO (dbCreateSlide iface slideId deckId slide)
-
-    pure $ Item slideId slide
-
-slidesPut
-  :: HC.Connection
-  -> Firebase.UserId
-  -> DeckId
-  -> SlideId
-  -> Slide
-  -> Servant.Handler (Item SlideId Slide)
-slidesPut conn fuid deckId slideId slide = do
-
-    iface <- liftIO $ getDbInterface conn
-
-    getDeck conn deckId >>= \case
-      Nothing ->  do
-        liftIO $ putStrLn $ unwords
-          [ "Trying to PUT slide", show slideId, "of deck",  show deckId
-          , "but deck doesn't exist." ]
-        Servant.throwError Servant.err404
-      Just deck@Deck{deckOwnerId, deckSlides} -> do
-        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Trying to PUT slide", show slideId, "of deck", show deck
-            , "but requester is not the owner", show fuid ]
-          Servant.throwError Servant.err404
-
-        unless (slideId `elem` deckSlides) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Trying to PUT slide", show slideId, "of deck", show deck
-            , "but slide doesn't belong to deck owned by", show fuid ]
-          Servant.throwError Servant.err404
-
-    liftIO (dbUpdateSlide iface slideId slide)
-
-    pure $ Item slideId slide
-
-slidesDelete :: HC.Connection -> Firebase.UserId -> DeckId -> SlideId -> Servant.Handler ()
-slidesDelete conn fuid deckId slideId = do
-
-    getDeck conn deckId >>= \case
-      Nothing ->  do
-        liftIO $ putStrLn $ unwords
-          [ "Trying to DELETE slide", show slideId, "of deck",  show deckId
-          , "but deck doesn't exist." ]
-        Servant.throwError Servant.err404
-      Just deck@Deck{deckOwnerId, deckSlides} -> do
-        when (Firebase.unUserId fuid /= unFirebaseId (unUserId deckOwnerId)) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Trying to DELETE slide", show slideId, "of deck", show deck
-            , "but requester is not the owner", show fuid ]
-          Servant.throwError Servant.err404
-
-        unless (slideId `elem` deckSlides) $ do
-          liftIO $ putStrLn $ unwords $
-            [ "Trying to DELETE slide", show slideId, "of deck", show deck
-            , "but slide doesn't belong to deck owned by", show fuid ]
-          Servant.throwError Servant.err404
-
-    iface <- liftIO $ getDbInterface conn
-    liftIO $ dbDeleteSlide iface slideId
 
 -------------------------------------------------------------------------------
 -- DATABASE
@@ -1410,17 +812,6 @@ data DbInterface = DbInterface
   , dbCreateUser :: UserId -> User -> IO (Either () ())
   , dbUpdateUser :: UserId -> User -> IO UserUpdateResult
   , dbDeleteUser :: UserId -> IO (Either () ())
-
-  , dbGetAllDecks :: IO [Item DeckId Deck]
-  , dbCreateDeck :: DeckId -> Deck -> IO ()
-  , dbUpdateDeck :: DeckId -> Deck -> IO ()
-  , dbGetDeckById :: DeckId -> IO (Maybe Deck)
-  , dbDeleteDeck :: DeckId -> IO () -- TODO: either () () for not found
-
-  , dbGetSlideById :: SlideId -> IO (Maybe Slide)
-  , dbCreateSlide :: SlideId -> DeckId -> Slide -> IO ()
-  , dbUpdateSlide :: SlideId -> Slide -> IO ()
-  , dbDeleteSlide :: SlideId -> IO () -- TODO: either () () for not found
 
   -- TODO: dbCreateSlide: if duplicated, no error !?
   , dbCreatePresentation :: PresentationId -> T.Text -> T.Text -> UserId -> IO ()
@@ -1647,6 +1038,8 @@ migrateFrom = \frm -> do
             , ");"
             ]
           ) HE.unit HD.unit True
+      -- TODO: unique on (owner, name)
+      -- TODO: drop deck, slide tables
       DbVersion7 -> do
         HS.statement () $ Statement
           (BS8.unwords
@@ -1691,9 +1084,6 @@ readDbVersion = do
             ]
           ) HE.unit HD.unit True
         pure $ Right Nothing
-
-latestDbVersion :: DbVersion
-latestDbVersion = maxBound
 
 dbVersionToText :: DbVersion -> T.Text
 dbVersionToText = \case
@@ -1743,17 +1133,6 @@ getDbInterface conn = do
       -- TODO: proper return type on delete
       , dbDeleteUser = \uid -> Right <$> wrap (usersDeleteSession uid)
 
-      , dbGetAllDecks = wrap decksGetSession
-      , dbCreateDeck = \did d -> wrap (decksPostSession did d)
-      , dbUpdateDeck = \did d -> wrap (decksPutSession did d)
-      , dbGetDeckById = \did -> wrap (decksGetByIdSession did)
-      , dbDeleteDeck = \did -> wrap (decksDeleteSession did)
-
-      , dbGetSlideById = \sid -> wrap (slidesGetByIdSession sid)
-      , dbCreateSlide = \sid did s -> wrap (slidesPostSession sid did s)
-      , dbUpdateSlide = \sid s -> wrap (slidesPutSession sid s)
-      , dbDeleteSlide = \sid -> wrap (slidesDeleteSession sid)
-
       , dbCreatePresentation = \pid pname purl uid  -> wrap (presentationsPostSession pid pname purl uid)
       , dbGetPresentationById = \pid -> wrap (presentationsGetByIdSession pid)
       }
@@ -1802,6 +1181,7 @@ sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
     dropBadChars = T.concatMap
       $ \case
         c | isAscii c && isAlphaNum c -> T.singleton c
+          | c == '-' -> T.singleton c
           | c == ' ' -> T.singleton '-'
           | otherwise -> ""
 
@@ -1842,8 +1222,6 @@ listPresentationObjects env bucket uname dname =
 withPresentationFiles
   :: Username
   -> PresentationInfo
-  -- -> Deck
-  -- -> [Slide
   -> ([(FilePath, S3.ObjectKey, S3.ETag)] -> IO a)
   -> IO a
 withPresentationFiles uname presentationInfo act = do
@@ -1938,30 +1316,6 @@ deleteObjects' env bname okeys =
         Right {} -> pure ()
         Left e -> error $ "Could not delete object: " <> show e
 
--- TODO: sanitize deck name
-deployDeck :: AWS.Env -> HC.Connection -> DeckId -> IO ()
-deployDeck env conn deckId = do
-    iface <- liftIO $ getDbInterface conn
-    dbGetDeckById iface deckId >>= \case
-      Nothing -> pure () -- TODO
-      Just deck -> do
-        liftIO (fmap itemContent <$> dbGetUserById iface (deckOwnerId deck)) >>= \case
-          Nothing -> pure () -- TODO
-          Just user -> case userUsername user of
-            Nothing -> pure () -- TODO
-            Just uname -> do
-              slides <- catMaybes <$> mapM (dbGetSlideById iface) (deckSlides deck)
-              deployPresentation env uname $ deckToPres deck slides
-
-deckToPres :: Deck -> [Slide] -> PresentationInfo
-deckToPres deck slides = PresentationInfo
-    { presentationName = deckDeckname deck
-    , presentationOwner = deckOwnerId deck
-    , presentationBackground = deckDeckbackground deck
-    , presentationAttributes = deckAttributes deck
-    , presentationSlides = slides
-    }
-
 deployPresentation :: AWS.Env -> Username -> PresentationInfo -> IO ()
 deployPresentation env uname presentationInfo = do
     bucketName <- getEnv "BUCKET_NAME"
@@ -1970,8 +1324,6 @@ deployPresentation env uname presentationInfo = do
     putStrLn "Listing current objects"
     currentObjs <- listPresentationObjects env bucket uname dname
     putStrLn "Listing presentations files"
-
-
 
     withPresentationFiles uname presentationInfo $ \files -> do
       let

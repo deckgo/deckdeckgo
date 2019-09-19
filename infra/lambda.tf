@@ -84,15 +84,6 @@ data "aws_iam_policy_document" "policy_for_lambda" {
       "sqs:GetQueueURL",
     ]
 
-    resources = [aws_sqs_queue.presentation_deploy.arn]
-  }
-
-  statement {
-    actions = [
-      "sqs:SendMessage",
-      "sqs:GetQueueURL",
-    ]
-
     resources = [aws_sqs_queue.dirty.arn]
   }
 
@@ -104,28 +95,6 @@ data "aws_iam_policy_document" "policy_for_lambda" {
 
     resources = ["${aws_s3_bucket.meta.arn}/*"]
   }
-
-  # Give access to DynamoDB
-  statement {
-    actions = [
-      "dynamodb:BatchGetItem",
-      "dynamodb:GetItem",
-      "dynamodb:UpdateItem",
-      "dynamodb:Query",
-      "dynamodb:Scan",
-      "dynamodb:BatchWriteItem",
-      "dynamodb:PutItem",
-      "dynamodb:UpdateItem",
-      "dynamodb:DeleteItem",
-    ]
-
-    resources = [
-      aws_dynamodb_table.deckdeckgo-test-dynamodb-table-decks.arn,
-      aws_dynamodb_table.deckdeckgo-test-dynamodb-table-slides.arn,
-      aws_dynamodb_table.deckdeckgo-test-dynamodb-table-users.arn,
-    ]
-  }
-
 
   # Give access to CloudWatch
   statement {

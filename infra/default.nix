@@ -18,6 +18,7 @@ rec
         (builtins.readDir function) "${function}/function.zip";
     } ;
 
+
   function-unsplash =
     pkgs.runCommand "build-lambda" {}
       ''
@@ -41,22 +42,6 @@ rec
         cp "${googleKeyUpdater}/bin/google-key-updater" main_hs
         mkdir $out
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
-      '';
-
-  function-presenter-path =
-    { path = builtins.seq
-        (builtins.readDir function-presenter) "${function-presenter}/function.zip";
-    } ;
-
-  function-presenter =
-    pkgs.runCommand "build-lambda-presenter" {}
-      ''
-        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
-        # Can't be called 'main' otherwise lambda tries to load it
-        cp "${handler}/bin/presenter" main_hs
-        cp ${deckdeckgo-starter-dist}/dist.tar dist.tar
-        mkdir -p $out
-        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist.tar
       '';
 
   function-dirty-path =
@@ -188,12 +173,6 @@ rec
   googleKeyUpdater = pkgs.haskellPackages.google-key-updater;
 
   publicKey = builtins.readFile ./public.cer;
-
-  swaggerUi = pkgs.runCommand "swagger-ui" {}
-  ''
-    mkdir -p $out
-    ${handler}/bin/swagger $out
-  '';
 
   googleResp = { "key1" = publicKey ; };
 
