@@ -58,21 +58,6 @@ executables:
         dependencies:
             - deckdeckgo-handler
 
-    # The AWS presenter
-    presenter:
-        main: app/Presenter.hs
-        dependencies:
-            - deckdeckgo-handler
-
-    # The API
-    swagger:
-        main: app/Swagger.hs
-        dependencies:
-            - warp
-            - deckdeckgo-handler
-            - servant-swagger
-            - servant-swagger-ui
-
     # The API
     dirty:
         main: app/Dirty.hs
