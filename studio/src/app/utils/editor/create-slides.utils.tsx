@@ -1,4 +1,4 @@
-import {h} from '@stencil/core';
+import {h, JSX} from '@stencil/core';
 
 import {SlideTemplate} from '../../models/data/slide';
 
@@ -9,8 +9,8 @@ import {User, UserSocial} from '../../models/data/user';
 
 export class CreateSlidesUtils {
 
-    static createSlide(template: SlideTemplate, user?: User): Promise<any> {
-        return new Promise<any>(async (resolve) => {
+    static createSlide(template: SlideTemplate, user?: User): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             if (!document) {
                 resolve(null);
                 return;
@@ -34,8 +34,8 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideTitle(): Promise<any> {
-        return new Promise<any>((resolve) => {
+    private static createSlideTitle(): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
                 return;
@@ -45,7 +45,7 @@ export class CreateSlidesUtils {
 
             const content = <section slot="content"></section>;
 
-            const slide: any = <deckgo-slide-title>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-title>
                 {title}
                 {content}
             </deckgo-slide-title>;
@@ -54,8 +54,8 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideContent(): Promise<any> {
-        return new Promise<any>((resolve) => {
+    private static createSlideContent(): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
                 return;
@@ -65,7 +65,7 @@ export class CreateSlidesUtils {
 
             const content = <section slot="content"></section>;
 
-            const slide: any = <deckgo-slide-content>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-content>
                 {title}
                 {content}
             </deckgo-slide-content>;
@@ -74,8 +74,8 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideSplit(): Promise<any> {
-        return new Promise<any>((resolve) => {
+    private static createSlideSplit(): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
                 return;
@@ -85,7 +85,7 @@ export class CreateSlidesUtils {
 
             const end = <section slot="end"></section>;
 
-            const slide: any = <deckgo-slide-split>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-split>
                 {start}
                 {end}
             </deckgo-slide-split>;
@@ -94,8 +94,8 @@ export class CreateSlidesUtils {
         });
     }
 
-    static createSlideGif(src: string): Promise<any> {
-        return new Promise<any>((resolve) => {
+    static createSlideGif(src: string): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
                 return;
@@ -105,7 +105,7 @@ export class CreateSlidesUtils {
 
             const content = <h3 slot="footer"></h3>;
 
-            const slide: any = <deckgo-slide-gif src={src}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-gif src={src}>
                 {title}
                 {content}
             </deckgo-slide-gif>;
@@ -114,8 +114,8 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideAuthor(user: User): Promise<any> {
-        return new Promise<any>(async (resolve) => {
+    private static createSlideAuthor(user: User): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             if (!document) {
                 resolve();
                 return;
@@ -136,7 +136,7 @@ export class CreateSlidesUtils {
 
             const links = await this.createSocialLinks(user);
 
-            const slide: any = <deckgo-slide-author img-src={imgSrc} img-alt={imgAlt}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-author img-src={imgSrc} img-alt={imgAlt}>
                 {title}
                 {author}
                 {links}
@@ -146,8 +146,8 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSocialLinks(user: User): Promise<any[]> {
-        return new Promise<any[]>((resolve) => {
+    private static createSocialLinks(user: User): Promise<JSX.IntrinsicElements[]> {
+        return new Promise<JSX.IntrinsicElements[]>((resolve) => {
             const links = [];
 
             if (user && user.data && user.data.social) {
@@ -202,8 +202,8 @@ export class CreateSlidesUtils {
         });
     }
 
-    static createSlideYoutube(src: string = undefined): Promise<any> {
-        return new Promise<any>((resolve) => {
+    static createSlideYoutube(src: string = undefined): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
                 return;
@@ -211,7 +211,7 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title"></h1>;
 
-            const slide: any = <deckgo-slide-youtube src={src}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-youtube src={src}>
                 {title}
             </deckgo-slide-youtube>;
 

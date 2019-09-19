@@ -1,3 +1,6 @@
+import {JSX} from '@stencil/core';
+import {take} from 'rxjs/operators';
+
 import {Slide} from '../../models/data/slide';
 import {Deck} from '../../models/data/deck';
 
@@ -82,16 +85,52 @@ export class EditorHelper {
         });
     }
 
-    private fetchSlide(deckId: string, slideId: string): Promise<any> {
+    private fetchSlide(deckId: string, slideId: string): Promise<JSX.IntrinsicElements> {
         return new Promise<any>(async (resolve) => {
             try {
                 const slide: Slide = await this.slideService.get(deckId, slideId);
-                const element: any = await ParseSlidesUtils.parseSlide(slide, true);
+                const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(slide, true);
 
                 resolve(element);
             } catch (err) {
                 this.errorService.error('Something went wrong while loading and parsing a slide');
-                resolve();
+                resolve(null);
+            }
+        });
+    }
+
+    copySlide(slide: HTMLElement): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>(async (resolve) => {
+            try {
+                if (!slide) {
+                    resolve(null);
+                    return;
+                }
+
+                if (!slide.getAttribute('slide_id')) {
+                    this.errorService.error('Slide is not defined');
+                    resolve(null);
+                    return;
+                }
+
+                const slideId: string = slide.getAttribute('slide_id');
+
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    let element: JSX.IntrinsicElements = null;
+
+                    if (deck && deck.data) {
+                        const slide: Slide = await this.slideService.get(deck.id, slideId);
+                        element = await ParseSlidesUtils.parseSlide(slide, true, true);
+                    }
+
+                    this.busyService.deckBusy(false);
+
+                    resolve(element);
+                });
+            } catch (err) {
+                this.errorService.error(err);
+                this.busyService.deckBusy(false);
+                resolve(null);
             }
         });
     }

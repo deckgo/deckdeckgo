@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/core';
 import {take} from 'rxjs/operators';
 
 import {SlideTemplate} from '../../../models/data/slide';
@@ -70,7 +70,7 @@ export class AppCreateSlide {
     }
 
     private async addSlide(template: SlideTemplate) {
-        const slide: any = await CreateSlidesUtils.createSlide(template, this.user);
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, this.user);
         await this.closePopover(template, slide);
     }
 
@@ -84,7 +84,7 @@ export class AppCreateSlide {
             return;
         }
 
-        const slide: any = await CreateSlidesUtils.createSlide(template, this.user);
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, this.user);
         await this.closePopover(template, slide);
     }
 
@@ -92,7 +92,7 @@ export class AppCreateSlide {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
-    private async closePopover(template: SlideTemplate, slide?: any) {
+    private async closePopover(template: SlideTemplate, slide?: JSX.IntrinsicElements) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
             slide: slide,
             template: template
