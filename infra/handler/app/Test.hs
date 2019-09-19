@@ -168,7 +168,7 @@ testPresDeploys = withQueueName $ withEnv $ \env -> withSQS env $ withS3 env $ d
     let someSlide = Slide (Just "foo") "bar" HMS.empty
 
     let somePres = PresentationInfo
-          { presentationName = Deckname "some-pres"
+          { presentationName = PresentationName "some-pres"
           , presentationSlides = [someSlide]
           , presentationOwner = someUserId
           , presentationAttributes = HMS.empty

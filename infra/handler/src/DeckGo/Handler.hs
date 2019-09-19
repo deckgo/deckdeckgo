@@ -233,11 +233,11 @@ instance ToSchema UserInfo where
 instance ToParamSchema (Item UserId UserInfo) where
   toParamSchema _ = mempty
 
-newtype Deckname = Deckname { unDeckname :: T.Text }
+newtype PresentationName = PresentationName { unPresentatinName :: T.Text }
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
-newtype Deckbackground = Deckbackground { unDeckbackground :: T.Text }
+newtype PresentationBackground = PresentationBackground { unPresentationBackground :: T.Text }
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
@@ -306,9 +306,9 @@ newtype PresentationId = PresentationId { unPresentationId :: T.Text }
 instance ToParamSchema PresentationId
 
 data PresentationInfo = PresentationInfo
-  { presentationName :: Deckname
+  { presentationName :: PresentationName
   , presentationOwner :: UserId
-  , presentationBackground :: Maybe Deckbackground
+  , presentationBackground :: Maybe PresentationBackground
   , presentationAttributes :: HMS.HashMap T.Text T.Text
   , presentationSlides :: [Slide]
   } deriving (Show, Eq)
@@ -420,7 +420,7 @@ presentationsPost env conn _userId pinfo = do
     let presName = presentationPrefix uname (presentationName pinfo)
 
     -- something fishy going on here
-    let presName' = sanitizeDeckname (presentationName pinfo)
+    let presName' = sanitizePresentationName (presentationName pinfo)
 
     liftIO $ putStrLn $ unwords
       [ "Presentation info:"
@@ -484,7 +484,7 @@ presentationsPut env conn _uid pid pinfo = do
     liftIO $ putStrLn $ "Got presentation: " <> show (presName, presUrl)
 
     -- XXX: huge hack because we know we stored the "correct" presentation name
-    let pinfo' = pinfo { presentationName = Deckname presName }
+    let pinfo' = pinfo { presentationName = PresentationName presName }
 
     liftIO $ putStrLn $ "Updated presentation info: " <> show pinfo
     liftIO $ deployPresentation env uname pinfo'
@@ -1168,12 +1168,12 @@ tshow :: Show a => a -> T.Text
 tshow = T.pack . show
 
 -- TODO: what happens when the deckname is "-" ?
-presentationPrefix :: Username -> Deckname -> T.Text
-presentationPrefix uname dname =
-    unUsername uname <> "/" <> sanitizeDeckname dname <> "/"
+presentationPrefix :: Username -> PresentationName -> T.Text
+presentationPrefix uname pname =
+    unUsername uname <> "/" <> sanitizePresentationName pname <> "/"
 
-sanitizeDeckname :: Deckname -> T.Text
-sanitizeDeckname = T.toLower . strip . dropBadChars . unDeckname
+sanitizePresentationName :: PresentationName -> T.Text
+sanitizePresentationName = T.toLower . strip . dropBadChars . unPresentatinName
   where
     strip :: T.Text -> T.Text
     strip = T.dropAround ( == '-' )
@@ -1214,10 +1214,10 @@ listPresentationObjects
   :: AWS.Env
   -> S3.BucketName
   -> Username
-  -> Deckname
+  -> PresentationName
   -> IO [S3.Object]
-listPresentationObjects env bucket uname dname =
-    listObjects env bucket (Just $ presentationPrefix uname dname)
+listPresentationObjects env bucket uname pname =
+    listObjects env bucket (Just $ presentationPrefix uname pname)
 
 withPresentationFiles
   :: Username
@@ -1234,27 +1234,27 @@ withPresentationFiles uname presentationInfo act = do
       files <- listDirectoryRecursive dir
       files' <- forM files $ \(fp, components) -> do
         etag <- fileETag fp
-        let okey = mkObjectKey uname dname components
+        let okey = mkObjectKey uname pname components
         pure (fp, okey, etag)
       act files'
   where
-    dname = presentationName presentationInfo
+    pname = presentationName presentationInfo
     processIndex :: T.Text -> T.Text
     processIndex =
       TagSoup.renderTags . processTags presentationInfo . TagSoup.parseTags .
       interpol
     interpol =
-      T.replace "{{DECKDECKGO_TITLE}}" (unDeckname dname) .
-      T.replace "{{DECKDECKGO_TITLE_SHORT}}" (T.take 12 $ unDeckname dname) .
+      T.replace "{{DECKDECKGO_TITLE}}" (unPresentatinName pname) .
+      T.replace "{{DECKDECKGO_TITLE_SHORT}}" (T.take 12 $ unPresentatinName pname) .
       T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname) .
       T.replace "{{DECKDECKGO_USERNAME}}" (unUsername uname) .
       T.replace "{{DECKDECKGO_USER_ID}}"
         (unFirebaseId . unUserId $ presentationOwner presentationInfo) .
-      T.replace "{{DECKDECKGO_DECKNAME}}" (sanitizeDeckname dname) .
+      T.replace "{{DECKDECKGO_DECKNAME}}" (sanitizePresentationName pname) .
       -- TODO: description
       T.replace "{{DECKDECKGO_DESCRIPTION}}" "(no description given)" .
       T.replace "{{DECKDECKGO_BASE_HREF}}"
-        ("/" <> presentationPrefix uname dname)
+        ("/" <> presentationPrefix uname pname)
 
 mapFile :: (T.Text -> T.Text) -> FilePath -> IO ()
 mapFile f fp = do
@@ -1268,11 +1268,12 @@ processTags presentationInfo = concatMap $ \case
     | str == "deckgo-deck" -> do
         [ TagSoup.TagOpen str (HMS.toList (presentationAttributes presentationInfo <> attrs)) ] <>
           (concatMap slideTags (presentationSlides presentationInfo)) <>
-          (maybe [] deckBackgroundTags (presentationBackground presentationInfo))
+          (maybe [] presentationBackgroundTags
+            (presentationBackground presentationInfo))
   t -> [t]
 
-deckBackgroundTags :: Deckbackground -> [Tag]
-deckBackgroundTags (unDeckbackground -> bg) =
+presentationBackgroundTags :: PresentationBackground -> [Tag]
+presentationBackgroundTags (unPresentationBackground -> bg) =
     [ TagSoup.TagOpen "div" (HMS.toList $ HMS.singleton "slot" "background")
     ] <> TagSoup.parseTags bg <>
     [ TagSoup.TagClose "div"
@@ -1320,9 +1321,9 @@ deployPresentation :: AWS.Env -> Username -> PresentationInfo -> IO ()
 deployPresentation env uname presentationInfo = do
     bucketName <- getEnv "BUCKET_NAME"
     let bucket = S3.BucketName (T.pack bucketName)
-    let dname = presentationName presentationInfo
+    let pname = presentationName presentationInfo
     putStrLn "Listing current objects"
-    currentObjs <- listPresentationObjects env bucket uname dname
+    currentObjs <- listPresentationObjects env bucket uname pname
     putStrLn "Listing presentations files"
 
     withPresentationFiles uname presentationInfo $ \files -> do
@@ -1351,7 +1352,7 @@ deployPresentation env uname presentationInfo = do
     liftIO $ print queueUrl
 
     res <- runAWS env $ AWS.send $ SQS.sendMessage queueUrl $
-      T.decodeUtf8 $ BL.toStrict $ Aeson.encode (presentationPrefix uname dname)
+      T.decodeUtf8 $ BL.toStrict $ Aeson.encode (presentationPrefix uname pname)
 
     case res of
       Right r -> do
@@ -1399,9 +1400,9 @@ fixupS3ETag (S3.ETag etag) =
       T.dropWhile (== '"') $
       T.decodeUtf8 etag
 
-mkObjectKey :: Username -> Deckname -> [T.Text] -> S3.ObjectKey
-mkObjectKey uname dname components = S3.ObjectKey $
-    presentationPrefix uname dname <> T.intercalate "/" components
+mkObjectKey :: Username -> PresentationName -> [T.Text] -> S3.ObjectKey
+mkObjectKey uname pname components = S3.ObjectKey $
+    presentationPrefix uname pname <> T.intercalate "/" components
 
 fileETag :: FilePath -> IO S3.ETag
 fileETag fp =
