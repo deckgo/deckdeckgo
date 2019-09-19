@@ -35,7 +35,10 @@ main = do
 
     putStrLn "Connection acquired, starting lambda..."
 
-    Lambda.run $ cors $ DeckGo.Handler.application settings env conn
+    Lambda.runSettings settings' $ cors $ DeckGo.Handler.application settings env conn
+  where
+    settings' = Lambda.defaultSettings
+      { Lambda.timeoutValue = 20 * 1000 * 1000 }
 
 -- TODO: factor out
 getFirebaseSettings :: AWS.Env -> IO Firebase.FirebaseLoginSettings
