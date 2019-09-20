@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.14"></a>
+# [1.0.0-rc.14](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13-1...v1.0.0-14) (2019-09-20)
+
+### Applications
+
+* studio: v1.0.0-beta.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
 <a name="1.0.0-rc.13-1"></a>
 # [1.0.0-rc.13-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13...v1.0.0-13-1) (2019-09-15)
 
