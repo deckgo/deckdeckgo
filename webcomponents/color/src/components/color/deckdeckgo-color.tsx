@@ -1,4 +1,4 @@
-import {Component, h, Prop, State, EventEmitter, Event, Element} from '@stencil/core';
+import {Component, h, Prop, EventEmitter, Event, Element} from '@stencil/core';
 
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '../utils/deckdeckgo-palette';
 
@@ -17,8 +17,7 @@ export class DeckdeckgoColor {
 
   @Prop() moreAlt: string = 'More';
 
-  @State()
-  private highlighted: DeckdeckgoPalette;
+  @Prop({mutable: true}) highlighted: string;
 
   @Event()
   selected: EventEmitter<string>;
@@ -38,7 +37,7 @@ export class DeckdeckgoColor {
         return;
       }
 
-      this.highlighted = paletteColor;
+      this.highlighted = paletteColor.color.hex;
 
       this.selected.emit(paletteColor.color.hex);
 
@@ -106,7 +105,7 @@ export class DeckdeckgoColor {
           };
 
           return <button aria-label={element.alt}
-                         class={this.highlighted && this.highlighted.color && this.highlighted.color.hex === element.color.hex ? 'selected' : undefined}
+                         class={this.highlighted && this.highlighted === element.color.hex ? 'selected' : undefined}
                          style={style} onClick={() => this.pickColor(element)}>
           </button>
         })
