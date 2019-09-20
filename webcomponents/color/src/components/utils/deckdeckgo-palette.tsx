@@ -78,5 +78,12 @@ export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [
       rgb: '153,0,239'
     },
     alt: 'Violet'
+  },
+  {
+    color: {
+      hex: '#000000',
+      rgb: '0,0,0'
+    },
+    alt: 'Black'
   }
 ];

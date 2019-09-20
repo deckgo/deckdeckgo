@@ -1,3 +1,7 @@
+:host {
+  display: block;
+}
+
 div.color-container {
   position: relative;
 
@@ -6,21 +10,21 @@ div.color-container {
   flex-wrap: wrap;
 
   button, div.more {
-    width: var(--deckgo-button-width, 30px);
-    height: var(--deckgo-button-height, 30px);
+    width: var(--deckgo-button-width, 28px);
+    height: var(--deckgo-button-height, 28px);
 
     margin: var(--deckgo-button-margin, 4px);
     padding: 0;
 
-    outline: none;
-    border: none;
+    outline: var(--deckgo-button-outline, none);
+    border: var(--deckgo-button-border, none);
   }
 
   button {
 
     cursor: pointer;
 
-    border-radius: var(--deckgo-button-border-radius, 4px);
+    border-radius: var(--deckgo-button-border-radius, 50%);
 
     background: var(--deckdeckgo-palette-color-hex);
 
@@ -49,6 +53,9 @@ div.color-container {
       transform: translate(-50%, -50%);
 
       margin: 0;
+
+      border-radius: var(--deckgo-button-more-border-radius);
+      border: var(--deckgo-button-more-border);
     }
 
     input {

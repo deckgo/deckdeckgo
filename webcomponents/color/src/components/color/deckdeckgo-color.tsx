@@ -1,4 +1,4 @@
-import {Component, h, Prop, EventEmitter, Event, Element} from '@stencil/core';
+import {Component, h, Prop, EventEmitter, Event, Element, Host} from '@stencil/core';
 
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '../utils/deckdeckgo-palette';
 
@@ -88,10 +88,12 @@ export class DeckdeckgoColor {
   };
 
   render() {
-    return <div class="color-container">
-      {this.renderPalette()}
-      {this.renderMore()}
-    </div>;
+    return <Host>
+      <div class="color-container">
+        {this.renderPalette()}
+        {this.renderMore()}
+      </div>
+    </Host>;
   }
 
   private renderPalette() {

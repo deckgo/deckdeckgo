@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property  | Attribute  | Description | Type                  | Default           |
-| --------- | ---------- | ----------- | --------------------- | ----------------- |
-| `more`    | `more`     |             | `boolean`             | `true`            |
-| `moreAlt` | `more-alt` |             | `string`              | `'More'`          |
-| `palette` | --         |             | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
+| Property      | Attribute     | Description | Type                  | Default           |
+| ------------- | ------------- | ----------- | --------------------- | ----------------- |
+| `highlighted` | `highlighted` |             | `string`              | `undefined`       |
+| `more`        | `more`        |             | `boolean`             | `true`            |
+| `moreAlt`     | `more-alt`    |             | `string`              | `'More'`          |
+| `palette`     | --            |             | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
 
 
 ## Events
