@@ -587,7 +587,9 @@ export class AppEditor {
         if (this.slidesFetched) {
             return undefined;
         } else {
-            return <ion-spinner color="primary"></ion-spinner>;
+            return <div class="spinner">
+                <ion-spinner color="primary"></ion-spinner>
+            </div>;
         }
     }
 }
