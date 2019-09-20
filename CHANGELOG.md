@@ -1,34 +1,19 @@
-<a name="1.0.0-rc.14"></a>
-# [1.0.0-rc.14](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13-1...v1.0.0-14) (2019-09-20)
+<a name="1.0.0-rc.13"></a>
+# [1.0.0-rc.13](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-3...v1.0.0-13) (2019-09-20)
 
 ### Applications
 
 * studio: v1.0.0-beta.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
-<a name="1.0.0-rc.13-1"></a>
-# [1.0.0-rc.13-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13...v1.0.0-13-1) (2019-09-15)
-
-### Applications
-
-* studio: v1.0.0-beta.3-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
-* remote: v1.0.0-beta.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
-* website: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
-
-### Web Components
-
-* remote: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
-
-### Others
-
-* types: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
-* starter kit: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
-
-<a name="1.0.0-rc.13"></a>
-# [1.0.0-rc.13](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-2...v1.0.0-13) (2019-09-14)
+<a name="1.0.0-rc.12-3"></a>
+# [1.0.0-rc.12-3](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-2...v1.0.0-12-3) (2019-09-15)
 
 ### Applications
 
 * docs: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+* studio: v1.0.0-beta.3-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+* remote: v1.0.0-beta.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+* website: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
 
 ### New: Web Components
 
@@ -37,10 +22,13 @@
 
 ### Web Components
 
+* remote: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
 * slide-youtube: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/youtube/CHANGELOG.md))
 
 ### Others
 
+* types: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* starter kit: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 * slide-utils: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.12-2"></a>
