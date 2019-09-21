@@ -1,5 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import {isIPad} from '@deckdeckgo/utils';
+
 @Component({
     tag: 'app-color',
     styleUrl: 'app-color.scss'
@@ -27,8 +29,13 @@ export class AppColor {
     @State()
     private background: string;
 
+    @State()
+    private moreColors: boolean = true;
+
     async componentWillLoad() {
         await this.initCurrentColors(this.selectedElement);
+
+        this.moreColors = !isIPad();
     }
 
     private async closePopover() {
@@ -174,7 +181,7 @@ export class AppColor {
                     </ion-item>
                 </ion-radio-group>
             </ion-list>,
-            <deckgo-color class="ion-padding" onColorChange={($event: CustomEvent) => this.selectColor($event)} color-hex={this.applyToText ? this.color : this.background}>
+            <deckgo-color class="ion-padding" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-hex={this.applyToText ? this.color : this.background}>
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>
         ]
