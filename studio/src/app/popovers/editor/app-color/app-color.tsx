@@ -51,7 +51,7 @@ export class AppColor {
         }
     }
 
-    private selectColor = async ($event) => {
+    private async selectColor($event: CustomEvent) {
         if (!this.selectedElement || !$event || !$event.detail) {
             return;
         }
@@ -65,7 +65,7 @@ export class AppColor {
             await this.selectBackground(selectedColor);
             this.background = selectedColor;
         }
-    };
+    }
 
     private selectTextColor(color: string): Promise<void> {
         return new Promise<void>((resolve) => {
@@ -174,7 +174,7 @@ export class AppColor {
                     </ion-item>
                 </ion-radio-group>
             </ion-list>,
-            <deckgo-color class="ion-padding" onColorChange={($event) => this.selectColor($event)} color-hex={this.applyToText ? this.color : this.background}>
+            <deckgo-color class="ion-padding" onColorChange={($event: CustomEvent) => this.selectColor($event)} color-hex={this.applyToText ? this.color : this.background}>
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>
         ]
