@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-docs",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "description": "The Progressive Web App alternative for simple presentations",
   "license": "MIT",
   "files": [
@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@deckdeckgo/charts": "^1.0.0-rc.1",
-    "@deckdeckgo/color": "file:../webcomponents/color",
+    "@deckdeckgo/color": "^1.0.0-rc.1",
     "@deckdeckgo/core": "^1.0.0-rc.1",
     "@deckdeckgo/highlight-code": "^1.0.0-rc.1",
-    "@deckdeckgo/inline-editor": "^1.0.0-rc.1",
+    "@deckdeckgo/inline-editor": "^1.0.0-rc.2",
     "@deckdeckgo/qrcode": "^1.0.0-rc.1",
     "@deckdeckgo/slide-author": "^1.0.0-rc.1",
     "@deckdeckgo/slide-big-img": "^1.0.0-rc.1",
