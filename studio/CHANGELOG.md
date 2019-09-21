@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.5"></a>
+# 1.0.0-beta.5 (2019-09-21)
+
+### Features
+
+* use a custom color picker to select and apply colors which still offers the platform's picker as extra choice ([#260](https://github.com/deckgo/deckdeckgo/issues/260))
+* hide fullscreen and platform's color picker on iPad ([#347](https://github.com/deckgo/deckdeckgo/issues/347))
+
 <a name="1.0.0-beta.4"></a>
 # 1.0.0-beta.4 (2019-09-20)
 
