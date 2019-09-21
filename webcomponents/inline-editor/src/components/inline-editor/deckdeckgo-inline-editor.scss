@@ -180,6 +180,8 @@ div.deckgo-tools {
     }
 
     div.link {
+      width: 100%;
+
       input {
         color: var(--deckgo-inline-editor-link-mobile-color, inherit);
 
@@ -187,6 +189,12 @@ div.deckgo-tools {
           color: var(--deckgo-inline-editor-link-mobile-placeholder-color, inherit);
         }
       }
+    }
+
+    div.color {
+      max-width: 100%;
+      overflow: scroll;
+      --deckgo-flex-wrap: nowrap;
     }
   }
 

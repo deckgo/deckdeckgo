@@ -208,6 +208,7 @@ The following theming options will affect this component if set on its host or p
 | --deckgo-button-border-radius | 50% | The border radius of a button to select a color |
 | --deckgo-button-more-border-radius | | The border radius of the more button |
 | --deckgo-button-more-border | | The border of the more button |
+| --deckgo-flex-wrap | wrap | Wrap properties of the buttons' container |
 
 ### Events
 

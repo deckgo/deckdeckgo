@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-1"></a>
+# 1.0.0-rc.2-1 (2019-09-21)
+
+### Fix
+
+* fix layout for color and link on sticky mobile devices
+
 <a name="1.0.0-rc.2"></a>
 # 1.0.0-rc.2 (2019-09-21)
 

@@ -1,5 +1,18 @@
+<a name="1.0.0-rc.14-1"></a>
+# [1.0.0-rc.14-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14...v1.0.0-14-1) (2019-09-21)
+
+### Applications
+
+* docs: v1.0.0-rc.3-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+* studio: v1.0.0-beta.5-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Web Components
+
+* color: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
+* inline-editor: v1.0.0-rc.2-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+
 <a name="1.0.0-rc.14"></a>
-# [1.0.0-rc.14](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13...v1.0.0-14) (2019-09-XX)
+# [1.0.0-rc.14](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13...v1.0.0-14) (2019-09-21)
 
 ### New: Web Components
 
@@ -9,6 +22,10 @@
 
 * docs: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 * studio: v1.0.0-beta.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Web Components
+
+* inline-editor: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
 ### Others
 

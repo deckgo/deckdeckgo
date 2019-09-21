@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.5-1"></a>
+# 1.0.0-beta.5-1 (2019-09-21)
+
+### Fix
+
+* inline editor color and link on sticky mobile devices
+
 <a name="1.0.0-beta.5"></a>
 # 1.0.0-beta.5 (2019-09-21)
 

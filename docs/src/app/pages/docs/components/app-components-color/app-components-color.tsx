@@ -171,6 +171,11 @@ export class AppComponentsColor {
 <td></td>
 <td>The border of the more button</td>
 </tr>
+<tr>
+<td>--deckgo-flex-wrap</td>
+<td>wrap</td>
+<td>Wrap properties of the buttons&#39; container</td>
+</tr>
 </tbody></table>
 <h3 id="app-components-color-events">Events</h3>
 <p>To listen to the selected color you have to subscribe to the following event:</p>

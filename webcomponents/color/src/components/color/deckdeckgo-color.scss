@@ -7,11 +7,15 @@ div.color-container {
 
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: var(--deckgo-flex-wrap, wrap);
+
+  overflow: auto;
 
   button, div.more {
     width: var(--deckgo-button-width, 28px);
+    min-width: var(--deckgo-button-width, 28px);
     height: var(--deckgo-button-height, 28px);
+    min-height: var(--deckgo-button-height, 28px);
 
     margin: var(--deckgo-button-margin, 4px);
     padding: 0;
