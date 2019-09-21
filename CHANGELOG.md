@@ -1,6 +1,9 @@
 <a name="1.0.0-rc.14"></a>
 # [1.0.0-rc.14](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13...v1.0.0-14) (2019-09-XX)
 
+### New: Web Components
+
+* color: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
 
 ### Others
 
