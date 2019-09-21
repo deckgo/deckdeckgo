@@ -1,5 +1,7 @@
-import {Component, Element, Event, EventEmitter, h, JSX, Listen, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, JSX, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
+
+import {isIPad} from '@deckdeckgo/utils';
 
 import {get, set} from 'idb-keyval';
 
@@ -45,8 +47,15 @@ export class AppEditorActions {
 
     @Event() private openShare: EventEmitter<void>;
 
+    @State()
+    private fullscreenEnable: boolean = true;
+
     constructor() {
         this.anonymousService = AnonymousService.getInstance();
+    }
+
+    componentWillLoad() {
+        this.fullscreenEnable = !isIPad();
     }
 
     async onActionOpenSlideAdd($event: CustomEvent) {
@@ -250,9 +259,7 @@ export class AppEditorActions {
                     <ion-label>Slides</ion-label>
                 </ion-tab-button>
 
-                <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices" mode="md">
-                    {this.renderFullscreen()}
-                </ion-tab-button>
+                {this.renderFullscreenButton()}
 
                 <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices"
                                 mode="md">
@@ -273,6 +280,16 @@ export class AppEditorActions {
                 <app-help-action></app-help-action>
             </ion-buttons>
         </ion-toolbar>
+    }
+
+    private renderFullscreenButton() {
+        if (this.fullscreenEnable) {
+            return <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices" mode="md">
+                {this.renderFullscreen()}
+            </ion-tab-button>;
+        } else {
+            return undefined;
+        }
     }
 
     private renderFullscreen() {

@@ -2,9 +2,15 @@ app-color {
 
   @import "../../../../global/theme/editor/editor-popover";
 
-  input {
-    visibility: hidden;
-    z-index: -1;
+  deckgo-color {
+    --deckgo-button-more-border-radius: 50%;
+    --deckgo-button-more-border: 1px solid var(--ion-color-medium);
+  }
+
+  ion-icon.more {
+    font-size: 1.4rem;
+    padding-top: 2px;
+    color: var(--ion-color-medium);
   }
 
 }

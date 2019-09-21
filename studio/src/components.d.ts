@@ -32,8 +32,6 @@ export namespace Components {
     'selectedElement': HTMLElement;
   }
   interface AppColor {
-    'background': string;
-    'color': string;
     'deckOrSlide': boolean;
     'selectedElement': HTMLElement;
   }
@@ -587,8 +585,6 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
   }
   interface AppColor extends JSXBase.HTMLAttributes<HTMLAppColorElement> {
-    'background'?: string;
-    'color'?: string;
     'deckOrSlide'?: boolean;
     'onColorDidChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;

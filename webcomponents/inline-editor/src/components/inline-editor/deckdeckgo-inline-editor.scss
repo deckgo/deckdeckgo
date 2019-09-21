@@ -106,14 +106,8 @@ div.deckgo-tools {
     }
   }
 
-  input[name="color-picker"] {
-    position: absolute;
-    left: 144px;
-    visibility: hidden;
-  }
-
   div.link {
-    width: 100%;
+    width: var(--deckgo-inline-editor-width, 216px);
 
     height: 44px;
     line-height: 44px;
@@ -134,6 +128,14 @@ div.deckgo-tools {
       &::placeholder {
         color: var(--deckgo-inline-editor-link-placeholder-color, #3880ff);
       }
+    }
+  }
+
+  div.color {
+    max-width: var(--deckgo-inline-editor-width, 216px);
+
+    deckgo-color {
+      pointer-events: all;
     }
   }
 

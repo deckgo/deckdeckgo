@@ -10,6 +10,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 export namespace Components {
   interface AppComponentsCharts {}
+  interface AppComponentsColor {}
   interface AppComponentsGif {}
   interface AppComponentsHighlightCode {}
   interface AppComponentsInlineEditor {}
@@ -76,6 +77,12 @@ declare global {
   var HTMLAppComponentsChartsElement: {
     prototype: HTMLAppComponentsChartsElement;
     new (): HTMLAppComponentsChartsElement;
+  };
+
+  interface HTMLAppComponentsColorElement extends Components.AppComponentsColor, HTMLStencilElement {}
+  var HTMLAppComponentsColorElement: {
+    prototype: HTMLAppComponentsColorElement;
+    new (): HTMLAppComponentsColorElement;
   };
 
   interface HTMLAppComponentsGifElement extends Components.AppComponentsGif, HTMLStencilElement {}
@@ -385,6 +392,7 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'app-components-charts': HTMLAppComponentsChartsElement;
+    'app-components-color': HTMLAppComponentsColorElement;
     'app-components-gif': HTMLAppComponentsGifElement;
     'app-components-highlight-code': HTMLAppComponentsHighlightCodeElement;
     'app-components-inline-editor': HTMLAppComponentsInlineEditorElement;
@@ -441,6 +449,7 @@ declare global {
 
 declare namespace LocalJSX {
   interface AppComponentsCharts extends JSXBase.HTMLAttributes<HTMLAppComponentsChartsElement> {}
+  interface AppComponentsColor extends JSXBase.HTMLAttributes<HTMLAppComponentsColorElement> {}
   interface AppComponentsGif extends JSXBase.HTMLAttributes<HTMLAppComponentsGifElement> {}
   interface AppComponentsHighlightCode extends JSXBase.HTMLAttributes<HTMLAppComponentsHighlightCodeElement> {}
   interface AppComponentsInlineEditor extends JSXBase.HTMLAttributes<HTMLAppComponentsInlineEditorElement> {}
@@ -501,6 +510,7 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'app-components-charts': AppComponentsCharts;
+    'app-components-color': AppComponentsColor;
     'app-components-gif': AppComponentsGif;
     'app-components-highlight-code': AppComponentsHighlightCode;
     'app-components-inline-editor': AppComponentsInlineEditor;
