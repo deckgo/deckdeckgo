@@ -16,7 +16,7 @@ export class DeckdeckgoColor {
   @Prop() more: boolean = true;
   @Prop() moreAlt: string = 'More';
 
-  @Prop({mutable: true}) color: string;
+  @Prop({mutable: true}) colorHex: string;
 
   @Event()
   colorChange: EventEmitter<DeckdeckgoPaletteColor>;
@@ -36,7 +36,7 @@ export class DeckdeckgoColor {
         return;
       }
 
-      this.color = paletteColor.color ? paletteColor.color.hex : undefined;
+      this.colorHex = paletteColor.color ? paletteColor.color.hex : undefined;
 
       this.colorChange.emit(paletteColor.color);
 
@@ -81,7 +81,7 @@ export class DeckdeckgoColor {
   private selectColor = async ($event) => {
     const selectedColor: string = $event.target.value;
 
-    this.color = undefined;
+    this.colorHex = undefined;
 
     this.colorChange.emit({
       hex: selectedColor,
@@ -108,11 +108,11 @@ export class DeckdeckgoColor {
       return false;
     }
 
-    if (!this.color) {
+    if (!this.colorHex) {
       return false;
     }
 
-    return this.color.toUpperCase() === element.color.hex.toUpperCase();
+    return this.colorHex.toUpperCase() === element.color.hex.toUpperCase();
   }
 
   render() {

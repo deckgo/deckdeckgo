@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property  | Attribute  | Description | Type                  | Default           |
-| --------- | ---------- | ----------- | --------------------- | ----------------- |
-| `color`   | `color`    |             | `string`              | `undefined`       |
-| `more`    | `more`     |             | `boolean`             | `true`            |
-| `moreAlt` | `more-alt` |             | `string`              | `'More'`          |
-| `palette` | --         |             | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
+| Property   | Attribute   | Description | Type                  | Default           |
+| ---------- | ----------- | ----------- | --------------------- | ----------------- |
+| `colorHex` | `color-hex` |             | `string`              | `undefined`       |
+| `more`     | `more`      |             | `boolean`             | `true`            |
+| `moreAlt`  | `more-alt`  |             | `string`              | `'More'`          |
+| `palette`  | --          |             | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
 
 
 ## Events
