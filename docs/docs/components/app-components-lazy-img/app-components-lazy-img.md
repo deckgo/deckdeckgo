@@ -9,8 +9,8 @@ An `<img/>` tag is per default use to display the image but optionally it could 
 ## Table of contents
 
 - [Installation](#app-components-lazy-img-installation)
-	- [Using from a CDN](#app-components-from-a-cdn)
-	- [Install from NPM](#app-components-from-npm)
+	- [Using from a CDN](#app-components-lazy-img-from-a-cdn)
+	- [Install from NPM](#app-components-lazy-img-from-npm)
 	- [Framework integration](#app-components-lazy-img-framework-integration)
 - [Usage](#app-components-lazy-img-usage)
   - [Slots](#app-components-lazy-img-slots)

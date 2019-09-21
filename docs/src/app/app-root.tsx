@@ -55,6 +55,7 @@ export class AppRoot {
           <ion-route url="/components/social" component="app-components-social"/>
           <ion-route url="/components/youtube" component="app-components-youtube"/>
           <ion-route url="/components/lazy-img" component="app-components-lazy-img"/>
+          <ion-route url="/components/color" component="app-components-color"/>
 
           <ion-route url="/deck" component="app-deck-navigation"/>
           <ion-route url="/deck/navigation" component="app-deck-navigation"/>
@@ -120,6 +121,7 @@ export class AppRoot {
                     <ion-label>Components</ion-label>
                   </ion-item-divider>
                   <ion-item detail={false} href="/components/charts" routerDirection="forward"><ion-label>Charts</ion-label></ion-item>
+                  <ion-item detail={false} href="/components/color" routerDirection="forward"><ion-label>Color Picker</ion-label></ion-item>
                   <ion-item detail={false} href="/components/gif" routerDirection="forward"><ion-label>Gif</ion-label></ion-item>
                   <ion-item detail={false} href="/components/code" routerDirection="forward"><ion-label>Highlight Code</ion-label></ion-item>
                   <ion-item detail={false} href="/components/lazy-img" routerDirection="forward"><ion-label>Lazy Image</ion-label></ion-item>
