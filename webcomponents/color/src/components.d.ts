@@ -8,11 +8,12 @@
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   DeckdeckgoPalette,
+  DeckdeckgoPaletteColor,
 } from './components/utils/deckdeckgo-palette';
 
 export namespace Components {
   interface DeckgoColor {
-    'highlighted': string;
+    'color': string;
     'more': boolean;
     'moreAlt': string;
     'palette': DeckdeckgoPalette[];
@@ -34,10 +35,10 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoColor extends JSXBase.HTMLAttributes<HTMLDeckgoColorElement> {
-    'highlighted'?: string;
+    'color'?: string;
     'more'?: boolean;
     'moreAlt'?: string;
-    'onSelected'?: (event: CustomEvent<string>) => void;
+    'onColorChange'?: (event: CustomEvent<DeckdeckgoPaletteColor>) => void;
     'palette'?: DeckdeckgoPalette[];
   }
 

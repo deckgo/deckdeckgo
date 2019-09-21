@@ -56,7 +56,7 @@ export class AppColor {
             return;
         }
 
-        const selectedColor: string = $event.detail;
+        const selectedColor: string = $event.detail.hex;
 
         if (this.applyToText) {
             await this.selectTextColor(selectedColor);
@@ -174,7 +174,7 @@ export class AppColor {
                     </ion-item>
                 </ion-radio-group>
             </ion-list>,
-            <deckgo-color class="ion-padding" onSelected={($event) => this.selectColor($event)} highlighted={this.applyToText ? this.color : this.background}>
+            <deckgo-color class="ion-padding" onColorChange={($event) => this.selectColor($event)} color={this.applyToText ? this.color : this.background}>
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>
         ]
