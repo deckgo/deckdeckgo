@@ -4,7 +4,7 @@
 ### New: Web Components
 
 * color: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
-
+* studio: v1.0.0-beta.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Applications
 
