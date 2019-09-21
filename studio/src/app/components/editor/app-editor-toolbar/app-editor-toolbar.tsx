@@ -32,12 +32,6 @@ export class AppEditorToolbar {
     @State()
     private displayed: boolean = false;
 
-    @State()
-    private color: string;
-
-    @State()
-    private background: string;
-
     private selectedElement: HTMLElement;
 
     @State()
@@ -346,10 +340,6 @@ export class AppEditorToolbar {
             await this.moveToolbar();
 
             this.displayed = true;
-
-            const style: CSSStyleDeclaration = window.getComputedStyle(element);
-            this.color = style.color;
-            this.background = style.backgroundColor;
 
             resolve();
         });
@@ -733,8 +723,6 @@ export class AppEditorToolbar {
             component: 'app-color',
             componentProps: {
                 deckOrSlide: this.deckOrSlide,
-                color: this.color,
-                background: this.background,
                 selectedElement: this.selectedElement
             },
             mode: 'md',

@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 @Component({
     tag: 'app-color',
@@ -12,19 +12,24 @@ export class AppColor {
     deckOrSlide: boolean = false;
 
     @Prop()
-    color: string;
-
-    @Prop()
-    background: string;
-
-    @Prop()
     selectedElement: HTMLElement;
 
     @Event() colorDidChange: EventEmitter<boolean>;
 
     private applyToAllDeck: boolean = false;
 
+    @State()
     private applyToText: boolean = true; // true = text, false = background
+
+    @State()
+    private color: string;
+
+    @State()
+    private background: string;
+
+    async componentWillLoad() {
+        await this.initCurrentColors(this.selectedElement);
+    }
 
     private async closePopover() {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
@@ -33,6 +38,10 @@ export class AppColor {
     private async selectApplyToAllDeck($event: CustomEvent) {
         if ($event) {
             this.applyToAllDeck = $event.detail;
+
+            if (this.deckOrSlide) {
+                await this.initCurrentColors(this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement);
+            }
         }
     }
 
@@ -51,8 +60,10 @@ export class AppColor {
 
         if (this.applyToText) {
             await this.selectTextColor(selectedColor);
+            this.color = selectedColor;
         } else {
             await this.selectBackground(selectedColor);
+            this.background = selectedColor;
         }
     };
 
@@ -108,6 +119,35 @@ export class AppColor {
         });
     }
 
+    private async initCurrentColors(element: HTMLElement) {
+        if (!element) {
+            return;
+        }
+
+        this.color = await this.rgb2hex(element.style.getPropertyValue('--color') ? element.style.getPropertyValue('--color') : element.style.color);
+        this.background = await this.rgb2hex(element.style.getPropertyValue('--background') ? element.style.getPropertyValue('--background') : element.style.background);
+    }
+
+    // https://css-tricks.com/converting-color-spaces-in-javascript/
+    private rgb2hex(rgb: string): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!rgb || rgb === undefined || rgb === '' || rgb.indexOf('rgb') <= -1) {
+                resolve(rgb);
+                return;
+            }
+
+            const separator: string = rgb.indexOf(",") > -1 ? "," : " ";
+
+            const rgbs: string[] = rgb.substr(4).split(")")[0].split(separator);
+
+            const r: string = (+rgbs[0]).toString(16);
+            const g: string = (+rgbs[1]).toString(16);
+            const b: string = (+rgbs[2]).toString(16);
+
+            resolve(`#${r.length == 1 ? '0' + r : r}${g.length == 1 ? '0' + g : g}${b.length == 1 ? '0' + b : b}`);
+        });
+    }
+
     render() {
         return [<ion-toolbar>
             <h2>Color</h2>
@@ -134,7 +174,7 @@ export class AppColor {
                     </ion-item>
                 </ion-radio-group>
             </ion-list>,
-            <deckgo-color class="ion-padding" onSelected={($event) => this.selectColor($event)}>
+            <deckgo-color class="ion-padding" onSelected={($event) => this.selectColor($event)} highlighted={this.applyToText ? this.color : this.background}>
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>
         ]

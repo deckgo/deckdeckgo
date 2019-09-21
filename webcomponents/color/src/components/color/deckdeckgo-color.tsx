@@ -107,7 +107,7 @@ export class DeckdeckgoColor {
           };
 
           return <button aria-label={element.alt}
-                         class={this.highlighted && this.highlighted === element.color.hex ? 'selected' : undefined}
+                         class={this.highlighted && this.highlighted !== undefined && this.highlighted.toUpperCase() === element.color.hex.toUpperCase() ? 'selected' : undefined}
                          style={style} onClick={() => this.pickColor(element)}>
           </button>
         })
