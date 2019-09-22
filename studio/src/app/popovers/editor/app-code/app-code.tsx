@@ -38,8 +38,6 @@ export class AppCode {
     @Prop()
     codeDidChange: EventEmitter<HTMLElement>;
 
-    private hidePopoverTimer;
-
     private prismService: PrismService;
 
     private currentLanguage: string = 'javascript';
@@ -98,19 +96,17 @@ export class AppCode {
         });
     }
 
-    private selectColor($event, colorFunction: Function): Promise<void> {
+    private selectColor($event: CustomEvent, colorFunction: Function): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
                 resolve();
                 return;
             }
 
-            if (!$event || !$event.target || !$event.target.value) {
+            if (!$event || !$event.detail) {
                 resolve();
                 return;
             }
-
-            await this.privateHideShowPopover();
 
             colorFunction($event);
 
@@ -120,33 +116,15 @@ export class AppCode {
         });
     }
 
-    private setCodeColor = ($event) => {
-        this.codeColor = $event.target.value;
-        this.selectedElement.style.setProperty(this.getStyle(), $event.target.value);
+    private setCodeColor = ($event: CustomEvent) => {
+        this.codeColor = $event.detail.hex;
+        this.selectedElement.style.setProperty(this.getStyle(), $event.detail.hex);
     };
 
-    private setHighlightColor = ($event) => {
-        this.highlightColor = $event.target.value;
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', $event.target.value);
+    private setHighlightColor = ($event: CustomEvent) => {
+        this.highlightColor = $event.detail.hex;
+        this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', $event.detail.hex);
     };
-
-    private privateHideShowPopover(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const popover: HTMLIonPopoverElement = this.el.closest('ion-popover');
-
-            popover.style.visibility = 'hidden';
-
-            if (this.hidePopoverTimer) {
-                clearTimeout(this.hidePopoverTimer);
-            }
-
-            this.hidePopoverTimer = setTimeout(() => {
-                popover.style.visibility = 'initial';
-            }, 1000);
-
-            resolve();
-        });
-    }
 
     private toggleCodeLanguage($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
@@ -432,9 +410,9 @@ export class AppCode {
                 </ion-item>
 
                 <ion-item disabled={this.codeColorType === undefined}>
-                    <ion-label>Color</ion-label>
-                    <input type="color" value={this.codeColor}
-                           onChange={(e) => this.selectColor(e, this.setCodeColor)}></input>
+                    <deckgo-color class="ion-padding-top ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)} color-hex={this.codeColor}>
+                        <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+                    </deckgo-color>
                 </ion-item>
 
                 <ion-item-divider class="ion-padding-top">
@@ -451,9 +429,9 @@ export class AppCode {
                 </ion-item>
 
                 <ion-item disabled={!this.highlightLines}>
-                    <ion-label>Color</ion-label>
-                    <input type="color" value={this.highlightColor}
-                           onChange={(e) => this.selectColor(e, this.setHighlightColor)}></input>
+                    <deckgo-color class="ion-padding-top ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)} color-hex={this.highlightColor}>
+                        <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+                    </deckgo-color>
                 </ion-item>
             </ion-list>]
     }
