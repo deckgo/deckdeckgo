@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
+import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
 
 import {ItemReorderEventDetail} from '@ionic/core';
 
@@ -44,7 +44,7 @@ export class AppEditor {
     deckId: string;
 
     @State()
-    private slides: any[] = [];
+    private slides: JSX.IntrinsicElements[] = [];
 
     @State()
     private background: any;
@@ -60,6 +60,8 @@ export class AppEditor {
     private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
     private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
     private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
+
+    private editorHelper: EditorHelper = new EditorHelper();
 
     private authService: AuthService;
     private anonymousService: AnonymousService;
@@ -197,7 +199,7 @@ export class AppEditor {
                 return;
             }
 
-            const slide: any = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
+            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
 
             await this.concatSlide(slide);
 
@@ -212,8 +214,7 @@ export class AppEditor {
                 return;
             }
 
-            const helper: EditorHelper = new EditorHelper();
-            const slides: any[] = await helper.loadDeckAndRetrieveSlides(this.deckId);
+            const slides: any[] = await this.editorHelper.loadDeckAndRetrieveSlides(this.deckId);
 
             if (slides && slides.length > 0) {
                 this.slides = [...slides];
@@ -241,7 +242,7 @@ export class AppEditor {
         });
     }
 
-    private concatSlide(extraSlide: any): Promise<void> {
+    private concatSlide(extraSlide: JSX.IntrinsicElements): Promise<void> {
         return new Promise<void>((resolve) => {
             this.slides = [...this.slides, extraSlide];
 
@@ -294,7 +295,19 @@ export class AppEditor {
         await (deck as any).slideTo($event.detail);
     }
 
-    private async addSlide($event: CustomEvent<any>) {
+    private async copySlide($event: CustomEvent<HTMLElement>) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        const slide: JSX.IntrinsicElements = await this.editorHelper.copySlide($event.detail);
+
+        if (slide) {
+            await this.concatSlide(slide);
+        }
+    }
+
+    private async addSlide($event: CustomEvent<JSX.IntrinsicElements>) {
         if (!$event) {
             return;
         }
@@ -552,13 +565,13 @@ export class AppEditor {
                     </deckgo-deck>
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
-                <app-editor-toolbar></app-editor-toolbar>
+                <app-editor-toolbar onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}></app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <app-editor-actions hideFooterActions={this.hideFooterActions} fullscreen={this.fullscreen}
                                     slides={this.slides}
                                     onSignIn={() => this.signIn()}
-                                    onAddSlide={($event: CustomEvent<any>) => this.addSlide($event)}
+                                    onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
                                     onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
                                     onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
                                     onToggleFullScreen={() => this.toggleFullScreen()}></app-editor-actions>
@@ -574,7 +587,9 @@ export class AppEditor {
         if (this.slidesFetched) {
             return undefined;
         } else {
-            return <ion-spinner color="primary"></ion-spinner>;
+            return <div class="spinner">
+                <ion-spinner color="primary"></ion-spinner>
+            </div>;
         }
     }
 }

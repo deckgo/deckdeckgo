@@ -25,8 +25,8 @@ export class AppComponentsLazyImg {
 <h2 id="app-components-lazy-img-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-components-lazy-img-installation">Installation</a><ul>
-<li><a href="#app-components-from-a-cdn">Using from a CDN</a></li>
-<li><a href="#app-components-from-npm">Install from NPM</a></li>
+<li><a href="#app-components-lazy-img-from-a-cdn">Using from a CDN</a></li>
+<li><a href="#app-components-lazy-img-from-npm">Install from NPM</a></li>
 <li><a href="#app-components-lazy-img-framework-integration">Framework integration</a></li>
 </ul>
 </li>

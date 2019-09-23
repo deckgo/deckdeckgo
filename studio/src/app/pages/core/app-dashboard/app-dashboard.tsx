@@ -1,4 +1,4 @@
-import {Component, h, State} from '@stencil/core';
+import {Component, h, JSX, State} from '@stencil/core';
 
 import {filter, take} from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils
 
 interface DeckAndFirstSlide {
     deck: Deck;
-    slide: any;
+    slide: JSX.IntrinsicElements;
     style: any;
     background: any;
 }
@@ -85,7 +85,7 @@ export class AppDashboard {
         return new Promise<DeckAndFirstSlide>(async (resolve) => {
             try {
                 const slide: Slide = await this.slideService.get(deck.id, slideId);
-                const element: any = await ParseSlidesUtils.parseSlide(slide, false);
+                const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(slide, false);
 
                 let style: any;
                 if (deck.data && deck.data.attributes && deck.data.attributes.style) {

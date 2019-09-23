@@ -8,6 +8,7 @@
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   EventEmitter,
+  JSX,
 } from '@stencil/core';
 import {
   Deck,
@@ -31,8 +32,6 @@ export namespace Components {
     'selectedElement': HTMLElement;
   }
   interface AppColor {
-    'background': string;
-    'color': string;
     'deckOrSlide': boolean;
     'selectedElement': HTMLElement;
   }
@@ -57,7 +56,7 @@ export namespace Components {
   interface AppEditorActions {
     'fullscreen': boolean;
     'hideFooterActions': boolean;
-    'slides': any[];
+    'slides': JSX.IntrinsicElements[];
   }
   interface AppEditorToolbar {
     'blurSelectedElement': () => Promise<void>;
@@ -586,8 +585,6 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
   }
   interface AppColor extends JSXBase.HTMLAttributes<HTMLAppColorElement> {
-    'background'?: string;
-    'color'?: string;
     'deckOrSlide'?: boolean;
     'onColorDidChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
@@ -618,13 +615,13 @@ declare namespace LocalJSX {
     'fullscreen'?: boolean;
     'hideFooterActions'?: boolean;
     'onActionPublish'?: (event: CustomEvent<void>) => void;
-    'onAddSlide'?: (event: CustomEvent<any>) => void;
+    'onAddSlide'?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
     'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideTo'?: (event: CustomEvent<number>) => void;
     'onToggleFullScreen'?: (event: CustomEvent<void>) => void;
-    'slides'?: any[];
+    'slides'?: JSX.IntrinsicElements[];
   }
   interface AppEditorToolbar extends JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement> {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
@@ -632,6 +629,7 @@ declare namespace LocalJSX {
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
+    'onSlideCopy'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }

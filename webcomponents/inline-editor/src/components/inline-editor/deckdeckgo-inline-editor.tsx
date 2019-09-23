@@ -2,6 +2,8 @@ import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Met
 
 import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
 
+import '@deckdeckgo/color';
+
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 
 interface AnchorLink {
@@ -16,7 +18,8 @@ interface InputTargetEvent extends EventTarget {
 enum ToolbarActions {
   SELECTION,
   LINK,
-  IMAGE
+  IMAGE,
+  COLOR
 }
 
 enum ImageSize {
@@ -141,16 +144,12 @@ export class DeckdeckgoInlineEditor {
   }
 
   async componentDidLoad() {
-    await this.colorPickerListener(true);
-
     if (!this.mobile) {
       this.mobile = isMobile();
     }
   }
 
   async componentDidUnload() {
-    await this.colorPickerListener(false);
-
     await this.detachListener(this.attachTo ? this.attachTo : document);
   }
 
@@ -271,6 +270,7 @@ export class DeckdeckgoInlineEditor {
       }
 
       this.toolbarActions = ToolbarActions.IMAGE;
+      this.color = undefined;
       await this.setToolsActivated(true);
 
       resolve();
@@ -883,34 +883,14 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  // Color picker
-
-  private colorPickerListener(bind: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
-
-      if (!colorPicker) {
-        resolve();
-        return;
-      }
-
-      if (bind) {
-        colorPicker.addEventListener('change', this.selectColor, false);
-      } else {
-        colorPicker.removeEventListener('change', this.selectColor, true);
-      }
 
 
-      resolve();
-    });
-  }
-
-  private selectColor = async ($event) => {
-    if (!this.selection) {
+  private async selectColor($event: CustomEvent) {
+    if (!this.selection || !$event || !$event.detail) {
       return;
     }
 
-    this.color = $event.target.value;
+    this.color = $event.detail.hex;
 
     if (!this.selection || this.selection.rangeCount <= 0 || !document) {
       return;
@@ -923,20 +903,13 @@ export class DeckdeckgoInlineEditor {
     }
 
     document.execCommand('foreColor', false, this.color);
-  };
+
+    await this.reset(true);
+  }
 
   private openColorPicker(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
-
-      if (!colorPicker) {
-        resolve();
-        return;
-      }
-
-      colorPicker.click();
-
-      await this.setToolsActivated(false);
+      this.toolbarActions = ToolbarActions.COLOR;
 
       resolve();
     });
@@ -1045,7 +1018,6 @@ export class DeckdeckgoInlineEditor {
 
     return <div class={classNames}>
       {this.renderActions()}
-      <input type="color" name="color-picker" value={this.color}></input>
     </div>;
   }
 
@@ -1059,6 +1031,12 @@ export class DeckdeckgoInlineEditor {
           ></input>
         </div>
       );
+    } else if (this.toolbarActions === ToolbarActions.COLOR) {
+      return <div class="color">
+        <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} more={false}>
+          <div slot="more"></div>
+        </deckgo-color>
+      </div>
     } else if (this.toolbarActions === ToolbarActions.IMAGE) {
       return this.renderImageActions();
     } else {

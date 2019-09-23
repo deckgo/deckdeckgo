@@ -1,3 +1,35 @@
+<a name="1.0.0-beta.5-1"></a>
+# 1.0.0-beta.5-1 (2019-09-21)
+
+### Fix
+
+* inline editor color and link on sticky mobile devices
+
+<a name="1.0.0-beta.5"></a>
+# 1.0.0-beta.5 (2019-09-21)
+
+### Features
+
+* use a custom color picker to select and apply colors which still offers the platform's picker as extra choice ([#260](https://github.com/deckgo/deckdeckgo/issues/260))
+* hide fullscreen and platform's color picker on iPad ([#347](https://github.com/deckgo/deckdeckgo/issues/347))
+
+<a name="1.0.0-beta.4"></a>
+# 1.0.0-beta.4 (2019-09-20)
+
+### Breaking Changes
+
+* publish api v2 ([#341](https://github.com/deckgo/deckdeckgo/issues/341))
+
+### Features
+
+* copy slides ([#313](https://github.com/deckgo/deckdeckgo/issues/313))
+* add twitter meta information to published presentations ([#332](https://github.com/deckgo/deckdeckgo/issues/332))
+* add "dashboard" link in left pane menu ([#330](https://github.com/deckgo/deckdeckgo/pull/330))
+
+### Fix
+
+* firebase not defined on slide delete ([#329](https://github.com/deckgo/deckdeckgo/pull/329))
+
 <a name="1.0.0-beta.3-2"></a>
 # 1.0.0-beta.3-2 (2019-09-15)
 

@@ -1,5 +1,7 @@
-import {Component, Element, Event, EventEmitter, h, Listen, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, JSX, Listen, Prop, State} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
+
+import {isIPad} from '@deckdeckgo/utils';
 
 import {get, set} from 'idb-keyval';
 
@@ -27,13 +29,13 @@ export class AppEditorActions {
     fullscreen: boolean = false;
 
     @Prop()
-    slides: any[] = [];
+    slides: JSX.IntrinsicElements[] = [];
 
     private anonymousService: AnonymousService;
 
     @Event() signIn: EventEmitter<void>;
 
-    @Event() addSlide: EventEmitter<any>;
+    @Event() addSlide: EventEmitter<JSX.IntrinsicElements>;
 
     @Event() animatePrevNextSlide: EventEmitter<boolean>;
 
@@ -45,8 +47,15 @@ export class AppEditorActions {
 
     @Event() private openShare: EventEmitter<void>;
 
+    @State()
+    private fullscreenEnable: boolean = true;
+
     constructor() {
         this.anonymousService = AnonymousService.getInstance();
+    }
+
+    componentWillLoad() {
+        this.fullscreenEnable = !isIPad();
     }
 
     async onActionOpenSlideAdd($event: CustomEvent) {
@@ -57,7 +66,7 @@ export class AppEditorActions {
         const couldAddSlide: boolean = await this.anonymousService.couldAddSlide(this.slides);
 
         if (!couldAddSlide) {
-            await this.signIn.emit();
+            this.signIn.emit();
             return;
         }
 
@@ -77,7 +86,7 @@ export class AppEditorActions {
                 }
 
                 if (detail.data.slide) {
-                    await this.addSlide.emit(detail.data.slide);
+                    this.addSlide.emit(detail.data.slide);
                 }
             }
         });
@@ -117,9 +126,9 @@ export class AppEditorActions {
             }
 
             const url: string = gif.media[0].gif.url;
-            const slide: any = await CreateSlidesUtils.createSlideGif(url);
+            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideGif(url);
 
-            await this.addSlide.emit(slide);
+            this.addSlide.emit(slide);
 
             resolve();
         });
@@ -132,9 +141,9 @@ export class AppEditorActions {
                 return;
             }
 
-            const slide: any = await CreateSlidesUtils.createSlideYoutube(youtubeUrl);
+            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideYoutube(youtubeUrl);
 
-            await this.addSlide.emit(slide);
+            this.addSlide.emit(slide);
 
             resolve();
         });
@@ -152,7 +161,7 @@ export class AppEditorActions {
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail.data >= 0) {
-                await this.slideTo.emit(detail.data);
+                this.slideTo.emit(detail.data);
             }
         });
 
@@ -187,7 +196,7 @@ export class AppEditorActions {
                 } else if (detail.data.action === MoreAction.REMOTE) {
                     await this.openRemoteControl();
                 } else if (detail.data.action === MoreAction.SHARE) {
-                    await this.openShare.emit();
+                    this.openShare.emit();
                 } else if (detail.data.action === MoreAction.PUBLISH) {
                     this.actionPublish.emit();
                 }
@@ -199,7 +208,7 @@ export class AppEditorActions {
 
     private toggleFullScreenMode(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            await this.toggleFullScreen.emit();
+            this.toggleFullScreen.emit();
 
             await this.openFullscreenInfo();
 
@@ -250,9 +259,7 @@ export class AppEditorActions {
                     <ion-label>Slides</ion-label>
                 </ion-tab-button>
 
-                <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices" mode="md">
-                    {this.renderFullscreen()}
-                </ion-tab-button>
+                {this.renderFullscreenButton()}
 
                 <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices"
                                 mode="md">
@@ -273,6 +280,16 @@ export class AppEditorActions {
                 <app-help-action></app-help-action>
             </ion-buttons>
         </ion-toolbar>
+    }
+
+    private renderFullscreenButton() {
+        if (this.fullscreenEnable) {
+            return <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices" mode="md">
+                {this.renderFullscreen()}
+            </ion-tab-button>;
+        } else {
+            return undefined;
+        }
     }
 
     private renderFullscreen() {

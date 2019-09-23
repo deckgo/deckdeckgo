@@ -1,4 +1,6 @@
-import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+
+import {isIPad} from '@deckdeckgo/utils';
 
 @Component({
     tag: 'app-color',
@@ -12,26 +14,28 @@ export class AppColor {
     deckOrSlide: boolean = false;
 
     @Prop()
-    color: string;
-
-    @Prop()
-    background: string;
-
-    @Prop()
     selectedElement: HTMLElement;
 
     @Event() colorDidChange: EventEmitter<boolean>;
 
     private applyToAllDeck: boolean = false;
 
-    async componentDidLoad() {
-        await this.colorPickerListener(true);
-        await this.backgroundPickerListener(true);
-    }
+    @State()
+    private applyToText: boolean = true; // true = text, false = background
 
-    async componentDidUnload() {
-        await this.colorPickerListener(false);
-        await this.backgroundPickerListener(false);
+    @State()
+    private color: string;
+
+    @State()
+    private background: string;
+
+    @State()
+    private moreColors: boolean = true;
+
+    async componentWillLoad() {
+        await this.initCurrentColors(this.selectedElement);
+
+        this.moreColors = !isIPad();
     }
 
     private async closePopover() {
@@ -41,151 +45,145 @@ export class AppColor {
     private async selectApplyToAllDeck($event: CustomEvent) {
         if ($event) {
             this.applyToAllDeck = $event.detail;
+
+            if (this.deckOrSlide) {
+                await this.initCurrentColors(this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement);
+            }
         }
     }
 
-    // Color
-
-    private colorPickerListener(bind: boolean): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
-
-            if (!colorPicker) {
-                resolve();
-                return;
-            }
-
-            if (bind) {
-                colorPicker.addEventListener('change', this.selectColor, false);
-            } else {
-                colorPicker.removeEventListener('change', this.selectColor, true);
-            }
-
-
-            resolve();
-        });
+    private selectApplyToText($event: CustomEvent) {
+        if ($event && $event.detail) {
+            this.applyToText = $event.detail.value;
+        }
     }
 
-    private openColorPicker(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
-
-            if (!colorPicker) {
-                resolve();
-                return;
-            }
-
-            colorPicker.click();
-
-            resolve();
-        });
-    }
-
-    private selectColor = async ($event) => {
-        if (!this.selectedElement) {
+    private async selectColor($event: CustomEvent) {
+        if (!this.selectedElement || !$event || !$event.detail) {
             return;
         }
 
-        this.color = $event.target.value;
+        const selectedColor: string = $event.detail.hex;
 
-        if (this.deckOrSlide) {
-            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-            element.style.setProperty('--color', $event.target.value);
+        if (this.applyToText) {
+            await this.selectTextColor(selectedColor);
+            this.color = selectedColor;
         } else {
-            this.selectedElement.style.color = $event.target.value;
+            await this.selectBackground(selectedColor);
+            this.background = selectedColor;
         }
+    }
 
-        this.colorDidChange.emit(this.applyToAllDeck);
-    };
-
-    // Background
-
-    private backgroundPickerListener(bind: boolean): Promise<void> {
+    private selectTextColor(color: string): Promise<void> {
         return new Promise<void>((resolve) => {
-            const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
-
-            if (!backgroundPicker) {
+            if (!this.selectedElement || !color) {
                 resolve();
                 return;
             }
 
-            if (bind) {
-                backgroundPicker.addEventListener('change', this.selectBackground, false);
+            if (this.deckOrSlide) {
+                const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
+
+                element.style.setProperty('--color', color);
             } else {
-                backgroundPicker.removeEventListener('change', this.selectBackground, true);
+                this.selectedElement.style.color = color;
             }
 
+            this.colorDidChange.emit(this.applyToAllDeck);
 
             resolve();
         });
     }
 
-    private openBackgroundPicker(): Promise<void> {
+    private selectBackground(color: string): Promise<void> {
         return new Promise<void>((resolve) => {
-            const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
-
-            if (!backgroundPicker) {
+            if (!this.selectedElement || !color) {
                 resolve();
                 return;
             }
 
-            backgroundPicker.click();
+            if (this.deckOrSlide) {
+                const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
+
+                element.style.setProperty('--background', color);
+            } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
+                const element: HTMLElement = this.selectedElement.parentElement;
+
+                if (this.selectedElement.getAttribute('slot') === 'start') {
+                    element.style.setProperty('--slide-split-background-start', color);
+                } else if (this.selectedElement.getAttribute('slot') === 'end') {
+                    element.style.setProperty('--slide-split-background-end', color);
+                } else {
+                    this.selectedElement.style.background = color;
+                }
+            } else {
+                this.selectedElement.style.background = color;
+            }
+
+            this.colorDidChange.emit(this.applyToAllDeck);
 
             resolve();
         });
     }
 
-    private selectBackground = async ($event) => {
-        if (!this.selectedElement) {
+    private async initCurrentColors(element: HTMLElement) {
+        if (!element) {
             return;
         }
 
-        this.background = $event.target.value;
+        this.color = await this.rgb2hex(element.style.getPropertyValue('--color') ? element.style.getPropertyValue('--color') : element.style.color);
+        this.background = await this.rgb2hex(element.style.getPropertyValue('--background') ? element.style.getPropertyValue('--background') : element.style.background);
+    }
 
-        if (this.deckOrSlide) {
-            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-            element.style.setProperty('--background', $event.target.value);
-        } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
-            const element: HTMLElement = this.selectedElement.parentElement;
-
-            if (this.selectedElement.getAttribute('slot') === 'start') {
-                element.style.setProperty('--slide-split-background-start', $event.target.value);
-            } else if (this.selectedElement.getAttribute('slot') === 'end') {
-                element.style.setProperty('--slide-split-background-end', $event.target.value);
-            } else {
-                this.selectedElement.style.background = $event.target.value;
+    // https://css-tricks.com/converting-color-spaces-in-javascript/
+    private rgb2hex(rgb: string): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!rgb || rgb === undefined || rgb === '' || rgb.indexOf('rgb') <= -1) {
+                resolve(rgb);
+                return;
             }
-        } else {
-            this.selectedElement.style.background = $event.target.value;
-        }
 
-        this.colorDidChange.emit(this.applyToAllDeck);
-    };
+            const separator: string = rgb.indexOf(",") > -1 ? "," : " ";
+
+            const rgbs: string[] = rgb.substr(4).split(")")[0].split(separator);
+
+            const r: string = (+rgbs[0]).toString(16);
+            const g: string = (+rgbs[1]).toString(16);
+            const b: string = (+rgbs[2]).toString(16);
+
+            resolve(`#${r.length == 1 ? '0' + r : r}${g.length == 1 ? '0' + g : g}${b.length == 1 ? '0' + b : b}`);
+        });
+    }
 
     render() {
         return [<ion-toolbar>
-                <h2>Color</h2>
-                <ion-router-link slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-router-link>
-            </ion-toolbar>,
+            <h2>Color</h2>
+            <ion-router-link slot="end" onClick={() => this.closePopover()}>
+                <ion-icon name="close"></ion-icon>
+            </ion-router-link>
+        </ion-toolbar>,
             <ion-list>
-                <app-deck-or-slide deckOrSlide={this.deckOrSlide} onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
+                <app-deck-or-slide deckOrSlide={this.deckOrSlide}
+                                   onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
 
-                <ion-item class="ion-margin-top action-button">
-                    <ion-button shape="round" onClick={() => this.openColorPicker()} color="primary">
-                        <ion-label class="ion-text-uppercase">Text color</ion-label>
-                    </ion-button>
-                </ion-item>
+                <ion-radio-group onIonChange={($event) => this.selectApplyToText($event)}>
+                    <ion-item-divider class="ion-padding-top">
+                        <ion-label>Apply color to</ion-label>
+                    </ion-item-divider>
 
-                <ion-item class="action-button">
-                    <ion-button shape="round" onClick={() => this.openBackgroundPicker()} color="secondary">
-                        <ion-label class="ion-text-uppercase">Background color</ion-label>
-                    </ion-button>
-                </ion-item>
+                    <ion-item>
+                        <ion-label>Text</ion-label>
+                        <ion-radio slot="start" value={true} checked mode="md"></ion-radio>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>Background</ion-label>
+                        <ion-radio slot="start" value={false} mode="md"></ion-radio>
+                    </ion-item>
+                </ion-radio-group>
             </ion-list>,
-            <input type="color" name="color-picker" value={this.color}></input>,
-            <input type="color" name="background-picker" value={this.background}></input>
+            <deckgo-color class="ion-padding" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-hex={this.applyToText ? this.color : this.background}>
+                <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+            </deckgo-color>
         ]
     }
 

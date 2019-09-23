@@ -1,4 +1,4 @@
-import {h} from '@stencil/core';
+import {h, JSX} from '@stencil/core';
 
 import {ParseStyleUtils} from './parse-style.utils';
 import {ParseElementsUtils} from './parse-elements.utils';
@@ -6,23 +6,23 @@ import {Slide, SlideTemplate} from '../../models/data/slide';
 
 export class ParseSlidesUtils {
 
-    static parseSlide(slide: Slide, contentEditable: boolean): Promise<any> {
-        return new Promise<any>(async (resolve) => {
+    static parseSlide(slide: Slide, contentEditable: boolean, ignoreSlideId: boolean = false): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             if (!document || !slide || !slide.data || !slide.data.template) {
                 resolve(null);
                 return;
             }
 
             if (SlideTemplate[slide.data.template.toUpperCase()]) {
-                resolve(await this.parseSlideElement(slide, `deckgo-slide-${SlideTemplate[slide.data.template.toUpperCase()].toLowerCase()}`, contentEditable));
+                resolve(await this.parseSlideElement(slide, `deckgo-slide-${SlideTemplate[slide.data.template.toUpperCase()].toLowerCase()}`, contentEditable, ignoreSlideId));
             } else {
                 resolve(null);
             }
         });
     }
 
-    private static parseSlideElement(slide: Slide, slideTag: string, contentEditable: boolean): Promise<any> {
-        return new Promise<any>(async (resolve) => {
+    private static parseSlideElement(slide: Slide, slideTag: string, contentEditable: boolean, ignoreSlideId: boolean): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             if (!document) {
                 resolve();
                 return;
@@ -45,8 +45,7 @@ export class ParseSlidesUtils {
 
             const SlideElement: string = slideTag;
 
-            // @ts-ignore
-            const result: any = <SlideElement key={slide.id} slide_id={slide.id} style={style} src={src} custom-background={customBackground} img-src={imgSrc} img-alt={imgAlt}>
+            const result: JSX.IntrinsicElements = <SlideElement key={slide.id} slide_id={ignoreSlideId ? undefined : slide.id} style={style} src={src} custom-background={customBackground} img-src={imgSrc} img-alt={imgAlt}>
                 {content}
             </SlideElement>;
 

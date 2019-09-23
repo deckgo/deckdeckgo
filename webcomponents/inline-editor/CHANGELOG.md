@@ -1,3 +1,17 @@
+<a name="1.0.0-rc.2-1"></a>
+# 1.0.0-rc.2-1 (2019-09-21)
+
+### Fix
+
+* fix layout for color and link on sticky mobile devices
+
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-09-21)
+
+### Breaking Changes
+
+* the component doesn't rely anymore on the platform's color picker but use the new `@deckdeckgo/color` Web Component to offer a limited and simple choice of selectable colors
+
 <a name="1.0.0-rc.1-1"></a>
 # 1.0.0-rc.1-1 (2019-09-01)
 

@@ -16,11 +16,8 @@ app-feed-card-tags {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 8px;
-
-    &:not(:first-of-type) {
-      margin: 0 4px;
-    }
+    padding: 2px 8px;
+    margin: 4px 2px;
 
     font-size: var(--font-size-normal);
 

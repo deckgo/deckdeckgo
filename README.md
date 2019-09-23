@@ -29,9 +29,9 @@ Are you interested to contribute to our open source project? That would be aweso
 
 | Project | Version | Online | Links |
 | ------- | ------- | ------- |:-----:|
-| **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.1-1&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
+| **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.3-1&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Remote control** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.1&color=success)](https://deckdeckgo.app) | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
-| **Studio** | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.3-1&color=orange) | | [`README.md`](studio/README.md)
+| **Studio** | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.5-1&color=orange) | | [`README.md`](studio/README.md)
 | **Website** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.2&color=success)](https://deckdeckgo.com) | [https://deckdeckgo.com](https://deckdeckgo.com) | [`Repo`](https://github.com/deckgo/deckdeckgo-website/)
 
 ## Web Components
@@ -40,6 +40,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | ------- | ------- | ------- |:-----:|
 | **Core** | [`@deckdeckgo/core`](https://www.npmjs.com/package/@deckdeckgo/core) | [![version](https://img.shields.io/npm/v/@deckdeckgo/core/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/core) | [`README.md`](webcomponents/core/README.md)
 | **Charts** | [`@deckdeckgo/charts`](https://www.npmjs.com/package/@deckdeckgo/charts) | [![version](https://img.shields.io/npm/v/@deckdeckgo/charts/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/charts) | [`README.md`](webcomponents/charts/README.md)
+| **Color** | [`@deckdeckgo/color`](https://www.npmjs.com/package/@deckdeckgo/color) | [![version](https://img.shields.io/npm/v/@deckdeckgo/color/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/color) | [`README.md`](webcomponents/color/README.md)
 | **Highlight code** | [`@deckdeckgo/highlight-code`](https://www.npmjs.com/package/@deckdeckgo/highlight-code) | [![version](https://img.shields.io/npm/v/@deckdeckgo/highlight-code/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/highlight-code) | [`README.md`](webcomponents/highlight-code/README.md)
 | **Inline editor** | [`@deckdeckgo/inline-editor`](https://www.npmjs.com/package/@deckdeckgo/inline-editor) | [![version](https://img.shields.io/npm/v/@deckdeckgo/inline-editor/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/inline-editor) | [`README.md`](webcomponents/inline-editor/README.md)
 | **Lazy image** | [`@deckdeckgo/lazy-img`](https://www.npmjs.com/package/@deckdeckgo/lazy-img) | [![version](https://img.shields.io/npm/v/@deckdeckgo/lazy-img/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/lazy-img) | [`README.md`](webcomponents/lazy-img/README.md)

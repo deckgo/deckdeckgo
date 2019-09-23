@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/inline-editor",
-  "version": "1.0.0-rc.1-1",
+  "version": "1.0.0-rc.2-1",
   "description": "A WYSIWYG HTML Inline Editor Web Component",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -22,6 +22,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
+    "@deckdeckgo/color": "^1.0.0-rc.1-1",
     "@deckdeckgo/utils": "^1.0.0-rc.1-1"
   },
   "devDependencies": {

@@ -32,12 +32,6 @@ export class AppEditorToolbar {
     @State()
     private displayed: boolean = false;
 
-    @State()
-    private color: string;
-
-    @State()
-    private background: string;
-
     private selectedElement: HTMLElement;
 
     @State()
@@ -65,6 +59,8 @@ export class AppEditorToolbar {
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
     @Event() private codeDidChange: EventEmitter<HTMLElement>;
     @Event() private imgDidChange: EventEmitter<HTMLElement>;
+
+    @Event() private slideCopy: EventEmitter<HTMLElement>;
 
     private subscription: Subscription;
     private busyService: BusyService;
@@ -345,10 +341,6 @@ export class AppEditorToolbar {
 
             this.displayed = true;
 
-            const style: CSSStyleDeclaration = window.getComputedStyle(element);
-            this.color = style.color;
-            this.background = style.backgroundColor;
-
             resolve();
         });
     }
@@ -449,6 +441,28 @@ export class AppEditorToolbar {
                 this.selectedElement.parentElement.removeChild(this.selectedElement);
                 this.slideDidChange.emit(parent);
             }
+
+            await this.hideToolbar();
+
+            resolve();
+        });
+    }
+
+    private cloneSlide(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (this.deckBusy || !this.deckOrSlide) {
+                resolve();
+                return;
+            }
+
+            this.busyService.deckBusy(true);
+
+            this.slideCopy.emit(this.selectedElement);
 
             await this.hideToolbar();
 
@@ -709,8 +723,6 @@ export class AppEditorToolbar {
             component: 'app-color',
             componentProps: {
                 deckOrSlide: this.deckOrSlide,
-                color: this.color,
-                background: this.background,
                 selectedElement: this.selectedElement
             },
             mode: 'md',
@@ -884,16 +896,31 @@ export class AppEditorToolbar {
                 {this.renderImages()}
                 {this.renderYoutube()}
                 {this.renderCodeOptions()}
-                {this.renderDelete()}
+
+                <div class="editor-toolbar-edit">
+                    {this.renderCopy()}
+                    {this.renderDelete()}
+                </div>
             </div>
         ];
     }
 
     private renderDelete() {
         return <a onClick={() => this.deleteElement()} title="Delete"
-                  class={this.deckBusy && this.deckOrSlide ? "delete disabled" : "delete"}>
+                  class={this.deckBusy && this.deckOrSlide ? "disabled" : ""}>
             <ion-icon name="trash"></ion-icon>
         </a>
+    }
+
+    private renderCopy() {
+        if (!this.deckOrSlide) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.cloneSlide()} title="Copy"
+                      class={this.deckBusy ? "disabled" : ""}>
+                <ion-icon name="copy"></ion-icon>
+            </a>
+        }
     }
 
     private renderColor() {

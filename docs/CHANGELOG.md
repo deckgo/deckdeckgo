@@ -1,3 +1,24 @@
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-09-21)
+
+### Features
+
+* new CSS variable of the `@deckdeckgo/color` component
+
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-09-21)
+
+### Features
+
+* new `@deckdeckgo/color` Web Component documented
+
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-09-15)
+
+### Features
+
+* document modifications related to remote
+
 <a name="1.0.0-rc.1-1"></a>
 # 1.0.0-rc.1-1 (2019-09-13)
 

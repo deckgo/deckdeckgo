@@ -37,6 +37,17 @@ export function isIOS(): boolean {
     return /iPad|iPhone|iPod/i.test(a);
 }
 
+
+export function isIPad(): boolean {
+    if (!window || !navigator) {
+        return false;
+    }
+
+    const a: string = navigator.userAgent || navigator.vendor || (window as any).opera;
+
+    return /iPad/i.test(a);
+}
+
 export function isFullscreen(): boolean {
     if (!window || !screen) {
         return false;

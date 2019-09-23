@@ -58,7 +58,7 @@ export class AppShareAction {
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data) {
                 if (detail.data.action === MoreAction.SHARE) {
-                    await this.openShare.emit();
+                    this.openShare.emit();
                 } else if (detail.data.action === MoreAction.PUBLISH) {
                     this.actionPublish.emit();
                 }
