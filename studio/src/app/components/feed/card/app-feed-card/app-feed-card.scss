@@ -11,6 +11,10 @@ app-feed-card {
         }
       }
 
+      p.content {
+        margin: 0;
+      }
+
       ion-card-title {
         white-space: nowrap;
         overflow: hidden;
@@ -37,6 +41,7 @@ app-feed-card {
 
     app-feed-card-tags {
       display: block;
+      height: 100%;
     }
   }
 
