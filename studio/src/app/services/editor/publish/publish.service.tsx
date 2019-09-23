@@ -78,7 +78,7 @@ export class PublishService {
                         return;
                     }
 
-                    const apiDeck: ApiDeck = await this.convertDeck(deck);
+                    const apiDeck: ApiDeck = await this.convertDeck(deck, description);
 
                     this.progress(0.25);
 
@@ -136,13 +136,14 @@ export class PublishService {
         }
     }
 
-    private convertDeck(deck: Deck): Promise<ApiDeck> {
+    private convertDeck(deck: Deck, description: string): Promise<ApiDeck> {
         return new Promise<ApiDeck>(async (resolve, reject) => {
             try {
                 const apiSlides: ApiSlide[] = await this.convertSlides(deck);
 
                 const apiDeck: ApiDeck = {
                     name: deck.data.name,
+                    description: description !== undefined && description !== '' ? description : deck.data.name,
                     owner_id: deck.data.owner_id,
                     attributes: deck.data.attributes,
                     background: deck.data.background,
