@@ -1,3 +1,16 @@
+<a name="1.0.0-beta.5-2"></a>
+# 1.0.0-beta.5-2 (2019-09-23)
+
+### Features
+
+* use new color picker for code ([#353](https://github.com/deckgo/deckdeckgo/issues/353))
+* improve tags spacing
+
+### Fix
+
+* missing "description" in the published presentation ([#351](https://github.com/deckgo/deckdeckgo/issues/351))
+* trim deck name when publishing (as it is use as room name for the remote control)
+
 <a name="1.0.0-beta.5-1"></a>
 # 1.0.0-beta.5-1 (2019-09-21)
 
