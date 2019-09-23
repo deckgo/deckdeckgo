@@ -311,6 +311,7 @@ data PresentationInfo = PresentationInfo
   , presentationBackground :: Maybe PresentationBackground
   , presentationAttributes :: HMS.HashMap T.Text T.Text
   , presentationSlides :: [Slide]
+  , presentationDescription :: T.Text
   } deriving (Show, Eq)
 
 data PresentationResult = PresentationResult
@@ -327,7 +328,8 @@ instance FromJSONObject PresentationInfo where
       obj .: "owner_id" <*>
       obj .:? "background" <*>
       obj .:? "attributes" .!= HMS.empty <*>
-      obj .: "slides"
+      obj .: "slides" <*>
+      obj .: "description"
 
 instance FromJSONObject PresentationResult where
   parseJSONObject = undefined -- \obj ->
@@ -1245,11 +1247,10 @@ withPresentationFiles uname psname presentationInfo act = do
       T.replace "{{DECKDECKGO_TITLE_SHORT}}" (T.take 12 $ unPresentationName pname) .
       T.replace "{{DECKDECKGO_AUTHOR}}" (unUsername uname) .
       T.replace "{{DECKDECKGO_USERNAME}}" (unUsername uname) .
+      T.replace "{{DECKDECKGO_DESCRIPTION}}" (presentationDescription presentationInfo) .
       T.replace "{{DECKDECKGO_USER_ID}}"
         (unFirebaseId . unUserId $ presentationOwner presentationInfo) .
       T.replace "{{DECKDECKGO_DECKNAME}}" (unPresShortname psname) .
-      -- TODO: description
-      T.replace "{{DECKDECKGO_DESCRIPTION}}" "(no description given)" .
       T.replace "{{DECKDECKGO_BASE_HREF}}"
         ("/" <> unPresentationPrefix (presentationPrefix uname psname))
 
