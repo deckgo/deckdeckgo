@@ -142,7 +142,7 @@ export class PublishService {
                 const apiSlides: ApiSlide[] = await this.convertSlides(deck);
 
                 const apiDeck: ApiDeck = {
-                    name: deck.data.name,
+                    name: deck.data.name ? deck.data.name.trim() : deck.data.name,
                     description: description !== undefined && description !== '' ? description : deck.data.name,
                     owner_id: deck.data.owner_id,
                     attributes: deck.data.attributes,
