@@ -17,7 +17,7 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](http
  
 ## Getting Started
 
-Start you new presentation using our 👉 [online Editor](https://deckdeckgo.com) 👈 or as a developer by following the quick  👉 [Getting Started guide](https://docs.deckdeckgo.com/docs) 👈
+Start you new presentation using our 👉 [online Editor](https://deckdeckgo.com) 👈 or as a developer by following the quick  [Getting Started guide](https://docs.deckdeckgo.com/docs).
 
 ## Documentation
 
@@ -33,7 +33,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | ------- | ------- | ------- |:-----:|
 | **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.3-1&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Remote control** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.1&color=success)](https://deckdeckgo.app) | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
-| **Studio** | [![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.5-2&color=success)(https://deckdeckgo.com)| | [https://deckdeckgo.com](https://deckdeckgo.com) | [`README.md`](studio/README.md)
+| **Studio** | [![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.5-2&color=success)](https://deckdeckgo.com)| [https://deckdeckgo.com](https://deckdeckgo.com) | [`README.md`](studio/README.md)
 
 ## Web Components
 
