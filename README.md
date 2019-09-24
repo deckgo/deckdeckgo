@@ -1,6 +1,8 @@
 # DeckDeckGo
 
-Create a PWA presentation using Web Components, [Ionic](http://ionicframework.com) components and HTML or Markdown 🚀
+The web open source editor for presentations 🚀
+
+Create a PWA presentation using Web Components, [Ionic](http://ionicframework.com) components and HTML or Markdown.
 
 Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](https://deckdeckgo.app) to remote control your slides 📱
 
@@ -15,7 +17,7 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](http
  
 ## Getting Started
 
-Start you new presentation by following the quick  👉 [Getting Started guide](https://docs.deckdeckgo.com/docs) 👈
+Start you new presentation using our 👉 [online Editor](https://deckdeckgo.com) 👈 or as a developer by following the quick  👉 [Getting Started guide](https://docs.deckdeckgo.com/docs) 👈
 
 ## Documentation
 
@@ -31,8 +33,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | ------- | ------- | ------- |:-----:|
 | **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.3-1&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Remote control** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.1&color=success)](https://deckdeckgo.app) | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
-| **Studio** | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.5-2&color=orange) | | [`README.md`](studio/README.md)
-| **Website** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.2&color=success)](https://deckdeckgo.com) | [https://deckdeckgo.com](https://deckdeckgo.com) | [`Repo`](https://github.com/deckgo/deckdeckgo-website/)
+| **Studio** | [![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.5-2&color=success)(https://deckdeckgo.com)| | [https://deckdeckgo.com](https://deckdeckgo.com) | [`README.md`](studio/README.md)
 
 ## Web Components
 
@@ -77,7 +78,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | ------- | ------- | ------- |:-----:|
 | **Backend** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-alpha.2&color=success) | [`README.md`](backend/README.md)
 | **CLI** | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo) | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg?color=success)](https://www.npmjs.com/package/create-deckdeckgo) | [`README.md`](cli/README.md)
-| **Cloud** | | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.1&color=orange) | [`README.md`](cloud/README.md)
+| **Cloud** | | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.1&color=success) | [`README.md`](cloud/README.md)
 | **Infrastructure** | | | [`README.md`](infra/README.md)
 | **Starter kit** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-rc.1-3&color=success) | [`Repo`](http://github.com/deckgo/deckdeckgo-starter/)
 | **WAI Lambda** | | | [`Repo`](https://github.com/deckgo/wai-lambda)
