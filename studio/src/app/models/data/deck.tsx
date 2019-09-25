@@ -16,6 +16,8 @@ export interface DeckMeta {
     published: boolean;
     published_at: firebase.firestore.Timestamp;
 
+    feed: boolean;
+
     updated_at: firebase.firestore.Timestamp;
 }
 
