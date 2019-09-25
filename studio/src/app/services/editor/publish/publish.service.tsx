@@ -264,6 +264,7 @@ export class PublishService {
                             pathname: url.pathname,
                             published: true,
                             published_at: now,
+                            feed: true,
                             updated_at: now
                         };
                     } else {
