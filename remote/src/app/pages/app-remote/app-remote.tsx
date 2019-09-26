@@ -481,15 +481,13 @@ export class AppRemote {
             <ion-header>
                 <ion-toolbar color="primary">
                     <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
-
                     <ion-buttons slot="end">
                         <ion-button onClick={() => this.openSettingsModal()}>
                             <ion-icon name="settings"></ion-icon>
-                        </ion-button>
+                        </ion-button>         
                     </ion-buttons>
-                </ion-toolbar>
+                </ion-toolbar>    
             </ion-header>,
-
             <ion-content>
                 {this.renderContent()}
 
@@ -531,6 +529,7 @@ export class AppRemote {
             ];
         } else {
             return [
+                <dark-mode-switch></dark-mode-switch>,
                 <h1 class="ion-padding">The DeckDeckGo remote control</h1>,
                 <a onClick={() => this.openConnectModal()} class="link-to-modal">
                     <p class="ion-padding-start ion-padding-end">Not connected yet, <strong>click here</strong> to find
