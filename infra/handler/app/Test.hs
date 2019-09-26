@@ -173,6 +173,7 @@ testPresDeploys = withQueueName $ withEnv $ \env -> withSQS env $ withS3 env $ d
           , presentationOwner = someUserId
           , presentationAttributes = HMS.empty
           , presentationBackground = Nothing
+          , presentationDescription = ""
           }
 
     let uname = Username "josph"
