@@ -17,7 +17,7 @@ Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](http
  
 ## Getting Started
 
-Start you new presentation using our 👉 [online Editor](https://deckdeckgo.com) 👈 or as a developer by following the quick  [Getting Started guide](https://docs.deckdeckgo.com/docs).
+Start your new presentation using our 👉 [online Editor](https://deckdeckgo.com) 👈 or as a developer by following the quick  [Getting Started guide](https://docs.deckdeckgo.com/docs).
 
 ## Documentation
 
