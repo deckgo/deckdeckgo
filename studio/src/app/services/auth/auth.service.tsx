@@ -15,6 +15,7 @@ import {ErrorService} from '../core/error/error.service';
 
 import {ApiUserService} from '../api/user/api.user.service';
 import {UserService} from '../data/user/user.service';
+import {ApiUserFactoryService} from '../api/user/api.user.factory.service';
 
 export class AuthService {
 
@@ -31,7 +32,7 @@ export class AuthService {
     private constructor() {
         // Private constructor, singleton
         this.errorService = ErrorService.getInstance();
-        this.apiUserService = ApiUserService.getInstance();
+        this.apiUserService = ApiUserFactoryService.getInstance();
         this.firestoreUserService = UserService.getInstance();
     }
 

@@ -14,6 +14,7 @@ import {ApiUser} from '../../../../models/api/api.user';
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 import {FeedService} from '../../../../services/data/feed/feed.service';
+import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 
 interface CustomInputEvent extends KeyboardEvent {
     data: string | null;
@@ -74,7 +75,7 @@ export class AppPublishEdit {
 
         this.errorService = ErrorService.getInstance();
 
-        this.apiUserService = ApiUserService.getInstance();
+        this.apiUserService = ApiUserFactoryService.getInstance();
 
         this.publishService = PublishService.getInstance();
 

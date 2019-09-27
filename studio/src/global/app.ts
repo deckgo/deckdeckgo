@@ -25,6 +25,7 @@ import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment
 
 setupDeckGoConfig({
     deckdeckgo: {
+        prod: true,
         appUrl: 'https://deckdeckgo.com',
         apiUrl: '<@API_URL@>',
         presentationUrl: '<@PRESENTATION_URL@>',

@@ -5,10 +5,12 @@ import {Subscription} from 'rxjs';
 import {AuthUser} from '../../../models/auth/auth.user';
 import {User} from '../../../models/data/user';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {ApiUser} from '../../../models/api/api.user';
+
+import {AuthService} from '../../../services/auth/auth.service';
 import {UserService} from '../../../services/data/user/user.service';
+import {ApiUserService} from '../../../services/api/user/api.user.service';
+import {ApiUserFactoryService} from '../../../services/api/user/api.user.factory.service';
 
 @Component({
     tag: 'app-user-info',
@@ -42,7 +44,7 @@ export class AppUserInfo {
 
     constructor() {
         this.authService = AuthService.getInstance();
-        this.apiUserService = ApiUserService.getInstance();
+        this.apiUserService = ApiUserFactoryService.getInstance();
         this.userService = UserService.getInstance();
     }
 

@@ -19,6 +19,7 @@ import {ErrorService} from '../../../services/core/error/error.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {StorageService} from '../../../services/storage/storage.service';
+import {ApiUserFactoryService} from '../../../services/api/user/api.user.factory.service';
 
 @Component({
     tag: 'app-settings',
@@ -84,7 +85,7 @@ export class AppHome {
 
     constructor() {
         this.authService = AuthService.getInstance();
-        this.apiUserService = ApiUserService.getInstance();
+        this.apiUserService = ApiUserFactoryService.getInstance();
         this.navService = NavService.getInstance();
         this.errorService = ErrorService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();

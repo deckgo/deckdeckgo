@@ -19,6 +19,7 @@ export interface EnvironmentUnsplashConfig {
 }
 
 export interface EnvironmentDeckDeckGoConfig {
+    prod: boolean;
     appUrl: string;
     apiUrl: string;
     presentationUrl: string;
