@@ -1,67 +1,16 @@
-import {EnvironmentUnsplashConfig} from '../../core/environment/environment-config';
-
 import {ErrorService} from '../../core/error/error.service';
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-export class ApiPhotoService {
+export abstract class ApiPhotoService {
 
-    private static instance: ApiPhotoService;
+    protected errorService: ErrorService;
 
-    private errorService: ErrorService;
-
-    private constructor() {
+    public constructor() {
         // Private constructor, singleton
         this.errorService = ErrorService.getInstance();
     }
 
-    static getInstance() {
-        if (!ApiPhotoService.instance) {
-            ApiPhotoService.instance = new ApiPhotoService();
-        }
-        return ApiPhotoService.instance;
-    }
+    abstract getPhotos(searchTerm: string, next: string | number): Promise<UnsplashSearchResponse>;
 
-    getPhotos(searchTerm: string, next: string | number): Promise<UnsplashSearchResponse> {
-        return new Promise<UnsplashSearchResponse>(async (resolve) => {
-            const config: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
-
-            const searchUrl: string = config.url + 'search/photos/?query=' + searchTerm + '&page=' + next;
-
-            try {
-                const rawResponse: Response = await fetch(searchUrl);
-
-                const response: UnsplashSearchResponse = JSON.parse(await rawResponse.text());
-
-                if (!response) {
-                    this.errorService.error('Unsplash photos could not be fetched');
-                    resolve();
-                    return;
-                }
-
-                resolve(response);
-            } catch (err) {
-                this.errorService.error(err.message);
-                resolve();
-            }
-        });
-    }
-
-    registerDownload(photoId: string): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const config: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
-
-            const shareUrl: string = config.url + 'photos/' + photoId +'/download/';
-
-            try {
-                await fetch(shareUrl);
-
-                // We don't check the status of the answer, user could still use the photo even if that would have failed
-                resolve();
-            } catch (err) {
-                // We ignore the error, user could still use the photo
-                resolve();
-            }
-        });
-    }
+    abstract registerDownload(photoId: string): Promise<void>;
 
 }

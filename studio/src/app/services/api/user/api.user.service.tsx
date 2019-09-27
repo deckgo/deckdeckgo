@@ -1,27 +1,18 @@
 import {Observable, ReplaySubject} from 'rxjs';
 
-import {AuthUser} from '../../../models/auth/auth.user';
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
+import {AuthUser} from '../../../models/auth/auth.user';
 
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-export class ApiUserService {
+export abstract class ApiUserService {
 
-    private apiUserSubject: ReplaySubject<ApiUser> = new ReplaySubject(1);
+    protected apiUserSubject: ReplaySubject<ApiUser> = new ReplaySubject(1);
 
-    private static instance: ApiUserService;
+    abstract query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser>;
 
-    private constructor() {
-        // Private constructor, singleton
-    }
-
-    static getInstance() {
-        if (!ApiUserService.instance) {
-            ApiUserService.instance = new ApiUserService();
-        }
-        return ApiUserService.instance;
-    }
+    abstract delete(userId: string, token: string): Promise<void>;
 
     signIn(authUser: AuthUser): Promise<void> {
         return new Promise<void>(async (resolve) => {
@@ -68,37 +59,6 @@ export class ApiUserService {
         return this.query(apiUser, token, `/users/${userId}`, 'PUT');
     }
 
-    query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser> {
-        return new Promise<ApiUser>(async (resolve, reject) => {
-            try {
-                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-                const rawResponse: Response = await fetch(config.apiUrl + context, {
-                    method: method,
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(apiUserInfo)
-                });
-
-                if (!rawResponse || (!rawResponse.ok && rawResponse.status !== 409)) {
-                    reject('Something went wrong while creating a user');
-                    return;
-                }
-
-                const persistedUser: ApiUser = await rawResponse.json();
-
-                this.apiUserSubject.next(persistedUser);
-
-                resolve(persistedUser);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
     private get(userId: string): Promise<ApiUser> {
         return new Promise<ApiUser>(async (resolve, reject) => {
             try {
@@ -129,37 +89,11 @@ export class ApiUserService {
         });
     }
 
-    delete(userId: string, token: string): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-                const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!rawResponse || !rawResponse.ok) {
-                    reject('Something went wrong while creating a user');
-                    return;
-                }
-
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
     watch(): Observable<ApiUser> {
         return this.apiUserSubject.asObservable();
     }
 
-    createUserInfo(authUser: AuthUser): Promise<ApiUserInfo> {
+    private createUserInfo(authUser: AuthUser): Promise<ApiUserInfo> {
         return new Promise<ApiUserInfo>((resolve) => {
             if (!authUser) {
                 resolve(null);
@@ -175,5 +109,4 @@ export class ApiUserService {
             resolve(apiUserInfo);
         });
     }
-
 }
