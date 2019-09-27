@@ -124,8 +124,8 @@ If you would provide a date using `until`, note that the format should be provid
 
 ```
 <deckgo-deck>
-  <deckgo-slide-qrcode hours="0" minutes="10" seconds="45">
-  </deckgo-slide-code>
+  <deckgo-slide-countdown hours="0" minutes="10" seconds="45">
+  </deckgo-slide-countdown>
 </deckgo-deck>  
 ```
 
