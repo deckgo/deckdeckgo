@@ -152,7 +152,7 @@ export class AppSlideCountdown {
 <p>If you would provide a date using <code>until</code>, note that the format should be provided as a valid and parsable date. See <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/parse">Date.parse()</a> for more information about the format.</p>
 <h3 id="app-slide-countdown-example-without-any-slots">Example without any slots</h3>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-qrcode hours=&quot;0&quot; minutes=&quot;10&quot; seconds=&quot;45&quot;&gt;{'\n'}  &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;  </code>
+      <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-countdown hours=&quot;0&quot; minutes=&quot;10&quot; seconds=&quot;45&quot;&gt;{'\n'}  &lt;&#47;deckgo-slide-countdown&gt;{'\n'}&lt;&#47;deckgo-deck&gt;  </code>
     </deckgo-highlight-code><h2 id="app-slide-countdown-theming">Theming</h2>
 <p>The following theming options will affect this component if set on its host or parent.</p>
 <table>
