@@ -18,6 +18,7 @@ import {UserService} from '../../data/user/user.service';
 import {DeckEditorService} from '../deck/deck-editor.service';
 
 import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
+import {ApiPresentationFactoryService} from '../../api/presentation/api.presentation.factory.service';
 
 export class PublishService {
 
@@ -38,7 +39,7 @@ export class PublishService {
         // Private constructor, singleton
         this.deckEditorService = DeckEditorService.getInstance();
 
-        this.apiPresentationService = ApiPresentationService.getInstance();
+        this.apiPresentationService = ApiPresentationFactoryService.getInstance();
 
         this.deckService = DeckService.getInstance();
         this.slideService = SlideService.getInstance();
