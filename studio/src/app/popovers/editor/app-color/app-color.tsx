@@ -74,6 +74,31 @@ export class AppColor {
         }
     }
 
+    private resetColor(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (this.applyToText) {
+                this.selectedElement.style.removeProperty('--color');
+                this.selectedElement.style.removeProperty('color');
+
+                this.color = null;
+            } else {
+                this.selectedElement.style.removeProperty('--background');
+                this.selectedElement.style.removeProperty('--slide-split-background-start');
+                this.selectedElement.style.removeProperty('--slide-split-background-end');
+                this.selectedElement.style.removeProperty('background');
+
+                this.background = null;
+            }
+
+            resolve();
+        });
+    }
+
     private selectTextColor(color: string): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!this.selectedElement || !color) {
@@ -183,7 +208,13 @@ export class AppColor {
             </ion-list>,
             <deckgo-color class="ion-padding" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-hex={this.applyToText ? this.color : this.background}>
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
-            </deckgo-color>
+            </deckgo-color>,
+            <ion-item class="action-button ion-margin-bottom">
+                <ion-button shape="round" onClick={() => this.resetColor()}
+                            fill="outline" class="delete">
+                    <ion-label class="ion-text-uppercase">Reset {this.applyToText ? 'text color' : 'background'}</ion-label>
+                </ion-button>
+            </ion-item>
         ]
     }
 
