@@ -25,7 +25,7 @@ import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment
 
 setupDeckGoConfig({
     deckdeckgo: {
-        appUrl: 'http://@deckdeckgo/studio-beta.firebaseapp.com',
+        appUrl: 'https://deckdeckgo.com',
         apiUrl: '<@API_URL@>',
         presentationUrl: '<@PRESENTATION_URL@>',
         globalAssetsUrl: 'https://deckdeckgo.com/assets'
