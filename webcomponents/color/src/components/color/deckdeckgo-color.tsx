@@ -17,6 +17,7 @@ export class DeckdeckgoColor {
   @Prop() moreAlt: string = 'More';
 
   @Prop({mutable: true}) colorHex: string;
+  @Prop({mutable: true}) colorRgb: string;
 
   @Event()
   colorChange: EventEmitter<DeckdeckgoPaletteColor>;
@@ -37,6 +38,7 @@ export class DeckdeckgoColor {
       }
 
       this.colorHex = paletteColor.color ? paletteColor.color.hex : undefined;
+      this.colorRgb = paletteColor.color ? paletteColor.color.rgb : undefined;
 
       this.colorChange.emit(paletteColor.color);
 
@@ -82,6 +84,7 @@ export class DeckdeckgoColor {
     const selectedColor: string = $event.target.value;
 
     this.colorHex = undefined;
+    this.colorRgb = undefined;
 
     this.colorChange.emit({
       hex: selectedColor,
@@ -115,6 +118,18 @@ export class DeckdeckgoColor {
     return this.colorHex.toUpperCase() === element.color.hex.toUpperCase();
   }
 
+  private isRgbColorSelected(element: DeckdeckgoPalette): boolean {
+    if (!element || !element.color || !element.color.rgb) {
+      return false;
+    }
+
+    if (!this.colorRgb) {
+      return false;
+    }
+
+    return this.colorRgb.toUpperCase() === element.color.rgb.toUpperCase();
+  }
+
   render() {
     return <Host>
       <div class="color-container">
@@ -135,7 +150,7 @@ export class DeckdeckgoColor {
           };
 
           return <button aria-label={element.alt}
-                         class={this.isHexColorSelected(element) ? 'selected' : undefined}
+                         class={this.isHexColorSelected(element) || this.isRgbColorSelected(element) ? 'selected' : undefined}
                          style={style} onClick={() => this.pickColor(element)}>
           </button>
         })

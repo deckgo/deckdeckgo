@@ -14,6 +14,7 @@ import {
 export namespace Components {
   interface DeckgoColor {
     'colorHex': string;
+    'colorRgb': string;
     'more': boolean;
     'moreAlt': string;
     'palette': DeckdeckgoPalette[];
@@ -36,6 +37,7 @@ declare global {
 declare namespace LocalJSX {
   interface DeckgoColor extends JSXBase.HTMLAttributes<HTMLDeckgoColorElement> {
     'colorHex'?: string;
+    'colorRgb'?: string;
     'more'?: boolean;
     'moreAlt'?: string;
     'onColorChange'?: (event: CustomEvent<DeckdeckgoPaletteColor>) => void;

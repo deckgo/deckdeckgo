@@ -10,6 +10,7 @@
 | Property   | Attribute   | Description | Type                  | Default           |
 | ---------- | ----------- | ----------- | --------------------- | ----------------- |
 | `colorHex` | `color-hex` |             | `string`              | `undefined`       |
+| `colorRgb` | `color-rgb` |             | `string`              | `undefined`       |
 | `more`     | `more`      |             | `boolean`             | `true`            |
 | `moreAlt`  | `more-alt`  |             | `string`              | `'More'`          |
 | `palette`  | --          |             | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
