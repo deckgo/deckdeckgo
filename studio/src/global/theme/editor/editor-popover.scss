@@ -45,3 +45,10 @@ ion-item-divider {
     margin: 16px 0 4px;
   }
 }
+
+ion-button.delete {
+  --color: var(--ion-color-medium);
+  --color-activated: var(--ion-color-medium);
+  --border-color: var(--ion-color-light);
+  --background-activated: white;
+}

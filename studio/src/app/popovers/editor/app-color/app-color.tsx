@@ -1,6 +1,12 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {RangeChangeEventDetail} from '@ionic/core';
 
 import {isIPad} from '@deckdeckgo/utils';
+
+interface InitStyleColor {
+    rgb: string | null;
+    opacity: number | null;
+}
 
 @Component({
     tag: 'app-color',
@@ -28,6 +34,12 @@ export class AppColor {
 
     @State()
     private background: string;
+
+    @State()
+    private colorOpacity: number = 100;
+
+    @State()
+    private backgroundOpacity: number = 100;
 
     @State()
     private moreColors: boolean = true;
@@ -63,30 +75,65 @@ export class AppColor {
             return;
         }
 
-        const selectedColor: string = $event.detail.hex;
-
         if (this.applyToText) {
-            await this.selectTextColor(selectedColor);
-            this.color = selectedColor;
+            this.color = $event.detail.rgb;
         } else {
-            await this.selectBackground(selectedColor);
-            this.background = selectedColor;
+            this.background = $event.detail.rgb;
+        }
+
+        await this.applyColor();
+    }
+
+    private async applyColor() {
+        if (this.applyToText) {
+            await this.applyTextColor();
+        } else {
+            await this.applyBackground();
         }
     }
 
-    private selectTextColor(color: string): Promise<void> {
+    private resetColor(): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (!this.selectedElement || !color) {
+            if (!this.selectedElement) {
                 resolve();
                 return;
             }
 
+            if (this.applyToText) {
+                this.selectedElement.style.removeProperty('--color');
+                this.selectedElement.style.removeProperty('color');
+
+                this.color = null;
+                this.colorOpacity = 100;
+            } else {
+                this.selectedElement.style.removeProperty('--background');
+                this.selectedElement.style.removeProperty('--slide-split-background-start');
+                this.selectedElement.style.removeProperty('--slide-split-background-end');
+                this.selectedElement.style.removeProperty('background');
+
+                this.background = null;
+                this.backgroundOpacity = 100;
+            }
+
+            resolve();
+        });
+    }
+
+    private applyTextColor(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.selectedElement || !this.color) {
+                resolve();
+                return;
+            }
+
+            const selectedColor: string = `rgba(${this.color},${this.transformOpacity()})`;
+
             if (this.deckOrSlide) {
                 const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
 
-                element.style.setProperty('--color', color);
+                element.style.setProperty('--color', selectedColor);
             } else {
-                this.selectedElement.style.color = color;
+                this.selectedElement.style.color = selectedColor;
             }
 
             this.colorDidChange.emit(this.applyToAllDeck);
@@ -95,29 +142,35 @@ export class AppColor {
         });
     }
 
-    private selectBackground(color: string): Promise<void> {
+    private transformOpacity(): number {
+        return this.applyToText ? (this.colorOpacity === 0 ? 0 : this.colorOpacity / 100) : (this.backgroundOpacity === 0 ? 0 : this.backgroundOpacity / 100);
+    }
+
+    private applyBackground(): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (!this.selectedElement || !color) {
+            if (!this.selectedElement || !this.background) {
                 resolve();
                 return;
             }
 
+            const selectedColor: string = `rgba(${this.background},${this.transformOpacity()})`;
+
             if (this.deckOrSlide) {
                 const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
 
-                element.style.setProperty('--background', color);
+                element.style.setProperty('--background', selectedColor);
             } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
                 const element: HTMLElement = this.selectedElement.parentElement;
 
                 if (this.selectedElement.getAttribute('slot') === 'start') {
-                    element.style.setProperty('--slide-split-background-start', color);
+                    element.style.setProperty('--slide-split-background-start', selectedColor);
                 } else if (this.selectedElement.getAttribute('slot') === 'end') {
-                    element.style.setProperty('--slide-split-background-end', color);
+                    element.style.setProperty('--slide-split-background-end', selectedColor);
                 } else {
-                    this.selectedElement.style.background = color;
+                    this.selectedElement.style.background = selectedColor;
                 }
             } else {
-                this.selectedElement.style.background = color;
+                this.selectedElement.style.background = selectedColor;
             }
 
             this.colorDidChange.emit(this.applyToAllDeck);
@@ -131,27 +184,58 @@ export class AppColor {
             return;
         }
 
-        this.color = await this.rgb2hex(element.style.getPropertyValue('--color') ? element.style.getPropertyValue('--color') : element.style.color);
-        this.background = await this.rgb2hex(element.style.getPropertyValue('--background') ? element.style.getPropertyValue('--background') : element.style.background);
+        const styleColor: InitStyleColor = await this.splitColor(element.style.getPropertyValue('--color') ? element.style.getPropertyValue('--color') : element.style.color);
+        this.color = styleColor.rgb;
+        this.colorOpacity = styleColor.opacity;
+
+        const styleBackground: InitStyleColor = await this.splitColor(element.style.getPropertyValue('--background') ? element.style.getPropertyValue('--background') : element.style.background);
+        this.background = styleBackground.rgb;
+        this.backgroundOpacity = styleBackground.opacity;
     }
 
-    // https://css-tricks.com/converting-color-spaces-in-javascript/
-    private rgb2hex(rgb: string): Promise<string> {
-        return new Promise<string>((resolve) => {
-            if (!rgb || rgb === undefined || rgb === '' || rgb.indexOf('rgb') <= -1) {
-                resolve(rgb);
+    private splitColor(styleColor: string): Promise<InitStyleColor> {
+        return new Promise<InitStyleColor>((resolve) => {
+            if (styleColor && styleColor !== undefined) {
+                const rgbs: RegExpMatchArray | null = styleColor.match(/[.?\d]+/g);
+
+                if (rgbs && rgbs.length >= 3) {
+                    resolve({
+                        rgb: `${rgbs[0]}, ${rgbs[1]}, ${rgbs[2]}`,
+                        opacity: rgbs.length > 3 ? parseFloat(rgbs[3]) * 100 : null
+                    });
+
+                    return;
+                }
+            }
+
+            resolve({
+                rgb: null,
+                opacity: 100
+            });
+        });
+    }
+
+    private updateOpacity($event: CustomEvent<RangeChangeEventDetail>): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+
+            if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
+                resolve();
                 return;
             }
 
-            const separator: string = rgb.indexOf(",") > -1 ? "," : " ";
+            $event.stopPropagation();
 
-            const rgbs: string[] = rgb.substr(4).split(")")[0].split(separator);
+            const opacity: number = $event.detail.value as number;
 
-            const r: string = (+rgbs[0]).toString(16);
-            const g: string = (+rgbs[1]).toString(16);
-            const b: string = (+rgbs[2]).toString(16);
+            if (this.applyToText) {
+                this.colorOpacity = opacity;
+            } else {
+                this.backgroundOpacity = opacity;
+            }
 
-            resolve(`#${r.length == 1 ? '0' + r : r}${g.length == 1 ? '0' + g : g}${b.length == 1 ? '0' + b : b}`);
+            await this.applyColor();
+
+            resolve();
         });
     }
 
@@ -180,10 +264,26 @@ export class AppColor {
                         <ion-radio slot="start" value={false} mode="md"></ion-radio>
                     </ion-item>
                 </ion-radio-group>
+
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>Opacity</ion-label>
+                </ion-item-divider>
+
+                <ion-item class="item-opacity">
+                    <ion-range color="primary" min={0} max={100} disabled={this.applyToText ? !this.color || this.color === undefined : !this.background || this.background === undefined}
+                               value={this.applyToText ? this.colorOpacity : this.backgroundOpacity} mode="md"
+                               onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
+                </ion-item>
             </ion-list>,
-            <deckgo-color class="ion-padding" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-hex={this.applyToText ? this.color : this.background}>
+            <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-rgb={this.applyToText ? this.color : this.background}>
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
-            </deckgo-color>
+            </deckgo-color>,
+            <ion-item class="action-button ion-margin-bottom">
+                <ion-button shape="round" onClick={() => this.resetColor()}
+                            fill="outline" class="delete">
+                    <ion-label class="ion-text-uppercase">Reset {this.applyToText ? 'text color' : 'background'}</ion-label>
+                </ion-button>
+            </ion-item>
         ]
     }
 

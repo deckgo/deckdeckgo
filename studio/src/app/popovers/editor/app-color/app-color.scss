@@ -13,4 +13,8 @@ app-color {
     color: var(--ion-color-medium);
   }
 
+  ion-item.item-opacity {
+    --padding-start: 8px;
+  }
+
 }

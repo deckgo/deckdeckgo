@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/color",
-  "version": "1.0.0-rc.1-1",
+  "version": "1.0.0-rc.2-1",
   "description": "A color picker developed with Web Components",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

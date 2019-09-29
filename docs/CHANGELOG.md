@@ -1,3 +1,17 @@
+<a name="1.0.0-rc.3-2"></a>
+# 1.0.0-rc.3-2 (2019-09-29)
+
+### Features
+
+* new property `color-hex` of the `@deckdeckgo/color` component
+
+<a name="1.0.0-rc.3-1"></a>
+# 1.0.0-rc.3-1 (2019-09-21)
+
+### Features
+
+* new property `--deckgo-flex-wrap` of the `@deckdeckgo/color` component
+
 <a name="1.0.0-rc.3"></a>
 # 1.0.0-rc.3 (2019-09-21)
 

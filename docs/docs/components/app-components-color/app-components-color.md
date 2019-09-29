@@ -86,6 +86,7 @@ This component offers the following options which could be set using attributes:
 | Property   | Attribute   | Description | Type                  | Default           |
 | ---------- | ----------- | ----------- | --------------------- | ----------------- |
 | `colorHex` | `color-hex` | The current selected color provided as hexadecimal value. | `string`              | `undefined`       |
+| `colorRgb` | `color-rgb` | The current selected color provided as a rgb value. | `string`              | `undefined`       |
 | `more`     | `more`      | In case you would not like to offer the "more" options. | `boolean`             | `true`            |
 | `moreAlt`  | `more-alt`  | An accessibility label for the "more action.           | `string`              | `'More'`          |
 | `palette`  |           | The palette of color (see here under).            | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
@@ -108,7 +109,7 @@ export interface DeckdeckgoPalette {
 }
 ```
 
-The key value is the color provided as `hex` value. The `rgb` value is use for presentation purpose, for the hover action and the highlight of the selected color.
+The key value is the color provided as `hex` value. The `rgb` value is use for presentation purpose, for the hover action and the highlight of the selected color. If you wish to highlight a selected color, you could either provide `color-hex` or `color-rgb`.
 
 The default palette is the following:
 
