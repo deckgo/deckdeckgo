@@ -91,6 +91,13 @@ export class AppComponentsColor {
 <td><code>undefined</code></td>
 </tr>
 <tr>
+<td><code>colorRgb</code></td>
+<td><code>color-rgb</code></td>
+<td>The current selected color provided as a rgb value.</td>
+<td><code>string</code></td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
 <td><code>more</code></td>
 <td><code>more</code></td>
 <td>In case you would not like to offer the &quot;more&quot; options.</td>
@@ -117,7 +124,7 @@ export class AppComponentsColor {
 <p>It is defined as the following:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">export interface DeckdeckgoPaletteColor &#123;{'\n'}    hex: string;{'\n'}    rgb?: string;{'\n'}&#125;{'\n'}{'\n'}export interface DeckdeckgoPalette &#123;{'\n'}  color: DeckdeckgoPaletteColor;{'\n'}  alt?: string;{'\n'}&#125;</code>
-    </deckgo-highlight-code><p>The key value is the color provided as <code>hex</code> value. The <code>rgb</code> value is use for presentation purpose, for the hover action and the highlight of the selected color.</p>
+    </deckgo-highlight-code><p>The key value is the color provided as <code>hex</code> value. The <code>rgb</code> value is use for presentation purpose, for the hover action and the highlight of the selected color. If you wish to highlight a selected color, you could either provide <code>color-hex</code> or <code>color-rgb</code>.</p>
 <p>The default palette is the following:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#FF6900&#039;,{'\n'}      rgb: &#039;255,105,0&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Orange&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#FCB900&#039;,{'\n'}      rgb: &#039;252,185,0&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Yellow&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#7BDCB5&#039;,{'\n'}      rgb: &#039;123,220,181&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Light green&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#00D084&#039;,{'\n'}      rgb: &#039;0,208,132&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Green&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#8ED1FC&#039;,{'\n'}      rgb: &#039;142,209,252&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Light blue&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#0693E3&#039;,{'\n'}      rgb: &#039;6,147,227&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Blue&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#ABB8C3&#039;,{'\n'}      rgb: &#039;171,184,195&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Grey&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#EB144C&#039;,{'\n'}      rgb: &#039;235,20,76&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Red&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#F78DA7&#039;,{'\n'}      rgb: &#039;247,141,167&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Pink&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#9900EF&#039;,{'\n'}      rgb: &#039;153,0,239&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Violet&#039;{'\n'}  &#125;,{'\n'}  &#123;{'\n'}    color: &#123;{'\n'}      hex: &#039;#000000&#039;,{'\n'}      rgb: &#039;0,0,0&#039;{'\n'}    &#125;,{'\n'}    alt: &#039;Black&#039;{'\n'}  &#125;{'\n'}];</code>
