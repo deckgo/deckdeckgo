@@ -31,7 +31,7 @@ Are you interested to contribute to our open source project? That would be aweso
 
 | Project | Version | Online | Links |
 | ------- | ------- | ------- |:-----:|
-| **Studio** | [![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.5-2&color=success)](https://deckdeckgo.com)| [https://deckdeckgo.com](https://deckdeckgo.com) | [`README.md`](studio/README.md)
+| **Studio** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.5-2&color=success)](https://deckdeckgo.com)| [https://deckdeckgo.com](https://deckdeckgo.com) | [`README.md`](studio/README.md)
 | **Remote control** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.1&color=success)](https://deckdeckgo.app) | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
 | **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.3-2&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Demo** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.2-1&color=success)](https://demo.deckdeckgo.com) | [https://demo.deckdeckgo.com](https://demo.deckdeckgo.com) | [`Repo`](https://github.com/deckgo/deckdeckgo-demo/)
@@ -79,7 +79,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | ------- | ------- | ------- |:-----:|
 | **Backend** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-alpha.2&color=success) | [`README.md`](backend/README.md)
 | **CLI** | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo) | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg?color=success)](https://www.npmjs.com/package/create-deckdeckgo) | [`README.md`](cli/README.md)
-| **Cloud** | | ![version](https://img.shields.io/static/v1.svg?label=in%20development&message=v1.0.0-beta.1&color=success) | [`README.md`](cloud/README.md)
+| **Cloud** | | ![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.1&color=success) | [`README.md`](cloud/README.md)
 | **Infrastructure** | | | [`README.md`](infra/README.md)
 | **Starter kit** | | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.0-rc.1-3&color=success) | [`Repo`](http://github.com/deckgo/deckdeckgo-starter/)
 | **WAI Lambda** | | | [`Repo`](https://github.com/deckgo/wai-lambda)
