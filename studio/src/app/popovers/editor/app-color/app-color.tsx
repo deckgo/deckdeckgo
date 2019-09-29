@@ -191,7 +191,6 @@ export class AppColor {
         const styleBackground: InitStyleColor = await this.splitColor(element.style.getPropertyValue('--background') ? element.style.getPropertyValue('--background') : element.style.background);
         this.background = styleBackground.rgb;
         this.backgroundOpacity = styleBackground.opacity;
-
     }
 
     private splitColor(styleColor: string): Promise<InitStyleColor> {
@@ -276,7 +275,7 @@ export class AppColor {
                                onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
                 </ion-item>
             </ion-list>,
-            <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-hex={this.applyToText ? this.color : this.background}>
+            <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-rgb={this.applyToText ? this.color : this.background}>
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>,
             <ion-item class="action-button ion-margin-bottom">
