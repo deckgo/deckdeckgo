@@ -127,7 +127,7 @@ export class DeckdeckgoColor {
       return false;
     }
 
-    return this.colorRgb.toUpperCase() === element.color.rgb.toUpperCase();
+    return this.colorRgb.replace(/\s/g, '').toUpperCase() === element.color.rgb.replace(/\s/g, '').toUpperCase();
   }
 
   render() {
