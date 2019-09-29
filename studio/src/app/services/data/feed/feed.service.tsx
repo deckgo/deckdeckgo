@@ -130,7 +130,7 @@ export class FeedService {
     }
 
     private addDecks(decks: Deck[]): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             if (!decks || decks.length <= 0) {
                 this.lastPageReached.next(true);
 
@@ -138,11 +138,25 @@ export class FeedService {
                 return;
             }
 
-            this.decks = this.decks.concat(decks);
+            // It costs around half a second to randomize 10 cards with Chrome but makes the feed more dynamic
+            const randomlySortedDecks: Deck[] = await this.shuffle(decks);
+            this.decks = this.decks.concat(randomlySortedDecks);
 
             this.decksSubject.next(this.decks);
 
             resolve();
+        });
+    }
+
+    // https://stackoverflow.com/a/12646864/5404186
+    private shuffle(decks: Deck[]): Promise<Deck[]> {
+        return new Promise<Deck[]>((resolve) => {
+            for (let i = decks.length - 1; i > 0; i--) {
+                const j: number = Math.floor(Math.random() * (i + 1));
+                [decks[i], decks[j]] = [decks[j], decks[i]];
+            }
+
+            resolve(decks);
         });
     }
 }
