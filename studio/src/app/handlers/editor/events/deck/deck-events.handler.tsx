@@ -564,13 +564,8 @@ export class DeckEventsHandler {
     }
 
     private cleanSlideContent(slide: HTMLElement): Promise<string> {
-        return new Promise<string>((resolve) => {
-            if (!slide) {
-                resolve(null);
-                return;
-            }
-
-            const content: string = slide.innerHTML;
+        return new Promise<string>(async (resolve) => {
+            const content: string = await this.filterSlideContentSlots(slide);
 
             if (!content || content.length <= 0) {
                 resolve(content);
@@ -587,6 +582,33 @@ export class DeckEventsHandler {
             }
 
             resolve(result);
+        });
+    }
+
+    private filterSlideContentSlots(slide: HTMLElement): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!slide || !document) {
+                resolve(null);
+                return;
+            }
+
+            const div = document.createElement('div');
+
+            const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
+            elements.forEach((e: HTMLElement) => {
+                if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
+                    div.appendChild(e.cloneNode(true));
+                }
+            });
+
+            if (!div || div.childElementCount <= 0) {
+                resolve(null);
+                return;
+            }
+
+            const content: string = div.innerHTML;
+
+            resolve(content);
         });
     }
 
