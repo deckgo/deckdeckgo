@@ -1038,7 +1038,7 @@ export class DeckdeckgoInlineEditor {
         <span>U</span>
       </button>,
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button onClick={() => this.openColorPicker()} class="pick-color">
         <div style={styleColor}></div>
@@ -1046,7 +1046,7 @@ export class DeckdeckgoInlineEditor {
 
       (this.renderList()),
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button onClick={() => this.toggleLink()} class={this.link ? "link active" : "link"}>
         <div></div>
@@ -1056,13 +1056,23 @@ export class DeckdeckgoInlineEditor {
     ];
   }
 
+  private renderSeparator() {
+    return <div class="separator"></div>;
+  }
+
   private renderCustomActions() {
     return this.customActions 
     ? [
-      <div class="separator"></div>,
-      this.customActions.split(',').map((CustomAction: string) => <CustomAction selection={this.selection} onCommandTriggered={(e: CustomEvent<InlineAction>) => this.execCommand(e.detail.command, e.detail.value)} />)
+      this.renderSeparator(),
+      this.customActions.split(',').map((CustomAction: string) => this.renderCustomAction(CustomAction))
     ] 
     : null
+  }
+
+  private renderCustomAction(CustomAction: string) {
+    return CustomAction === 'separator' ? this.renderSeparator() : <CustomAction 
+      selection={this.selection} 
+      onCommandTriggered={(e: CustomEvent<InlineAction>) => this.execCommand(e.detail.command, e.detail.value)} />
   }
 
   private renderList() {
@@ -1110,7 +1120,7 @@ export class DeckdeckgoInlineEditor {
         <div></div>
       </button>,
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button
         onClick={(e: UIEvent) => this.styleImage(e, this.setImageAlignment, ImageAlign.STANDARD)}
@@ -1123,7 +1133,7 @@ export class DeckdeckgoInlineEditor {
         <div></div>
       </button>,
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button
         onClick={(e: UIEvent) => this.deleteImage(e)} class="image-delete">
