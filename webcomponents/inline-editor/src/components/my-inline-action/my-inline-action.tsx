@@ -2,7 +2,7 @@ import { Component, h } from '@stencil/core';
 
 @Component({
   tag: 'my-inline-action',
-  //   styleUrl: 'deckdeckgo-inline-editor.scss',
+  styleUrl: 'my-inline-action.scss',
   shadow: true
 })
 export class MyInlineAction {
@@ -15,8 +15,9 @@ export class MyInlineAction {
       // disabled={this.disabledTitle}
       // class={this.bold ? 'bold active' : 'bold'}
       >
-        B
+        C
       </button>
+      //   <h5>Custom</h5>
     );
   }
 

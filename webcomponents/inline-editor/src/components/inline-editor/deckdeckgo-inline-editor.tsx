@@ -629,6 +629,19 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private styleCustomAction(e: UIEvent): Promise<void> {
+    console.log('styleCustomAction');
+    return new Promise<void>(async (resolve) => {
+      e.stopPropagation();
+
+      await this.execCommand('bold');
+
+      await this.initStyle(this.selection);
+
+      resolve();
+    });
+  }
+
   private styleItalic(e: UIEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
@@ -1053,7 +1066,7 @@ export class DeckdeckgoInlineEditor {
       this.customActions 
         ? [
           <div class="separator"></div>,
-          this.customActions.split(',').map((CustomAction: string) => <CustomAction />)
+          this.customActions.split(',').map((CustomAction: string) => <CustomAction onClick={(e : UIEvent) => this.styleCustomAction(e)} />)
         ] 
         : null
     ];
