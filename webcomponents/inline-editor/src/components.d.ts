@@ -26,7 +26,9 @@ export namespace Components {
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
   }
-  interface MyInlineAction {}
+  interface MyInlineAction {
+    'selection': Selection;
+  }
 }
 
 declare global {
@@ -75,7 +77,8 @@ declare namespace LocalJSX {
     'stickyMobile'?: boolean;
   }
   interface MyInlineAction extends JSXBase.HTMLAttributes<HTMLMyInlineActionElement> {
-    'onActionTriggered'?: (event: CustomEvent<InlineAction>) => void;
+    'onCommandTriggered'?: (event: CustomEvent<InlineAction>) => void;
+    'selection'?: Selection;
   }
 
   interface IntrinsicElements {

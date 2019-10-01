@@ -629,17 +629,6 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private async styleCustomAction(e: CustomEvent<InlineAction>): Promise<void> {
-    console.log('styleCustomAction', e.detail);
-    e.stopPropagation();
-
-    const { detail } = e;
-
-    await this.execCommand(detail.command, detail.value);
-
-    await this.initStyle(this.selection);
-  }
-
   private styleItalic(e: UIEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
@@ -1066,7 +1055,7 @@ export class DeckdeckgoInlineEditor {
       this.customActions 
         ? [
           <div class="separator"></div>,
-          this.customActions.split(',').map((CustomAction: string) => <CustomAction onActionTriggered={(e: CustomEvent<InlineAction>) => this.styleCustomAction(e)} />)
+          this.customActions.split(',').map((CustomAction: string) => <CustomAction selection={this.selection} onCommandTriggered={(e: CustomEvent<InlineAction>) => this.execCommand(e.detail.command, e.detail.value)} />)
         ] 
         : null
     ];

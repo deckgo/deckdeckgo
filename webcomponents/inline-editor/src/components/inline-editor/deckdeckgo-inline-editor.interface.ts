@@ -15,6 +15,8 @@ export interface InlineAction {
   command: InlineActionCommand;
   value?: string;
 }
+
 export interface InlineActionComponent {
-  actionTriggered: EventEmitter<InlineAction>;
+  selection: Selection;
+  commandTriggered: EventEmitter<InlineAction>;
 }
