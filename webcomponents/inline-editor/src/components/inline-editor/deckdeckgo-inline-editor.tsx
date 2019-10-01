@@ -1052,13 +1052,17 @@ export class DeckdeckgoInlineEditor {
         <div></div>
       </button>,
 
-      this.customActions 
-        ? [
-          <div class="separator"></div>,
-          this.customActions.split(',').map((CustomAction: string) => <CustomAction selection={this.selection} onCommandTriggered={(e: CustomEvent<InlineAction>) => this.execCommand(e.detail.command, e.detail.value)} />)
-        ] 
-        : null
+      this.renderCustomActions()
     ];
+  }
+
+  private renderCustomActions() {
+    return this.customActions 
+    ? [
+      <div class="separator"></div>,
+      this.customActions.split(',').map((CustomAction: string) => <CustomAction selection={this.selection} onCommandTriggered={(e: CustomEvent<InlineAction>) => this.execCommand(e.detail.command, e.detail.value)} />)
+    ] 
+    : null
   }
 
   private renderList() {
