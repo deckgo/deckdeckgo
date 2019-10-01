@@ -6,9 +6,12 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  InlineAction,
+} from './components/inline-editor/deckdeckgo-inline-editor.interface';
 
 export namespace Components {
+  interface AcmePlaceholder {}
   interface DeckgoInlineEditor {
     'attachTo': HTMLElement;
     'containers': string;
@@ -29,6 +32,12 @@ export namespace Components {
 declare global {
 
 
+  interface HTMLAcmePlaceholderElement extends Components.AcmePlaceholder, HTMLStencilElement {}
+  var HTMLAcmePlaceholderElement: {
+    prototype: HTMLAcmePlaceholderElement;
+    new (): HTMLAcmePlaceholderElement;
+  };
+
   interface HTMLDeckgoInlineEditorElement extends Components.DeckgoInlineEditor, HTMLStencilElement {}
   var HTMLDeckgoInlineEditorElement: {
     prototype: HTMLDeckgoInlineEditorElement;
@@ -41,12 +50,14 @@ declare global {
     new (): HTMLMyInlineActionElement;
   };
   interface HTMLElementTagNameMap {
+    'acme-placeholder': HTMLAcmePlaceholderElement;
     'deckgo-inline-editor': HTMLDeckgoInlineEditorElement;
     'my-inline-action': HTMLMyInlineActionElement;
   }
 }
 
 declare namespace LocalJSX {
+  interface AcmePlaceholder extends JSXBase.HTMLAttributes<HTMLAcmePlaceholderElement> {}
   interface DeckgoInlineEditor extends JSXBase.HTMLAttributes<HTMLDeckgoInlineEditorElement> {
     'attachTo'?: HTMLElement;
     'containers'?: string;
@@ -63,9 +74,12 @@ declare namespace LocalJSX {
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;
   }
-  interface MyInlineAction extends JSXBase.HTMLAttributes<HTMLMyInlineActionElement> {}
+  interface MyInlineAction extends JSXBase.HTMLAttributes<HTMLMyInlineActionElement> {
+    'onActionTriggered'?: (event: CustomEvent<InlineAction>) => void;
+  }
 
   interface IntrinsicElements {
+    'acme-placeholder': AcmePlaceholder;
     'deckgo-inline-editor': DeckgoInlineEditor;
     'my-inline-action': MyInlineAction;
   }

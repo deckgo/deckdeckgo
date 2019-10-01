@@ -6,7 +6,7 @@ import '@deckdeckgo/color';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 import { ImageSize, ImageAlign, ToolbarActions } from '../../utils/enums';
-import { AnchorLink, InputTargetEvent } from './deckdeckgo-inline-editor.interface';
+import { AnchorLink, InputTargetEvent, InlineAction } from './deckdeckgo-inline-editor.interface';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -629,17 +629,15 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private styleCustomAction(e: UIEvent): Promise<void> {
-    console.log('styleCustomAction');
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
+  private async styleCustomAction(e: CustomEvent<InlineAction>): Promise<void> {
+    console.log('styleCustomAction', e.detail);
+    e.stopPropagation();
 
-      await this.execCommand('bold');
+    const { detail } = e;
 
-      await this.initStyle(this.selection);
+    await this.execCommand(detail.command, detail.value);
 
-      resolve();
-    });
+    await this.initStyle(this.selection);
   }
 
   private styleItalic(e: UIEvent): Promise<void> {
@@ -678,7 +676,7 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private execCommand(command: string): Promise<void> {
+  private execCommand(command: string, value?: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selection || this.selection.rangeCount <= 0 || !document) {
         resolve();
@@ -692,7 +690,9 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      document.execCommand(command);
+      !value 
+        ? document.execCommand(command)
+        : document.execCommand(command, false, value);
 
       resolve();
     });
@@ -1066,7 +1066,7 @@ export class DeckdeckgoInlineEditor {
       this.customActions 
         ? [
           <div class="separator"></div>,
-          this.customActions.split(',').map((CustomAction: string) => <CustomAction onClick={(e : UIEvent) => this.styleCustomAction(e)} />)
+          this.customActions.split(',').map((CustomAction: string) => <CustomAction onActionTriggered={(e: CustomEvent<InlineAction>) => this.styleCustomAction(e)} />)
         ] 
         : null
     ];
