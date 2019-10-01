@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property    | Attribute | Description | Type        | Default     |
-| ----------- | --------- | ----------- | ----------- | ----------- |
-| `selection` | --        |             | `Selection` | `undefined` |
+| Property     | Attribute | Description | Type         | Default     |
+| ------------ | --------- | ----------- | ------------ | ----------- |
+| `anchorLink` | --        |             | `AnchorLink` | `undefined` |
+| `selection`  | --        |             | `Selection`  | `undefined` |
 
 
 ## Events

@@ -6,6 +6,7 @@
 import { Component, Event, EventEmitter, h, Prop, Watch } from '@stencil/core';
 
 import {
+  AnchorLink,
   InlineActionComponent,
   InlineAction
 } from '../inline-editor/deckdeckgo-inline-editor.interface';
@@ -19,6 +20,8 @@ export class MyInlineAction implements InlineActionComponent {
   // INTERFACE STARTS HERE
   @Prop()
   selection: Selection;
+  @Prop()
+  anchorLink: AnchorLink;
   @Watch('selection')
   protected selectionHandler() {
     // We can react on changes to selection and always have the latest available
@@ -30,6 +33,7 @@ export class MyInlineAction implements InlineActionComponent {
 
   private async onCustomAction(e: UIEvent): Promise<void> {
     console.log('styleCustomAction', e.detail);
+    console.log('styleCustomAction, element', this.anchorLink.element);
     e.stopPropagation();
 
     // BAD:

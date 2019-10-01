@@ -328,7 +328,8 @@ export class DeckdeckgoInlineEditor {
           const range: Range = selection.getRangeAt(0);
           this.anchorLink = {
             range: range,
-            text: selection.toString()
+            text: selection.toString(),
+            element: document.activeElement
           };
 
           await this.setToolbarAnchorPosition();
@@ -1072,6 +1073,7 @@ export class DeckdeckgoInlineEditor {
   private renderCustomAction(CustomAction: string) {
     return CustomAction === 'separator' ? this.renderSeparator() : <CustomAction 
       selection={this.selection} 
+      anchorLink={this.anchorLink}
       onCommandTriggered={(e: CustomEvent<InlineAction>) => this.execCommand(e.detail.command, e.detail.value)} />
   }
 

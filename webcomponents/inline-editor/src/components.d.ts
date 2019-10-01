@@ -7,6 +7,7 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  AnchorLink,
   InlineAction,
 } from './components/inline-editor/deckdeckgo-inline-editor.interface';
 
@@ -27,6 +28,7 @@ export namespace Components {
     'stickyMobile': boolean;
   }
   interface MyInlineAction {
+    'anchorLink': AnchorLink;
     'selection': Selection;
   }
 }
@@ -77,6 +79,7 @@ declare namespace LocalJSX {
     'stickyMobile'?: boolean;
   }
   interface MyInlineAction extends JSXBase.HTMLAttributes<HTMLMyInlineActionElement> {
+    'anchorLink'?: AnchorLink;
     'onCommandTriggered'?: (event: CustomEvent<InlineAction>) => void;
     'selection'?: Selection;
   }

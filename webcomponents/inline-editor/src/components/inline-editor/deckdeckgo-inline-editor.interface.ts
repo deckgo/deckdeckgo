@@ -3,6 +3,7 @@ import { EventEmitter } from '@stencil/core';
 export interface AnchorLink {
   range: Range;
   text: string;
+  element: Element;
 }
 
 export interface InputTargetEvent extends EventTarget {
@@ -18,5 +19,6 @@ export interface InlineAction {
 
 export interface InlineActionComponent {
   selection: Selection;
+  anchorLink: AnchorLink;
   commandTriggered: EventEmitter<InlineAction>;
 }
