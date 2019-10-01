@@ -12,6 +12,7 @@ export namespace Components {
   interface DeckgoInlineEditor {
     'attachTo': HTMLElement;
     'containers': string;
+    'customActions': string;
     'imgAnchor': string;
     'imgEditable': boolean;
     'imgPropertyCssFloat': string;
@@ -22,6 +23,7 @@ export namespace Components {
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
   }
+  interface MyInlineAction {}
 }
 
 declare global {
@@ -32,8 +34,15 @@ declare global {
     prototype: HTMLDeckgoInlineEditorElement;
     new (): HTMLDeckgoInlineEditorElement;
   };
+
+  interface HTMLMyInlineActionElement extends Components.MyInlineAction, HTMLStencilElement {}
+  var HTMLMyInlineActionElement: {
+    prototype: HTMLMyInlineActionElement;
+    new (): HTMLMyInlineActionElement;
+  };
   interface HTMLElementTagNameMap {
     'deckgo-inline-editor': HTMLDeckgoInlineEditorElement;
+    'my-inline-action': HTMLMyInlineActionElement;
   }
 }
 
@@ -41,6 +50,7 @@ declare namespace LocalJSX {
   interface DeckgoInlineEditor extends JSXBase.HTMLAttributes<HTMLDeckgoInlineEditorElement> {
     'attachTo'?: HTMLElement;
     'containers'?: string;
+    'customActions'?: string;
     'imgAnchor'?: string;
     'imgEditable'?: boolean;
     'imgPropertyCssFloat'?: string;
@@ -53,9 +63,11 @@ declare namespace LocalJSX {
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;
   }
+  interface MyInlineAction extends JSXBase.HTMLAttributes<HTMLMyInlineActionElement> {}
 
   interface IntrinsicElements {
     'deckgo-inline-editor': DeckgoInlineEditor;
+    'my-inline-action': MyInlineAction;
   }
 }
 

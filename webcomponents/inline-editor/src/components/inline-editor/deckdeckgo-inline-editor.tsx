@@ -103,6 +103,9 @@ export class DeckdeckgoInlineEditor {
   @Prop()
   list: boolean = true;
 
+  @Prop()
+  customActions: string; // Comma separated list of additional action components
+
   constructor() {
     this.resetDisplayToolsActivated();
   }
@@ -1045,7 +1048,14 @@ export class DeckdeckgoInlineEditor {
 
       <button onClick={() => this.toggleLink()} class={this.link ? "link active" : "link"}>
         <div></div>
-      </button>
+      </button>,
+
+      this.customActions 
+        ? [
+          <div class="separator"></div>,
+          this.customActions.split(',').map((CustomAction: string) => <CustomAction />)
+        ] 
+        : null
     ];
   }
 
