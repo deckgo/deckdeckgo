@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.4"></a>
+# 1.0.0-rc.4 (2019-10-01)
+
+### Features
+
+* new custom actions for the `@deckdeckgo/inline-editor`
+
 <a name="1.0.0-rc.3-2"></a>
 # 1.0.0-rc.3-2 (2019-09-29)
 

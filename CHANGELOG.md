@@ -1,6 +1,10 @@
 <a name="1.0.0-rc.15"></a>
 # [1.0.0-rc.15](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-2...v1.0.0-15) (In progress)
 
+### Applications
+
+* docs: v1.0.0-rc.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 ### Web Components
 * inline-editor: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
