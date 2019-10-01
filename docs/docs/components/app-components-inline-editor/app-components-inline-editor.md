@@ -11,6 +11,7 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 	- [Framework integration](#app-components-inline-editor-framework-integration)
 - [Usage](#app-components-inline-editor-usage)
 	- [Properties](#app-components-inline-editor-properties)
+	    - [Custom actions slots](#app-components-inline-editor-custom-actions-slots)
 	- [Styling](#app-components-inline-editor-styling)
 	- [Events](#app-components-inline-editor-events)
 	- [Methods](#app-components-inline-editor-methods)
@@ -91,6 +92,17 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | `mobile`              | `mobile`                 | The mobile mode is automatically recognize, but just it case you would like to "force" it. | `boolean`     | `false`                   |
 | `stickyDesktop`       | `sticky-desktop`         | Use a sticky footer toolbar on desktop | `boolean`     | `false`                   |
 | `stickyMobile`        | `sticky-mobile`          | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top. | `boolean`     | `false`                   |
+| `customActions`       | `custom-actions`         | You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions | `string`      |  |
+
+### Custom actions slots
+
+If you provide custom actions, a `slot` is going to be generated on the flight for every actions you would provide. For example:
+
+```
+<deckgo-inline-editor custom-actions="my-action">
+    <span slot="my-action">My action</span>
+</deckgo-inline-editor>
+```
 
 ### Styling
 
@@ -137,13 +149,14 @@ Furthermore, the following variables are also available but only have an effects
 
 ### Events
 
-The event `input` will be automatically triggered when the content will be modified using the `<deckgo-inline-editor/>`. However, when manipulating image, this event won't be triggered. Therefore a custom event will be instead triggered:
+The event `input` will be automatically triggered when the content will be modified using the `<deckgo-inline-editor/>`. However, when manipulating image, this event won't be triggered. Therefore a custom event will be instead triggered. Moreover, if you provide custom actions, an event is triggered each time one of these are selected. 
 
 | Event          | Description | Type                       |
 | -------------- | ----------- | -------------------------- |
 | `imgDidChange` | Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element. | `CustomEvent<HTMLElement>` |
-| `linkCreated` | Triggered when a link is created by the user using this component |
-| `stickyToolbarActivated` | Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it. | `CustomEvent<boolean>` | 
+| `linkCreated` | Triggered when a link is created by the user using this component | `CustomEvent<HTMLElement>` |
+| `stickyToolbarActivated` | Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it. | `CustomEvent<boolean>` |
+| `customAction` | Triggered when a custom action is selected. Its detail provide an `action` name, the `Selection` and an `anchorLink` | `CustomEvent<InlineAction>` |
 
 ### Methods
 

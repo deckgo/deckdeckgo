@@ -30,7 +30,10 @@ export class AppComponentsInlineEditor {
 </ul>
 </li>
 <li><a href="#app-components-inline-editor-usage">Usage</a><ul>
-<li><a href="#app-components-inline-editor-properties">Properties</a></li>
+<li><a href="#app-components-inline-editor-properties">Properties</a><ul>
+<li><a href="#app-components-inline-editor-custom-actions-slots">Custom actions slots</a></li>
+</ul>
+</li>
 <li><a href="#app-components-inline-editor-styling">Styling</a></li>
 <li><a href="#app-components-inline-editor-events">Events</a></li>
 <li><a href="#app-components-inline-editor-methods">Methods</a></li>
@@ -150,8 +153,19 @@ export class AppComponentsInlineEditor {
 <td><code>boolean</code></td>
 <td><code>false</code></td>
 </tr>
+<tr>
+<td><code>customActions</code></td>
+<td><code>custom-actions</code></td>
+<td>You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions</td>
+<td><code>string</code></td>
+<td></td>
+</tr>
 </tbody></table>
-<h3 id="app-components-inline-editor-styling">Styling</h3>
+<h3 id="app-components-inline-editor-custom-actions-slots">Custom actions slots</h3>
+<p>If you provide custom actions, a <code>slot</code> is going to be generated on the flight for every actions you would provide. For example:</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">&lt;deckgo-inline-editor custom-actions=&quot;my-action&quot;&gt;{'\n'}    &lt;span slot=&quot;my-action&quot;&gt;My action&lt;&#47;span&gt;{'\n'}&lt;&#47;deckgo-inline-editor&gt;</code>
+    </deckgo-highlight-code><h3 id="app-components-inline-editor-styling">Styling</h3>
 <p>The <code>&lt;deckgo-inline-editor/&gt;</code> could be styled using the following CSS4 variables which would only applies on the type <code>&lt;svg/&gt;</code>:</p>
 <table>
 <thead>
@@ -319,7 +333,7 @@ export class AppComponentsInlineEditor {
 </tbody></table>
 <p>** like above but for mobile</p>
 <h3 id="app-components-inline-editor-events">Events</h3>
-<p>The event <code>input</code> will be automatically triggered when the content will be modified using the <code>&lt;deckgo-inline-editor/&gt;</code>. However, when manipulating image, this event won&#39;t be triggered. Therefore a custom event will be instead triggered:</p>
+<p>The event <code>input</code> will be automatically triggered when the content will be modified using the <code>&lt;deckgo-inline-editor/&gt;</code>. However, when manipulating image, this event won&#39;t be triggered. Therefore a custom event will be instead triggered. Moreover, if you provide custom actions, an event is triggered each time one of these are selected. </p>
 <table>
 <thead>
 <tr>
@@ -336,12 +350,17 @@ export class AppComponentsInlineEditor {
 <tr>
 <td><code>linkCreated</code></td>
 <td>Triggered when a link is created by the user using this component</td>
-<td></td>
+<td><code>CustomEvent&lt;HTMLElement&gt;</code></td>
 </tr>
 <tr>
 <td><code>stickyToolbarActivated</code></td>
 <td>Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it.</td>
 <td><code>CustomEvent&lt;boolean&gt;</code></td>
+</tr>
+<tr>
+<td><code>customAction</code></td>
+<td>Triggered when a custom action is selected. Its detail provide an <code>action</code> name, the <code>Selection</code> and an <code>anchorLink</code></td>
+<td><code>CustomEvent&lt;InlineAction&gt;</code></td>
 </tr>
 </tbody></table>
 <h3 id="app-components-inline-editor-methods">Methods</h3>
