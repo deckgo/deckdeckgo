@@ -5,6 +5,7 @@ import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
 import '@deckdeckgo/color';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
+import { ImageSize, ImageAlign, ToolbarActions } from '../../utils/enums';
 
 interface AnchorLink {
   range: Range;
@@ -13,25 +14,6 @@ interface AnchorLink {
 
 interface InputTargetEvent extends EventTarget {
   value: string;
-}
-
-enum ToolbarActions {
-  SELECTION,
-  LINK,
-  IMAGE,
-  COLOR
-}
-
-enum ImageSize {
-  SMALL = '25%',
-  MEDIUM = '50%',
-  LARGE = '75%',
-  ORIGINAL = '100%'
-}
-
-enum ImageAlign {
-  STANDARD,
-  START
 }
 
 @Component({
