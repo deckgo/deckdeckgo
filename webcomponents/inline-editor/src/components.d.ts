@@ -7,12 +7,10 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
-  AnchorLink,
   InlineAction,
 } from './components/inline-editor/deckdeckgo-inline-editor.interface';
 
 export namespace Components {
-  interface AcmePlaceholder {}
   interface DeckgoInlineEditor {
     'attachTo': HTMLElement;
     'containers': string;
@@ -27,41 +25,22 @@ export namespace Components {
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
   }
-  interface MyInlineAction {
-    'anchorLink': AnchorLink;
-    'selection': Selection;
-  }
 }
 
 declare global {
 
-
-  interface HTMLAcmePlaceholderElement extends Components.AcmePlaceholder, HTMLStencilElement {}
-  var HTMLAcmePlaceholderElement: {
-    prototype: HTMLAcmePlaceholderElement;
-    new (): HTMLAcmePlaceholderElement;
-  };
 
   interface HTMLDeckgoInlineEditorElement extends Components.DeckgoInlineEditor, HTMLStencilElement {}
   var HTMLDeckgoInlineEditorElement: {
     prototype: HTMLDeckgoInlineEditorElement;
     new (): HTMLDeckgoInlineEditorElement;
   };
-
-  interface HTMLMyInlineActionElement extends Components.MyInlineAction, HTMLStencilElement {}
-  var HTMLMyInlineActionElement: {
-    prototype: HTMLMyInlineActionElement;
-    new (): HTMLMyInlineActionElement;
-  };
   interface HTMLElementTagNameMap {
-    'acme-placeholder': HTMLAcmePlaceholderElement;
     'deckgo-inline-editor': HTMLDeckgoInlineEditorElement;
-    'my-inline-action': HTMLMyInlineActionElement;
   }
 }
 
 declare namespace LocalJSX {
-  interface AcmePlaceholder extends JSXBase.HTMLAttributes<HTMLAcmePlaceholderElement> {}
   interface DeckgoInlineEditor extends JSXBase.HTMLAttributes<HTMLDeckgoInlineEditorElement> {
     'attachTo'?: HTMLElement;
     'containers'?: string;
@@ -72,22 +51,16 @@ declare namespace LocalJSX {
     'imgPropertyWidth'?: string;
     'list'?: boolean;
     'mobile'?: boolean;
+    'onCustomAction'?: (event: CustomEvent<InlineAction>) => void;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onLinkCreated'?: (event: CustomEvent<HTMLElement>) => void;
     'onStickyToolbarActivated'?: (event: CustomEvent<boolean>) => void;
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;
   }
-  interface MyInlineAction extends JSXBase.HTMLAttributes<HTMLMyInlineActionElement> {
-    'anchorLink'?: AnchorLink;
-    'onCommandTriggered'?: (event: CustomEvent<InlineAction>) => void;
-    'selection'?: Selection;
-  }
 
   interface IntrinsicElements {
-    'acme-placeholder': AcmePlaceholder;
     'deckgo-inline-editor': DeckgoInlineEditor;
-    'my-inline-action': MyInlineAction;
   }
 }
 

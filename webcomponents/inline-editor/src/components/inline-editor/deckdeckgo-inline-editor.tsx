@@ -5,8 +5,8 @@ import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
 import '@deckdeckgo/color';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
-import { ImageSize, ImageAlign, ToolbarActions } from '../../utils/enums';
-import { AnchorLink, InputTargetEvent, InlineAction } from './deckdeckgo-inline-editor.interface';
+import {ImageSize, ImageAlign, ToolbarActions} from '../../utils/enums';
+import {AnchorLink, InlineAction, InputTargetEvent} from './deckdeckgo-inline-editor.interface';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -105,6 +105,9 @@ export class DeckdeckgoInlineEditor {
 
   @Prop()
   customActions: string; // Comma separated list of additional action components
+
+  @Event()
+  customAction: EventEmitter<InlineAction>;
 
   constructor() {
     this.resetDisplayToolsActivated();
@@ -666,7 +669,7 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private execCommand(command: string, value?: string): Promise<void> {
+  private execCommand(command: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selection || this.selection.rangeCount <= 0 || !document) {
         resolve();
@@ -680,9 +683,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      !value 
-        ? document.execCommand(command)
-        : document.execCommand(command, false, value);
+      document.execCommand(command);
 
       resolve();
     });
@@ -863,8 +864,6 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-
-
   private async selectColor($event: CustomEvent) {
     if (!this.selection || !$event || !$event.detail) {
       return;
@@ -989,6 +988,16 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private async onCustomAction($event: UIEvent, action: string): Promise<void> {
+    $event.stopPropagation();
+
+    this.customAction.emit({
+      action: action,
+      selection: this.selection,
+      anchorLink: this.anchorLink
+    });
+  }
+
   render() {
     let classNames: string = this.displayToolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
 
@@ -1062,19 +1071,18 @@ export class DeckdeckgoInlineEditor {
   }
 
   private renderCustomActions() {
-    return this.customActions 
-    ? [
-      this.renderSeparator(),
-      this.customActions.split(',').map((CustomAction: string) => this.renderCustomAction(CustomAction))
-    ] 
-    : null
+    return this.customActions ?
+      this.customActions.split(',').map((customAction: string) => this.renderCustomAction(customAction))
+      : undefined
   }
 
-  private renderCustomAction(CustomAction: string) {
-    return CustomAction === 'separator' ? this.renderSeparator() : <CustomAction 
-      selection={this.selection} 
-      anchorLink={this.anchorLink}
-      onCommandTriggered={(e: CustomEvent<InlineAction>) => this.execCommand(e.detail.command, e.detail.value)} />
+  private renderCustomAction(customAction: string) {
+    return [
+      this.renderSeparator(),
+      <button onClick={($event: UIEvent) => this.onCustomAction($event, customAction)}>
+        <slot name={customAction}></slot>
+      </button>
+    ]
   }
 
   private renderList() {

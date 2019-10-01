@@ -24,11 +24,12 @@
 
 ## Events
 
-| Event                    | Description | Type                       |
-| ------------------------ | ----------- | -------------------------- |
-| `imgDidChange`           |             | `CustomEvent<HTMLElement>` |
-| `linkCreated`            |             | `CustomEvent<HTMLElement>` |
-| `stickyToolbarActivated` |             | `CustomEvent<boolean>`     |
+| Event                    | Description | Type                        |
+| ------------------------ | ----------- | --------------------------- |
+| `customAction`           |             | `CustomEvent<InlineAction>` |
+| `imgDidChange`           |             | `CustomEvent<HTMLElement>`  |
+| `linkCreated`            |             | `CustomEvent<HTMLElement>`  |
+| `stickyToolbarActivated` |             | `CustomEvent<boolean>`      |
 
 
 ## Methods
