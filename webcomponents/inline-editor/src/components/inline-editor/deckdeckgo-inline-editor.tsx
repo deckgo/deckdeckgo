@@ -366,8 +366,8 @@ export class DeckdeckgoInlineEditor {
 
         const innerWidth: number = isIOS() ? screen.width : window.innerWidth;
 
-        if (innerWidth > 0 && left > innerWidth - 340) {
-          left = innerWidth - 340;
+        if (innerWidth > 0 && left > innerWidth - tools.offsetWidth) {
+          left = innerWidth - tools.offsetWidth;
         }
 
         tools.style.top = '' + (top) + 'px';
