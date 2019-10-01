@@ -23,7 +23,24 @@
 
   <p contenteditable><img style="width: 100px;" src="https://deckdeckgo.com/assets/img/deckdeckgo.png"/></p>
 
-  <deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable="true"></deckgo-inline-editor>
+  <deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable="true"
+                        custom-actions="my-inline-action">
+
+    <span style="color: red;" slot="my-inline-action">My action</span>
+
+  </deckgo-inline-editor>
+
+  <script type="text/javascript">
+      function myActions(e) {
+          if (e && e.detail && e.detail.action === 'my-inline-action') {
+              document.execCommand('insertHTML', false, `<acme-placeholder class="own-class">${e.detail.selection}</acme-placeholder>`);
+          }
+      }
+
+      document.addEventListener('customAction', myActions);
+  </script>
+
+
 
 </body>
 </html>

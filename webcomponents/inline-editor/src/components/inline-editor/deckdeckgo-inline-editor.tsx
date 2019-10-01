@@ -5,34 +5,8 @@ import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
 import '@deckdeckgo/color';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
-
-interface AnchorLink {
-  range: Range;
-  text: string;
-}
-
-interface InputTargetEvent extends EventTarget {
-  value: string;
-}
-
-enum ToolbarActions {
-  SELECTION,
-  LINK,
-  IMAGE,
-  COLOR
-}
-
-enum ImageSize {
-  SMALL = '25%',
-  MEDIUM = '50%',
-  LARGE = '75%',
-  ORIGINAL = '100%'
-}
-
-enum ImageAlign {
-  STANDARD,
-  START
-}
+import {ImageSize, ImageAlign, ToolbarActions} from '../../utils/enums';
+import {AnchorLink, InlineAction, InputTargetEvent} from './deckdeckgo-inline-editor.interface';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -128,6 +102,12 @@ export class DeckdeckgoInlineEditor {
 
   @Prop()
   list: boolean = true;
+
+  @Prop()
+  customActions: string; // Comma separated list of additional action components
+
+  @Event()
+  customAction: EventEmitter<InlineAction>;
 
   constructor() {
     this.resetDisplayToolsActivated();
@@ -351,7 +331,8 @@ export class DeckdeckgoInlineEditor {
           const range: Range = selection.getRangeAt(0);
           this.anchorLink = {
             range: range,
-            text: selection.toString()
+            text: selection.toString(),
+            element: document.activeElement
           };
 
           await this.setToolbarAnchorPosition();
@@ -385,8 +366,8 @@ export class DeckdeckgoInlineEditor {
 
         const innerWidth: number = isIOS() ? screen.width : window.innerWidth;
 
-        if (innerWidth > 0 && left > innerWidth - 340) {
-          left = innerWidth - 340;
+        if (innerWidth > 0 && left > innerWidth - tools.offsetWidth) {
+          left = innerWidth - tools.offsetWidth;
         }
 
         tools.style.top = '' + (top) + 'px';
@@ -883,8 +864,6 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-
-
   private async selectColor($event: CustomEvent) {
     if (!this.selection || !$event || !$event.detail) {
       return;
@@ -1009,6 +988,16 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private async onCustomAction($event: UIEvent, action: string): Promise<void> {
+    $event.stopPropagation();
+
+    this.customAction.emit({
+      action: action,
+      selection: this.selection,
+      anchorLink: this.anchorLink
+    });
+  }
+
   render() {
     let classNames: string = this.displayToolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
 
@@ -1059,7 +1048,7 @@ export class DeckdeckgoInlineEditor {
         <span>U</span>
       </button>,
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button onClick={() => this.openColorPicker()} class="pick-color">
         <div style={styleColor}></div>
@@ -1067,12 +1056,33 @@ export class DeckdeckgoInlineEditor {
 
       (this.renderList()),
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button onClick={() => this.toggleLink()} class={this.link ? "link active" : "link"}>
         <div></div>
-      </button>
+      </button>,
+
+      this.renderCustomActions()
     ];
+  }
+
+  private renderSeparator() {
+    return <div class="separator"></div>;
+  }
+
+  private renderCustomActions() {
+    return this.customActions ?
+      this.customActions.split(',').map((customAction: string) => this.renderCustomAction(customAction))
+      : undefined
+  }
+
+  private renderCustomAction(customAction: string) {
+    return [
+      this.renderSeparator(),
+      <button onClick={($event: UIEvent) => this.onCustomAction($event, customAction)}>
+        <slot name={customAction}></slot>
+      </button>
+    ]
   }
 
   private renderList() {
@@ -1120,7 +1130,7 @@ export class DeckdeckgoInlineEditor {
         <div></div>
       </button>,
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button
         onClick={(e: UIEvent) => this.styleImage(e, this.setImageAlignment, ImageAlign.STANDARD)}
@@ -1133,7 +1143,7 @@ export class DeckdeckgoInlineEditor {
         <div></div>
       </button>,
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button
         onClick={(e: UIEvent) => this.deleteImage(e)} class="image-delete">
