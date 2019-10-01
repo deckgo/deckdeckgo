@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-10-01)
+
+### Features
+
+* provide your own custom actions to the component. Kudos to [Matthias Max / Bitflower](https://github.com/bitflower) for the PR ([#380](https://github.com/deckgo/deckdeckgo/pull/380))
+
 <a name="1.0.0-rc.2-1"></a>
 # 1.0.0-rc.2-1 (2019-09-21)
 

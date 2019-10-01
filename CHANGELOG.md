@@ -1,3 +1,9 @@
+<a name="1.0.0-rc.15"></a>
+# [1.0.0-rc.15](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-2...v1.0.0-15) (In progress)
+
+### Web Components
+* inline-editor: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+
 <a name="1.0.0-rc.14-2"></a>
 # [1.0.0-rc.14-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-1...v1.0.0-14-2) (2019-09-23)
 
