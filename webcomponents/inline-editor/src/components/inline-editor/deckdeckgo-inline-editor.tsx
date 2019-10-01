@@ -6,15 +6,7 @@ import '@deckdeckgo/color';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 import { ImageSize, ImageAlign, ToolbarActions } from '../../utils/enums';
-
-interface AnchorLink {
-  range: Range;
-  text: string;
-}
-
-interface InputTargetEvent extends EventTarget {
-  value: string;
-}
+import { AnchorLink, InputTargetEvent } from './deckdeckgo-inline-editor.interface';
 
 @Component({
   tag: 'deckgo-inline-editor',
