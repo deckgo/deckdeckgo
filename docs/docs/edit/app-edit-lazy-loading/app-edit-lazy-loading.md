@@ -11,7 +11,7 @@ In order to lazy load the images of your presentation, your could either use our
 Here's an example of usage of our component:
 
 ```
-<deckgo-lazy-img img-src="https://deckdeckgo.com/assets/img/deckdeckgo.png">
+<deckgo-lazy-img img-src="https://deckdeckgo.com/assets/favicon/android-chrome-512x512.png">
 </deckgo-lazy-img>
 ```
 
@@ -20,7 +20,7 @@ Here's an example of usage of our component:
 Instead of providing the url of your images as `src`, which would trigger an instant loading of their content, in case you would not like to use our above component, please provide their url using the attribute `data-src` instead of `src`.
 
 ```
-<img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png"/>
+<img data-src="https://deckdeckgo.com/assets/favicon/android-chrome-512x512.png"/>
 ```
 
 [DeckDeckGo]: https://deckdeckgo.com

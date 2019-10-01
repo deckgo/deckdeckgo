@@ -17,11 +17,11 @@ export class AppEditLazyLoading {
 <h2 id="app-edit-lazy-loading-lazy-image-component">Lazy Image component</h2>
 <p>Here&#39;s an example of usage of our component:</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-lazy-img img-src=&quot;https:&#47;&#47;deckdeckgo.com&#47;assets&#47;img&#47;deckdeckgo.png&quot;&gt;{'\n'}&lt;&#47;deckgo-lazy-img&gt;</code>
+      <code slot="code">&lt;deckgo-lazy-img img-src=&quot;https:&#47;&#47;deckdeckgo.com&#47;assets&#47;favicon&#47;android-chrome-512x512.png&quot;&gt;{'\n'}&lt;&#47;deckgo-lazy-img&gt;</code>
     </deckgo-highlight-code><h2 id="app-edit-lazy-loading-tweak-image-tag">Tweak Image Tag</h2>
 <p>Instead of providing the url of your images as <code>src</code>, which would trigger an instant loading of their content, in case you would not like to use our above component, please provide their url using the attribute <code>data-src</code> instead of <code>src</code>.</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;img data-src=&quot;https:&#47;&#47;deckdeckgo.com&#47;assets&#47;img&#47;deckdeckgo.png&quot;&#47;&gt;</code>
+      <code slot="code">&lt;img data-src=&quot;https:&#47;&#47;deckdeckgo.com&#47;assets&#47;favicon&#47;android-chrome-512x512.png&quot;&#47;&gt;</code>
     </deckgo-highlight-code></main>
 
         <app-footer></app-footer>
