@@ -1,3 +1,14 @@
+<a name="1.0.0-rc.2-1"></a>
+# 1.0.0-rc.2-1 (2019-10-02)
+
+### Features
+
+* don't delete button to open the modal to display the notes even if no notes are provided
+
+### Fix
+
+* don't delete notes if attribute `show` is provided, as users want to export their notes in their production bundle 
+
 <a name="1.0.0-rc.2"></a>
 # 1.0.0-rc.2 (2019-09-13)
 

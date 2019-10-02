@@ -8,6 +8,10 @@
 ### Web Components
 * inline-editor: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
+### Others
+
+* webpack: v1.0.0-rc.2-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
+
 <a name="1.0.0-rc.14-2"></a>
 # [1.0.0-rc.14-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-1...v1.0.0-14-2) (2019-09-23)
 
