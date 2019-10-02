@@ -138,7 +138,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-qrcode-align | center | QR code vertical alignment |
 | --slide-qrcode-text-align | center | QR code horizontal alignment |
 | --slide-qrcode-background | | QR code column's background |
-| --slide-qrcode-title-display | inherit | If you wish to hide the slot="title" |
+| --slide-qrcode-title-display | block | If you wish to hide the slot="title" |
 
 Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - QR code Web Component, see its [documentation](https://docs.deckdeckgo.com/components/qrcode) for the details.
 

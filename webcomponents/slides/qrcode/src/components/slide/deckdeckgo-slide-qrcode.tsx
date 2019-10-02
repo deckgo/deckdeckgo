@@ -14,7 +14,7 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() content: string;
+  @Prop({reflectToAttr: true}) content: string;
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;

@@ -24,6 +24,7 @@
     "@deckdeckgo/slide-author": "^1.0.0-rc.1",
     "@deckdeckgo/slide-content": "^1.0.0-rc.1",
     "@deckdeckgo/slide-gif": "^1.0.0-rc.1-1",
+    "@deckdeckgo/slide-qrcode": "file:../webcomponents/slides/qrcode",
     "@deckdeckgo/slide-split": "^1.0.0-rc.1",
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
     "@deckdeckgo/slide-youtube": "^1.0.0-rc.1-1",

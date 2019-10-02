@@ -534,6 +534,10 @@ export class DeckEventsHandler {
                 attributes.imgAlt = (slide as any).imgAlt;
             }
 
+            if ((slide as any).content) {
+                attributes.content = (slide as any).content;
+            }
+
             resolve(attributes);
         })
     }

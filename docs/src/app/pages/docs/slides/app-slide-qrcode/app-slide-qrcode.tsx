@@ -181,7 +181,7 @@ export class AppSlideQRCode {
 </tr>
 <tr>
 <td>--slide-qrcode-title-display</td>
-<td>inherit</td>
+<td>block</td>
 <td>If you wish to hide the slot=&quot;title&quot;</td>
 </tr>
 </tbody></table>

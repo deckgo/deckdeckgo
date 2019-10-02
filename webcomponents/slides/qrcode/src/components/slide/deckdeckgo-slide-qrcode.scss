@@ -26,7 +26,7 @@ div.deckgo-slide-qrcode {
 }
 
 ::slotted([slot="title"]) {
-  display: var(--slide-qrcode-title-display, inherit);
+  display: var(--slide-qrcode-title-display, block);
 }
 
 ::slotted([slot="content"]) {

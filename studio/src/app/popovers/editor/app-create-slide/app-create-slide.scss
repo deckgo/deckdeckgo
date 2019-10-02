@@ -37,7 +37,7 @@ app-create-slide {
       }
     }
 
-    deckgo-slide-content {
+    deckgo-slide-content, deckgo-slide-qrcode {
       --slide-padding-top: 4px;
       --slide-padding-start: 2px;
       --slide-padding-end: 6px;
@@ -80,6 +80,10 @@ app-create-slide {
       @media screen and (min-width: 1024px) {
         --slide-author-padding-top: 54px;
       }
+    }
+
+    deckgo-slide-qrcode {
+      --deckgo-qrcode-color-fill: var(--ion-color-primary);
     }
 
     p {

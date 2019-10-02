@@ -162,6 +162,11 @@ export class AppCreateSlide {
                         </p>
                     </deckgo-slide-content>
                 </div>
+                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.QRCODE)}>
+                    <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com/faq">
+                        <p slot="title">QR code</p>
+                    </deckgo-slide-qrcode>
+                </div>
             </div>
         ];
     }

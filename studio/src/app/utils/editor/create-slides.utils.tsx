@@ -28,6 +28,8 @@ export class CreateSlidesUtils {
                 resolve(await this.createSlideAuthor(user));
             } else if (template === SlideTemplate.YOUTUBE) {
                 resolve(await this.createSlideYoutube());
+            } else if (template === SlideTemplate.QRCODE) {
+                resolve(await this.createSlideQRCode());
             } else {
                 resolve(null);
             }
@@ -214,6 +216,23 @@ export class CreateSlidesUtils {
             const slide: JSX.IntrinsicElements = <deckgo-slide-youtube src={src}>
                 {title}
             </deckgo-slide-youtube>;
+
+            resolve(slide);
+        });
+    }
+
+    private static createSlideQRCode(): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>((resolve) => {
+            if (!document) {
+                resolve();
+                return;
+            }
+
+            const title = <h1 slot="title"></h1>;
+
+            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode content="https://deckdeckgo.com/faq">
+                {title}
+            </deckgo-slide-qrcode>;
 
             resolve(slide);
         });
