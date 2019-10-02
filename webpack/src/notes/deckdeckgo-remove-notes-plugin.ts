@@ -19,10 +19,8 @@ class DeckDeckGoRemoveNotesPlugin {
                 JSDOM.fromFile(resourcesRemoveNotes.Constants.SRC).then(dom => {
                     const notesSlots = dom.window.document.querySelectorAll('[slot="notes"]');
                     if (notesSlots && notesSlots.length > 0) {
-                        this.removeNotes(notesSlots);
+                         this.removeNotes(notesSlots);
                     }
-
-                    this.removeButtonSlideNotes(dom);
 
                     writeFileNotes(resourcesRemoveNotes.Constants.SRC, dom.serialize(), 'utf8');
                 });
@@ -30,19 +28,11 @@ class DeckDeckGoRemoveNotesPlugin {
         });
     }
 
-    private removeButtonSlideNotes(dom) {
-        const button = dom.window.document.querySelector('#buttonSlideNotes');
-
-        if (button && button.parentNode) {
-            button.parentNode.removeChild(button);
-        }
-    }
-
     private removeNotes(notesSlots) {
         for (let i = 0; i < notesSlots.length; i++) {
             const slot = notesSlots[i];
 
-            if (slot.parentNode) {
+            if (slot.parentNode && !slot.hasAttribute('show')) {
                 slot.parentNode.removeChild(slot);
             }
         }
