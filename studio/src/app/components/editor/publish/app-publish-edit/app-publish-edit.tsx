@@ -102,6 +102,10 @@ export class AppPublishEdit {
         });
     }
 
+    componentDidLoad() {
+        this.validateCaptionInput();
+    }
+
     private init(deck: Deck): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!deck || !deck.data) {
@@ -234,7 +238,17 @@ export class AppPublishEdit {
     }
 
     private validCaption(title: string): boolean {
-        return title && title !== undefined && title !== '' && title.length < Resources.Constants.DECK.TITLE_MAX_LENGTH;
+        if (!title || title === undefined || title == '' || title.length > Resources.Constants.DECK.TITLE_MAX_LENGTH) {
+            return false;
+        }
+
+        const match: RegExpMatchArray | null = title.match(/[A-Za-z0-9\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s\-]+/g)
+
+        if (!match || match.length <= 0 || match.length > 1) {
+            return false;
+        }
+
+        return match[0] === title;
     }
 
     private onDescriptionInput($event: CustomEvent<KeyboardEvent>) {
@@ -352,6 +366,8 @@ export class AppPublishEdit {
                                    onIonChange={() => this.validateCaptionInput()}></ion-input>
                     </ion-item>
 
+                    <p class="small">The title could be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than {Resources.Constants.DECK.TITLE_MAX_LENGTH} characters.</p>
+
                     <ion-item class="item-title">
                         <ion-label>Description</ion-label>
                     </ion-item>
@@ -382,7 +398,7 @@ export class AppPublishEdit {
                 </div>
             </form>
 
-            <p class="social">No images need to be uploaded for the the social card of your presentation. DeckDeckGo will automatically generate it for you based on the first slide of your deck.</p>
+            <p class="small">No images need to be uploaded for the the social card of your presentation. DeckDeckGo will automatically generate it for you based on the first slide of your deck.</p>
 
         </article>
     }
