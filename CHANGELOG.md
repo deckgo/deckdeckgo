@@ -10,6 +10,7 @@
 
 ### Others
 
+* starter kit: v1.0.0-rc.2-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 * webpack: v1.0.0-rc.2-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
 
 <a name="1.0.0-rc.14-2"></a>
