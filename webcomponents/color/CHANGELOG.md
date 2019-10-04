@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-2"></a>
+# 1.0.0-rc.2-2 (2019-10-04)
+
+### Fix
+
+* color container `overflow` set to `visible`
+
 <a name="1.0.0-rc.2-1"></a>
 # 1.0.0-rc.2-1 (2019-09-29)
 
