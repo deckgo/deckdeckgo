@@ -11,6 +11,9 @@ import {
   JSX,
 } from '@stencil/core';
 import {
+  ColorType,
+} from './app/utils/editor/color-type';
+import {
   Deck,
 } from './app/models/data/deck';
 import {
@@ -45,6 +48,7 @@ export namespace Components {
   }
   interface AppDeckOrSlide {
     'deckOrSlide': boolean;
+    'qrCode': boolean;
   }
   interface AppDeleteDeckAction {
     'deck': Deck;
@@ -601,7 +605,8 @@ declare namespace LocalJSX {
   }
   interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {
     'deckOrSlide'?: boolean;
-    'onApplyTo'?: (event: CustomEvent<boolean>) => void;
+    'onApplyTo'?: (event: CustomEvent<ColorType>) => void;
+    'qrCode'?: boolean;
   }
   interface AppDeleteDeckAction extends JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement> {
     'deck'?: Deck;

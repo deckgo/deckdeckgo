@@ -2,6 +2,7 @@ import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import {isIPad} from '@deckdeckgo/utils';
+import {ColorType} from '../../../utils/editor/color-type';
 
 interface InitStyleColor {
     rgb: string | null;
@@ -55,8 +56,8 @@ export class AppColor {
     }
 
     private async selectApplyToAllDeck($event: CustomEvent) {
-        if ($event) {
-            this.applyToAllDeck = $event.detail;
+        if ($event && $event.detail) {
+            this.applyToAllDeck = $event.detail === ColorType.DECK;
 
             if (this.deckOrSlide) {
                 await this.initCurrentColors(this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement);

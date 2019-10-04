@@ -5,6 +5,7 @@ import {ImageAction} from './image-action';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+import {ColorType} from '../../../utils/editor/color-type';
 
 enum ImageSize {
     SMALL = '25%',
@@ -173,7 +174,7 @@ export class AppImage {
 
     private selectApplyToAllDeck($event: CustomEvent) {
         if ($event) {
-            this.applyToAllDeck = $event.detail;
+            this.applyToAllDeck = $event.detail === ColorType.DECK;
         }
     }
 

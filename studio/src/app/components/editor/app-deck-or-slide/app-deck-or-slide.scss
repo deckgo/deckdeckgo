@@ -22,4 +22,15 @@ app-deck-or-slide {
     }
   }
 
+  ion-segment {
+    ion-segment-button {
+      min-width: auto;
+
+      --padding-end: 0;
+      --padding-start: 0;
+
+      --indicator-color: var(--ion-color-light);
+    }
+  }
+
 }
