@@ -1,6 +1,6 @@
-import {DeckdeckgoSlide} from './deckdeckgo-slide';
+import {DeckdeckgoSlideResize} from './deckdeckgo-slide-resize';
 
-export interface DeckdeckgoSlidePlay extends DeckdeckgoSlide {
+export interface DeckdeckgoSlidePlay extends DeckdeckgoSlideResize {
     play(): Promise<void>;
 
     pause(): Promise<void>;

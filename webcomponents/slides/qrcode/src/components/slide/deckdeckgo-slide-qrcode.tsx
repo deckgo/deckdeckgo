@@ -1,14 +1,14 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
-import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-qrcode',
   styleUrl: 'deckdeckgo-slide-qrcode.scss',
   shadow: true
 })
-export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
+export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
 
   @Element() el: HTMLElement;
 
@@ -95,6 +95,15 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
   @Method()
   hideContent(): Promise<void> {
     return Promise.resolve();
+  }
+
+  @Method()
+  resizeContent(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      await this.onResizeContent();
+
+      resolve();
+    });
   }
 
   render() {

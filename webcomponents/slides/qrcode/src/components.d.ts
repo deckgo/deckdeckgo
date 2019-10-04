@@ -17,6 +17,7 @@ export namespace Components {
     'customBackground': boolean;
     'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
+    'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
   }
 }

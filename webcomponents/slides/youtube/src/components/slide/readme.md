@@ -85,6 +85,16 @@ Type: `Promise<void>`
 
 
 
+### `resizeContent() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `revealContent() => Promise<void>`
 
 

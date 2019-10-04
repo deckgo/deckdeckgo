@@ -89,6 +89,7 @@ export class AppEditorToolbar {
 
         this.moveToolbarSubscription = this.moveToolbarSubject.pipe(debounceTime(250)).subscribe(async () => {
             await this.moveToolbar();
+            await this.resizeSlideContent();
         });
     }
 
@@ -598,6 +599,8 @@ export class AppEditorToolbar {
 
             await this.emitChange();
 
+            await this.resizeSlideContent();
+
             await this.hideToolbar();
 
             resolve();
@@ -691,6 +694,7 @@ export class AppEditorToolbar {
 
                 this.elementResizeObserver = new ResizeObserver(async (_entries) => {
                     await this.moveToolbar();
+                    await this.resizeSlideContent();
                 });
                 this.elementResizeObserver.observe(this.selectedElement);
             } else {
@@ -881,6 +885,28 @@ export class AppEditorToolbar {
             await this.emitChange();
 
             await this.hideToolbar();
+
+            resolve();
+        });
+    }
+
+    private resizeSlideContent(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement;
+
+            if (!element) {
+                resolve();
+                return;
+            }
+
+            if ((element as any).resizeContent !== undefined) {
+                await (element as any).resizeContent();
+            }
 
             resolve();
         });
