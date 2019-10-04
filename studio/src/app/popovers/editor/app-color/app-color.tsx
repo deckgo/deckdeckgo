@@ -2,7 +2,8 @@ import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import {isIPad} from '@deckdeckgo/utils';
-import {ColorType} from '../../../utils/editor/color-type';
+
+import {TargetElement} from '../../../utils/editor/target-element';
 
 interface InitStyleColor {
     rgb: string | null;
@@ -57,7 +58,7 @@ export class AppColor {
 
     private async selectApplyToAllDeck($event: CustomEvent) {
         if ($event && $event.detail) {
-            this.applyToAllDeck = $event.detail === ColorType.DECK;
+            this.applyToAllDeck = $event.detail === TargetElement.DECK;
 
             if (this.deckOrSlide) {
                 await this.initCurrentColors(this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement);
@@ -248,8 +249,8 @@ export class AppColor {
             </ion-router-link>
         </ion-toolbar>,
             <ion-list>
-                <app-deck-or-slide deckOrSlide={this.deckOrSlide}
-                                   onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
+                <app-select-target-element deckOrSlide={this.deckOrSlide}
+                                   onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-select-target-element>
 
                 <ion-radio-group onIonChange={($event) => this.selectApplyToText($event)}>
                     <ion-item-divider class="ion-padding-top">

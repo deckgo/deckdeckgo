@@ -11,11 +11,11 @@ import {
   JSX,
 } from '@stencil/core';
 import {
-  ColorType,
-} from './app/utils/editor/color-type';
-import {
   Deck,
 } from './app/models/data/deck';
+import {
+  TargetElement,
+} from './app/utils/editor/target-element';
 import {
   MoreAction,
 } from './app/utils/editor/more-action';
@@ -45,10 +45,6 @@ export namespace Components {
   interface AppDeckDelete {
     'deckName': string;
     'published': string;
-  }
-  interface AppDeckOrSlide {
-    'deckOrSlide': boolean;
-    'qrCode': boolean;
   }
   interface AppDeleteDeckAction {
     'deck': Deck;
@@ -127,6 +123,10 @@ export namespace Components {
     'selectedElement': HTMLElement;
   }
   interface AppRoot {}
+  interface AppSelectTargetElement {
+    'deckOrSlide': boolean;
+    'qrCode': boolean;
+  }
   interface AppServices {}
   interface AppSettings {}
   interface AppShareAction {}
@@ -217,12 +217,6 @@ declare global {
   var HTMLAppDeckDeleteElement: {
     prototype: HTMLAppDeckDeleteElement;
     new (): HTMLAppDeckDeleteElement;
-  };
-
-  interface HTMLAppDeckOrSlideElement extends Components.AppDeckOrSlide, HTMLStencilElement {}
-  var HTMLAppDeckOrSlideElement: {
-    prototype: HTMLAppDeckOrSlideElement;
-    new (): HTMLAppDeckOrSlideElement;
   };
 
   interface HTMLAppDeleteDeckActionElement extends Components.AppDeleteDeckAction, HTMLStencilElement {}
@@ -429,6 +423,12 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
+  interface HTMLAppSelectTargetElementElement extends Components.AppSelectTargetElement, HTMLStencilElement {}
+  var HTMLAppSelectTargetElementElement: {
+    prototype: HTMLAppSelectTargetElementElement;
+    new (): HTMLAppSelectTargetElementElement;
+  };
+
   interface HTMLAppServicesElement extends Components.AppServices, HTMLStencilElement {}
   var HTMLAppServicesElement: {
     prototype: HTMLAppServicesElement;
@@ -523,7 +523,6 @@ declare global {
     'app-custom-images': HTMLAppCustomImagesElement;
     'app-dashboard': HTMLAppDashboardElement;
     'app-deck-delete': HTMLAppDeckDeleteElement;
-    'app-deck-or-slide': HTMLAppDeckOrSlideElement;
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-editor': HTMLAppEditorElement;
@@ -558,6 +557,7 @@ declare global {
     'app-remote': HTMLAppRemoteElement;
     'app-reveal': HTMLAppRevealElement;
     'app-root': HTMLAppRootElement;
+    'app-select-target-element': HTMLAppSelectTargetElementElement;
     'app-services': HTMLAppServicesElement;
     'app-settings': HTMLAppSettingsElement;
     'app-share-action': HTMLAppShareActionElement;
@@ -602,11 +602,6 @@ declare namespace LocalJSX {
   interface AppDeckDelete extends JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement> {
     'deckName'?: string;
     'published'?: string;
-  }
-  interface AppDeckOrSlide extends JSXBase.HTMLAttributes<HTMLAppDeckOrSlideElement> {
-    'deckOrSlide'?: boolean;
-    'onApplyTo'?: (event: CustomEvent<ColorType>) => void;
-    'qrCode'?: boolean;
   }
   interface AppDeleteDeckAction extends JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement> {
     'deck'?: Deck;
@@ -703,6 +698,11 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
   }
   interface AppRoot extends JSXBase.HTMLAttributes<HTMLAppRootElement> {}
+  interface AppSelectTargetElement extends JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement> {
+    'deckOrSlide'?: boolean;
+    'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
+    'qrCode'?: boolean;
+  }
   interface AppServices extends JSXBase.HTMLAttributes<HTMLAppServicesElement> {}
   interface AppSettings extends JSXBase.HTMLAttributes<HTMLAppSettingsElement> {}
   interface AppShareAction extends JSXBase.HTMLAttributes<HTMLAppShareActionElement> {
@@ -747,7 +747,6 @@ declare namespace LocalJSX {
     'app-custom-images': AppCustomImages;
     'app-dashboard': AppDashboard;
     'app-deck-delete': AppDeckDelete;
-    'app-deck-or-slide': AppDeckOrSlide;
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
     'app-editor': AppEditor;
@@ -782,6 +781,7 @@ declare namespace LocalJSX {
     'app-remote': AppRemote;
     'app-reveal': AppReveal;
     'app-root': AppRoot;
+    'app-select-target-element': AppSelectTargetElement;
     'app-services': AppServices;
     'app-settings': AppSettings;
     'app-share-action': AppShareAction;

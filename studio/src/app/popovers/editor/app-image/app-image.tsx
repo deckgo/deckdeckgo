@@ -1,11 +1,11 @@
 import {Component, Element, Prop, State, h, EventEmitter} from '@stencil/core';
 
 import {ImageAction} from './image-action';
+import {TargetElement} from '../../../utils/editor/target-element';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
-import {ColorType} from '../../../utils/editor/color-type';
 
 enum ImageSize {
     SMALL = '25%',
@@ -174,7 +174,7 @@ export class AppImage {
 
     private selectApplyToAllDeck($event: CustomEvent) {
         if ($event) {
-            this.applyToAllDeck = $event.detail === ColorType.DECK;
+            this.applyToAllDeck = $event.detail === TargetElement.DECK;
         }
     }
 
@@ -244,8 +244,8 @@ export class AppImage {
             </ion-router-link>
         </ion-toolbar>,
             <ion-list>
-                <app-deck-or-slide deckOrSlide={this.deckOrSlide}
-                                   onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
+                <app-select-target-element deckOrSlide={this.deckOrSlide}
+                                   onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-select-target-element>
 
                 {this.renderImageSize()}
                 {this.renderImageAlignment()}
