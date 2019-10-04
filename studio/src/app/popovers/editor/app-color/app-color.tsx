@@ -111,14 +111,19 @@ export class AppColor {
                 return;
             }
 
+            const applyToQRCode: boolean = this.qrCode && this.applyToTargetElement === TargetElement.QR_CODE;
+
             if (this.applyColorType === ApplyColorType.QR_CODE) {
                 this.selectedElement.style.removeProperty('--deckgo-qrcode-color-fill');
             } else if (this.applyColorType === ApplyColorType.BACKGROUND) {
-                this.selectedElement.style.removeProperty('--background');
-                this.selectedElement.style.removeProperty('--slide-split-background-start');
-                this.selectedElement.style.removeProperty('--slide-split-background-end');
-                this.selectedElement.style.removeProperty('background');
-                this.selectedElement.style.removeProperty('--deckgo-qrcode-background-fill');
+                if (applyToQRCode) {
+                    this.selectedElement.style.removeProperty('--deckgo-qrcode-background-fill');
+                } else {
+                    this.selectedElement.style.removeProperty('--background');
+                    this.selectedElement.style.removeProperty('--slide-split-background-start');
+                    this.selectedElement.style.removeProperty('--slide-split-background-end');
+                    this.selectedElement.style.removeProperty('background');
+                }
             } else {
                 this.selectedElement.style.removeProperty('--color');
                 this.selectedElement.style.removeProperty('color');
@@ -126,6 +131,8 @@ export class AppColor {
 
             this.color = null;
             this.colorOpacity = 100;
+
+            this.colorDidChange.emit(this.isApplyToAllDeck() && !applyToQRCode);
 
             resolve();
         });
@@ -165,7 +172,7 @@ export class AppColor {
 
             this.selectedElement.style.setProperty('--deckgo-qrcode-color-fill', selectedColor);
 
-            this.colorDidChange.emit(this.isApplyToAllDeck());
+            this.colorDidChange.emit(false);
 
             resolve();
         });
@@ -188,8 +195,10 @@ export class AppColor {
 
             const selectedColor: string = `rgba(${this.color},${this.transformOpacity()})`;
 
+            const applyToQRCode: boolean = this.qrCode && this.applyToTargetElement === TargetElement.QR_CODE;
+
             if (this.deckOrSlide) {
-                if (this.qrCode && this.applyToTargetElement === TargetElement.QR_CODE) {
+                if (applyToQRCode) {
                     this.selectedElement.style.setProperty('--deckgo-qrcode-background-fill', selectedColor);
                 } else {
                     const element: HTMLElement = this.isApplyToAllDeck() ? this.selectedElement.parentElement : this.selectedElement;
@@ -210,7 +219,7 @@ export class AppColor {
                 this.selectedElement.style.background = selectedColor;
             }
 
-            this.colorDidChange.emit(this.isApplyToAllDeck());
+            this.colorDidChange.emit(this.isApplyToAllDeck() && !applyToQRCode);
 
             resolve();
         });
@@ -296,7 +305,7 @@ export class AppColor {
         </ion-toolbar>,
             <ion-list>
                 <app-select-target-element deckOrSlide={this.deckOrSlide} qrCode={this.qrCode}
-                                   onApplyTo={($event: CustomEvent) => this.selectApplyToTargetElement($event)}></app-select-target-element>
+                                           onApplyTo={($event: CustomEvent) => this.selectApplyToTargetElement($event)}></app-select-target-element>
 
                 {this.renderApplyColorTo()}
 
@@ -310,7 +319,8 @@ export class AppColor {
                                onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
                 </ion-item>
             </ion-list>,
-            <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-rgb={this.color}>
+            <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors}
+                          onColorChange={($event: CustomEvent) => this.selectColor($event)} color-rgb={this.color}>
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>,
             <ion-item class="action-button ion-margin-bottom">
