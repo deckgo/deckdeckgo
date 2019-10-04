@@ -1,4 +1,4 @@
-import {Component, h, Prop, EventEmitter, Event, Element, Host} from '@stencil/core';
+import {Component, h, Prop, EventEmitter, Event, Element, Host, State, Watch} from '@stencil/core';
 
 import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../utils/deckdeckgo-palette';
 
@@ -16,11 +16,22 @@ export class DeckdeckgoColor {
   @Prop() more: boolean = true;
   @Prop() moreAlt: string = 'More';
 
-  @Prop({mutable: true}) colorHex: string;
-  @Prop({mutable: true}) colorRgb: string;
+  @Prop() colorHex: string;
+  @Prop() colorRgb: string;
+
+  @State()
+  private selectedColorHex: string;
+
+  @State()
+  private selectedColorRgb: string;
 
   @Event()
   colorChange: EventEmitter<DeckdeckgoPaletteColor>;
+
+  componentWillLoad() {
+    this.selectedColorHex = this.colorHex;
+    this.selectedColorRgb = this.colorRgb;
+  }
 
   async componentDidLoad() {
     await this.colorPickerListener(true);
@@ -30,6 +41,18 @@ export class DeckdeckgoColor {
     await this.colorPickerListener(false);
   }
 
+  @Watch('colorHex')
+  onColorHexChange() {
+    this.selectedColorHex = this.colorHex;
+    this.selectedColorRgb = undefined;
+  }
+
+  @Watch('colorRgb')
+  onColorRgbChange() {
+    this.selectedColorHex = undefined;
+    this.selectedColorRgb = this.colorRgb;
+  }
+
   private pickColor(paletteColor: DeckdeckgoPalette): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.palette || this.palette.length <= 0) {
@@ -37,8 +60,8 @@ export class DeckdeckgoColor {
         return;
       }
 
-      this.colorHex = paletteColor.color ? paletteColor.color.hex : undefined;
-      this.colorRgb = paletteColor.color ? paletteColor.color.rgb : undefined;
+      this.selectedColorHex = paletteColor.color ? paletteColor.color.hex : undefined;
+      this.selectedColorRgb = paletteColor.color ? paletteColor.color.rgb : undefined;
 
       this.colorChange.emit(paletteColor.color);
 
@@ -111,11 +134,11 @@ export class DeckdeckgoColor {
       return false;
     }
 
-    if (!this.colorHex) {
+    if (!this.selectedColorHex) {
       return false;
     }
 
-    return this.colorHex.toUpperCase() === element.color.hex.toUpperCase();
+    return this.selectedColorHex.toUpperCase() === element.color.hex.toUpperCase();
   }
 
   private isRgbColorSelected(element: DeckdeckgoPalette): boolean {
@@ -123,11 +146,11 @@ export class DeckdeckgoColor {
       return false;
     }
 
-    if (!this.colorRgb) {
+    if (!this.selectedColorRgb) {
       return false;
     }
 
-    return this.colorRgb.replace(/\s/g, '').toUpperCase() === element.color.rgb.replace(/\s/g, '').toUpperCase();
+    return this.selectedColorRgb.replace(/\s/g, '').toUpperCase() === element.color.rgb.replace(/\s/g, '').toUpperCase();
   }
 
   render() {

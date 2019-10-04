@@ -10,6 +10,12 @@ interface InitStyleColor {
     opacity: number | null;
 }
 
+enum ApplyColorType {
+    TEXT,
+    BACKGROUND,
+    QR_CODE
+}
+
 @Component({
     tag: 'app-color',
     styleUrl: 'app-color.scss'
@@ -26,28 +32,28 @@ export class AppColor {
 
     @Event() colorDidChange: EventEmitter<boolean>;
 
-    private applyToAllDeck: boolean = false;
+    @State()
+    private applyToTargetElement: TargetElement = TargetElement.SLIDE;
 
     @State()
-    private applyToText: boolean = true; // true = text, false = background
+    private applyColorType: ApplyColorType = ApplyColorType.TEXT;
 
     @State()
     private color: string;
 
     @State()
-    private background: string;
-
-    @State()
     private colorOpacity: number = 100;
-
-    @State()
-    private backgroundOpacity: number = 100;
 
     @State()
     private moreColors: boolean = true;
 
+    @State()
+    private qrCode: boolean = false;
+
     async componentWillLoad() {
-        await this.initCurrentColors(this.selectedElement);
+        await this.initCurrentColors();
+
+        this.qrCode = this.deckOrSlide && this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
 
         this.moreColors = !isIPad();
     }
@@ -56,19 +62,25 @@ export class AppColor {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
-    private async selectApplyToAllDeck($event: CustomEvent) {
+    private async selectApplyToTargetElement($event: CustomEvent) {
         if ($event && $event.detail) {
-            this.applyToAllDeck = $event.detail === TargetElement.DECK;
+            this.applyToTargetElement = $event.detail;
 
-            if (this.deckOrSlide) {
-                await this.initCurrentColors(this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement);
+            if (this.applyToTargetElement === TargetElement.QR_CODE && this.applyColorType === ApplyColorType.TEXT) {
+                this.applyColorType = ApplyColorType.QR_CODE;
+            } else if (this.applyToTargetElement !== TargetElement.QR_CODE && this.applyColorType === ApplyColorType.QR_CODE) {
+                this.applyColorType = ApplyColorType.TEXT;
             }
+
+            await this.initCurrentColors();
         }
     }
 
-    private selectApplyToText($event: CustomEvent) {
+    private async selectApplyType($event: CustomEvent) {
         if ($event && $event.detail) {
-            this.applyToText = $event.detail.value;
+            this.applyColorType = $event.detail.value;
+
+            await this.initCurrentColors();
         }
     }
 
@@ -77,20 +89,18 @@ export class AppColor {
             return;
         }
 
-        if (this.applyToText) {
-            this.color = $event.detail.rgb;
-        } else {
-            this.background = $event.detail.rgb;
-        }
+        this.color = $event.detail.rgb;
 
         await this.applyColor();
     }
 
     private async applyColor() {
-        if (this.applyToText) {
-            await this.applyTextColor();
-        } else {
+        if (this.applyColorType === ApplyColorType.QR_CODE) {
+            await this.applyQRCodeColor();
+        } else if (this.applyColorType === ApplyColorType.BACKGROUND) {
             await this.applyBackground();
+        } else {
+            await this.applyTextColor();
         }
     }
 
@@ -101,21 +111,21 @@ export class AppColor {
                 return;
             }
 
-            if (this.applyToText) {
-                this.selectedElement.style.removeProperty('--color');
-                this.selectedElement.style.removeProperty('color');
-
-                this.color = null;
-                this.colorOpacity = 100;
-            } else {
+            if (this.applyColorType === ApplyColorType.QR_CODE) {
+                this.selectedElement.style.removeProperty('--deckgo-qrcode-color-fill');
+            } else if (this.applyColorType === ApplyColorType.BACKGROUND) {
                 this.selectedElement.style.removeProperty('--background');
                 this.selectedElement.style.removeProperty('--slide-split-background-start');
                 this.selectedElement.style.removeProperty('--slide-split-background-end');
                 this.selectedElement.style.removeProperty('background');
-
-                this.background = null;
-                this.backgroundOpacity = 100;
+                this.selectedElement.style.removeProperty('--deckgo-qrcode-background-fill');
+            } else {
+                this.selectedElement.style.removeProperty('--color');
+                this.selectedElement.style.removeProperty('color');
             }
+
+            this.color = null;
+            this.colorOpacity = 100;
 
             resolve();
         });
@@ -131,36 +141,61 @@ export class AppColor {
             const selectedColor: string = `rgba(${this.color},${this.transformOpacity()})`;
 
             if (this.deckOrSlide) {
-                const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
+                const element: HTMLElement = this.isApplyToAllDeck() ? this.selectedElement.parentElement : this.selectedElement;
 
                 element.style.setProperty('--color', selectedColor);
             } else {
                 this.selectedElement.style.color = selectedColor;
             }
 
-            this.colorDidChange.emit(this.applyToAllDeck);
+            this.colorDidChange.emit(this.isApplyToAllDeck());
 
             resolve();
         });
     }
 
-    private transformOpacity(): number {
-        return this.applyToText ? (this.colorOpacity === 0 ? 0 : this.colorOpacity / 100) : (this.backgroundOpacity === 0 ? 0 : this.backgroundOpacity / 100);
-    }
-
-    private applyBackground(): Promise<void> {
+    private applyQRCodeColor(): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (!this.selectedElement || !this.background) {
+            if (!this.selectedElement || !this.color) {
                 resolve();
                 return;
             }
 
-            const selectedColor: string = `rgba(${this.background},${this.transformOpacity()})`;
+            const selectedColor: string = `rgba(${this.color},${this.transformOpacity()})`;
+
+            this.selectedElement.style.setProperty('--deckgo-qrcode-color-fill', selectedColor);
+
+            this.colorDidChange.emit(this.isApplyToAllDeck());
+
+            resolve();
+        });
+    }
+
+    private isApplyToAllDeck(): boolean {
+        return this.applyToTargetElement === TargetElement.DECK;
+    }
+
+    private transformOpacity(): number {
+        return this.colorOpacity === 0 ? 0 : this.colorOpacity / 100;
+    }
+
+    private applyBackground(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.selectedElement || !this.color) {
+                resolve();
+                return;
+            }
+
+            const selectedColor: string = `rgba(${this.color},${this.transformOpacity()})`;
 
             if (this.deckOrSlide) {
-                const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
+                if (this.qrCode && this.applyToTargetElement === TargetElement.QR_CODE) {
+                    this.selectedElement.style.setProperty('--deckgo-qrcode-background-fill', selectedColor);
+                } else {
+                    const element: HTMLElement = this.isApplyToAllDeck() ? this.selectedElement.parentElement : this.selectedElement;
 
-                element.style.setProperty('--background', selectedColor);
+                    element.style.setProperty('--background', selectedColor);
+                }
             } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
                 const element: HTMLElement = this.selectedElement.parentElement;
 
@@ -175,24 +210,39 @@ export class AppColor {
                 this.selectedElement.style.background = selectedColor;
             }
 
-            this.colorDidChange.emit(this.applyToAllDeck);
+            this.colorDidChange.emit(this.isApplyToAllDeck());
 
             resolve();
         });
     }
 
-    private async initCurrentColors(element: HTMLElement) {
+    private async initCurrentColors() {
+        if (!this.selectedElement) {
+            return;
+        }
+
+        const element: HTMLElement = this.isApplyToAllDeck() ? this.selectedElement.parentElement : this.selectedElement;
+
         if (!element) {
             return;
         }
 
-        const styleColor: InitStyleColor = await this.splitColor(element.style.getPropertyValue('--color') ? element.style.getPropertyValue('--color') : element.style.color);
+        let styleColor: InitStyleColor;
+
+        if (this.applyColorType === ApplyColorType.QR_CODE) {
+            styleColor = await this.splitColor(element.style.getPropertyValue('--deckgo-qrcode-color-fill'));
+        } else if (this.applyColorType === ApplyColorType.BACKGROUND) {
+            if (this.applyToTargetElement === TargetElement.QR_CODE) {
+                styleColor = await this.splitColor(element.style.getPropertyValue('--deckgo-qrcode-background-fill'));
+            } else {
+                styleColor = await this.splitColor(element.style.getPropertyValue('--background') ? element.style.getPropertyValue('--background') : element.style.background);
+            }
+        } else {
+            styleColor = await this.splitColor(element.style.getPropertyValue('--color') ? element.style.getPropertyValue('--color') : element.style.color);
+        }
+
         this.color = styleColor.rgb;
         this.colorOpacity = styleColor.opacity;
-
-        const styleBackground: InitStyleColor = await this.splitColor(element.style.getPropertyValue('--background') ? element.style.getPropertyValue('--background') : element.style.background);
-        this.background = styleBackground.rgb;
-        this.backgroundOpacity = styleBackground.opacity;
     }
 
     private splitColor(styleColor: string): Promise<InitStyleColor> {
@@ -203,7 +253,7 @@ export class AppColor {
                 if (rgbs && rgbs.length >= 3) {
                     resolve({
                         rgb: `${rgbs[0]}, ${rgbs[1]}, ${rgbs[2]}`,
-                        opacity: rgbs.length > 3 ? parseFloat(rgbs[3]) * 100 : null
+                        opacity: rgbs.length > 3 ? parseFloat(rgbs[3]) * 100 : 100
                     });
 
                     return;
@@ -229,11 +279,7 @@ export class AppColor {
 
             const opacity: number = $event.detail.value as number;
 
-            if (this.applyToText) {
-                this.colorOpacity = opacity;
-            } else {
-                this.backgroundOpacity = opacity;
-            }
+            this.colorOpacity = opacity;
 
             await this.applyColor();
 
@@ -249,44 +295,68 @@ export class AppColor {
             </ion-router-link>
         </ion-toolbar>,
             <ion-list>
-                <app-select-target-element deckOrSlide={this.deckOrSlide}
-                                   onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-select-target-element>
+                <app-select-target-element deckOrSlide={this.deckOrSlide} qrCode={this.qrCode}
+                                   onApplyTo={($event: CustomEvent) => this.selectApplyToTargetElement($event)}></app-select-target-element>
 
-                <ion-radio-group onIonChange={($event) => this.selectApplyToText($event)}>
-                    <ion-item-divider class="ion-padding-top">
-                        <ion-label>Apply color to</ion-label>
-                    </ion-item-divider>
-
-                    <ion-item>
-                        <ion-label>Text</ion-label>
-                        <ion-radio slot="start" value={true} checked mode="md"></ion-radio>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label>Background</ion-label>
-                        <ion-radio slot="start" value={false} mode="md"></ion-radio>
-                    </ion-item>
-                </ion-radio-group>
+                {this.renderApplyColorTo()}
 
                 <ion-item-divider class="ion-padding-top">
                     <ion-label>Opacity</ion-label>
                 </ion-item-divider>
 
                 <ion-item class="item-opacity">
-                    <ion-range color="primary" min={0} max={100} disabled={this.applyToText ? !this.color || this.color === undefined : !this.background || this.background === undefined}
-                               value={this.applyToText ? this.colorOpacity : this.backgroundOpacity} mode="md"
+                    <ion-range color="primary" min={0} max={100} disabled={!this.color || this.color === undefined}
+                               value={this.colorOpacity} mode="md"
                                onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
                 </ion-item>
             </ion-list>,
-            <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-rgb={this.applyToText ? this.color : this.background}>
+            <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors} onColorChange={($event: CustomEvent) => this.selectColor($event)} color-rgb={this.color}>
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>,
             <ion-item class="action-button ion-margin-bottom">
                 <ion-button shape="round" onClick={() => this.resetColor()}
                             fill="outline" class="delete">
-                    <ion-label class="ion-text-uppercase">Reset {this.applyToText ? 'text color' : 'background'}</ion-label>
+                    <ion-label class="ion-text-uppercase">{this.resetLabelContent()}</ion-label>
                 </ion-button>
             </ion-item>
         ]
     }
 
+    private renderApplyColorTo() {
+        return <ion-radio-group onIonChange={($event) => this.selectApplyType($event)}>
+            <ion-item-divider class="ion-padding-top">
+                <ion-label>Apply color to</ion-label>
+            </ion-item-divider>
+
+            {this.renderApplyColorToTextOrQRCode()}
+            <ion-item>
+                <ion-label>Background</ion-label>
+                <ion-radio slot="start" value={ApplyColorType.BACKGROUND} mode="md"></ion-radio>
+            </ion-item>
+        </ion-radio-group>;
+    }
+
+    private renderApplyColorToTextOrQRCode() {
+        if (this.applyToTargetElement === TargetElement.QR_CODE) {
+            return <ion-item>
+                <ion-label>Fill</ion-label>
+                <ion-radio slot="start" value={ApplyColorType.QR_CODE} checked mode="md"></ion-radio>
+            </ion-item>;
+        } else {
+            return <ion-item>
+                <ion-label>Text</ion-label>
+                <ion-radio slot="start" value={ApplyColorType.TEXT} checked mode="md"></ion-radio>
+            </ion-item>;
+        }
+    }
+
+    private resetLabelContent() {
+        if (this.applyColorType === ApplyColorType.QR_CODE) {
+            return "Reset fill color";
+        } else if (this.applyColorType === ApplyColorType.BACKGROUND) {
+            return "Reset background";
+        } else {
+            return "Reset color";
+        }
+    }
 }
