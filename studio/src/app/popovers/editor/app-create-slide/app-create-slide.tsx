@@ -4,12 +4,14 @@ import {take} from 'rxjs/operators';
 import {SlideTemplate} from '../../../models/data/slide';
 
 import {User} from '../../../models/data/user';
+import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
     tag: 'app-create-slide',
@@ -26,12 +28,14 @@ export class AppCreateSlide {
 
     private userService: UserService;
     private anonymousService: AnonymousService;
+    private deckEditorService: DeckEditorService;
 
     @Event() signIn: EventEmitter<void>;
 
     constructor() {
         this.userService = UserService.getInstance();
         this.anonymousService = AnonymousService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentWillLoad() {
@@ -69,9 +73,15 @@ export class AppCreateSlide {
         });
     }
 
-    private async addSlide(template: SlideTemplate) {
-        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, this.user);
+    private async addSlide(template: SlideTemplate, deck?: Deck) {
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, deck, this.user);
         await this.closePopover(template, slide);
+    }
+
+    private addSlideQRCode() {
+        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+            await this.addSlide(SlideTemplate.QRCODE, deck);
+        });
     }
 
     // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
@@ -84,7 +94,7 @@ export class AppCreateSlide {
             return;
         }
 
-        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, this.user);
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, null, this.user);
         await this.closePopover(template, slide);
     }
 
@@ -148,7 +158,7 @@ export class AppCreateSlide {
                         </p>
                     </deckgo-slide-content>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.QRCODE)}>
+                <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
                     <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com">
                         <p slot="title">QR code</p>
                     </deckgo-slide-qrcode>

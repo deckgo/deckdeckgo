@@ -21,12 +21,12 @@ export class AppEditSlide {
     private customQRCode: boolean = false;
 
     @State()
-    private customUrl: string = undefined;
+    private customContent: string = undefined;
 
     componentWillLoad() {
         this.customQRCode = this.selectedElement && this.selectedElement.hasAttribute('custom-qrcode') && this.selectedElement.getAttribute('custom-qrcode') === 'true';
 
-        this.customUrl = this.customQRCode && this.selectedElement ? this.selectedElement.getAttribute('content') : undefined;
+        this.customContent = this.customQRCode && this.selectedElement ? this.selectedElement.getAttribute('content') : undefined;
     }
 
     private async closePopover() {
@@ -42,7 +42,7 @@ export class AppEditSlide {
     }
 
     private handleInput($event: CustomEvent<KeyboardEvent>) {
-        this.customUrl = ($event.target as InputTargetEvent).value;
+        this.customContent = ($event.target as InputTargetEvent).value;
     }
 
     private onInputCustomUrlChange(): Promise<void> {
@@ -59,7 +59,7 @@ export class AppEditSlide {
                 return;
             }
 
-            this.selectedElement.setAttribute('content', this.customUrl);
+            this.selectedElement.setAttribute('content', this.customContent);
             this.selectedElement.setAttribute('custom-qrcode', `${true}`);
 
             this.slideDidChange.emit(this.selectedElement);
@@ -71,12 +71,12 @@ export class AppEditSlide {
     private validateCustomUrl(): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             try {
-                if (!this.customUrl) {
+                if (!this.customContent) {
                     resolve(false);
                     return;
                 }
 
-                new URL(this.customUrl);
+                new URL(this.customContent);
 
                 // https://stackoverflow.com/a/14582229/5404186
                 const pattern: RegExp = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -86,7 +86,7 @@ export class AppEditSlide {
                     '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
                     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
 
-                resolve(pattern.test(this.customUrl));
+                resolve(pattern.test(this.customContent));
             } catch (err) {
                 resolve(false);
             }
@@ -112,7 +112,7 @@ export class AppEditSlide {
                 this.selectedElement.setAttribute('custom-qrcode', `${false}`);
             }
 
-            this.customUrl = undefined;
+            this.customContent = undefined;
 
             this.slideDidChange.emit(this.selectedElement);
 
@@ -150,7 +150,7 @@ export class AppEditSlide {
                 </ion-item>
 
                 <ion-item class="with-padding">
-                    <ion-input value={this.customUrl} placeholder="https://..." debounce={500} disabled={!this.customQRCode}
+                    <ion-input value={this.customContent} placeholder="https://..." debounce={500} disabled={!this.customQRCode}
                                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
                                onIonChange={() => this.onInputCustomUrlChange()}></ion-input>
                 </ion-item>

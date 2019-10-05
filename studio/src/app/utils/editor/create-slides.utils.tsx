@@ -3,13 +3,16 @@ import {h, JSX} from '@stencil/core';
 import {SlideTemplate} from '../../models/data/slide';
 
 import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
-
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
+
 import {User, UserSocial} from '../../models/data/user';
+import {Deck} from '../../models/data/deck';
+
+import {QRCodeUtils} from './qrcode.utils';
 
 export class CreateSlidesUtils {
 
-    static createSlide(template: SlideTemplate, user?: User): Promise<JSX.IntrinsicElements> {
+    static createSlide(template: SlideTemplate, deck?: Deck, user?: User): Promise<JSX.IntrinsicElements> {
         return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             if (!document) {
                 resolve(null);
@@ -29,7 +32,7 @@ export class CreateSlidesUtils {
             } else if (template === SlideTemplate.YOUTUBE) {
                 resolve(await this.createSlideYoutube());
             } else if (template === SlideTemplate.QRCODE) {
-                resolve(await this.createSlideQRCode());
+                resolve(await this.createSlideQRCode(deck));
             } else {
                 resolve(null);
             }
@@ -221,7 +224,7 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideQRCode(): Promise<JSX.IntrinsicElements> {
+    private static createSlideQRCode(deck: Deck): Promise<JSX.IntrinsicElements> {
         return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
@@ -230,7 +233,9 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title"></h1>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode content="https://deckdeckgo.com">
+            const content: string = QRCodeUtils.getPresentationUrl(deck);
+
+            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode content={content}>
                 {title}
             </deckgo-slide-qrcode>;
 

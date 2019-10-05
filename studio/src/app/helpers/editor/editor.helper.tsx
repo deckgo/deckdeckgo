@@ -61,7 +61,7 @@ export class EditorHelper {
 
                 const promises: Promise<any>[] = [];
                 deck.data.slides.forEach((slideId: string) => {
-                    promises.push(this.fetchSlide(deckId, slideId));
+                    promises.push(this.fetchSlide(deck, slideId));
                 });
 
                 let parsedSlides: any[] = [];
@@ -85,11 +85,11 @@ export class EditorHelper {
         });
     }
 
-    private fetchSlide(deckId: string, slideId: string): Promise<JSX.IntrinsicElements> {
+    private fetchSlide(deck: Deck, slideId: string): Promise<JSX.IntrinsicElements> {
         return new Promise<any>(async (resolve) => {
             try {
-                const slide: Slide = await this.slideService.get(deckId, slideId);
-                const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(slide, true);
+                const slide: Slide = await this.slideService.get(deck.id, slideId);
+                const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, true);
 
                 resolve(element);
             } catch (err) {
@@ -120,7 +120,7 @@ export class EditorHelper {
 
                     if (deck && deck.data) {
                         const slide: Slide = await this.slideService.get(deck.id, slideId);
-                        element = await ParseSlidesUtils.parseSlide(slide, true, true);
+                        element = await ParseSlidesUtils.parseSlide(deck, slide, true, true);
                     }
 
                     this.busyService.deckBusy(false);

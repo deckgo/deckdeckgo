@@ -534,12 +534,17 @@ export class DeckEventsHandler {
                 attributes.imgAlt = (slide as any).imgAlt;
             }
 
-            if ((slide as any).content) {
-                attributes.content = (slide as any).content;
-            }
-
             if (slide.hasAttribute('custom-qrcode')) {
-                attributes.customQRCode = slide.getAttribute('custom-qrcode');
+                attributes.customQRCode = slide.getAttribute('custom-qrcode') === 'true';
+
+                if (slide.getAttribute('custom-qrcode') === 'true') {
+                    attributes.content = (slide as any).content;
+                } else if (slide.getAttribute('custom-qrcode') === 'false') {
+                    // @ts-ignore
+                    attributes.content = firebase.firestore.FieldValue.delete();
+                    // @ts-ignore
+                    attributes.customQRCode = firebase.firestore.FieldValue.delete();
+                }
             }
 
             resolve(attributes);

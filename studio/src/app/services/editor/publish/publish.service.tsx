@@ -6,7 +6,7 @@ import {take} from 'rxjs/operators';
 
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
 import {ApiDeck} from '../../../models/api/api.deck';
-import {Slide} from '../../../models/data/slide';
+import {Slide, SlideTemplate} from '../../../models/data/slide';
 import {User} from '../../../models/data/user';
 
 import {ApiPresentation} from '../../../models/api/api.presentation';
@@ -19,6 +19,8 @@ import {DeckEditorService} from '../deck/deck-editor.service';
 
 import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
 import {ApiPresentationFactoryService} from '../../api/presentation/api.presentation.factory.service';
+
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 export class PublishService {
 
@@ -202,6 +204,43 @@ export class PublishService {
                 content: slide.data.content,
                 attributes: slide.data.attributes
             };
+
+            const cleanApiSlide: ApiSlide = await this.convertSlideQRCode(apiSlide);
+
+            resolve(cleanApiSlide);
+        });
+    }
+
+    private convertSlideQRCode(apiSlide: ApiSlide): Promise<ApiSlide> {
+        return new Promise<ApiSlide>(async (resolve) => {
+            if (!apiSlide) {
+                resolve(apiSlide);
+                return;
+            }
+
+            if (apiSlide.template !== SlideTemplate.QRCODE) {
+                resolve(apiSlide);
+                return;
+            }
+
+            const presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
+
+            // If no attributes at all, we create an attribute "content" of the QR code with it's upcoming published url
+            if (!apiSlide.attributes) {
+                apiSlide.attributes = {
+                    content: `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`
+                };
+            }
+
+            // If not custom content, we replace the attribute "content" of the QR code with it's upcoming published url
+            if (!apiSlide.attributes.hasOwnProperty('customQRCode') || !apiSlide.attributes.customQRCode) {
+                apiSlide.attributes.content = `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`;
+            }
+
+            // In any case, we don't need customQRCode attribute in our presentations, this is an attribute used by the editor
+            if (apiSlide.attributes.hasOwnProperty('customQRCode')) {
+                delete apiSlide.attributes['customQRCode'];
+            }
 
             resolve(apiSlide);
         });

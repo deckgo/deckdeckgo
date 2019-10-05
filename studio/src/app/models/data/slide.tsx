@@ -15,7 +15,7 @@ export interface SlideAttributes {
     imgSrc?: string;
     imgAlt?: string;
     content?: string;
-    customQRCode?: string;
+    customQRCode?: boolean;
 }
 
 export interface SlideData {
