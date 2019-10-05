@@ -53,7 +53,11 @@ export class AppColor {
     async componentWillLoad() {
         await this.initCurrentColors();
 
-        this.qrCode = this.deckOrSlide && this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
+        if (this.deckOrSlide) {
+            this.qrCode = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
+
+            this.applyToTargetElement = this.qrCode ? TargetElement.QR_CODE : TargetElement.SLIDE;
+        }
 
         this.moreColors = !isIPad();
     }
