@@ -448,6 +448,8 @@ export class AppEditorToolbar {
                 const parent: HTMLElement = this.selectedElement.parentElement;
                 this.selectedElement.parentElement.removeChild(this.selectedElement);
                 this.slideDidChange.emit(parent);
+
+                await this.resizeSlideContent(parent);
             }
 
             await this.hideToolbar();
@@ -917,14 +919,14 @@ export class AppEditorToolbar {
         });
     }
 
-    private resizeSlideContent(): Promise<void> {
+    private resizeSlideContent(slideElement?: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
                 resolve();
                 return;
             }
 
-            const element: HTMLElement = this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement;
+            const element: HTMLElement = slideElement ? slideElement : (this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
 
             if (!element) {
                 resolve();
