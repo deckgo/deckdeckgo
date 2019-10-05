@@ -50,6 +50,11 @@ export namespace Components {
     'deck': Deck;
   }
   interface AppDeveloper {}
+  interface AppEditSlide {
+    'qrCode': boolean;
+    'selectedElement': HTMLElement;
+    'slideDidChange': EventEmitter<HTMLElement>;
+  }
   interface AppEditor {
     'deckId': string;
   }
@@ -229,6 +234,12 @@ declare global {
   var HTMLAppDeveloperElement: {
     prototype: HTMLAppDeveloperElement;
     new (): HTMLAppDeveloperElement;
+  };
+
+  interface HTMLAppEditSlideElement extends Components.AppEditSlide, HTMLStencilElement {}
+  var HTMLAppEditSlideElement: {
+    prototype: HTMLAppEditSlideElement;
+    new (): HTMLAppEditSlideElement;
   };
 
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
@@ -525,6 +536,7 @@ declare global {
     'app-deck-delete': HTMLAppDeckDeleteElement;
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
+    'app-edit-slide': HTMLAppEditSlideElement;
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
@@ -608,6 +620,11 @@ declare namespace LocalJSX {
     'onDeckDeleted'?: (event: CustomEvent<string>) => void;
   }
   interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
+  interface AppEditSlide extends JSXBase.HTMLAttributes<HTMLAppEditSlideElement> {
+    'qrCode'?: boolean;
+    'selectedElement'?: HTMLElement;
+    'slideDidChange'?: EventEmitter<HTMLElement>;
+  }
   interface AppEditor extends JSXBase.HTMLAttributes<HTMLAppEditorElement> {
     'deckId'?: string;
   }
@@ -749,6 +766,7 @@ declare namespace LocalJSX {
     'app-deck-delete': AppDeckDelete;
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
+    'app-edit-slide': AppEditSlide;
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
     'app-editor-toolbar': AppEditorToolbar;

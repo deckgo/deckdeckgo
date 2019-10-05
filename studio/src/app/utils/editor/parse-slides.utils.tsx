@@ -41,6 +41,7 @@ export class ParseSlidesUtils {
             const contentAttr = slide.data.attributes && slide.data.attributes.content ? slide.data.attributes.content : undefined;
 
             const customBackground = slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined;
+            const customQRCode = slide.data.attributes && slide.data.attributes.customQRCode ? slide.data.attributes.customQRCode : undefined;
 
             const imgSrc = slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined;
             const imgAlt = slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined;
@@ -48,7 +49,7 @@ export class ParseSlidesUtils {
             const SlideElement: string = slideTag;
 
             const result: JSX.IntrinsicElements = <SlideElement key={slide.id} slide_id={ignoreSlideId ? undefined : slide.id} style={style}
-                                                                src={src} custom-background={customBackground} img-src={imgSrc} img-alt={imgAlt} content={contentAttr}>
+                                                                src={src} custom-background={customBackground} img-src={imgSrc} img-alt={imgAlt} content={contentAttr} custom-qrcode={customQRCode}>
                 {content}
             </SlideElement>;
 

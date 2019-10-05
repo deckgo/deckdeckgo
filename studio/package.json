@@ -19,7 +19,7 @@
     "@deckdeckgo/highlight-code": "^1.0.0-rc.1-1",
     "@deckdeckgo/inline-editor": "^1.0.0-rc.2-1",
     "@deckdeckgo/lazy-img": "^1.0.0-rc.1",
-    "@deckdeckgo/qrcode": "^1.0.0-rc.1",
+    "@deckdeckgo/qrcode": "file:../webcomponents/qrcode",
     "@deckdeckgo/remote": "^1.0.0-rc.1",
     "@deckdeckgo/slide-author": "^1.0.0-rc.1",
     "@deckdeckgo/slide-content": "^1.0.0-rc.1",

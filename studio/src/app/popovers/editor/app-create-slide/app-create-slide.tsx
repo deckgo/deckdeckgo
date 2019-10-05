@@ -140,6 +140,19 @@ export class AppCreateSlide {
                         }}>and footer</p>
                     </deckgo-slide-gif>
                 </div>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
+                    <deckgo-slide-content class="showcase gif">
+                        <p slot="title">Youtube</p>
+                        <p slot="content">
+                            <ion-icon name="logo-youtube"></ion-icon>
+                        </p>
+                    </deckgo-slide-content>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.QRCODE)}>
+                    <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com">
+                        <p slot="title">QR code</p>
+                    </deckgo-slide-qrcode>
+                </div>
                 <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
                     <deckgo-slide-author class="showcase"
                                          img-src={this.photoUrl}
@@ -153,19 +166,6 @@ export class AppCreateSlide {
                         <p slot="social-link">Github</p>
                         <p slot="social-link">Web</p>
                     </deckgo-slide-author>
-                </div>
-                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
-                    <deckgo-slide-content class="showcase gif">
-                        <p slot="title">Youtube</p>
-                        <p slot="content">
-                            <ion-icon name="logo-youtube"></ion-icon>
-                        </p>
-                    </deckgo-slide-content>
-                </div>
-                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.QRCODE)}>
-                    <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com/faq">
-                        <p slot="title">QR code</p>
-                    </deckgo-slide-qrcode>
                 </div>
             </div>
         ];

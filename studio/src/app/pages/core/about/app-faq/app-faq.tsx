@@ -50,9 +50,9 @@ export class AppFaq {
 
                     <p>No problemo. This editor use separate Web Components we open sourced too as core engine. Therefore, if you wish to code your own presentations using our libraries, HTML or Markdown, of course you could. Run <strong>npm init deckdeckgo</strong> to get started.</p>
 
-                    <h3 class="ion-padding-top">I just scanned a QR code and I landed here, what the heck happened?</h3>
+                    <h3 class="ion-padding-top">I just scanned a QR code and I landed on the homepage, what the heck happened?</h3>
 
-                    <p>The QR codes you add to your presentations are by default linked with this FAQ. If you share your presentations, their content will automatically be updated with their online published url. Alternatively, you could also provide a custom url for their content.</p>
+                    <p>The QR codes you add to your presentations are by default linked with the homepage (feed). As soon as you share them, their content will automatically be updated with their real online published urls. Alternatively, you could also provide a custom url for their content.</p>
 
                 </main>
 

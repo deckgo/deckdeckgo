@@ -230,7 +230,7 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title"></h1>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode content="https://deckdeckgo.com/faq">
+            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode content="https://deckdeckgo.com">
                 {title}
             </deckgo-slide-qrcode>;
 

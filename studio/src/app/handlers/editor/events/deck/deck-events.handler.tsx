@@ -538,6 +538,10 @@ export class DeckEventsHandler {
                 attributes.content = (slide as any).content;
             }
 
+            if (slide.hasAttribute('custom-qrcode')) {
+                attributes.customQRCode = slide.getAttribute('custom-qrcode');
+            }
+
             resolve(attributes);
         })
     }

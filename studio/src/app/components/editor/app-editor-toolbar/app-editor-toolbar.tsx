@@ -41,6 +41,9 @@ export class AppEditorToolbar {
     private code: boolean = false;
 
     @State()
+    private qrCode: boolean = false;
+
+    @State()
     private youtube: boolean = false;
 
     @State()
@@ -230,6 +233,10 @@ export class AppEditorToolbar {
 
     private isElementYoutubeSlide(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-youtube';
+    }
+
+    private isElementQRCodeSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-qrcode';
     }
 
     private isElementList(element: HTMLElement): SlotType {
@@ -494,6 +501,25 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openSlideOptions() {
+        if (!this.deckOrSlide || !this.qrCode) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+            component: 'app-edit-slide',
+            componentProps: {
+                selectedElement: this.selectedElement,
+                qrCode: this.qrCode,
+                slideDidChange: this.slideDidChange
+            },
+            mode: 'md',
+            cssClass: 'popover-menu'
+        });
+
+        await popover.present();
+    }
+
     private async openReveal() {
         if (this.deckOrSlide) {
             return;
@@ -646,6 +672,7 @@ export class AppEditorToolbar {
             this.deckOrSlide = this.isElementSlideOrDeck(element);
 
             this.youtube = this.isElementYoutubeSlide(element);
+            this.qrCode = this.isElementQRCodeSlide(element);
 
             this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
             this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
@@ -904,7 +931,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if ((element as any).resizeContent !== undefined) {
+            if (typeof (element as any).resizeContent === 'function') {
                 await (element as any).resizeContent();
             }
 
@@ -957,7 +984,13 @@ export class AppEditorToolbar {
 
     private renderSlotType() {
         if (this.deckOrSlide) {
-            return undefined;
+            if (!this.qrCode) {
+                return undefined;
+            }
+
+            return <a onClick={() => this.openSlideOptions()} title="Slide options">
+                <ion-label><ion-icon name="add" md="md-add" ios="md-add"></ion-icon></ion-label>
+            </a>
         } else {
             return <a onClick={() => this.openSlotType()} title="Toggle element type">
                 <ion-label><ion-icon name="add" md="md-add" ios="md-add"></ion-icon></ion-label>
