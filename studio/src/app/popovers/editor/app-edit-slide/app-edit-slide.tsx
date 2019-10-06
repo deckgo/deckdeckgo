@@ -39,7 +39,7 @@ export class AppEditSlide {
     }
 
     componentWillLoad() {
-        this.customQRCode = this.selectedElement && this.selectedElement.hasAttribute('custom-qrcode') && this.selectedElement.getAttribute('custom-qrcode') === 'true';
+        this.customQRCode = this.selectedElement && this.selectedElement.hasAttribute('custom-qrcode');
 
         this.customContent = this.customQRCode && this.selectedElement ? this.selectedElement.getAttribute('content') : undefined;
     }
@@ -130,10 +130,7 @@ export class AppEditSlide {
 
             this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
                 this.selectedElement.setAttribute('content', QRCodeUtils.getPresentationUrl(deck));
-
-                if (this.selectedElement.hasAttribute('custom-qrcode')) {
-                    this.selectedElement.setAttribute('custom-qrcode', `${false}`);
-                }
+                this.selectedElement.removeAttribute('custom-qrcode');
 
                 this.customContent = undefined;
 

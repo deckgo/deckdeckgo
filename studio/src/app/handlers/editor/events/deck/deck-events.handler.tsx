@@ -229,7 +229,7 @@ export class DeckEventsHandler {
                 slideData.content = content
             }
 
-            const attributes: SlideAttributes = await this.getSlideAttributes(slide);
+            const attributes: SlideAttributes = await this.getSlideAttributes(slide, false);
 
             if (attributes && Object.keys(attributes).length > 0) {
                 slideData.attributes = attributes;
@@ -422,7 +422,7 @@ export class DeckEventsHandler {
                     slideUpdate.data.content = firebase.firestore.FieldValue.delete();
                 }
 
-                const attributes: SlideAttributes = await this.getSlideAttributes(slide);
+                const attributes: SlideAttributes = await this.getSlideAttributes(slide, true);
 
                 if (attributes && Object.keys(attributes).length > 0) {
                     slideUpdate.data.attributes = attributes;
@@ -510,7 +510,7 @@ export class DeckEventsHandler {
         });
     }
 
-    private getSlideAttributes(slide: HTMLElement): Promise<SlideAttributes> {
+    private getSlideAttributes(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
         return new Promise<SlideAttributes>((resolve) => {
             let attributes: SlideAttributes = {};
 
@@ -524,14 +524,14 @@ export class DeckEventsHandler {
 
             if (slide.hasAttribute('custom-background')) {
                 attributes.customBackground = '' + true;
-            } else {
+            } else if (cleanFields) {
                 // @ts-ignore
                 attributes.customBackground = firebase.firestore.FieldValue.delete();
             }
 
             if ((slide as any).imgSrc) {
                 attributes.imgSrc = (slide as any).imgSrc;
-            } else {
+            } else if (cleanFields) {
                 // @ts-ignore
                 attributes.imgSrc = firebase.firestore.FieldValue.delete();
             }
@@ -541,16 +541,13 @@ export class DeckEventsHandler {
             }
 
             if (slide.hasAttribute('custom-qrcode')) {
-                attributes.customQRCode = slide.getAttribute('custom-qrcode') === 'true';
-
-                if (slide.getAttribute('custom-qrcode') === 'true') {
-                    attributes.content = (slide as any).content;
-                } else if (slide.getAttribute('custom-qrcode') === 'false') {
-                    // @ts-ignore
-                    attributes.content = firebase.firestore.FieldValue.delete();
-                    // @ts-ignore
-                    attributes.customQRCode = firebase.firestore.FieldValue.delete();
-                }
+                attributes.customQRCode = true;
+                attributes.content = (slide as any).content;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.customQRCode = firebase.firestore.FieldValue.delete();
+                // @ts-ignore
+                attributes.content = firebase.firestore.FieldValue.delete();
             }
 
             resolve(attributes);

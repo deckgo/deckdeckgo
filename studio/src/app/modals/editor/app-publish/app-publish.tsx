@@ -47,7 +47,7 @@ export class AppPublish {
             }
 
             for (const slide of Array.from(slides)) {
-                if (!slide.hasAttribute('custom-qrcode') || slide.getAttribute('custom-qrcode') === 'false') {
+                if (!slide.hasAttribute('custom-qrcode')) {
                     slide.setAttribute('content', this.publishedUrl);
                 }
             }
