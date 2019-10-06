@@ -1,5 +1,13 @@
 import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import {take} from 'rxjs/operators';
+
+import {Deck} from '../../../models/data/deck';
+
+import {QRCodeUtils} from '../../../utils/editor/qrcode.utils';
+
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+
 @Component({
     tag: 'app-edit-slide',
     styleUrl: 'app-edit-slide.scss'
@@ -22,6 +30,12 @@ export class AppEditSlide {
 
     @State()
     private customContent: string = undefined;
+
+    private deckEditorService: DeckEditorService;
+
+    constructor() {
+        this.deckEditorService = DeckEditorService.getInstance();
+    }
 
     componentWillLoad() {
         this.customQRCode = this.selectedElement && this.selectedElement.hasAttribute('custom-qrcode') && this.selectedElement.getAttribute('custom-qrcode') === 'true';
@@ -105,18 +119,19 @@ export class AppEditSlide {
                 return;
             }
 
-            // TODO: Url
-            this.selectedElement.setAttribute('content', 'https://deckdeckgo.com');
+            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                this.selectedElement.setAttribute('content', QRCodeUtils.getPresentationUrl(deck));
 
-            if (this.selectedElement.hasAttribute('custom-qrcode')) {
-                this.selectedElement.setAttribute('custom-qrcode', `${false}`);
-            }
+                if (this.selectedElement.hasAttribute('custom-qrcode')) {
+                    this.selectedElement.setAttribute('custom-qrcode', `${false}`);
+                }
 
-            this.customContent = undefined;
+                this.customContent = undefined;
 
-            this.slideDidChange.emit(this.selectedElement);
+                this.slideDidChange.emit(this.selectedElement);
 
-            resolve();
+                resolve();
+            });
         });
     }
 
