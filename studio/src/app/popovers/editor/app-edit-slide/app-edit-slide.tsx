@@ -8,6 +8,7 @@ import {QRCodeUtils} from '../../../utils/editor/qrcode.utils';
 import {ImageAction} from '../app-image/image-action';
 
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 @Component({
     tag: 'app-edit-slide',
@@ -141,9 +142,18 @@ export class AppEditSlide {
         });
     }
 
+    private async presentQRCodeInfo() {
+        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
+            message: 'The QR codes you add to your presentations are by default linked with the homepage.<br/><br/>As soon as you share them, their content will automatically be updated with their online urls.<br/><br/>Alternatively, you could also provide a custom url for their content.',
+            buttons: ['Ok']
+        });
+
+        return await alert.present();
+    }
+
     render() {
         return [<ion-toolbar>
-            <h2>Slide options</h2>
+            {this.renderTitle()}
             <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
@@ -154,11 +164,22 @@ export class AppEditSlide {
         ]
     }
 
+    private renderTitle() {
+        if (this.qrCode) {
+            return <h2>QR code options</h2>;
+        } else {
+            return <h2>Slide options</h2>;
+        }
+    }
+
     private renderOptions() {
         if (this.qrCode) {
             return <ion-radio-group onIonChange={($event) => this.onRadioCustomLink($event)}>
                 <ion-item-divider class="ion-padding-top">
-                    <ion-label>Scanning the QR code lead to</ion-label>
+                    <ion-label>Target</ion-label>
+                    <button slot="end" class="info" onClick={() => this.presentQRCodeInfo()}>
+                        <ion-icon name="help"></ion-icon>
+                    </button>
                 </ion-item-divider>
 
                 <ion-item>
@@ -176,21 +197,17 @@ export class AppEditSlide {
                                onIonChange={() => this.onInputCustomUrlChange()}></ion-input>
                 </ion-item>
 
-                <ion-item-divider class="ion-padding-top">
-                    <ion-label>QR code logo</ion-label>
-                </ion-item-divider>
-
-                <ion-item class="action-button">
+                <ion-item class="action-button ion-margin-top">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_CUSTOM_LOGO)}
                                 color="tertiary">
-                        <ion-label class="ion-text-uppercase">Your image</ion-label>
+                        <ion-label class="ion-text-uppercase">Your logo</ion-label>
                     </ion-button>
                 </ion-item>
 
                 <ion-item class="action-button ion-margin-bottom">
                     <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_LOGO)}
                                 fill="outline" class="delete">
-                        <ion-label class="ion-text-uppercase">Delete image</ion-label>
+                        <ion-label class="ion-text-uppercase">Delete logo</ion-label>
                     </ion-button>
                 </ion-item>
             </ion-radio-group>;

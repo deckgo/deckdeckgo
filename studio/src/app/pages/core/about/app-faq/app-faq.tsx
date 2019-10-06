@@ -52,7 +52,7 @@ export class AppFaq {
 
                     <h3 class="ion-padding-top">I just scanned a QR code and I landed on the homepage, what the heck happened?</h3>
 
-                    <p>The QR codes you add to your presentations are by default linked with the homepage (feed). As soon as you share them, their content will automatically be updated with their real online published urls. Alternatively, you could also provide a custom url for their content.</p>
+                    <p>The QR codes you add to your presentations are by default linked with the homepage. As soon as you share them, their content will automatically be updated with their online urls. Alternatively, you could also provide a custom url for their content.</p>
 
                 </main>
 
