@@ -172,4 +172,38 @@ export class ImageHelper {
             resolve();
         });
     }
+
+    deleteSlideAttributeImgSrc(selectedElement: HTMLElement): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!selectedElement) {
+                resolve();
+                return;
+            }
+
+            this.busyService.deckBusy(true);
+
+            selectedElement.removeAttribute('img-src');
+
+            this.slideDidChange.emit(selectedElement);
+
+            resolve();
+        });
+    }
+
+    updateSlideAttributeImgSrc(selectedElement: HTMLElement, image: StorageFile): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!selectedElement || !image) {
+                resolve();
+                return;
+            }
+
+            this.busyService.deckBusy(true);
+
+            selectedElement.setAttribute('img-src', image.downloadUrl);
+
+            this.slideDidChange.emit(selectedElement);
+
+            resolve();
+        });
+    }
 }

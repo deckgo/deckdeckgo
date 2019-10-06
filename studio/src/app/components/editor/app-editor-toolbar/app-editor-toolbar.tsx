@@ -503,7 +503,7 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openSlideOptions() {
+    private async openEditSlide() {
         if (!this.deckOrSlide || !this.qrCode) {
             return;
         }
@@ -517,6 +517,16 @@ export class AppEditorToolbar {
             },
             mode: 'md',
             cssClass: 'popover-menu'
+        });
+
+        popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                if (detail.data.action === ImageAction.DELETE_LOGO) {
+                    await this.deleteLogo();
+                } else if (detail.data.action === ImageAction.OPEN_CUSTOM_LOGO) {
+                    await this.openCustomImagesModal(ImageAction.OPEN_CUSTOM_LOGO);
+                }
+            }
         });
 
         await popover.present();
@@ -792,7 +802,7 @@ export class AppEditorToolbar {
                 } else if (detail.data.action === ImageAction.OPEN_GIFS) {
                     await this.openImagesModal('app-gif');
                 } else if (detail.data.action === ImageAction.OPEN_CUSTOM) {
-                    await this.openCustomImagesModal();
+                    await this.openCustomImagesModal(ImageAction.OPEN_CUSTOM);
                 }
             }
         });
@@ -800,14 +810,18 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openImagesModal(componentTag: string) {
+    private async openImagesModal(componentTag: string, action?: ImageAction) {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: componentTag
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                await this.appendImage(detail.data);
+                if (action === ImageAction.OPEN_CUSTOM_LOGO) {
+                    await this.appendLogo(detail.data);
+                } else {
+                    await this.appendImage(detail.data);
+                }
             }
         });
 
@@ -833,7 +847,7 @@ export class AppEditorToolbar {
         });
     }
 
-    private async openCustomImagesModal() {
+    private async openCustomImagesModal(action: ImageAction) {
         const isAnonymous: boolean = await this.anonymousService.isAnonymous();
 
         if (isAnonymous) {
@@ -841,7 +855,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        await this.openImagesModal('app-custom-images');
+        await this.openImagesModal('app-custom-images', action);
     }
 
     private deleteBackground(): Promise<void> {
@@ -853,6 +867,36 @@ export class AppEditorToolbar {
 
             const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
             await helper.deleteBackground(this.selectedElement, this.applyToAllDeck);
+
+            resolve();
+        });
+    }
+
+    private deleteLogo(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            await helper.deleteSlideAttributeImgSrc(this.selectedElement);
+
+            resolve();
+        });
+    }
+
+    private appendLogo(image: StorageFile): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (!image) {
+                resolve();
+                return;
+            }
+
+            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            await helper.updateSlideAttributeImgSrc(this.selectedElement, image);
+
+            resolve();
         });
     }
 
@@ -990,7 +1034,7 @@ export class AppEditorToolbar {
                 return undefined;
             }
 
-            return <a onClick={() => this.openSlideOptions()} title="Slide options">
+            return <a onClick={() => this.openEditSlide()} title="Slide options">
                 <ion-label><ion-icon name="add" md="md-add" ios="md-add"></ion-icon></ion-label>
             </a>
         } else {

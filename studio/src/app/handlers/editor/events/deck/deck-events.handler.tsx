@@ -524,10 +524,16 @@ export class DeckEventsHandler {
 
             if (slide.hasAttribute('custom-background')) {
                 attributes.customBackground = '' + true;
+            } else {
+                // @ts-ignore
+                attributes.customBackground = firebase.firestore.FieldValue.delete();
             }
 
             if ((slide as any).imgSrc) {
                 attributes.imgSrc = (slide as any).imgSrc;
+            } else {
+                // @ts-ignore
+                attributes.imgSrc = firebase.firestore.FieldValue.delete();
             }
 
             if ((slide as any).imgAlt) {

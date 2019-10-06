@@ -19,12 +19,23 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
+  @Prop({reflectToAttr: true}) imgSrc: string;
+  @Prop({reflectToAttr: true}) imgAlt: string;
+
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
     this.initWindowResize();
 
     this.slideDidLoad.emit();
+  }
+
+  async componentDidUpdate() {
+    const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
+
+    if (img && this.imgSrc) {
+      await this.lazyLoadContent();
+    }
   }
 
   private initWindowResize() {
@@ -54,7 +65,11 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
         const qrCode: HTMLElement = container.querySelector('deckgo-qrcode');
 
         if (qrCode) {
-          qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? (height + 'px') : ('calc('  + width + 'px - 32px)'));
+          if (width <= 0 && height <= 0) {
+            qrCode.style.setProperty('--deckgo-qrcode-size', '100%');
+          } else {
+            qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? (height + 'px') : ('calc('  + width + 'px - 32px)'));
+          }
         }
       }
 
@@ -112,13 +127,23 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
         <slot name="title"></slot>
         <div class="deckgo-slide-qrcode">
           <slot name="content"></slot>
-          <deckgo-qrcode content={this.content}></deckgo-qrcode>
+          <deckgo-qrcode content={this.content}>
+            {this.renderLogo()}
+          </deckgo-qrcode>
         </div>
         <slot name="notes"></slot>
         <slot name="actions"></slot>
         <slot name="background"></slot>
       </div>
     </Host>;
+  }
+
+  private renderLogo() {
+  if (this.imgSrc) {
+      return <img slot="logo" data-src={this.imgSrc} alt={this.imgAlt}/>;
+    } else {
+      return undefined;
+    }
   }
 
 }

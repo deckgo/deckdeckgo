@@ -54,8 +54,9 @@ export class AppCreateSlide {
         return new Promise<void>(async (resolve) => {
             const slideGif: HTMLElement = this.el.querySelector('deckgo-slide-gif.showcase');
             const slideAuthor: HTMLElement = this.el.querySelector('deckgo-slide-author.showcase');
+            const slideQRCode: HTMLElement = this.el.querySelector('deckgo-slide-qrcode.showcase');
 
-            const slides: HTMLElement[] = [slideGif, slideAuthor];
+            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode];
 
             if (!slides || slides.length <= 0) {
                 resolve();
@@ -159,7 +160,7 @@ export class AppCreateSlide {
                     </deckgo-slide-content>
                 </div>
                 <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
-                    <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com">
+                    <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com" img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
                         <p slot="title">QR code</p>
                     </deckgo-slide-qrcode>
                 </div>

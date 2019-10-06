@@ -5,6 +5,7 @@ import {take} from 'rxjs/operators';
 import {Deck} from '../../../models/data/deck';
 
 import {QRCodeUtils} from '../../../utils/editor/qrcode.utils';
+import {ImageAction} from '../app-image/image-action';
 
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
@@ -43,8 +44,16 @@ export class AppEditSlide {
         this.customContent = this.customQRCode && this.selectedElement ? this.selectedElement.getAttribute('content') : undefined;
     }
 
-    private async closePopover() {
+    private async closePopoverWithoutResults() {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+    }
+
+    private async closePopover(action: ImageAction) {
+        const data = {
+            action: action
+        };
+
+        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss(data);
     }
 
     private async onRadioCustomLink($event: CustomEvent) {
@@ -138,7 +147,7 @@ export class AppEditSlide {
     render() {
         return [<ion-toolbar>
             <h2>Slide options</h2>
-            <ion-router-link slot="end" onClick={() => this.closePopover()}>
+            <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
@@ -168,6 +177,24 @@ export class AppEditSlide {
                     <ion-input value={this.customContent} placeholder="https://..." debounce={500} disabled={!this.customQRCode}
                                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
                                onIonChange={() => this.onInputCustomUrlChange()}></ion-input>
+                </ion-item>
+
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>QR code logo</ion-label>
+                </ion-item-divider>
+
+                <ion-item class="action-button">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_CUSTOM_LOGO)}
+                                color="tertiary">
+                        <ion-label class="ion-text-uppercase">Your image</ion-label>
+                    </ion-button>
+                </ion-item>
+
+                <ion-item class="action-button ion-margin-bottom">
+                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_LOGO)}
+                                fill="outline" class="delete">
+                        <ion-label class="ion-text-uppercase">Delete image</ion-label>
+                    </ion-button>
                 </ion-item>
             </ion-radio-group>;
         } else {

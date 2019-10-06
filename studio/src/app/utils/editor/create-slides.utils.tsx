@@ -235,7 +235,7 @@ export class CreateSlidesUtils {
 
             const content: string = QRCodeUtils.getPresentationUrl(deck);
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode content={content}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode content={content} img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
                 {title}
             </deckgo-slide-qrcode>;
 
