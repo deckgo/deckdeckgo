@@ -52,3 +52,15 @@ ion-button.delete {
   --border-color: var(--ion-color-light);
   --background-activated: white;
 }
+
+ion-segment {
+  ion-segment-button {
+    &:first-of-type {
+      margin-left: 8px;
+    }
+
+    &:last-of-type {
+      margin-right: 8px;
+    }
+  }
+}
