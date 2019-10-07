@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-2"></a>
+# 1.0.0-rc.1-2 (2019-10-07)
+
+### Features
+
+* update keyboard assist to support Vim key bindings (`k` and `j` to swipe slides too)
+
 <a name="1.0.0-rc.1-1"></a>
 # 1.0.0-rc.1-1 (2019-09-04)
 
