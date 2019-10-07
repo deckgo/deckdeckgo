@@ -1,3 +1,14 @@
+<a name="1.0.0-rc.4-1"></a>
+# 1.0.0-rc.4-1 (2019-10-01)
+
+### Features
+
+* new features of the slide QR code
+
+### Libs
+
+* update to most recent DeckDeckGo dependencies
+
 <a name="1.0.0-rc.4"></a>
 # 1.0.0-rc.4 (2019-10-01)
 
