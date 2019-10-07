@@ -120,6 +120,18 @@ export class AppSlideQRCode {
 <td>false</td>
 <td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
 </tr>
+<tr>
+<td>img-src</td>
+<td>string</td>
+<td></td>
+<td>In case you would like to display a logo over the QR code, provide the source of the image. Note: this image  is lazy loaded too.</td>
+</tr>
+<tr>
+<td>img-alt</td>
+<td>string</td>
+<td></td>
+<td>In case you would display a logo over the QR code, you could provide an accessibility attribute using this option.</td>
+</tr>
 </tbody></table>
 <h3 id="app-slide-qrcode-example-without-any-slots">Example without any slots</h3>
 <deckgo-highlight-code language="javascript">

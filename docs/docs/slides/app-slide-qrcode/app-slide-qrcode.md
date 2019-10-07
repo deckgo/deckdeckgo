@@ -113,6 +113,8 @@ The attribute `content` should be provided in order to render a QR code in this 
 | -------------------------- |-----------------|-----------------|-----------------|
 | custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
 | custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| img-src        | string  | | In case you would like to display a logo over the QR code, provide the source of the image. Note: this image  is lazy loaded too. |
+| img-alt           | string | | In case you would display a logo over the QR code, you could provide an accessibility attribute using this option. |
 
 ### Example without any slots
 
