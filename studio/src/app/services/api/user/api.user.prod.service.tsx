@@ -66,4 +66,35 @@ export class ApiUserProdService extends ApiUserService {
         });
     }
 
+    // @Override
+    get(userId: string): Promise<ApiUser> {
+        return new Promise<ApiUser>(async (resolve, reject) => {
+            try {
+                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+                const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!rawResponse || !rawResponse.ok) {
+                    // 404 if not found
+                    resolve(null);
+                    return;
+                }
+
+                const persistedUser: ApiUser = await rawResponse.json();
+
+                this.apiUserSubject.next(persistedUser);
+
+                resolve(persistedUser);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
 }

@@ -26,6 +26,13 @@ export class ApiUserMockService extends ApiUserService {
         });
     }
 
+    // @Override
+    get(_userId: string): Promise<ApiUser> {
+        return new Promise<ApiUser>(async (resolve) => {
+            resolve(undefined);
+        });
+    }
+
     private createTestUserInfo(apiUserInfo: ApiUserInfo | ApiUser): Promise<ApiUser> {
         return new Promise<ApiUser>((resolve) => {
             const testUser: ApiUser = {

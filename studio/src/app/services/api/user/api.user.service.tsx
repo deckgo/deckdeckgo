@@ -3,9 +3,6 @@ import {Observable, ReplaySubject} from 'rxjs';
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 import {AuthUser} from '../../../models/auth/auth.user';
 
-import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
-
 export abstract class ApiUserService {
 
     protected apiUserSubject: ReplaySubject<ApiUser> = new ReplaySubject(1);
@@ -13,6 +10,8 @@ export abstract class ApiUserService {
     abstract query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser>;
 
     abstract delete(userId: string, token: string): Promise<void>;
+
+    abstract get(userId: string): Promise<ApiUser>;
 
     signIn(authUser: AuthUser): Promise<void> {
         return new Promise<void>(async (resolve) => {
@@ -57,36 +56,6 @@ export abstract class ApiUserService {
 
     put(apiUser: ApiUserInfo | ApiUser, token: string, userId: string): Promise<ApiUser> {
         return this.query(apiUser, token, `/users/${userId}`, 'PUT');
-    }
-
-    private get(userId: string): Promise<ApiUser> {
-        return new Promise<ApiUser>(async (resolve, reject) => {
-            try {
-                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-                const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!rawResponse || !rawResponse.ok) {
-                    // 404 if not found
-                    resolve(null);
-                    return;
-                }
-
-                const persistedUser: ApiUser = await rawResponse.json();
-
-                this.apiUserSubject.next(persistedUser);
-
-                resolve(persistedUser);
-            } catch (err) {
-                reject(err);
-            }
-        });
     }
 
     watch(): Observable<ApiUser> {
