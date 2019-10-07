@@ -41,6 +41,9 @@ export class AppEditorToolbar {
     private code: boolean = false;
 
     @State()
+    private qrCode: boolean = false;
+
+    @State()
     private youtube: boolean = false;
 
     @State()
@@ -89,6 +92,7 @@ export class AppEditorToolbar {
 
         this.moveToolbarSubscription = this.moveToolbarSubject.pipe(debounceTime(250)).subscribe(async () => {
             await this.moveToolbar();
+            await this.resizeSlideContent();
         });
     }
 
@@ -229,6 +233,10 @@ export class AppEditorToolbar {
 
     private isElementYoutubeSlide(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-youtube';
+    }
+
+    private isElementQRCodeSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-qrcode';
     }
 
     private isElementList(element: HTMLElement): SlotType {
@@ -440,6 +448,8 @@ export class AppEditorToolbar {
                 const parent: HTMLElement = this.selectedElement.parentElement;
                 this.selectedElement.parentElement.removeChild(this.selectedElement);
                 this.slideDidChange.emit(parent);
+
+                await this.resizeSlideContent(parent);
             }
 
             await this.hideToolbar();
@@ -487,6 +497,35 @@ export class AppEditorToolbar {
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail.data && detail.data.type) {
                 await this.toggleSlotType(detail.data.type);
+            }
+        });
+
+        await popover.present();
+    }
+
+    private async openEditSlide() {
+        if (!this.deckOrSlide || !this.qrCode) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+            component: 'app-edit-slide',
+            componentProps: {
+                selectedElement: this.selectedElement,
+                qrCode: this.qrCode,
+                slideDidChange: this.slideDidChange
+            },
+            mode: 'md',
+            cssClass: 'popover-menu'
+        });
+
+        popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                if (detail.data.action === ImageAction.DELETE_LOGO) {
+                    await this.deleteLogo();
+                } else if (detail.data.action === ImageAction.OPEN_CUSTOM_LOGO) {
+                    await this.openCustomImagesModal(ImageAction.OPEN_CUSTOM_LOGO);
+                }
             }
         });
 
@@ -598,6 +637,8 @@ export class AppEditorToolbar {
 
             await this.emitChange();
 
+            await this.resizeSlideContent();
+
             await this.hideToolbar();
 
             resolve();
@@ -643,6 +684,7 @@ export class AppEditorToolbar {
             this.deckOrSlide = this.isElementSlideOrDeck(element);
 
             this.youtube = this.isElementYoutubeSlide(element);
+            this.qrCode = this.isElementQRCodeSlide(element);
 
             this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
             this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
@@ -691,6 +733,7 @@ export class AppEditorToolbar {
 
                 this.elementResizeObserver = new ResizeObserver(async (_entries) => {
                     await this.moveToolbar();
+                    await this.resizeSlideContent();
                 });
                 this.elementResizeObserver.observe(this.selectedElement);
             } else {
@@ -759,7 +802,7 @@ export class AppEditorToolbar {
                 } else if (detail.data.action === ImageAction.OPEN_GIFS) {
                     await this.openImagesModal('app-gif');
                 } else if (detail.data.action === ImageAction.OPEN_CUSTOM) {
-                    await this.openCustomImagesModal();
+                    await this.openCustomImagesModal(ImageAction.OPEN_CUSTOM);
                 }
             }
         });
@@ -767,14 +810,18 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openImagesModal(componentTag: string) {
+    private async openImagesModal(componentTag: string, action?: ImageAction) {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: componentTag
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                await this.appendImage(detail.data);
+                if (action === ImageAction.OPEN_CUSTOM_LOGO) {
+                    await this.appendLogo(detail.data);
+                } else {
+                    await this.appendImage(detail.data);
+                }
             }
         });
 
@@ -800,7 +847,7 @@ export class AppEditorToolbar {
         });
     }
 
-    private async openCustomImagesModal() {
+    private async openCustomImagesModal(action: ImageAction) {
         const isAnonymous: boolean = await this.anonymousService.isAnonymous();
 
         if (isAnonymous) {
@@ -808,7 +855,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        await this.openImagesModal('app-custom-images');
+        await this.openImagesModal('app-custom-images', action);
     }
 
     private deleteBackground(): Promise<void> {
@@ -820,6 +867,36 @@ export class AppEditorToolbar {
 
             const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
             await helper.deleteBackground(this.selectedElement, this.applyToAllDeck);
+
+            resolve();
+        });
+    }
+
+    private deleteLogo(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            await helper.deleteSlideAttributeImgSrc(this.selectedElement);
+
+            resolve();
+        });
+    }
+
+    private appendLogo(image: StorageFile): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (!image) {
+                resolve();
+                return;
+            }
+
+            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            await helper.updateSlideAttributeImgSrc(this.selectedElement, image);
+
+            resolve();
         });
     }
 
@@ -886,6 +963,28 @@ export class AppEditorToolbar {
         });
     }
 
+    private resizeSlideContent(slideElement?: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = slideElement ? slideElement : (this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
+
+            if (!element) {
+                resolve();
+                return;
+            }
+
+            if (typeof (element as any).resizeContent === 'function') {
+                await (element as any).resizeContent();
+            }
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
@@ -931,7 +1030,13 @@ export class AppEditorToolbar {
 
     private renderSlotType() {
         if (this.deckOrSlide) {
-            return undefined;
+            if (!this.qrCode) {
+                return undefined;
+            }
+
+            return <a onClick={() => this.openEditSlide()} title="Slide options">
+                <ion-label><ion-icon name="add" md="md-add" ios="md-add"></ion-icon></ion-label>
+            </a>
         } else {
             return <a onClick={() => this.openSlotType()} title="Toggle element type">
                 <ion-label><ion-icon name="add" md="md-add" ios="md-add"></ion-icon></ion-label>

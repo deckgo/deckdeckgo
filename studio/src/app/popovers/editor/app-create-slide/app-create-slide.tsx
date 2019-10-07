@@ -4,12 +4,14 @@ import {take} from 'rxjs/operators';
 import {SlideTemplate} from '../../../models/data/slide';
 
 import {User} from '../../../models/data/user';
+import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
     tag: 'app-create-slide',
@@ -26,12 +28,14 @@ export class AppCreateSlide {
 
     private userService: UserService;
     private anonymousService: AnonymousService;
+    private deckEditorService: DeckEditorService;
 
     @Event() signIn: EventEmitter<void>;
 
     constructor() {
         this.userService = UserService.getInstance();
         this.anonymousService = AnonymousService.getInstance();
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentWillLoad() {
@@ -50,8 +54,9 @@ export class AppCreateSlide {
         return new Promise<void>(async (resolve) => {
             const slideGif: HTMLElement = this.el.querySelector('deckgo-slide-gif.showcase');
             const slideAuthor: HTMLElement = this.el.querySelector('deckgo-slide-author.showcase');
+            const slideQRCode: HTMLElement = this.el.querySelector('deckgo-slide-qrcode.showcase');
 
-            const slides: HTMLElement[] = [slideGif, slideAuthor];
+            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode];
 
             if (!slides || slides.length <= 0) {
                 resolve();
@@ -69,9 +74,15 @@ export class AppCreateSlide {
         });
     }
 
-    private async addSlide(template: SlideTemplate) {
-        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, this.user);
+    private async addSlide(template: SlideTemplate, deck?: Deck) {
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, deck, this.user);
         await this.closePopover(template, slide);
+    }
+
+    private addSlideQRCode() {
+        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+            await this.addSlide(SlideTemplate.QRCODE, deck);
+        });
     }
 
     // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
@@ -84,7 +95,7 @@ export class AppCreateSlide {
             return;
         }
 
-        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, this.user);
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, null, this.user);
         await this.closePopover(template, slide);
     }
 
@@ -140,6 +151,19 @@ export class AppCreateSlide {
                         }}>and footer</p>
                     </deckgo-slide-gif>
                 </div>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
+                    <deckgo-slide-content class="showcase gif">
+                        <p slot="title">Youtube</p>
+                        <p slot="content">
+                            <ion-icon name="logo-youtube"></ion-icon>
+                        </p>
+                    </deckgo-slide-content>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
+                    <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com" img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
+                        <p slot="title">QR code</p>
+                    </deckgo-slide-qrcode>
+                </div>
                 <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
                     <deckgo-slide-author class="showcase"
                                          img-src={this.photoUrl}
@@ -153,14 +177,6 @@ export class AppCreateSlide {
                         <p slot="social-link">Github</p>
                         <p slot="social-link">Web</p>
                     </deckgo-slide-author>
-                </div>
-                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
-                    <deckgo-slide-content class="showcase gif">
-                        <p slot="title">Youtube</p>
-                        <p slot="content">
-                            <ion-icon name="logo-youtube"></ion-icon>
-                        </p>
-                    </deckgo-slide-content>
                 </div>
             </div>
         ];

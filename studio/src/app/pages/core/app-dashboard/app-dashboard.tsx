@@ -85,7 +85,7 @@ export class AppDashboard {
         return new Promise<DeckAndFirstSlide>(async (resolve) => {
             try {
                 const slide: Slide = await this.slideService.get(deck.id, slideId);
-                const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(slide, false);
+                const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
                 let style: any;
                 if (deck.data && deck.data.attributes && deck.data.attributes.style) {

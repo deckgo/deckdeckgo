@@ -16,7 +16,10 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'hideContent': () => Promise<void>;
+    'imgAlt': string;
+    'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
+    'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
   }
 }
@@ -39,6 +42,8 @@ declare namespace LocalJSX {
     'content'?: string;
     'customActions'?: boolean;
     'customBackground'?: boolean;
+    'imgAlt'?: string;
+    'imgSrc'?: string;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
   }
 

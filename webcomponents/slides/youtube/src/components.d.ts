@@ -19,6 +19,7 @@ export namespace Components {
     'lazyLoadContent': () => Promise<void>;
     'pause': () => Promise<void>;
     'play': () => Promise<void>;
+    'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
     'src': string;
     'toggle': () => Promise<void>;

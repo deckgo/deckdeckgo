@@ -1,23 +1,26 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
-import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-qrcode',
   styleUrl: 'deckdeckgo-slide-qrcode.scss',
   shadow: true
 })
-export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
+export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
 
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() content: string;
+  @Prop({reflectToAttr: true}) content: string;
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
+
+  @Prop({reflectToAttr: true}) imgSrc: string;
+  @Prop({reflectToAttr: true}) imgAlt: string;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
@@ -25,6 +28,14 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
     this.initWindowResize();
 
     this.slideDidLoad.emit();
+  }
+
+  async componentDidUpdate() {
+    const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
+
+    if (img && this.imgSrc) {
+      await this.lazyLoadContent();
+    }
   }
 
   private initWindowResize() {
@@ -54,7 +65,11 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
         const qrCode: HTMLElement = container.querySelector('deckgo-qrcode');
 
         if (qrCode) {
-          qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? (height + 'px') : ('calc('  + width + 'px - 32px)'));
+          if (width <= 0 && height <= 0) {
+            qrCode.style.setProperty('--deckgo-qrcode-size', '100%');
+          } else {
+            qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? (height + 'px') : ('calc('  + width + 'px - 32px)'));
+          }
         }
       }
 
@@ -97,19 +112,38 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlide {
     return Promise.resolve();
   }
 
+  @Method()
+  resizeContent(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      await this.onResizeContent();
+
+      resolve();
+    });
+  }
+
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <div class="deckgo-slide">
         <slot name="title"></slot>
         <div class="deckgo-slide-qrcode">
           <slot name="content"></slot>
-          <deckgo-qrcode content={this.content}></deckgo-qrcode>
+          <deckgo-qrcode content={this.content}>
+            {this.renderLogo()}
+          </deckgo-qrcode>
         </div>
         <slot name="notes"></slot>
         <slot name="actions"></slot>
         <slot name="background"></slot>
       </div>
     </Host>;
+  }
+
+  private renderLogo() {
+  if (this.imgSrc) {
+      return <img slot="logo" data-src={this.imgSrc} alt={this.imgAlt}/>;
+    } else {
+      return undefined;
+    }
   }
 
 }

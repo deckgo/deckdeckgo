@@ -1,4 +1,4 @@
-app-deck-or-slide {
+app-select-target-element {
 
   ion-list.list-ios {
     margin-bottom: 0;
@@ -19,6 +19,17 @@ app-deck-or-slide {
 
     ion-label {
       margin: 16px 0 4px;
+    }
+  }
+
+  ion-segment {
+    ion-segment-button {
+      min-width: auto;
+
+      --padding-end: 0;
+      --padding-start: 0;
+
+      --indicator-color: var(--ion-color-light);
     }
   }
 

@@ -20,6 +20,7 @@ import '@deckdeckgo/slide-split';
 import '@deckdeckgo/slide-gif';
 import '@deckdeckgo/slide-youtube';
 import '@deckdeckgo/slide-author';
+import '@deckdeckgo/slide-qrcode';
 
 import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment/environment-config';
 

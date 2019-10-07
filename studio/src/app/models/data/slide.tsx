@@ -4,7 +4,8 @@ export enum SlideTemplate {
     SPLIT = 'split',
     GIF = 'gif',
     AUTHOR = 'author',
-    YOUTUBE = 'youtube'
+    YOUTUBE = 'youtube',
+    QRCODE = 'qrcode'
 }
 
 export interface SlideAttributes {
@@ -13,6 +14,8 @@ export interface SlideAttributes {
     customBackground?: string;
     imgSrc?: string;
     imgAlt?: string;
+    content?: string;
+    customQRCode?: boolean;
 }
 
 export interface SlideData {

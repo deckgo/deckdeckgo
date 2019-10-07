@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.2 (2019-10-XX)
+
+### Features
+
+* `watch` property `content` to generate QR code again if its value is modified
+
 <a name="1.0.0-rc.1"></a>
 # 1.0.0-rc.1 (2019-08-30)
 

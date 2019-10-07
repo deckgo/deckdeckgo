@@ -40,7 +40,7 @@ export class AppFaq {
 
                     <h3 class="ion-padding-top">How could I print? How could I export to PDF?</h3>
 
-                    <p>You can't.</p>
+                    <p>You can't (but we do understand that you might wish to).</p>
 
                     <p>With DeckDeckGo each presentations are shared as standalone applications. It's a bit another concept and we think that it is quite interesting to challenge it.</p>
 
@@ -49,6 +49,10 @@ export class AppFaq {
                     <h3 class="ion-padding-top">I don't want to use the editor, I want to code my presentations, is that possible?</h3>
 
                     <p>No problemo. This editor use separate Web Components we open sourced too as core engine. Therefore, if you wish to code your own presentations using our libraries, HTML or Markdown, of course you could. Run <strong>npm init deckdeckgo</strong> to get started.</p>
+
+                    <h3 class="ion-padding-top">I just scanned a QR code and I landed on the homepage, what the heck happened?</h3>
+
+                    <p>The QR codes you add to your presentations are by default linked with the homepage. As soon as you share them, their content will automatically be updated with their online urls. Alternatively, you could also provide a custom url for their content.</p>
 
                 </main>
 

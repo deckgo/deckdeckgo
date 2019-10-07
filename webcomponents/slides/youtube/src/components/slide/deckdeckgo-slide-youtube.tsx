@@ -62,7 +62,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
       await lazyLoadContent(this.el);
 
       await this.initSize();
-      await this.resizeContent();
+      await this.resizeVideoContent();
 
       resolve();
     });
@@ -154,15 +154,24 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   private onResizeContent = async () => {
     await this.initSize();
 
-    await this.resizeContent();
+    await this.resizeVideoContent();
   };
 
-  private async resizeContent() {
+  private async resizeVideoContent() {
     const element: any = this.el.shadowRoot.querySelector('deckgo-youtube');
 
     if (element) {
       await element.updateIFrame(this.videoWidth, this.videoHeight);
     }
+  }
+
+  @Method()
+  resizeContent(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      await this.onResizeContent();
+
+      resolve();
+    });
   }
 
   render() {

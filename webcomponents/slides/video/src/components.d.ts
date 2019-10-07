@@ -24,6 +24,7 @@ export namespace Components {
     'pause': () => Promise<void>;
     'play': () => Promise<void>;
     'playsinline': boolean;
+    'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
     'src': string;
     'toggle': () => Promise<void>;

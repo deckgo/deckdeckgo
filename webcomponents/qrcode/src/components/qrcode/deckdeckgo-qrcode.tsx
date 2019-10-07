@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop, h} from '@stencil/core';
+import {Component, Element, Method, Prop, h, Watch} from '@stencil/core';
 
 import * as QRCodeGenerator from '../utils/qrcode-generator/qrcode';
 
@@ -28,6 +28,11 @@ export class DeckdeckgoQRCode {
   @Prop() qrAlt: string;
 
   async componentDidLoad() {
+    await this.generate();
+  }
+
+  @Watch('content')
+  async onContentChange() {
     await this.generate();
   }
 
