@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-video",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.1-1",
   "description": "The Video template displays a video and play/stop it on swipe",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -22,7 +22,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "file:../utils",
+    "@deckdeckgo/slide-utils": "^1.0.0-rc.3",
     "@deckdeckgo/utils": "^1.0.0-rc.1-1"
   },
   "devDependencies": {
