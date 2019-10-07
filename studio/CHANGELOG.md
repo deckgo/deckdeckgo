@@ -1,3 +1,19 @@
+<a name="1.0.0-beta.6"></a>
+# 1.0.0-beta.6 (2019-10-07)
+
+### Features
+
+* integrate template QR code ([#384](https://github.com/deckgo/deckdeckgo/issues/384))
+* add a meta attribute for the display in the feed ([#361](https://github.com/deckgo/deckdeckgo/issues/361))
+* mock api ([#367](https://github.com/deckgo/deckdeckgo/issues/367))
+* background opacity and missing "white" in color picker  ([#348](https://github.com/deckgo/deckdeckgo/issues/348))
+* randomize feed ([#374](https://github.com/deckgo/deckdeckgo/issues/374))
+* don't persist "grammarly" injected data ([#376](https://github.com/deckgo/deckdeckgo/issues/376))
+
+### Fix
+
+* non latin characters as presentation's name / url ([#385](https://github.com/deckgo/deckdeckgo/issues/385))
+
 <a name="1.0.0-beta.5-2"></a>
 # 1.0.0-beta.5-2 (2019-09-23)
 
