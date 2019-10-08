@@ -16,6 +16,7 @@ app-feed-card {
       }
 
       ion-card-title {
+        display: none;
         white-space: nowrap;
         overflow: hidden;
         font-size: var(--font-size-h1);
