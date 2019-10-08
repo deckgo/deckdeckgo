@@ -6,7 +6,7 @@ app-feed-card {
     ion-card-content {
 
       &.compact {
-        app-feed-card-tags, p.content {
+        p.content {
           display: none;
         }
       }
