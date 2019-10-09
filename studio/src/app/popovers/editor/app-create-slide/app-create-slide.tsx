@@ -24,6 +24,9 @@ export class AppCreateSlide {
     @State()
     private photoUrl: string;
 
+    @State()
+    private chartsCollapsed: boolean = true;
+
     private user: User;
 
     private userService: UserService;
@@ -175,7 +178,7 @@ export class AppCreateSlide {
                         </p>
                     </deckgo-slide-content>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.CHART)}>
+                <div class="item" custom-tappable onClick={() => this.chartsCollapsed = !this.chartsCollapsed}>
                     <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
                                         width={204} height={68}
@@ -183,6 +186,9 @@ export class AppCreateSlide {
                         <p slot="title">Chart</p>
                     </deckgo-slide-chart>
                 </div>
+
+                {this.renderCharts()}
+
                 <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
                     <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com" img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
                         <p slot="title">QR code</p>
@@ -204,6 +210,58 @@ export class AppCreateSlide {
                 </div>
             </div>
         ];
+    }
+
+    private renderCharts() {
+        const chartsClass: string = `expand-charts ${this.chartsCollapsed ? 'collapsed' : ''}`;
+
+        return <div class={chartsClass}>
+
+            <div class="arrow"></div>
+
+            <div class="list">
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.CHART)}>
+                    <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+                        <p slot="title">Chart</p>
+                    </deckgo-slide-chart>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.CHART)}>
+                    <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+                        <p slot="title">Chart</p>
+                    </deckgo-slide-chart>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.CHART)}>
+                    <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+                        <p slot="title">Chart</p>
+                    </deckgo-slide-chart>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.CHART)}>
+                    <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+                        <p slot="title">Chart</p>
+                    </deckgo-slide-chart>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.CHART)}>
+                    <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+                        <p slot="title">Chart</p>
+                    </deckgo-slide-chart>
+                </div>
+            </div>
+        </div>;
     }
 
 }
