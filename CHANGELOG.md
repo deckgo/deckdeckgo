@@ -1,6 +1,10 @@
 <a name="1.0.0-rc.16"></a>
 # [1.0.0-rc.16](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.15...v1.0.0-16) (In the making...)
 
+### Applications
+
+* docs: v1.0.0-rc.4-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 ### Web Components
 * charts: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
 * slide-chart: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/chart/CHANGELOG.md))
