@@ -10,6 +10,7 @@ import {transition} from 'd3-transition';
 
 interface DeckdeckgoBarChartDataValue {
   key: string;
+  title: string;
   value: number;
 }
 
@@ -186,7 +187,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       this.y = scaleLinear().rangeRound([this.height, 0]);
 
       const xDomains = this.data[0].values.map((d) => {
-        return d.key;
+        return d.title;
       });
 
       if (this.animation) {
@@ -233,7 +234,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .transition(t).duration(animationDuration)
         .attr('x', (d) => {
-          return this.x0(d.key);
+          return this.x0(d.title);
         })
         .attr('y', (d) => {
           return this.y(d.value);
@@ -263,7 +264,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .enter().append('rect')
         .attr('x', (d) => {
-          return this.x1(d.key);
+          return this.x1(d.title);
         })
         .attr('y', (d) => {
           return this.y(d.value);
@@ -303,26 +304,39 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       }
 
       let results: DeckdeckgoBarChartData[] = [];
-      lines.forEach((line: string) => {
+      let keys: (number | string)[];
+
+      lines.forEach((line: string, lineCount: number) => {
         const values: string[] = line.split(this.separator);
 
         if (values && values.length >= 2) {
 
+          // Title
+          if (!keys) {
+            keys = [...Array(values.length).keys()].slice(1);
+          }
+
           let dataValues: DeckdeckgoBarChartDataValue[] = [];
           for (let i = 1; i < values.length; i++) {
             const tmp: number = parseInt(values[i]);
+
             if (!isNaN(tmp)) {
               dataValues.push({
-                key: '' + i,
+                key: `${i}`,
+                title: keys.length >= i ? `${keys[i - 1]}` : `${i}`,
                 value: tmp
               });
+            } else if (lineCount === 0 && keys.length >= i) {
+              keys[i - 1] = values[i];
             }
           }
 
-          results.push({
-            label: values[0],
-            values: dataValues
-          });
+          if (dataValues && dataValues.length > 0) {
+            results.push({
+              label: values[0],
+              values: dataValues
+            });
+          }
         }
       });
 
