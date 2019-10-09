@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-10-09)
+
+### Features
+
+* when using animation bar, allow custom labels for x-axis ([#340](https://github.com/deckgo/deckdeckgo/issues/340))
+
 <a name="1.0.0-rc.1"></a>
 # 1.0.0-rc.1 (2019-08-30)
 

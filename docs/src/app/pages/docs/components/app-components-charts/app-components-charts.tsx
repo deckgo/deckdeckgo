@@ -37,59 +37,59 @@ export class AppComponentsCharts {
 <p>To create and draw the charts, this project is using <a href="https://d3js.org">D3js</a>.</p>
 <h2 id="app-components-charts-table-of-contents">Table of contents</h2>
 <ul>
-<li><a href="#app-components-chart-showcase">Showcase</a><ul>
-<li><a href="#app-components-chart-pie">Pie</a></li>
-<li><a href="#app-components-chart-donut">Donut</a></li>
-<li><a href="#app-components-chart-animated-pie">Animated pie</a></li>
-<li><a href="#app-components-chart-compare-two-graphs">Compare two graphs</a></li>
-<li><a href="#app-components-chart-line-and-area">Line and area</a></li>
-<li><a href="#app-components-chart-compare-two-lines-and-smoothing-effect">Compare two lines and smoothing effect</a></li>
-<li><a href="#app-components-chart-compare-two-lines-and-display-a-grid">Compare two lines and display a grid</a></li>
-<li><a href="#app-components-chart-animated-lines">Animated lines</a></li>
-<li><a href="#app-components-chart-bar">Bar</a></li>
-<li><a href="#app-components-chart-compare-multiple-bars">Compare multiple bars</a></li>
-<li><a href="#app-components-chart-animated-bars">Animated bars</a></li>
+<li><a href="#app-components-charts-showcase">Showcase</a><ul>
+<li><a href="#app-components-charts-pie">Pie</a></li>
+<li><a href="#app-components-charts-donut">Donut</a></li>
+<li><a href="#app-components-charts-animated-pie">Animated pie</a></li>
+<li><a href="#app-components-charts-compare-two-graphs">Compare two graphs</a></li>
+<li><a href="#app-components-charts-line-and-area">Line and area</a></li>
+<li><a href="#app-components-charts-compare-two-lines-and-smoothing-effect">Compare two lines and smoothing effect</a></li>
+<li><a href="#app-components-charts-compare-two-lines-and-display-a-grid">Compare two lines and display a grid</a></li>
+<li><a href="#app-components-charts-animated-lines">Animated lines</a></li>
+<li><a href="#app-components-charts-bar">Bar</a></li>
+<li><a href="#app-components-charts-compare-multiple-bars">Compare multiple bars</a></li>
+<li><a href="#app-components-charts-animated-bars">Animated bars</a></li>
 </ul>
 </li>
-<li><a href="#app-components-chart-installation">Installation</a><ul>
-<li><a href="#app-components-chart-using-deckdeckgo-charts-from-a-cdn">Using DeckDeckGo charts from a CDN</a></li>
-<li><a href="#app-components-chart-install-deckdeckgo-charts-from-npm">Install DeckDeckGo charts from NPM</a></li>
-<li><a href="#app-components-chart-framework-integration">Framework integration</a></li>
+<li><a href="#app-components-charts-installation">Installation</a><ul>
+<li><a href="#app-components-charts-using-deckdeckgo-charts-from-a-cdn">Using DeckDeckGo charts from a CDN</a></li>
+<li><a href="#app-components-charts-install-deckdeckgo-charts-from-npm">Install DeckDeckGo charts from NPM</a></li>
+<li><a href="#app-components-charts-framework-integration">Framework integration</a></li>
 </ul>
 </li>
-<li><a href="#app-components-chart-usage">Usage</a><ul>
-<li><a href="#app-components-chart-pie-usage">Pie usage</a><ul>
-<li><a href="#app-components-chart-csv">CSV</a><ul>
-<li><a href="#app-components-chart-example">Example</a></li>
+<li><a href="#app-components-charts-usage">Usage</a><ul>
+<li><a href="#app-components-charts-pie-usage">Pie usage</a><ul>
+<li><a href="#app-components-charts-csv">CSV</a><ul>
+<li><a href="#app-components-charts-example">Example</a></li>
 </ul>
 </li>
-<li><a href="#app-components-chart-properties">Properties</a></li>
-<li><a href="#app-components-chart-styling">Styling</a></li>
-<li><a href="#app-components-chart-methods">Methods</a></li>
-<li><a href="#app-components-chart-examples">Examples</a></li>
+<li><a href="#app-components-charts-properties">Properties</a></li>
+<li><a href="#app-components-charts-styling">Styling</a></li>
+<li><a href="#app-components-charts-methods">Methods</a></li>
+<li><a href="#app-components-charts-examples">Examples</a></li>
 </ul>
 </li>
-<li><a href="#app-components-chart-line-usage">Line usage</a><ul>
-<li><a href="#app-components-chart-csv-1">CSV</a><ul>
-<li><a href="#app-components-chart-two-columns-1">Two columns</a></li>
-<li><a href="#app-components-chart-three-columns-or-more">Three columns or more</a></li>
+<li><a href="#app-components-charts-line-usage">Line usage</a><ul>
+<li><a href="#app-components-charts-csv-1">CSV</a><ul>
+<li><a href="#app-components-charts-two-columns-1">Two columns</a></li>
+<li><a href="#app-components-charts-three-columns-or-more">Three columns or more</a></li>
 </ul>
 </li>
-<li><a href="#app-components-chart-properties-1">Properties</a></li>
-<li><a href="#app-components-chart-styling-1">Styling</a></li>
-<li><a href="#app-components-chart-methods-1">Methods</a></li>
-<li><a href="#app-components-chart-examples-1">Examples</a></li>
+<li><a href="#app-components-charts-properties-1">Properties</a></li>
+<li><a href="#app-components-charts-styling-1">Styling</a></li>
+<li><a href="#app-components-charts-methods-1">Methods</a></li>
+<li><a href="#app-components-charts-examples-1">Examples</a></li>
 </ul>
 </li>
-<li><a href="#app-components-chart-bar-usage">Bar usage</a><ul>
-<li><a href="#app-components-chart-csv-2">CSV</a><ul>
-<li><a href="#app-components-chart-multiple-columns">Multiple columns</a></li>
+<li><a href="#app-components-charts-bar-usage">Bar usage</a><ul>
+<li><a href="#app-components-charts-csv-2">CSV</a><ul>
+<li><a href="#app-components-charts-multiple-columns">Multiple columns</a></li>
 </ul>
 </li>
-<li><a href="#app-components-chart-properties-2">Properties</a></li>
-<li><a href="#app-components-chart-styling-2">Styling</a></li>
-<li><a href="#app-components-chart-methods-2">Methods</a></li>
-<li><a href="#app-components-chart-examples-2">Examples</a></li>
+<li><a href="#app-components-charts-properties-2">Properties</a></li>
+<li><a href="#app-components-charts-styling-2">Styling</a></li>
+<li><a href="#app-components-charts-methods-2">Methods</a></li>
+<li><a href="#app-components-charts-examples-2">Examples</a></li>
 </ul>
 </li>
 </ul>
@@ -153,7 +153,7 @@ export class AppComponentsCharts {
 
 <h3 id="app-components-charts-animated-bars">Animated bars</h3>
 <div>
-  <deckgo-bar-chart id="animatedBar" animation={true} width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+  <deckgo-bar-chart id="animatedBar" animation={true} width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare-with-titles.csv"
                       style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}></deckgo-bar-chart>
 
   <div>
@@ -577,6 +577,9 @@ export class AppComponentsCharts {
 <p>The first column should contains the labels or groups used for the X axis. The other columns are the values use for the Y axis.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">Group A;5;0;10{'\n'}Group B;10;6;12{'\n'}Group C;8;14;8{'\n'}Group D;14;8;16{'\n'}Group E;18;4;5</code>
+    </deckgo-highlight-code><p>If you want to provide title for the bars, add a first row in your data with an empty value for the first column.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">;Salami;Pastrami;Prosciutto{'\n'}Group A;5;0;10{'\n'}Group B;10;6;12{'\n'}Group C;8;14;8{'\n'}Group D;14;8;16{'\n'}Group E;18;4;5</code>
     </deckgo-highlight-code><h4 id="app-components-charts-properties-2">Properties</h4>
 <p>The <code>&lt;deckgo-bar-chart/&gt;</code> expose the following properties:</p>
 <table>

@@ -6,45 +6,45 @@ To create and draw the charts, this project is using [D3js](https://d3js.org).
 
 ## Table of contents
 
-- [Showcase](#app-components-chart-showcase)
-	- [Pie](#app-components-chart-pie)
-	- [Donut](#app-components-chart-donut)
-	- [Animated pie](#app-components-chart-animated-pie)
-	- [Compare two graphs](#app-components-chart-compare-two-graphs)
-	- [Line and area](#app-components-chart-line-and-area)
-	- [Compare two lines and smoothing effect](#app-components-chart-compare-two-lines-and-smoothing-effect)
-	- [Compare two lines and display a grid](#app-components-chart-compare-two-lines-and-display-a-grid)
-	- [Animated lines](#app-components-chart-animated-lines)
-	- [Bar](#app-components-chart-bar)
-	- [Compare multiple bars](#app-components-chart-compare-multiple-bars)
-	- [Animated bars](#app-components-chart-animated-bars)
-- [Installation](#app-components-chart-installation)
-	- [Using DeckDeckGo charts from a CDN](#app-components-chart-using-deckdeckgo-charts-from-a-cdn)
-	- [Install DeckDeckGo charts from NPM](#app-components-chart-install-deckdeckgo-charts-from-npm)
-	- [Framework integration](#app-components-chart-framework-integration)
-- [Usage](#app-components-chart-usage)
-	- [Pie usage](#app-components-chart-pie-usage)
-		- [CSV](#app-components-chart-csv)
-			- [Example](#app-components-chart-example)
-		- [Properties](#app-components-chart-properties)
-		- [Styling](#app-components-chart-styling)
-		- [Methods](#app-components-chart-methods)
-		- [Examples](#app-components-chart-examples)
-	- [Line usage](#app-components-chart-line-usage)
-		- [CSV](#app-components-chart-csv-1)
-			- [Two columns](#app-components-chart-two-columns-1)
-			- [Three columns or more](#app-components-chart-three-columns-or-more)
-		- [Properties](#app-components-chart-properties-1)
-		- [Styling](#app-components-chart-styling-1)
-		- [Methods](#app-components-chart-methods-1)
-		- [Examples](#app-components-chart-examples-1)
-	- [Bar usage](#app-components-chart-bar-usage)
-		- [CSV](#app-components-chart-csv-2)
-			- [Multiple columns](#app-components-chart-multiple-columns)
-		- [Properties](#app-components-chart-properties-2)
-		- [Styling](#app-components-chart-styling-2)
-		- [Methods](#app-components-chart-methods-2)
-		- [Examples](#app-components-chart-examples-2)
+- [Showcase](#app-components-charts-showcase)
+	- [Pie](#app-components-charts-pie)
+	- [Donut](#app-components-charts-donut)
+	- [Animated pie](#app-components-charts-animated-pie)
+	- [Compare two graphs](#app-components-charts-compare-two-graphs)
+	- [Line and area](#app-components-charts-line-and-area)
+	- [Compare two lines and smoothing effect](#app-components-charts-compare-two-lines-and-smoothing-effect)
+	- [Compare two lines and display a grid](#app-components-charts-compare-two-lines-and-display-a-grid)
+	- [Animated lines](#app-components-charts-animated-lines)
+	- [Bar](#app-components-charts-bar)
+	- [Compare multiple bars](#app-components-charts-compare-multiple-bars)
+	- [Animated bars](#app-components-charts-animated-bars)
+- [Installation](#app-components-charts-installation)
+	- [Using DeckDeckGo charts from a CDN](#app-components-charts-using-deckdeckgo-charts-from-a-cdn)
+	- [Install DeckDeckGo charts from NPM](#app-components-charts-install-deckdeckgo-charts-from-npm)
+	- [Framework integration](#app-components-charts-framework-integration)
+- [Usage](#app-components-charts-usage)
+	- [Pie usage](#app-components-charts-pie-usage)
+		- [CSV](#app-components-charts-csv)
+			- [Example](#app-components-charts-example)
+		- [Properties](#app-components-charts-properties)
+		- [Styling](#app-components-charts-styling)
+		- [Methods](#app-components-charts-methods)
+		- [Examples](#app-components-charts-examples)
+	- [Line usage](#app-components-charts-line-usage)
+		- [CSV](#app-components-charts-csv-1)
+			- [Two columns](#app-components-charts-two-columns-1)
+			- [Three columns or more](#app-components-charts-three-columns-or-more)
+		- [Properties](#app-components-charts-properties-1)
+		- [Styling](#app-components-charts-styling-1)
+		- [Methods](#app-components-charts-methods-1)
+		- [Examples](#app-components-charts-examples-1)
+	- [Bar usage](#app-components-charts-bar-usage)
+		- [CSV](#app-components-charts-csv-2)
+			- [Multiple columns](#app-components-charts-multiple-columns)
+		- [Properties](#app-components-charts-properties-2)
+		- [Styling](#app-components-charts-styling-2)
+		- [Methods](#app-components-charts-methods-2)
+		- [Examples](#app-components-charts-examples-2)
 
 ## Showcase
 
@@ -126,7 +126,7 @@ npm run start
 ### Animated bars
 
 <div>
-  <deckgo-bar-chart id="animatedBar" animation={true} width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+  <deckgo-bar-chart id="animatedBar" animation={true} width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare-with-titles.csv"
                       style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}></deckgo-bar-chart>
   
   <div>
@@ -417,6 +417,17 @@ The values could be provided as `number` or `percent`.
 The first column should contains the labels or groups used for the X axis. The other columns are the values use for the Y axis.
 
 ```
+Group A;5;0;10
+Group B;10;6;12
+Group C;8;14;8
+Group D;14;8;16
+Group E;18;4;5
+```
+
+If you want to provide title for the bars, add a first row in your data with an empty value for the first column.
+
+```
+;Salami;Pastrami;Prosciutto
 Group A;5;0;10
 Group B;10;6;12
 Group C;8;14;8

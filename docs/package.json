@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-docs",
-  "version": "1.0.0-rc.4-1",
+  "version": "1.0.0-rc.4-2",
   "description": "The Progressive Web App alternative for simple presentations",
   "license": "MIT",
   "files": [
@@ -14,7 +14,7 @@
     "test.watch": "npm run docs && stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/charts": "^1.0.0-rc.1",
+    "@deckdeckgo/charts": "^1.0.0-rc.2",
     "@deckdeckgo/color": "^1.0.0-rc.2-2",
     "@deckdeckgo/core": "^1.0.0-rc.1-2",
     "@deckdeckgo/highlight-code": "^1.0.0-rc.1-1",

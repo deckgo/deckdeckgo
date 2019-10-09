@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.4-2"></a>
+# 1.0.0-rc.4-2 (2019-10-09)
+
+### Features
+
+* new animated bar charts title options
+
 <a name="1.0.0-rc.4-1"></a>
 # 1.0.0-rc.4-1 (2019-10-01)
 
