@@ -18,6 +18,7 @@ export namespace Components {
     'customActions': boolean;
     'customBackground': boolean;
     'datePattern': string;
+    'draw': () => Promise<void>;
     'grid': boolean;
     'height': number;
     'hideContent': () => Promise<void>;

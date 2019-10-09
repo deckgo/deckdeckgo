@@ -157,6 +157,11 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
     }
   }
 
+  @Method()
+  async draw() {
+    await this.drawChart();
+  }
+
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <div class="deckgo-slide">

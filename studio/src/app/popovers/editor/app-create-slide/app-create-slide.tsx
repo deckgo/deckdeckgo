@@ -48,6 +48,7 @@ export class AppCreateSlide {
 
     async componentDidLoad() {
         await this.lazyLoadContent();
+        await this.drawChart();
     }
 
     private lazyLoadContent(): Promise<void> {
@@ -69,6 +70,21 @@ export class AppCreateSlide {
             });
 
             await Promise.all(promises);
+
+            resolve();
+        });
+    }
+
+    private drawChart(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slideChart: HTMLElement = this.el.querySelector('deckgo-slide-chart.showcase');
+
+            if (!slideChart) {
+                resolve();
+                return;
+            }
+
+            await (slideChart as any).draw();
 
             resolve();
         });
@@ -158,6 +174,14 @@ export class AppCreateSlide {
                             <ion-icon name="logo-youtube"></ion-icon>
                         </p>
                     </deckgo-slide-content>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.CHART)}>
+                    <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+                        <p slot="title">Chart</p>
+                    </deckgo-slide-chart>
                 </div>
                 <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
                     <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com" img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">

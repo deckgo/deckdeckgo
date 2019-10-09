@@ -5,7 +5,8 @@ export enum SlideTemplate {
     GIF = 'gif',
     AUTHOR = 'author',
     YOUTUBE = 'youtube',
-    QRCODE = 'qrcode'
+    QRCODE = 'qrcode',
+    CHART = 'chart'
 }
 
 export interface SlideAttributes {

@@ -37,7 +37,7 @@ app-create-slide {
       }
     }
 
-    deckgo-slide-content, deckgo-slide-qrcode {
+    deckgo-slide-content, deckgo-slide-qrcode, deckgo-slide-chart {
       --slide-padding-top: 4px;
       --slide-padding-start: 2px;
       --slide-padding-end: 6px;
@@ -80,6 +80,17 @@ app-create-slide {
       @media screen and (min-width: 1024px) {
         --slide-author-padding-top: 54px;
       }
+    }
+
+    deckgo-slide-chart {
+      --slide-chart-margin-end: 0;
+      --slide-chart-margin-start: 4px;
+      --slide-chart-margin-top: 8px;
+      --slide-chart-margin-bottom: 4px;
+
+      --deckgo-chart-fill-color-0: var(--ion-color-primary);
+      --deckgo-chart-fill-color-1: var(--ion-color-secondary);
+      --deckgo-chart-fill-opacity-1: 0.7;
     }
 
     p {

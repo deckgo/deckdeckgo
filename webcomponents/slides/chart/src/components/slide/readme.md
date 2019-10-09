@@ -61,6 +61,16 @@ Type: `Promise<boolean>`
 
 
 
+### `draw() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `hideContent() => Promise<void>`
 
 

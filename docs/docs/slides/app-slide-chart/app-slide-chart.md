@@ -16,6 +16,8 @@ The "Chart" slide let you draw easily charts in your presentation.
 - [Installation](#app-slide-chart-installation)
 - [Attributes](#app-slide-chart-attributes)
 - [Theming](#app-slide-chart-theming)
+- [Methods](#app-slide-chart-methods)
+  - [Draw](#app-slide-chart-draw)
 
 ## Layout
 
@@ -138,5 +140,18 @@ The following theming options will affect this component if set on its host or p
 | --slide-chart-margin-start | 32px | Margin left of the chart inside its container |
 
 Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] charts Web Component, see its [documentation](/components/charts) for the details.
+
+## Methods
+
+The slide "Chart" exposes the following methods:
+
+### Draw
+
+In case you would like to draw or redraw your chart.
+
+```
+const slide = deck.getElementsByTagName('deckgo-slide-chart');
+await slide.draw();
+```
 
 [DeckDeckGo]: https://deckdeckgo.com
