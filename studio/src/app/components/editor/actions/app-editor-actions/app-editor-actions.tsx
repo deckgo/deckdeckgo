@@ -5,7 +5,7 @@ import {isIPad} from '@deckdeckgo/utils';
 
 import {get, set} from 'idb-keyval';
 
-import {SlideChartType, SlideTemplate} from '../../../../models/data/slide';
+import {SlideAttributes, SlideTemplate} from '../../../../models/data/slide';
 
 import {MoreAction} from '../../../../utils/editor/more-action';
 
@@ -84,7 +84,7 @@ export class AppEditorActions {
                 } else if (detail.data.template === SlideTemplate.YOUTUBE) {
                     await this.openYoutube();
                 } else if (detail.data.template === SlideTemplate.CHART) {
-                    await this.openChart(detail.data.extra);
+                    await this.openChart(detail.data.attributes);
                 }
 
                 if (detail.data.slide) {
@@ -120,14 +120,14 @@ export class AppEditorActions {
         await modal.present();
     }
 
-    private async openChart(type: SlideChartType) {
+    private async openChart(attributes: SlideAttributes) {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-custom-data'
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data) {
-                await this.addSlideChart(detail.data, type);
+                await this.addSlideChart(detail.data, attributes);
             }
         });
 
@@ -165,7 +165,7 @@ export class AppEditorActions {
         });
     }
 
-    private addSlideChart(dataFile: StorageFile, type: SlideChartType): Promise<void> {
+    private addSlideChart(dataFile: StorageFile, attributes: SlideAttributes): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!dataFile) {
                 resolve();
@@ -179,7 +179,15 @@ export class AppEditorActions {
                 return;
             }
 
-            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideChart(url, type);
+            if (!attributes) {
+                attributes = {
+                    src: url
+                };
+            } else {
+                attributes.src = url;
+            }
+
+            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideChart(attributes);
 
             this.addSlide.emit(slide);
 

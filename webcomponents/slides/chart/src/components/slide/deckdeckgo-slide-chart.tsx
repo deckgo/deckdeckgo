@@ -32,7 +32,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Prop({reflect: true}) type: string = DeckdeckgoSlideChartType.PIE;
 
   // Pie
-  @Prop() innerRadius: number = 0;
+  @Prop({reflect: true}) innerRadius: number = 0;
   @Prop() range: string[];
 
   // Line

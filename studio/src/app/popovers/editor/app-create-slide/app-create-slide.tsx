@@ -1,7 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/core';
 import {take} from 'rxjs/operators';
 
-import {SlideChartType, SlideTemplate} from '../../../models/data/slide';
+import {SlideAttributes, SlideChartType, SlideTemplate} from '../../../models/data/slide';
 
 import {User} from '../../../models/data/user';
 import {Deck} from '../../../models/data/deck';
@@ -119,7 +119,7 @@ export class AppCreateSlide {
     }
 
     // User will need an account to upload her/his data
-    private async closePopoverRestricted(template: SlideTemplate, extra: SlideChartType) {
+    private async closePopoverRestricted(template: SlideTemplate, attributes: SlideAttributes) {
         const isAnonymous: boolean = await this.anonymousService.isAnonymous();
 
         if (isAnonymous) {
@@ -128,18 +128,18 @@ export class AppCreateSlide {
             return;
         }
 
-        await this.closePopover(template, null, extra);
+        await this.closePopover(template, null, attributes);
     }
 
     private async closePopoverWithoutResults() {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
-    private async closePopover(template: SlideTemplate, slide?: JSX.IntrinsicElements, extra?: SlideChartType) {
+    private async closePopover(template: SlideTemplate, slide?: JSX.IntrinsicElements, attributes?: SlideAttributes) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
             template: template,
             slide: slide,
-            extra: extra
+            attributes: attributes
         });
     }
 
@@ -234,12 +234,24 @@ export class AppCreateSlide {
             <div class="arrow"></div>
 
             <div class="list">
-                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, SlideChartType.PIE)}>
+                {/* Pie */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE})}>
                     <deckgo-slide-chart class="showcase" type="pie"
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
                                         width={204} height={68}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
                         <p slot="title">Pie</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Donut */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, innerRadius: 100})}>
+                    <deckgo-slide-chart class="showcase" type="pie"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        inner-radius={16}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+                        <p slot="title">Donut</p>
                     </deckgo-slide-chart>
                 </div>
             </div>

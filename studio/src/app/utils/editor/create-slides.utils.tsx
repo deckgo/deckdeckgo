@@ -1,6 +1,6 @@
 import {h, JSX} from '@stencil/core';
 
-import {SlideChartType, SlideTemplate} from '../../models/data/slide';
+import {SlideAttributes, SlideTemplate} from '../../models/data/slide';
 
 import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
@@ -245,7 +245,7 @@ export class CreateSlidesUtils {
         });
     }
 
-    static createSlideChart(src: string = undefined, type: SlideChartType = SlideChartType.LINE): Promise<JSX.IntrinsicElements> {
+    static createSlideChart(attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
         return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
@@ -254,7 +254,7 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title"></h1>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-chart src={src} type={type}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-chart {...attributes}>
                 {title}
             </deckgo-slide-chart>;
 

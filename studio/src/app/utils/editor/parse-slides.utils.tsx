@@ -38,27 +38,24 @@ export class ParseSlidesUtils {
 
             const content = await ParseElementsUtils.parseElements(div, true, contentEditable);
 
-            const style = slide.data.attributes ? await ParseStyleUtils.convertStyle(slide.data.attributes.style) : undefined;
-
-            const src = slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined;
-
-            const customBackground = slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined;
-
-            let contentAttr = undefined;
-            let customQRCode = undefined;
+            const attributes = {
+                style: slide.data.attributes ? await ParseStyleUtils.convertStyle(slide.data.attributes.style) : undefined,
+                src: slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined,
+                'custom-background': slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined,
+                'img-src': slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined,
+                'img-alt': slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined,
+                'type': slide.data.attributes && slide.data.attributes.type ? slide.data.attributes.type : undefined,
+                'inner-radius': slide.data.attributes && slide.data.attributes.innerRadius ? slide.data.attributes.innerRadius : undefined,
+            };
 
             if (slide.data.template === SlideTemplate.QRCODE) {
-                contentAttr = slide.data.attributes && slide.data.attributes.content ? slide.data.attributes.content : QRCodeUtils.getPresentationUrl(deck);
-                customQRCode = slide.data.attributes && slide.data.attributes.content ? 'true' : undefined;
+                attributes['content'] = slide.data.attributes && slide.data.attributes.content ? slide.data.attributes.content : QRCodeUtils.getPresentationUrl(deck);
+                attributes['custom-qrcode'] = slide.data.attributes && slide.data.attributes.content ? 'true' : undefined;
             }
-
-            const imgSrc = slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined;
-            const imgAlt = slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined;
 
             const SlideElement: string = slideTag;
 
-            const result: JSX.IntrinsicElements = <SlideElement key={slide.id} slide_id={ignoreSlideId ? undefined : slide.id} style={style}
-                                                                src={src} custom-background={customBackground} img-src={imgSrc} img-alt={imgAlt} content={contentAttr} custom-qrcode={customQRCode}>
+            const result: JSX.IntrinsicElements = <SlideElement key={slide.id} slide_id={ignoreSlideId ? undefined : slide.id} {...attributes}>
                 {content}
             </SlideElement>;
 

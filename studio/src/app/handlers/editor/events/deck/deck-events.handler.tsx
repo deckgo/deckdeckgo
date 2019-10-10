@@ -550,6 +550,11 @@ export class DeckEventsHandler {
                 attributes.content = firebase.firestore.FieldValue.delete();
             }
 
+            // Charts
+            if (slide.getAttribute('inner-radius')) {
+                attributes.innerRadius = parseInt(slide.getAttribute('inner-radius'));
+            }
+
             resolve(attributes);
         })
     }

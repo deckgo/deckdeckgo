@@ -24,6 +24,7 @@ export interface SlideAttributes {
     content?: string;
     customQRCode?: boolean;
     type?: SlideChartType;
+    innerRadius?: number;
 }
 
 export interface SlideData {
