@@ -9,6 +9,12 @@ export enum SlideTemplate {
     CHART = 'chart'
 }
 
+export enum SlideChartType {
+    LINE = 'line',
+    PIE = 'pie',
+    BAR = 'bar'
+}
+
 export interface SlideAttributes {
     style?: string;
     src?: string;
@@ -17,6 +23,7 @@ export interface SlideAttributes {
     imgAlt?: string;
     content?: string;
     customQRCode?: boolean;
+    type?: SlideChartType;
 }
 
 export interface SlideData {
