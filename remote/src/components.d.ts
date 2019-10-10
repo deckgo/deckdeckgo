@@ -38,6 +38,7 @@ export namespace Components {
   interface AppStopwatchTime {}
   interface AppTabs {}
   interface AppTimer {}
+  interface DarkModeSwitch {}
 }
 
 declare global {
@@ -114,6 +115,12 @@ declare global {
     prototype: HTMLAppTimerElement;
     new (): HTMLAppTimerElement;
   };
+
+  interface HTMLDarkModeSwitchElement extends Components.DarkModeSwitch, HTMLStencilElement {}
+  var HTMLDarkModeSwitchElement: {
+    prototype: HTMLDarkModeSwitchElement;
+    new (): HTMLDarkModeSwitchElement;
+  };
   interface HTMLElementTagNameMap {
     'app-about': HTMLAppAboutElement;
     'app-accelerometer': HTMLAppAccelerometerElement;
@@ -127,6 +134,7 @@ declare global {
     'app-stopwatch-time': HTMLAppStopwatchTimeElement;
     'app-tabs': HTMLAppTabsElement;
     'app-timer': HTMLAppTimerElement;
+    'dark-mode-switch': HTMLDarkModeSwitchElement;
   }
 }
 
@@ -158,6 +166,7 @@ declare namespace LocalJSX {
   interface AppStopwatchTime extends JSXBase.HTMLAttributes<HTMLAppStopwatchTimeElement> {}
   interface AppTabs extends JSXBase.HTMLAttributes<HTMLAppTabsElement> {}
   interface AppTimer extends JSXBase.HTMLAttributes<HTMLAppTimerElement> {}
+  interface DarkModeSwitch extends JSXBase.HTMLAttributes<HTMLDarkModeSwitchElement> {}
 
   interface IntrinsicElements {
     'app-about': AppAbout;
@@ -172,6 +181,7 @@ declare namespace LocalJSX {
     'app-stopwatch-time': AppStopwatchTime;
     'app-tabs': AppTabs;
     'app-timer': AppTimer;
+    'dark-mode-switch': DarkModeSwitch;
   }
 }
 

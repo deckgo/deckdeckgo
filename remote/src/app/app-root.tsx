@@ -52,8 +52,9 @@ export class AppRoot {
                 </ion-router>
 
                 <ion-router-outlet animated={true}></ion-router-outlet>
-
+                
                 <ion-modal-controller></ion-modal-controller>
+                
             </ion-app>
         );
     }
