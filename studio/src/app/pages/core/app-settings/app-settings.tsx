@@ -290,7 +290,7 @@ export class AppHome {
             }
 
             try {
-                const storageFile: StorageFile = await this.storageService.uploadImage(this.profilePicture, 'avatars', 524288);
+                const storageFile: StorageFile = await this.storageService.uploadFile(this.profilePicture, 'avatars', 524288);
 
                 if (storageFile) {
                     this.user.data.photo_url = storageFile.downloadUrl;

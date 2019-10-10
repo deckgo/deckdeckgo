@@ -53,6 +53,7 @@ app-create-slide {
 
         div.item {
           background: white;
+          font-size: 0.2rem;
 
           &:first-of-type {
             margin-top: 16px;
@@ -133,8 +134,8 @@ app-create-slide {
     deckgo-slide-chart {
       --slide-chart-margin-end: 0;
       --slide-chart-margin-start: 4px;
-      --slide-chart-margin-top: 8px;
-      --slide-chart-margin-bottom: 4px;
+      --slide-chart-margin-top: 6px;
+      --slide-chart-margin-bottom: 8px;
 
       --deckgo-chart-fill-color-0: var(--ion-color-primary);
       --deckgo-chart-fill-color-1: var(--ion-color-secondary);

@@ -4,26 +4,20 @@ import {get, set} from 'idb-keyval';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
-import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
-    tag: 'app-custom-images',
-    styleUrl: 'app-custom-images.scss'
+    tag: 'app-custom-data',
+    styleUrl: 'app-custom-data.scss'
 })
-export class AppCustomImages {
+export class AppCustomData {
 
     @Element() el: HTMLElement;
 
     private storageService: StorageService;
 
-    private imageHistoryService: ImageHistoryService;
-
     @State()
-    private imagesOdd: StorageFile[];
-
-    @State()
-    private imagesEven: StorageFile[];
+    private files: StorageFile[];
 
     @State()
     private disableInfiniteScroll = false;
@@ -34,7 +28,6 @@ export class AppCustomImages {
     private uploading: boolean = false;
 
     constructor() {
-        this.imageHistoryService = ImageHistoryService.getInstance();
         this.storageService = StorageService.getInstance();
     }
 
@@ -53,9 +46,9 @@ export class AppCustomImages {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private selectImage($event: CustomEvent): Promise<void> {
+    private selectData(storageFile: StorageFile): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!$event || !$event.detail) {
+            if (!storageFile) {
                 resolve();
                 return;
             }
@@ -65,19 +58,15 @@ export class AppCustomImages {
                 return;
             }
 
-            const image: StorageFile = $event.detail;
-
-            await this.selectAndClose(image);
+            await this.selectAndClose(storageFile);
 
             resolve();
         });
     }
 
-    private selectAndClose(image: StorageFile): Promise<void> {
+    private selectAndClose(data: StorageFile): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            await this.imageHistoryService.push(image);
-
-            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(image);
+            await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(data);
 
             resolve();
         });
@@ -85,7 +74,7 @@ export class AppCustomImages {
 
     private search(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, 'images');
+            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, 'data');
 
             if (!list) {
                 resolve();
@@ -93,22 +82,17 @@ export class AppCustomImages {
             }
 
             if (!list.items || list.items.length <= 0) {
-                this.emptyImages();
+                this.emptyFiles();
 
                 resolve();
                 return;
             }
 
-            if (!this.imagesOdd) {
-                this.imagesOdd = [];
+            if (!this.files) {
+                this.files = [];
             }
-
-            if (!this.imagesEven) {
-                this.imagesEven = [];
-            }
-
-            this.imagesOdd = [...this.imagesOdd, ...list.items.filter((_a, i) => !(i % 2))];
-            this.imagesEven = [...this.imagesEven, ...list.items.filter((_a, i) => i % 2)];
+            
+            this.files = [...this.files, ...list.items];
 
             this.paginationNext = list.nextPageToken;
 
@@ -118,9 +102,8 @@ export class AppCustomImages {
         });
     }
 
-    private emptyImages() {
-        this.imagesOdd = [];
-        this.imagesEven = [];
+    private emptyFiles() {
+        this.files = [];
 
         this.disableInfiniteScroll = true;
     }
@@ -135,11 +118,11 @@ export class AppCustomImages {
         });
     }
 
-    async uploadNewImage() {
-        const infoDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_custom_images');
+    async uploadNewData() {
+        const infoDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_custom_data');
 
         if (!infoDisplayedOnce) {
-            await this.openCustomImagesPublicInfo();
+            await this.openCustomDataPublicInfo();
         } else {
             await this.openFilePicker();
         }
@@ -173,7 +156,7 @@ export class AppCustomImages {
             if (filePicker.files && filePicker.files.length > 0) {
                 this.uploading = true;
 
-                const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'images', 10485760);
+                const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'data', 10485760);
 
                 if (storageFile) {
                     await this.selectAndClose(storageFile);
@@ -186,10 +169,10 @@ export class AppCustomImages {
         });
     }
 
-    private async openCustomImagesPublicInfo() {
+    private async openCustomDataPublicInfo() {
         const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
-            header: 'About your images',
-            message: 'Please note that currently, all the images you would upload, will be publicly visible on the internet.',
+            header: 'About your data',
+            message: 'Please note that currently, all the data you would upload, will be publicly visible on the internet.',
             cssClass: 'custom-info',
             buttons: [
                 {
@@ -201,7 +184,7 @@ export class AppCustomImages {
                 }, {
                     text: 'Ok',
                     handler: async () => {
-                        await set('deckdeckgo_display_custom_images', true);
+                        await set('deckdeckgo_display_custom_data', true);
 
                         await this.openFilePicker();
                     }
@@ -221,17 +204,13 @@ export class AppCustomImages {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Your images</ion-title>
+                    <ion-title class="ion-text-uppercase">Your data</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
-                <app-image-columns imagesOdd={this.imagesOdd} imagesEven={this.imagesEven}
-                                  onSelectImage={($event: CustomEvent) => this.selectImage($event)}>
-                </app-image-columns>
+                {this.renderData()}
 
-                {this.renderImagesPlaceHolder()}
-
-                <input type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.upload()}/>
+                <input type="file" accept=".csv" onChange={() => this.upload()}/>
 
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
                                      onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
@@ -250,24 +229,45 @@ export class AppCustomImages {
         ];
     }
 
-    private renderImagesPlaceHolder() {
-        if ((!this.imagesOdd || this.imagesOdd.length <= 0) && (!this.imagesEven || this.imagesEven.length <= 0)) {
-            return <div class="placeholder">
-                <div>
-                    <ion-icon name="images"></ion-icon>
-                    <ion-label class="ion-text-center">Your collection of images is empty</ion-label>
-                </div>
-            </div>
+    private renderData() {
+        if (!this.files || this.files.length <= 0) {
+            return this.renderPlaceHolder();
         } else {
-            return undefined;
+            return <div class="data-container">
+                {this.renderFiles()}
+            </div>;
         }
+    }
+
+    private renderFiles() {
+        return (
+            this.files.map((storageFile: StorageFile) => {
+                return this.renderFile(storageFile);
+            })
+        );
+    }
+
+    private renderFile(storageFile: StorageFile) {
+        return <div class="ion-padding data" custom-tappable onClick={() => this.selectData(storageFile)}>
+            <ion-icon src="/assets/icons/file.svg"></ion-icon>
+            <ion-label>{storageFile.name}</ion-label>
+        </div>
+    }
+
+    private renderPlaceHolder() {
+        return <div class="placeholder">
+            <div>
+                <ion-icon src="/assets/icons/file.svg"></ion-icon>
+                <ion-label class="ion-text-center">Your collection of data is empty</ion-label>
+            </div>
+        </div>
     }
 
     private renderToolbarAction() {
         if (!this.uploading) {
-            return <ion-button onClick={() => this.uploadNewImage()} shape="round" color="tertiary">
+            return <ion-button onClick={() => this.uploadNewData()} shape="round" color="tertiary">
                 <ion-icon name="cloud-upload" slot="start"></ion-icon>
-                <ion-label>Upload a new image</ion-label>
+                <ion-label>Upload a new data</ion-label>
             </ion-button>
         } else {
             return [

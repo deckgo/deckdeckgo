@@ -83,6 +83,8 @@ export class AppEditorActions {
                     await this.openGifPicker();
                 } else if (detail.data.template === SlideTemplate.YOUTUBE) {
                     await this.openYoutube();
+                } else if (detail.data.template === SlideTemplate.CHART) {
+                    await this.openChart();
                 }
 
                 if (detail.data.slide) {
@@ -113,6 +115,18 @@ export class AppEditorActions {
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             await this.addSlideYoutube(detail.data);
+        });
+
+        await modal.present();
+    }
+
+    private async openChart() {
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+            component: 'app-custom-data'
+        });
+
+        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+            // TODO
         });
 
         await modal.present();

@@ -40,6 +40,7 @@ export namespace Components {
   }
   interface AppContact {}
   interface AppCreateSlide {}
+  interface AppCustomData {}
   interface AppCustomImages {}
   interface AppDashboard {}
   interface AppDeckDelete {
@@ -204,6 +205,12 @@ declare global {
   var HTMLAppCreateSlideElement: {
     prototype: HTMLAppCreateSlideElement;
     new (): HTMLAppCreateSlideElement;
+  };
+
+  interface HTMLAppCustomDataElement extends Components.AppCustomData, HTMLStencilElement {}
+  var HTMLAppCustomDataElement: {
+    prototype: HTMLAppCustomDataElement;
+    new (): HTMLAppCustomDataElement;
   };
 
   interface HTMLAppCustomImagesElement extends Components.AppCustomImages, HTMLStencilElement {}
@@ -531,6 +538,7 @@ declare global {
     'app-color': HTMLAppColorElement;
     'app-contact': HTMLAppContactElement;
     'app-create-slide': HTMLAppCreateSlideElement;
+    'app-custom-data': HTMLAppCustomDataElement;
     'app-custom-images': HTMLAppCustomImagesElement;
     'app-dashboard': HTMLAppDashboardElement;
     'app-deck-delete': HTMLAppDeckDeleteElement;
@@ -609,6 +617,7 @@ declare namespace LocalJSX {
   interface AppCreateSlide extends JSXBase.HTMLAttributes<HTMLAppCreateSlideElement> {
     'onSignIn'?: (event: CustomEvent<void>) => void;
   }
+  interface AppCustomData extends JSXBase.HTMLAttributes<HTMLAppCustomDataElement> {}
   interface AppCustomImages extends JSXBase.HTMLAttributes<HTMLAppCustomImagesElement> {}
   interface AppDashboard extends JSXBase.HTMLAttributes<HTMLAppDashboardElement> {}
   interface AppDeckDelete extends JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement> {
@@ -761,6 +770,7 @@ declare namespace LocalJSX {
     'app-color': AppColor;
     'app-contact': AppContact;
     'app-create-slide': AppCreateSlide;
+    'app-custom-data': AppCustomData;
     'app-custom-images': AppCustomImages;
     'app-dashboard': AppDashboard;
     'app-deck-delete': AppDeckDelete;
