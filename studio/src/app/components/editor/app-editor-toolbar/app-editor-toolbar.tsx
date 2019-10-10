@@ -8,14 +8,14 @@ import {isFullscreen} from '@deckdeckgo/utils';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
-import {ImageHelper} from '../../../helpers/editor/image.helper';
+import {SlideHelper} from '../../../helpers/editor/slide.helper';
 
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 
-import {ImageAction} from '../../../popovers/editor/app-image/image-action';
+import {EditAction} from '../../../utils/editor/edit-action';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -42,6 +42,9 @@ export class AppEditorToolbar {
 
     @State()
     private qrCode: boolean = false;
+
+    @State()
+    private chart: boolean = false;
 
     @State()
     private youtube: boolean = false;
@@ -237,6 +240,10 @@ export class AppEditorToolbar {
 
     private isElementQRCodeSlide(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-qrcode';
+    }
+
+    private isElementChartSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-chart';
     }
 
     private isElementList(element: HTMLElement): SlotType {
@@ -504,7 +511,7 @@ export class AppEditorToolbar {
     }
 
     private async openEditSlide() {
-        if (!this.deckOrSlide || !this.qrCode) {
+        if (!this.deckOrSlide || (!this.qrCode && !this.chart)) {
             return;
         }
 
@@ -513,6 +520,7 @@ export class AppEditorToolbar {
             componentProps: {
                 selectedElement: this.selectedElement,
                 qrCode: this.qrCode,
+                chart: this.chart,
                 slideDidChange: this.slideDidChange
             },
             mode: 'md',
@@ -521,10 +529,12 @@ export class AppEditorToolbar {
 
         popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail.data) {
-                if (detail.data.action === ImageAction.DELETE_LOGO) {
+                if (detail.data.action === EditAction.DELETE_LOGO) {
                     await this.deleteLogo();
-                } else if (detail.data.action === ImageAction.OPEN_CUSTOM_LOGO) {
-                    await this.openCustomImagesModal(ImageAction.OPEN_CUSTOM_LOGO);
+                } else if (detail.data.action === EditAction.OPEN_CUSTOM_LOGO) {
+                    await this.openCustomModalRestricted('app-custom-images', detail.data.action);
+                } else if (detail.data.action === EditAction.OPEN_DATA) {
+                    await this.openCustomModalRestricted('app-custom-data', detail.data.action);
                 }
             }
         });
@@ -685,6 +695,7 @@ export class AppEditorToolbar {
 
             this.youtube = this.isElementYoutubeSlide(element);
             this.qrCode = this.isElementQRCodeSlide(element);
+            this.chart = this.isElementChartSlide(element);
 
             this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
             this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
@@ -793,16 +804,16 @@ export class AppEditorToolbar {
                     this.applyToAllDeck = detail.data.applyToAllDeck;
                 }
 
-                if (detail.data.action === ImageAction.OPEN_PHOTOS) {
-                    await this.openImagesModal('app-photo');
-                } else if (detail.data.action === ImageAction.DELETE_BACKGROUND) {
+                if (detail.data.action === EditAction.OPEN_PHOTOS) {
+                    await this.openModal('app-photo');
+                } else if (detail.data.action === EditAction.DELETE_BACKGROUND) {
                     await this.deleteBackground();
-                } else if (detail.data.action === ImageAction.ADD_IMAGE && detail.data.image) {
+                } else if (detail.data.action === EditAction.ADD_IMAGE && detail.data.image) {
                     await this.appendImage(detail.data.image);
-                } else if (detail.data.action === ImageAction.OPEN_GIFS) {
-                    await this.openImagesModal('app-gif');
-                } else if (detail.data.action === ImageAction.OPEN_CUSTOM) {
-                    await this.openCustomImagesModal(ImageAction.OPEN_CUSTOM);
+                } else if (detail.data.action === EditAction.OPEN_GIFS) {
+                    await this.openModal('app-gif');
+                } else if (detail.data.action === EditAction.OPEN_CUSTOM) {
+                    await this.openCustomModalRestricted('app-custom-images', EditAction.OPEN_CUSTOM);
                 }
             }
         });
@@ -810,15 +821,17 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openImagesModal(componentTag: string, action?: ImageAction) {
+    private async openModal(componentTag: string, action?: EditAction) {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: componentTag
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                if (action === ImageAction.OPEN_CUSTOM_LOGO) {
-                    await this.appendLogo(detail.data);
+                if (action === EditAction.OPEN_CUSTOM_LOGO) {
+                    await this.updateSlideAttribute(detail.data, 'img-src');
+                } if (action === EditAction.OPEN_DATA) {
+                    await this.updateSlideAttribute(detail.data, 'src');
                 } else {
                     await this.appendImage(detail.data);
                 }
@@ -840,14 +853,14 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
             await helper.appendImage(this.selectedElement, image, this.deckOrSlide, this.applyToAllDeck);
 
             resolve();
         });
     }
 
-    private async openCustomImagesModal(action: ImageAction) {
+    private async openCustomModalRestricted(componentTag: string, action: EditAction) {
         const isAnonymous: boolean = await this.anonymousService.isAnonymous();
 
         if (isAnonymous) {
@@ -855,7 +868,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        await this.openImagesModal('app-custom-images', action);
+        await this.openModal(componentTag, action);
     }
 
     private deleteBackground(): Promise<void> {
@@ -865,7 +878,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
             await helper.deleteBackground(this.selectedElement, this.applyToAllDeck);
 
             resolve();
@@ -874,27 +887,27 @@ export class AppEditorToolbar {
 
     private deleteLogo(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
             await helper.deleteSlideAttributeImgSrc(this.selectedElement);
 
             resolve();
         });
     }
 
-    private appendLogo(image: StorageFile): Promise<void> {
+    private updateSlideAttribute(data: StorageFile, attribute: string): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
                 resolve();
                 return;
             }
 
-            if (!image) {
+            if (!data) {
                 resolve();
                 return;
             }
 
-            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
-            await helper.updateSlideAttributeImgSrc(this.selectedElement, image);
+            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
+            await helper.updateSlideAttribute(this.selectedElement, attribute, data);
 
             resolve();
         });
@@ -1030,7 +1043,7 @@ export class AppEditorToolbar {
 
     private renderSlotType() {
         if (this.deckOrSlide) {
-            if (!this.qrCode) {
+            if (!this.qrCode && !this.chart) {
                 return undefined;
             }
 

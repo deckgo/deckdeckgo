@@ -20,7 +20,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() src: string;
+  @Prop({reflect: true}) src: string;
   @Prop() separator: string = ';';
 
   @Prop() width: number;
@@ -29,7 +29,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @State() chartWidth: number;
   @State() chartHeight: number;
 
-  @Prop() type: string = DeckdeckgoSlideChartType.PIE;
+  @Prop({reflect: true}) type: string = DeckdeckgoSlideChartType.PIE;
 
   // Pie
   @Prop() innerRadius: number = 0;

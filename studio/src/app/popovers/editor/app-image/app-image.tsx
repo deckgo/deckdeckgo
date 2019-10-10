@@ -1,6 +1,6 @@
 import {Component, Element, Prop, State, h, EventEmitter} from '@stencil/core';
 
-import {ImageAction} from './image-action';
+import {EditAction} from '../../../utils/editor/edit-action';
 import {TargetElement} from '../../../utils/editor/target-element';
 
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
@@ -143,7 +143,7 @@ export class AppImage {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
-    private async closePopover(action: ImageAction, image?: UnsplashPhoto | TenorGif | StorageFile) {
+    private async closePopover(action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile) {
         const data = {
             action: action
         };
@@ -166,7 +166,7 @@ export class AppImage {
                 return;
             }
 
-            await this.closePopover(ImageAction.ADD_IMAGE, $event.detail);
+            await this.closePopover(EditAction.ADD_IMAGE, $event.detail);
 
             resolve();
         });
@@ -251,21 +251,21 @@ export class AppImage {
                 {this.renderImageAlignment()}
 
                 <ion-item class="action-button action-button-margin">
-                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_PHOTOS)}
+                    <ion-button shape="round" onClick={() => this.closePopover(EditAction.OPEN_PHOTOS)}
                                 color="primary">
                         <ion-label class="ion-text-uppercase">Stock photo</ion-label>
                     </ion-button>
                 </ion-item>
 
                 <ion-item class="action-button">
-                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_GIFS)}
+                    <ion-button shape="round" onClick={() => this.closePopover(EditAction.OPEN_GIFS)}
                                 color="secondary">
                         <ion-label class="ion-text-uppercase">Gif</ion-label>
                     </ion-button>
                 </ion-item>
 
                 <ion-item class="action-button">
-                    <ion-button shape="round" onClick={() => this.closePopover(ImageAction.OPEN_CUSTOM)}
+                    <ion-button shape="round" onClick={() => this.closePopover(EditAction.OPEN_CUSTOM)}
                                 color="tertiary">
                         <ion-label class="ion-text-uppercase">Your images</ion-label>
                     </ion-button>
@@ -290,7 +290,7 @@ export class AppImage {
             return undefined;
         } else {
             return <ion-item class="action-button ion-margin-bottom">
-                <ion-button shape="round" onClick={() => this.closePopover(ImageAction.DELETE_BACKGROUND)}
+                <ion-button shape="round" onClick={() => this.closePopover(EditAction.DELETE_BACKGROUND)}
                             fill="outline" class="delete">
                     <ion-label class="ion-text-uppercase">Delete background</ion-label>
                 </ion-button>

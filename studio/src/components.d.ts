@@ -52,6 +52,7 @@ export namespace Components {
   }
   interface AppDeveloper {}
   interface AppEditSlide {
+    'chart': boolean;
     'qrCode': boolean;
     'selectedElement': HTMLElement;
     'slideDidChange': EventEmitter<HTMLElement>;
@@ -630,6 +631,7 @@ declare namespace LocalJSX {
   }
   interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
   interface AppEditSlide extends JSXBase.HTMLAttributes<HTMLAppEditSlideElement> {
+    'chart'?: boolean;
     'qrCode'?: boolean;
     'selectedElement'?: HTMLElement;
     'slideDidChange'?: EventEmitter<HTMLElement>;
