@@ -1,4 +1,6 @@
 import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/core';
+
+import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {SlideAttributes, SlideChartType, SlideTemplate} from '../../../models/data/slide';
@@ -35,6 +37,8 @@ export class AppCreateSlide {
 
     @Event() signIn: EventEmitter<void>;
 
+    private timerSubscription: Subscription;
+
     constructor() {
         this.userService = UserService.getInstance();
         this.anonymousService = AnonymousService.getInstance();
@@ -52,6 +56,16 @@ export class AppCreateSlide {
     async componentDidLoad() {
         await this.lazyLoadContent();
         await this.drawChart();
+    }
+
+    componentDidUnload() {
+        this.unsubscribeTimer();
+    }
+
+    private unsubscribeTimer() {
+        if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+        }
     }
 
     private lazyLoadContent(): Promise<void> {
@@ -143,6 +157,26 @@ export class AppCreateSlide {
         });
     }
 
+    private async selectUnselectCharts() {
+        this.chartsCollapsed = !this.chartsCollapsed;
+
+        this.unsubscribeTimer();
+
+        if (this.chartsCollapsed) {
+            return;
+        }
+
+        this.timerSubscription = interval(2000).subscribe(async (val: number) => {
+            const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-slide-chart[animation]');
+
+            if (elements) {
+                for (const element of Array.from(elements)) {
+                    await (element as any).beforeSwipe(val % 2 === 0, true);
+                }
+            }
+        });
+    }
+
     render() {
         return [<ion-toolbar>
             <h2>Add a slide</h2>
@@ -192,7 +226,7 @@ export class AppCreateSlide {
                         </p>
                     </deckgo-slide-content>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.chartsCollapsed = !this.chartsCollapsed}>
+                <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
                     <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
                                         width={204} height={68}
@@ -252,6 +286,16 @@ export class AppCreateSlide {
                                         inner-radius={16}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
                         <p slot="title">Donut</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Animated Pie */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, animation: true})}>
+                    <deckgo-slide-chart class="showcase" type="pie" animation={true}
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv">
+                        <p slot="title">Pie comparison</p>
                     </deckgo-slide-chart>
                 </div>
             </div>

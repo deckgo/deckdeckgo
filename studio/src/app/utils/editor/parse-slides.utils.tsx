@@ -43,14 +43,18 @@ export class ParseSlidesUtils {
                 src: slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined,
                 'custom-background': slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined,
                 'img-src': slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined,
-                'img-alt': slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined,
-                'type': slide.data.attributes && slide.data.attributes.type ? slide.data.attributes.type : undefined,
-                'inner-radius': slide.data.attributes && slide.data.attributes.innerRadius ? slide.data.attributes.innerRadius : undefined,
+                'img-alt': slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined
             };
 
             if (slide.data.template === SlideTemplate.QRCODE) {
                 attributes['content'] = slide.data.attributes && slide.data.attributes.content ? slide.data.attributes.content : QRCodeUtils.getPresentationUrl(deck);
                 attributes['custom-qrcode'] = slide.data.attributes && slide.data.attributes.content ? 'true' : undefined;
+            }
+
+            if (slide.data.template === SlideTemplate.CHART) {
+                attributes['type'] = slide.data.attributes && slide.data.attributes.type ? slide.data.attributes.type : undefined;
+                attributes['inner-radius'] = slide.data.attributes && slide.data.attributes.innerRadius ? slide.data.attributes.innerRadius : undefined;
+                attributes['animation'] = slide.data.attributes && slide.data.attributes.animation ? slide.data.attributes.animation : undefined;
             }
 
             const SlideElement: string = slideTag;

@@ -8,7 +8,7 @@ import '@firebase/firestore';
 
 import {AuthUser} from '../../../../models/auth/auth.user';
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
-import {Slide, SlideAttributes, SlideData, SlideTemplate} from '../../../../models/data/slide';
+import {Slide, SlideAttributes, SlideChartType, SlideData, SlideTemplate} from '../../../../models/data/slide';
 
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
@@ -551,8 +551,16 @@ export class DeckEventsHandler {
             }
 
             // Charts
-            if (slide.getAttribute('inner-radius')) {
+            if (slide.hasAttribute('inner-radius')) {
                 attributes.innerRadius = parseInt(slide.getAttribute('inner-radius'));
+            }
+
+            if (slide.hasAttribute('type')) {
+                attributes.type = SlideChartType[slide.getAttribute('type').toUpperCase()];
+            }
+
+            if (slide.hasAttribute('animation')) {
+                attributes.animation = slide.hasAttribute('animation');
             }
 
             resolve(attributes);

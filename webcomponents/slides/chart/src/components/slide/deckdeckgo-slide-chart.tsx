@@ -53,7 +53,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
-  @Prop() animation: boolean = false;
+  @Prop({reflect: true}) animation: boolean = false;
   @Prop() animationDuration: number = 1000;
 
   async componentDidLoad() {
