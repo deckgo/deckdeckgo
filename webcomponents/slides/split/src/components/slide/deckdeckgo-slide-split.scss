@@ -8,6 +8,12 @@ div.deckgo-slide {
   height: var(--slide-height);
 }
 
+div.deckgo-slide-vertical {
+  @extend div, .deckgo-slide;
+  flex-flow: column wrap;
+  height: calc(var(--slide-height) - (2 * var(--slide-split-padding-bottom, var(--slide-padding-bottom-default))));
+}
+
 div.deckgo-slide-split {
   flex: 1;
 
@@ -29,6 +35,11 @@ div.deckgo-slide-split {
     background: var(--slide-split-background-end);
     color: var(--slide-split-color-end);
   }
+}
+
+div.deckgo-slide-split-vertical {
+  @extend div, .deckgo-slide-split;
+  width: calc(var(--slide-width) - (var(--slide-split-padding-end, var(--slide-padding-end-default))) - (var(--slide-split-padding-start, var(--slide-padding-start-default))));
 }
 
 ::slotted([slot="title"]) {

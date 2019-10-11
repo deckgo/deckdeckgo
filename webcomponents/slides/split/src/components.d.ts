@@ -17,6 +17,7 @@ export namespace Components {
     'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
+    'vertical': boolean;
   }
 }
 
@@ -38,6 +39,7 @@ declare namespace LocalJSX {
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'vertical'?: boolean;
   }
 
   interface IntrinsicElements {
