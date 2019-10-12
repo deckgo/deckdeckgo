@@ -55,6 +55,12 @@ export class ParseSlidesUtils {
                 attributes['type'] = slide.data.attributes && slide.data.attributes.type ? slide.data.attributes.type : undefined;
                 attributes['inner-radius'] = slide.data.attributes && slide.data.attributes.innerRadius ? slide.data.attributes.innerRadius : undefined;
                 attributes['animation'] = slide.data.attributes && slide.data.attributes.animation ? slide.data.attributes.animation : undefined;
+                attributes['date-pattern'] = slide.data.attributes && slide.data.attributes.datePattern ? slide.data.attributes.datePattern : undefined;
+                attributes['y-axis-domain'] = slide.data.attributes && slide.data.attributes.yAxisDomain ? slide.data.attributes.yAxisDomain : undefined;
+                attributes['smooth'] = slide.data.attributes && slide.data.attributes.smooth === false ? 'false' : undefined;
+                attributes['area'] = slide.data.attributes && slide.data.attributes.area === false ? 'false' : undefined;
+                attributes['ticks'] = slide.data.attributes && slide.data.attributes.ticks ? slide.data.attributes.ticks : undefined;
+                attributes['grid'] = slide.data.attributes && slide.data.attributes.grid ? 'true' : undefined;
             }
 
             const SlideElement: string = slideTag;

@@ -15,17 +15,27 @@ export enum SlideChartType {
     BAR = 'bar'
 }
 
+export type SlideAttributesYAxisDomain = 'max' | 'extent';
+
 export interface SlideAttributes {
     style?: string;
     src?: string;
     customBackground?: string;
     imgSrc?: string;
     imgAlt?: string;
+
     content?: string;
     customQRCode?: boolean;
+
     type?: SlideChartType;
     innerRadius?: number;
     animation?: boolean;
+    datePattern?: string;
+    yAxisDomain?: SlideAttributesYAxisDomain;
+    smooth?: boolean;
+    area?: boolean;
+    ticks?: number;
+    grid?: boolean;
 }
 
 export interface SlideData {

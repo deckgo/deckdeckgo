@@ -298,6 +298,17 @@ export class AppCreateSlide {
                         <p slot="title">Pie comparison</p>
                     </deckgo-slide-chart>
                 </div>
+
+                {/* Compare two graphs */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE})}>
+                    <deckgo-slide-chart class="showcase" type="line"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+                        <p slot="title">Area</p>
+                    </deckgo-slide-chart>
+                </div>
             </div>
         </div>;
     }

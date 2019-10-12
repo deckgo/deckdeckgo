@@ -1,0 +1,211 @@
+import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
+
+import {SlideAttributesYAxisDomain, SlideChartType} from '../../../../models/data/slide';
+
+@Component({
+    tag: 'app-edit-slide-chart'
+})
+export class AppEditSlideChart {
+
+    @Element() el: HTMLElement;
+
+    @Prop()
+    selectedElement: HTMLElement;
+
+    @Prop()
+    slideDidChange: EventEmitter<HTMLElement>;
+
+    @State()
+    private chartType: SlideChartType = undefined;
+
+    @State()
+    private datePattern: string = undefined;
+
+    @State()
+    private smooth: boolean = true;
+
+    @State()
+    private area: boolean = true;
+
+    @State()
+    private grid: boolean = false;
+
+    @State()
+    private yAxisDomain: SlideAttributesYAxisDomain = undefined;
+
+    @State()
+    private ticks: string;
+
+    async componentWillLoad() {
+        this.chartType = await this.initSlideChartType();
+
+        this.datePattern = this.selectedElement ? this.selectedElement.getAttribute('date-pattern') : undefined;
+        this.yAxisDomain = this.selectedElement ? this.selectedElement.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain : 'max';
+
+        this.smooth = this.selectedElement ? (this.selectedElement.getAttribute('smooth') === 'false' ? false : true) : true;
+        this.area = this.selectedElement ? (this.selectedElement.getAttribute('area') === 'false' ? false : true) : true;
+        this.grid = this.selectedElement ? this.selectedElement.hasAttribute('grid') : false;
+
+        this.ticks = this.selectedElement ? this.selectedElement.getAttribute('ticks') : undefined;
+    }
+
+    private initSlideChartType(): Promise<SlideChartType> {
+        return new Promise<SlideChartType>((resolve) => {
+            if (!this.selectedElement) {
+                resolve(undefined);
+                return;
+            }
+
+            const typeAttr: string = this.selectedElement.getAttribute('type');
+
+            if (!typeAttr || typeAttr === undefined || typeAttr === '') {
+                resolve(SlideChartType.PIE);
+                return;
+            }
+
+            const chartType: string = Object.keys(SlideChartType).find((key: string) => {
+                return typeAttr === SlideChartType[key];
+            });
+
+            resolve(SlideChartType[chartType]);
+        });
+    }
+
+    private handleDatePatternInput($event: CustomEvent<KeyboardEvent>) {
+        this.datePattern = ($event.target as InputTargetEvent).value;
+    }
+
+    private handleTicksInput($event: CustomEvent<KeyboardEvent>) {
+        this.ticks = ($event.target as InputTargetEvent).value;
+    }
+
+    private applyChartChanges(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (this.datePattern && this.datePattern !== 'yyyy-MM-dd') {
+                this.selectedElement.setAttribute('date-pattern', this.datePattern);
+            } else {
+                this.selectedElement.removeAttribute('date-pattern');
+            }
+
+            if (this.yAxisDomain && this.yAxisDomain !== 'max') {
+                this.selectedElement.setAttribute('y-axis-domain', this.yAxisDomain);
+            } else {
+                this.selectedElement.removeAttribute('y-axis-domain');
+            }
+
+            this.selectedElement.setAttribute('smooth', `${this.smooth}`);
+            this.selectedElement.setAttribute('area', `${this.area}`);
+            this.selectedElement.setAttribute('grid', `${this.grid}`);
+
+            if (this.ticks && !isNaN(this.ticks as any)) {
+                this.selectedElement.setAttribute('ticks', this.ticks);
+            } else {
+                this.selectedElement.removeAttribute('ticks');
+            }
+
+            this.slideDidChange.emit(this.selectedElement);
+
+            resolve();
+        });
+    }
+
+    private toggleYAxisDomain($event: CustomEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            this.yAxisDomain = $event.detail.value;
+
+            await this.applyChartChanges();
+
+            resolve();
+        });
+    }
+
+    private async toggleSmooth() {
+        this.smooth = !this.smooth;
+
+        await this.applyChartChanges();
+    }
+
+    private async toggleArea() {
+        this.area = !this.area;
+
+        await this.applyChartChanges();
+    }
+
+    private async toggleGrid() {
+        this.grid = !this.grid;
+
+        await this.applyChartChanges();
+    }
+
+    render() {
+        return this.renderChartLineOptions();
+    }
+
+    private renderChartLineOptions() {
+        if (this.chartType !== SlideChartType.LINE) {
+            return undefined;
+        }
+
+        return [
+            <ion-item>
+                <ion-label>Smooth</ion-label>
+                <ion-checkbox slot="end" checked={this.smooth}
+                              onIonChange={() => this.toggleSmooth()}></ion-checkbox>
+            </ion-item>,
+
+            <ion-item>
+                <ion-label>Area</ion-label>
+                <ion-checkbox slot="end" checked={this.area}
+                              onIonChange={() => this.toggleArea()}></ion-checkbox>
+            </ion-item>,
+
+            <ion-item>
+                <ion-label>Grid</ion-label>
+                <ion-checkbox slot="end" checked={this.grid}
+                              onIonChange={() => this.toggleGrid()}></ion-checkbox>
+            </ion-item>,
+
+            <ion-item-divider>
+                <ion-label>Date pattern</ion-label>
+            </ion-item-divider>,
+
+            <ion-item class="with-padding">
+                <ion-input value={this.datePattern} placeholder="yyyy-MM-dd" debounce={500}
+                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleDatePatternInput(e)}
+                           onIonChange={() => this.applyChartChanges()}></ion-input>
+            </ion-item>,
+
+            <ion-item-divider class="ion-margin-top">
+                Y-axis
+            </ion-item-divider>,
+
+            <ion-item class="select">
+                <ion-label>Domain</ion-label>
+
+                <ion-select value={this.yAxisDomain} placeholder="Domain"
+                            onIonChange={(e: CustomEvent) => this.toggleYAxisDomain(e)}
+                            class="ion-padding-start ion-padding-end">
+                    <ion-select-option value='max'>Max</ion-select-option>
+                    <ion-select-option value='extent'>Extent</ion-select-option>
+                </ion-select>
+            </ion-item>,
+
+            <ion-item class="with-padding">
+                <ion-input value={this.ticks} type="number" placeholder="Ticks" debounce={500}
+                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleTicksInput(e)}
+                           onIonChange={() => this.applyChartChanges()}></ion-input>
+            </ion-item>
+        ]
+    }
+
+}

@@ -830,7 +830,7 @@ export class AppEditorToolbar {
             if (detail && detail.data && this.selectedElement) {
                 if (action === EditAction.OPEN_CUSTOM_LOGO) {
                     await this.updateSlideAttribute(detail.data, 'img-src');
-                } if (action === EditAction.OPEN_DATA) {
+                } else if (action === EditAction.OPEN_DATA) {
                     await this.updateSlideAttribute(detail.data, 'src');
                 } else {
                     await this.appendImage(detail.data);

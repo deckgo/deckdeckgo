@@ -11,11 +11,11 @@
 | ------------------- | -------------------- | ----------- | ---------- | ------------------------------ |
 | `animation`         | `animation`          |             | `boolean`  | `false`                        |
 | `animationDuration` | `animation-duration` |             | `number`   | `1000`                         |
-| `area`              | `area`               |             | `boolean`  | `true`                         |
+| `area`              | `area`               |             | `string`   | `undefined`                    |
 | `customActions`     | `custom-actions`     |             | `boolean`  | `false`                        |
 | `customBackground`  | `custom-background`  |             | `boolean`  | `false`                        |
-| `datePattern`       | `date-pattern`       |             | `string`   | `'yyyy-MM-dd'`                 |
-| `grid`              | `grid`               |             | `boolean`  | `false`                        |
+| `datePattern`       | `date-pattern`       |             | `string`   | `undefined`                    |
+| `grid`              | `grid`               |             | `string`   | `undefined`                    |
 | `height`            | `height`             |             | `number`   | `undefined`                    |
 | `innerRadius`       | `inner-radius`       |             | `number`   | `0`                            |
 | `marginBottom`      | `margin-bottom`      |             | `number`   | `32`                           |
@@ -23,13 +23,13 @@
 | `marginRight`       | `margin-right`       |             | `number`   | `32`                           |
 | `marginTop`         | `margin-top`         |             | `number`   | `32`                           |
 | `range`             | --                   |             | `string[]` | `undefined`                    |
-| `separator`         | `separator`          |             | `string`   | `';'`                          |
-| `smooth`            | `smooth`             |             | `boolean`  | `true`                         |
+| `separator`         | `separator`          |             | `string`   | `undefined`                    |
+| `smooth`            | `smooth`             |             | `string`   | `undefined`                    |
 | `src`               | `src`                |             | `string`   | `undefined`                    |
 | `ticks`             | `ticks`              |             | `number`   | `undefined`                    |
 | `type`              | `type`               |             | `string`   | `DeckdeckgoSlideChartType.PIE` |
 | `width`             | `width`              |             | `number`   | `undefined`                    |
-| `yAxisDomain`       | `y-axis-domain`      |             | `string`   | `'max'`                        |
+| `yAxisDomain`       | `y-axis-domain`      |             | `string`   | `undefined`                    |
 
 
 ## Events

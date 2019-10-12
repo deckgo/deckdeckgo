@@ -8,7 +8,14 @@ import '@firebase/firestore';
 
 import {AuthUser} from '../../../../models/auth/auth.user';
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
-import {Slide, SlideAttributes, SlideChartType, SlideData, SlideTemplate} from '../../../../models/data/slide';
+import {
+    Slide,
+    SlideAttributes,
+    SlideAttributesYAxisDomain,
+    SlideChartType,
+    SlideData,
+    SlideTemplate
+} from '../../../../models/data/slide';
 
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
@@ -511,7 +518,7 @@ export class DeckEventsHandler {
     }
 
     private getSlideAttributes(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
-        return new Promise<SlideAttributes>((resolve) => {
+        return new Promise<SlideAttributes>(async (resolve) => {
             let attributes: SlideAttributes = {};
 
             if (slide.getAttribute('style')) {
@@ -540,6 +547,24 @@ export class DeckEventsHandler {
                 attributes.imgAlt = (slide as any).imgAlt;
             }
 
+            const qrCodeAttributes: SlideAttributes = await this.getSlideAttributesQRCode(slide, cleanFields);
+            const chartAttributes: SlideAttributes = await this.getSlideAttributesChart(slide, cleanFields);
+
+            attributes = {...attributes, ...qrCodeAttributes, ...chartAttributes};
+
+            resolve(attributes);
+        })
+    }
+
+    private getSlideAttributesQRCode(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-qrcode') {
+                resolve({});
+                return;
+            }
+
+            let attributes: SlideAttributes = {};
+
             if (slide.hasAttribute('custom-qrcode')) {
                 attributes.customQRCode = true;
                 attributes.content = (slide as any).content;
@@ -550,7 +575,19 @@ export class DeckEventsHandler {
                 attributes.content = firebase.firestore.FieldValue.delete();
             }
 
-            // Charts
+            resolve(attributes);
+        });
+    }
+
+    private getSlideAttributesChart(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-chart') {
+                resolve({});
+                return;
+            }
+
+            let attributes: SlideAttributes = {};
+
             if (slide.hasAttribute('inner-radius')) {
                 attributes.innerRadius = parseInt(slide.getAttribute('inner-radius'));
             }
@@ -563,8 +600,50 @@ export class DeckEventsHandler {
                 attributes.animation = slide.hasAttribute('animation');
             }
 
+            if (slide.hasAttribute('date-pattern')) {
+                attributes.datePattern = slide.getAttribute('date-pattern');
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.datePattern = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.hasAttribute('y-axis-domain')) {
+                attributes.yAxisDomain = slide.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.yAxisDomain = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.getAttribute('smooth') === 'false') {
+                attributes.smooth = false;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.smooth = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.getAttribute('area') === 'false') {
+                attributes.area = false;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.area = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.hasAttribute('ticks')) {
+                attributes.ticks = parseInt(slide.getAttribute('ticks'));
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.ticks = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.getAttribute('grid') === 'true') {
+                attributes.grid = true;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.grid = firebase.firestore.FieldValue.delete();
+            }
+
             resolve(attributes);
-        })
+        });
     }
 
     private getDeckAttributes(deck: HTMLElement): Promise<DeckAttributes> {

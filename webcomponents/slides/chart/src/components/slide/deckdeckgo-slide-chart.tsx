@@ -21,7 +21,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Event() slideDidLoad: EventEmitter<void>;
 
   @Prop({reflect: true}) src: string;
-  @Prop() separator: string = ';';
+  @Prop() separator: string;
 
   @Prop() width: number;
   @Prop() height: number;
@@ -36,19 +36,19 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @Prop() range: string[];
 
   // Line
-  @Prop() datePattern: string = 'yyyy-MM-dd';
+  @Prop({reflect: true}) datePattern: string;
 
   @Prop() marginTop: number = 32;
   @Prop() marginBottom: number = 32;
   @Prop() marginLeft: number = 32;
   @Prop() marginRight: number = 32;
 
-  @Prop() yAxisDomain: string = 'max';
+  @Prop({reflect: true}) yAxisDomain: string;
 
-  @Prop() smooth: boolean = true;
-  @Prop() area: boolean = true;
-  @Prop() ticks: number;
-  @Prop() grid: boolean = false;
+  @Prop({reflect: true}) smooth: string;
+  @Prop({reflect: true}) area: string;
+  @Prop({reflect: true}) ticks: number;
+  @Prop({reflect: true}) grid: string;
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
@@ -64,6 +64,10 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
     await this.drawChart();
 
     this.slideDidLoad.emit();
+  }
+
+  async componentDidUpdate() {
+    await this.drawChart();
   }
 
   @Method()
@@ -177,25 +181,47 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   }
 
   private renderChart() {
+    const attrs = {};
+
+    if (this.separator) {
+      attrs['separator'] = this.separator;
+    }
+
     if (this.type === DeckdeckgoSlideChartType.LINE) {
-      return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
-                                separator={this.separator}
-                                date-pattern={this.datePattern} y-axis-domain={this.yAxisDomain}
-                                margin-top={this.marginTop} margin-bottom={this.marginBottom}
-                                margin-right={this.marginRight} margin-left={this.marginLeft}
-                                smooth={this.smooth} area={this.area} ticks={this.ticks}
-                                grid={this.grid}
-                                animation={this.animation} animation-duration={this.animationDuration}></deckgo-line-chart>
+      return this.renderLineChart(attrs);
     } else if (this.type === DeckdeckgoSlideChartType.BAR) {
-      return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
+      return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
                                 margin-top={this.marginTop} margin-bottom={this.marginBottom}
                                 margin-right={this.marginRight} margin-left={this.marginLeft}
-                               animation={this.animation} animation-duration={this.animationDuration}></deckgo-bar-chart>
+                               animation={this.animation} animation-duration={this.animationDuration} {...attrs}></deckgo-bar-chart>
     } else {
-      return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
+      return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
                                inner-radius={this.innerRadius} range={this.range}
-                               animation={this.animation} animation-duration={this.animationDuration}></deckgo-pie-chart>
+                               animation={this.animation} animation-duration={this.animationDuration} {...attrs}></deckgo-pie-chart>
     }
   }
 
+  private renderLineChart(attrs) {
+    if (this.datePattern) {
+      attrs['date-pattern'] = this.datePattern;
+    }
+
+    if (this.yAxisDomain) {
+      attrs['y-axis-domain'] = this.yAxisDomain;
+    }
+
+    attrs['smooth'] = this.smooth === 'false' ? false : true;
+    attrs['area'] = this.area === 'false' ? false : true;
+    attrs['grid'] = this.grid === 'true';
+
+    if (this.ticks > 0) {
+      attrs['ticks'] = this.ticks;
+    }
+
+    return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+                              margin-top={this.marginTop} margin-bottom={this.marginBottom}
+                              margin-right={this.marginRight} margin-left={this.marginLeft}
+                              animation={this.animation} animation-duration={this.animationDuration}
+                              {...attrs}></deckgo-line-chart>;
+  }
 }

@@ -13,13 +13,13 @@ export namespace Components {
     'afterSwipe': () => Promise<void>;
     'animation': boolean;
     'animationDuration': number;
-    'area': boolean;
+    'area': string;
     'beforeSwipe': (enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
     'datePattern': string;
     'draw': () => Promise<void>;
-    'grid': boolean;
+    'grid': string;
     'height': number;
     'hideContent': () => Promise<void>;
     'innerRadius': number;
@@ -31,7 +31,7 @@ export namespace Components {
     'range': string[];
     'revealContent': () => Promise<void>;
     'separator': string;
-    'smooth': boolean;
+    'smooth': string;
     'src': string;
     'ticks': number;
     'type': string;
@@ -57,11 +57,11 @@ declare namespace LocalJSX {
   interface DeckgoSlideChart extends JSXBase.HTMLAttributes<HTMLDeckgoSlideChartElement> {
     'animation'?: boolean;
     'animationDuration'?: number;
-    'area'?: boolean;
+    'area'?: string;
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'datePattern'?: string;
-    'grid'?: boolean;
+    'grid'?: string;
     'height'?: number;
     'innerRadius'?: number;
     'marginBottom'?: number;
@@ -71,7 +71,7 @@ declare namespace LocalJSX {
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'range'?: string[];
     'separator'?: string;
-    'smooth'?: boolean;
+    'smooth'?: string;
     'src'?: string;
     'ticks'?: number;
     'type'?: string;

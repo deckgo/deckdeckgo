@@ -14,6 +14,9 @@ import {
   Deck,
 } from './app/models/data/deck';
 import {
+  EditAction,
+} from './app/utils/editor/edit-action';
+import {
   TargetElement,
 } from './app/utils/editor/target-element';
 import {
@@ -53,6 +56,15 @@ export namespace Components {
   interface AppDeveloper {}
   interface AppEditSlide {
     'chart': boolean;
+    'qrCode': boolean;
+    'selectedElement': HTMLElement;
+    'slideDidChange': EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideChart {
+    'selectedElement': HTMLElement;
+    'slideDidChange': EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideQrcode {
     'qrCode': boolean;
     'selectedElement': HTMLElement;
     'slideDidChange': EventEmitter<HTMLElement>;
@@ -248,6 +260,18 @@ declare global {
   var HTMLAppEditSlideElement: {
     prototype: HTMLAppEditSlideElement;
     new (): HTMLAppEditSlideElement;
+  };
+
+  interface HTMLAppEditSlideChartElement extends Components.AppEditSlideChart, HTMLStencilElement {}
+  var HTMLAppEditSlideChartElement: {
+    prototype: HTMLAppEditSlideChartElement;
+    new (): HTMLAppEditSlideChartElement;
+  };
+
+  interface HTMLAppEditSlideQrcodeElement extends Components.AppEditSlideQrcode, HTMLStencilElement {}
+  var HTMLAppEditSlideQrcodeElement: {
+    prototype: HTMLAppEditSlideQrcodeElement;
+    new (): HTMLAppEditSlideQrcodeElement;
   };
 
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
@@ -546,6 +570,8 @@ declare global {
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-edit-slide': HTMLAppEditSlideElement;
+    'app-edit-slide-chart': HTMLAppEditSlideChartElement;
+    'app-edit-slide-qrcode': HTMLAppEditSlideQrcodeElement;
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
@@ -632,6 +658,16 @@ declare namespace LocalJSX {
   interface AppDeveloper extends JSXBase.HTMLAttributes<HTMLAppDeveloperElement> {}
   interface AppEditSlide extends JSXBase.HTMLAttributes<HTMLAppEditSlideElement> {
     'chart'?: boolean;
+    'qrCode'?: boolean;
+    'selectedElement'?: HTMLElement;
+    'slideDidChange'?: EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideChart extends JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement> {
+    'selectedElement'?: HTMLElement;
+    'slideDidChange'?: EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideQrcode extends JSXBase.HTMLAttributes<HTMLAppEditSlideQrcodeElement> {
+    'onAction'?: (event: CustomEvent<EditAction>) => void;
     'qrCode'?: boolean;
     'selectedElement'?: HTMLElement;
     'slideDidChange'?: EventEmitter<HTMLElement>;
@@ -779,6 +815,8 @@ declare namespace LocalJSX {
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
     'app-edit-slide': AppEditSlide;
+    'app-edit-slide-chart': AppEditSlideChart;
+    'app-edit-slide-qrcode': AppEditSlideQrcode;
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
     'app-editor-toolbar': AppEditorToolbar;
