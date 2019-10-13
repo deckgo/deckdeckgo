@@ -785,14 +785,14 @@ export class DeckdeckgoInlineEditor {
         const textAfter: string = (index + this.anchorLink.text.length) > -1 ? target.textContent.substr((index + this.anchorLink.text.length)) : null;
 
         if (textBefore) {
-          target.parentElement.appendChild(document.createTextNode(textBefore));
+          target.parentElement.insertBefore(document.createTextNode(textBefore), target);
         }
 
         const a: HTMLAnchorElement = await this.createLinkElement();
-        target.parentElement.appendChild(a);
+        target.parentElement.insertBefore(a, target);
 
         if (textAfter) {
-          target.parentElement.appendChild(document.createTextNode(textAfter));
+          target.parentElement.insertBefore(document.createTextNode(textAfter), target);
         }
 
         target.parentElement.removeChild(target);
