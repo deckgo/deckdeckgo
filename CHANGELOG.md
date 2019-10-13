@@ -9,6 +9,7 @@
 * charts: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
 * slide-chart: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/chart/CHANGELOG.md))
 * slide-qrcode: v1.0.0-rc.2-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/qrcode/CHANGELOG.md))
+* slide-split: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/split/CHANGELOG.md))
 
 <a name="1.0.0-rc.15"></a>
 # [1.0.0-rc.15](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-2...v1.0.0-15) (2019-10-07)
