@@ -46,6 +46,7 @@ div.deckgo-slide-split-vertical {
   flex: 1 100%;
 
   display: var(--slide-split-title-display, none);
+  max-height: fit-content;
 
   padding: var(--slide-split-title-padding-top, var(--slide-padding-top-default)) var(--slide-split-title-padding-end, var(--slide-padding-end-default)) var(--slide-split-title-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-split-title-padding-start, var(--slide-padding-start-default));
 }
