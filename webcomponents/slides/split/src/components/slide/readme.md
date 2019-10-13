@@ -11,6 +11,7 @@
 | ------------------ | ------------------- | ----------- | --------- | ------- |
 | `customActions`    | `custom-actions`    |             | `boolean` | `false` |
 | `customBackground` | `custom-background` |             | `boolean` | `false` |
+| `vertical`         | `vertical`          |             | `boolean` | `false` |
 
 
 ## Events
