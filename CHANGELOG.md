@@ -3,7 +3,7 @@
 
 ### Applications
 
-* docs: v1.0.0-rc.4-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+* docs: v1.0.0-rc.4-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 
 ### Web Components
 * charts: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))

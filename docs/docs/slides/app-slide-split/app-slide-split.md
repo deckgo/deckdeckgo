@@ -5,6 +5,8 @@ The "Split" slide is a simple slide which display two panes on the page.
 ## Table of contents
 
 - [Layout](#app-slide-split-layout)
+  - [Horizontal](#app-slide-split-layout-horizontal)
+  - [Vertical](#app-slide-split-layout-vertical)
 - [Installation](#app-slide-split-installation)
   - [From a CDN](#app-slide-split-from-a-cdn)
   - [From NPM](#app-slide-split-from-npm)
@@ -17,15 +19,34 @@ The "Split" slide is a simple slide which display two panes on the page.
 
 ## Layout
 
+This template could split the content in two different ways.
+
+### Horizontal
+
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-split>
-        <h1 slot="title">Two columns subject</h1>
         <p slot="start">
           The content you want to display on the left side of the page
         </p>
         <p slot="end">
           The content you want to display on the right side of the page
+        </p>
+      </deckgo-slide-split>
+  </deckgo-deck>
+</div>
+
+### Vertical
+
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-split vertical={true}>
+        <p slot="start">
+          The content you want to display on the top of the page
+        </p>
+        <p slot="end">
+          The content you want to display on the bottom of the page
         </p>
       </deckgo-slide-split>
   </deckgo-deck>
@@ -113,6 +134,7 @@ This component offers the following options which could be set using attributes:
 | -------------------------- |-----------------|-----------------|-----------------|
 | custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
 | custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| vertical| boolean | false | Per default this template is horizontally split (two columns). Turn this property to `true` too display two rows respectively split vertically |
 
 ## Theming
 
