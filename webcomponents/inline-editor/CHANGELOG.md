@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-1"></a>
+# 1.0.0-rc.3-1 (2019-10-13)
+
+### Fix
+
+* create link don't always respect order ([#405](https://github.com/deckgo/deckdeckgo/issues/405))
+
 <a name="1.0.0-rc.3"></a>
 # 1.0.0-rc.3 (2019-10-01)
 
