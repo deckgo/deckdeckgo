@@ -15,7 +15,8 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
-  @Prop() vertical: boolean = false;
+
+  @Prop({reflectToAttr: true}) vertical: boolean = false;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
