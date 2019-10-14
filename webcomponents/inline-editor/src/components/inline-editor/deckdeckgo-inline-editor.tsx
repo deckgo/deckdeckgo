@@ -315,12 +315,6 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      // Quirk when use click at the begin of the selection after having already selected something
-      if (this.selection && selection.toString() === this.selection.toString()) {
-        resolve();
-        return;
-      }
-
       const activated: boolean = await this.activateToolbar(selection);
       await this.setToolsActivated(activated);
 
