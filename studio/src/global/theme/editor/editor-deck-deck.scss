@@ -58,7 +58,7 @@ deckgo-deck deckgo-social {
 
 /* Chart */
 
-deckgo-deck deckgo-slide-chart:not([area="true"]) {
+deckgo-deck deckgo-slide-chart[area="false"] {
   --deckgo-chart-stroke: var(--color);
 }
 
