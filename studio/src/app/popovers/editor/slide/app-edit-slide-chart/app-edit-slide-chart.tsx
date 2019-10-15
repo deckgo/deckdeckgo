@@ -44,7 +44,7 @@ export class AppEditSlideChart {
 
         this.smooth = this.selectedElement ? (this.selectedElement.getAttribute('smooth') === 'false' ? false : true) : true;
         this.area = this.selectedElement ? (this.selectedElement.getAttribute('area') === 'false' ? false : true) : true;
-        this.grid = this.selectedElement ? this.selectedElement.hasAttribute('grid') : false;
+        this.grid = this.selectedElement ? (this.selectedElement.getAttribute('grid') === 'true' ? true : false) : false;
 
         this.ticks = this.selectedElement ? this.selectedElement.getAttribute('ticks') : undefined;
     }
@@ -100,6 +100,7 @@ export class AppEditSlideChart {
 
             this.selectedElement.setAttribute('smooth', `${this.smooth}`);
             this.selectedElement.setAttribute('area', `${this.area}`);
+
             this.selectedElement.setAttribute('grid', `${this.grid}`);
 
             if (this.ticks && !isNaN(this.ticks as any)) {
