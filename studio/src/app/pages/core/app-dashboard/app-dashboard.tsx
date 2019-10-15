@@ -111,14 +111,14 @@ export class AppDashboard {
     private filterDecks(value: string): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!value || value === undefined || value === '') {
-                this.filteredDecks = this.decks ? [...this.decks] : null;
+                this.filteredDecks = this.decks ? [...this.decks] : [];
 
                 resolve();
                 return;
             }
 
             if (!this.decks || this.decks.length <= 0) {
-                this.filteredDecks = this.decks ? [...this.decks] : null;
+                this.filteredDecks = this.decks ? [...this.decks] : [];
 
                 resolve();
                 return;
@@ -238,19 +238,28 @@ export class AppDashboard {
     }
 
     private renderContent() {
+        if (!this.filteredDecks) {
+            return undefined;
+        }
+
         return <main class="ion-padding">
-            {this.filteredDecks && this.filteredDecks.length > 0 && <h1>Your presentations</h1>}
-            {(!this.filteredDecks || (this.filteredDecks && this.filteredDecks.length === 0)) && 
-                <h1>{"You don't have any presentation"}</h1>
-            }
+            {this.renderTitle()}
             {this.renderDecksFilter()}
             {this.renderCreateButton()}
             {this.renderDecks()}
         </main>
     }
 
+    private renderTitle() {
+        if (this.filteredDecks.length > 0) {
+            return <h1>Your presentations</h1>;
+        } else {
+            return <h1>You don't have any presentation yet</h1>;
+        }
+    }
+
     private renderDecksFilter() {
-        if (this.filteredDecks && this.filteredDecks.length > 0) {
+        if (this.filteredDecks.length > 0) {
             return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
                                 onClick={($event) => $event.stopImmediatePropagation()}
                                 onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
@@ -261,14 +270,14 @@ export class AppDashboard {
     }
 
     private renderCreateButton() {
-        if (!this.filteredDecks || (this.filteredDecks && this.filteredDecks.length === 0)) {
+        if (this.filteredDecks.length === 0) {
             return  <ion-grid>
                 <ion-row class="ion-justify-content-center">
                     <ion-column>
                         <ion-button slot="end" shape="round" fill="outline" 
                                     onClick={() => this.navigateEditor()} 
                                     class="ion-margin-top">
-                            <ion-label>Create Presentation</ion-label>
+                            <ion-label>Start one now 🚀</ion-label>
                         </ion-button>   
                     </ion-column>
                 </ion-row>
