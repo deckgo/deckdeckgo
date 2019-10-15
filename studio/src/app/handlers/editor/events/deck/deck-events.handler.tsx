@@ -240,10 +240,6 @@ export class DeckEventsHandler {
             if (persistedSlide && persistedSlide.id) {
                 slide.setAttribute('slide_id', persistedSlide.id);
 
-                // Add a key to uniquely identify the slide. Mandatory notably for the reorder function
-                // See https://stenciljs.com/docs/templating-jsx?#loops
-                slide.setAttribute('key', persistedSlide.id);
-
                 this.busyService.slideEditable(slide);
             }
 
