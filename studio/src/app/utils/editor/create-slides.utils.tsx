@@ -1,5 +1,7 @@
 import {h, JSX} from '@stencil/core';
 
+import uuid from 'uuid/v4';
+
 import {SlideTemplate} from '../../models/data/slide';
 
 import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
@@ -50,7 +52,7 @@ export class CreateSlidesUtils {
 
             const content = <section slot="content"></section>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-title>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-title key={uuid()}>
                 {title}
                 {content}
             </deckgo-slide-title>;
@@ -70,7 +72,7 @@ export class CreateSlidesUtils {
 
             const content = <section slot="content"></section>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-content>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-content key={uuid()}>
                 {title}
                 {content}
             </deckgo-slide-content>;
@@ -90,7 +92,7 @@ export class CreateSlidesUtils {
 
             const end = <section slot="end"></section>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-split>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-split key={uuid()}>
                 {start}
                 {end}
             </deckgo-slide-split>;
@@ -110,7 +112,7 @@ export class CreateSlidesUtils {
 
             const content = <h3 slot="footer"></h3>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-gif src={src}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-gif src={src} key={uuid()}>
                 {title}
                 {content}
             </deckgo-slide-gif>;
@@ -141,7 +143,7 @@ export class CreateSlidesUtils {
 
             const links = await this.createSocialLinks(user);
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-author img-src={imgSrc} img-alt={imgAlt}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-author key={uuid()} img-src={imgSrc} img-alt={imgAlt}>
                 {title}
                 {author}
                 {links}
@@ -216,7 +218,7 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title"></h1>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-youtube src={src}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-youtube key={uuid()} src={src}>
                 {title}
             </deckgo-slide-youtube>;
 
@@ -235,7 +237,7 @@ export class CreateSlidesUtils {
 
             const content: string = QRCodeUtils.getPresentationUrl(deck);
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode content={content} img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
+            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode key={uuid()} content={content} img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
                 {title}
             </deckgo-slide-qrcode>;
 
