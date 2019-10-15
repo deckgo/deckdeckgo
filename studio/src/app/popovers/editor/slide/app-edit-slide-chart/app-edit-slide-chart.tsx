@@ -1,6 +1,7 @@
-import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Prop, State, Host} from '@stencil/core';
 
 import {SlideAttributesYAxisDomain, SlideChartType} from '../../../../models/data/slide';
+import {EditAction} from '../../../../utils/editor/edit-action';
 
 @Component({
     tag: 'app-edit-slide-chart'
@@ -14,6 +15,9 @@ export class AppEditSlideChart {
 
     @Prop()
     slideDidChange: EventEmitter<HTMLElement>;
+
+    @Event()
+    private action: EventEmitter<EditAction>;
 
     @State()
     private chartType: SlideChartType = undefined;
@@ -149,7 +153,16 @@ export class AppEditSlideChart {
     }
 
     render() {
-        return this.renderChartLineOptions();
+        return <Host>
+            {this.renderChartLineOptions()}
+
+            <ion-item class="action-button ion-margin-top">
+                <ion-button shape="round" onClick={() => this.action.emit(EditAction.OPEN_DATA)}
+                            color="tertiary">
+                    <ion-label class="ion-text-uppercase">Your data</ion-label>
+                </ion-button>
+            </ion-item>
+        </Host>;
     }
 
     private renderChartLineOptions() {

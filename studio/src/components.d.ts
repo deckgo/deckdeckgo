@@ -671,6 +671,7 @@ declare namespace LocalJSX {
     'slideDidChange'?: EventEmitter<HTMLElement>;
   }
   interface AppEditSlideChart extends JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement> {
+    'onAction'?: (event: CustomEvent<EditAction>) => void;
     'selectedElement'?: HTMLElement;
     'slideDidChange'?: EventEmitter<HTMLElement>;
   }

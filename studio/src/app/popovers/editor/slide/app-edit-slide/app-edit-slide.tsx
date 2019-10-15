@@ -65,7 +65,7 @@ export class AppEditSlide {
         if (this.qrCode) {
             return <app-edit-slide-qrcode selectedElement={this.selectedElement} slideDidChange={this.slideDidChange} onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-qrcode>;
         } else if (this.chart) {
-            return <app-edit-slide-chart selectedElement={this.selectedElement} slideDidChange={this.slideDidChange}></app-edit-slide-chart>;
+            return <app-edit-slide-chart selectedElement={this.selectedElement} slideDidChange={this.slideDidChange} onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-chart>;
         } else {
             return undefined;
         }
