@@ -111,14 +111,14 @@ export class AppDashboard {
     private filterDecks(value: string): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!value || value === undefined || value === '') {
-                this.filteredDecks = this.decks ? [...this.decks] : null;
+                this.filteredDecks = this.decks ? [...this.decks] : [];
 
                 resolve();
                 return;
             }
 
             if (!this.decks || this.decks.length <= 0) {
-                this.filteredDecks = this.decks ? [...this.decks] : null;
+                this.filteredDecks = this.decks ? [...this.decks] : [];
 
                 resolve();
                 return;
@@ -168,6 +168,13 @@ export class AppDashboard {
 
         this.navService.navigate({
             url: url,
+            direction: NavDirection.ROOT
+        });
+    }
+
+    private async navigateEditor() {
+        this.navService.navigate({
+            url: '/editor',
             direction: NavDirection.ROOT
         });
     }
@@ -231,18 +238,53 @@ export class AppDashboard {
     }
 
     private renderContent() {
+        if (!this.filteredDecks) {
+            return undefined;
+        }
+
         return <main class="ion-padding">
-            <h1>Your presentations</h1>
+            {this.renderTitle()}
             {this.renderDecksFilter()}
+            {this.renderCreateButton()}
             {this.renderDecks()}
         </main>
     }
 
+    private renderTitle() {
+        if (this.filteredDecks.length > 0) {
+            return <h1>Your presentations</h1>;
+        } else {
+            return <h1>You don't have any presentation yet</h1>;
+        }
+    }
+
     private renderDecksFilter() {
-        return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
-                              onClick={($event) => $event.stopImmediatePropagation()}
-                              onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
-                              class="ion-no-padding ion-margin-top ion-margin-bottom"></ion-searchbar>;
+        if (this.filteredDecks.length > 0) {
+            return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
+                                onClick={($event) => $event.stopImmediatePropagation()}
+                                onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
+                                class="ion-no-padding ion-margin-top ion-margin-bottom" />
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderCreateButton() {
+        if (this.filteredDecks.length === 0) {
+            return  <ion-grid>
+                <ion-row class="ion-justify-content-center">
+                    <ion-column>
+                        <ion-button slot="end" shape="round" fill="outline" 
+                                    onClick={() => this.navigateEditor()} 
+                                    class="ion-margin-top">
+                            <ion-label>Start one now 🚀</ion-label>
+                        </ion-button>   
+                    </ion-column>
+                </ion-row>
+            </ion-grid>;
+        } else {
+            return undefined;
+        }
     }
 
     private renderDecks() {
