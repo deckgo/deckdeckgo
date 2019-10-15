@@ -134,6 +134,8 @@ app-create-slide {
       --deckgo-chart-fill-color-1: var(--ion-color-secondary);
       --deckgo-chart-fill-opacity-1: 0.7;
 
+      --deckgo-chart-text-display: none;
+
       &[area="false"] {
         --deckgo-chart-stroke: black;
       }

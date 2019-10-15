@@ -302,7 +302,7 @@ export class AppCreateSlide {
                 {/* Area */}
                 <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE})}>
                     <deckgo-slide-chart class="showcase" type="line"
-                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
                                         width={88} height={68}
                                         y-axis-domain="extent" date-pattern="dd.MM.yyyy"
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
@@ -313,7 +313,7 @@ export class AppCreateSlide {
                 {/* Sharp area */}
                 <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, smooth: false})}>
                     <deckgo-slide-chart class="showcase" type="line"
-                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
                                         width={88} height={68}
                                         y-axis-domain="extent" date-pattern="dd.MM.yyyy" smooth={false}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv">
@@ -324,7 +324,7 @@ export class AppCreateSlide {
                 {/* Lines */}
                 <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, area: false})}>
                     <deckgo-slide-chart class="showcase" type="line"
-                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
                                         width={88} height={68}
                                         area={false}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv">
@@ -335,12 +335,44 @@ export class AppCreateSlide {
                 {/* Animated area */}
                 <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, animation: true})}>
                     <deckgo-slide-chart class="showcase" type="line"
-                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
-                                        width={88} height={48}
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={53}
                                         y-axis-domain="extent" date-pattern="dd.MM.yyyy"
                                         animation={true}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv">
                         <p slot="title">Line graph comparison</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Bar */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
+                    <deckgo-slide-chart class="showcase" type="bar"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+                        <p slot="title">Bar</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Grouped bars */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
+                    <deckgo-slide-chart class="showcase" type="bar"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+                                        style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}>
+                        <p slot="title">Grouped bars</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Animation bars */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR, animation: true})}>
+                    <deckgo-slide-chart class="showcase" type="bar"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={68} animation={true}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+                                        style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}>
+                        <p slot="title">Bar comparison</p>
                     </deckgo-slide-chart>
                 </div>
             </div>
