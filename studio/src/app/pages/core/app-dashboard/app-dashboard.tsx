@@ -172,6 +172,13 @@ export class AppDashboard {
         });
     }
 
+    private async navigateEditor() {
+        this.navService.navigate({
+            url: '/editor',
+            direction: NavDirection.ROOT
+        });
+    }
+
     private removeDeletedDeck($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!$event || !$event.detail || $event.detail === undefined || $event.detail === '') {
@@ -232,17 +239,43 @@ export class AppDashboard {
 
     private renderContent() {
         return <main class="ion-padding">
-            <h1>Your presentations</h1>
+            {this.filteredDecks && this.filteredDecks.length > 0 && <h1>Your presentations</h1>}
+            {(!this.filteredDecks || (this.filteredDecks && this.filteredDecks.length === 0)) && 
+                <h1>{"You don't have any presentation"}</h1>
+            }
             {this.renderDecksFilter()}
+            {this.renderCreateButton()}
             {this.renderDecks()}
         </main>
     }
 
     private renderDecksFilter() {
-        return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
-                              onClick={($event) => $event.stopImmediatePropagation()}
-                              onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
-                              class="ion-no-padding ion-margin-top ion-margin-bottom"></ion-searchbar>;
+        if (this.filteredDecks && this.filteredDecks.length > 0) {
+            return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
+                                onClick={($event) => $event.stopImmediatePropagation()}
+                                onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
+                                class="ion-no-padding ion-margin-top ion-margin-bottom" />
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderCreateButton() {
+        if (!this.filteredDecks || (this.filteredDecks && this.filteredDecks.length === 0)) {
+            return  <ion-grid>
+                <ion-row class="ion-justify-content-center">
+                    <ion-column>
+                        <ion-button slot="end" shape="round" fill="outline" 
+                                    onClick={() => this.navigateEditor()} 
+                                    class="ion-margin-top">
+                            <ion-label>Create Presentation</ion-label>
+                        </ion-button>   
+                    </ion-column>
+                </ion-row>
+            </ion-grid>;
+        } else {
+            return undefined;
+        }
     }
 
     private renderDecks() {
