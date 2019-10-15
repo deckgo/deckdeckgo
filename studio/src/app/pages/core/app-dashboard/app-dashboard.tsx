@@ -232,17 +232,24 @@ export class AppDashboard {
 
     private renderContent() {
         return <main class="ion-padding">
-            <h1>Your presentations</h1>
+            {this.filteredDecks && this.filteredDecks.length > 0 && <h1>Your presentations</h1>}
+            {(!this.filteredDecks || (this.filteredDecks && this.filteredDecks.length === 0)) && 
+                <h1>{"You don't have any presentation"}</h1>
+            }
             {this.renderDecksFilter()}
             {this.renderDecks()}
         </main>
     }
 
     private renderDecksFilter() {
-        return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
-                              onClick={($event) => $event.stopImmediatePropagation()}
-                              onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
-                              class="ion-no-padding ion-margin-top ion-margin-bottom"></ion-searchbar>;
+        if (this.filteredDecks && this.filteredDecks.length > 0) {
+            return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
+                                onClick={($event) => $event.stopImmediatePropagation()}
+                                onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
+                                class="ion-no-padding ion-margin-top ion-margin-bottom"></ion-searchbar>;
+        } else {
+            return undefined;
+        }
     }
 
     private renderDecks() {
