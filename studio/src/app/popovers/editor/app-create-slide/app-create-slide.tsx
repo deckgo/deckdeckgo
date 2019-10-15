@@ -272,7 +272,7 @@ export class AppCreateSlide {
                 <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE})}>
                     <deckgo-slide-chart class="showcase" type="pie"
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
-                                        width={204} height={68}
+                                        width={68} height={68}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
                         <p slot="title">Pie</p>
                     </deckgo-slide-chart>
@@ -282,7 +282,7 @@ export class AppCreateSlide {
                 <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, innerRadius: 100})}>
                     <deckgo-slide-chart class="showcase" type="pie"
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
-                                        width={204} height={68}
+                                        width={68} height={68}
                                         inner-radius={16}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
                         <p slot="title">Donut</p>
@@ -293,7 +293,7 @@ export class AppCreateSlide {
                 <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, animation: true})}>
                     <deckgo-slide-chart class="showcase" type="pie" animation={true}
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
-                                        width={204} height={68}
+                                        width={68} height={68}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv">
                         <p slot="title">Pie comparison</p>
                     </deckgo-slide-chart>
@@ -303,7 +303,7 @@ export class AppCreateSlide {
                 <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE})}>
                     <deckgo-slide-chart class="showcase" type="line"
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
-                                        width={204} height={68}
+                                        width={88} height={68}
                                         y-axis-domain="extent" date-pattern="dd.MM.yyyy"
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
                         <p slot="title">Area</p>

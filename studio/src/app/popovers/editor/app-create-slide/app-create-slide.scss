@@ -29,8 +29,6 @@ app-create-slide {
       justify-content: center;
       align-items: center;
 
-      margin-bottom: 16px;
-
       &.collapsed {
         max-height: 0;
         margin-bottom: 0;
@@ -45,23 +43,18 @@ app-create-slide {
       div.list {
         width: 100%;
         background: var(--ion-color-primary);
+        padding: 8px 0;
 
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
+        flex-wrap: wrap;
 
         div.item {
+          width: calc((100% - 32px) / 2);
+          margin: 4px 4px;
           background: white;
           font-size: 0.2rem;
-
-          &:first-of-type {
-            margin-top: 16px;
-          }
-
-          &:last-of-type {
-            margin-bottom: 16px;
-          }
         }
       }
     }
