@@ -342,7 +342,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       .attr('class', 'area')
       .style('fill', `var(--deckgo-chart-fill-color-${index}, #${Math.floor(Math.random()*16777215).toString(16)})`)
       .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${index})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${index})`)
+      .style('stroke', `var(--deckgo-chart-stroke-${index}, var(--deckgo-chart-stroke))`)
       .style('stroke-width', `var(--deckgo-chart-stroke-width-${index})`)
       .attr('d', line);
   }
@@ -360,7 +360,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       .append('path').merge(section)
       .style('fill', `var(--deckgo-chart-fill-color-${index}, #${Math.floor(Math.random()*16777215).toString(16)})`)
       .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${index})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${index})`)
+      .style('stroke', `var(--deckgo-chart-stroke-${index}, var(--deckgo-chart-stroke))`)
       .style('stroke-width', `var(--deckgo-chart-stroke-width-${index})`)
       .transition(t).duration(this.animationDuration).ease(easeLinear)
       .attr('class', 'area')

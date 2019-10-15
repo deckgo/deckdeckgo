@@ -517,6 +517,11 @@ export class AppComponentsCharts {
 <td>0.7</td>
 <td>The stroke opacity of the grid</td>
 </tr>
+<tr>
+<td>--deckgo-chart-stroke</td>
+<td></td>
+<td>A default stroke which could be applied to all graphs&#39; line</td>
+</tr>
 </tbody></table>
 <p>Furthermore, for each generated charts, the following CSS4 variables could be applied:</p>
 <table>

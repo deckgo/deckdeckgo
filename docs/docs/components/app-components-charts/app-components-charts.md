@@ -352,6 +352,7 @@ The `<deckgo-line-chart/>` could be styled using the following CSS4 variables:
 | --deckgo-chart-text-display |  | The display property of the labels |
 | --deckgo-chart-grid-stroke | #989aa2 | The stroke of the grid |
 | --deckgo-chart-grid-stroke-opacity | 0.7 | The stroke opacity of the grid |
+| --deckgo-chart-stroke | | A default stroke which could be applied to all graphs' line |
 
 Furthermore, for each generated charts, the following CSS4 variables could be applied:
 
