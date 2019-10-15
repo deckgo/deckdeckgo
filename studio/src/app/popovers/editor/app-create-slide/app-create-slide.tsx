@@ -299,7 +299,7 @@ export class AppCreateSlide {
                     </deckgo-slide-chart>
                 </div>
 
-                {/* Compare two graphs */}
+                {/* Area */}
                 <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE})}>
                     <deckgo-slide-chart class="showcase" type="line"
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
@@ -307,6 +307,40 @@ export class AppCreateSlide {
                                         y-axis-domain="extent" date-pattern="dd.MM.yyyy"
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
                         <p slot="title">Area</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Sharp area */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, smooth: false})}>
+                    <deckgo-slide-chart class="showcase" type="line"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={88} height={68}
+                                        y-axis-domain="extent" date-pattern="dd.MM.yyyy" smooth={false}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv">
+                        <p slot="title">Sharp area</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Lines */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, area: false})}>
+                    <deckgo-slide-chart class="showcase" type="line"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={88} height={68}
+                                        area={false}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv">
+                        <p slot="title">Lines</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Animated area */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, animation: true})}>
+                    <deckgo-slide-chart class="showcase" type="line"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={88} height={48}
+                                        y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        animation={true}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv">
+                        <p slot="title">Line graph comparison</p>
                     </deckgo-slide-chart>
                 </div>
             </div>
