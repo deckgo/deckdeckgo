@@ -194,7 +194,11 @@ export class AppSlideYoutube {
 <p>Toggle will take care to pause or play the video according its current state.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">const slide = deck.getElementsByTagName(&#039;deckgo-slide-youtube&#039;);{'\n'}await slide.toggle();</code>
-    </deckgo-highlight-code></main>
+    </deckgo-highlight-code><h2 id="app-slide-youtube-video">Video</h2>
+<p>Have a look at this video where we demonstrate how to use it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=4fOFE_Tlxls" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</main>
 
         <app-footer></app-footer>
       </ion-content>

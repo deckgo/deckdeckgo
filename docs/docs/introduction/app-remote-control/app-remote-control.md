@@ -49,5 +49,15 @@ The [remote control] let you track your talk's time too. This application implem
 
 ![The DeckDeckGo remote control timer](/assets/img/screenshots/remote-control/deckdeckgo-remote-control-timer.png "The DeckDeckGo remote control timer")
 
+## Video
+
+Have a look at this video where we demonstrate it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=3o3oGBTTRSs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+And on this one where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=nxjHYBLTw5E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 [DeckDeckGo]: https://deckdeckgo.com
 [remote control]: https://deckdeckgo.app

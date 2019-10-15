@@ -68,6 +68,10 @@ export class AppEditMarkdown {
       <code slot="code">new DeckDeckGoMarkdownPlugin(&#123;src: &#039;&#47;Users&#47;david&#47;mypresentation&#47;src&#47;hello.md&#039;&#125;)</code>
     </deckgo-highlight-code><h2 id="app-edit-markdown-summary">Summary</h2>
 <p>When you choose Markdown, you edit your slides in <code>index.md</code> and use standard Markdown except the extra tags <code>---</code> to declare your slides and <code>***</code> if you wish to add notes. </p>
+<h2 id="app-edit-markdown-video">Video</h2>
+<p>Have a look at this video where we demonstrate how to use it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=Ah68rZ2E8YY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 </main>
 
         <app-footer></app-footer>

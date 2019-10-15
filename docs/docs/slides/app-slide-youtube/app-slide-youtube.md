@@ -149,4 +149,10 @@ const slide = deck.getElementsByTagName('deckgo-slide-youtube');
 await slide.toggle();
 ```
 
+## Video
+
+Have a look at this video where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=4fOFE_Tlxls" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 [DeckDeckGo]: https://deckdeckgo.com
