@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-1"></a>
+# 1.0.0-rc.2-1 (2019-10-12)
+
+### Fix
+
+* don't set a default 100% value as it might be to wide depending on the slide format
+
 <a name="1.0.0-rc.2"></a>
 # 1.0.0-rc.2 (2019-10-07)
 

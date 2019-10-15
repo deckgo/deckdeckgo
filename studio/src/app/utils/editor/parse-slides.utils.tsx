@@ -1,5 +1,7 @@
 import {h, JSX} from '@stencil/core';
 
+import uuid from 'uuid/v4';
+
 import {ParseStyleUtils} from './parse-style.utils';
 import {ParseElementsUtils} from './parse-elements.utils';
 
@@ -65,7 +67,7 @@ export class ParseSlidesUtils {
 
             const SlideElement: string = slideTag;
 
-            const result: JSX.IntrinsicElements = <SlideElement key={slide.id} slide_id={ignoreSlideId ? undefined : slide.id} {...attributes}>
+            const result: JSX.IntrinsicElements = <SlideElement key={uuid()} slide_id={ignoreSlideId ? undefined : slide.id} {...attributes}>
                 {content}
             </SlideElement>;
 

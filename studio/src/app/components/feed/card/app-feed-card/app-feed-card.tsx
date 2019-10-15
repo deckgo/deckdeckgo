@@ -146,7 +146,7 @@ export class AppFeedCard {
 
     private renderAuthor() {
         if (this.author) {
-            return <p class="author ion-padding-top">
+            return <p class="author">
                 {this.renderAuthorAvatar()}
                 <ion-label>{this.author} | {this.formattedPublishedAt}</ion-label>
             </p>

@@ -30,7 +30,11 @@ export class AppSlideContent {
 <p>The &quot;Split&quot; slide is a simple slide which display two panes on the page.</p>
 <h2 id="app-slide-split-table-of-contents">Table of contents</h2>
 <ul>
-<li><a href="#app-slide-split-layout">Layout</a></li>
+<li><a href="#app-slide-split-layout">Layout</a><ul>
+<li><a href="#app-slide-split-layout-horizontal">Horizontal</a></li>
+<li><a href="#app-slide-split-layout-vertical">Vertical</a></li>
+</ul>
+</li>
 <li><a href="#app-slide-split-installation">Installation</a><ul>
 <li><a href="#app-slide-split-from-a-cdn">From a CDN</a></li>
 <li><a href="#app-slide-split-from-npm">From NPM</a></li>
@@ -46,15 +50,30 @@ export class AppSlideContent {
 <li><a href="#app-slide-split-theming">Theming</a></li>
 </ul>
 <h2 id="app-slide-split-layout">Layout</h2>
+<p>This template could split the content in two different ways.</p>
+<h3 id="app-slide-split-horizontal">Horizontal</h3>
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-split>
-        <h1 slot="title">Two columns subject</h1>
         <p slot="start">
           The content you want to display on the left side of the page
         </p>
         <p slot="end">
           The content you want to display on the right side of the page
+        </p>
+      </deckgo-slide-split>
+  </deckgo-deck>
+</div>
+
+<h3 id="app-slide-split-vertical">Vertical</h3>
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-split vertical={true}>
+        <p slot="start">
+          The content you want to display on the top of the page
+        </p>
+        <p slot="end">
+          The content you want to display on the bottom of the page
         </p>
       </deckgo-slide-split>
   </deckgo-deck>
@@ -115,6 +134,12 @@ export class AppSlideContent {
 <td>boolean</td>
 <td>false</td>
 <td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+</tr>
+<tr>
+<td>vertical</td>
+<td>boolean</td>
+<td>false</td>
+<td>Per default this template is horizontally split (two columns). Turn this property to <code>true</code> too display two rows respectively split vertically</td>
 </tr>
 </tbody></table>
 <h2 id="app-slide-split-theming">Theming</h2>

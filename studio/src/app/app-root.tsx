@@ -126,6 +126,7 @@ export class AppRoot {
                     <ion-route url="/developer" component="app-developer"/>
                     <ion-route url="/contact" component="app-contact"/>
                     <ion-route url="/newsletter" component="app-newsletter"/>
+                    <ion-route url="/press" component="app-press"/>
                 </ion-router>
 
                 <ion-menu id="ion-menu" side="start" type="overlay" swipeGesture={false} contentId="menu-content">

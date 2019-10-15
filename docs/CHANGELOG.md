@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.4-3"></a>
+# 1.0.0-rc.4-3 (2019-10-13)
+
+### Features
+
+* new split `vertical` property
+
 <a name="1.0.0-rc.4-2"></a>
 # 1.0.0-rc.4-2 (2019-10-09)
 

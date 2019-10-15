@@ -131,6 +131,7 @@ export namespace Components {
     'description': boolean;
     'help': boolean;
   }
+  interface AppPress {}
   interface AppPrivacy {}
   interface AppPublish {}
   interface AppPublishDone {
@@ -424,6 +425,12 @@ declare global {
     new (): HTMLAppPopularElement;
   };
 
+  interface HTMLAppPressElement extends Components.AppPress, HTMLStencilElement {}
+  var HTMLAppPressElement: {
+    prototype: HTMLAppPressElement;
+    new (): HTMLAppPressElement;
+  };
+
   interface HTMLAppPrivacyElement extends Components.AppPrivacy, HTMLStencilElement {}
   var HTMLAppPrivacyElement: {
     prototype: HTMLAppPrivacyElement;
@@ -597,6 +604,7 @@ declare global {
     'app-opensource': HTMLAppOpensourceElement;
     'app-photo': HTMLAppPhotoElement;
     'app-popular': HTMLAppPopularElement;
+    'app-press': HTMLAppPressElement;
     'app-privacy': HTMLAppPrivacyElement;
     'app-publish': HTMLAppPublishElement;
     'app-publish-done': HTMLAppPublishDoneElement;
@@ -748,6 +756,7 @@ declare namespace LocalJSX {
     'description'?: boolean;
     'help'?: boolean;
   }
+  interface AppPress extends JSXBase.HTMLAttributes<HTMLAppPressElement> {}
   interface AppPrivacy extends JSXBase.HTMLAttributes<HTMLAppPrivacyElement> {}
   interface AppPublish extends JSXBase.HTMLAttributes<HTMLAppPublishElement> {}
   interface AppPublishDone extends JSXBase.HTMLAttributes<HTMLAppPublishDoneElement> {
@@ -842,6 +851,7 @@ declare namespace LocalJSX {
     'app-opensource': AppOpensource;
     'app-photo': AppPhoto;
     'app-popular': AppPopular;
+    'app-press': AppPress;
     'app-privacy': AppPrivacy;
     'app-publish': AppPublish;
     'app-publish-done': AppPublishDone;

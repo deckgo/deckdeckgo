@@ -64,12 +64,8 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
 
         const qrCode: HTMLElement = container.querySelector('deckgo-qrcode');
 
-        if (qrCode) {
-          if (width <= 0 && height <= 0) {
-            qrCode.style.setProperty('--deckgo-qrcode-size', '100%');
-          } else {
-            qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? (height + 'px') : ('calc('  + width + 'px - 32px)'));
-          }
+        if (qrCode && width > 0 && height > 0) {
+          qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? (height + 'px') : ('calc('  + width + 'px - 32px)'));
         }
       }
 

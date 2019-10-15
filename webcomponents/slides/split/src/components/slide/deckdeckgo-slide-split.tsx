@@ -16,6 +16,8 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
+  @Prop({reflectToAttr: true}) vertical: boolean = false;
+
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
@@ -48,11 +50,12 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
   }
 
   render() {
+    const verticalAttr = this.vertical ? '-vertical' : '';
     return <Host class={{'deckgo-slide-container': true}}>
-      <div class="deckgo-slide">
+      <div class={`deckgo-slide${verticalAttr}`}>
         <slot name="title"></slot>
-        <div class="deckgo-slide-split deckgo-slide-split-start"><slot name="start"></slot></div>
-        <div class="deckgo-slide-split deckgo-slide-split-end"><slot name="end"></slot></div>
+        <div class={`deckgo-slide-split${verticalAttr} deckgo-slide-split-start`}><slot name="start"></slot></div>
+        <div class={`deckgo-slide-split${verticalAttr} deckgo-slide-split-end`}><slot name="end"></slot></div>
         <slot name="notes"></slot>
         <slot name="actions"></slot>
         <slot name="background"></slot>
