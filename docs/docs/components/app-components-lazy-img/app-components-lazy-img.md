@@ -128,4 +128,10 @@ In case the browser would not support the native native lazy-loading or the Inte
 
 This component lazy load images when these are not presented in the viewport. If you would use this component in a simple test containing only a couple of images, respectively no content or no real use case where the images are effectively offscreen, assign a default height to components in order to ensure that some are effectively placed outside of the window [[#128]](https://github.com/deckgo/deckdeckgo/issues/128#issuecomment-493979841).
 
+## Video
+
+Have a look at this video where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=VMNa3RnWxHI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 [DeckDeckGo]: https://deckdeckgo.com 

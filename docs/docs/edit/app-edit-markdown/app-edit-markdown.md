@@ -120,4 +120,10 @@ new DeckDeckGoMarkdownPlugin({src: '/Users/david/mypresentation/src/hello.md'})
 
 When you choose Markdown, you edit your slides in `index.md` and use standard Markdown except the extra tags `---` to declare your slides and `***` if you wish to add notes. 
 
+## Video
+
+Have a look at this video where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=Ah68rZ2E8YY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 [DeckDeckGo]: https://deckdeckgo.com

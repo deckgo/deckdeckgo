@@ -224,6 +224,10 @@ export class AppComponentsLazyImg {
 <p>In case the browser would not support the native native lazy-loading or the Intersection Observer API, images are going to be loaded without any delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded. </p>
 <h3 id="app-components-lazy-img-trying-it-out">Trying it out</h3>
 <p>This component lazy load images when these are not presented in the viewport. If you would use this component in a simple test containing only a couple of images, respectively no content or no real use case where the images are effectively offscreen, assign a default height to components in order to ensure that some are effectively placed outside of the window <a href="https://github.com/deckgo/deckdeckgo/issues/128#issuecomment-493979841">[#128]</a>.</p>
+<h2 id="app-components-lazy-img-video">Video</h2>
+<p>Have a look at this video where we demonstrate how to use it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=VMNa3RnWxHI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 </main>
 
         <app-footer></app-footer>

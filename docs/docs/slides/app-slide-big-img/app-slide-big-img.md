@@ -120,4 +120,11 @@ The following theming options will affect this component if set on its host or p
 | --zIndex | 1 | The z-index of the slide |
 | --slide-img-max-width |  | A maximal width value for the image. Useful in case you would like to display your deck in a container respectively not full window/screen. |
 
+## Video
+
+Have a look at this video where we show how to use stock photos with it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=iCzRn3XxEXs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 [DeckDeckGo]: https://deckdeckgo.com

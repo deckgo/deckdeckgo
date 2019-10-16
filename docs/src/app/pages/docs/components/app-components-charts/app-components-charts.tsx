@@ -748,7 +748,11 @@ export class AppComponentsCharts {
 <p>You could find other examples of bar charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-bar-chart width=&#123;500&#125; {'\n'}                  height=&#123;400&#125;{'\n'}                   src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;{'\n'}                   style=&quot;--deckgo-chart-fill-color-bar1: #3880ff;&quot;&gt;{'\n'}&lt;&#47;deckgo-bar-chart&gt;</code>
-    </deckgo-highlight-code></main>
+    </deckgo-highlight-code><h2 id="app-components-charts-video">Video</h2>
+<p>Have a look at this video where we demonstrate it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=CaEwUXO7BYA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</main>
 
         <app-footer></app-footer>
       </ion-content>

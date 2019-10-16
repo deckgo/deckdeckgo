@@ -370,7 +370,12 @@ export class AppComponentsInlineEditor {
     </deckgo-highlight-code><h3 id="app-components-inline-editor-examples">Examples</h3>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;p contenteditable slot=&quot;content&quot;&gt;This text will be editable&lt;&#47;p&gt;{'\n'}{'\n'}&lt;h1 contenteditable slot=&quot;title&quot;&gt;This title too&lt;&#47;h1&gt;{'\n'}{'\n'}&lt;deckgo-inline-editor&gt;&lt;&#47;deckgo-inline-editor&gt;</code>
-    </deckgo-highlight-code></main>
+    </deckgo-highlight-code><h2 id="app-components-inline-editor-video">Video</h2>
+<p>Have a look at this video where we demonstrate how to use it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=As3bXlnHHFE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+</main>
 
         <app-footer></app-footer>
       </ion-content>

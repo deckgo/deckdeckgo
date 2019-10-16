@@ -187,6 +187,11 @@ export class AppSlideBigImg {
 <td>A maximal width value for the image. Useful in case you would like to display your deck in a container respectively not full window/screen.</td>
 </tr>
 </tbody></table>
+<h2 id="app-slide-big-img-video">Video</h2>
+<p>Have a look at this video where we show how to use stock photos with it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=iCzRn3XxEXs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 </main>
 
         <app-footer></app-footer>

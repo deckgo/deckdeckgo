@@ -511,4 +511,10 @@ You could find other examples of bar charts in the [src/index.html](https://gith
 </deckgo-bar-chart>
 ```
 
+## Video
+
+Have a look at this video where we demonstrate it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=CaEwUXO7BYA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 [DeckDeckGo]: https://deckdeckgo.com

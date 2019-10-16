@@ -199,6 +199,10 @@ export class AppSlideChart {
 </tr>
 </tbody></table>
 <p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts Web Component, see its <a href="/components/charts">documentation</a> for the details.</p>
+<h2 id="app-slide-chart-video">Video</h2>
+<p>Have a look at this video where we demonstrate how to use it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=ESD-K7zZT-c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 </main>
 
         <app-footer></app-footer>
