@@ -2,6 +2,23 @@
 
 The "WYSIWYG inline editor" component is an extra component which will be use in the upcoming [DeckDeckGo] Studio.
 
+## Table of contents
+
+- [Showcase](#app-components-inline-editor-showcase)
+    - [Video](#app-components-inline-editor-video)
+- [Installation](#app-components-inline-editor-installation)
+	- [Using from a CDN](#app-components-inline-editor-from-a-cdn)
+	- [Install from NPM](#app-components-inline-editor-from-npm)
+	- [Framework integration](#app-components-inline-editor-framework-integration)
+- [Usage](#app-components-inline-editor-usage)
+	- [Properties](#app-components-inline-editor-properties)
+	    - [Custom actions slots](#app-components-inline-editor-custom-actions-slots)
+	- [Styling](#app-components-inline-editor-styling)
+	- [Events](#app-components-inline-editor-events)
+	- [Methods](#app-components-inline-editor-methods)
+	- [Examples](#app-components-inline-editor-examples)
+	
+
 ## Showcase
 
 <div>
@@ -17,20 +34,11 @@ The "WYSIWYG inline editor" component is an extra component which will be use in
 
 <deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable={true}></deckgo-inline-editor>
 
-## Table of contents
+### Video
 
-- [Showcase](#app-components-inline-editor-showcase)
-- [Installation](#app-components-inline-editor-installation)
-	- [Using from a CDN](#app-components-from-a-cdn)
-	- [Install from NPM](#app-components-from-npm)
-	- [Framework integration](#app-components-inline-editor-framework-integration)
-- [Usage](#app-components-inline-editor-usage)
-	- [Properties](#app-components-inline-editor-properties)
-	    - [Custom actions slots](#app-components-inline-editor-custom-actions-slots)
-	- [Styling](#app-components-inline-editor-styling)
-	- [Events](#app-components-inline-editor-events)
-	- [Methods](#app-components-inline-editor-methods)
-	- [Examples](#app-components-inline-editor-examples)
+Have a look at this video where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/As3bXlnHHFE" frameborder="0"></iframe>
 
 ## Installation
 
@@ -176,5 +184,6 @@ await element.reset(clearSelection: boolean, blurActiveElement?: boolean);
 
 <deckgo-inline-editor></deckgo-inline-editor>
 ```
+
 
 [DeckDeckGo]: https://deckdeckgo.com 

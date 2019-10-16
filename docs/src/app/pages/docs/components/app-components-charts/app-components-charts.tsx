@@ -49,6 +49,7 @@ export class AppComponentsCharts {
 <li><a href="#app-components-charts-bar">Bar</a></li>
 <li><a href="#app-components-charts-compare-multiple-bars">Compare multiple bars</a></li>
 <li><a href="#app-components-charts-animated-bars">Animated bars</a></li>
+<li><a href="#app-components-charts-video">Video</a></li>
 </ul>
 </li>
 <li><a href="#app-components-charts-installation">Installation</a><ul>
@@ -161,6 +162,10 @@ export class AppComponentsCharts {
     <ion-button fill="outline" size="small" onClick={() => this.next('animatedBar')}><ion-label>Next</ion-label></ion-button>
   </div>
 </div>
+
+<h3 id="app-components-charts-video">Video</h3>
+<p>Have a look at this video where we demonstrate it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CaEwUXO7BYA" frameborder="0"></iframe>
 
 <h2 id="app-components-charts-installation">Installation</h2>
 <p>This component could be added to your web application using the following methods.</p>

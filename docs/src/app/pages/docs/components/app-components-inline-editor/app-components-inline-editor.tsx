@@ -20,25 +20,15 @@ export class AppComponentsInlineEditor {
       <ion-content class="ion-padding">
         <main><h1 id="app-components-inline-editor-wysiwyg-inline-editor">WYSIWYG inline editor</h1>
 <p>The &quot;WYSIWYG inline editor&quot; component is an extra component which will be use in the upcoming <a href="https://deckdeckgo.com">DeckDeckGo</a> Studio.</p>
-<h2 id="app-components-inline-editor-showcase">Showcase</h2>
-<div>
-  <h1 style={{color: '#3880ff'}} contenteditable slot="title">DeckDeckGo (editable title)</h1>
-
-  <h2 style={{color: '#3880ff'}} contenteditable slot="title">The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
-
-  <p style={{color: '#3880ff'}} contenteditable slot="content">Edit anywhere, display everywhere (editable paragraph)</p>
-
-  <p style={{width: '200px'}} contenteditable><img style={{'max-width': '100%'}} src="https://deckdeckgo.com/assets/favicon/android-chrome-512x512.png"/></p>
-
-</div>
-
-<p><deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable={true}></deckgo-inline-editor></p>
 <h2 id="app-components-inline-editor-table-of-contents">Table of contents</h2>
 <ul>
-<li><a href="#app-components-inline-editor-showcase">Showcase</a></li>
+<li><a href="#app-components-inline-editor-showcase">Showcase</a><ul>
+<li><a href="#app-components-inline-editor-video">Video</a></li>
+</ul>
+</li>
 <li><a href="#app-components-inline-editor-installation">Installation</a><ul>
-<li><a href="#app-components-from-a-cdn">Using from a CDN</a></li>
-<li><a href="#app-components-from-npm">Install from NPM</a></li>
+<li><a href="#app-components-inline-editor-from-a-cdn">Using from a CDN</a></li>
+<li><a href="#app-components-inline-editor-from-npm">Install from NPM</a></li>
 <li><a href="#app-components-inline-editor-framework-integration">Framework integration</a></li>
 </ul>
 </li>
@@ -54,6 +44,23 @@ export class AppComponentsInlineEditor {
 </ul>
 </li>
 </ul>
+<h2 id="app-components-inline-editor-showcase">Showcase</h2>
+<div>
+  <h1 style={{color: '#3880ff'}} contenteditable slot="title">DeckDeckGo (editable title)</h1>
+
+  <h2 style={{color: '#3880ff'}} contenteditable slot="title">The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
+
+  <p style={{color: '#3880ff'}} contenteditable slot="content">Edit anywhere, display everywhere (editable paragraph)</p>
+
+  <p style={{width: '200px'}} contenteditable><img style={{'max-width': '100%'}} src="https://deckdeckgo.com/assets/favicon/android-chrome-512x512.png"/></p>
+
+</div>
+
+<p><deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable={true}></deckgo-inline-editor></p>
+<h3 id="app-components-inline-editor-video">Video</h3>
+<p>Have a look at this video where we demonstrate how to use it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/As3bXlnHHFE" frameborder="0"></iframe>
+
 <h2 id="app-components-inline-editor-installation">Installation</h2>
 <p>This component could be added to your web application using the following methods.</p>
 <blockquote>

@@ -5,6 +5,7 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 ## Table of contents
 
 - [Layout](#app-slide-gif-layout)
+- [Video](#app-slide-gif-video)
 - [Installation](#app-slide-gif-installation)
   - [From a CDN](#app-slide-gif-from-a-cdn)
   - [From NPM](#app-slide-gif-from-npm)
@@ -28,6 +29,12 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
     </deckgo-slide-gif>
   </deckgo-deck>
 </div>
+
+## Video
+
+Have a look at this video where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0X3k3-yP7-Q" frameborder="0"></iframe>
 
 ## Installation
 

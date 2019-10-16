@@ -44,4 +44,10 @@ The following is an example of the process if you would like to install the Goog
 
 ``` 
 
+## Video
+
+Have a look at this video where we show how to do it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/S6qL7JbxJ70" frameborder="0"></iframe>
+
 [DeckDeckGo]: https://deckdeckgo.com

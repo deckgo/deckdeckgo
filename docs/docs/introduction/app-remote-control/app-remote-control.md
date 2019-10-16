@@ -37,9 +37,15 @@ Use the [remote control] to take remotely the remotely of your presentation. Use
 * Draw over your slide deck
 * Highlight elements of your presentation
 
-### Screenshot
+### Video
 
-![The DeckDeckGo remote control](/assets/img/screenshots/remote-control/deckdeckgo-remote-control-interact.png "The DeckDeckGo remote control")
+Have a look at this video where we demonstrate it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3o3oGBTTRSs" frameborder="0"></iframe>
+
+And on this one where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nxjHYBLTw5E" frameborder="0"></iframe>
 
 ## Time tracker
 

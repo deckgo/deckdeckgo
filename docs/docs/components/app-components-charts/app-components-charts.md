@@ -18,6 +18,7 @@ To create and draw the charts, this project is using [D3js](https://d3js.org).
 	- [Bar](#app-components-charts-bar)
 	- [Compare multiple bars](#app-components-charts-compare-multiple-bars)
 	- [Animated bars](#app-components-charts-animated-bars)
+	- [Video](#app-components-charts-video)
 - [Installation](#app-components-charts-installation)
 	- [Using DeckDeckGo charts from a CDN](#app-components-charts-using-deckdeckgo-charts-from-a-cdn)
 	- [Install DeckDeckGo charts from NPM](#app-components-charts-install-deckdeckgo-charts-from-npm)
@@ -134,6 +135,12 @@ npm run start
     <ion-button fill="outline" size="small" onClick={() => this.next('animatedBar')}><ion-label>Next</ion-label></ion-button>
   </div>
 </div>
+
+### Video
+
+Have a look at this video where we demonstrate it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CaEwUXO7BYA" frameborder="0"></iframe>
 
 ## Installation
 

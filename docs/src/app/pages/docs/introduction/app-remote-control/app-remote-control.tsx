@@ -51,11 +51,16 @@ export class AppRemoteControl {
 <li>Draw over your slide deck</li>
 <li>Highlight elements of your presentation</li>
 </ul>
-<h3 id="app-remote-control-screenshot">Screenshot</h3>
-<p><img src="/assets/img/screenshots/remote-control/deckdeckgo-remote-control-interact.png" alt="The DeckDeckGo remote control" title="The DeckDeckGo remote control"/></p>
+<h3 id="app-remote-control-video">Video</h3>
+<p>Have a look at this video where we demonstrate it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3o3oGBTTRSs" frameborder="0"></iframe>
+
+<p>And on this one where we demonstrate how to use it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nxjHYBLTw5E" frameborder="0"></iframe>
+
 <h2 id="app-remote-control-time-tracker">Time tracker</h2>
 <p>The <a href="https://deckdeckgo.app">remote control</a> let you track your talk&#39;s time too. This application implements local notifications to inform you when your talk is about to finish or is finished.</p>
-<h3 id="app-remote-control-screenshot-1">Screenshot</h3>
+<h3 id="app-remote-control-screenshot">Screenshot</h3>
 <p><img src="/assets/img/screenshots/remote-control/deckdeckgo-remote-control-timer.png" alt="The DeckDeckGo remote control timer" title="The DeckDeckGo remote control timer"/></p>
 </main>
 

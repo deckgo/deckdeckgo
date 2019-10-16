@@ -30,10 +30,10 @@ Cool, let's kick start a new DeckDeckGo presentation
 ? What's your name (will be use for the author meta information)? (David)
 
 ? What method do you want to use to edit your presentation? (Use arrow keys)
-  ❯ HTML 
+  ❯ HTML
     Markdown
 ```
 
 Once your presentation created, go to your new project's folder and start editing your slides and content for your talk 😉
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

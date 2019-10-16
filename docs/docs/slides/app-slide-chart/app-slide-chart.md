@@ -5,6 +5,7 @@ The "Chart" slide let you draw easily charts in your presentation.
 ## Table of contents
 
 - [Layout](#app-slide-chart-layout)
+- [Video](#app-slide-chart-video)
 - [Installation](#app-slide-chart-installation)
   - [From a CDN](#app-slide-chart-from-a-cdn)
   - [From NPM](#app-slide-chart-from-npm)
@@ -38,6 +39,12 @@ The "Chart" slide let you draw easily charts in your presentation.
     </deckgo-slide-chart>
   </deckgo-deck>
 </div>
+
+## Video
+
+Have a look at this video where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ESD-K7zZT-c" frameborder="0"></iframe>
 
 ## Installation
 
