@@ -144,10 +144,4 @@ The following theming options will affect this component if set on its host or p
 
 Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - QR code Web Component, see its [documentation](https://docs.deckdeckgo.com/components/qrcode) for the details.
 
-## Video
-
-Have a look at this video where we demonstrate how to use it!
-
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=Hqqt6HZ2HMs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 [deckdeckgo]: https://deckdeckgo.com

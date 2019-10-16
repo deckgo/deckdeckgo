@@ -159,10 +159,4 @@ The following theming options will affect this component if set on its host or p
 | --slide-author-social-padding-top | 32px | The spacing between the author description and the social links |
 | --zIndex | 1 | The z-index of the slide |
 
-## Video
-
-Have a look at this video where we demonstrate how to use it!
-
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=iCzRn3XxEXs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 [DeckDeckGo]: https://deckdeckgo.com

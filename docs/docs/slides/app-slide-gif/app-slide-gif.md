@@ -5,6 +5,7 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 ## Table of contents
 
 - [Layout](#app-slide-gif-layout)
+- [Video](#app-slide-gif-video)
 - [Installation](#app-slide-gif-installation)
   - [From a CDN](#app-slide-gif-from-a-cdn)
   - [From NPM](#app-slide-gif-from-npm)
@@ -28,6 +29,12 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
     </deckgo-slide-gif>
   </deckgo-deck>
 </div>
+
+## Video
+
+Have a look at this video where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0X3k3-yP7-Q" frameborder="0"></iframe>
 
 ## Installation
 
@@ -126,11 +133,5 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
 | --zIndex | 1 | The z-index of the slide |
-
-## Video
-
-Have a look at this video where we demonstrate how to use it!
-
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=0X3k3-yP7-Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 [DeckDeckGo]: https://deckdeckgo.com

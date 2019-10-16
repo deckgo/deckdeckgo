@@ -5,6 +5,7 @@ The "Chart" slide let you draw easily charts in your presentation.
 ## Table of contents
 
 - [Layout](#app-slide-chart-layout)
+- [Video](#app-slide-chart-video)
 - [Installation](#app-slide-chart-installation)
   - [From a CDN](#app-slide-chart-from-a-cdn)
   - [From NPM](#app-slide-chart-from-npm)
@@ -36,6 +37,12 @@ The "Chart" slide let you draw easily charts in your presentation.
     </deckgo-slide-chart>
   </deckgo-deck>
 </div>
+
+## Video
+
+Have a look at this video where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ESD-K7zZT-c" frameborder="0"></iframe>
 
 ## Installation
 
@@ -138,11 +145,5 @@ The following theming options will affect this component if set on its host or p
 | --slide-chart-margin-start | 32px | Margin left of the chart inside its container |
 
 Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] charts Web Component, see its [documentation](/components/charts) for the details.
-
-## Video
-
-Have a look at this video where we demonstrate how to use it!
-
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=ESD-K7zZT-c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 [DeckDeckGo]: https://deckdeckgo.com

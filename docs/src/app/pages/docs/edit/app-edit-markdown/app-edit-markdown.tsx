@@ -31,6 +31,7 @@ export class AppEditMarkdown {
 </ul>
 </li>
 <li><a href="#app-edit-markdown-summary">Summary</a></li>
+<li><a href="#app-edit-markdown-video">Video</a></li>
 </ul>
 <h2 id="app-edit-markdown-introduction">Introduction</h2>
 <p>When you edit your talk with Markdown, the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webpack">DeckDeckGo Webpack Markdown Plugin</a> will convert, at bundle time, your code to HTML and will inject the results in the <code>index.html</code> file. Doing so, your <a href="https://deckdeckgo.com">DeckDeckGo</a> presentation will remain SEO friendly even without server side rendering. </p>
@@ -70,7 +71,7 @@ export class AppEditMarkdown {
 <p>When you choose Markdown, you edit your slides in <code>index.md</code> and use standard Markdown except the extra tags <code>---</code> to declare your slides and <code>***</code> if you wish to add notes. </p>
 <h2 id="app-edit-markdown-video">Video</h2>
 <p>Have a look at this video where we demonstrate how to use it!</p>
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=Ah68rZ2E8YY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Ah68rZ2E8YY" frameborder="0"></iframe>
 
 </main>
 

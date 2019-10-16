@@ -181,10 +181,4 @@ The following theming options will affect this component if set on its host or p
 
 Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - Highlight code Web Component, see its [documentation](https://docs.deckdeckgo.com/components/code) for the details.
 
-## Video
-
-Have a look at this video where we demonstrate how to use it!
-
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=s9ZpH1kM2Zs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 [DeckDeckGo]: https://deckdeckgo.com

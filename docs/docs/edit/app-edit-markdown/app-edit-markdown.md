@@ -11,6 +11,7 @@ If you wish, you could edit your [DeckDeckGo] presentation using Markdown. This 
     - [Notes](#app-edit-markdown-notes)
     - [Options](#app-edit-markdown-options)
 - [Summary](#app-edit-markdown-summary)
+- [Video](#app-edit-markdown-video)
 
 ## Introduction
 
@@ -124,6 +125,6 @@ When you choose Markdown, you edit your slides in `index.md` and use standard Ma
 
 Have a look at this video where we demonstrate how to use it!
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=Ah68rZ2E8YY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Ah68rZ2E8YY" frameborder="0"></iframe>
 
 [DeckDeckGo]: https://deckdeckgo.com

@@ -31,6 +31,7 @@ export class AppSlideChart {
 <h2 id="app-slide-chart-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-slide-chart-layout">Layout</a></li>
+<li><a href="#app-slide-chart-video">Video</a></li>
 <li><a href="#app-slide-chart-installation">Installation</a><ul>
 <li><a href="#app-slide-chart-from-a-cdn">From a CDN</a></li>
 <li><a href="#app-slide-chart-from-npm">From NPM</a></li>
@@ -65,6 +66,10 @@ export class AppSlideChart {
     </deckgo-slide-chart>
   </deckgo-deck>
 </div>
+
+<h2 id="app-slide-chart-video">Video</h2>
+<p>Have a look at this video where we demonstrate how to use it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ESD-K7zZT-c" frameborder="0"></iframe>
 
 <h2 id="app-slide-chart-installation">Installation</h2>
 <p>This template could be added to your presentation using the following methods.</p>
@@ -199,10 +204,6 @@ export class AppSlideChart {
 </tr>
 </tbody></table>
 <p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts Web Component, see its <a href="/components/charts">documentation</a> for the details.</p>
-<h2 id="app-slide-chart-video">Video</h2>
-<p>Have a look at this video where we demonstrate how to use it!</p>
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=ESD-K7zZT-c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 </main>
 
         <app-footer></app-footer>

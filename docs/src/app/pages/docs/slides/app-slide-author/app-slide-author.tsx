@@ -231,10 +231,6 @@ export class AppSlideAuthor {
 <td>The z-index of the slide</td>
 </tr>
 </tbody></table>
-<h2 id="app-slide-author-video">Video</h2>
-<p>Have a look at this video where we demonstrate how to use it!</p>
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=iCzRn3XxEXs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 </main>
 
         <app-footer></app-footer>

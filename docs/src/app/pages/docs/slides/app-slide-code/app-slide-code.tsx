@@ -175,10 +175,6 @@ export class AppSlideCode {
 </tr>
 </tbody></table>
 <p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> - Highlight code Web Component, see its <a href="https://docs.deckdeckgo.com/components/code">documentation</a> for the details.</p>
-<h2 id="app-slide-code-video">Video</h2>
-<p>Have a look at this video where we demonstrate how to use it!</p>
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=s9ZpH1kM2Zs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 </main>
 
         <app-footer></app-footer>

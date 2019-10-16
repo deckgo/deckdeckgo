@@ -49,6 +49,7 @@ export class AppComponentsCharts {
 <li><a href="#app-components-charts-bar">Bar</a></li>
 <li><a href="#app-components-charts-compare-multiple-bars">Compare multiple bars</a></li>
 <li><a href="#app-components-charts-animated-bars">Animated bars</a></li>
+<li><a href="#app-components-charts-video">Video</a></li>
 </ul>
 </li>
 <li><a href="#app-components-charts-installation">Installation</a><ul>
@@ -161,6 +162,10 @@ export class AppComponentsCharts {
     <ion-button fill="outline" size="small" onClick={() => this.next('animatedBar')}><ion-label>Next</ion-label></ion-button>
   </div>
 </div>
+
+<h3 id="app-components-charts-video">Video</h3>
+<p>Have a look at this video where we demonstrate it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CaEwUXO7BYA" frameborder="0"></iframe>
 
 <h2 id="app-components-charts-installation">Installation</h2>
 <p>This component could be added to your web application using the following methods.</p>
@@ -748,11 +753,7 @@ export class AppComponentsCharts {
 <p>You could find other examples of bar charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-bar-chart width=&#123;500&#125; {'\n'}                  height=&#123;400&#125;{'\n'}                   src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;{'\n'}                   style=&quot;--deckgo-chart-fill-color-bar1: #3880ff;&quot;&gt;{'\n'}&lt;&#47;deckgo-bar-chart&gt;</code>
-    </deckgo-highlight-code><h2 id="app-components-charts-video">Video</h2>
-<p>Have a look at this video where we demonstrate it!</p>
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=CaEwUXO7BYA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-</main>
+    </deckgo-highlight-code></main>
 
         <app-footer></app-footer>
       </ion-content>
