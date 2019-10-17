@@ -742,9 +742,13 @@ export class AppEditorToolbar {
             if (window && 'ResizeObserver' in window) {
                 await this.detachMoveToolbarOnElement();
 
-                this.elementResizeObserver = new ResizeObserver(async (_entries) => {
+                this.elementResizeObserver = new ResizeObserver(async (entries) => {
                     await this.moveToolbar();
-                    await this.resizeSlideContent();
+
+                    if (entries && entries.length > 0 && entries[0].target
+                        && entries[0].target.nodeName && entries[0].target.nodeName.toLowerCase().indexOf('deckgo-slide') === -1) {
+                        await this.resizeSlideContent();
+                    }
                 });
                 this.elementResizeObserver.observe(this.selectedElement);
             } else {
