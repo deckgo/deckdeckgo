@@ -74,7 +74,7 @@ export class AppRoot {
           <ion-route url="/misc/contact" component="app-misc-contact"/>
         </ion-router>
 
-        <ion-menu side="start" type="push" swipeGesture={false} contentId="menu-content">
+        <ion-menu side="start" type="push" swipeGesture={false} content-id="menu-content">
           <app-navigation logo={true} menuToggle={false} navigation={false}></app-navigation>
           <ion-content>
             <ion-menu-toggle autoHide={false}>
