@@ -140,8 +140,8 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
     return new Promise<void>((resolve) => {
       // If width and height, use them otherwise full size
       if (this.width > 0 && this.height > 0) {
-        this.chartWidth = this.width - this.marginLeft - this.marginRight;
-        this.chartHeight = this.height - this.marginTop - this.marginBottom;
+        this.chartWidth = this.width - (this.type !== DeckdeckgoSlideChartType.PIE ? (this.marginLeft + this.marginRight) : 0);
+        this.chartHeight = this.height - (this.type !== DeckdeckgoSlideChartType.PIE ? (this.marginTop + this.marginBottom) : 0);
       } else {
         const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-chart-container');
 
@@ -149,8 +149,8 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
         const height: number = container.clientHeight;
 
         if (container && width > 0 && height > 0) {
-          this.chartWidth = width - this.marginLeft - this.marginRight;
-          this.chartHeight = height - this.marginTop - this.marginBottom;
+          this.chartWidth = width - (this.type !== DeckdeckgoSlideChartType.PIE ? (this.marginLeft + this.marginRight) : 0);
+          this.chartHeight = height - (this.type !== DeckdeckgoSlideChartType.PIE ? (this.marginTop + this.marginBottom) : 0);
         }
       }
 
