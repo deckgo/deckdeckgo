@@ -15,6 +15,9 @@ import {
   Deck,
 } from './app/models/data/deck';
 import {
+  EditAction,
+} from './app/utils/editor/edit-action';
+import {
   TargetElement,
 } from './app/utils/editor/target-element';
 import {
@@ -41,6 +44,7 @@ export namespace Components {
   }
   interface AppContact {}
   interface AppCreateSlide {}
+  interface AppCustomData {}
   interface AppCustomImages {}
   interface AppDashboard {}
   interface AppDeckDelete {
@@ -52,6 +56,16 @@ export namespace Components {
   }
   interface AppDeveloper {}
   interface AppEditSlide {
+    'chart': boolean;
+    'qrCode': boolean;
+    'selectedElement': HTMLElement;
+    'slideDidChange': EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideChart {
+    'selectedElement': HTMLElement;
+    'slideDidChange': EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideQrcode {
     'qrCode': boolean;
     'selectedElement': HTMLElement;
     'slideDidChange': EventEmitter<HTMLElement>;
@@ -208,6 +222,12 @@ declare global {
     new (): HTMLAppCreateSlideElement;
   };
 
+  interface HTMLAppCustomDataElement extends Components.AppCustomData, HTMLStencilElement {}
+  const HTMLAppCustomDataElement: {
+    prototype: HTMLAppCustomDataElement;
+    new (): HTMLAppCustomDataElement;
+  };
+
   interface HTMLAppCustomImagesElement extends Components.AppCustomImages, HTMLStencilElement {}
   const HTMLAppCustomImagesElement: {
     prototype: HTMLAppCustomImagesElement;
@@ -242,6 +262,18 @@ declare global {
   const HTMLAppEditSlideElement: {
     prototype: HTMLAppEditSlideElement;
     new (): HTMLAppEditSlideElement;
+  };
+
+  interface HTMLAppEditSlideChartElement extends Components.AppEditSlideChart, HTMLStencilElement {}
+  const HTMLAppEditSlideChartElement: {
+    prototype: HTMLAppEditSlideChartElement;
+    new (): HTMLAppEditSlideChartElement;
+  };
+
+  interface HTMLAppEditSlideQrcodeElement extends Components.AppEditSlideQrcode, HTMLStencilElement {}
+  const HTMLAppEditSlideQrcodeElement: {
+    prototype: HTMLAppEditSlideQrcodeElement;
+    new (): HTMLAppEditSlideQrcodeElement;
   };
 
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
@@ -539,12 +571,15 @@ declare global {
     'app-color': HTMLAppColorElement;
     'app-contact': HTMLAppContactElement;
     'app-create-slide': HTMLAppCreateSlideElement;
+    'app-custom-data': HTMLAppCustomDataElement;
     'app-custom-images': HTMLAppCustomImagesElement;
     'app-dashboard': HTMLAppDashboardElement;
     'app-deck-delete': HTMLAppDeckDeleteElement;
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-edit-slide': HTMLAppEditSlideElement;
+    'app-edit-slide-chart': HTMLAppEditSlideChartElement;
+    'app-edit-slide-qrcode': HTMLAppEditSlideQrcodeElement;
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
@@ -618,6 +653,7 @@ declare namespace LocalJSX {
   interface AppCreateSlide {
     'onSignIn'?: (event: CustomEvent<void>) => void;
   }
+  interface AppCustomData {}
   interface AppCustomImages {}
   interface AppDashboard {}
   interface AppDeckDelete {
@@ -630,6 +666,18 @@ declare namespace LocalJSX {
   }
   interface AppDeveloper {}
   interface AppEditSlide {
+    'chart'?: boolean;
+    'qrCode'?: boolean;
+    'selectedElement'?: HTMLElement;
+    'slideDidChange'?: EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideChart {
+    'onAction'?: (event: CustomEvent<EditAction>) => void;
+    'selectedElement'?: HTMLElement;
+    'slideDidChange'?: EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideQrcode {
+    'onAction'?: (event: CustomEvent<EditAction>) => void;
     'qrCode'?: boolean;
     'selectedElement'?: HTMLElement;
     'slideDidChange'?: EventEmitter<HTMLElement>;
@@ -771,12 +819,15 @@ declare namespace LocalJSX {
     'app-color': AppColor;
     'app-contact': AppContact;
     'app-create-slide': AppCreateSlide;
+    'app-custom-data': AppCustomData;
     'app-custom-images': AppCustomImages;
     'app-dashboard': AppDashboard;
     'app-deck-delete': AppDeckDelete;
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
     'app-edit-slide': AppEditSlide;
+    'app-edit-slide-chart': AppEditSlideChart;
+    'app-edit-slide-qrcode': AppEditSlideQrcode;
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
     'app-editor-toolbar': AppEditorToolbar;
@@ -841,12 +892,15 @@ declare module "@stencil/core" {
       'app-color': LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
       'app-contact': LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
       'app-create-slide': LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
+      'app-custom-data': LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
       'app-custom-images': LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
       'app-dashboard': LocalJSX.AppDashboard & JSXBase.HTMLAttributes<HTMLAppDashboardElement>;
       'app-deck-delete': LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
       'app-delete-deck-action': LocalJSX.AppDeleteDeckAction & JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement>;
       'app-developer': LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
       'app-edit-slide': LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
+      'app-edit-slide-chart': LocalJSX.AppEditSlideChart & JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement>;
+      'app-edit-slide-qrcode': LocalJSX.AppEditSlideQrcode & JSXBase.HTMLAttributes<HTMLAppEditSlideQrcodeElement>;
       'app-editor': LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;
       'app-editor-actions': LocalJSX.AppEditorActions & JSXBase.HTMLAttributes<HTMLAppEditorActionsElement>;
       'app-editor-toolbar': LocalJSX.AppEditorToolbar & JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement>;

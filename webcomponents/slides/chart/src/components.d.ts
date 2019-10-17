@@ -29,6 +29,7 @@ export namespace Components {
     'marginRight': number;
     'marginTop': number;
     'range': string[];
+    'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
     'separator': string;
     'smooth': string;

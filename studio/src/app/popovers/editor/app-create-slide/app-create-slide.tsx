@@ -73,8 +73,9 @@ export class AppCreateSlide {
             const slideGif: HTMLElement = this.el.querySelector('deckgo-slide-gif.showcase');
             const slideAuthor: HTMLElement = this.el.querySelector('deckgo-slide-author.showcase');
             const slideQRCode: HTMLElement = this.el.querySelector('deckgo-slide-qrcode.showcase');
+            const slidesChart: HTMLElement[] = Array.from(this.el.querySelectorAll('deckgo-slide-chart.showcase'));
 
-            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode];
+            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, ...slidesChart];
 
             if (!slides || slides.length <= 0) {
                 resolve();

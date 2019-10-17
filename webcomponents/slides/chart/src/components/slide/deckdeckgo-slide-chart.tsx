@@ -1,6 +1,6 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host, Watch} from '@stencil/core';
 
-import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 import {debounce} from '@deckdeckgo/utils';
 
 enum DeckdeckgoSlideChartType {
@@ -14,13 +14,13 @@ enum DeckdeckgoSlideChartType {
   styleUrl: 'deckdeckgo-slide-chart.scss',
   shadow: true
 })
-export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
+export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
 
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflect: true}) src: string;
+  @Prop({reflect: true, mutable: true}) src: string;
   @Prop() separator: string;
 
   @Prop() width: number;
@@ -61,12 +61,18 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
     this.initWindowResize();
 
-    await this.drawChart();
-
     this.slideDidLoad.emit();
   }
 
-  async componentDidUpdate() {
+  @Watch('innerRadius')
+  @Watch('datePattern')
+  @Watch('yAxisDomain')
+  @Watch('smooth')
+  @Watch('area')
+  @Watch('ticks')
+  @Watch('grid')
+  @Watch('animation')
+  async onPropChanges() {
     await this.drawChart();
   }
 
@@ -109,7 +115,15 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return lazyLoadContent(this.el);
+    return new Promise<void>(async (resolve) => {
+      const promises = [];
+      promises.push(lazyLoadContent(this.el));
+      promises.push(this.drawChart());
+
+      await Promise.all(promises);
+
+      resolve();
+    });
   }
 
   @Method()
@@ -131,9 +145,12 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
       } else {
         const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-chart-container');
 
-        if (container) {
-          this.chartWidth = container.clientWidth - this.marginLeft - this.marginRight;
-          this.chartHeight = container.clientHeight - this.marginTop - this.marginBottom;
+        const width: number = container.clientWidth;
+        const height: number = container.clientHeight;
+
+        if (container && width > 0 && height > 0) {
+          this.chartWidth = width - this.marginLeft - this.marginRight;
+          this.chartHeight = height - this.marginTop - this.marginBottom;
         }
       }
 
@@ -143,7 +160,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', debounce(this.onResizeContent));
+      window.addEventListener('resize', debounce(this.onResizeContent, 500));
     }
   }
 
@@ -163,7 +180,16 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   @Method()
   async draw() {
-    await this.drawChart();
+    await this.onResizeContent();
+  }
+
+  @Method()
+  resizeContent(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      await this.onResizeContent();
+
+      resolve();
+    });
   }
 
   render() {
