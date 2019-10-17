@@ -37,7 +37,7 @@ export class ParseElementsUtils {
 
     private static parseElement(element: HTMLElement, content: any, contentEditable: boolean): Promise<any> {
         return new Promise<any>(async (resolve) => {
-            const Elem: string = element.nodeName;
+            const Elem: string = element.nodeName.toLowerCase();
 
             const attributes: any = this.getAttributes(element);
             if (attributes.style) {
