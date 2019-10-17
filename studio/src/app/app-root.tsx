@@ -129,7 +129,7 @@ export class AppRoot {
                     <ion-route url="/press" component="app-press"/>
                 </ion-router>
 
-                <ion-menu id="ion-menu" side="start" type="overlay" swipeGesture={false} contentId="menu-content">
+                <ion-menu id="ion-menu" side="start" type="overlay" swipeGesture={false} content-id="menu-content">
                     <ion-content>
                         <ion-menu-toggle autoHide={false}>
                             <app-menu></app-menu>
