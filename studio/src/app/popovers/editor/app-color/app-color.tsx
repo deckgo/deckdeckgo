@@ -60,8 +60,6 @@ export class AppColor {
              element = this.el.querySelector('app-color-deck-slide');
         }
 
-        console.log(element);
-
         if (element) {
             await (element as any).initCurrentColors();
         }
