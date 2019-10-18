@@ -18,10 +18,10 @@
 | `grid`              | `grid`               |             | `string`   | `undefined`                    |
 | `height`            | `height`             |             | `number`   | `undefined`                    |
 | `innerRadius`       | `inner-radius`       |             | `number`   | `0`                            |
-| `marginBottom`      | `margin-bottom`      |             | `number`   | `32`                           |
+| `marginBottom`      | `margin-bottom`      |             | `number`   | `64`                           |
 | `marginLeft`        | `margin-left`        |             | `number`   | `32`                           |
 | `marginRight`       | `margin-right`       |             | `number`   | `32`                           |
-| `marginTop`         | `margin-top`         |             | `number`   | `32`                           |
+| `marginTop`         | `margin-top`         |             | `number`   | `8`                            |
 | `range`             | --                   |             | `string[]` | `undefined`                    |
 | `separator`         | `separator`          |             | `string`   | `undefined`                    |
 | `smooth`            | `smooth`             |             | `string`   | `undefined`                    |

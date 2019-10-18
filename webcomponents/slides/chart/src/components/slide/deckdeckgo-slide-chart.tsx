@@ -38,8 +38,8 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   // Line
   @Prop({reflect: true}) datePattern: string;
 
-  @Prop() marginTop: number = 32;
-  @Prop() marginBottom: number = 32;
+  @Prop() marginTop: number = 8;
+  @Prop() marginBottom: number = 64;
   @Prop() marginLeft: number = 32;
   @Prop() marginRight: number = 32;
 

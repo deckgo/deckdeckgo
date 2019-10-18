@@ -141,10 +141,6 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
 | --zIndex | 1 | The z-index of the slide |
-| --slide-chart-margin-top | 0 | Margin top of the chart inside its container |
-| --slide-chart-margin-end | 32px | Margin right of the chart inside its container |
-| --slide-chart-margin-bottom | 64px | Margin bottom of the chart inside its container |
-| --slide-chart-margin-start | 32px | Margin left of the chart inside its container |
 
 Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] charts Web Component, see its [documentation](/components/charts) for the details.
 
