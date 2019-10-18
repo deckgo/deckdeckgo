@@ -9,8 +9,7 @@ enum ApplyColorType {
 }
 
 @Component({
-    tag: 'app-color-qrcode',
-    styleUrl: 'app-color-qrcode.scss'
+    tag: 'app-color-qrcode'
 })
 export class AppColorQRCode {
 

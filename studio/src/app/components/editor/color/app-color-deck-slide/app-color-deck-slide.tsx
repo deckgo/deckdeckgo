@@ -9,8 +9,7 @@ enum ApplyColorType {
 }
 
 @Component({
-    tag: 'app-color-deck-slide',
-    styleUrl: 'app-color-deck-slide.scss'
+    tag: 'app-color-deck-slide'
 })
 export class AppColorDeckSlide {
 
