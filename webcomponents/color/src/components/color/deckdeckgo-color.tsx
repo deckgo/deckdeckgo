@@ -45,12 +45,18 @@ export class DeckdeckgoColor {
   onColorHexChange() {
     this.selectedColorHex = this.colorHex;
     this.selectedColorRgb = undefined;
+
+    // Render component again
+    this.palette = [...this.palette];
   }
 
   @Watch('colorRgb')
   onColorRgbChange() {
     this.selectedColorHex = undefined;
     this.selectedColorRgb = this.colorRgb;
+
+    // Render component again
+    this.palette = [...this.palette];
   }
 
   private pickColor(paletteColor: DeckdeckgoPalette): Promise<void> {

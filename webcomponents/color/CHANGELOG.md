@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-3"></a>
+# 1.0.0-rc.2-3 (Not released yet)
+
+### Features
+
+*  on external `colorRgb` or `colorHex` changes, render component again
+
 <a name="1.0.0-rc.2-2"></a>
 # 1.0.0-rc.2-2 (2019-10-04)
 
