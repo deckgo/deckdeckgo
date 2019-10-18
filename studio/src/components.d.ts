@@ -45,6 +45,11 @@ export namespace Components {
     'deckOrSlide': boolean;
     'selectedElement': HTMLElement;
   }
+  interface AppColorChart {
+    'initCurrentColors': () => Promise<void>;
+    'moreColors': boolean;
+    'selectedElement': HTMLElement;
+  }
   interface AppColorDeckSlide {
     'applyToAllDeck': boolean;
     'deckOrSlide': boolean;
@@ -160,6 +165,7 @@ export namespace Components {
   }
   interface AppRoot {}
   interface AppSelectTargetElement {
+    'chart': boolean;
     'deckOrSlide': boolean;
     'qrCode': boolean;
   }
@@ -223,6 +229,12 @@ declare global {
   const HTMLAppColorElement: {
     prototype: HTMLAppColorElement;
     new (): HTMLAppColorElement;
+  };
+
+  interface HTMLAppColorChartElement extends Components.AppColorChart, HTMLStencilElement {}
+  const HTMLAppColorChartElement: {
+    prototype: HTMLAppColorChartElement;
+    new (): HTMLAppColorChartElement;
   };
 
   interface HTMLAppColorDeckSlideElement extends Components.AppColorDeckSlide, HTMLStencilElement {}
@@ -596,6 +608,7 @@ declare global {
     'app-avatar': HTMLAppAvatarElement;
     'app-code': HTMLAppCodeElement;
     'app-color': HTMLAppColorElement;
+    'app-color-chart': HTMLAppColorChartElement;
     'app-color-deck-slide': HTMLAppColorDeckSlideElement;
     'app-color-qrcode': HTMLAppColorQrcodeElement;
     'app-contact': HTMLAppContactElement;
@@ -676,6 +689,11 @@ declare namespace LocalJSX {
   interface AppColor {
     'deckOrSlide'?: boolean;
     'onColorDidChange'?: (event: CustomEvent<boolean>) => void;
+    'selectedElement'?: HTMLElement;
+  }
+  interface AppColorChart {
+    'moreColors'?: boolean;
+    'onColorChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppColorDeckSlide {
@@ -815,6 +833,7 @@ declare namespace LocalJSX {
   }
   interface AppRoot {}
   interface AppSelectTargetElement {
+    'chart'?: boolean;
     'deckOrSlide'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
@@ -858,6 +877,7 @@ declare namespace LocalJSX {
     'app-avatar': AppAvatar;
     'app-code': AppCode;
     'app-color': AppColor;
+    'app-color-chart': AppColorChart;
     'app-color-deck-slide': AppColorDeckSlide;
     'app-color-qrcode': AppColorQrcode;
     'app-contact': AppContact;
@@ -933,6 +953,7 @@ declare module "@stencil/core" {
       'app-avatar': LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
       'app-code': LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
       'app-color': LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
+      'app-color-chart': LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;
       'app-color-deck-slide': LocalJSX.AppColorDeckSlide & JSXBase.HTMLAttributes<HTMLAppColorDeckSlideElement>;
       'app-color-qrcode': LocalJSX.AppColorQrcode & JSXBase.HTMLAttributes<HTMLAppColorQrcodeElement>;
       'app-contact': LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;

@@ -29,11 +29,15 @@ export class AppColor {
     @State()
     private qrCode: boolean = false;
 
+    @State()
+    private chart: boolean = false;
+
     async componentWillLoad() {
         if (this.deckOrSlide) {
             this.qrCode = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
+            this.chart = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-chart'.toUpperCase();
 
-            this.applyToTargetElement = this.qrCode ? TargetElement.QR_CODE : TargetElement.SLIDE;
+            this.applyToTargetElement = this.qrCode ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : TargetElement.SLIDE);
         }
 
         this.moreColors = !isIPad();
@@ -78,7 +82,7 @@ export class AppColor {
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
-            <app-select-target-element deckOrSlide={this.deckOrSlide} qrCode={this.qrCode}
+            <app-select-target-element deckOrSlide={this.deckOrSlide} qrCode={this.qrCode} chart={this.chart}
                                        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
             this.renderColorOptions()
@@ -90,6 +94,10 @@ export class AppColor {
             return <app-color-qrcode selectedElement={this.selectedElement}
                                      onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
                                      moreColors={this.moreColors}></app-color-qrcode>
+        } else if (this.applyToTargetElement === TargetElement.CHART) {
+            return <app-color-chart selectedElement={this.selectedElement}
+                                     onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
+                                     moreColors={this.moreColors}></app-color-chart>
         } else {
             return <app-color-deck-slide selectedElement={this.selectedElement} moreColors={this.moreColors}
                                             deckOrSlide={this.deckOrSlide}

@@ -78,14 +78,6 @@ export class AppColorQRCode {
         await this.applyColor();
     }
 
-    private async applyColor() {
-        if (this.applyColorType === ApplyColorType.BACKGROUND) {
-            await this.applyBackground();
-        } else {
-            await this.applyQRCodeColor();
-        }
-    }
-
     private resetColor(): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!this.selectedElement) {
@@ -108,7 +100,7 @@ export class AppColorQRCode {
         });
     }
 
-    private applyBackground(): Promise<void> {
+    private applyColor(): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!this.selectedElement || !this.color) {
                 resolve();
@@ -117,24 +109,11 @@ export class AppColorQRCode {
 
             const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
 
-            this.selectedElement.style.setProperty('--deckgo-qrcode-background-fill', selectedColor);
-
-            this.colorChange.emit(false);
-
-            resolve();
-        });
-    }
-
-    private applyQRCodeColor(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!this.selectedElement || !this.color) {
-                resolve();
-                return;
+            if (this.applyColorType === ApplyColorType.BACKGROUND) {
+                this.selectedElement.style.setProperty('--deckgo-qrcode-background-fill', selectedColor);
+            } else {
+                this.selectedElement.style.setProperty('--deckgo-qrcode-color-fill', selectedColor);
             }
-
-            const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
-
-            this.selectedElement.style.setProperty('--deckgo-qrcode-color-fill', selectedColor);
 
             this.colorChange.emit(false);
 
