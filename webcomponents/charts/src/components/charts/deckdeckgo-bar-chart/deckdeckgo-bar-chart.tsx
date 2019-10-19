@@ -12,6 +12,7 @@ interface DeckdeckgoBarChartDataValue {
   key: string;
   title: string;
   value: number;
+  randomFillColor: string;
 }
 
 interface DeckdeckgoBarChartData {
@@ -230,7 +231,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         .append('rect')
         .merge(section)
         .attr('style', (d) => {
-          return 'fill: var(--deckgo-chart-fill-color-' + d.key + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (d.randomFillColor ? `#${d.randomFillColor}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
         })
         .transition(t).duration(animationDuration)
         .attr('x', (d) => {
@@ -274,7 +275,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
           return this.height - this.y(d.value);
         })
         .attr('style', (d) => {
-          return 'fill: var(--deckgo-chart-fill-color-' + d.key + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (d.randomFillColor ? `#${d.randomFillColor}` : '')  + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
         });
 
       resolve();
@@ -305,6 +306,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
       let results: DeckdeckgoBarChartData[] = [];
       let keys: (number | string)[];
+      let randomColors: string[];
 
       lines.forEach((line: string, lineCount: number) => {
         const values: string[] = line.split(this.separator);
@@ -316,6 +318,10 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
             keys = [...Array(values.length).keys()].slice(1);
           }
 
+          if (!randomColors) {
+            randomColors = Array.from({ length: values.length }, (_v, _i) => (Math.floor(Math.random()*16777215).toString(16)));
+          }
+
           let dataValues: DeckdeckgoBarChartDataValue[] = [];
           for (let i = 1; i < values.length; i++) {
             const tmp: number = parseInt(values[i]);
@@ -324,7 +330,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
               dataValues.push({
                 key: `${i}`,
                 title: keys.length >= i ? `${keys[i - 1]}` : `${i}`,
-                value: tmp
+                value: tmp,
+                randomFillColor: randomColors.length >= i ? randomColors[i] : undefined
               });
             } else if (lineCount === 0 && keys.length >= i) {
               keys[i - 1] = values[i];
@@ -337,6 +344,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
               values: dataValues
             });
           }
+
+          console.log(results);
         }
       });
 
