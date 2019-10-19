@@ -20,6 +20,7 @@ interface DeckdeckgoLineChartData {
 
 interface DeckdeckgoLineChartSerie {
   data: DeckdeckgoLineChartData[];
+  randomFillColor: string;
 }
 
 enum DeckdeckgoLineChartAxisDomain {
@@ -323,31 +324,35 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       }
 
       const data: DeckdeckgoLineChartData[] = this.series[index].data;
+      const randomFillColor: string = this.series[index].randomFillColor;
 
       if (this.animation) {
-        this.drawAnimatedLine(data, index, line);
+        this.drawAnimatedLine(data, index, line, randomFillColor);
       } else {
-        this.drawInstantLine(data, index, line);
+        this.drawInstantLine(data, index, line, randomFillColor);
       }
 
       resolve();
     })
   }
 
-  private drawInstantLine(data: DeckdeckgoLineChartData[], index: number, line: Area<DeckdeckgoLineChartData>) {
+  private drawInstantLine(data: DeckdeckgoLineChartData[], index: number, line: Area<DeckdeckgoLineChartData>, randomFillColor: string) {
     // Random hex color source: https://css-tricks.com/snippets/javascript/random-hex-color/
+
+    // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
+    const styleIndex: number = index + 1;
 
     this.svg.append('path')
       .datum(data)
       .attr('class', 'area')
-      .style('fill', `var(--deckgo-chart-fill-color-${index}, #${Math.floor(Math.random()*16777215).toString(16)})`)
-      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${index})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${index})`)
-      .style('stroke-width', `var(--deckgo-chart-stroke-width-${index})`)
+      .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
+      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
+      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
       .attr('d', line);
   }
 
-  private drawAnimatedLine(data: DeckdeckgoLineChartData[], index: number, line: Area<DeckdeckgoLineChartData>) {
+  private drawAnimatedLine(data: DeckdeckgoLineChartData[], index: number, line: Area<DeckdeckgoLineChartData>, randomFillColor: string) {
     const t = transition();
 
     const section: any = this.svg.selectAll('.area')
@@ -355,13 +360,16 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         return this.y(d.value)
       });
 
+    // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
+    const styleIndex: number = index + 1;
+
     section
       .enter()
       .append('path').merge(section)
-      .style('fill', `var(--deckgo-chart-fill-color-${index}, #${Math.floor(Math.random()*16777215).toString(16)})`)
-      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${index})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${index})`)
-      .style('stroke-width', `var(--deckgo-chart-stroke-width-${index})`)
+      .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
+      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
+      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
       .transition(t).duration(this.animationDuration).ease(easeLinear)
       .attr('class', 'area')
       .attr('d', line);
@@ -403,7 +411,13 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
               const value: number = parseInt(values[i]);
 
               if (!isNaN(value)) {
-                let data: DeckdeckgoLineChartSerie = series && series.length >= i ? series[i - 1] : {data: []};
+                // Random hex color source: https://css-tricks.com/snippets/javascript/random-hex-color/
+                const randomFillColor: string = Math.floor(Math.random() * 16777215).toString(16);
+
+                let data: DeckdeckgoLineChartSerie = series && series.length >= i ? series[i - 1] : {
+                  data: [],
+                  randomFillColor: randomFillColor
+                };
 
                 if (!data.data || data.data.length <= 0) {
                   data.data = [];

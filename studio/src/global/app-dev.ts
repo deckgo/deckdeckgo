@@ -13,6 +13,7 @@ import '@deckdeckgo/qrcode';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/lazy-img';
 import '@deckdeckgo/color';
+import '@deckdeckgo/charts';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-content';
@@ -21,6 +22,7 @@ import '@deckdeckgo/slide-gif';
 import '@deckdeckgo/slide-youtube';
 import '@deckdeckgo/slide-author';
 import '@deckdeckgo/slide-qrcode';
+import '@deckdeckgo/slide-chart';
 
 import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment/environment-config';
 

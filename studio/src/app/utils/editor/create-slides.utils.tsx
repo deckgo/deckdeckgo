@@ -2,7 +2,7 @@ import {h, JSX} from '@stencil/core';
 
 import uuid from 'uuid/v4';
 
-import {SlideTemplate} from '../../models/data/slide';
+import {SlideAttributes, SlideTemplate} from '../../models/data/slide';
 
 import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
@@ -35,6 +35,8 @@ export class CreateSlidesUtils {
                 resolve(await this.createSlideYoutube());
             } else if (template === SlideTemplate.QRCODE) {
                 resolve(await this.createSlideQRCode(deck));
+            } else if (template === SlideTemplate.CHART) {
+                resolve(await this.createSlideChart());
             } else {
                 resolve(null);
             }
@@ -240,6 +242,24 @@ export class CreateSlidesUtils {
             const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode key={uuid()} content={content} img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
                 {title}
             </deckgo-slide-qrcode>;
+
+            resolve(slide);
+        });
+    }
+
+    static createSlideChart(attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>((resolve) => {
+            if (!document) {
+                resolve();
+                return;
+            }
+
+            const title = <h1 slot="title"></h1>;
+
+            // @ts-ignore
+            const slide: JSX.IntrinsicElements = <deckgo-slide-chart key={uuid()} {...attributes}>
+                {title}
+            </deckgo-slide-chart>;
 
             resolve(slide);
         });

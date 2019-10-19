@@ -1,6 +1,6 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host, Watch} from '@stencil/core';
 
-import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 import {debounce} from '@deckdeckgo/utils';
 
 enum DeckdeckgoSlideChartType {
@@ -14,14 +14,14 @@ enum DeckdeckgoSlideChartType {
   styleUrl: 'deckdeckgo-slide-chart.scss',
   shadow: true
 })
-export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
+export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
 
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() src: string;
-  @Prop() separator: string = ';';
+  @Prop({reflect: true, mutable: true}) src: string;
+  @Prop({reflect: true}) separator: string;
 
   @Prop() width: number;
   @Prop() height: number;
@@ -29,41 +29,61 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   @State() chartWidth: number;
   @State() chartHeight: number;
 
-  @Prop() type: string = DeckdeckgoSlideChartType.PIE;
+  @Prop({reflect: true}) type: string = DeckdeckgoSlideChartType.PIE;
 
   // Pie
-  @Prop() innerRadius: number = 0;
+  @Prop({reflect: true}) innerRadius: number;
   @Prop() range: string[];
 
   // Line
-  @Prop() datePattern: string = 'yyyy-MM-dd';
+  @Prop({reflect: true}) datePattern: string;
 
-  @Prop() marginTop: number = 32;
-  @Prop() marginBottom: number = 32;
+  @Prop() marginTop: number = 8;
+  @Prop() marginBottom: number = 64;
   @Prop() marginLeft: number = 32;
   @Prop() marginRight: number = 32;
 
-  @Prop() yAxisDomain: string = 'max';
+  @Prop({reflect: true}) yAxisDomain: string;
 
-  @Prop() smooth: boolean = true;
-  @Prop() area: boolean = true;
-  @Prop() ticks: number;
-  @Prop() grid: boolean = false;
+  @Prop({reflect: true}) smooth: string;
+  @Prop({reflect: true}) area: string;
+  @Prop({reflect: true}) ticks: number;
+  @Prop({reflect: true}) grid: string;
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
-  @Prop() animation: boolean = false;
+  @Prop({reflect: true}) animation: boolean = false;
   @Prop() animationDuration: number = 1000;
+
+  private redrawAfterUpdate: boolean = false;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
     this.initWindowResize();
 
-    await this.drawChart();
-
     this.slideDidLoad.emit();
+  }
+
+  @Watch('innerRadius')
+  @Watch('datePattern')
+  @Watch('yAxisDomain')
+  @Watch('smooth')
+  @Watch('area')
+  @Watch('ticks')
+  @Watch('grid')
+  @Watch('animation')
+  @Watch('separator')
+  async onPropChanges() {
+    this.redrawAfterUpdate = true;
+  }
+
+  async componentDidUpdate() {
+    if (this.redrawAfterUpdate) {
+      await this.drawChart();
+      this.redrawAfterUpdate = false;
+    }
   }
 
   @Method()
@@ -105,7 +125,15 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return lazyLoadContent(this.el);
+    return new Promise<void>(async (resolve) => {
+      const promises = [];
+      promises.push(lazyLoadContent(this.el));
+      promises.push(this.drawChart());
+
+      await Promise.all(promises);
+
+      resolve();
+    });
   }
 
   @Method()
@@ -122,14 +150,17 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
     return new Promise<void>((resolve) => {
       // If width and height, use them otherwise full size
       if (this.width > 0 && this.height > 0) {
-        this.chartWidth = this.width - this.marginLeft - this.marginRight;
-        this.chartHeight = this.height - this.marginTop - this.marginBottom;
+        this.chartWidth = this.width - (this.type !== DeckdeckgoSlideChartType.PIE ? (this.marginLeft + this.marginRight) : 0);
+        this.chartHeight = this.height - (this.type !== DeckdeckgoSlideChartType.PIE ? (this.marginTop + this.marginBottom) : 0);
       } else {
         const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-chart-container');
 
-        if (container) {
-          this.chartWidth = container.clientWidth - this.marginLeft - this.marginRight;
-          this.chartHeight = container.clientHeight - this.marginTop - this.marginBottom;
+        const width: number = container.clientWidth;
+        const height: number = container.clientHeight;
+
+        if (container && width > 0 && height > 0) {
+          this.chartWidth = width - (this.type !== DeckdeckgoSlideChartType.PIE ? (this.marginLeft + this.marginRight) : 0);
+          this.chartHeight = height - (this.type !== DeckdeckgoSlideChartType.PIE ? (this.marginTop + this.marginBottom) : 0);
         }
       }
 
@@ -139,7 +170,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', debounce(this.onResizeContent));
+      window.addEventListener('resize', debounce(this.onResizeContent, 500));
     }
   }
 
@@ -157,6 +188,20 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
     }
   }
 
+  @Method()
+  async draw() {
+    await this.onResizeContent();
+  }
+
+  @Method()
+  resizeContent(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      await this.onResizeContent();
+
+      resolve();
+    });
+  }
+
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <div class="deckgo-slide">
@@ -172,25 +217,54 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlide {
   }
 
   private renderChart() {
+    const attrs = {
+      separator: this.separator ? this.separator : ';'
+    };
+
     if (this.type === DeckdeckgoSlideChartType.LINE) {
-      return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
-                                separator={this.separator}
-                                date-pattern={this.datePattern} y-axis-domain={this.yAxisDomain}
-                                margin-top={this.marginTop} margin-bottom={this.marginBottom}
-                                margin-right={this.marginRight} margin-left={this.marginLeft}
-                                smooth={this.smooth} area={this.area} ticks={this.ticks}
-                                grid={this.grid}
-                                animation={this.animation} animation-duration={this.animationDuration}></deckgo-line-chart>
+      return this.renderLineChart(attrs);
     } else if (this.type === DeckdeckgoSlideChartType.BAR) {
-      return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
-                                margin-top={this.marginTop} margin-bottom={this.marginBottom}
-                                margin-right={this.marginRight} margin-left={this.marginLeft}
-                               animation={this.animation} animation-duration={this.animationDuration}></deckgo-bar-chart>
+      return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+                               margin-top={this.marginTop} margin-bottom={this.marginBottom}
+                               margin-right={this.marginRight} margin-left={this.marginLeft}
+                               animation={this.animation}
+                               animation-duration={this.animationDuration} {...attrs}></deckgo-bar-chart>
     } else {
-      return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src} separator={this.separator}
-                               inner-radius={this.innerRadius} range={this.range}
-                               animation={this.animation} animation-duration={this.animationDuration}></deckgo-pie-chart>
+      return this.renderPieChart(attrs);
     }
   }
 
+  private renderLineChart(attrs) {
+    if (this.datePattern) {
+      attrs['date-pattern'] = this.datePattern;
+    }
+
+    if (this.yAxisDomain) {
+      attrs['y-axis-domain'] = this.yAxisDomain;
+    }
+
+    attrs['smooth'] = this.smooth === 'false' ? false : true;
+    attrs['area'] = this.area === 'false' ? false : true;
+    attrs['grid'] = this.grid === 'true';
+
+    if (this.ticks > 0) {
+      attrs['ticks'] = this.ticks;
+    }
+
+    return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+                              margin-top={this.marginTop} margin-bottom={this.marginBottom}
+                              margin-right={this.marginRight} margin-left={this.marginLeft}
+                              animation={this.animation} animation-duration={this.animationDuration}
+                              {...attrs}></deckgo-line-chart>;
+  }
+
+  private renderPieChart(attrs) {
+    if (this.innerRadius > 0) {
+      attrs['inner-radius'] = this.innerRadius;
+    }
+
+    return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+                             animation={this.animation}
+                             animation-duration={this.animationDuration} {...attrs}></deckgo-pie-chart>
+  }
 }

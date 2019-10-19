@@ -31,7 +31,7 @@ export class StorageService {
         return StorageService.instance;
     }
 
-    uploadImage(image: File, folder: string, maxSize: number): Promise<StorageFile> {
+    uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile> {
         return new Promise<StorageFile>((resolve) => {
             try {
                 this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
@@ -41,25 +41,26 @@ export class StorageService {
                         return;
                     }
 
-                    if (!image || !image.name) {
+                    if (!data || !data.name) {
                         this.errorService.error('Image not valid.');
                         resolve();
                         return;
                     }
 
-                    if (image.size > 10485760) {
+                    if (data.size > 10485760) {
                         this.errorService.error(`Image is too big (max. ${maxSize / 1048576} Mb)`);
                         resolve();
                         return;
                     }
 
-                    const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${folder}/${image.name}`);
+                    const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${folder}/${data.name}`);
 
-                    await ref.put(image);
+                    await ref.put(data);
 
                     resolve({
                         downloadUrl: await ref.getDownloadURL(),
-                        fullPath: ref.fullPath
+                        fullPath: ref.fullPath,
+                        name: ref.name
                     });
                 });
             } catch (err) {
@@ -69,7 +70,7 @@ export class StorageService {
         });
     }
 
-    getImages(next: string | null): Promise<StorageFilesList | null> {
+    getFiles(next: string | null, folder: string): Promise<StorageFilesList | null> {
         return new Promise<StorageFilesList | null>((resolve) => {
             try {
                 this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
@@ -79,7 +80,7 @@ export class StorageService {
                         return;
                     }
 
-                    const ref = firebase.storage().ref(`${authUser.uid}/assets/images/`);
+                    const ref = firebase.storage().ref(`${authUser.uid}/assets/${folder}/`);
 
                     let options: ListOptions = {
                         maxResults: this.maxQueryResults
@@ -123,7 +124,8 @@ export class StorageService {
         return new Promise<StorageFile>(async (resolve) => {
             resolve({
                 downloadUrl: await ref.getDownloadURL(),
-                fullPath: ref.fullPath
+                fullPath: ref.fullPath,
+                name: ref.name
             });
         });
     }

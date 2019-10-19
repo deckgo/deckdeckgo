@@ -56,6 +56,12 @@ deckgo-deck deckgo-social {
   display: flex;
 }
 
+/* Chart */
+
+deckgo-deck deckgo-slide-chart[area="false"] {
+  --deckgo-chart-stroke: var(--color);
+}
+
 /* Images */
 
 deckgo-deck deckgo-social deckgo-lazy-img {

@@ -47,6 +47,10 @@ export class AppSlideChart {
 <li><a href="#app-slide-chart-installation">Installation</a></li>
 <li><a href="#app-slide-chart-attributes">Attributes</a></li>
 <li><a href="#app-slide-chart-theming">Theming</a></li>
+<li><a href="#app-slide-chart-methods">Methods</a><ul>
+<li><a href="#app-slide-chart-draw">Draw</a></li>
+</ul>
+</li>
 </ul>
 <h2 id="app-slide-chart-layout">Layout</h2>
 <div class="container ion-margin">
@@ -182,29 +186,15 @@ export class AppSlideChart {
 <td>1</td>
 <td>The z-index of the slide</td>
 </tr>
-<tr>
-<td>--slide-chart-margin-top</td>
-<td>0</td>
-<td>Margin top of the chart inside its container</td>
-</tr>
-<tr>
-<td>--slide-chart-margin-end</td>
-<td>32px</td>
-<td>Margin right of the chart inside its container</td>
-</tr>
-<tr>
-<td>--slide-chart-margin-bottom</td>
-<td>64px</td>
-<td>Margin bottom of the chart inside its container</td>
-</tr>
-<tr>
-<td>--slide-chart-margin-start</td>
-<td>32px</td>
-<td>Margin left of the chart inside its container</td>
-</tr>
 </tbody></table>
 <p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts Web Component, see its <a href="/components/charts">documentation</a> for the details.</p>
-</main>
+<h2 id="app-slide-chart-methods">Methods</h2>
+<p>The slide &quot;Chart&quot; exposes the following methods:</p>
+<h3 id="app-slide-chart-draw">Draw</h3>
+<p>In case you would like to draw or redraw your chart.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">const slide = deck.getElementsByTagName(&#039;deckgo-slide-chart&#039;);{'\n'}await slide.draw();</code>
+    </deckgo-highlight-code></main>
 
         <app-footer></app-footer>
       </ion-content>

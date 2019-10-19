@@ -1,7 +1,9 @@
 import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/core';
+
+import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import {SlideTemplate} from '../../../models/data/slide';
+import {SlideAttributes, SlideChartType, SlideTemplate} from '../../../models/data/slide';
 
 import {User} from '../../../models/data/user';
 import {Deck} from '../../../models/data/deck';
@@ -24,6 +26,9 @@ export class AppCreateSlide {
     @State()
     private photoUrl: string;
 
+    @State()
+    private chartsCollapsed: boolean = true;
+
     private user: User;
 
     private userService: UserService;
@@ -31,6 +36,8 @@ export class AppCreateSlide {
     private deckEditorService: DeckEditorService;
 
     @Event() signIn: EventEmitter<void>;
+
+    private timerSubscription: Subscription;
 
     constructor() {
         this.userService = UserService.getInstance();
@@ -48,6 +55,17 @@ export class AppCreateSlide {
 
     async componentDidLoad() {
         await this.lazyLoadContent();
+        await this.drawChart();
+    }
+
+    componentDidUnload() {
+        this.unsubscribeTimer();
+    }
+
+    private unsubscribeTimer() {
+        if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+        }
     }
 
     private lazyLoadContent(): Promise<void> {
@@ -55,8 +73,9 @@ export class AppCreateSlide {
             const slideGif: HTMLElement = this.el.querySelector('deckgo-slide-gif.showcase');
             const slideAuthor: HTMLElement = this.el.querySelector('deckgo-slide-author.showcase');
             const slideQRCode: HTMLElement = this.el.querySelector('deckgo-slide-qrcode.showcase');
+            const slidesChart: HTMLElement[] = Array.from(this.el.querySelectorAll('deckgo-slide-chart.showcase'));
 
-            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode];
+            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, ...slidesChart];
 
             if (!slides || slides.length <= 0) {
                 resolve();
@@ -69,6 +88,21 @@ export class AppCreateSlide {
             });
 
             await Promise.all(promises);
+
+            resolve();
+        });
+    }
+
+    private drawChart(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slideChart: HTMLElement = this.el.querySelector('deckgo-slide-chart.showcase');
+
+            if (!slideChart) {
+                resolve();
+                return;
+            }
+
+            await (slideChart as any).draw();
 
             resolve();
         });
@@ -99,14 +133,48 @@ export class AppCreateSlide {
         await this.closePopover(template, slide);
     }
 
+    // User will need an account to upload her/his data
+    private async closePopoverRestricted(template: SlideTemplate, attributes: SlideAttributes) {
+        const isAnonymous: boolean = await this.anonymousService.isAnonymous();
+
+        if (isAnonymous) {
+            this.signIn.emit();
+            await this.closePopover(null);
+            return;
+        }
+
+        await this.closePopover(template, null, attributes);
+    }
+
     private async closePopoverWithoutResults() {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
-    private async closePopover(template: SlideTemplate, slide?: JSX.IntrinsicElements) {
+    private async closePopover(template: SlideTemplate, slide?: JSX.IntrinsicElements, attributes?: SlideAttributes) {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
+            template: template,
             slide: slide,
-            template: template
+            attributes: attributes
+        });
+    }
+
+    private async selectUnselectCharts() {
+        this.chartsCollapsed = !this.chartsCollapsed;
+
+        this.unsubscribeTimer();
+
+        if (this.chartsCollapsed) {
+            return;
+        }
+
+        this.timerSubscription = interval(2000).subscribe(async (val: number) => {
+            const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-slide-chart[animation]');
+
+            if (elements) {
+                for (const element of Array.from(elements)) {
+                    await (element as any).beforeSwipe(val % 2 === 0, true);
+                }
+            }
         });
     }
 
@@ -159,6 +227,17 @@ export class AppCreateSlide {
                         </p>
                     </deckgo-slide-content>
                 </div>
+                <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
+                    <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={204} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+                        <p slot="title">Chart</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {this.renderCharts()}
+
                 <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
                     <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com" img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
                         <p slot="title">QR code</p>
@@ -180,6 +259,125 @@ export class AppCreateSlide {
                 </div>
             </div>
         ];
+    }
+
+    private renderCharts() {
+        const chartsClass: string = `expand-charts ${this.chartsCollapsed ? 'collapsed' : ''}`;
+
+        return <div class={chartsClass}>
+
+            <div class="arrow"></div>
+
+            <div class="list">
+                {/* Pie */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE})}>
+                    <deckgo-slide-chart class="showcase" type="pie"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={68} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+                        <p slot="title">Pie</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Donut */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, innerRadius: 100})}>
+                    <deckgo-slide-chart class="showcase" type="pie"
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={68} height={68}
+                                        inner-radius={16}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+                        <p slot="title">Donut</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Animated Pie */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, animation: true})}>
+                    <deckgo-slide-chart class="showcase" type="pie" animation={true}
+                                        marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
+                                        width={68} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv">
+                        <p slot="title">Pie comparison</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Area */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE})}>
+                    <deckgo-slide-chart class="showcase" type="line"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={68}
+                                        y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+                        <p slot="title">Area</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Sharp area */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, smooth: false})}>
+                    <deckgo-slide-chart class="showcase" type="line"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={68}
+                                        y-axis-domain="extent" date-pattern="dd.MM.yyyy" smooth={'false'}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv">
+                        <p slot="title">Sharp area</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Lines */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, area: false})}>
+                    <deckgo-slide-chart class="showcase" type="line"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={68}
+                                        area={'false'}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv">
+                        <p slot="title">Lines</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Animated area */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, animation: true})}>
+                    <deckgo-slide-chart class="showcase" type="line"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={53}
+                                        y-axis-domain="extent" date-pattern="dd.MM.yyyy"
+                                        animation={true}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv">
+                        <p slot="title">Line graph comparison</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Bar */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
+                    <deckgo-slide-chart class="showcase" type="bar"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+                        <p slot="title">Bar</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Grouped bars */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
+                    <deckgo-slide-chart class="showcase" type="bar"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={68}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+                                        style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}>
+                        <p slot="title">Grouped bars</p>
+                    </deckgo-slide-chart>
+                </div>
+
+                {/* Animation bars */}
+                <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR, animation: true})}>
+                    <deckgo-slide-chart class="showcase" type="bar"
+                                        marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
+                                        width={88} height={68} animation={true}
+                                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+                                        style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}>
+                        <p slot="title">Bar comparison</p>
+                    </deckgo-slide-chart>
+                </div>
+            </div>
+        </div>;
     }
 
 }

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/color",
-  "version": "1.0.0-rc.2-2",
+  "version": "1.0.0-rc.2-3",
   "description": "A color picker developed with Web Components",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -23,10 +23,10 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@stencil/core": "^1.4.0",
+    "@stencil/core": "^1.7.3",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",
-    "autoprefixer": "^9.6.1"
+    "autoprefixer": "^9.6.5"
   },
   "license": "MIT",
   "repository": {

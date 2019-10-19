@@ -85,7 +85,7 @@ export class AppCustomImages {
 
     private search(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const list: StorageFilesList = await this.storageService.getImages(this.paginationNext);
+            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, 'images');
 
             if (!list) {
                 resolve();
@@ -173,7 +173,7 @@ export class AppCustomImages {
             if (filePicker.files && filePicker.files.length > 0) {
                 this.uploading = true;
 
-                const storageFile: StorageFile = await this.storageService.uploadImage(filePicker.files[0], 'images', 10485760);
+                const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'images', 10485760);
 
                 if (storageFile) {
                     await this.selectAndClose(storageFile);
@@ -190,7 +190,7 @@ export class AppCustomImages {
         const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
             header: 'About your images',
             message: 'Please note that currently, all the images you would upload, will be publicly visible on the internet.',
-            cssClass: 'custom-images',
+            cssClass: 'custom-info',
             buttons: [
                 {
                     text: 'Cancel',
@@ -252,7 +252,7 @@ export class AppCustomImages {
 
     private renderImagesPlaceHolder() {
         if ((!this.imagesOdd || this.imagesOdd.length <= 0) && (!this.imagesEven || this.imagesEven.length <= 0)) {
-            return <div class="photos-placeholder">
+            return <div class="placeholder">
                 <div>
                     <ion-icon name="images"></ion-icon>
                     <ion-label class="ion-text-center">Your collection of images is empty</ion-label>

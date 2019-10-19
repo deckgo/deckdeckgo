@@ -14,7 +14,8 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/color": "^1.0.0-rc.2-2",
+    "@deckdeckgo/charts": "^1.0.0-rc.3",
+    "@deckdeckgo/color": "^1.0.0-rc.2-3",
     "@deckdeckgo/core": "^1.0.0-rc.1-2",
     "@deckdeckgo/highlight-code": "^1.0.0-rc.1-1",
     "@deckdeckgo/inline-editor": "^1.0.0-rc.3-2",
@@ -22,6 +23,7 @@
     "@deckdeckgo/qrcode": "^1.0.0-rc.1-1",
     "@deckdeckgo/remote": "^1.0.0-rc.2",
     "@deckdeckgo/slide-author": "^1.0.0-rc.1",
+    "@deckdeckgo/slide-chart": "^1.0.0-rc.2",
     "@deckdeckgo/slide-content": "^1.0.0-rc.1",
     "@deckdeckgo/slide-gif": "^1.0.0-rc.1-1",
     "@deckdeckgo/slide-qrcode": "^1.0.0-rc.2-1",
@@ -38,7 +40,7 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-rc.2",
-    "@stencil/core": "^1.7.2",
+    "@stencil/core": "^1.7.3",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",
     "@types/uuid": "^3.4.5",

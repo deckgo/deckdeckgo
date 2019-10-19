@@ -40,27 +40,35 @@ export class ParseSlidesUtils {
 
             const content = await ParseElementsUtils.parseElements(div, true, contentEditable);
 
-            const style = slide.data.attributes ? await ParseStyleUtils.convertStyle(slide.data.attributes.style) : undefined;
-
-            const src = slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined;
-
-            const customBackground = slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined;
-
-            let contentAttr = undefined;
-            let customQRCode = undefined;
+            const attributes = {
+                style: slide.data.attributes ? await ParseStyleUtils.convertStyle(slide.data.attributes.style) : undefined,
+                src: slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined,
+                'custom-background': slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined,
+                'img-src': slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined,
+                'img-alt': slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined
+            };
 
             if (slide.data.template === SlideTemplate.QRCODE) {
-                contentAttr = slide.data.attributes && slide.data.attributes.content ? slide.data.attributes.content : QRCodeUtils.getPresentationUrl(deck);
-                customQRCode = slide.data.attributes && slide.data.attributes.content ? 'true' : undefined;
+                attributes['content'] = slide.data.attributes && slide.data.attributes.content ? slide.data.attributes.content : QRCodeUtils.getPresentationUrl(deck);
+                attributes['custom-qrcode'] = slide.data.attributes && slide.data.attributes.content ? 'true' : undefined;
             }
 
-            const imgSrc = slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined;
-            const imgAlt = slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined;
+            if (slide.data.template === SlideTemplate.CHART) {
+                attributes['type'] = slide.data.attributes && slide.data.attributes.type ? slide.data.attributes.type : undefined;
+                attributes['inner-radius'] = slide.data.attributes && slide.data.attributes.innerRadius ? slide.data.attributes.innerRadius : undefined;
+                attributes['animation'] = slide.data.attributes && slide.data.attributes.animation ? slide.data.attributes.animation : undefined;
+                attributes['date-pattern'] = slide.data.attributes && slide.data.attributes.datePattern ? slide.data.attributes.datePattern : undefined;
+                attributes['y-axis-domain'] = slide.data.attributes && slide.data.attributes.yAxisDomain ? slide.data.attributes.yAxisDomain : undefined;
+                attributes['smooth'] = slide.data.attributes && slide.data.attributes.smooth === false ? 'false' : undefined;
+                attributes['area'] = slide.data.attributes && slide.data.attributes.area === false ? 'false' : undefined;
+                attributes['ticks'] = slide.data.attributes && slide.data.attributes.ticks ? slide.data.attributes.ticks : undefined;
+                attributes['grid'] = slide.data.attributes && slide.data.attributes.grid ? 'true' : undefined;
+                attributes['separator'] = slide.data.attributes && slide.data.attributes.separator ? slide.data.attributes.separator : undefined;
+            }
 
             const SlideElement: string = slideTag;
 
-            const result: JSX.IntrinsicElements = <SlideElement key={uuid()} slide_id={ignoreSlideId ? undefined : slide.id} style={style}
-                                                                src={src} custom-background={customBackground} img-src={imgSrc} img-alt={imgAlt} content={contentAttr} custom-qrcode={customQRCode}>
+            const result: JSX.IntrinsicElements = <SlideElement key={uuid()} slide_id={ignoreSlideId ? undefined : slide.id} {...attributes}>
                 {content}
             </SlideElement>;
 

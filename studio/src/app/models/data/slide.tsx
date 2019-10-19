@@ -5,8 +5,17 @@ export enum SlideTemplate {
     GIF = 'gif',
     AUTHOR = 'author',
     YOUTUBE = 'youtube',
-    QRCODE = 'qrcode'
+    QRCODE = 'qrcode',
+    CHART = 'chart'
 }
+
+export enum SlideChartType {
+    LINE = 'line',
+    PIE = 'pie',
+    BAR = 'bar'
+}
+
+export type SlideAttributesYAxisDomain = 'max' | 'extent';
 
 export interface SlideAttributes {
     style?: string;
@@ -14,8 +23,20 @@ export interface SlideAttributes {
     customBackground?: string;
     imgSrc?: string;
     imgAlt?: string;
+
     content?: string;
     customQRCode?: boolean;
+
+    type?: SlideChartType;
+    innerRadius?: number;
+    animation?: boolean;
+    datePattern?: string;
+    yAxisDomain?: SlideAttributesYAxisDomain;
+    smooth?: boolean;
+    area?: boolean;
+    ticks?: number;
+    grid?: boolean;
+    separator?: string;
 }
 
 export interface SlideData {

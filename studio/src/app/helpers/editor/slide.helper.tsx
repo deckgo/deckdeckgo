@@ -5,7 +5,7 @@ import {SlotUtils} from '../../utils/editor/slot.utils';
 
 import {BusyService} from '../../services/editor/busy/busy.service';
 
-export class ImageHelper {
+export class SlideHelper {
 
     private busyService: BusyService;
 
@@ -190,16 +190,16 @@ export class ImageHelper {
         });
     }
 
-    updateSlideAttributeImgSrc(selectedElement: HTMLElement, image: StorageFile): Promise<void> {
+    updateSlideAttribute(selectedElement: HTMLElement, attribute: string, image: StorageFile): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!selectedElement || !image) {
+            if (!selectedElement || !image || !attribute) {
                 resolve();
                 return;
             }
 
             this.busyService.deckBusy(true);
 
-            selectedElement.setAttribute('img-src', image.downloadUrl);
+            selectedElement.setAttribute(attribute, image.downloadUrl);
 
             this.slideDidChange.emit(selectedElement);
 
