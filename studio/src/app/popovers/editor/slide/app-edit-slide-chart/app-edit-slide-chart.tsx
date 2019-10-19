@@ -35,7 +35,7 @@ export class AppEditSlideChart {
     private grid: boolean = false;
 
     @State()
-    private yAxisDomain: SlideAttributesYAxisDomain = undefined;
+    private yAxisDomain: SlideAttributesYAxisDomain = 'max';
 
     @State()
     private ticks: string;
@@ -44,7 +44,7 @@ export class AppEditSlideChart {
         this.chartType = await this.initSlideChartType();
 
         this.datePattern = this.selectedElement ? this.selectedElement.getAttribute('date-pattern') : undefined;
-        this.yAxisDomain = this.selectedElement ? this.selectedElement.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain : 'max';
+        this.yAxisDomain = this.selectedElement && this.selectedElement.hasAttribute('y-axis-domain') ? this.selectedElement.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain : 'max';
 
         this.smooth = this.selectedElement ? (this.selectedElement.getAttribute('smooth') === 'false' ? false : true) : true;
         this.area = this.selectedElement ? (this.selectedElement.getAttribute('area') === 'false' ? false : true) : true;
@@ -214,8 +214,12 @@ export class AppEditSlideChart {
                 </ion-select>
             </ion-item>,
 
+            <ion-item-divider class="ion-margin-top">
+                Ticks
+            </ion-item-divider>,
+
             <ion-item class="with-padding">
-                <ion-input value={this.ticks} type="number" placeholder="Ticks" debounce={500}
+                <ion-input value={this.ticks} type="number" placeholder="A custom number of ticks" debounce={500}
                            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleTicksInput(e)}
                            onIonChange={() => this.applyChartChanges()}></ion-input>
             </ion-item>
