@@ -344,8 +344,6 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
               values: dataValues
             });
           }
-
-          console.log(results);
         }
       });
 
