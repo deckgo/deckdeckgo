@@ -1,6 +1,10 @@
 <a name="1.0.0-rc.2-1"></a>
 # 1.0.0-rc.2-1 (2019-10-XX)
 
+### Breaking changes
+
+* indexing of the style of `line bar` chart has been moved from index `0` to begin with `1`
+
 ### Features
 
 * add a new CSS4 variable `--deckgo-chart-stroke` in case you would like to use a default styling color for all the graphs' lines

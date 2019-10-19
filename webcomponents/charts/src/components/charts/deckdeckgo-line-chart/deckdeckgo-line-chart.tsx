@@ -337,13 +337,16 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   private drawInstantLine(data: DeckdeckgoLineChartData[], index: number, line: Area<DeckdeckgoLineChartData>) {
     // Random hex color source: https://css-tricks.com/snippets/javascript/random-hex-color/
 
+    // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
+    const styleIndex: number = index + 1;
+
     this.svg.append('path')
       .datum(data)
       .attr('class', 'area')
-      .style('fill', `var(--deckgo-chart-fill-color-${index}, #${Math.floor(Math.random()*16777215).toString(16)})`)
-      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${index})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${index}, var(--deckgo-chart-stroke))`)
-      .style('stroke-width', `var(--deckgo-chart-stroke-width-${index})`)
+      .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${Math.floor(Math.random()*16777215).toString(16)})`)
+      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
+      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
       .attr('d', line);
   }
 
@@ -355,13 +358,16 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         return this.y(d.value)
       });
 
+    // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
+    const styleIndex: number = index + 1;
+
     section
       .enter()
       .append('path').merge(section)
-      .style('fill', `var(--deckgo-chart-fill-color-${index}, #${Math.floor(Math.random()*16777215).toString(16)})`)
-      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${index})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${index}, var(--deckgo-chart-stroke))`)
-      .style('stroke-width', `var(--deckgo-chart-stroke-width-${index})`)
+      .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${Math.floor(Math.random()*16777215).toString(16)})`)
+      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
+      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
       .transition(t).duration(this.animationDuration).ease(easeLinear)
       .attr('class', 'area')
       .attr('d', line);

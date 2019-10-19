@@ -89,14 +89,14 @@ npm run start
 
 <div>
   <deckgo-line-chart width={500} height={400} area={false} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
-                    style={{'--deckgo-chart-fill-color-0': 'none', '--deckgo-chart-stroke-0': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-fill-opacity-1': '1', '--deckgo-chart-stroke-1': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-1': '3px'}}></deckgo-line-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-stroke-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'none', '--deckgo-chart-fill-opacity-2': '1', '--deckgo-chart-stroke-2': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-2': '3px'}}></deckgo-line-chart>
 </div>
 
 ### Compare two lines and display a grid
 
 <div>
   <deckgo-line-chart width={500} height={400} smooth={false} area={false} grid={true} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
-                    style={{'--deckgo-chart-fill-color-0': 'none', '--deckgo-chart-stroke-0': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-fill-opacity-1': '1', '--deckgo-chart-stroke-1': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-1': '3px'}}></deckgo-line-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-stroke-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'none', '--deckgo-chart-fill-opacity-2': '1', '--deckgo-chart-stroke-2': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-2': '3px'}}></deckgo-line-chart>
 </div>
 
 ### Animated lines
@@ -474,10 +474,10 @@ Furthermore, as the Bar chart could draw dynamically multiple bars, it will gene
 | -------------------------- |-----------------|-----------------|
 | --deckgo-chart-text-color |  | The color of the labels |
 | --deckgo-chart-text-display |  | The display property of the labels |
-| --deckgo-chart-fill-color-bar-X | | The fill color of the bar chart identified with index `X` |
-| --deckgo-chart-fill-opacity-bax-X | | The opacity of the bar chart identified with index `X` |
-| --deckgo-chart-stroke-bar-X | | The stroke of the bar chart identified with index `X` |
-| --deckgo-chart-stroke-width-bar-X | | The stroke width of the chart identified with index `X` |
+| --deckgo-chart-fill-color-index | | The fill color of the bar chart identified with index `X` |
+| --deckgo-chart-fill-opacity-index | | The opacity of the bar chart identified with index `X` |
+| --deckgo-chart-stroke-index | | The stroke of the bar chart identified with index `X` |
+| --deckgo-chart-stroke-width-index | | The stroke width of the chart identified with index `X` |
 
 #### Methods
 
@@ -515,7 +515,7 @@ You could find other examples of bar charts in the [src/index.html](https://gith
 <deckgo-bar-chart width={500} 
                   height={400}
                    src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"
-                   style="--deckgo-chart-fill-color-bar1: #3880ff;">
+                   style="--deckgo-chart-fill-color-1: #3880ff;">
 </deckgo-bar-chart>
 ```
 

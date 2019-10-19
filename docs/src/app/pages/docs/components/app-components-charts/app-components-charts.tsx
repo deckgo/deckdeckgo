@@ -121,13 +121,13 @@ export class AppComponentsCharts {
 <h3 id="app-components-charts-compare-two-lines-and-smoothing-effect">Compare two lines and smoothing effect</h3>
 <div>
   <deckgo-line-chart width={500} height={400} area={false} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
-                    style={{'--deckgo-chart-fill-color-0': 'none', '--deckgo-chart-stroke-0': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-fill-opacity-1': '1', '--deckgo-chart-stroke-1': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-1': '3px'}}></deckgo-line-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-stroke-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'none', '--deckgo-chart-fill-opacity-2': '1', '--deckgo-chart-stroke-2': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-2': '3px'}}></deckgo-line-chart>
 </div>
 
 <h3 id="app-components-charts-compare-two-lines-and-display-a-grid">Compare two lines and display a grid</h3>
 <div>
   <deckgo-line-chart width={500} height={400} smooth={false} area={false} grid={true} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
-                    style={{'--deckgo-chart-fill-color-0': 'none', '--deckgo-chart-stroke-0': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-fill-opacity-1': '1', '--deckgo-chart-stroke-1': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-1': '3px'}}></deckgo-line-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-stroke-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'none', '--deckgo-chart-fill-opacity-2': '1', '--deckgo-chart-stroke-2': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-2': '3px'}}></deckgo-line-chart>
 </div>
 
 <h3 id="app-components-charts-animated-lines">Animated lines</h3>
@@ -720,22 +720,22 @@ export class AppComponentsCharts {
 <td>The display property of the labels</td>
 </tr>
 <tr>
-<td>--deckgo-chart-fill-color-bar-X</td>
+<td>--deckgo-chart-fill-color-index</td>
 <td></td>
 <td>The fill color of the bar chart identified with index <code>X</code></td>
 </tr>
 <tr>
-<td>--deckgo-chart-fill-opacity-bax-X</td>
+<td>--deckgo-chart-fill-opacity-index</td>
 <td></td>
 <td>The opacity of the bar chart identified with index <code>X</code></td>
 </tr>
 <tr>
-<td>--deckgo-chart-stroke-bar-X</td>
+<td>--deckgo-chart-stroke-index</td>
 <td></td>
 <td>The stroke of the bar chart identified with index <code>X</code></td>
 </tr>
 <tr>
-<td>--deckgo-chart-stroke-width-bar-X</td>
+<td>--deckgo-chart-stroke-width-index</td>
 <td></td>
 <td>The stroke width of the chart identified with index <code>X</code></td>
 </tr>
@@ -757,7 +757,7 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h4 id="app-components-charts-examples-2">Examples</h4>
 <p>You could find other examples of bar charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-bar-chart width=&#123;500&#125; {'\n'}                  height=&#123;400&#125;{'\n'}                   src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;{'\n'}                   style=&quot;--deckgo-chart-fill-color-bar1: #3880ff;&quot;&gt;{'\n'}&lt;&#47;deckgo-bar-chart&gt;</code>
+      <code slot="code">&lt;deckgo-bar-chart width=&#123;500&#125; {'\n'}                  height=&#123;400&#125;{'\n'}                   src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;{'\n'}                   style=&quot;--deckgo-chart-fill-color-1: #3880ff;&quot;&gt;{'\n'}&lt;&#47;deckgo-bar-chart&gt;</code>
     </deckgo-highlight-code></main>
 
         <app-footer></app-footer>

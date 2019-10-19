@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.4-4"></a>
+# 1.0.0-rc.4-4 (2019-10-XX)
+
+### Features
+
+* update `slide chart` and `charts` components to follow their integration in the editor
+
 <a name="1.0.0-rc.4-3"></a>
 # 1.0.0-rc.4-3 (2019-10-13)
 
