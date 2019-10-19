@@ -26,6 +26,9 @@ export class AppEditSlideChart {
     private datePattern: string = undefined;
 
     @State()
+    private separator: string = undefined;
+
+    @State()
     private smooth: boolean = true;
 
     @State()
@@ -51,6 +54,8 @@ export class AppEditSlideChart {
         this.grid = this.selectedElement ? (this.selectedElement.getAttribute('grid') === 'true' ? true : false) : false;
 
         this.ticks = this.selectedElement ? this.selectedElement.getAttribute('ticks') : undefined;
+
+        this.separator = this.selectedElement ? this.selectedElement.getAttribute('separator') : undefined;
     }
 
     private initSlideChartType(): Promise<SlideChartType> {
@@ -83,6 +88,10 @@ export class AppEditSlideChart {
         this.ticks = ($event.target as InputTargetEvent).value;
     }
 
+    private handleSeparatorInput($event: CustomEvent<KeyboardEvent>) {
+        this.separator = ($event.target as InputTargetEvent).value;
+    }
+
     private applyChartChanges(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
@@ -111,6 +120,12 @@ export class AppEditSlideChart {
                 this.selectedElement.setAttribute('ticks', this.ticks);
             } else {
                 this.selectedElement.removeAttribute('ticks');
+            }
+
+            if (this.separator && this.separator !== '' && this.separator !== ';') {
+                this.selectedElement.setAttribute('separator', this.separator);
+            } else {
+                this.selectedElement.removeAttribute('separator');
             }
 
             this.slideDidChange.emit(this.selectedElement);
@@ -156,6 +171,18 @@ export class AppEditSlideChart {
         return <Host>
             {this.renderChartLineOptions()}
 
+            {this.renderChartDataOptions()}
+
+            <ion-item-divider>
+                <ion-label>Data separator</ion-label>
+            </ion-item-divider>
+
+            <ion-item class="with-padding">
+                <ion-input value={this.separator} placeholder=";" debounce={500}
+                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleSeparatorInput(e)}
+                           onIonChange={() => this.applyChartChanges()}></ion-input>
+            </ion-item>
+
             <ion-item class="action-button ion-margin-top">
                 <ion-button shape="round" onClick={() => this.action.emit(EditAction.OPEN_DATA)}
                             color="tertiary">
@@ -163,6 +190,28 @@ export class AppEditSlideChart {
                 </ion-button>
             </ion-item>
         </Host>;
+    }
+
+    private renderChartDataOptions() {
+        if (this.chartType !== SlideChartType.LINE) {
+            return undefined;
+        }
+
+        return [
+            <ion-item-divider class="ion-margin-top">
+                <h4 class="ion-no-margin">Data source</h4>
+            </ion-item-divider>,
+
+            <ion-item-divider>
+                <ion-label>Date pattern</ion-label>
+            </ion-item-divider>,
+
+            <ion-item class="with-padding">
+                <ion-input value={this.datePattern} placeholder="yyyy-MM-dd" debounce={500}
+                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleDatePatternInput(e)}
+                           onIonChange={() => this.applyChartChanges()}></ion-input>
+            </ion-item>
+        ];
     }
 
     private renderChartLineOptions() {
@@ -189,16 +238,6 @@ export class AppEditSlideChart {
                               onIonChange={() => this.toggleGrid()}></ion-checkbox>
             </ion-item>,
 
-            <ion-item-divider>
-                <ion-label>Date pattern</ion-label>
-            </ion-item-divider>,
-
-            <ion-item class="with-padding">
-                <ion-input value={this.datePattern} placeholder="yyyy-MM-dd" debounce={500}
-                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleDatePatternInput(e)}
-                           onIonChange={() => this.applyChartChanges()}></ion-input>
-            </ion-item>,
-
             <ion-item-divider class="ion-margin-top">
                 Y-axis
             </ion-item-divider>,
@@ -214,7 +253,7 @@ export class AppEditSlideChart {
                 </ion-select>
             </ion-item>,
 
-            <ion-item-divider class="ion-margin-top">
+            <ion-item-divider>
                 Ticks
             </ion-item-divider>,
 

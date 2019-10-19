@@ -638,6 +638,13 @@ export class DeckEventsHandler {
                 attributes.grid = firebase.firestore.FieldValue.delete();
             }
 
+            if (slide.hasAttribute('separator')) {
+                attributes.separator = slide.getAttribute('separator');
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.separator = firebase.firestore.FieldValue.delete();
+            }
+
             resolve(attributes);
         });
     }

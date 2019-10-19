@@ -63,6 +63,7 @@ export class ParseSlidesUtils {
                 attributes['area'] = slide.data.attributes && slide.data.attributes.area === false ? 'false' : undefined;
                 attributes['ticks'] = slide.data.attributes && slide.data.attributes.ticks ? slide.data.attributes.ticks : undefined;
                 attributes['grid'] = slide.data.attributes && slide.data.attributes.grid ? 'true' : undefined;
+                attributes['separator'] = slide.data.attributes && slide.data.attributes.separator ? slide.data.attributes.separator : undefined;
             }
 
             const SlideElement: string = slideTag;

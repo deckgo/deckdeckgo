@@ -36,6 +36,7 @@ export interface SlideAttributes {
     area?: boolean;
     ticks?: number;
     grid?: boolean;
+    separator?: string;
 }
 
 export interface SlideData {

@@ -21,7 +21,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Event() slideDidLoad: EventEmitter<void>;
 
   @Prop({reflect: true, mutable: true}) src: string;
-  @Prop() separator: string;
+  @Prop({reflect: true}) separator: string;
 
   @Prop() width: number;
   @Prop() height: number;
@@ -56,6 +56,8 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Prop({reflect: true}) animation: boolean = false;
   @Prop() animationDuration: number = 1000;
 
+  private redrawAfterUpdate: boolean = false;
+
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
@@ -72,8 +74,16 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Watch('ticks')
   @Watch('grid')
   @Watch('animation')
+  @Watch('separator')
   async onPropChanges() {
-    await this.drawChart();
+    this.redrawAfterUpdate = true;
+  }
+
+  async componentDidUpdate() {
+    if (this.redrawAfterUpdate) {
+      await this.drawChart();
+      this.redrawAfterUpdate = false;
+    }
   }
 
   @Method()
@@ -207,23 +217,23 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   }
 
   private renderChart() {
-    const attrs = {};
-
-    if (this.separator) {
-      attrs['separator'] = this.separator;
-    }
+    const attrs = {
+      separator: this.separator ? this.separator : ';'
+    };
 
     if (this.type === DeckdeckgoSlideChartType.LINE) {
       return this.renderLineChart(attrs);
     } else if (this.type === DeckdeckgoSlideChartType.BAR) {
       return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
-                                margin-top={this.marginTop} margin-bottom={this.marginBottom}
-                                margin-right={this.marginRight} margin-left={this.marginLeft}
-                               animation={this.animation} animation-duration={this.animationDuration} {...attrs}></deckgo-bar-chart>
+                               margin-top={this.marginTop} margin-bottom={this.marginBottom}
+                               margin-right={this.marginRight} margin-left={this.marginLeft}
+                               animation={this.animation}
+                               animation-duration={this.animationDuration} {...attrs}></deckgo-bar-chart>
     } else {
       return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
                                inner-radius={this.innerRadius} range={this.range}
-                               animation={this.animation} animation-duration={this.animationDuration} {...attrs}></deckgo-pie-chart>
+                               animation={this.animation}
+                               animation-duration={this.animationDuration} {...attrs}></deckgo-pie-chart>
     }
   }
 
