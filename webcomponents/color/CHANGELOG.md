@@ -1,5 +1,5 @@
 <a name="1.0.0-rc.2-3"></a>
-# 1.0.0-rc.2-3 (Not released yet)
+# 1.0.0-rc.2-3 (2019-10-19)
 
 ### Features
 
