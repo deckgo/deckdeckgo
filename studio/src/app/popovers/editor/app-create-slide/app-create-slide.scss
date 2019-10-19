@@ -130,9 +130,14 @@ app-create-slide {
       --slide-chart-margin-top: 6px;
       --slide-chart-margin-bottom: 8px;
 
-      --deckgo-chart-fill-color-0: var(--ion-color-primary);
-      --deckgo-chart-fill-color-1: var(--ion-color-secondary);
+      --deckgo-chart-fill-color-1: var(--ion-color-primary);
+      --deckgo-chart-fill-color-2: var(--ion-color-secondary);
+      --deckgo-chart-fill-color-3: var(--ion-color-tertiary);
+      --deckgo-chart-fill-color-4: #783F8E;
+      --deckgo-chart-fill-color-5: #4F1271;
+      --deckgo-chart-fill-color-6: #8F68A4;
       --deckgo-chart-fill-opacity-1: 0.7;
+      --deckgo-chart-fill-opacity-5: 0.9;
 
       --deckgo-chart-text-display: none;
 
