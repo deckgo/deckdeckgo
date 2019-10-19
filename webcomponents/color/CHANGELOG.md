@@ -3,7 +3,8 @@
 
 ### Features
 
-*  on external `colorRgb` or `colorHex` changes, render component again
+* on external `colorRgb` or `colorHex` changes, render component again
+* update most recent libs
 
 <a name="1.0.0-rc.2-2"></a>
 # 1.0.0-rc.2-2 (2019-10-04)

@@ -23,10 +23,10 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@stencil/core": "^1.4.0",
+    "@stencil/core": "^1.7.3",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",
-    "autoprefixer": "^9.6.1"
+    "autoprefixer": "^9.6.5"
   },
   "license": "MIT",
   "repository": {
