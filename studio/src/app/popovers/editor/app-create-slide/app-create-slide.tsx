@@ -316,7 +316,7 @@ export class AppCreateSlide {
                     <deckgo-slide-chart class="showcase" type="line"
                                         marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
                                         width={88} height={68}
-                                        y-axis-domain="extent" date-pattern="dd.MM.yyyy" smooth={false}
+                                        y-axis-domain="extent" date-pattern="dd.MM.yyyy" smooth={'false'}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv">
                         <p slot="title">Sharp area</p>
                     </deckgo-slide-chart>
@@ -327,7 +327,7 @@ export class AppCreateSlide {
                     <deckgo-slide-chart class="showcase" type="line"
                                         marginTop={0} marginBottom={1} marginLeft={0} marginRight={0}
                                         width={88} height={68}
-                                        area={false}
+                                        area={'false'}
                                         src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv">
                         <p slot="title">Lines</p>
                     </deckgo-slide-chart>

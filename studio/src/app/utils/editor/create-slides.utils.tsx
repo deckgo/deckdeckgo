@@ -256,6 +256,7 @@ export class CreateSlidesUtils {
 
             const title = <h1 slot="title"></h1>;
 
+            // @ts-ignore
             const slide: JSX.IntrinsicElements = <deckgo-slide-chart key={uuid()} {...attributes}>
                 {title}
             </deckgo-slide-chart>;
