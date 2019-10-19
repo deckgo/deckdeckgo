@@ -1052,11 +1052,11 @@ export class AppEditorToolbar {
             }
 
             return <a onClick={() => this.openEditSlide()} title="Slide options">
-                <ion-label><ion-icon name="add" md="md-add" ios="md-add"></ion-icon></ion-label>
+                <ion-icon src="/assets/icons/ionicons/md-create.svg"></ion-icon>
             </a>
         } else {
             return <a onClick={() => this.openSlotType()} title="Toggle element type">
-                <ion-label><ion-icon name="add" md="md-add" ios="md-add"></ion-icon></ion-label>
+                <ion-icon src="/assets/icons/ionicons/md-add.svg"></ion-icon>
             </a>
         }
     }
