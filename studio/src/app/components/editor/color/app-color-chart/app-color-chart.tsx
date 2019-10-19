@@ -4,7 +4,8 @@ import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
 enum ApplyColorAxisType {
     TEXT,
-    AXIS
+    AXIS,
+    GRID
 }
 
 @Component({
@@ -92,6 +93,8 @@ export class AppColorDeckSlide {
 
             if (this.applyColorAxisType === ApplyColorAxisType.AXIS) {
                 this.selectedElement.style.setProperty('--deckgo-chart-axis-color', selectedColor);
+            } else if (this.applyColorAxisType === ApplyColorAxisType.GRID) {
+                this.selectedElement.style.setProperty('--deckgo-chart-grid-stroke', selectedColor);
             } else {
                 this.selectedElement.style.setProperty('--deckgo-chart-text-color', selectedColor);
             }
@@ -116,6 +119,7 @@ export class AppColorDeckSlide {
                             class="ion-padding-start ion-padding-end">
                     <ion-select-option value={ApplyColorAxisType.TEXT}>Text</ion-select-option>
                     <ion-select-option value={ApplyColorAxisType.AXIS}>Axis</ion-select-option>
+                    <ion-select-option value={ApplyColorAxisType.GRID}>Grid</ion-select-option>
                 </ion-select>
             </ion-item>,
 
