@@ -186,26 +186,6 @@ export class AppSlideChart {
 <td>1</td>
 <td>The z-index of the slide</td>
 </tr>
-<tr>
-<td>--slide-chart-margin-top</td>
-<td>0</td>
-<td>Margin top of the chart inside its container</td>
-</tr>
-<tr>
-<td>--slide-chart-margin-end</td>
-<td>32px</td>
-<td>Margin right of the chart inside its container</td>
-</tr>
-<tr>
-<td>--slide-chart-margin-bottom</td>
-<td>64px</td>
-<td>Margin bottom of the chart inside its container</td>
-</tr>
-<tr>
-<td>--slide-chart-margin-start</td>
-<td>32px</td>
-<td>Margin left of the chart inside its container</td>
-</tr>
 </tbody></table>
 <p>Furthermore, this slide component offers the exact same CSS4 variables as the <a href="https://deckdeckgo.com">DeckDeckGo</a> charts Web Component, see its <a href="/components/charts">documentation</a> for the details.</p>
 <h2 id="app-slide-chart-methods">Methods</h2>
