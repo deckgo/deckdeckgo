@@ -43,6 +43,9 @@ export class AppEditSlideChart {
     @State()
     private ticks: string;
 
+    @State()
+    private innerRadius: string;
+
     async componentWillLoad() {
         this.chartType = await this.initSlideChartType();
 
@@ -56,6 +59,8 @@ export class AppEditSlideChart {
         this.ticks = this.selectedElement ? this.selectedElement.getAttribute('ticks') : undefined;
 
         this.separator = this.selectedElement ? this.selectedElement.getAttribute('separator') : undefined;
+
+        this.innerRadius = this.selectedElement ? this.selectedElement.getAttribute('inner-radius') : undefined;
     }
 
     private initSlideChartType(): Promise<SlideChartType> {
@@ -92,6 +97,10 @@ export class AppEditSlideChart {
         this.separator = ($event.target as InputTargetEvent).value;
     }
 
+    private handleInnerRadiusInput($event: CustomEvent<KeyboardEvent>) {
+        this.innerRadius = ($event.target as InputTargetEvent).value;
+    }
+
     private applyChartChanges(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
@@ -126,6 +135,12 @@ export class AppEditSlideChart {
                 this.selectedElement.setAttribute('separator', this.separator);
             } else {
                 this.selectedElement.removeAttribute('separator');
+            }
+
+            if (this.innerRadius && !isNaN(this.innerRadius as any)) {
+                this.selectedElement.setAttribute('inner-radius', this.innerRadius);
+            } else {
+                this.selectedElement.removeAttribute('inner-radius');
             }
 
             this.slideDidChange.emit(this.selectedElement);
@@ -170,6 +185,7 @@ export class AppEditSlideChart {
     render() {
         return <Host>
             {this.renderChartLineOptions()}
+            {this.renderChartPieOptions()}
 
             {this.renderChartDataOptions()}
 
@@ -212,6 +228,24 @@ export class AppEditSlideChart {
                            onIonChange={() => this.applyChartChanges()}></ion-input>
             </ion-item>
         ];
+    }
+
+    private renderChartPieOptions() {
+        if (this.chartType !== SlideChartType.PIE) {
+            return undefined;
+        }
+
+        return [
+            <ion-item-divider>
+                Inner radius
+            </ion-item-divider>,
+
+            <ion-item class="with-padding">
+                <ion-input value={this.innerRadius} type="number" placeholder="A radius to display a donut" debounce={500}
+                           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInnerRadiusInput(e)}
+                           onIonChange={() => this.applyChartChanges()}></ion-input>
+            </ion-item>
+        ]
     }
 
     private renderChartLineOptions() {

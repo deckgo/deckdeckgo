@@ -32,7 +32,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Prop({reflect: true}) type: string = DeckdeckgoSlideChartType.PIE;
 
   // Pie
-  @Prop({reflect: true}) innerRadius: number = 0;
+  @Prop({reflect: true}) innerRadius: number;
   @Prop() range: string[];
 
   // Line
@@ -230,10 +230,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
                                animation={this.animation}
                                animation-duration={this.animationDuration} {...attrs}></deckgo-bar-chart>
     } else {
-      return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
-                               inner-radius={this.innerRadius} range={this.range}
-                               animation={this.animation}
-                               animation-duration={this.animationDuration} {...attrs}></deckgo-pie-chart>
+      return this.renderPieChart(attrs);
     }
   }
 
@@ -259,5 +256,15 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
                               margin-right={this.marginRight} margin-left={this.marginLeft}
                               animation={this.animation} animation-duration={this.animationDuration}
                               {...attrs}></deckgo-line-chart>;
+  }
+
+  private renderPieChart(attrs) {
+    if (this.innerRadius > 0) {
+      attrs['inner-radius'] = this.innerRadius;
+    }
+
+    return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+                             animation={this.animation}
+                             animation-duration={this.animationDuration} {...attrs}></deckgo-pie-chart>
   }
 }

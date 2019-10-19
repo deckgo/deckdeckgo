@@ -17,7 +17,7 @@
 | `datePattern`       | `date-pattern`       |             | `string`   | `undefined`                    |
 | `grid`              | `grid`               |             | `string`   | `undefined`                    |
 | `height`            | `height`             |             | `number`   | `undefined`                    |
-| `innerRadius`       | `inner-radius`       |             | `number`   | `0`                            |
+| `innerRadius`       | `inner-radius`       |             | `number`   | `undefined`                    |
 | `marginBottom`      | `margin-bottom`      |             | `number`   | `64`                           |
 | `marginLeft`        | `margin-left`        |             | `number`   | `32`                           |
 | `marginRight`       | `margin-right`       |             | `number`   | `32`                           |
