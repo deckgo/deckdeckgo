@@ -331,7 +331,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
                 key: `${i}`,
                 title: keys.length >= i ? `${keys[i - 1]}` : `${i}`,
                 value: tmp,
-                randomFillColor: randomColors.length >= i ? randomColors[i] : undefined
+                randomFillColor: randomColors.length >= (i + 1) ? randomColors[i] : undefined
               });
             } else if (lineCount === 0 && keys.length >= i) {
               keys[i - 1] = values[i];

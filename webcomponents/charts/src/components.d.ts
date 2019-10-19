@@ -59,7 +59,6 @@ export namespace Components {
     'isEnd': () => Promise<boolean>;
     'next': () => Promise<void>;
     'prev': () => Promise<void>;
-    'range': string[];
     'separator': string;
     'src': string;
     'width': number;
@@ -129,7 +128,6 @@ declare namespace LocalJSX {
     'animationDuration'?: number;
     'height'?: number;
     'innerRadius'?: number;
-    'range'?: string[];
     'separator'?: string;
     'src'?: string;
     'width'?: number;

@@ -2,8 +2,6 @@ import {Component, Prop, Element, Method, Watch, h} from '@stencil/core';
 
 import {BaseType, Selection} from 'd3-selection';
 import {pie, arc, Pie, Arc, DefaultArcObject} from 'd3-shape';
-import {schemePastel2} from 'd3-scale-chromatic';
-import {ScaleOrdinal, scaleOrdinal} from 'd3-scale';
 
 import {DeckdeckgoChart, DeckdeckgoChartUtils} from '../deckdeckgo-chart';
 import {transition} from 'd3-transition';
@@ -12,6 +10,8 @@ import {ascending} from 'd3-array';
 interface DeckdeckgoPieChartDataValue {
   label: string;
   value: number;
+  randomFillColor: string;
+  key: number;
 }
 
 interface DeckdeckgoPieChartData {
@@ -32,9 +32,6 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
   // Specify a number for a donut chart
   @Prop() innerRadius: number = 0;
-
-  // For example: ['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00']
-  @Prop() range: string[];
 
   @Prop() src: string;
   @Prop() separator: string = ';';
@@ -164,17 +161,15 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
       const section: any = this.svg.selectAll('path').data(myPieData);
 
-      const colors: ScaleOrdinal<string, string> = this.getColors();
-
       section
         .enter()
         .append('path')
         .merge(section)
+        .attr('style', (d) => {
+          return 'fill: var(--deckgo-chart-fill-color-' + d.data.key + ', ' + (d.data.randomFillColor ? `#${d.data.randomFillColor}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.data.key + '); stroke: var(--deckgo-chart-stroke-' + d.data.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.data.key + ')';
+        })
         .transition(t).duration(animationDuration)
-        .attr('d', this.myPath)
-        .attr('fill', () => {
-          return colors('' + Math.random())
-        });
+        .attr('d', this.myPath);
 
       section
         .exit()
@@ -235,16 +230,6 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
     });
   }
 
-  private getColors(): ScaleOrdinal<string, string> {
-    const colors: ScaleOrdinal<string, string> = scaleOrdinal(schemePastel2);
-
-    if (this.range && this.range.length > 0) {
-      colors.range(this.range);
-    }
-
-    return colors;
-  }
-
   async fetchData(): Promise<DeckdeckgoPieChartData[]> {
     return new Promise<DeckdeckgoPieChartData[]>(async (resolve) => {
       if (!this.src) {
@@ -268,16 +253,23 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
       }
 
       let results: DeckdeckgoPieChartData[] = [];
+      let randomColors: string[];
 
-      lines.forEach((line: string) => {
+      lines.forEach((line: string, lineIndex: number) => {
         const values: string[] = line.split(this.separator);
 
         if (values && values.length >= 2) {
+          if (!randomColors) {
+            randomColors = Array.from({ length: lines.length }, (_v, _i) => (Math.floor(Math.random()*16777215).toString(16)));
+          }
+
           const label: string = values[0];
 
           const pieData: DeckdeckgoPieChartDataValue = {
             label: label,
-            value: parseInt(values[1])
+            value: parseInt(values[1]),
+            randomFillColor: randomColors.length >= 1 ? randomColors[lineIndex] : undefined,
+            key: lineIndex + 1
           };
 
           if (!isNaN(pieData.value)) {
@@ -302,7 +294,9 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
                 const pieData: DeckdeckgoPieChartDataValue = {
                   label: label,
-                  value: parseInt(values[i])
+                  value: parseInt(values[i]),
+                  randomFillColor: randomColors.length >= i ? randomColors[lineIndex] : undefined,
+                  key: lineIndex + 1
                 };
 
                 results[i - 1].values.push(pieData);

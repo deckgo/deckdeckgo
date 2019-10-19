@@ -247,14 +247,6 @@ export class AppComponentsCharts {
 <td><code>0</code></td>
 </tr>
 <tr>
-<td><code>range</code></td>
-<td><code>range</code></td>
-<td></td>
-<td>A list of custom colors which should be to draw the chart</td>
-<td><code>string[]</code></td>
-<td></td>
-</tr>
-<tr>
 <td><code>separator</code></td>
 <td><code>separator</code></td>
 <td></td>
@@ -303,6 +295,36 @@ export class AppComponentsCharts {
 <td>--deckgo-chart-path-stroke</td>
 <td></td>
 <td>The stroke property of the pie, in case you would like to display a line between the slices</td>
+</tr>
+</tbody></table>
+<p>Furthermore, as the Pie chart contains probably more than one slice, it will generate dynamically the following CSS4 variable for each slice of the pie where <code>X</code> is an index between <code>1</code> and the number of slices.</p>
+<table>
+<thead>
+<tr>
+<th>CSS4 variable</th>
+<th>Default</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>--deckgo-chart-fill-color-index</td>
+<td></td>
+<td>The fill color of the slice identified with index <code>X</code></td>
+</tr>
+<tr>
+<td>--deckgo-chart-fill-opacity-index</td>
+<td></td>
+<td>The opacity of the slice identified with index <code>X</code></td>
+</tr>
+<tr>
+<td>--deckgo-chart-stroke-index</td>
+<td></td>
+<td>The stroke of the slice identified with index <code>X</code></td>
+</tr>
+<tr>
+<td>--deckgo-chart-stroke-width-index</td>
+<td></td>
+<td>The stroke width of the slice identified with index <code>X</code></td>
 </tr>
 </tbody></table>
 <h4 id="app-components-charts-methods">Methods</h4>

@@ -4,6 +4,7 @@
 ### Breaking changes
 
 * indexing of the style of `line bar` chart has been moved from index `0` to begin with `1`
+* property `range` replaced by CSS4 variables generated dynamically 
 
 ### Features
 

@@ -222,7 +222,6 @@ The `<deckgo-pie-chart/>` expose the following properties:
 | `width`       | `width`        | X | The width of the chart            | `number`                | |
 | `height`      | `height`       | X | The height of the chart            | `number`                | |
 | `innerRadius` | `inner-radius` |  | To plot a `donut` instead of a `pie`, provide an inner radius            | `number`                | `0`         |
-| `range`       | `range`        |  | A list of custom colors which should be to draw the chart | `string[]` | |
 | `separator`   | `separator`    |  | The line separator use in your csv file           | `string`                | `';'`       |
 | `animation`         | `animation`          | | Display multiple graphs and animate the transition between these | `boolean`                | `false` |
 | `animationDuration`         | `animation-duration`          | | Duration of the transition between graphs | `numer`                | `1000` (aka 1 second) |
@@ -236,6 +235,15 @@ The `<deckgo-pie-chart/>` could be styled using the following CSS4 variables:
 | --deckgo-chart-text-color | black | The color of the labels |
 | --deckgo-chart-text-display |  | The display property of the labels |
 | --deckgo-chart-path-stroke | | The stroke property of the pie, in case you would like to display a line between the slices |
+
+Furthermore, as the Pie chart contains probably more than one slice, it will generate dynamically the following CSS4 variable for each slice of the pie where `X` is an index between `1` and the number of slices.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |-----------------|-----------------|
+| --deckgo-chart-fill-color-index | | The fill color of the slice identified with index `X` |
+| --deckgo-chart-fill-opacity-index | | The opacity of the slice identified with index `X` |
+| --deckgo-chart-stroke-index | | The stroke of the slice identified with index `X` |
+| --deckgo-chart-stroke-width-index | | The stroke width of the slice identified with index `X` |
 
 #### Methods
 
