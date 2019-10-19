@@ -1,7 +1,9 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State, Host} from '@stencil/core';
 
 import {SlideAttributesYAxisDomain, SlideChartType} from '../../../../models/data/slide';
+
 import {EditAction} from '../../../../utils/editor/edit-action';
+import {ChartUtils} from '../../../../utils/editor/chart.utils';
 
 @Component({
     tag: 'app-edit-slide-chart'
@@ -47,7 +49,7 @@ export class AppEditSlideChart {
     private innerRadius: string;
 
     async componentWillLoad() {
-        this.chartType = await this.initSlideChartType();
+        this.chartType = await ChartUtils.initSlideChartType(this.selectedElement);
 
         this.datePattern = this.selectedElement ? this.selectedElement.getAttribute('date-pattern') : undefined;
         this.yAxisDomain = this.selectedElement && this.selectedElement.hasAttribute('y-axis-domain') ? this.selectedElement.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain : 'max';
@@ -61,28 +63,6 @@ export class AppEditSlideChart {
         this.separator = this.selectedElement ? this.selectedElement.getAttribute('separator') : undefined;
 
         this.innerRadius = this.selectedElement ? this.selectedElement.getAttribute('inner-radius') : undefined;
-    }
-
-    private initSlideChartType(): Promise<SlideChartType> {
-        return new Promise<SlideChartType>((resolve) => {
-            if (!this.selectedElement) {
-                resolve(undefined);
-                return;
-            }
-
-            const typeAttr: string = this.selectedElement.getAttribute('type');
-
-            if (!typeAttr || typeAttr === undefined || typeAttr === '') {
-                resolve(SlideChartType.PIE);
-                return;
-            }
-
-            const chartType: string = Object.keys(SlideChartType).find((key: string) => {
-                return typeAttr === SlideChartType[key];
-            });
-
-            resolve(SlideChartType[chartType]);
-        });
     }
 
     private handleDatePatternInput($event: CustomEvent<KeyboardEvent>) {

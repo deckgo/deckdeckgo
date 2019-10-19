@@ -1,7 +1,10 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
+import {RangeChangeEventDetail} from '@ionic/core';
+
+import {SlideChartType} from '../../../../models/data/slide';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
-import {RangeChangeEventDetail} from '@ionic/core';
+import {ChartUtils} from '../../../../utils/editor/chart.utils';
 
 enum ApplyColorType {
     FILL,
@@ -36,11 +39,16 @@ export class AppColorDeckSlide {
     @State()
     private colorIndex: number = 1;
 
+    @State()
+    private chartType: SlideChartType = undefined;
+
     private indexes: number[] = [...Array(99).keys()];
 
     @Event() colorChange: EventEmitter<boolean>;
 
     async componentWillLoad() {
+        this.chartType = await ChartUtils.initSlideChartType(this.selectedElement);
+
         await this.initCurrentColors();
     }
 
@@ -86,6 +94,8 @@ export class AppColorDeckSlide {
             }
 
             this.applyColorType = $event.detail.value;
+
+            await this.initCurrentColors();
         });
     }
 
@@ -176,11 +186,7 @@ export class AppColorDeckSlide {
                 <ion-select value={this.applyColorType} placeholder="Apply color to"
                             onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
                             class="ion-padding-start ion-padding-end">
-                    <ion-select-option value={ApplyColorType.FILL}>Fill</ion-select-option>
-                    <ion-select-option value={ApplyColorType.STROKE}>Stroke</ion-select-option>
-                    <ion-select-option value={ApplyColorType.TEXT}>Text</ion-select-option>
-                    <ion-select-option value={ApplyColorType.AXIS}>Axis</ion-select-option>
-                    <ion-select-option value={ApplyColorType.GRID}>Grid</ion-select-option>
+                    {this.renderColorOptions()}
                 </ion-select>
             </ion-item>,
 
@@ -191,7 +197,8 @@ export class AppColorDeckSlide {
             <ion-item class="select">
                 <ion-label>Series</ion-label>
 
-                <ion-select value={this.colorIndex} placeholder="Series index" disabled={(this.applyColorType !== ApplyColorType.FILL && this.applyColorType !== ApplyColorType.STROKE)}
+                <ion-select value={this.colorIndex} placeholder="Series index"
+                            disabled={(this.applyColorType !== ApplyColorType.FILL && this.applyColorType !== ApplyColorType.STROKE)}
                             onIonChange={(e: CustomEvent) => this.selectColorIndex(e)}
                             class="ion-padding-start ion-padding-end">
                     {this.renderChartIndexes()}
@@ -214,6 +221,21 @@ export class AppColorDeckSlide {
                 <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>
         ]
+    }
+
+    private renderColorOptions() {
+        const options = [
+            <ion-select-option value={ApplyColorType.FILL}>Fill</ion-select-option>,
+            <ion-select-option value={ApplyColorType.STROKE}>Stroke</ion-select-option>,
+            <ion-select-option value={ApplyColorType.TEXT}>Text</ion-select-option>
+        ];
+
+        if (this.chartType != SlideChartType.PIE) {
+            options.push(<ion-select-option value={ApplyColorType.AXIS}>Axis</ion-select-option>);
+            options.push(<ion-select-option value={ApplyColorType.GRID}>Grid</ion-select-option>);
+        }
+
+        return options;
     }
 
     // A select is more user friendly than an input
