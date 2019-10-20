@@ -315,7 +315,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
           // Title
           if (!keys) {
-            keys = [...Array(values.length).keys()].slice(1);
+            keys = Array.apply(null, {length: values.length}).map(Number.call, Number).slice(1);
           }
 
           if (!randomColors) {

@@ -1,5 +1,12 @@
+<a name="1.0.0-rc.3-1"></a>
+# 1.0.0-rc.3-1 (2019-10-20)
+
+### Fix
+
+* custom labels for x-axis compatible with ES5
+
 <a name="1.0.0-rc.3"></a>
-# 1.0.0-rc.2-1 (2019-10-19)
+# 1.0.0-rc.3 (2019-10-19)
 
 ### Breaking changes
 
