@@ -9,7 +9,10 @@ ion-menu {
   ion-content {
     ion-list {
       ion-item-divider, ion-item {
-        --color: white;
+        --color: var(--ion-color-light);
+
+        --background-hover: var(--ion-color-secondary);
+        --background-activated: var(--ion-color-secondary);
       }
 
       ion-item-divider {
@@ -43,7 +46,7 @@ ion-menu {
 
   ion-header {
     ion-toolbar {
-      --color: white;
+      --color: var(--ion-color-light);
       --border-color: transparent;
 
       ion-title {
@@ -55,25 +58,3 @@ ion-menu {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  ion-menu {
-
-    ion-content {
-      ion-list {
-        ion-item, ion-item-divider {
-          --background-hover: var(--ion-color-secondary);
-          --background-activated: var(--ion-color-secondary);
-        }
-
-        ion-item-divider {
-          --color: var(--ion-color-light);
-          --background: inherit;
-        }
-
-        ion-item {
-          --color: var(--ion-color-light);
-        }
-      }
-    }
-  }
-}
