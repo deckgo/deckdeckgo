@@ -5,7 +5,8 @@
 
 * update `slide chart` and `charts` components to follow their integration in the editor
 * update most recent libs
-* hello darkness my old friend switcher
+* hello darkness my old friend switcher ([#419](https://github.com/deckgo/deckdeckgo/issues/419))
+* add youtube video to documentation ([#60](https://github.com/deckgo/deckdeckgo/issues/60))
 
 <a name="1.0.0-rc.4-3"></a>
 # 1.0.0-rc.4-3 (2019-10-13)

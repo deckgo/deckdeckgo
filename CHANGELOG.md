@@ -1,8 +1,9 @@
 <a name="1.0.0-rc.16"></a>
-# [1.0.0-rc.16](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.15...v1.0.0-16) (In the making...)
+# [1.0.0-rc.16](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.15...v1.0.0-16) (2019-10-20)
 
 ### Applications
 
+* studio: v1.0.0-beta.7 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 * docs: v1.0.0-rc.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 
 ### Web Components

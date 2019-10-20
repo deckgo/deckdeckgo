@@ -1,3 +1,18 @@
+<a name="1.0.0-beta.7"></a>
+# 1.0.0-beta.7 (2019-10-20)
+
+### Features
+
+* integrate template chart ([#400](https://github.com/deckgo/deckdeckgo/issues/400))
+* add call to action "create a presentation" ([#411](https://github.com/deckgo/deckdeckgo/issues/411))
+* expose studio configuration for contributors ([#413](https://github.com/deckgo/deckdeckgo/pull/413))
+* add a dummy press kit page ([#409](https://github.com/deckgo/deckdeckgo/pull/409))
+* display tags and hide title on cards of the main feed ([#371](https://github.com/deckgo/deckdeckgo/issues/371))
+
+### Fix
+
+* move slide time to time doesn't work ([#404](https://github.com/deckgo/deckdeckgo/issues/404))
+
 <a name="1.0.0-beta.6"></a>
 # 1.0.0-beta.6 (2019-10-07)
 
