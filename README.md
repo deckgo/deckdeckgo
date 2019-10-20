@@ -33,7 +33,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | ------- | ------- | ------- |:-----:|
 | **Studio** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.5-2&color=success)](https://deckdeckgo.com)| [https://deckdeckgo.com](https://deckdeckgo.com) | [`README.md`](studio/README.md)
 | **Remote control** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.1&color=success)](https://deckdeckgo.app) | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
-| **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.4-4&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
+| **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.5&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Demo** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.2-1&color=success)](https://demo.deckdeckgo.com) | [https://demo.deckdeckgo.com](https://demo.deckdeckgo.com) | [`Repo`](https://github.com/deckgo/deckdeckgo-demo/)
 
 ## Web Components

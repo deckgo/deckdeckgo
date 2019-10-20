@@ -1,10 +1,11 @@
-<a name="1.0.0-rc.4-4"></a>
-# 1.0.0-rc.4-4 (2019-10-19)
+<a name="1.0.0-rc.5"></a>
+# 1.0.0-rc.5 (2019-10-20)
 
 ### Features
 
 * update `slide chart` and `charts` components to follow their integration in the editor
 * update most recent libs
+* hello darkness my old friend switcher
 
 <a name="1.0.0-rc.4-3"></a>
 # 1.0.0-rc.4-3 (2019-10-13)
