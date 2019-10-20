@@ -13,6 +13,9 @@
 * slide-qrcode: v1.0.0-rc.2-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/qrcode/CHANGELOG.md))
 * slide-split: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/split/CHANGELOG.md))
 
+### Others
+* starter kit: v1.0.0-rc.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+
 <a name="1.0.0-rc.15"></a>
 # [1.0.0-rc.15](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-2...v1.0.0-15) (2019-10-07)
 
