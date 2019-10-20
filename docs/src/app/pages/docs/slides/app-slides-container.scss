@@ -50,18 +50,10 @@ div.container {
 
     h1[slot], div[slot="author"] {
       border: 1px dashed var(--ion-color-primary);
-
-      @media (prefers-color-scheme: dark) {
-        border: 1px dashed var(--ion-color-light);
-      }
     }
 
     h2[slot], p[slot] {
       border: 1px dashed var(--ion-color-tertiary);
-
-      @media (prefers-color-scheme: dark) {
-        border: 1px dashed var(--ion-color-secondary);
-      }
     }
 
     deckgo-slide-split {
@@ -78,6 +70,20 @@ div.container {
 
     deckgo-slide-big-img {
       --slide-img-max-width: 400px;
+    }
+  }
+}
+
+body.dark {
+  div.container {
+    deckgo-deck {
+      h1[slot], div[slot="author"] {
+        border: 1px dashed var(--ion-color-light);
+      }
+
+      h2[slot], p[slot] {
+        border: 1px dashed var(--ion-color-secondary);
+      }
     }
   }
 }

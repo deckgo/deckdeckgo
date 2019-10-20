@@ -28,7 +28,7 @@ deckgo-highlight-code, deckgo-deck {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+body.dark {
   deckgo-highlight-code {
     --deckgo-highlight-code-background: var(--ion-color-dark);
   }

@@ -51,9 +51,9 @@ export class AppThemeSwitcher {
   }
 
   @Listen('click', {capture: true})
-  handleOnToggleChange() {
+  async handleOnToggleChange() {
     this.updateDarkModePreferences();
-    this.idbKeyValPromiseHandler(set('darkModePreferences', this.darkModePreference));
+    await this.idbKeyValPromiseHandler(set('darkModePreferences', this.darkModePreference));
   }
 
   render() {

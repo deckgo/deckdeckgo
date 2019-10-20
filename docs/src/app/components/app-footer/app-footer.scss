@@ -26,21 +26,7 @@ footer {
         padding-right: 8px;
 
         ion-icon {
-          color: initial;
-        }
-      }
-    }
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  footer {
-    div.container {
-      div.end {
-        a {
-          ion-icon {
-            color: var(--ion-color-light);
-          }
+          color: var(--ion-text-color, #000);
         }
       }
     }
