@@ -1,8 +1,8 @@
 export enum SlideTemplate {
     TITLE = 'title',
     CONTENT = 'content',
-	SPLIT_HORIZONTALLY = 'split',
-	SPLIT_VERTICALLY = 'splitVertically',
+    SPLIT_HORIZONTALLY = 'split',
+    SPLIT_VERTICALLY = 'splitVertically',
     GIF = 'gif',
     AUTHOR = 'author',
     YOUTUBE = 'youtube',
@@ -37,8 +37,8 @@ export interface SlideAttributes {
     area?: boolean;
     ticks?: number;
     grid?: boolean;
-	separator?: string;
-	vertical?: boolean;
+    separator?: string;
+    vertical?: boolean;
 }
 
 export interface SlideData {

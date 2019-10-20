@@ -541,13 +541,13 @@ export class DeckEventsHandler {
 
             if ((slide as any).imgAlt) {
                 attributes.imgAlt = (slide as any).imgAlt;
-			}
-			
-			if (slide.getAttribute('vertical') === 'true') {
+            }
+            
+            if (slide.getAttribute('vertical') === 'true') {
                 attributes.vertical = true;
             } else if (cleanFields) {
                 // @ts-ignore
-				attributes.vertical = false;
+                attributes.vertical = false;
             }
 
             const qrCodeAttributes: SlideAttributes = await this.getSlideAttributesQRCode(slide, cleanFields);
