@@ -6,7 +6,7 @@ import {take} from 'rxjs/operators';
 
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
 import {ApiDeck} from '../../../models/api/api.deck';
-import {Slide, SlideTemplate} from '../../../models/data/slide';
+import {Slide, SlideAttributes, SlideTemplate} from '../../../models/data/slide';
 import {User} from '../../../models/data/user';
 
 import {ApiPresentation} from '../../../models/api/api.presentation';
@@ -199,15 +199,39 @@ export class PublishService {
                 return;
             }
 
+            const attributes: SlideAttributes = await this.convertAttributesToString(slide.data.attributes);
+
             const apiSlide: ApiSlide = {
                 template: slide.data.template,
                 content: slide.data.content,
-                attributes: slide.data.attributes
+                attributes: attributes
             };
 
             const cleanApiSlide: ApiSlide = await this.convertSlideQRCode(apiSlide);
 
             resolve(cleanApiSlide);
+        });
+    }
+
+    private convertAttributesToString(attributes: SlideAttributes): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            if (!attributes) {
+                resolve(undefined);
+                return;
+            }
+
+            // We loose the type but doing so we ensure that all attributes are converted to string in order to parse them to HTML in the API
+            const result: SlideAttributes = {};
+            Object.keys(attributes).forEach((key: string) => {
+                result[key] = `${attributes[key]}`;
+            });
+
+            if (!result) {
+                resolve(undefined);
+                return;
+            }
+
+            resolve(result);
         });
     }
 
