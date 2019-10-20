@@ -10,6 +10,12 @@ app-navigation {
   div[slot="end"] {
     z-index: 2;
 
+    div.links {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
     ion-button {
       --color: black;
       --color-activated: black;

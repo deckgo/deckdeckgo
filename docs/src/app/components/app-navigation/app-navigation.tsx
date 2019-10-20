@@ -67,6 +67,7 @@ export class AppNavigation {
         <div class="links">
           <a href="https://deckdeckgo.com" padding-start padding-end>Demo</a>
           <a href="https://github.com/deckgo" padding-start padding-end>Github</a>
+          <app-theme-switcher></app-theme-switcher>
         </div>
       </div>;
     } else {

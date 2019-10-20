@@ -36,6 +36,10 @@ export class AppNavigationModal {
                 <div>
                   <a href="https://deckdeckgo.com" padding-top>Demo</a>
                   <a href="https://github.com/deckgo" padding-top>Github</a>
+                  <div class="ion-margin-top toggle-theme">
+                    <h1>Toggle theme</h1>
+                    <app-theme-switcher></app-theme-switcher>
+                  </div>
                 </div>
             </ion-content>
         ];

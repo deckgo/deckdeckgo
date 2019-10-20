@@ -69,6 +69,7 @@ export namespace Components {
   interface AppSlideVideo {}
   interface AppSlideYoutube {}
   interface AppSlidesConcept {}
+  interface AppThemeSwitcher {}
 }
 
 declare global {
@@ -391,6 +392,12 @@ declare global {
     prototype: HTMLAppSlidesConceptElement;
     new (): HTMLAppSlidesConceptElement;
   };
+
+  interface HTMLAppThemeSwitcherElement extends Components.AppThemeSwitcher, HTMLStencilElement {}
+  const HTMLAppThemeSwitcherElement: {
+    prototype: HTMLAppThemeSwitcherElement;
+    new (): HTMLAppThemeSwitcherElement;
+  };
   interface HTMLElementTagNameMap {
     'app-components-charts': HTMLAppComponentsChartsElement;
     'app-components-color': HTMLAppComponentsColorElement;
@@ -445,6 +452,7 @@ declare global {
     'app-slide-video': HTMLAppSlideVideoElement;
     'app-slide-youtube': HTMLAppSlideYoutubeElement;
     'app-slides-concept': HTMLAppSlidesConceptElement;
+    'app-theme-switcher': HTMLAppThemeSwitcherElement;
   }
 }
 
@@ -508,6 +516,7 @@ declare namespace LocalJSX {
   interface AppSlideVideo {}
   interface AppSlideYoutube {}
   interface AppSlidesConcept {}
+  interface AppThemeSwitcher {}
 
   interface IntrinsicElements {
     'app-components-charts': AppComponentsCharts;
@@ -563,6 +572,7 @@ declare namespace LocalJSX {
     'app-slide-video': AppSlideVideo;
     'app-slide-youtube': AppSlideYoutube;
     'app-slides-concept': AppSlidesConcept;
+    'app-theme-switcher': AppThemeSwitcher;
   }
 }
 
@@ -625,6 +635,7 @@ declare module "@stencil/core" {
       'app-slide-video': LocalJSX.AppSlideVideo & JSXBase.HTMLAttributes<HTMLAppSlideVideoElement>;
       'app-slide-youtube': LocalJSX.AppSlideYoutube & JSXBase.HTMLAttributes<HTMLAppSlideYoutubeElement>;
       'app-slides-concept': LocalJSX.AppSlidesConcept & JSXBase.HTMLAttributes<HTMLAppSlidesConceptElement>;
+      'app-theme-switcher': LocalJSX.AppThemeSwitcher & JSXBase.HTMLAttributes<HTMLAppThemeSwitcherElement>;
     }
   }
 }
