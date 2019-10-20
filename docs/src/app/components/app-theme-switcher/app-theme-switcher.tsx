@@ -1,4 +1,4 @@
-import {Component, h, Listen, State} from '@stencil/core';
+import {Component, h, State} from '@stencil/core';
 
 import {set, get} from 'idb-keyval';
 
@@ -9,54 +9,54 @@ import {set, get} from 'idb-keyval';
 export class AppThemeSwitcher {
 
   @State()
-  private darkModePreference: Boolean = false;
+  private darkModePreference: boolean = false;
 
   private domBodyClassList: DOMTokenList = document.body.classList;
 
-  // error handling if the idb-keyval throws an error
-  private async idbKeyValPromiseHandler(promise): Promise<any> {
-    return Promise.resolve(promise)
-      .then(valueOfPromise => valueOfPromise)
-      .catch(err => Error(err));
-  }
+  private async initDarkModePreference(): Promise<boolean> {
+    try {
+      const savedDarkModePreference: boolean = await get('deckdeckgo_dark_mode');
 
-  private async resolveDarkModePreference(): Promise<Boolean> {
-    let getDarkModePreferenceFromIdb: Promise<any> = await this.idbKeyValPromiseHandler(get('darkModePreferences'));
-    let getDarkModePreferenceFromMedia = window.matchMedia('(prefers-color-scheme: dark)');
-    if (getDarkModePreferenceFromIdb instanceof Error) {
+      // If user already specified once a preference, we use that as default
+      if (savedDarkModePreference !== undefined) {
+        return savedDarkModePreference;
+      }
+    } catch (err) {
       return false;
     }
-    let isDarkModePreferenceDetermined: Boolean | Promise<Boolean> =
-      getDarkModePreferenceFromIdb ||
-      getDarkModePreferenceFromMedia.matches;
 
-    return isDarkModePreferenceDetermined ? isDarkModePreferenceDetermined : this.darkModePreference;
+    // Otherwise we check the prefers-color-scheme of the OS
+    const darkModePreferenceFromMedia: MediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+
+    return darkModePreferenceFromMedia.matches;
   }
 
-
-  private updateDarkModePreferences(): void {
+  private updateDarkModePreferences() {
     !this.darkModePreference ?
       this.domBodyClassList.add('dark') :
       this.domBodyClassList.remove('dark');
     this.darkModePreference = !this.darkModePreference;
   }
 
-  async componentDidLoad() {
-    this.darkModePreference = await this.resolveDarkModePreference();
-    const DARKTOGGLE: HTMLInputElement = document.querySelector('#themeToggle');
+  async componentWillLoad() {
+    this.darkModePreference = await this.initDarkModePreference();
+
     if (this.darkModePreference) {
-      DARKTOGGLE.checked = true;
       this.domBodyClassList.add('dark');
     }
   }
 
-  @Listen('click', {capture: true})
-  async handleOnToggleChange() {
+  private async toggleTheme() {
     this.updateDarkModePreferences();
-    await this.idbKeyValPromiseHandler(set('darkModePreferences', this.darkModePreference));
+
+    try {
+      await set('deckdeckgo_dark_mode', this.darkModePreference);
+    } catch (err) {
+      // We ignore this error. In worst case scenario, the application will be displayed in another theme after next refresh.
+    }
   }
 
   render() {
-    return <ion-toggle id="themeToggle" mode="md" color="switcher"></ion-toggle>;
+    return <ion-toggle checked={this.darkModePreference} mode="md" color="switcher" onIonChange={() => this.toggleTheme()}></ion-toggle>;
   }
 }
