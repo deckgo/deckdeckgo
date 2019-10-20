@@ -198,9 +198,15 @@ export class AppCreateSlide {
                         <p slot="content">Content</p>
                     </deckgo-slide-content>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.SPLIT)}>
+                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.SPLIT_HORIZONTALLY)}>
                     <deckgo-slide-split class="showcase">
                         <p slot="start">Content</p>
+                        <p slot="end">Content</p>
+                    </deckgo-slide-split>
+				</div>
+				<div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.SPLIT_VERTICALLY)}>
+                    <deckgo-slide-split vertical class="showcase">
+						<p slot="start">Content</p>
                         <p slot="end">Content</p>
                     </deckgo-slide-split>
                 </div>

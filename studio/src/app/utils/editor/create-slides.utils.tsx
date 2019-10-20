@@ -25,8 +25,10 @@ export class CreateSlidesUtils {
                 resolve(await this.createSlideTitle());
             } else if (template === SlideTemplate.CONTENT) {
                 resolve(await this.createSlideContent());
-            } else if (template === SlideTemplate.SPLIT) {
+            } else if (template === SlideTemplate.SPLIT_HORIZONTALLY) {
                 resolve(await this.createSlideSplit());
+            } else if (template === SlideTemplate.SPLIT_VERTICALLY) {
+                resolve(await this.createSlideSplit(true));
             } else if (template === SlideTemplate.GIF) {
                 resolve(await this.createSlideGif(EnvironmentConfigService.getInstance().get('gifExampleSrc')));
             } else if (template === SlideTemplate.AUTHOR) {
@@ -83,7 +85,7 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideSplit(): Promise<JSX.IntrinsicElements> {
+    private static createSlideSplit(vertical = false): Promise<JSX.IntrinsicElements> {
         return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
@@ -94,7 +96,7 @@ export class CreateSlidesUtils {
 
             const end = <section slot="end"></section>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-split key={uuid()}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-split vertical={vertical} key={uuid()}>
                 {start}
                 {end}
             </deckgo-slide-split>;
