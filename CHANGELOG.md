@@ -1,5 +1,9 @@
-<a name="1.0.0-rc.17"></a>
-# [1.0.0-rc.17](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.16...v1.0.0-17) (In progress)
+<a name="1.0.0-rc.16-1"></a>
+# [1.0.0-rc.16-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.16...v1.0.0-rc.16-1) (In progress)
+
+### Applications
+
+* studio: v1.0.0-beta.7-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
 * highlight-code: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
@@ -8,7 +12,7 @@
 * starter kit: v1.0.0-rc.4-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.0.0-rc.16"></a>
-# [1.0.0-rc.16](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.15...v1.0.0-16) (2019-10-20)
+# [1.0.0-rc.16](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.15...v1.0.0-rc.16) (2019-10-20)
 
 ### Applications
 
@@ -27,7 +31,7 @@
 * starter kit: v1.0.0-rc.4-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.0.0-rc.15"></a>
-# [1.0.0-rc.15](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-2...v1.0.0-15) (2019-10-07)
+# [1.0.0-rc.15](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-2...v1.0.0-rc.15) (2019-10-07)
 
 ### Applications
 
@@ -50,14 +54,14 @@
 * webpack: v1.0.0-rc.2-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
 
 <a name="1.0.0-rc.14-2"></a>
-# [1.0.0-rc.14-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-1...v1.0.0-14-2) (2019-09-23)
+# [1.0.0-rc.14-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14-1...v1.0.0-rc.14-2) (2019-09-23)
 
 ### Applications
 
 * studio: v1.0.0-beta.5-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 <a name="1.0.0-rc.14-1"></a>
-# [1.0.0-rc.14-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14...v1.0.0-14-1) (2019-09-21)
+# [1.0.0-rc.14-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.14...v1.0.0-rc.14-1) (2019-09-21)
 
 ### Applications
 
@@ -70,7 +74,7 @@
 * inline-editor: v1.0.0-rc.2-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
 <a name="1.0.0-rc.14"></a>
-# [1.0.0-rc.14](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13...v1.0.0-14) (2019-09-21)
+# [1.0.0-rc.14](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.13...v1.0.0-rc.14) (2019-09-21)
 
 ### New: Web Components
 
@@ -90,14 +94,14 @@
 * utils: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.13"></a>
-# [1.0.0-rc.13](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-3...v1.0.0-13) (2019-09-20)
+# [1.0.0-rc.13](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-3...v1.0.0-rc.13) (2019-09-20)
 
 ### Applications
 
 * studio: v1.0.0-beta.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 <a name="1.0.0-rc.12-3"></a>
-# [1.0.0-rc.12-3](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-2...v1.0.0-12-3) (2019-09-15)
+# [1.0.0-rc.12-3](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-2...v1.0.0-rc.12-3) (2019-09-15)
 
 ### Applications
 
@@ -123,7 +127,7 @@
 * slide-utils: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.12-2"></a>
-# [1.0.0-rc.12-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-1...v1.0.0-12-2) (2019-09-13)
+# [1.0.0-rc.12-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-1...v1.0.0-rc.12-2) (2019-09-13)
 
 ### Applications
 
@@ -134,7 +138,7 @@
 * webpack: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
 
 <a name="1.0.0-rc.12-1"></a>
-# [1.0.0-rc.12-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12...v1.0.0-12-1) (2019-09-09)
+# [1.0.0-rc.12-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12...v1.0.0-rc.12-1) (2019-09-09)
 
 ### Applications
 
@@ -146,7 +150,7 @@
 * slide-gif: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/gif/CHANGELOG.md))
 
 <a name="1.0.0-rc.12"></a>
-# [1.0.0-rc.12](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11-2...v1.0.0-12) (2019-09-08)
+# [1.0.0-rc.12](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11-2...v1.0.0-rc.12) (2019-09-08)
 
 ### Applications
 
@@ -157,7 +161,7 @@
 * cloud: v1.0.0-beta.1  ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cloud/CHANGELOG.md))
 
 <a name="1.0.0-rc.11-2"></a>
-# [1.0.0-rc.11-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11-1...v1.0.0-11-2) (2019-09-04)
+# [1.0.0-rc.11-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11-1...v1.0.0-rc.11-2) (2019-09-04)
 
 ### Web Components
 
@@ -172,7 +176,7 @@
 * starter kit: v1.0.0-rc.1-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.0.0-rc.11-1"></a>
-# [1.0.0-rc.11-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11...v1.0.0-11-1) (2019-09-02)
+# [1.0.0-rc.11-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.11...v1.0.0-rc.11-1) (2019-09-02)
 
 ### Others
 
@@ -180,7 +184,7 @@
 * webpack: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
 
 <a name="1.0.0-rc.11"></a>
-# [1.0.0-rc.11](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.10...v1.0.0-11) (2019-09-01)
+# [1.0.0-rc.11](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.10...v1.0.0-rc.11) (2019-09-01)
 
 ### Applications
 
@@ -195,7 +199,7 @@
 * utils: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.10"></a>
-# [1.0.0-rc.10](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.9...v1.0.0-10) (2019-08-30)
+# [1.0.0-rc.10](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.9...v1.0.0-rc.10) (2019-08-30)
 
 ### BREAKING: Web Components
 
