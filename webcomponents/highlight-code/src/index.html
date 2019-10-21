@@ -129,5 +129,28 @@
     System.out.println(isNegative.computeTest(-5));
     }</code>
 </deckgo-highlight-code>
+
+<h1>Issue #423</h1>
+<deckgo-highlight-code language="java" highlight-lines="6,7">
+  <code slot="code"># main.tf
+
+    resource "aws_lambda_function" "api" {
+    function_name = "deckdeckgo-handler-lambda"
+
+    filename      =
+    data.external.build-function.result.path
+
+    runtime = ...
+    }
+
+    data "external" "build-function" {
+    program = [
+    "nix",
+    "eval",
+    "(import ./default.nix).function-handler-path",
+    "--json",
+    ]
+    }</code>
+</deckgo-highlight-code>
 </body>
 </html>
