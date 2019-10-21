@@ -542,6 +542,13 @@ export class DeckEventsHandler {
             if ((slide as any).imgAlt) {
                 attributes.imgAlt = (slide as any).imgAlt;
             }
+            
+            if ((slide as any).vertical) {
+                attributes.vertical = true;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.vertical = firebase.firestore.FieldValue.delete();
+            }
 
             const qrCodeAttributes: SlideAttributes = await this.getSlideAttributesQRCode(slide, cleanFields);
             const chartAttributes: SlideAttributes = await this.getSlideAttributesChart(slide, cleanFields);

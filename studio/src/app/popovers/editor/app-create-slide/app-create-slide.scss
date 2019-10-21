@@ -186,8 +186,14 @@ app-create-slide {
         margin: 0;
         min-height: 102px;
         overflow: hidden;
-      }
     }
+    
+    &[vertical] {
+        p {
+          min-height: 47px;
+        }
+      }
+  }
 
     deckgo-slide-gif {
       p {

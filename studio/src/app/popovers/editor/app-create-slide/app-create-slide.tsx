@@ -112,6 +112,11 @@ export class AppCreateSlide {
         const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, deck, this.user);
         await this.closePopover(template, slide);
     }
+    
+    private async addSlideSplit(template: SlideTemplate, attributes: SlideAttributes = undefined) {
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(attributes);
+        await this.closePopover(template, slide, attributes);
+    }
 
     private addSlideQRCode() {
         this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
@@ -198,8 +203,14 @@ export class AppCreateSlide {
                         <p slot="content">Content</p>
                     </deckgo-slide-content>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.SPLIT)}>
+                <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT)}>
                     <deckgo-slide-split class="showcase">
+                        <p slot="start">Content</p>
+                        <p slot="end">Content</p>
+                    </deckgo-slide-split>
+                </div>
+                <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true})}>
+                    <deckgo-slide-split vertical={true} class="showcase">
                         <p slot="start">Content</p>
                         <p slot="end">Content</p>
                     </deckgo-slide-split>

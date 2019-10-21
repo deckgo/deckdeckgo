@@ -83,7 +83,7 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideSplit(): Promise<JSX.IntrinsicElements> {
+    public static createSlideSplit(attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
         return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
@@ -94,7 +94,8 @@ export class CreateSlidesUtils {
 
             const end = <section slot="end"></section>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-split key={uuid()}>
+            // @ts-ignore
+            const slide: JSX.IntrinsicElements = <deckgo-slide-split key={uuid()} {...attributes}>
                 {start}
                 {end}
             </deckgo-slide-split>;
