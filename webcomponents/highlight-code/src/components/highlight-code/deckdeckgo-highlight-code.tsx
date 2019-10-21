@@ -183,35 +183,30 @@ export class DeckdeckgoHighlightCode {
 
       if (container) {
         try {
-          if (this.lineNumbers) {
-            // clear the container first
-            container.children[0].innerHTML = '';
+          // clear the container first
+          container.children[0].innerHTML = '';
 
-            // split the code on linebreaks
-            const regEx = RegExp(/\n(?!$)/g); //
-            const match = code.split(regEx);
-            match.forEach((m, idx, array) => {
-              // On last element
-              if (idx === array.length - 1){
-                this.attachHighlightObserver(container);
-              }
+          // split the code on linebreaks
+          const regEx = RegExp(/\n(?!$)/g); //
+          const match = code.split(regEx);
+          match.forEach((m, idx, array) => {
+            // On last element
+            if (idx === array.length - 1) {
+              this.attachHighlightObserver(container);
+            }
 
-              let div: HTMLElement = document.createElement('div');
+            let div: HTMLElement = document.createElement('div');
+            if (this.lineNumbers) {
               div.classList.add('deckgo-highlight-code-line-number');
+            }
 
-              const highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
+            const highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
 
-              // If empty, use \u200B as zero width text spacer
-              div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
+            // If empty, use \u200B as zero width text spacer
+            div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
 
-              container.children[0].appendChild(div);
-            });
-          }else{
-            this.attachHighlightObserver(container);
-
-            container.children[0].innerHTML = Prism.highlight(code, Prism.languages[this.language], this.language);
-          }
-
+            container.children[0].appendChild(div);
+          });
           await this.addAnchors();
 
           resolve();
@@ -233,7 +228,7 @@ export class DeckdeckgoHighlightCode {
 
       observer.observe(container);
     } else {
-       // Back in my days...
+      // Back in my days...
       setTimeout(async () => {
         await this.addHighlight();
       }, 100);
