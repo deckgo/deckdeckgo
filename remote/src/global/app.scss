@@ -30,5 +30,6 @@
   https://beta.ionicframework.com/docs/theming/color-generator
 */
 
-@import 'variables';
-@import 'theme';
+@import 'theme/variables';
+@import 'theme/content';
+@import 'theme/menu';

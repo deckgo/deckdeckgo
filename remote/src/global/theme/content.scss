@@ -36,9 +36,3 @@ ion-content {
     }
   }
 }
-
-ion-tab-button {
-  &.tab-selected {
-    --ion-color-contrast: var(--ion-color-primary);
-  }
-}

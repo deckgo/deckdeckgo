@@ -481,6 +481,15 @@ export class AppRemote {
             <ion-header>
                 <ion-toolbar color="primary">
                     <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
+
+                    <ion-buttons slot="start">
+                        <ion-menu-toggle>
+                            <ion-button>
+                                <ion-icon slot="icon-only" name="menu"></ion-icon>
+                            </ion-button>
+                        </ion-menu-toggle>
+                    </ion-buttons>
+
                     <ion-buttons slot="end">
                         <ion-button onClick={() => this.openSettingsModal()}>
                             <ion-icon name="settings"></ion-icon>

@@ -23,6 +23,7 @@ export namespace Components {
     'slides': number;
     'width': number;
   }
+  interface AppLogo {}
   interface AppRemote {
     'room': string;
   }
@@ -37,7 +38,6 @@ export namespace Components {
     'remaining': number;
   }
   interface AppStopwatchTime {}
-  interface AppTabs {}
   interface AppTimer {}
   interface DarkModeSwitch {}
 }
@@ -61,6 +61,12 @@ declare global {
   const HTMLAppDrawElement: {
     prototype: HTMLAppDrawElement;
     new (): HTMLAppDrawElement;
+  };
+
+  interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
+  const HTMLAppLogoElement: {
+    prototype: HTMLAppLogoElement;
+    new (): HTMLAppLogoElement;
   };
 
   interface HTMLAppRemoteElement extends Components.AppRemote, HTMLStencilElement {}
@@ -105,12 +111,6 @@ declare global {
     new (): HTMLAppStopwatchTimeElement;
   };
 
-  interface HTMLAppTabsElement extends Components.AppTabs, HTMLStencilElement {}
-  const HTMLAppTabsElement: {
-    prototype: HTMLAppTabsElement;
-    new (): HTMLAppTabsElement;
-  };
-
   interface HTMLAppTimerElement extends Components.AppTimer, HTMLStencilElement {}
   const HTMLAppTimerElement: {
     prototype: HTMLAppTimerElement;
@@ -126,6 +126,7 @@ declare global {
     'app-about': HTMLAppAboutElement;
     'app-accelerometer': HTMLAppAccelerometerElement;
     'app-draw': HTMLAppDrawElement;
+    'app-logo': HTMLAppLogoElement;
     'app-remote': HTMLAppRemoteElement;
     'app-remote-connect': HTMLAppRemoteConnectElement;
     'app-remote-settings': HTMLAppRemoteSettingsElement;
@@ -133,7 +134,6 @@ declare global {
     'app-root': HTMLAppRootElement;
     'app-stopwatch': HTMLAppStopwatchElement;
     'app-stopwatch-time': HTMLAppStopwatchTimeElement;
-    'app-tabs': HTMLAppTabsElement;
     'app-timer': HTMLAppTimerElement;
     'dark-mode-switch': HTMLDarkModeSwitchElement;
   }
@@ -151,6 +151,7 @@ declare namespace LocalJSX {
     'slides'?: number;
     'width'?: number;
   }
+  interface AppLogo {}
   interface AppRemote {
     'room'?: string;
   }
@@ -165,7 +166,6 @@ declare namespace LocalJSX {
     'remaining'?: number;
   }
   interface AppStopwatchTime {}
-  interface AppTabs {}
   interface AppTimer {}
   interface DarkModeSwitch {}
 
@@ -173,6 +173,7 @@ declare namespace LocalJSX {
     'app-about': AppAbout;
     'app-accelerometer': AppAccelerometer;
     'app-draw': AppDraw;
+    'app-logo': AppLogo;
     'app-remote': AppRemote;
     'app-remote-connect': AppRemoteConnect;
     'app-remote-settings': AppRemoteSettings;
@@ -180,7 +181,6 @@ declare namespace LocalJSX {
     'app-root': AppRoot;
     'app-stopwatch': AppStopwatch;
     'app-stopwatch-time': AppStopwatchTime;
-    'app-tabs': AppTabs;
     'app-timer': AppTimer;
     'dark-mode-switch': DarkModeSwitch;
   }
@@ -195,6 +195,7 @@ declare module "@stencil/core" {
       'app-about': LocalJSX.AppAbout & JSXBase.HTMLAttributes<HTMLAppAboutElement>;
       'app-accelerometer': LocalJSX.AppAccelerometer & JSXBase.HTMLAttributes<HTMLAppAccelerometerElement>;
       'app-draw': LocalJSX.AppDraw & JSXBase.HTMLAttributes<HTMLAppDrawElement>;
+      'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-remote': LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
       'app-remote-connect': LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
       'app-remote-settings': LocalJSX.AppRemoteSettings & JSXBase.HTMLAttributes<HTMLAppRemoteSettingsElement>;
@@ -202,7 +203,6 @@ declare module "@stencil/core" {
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'app-stopwatch': LocalJSX.AppStopwatch & JSXBase.HTMLAttributes<HTMLAppStopwatchElement>;
       'app-stopwatch-time': LocalJSX.AppStopwatchTime & JSXBase.HTMLAttributes<HTMLAppStopwatchTimeElement>;
-      'app-tabs': LocalJSX.AppTabs & JSXBase.HTMLAttributes<HTMLAppTabsElement>;
       'app-timer': LocalJSX.AppTimer & JSXBase.HTMLAttributes<HTMLAppTimerElement>;
       'dark-mode-switch': LocalJSX.DarkModeSwitch & JSXBase.HTMLAttributes<HTMLDarkModeSwitchElement>;
     }
