@@ -4,6 +4,9 @@
 ### Web Components
 * highlight-code: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
+### Others
+* starter kit: v1.0.0-rc.4-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+
 <a name="1.0.0-rc.16"></a>
 # [1.0.0-rc.16](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.15...v1.0.0-16) (2019-10-20)
 
