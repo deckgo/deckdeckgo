@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-3"></a>
+# 1.0.0-rc.1-3 (2019-10-21)
+
+### Fix
+
+* missing place holder (not displayed)
+
 <a name="1.0.0-rc.1-2"></a>
 # 1.0.0-rc.1-2 (2019-10-21)
 
