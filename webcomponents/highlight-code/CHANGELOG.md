@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-2"></a>
+# 1.0.0-rc.1-2 (2019-10-21)
+
+### Fix
+
+* wrong code highlight when line numbers are off ([#423](https://github.com/deckgo/deckdeckgo/issues/423))
+
 <a name="1.0.0-rc.1-1"></a>
 # 1.0.0-rc.1-1 (2019-09-09)
 
