@@ -1,8 +1,7 @@
 export enum SlideTemplate {
     TITLE = 'title',
     CONTENT = 'content',
-    SPLIT_HORIZONTALLY = 'split',
-    SPLIT_VERTICALLY = 'splitVertically',
+    SPLIT = 'split',
     GIF = 'gif',
     AUTHOR = 'author',
     YOUTUBE = 'youtube',
