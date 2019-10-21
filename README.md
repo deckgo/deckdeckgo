@@ -1,6 +1,6 @@
 # DeckDeckGo
 
-The web open source editor for presentations 🚀
+The web open source editor for presentations. 🚀
 
 Create a PWA presentation using Web Components, [Ionic](http://ionicframework.com) components and HTML or Markdown.
 
