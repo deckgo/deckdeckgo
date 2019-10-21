@@ -113,8 +113,8 @@ export class AppCreateSlide {
         await this.closePopover(template, slide);
     }
     
-    private async addSlideSplit(template: SlideTemplate, deck?: Deck, attributes: SlideAttributes = undefined) {
-        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, deck, this.user);
+    private async addSlideSplit(template: SlideTemplate, attributes: SlideAttributes = undefined) {
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(attributes);
         await this.closePopover(template, slide, attributes);
     }
 
@@ -209,7 +209,7 @@ export class AppCreateSlide {
                         <p slot="end">Content</p>
                     </deckgo-slide-split>
                 </div>
-                <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT, null, {vertical: true})}>
+                <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true})}>
                     <deckgo-slide-split vertical={true} class="showcase">
                         <p slot="start">Content</p>
                         <p slot="end">Content</p>

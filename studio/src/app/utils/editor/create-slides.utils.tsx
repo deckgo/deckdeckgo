@@ -83,7 +83,7 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideSplit(attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
+    public static createSlideSplit(attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
         return new Promise<JSX.IntrinsicElements>((resolve) => {
             if (!document) {
                 resolve();
