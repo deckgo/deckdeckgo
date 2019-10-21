@@ -115,7 +115,7 @@ export class AppCreateSlide {
     
     private async addSlideSplit(template: SlideTemplate, attributes: SlideAttributes = undefined) {
         const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(attributes);
-        await this.closePopover(template, slide, attributes);
+        await this.closePopover(template, slide);
     }
 
     private addSlideQRCode() {

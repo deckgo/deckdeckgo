@@ -542,7 +542,26 @@ export class DeckEventsHandler {
             if ((slide as any).imgAlt) {
                 attributes.imgAlt = (slide as any).imgAlt;
             }
-            
+
+            const qrCodeAttributes: SlideAttributes = await this.getSlideAttributesQRCode(slide, cleanFields);
+            const chartAttributes: SlideAttributes = await this.getSlideAttributesChart(slide, cleanFields);
+            const splitAttributes: SlideAttributes = await this.getSlideAttributesSplit(slide, cleanFields);
+
+            attributes = {...attributes, ...qrCodeAttributes, ...chartAttributes, ...splitAttributes};
+
+            resolve(attributes);
+        })
+    }
+
+    private getSlideAttributesSplit(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-split') {
+                resolve({});
+                return;
+            }
+
+            let attributes: SlideAttributes = {};
+
             if ((slide as any).vertical) {
                 attributes.vertical = true;
             } else if (cleanFields) {
@@ -550,13 +569,8 @@ export class DeckEventsHandler {
                 attributes.vertical = firebase.firestore.FieldValue.delete();
             }
 
-            const qrCodeAttributes: SlideAttributes = await this.getSlideAttributesQRCode(slide, cleanFields);
-            const chartAttributes: SlideAttributes = await this.getSlideAttributesChart(slide, cleanFields);
-
-            attributes = {...attributes, ...qrCodeAttributes, ...chartAttributes};
-
             resolve(attributes);
-        })
+        });
     }
 
     private getSlideAttributesQRCode(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
