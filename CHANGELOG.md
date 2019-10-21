@@ -6,7 +6,7 @@
 * studio: v1.0.0-beta.7-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
-* highlight-code: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+* highlight-code: v1.0.0-rc.1-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
 ### Others
 * starter kit: v1.0.0-rc.4-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
