@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.7-1"></a>
+# 1.0.0-beta.7-1 (2019-10-21)
+
+### Features
+
+* add split template vertical ([#408](https://github.com/deckgo/deckdeckgo/issues/408))
+
+### Fix
+
+* per-line highlight is wrong unless "display line numbers" is set ([#423](https://github.com/deckgo/deckdeckgo/issues/423))
+
 <a name="1.0.0-beta.7"></a>
 # 1.0.0-beta.7 (2019-10-20)
 
