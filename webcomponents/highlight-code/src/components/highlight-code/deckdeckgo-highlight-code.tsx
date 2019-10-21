@@ -181,6 +181,11 @@ export class DeckdeckgoHighlightCode {
     return new Promise<void>(async (resolve, reject) => {
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-highlight-code-container');
 
+      if (!code || code === undefined || code === '') {
+        resolve();
+        return;
+      }
+
       if (container) {
         try {
           // clear the container first
