@@ -18,7 +18,7 @@ If you wish to do so, use it directly in your project via a CDN, using a simple 
 
 ## Using DeckDeckGo from a CDN
 
-It's recommended to use [unpkg](https://unpkg.com/) as a preferred CDN for the [DeckDeckGo] core. To do so, add the following include script in the main HTML file of your project:
+It's recommended to use [unpkg](https://unpkg.com/) as a CDN for the [DeckDeckGo] core. To do so, add the following include script in the main HTML file of your project:
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
