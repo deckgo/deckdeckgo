@@ -9,10 +9,6 @@
   fill: none;
   stroke: var(--stopwatch-background, #eee);
   stroke-width: var(--stopwatch-stroke-outer-width, 2.8);
-
-  @media (prefers-color-scheme: dark) {
-    stroke: var(--ion-tab-bar-background);
-  }
 }
 
 .stopwatch-circle {
@@ -34,8 +30,5 @@
   font-size: var(--stopwatch-text-size, 0.2em);
   text-anchor: middle;
   font-weight: 300;
-
-  @media (prefers-color-scheme: dark) {
-    fill: var(--ion-text-color);
-  }
+  fill: var(--ion-text-color);
 }
