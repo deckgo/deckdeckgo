@@ -71,11 +71,11 @@ export class AppRoot {
                     <ion-route url="/about" component="app-about"></ion-route>
                 </ion-router>
 
-                <ion-menu side="start" type="push" swipeGesture={false} content-id="menu-content">
+                <ion-menu side="start" type="overlay" swipeGesture={false} content-id="menu-content">
                     <ion-header>
                         <ion-toolbar>
                             <ion-title slot="start" class="ion-no-padding ion-margin-start ion-margin-end">
-                                <a href="/">
+                                <a href="https://deckdeckgo.com" target="_blank">
                                     <app-logo></app-logo>
                                     <span>DeckDeckGo</span>
                                 </a>
@@ -85,10 +85,12 @@ export class AppRoot {
 
                     <ion-content>
                         <ion-menu-toggle autoHide={false}>
-                            <ion-item detail={false} href="/" routerDirection="forward"><ion-label>Remote</ion-label></ion-item>
-                            <ion-item detail={false} href="/timer" routerDirection="forward"><ion-label>Timer</ion-label></ion-item>
-                            <ion-item detail={false} href="/settings" routerDirection="forward"><ion-label>Settings</ion-label></ion-item>
-                            <ion-item detail={false} href="/about" routerDirection="forward"><ion-label>About</ion-label></ion-item>
+                            <ion-list>
+                                <ion-item detail={false} href="/" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">Remote</ion-label></ion-item>
+                                <ion-item detail={false} href="/timer" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">Timer</ion-label></ion-item>
+                                <ion-item detail={false} href="/settings" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">Settings</ion-label></ion-item>
+                                <ion-item detail={false} href="/about" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">About</ion-label></ion-item>
+                            </ion-list>
                         </ion-menu-toggle>
                     </ion-content>
                 </ion-menu>

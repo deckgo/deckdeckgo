@@ -6,44 +6,6 @@ ion-menu {
 
   --deckgo-logo-url: url('/assets/img/deckdeckgo-logo-invert.svg');
 
-  ion-content {
-    ion-list {
-      ion-item-divider, ion-item {
-        --color: var(--ion-color-light);
-
-        --background-hover: var(--ion-color-secondary);
-        --background-activated: var(--ion-color-secondary);
-      }
-
-      ion-item-divider {
-        border: 0;
-        font-size: var(--font-size-small);
-        font-weight: bold;
-
-        &:not(:first-of-type) {
-          margin-top: 8px;
-        }
-      }
-
-      ion-item {
-        --border-color: transparent;
-        --padding-start: 32px;
-        --min-height: inherit;
-        font-size: var(--font-size-small);
-        height: inherit;
-
-        ion-label {
-          margin-top: 6px;
-          margin-bottom: 6px;
-        }
-      }
-    }
-
-    app-menu-footer {
-      --deckgo-menu-footer-color: white;
-    }
-  }
-
   ion-header {
     ion-toolbar {
       --color: var(--ion-color-light);
@@ -53,6 +15,45 @@ ion-menu {
         --deckgo-logo-vertical-align: bottom;
         --deckgo-logo-margin-end: 6px;
         --deckgo-logo-size: 20px
+      }
+    }
+
+    a {
+      color: var(--ion-color-light);
+      text-decoration: none;
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      span {
+        text-transform: uppercase;
+        padding: 0 4px;
+        font-weight: 300;
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  ion-content {
+    ion-list {
+      --ion-background-color: transparent;
+      --ion-item-background: transparent;
+
+      ion-item-divider, ion-item {
+        --color: var(--ion-color-light);
+
+        --background: transparent;
+        --background-hover: var(--ion-color-secondary);
+        --background-activated: var(--ion-color-secondary);
+      }
+
+      ion-item {
+        --border-color: transparent;
+        --padding-start: 32px;
+        --min-height: inherit;
+        font-size: 1.8rem;
+        height: inherit;
       }
     }
   }

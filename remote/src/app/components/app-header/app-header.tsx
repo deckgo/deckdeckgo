@@ -35,8 +35,6 @@ export class AppHeader {
     render() {
         return <ion-header>
             <ion-toolbar color={this.darkTheme ? 'dark' : 'primary'}>
-                <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
-
                 <ion-buttons slot="start">
                     <ion-menu-toggle>
                         <ion-button>
