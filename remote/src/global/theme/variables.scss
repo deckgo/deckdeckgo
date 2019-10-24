@@ -63,8 +63,7 @@
   --ion-color-light-tint: #f5f6f9;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
+body.dark {
     --ion-background-color: #323639;
 
     --ion-text-color: #ffffff;
@@ -80,5 +79,4 @@
     --ion-color-medium-contrast-rgb: 255,255,255;
     --ion-color-medium-shade: #616062;
     --ion-color-medium-tint: #7d7c7d;
-  }
 }

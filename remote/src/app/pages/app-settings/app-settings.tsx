@@ -22,6 +22,8 @@ export class AppSettings {
     componentWillLoad() {
         this.themeService.watch().pipe(take(1)).subscribe((dark: boolean) => {
             this.darkTheme = dark;
+
+            console.log(dark);
         });
     }
 

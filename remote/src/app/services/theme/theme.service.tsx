@@ -1,4 +1,4 @@
-import {Observable, Subject} from 'rxjs';
+import {Observable, ReplaySubject} from 'rxjs';
 
 import {get, set} from 'idb-keyval';
 
@@ -6,7 +6,7 @@ export class ThemeService {
 
     private static instance: ThemeService;
 
-    private darkTheme: Subject<boolean> = new Subject<boolean>();
+    private darkTheme: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
     private constructor() {
         // Private constructor, singleton

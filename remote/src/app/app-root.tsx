@@ -51,7 +51,7 @@ export class AppRoot {
     }
 
     private updateDarkModePreferences(dark: boolean) {
-        !dark ?
+        dark ?
             this.domBodyClassList.add('dark') :
             this.domBodyClassList.remove('dark');
     }
