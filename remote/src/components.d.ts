@@ -33,13 +33,13 @@ export namespace Components {
     'slides': DeckdeckgoSlideDefinition[];
   }
   interface AppRoot {}
+  interface AppSettings {}
   interface AppStopwatch {
     'length': number;
     'remaining': number;
   }
   interface AppStopwatchTime {}
   interface AppTimer {}
-  interface DarkModeSwitch {}
 }
 
 declare global {
@@ -99,6 +99,12 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
+  interface HTMLAppSettingsElement extends Components.AppSettings, HTMLStencilElement {}
+  const HTMLAppSettingsElement: {
+    prototype: HTMLAppSettingsElement;
+    new (): HTMLAppSettingsElement;
+  };
+
   interface HTMLAppStopwatchElement extends Components.AppStopwatch, HTMLStencilElement {}
   const HTMLAppStopwatchElement: {
     prototype: HTMLAppStopwatchElement;
@@ -116,12 +122,6 @@ declare global {
     prototype: HTMLAppTimerElement;
     new (): HTMLAppTimerElement;
   };
-
-  interface HTMLDarkModeSwitchElement extends Components.DarkModeSwitch, HTMLStencilElement {}
-  const HTMLDarkModeSwitchElement: {
-    prototype: HTMLDarkModeSwitchElement;
-    new (): HTMLDarkModeSwitchElement;
-  };
   interface HTMLElementTagNameMap {
     'app-about': HTMLAppAboutElement;
     'app-accelerometer': HTMLAppAccelerometerElement;
@@ -132,10 +132,10 @@ declare global {
     'app-remote-settings': HTMLAppRemoteSettingsElement;
     'app-remote-slide-picker': HTMLAppRemoteSlidePickerElement;
     'app-root': HTMLAppRootElement;
+    'app-settings': HTMLAppSettingsElement;
     'app-stopwatch': HTMLAppStopwatchElement;
     'app-stopwatch-time': HTMLAppStopwatchTimeElement;
     'app-timer': HTMLAppTimerElement;
-    'dark-mode-switch': HTMLDarkModeSwitchElement;
   }
 }
 
@@ -161,13 +161,13 @@ declare namespace LocalJSX {
     'slides'?: DeckdeckgoSlideDefinition[];
   }
   interface AppRoot {}
+  interface AppSettings {}
   interface AppStopwatch {
     'length'?: number;
     'remaining'?: number;
   }
   interface AppStopwatchTime {}
   interface AppTimer {}
-  interface DarkModeSwitch {}
 
   interface IntrinsicElements {
     'app-about': AppAbout;
@@ -179,10 +179,10 @@ declare namespace LocalJSX {
     'app-remote-settings': AppRemoteSettings;
     'app-remote-slide-picker': AppRemoteSlidePicker;
     'app-root': AppRoot;
+    'app-settings': AppSettings;
     'app-stopwatch': AppStopwatch;
     'app-stopwatch-time': AppStopwatchTime;
     'app-timer': AppTimer;
-    'dark-mode-switch': DarkModeSwitch;
   }
 }
 
@@ -201,10 +201,10 @@ declare module "@stencil/core" {
       'app-remote-settings': LocalJSX.AppRemoteSettings & JSXBase.HTMLAttributes<HTMLAppRemoteSettingsElement>;
       'app-remote-slide-picker': LocalJSX.AppRemoteSlidePicker & JSXBase.HTMLAttributes<HTMLAppRemoteSlidePickerElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+      'app-settings': LocalJSX.AppSettings & JSXBase.HTMLAttributes<HTMLAppSettingsElement>;
       'app-stopwatch': LocalJSX.AppStopwatch & JSXBase.HTMLAttributes<HTMLAppStopwatchElement>;
       'app-stopwatch-time': LocalJSX.AppStopwatchTime & JSXBase.HTMLAttributes<HTMLAppStopwatchTimeElement>;
       'app-timer': LocalJSX.AppTimer & JSXBase.HTMLAttributes<HTMLAppTimerElement>;
-      'dark-mode-switch': LocalJSX.DarkModeSwitch & JSXBase.HTMLAttributes<HTMLDarkModeSwitchElement>;
     }
   }
 }

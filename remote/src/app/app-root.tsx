@@ -1,7 +1,10 @@
 import {Build, Component, h} from '@stencil/core';
 
+import {Subscription} from 'rxjs';
+
 import {TimerService} from './services/timer/timer.service';
 import {AccelerometerService} from './services/accelerometer/accelerometer.service';
+import {ThemeService} from './services/theme/theme.service';
 
 @Component({
     tag: 'app-root',
@@ -12,9 +15,23 @@ export class AppRoot {
     private timerService: TimerService;
     private accelerometerService: AccelerometerService;
 
+    private themeSubscription: Subscription;
+    private themeService: ThemeService;
+
+    private domBodyClassList: DOMTokenList = document.body.classList;
+
     constructor() {
         this.timerService = TimerService.getInstance();
         this.accelerometerService = AccelerometerService.getInstance();
+        this.themeService = ThemeService.getInstance();
+    }
+
+    async componentWillLoad() {
+        this.themeSubscription = this.themeService.watch().subscribe((dark: boolean) => {
+            this.updateDarkModePreferences(dark);
+        });
+
+        await this.themeService.initDarkModePreference();
     }
 
     async componentDidLoad() {
@@ -27,6 +44,16 @@ export class AppRoot {
 
     componentDidUnload() {
         this.timerService.destroy();
+
+        if (this.themeSubscription) {
+            this.themeSubscription.unsubscribe();
+        }
+    }
+
+    private updateDarkModePreferences(dark: boolean) {
+        !dark ?
+            this.domBodyClassList.add('dark') :
+            this.domBodyClassList.remove('dark');
     }
 
     render() {
@@ -38,6 +65,8 @@ export class AppRoot {
                     <ion-route url="/remote/:room" component="app-remote"></ion-route>
 
                     <ion-route url="/timer" component="app-timer"></ion-route>
+
+                    <ion-route url="/settings" component="app-settings"></ion-route>
 
                     <ion-route url="/about" component="app-about"></ion-route>
                 </ion-router>
@@ -58,6 +87,7 @@ export class AppRoot {
                         <ion-menu-toggle autoHide={false}>
                             <ion-item detail={false} href="/" routerDirection="forward"><ion-label>Remote</ion-label></ion-item>
                             <ion-item detail={false} href="/timer" routerDirection="forward"><ion-label>Timer</ion-label></ion-item>
+                            <ion-item detail={false} href="/settings" routerDirection="forward"><ion-label>Settings</ion-label></ion-item>
                             <ion-item detail={false} href="/about" routerDirection="forward"><ion-label>About</ion-label></ion-item>
                         </ion-menu-toggle>
                     </ion-content>
