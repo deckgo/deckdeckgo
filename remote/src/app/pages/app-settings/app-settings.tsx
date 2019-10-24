@@ -37,7 +37,12 @@ export class AppSettings {
             <app-header></app-header>,
 
             <ion-content class="ion-padding">
-                <ion-toggle checked={this.darkTheme} mode="md" color="switcher" onIonChange={() => this.toggleTheme()}></ion-toggle>
+                <ion-list>
+                    <ion-item>
+                        <ion-label>{this.darkTheme ? 'Hello darkness my old theme' : 'Light my fire theme'}</ion-label>
+                        <ion-toggle checked={this.darkTheme} mode="md" color="switcher" onIonChange={() => this.toggleTheme()}></ion-toggle>
+                    </ion-item>
+                </ion-list>
             </ion-content>
         ];
     }

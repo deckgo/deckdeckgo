@@ -1,13 +1,7 @@
-div.social-links {
-  padding-top: 32px;
-  padding-bottom: 32px;
-
-  a {
-    font-size: 3rem;
-
-    &:not(last-child) {
-      padding-right: 8px;
-    }
+app-settings {
+  ion-list {
+    --ion-background-color: transparent;
+    --ion-item-background: transparent;
+    --border-color: transparent;
   }
 }
-

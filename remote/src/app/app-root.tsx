@@ -85,7 +85,7 @@ export class AppRoot {
 
                     <ion-content>
                         <ion-menu-toggle autoHide={false}>
-                            <ion-list>
+                            <ion-list class="ion-margin-top">
                                 <ion-item detail={false} href="/" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">Remote</ion-label></ion-item>
                                 <ion-item detail={false} href="/timer" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">Timer</ion-label></ion-item>
                                 <ion-item detail={false} href="/settings" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">Settings</ion-label></ion-item>
