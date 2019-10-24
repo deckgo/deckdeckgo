@@ -98,16 +98,13 @@ export class AppRemoteSettings {
 
     render() {
         return [
-            <ion-header>
-                <ion-toolbar color="primary">
-                    <ion-buttons slot="start">
-                        <ion-button onClick={() => this.closeModal()}>
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
-                    <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
-                </ion-toolbar>
-            </ion-header>,
+            <app-header>
+                <ion-buttons slot="start">
+                    <ion-button onClick={() => this.closeModal()}>
+                        <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </app-header>,
 
             <ion-content class="ion-padding">
                 <ion-list>

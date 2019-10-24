@@ -35,13 +35,15 @@ export class AppHeader {
     render() {
         return <ion-header>
             <ion-toolbar color={this.darkTheme ? 'dark' : 'primary'}>
-                <ion-buttons slot="start">
-                    <ion-menu-toggle>
-                        <ion-button>
-                            <ion-icon slot="icon-only" name="menu"></ion-icon>
-                        </ion-button>
-                    </ion-menu-toggle>
-                </ion-buttons>
+                <slot name="start">
+                    <ion-buttons slot="start">
+                        <ion-menu-toggle>
+                            <ion-button>
+                                <ion-icon slot="icon-only" name="menu"></ion-icon>
+                            </ion-button>
+                        </ion-menu-toggle>
+                    </ion-buttons>
+                </slot>
 
                 <slot name="end"></slot>
             </ion-toolbar>
