@@ -23,6 +23,7 @@ export namespace Components {
     'slides': number;
     'width': number;
   }
+  interface AppHeader {}
   interface AppLogo {}
   interface AppRemote {
     'room': string;
@@ -61,6 +62,12 @@ declare global {
   const HTMLAppDrawElement: {
     prototype: HTMLAppDrawElement;
     new (): HTMLAppDrawElement;
+  };
+
+  interface HTMLAppHeaderElement extends Components.AppHeader, HTMLStencilElement {}
+  const HTMLAppHeaderElement: {
+    prototype: HTMLAppHeaderElement;
+    new (): HTMLAppHeaderElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
@@ -126,6 +133,7 @@ declare global {
     'app-about': HTMLAppAboutElement;
     'app-accelerometer': HTMLAppAccelerometerElement;
     'app-draw': HTMLAppDrawElement;
+    'app-header': HTMLAppHeaderElement;
     'app-logo': HTMLAppLogoElement;
     'app-remote': HTMLAppRemoteElement;
     'app-remote-connect': HTMLAppRemoteConnectElement;
@@ -151,6 +159,7 @@ declare namespace LocalJSX {
     'slides'?: number;
     'width'?: number;
   }
+  interface AppHeader {}
   interface AppLogo {}
   interface AppRemote {
     'room'?: string;
@@ -173,6 +182,7 @@ declare namespace LocalJSX {
     'app-about': AppAbout;
     'app-accelerometer': AppAccelerometer;
     'app-draw': AppDraw;
+    'app-header': AppHeader;
     'app-logo': AppLogo;
     'app-remote': AppRemote;
     'app-remote-connect': AppRemoteConnect;
@@ -195,6 +205,7 @@ declare module "@stencil/core" {
       'app-about': LocalJSX.AppAbout & JSXBase.HTMLAttributes<HTMLAppAboutElement>;
       'app-accelerometer': LocalJSX.AppAccelerometer & JSXBase.HTMLAttributes<HTMLAppAccelerometerElement>;
       'app-draw': LocalJSX.AppDraw & JSXBase.HTMLAttributes<HTMLAppDrawElement>;
+      'app-header': LocalJSX.AppHeader & JSXBase.HTMLAttributes<HTMLAppHeaderElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-remote': LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
       'app-remote-connect': LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
