@@ -1,19 +1,80 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, State, Watch, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
-
 // Types
 import {
-  DeckdeckgoEventDraw,
-  DeckdeckgoEvent,
-  DeckdeckgoEventType,
-  DeckdeckgoEventEmitter,
   DeckdeckgoDrawAction,
-  DeckdeckgoSlideDefinition, DeckdeckgoSlideAction
+  DeckdeckgoEvent,
+  DeckdeckgoEventDraw,
+  DeckdeckgoEventEmitter,
+  DeckdeckgoEventType,
+  DeckdeckgoSlideAction,
+  DeckdeckgoSlideDefinition
 } from '@deckdeckgo/types';
-
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Drawable {
+  draw(ctx: CanvasRenderingContext2D)
+}
+
+class Circle implements Drawable {
+
+  private readonly from: Point;
+  private readonly to: Point;
+  private readonly color: string;
+
+  constructor(from: Point, to: Point, color: string) {
+    this.from = from;
+    this.to = to;
+    this.color = color;
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.beginPath();
+
+    ctx.moveTo(this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
+    ctx.bezierCurveTo(this.from.x, this.from.y, this.to.x, this.from.y, this.to.x, this.from.y + (this.to.y - this.from.y) / 2);
+    ctx.bezierCurveTo(this.to.x, this.to.y, this.from.x, this.to.y, this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
+
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = 3;
+
+    ctx.stroke();
+    ctx.closePath();
+  }
+}
+
+class Pencil implements Drawable {
+
+  private readonly from: Point;
+  private readonly to: Point;
+  private readonly color: string;
+
+  constructor(from: Point, to: Point, color: string) {
+    this.from = from;
+    this.to = to;
+    this.color = color;
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.beginPath();
+
+    ctx.moveTo(this.from.x, this.from.y);
+    ctx.lineTo(this.to.x, this.to.y);
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = 3;
+
+    ctx.stroke();
+    ctx.closePath();
+
+  }
+}
 
 @Component({
   tag: 'deckgo-remote',
@@ -43,6 +104,7 @@ export class DeckdeckgoRemote {
   private subscriptionEvent: Subscription;
 
   private ctx: CanvasRenderingContext2D;
+  private drawables: Drawable[] = [];
 
   private startX: number;
   private startY: number;
@@ -179,6 +241,14 @@ export class DeckdeckgoRemote {
       this.startX = this.interpolateX(event) - this.leftOffset;
       this.startY = this.interpolateY(event);
 
+
+      if (event.action === DeckdeckgoDrawAction.CIRCLE) {
+        this.drawables.push(new Circle({x: this.startX, y: this.startY}, {
+          x: this.startX,
+          y: this.startY
+        }, event.color));
+      }
+
       await this.setCanvasIndex(1);
 
       resolve();
@@ -192,42 +262,46 @@ export class DeckdeckgoRemote {
       const toX: number = this.interpolateX(event) - this.leftOffset;
       const toY: number = this.interpolateY(event);
 
-      if (event.action === DeckdeckgoDrawAction.CIRCLE) {
-        this.drawCircle(toX, toY);
-      } else {
-        this.drawPencil(toX, toY);
+      if (event.action === DeckdeckgoDrawAction.PENCIL) {
+        this.drawables.push(new Pencil({x: this.startX, y: this.startY}, {x: toX, y: toY}, event.color));
+        this.startX = toX;
+        this.startY = toY;
       }
 
-      this.ctx.strokeStyle = event.color ? event.color : 'red';
-      this.ctx.lineWidth = 6;
-
-      this.ctx.stroke();
-      this.ctx.closePath();
+      if (event.action === DeckdeckgoDrawAction.CIRCLE) {
+        this.drawables[this.drawables.length - 1] = new Circle({x: this.startX, y: this.startY}, {
+          x: toX,
+          y: toY
+        }, event.color);
+      }
+      this.drawElements();
 
       resolve();
     });
   }
 
-  private drawPencil(toX: number, toY: number) {
-    this.ctx.moveTo(this.startX, this.startY);
-    this.ctx.lineTo(toX, toY);
-
-    this.startX = toX;
-    this.startY = toY;
-  }
-
-  private drawCircle(toX: number, toY: number) {
+  private drawElements() {
     this.ctx.clearRect(-1 * this.leftOffset, 0, this.width, this.height);
-    this.ctx.moveTo(this.startX, this.startY + (toY - this.startY) / 2);
-    this.ctx.bezierCurveTo(this.startX, this.startY, toX, this.startY, toX, this.startY + (toY - this.startY) / 2);
-    this.ctx.bezierCurveTo(toX, toY, this.startX, toY, this.startX, this.startY + (toY - this.startY) / 2);
+    for (const drawable of this.drawables) {
+      drawable.draw(this.ctx);
+    }
   }
 
-  private endDrawing(_event: DeckdeckgoEventDraw): Promise<void> {
+  private endDrawing(event: DeckdeckgoEventDraw): Promise<void> {
     return new Promise<void>(async (resolve) => {
+
+      const toX: number = this.interpolateX(event) - this.leftOffset;
+      const toY: number = this.interpolateY(event);
+
+      if (event.action === DeckdeckgoDrawAction.CIRCLE) {
+        this.drawables[this.drawables.length - 1] = new Circle({x: this.startX, y: this.startY}, {
+          x: toX,
+          y: toY
+        }, event.color);
+      }
+
       this.startX = null;
       this.startY = null;
-
       await this.setCanvasIndex(0);
 
       resolve();

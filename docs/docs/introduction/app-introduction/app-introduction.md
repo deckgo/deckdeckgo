@@ -16,7 +16,7 @@ Run the following command in a terminal to create a new deck:
 npm init deckdeckgo
 ```
 
-After running init you will be provided with a prompt so that you can set the base information for your new deck and choose if you rather like to edit it in **HTML** or **markdown**:
+After running init you will be provided with a prompt which asks you to set the base information for your new deck and choose if you'd rather like to edit it in **HTML** or **markdown**:
 
 ```bash
 Cool, let's kick start a new DeckDeckGo presentation
@@ -34,6 +34,6 @@ Cool, let's kick start a new DeckDeckGo presentation
     Markdown
 ```
 
-Once your presentation created, go to your new project's folder and start editing your slides and content for your talk 😉
+Once your presentation is created, navigate to your new project's folder and start editing your slides and content for your talk 😉
 
 [deckdeckgo]: https://deckdeckgo.com
