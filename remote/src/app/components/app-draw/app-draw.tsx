@@ -1,12 +1,73 @@
-import {Component, Element, Method, Prop, State, Watch, EventEmitter, Event, h} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
 
 import {unifyEvent} from '@deckdeckgo/utils';
-
 // Types
-import {DeckdeckgoDrawAction, DeckdeckgoEventType, DeckdeckgoEventEmitter} from '@deckdeckgo/types';
-
+import {DeckdeckgoDrawAction, DeckdeckgoEventEmitter, DeckdeckgoEventType} from '@deckdeckgo/types';
 // Services
 import {CommunicationService} from '../../services/communication/communication.service';
+
+interface Point {
+    x: number;
+    y: number;
+}
+
+interface Drawable {
+    draw(ctx: CanvasRenderingContext2D)
+}
+
+class Circle implements Drawable {
+
+    private readonly from: Point;
+    private readonly to: Point;
+    private readonly color: string;
+
+    constructor(from: Point, to: Point, color: string) {
+        this.from = from;
+        this.to = to;
+        this.color = color;
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
+
+        ctx.moveTo(this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
+        ctx.bezierCurveTo(this.from.x, this.from.y, this.to.x, this.from.y, this.to.x, this.from.y + (this.to.y - this.from.y) / 2);
+        ctx.bezierCurveTo(this.to.x, this.to.y, this.from.x, this.to.y, this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
+
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 3;
+
+        ctx.stroke();
+        ctx.closePath();
+    }
+}
+
+class Pencil implements Drawable {
+
+    private readonly from: Point;
+    private readonly to: Point;
+    private readonly color: string;
+
+    constructor(from: Point, to: Point, color: string) {
+        this.from = from;
+        this.to = to;
+        this.color = color;
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
+
+        ctx.moveTo(this.from.x, this.from.y);
+        ctx.lineTo(this.to.x, this.to.y);
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 3;
+
+        ctx.stroke();
+        ctx.closePath();
+
+    }
+}
+
 
 @Component({
     tag: 'app-draw',
@@ -28,6 +89,8 @@ export class AppDraw {
 
     private startX: number;
     private startY: number;
+
+    private drawables: Drawable[] = [];
 
     private leftOffset: number = 0;
 
@@ -144,11 +207,29 @@ export class AppDraw {
         this.startX = unifyEvent(e).clientX - this.leftOffset;
         this.startY = unifyEvent(e).clientY - this.heightOffset;
 
+        if (this.action === DeckdeckgoDrawAction.CIRCLE) {
+            this.drawables.push(new Circle({x: this.startX, y: this.startY}, {
+                x: this.startX,
+                y: this.startY
+            }, this.color))
+        }
+
         this.drawEvents = true;
     };
 
     private endEvent = (e: MouseEvent) => {
         this.emit(DeckdeckgoEventType.END_DRAWING, e);
+
+        const toX: number = unifyEvent(e).clientX - this.leftOffset;
+        const toY: number = unifyEvent(e).clientY - this.heightOffset;
+
+
+        if (this.action === DeckdeckgoDrawAction.CIRCLE) {
+            this.drawables[this.drawables.length - 1] = new Circle({x: this.startX, y: this.startY}, {
+                x: toX,
+                y: toY
+            }, this.color);
+        }
 
         this.drawEvents = false;
     };
@@ -163,39 +244,28 @@ export class AppDraw {
         const toX: number = unifyEvent(e).clientX - this.leftOffset;
         const toY: number = unifyEvent(e).clientY - this.heightOffset;
 
-        this.draw(toX, toY);
-    };
-
-    private draw(toX: number, toY: number) {
-        this.ctx.beginPath();
-
-        if (this.action === DeckdeckgoDrawAction.CIRCLE) {
-            this.drawCircle(toX, toY);
-        } else {
-            this.drawPencil(toX, toY);
+        if (this.action === DeckdeckgoDrawAction.PENCIL) {
+            this.drawables.push(new Pencil({x: this.startX, y: this.startY}, {x: toX, y: toY}, this.color));
+            this.startX = toX;
+            this.startY = toY;
         }
 
-        this.ctx.strokeStyle = this.color;
-        this.ctx.lineWidth = 3;
+        if (this.action === DeckdeckgoDrawAction.CIRCLE) {
+            this.drawables[this.drawables.length - 1] = new Circle({x: this.startX, y: this.startY}, {
+                x: toX,
+                y: toY
+            }, this.color);
+        }
+        this.draw();
+    };
 
-        this.ctx.stroke();
-        this.ctx.closePath();
-    }
-
-    private drawPencil(toX: number, toY: number) {
-        this.ctx.moveTo(this.startX, this.startY);
-        this.ctx.lineTo(toX, toY);
-
-        this.startX = toX;
-        this.startY = toY;
-    }
-
-    private drawCircle(toX: number, toY: number) {
+    private draw() {
         this.ctx.clearRect(-1 * this.leftOffset, 0, this.width, this.height);
-        this.ctx.moveTo(this.startX, this.startY + (toY - this.startY) / 2);
-        this.ctx.bezierCurveTo(this.startX, this.startY, toX, this.startY, toX, this.startY + (toY - this.startY) / 2);
-        this.ctx.bezierCurveTo(toX, toY, this.startX, toY, this.startX, this.startY + (toY - this.startY) / 2);
+        for (const drawable of this.drawables) {
+            drawable.draw(this.ctx);
+        }
     }
+
 
     private switchTool(e: UIEvent, action: DeckdeckgoDrawAction) {
         e.stopPropagation();
@@ -238,7 +308,10 @@ export class AppDraw {
         return new Promise<void>((resolve) => {
             e.stopPropagation();
 
-            this.communicationService.emit({type: DeckdeckgoEventType.CLEAR_SLIDE, emitter: DeckdeckgoEventEmitter.APP});
+            this.communicationService.emit({
+                type: DeckdeckgoEventType.CLEAR_SLIDE,
+                emitter: DeckdeckgoEventEmitter.APP
+            });
 
             this.ctx.beginPath();
             this.ctx.clearRect(-1 * this.leftOffset, 0, this.width, this.height);
@@ -252,7 +325,7 @@ export class AppDraw {
     render() {
 
         const styleColorPicker = {
-          color: this.color === 'red' ? 'black' : 'red'
+            color: this.color === 'red' ? 'black' : 'red'
         };
 
         return ([
@@ -265,7 +338,8 @@ export class AppDraw {
                     {this.renderPencilRubber()}
                 </ion-fab-list>
                 <ion-fab-list side="top">
-                    <ion-fab-button color="medium" style={styleColorPicker} onClick={(e: UIEvent) => this.switchColor(e)}>
+                    <ion-fab-button color="medium" style={styleColorPicker}
+                                    onClick={(e: UIEvent) => this.switchColor(e)}>
                         <ion-icon name="color-palette"></ion-icon>
                     </ion-fab-button>
                     <ion-fab-button color="medium" onClick={(e: UIEvent) => this.clear(e)}>
@@ -279,13 +353,15 @@ export class AppDraw {
     private renderPencilRubber() {
         if (this.action !== DeckdeckgoDrawAction.PENCIL) {
             return (
-                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.PENCIL)}>
+                <ion-fab-button color="medium"
+                                onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.PENCIL)}>
                     <ion-icon name="create"></ion-icon>
                 </ion-fab-button>
             );
         } else {
             return (
-                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.CIRCLE)}>
+                <ion-fab-button color="medium"
+                                onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.CIRCLE)}>
                     <ion-icon name="radio-button-off"></ion-icon>
                 </ion-fab-button>
             );
