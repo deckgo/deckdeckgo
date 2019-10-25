@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-10-25)
+
+### Features
+
+* drawing circle clear the all pane ([#66](https://github.com/deckgo/deckdeckgo/issues/66))
+
 <a name="1.0.0-rc.2"></a>
 # 1.0.0-rc.2 (2019-09-15)
 

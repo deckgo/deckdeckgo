@@ -246,7 +246,7 @@ export class DeckdeckgoRemote {
         this.drawables.push(new Circle({x: this.startX, y: this.startY}, {
           x: this.startX,
           y: this.startY
-        }, event.color))
+        }, event.color));
       }
 
       await this.setCanvasIndex(1);
