@@ -1,11 +1,11 @@
 # Lazy loading
 
-[DeckDeckGo] is build for performance and try to lazy load as much as possible the components of your presentation, have a look to the Lighthouse score of the [DeckDeckGo] website for reference.
+[DeckDeckGo] is built for performance and tries to lazy load as much as possible the components of your presentation. Have a look at the Lighthouse score of the [DeckDeckGo] website for reference.
 
-In order to lazy load the images of your presentation, your could either use our dead simple component or tweak your images's attributes like following.
+In order to lazy load the images of your presentation, you could either use our dead simple component or tweak your images' attributes like the following example below.
 
-[DeckDeckGo] handles the lazy loading of images provided in both forms. 
- 
+[DeckDeckGo] handles the lazy loading of images provided in both forms.
+
 ## Lazy Image component
 
 Here's an example of usage of our component:
@@ -17,7 +17,7 @@ Here's an example of usage of our component:
 
 ## Tweak Image Tag
 
-Instead of providing the url of your images as `src`, which would trigger an instant loading of their content, in case you would not like to use our above component, please provide their url using the attribute `data-src` instead of `src`.
+Instead of providing the url of your images as `src`, which would trigger an instant loading of their content, please provide their url using the attribute `data-src`.
 
 ```
 <img data-src="https://deckdeckgo.com/assets/favicon/android-chrome-512x512.png"/>

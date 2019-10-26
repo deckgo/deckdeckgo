@@ -1,6 +1,6 @@
 # Markdown
 
-If you wish, you could edit your [DeckDeckGo] presentation using Markdown. This chapter has for goal to introduce you briefly on how editing your slides with Markdown differs from the HTML method.
+If you wish, you can edit your [DeckDeckGo] presentation using Markdown. This chapter introduces you to the basic essentials of editing your slides with Markdown and how it differs from the HTML method.
 
 ## Table of contents
 
@@ -15,13 +15,13 @@ If you wish, you could edit your [DeckDeckGo] presentation using Markdown. This 
 
 ## Introduction
 
-When you edit your talk with Markdown, the [DeckDeckGo Webpack Markdown Plugin](https://github.com/deckgo/deckdeckgo/tree/master/webpack) will convert, at bundle time, your code to HTML and will inject the results in the `index.html` file. Doing so, your [DeckDeckGo] presentation will remain SEO friendly even without server side rendering. 
+When you edit your deck with Markdown, the [DeckDeckGo Webpack Markdown Plugin](https://github.com/deckgo/deckdeckgo/tree/master/webpack) will convert, at bundle time, your code to HTML and will inject the results in the `index.html` file. Doing so, your [DeckDeckGo] presentation will remain SEO friendly even without server side rendering.
 
 ## Edit
 
-To begin to edit your talk, instead of editing the `index.html` you will instead have to edit the `index.md` file provided by the starter kit.
+To begin editing your deck, update the `index.md` file provided by the starter kit, instead of the `index.html`.
 
-Furthermore than the standard Markdown tags, you will be able to use extended tags in order to specify which types of slides you would like to use. For that purpose, use the separator `---` followed by a shortened version of the template's name, like for example `--- title` for `</deckgo-slide-title>`.
+Furthermore, apart from the standard Markdown tags, you will be able to use extended tags in order to specify which types of slides you would like to use. For that purpose, use the separator `---` followed by a shortened version of the template's name, like for example `--- title` for `</deckgo-slide-title>`.
 
 The plugin also takes care of injecting the content you would provide in the right slots.
 
@@ -49,9 +49,9 @@ will be parsed into:
 
 ### Attributes
 
-As some templates needs attributes, you will also be able to specify them in Markdown.
+As some templates need attributes, you will also be able to specify them in Markdown.
 
-For example the `<deckgo-slide-gif/>` slide:
+For example to inject a `<deckgo-slide-gif/>` slide to the deck, use:
 
 ```
 --- gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen="true"
@@ -62,7 +62,7 @@ For example the `<deckgo-slide-gif/>` slide:
 ### It's cool gif
 ```
 
-will be parsed into:
+which then will be parsed into:
 
 ```
 <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen="true">
@@ -101,7 +101,7 @@ will be parsed into:
   </div>
   <div slot="notes">
     I should not forget to think about that during my talk
-    
+  
     ...and say hello to mum
   </div>
 </deckgo-slide-title>
@@ -111,7 +111,7 @@ will be parsed into:
 
 `src/index.md` is used as default source file to generate your presentation. If you wish, you could provide an alternative path.
 
-For that purpose, edit the `webpack.config.js` at the root of the your presentation's project and provide a custom path like for example the following:
+For that purpose, edit the `webpack.config.js` at the root of the presentation's project and provide a custom path, for example the following:
 
 ```
 new DeckDeckGoMarkdownPlugin({src: '/Users/david/mypresentation/src/hello.md'})
@@ -119,7 +119,7 @@ new DeckDeckGoMarkdownPlugin({src: '/Users/david/mypresentation/src/hello.md'})
 
 ## Summary
 
-When you choose Markdown, you edit your slides in `index.md` and use standard Markdown except the extra tags `---` to declare your slides and `***` if you wish to add notes. 
+When you choose Markdown, you edit your slides in `index.md` and use standard Markdown except the extra tags `---` to declare your slides and `***` if you wish to add notes.
 
 ## Video
 

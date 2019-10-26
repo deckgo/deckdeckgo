@@ -12,7 +12,7 @@ Theming a [DeckDeckGo] presentation is quick and easy.
 
 To create the theme for your deck when you are using the [DeckDeckGo] starter kit, use the [Ionic Color Generator](https://ionicframework.com/docs/theming/color-generator) to pick the colors of your choice.
 
-Once done, `copy` the generated CSS variables and `parse` them into the `src/css/variables.css` file of your presentation.
+Once done, `copy` the generated CSS variables and `paste` them into the `src/css/variables.css` file of your presentation.
 
 Finally, edit the `index.html` and replace the color of the `body` background.
 
@@ -30,6 +30,6 @@ body {
 
 ## Notes
 
-If you would miss or need further theming options, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more theming flexibility and options 
+If you think we missed or need further theming options, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more theming flexibility and options.
 
 [DeckDeckGo]: https://deckdeckgo.com
