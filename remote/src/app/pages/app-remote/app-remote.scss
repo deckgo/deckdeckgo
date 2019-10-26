@@ -1,4 +1,47 @@
 app-remote {
+  main {
+    display: grid;
+    height: 100%;
+
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+
+    div.deck  {
+      grid-column-start: 1;
+      grid-column-end: span 2;
+
+      position: relative;
+      display: block;
+    }
+
+    div.deck-navigation-button-next, div.deck-navigation-button-prev {
+      padding: 0 16px 16px;
+
+      ion-button {
+        border-radius: 10px;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, .12);
+
+        height: 100%;
+        width: 100%;
+
+        ion-label {
+          text-transform: inherit;
+          font-size: 2rem;
+          font-weight: 300;
+          white-space: pre-wrap;
+        }
+      }
+    }
+
+    div.deck-navigation-button-next {
+      padding-left: 8px;
+    }
+
+    div.deck-navigation-button-prev {
+      padding-right: 8px;
+    }
+  }
+
   deckgo-deck {
     --zIndex: 1;
     --background: transparent;
