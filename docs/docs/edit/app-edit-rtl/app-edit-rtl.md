@@ -2,7 +2,7 @@
 
 [DeckDeckGo] offers full LTR and RTL support. The deck inherits its parent text direction.
 
-Commonly, if you wish to use RTL for your all page respectively presentation, you could set the attribute `dir` of the root `html` tag to `rtl`.    
+Commonly, if you wish to use RTL for all of your pages in the presentation, you could set the attribute `dir` of the root `html` tag to `rtl`.
 
 ```
 <!DOCTYPE html>
@@ -11,7 +11,7 @@ Commonly, if you wish to use RTL for your all page respectively presentation, yo
   <deckgo-deck>
   </deckgo-deck>
 </body>
-</html>  
-``` 
+</html>
+```
 
 [DeckDeckGo]: https://deckdeckgo.com

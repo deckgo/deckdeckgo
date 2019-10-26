@@ -1,6 +1,6 @@
 # Reveal
 
-Make elements and texts appear one line at a time in [DeckDeckGo].
+Make elements and text appear one line at a time in [DeckDeckGo].
 
 ## Table of contents
 
@@ -14,25 +14,25 @@ Make elements and texts appear one line at a time in [DeckDeckGo].
 
 ## Introduction
 
-Per default all the content of each slides and components is visible. If you wish to make elements and texts appear one line at a time, it's up to you using the following supported options.
+Per default all the content of each slide and component is visible. If you wish to make elements and text appear one line at a time, it's up to you using the following supported options.
 
 ## Triggers
 
-The animation of such elements will happen when you or your users will use the keyboard, the navigation buttons or the navigation buttons in the [remote control](https://deckdeckgo.app).
+The animation of such elements will happen when you or your user will use the navigation buttons on the keyboard or the navigation buttons in the [remote control](https://deckdeckgo.app).
 
 ## Exception
 
 Elements set as "to be animated" are going to be displayed in any case on mobile devices, that's a design choice.
 
-> I (David here) think that it is better in terms of mobile UX. For example, if a slides would contains for example 10 elements, the users would have to swipe the slide 10 times before being able to read the all content and navigate. I'm open to suggestion and discussion about it, ping me, open a feature request or even submit a PR if you see this differently.   
+> I (David here) think that it is better in terms of mobile UX. For example, if a slide would contain for example 10 elements, the users would have to swipe the slide 10 times before being able to read the entire content and navigate. I'm open to suggestion and discussion about it, ping me, open a feature request or even submit a PR if you see this differently.
 
 ## Edit
 
-[DeckDeckGo] provide a component `<deckgo-reveal/>` which should be use in case you would like to make elements appear one at a time. Simply put your element with your content inside, that's it.
+[DeckDeckGo] provides a component `<deckgo-reveal/>` which should be used in case you would like to make elements appear one at a time. Simply put your element with your content inside, that's it.
 
 Good to know, the component could be use as a child of a `slot` you would pass to a slide or could also be use as `slot` value, as you wish.
 
-Notabene, at least an element should be provided, adding only text inside the component would not work as the detection is based on elements. 
+Nota bene, at least one element should be provided, adding only text inside the component would not work as the detection is based on elements.
 
 ### Examples
 
@@ -83,13 +83,13 @@ Or a component `deckgo-reveal` as child containing children:
 
 ## List
 
-You could use the above component to encapsulate each `li` elements of your lists, I guess that would work out, but [DeckDeckGo] also provide a dedicated component `<deckgo-reveal-list/>` to reveal list.
+You could use the above component to encapsulate each `li` element of your lists, I guess that would work out, but [DeckDeckGo] also provides a dedicated component `<deckgo-reveal-list/>` to reveal list.
 
 To use it, simply replace the opening tag of your list (`ul`, `ol` or `dl`) with it.
 
 ### Attributes
 
-The following attribute could be applied to the element:
+The following attributes could be applied to the element:
 
 | Property       | Attribute       | Mandatory | Description | Type      | Default                             |
 | -------------- | --------------- | --------- | ----------- | --------- | ----------------------------------- |
@@ -113,7 +113,7 @@ The following theming options are also available:
 
 ## Examples for list
 
-Likewise, the component could be use as a child of a `slot` you would pass to a slide or could also be use as `slot` value, as you wish.
+Likewise, the component could be used as a child of a `slot` you would pass to a slide or could also be use as `slot` value, as you wish.
 
 ```
 <deckgo-deck>
