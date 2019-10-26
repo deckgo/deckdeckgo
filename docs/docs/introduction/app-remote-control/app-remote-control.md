@@ -20,9 +20,9 @@ Once the presentation is linked to the [remote control], the communication betwe
 
 ## Give it a try
 
-Better than a description, the DeckDeckGo website implements a deck and receiver to let you interact with this application, just give it a try:
+Better than a long description, the DeckDeckGo demo website implements a deck and receiver to let you interact with this application, just give it a try:
 
-1. Open the DeckDeckGo website 👉 https://deckdeckgo.com
+1. Open the DeckDeckGo demo website 👉 https://demo.deckdeckgo.com
 2. Start the [remote control] PWA 👉 https://deckdeckgo.app
 3. Have fun 🎉
 
