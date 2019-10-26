@@ -1,8 +1,9 @@
 import {Component, h, State} from '@stencil/core';
 
-import {take} from 'rxjs/operators';
-
-import {ThemeService} from '../../services/theme/theme.service';
+enum SettingsTab {
+    GENERAL= 'general',
+    EXPERIMENTAL = 'experimental'
+}
 
 @Component({
     tag: 'app-settings',
@@ -10,26 +11,15 @@ import {ThemeService} from '../../services/theme/theme.service';
 })
 export class AppSettings {
 
-    private themeService: ThemeService;
-
     @State()
-    private darkTheme: boolean;
+    private tab: SettingsTab = SettingsTab.GENERAL;
 
-    constructor() {
-        this.themeService = ThemeService.getInstance();
-    }
+    private selectTab($event: CustomEvent) {
+        if ($event && $event.detail) {
+            this.tab = $event.detail.value;
 
-    componentWillLoad() {
-        this.themeService.watch().pipe(take(1)).subscribe((dark: boolean) => {
-            this.darkTheme = dark;
-
-            console.log(dark);
-        });
-    }
-
-    async toggleTheme() {
-        this.darkTheme = !this.darkTheme;
-        await this.themeService.switch(this.darkTheme);
+            console.log(this.tab);
+        }
     }
 
     render() {
@@ -37,13 +27,25 @@ export class AppSettings {
             <app-header></app-header>,
 
             <ion-content class="ion-padding">
-                <ion-list>
-                    <ion-item>
-                        <ion-label>{this.darkTheme ? 'Hello darkness my old theme' : 'Light my fire theme'}</ion-label>
-                        <ion-toggle checked={this.darkTheme} mode="md" color="switcher" onIonChange={() => this.toggleTheme()}></ion-toggle>
-                    </ion-item>
-                </ion-list>
+                <ion-segment mode="md" color="switcher" onIonChange={($event: CustomEvent) => this.selectTab($event)}>
+                    <ion-segment-button value={SettingsTab.GENERAL} checked={this.tab === SettingsTab.GENERAL}>
+                        <ion-label>General</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value={SettingsTab.EXPERIMENTAL} checked={this.tab === SettingsTab.EXPERIMENTAL}>
+                        <ion-label>Experimental</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+
+                {this.renderTab()}
             </ion-content>
         ];
+    }
+
+    private renderTab() {
+        if (this.tab === SettingsTab.EXPERIMENTAL) {
+            return <app-experimental-settings></app-experimental-settings>;
+        } else {
+            return <app-general-settings></app-general-settings>;
+        }
     }
 }

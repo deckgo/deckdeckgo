@@ -13,9 +13,6 @@ import {
 
 export namespace Components {
   interface AppAbout {}
-  interface AppAccelerometer {
-    'hide': boolean;
-  }
   interface AppDraw {
     'height': number;
     'heightOffset': number;
@@ -23,13 +20,14 @@ export namespace Components {
     'slides': number;
     'width': number;
   }
+  interface AppExperimentalSettings {}
+  interface AppGeneralSettings {}
   interface AppHeader {}
   interface AppLogo {}
   interface AppRemote {
     'room': string;
   }
   interface AppRemoteConnect {}
-  interface AppRemoteSettings {}
   interface AppRemoteSlidePicker {
     'slides': DeckdeckgoSlideDefinition[];
   }
@@ -52,16 +50,22 @@ declare global {
     new (): HTMLAppAboutElement;
   };
 
-  interface HTMLAppAccelerometerElement extends Components.AppAccelerometer, HTMLStencilElement {}
-  const HTMLAppAccelerometerElement: {
-    prototype: HTMLAppAccelerometerElement;
-    new (): HTMLAppAccelerometerElement;
-  };
-
   interface HTMLAppDrawElement extends Components.AppDraw, HTMLStencilElement {}
   const HTMLAppDrawElement: {
     prototype: HTMLAppDrawElement;
     new (): HTMLAppDrawElement;
+  };
+
+  interface HTMLAppExperimentalSettingsElement extends Components.AppExperimentalSettings, HTMLStencilElement {}
+  const HTMLAppExperimentalSettingsElement: {
+    prototype: HTMLAppExperimentalSettingsElement;
+    new (): HTMLAppExperimentalSettingsElement;
+  };
+
+  interface HTMLAppGeneralSettingsElement extends Components.AppGeneralSettings, HTMLStencilElement {}
+  const HTMLAppGeneralSettingsElement: {
+    prototype: HTMLAppGeneralSettingsElement;
+    new (): HTMLAppGeneralSettingsElement;
   };
 
   interface HTMLAppHeaderElement extends Components.AppHeader, HTMLStencilElement {}
@@ -86,12 +90,6 @@ declare global {
   const HTMLAppRemoteConnectElement: {
     prototype: HTMLAppRemoteConnectElement;
     new (): HTMLAppRemoteConnectElement;
-  };
-
-  interface HTMLAppRemoteSettingsElement extends Components.AppRemoteSettings, HTMLStencilElement {}
-  const HTMLAppRemoteSettingsElement: {
-    prototype: HTMLAppRemoteSettingsElement;
-    new (): HTMLAppRemoteSettingsElement;
   };
 
   interface HTMLAppRemoteSlidePickerElement extends Components.AppRemoteSlidePicker, HTMLStencilElement {}
@@ -131,13 +129,13 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'app-about': HTMLAppAboutElement;
-    'app-accelerometer': HTMLAppAccelerometerElement;
     'app-draw': HTMLAppDrawElement;
+    'app-experimental-settings': HTMLAppExperimentalSettingsElement;
+    'app-general-settings': HTMLAppGeneralSettingsElement;
     'app-header': HTMLAppHeaderElement;
     'app-logo': HTMLAppLogoElement;
     'app-remote': HTMLAppRemoteElement;
     'app-remote-connect': HTMLAppRemoteConnectElement;
-    'app-remote-settings': HTMLAppRemoteSettingsElement;
     'app-remote-slide-picker': HTMLAppRemoteSlidePickerElement;
     'app-root': HTMLAppRootElement;
     'app-settings': HTMLAppSettingsElement;
@@ -149,9 +147,6 @@ declare global {
 
 declare namespace LocalJSX {
   interface AppAbout {}
-  interface AppAccelerometer {
-    'hide'?: boolean;
-  }
   interface AppDraw {
     'height'?: number;
     'heightOffset'?: number;
@@ -159,13 +154,14 @@ declare namespace LocalJSX {
     'slides'?: number;
     'width'?: number;
   }
+  interface AppExperimentalSettings {}
+  interface AppGeneralSettings {}
   interface AppHeader {}
   interface AppLogo {}
   interface AppRemote {
     'room'?: string;
   }
   interface AppRemoteConnect {}
-  interface AppRemoteSettings {}
   interface AppRemoteSlidePicker {
     'slides'?: DeckdeckgoSlideDefinition[];
   }
@@ -180,13 +176,13 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'app-about': AppAbout;
-    'app-accelerometer': AppAccelerometer;
     'app-draw': AppDraw;
+    'app-experimental-settings': AppExperimentalSettings;
+    'app-general-settings': AppGeneralSettings;
     'app-header': AppHeader;
     'app-logo': AppLogo;
     'app-remote': AppRemote;
     'app-remote-connect': AppRemoteConnect;
-    'app-remote-settings': AppRemoteSettings;
     'app-remote-slide-picker': AppRemoteSlidePicker;
     'app-root': AppRoot;
     'app-settings': AppSettings;
@@ -203,13 +199,13 @@ declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'app-about': LocalJSX.AppAbout & JSXBase.HTMLAttributes<HTMLAppAboutElement>;
-      'app-accelerometer': LocalJSX.AppAccelerometer & JSXBase.HTMLAttributes<HTMLAppAccelerometerElement>;
       'app-draw': LocalJSX.AppDraw & JSXBase.HTMLAttributes<HTMLAppDrawElement>;
+      'app-experimental-settings': LocalJSX.AppExperimentalSettings & JSXBase.HTMLAttributes<HTMLAppExperimentalSettingsElement>;
+      'app-general-settings': LocalJSX.AppGeneralSettings & JSXBase.HTMLAttributes<HTMLAppGeneralSettingsElement>;
       'app-header': LocalJSX.AppHeader & JSXBase.HTMLAttributes<HTMLAppHeaderElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-remote': LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
       'app-remote-connect': LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
-      'app-remote-settings': LocalJSX.AppRemoteSettings & JSXBase.HTMLAttributes<HTMLAppRemoteSettingsElement>;
       'app-remote-slide-picker': LocalJSX.AppRemoteSlidePicker & JSXBase.HTMLAttributes<HTMLAppRemoteSlidePickerElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'app-settings': LocalJSX.AppSettings & JSXBase.HTMLAttributes<HTMLAppSettingsElement>;

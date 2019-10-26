@@ -383,18 +383,6 @@ export class AppRemote {
         await modal.present();
     }
 
-    private async openSettingsModal() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-remote-settings'
-        });
-
-        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-            await this.startAccelerometer();
-        });
-
-        await modal.present();
-    }
-
     private async openSlidePicker() {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote-slide-picker',
@@ -470,11 +458,7 @@ export class AppRemote {
     render() {
         return [
             <app-header>
-                <ion-buttons slot="end">
-                    <ion-button onClick={() => this.openSettingsModal()}>
-                        <ion-icon name="settings"></ion-icon>
-                    </ion-button>
-                </ion-buttons>
+                {this.renderHeaderButtons()}
             </app-header>,
             <ion-content>
                 {this.renderContent()}
@@ -482,6 +466,18 @@ export class AppRemote {
                 {this.renderActions()}
             </ion-content>
         ];
+    }
+
+    private renderHeaderButtons() {
+        if (this.connectionState  !== ConnectionState.CONNECTED) {
+            return undefined;
+        }
+
+        return <ion-buttons slot="end">
+            <ion-button onClick={() => this.openSlidePicker()}>
+                <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
+            </ion-button>
+        </ion-buttons>;
     }
 
     private renderContent() {
@@ -585,11 +581,9 @@ export class AppRemote {
                         <ion-icon name="apps"></ion-icon>
                     </ion-fab-button>
                     <ion-fab-list side="start">
-                        <ion-fab-button color="medium" onClick={() => this.openSlidePicker()}>
-                            <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
-                        </ion-fab-button>
+
                         {this.renderNotesActions()}
-                        <app-accelerometer></app-accelerometer>
+
                     </ion-fab-list>
                     <ion-fab-list side="top">
                         {this.renderExtraActions()}
