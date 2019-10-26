@@ -4,38 +4,38 @@ Cherry on the cake 🍒🎂 DeckDeckGo comes with a Progressive Web App to remot
 
 ## Table of contents
 
-- [How does it works](#app-remote-control-how-does-it-work)
-- [Give a try](#app-remote-control-give-a-try)
+- [How does it work](#app-remote-control-how-does-it-work)
+- [Give it a try](#app-remote-control-give-a-try)
 - [Control your slides](#app-remote-control-control-your-slides)
   - [Features](#app-remote-control-features)
 - [Time tracker](#app-remote-control-time-tracker)
 
 ## How does it work
 
-The same Progressive Web App [remote control] could be use to control any presentations developed with [DeckDeckGo].
+The same Progressive Web App [remote control] could be used to control any presentations developed with [DeckDeckGo].
 
-If you are using the starter kit, out of the box, your presentation will signal itself as "controllable" and will therefore be "discoverable".   
+If you are using the starter kit, out of the box, your presentation will signal itself as "controllable" and will therefore be "discoverable".
 
-One a presentation would be linked with the [remote control], the communication between these will happens through a real-time channel using [WebRTC](https://webrtc.org/).
+Once the presentation is linked to the [remote control], the communication between these will happen through a real-time channel using [WebRTC](https://webrtc.org/).
 
-## Give a try
+## Give it a try
 
-Better than a description, the DeckDeckGo website implement a deck and receiver to let you interact with this application, just give it a try:
+Better than a long description, the DeckDeckGo demo website implements a deck and receiver to let you interact with this application, just give it a try:
 
-1. Open the DeckDeckGo website 👉 https://deckdeckgo.com
+1. Open the DeckDeckGo demo website 👉 https://demo.deckdeckgo.com
 2. Start the [remote control] PWA 👉 https://deckdeckgo.app
 3. Have fun 🎉
 
 ## Control your slides
 
-Use the [remote control] to take remotely the remotely of your presentation. Useful to interact with present your slides while you are focusing one your talk.
+Use the [remote control] to remotely take control of your presentation. It makes it easy to interact with the slides while you are focusing on your talk/audience.
 
 ### Features
 
-* Switch between slides and/or swipe your slides
-* Play and pause Youtube video
-* Draw over your slide deck
-* Highlight elements of your presentation
+- Switch between slides and/or swipe your slides
+- Play and pause YouTube video
+- Draw over your slide deck
+- Highlight elements of your presentation
 
 ### Video
 
@@ -43,13 +43,13 @@ Have a look at this video where we demonstrate it!
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3o3oGBTTRSs" frameborder="0"></iframe>
 
-And on this one where we demonstrate how to use it!
+And this one where we demonstrate how to use it!
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/nxjHYBLTw5E" frameborder="0"></iframe>
 
 ## Time tracker
 
-The [remote control] let you track your talk's time too. This application implements local notifications to inform you when your talk is about to finish or is finished.
+The [remote control] lets you track your talk's time too. This application implements local notifications to inform you when your talk is about to finish or is finished.
 
 ### Screenshot
 
