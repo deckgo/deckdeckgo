@@ -11,9 +11,9 @@ import builtins from 'rollup-plugin-node-builtins';
 let globalScript: string = 'src/global/app.ts';
 
 // @ts-ignore
-const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
+const dev: boolean = process.argv && process.argv.indexOf('--local') > -1;
 if (dev) {
-    globalScript = 'src/global/app-dev.ts';
+    globalScript = 'src/global/app-local.ts';
 }
 
 export const config: Config = {
