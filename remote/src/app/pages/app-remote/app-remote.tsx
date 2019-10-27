@@ -421,6 +421,30 @@ export class AppRemote {
         await this.accelerometerService.stop();
     }
 
+    private async openDisconnectConfirm() {
+        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
+            header: 'Disconnect',
+            message: 'The remote control must be disconnected from the presentation?',
+            cssClass: 'custom-info',
+            buttons: [
+                {
+                    text: 'No',
+                    role: 'cancel',
+                    handler: () => {
+                        // Nothing
+                    }
+                }, {
+                    text: 'Yes',
+                    handler: async () => {
+                        await this.disconnect();
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
     @Listen('drawing')
     isDrawing(event: CustomEvent) {
         this.drawing = event.detail;
@@ -476,6 +500,10 @@ export class AppRemote {
         return <ion-buttons slot="end">
             <ion-button onClick={() => this.openSlidePicker()}>
                 <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
+            </ion-button>
+
+            <ion-button onClick={() => this.openDisconnectConfirm()}>
+                <ion-icon name="log-out"></ion-icon>
             </ion-button>
         </ion-buttons>;
     }
@@ -587,9 +615,7 @@ export class AppRemote {
                     </ion-fab-list>
                     <ion-fab-list side="top">
                         {this.renderExtraActions()}
-                        <ion-fab-button color="medium" onClick={() => this.disconnect()}>
-                            <ion-icon name="log-out"></ion-icon>
-                        </ion-fab-button>
+
                     </ion-fab-list>
                 </ion-fab>
             );

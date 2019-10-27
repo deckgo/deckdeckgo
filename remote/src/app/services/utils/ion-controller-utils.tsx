@@ -1,4 +1,4 @@
-import {ModalOptions} from '@ionic/core';
+import {AlertOptions, ModalOptions} from '@ionic/core';
 
 export class IonControllerUtils {
 
@@ -10,6 +10,17 @@ export class IonControllerUtils {
             const modal: HTMLIonModalElement = await modalController.create(opts);
 
             resolve(modal);
+        });
+    }
+
+    static createAlert(opts: AlertOptions): Promise<HTMLIonAlertElement> {
+        return new Promise<HTMLIonAlertElement>(async (resolve) => {
+            const alertController: HTMLIonAlertControllerElement = document.querySelector('ion-alert-controller');
+            await alertController.componentOnReady();
+
+            const alert: HTMLIonAlertElement = await alertController.create(opts);
+
+            resolve(alert);
         });
     }
 
