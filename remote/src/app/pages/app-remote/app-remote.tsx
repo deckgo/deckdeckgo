@@ -512,8 +512,12 @@ export class AppRemote {
         if (this.connectionState === ConnectionState.CONNECTED) {
             return <main>
                 {this.renderDeck()}
-                <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevSlide(true)}><ion-label>Previous slide</ion-label></ion-button></div>
-                <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.nextSlide(true)}><ion-label>Next slide</ion-label></ion-button></div>
+                <div class="deck-navigation-buttons">
+                    <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevSlide(true)}><ion-label>Previous slide</ion-label></ion-button></div>
+                    <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.nextSlide(true)}><ion-label>Next slide</ion-label></ion-button></div>
+
+                    {this.renderExtraActions()}
+                </div>
             </main>
         } else if (this.connectionState !== ConnectionState.DISCONNECTED) {
             let text: string = 'Not connected';
@@ -613,10 +617,6 @@ export class AppRemote {
                         {this.renderNotesActions()}
 
                     </ion-fab-list>
-                    <ion-fab-list side="top">
-                        {this.renderExtraActions()}
-
-                    </ion-fab-list>
                 </ion-fab>
             );
         } else {
@@ -653,9 +653,11 @@ export class AppRemote {
             const icon: string = this.action === DeckdeckgoSlideAction.PLAY ? 'pause' : 'play';
 
             return (
-                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.emitAction(e)}>
-                    <ion-icon name={icon}></ion-icon>
-                </ion-fab-button>
+                <div class="deck-action-button">
+                    <button onClick={(e: UIEvent) => this.emitAction(e)} area-label={icon}>
+                        <ion-icon name={icon} class={`deck-action-button-icon-${icon}`}></ion-icon>
+                    </button>
+                </div>
             )
         } else {
             return null;

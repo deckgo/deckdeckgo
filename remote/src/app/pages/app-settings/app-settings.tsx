@@ -28,10 +28,10 @@ export class AppSettings {
 
             <ion-content class="ion-padding">
                 <ion-segment mode="md" color="switcher" onIonChange={($event: CustomEvent) => this.selectTab($event)}>
-                    <ion-segment-button value={SettingsTab.GENERAL} checked={this.tab === SettingsTab.GENERAL}>
+                    <ion-segment-button mode="md" value={SettingsTab.GENERAL} checked={this.tab === SettingsTab.GENERAL}>
                         <ion-label>General</ion-label>
                     </ion-segment-button>
-                    <ion-segment-button value={SettingsTab.EXPERIMENTAL} checked={this.tab === SettingsTab.EXPERIMENTAL}>
+                    <ion-segment-button mode="md" value={SettingsTab.EXPERIMENTAL} checked={this.tab === SettingsTab.EXPERIMENTAL}>
                         <ion-label>Experimental</ion-label>
                     </ion-segment-button>
                 </ion-segment>

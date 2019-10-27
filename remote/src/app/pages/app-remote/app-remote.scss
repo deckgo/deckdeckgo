@@ -1,44 +1,97 @@
 app-remote {
   main {
     display: grid;
+    grid-template-rows: 50% 50%;
     height: 100%;
 
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 50% 50%;
-
     div.deck  {
-      grid-column-start: 1;
-      grid-column-end: span 2;
-
       position: relative;
       display: block;
     }
 
-    div.deck-navigation-button-next, div.deck-navigation-button-prev {
-      padding: 0 16px 16px;
+    div.deck-navigation-buttons {
+      display: grid;
+      grid-template-columns: 50% 50%;
 
-      ion-button {
-        border-radius: 10px;
-        box-shadow: 0 4px 4px rgba(0, 0, 0, .12);
+      position: relative;
 
-        height: 100%;
-        width: 100%;
+      div.deck-navigation-button-next, div.deck-navigation-button-prev {
+        padding: 0 16px 16px;
 
-        ion-label {
-          text-transform: inherit;
-          font-size: 2rem;
-          font-weight: 300;
-          white-space: pre-wrap;
+        ion-button {
+          border-radius: 10px;
+          box-shadow: 0 4px 4px rgba(0, 0, 0, .12);
+
+          height: 100%;
+          width: 100%;
+
+          ion-label {
+            text-transform: inherit;
+            font-size: 1.8rem;
+            font-weight: 300;
+            white-space: pre-wrap;
+
+            position: absolute;
+            bottom: 16px;
+          }
         }
       }
-    }
 
-    div.deck-navigation-button-next {
-      padding-left: 8px;
-    }
+      div.deck-navigation-button-next {
+        padding-left: 4px;
+      }
 
-    div.deck-navigation-button-prev {
-      padding-right: 8px;
+      div.deck-navigation-button-prev {
+        padding-right: 4px;
+      }
+
+      div.deck-action-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 9rem;
+        height: 9rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background: var(--background);
+
+        border-radius: 50%;
+
+        button {
+          width: calc(9rem - 16px);
+          height: calc(9rem - 16px);
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          font-size: 6rem;
+
+          border: 0;
+          outline: 0;
+
+          box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+
+          background: var(--ion-color-tertiary);
+
+          border-radius: 50%;
+
+          ion-icon {
+            color: var(--ion-color-light);
+
+            &.deck-action-button-icon-play {
+              padding-left: 12px;
+            }
+          }
+        }
+      }
     }
   }
 
