@@ -19,6 +19,7 @@ import {IonControllerUtils} from '../../services/utils/ion-controller-utils';
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
 import {AccelerometerService} from '../../services/accelerometer/accelerometer.service';
+import {NotesService} from '../../services/notes/notes.service';
 
 @Component({
     tag: 'app-remote',
@@ -52,10 +53,12 @@ export class AppRemote {
 
     private communicationService: CommunicationService;
     private accelerometerService: AccelerometerService;
+    private notesService: NotesService;
 
     constructor() {
         this.communicationService = CommunicationService.getInstance();
         this.accelerometerService = AccelerometerService.getInstance();
+        this.notesService = NotesService.getInstance();
     }
 
     async componentDidLoad() {
@@ -206,6 +209,7 @@ export class AppRemote {
 
     private async afterSwipe() {
         await this.setActiveIndex();
+        await this.setNotes();
 
         this.action = null;
     }
@@ -223,6 +227,10 @@ export class AppRemote {
 
             resolve();
         });
+    }
+
+    private async setNotes() {
+        this.notesService.nextSlideDefinition(this.slides && this.slides.length > this.slideIndex ? this.slides[this.slideIndex] : null);
     }
 
     private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
@@ -338,23 +346,6 @@ export class AppRemote {
         });
     }
 
-    private scrollNotes(e: UIEvent, scrollTop: number): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            e.stopPropagation();
-
-            const notes: HTMLElement = this.el.querySelector('p.notes');
-
-            if (!notes) {
-                resolve();
-                return;
-            }
-
-            notes.scrollTop = notes.scrollTop + scrollTop;
-
-            resolve();
-        });
-    }
-
     private emitAction(e: UIEvent) {
         e.stopPropagation();
 
@@ -378,6 +369,14 @@ export class AppRemote {
             } else {
                 await this.disconnect();
             }
+        });
+
+        await modal.present();
+    }
+
+    private async openNotesModal() {
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+            component: 'app-remote-notes'
         });
 
         await modal.present();
@@ -453,6 +452,7 @@ export class AppRemote {
     private async initDeck() {
         await this.deckSize();
         await this.startAccelerometer();
+        await this.setNotes()
     }
 
     private async startAccelerometer() {
@@ -518,6 +518,7 @@ export class AppRemote {
 
                     {this.renderExtraActions()}
                 </div>
+                <div><a onClick={() => this.openNotesModal()} class="ion-padding"><ion-label>Notes</ion-label></a></div>
             </main>
         } else if (this.connectionState !== ConnectionState.DISCONNECTED) {
             let text: string = 'Not connected';
@@ -564,7 +565,7 @@ export class AppRemote {
 
     private renderSlides() {
         return (
-            this.slides.map((slideDefinition: DeckdeckgoSlideDefinition, i: number) => {
+            this.slides.map((_slideDefinition: DeckdeckgoSlideDefinition, i: number) => {
                 return <deckgo-slide-title>
                     <div slot="content" class="ion-padding">
                         <div class="floating-slide-title">
@@ -575,7 +576,7 @@ export class AppRemote {
                         <div class="floating-slide-timer">
                             <app-stopwatch-time></app-stopwatch-time>
                         </div>
-                        {this.renderSlideContent(slideDefinition)}
+                        {this.renderSlideHint()}
                     </div>
                 </deckgo-slide-title>
             })
@@ -590,35 +591,9 @@ export class AppRemote {
         }
     }
 
-    private renderSlideContent(slideDefinition: DeckdeckgoSlideDefinition) {
-        return [
-            this.renderNotes(slideDefinition),
-            this.renderSlideHint()
-        ]
-    }
-
-    private renderNotes(slideDefinition: DeckdeckgoSlideDefinition) {
-        if (slideDefinition.notes && slideDefinition.notes.length > 0) {
-            // Just in case, remove html tags from the notes
-            return <p class="ion-padding notes">{slideDefinition.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
-        } else {
-            return undefined;
-        }
-    }
-
     private renderActions() {
         if (this.connectionState === ConnectionState.CONNECTED) {
-            return (<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-                    <ion-fab-button>
-                        <ion-icon name="apps"></ion-icon>
-                    </ion-fab-button>
-                    <ion-fab-list side="start">
-
-                        {this.renderNotesActions()}
-
-                    </ion-fab-list>
-                </ion-fab>
-            );
+            return undefined;
         } else {
             return (
                 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -627,21 +602,6 @@ export class AppRemote {
                     </ion-fab-button>
                 </ion-fab>
             );
-        }
-    }
-
-    private renderNotesActions() {
-        if (this.slides && this.slides.length > 0 && this.slides[this.slideIndex].notes) {
-            return [
-                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.scrollNotes(e, 50)}>
-                    <ion-icon name="arrow-down"></ion-icon>
-                </ion-fab-button>,
-                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.scrollNotes(e, -50)}>
-                    <ion-icon name="arrow-up"></ion-icon>
-                </ion-fab-button>
-            ]
-        } else {
-            return null;
         }
     }
 

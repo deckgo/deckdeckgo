@@ -24,10 +24,12 @@ export namespace Components {
   interface AppGeneralSettings {}
   interface AppHeader {}
   interface AppLogo {}
+  interface AppNotes {}
   interface AppRemote {
     'room': string;
   }
   interface AppRemoteConnect {}
+  interface AppRemoteNotes {}
   interface AppRemoteSlidePicker {
     'slides': DeckdeckgoSlideDefinition[];
   }
@@ -80,6 +82,12 @@ declare global {
     new (): HTMLAppLogoElement;
   };
 
+  interface HTMLAppNotesElement extends Components.AppNotes, HTMLStencilElement {}
+  const HTMLAppNotesElement: {
+    prototype: HTMLAppNotesElement;
+    new (): HTMLAppNotesElement;
+  };
+
   interface HTMLAppRemoteElement extends Components.AppRemote, HTMLStencilElement {}
   const HTMLAppRemoteElement: {
     prototype: HTMLAppRemoteElement;
@@ -90,6 +98,12 @@ declare global {
   const HTMLAppRemoteConnectElement: {
     prototype: HTMLAppRemoteConnectElement;
     new (): HTMLAppRemoteConnectElement;
+  };
+
+  interface HTMLAppRemoteNotesElement extends Components.AppRemoteNotes, HTMLStencilElement {}
+  const HTMLAppRemoteNotesElement: {
+    prototype: HTMLAppRemoteNotesElement;
+    new (): HTMLAppRemoteNotesElement;
   };
 
   interface HTMLAppRemoteSlidePickerElement extends Components.AppRemoteSlidePicker, HTMLStencilElement {}
@@ -134,8 +148,10 @@ declare global {
     'app-general-settings': HTMLAppGeneralSettingsElement;
     'app-header': HTMLAppHeaderElement;
     'app-logo': HTMLAppLogoElement;
+    'app-notes': HTMLAppNotesElement;
     'app-remote': HTMLAppRemoteElement;
     'app-remote-connect': HTMLAppRemoteConnectElement;
+    'app-remote-notes': HTMLAppRemoteNotesElement;
     'app-remote-slide-picker': HTMLAppRemoteSlidePickerElement;
     'app-root': HTMLAppRootElement;
     'app-settings': HTMLAppSettingsElement;
@@ -158,10 +174,12 @@ declare namespace LocalJSX {
   interface AppGeneralSettings {}
   interface AppHeader {}
   interface AppLogo {}
+  interface AppNotes {}
   interface AppRemote {
     'room'?: string;
   }
   interface AppRemoteConnect {}
+  interface AppRemoteNotes {}
   interface AppRemoteSlidePicker {
     'slides'?: DeckdeckgoSlideDefinition[];
   }
@@ -181,8 +199,10 @@ declare namespace LocalJSX {
     'app-general-settings': AppGeneralSettings;
     'app-header': AppHeader;
     'app-logo': AppLogo;
+    'app-notes': AppNotes;
     'app-remote': AppRemote;
     'app-remote-connect': AppRemoteConnect;
+    'app-remote-notes': AppRemoteNotes;
     'app-remote-slide-picker': AppRemoteSlidePicker;
     'app-root': AppRoot;
     'app-settings': AppSettings;
@@ -204,8 +224,10 @@ declare module "@stencil/core" {
       'app-general-settings': LocalJSX.AppGeneralSettings & JSXBase.HTMLAttributes<HTMLAppGeneralSettingsElement>;
       'app-header': LocalJSX.AppHeader & JSXBase.HTMLAttributes<HTMLAppHeaderElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
+      'app-notes': LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
       'app-remote': LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
       'app-remote-connect': LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
+      'app-remote-notes': LocalJSX.AppRemoteNotes & JSXBase.HTMLAttributes<HTMLAppRemoteNotesElement>;
       'app-remote-slide-picker': LocalJSX.AppRemoteSlidePicker & JSXBase.HTMLAttributes<HTMLAppRemoteSlidePickerElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'app-settings': LocalJSX.AppSettings & JSXBase.HTMLAttributes<HTMLAppSettingsElement>;

@@ -1,7 +1,7 @@
 app-remote {
   main {
     display: grid;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: calc((100% - 32px) / 2) calc((100% - 32px) / 2) 32px;
     height: 100%;
 
     div.deck  {
