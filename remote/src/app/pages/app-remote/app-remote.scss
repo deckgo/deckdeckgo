@@ -4,9 +4,27 @@ app-remote {
     grid-template-rows: calc((100% - 64px) / 2) calc((100% - 64px) / 2) 64px;
     height: 100%;
 
+    @media screen and (orientation: landscape) {
+      grid-template-rows: 50% 50%;
+      grid-template-columns: 50% 50%;
+
+      div.deck, div.deck-navigation-buttons {
+        grid-column-start: 1;
+        grid-column-end: 2;
+      }
+
+      app-notes {
+        grid-column-start: 2;
+
+        grid-row-start: 1;
+        grid-row-end: 3;
+      }
+    }
+
     div.deck  {
       position: relative;
       display: block;
+      overflow: hidden;
     }
 
     div.deck-navigation-buttons {

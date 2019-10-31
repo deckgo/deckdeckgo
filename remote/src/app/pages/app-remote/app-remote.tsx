@@ -510,8 +510,8 @@ export class AppRemote {
 
                         {this.renderExtraActions()}
                     </div>
-                </main>,
-                <app-notes></app-notes>
+                    <app-notes></app-notes>
+                </main>
             ];
         } else if (this.connectionState !== ConnectionState.DISCONNECTED) {
             let text: string = 'Not connected';

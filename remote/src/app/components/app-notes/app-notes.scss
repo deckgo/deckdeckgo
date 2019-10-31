@@ -14,4 +14,20 @@ app-notes {
     --sheet-content-padding-top: 4px;
     --sheet-z-index: 1000;
   }
+
+  div.landscape-notes {
+    border-radius: 10px;
+    height: calc(100% - 32px);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, .12);
+    border: 1px dotted var(--ion-color-light-shade);
+    overflow: scroll;
+    margin: 16px 16px 0 0;
+  }
+
+  @media screen and (orientation: landscape) {
+    bottom-sheet {
+      display: none;
+    }
+  }
 }
+

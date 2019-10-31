@@ -1,4 +1,4 @@
-import {Component, h, State} from '@stencil/core';
+import {Component, h, Listen, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -17,6 +17,9 @@ export class AppNotes {
     private subscription: Subscription;
 
     @State()
+    private portrait: boolean = true;
+
+    @State()
     private currentSlide: DeckdeckgoSlideDefinition;
 
     constructor() {
@@ -24,9 +27,13 @@ export class AppNotes {
     }
 
     componentWillLoad() {
-        this.subscription = this.notesService.watch().subscribe((slide:  DeckdeckgoSlideDefinition) => {
+        this.subscription = this.notesService.watch().subscribe((slide: DeckdeckgoSlideDefinition) => {
             this.currentSlide = slide;
-        })
+        });
+    }
+
+    componentDidLoad() {
+        this.initPortrait();
     }
 
     componentDidUnload() {
@@ -35,14 +42,41 @@ export class AppNotes {
         }
     }
 
+    @Listen('resize', {target: 'window'})
+    onOrientationchange() {
+        this.initPortrait();
+    }
+
+    private initPortrait() {
+        this.portrait = window.matchMedia('(orientation: portrait)').matches;
+
+        console.log(this.portrait);
+    }
+
     render() {
-        if (!this.currentSlide || ! this.currentSlide.notes || this.currentSlide.notes === '') {
+        if (this.portrait) {
+            return <bottom-sheet arrow={true}>
+                {this.renderNotes()}
+            </bottom-sheet>;
+        } else {
+            return <div class="ion-padding landscape-notes">
+                {this.renderNotes()}
+            </div>
+        }
+    }
+
+    private renderNotes() {
+        return [
+            <ion-label class="notes-title" slot="sheet-header">Notes</ion-label>,
+            this.renderNote()
+        ]
+    }
+
+    private renderNote() {
+        if (!this.currentSlide || !this.currentSlide.notes || this.currentSlide.notes === '') {
             return undefined;
         }
 
-        return <bottom-sheet arrow={true}>
-            <ion-label class="notes-title" slot="sheet-header">Notes</ion-label>
-            <p class="ion-padding-top ion-padding-bottom ion-margin-top notes">{this.currentSlide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>
-        </bottom-sheet>;
+        return <p class="ion-padding-top ion-padding-bottom ion-margin-top notes">{this.currentSlide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
     }
 }
