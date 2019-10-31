@@ -40,6 +40,9 @@ export class AppNotes {
             return undefined;
         }
 
-        return <p class="ion-padding notes">{this.currentSlide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
+        return <bottom-sheet arrow={true}>
+            <ion-label class="notes-title" slot="sheet-header">Notes</ion-label>
+            <p class="ion-padding-top ion-padding-bottom ion-margin-top notes">{this.currentSlide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>
+        </bottom-sheet>;
     }
 }

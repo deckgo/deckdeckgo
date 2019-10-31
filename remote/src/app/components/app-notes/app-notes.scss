@@ -1,8 +1,17 @@
 app-notes {
   p {
-    font-size: 1.8rem;
-    line-height: 2.2rem;
+    font-size: 1.4rem;
+    line-height: 1.5rem;
     margin: 0;
     white-space: pre-line;
+  }
+
+  ion-label.notes-title {
+    font-size: 1.8rem;
+  }
+
+  bottom-sheet {
+    --sheet-content-padding-top: 4px;
+    --sheet-z-index: 1000;
   }
 }

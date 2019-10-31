@@ -374,14 +374,6 @@ export class AppRemote {
         await modal.present();
     }
 
-    private async openNotesModal() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-remote-notes'
-        });
-
-        await modal.present();
-    }
-
     private async openSlidePicker() {
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote-slide-picker',
@@ -510,16 +502,17 @@ export class AppRemote {
 
     private renderContent() {
         if (this.connectionState === ConnectionState.CONNECTED) {
-            return <main>
-                {this.renderDeck()}
-                <div class="deck-navigation-buttons">
-                    <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevSlide(true)}><ion-label>Previous slide</ion-label></ion-button></div>
-                    <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.nextSlide(true)}><ion-label>Next slide</ion-label></ion-button></div>
+            return [<main>
+                    {this.renderDeck()}
+                    <div class="deck-navigation-buttons">
+                        <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevSlide(true)}><ion-label>Previous slide</ion-label></ion-button></div>
+                        <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.nextSlide(true)}><ion-label>Next slide</ion-label></ion-button></div>
 
-                    {this.renderExtraActions()}
-                </div>
-                <div><a onClick={() => this.openNotesModal()} class="ion-padding"><ion-label>Notes</ion-label></a></div>
-            </main>
+                        {this.renderExtraActions()}
+                    </div>
+                </main>,
+                <app-notes></app-notes>
+            ];
         } else if (this.connectionState !== ConnectionState.DISCONNECTED) {
             let text: string = 'Not connected';
 

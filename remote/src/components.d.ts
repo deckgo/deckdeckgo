@@ -29,7 +29,6 @@ export namespace Components {
     'room': string;
   }
   interface AppRemoteConnect {}
-  interface AppRemoteNotes {}
   interface AppRemoteSlidePicker {
     'slides': DeckdeckgoSlideDefinition[];
   }
@@ -100,12 +99,6 @@ declare global {
     new (): HTMLAppRemoteConnectElement;
   };
 
-  interface HTMLAppRemoteNotesElement extends Components.AppRemoteNotes, HTMLStencilElement {}
-  const HTMLAppRemoteNotesElement: {
-    prototype: HTMLAppRemoteNotesElement;
-    new (): HTMLAppRemoteNotesElement;
-  };
-
   interface HTMLAppRemoteSlidePickerElement extends Components.AppRemoteSlidePicker, HTMLStencilElement {}
   const HTMLAppRemoteSlidePickerElement: {
     prototype: HTMLAppRemoteSlidePickerElement;
@@ -151,7 +144,6 @@ declare global {
     'app-notes': HTMLAppNotesElement;
     'app-remote': HTMLAppRemoteElement;
     'app-remote-connect': HTMLAppRemoteConnectElement;
-    'app-remote-notes': HTMLAppRemoteNotesElement;
     'app-remote-slide-picker': HTMLAppRemoteSlidePickerElement;
     'app-root': HTMLAppRootElement;
     'app-settings': HTMLAppSettingsElement;
@@ -179,7 +171,6 @@ declare namespace LocalJSX {
     'room'?: string;
   }
   interface AppRemoteConnect {}
-  interface AppRemoteNotes {}
   interface AppRemoteSlidePicker {
     'slides'?: DeckdeckgoSlideDefinition[];
   }
@@ -202,7 +193,6 @@ declare namespace LocalJSX {
     'app-notes': AppNotes;
     'app-remote': AppRemote;
     'app-remote-connect': AppRemoteConnect;
-    'app-remote-notes': AppRemoteNotes;
     'app-remote-slide-picker': AppRemoteSlidePicker;
     'app-root': AppRoot;
     'app-settings': AppSettings;
@@ -227,7 +217,6 @@ declare module "@stencil/core" {
       'app-notes': LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
       'app-remote': LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
       'app-remote-connect': LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
-      'app-remote-notes': LocalJSX.AppRemoteNotes & JSXBase.HTMLAttributes<HTMLAppRemoteNotesElement>;
       'app-remote-slide-picker': LocalJSX.AppRemoteSlidePicker & JSXBase.HTMLAttributes<HTMLAppRemoteSlidePickerElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'app-settings': LocalJSX.AppSettings & JSXBase.HTMLAttributes<HTMLAppSettingsElement>;

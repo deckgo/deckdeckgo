@@ -1,7 +1,7 @@
 app-remote {
   main {
     display: grid;
-    grid-template-rows: calc((100% - 32px) / 2) calc((100% - 32px) / 2) 32px;
+    grid-template-rows: calc((100% - 64px) / 2) calc((100% - 64px) / 2) 64px;
     height: 100%;
 
     div.deck  {
@@ -142,20 +142,6 @@ app-remote {
       ion-icon {
         font-size: 4rem;
         color: var(--ion-color-light);
-      }
-
-      p.notes {
-        max-height: 80%;
-        color: var(--ion-color-dark);
-        overflow: hidden;
-        white-space: pre-wrap;
-        text-align: initial;
-
-        position: absolute;
-        top: 32px;
-        left: 0;
-
-        z-index: 1;
       }
     }
 
