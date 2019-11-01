@@ -375,6 +375,9 @@ export class AppRemote {
     }
 
     private async openSlidePicker() {
+
+        console.log('emit');
+
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote-slide-picker',
             componentProps: {

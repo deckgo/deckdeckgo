@@ -35,12 +35,8 @@ export class AppGeneralSettings {
                 <ion-label>Hello darkness my old friend</ion-label>
             </ion-list-header>
 
-            <p>
-                The remote control detects your OS default settings but you could select a lighter or darker theme 🔦
-            </p>
-
             <ion-item>
-                <ion-label>{this.darkTheme ? 'Dark theme' : 'Light theme'}</ion-label>
+                <ion-label>{this.darkTheme ? 'Dark' : 'Light'} theme 🔦</ion-label>
                 <ion-toggle slot="end" checked={this.darkTheme} mode="md" color="switcher" onIonChange={() => this.toggleTheme()}></ion-toggle>
             </ion-item>
         </ion-list>;

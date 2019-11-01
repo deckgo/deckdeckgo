@@ -120,7 +120,12 @@ app-remote {
     --slide-padding-top: 16px;
     --slide-padding-bottom: 16px;
 
-    --pager-display: none;
+    --pager-margin-start: 24px;
+    --pager-margin-bottom: 24px;
+    --pager-text-color: var(--ion-text-color);
+    --pager-text-slides-display: block;
+    --pager-size: 64px;
+    --pager-text-size: 0.6rem;
   }
 
   ion-spinner {
