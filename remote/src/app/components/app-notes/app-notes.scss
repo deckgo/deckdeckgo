@@ -5,6 +5,8 @@ app-notes {
     margin: 0;
     white-space: pre-line;
 
+    color: var(--ion-text-color);
+
     &.notes-title {
       font-size: 1.8rem;
     }
@@ -13,6 +15,8 @@ app-notes {
   bottom-sheet {
     --sheet-content-padding-top: 4px;
     --sheet-z-index: 1000;
+    --sheet-background-color: var(--ion-background-color, white);
+    --sheet-indicator-color: var(--ion-text-color);
   }
 
   div.landscape-notes {

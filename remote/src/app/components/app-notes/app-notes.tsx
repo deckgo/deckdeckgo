@@ -65,7 +65,7 @@ export class AppNotes {
 
     private renderNotes() {
         return [
-            <p slot="sheet-header">Notes</p>,
+            <p slot="sheet-header" class="ion-margin-start ion-margin-end">Notes</p>,
             this.renderNote()
         ]
     }
@@ -75,6 +75,6 @@ export class AppNotes {
             return undefined;
         }
 
-        return <p class="ion-padding-top ion-padding-bottom ion-margin-top notes">{this.currentSlide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
+        return <p class="ion-padding-top ion-padding-bottom ion-margin notes">{this.currentSlide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
     }
 }
