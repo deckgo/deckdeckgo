@@ -38,10 +38,16 @@ app-remote {
 
         ion-button {
           border-radius: 10px;
-          box-shadow: 0 4px 4px rgba(0, 0, 0, .12);
+          --box-shadow: var(--remote-box-shadow);
 
           height: 100%;
           width: 100%;
+
+          --border-radius: 10px;
+
+          --border-color: var(--ion-color-light-shade);
+          --border-width: 1px;
+          --border-style: solid;
 
           ion-label {
             text-transform: inherit;
@@ -143,9 +149,9 @@ app-remote {
       justify-content: center;
       align-items: center;
       display: flex;
-      border: 1px dotted var(--ion-color-light-shade);
+      border: 1px solid var(--ion-color-light-shade);
       border-radius: 10px;
-      box-shadow: 0 4px 4px rgba(0, 0, 0, .12);
+      box-shadow: var(--remote-box-shadow);
 
       position: relative;
 
