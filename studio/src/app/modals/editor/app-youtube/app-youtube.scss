@@ -2,6 +2,11 @@ app-youtube {
   ion-content {
     --background: var(--ion-color-light);
 
+    ion-item.item-input ion-input[class*=sc-ion-input] {
+      --background: white;
+      background: white;
+    }
+
     ion-list {
       --ion-item-background: transparent;
     }

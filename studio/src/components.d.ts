@@ -146,6 +146,9 @@ export namespace Components {
     'signIn': boolean;
   }
   interface AppNewsletter {}
+  interface AppNotes {
+    'selectedElement': HTMLElement;
+  }
   interface AppOpensource {}
   interface AppPhoto {}
   interface AppPopular {
@@ -447,6 +450,12 @@ declare global {
     new (): HTMLAppNewsletterElement;
   };
 
+  interface HTMLAppNotesElement extends Components.AppNotes, HTMLStencilElement {}
+  const HTMLAppNotesElement: {
+    prototype: HTMLAppNotesElement;
+    new (): HTMLAppNotesElement;
+  };
+
   interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
   const HTMLAppOpensourceElement: {
     prototype: HTMLAppOpensourceElement;
@@ -644,6 +653,7 @@ declare global {
     'app-navigation': HTMLAppNavigationElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-newsletter': HTMLAppNewsletterElement;
+    'app-notes': HTMLAppNotesElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-photo': HTMLAppPhotoElement;
     'app-popular': HTMLAppPopularElement;
@@ -811,6 +821,9 @@ declare namespace LocalJSX {
     'signIn'?: boolean;
   }
   interface AppNewsletter {}
+  interface AppNotes {
+    'selectedElement'?: HTMLElement;
+  }
   interface AppOpensource {}
   interface AppPhoto {}
   interface AppPopular {
@@ -913,6 +926,7 @@ declare namespace LocalJSX {
     'app-navigation': AppNavigation;
     'app-navigation-actions': AppNavigationActions;
     'app-newsletter': AppNewsletter;
+    'app-notes': AppNotes;
     'app-opensource': AppOpensource;
     'app-photo': AppPhoto;
     'app-popular': AppPopular;
@@ -989,6 +1003,7 @@ declare module "@stencil/core" {
       'app-navigation': LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
       'app-navigation-actions': LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
       'app-newsletter': LocalJSX.AppNewsletter & JSXBase.HTMLAttributes<HTMLAppNewsletterElement>;
+      'app-notes': LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
       'app-opensource': LocalJSX.AppOpensource & JSXBase.HTMLAttributes<HTMLAppOpensourceElement>;
       'app-photo': LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;
       'app-popular': LocalJSX.AppPopular & JSXBase.HTMLAttributes<HTMLAppPopularElement>;
