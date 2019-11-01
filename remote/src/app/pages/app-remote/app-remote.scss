@@ -144,16 +144,9 @@ app-remote {
 
       position: relative;
 
-      div.floating-slide-title, div.floating-slide-timer {
+      div.floating-slide-timer {
         position: absolute;
         top: 4px;
-      }
-
-      div.floating-slide-title {
-        left: 4px;
-      }
-
-      div.floating-slide-timer {
         right: 4px;
       }
 

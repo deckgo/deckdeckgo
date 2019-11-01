@@ -558,14 +558,9 @@ export class AppRemote {
 
     private renderSlides() {
         return (
-            this.slides.map((_slideDefinition: DeckdeckgoSlideDefinition, i: number) => {
+            this.slides.map((_slideDefinition: DeckdeckgoSlideDefinition, _i: number) => {
                 return <deckgo-slide-title>
                     <div slot="content" class="ion-padding">
-                        <div class="floating-slide-title">
-                            <ion-chip color="primary">
-                                <ion-label>Slide {i + 1} of {this.slides.length}</ion-label>
-                            </ion-chip>
-                        </div>
                         <div class="floating-slide-timer">
                             <app-stopwatch-time></app-stopwatch-time>
                         </div>
