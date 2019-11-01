@@ -99,7 +99,7 @@ export class AppNotes {
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
-                <p>Your notes are displayed in the <a href="https://deckdeckgo.app" target="_blank">remote control <ion-icon name="open"></ion-icon></a>.</p>
+                <p>Your notes are displayed in the <a href="https://deckdeckgo.app" target="_blank">remote control <ion-icon name="open"></ion-icon></a>. Markdown is supported 😉</p>
 
                 <ion-list class="ion-no-padding">
                     <ion-item>

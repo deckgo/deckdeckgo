@@ -2,6 +2,8 @@ import {Component, h, Listen, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
+import {Remarkable} from 'remarkable';
+
 import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
 import {NotesService} from '../../services/notes/notes.service';
@@ -20,7 +22,7 @@ export class AppNotes {
     private portrait: boolean = true;
 
     @State()
-    private currentSlide: DeckdeckgoSlideDefinition;
+    private notes: string;
 
     constructor() {
         this.notesService = NotesService.getInstance();
@@ -28,7 +30,18 @@ export class AppNotes {
 
     componentWillLoad() {
         this.subscription = this.notesService.watch().subscribe((slide: DeckdeckgoSlideDefinition) => {
-            this.currentSlide = slide;
+            if (slide && slide.notes && slide.notes) {
+                const notesWithNewLines = slide.notes.replace(/\n/g, '\u200B\n');
+
+                const md: Remarkable = new Remarkable({
+                    html: true,
+                    xhtmlOut: true
+                });
+
+                this.notes = md.render(notesWithNewLines.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, ''));
+            } else {
+                this.notes = undefined;
+            }
         });
     }
 
@@ -71,10 +84,10 @@ export class AppNotes {
     }
 
     private renderNote() {
-        if (!this.currentSlide || !this.currentSlide.notes || this.currentSlide.notes === '') {
+        if (!this.notes || this.notes === undefined) {
             return undefined;
         }
 
-        return <p class="ion-padding-top ion-padding-bottom ion-margin notes">{this.currentSlide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
+        return <p class="ion-padding-top ion-padding-bottom ion-margin notes" innerHTML={this.notes}></p>;
     }
 }
