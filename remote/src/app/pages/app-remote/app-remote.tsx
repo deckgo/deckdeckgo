@@ -599,7 +599,7 @@ export class AppRemote {
     }
 
     private renderExtraActions() {
-        if (this.slides &&
+        if (this.slides && this.slides.length > 0 &&
             (this.slides[this.slideIndex].name === 'deckgo-slide-youtube'.toUpperCase() ||
              this.slides[this.slideIndex].name === 'deckgo-slide-big-img'.toUpperCase())) {
 
