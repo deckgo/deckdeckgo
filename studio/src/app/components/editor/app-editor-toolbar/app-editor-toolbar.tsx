@@ -604,6 +604,23 @@ export class AppEditorToolbar {
         await modal.present();
     }
 
+    private async openNotes() {
+        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+            component: 'app-notes',
+            componentProps: {
+                selectedElement: this.selectedElement
+            }
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data && this.selectedElement) {
+                this.slideDidChange.emit(this.selectedElement);
+            }
+        });
+
+        await modal.present();
+    }
+
     private toggleSlotType(type: SlotType): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
@@ -1014,6 +1031,7 @@ export class AppEditorToolbar {
                 {this.renderCodeOptions()}
 
                 <div class="editor-toolbar-edit">
+                    {this.renderNotes()}
                     {this.renderCopy()}
                     {this.renderDelete()}
                 </div>
@@ -1026,6 +1044,17 @@ export class AppEditorToolbar {
                   class={this.deckBusy && this.deckOrSlide ? "disabled" : ""}>
             <ion-icon name="trash"></ion-icon>
         </a>
+    }
+
+    private renderNotes() {
+        if (!this.deckOrSlide) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.openNotes()} title="Notes"
+                      class={this.deckBusy ? "disabled" : ""}>
+                <ion-icon src="/assets/icons/notes.svg"></ion-icon>
+            </a>
+        }
     }
 
     private renderCopy() {
