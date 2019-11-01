@@ -89,7 +89,6 @@ export class AppRoot {
                                 <ion-item detail={false} href="/" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">Remote</ion-label></ion-item>
                                 <ion-item detail={false} href="/timer" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">Timer</ion-label></ion-item>
                                 <ion-item detail={false} href="/settings" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">Settings</ion-label></ion-item>
-                                <ion-item detail={false} href="/about" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">About</ion-label></ion-item>
                             </ion-list>
                         </ion-menu-toggle>
                     </ion-content>
