@@ -1,6 +1,6 @@
 app-notes {
   p {
-    font-size: 1.4rem;
+    font-size: var(--font-size-small);
     line-height: 1.5rem;
     margin: 0;
     white-space: pre-line;
@@ -8,7 +8,7 @@ app-notes {
     color: var(--ion-text-color);
 
     &.notes-title {
-      font-size: 1.8rem;
+      font-size: var(--font-size-normal);
     }
   }
 

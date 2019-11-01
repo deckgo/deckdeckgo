@@ -25,7 +25,7 @@ ion-menu {
         --border-color: transparent;
         --padding-start: 32px;
         --min-height: inherit;
-        font-size: 1.8rem;
+        font-size: var(--font-size-normal);
         height: inherit;
 
         &.item ion-label[class*="sc-ion-label"] {
@@ -50,7 +50,7 @@ ion-menu {
             text-transform: uppercase;
             padding: 0 4px;
             font-weight: 300;
-            font-size: 1.8rem;
+            font-size: var(--font-size-normal);
           }
 
           --deckgo-logo-url: url('/assets/img/deckdeckgo-logo-invert.svg');

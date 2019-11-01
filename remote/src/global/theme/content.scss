@@ -10,12 +10,12 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: var(--font-size-big);
 }
 
 p {
   font-weight: var(--deckgo-font-weight);
-  line-height: 1.4rem;
+  line-height: calc(var(--font-size-normal) + 0.2rem);
 }
 
 ion-content {
@@ -24,7 +24,7 @@ ion-content {
     --ion-safe-area-left: 0;
 
     ion-list-header {
-      font-size: 2rem;
+      font-size: var(--font-size-big);
       font-weight: 300;
       text-transform: uppercase;
     }

@@ -65,7 +65,7 @@ export class AppNotes {
 
     private renderNotes() {
         return [
-            <p slot="sheet-header" class="ion-margin-start ion-margin-end">Notes</p>,
+            <p slot="sheet-header" class="ion-margin-start ion-margin-end ion-text-uppercase">Notes</p>,
             this.renderNote()
         ]
     }
