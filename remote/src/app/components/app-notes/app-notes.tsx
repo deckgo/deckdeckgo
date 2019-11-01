@@ -49,8 +49,6 @@ export class AppNotes {
 
     private initPortrait() {
         this.portrait = window.matchMedia('(orientation: portrait)').matches;
-
-        console.log(this.portrait);
     }
 
     render() {

@@ -17,8 +17,6 @@ export class AppSettings {
     private selectTab($event: CustomEvent) {
         if ($event && $event.detail) {
             this.tab = $event.detail.value;
-
-            console.log(this.tab);
         }
     }
 
