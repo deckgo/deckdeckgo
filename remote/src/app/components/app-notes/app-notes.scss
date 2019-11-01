@@ -17,6 +17,7 @@ app-notes {
     --sheet-z-index: 1000;
     --sheet-background-color: var(--ion-background-color, white);
     --sheet-indicator-color: var(--ion-text-color);
+    --sheet-max-width: 540px;
   }
 
   div.landscape-notes {
