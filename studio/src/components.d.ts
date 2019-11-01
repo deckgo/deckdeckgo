@@ -771,6 +771,7 @@ declare namespace LocalJSX {
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onNotesDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideCopy'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;

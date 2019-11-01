@@ -74,6 +74,7 @@ export class DeckEventsHandler {
             this.el.addEventListener('codeDidChange', this.onCustomEventChange, false);
             this.el.addEventListener('imgDidChange', this.onCustomEventChange, false);
             this.el.addEventListener('linkCreated', this.onCustomEventChange, false);
+            this.el.addEventListener('notesDidChange', this.onSlideChange, false);
 
             this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
                 await this.updateSlide(element);
@@ -97,6 +98,7 @@ export class DeckEventsHandler {
         this.el.removeEventListener('codeDidChange', this.onCustomEventChange, true);
         this.el.removeEventListener('imgDidChange', this.onCustomEventChange, true);
         this.el.removeEventListener('linkCreated', this.onCustomEventChange, true);
+        this.el.removeEventListener('notesDidChange', this.onSlideChange, true);
 
         if (this.updateSlideSubscription) {
             this.updateSlideSubscription.unsubscribe();

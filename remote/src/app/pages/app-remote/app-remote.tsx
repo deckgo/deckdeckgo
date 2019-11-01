@@ -81,6 +81,7 @@ export class AppRemote {
                 } else if ($event.type === DeckdeckgoEventType.SLIDES_UPDATE) {
                     await this.initSlides(($event as DeckdeckgoEventSlides));
                     await this.slideToLastSlide();
+                    await this.setNotes();
                 } else if ($event.type === DeckdeckgoEventType.NEXT_SLIDE) {
                     await this.animateNextSlide();
                 } else if ($event.type === DeckdeckgoEventType.PREV_SLIDE) {

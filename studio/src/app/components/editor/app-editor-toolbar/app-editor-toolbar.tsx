@@ -65,6 +65,7 @@ export class AppEditorToolbar {
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
     @Event() private codeDidChange: EventEmitter<HTMLElement>;
     @Event() private imgDidChange: EventEmitter<HTMLElement>;
+    @Event() private notesDidChange: EventEmitter<HTMLElement>;
 
     @Event() private slideCopy: EventEmitter<HTMLElement>;
 
@@ -614,7 +615,7 @@ export class AppEditorToolbar {
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                this.slideDidChange.emit(this.selectedElement);
+                this.notesDidChange.emit(this.selectedElement);
             }
         });
 
