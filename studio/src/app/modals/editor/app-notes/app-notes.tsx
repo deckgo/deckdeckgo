@@ -64,7 +64,23 @@ export class AppNotes {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(true);
     }
 
-    // TODO delete notes
+    async delete() {
+        if (!this.selectedElement) {
+            await this.closeModal();
+            return;
+        }
+
+        let element: HTMLElement = this.selectedElement.querySelector('[slot="notes"]');
+
+        if (!element) {
+            await this.closeModal();
+            return;
+        }
+
+        element.parentElement.removeChild(element);
+
+        await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(true);
+    }
 
     private handleNotesInput($event: CustomEvent<KeyboardEvent>) {
         this.notes = ($event.target as InputTargetEvent).value;
@@ -93,9 +109,15 @@ export class AppNotes {
                     </ion-item>
                 </ion-list>
 
-                <ion-button disabled={this.notes === undefined || !this.notes || this.notes === ''} color="dark" shape="round" onClick={() => this.save()} class="ion-margin-top">
-                    <ion-label>Save</ion-label>
-                </ion-button>
+                <div class="notes-actions ion-margin-top">
+                    <ion-button color="dark" shape="round" onClick={() => this.save()}>
+                        <ion-label>Save</ion-label>
+                    </ion-button>
+
+                    <ion-button color="dark" shape="round" onClick={() => this.delete()} fill="outline">
+                        <ion-label>Delete</ion-label>
+                    </ion-button>
+                </div>
             </ion-content>
         ];
     }

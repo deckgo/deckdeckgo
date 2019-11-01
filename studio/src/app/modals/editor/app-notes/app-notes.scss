@@ -18,5 +18,15 @@ app-notes {
     ion-list.list-ios {
       margin-bottom: 0;
     }
+
+    div.notes-actions {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      ion-button:first-of-type {
+        margin-right: 4px;
+      }
+    }
   }
 }
