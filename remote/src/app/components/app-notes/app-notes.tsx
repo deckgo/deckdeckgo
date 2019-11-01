@@ -65,7 +65,7 @@ export class AppNotes {
 
     private renderNotes() {
         return [
-            <ion-label class="notes-title" slot="sheet-header">Notes</ion-label>,
+            <p slot="sheet-header">Notes</p>,
             this.renderNote()
         ]
     }
