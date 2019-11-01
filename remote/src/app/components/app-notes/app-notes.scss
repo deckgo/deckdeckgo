@@ -1,0 +1,38 @@
+app-notes {
+  p {
+    font-size: var(--font-size-small);
+    line-height: 1.5rem;
+    margin: 0;
+    white-space: pre-line;
+
+    color: var(--ion-text-color);
+
+    &.notes-title {
+      font-size: var(--font-size-normal);
+    }
+  }
+
+  bottom-sheet {
+    --sheet-content-padding-top: 4px;
+    --sheet-z-index: 1000;
+    --sheet-background-color: var(--ion-background-color, white);
+    --sheet-indicator-color: var(--ion-text-color);
+    --sheet-max-width: 540px;
+  }
+
+  div.landscape-notes {
+    border-radius: 10px;
+    height: calc(100% - 28px);
+    box-shadow: var(--remote-box-shadow);
+    border: 1px solid var(--ion-color-light-shade);
+    overflow: scroll;
+    margin: 16px 16px 0 4px;
+  }
+
+  @media screen and (orientation: landscape) {
+    bottom-sheet {
+      display: none;
+    }
+  }
+}
+

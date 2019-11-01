@@ -1,4 +1,124 @@
 app-remote {
+  main {
+    display: grid;
+    grid-template-rows: calc((100% - 64px) / 2) calc((100% - 64px) / 2) 64px;
+    height: 100%;
+
+    @media screen and (orientation: landscape) {
+      grid-template-rows: 50% 50%;
+      grid-template-columns: 50% 50%;
+
+      div.deck, div.deck-navigation-buttons {
+        grid-column-start: 1;
+        grid-column-end: 2;
+      }
+
+      app-notes {
+        grid-column-start: 2;
+
+        grid-row-start: 1;
+        grid-row-end: 3;
+      }
+    }
+
+    div.deck  {
+      position: relative;
+      display: block;
+      overflow: hidden;
+    }
+
+    div.deck-navigation-buttons {
+      display: grid;
+      grid-template-columns: 50% 50%;
+
+      position: relative;
+
+      div.deck-navigation-button-next, div.deck-navigation-button-prev {
+        padding: 0 16px 16px;
+
+        ion-button {
+          border-radius: 10px;
+          --box-shadow: var(--remote-box-shadow);
+
+          height: 100%;
+          width: 100%;
+
+          --border-radius: 10px;
+
+          --border-color: var(--ion-color-light-shade);
+          --border-width: 1px;
+          --border-style: solid;
+
+          ion-label {
+            text-transform: inherit;
+            font-size: var(--font-size-normal);
+            font-weight: 300;
+            white-space: pre-wrap;
+
+            position: absolute;
+            bottom: 16px;
+          }
+        }
+      }
+
+      div.deck-navigation-button-next {
+        padding-left: 4px;
+      }
+
+      div.deck-navigation-button-prev {
+        padding-right: 4px;
+      }
+
+      div.deck-action-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 9rem;
+        height: 9rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background: var(--background);
+
+        border-radius: 50%;
+
+        button {
+          width: calc(9rem - 16px);
+          height: calc(9rem - 16px);
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          font-size: 6rem;
+
+          border: 0;
+          outline: 0;
+
+          box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+
+          background: var(--ion-color-tertiary);
+
+          border-radius: 50%;
+
+          ion-icon {
+            color: var(--ion-color-light);
+
+            &.deck-action-button-icon-play {
+              padding-left: 12px;
+            }
+          }
+        }
+      }
+    }
+  }
+
   deckgo-deck {
     --zIndex: 1;
     --background: transparent;
@@ -6,7 +126,12 @@ app-remote {
     --slide-padding-top: 16px;
     --slide-padding-bottom: 16px;
 
-    --pager-display: hidden;
+    --pager-margin-start: 24px;
+    --pager-margin-bottom: 24px;
+    --pager-text-color: var(--ion-text-color);
+    --pager-text-slides-display: block;
+    --pager-size: 64px;
+    --pager-text-size: 0.6rem;
   }
 
   ion-spinner {
@@ -24,42 +149,21 @@ app-remote {
       justify-content: center;
       align-items: center;
       display: flex;
-      border: 1px dotted var(--ion-color-light-shade);
+      border: 1px solid var(--ion-color-light-shade);
       border-radius: 10px;
-      box-shadow: 0 4px 4px rgba(0, 0, 0, .12);
+      box-shadow: var(--remote-box-shadow);
 
       position: relative;
 
-      div.floating-slide-title, div.floating-slide-timer {
+      div.floating-slide-timer {
         position: absolute;
         top: 4px;
-      }
-
-      div.floating-slide-title {
-        left: 4px;
-      }
-
-      div.floating-slide-timer {
         right: 4px;
       }
 
       ion-icon {
         font-size: 4rem;
         color: var(--ion-color-light);
-      }
-
-      p.notes {
-        max-height: 80%;
-        color: var(--ion-color-dark);
-        overflow: hidden;
-        white-space: pre-wrap;
-        text-align: initial;
-
-        position: absolute;
-        top: 32px;
-        left: 0;
-
-        z-index: 1;
       }
     }
 

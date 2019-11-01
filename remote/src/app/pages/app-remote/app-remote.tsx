@@ -19,6 +19,7 @@ import {IonControllerUtils} from '../../services/utils/ion-controller-utils';
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
 import {AccelerometerService} from '../../services/accelerometer/accelerometer.service';
+import {NotesService} from '../../services/notes/notes.service';
 
 @Component({
     tag: 'app-remote',
@@ -36,8 +37,8 @@ export class AppRemote {
 
     @State() private connectionState: ConnectionState = ConnectionState.DISCONNECTED;
 
-    @State() private contentWidth: number;
-    @State() private contentHeight: number;
+    @State() private deckWidth: number;
+    @State() private deckHeight: number;
     @State() private headerHeight: number;
 
     @State() private slides: DeckdeckgoSlideDefinition[] = [];
@@ -52,10 +53,12 @@ export class AppRemote {
 
     private communicationService: CommunicationService;
     private accelerometerService: AccelerometerService;
+    private notesService: NotesService;
 
     constructor() {
         this.communicationService = CommunicationService.getInstance();
         this.accelerometerService = AccelerometerService.getInstance();
+        this.notesService = NotesService.getInstance();
     }
 
     async componentDidLoad() {
@@ -121,11 +124,9 @@ export class AppRemote {
 
         if (window) {
             window.addEventListener('resize', async () => {
-                await this.contentSize();
+                await this.deckSize();
             });
         }
-
-        await this.contentSize();
 
         await this.autoConnect();
     }
@@ -169,16 +170,16 @@ export class AppRemote {
         }
     }
 
-    private contentSize(): Promise<void> {
+    private deckSize(): Promise<void> {
         return new Promise<void>((resolve) => {
-            const content: HTMLElement = this.el.querySelector('ion-content');
+            const container: HTMLElement = this.el.querySelector('div.deck');
 
-            if (!content) {
+            if (!container) {
                 return;
             }
 
-            this.contentWidth = content.offsetWidth;
-            this.contentHeight = content.offsetHeight;
+            this.deckWidth = container.offsetWidth;
+            this.deckHeight = container.offsetHeight;
 
             const header: HTMLElement = this.el.querySelector('ion-header');
 
@@ -208,6 +209,7 @@ export class AppRemote {
 
     private async afterSwipe() {
         await this.setActiveIndex();
+        await this.setNotes();
 
         this.action = null;
     }
@@ -225,6 +227,10 @@ export class AppRemote {
 
             resolve();
         });
+    }
+
+    private async setNotes() {
+        this.notesService.nextSlideDefinition(this.slides && this.slides.length > this.slideIndex ? this.slides[this.slideIndex] : null);
     }
 
     private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
@@ -245,18 +251,6 @@ export class AppRemote {
         await this.animatePrevNextSlide(false);
 
         await this.afterSwipe();
-    }
-
-    private async arrowNextSlide(e: UIEvent) {
-        e.stopPropagation();
-
-        await this.nextSlide(true);
-    }
-
-    private async arrowPrevSlide(e: UIEvent) {
-        e.stopPropagation();
-
-        await this.prevSlide(true);
     }
 
     private async animatePrevNextSlide(next: boolean) {
@@ -352,23 +346,6 @@ export class AppRemote {
         });
     }
 
-    private scrollNotes(e: UIEvent, scrollTop: number): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            e.stopPropagation();
-
-            const notes: HTMLElement = this.el.querySelector('p.notes');
-
-            if (!notes) {
-                resolve();
-                return;
-            }
-
-            notes.scrollTop = notes.scrollTop + scrollTop;
-
-            resolve();
-        });
-    }
-
     private emitAction(e: UIEvent) {
         e.stopPropagation();
 
@@ -397,19 +374,10 @@ export class AppRemote {
         await modal.present();
     }
 
-    private async openSettingsModal() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-remote-settings'
-        });
-
-        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-            await this.startAccelerometer();
-        });
-
-        await modal.present();
-    }
-
     private async openSlidePicker() {
+
+        console.log('emit');
+
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote-slide-picker',
             componentProps: {
@@ -447,9 +415,39 @@ export class AppRemote {
         await this.accelerometerService.stop();
     }
 
+    private async openDisconnectConfirm() {
+        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
+            header: 'Disconnect',
+            message: 'The remote control must be disconnected from the presentation?',
+            cssClass: 'custom-info',
+            buttons: [
+                {
+                    text: 'No',
+                    role: 'cancel',
+                    handler: () => {
+                        // Nothing
+                    }
+                }, {
+                    text: 'Yes',
+                    handler: async () => {
+                        await this.disconnect();
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
     @Listen('drawing')
     isDrawing(event: CustomEvent) {
         this.drawing = event.detail;
+    }
+
+    private async initDeck() {
+        await this.deckSize();
+        await this.startAccelerometer();
+        await this.setNotes()
     }
 
     private async startAccelerometer() {
@@ -478,16 +476,9 @@ export class AppRemote {
 
     render() {
         return [
-            <ion-header>
-                <ion-toolbar color="primary">
-                    <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
-                    <ion-buttons slot="end">
-                        <ion-button onClick={() => this.openSettingsModal()}>
-                            <ion-icon name="settings"></ion-icon>
-                        </ion-button>         
-                    </ion-buttons>
-                </ion-toolbar>    
-            </ion-header>,
+            <app-header>
+                {this.renderHeaderButtons()}
+            </app-header>,
             <ion-content>
                 {this.renderContent()}
 
@@ -496,22 +487,35 @@ export class AppRemote {
         ];
     }
 
+    private renderHeaderButtons() {
+        if (this.connectionState  !== ConnectionState.CONNECTED) {
+            return undefined;
+        }
+
+        return <ion-buttons slot="end">
+            <ion-button onClick={() => this.openSlidePicker()}>
+                <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
+            </ion-button>
+
+            <ion-button onClick={() => this.openDisconnectConfirm()}>
+                <ion-icon name="log-out"></ion-icon>
+            </ion-button>
+        </ion-buttons>;
+    }
+
     private renderContent() {
         if (this.connectionState === ConnectionState.CONNECTED) {
-            return ([
-                <deckgo-deck embedded={true}
-                             onSlidesDidLoad={() => this.startAccelerometer()}
-                             onSlideNextDidChange={() => this.nextSlide(false)}
-                             onSlidePrevDidChange={() => this.prevSlide(false)}
-                             onSlideWillChange={(event: CustomEvent<number>) => this.moveDraw(event)}
-                             onSlideDrag={(event: CustomEvent<number>) => this.scrollDraw(event)}>
-                    {this.renderSlides()}
-                </deckgo-deck>,
-                <app-draw width={this.contentWidth}
-                          height={this.contentHeight}
-                          slides={this.slides.length}
-                          heightOffset={this.headerHeight}></app-draw>
-            ]);
+            return [<main>
+                    {this.renderDeck()}
+                    <div class="deck-navigation-buttons">
+                        <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevSlide(true)}><ion-label>Previous slide</ion-label></ion-button></div>
+                        <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.nextSlide(true)}><ion-label>Next slide</ion-label></ion-button></div>
+
+                        {this.renderExtraActions()}
+                    </div>
+                    <app-notes></app-notes>
+                </main>
+            ];
         } else if (this.connectionState !== ConnectionState.DISCONNECTED) {
             let text: string = 'Not connected';
 
@@ -529,7 +533,6 @@ export class AppRemote {
             ];
         } else {
             return [
-                <dark-mode-switch></dark-mode-switch>,
                 <h1 class="ion-padding">The DeckDeckGo remote control</h1>,
                 <a onClick={() => this.openConnectModal()} class="link-to-modal">
                     <p class="ion-padding-start ion-padding-end">Not connected yet, <strong>click here</strong> to find
@@ -539,20 +542,32 @@ export class AppRemote {
         }
     }
 
+    private renderDeck() {
+        return <div class="deck">
+            <deckgo-deck embedded={true}
+                         onSlidesDidLoad={() => this.initDeck()}
+                         onSlideNextDidChange={() => this.nextSlide(false)}
+                         onSlidePrevDidChange={() => this.prevSlide(false)}
+                         onSlideWillChange={(event: CustomEvent<number>) => this.moveDraw(event)}
+                         onSlideDrag={(event: CustomEvent<number>) => this.scrollDraw(event)}>
+                {this.renderSlides()}
+            </deckgo-deck>
+            <app-draw width={this.deckWidth}
+                      height={this.deckHeight}
+                      slides={this.slides.length}
+                      heightOffset={this.headerHeight}></app-draw>
+        </div>;
+    }
+
     private renderSlides() {
         return (
-            this.slides.map((slideDefinition: DeckdeckgoSlideDefinition, i: number) => {
+            this.slides.map((_slideDefinition: DeckdeckgoSlideDefinition, _i: number) => {
                 return <deckgo-slide-title>
                     <div slot="content" class="ion-padding">
-                        <div class="floating-slide-title">
-                            <ion-chip color="primary">
-                                <ion-label>Slide {i + 1} of {this.slides.length}</ion-label>
-                            </ion-chip>
-                        </div>
                         <div class="floating-slide-timer">
                             <app-stopwatch-time></app-stopwatch-time>
                         </div>
-                        {this.renderSlideContent(slideDefinition)}
+                        {this.renderSlideHint()}
                     </div>
                 </deckgo-slide-title>
             })
@@ -567,49 +582,9 @@ export class AppRemote {
         }
     }
 
-    private renderSlideContent(slideDefinition: DeckdeckgoSlideDefinition) {
-        return [
-            this.renderNotes(slideDefinition),
-            this.renderSlideHint()
-        ]
-    }
-
-    private renderNotes(slideDefinition: DeckdeckgoSlideDefinition) {
-        if (slideDefinition.notes && slideDefinition.notes.length > 0) {
-            // Just in case, remove html tags from the notes
-            return <p class="ion-padding notes">{slideDefinition.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')}</p>;
-        } else {
-            return undefined;
-        }
-    }
-
     private renderActions() {
         if (this.connectionState === ConnectionState.CONNECTED) {
-            return (<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-                    <ion-fab-button>
-                        <ion-icon name="apps"></ion-icon>
-                    </ion-fab-button>
-                    <ion-fab-list side="start">
-                        <ion-fab-button color="medium" onClick={() => this.openSlidePicker()}>
-                            <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
-                        </ion-fab-button>
-                        <ion-fab-button color="medium" onClick={(e: UIEvent) => this.arrowNextSlide(e)}>
-                            <ion-icon name="arrow-forward"></ion-icon>
-                        </ion-fab-button>
-                        {this.renderNotesActions()}
-                        <ion-fab-button color="medium" onClick={(e: UIEvent) => this.arrowPrevSlide(e)}>
-                            <ion-icon name="arrow-back"></ion-icon>
-                        </ion-fab-button>
-                        <app-accelerometer></app-accelerometer>
-                    </ion-fab-list>
-                    <ion-fab-list side="top">
-                        {this.renderExtraActions()}
-                        <ion-fab-button color="medium" onClick={() => this.disconnect()}>
-                            <ion-icon name="log-out"></ion-icon>
-                        </ion-fab-button>
-                    </ion-fab-list>
-                </ion-fab>
-            );
+            return undefined;
         } else {
             return (
                 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -621,32 +596,19 @@ export class AppRemote {
         }
     }
 
-    private renderNotesActions() {
-        if (this.slides && this.slides.length > 0 && this.slides[this.slideIndex].notes) {
-            return [
-                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.scrollNotes(e, 50)}>
-                    <ion-icon name="arrow-down"></ion-icon>
-                </ion-fab-button>,
-                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.scrollNotes(e, -50)}>
-                    <ion-icon name="arrow-up"></ion-icon>
-                </ion-fab-button>
-            ]
-        } else {
-            return null;
-        }
-    }
-
     private renderExtraActions() {
-        if (this.slides &&
+        if (this.slides && this.slides.length > 0 &&
             (this.slides[this.slideIndex].name === 'deckgo-slide-youtube'.toUpperCase() ||
              this.slides[this.slideIndex].name === 'deckgo-slide-big-img'.toUpperCase())) {
 
             const icon: string = this.action === DeckdeckgoSlideAction.PLAY ? 'pause' : 'play';
 
             return (
-                <ion-fab-button color="medium" onClick={(e: UIEvent) => this.emitAction(e)}>
-                    <ion-icon name={icon}></ion-icon>
-                </ion-fab-button>
+                <div class="deck-action-button">
+                    <button onClick={(e: UIEvent) => this.emitAction(e)} area-label={icon}>
+                        <ion-icon name={icon} class={`deck-action-button-icon-${icon}`}></ion-icon>
+                    </button>
+                </div>
             )
         } else {
             return null;

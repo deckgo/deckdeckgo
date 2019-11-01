@@ -32,16 +32,13 @@ export class AppRemoteSettings {
 
     render() {
         return [
-            <ion-header>
-                <ion-toolbar color="primary">
-                    <ion-buttons slot="start">
-                        <ion-button onClick={() => this.closeModal()}>
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
-                    <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
-                </ion-toolbar>
-            </ion-header>,
+            <app-header>
+                <ion-buttons slot="start">
+                    <ion-button onClick={() => this.closeModal()}>
+                        <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </app-header>,
             <ion-content class="ion-padding">
                 <ion-list>
                     <ion-list-header class="ion-padding-bottom ion-padding-top">
@@ -62,7 +59,7 @@ export class AppRemoteSettings {
                     const text = 'Slide ' + (i + 1) + (slideDefinition.title ? ': ' + slideDefinition.title : '');
 
                     return <ion-item ion-item button onClick={() => this.jumpToSlide(i)}>
-                        <ion-label class="ion-padding-start">{text}</ion-label>
+                        <ion-label>{text}</ion-label>
                     </ion-item>
                 })
             );

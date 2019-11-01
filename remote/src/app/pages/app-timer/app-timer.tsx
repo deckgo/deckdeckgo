@@ -124,11 +124,7 @@ export class AppTimer {
 
     render() {
         return [
-            <ion-header>
-                <ion-toolbar color="primary">
-                    <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
-                </ion-toolbar>
-            </ion-header>,
+            <app-header></app-header>,
 
             <ion-content class="ion-padding">
                 {this.renderContent()}

@@ -71,8 +71,7 @@ class Pencil implements Drawable {
 
 @Component({
     tag: 'app-draw',
-    styleUrl: 'app-draw.scss',
-    shadow: true
+    styleUrl: 'app-draw.scss'
 })
 export class AppDraw {
     @Element() el: HTMLElement;
@@ -125,7 +124,7 @@ export class AppDraw {
 
     private initContext(): Promise<void> {
         return new Promise<void>((resolve) => {
-            const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');
+            const canvas: HTMLCanvasElement = this.el.querySelector('canvas');
 
             if (!canvas) {
                 resolve();
@@ -141,7 +140,7 @@ export class AppDraw {
     @Method()
     moveDraw(leftOffset: number, transitionDuration: string): Promise<void> {
         return new Promise<void>((resolve) => {
-            const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');
+            const canvas: HTMLCanvasElement = this.el.querySelector('canvas');
 
             if (!canvas) {
                 resolve();
@@ -159,7 +158,7 @@ export class AppDraw {
 
     private start(): Promise<void> {
         return new Promise<void>((resolve) => {
-            this.canvas = this.el.shadowRoot.querySelector('canvas');
+            this.canvas = this.el.querySelector('canvas');
 
             if (!this.canvas) {
                 resolve();
@@ -181,7 +180,7 @@ export class AppDraw {
 
     private end(): Promise<void> {
         return new Promise<void>((resolve) => {
-            this.canvas = this.el.shadowRoot.querySelector('canvas');
+            this.canvas = this.el.querySelector('canvas');
 
             if (!this.canvas) {
                 resolve();
@@ -325,24 +324,24 @@ export class AppDraw {
     render() {
 
         const styleColorPicker = {
-            color: this.color === 'red' ? 'black' : 'red'
+            color: this.color
         };
 
         return ([
             <canvas width={this.canvasWidth} height={this.height}></canvas>,
-            <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-                <ion-fab-button onClick={() => this.startStopDrawing()}>
+            <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin">
+                <ion-fab-button onClick={() => this.startStopDrawing()} color="dark">
                     <ion-icon name="brush"></ion-icon>
                 </ion-fab-button>
-                <ion-fab-list side="end">
+                <ion-fab-list side="start">
                     {this.renderPencilRubber()}
                 </ion-fab-list>
                 <ion-fab-list side="top">
-                    <ion-fab-button color="medium" style={styleColorPicker}
+                    <ion-fab-button color="light"
                                     onClick={(e: UIEvent) => this.switchColor(e)}>
-                        <ion-icon name="color-palette"></ion-icon>
+                        <ion-icon name="color-palette" style={styleColorPicker}></ion-icon>
                     </ion-fab-button>
-                    <ion-fab-button color="medium" onClick={(e: UIEvent) => this.clear(e)}>
+                    <ion-fab-button color="light" onClick={(e: UIEvent) => this.clear(e)}>
                         <ion-icon name="trash"></ion-icon>
                     </ion-fab-button>
                 </ion-fab-list>
@@ -353,16 +352,16 @@ export class AppDraw {
     private renderPencilRubber() {
         if (this.action !== DeckdeckgoDrawAction.PENCIL) {
             return (
-                <ion-fab-button color="medium"
+                <ion-fab-button color="light"
                                 onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.PENCIL)}>
-                    <ion-icon name="create"></ion-icon>
+                    <ion-icon name="radio-button-off"></ion-icon>
                 </ion-fab-button>
             );
         } else {
             return (
-                <ion-fab-button color="medium"
+                <ion-fab-button color="light"
                                 onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.CIRCLE)}>
-                    <ion-icon name="radio-button-off"></ion-icon>
+                    <ion-icon name="create"></ion-icon>
                 </ion-fab-button>
             );
         }
