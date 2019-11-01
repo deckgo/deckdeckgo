@@ -330,7 +330,7 @@ export class AppDraw {
         return ([
             <canvas width={this.canvasWidth} height={this.height}></canvas>,
             <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin">
-                <ion-fab-button onClick={() => this.startStopDrawing()} color="light">
+                <ion-fab-button onClick={() => this.startStopDrawing()} color="dark">
                     <ion-icon name="brush"></ion-icon>
                 </ion-fab-button>
                 <ion-fab-list side="start">
