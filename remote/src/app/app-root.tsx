@@ -74,21 +74,29 @@ export class AppRoot {
                 <ion-menu side="start" type="overlay" swipeGesture={false} content-id="menu-content">
                     <ion-header>
                         <ion-toolbar>
-                            <ion-title slot="start" class="ion-no-padding ion-margin-start ion-margin-end">
-                                <a href="https://deckdeckgo.com" target="_blank">
-                                    <app-logo></app-logo>
-                                    <span>DeckDeckGo</span>
-                                </a>
-                            </ion-title>
                         </ion-toolbar>
                     </ion-header>
 
                     <ion-content>
                         <ion-menu-toggle autoHide={false}>
                             <ion-list class="ion-margin-top">
-                                <ion-item detail={false} href="/" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">Remote</ion-label></ion-item>
-                                <ion-item detail={false} href="/timer" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">Timer</ion-label></ion-item>
-                                <ion-item detail={false} href="/settings" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">Settings</ion-label></ion-item>
+                                <ion-item detail={false} href="/" routerDirection="forward">
+                                    <ion-label class="ion-padding-start ion-padding-end ion-text-uppercase"><ion-icon name="phone-portrait"></ion-icon> Remote</ion-label>
+                                </ion-item>
+                                <ion-item detail={false} href="/timer" routerDirection="forward">
+                                    <ion-label class="ion-padding-start ion-padding-end ion-text-uppercase"><ion-icon name="stopwatch"></ion-icon> Timer</ion-label>
+                                </ion-item>
+                                <ion-item detail={false} href="/settings" routerDirection="forward">
+                                    <ion-label class="ion-padding-start ion-padding-end ion-text-uppercase"><ion-icon name="settings"></ion-icon> Settings</ion-label>
+                                </ion-item>
+                                <ion-item detail={false}>
+                                    <ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">
+                                        <a href="https://deckdeckgo.com" target="_blank" class="deckdeckgo">
+                                            <app-logo></app-logo>
+                                            <span>DeckDeckGo</span>
+                                        </a>
+                                    </ion-label>
+                                </ion-item>
                             </ion-list>
                         </ion-menu-toggle>
                     </ion-content>

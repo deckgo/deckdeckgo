@@ -4,34 +4,9 @@ ion-menu {
   --background: var(--ion-color-primary);
   --ion-background-color: var(--ion-color-primary);
 
-  --deckgo-logo-url: url('/assets/img/deckdeckgo-logo-invert.svg');
-
   ion-header {
     ion-toolbar {
-      --color: var(--ion-color-light);
       --border-color: transparent;
-
-      ion-title {
-        --deckgo-logo-vertical-align: bottom;
-        --deckgo-logo-margin-end: 6px;
-        --deckgo-logo-size: 20px
-      }
-    }
-
-    a {
-      color: var(--ion-color-light);
-      text-decoration: none;
-
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      span {
-        text-transform: uppercase;
-        padding: 0 4px;
-        font-weight: 300;
-        font-size: 1.8rem;
-      }
     }
   }
 
@@ -52,6 +27,37 @@ ion-menu {
         --min-height: inherit;
         font-size: 1.8rem;
         height: inherit;
+
+        &.item ion-label[class*="sc-ion-label"] {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
+          ion-icon {
+            margin-right: 6px;
+          }
+        }
+
+        a.deckdeckgo {
+          color: var(--ion-color-light);
+          text-decoration: none;
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
+          span {
+            text-transform: uppercase;
+            padding: 0 4px;
+            font-weight: 300;
+            font-size: 1.8rem;
+          }
+
+          --deckgo-logo-url: url('/assets/img/deckdeckgo-logo-invert.svg');
+          --deckgo-logo-vertical-align: bottom;
+          --deckgo-logo-margin: 0 6px 0 4px;
+          --deckgo-logo-size: 20px
+        }
       }
     }
   }
