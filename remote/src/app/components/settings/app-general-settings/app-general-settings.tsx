@@ -30,13 +30,13 @@ export class AppGeneralSettings {
     private darkTheme: boolean;
 
     render() {
-        return <ion-list class="ion-padding">
+        return <ion-list class="ion-padding-top ion-padding-bottom">
             <ion-list-header class="ion-padding-bottom ion-padding-top">
                 <ion-label>Hello darkness my old friend</ion-label>
             </ion-list-header>
 
             <p>
-                The remote control detects your OS default settings but if you wish, toggle to a lighter or darker theme 🔦
+                The remote control detects your OS default settings but you could select a lighter or darker theme 🔦
             </p>
 
             <ion-item>

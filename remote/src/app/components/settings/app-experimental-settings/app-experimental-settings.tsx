@@ -82,7 +82,7 @@ export class AppExperimentalSettings {
     }
 
     render() {
-        return <ion-list class="ion-padding">
+        return <ion-list class="ion-padding-top ion-padding-bottom">
             <ion-list-header class="ion-padding-bottom ion-padding-top">
                 <ion-label>Use the force, Luke</ion-label>
             </ion-list-header>

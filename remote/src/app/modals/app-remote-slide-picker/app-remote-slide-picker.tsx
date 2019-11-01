@@ -59,7 +59,7 @@ export class AppRemoteSettings {
                     const text = 'Slide ' + (i + 1) + (slideDefinition.title ? ': ' + slideDefinition.title : '');
 
                     return <ion-item ion-item button onClick={() => this.jumpToSlide(i)}>
-                        <ion-label class="ion-padding-start">{text}</ion-label>
+                        <ion-label>{text}</ion-label>
                     </ion-item>
                 })
             );

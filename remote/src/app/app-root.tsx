@@ -86,10 +86,10 @@ export class AppRoot {
                     <ion-content>
                         <ion-menu-toggle autoHide={false}>
                             <ion-list class="ion-margin-top">
-                                <ion-item detail={false} href="/" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">Remote</ion-label></ion-item>
-                                <ion-item detail={false} href="/timer" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">Timer</ion-label></ion-item>
-                                <ion-item detail={false} href="/settings" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">Settings</ion-label></ion-item>
-                                <ion-item detail={false} href="/about" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end">About</ion-label></ion-item>
+                                <ion-item detail={false} href="/" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">Remote</ion-label></ion-item>
+                                <ion-item detail={false} href="/timer" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">Timer</ion-label></ion-item>
+                                <ion-item detail={false} href="/settings" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">Settings</ion-label></ion-item>
+                                <ion-item detail={false} href="/about" routerDirection="forward"><ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">About</ion-label></ion-item>
                             </ion-list>
                         </ion-menu-toggle>
                     </ion-content>
