@@ -4,7 +4,7 @@ resource "aws_lambda_function" "dirty" {
 
   timeout = 5
   handler = "main.handler"
-  runtime = "nodejs8.10"
+  runtime = "nodejs10.x"
 
   role = aws_iam_role.iam_for_lambda_dirty.arn
 
