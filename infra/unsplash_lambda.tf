@@ -7,7 +7,7 @@ resource "aws_lambda_function" "unsplash" {
   function_name = var.unsplash_name
   filename      = data.external.build-function-unsplash.result.build_function_zip_path
   handler       = "main.handler"
-  runtime       = "nodejs8.10"
+  runtime       = "nodejs10.x"
   timeout       = 10
 
   role = aws_iam_role.iam_for_unsplash_lambda.arn
