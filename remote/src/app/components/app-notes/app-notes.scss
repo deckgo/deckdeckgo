@@ -1,14 +1,26 @@
 app-notes {
   p {
-    font-size: var(--font-size-small);
     line-height: 1.5rem;
     margin: 0;
-    white-space: pre-line;
-
-    color: var(--ion-text-color);
 
     &.notes-title {
       font-size: var(--font-size-normal);
+    }
+  }
+
+  p, div {
+    font-size: var(--font-size-small);
+    color: var(--ion-text-color);
+  }
+
+  deckgo-highlight-code {
+    &.inline {
+      --deckgo-highlight-code-container-display: inline-flex;
+      --deckgo-highlight-code-margin: 0;
+    }
+
+    &:not(.inline) {
+      --deckgo-highlight-code-margin: 16px 0;
     }
   }
 
