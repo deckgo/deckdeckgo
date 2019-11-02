@@ -187,9 +187,9 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    if (['ArrowLeft', 'k'].indexOf($event.key) !== -1) {
+    if (['ArrowLeft', 'k', 'PageUp'].indexOf($event.key) !== -1) {
       await this.slideNextPrev(false, true);
-    } else if (['ArrowRight', 'j'].indexOf($event.key) !== -1) {
+    } else if (['ArrowRight', 'j', 'PageDown'].indexOf($event.key) !== -1) {
       await this.slideNextPrev(true, true);
     }
   };
