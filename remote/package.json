@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@deckdeckgo/core": "^1.0.0-rc.1-2",
+    "@deckdeckgo/highlight-code": "^1.0.0-rc.1-3",
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
     "@deckdeckgo/utils": "^1.0.0-rc.1-2",
     "@ionic/core": "^4.11.1",

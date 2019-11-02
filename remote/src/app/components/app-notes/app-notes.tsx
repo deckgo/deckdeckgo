@@ -33,8 +33,20 @@ export class AppNotes {
             if (slide && slide.notes && slide.notes) {
                 const md: Remarkable = new Remarkable({
                     html: true,
-                    xhtmlOut: true
+                    xhtmlOut: true,
+                    breaks: true
                 });
+
+                const codeRule = (inline: boolean) => (tokens, idx, _options, _env) => {
+                    return `<deckgo-highlight-code 
+                                class="${inline ? 'inline' : undefined}"
+                                language="${tokens[idx].params ? tokens[idx].params : 'javascript'}">
+                                    <code slot="code">${tokens[idx].content}</code>
+                            </deckgo-highlight-code>`;
+                };
+
+                md.renderer.rules.code = codeRule(true);
+                md.renderer.rules.fence = codeRule(false);
 
                 this.notes = md.render(slide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, ''));
             } else {
@@ -86,6 +98,6 @@ export class AppNotes {
             return undefined;
         }
 
-        return <p class="ion-padding-top ion-padding-bottom ion-margin notes" innerHTML={this.notes}></p>;
+        return <div class="ion-padding-top ion-padding-bottom ion-margin notes" innerHTML={this.notes}></div>;
     }
 }
