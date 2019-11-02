@@ -31,14 +31,12 @@ export class AppNotes {
     componentWillLoad() {
         this.subscription = this.notesService.watch().subscribe((slide: DeckdeckgoSlideDefinition) => {
             if (slide && slide.notes && slide.notes) {
-                const notesWithNewLines = slide.notes.replace(/\n/g, '\u200B\n');
-
                 const md: Remarkable = new Remarkable({
                     html: true,
                     xhtmlOut: true
                 });
 
-                this.notes = md.render(notesWithNewLines.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, ''));
+                this.notes = md.render(slide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, ''));
             } else {
                 this.notes = undefined;
             }
