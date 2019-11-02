@@ -38,8 +38,11 @@ export class AppNotes {
                 });
 
                 const codeRule = (inline: boolean) => (tokens, idx, _options, _env) => {
+
+                    console.log(tokens[idx]);
+
                     return `<deckgo-highlight-code 
-                                class="${inline ? 'inline' : undefined}"
+                                ${inline ? 'class="inline"' : ''}
                                 language="${tokens[idx].params ? tokens[idx].params : 'javascript'}">
                                     <code slot="code">${tokens[idx].content}</code>
                             </deckgo-highlight-code>`;
@@ -47,6 +50,18 @@ export class AppNotes {
 
                 md.renderer.rules.code = codeRule(true);
                 md.renderer.rules.fence = codeRule(false);
+
+                const hello = `# Title
+
+A line \`console.log('Inline code');\`
+    
+\`\`\`
+console.log('Block code');
+\`\`\`
+
+                `;
+
+                console.log(md.render(hello.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')));
 
                 this.notes = md.render(slide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, ''));
             } else {
