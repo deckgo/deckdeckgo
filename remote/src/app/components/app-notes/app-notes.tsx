@@ -51,18 +51,6 @@ export class AppNotes {
                 md.renderer.rules.code = codeRule(true);
                 md.renderer.rules.fence = codeRule(false);
 
-                const hello = `# Title
-
-A line \`console.log('Inline code');\`
-    
-\`\`\`
-console.log('Block code');
-\`\`\`
-
-                `;
-
-                console.log(md.render(hello.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, '')));
-
                 this.notes = md.render(slide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, ''));
             } else {
                 this.notes = undefined;
