@@ -56,7 +56,7 @@ export class DeckdeckgoDeck {
 
   private fullscreen: boolean = false;
   private cursorHidden: boolean = false;
-  private idleMouseTimer: number;
+  private idleMouseTimer: NodeJS.Timeout;
 
   @Event() mouseInactivity: EventEmitter<boolean>;
 
@@ -756,7 +756,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    if (this.idleMouseTimer > 0) {
+    if (this.idleMouseTimer) {
       clearTimeout(this.idleMouseTimer);
     }
 
