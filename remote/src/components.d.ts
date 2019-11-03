@@ -18,6 +18,7 @@ export namespace Components {
     'moveDraw': (leftOffset: number, transitionDuration: string) => Promise<void>;
     'slides': number;
     'width': number;
+    'widthOffset': number;
   }
   interface AppExperimentalSettings {}
   interface AppGeneralSettings {}
@@ -152,6 +153,7 @@ declare namespace LocalJSX {
     'onDrawing'?: (event: CustomEvent<boolean>) => void;
     'slides'?: number;
     'width'?: number;
+    'widthOffset'?: number;
   }
   interface AppExperimentalSettings {}
   interface AppGeneralSettings {}

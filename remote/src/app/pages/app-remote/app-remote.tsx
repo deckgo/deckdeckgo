@@ -41,7 +41,8 @@ export class AppRemote {
 
     @State() private deckWidth: number;
     @State() private deckHeight: number;
-    @State() private headerHeight: number;
+    @State() private drawHeightOffset: number;
+    @State() private drawWidthOffset: number;
 
     @State() private slides: JSX.IntrinsicElements[] = [];
     @State() private slideIndex: number = 0;
@@ -189,7 +190,8 @@ export class AppRemote {
                 return;
             }
 
-            this.headerHeight = header.offsetHeight;
+            this.drawHeightOffset = header.offsetHeight + parseInt(window.getComputedStyle(container).marginTop);
+            this.drawWidthOffset = parseInt(window.getComputedStyle(container).marginLeft);
 
             resolve();
         });
@@ -574,7 +576,8 @@ export class AppRemote {
             <app-draw width={this.deckWidth}
                       height={this.deckHeight}
                       slides={this.slides.length}
-                      heightOffset={this.headerHeight}></app-draw>
+                      heightOffset={this.drawHeightOffset}
+                      widthOffset={this.drawWidthOffset}></app-draw>
         </div>;
     }
 
