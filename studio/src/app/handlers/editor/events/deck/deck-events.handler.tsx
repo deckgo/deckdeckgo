@@ -78,6 +78,8 @@ export class DeckEventsHandler {
 
             this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
                 await this.updateSlide(element);
+
+                await this.emitSlideDidUpdate(element);
             });
 
             this.updateDeckTitleSubscription = this.updateDeckTitleSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
@@ -828,6 +830,19 @@ export class DeckEventsHandler {
             } catch (err) {
                 reject(err);
             }
+        });
+    }
+
+    private emitSlideDidUpdate(element: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slideDidUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>('slideDidUpdate', {
+                bubbles: true,
+                detail: element
+            });
+
+            this.el.dispatchEvent(slideDidUpdate);
+
+            resolve();
         });
     }
 }

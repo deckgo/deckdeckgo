@@ -86,7 +86,7 @@ export class RemoteEventsHandler {
         }
 
         this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
-        this.el.removeEventListener('notesDidChange', this.onNotesDidChange, true);
+        this.el.removeEventListener('slideDidUpdate', this.slideDidUpdate, true);
     }
 
     private initRemote(): Promise<void> {
@@ -115,7 +115,7 @@ export class RemoteEventsHandler {
             await this.remoteService.init();
 
             this.el.addEventListener('slideDelete', this.onSlideDelete, false);
-            this.el.addEventListener('notesDidChange', this.onNotesDidChange, false);
+            this.el.addEventListener('slideDidUpdate', this.slideDidUpdate, false);
 
             resolve();
         });
@@ -486,7 +486,7 @@ export class RemoteEventsHandler {
         await this.deleteRemoteSlide();
     };
 
-    private onNotesDidChange = async ($event: CustomEvent) => {
+    private slideDidUpdate = async ($event: CustomEvent) => {
         if (!$event || !$event.detail) {
             return;
         }
