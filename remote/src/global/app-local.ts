@@ -4,6 +4,8 @@ import '@deckdeckgo/core';
 import '@deckdeckgo/slide-title';
 
 import '@deckdeckgo/highlight-code';
+import '@deckdeckgo/lazy-img';
+import '@deckdeckgo/qrcode';
 
 import 'bottom-sheet';
 

@@ -25,6 +25,11 @@ app-remote {
       position: relative;
       display: block;
       overflow: hidden;
+
+      margin: 16px;
+      border-radius: 10px;
+      border: 1px solid var(--ion-color-light-shade);
+      box-shadow: var(--remote-box-shadow);
     }
 
     div.deck-navigation-buttons {
@@ -120,9 +125,6 @@ app-remote {
   }
 
   deckgo-deck {
-    --zIndex: 1;
-    --background: transparent;
-
     --slide-padding-top: 16px;
     --slide-padding-bottom: 16px;
 
@@ -139,38 +141,6 @@ app-remote {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
-
-  deckgo-slide-title {
-
-    div[slot="content"] {
-      width: 100%;
-      height: 100%;
-      justify-content: center;
-      align-items: center;
-      display: flex;
-      border: 1px solid var(--ion-color-light-shade);
-      border-radius: 10px;
-      box-shadow: var(--remote-box-shadow);
-
-      position: relative;
-
-      div.floating-slide-timer {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-      }
-
-      ion-icon {
-        font-size: 4rem;
-        color: var(--ion-color-light);
-      }
-    }
-
-    --color: var(--ion-color-light-shade);
-
-    --slide-padding-end: 16px;
-    --slide-padding-start: 16px;
   }
 
   a.link-to-modal {

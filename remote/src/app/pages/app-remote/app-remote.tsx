@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
+import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
@@ -10,11 +10,12 @@ import {
     DeckdeckgoEventType,
     DeckdeckgoEventDeck,
     DeckdeckgoEventSlideTo,
-    DeckdeckgoSlideAction, DeckdeckgoSlideDefinition, DeckdeckgoEventSlideAction
+    DeckdeckgoSlideAction, DeckdeckgoEventSlideAction
 } from '@deckdeckgo/types';
 
 // Utils
 import {IonControllerUtils} from '../../services/utils/ion-controller-utils';
+import {ParseSlidesUtils} from '../../utils/parse-slides.utils';
 
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
@@ -41,12 +42,14 @@ export class AppRemote {
     @State() private deckHeight: number;
     @State() private headerHeight: number;
 
-    @State() private slides: DeckdeckgoSlideDefinition[] = [];
+    @State() private slides: JSX.IntrinsicElements[] = [];
     @State() private slideIndex: number = 0;
 
     @State() drawing: boolean = false;
 
     @State() action: DeckdeckgoSlideAction;
+
+    @State() extraPlayAction: boolean = false;
 
     private acceleratorSubscription: Subscription;
     private acceleratorInitSubscription: Subscription;
@@ -133,18 +136,12 @@ export class AppRemote {
     }
 
     private initSlides($event: DeckdeckgoEventDeck): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if ($event && $event.deck && $event.deck.slides) {
-                this.slides = $event.deck.slides;
+        return new Promise<void>(async (resolve) => {
+            if ($event && $event.deck) {
+                const slidesElements: JSX.IntrinsicElements[] = await ParseSlidesUtils.parseSlides($event.deck);
+                this.slides = [...slidesElements];
             } else {
-                // If the slides definition is not provided, we generate a pseudo list of slides for the deck length
-                const length: number = $event.length;
-
-                for (let i: number = 0; i < length; i++) {
-                    this.slides.push({
-                        template: 'deckgo-slide-title'
-                    });
-                }
+                this.slides = undefined;
             }
 
             resolve();
@@ -226,12 +223,28 @@ export class AppRemote {
 
             this.slideIndex = await (deck as any).getActiveIndex();
 
+            this.setExtraPlayAction();
+
             resolve();
         });
     }
 
+    private setExtraPlayAction() {
+        const element: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.slideIndex + 1) + ')');
+
+        this.extraPlayAction = element && element.nodeName && (
+            element.nodeName.toLowerCase() === 'deckgo-slide-youtube'.toUpperCase() || element.nodeName.toLowerCase() === 'deckgo-slide-video'.toUpperCase()
+        );
+    }
+
     private async setNotes() {
-        this.notesService.nextSlideDefinition(this.slides && this.slides.length > this.slideIndex ? this.slides[this.slideIndex] : null);
+        let next: HTMLElement = null;
+
+        if (this.slides && this.slides.length > this.slideIndex) {
+            next = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.slideIndex + 1) + ')');
+        }
+
+        this.notesService.next(next);
     }
 
     private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
@@ -314,6 +327,8 @@ export class AppRemote {
         if (this.slides && this.slides.length > this.slideIndex && this.slideIndex >= 0) {
             this.slides.splice(this.slideIndex, 1);
             this.slideIndex = this.slideIndex > 0 ? this.slideIndex - 1 : 0;
+
+            this.setExtraPlayAction();
         }
     }
 
@@ -376,9 +391,6 @@ export class AppRemote {
     }
 
     private async openSlidePicker() {
-
-        console.log('emit');
-
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote-slide-picker',
             componentProps: {
@@ -494,6 +506,8 @@ export class AppRemote {
         }
 
         return <ion-buttons slot="end">
+            <app-stopwatch-time></app-stopwatch-time>
+
             <ion-button onClick={() => this.openSlidePicker()}>
                 <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
             </ion-button>
@@ -544,6 +558,8 @@ export class AppRemote {
     }
 
     private renderDeck() {
+        // TODO deck style
+
         return <div class="deck">
             <deckgo-deck embedded={true}
                          onSlidesDidLoad={() => this.initDeck()}
@@ -551,36 +567,13 @@ export class AppRemote {
                          onSlidePrevDidChange={() => this.prevSlide(false)}
                          onSlideWillChange={(event: CustomEvent<number>) => this.moveDraw(event)}
                          onSlideDrag={(event: CustomEvent<number>) => this.scrollDraw(event)}>
-                {this.renderSlides()}
+                {this.slides}
             </deckgo-deck>
             <app-draw width={this.deckWidth}
                       height={this.deckHeight}
                       slides={this.slides.length}
                       heightOffset={this.headerHeight}></app-draw>
         </div>;
-    }
-
-    private renderSlides() {
-        return (
-            this.slides.map((_slideDefinition: DeckdeckgoSlideDefinition, _i: number) => {
-                return <deckgo-slide-title>
-                    <div slot="content" class="ion-padding">
-                        <div class="floating-slide-timer">
-                            <app-stopwatch-time></app-stopwatch-time>
-                        </div>
-                        {this.renderSlideHint()}
-                    </div>
-                </deckgo-slide-title>
-            })
-        );
-    }
-
-    private renderSlideHint() {
-        if (this.drawing) {
-            return <ion-icon name="brush"></ion-icon>;
-        } else {
-            return <ion-icon name="swap"></ion-icon>;
-        }
     }
 
     private renderActions() {
@@ -598,10 +591,7 @@ export class AppRemote {
     }
 
     private renderExtraActions() {
-        if (this.slides && this.slides.length > 0 &&
-            (this.slides[this.slideIndex].template === 'deckgo-slide-youtube'.toUpperCase() ||
-             this.slides[this.slideIndex].template === 'deckgo-slide-big-img'.toUpperCase())) {
-
+        if (this.extraPlayAction) {
             const icon: string = this.action === DeckdeckgoSlideAction.PLAY ? 'pause' : 'play';
 
             return (
@@ -612,7 +602,7 @@ export class AppRemote {
                 </div>
             )
         } else {
-            return null;
+            return undefined;
         }
     }
 }

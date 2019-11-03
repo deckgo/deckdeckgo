@@ -501,7 +501,7 @@ export class DeckdeckgoDeck {
 
       const results: DeckdeckgoAttributeDefinition[] = [];
       Array.prototype.slice.call(attributes).forEach((attribute: Attr) => {
-        if (['id', 'hydrated', 'class'].indexOf(attribute.name.toLowerCase()) === -1) {
+        if (['id', 'hydrated', 'class', 'contenteditable'].indexOf(attribute.name.toLowerCase()) === -1) {
           let attr: DeckdeckgoAttributeDefinition = {
             name: attribute.name
           };

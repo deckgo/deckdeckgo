@@ -4,8 +4,6 @@ import {Subscription} from 'rxjs';
 
 import {Remarkable} from 'remarkable';
 
-import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
-
 import {NotesService} from '../../services/notes/notes.service';
 
 @Component({
@@ -29,13 +27,10 @@ export class AppNotes {
     }
 
     componentWillLoad() {
-        this.subscription = this.notesService.watch().subscribe((slide: DeckdeckgoSlideDefinition) => {
+        this.subscription = this.notesService.watch().subscribe((element: HTMLElement) => {
             let notes: string = undefined;
 
-            if (document && slide && slide.content) {
-                const element: HTMLDivElement = document.createElement('div');
-                element.innerHTML = slide.content;
-
+            if (document && element) {
                 const notesElement: HTMLElement = element.querySelector('[slot=\'notes\']');
 
                 if (notesElement && notesElement.innerHTML !== '') {
@@ -46,9 +41,6 @@ export class AppNotes {
                     });
 
                     const codeRule = (inline: boolean) => (tokens, idx, _options, _env) => {
-
-                        console.log(tokens[idx]);
-
                         return `<deckgo-highlight-code 
                                 ${inline ? 'class="inline"' : ''}
                                 language="${tokens[idx].params ? tokens[idx].params : 'javascript'}">
