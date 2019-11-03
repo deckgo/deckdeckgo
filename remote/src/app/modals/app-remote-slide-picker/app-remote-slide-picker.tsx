@@ -56,7 +56,8 @@ export class AppRemoteSettings {
             return (
                 this.slides.map((slideDefinition: DeckdeckgoSlideDefinition, i: number) => {
 
-                    const text = 'Slide ' + (i + 1) + (slideDefinition.title ? ': ' + slideDefinition.title : '');
+                    // TODO: display content and load all components
+                    const text = 'Slide ' + (i + 1) + (slideDefinition.template ? ': ' + slideDefinition.template : '');
 
                     return <ion-item ion-item button onClick={() => this.jumpToSlide(i)}>
                         <ion-label>{text}</ion-label>

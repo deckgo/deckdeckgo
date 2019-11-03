@@ -26,7 +26,7 @@
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0-rc.2",
+    "@deckdeckgo/types": "file:../types",
     "@stencil/core": "^1.7.4",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.0.1",

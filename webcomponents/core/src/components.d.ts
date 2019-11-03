@@ -7,6 +7,8 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  DeckdeckgoAttributeDefinition,
+  DeckdeckgoDeckDefinition,
   DeckdeckgoSlideDefinition,
 } from '@deckdeckgo/types';
 
@@ -18,8 +20,8 @@ export namespace Components {
     'doPrint': () => Promise<void>;
     'embedded': boolean;
     'getActiveIndex': () => Promise<number>;
+    'getDeckDefinition': () => Promise<DeckdeckgoDeckDefinition>;
     'getLength': () => Promise<number>;
-    'getSlidesDefinition': () => Promise<DeckdeckgoSlideDefinition[]>;
     'initSlideSize': () => Promise<void>;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;

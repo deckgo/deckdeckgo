@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
+
 // Types
 import {
   DeckdeckgoDrawAction,
@@ -9,8 +10,9 @@ import {
   DeckdeckgoEventEmitter,
   DeckdeckgoEventType,
   DeckdeckgoSlideAction,
-  DeckdeckgoSlideDefinition
+  DeckdeckgoDeckDefinition
 } from '@deckdeckgo/types';
+
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
 
@@ -91,7 +93,7 @@ export class DeckdeckgoRemote {
   @Prop() height: number;
   @Prop() length: number;
 
-  @Prop() slides: DeckdeckgoSlideDefinition[];
+  @Prop() deck: DeckdeckgoDeckDefinition;
 
   @Prop() autoConnect: boolean = true;
 
@@ -324,7 +326,7 @@ export class DeckdeckgoRemote {
         type: type,
         emitter: DeckdeckgoEventEmitter.DECK,
         length: this.length,
-        slides: this.slides
+        deck: this.deck
       });
 
       resolve();

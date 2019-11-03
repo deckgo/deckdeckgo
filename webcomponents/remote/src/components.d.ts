@@ -8,8 +8,8 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  DeckdeckgoDeckDefinition,
   DeckdeckgoEvent,
-  DeckdeckgoSlideDefinition,
 } from '@deckdeckgo/types';
 import {
   ConnectionState,
@@ -19,6 +19,7 @@ export namespace Components {
   interface DeckgoRemote {
     'autoConnect': boolean;
     'connect': () => Promise<void>;
+    'deck': DeckdeckgoDeckDefinition;
     'deleteSlide': () => Promise<void>;
     'disconnect': () => Promise<void>;
     'height': number;
@@ -31,7 +32,6 @@ export namespace Components {
     'room': string;
     'server': string;
     'slideTo': (index: number, speed?: number) => Promise<void>;
-    'slides': DeckdeckgoSlideDefinition[];
     'updateSlides': () => Promise<void>;
     'width': number;
   }
@@ -53,13 +53,13 @@ declare global {
 declare namespace LocalJSX {
   interface DeckgoRemote {
     'autoConnect'?: boolean;
+    'deck'?: DeckdeckgoDeckDefinition;
     'height'?: number;
     'length'?: number;
     'onEvent'?: (event: CustomEvent<DeckdeckgoEvent>) => void;
     'onState'?: (event: CustomEvent<ConnectionState>) => void;
     'room'?: string;
     'server'?: string;
-    'slides'?: DeckdeckgoSlideDefinition[];
     'width'?: number;
   }
 

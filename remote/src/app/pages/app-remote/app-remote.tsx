@@ -8,7 +8,7 @@ import {
     DeckdeckgoEvent,
     DeckdeckgoEventEmitter,
     DeckdeckgoEventType,
-    DeckdeckgoEventSlides,
+    DeckdeckgoEventDeck,
     DeckdeckgoEventSlideTo,
     DeckdeckgoSlideAction, DeckdeckgoSlideDefinition, DeckdeckgoEventSlideAction
 } from '@deckdeckgo/types';
@@ -76,10 +76,10 @@ export class AppRemote {
         this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async ($event: DeckdeckgoEvent) => {
             if ($event.emitter === DeckdeckgoEventEmitter.DECK) {
                 if ($event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
-                    await this.initSlides(($event as DeckdeckgoEventSlides));
+                    await this.initSlides(($event as DeckdeckgoEventDeck));
                     await this.slidePickerTo(0);
                 } else if ($event.type === DeckdeckgoEventType.SLIDES_UPDATE) {
-                    await this.initSlides(($event as DeckdeckgoEventSlides));
+                    await this.initSlides(($event as DeckdeckgoEventDeck));
                     await this.slideToLastSlide();
                     await this.setNotes();
                 } else if ($event.type === DeckdeckgoEventType.NEXT_SLIDE) {
@@ -132,17 +132,17 @@ export class AppRemote {
         await this.autoConnect();
     }
 
-    private initSlides(event: DeckdeckgoEventSlides): Promise<void> {
+    private initSlides($event: DeckdeckgoEventDeck): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (event.slides) {
-                this.slides = event.slides;
+            if ($event && $event.deck && $event.deck.slides) {
+                this.slides = $event.deck.slides;
             } else {
                 // If the slides definition is not provided, we generate a pseudo list of slides for the deck length
-                const length: number = event.length;
+                const length: number = $event.length;
 
                 for (let i: number = 0; i < length; i++) {
                     this.slides.push({
-                        name: 'deckgo-slide-title'
+                        template: 'deckgo-slide-title'
                     });
                 }
             }
@@ -599,8 +599,8 @@ export class AppRemote {
 
     private renderExtraActions() {
         if (this.slides && this.slides.length > 0 &&
-            (this.slides[this.slideIndex].name === 'deckgo-slide-youtube'.toUpperCase() ||
-             this.slides[this.slideIndex].name === 'deckgo-slide-big-img'.toUpperCase())) {
+            (this.slides[this.slideIndex].template === 'deckgo-slide-youtube'.toUpperCase() ||
+             this.slides[this.slideIndex].template === 'deckgo-slide-big-img'.toUpperCase())) {
 
             const icon: string = this.action === DeckdeckgoSlideAction.PLAY ? 'pause' : 'play';
 

@@ -30,31 +30,40 @@ export class AppNotes {
 
     componentWillLoad() {
         this.subscription = this.notesService.watch().subscribe((slide: DeckdeckgoSlideDefinition) => {
-            if (slide && slide.notes && slide.notes) {
-                const md: Remarkable = new Remarkable({
-                    html: true,
-                    xhtmlOut: true,
-                    breaks: true
-                });
+            let notes: string = undefined;
 
-                const codeRule = (inline: boolean) => (tokens, idx, _options, _env) => {
+            if (document && slide && slide.content) {
+                const element: HTMLDivElement = document.createElement('div');
+                element.innerHTML = slide.content;
 
-                    console.log(tokens[idx]);
+                const notesElement: HTMLElement = element.querySelector('[slot=\'notes\']');
 
-                    return `<deckgo-highlight-code 
+                if (notesElement && notesElement.innerHTML !== '') {
+                    const md: Remarkable = new Remarkable({
+                        html: true,
+                        xhtmlOut: true,
+                        breaks: true
+                    });
+
+                    const codeRule = (inline: boolean) => (tokens, idx, _options, _env) => {
+
+                        console.log(tokens[idx]);
+
+                        return `<deckgo-highlight-code 
                                 ${inline ? 'class="inline"' : ''}
                                 language="${tokens[idx].params ? tokens[idx].params : 'javascript'}">
                                     <code slot="code">${tokens[idx].content}</code>
                             </deckgo-highlight-code>`;
-                };
+                    };
 
-                md.renderer.rules.code = codeRule(true);
-                md.renderer.rules.fence = codeRule(false);
+                    md.renderer.rules.code = codeRule(true);
+                    md.renderer.rules.fence = codeRule(false);
 
-                this.notes = md.render(slide.notes.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, ''));
-            } else {
-                this.notes = undefined;
+                    notes = md.render(notesElement.innerHTML.replace(/<(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>/gmi, ''));
+                }
             }
+
+            this.notes = notes;
         });
     }
 

@@ -8,10 +8,21 @@ export enum DeckdeckgoSlideAction {
     PAUSE = 'pause'
 }
 
-export interface DeckdeckgoSlideDefinition {
+export interface DeckdeckgoAttributeDefinition {
     name: string;
-    title?: string;
-    notes?: string;
+    value?: any;
+}
+
+export interface DeckdeckgoSlideDefinition {
+    template: string;
+    content?: string;
+    attributes?: DeckdeckgoAttributeDefinition[];
+}
+
+export interface DeckdeckgoDeckDefinition {
+    slides: DeckdeckgoSlideDefinition[];
+    attributes?: DeckdeckgoAttributeDefinition[];
+    background?: string;
 }
 
 export enum DeckdeckgoEventType {
@@ -60,9 +71,9 @@ export interface DeckdeckgoEventSlideTo extends DeckdeckgoEvent {
     speed?: number
 }
 
-export interface DeckdeckgoEventSlides extends DeckdeckgoEvent {
+export interface DeckdeckgoEventDeck extends DeckdeckgoEvent {
     length: number;
-    slides: DeckdeckgoSlideDefinition[];
+    deck: DeckdeckgoDeckDefinition;
 }
 
 export interface DeckdeckgoEventSlideAction extends DeckdeckgoEvent {

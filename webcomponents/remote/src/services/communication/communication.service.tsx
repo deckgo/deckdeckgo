@@ -6,7 +6,7 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {
   DeckdeckgoEvent,
   DeckdeckgoEventSlideAction,
-  DeckdeckgoEventSlides,
+  DeckdeckgoEventDeck,
   DeckdeckgoEventSlideTo
 } from '@deckdeckgo/types';
 
@@ -233,7 +233,7 @@ export class CommunicationService {
     this.event.next(data);
   };
 
-  emit(data: DeckdeckgoEvent | DeckdeckgoEventSlides | DeckdeckgoEventSlideTo | DeckdeckgoEventSlideAction) {
+  emit(data: DeckdeckgoEvent | DeckdeckgoEventDeck | DeckdeckgoEventSlideTo | DeckdeckgoEventSlideAction) {
     if (this.dataChannelOut) {
       this.dataChannelOut.send(JSON.stringify(data));
     }

@@ -239,7 +239,7 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            deckgoRemoteElement.slides = $event.detail;
+            deckgoRemoteElement.deck = $event.detail;
 
             await this.updateRemoteSlidesOnSlidesDidLoad($event);
 
@@ -447,13 +447,13 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            const slidesDefinition: any[] = await (deck as any).getSlidesDefinition();
+            const deckDefinition: any = await (deck as any).getDeckDefinition();
 
-            if (slidesDefinition && slidesDefinition.length > 0) {
+            if (deckDefinition) {
                 const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
                 if (deckgoRemoteElement) {
-                    deckgoRemoteElement.slides = slidesDefinition;
+                    deckgoRemoteElement.deck = deckDefinition;
 
                     await this.updateRemoteSlides();
                 }
