@@ -1,3 +1,14 @@
+<a name="1.0.0-rc.1-3"></a>
+# 1.0.0-rc.1-3 (2019-11-03)
+
+### Features
+
+* update keyboard assist to support PageUp/PageDown
+
+### Libs
+
+* update to most recent dependencies
+
 <a name="1.0.0-rc.1-2"></a>
 # 1.0.0-rc.1-2 (2019-10-07)
 
