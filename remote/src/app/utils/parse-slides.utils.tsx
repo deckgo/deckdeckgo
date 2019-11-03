@@ -5,6 +5,7 @@ import uuid from 'uuid/v4';
 import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
 
 import {ParseElementsUtils} from './parse-elements.utils';
+import {ParseStyleUtils} from './parse-style.utils';
 
 export class ParseSlidesUtils {
 
@@ -53,30 +54,17 @@ export class ParseSlidesUtils {
     }
 
     private static parseAttributes(attributes: DeckdeckgoAttributeDefinition[]): Promise<any> {
-        return new Promise<any>((resolve) => {
+        return new Promise<any>(async (resolve) => {
             const attr: any = {};
 
             if (attributes && attributes.length > 0) {
-                attributes.forEach((def: DeckdeckgoAttributeDefinition) => {
-                    if (def.name === 'style' && def.value) {
-                        const styles: any[] = [];
-
-                        const splitStyles: string[] = def.value.split(';');
-
-                        if (splitStyles && splitStyles.length > 0) {
-                            splitStyles.forEach((style: string) => {
-                               const split: string[] = style.split(':');
-                               if (split && split.length >= 1) {
-                                   styles[split[0].trim()] = split.length >= 2 && split[1] ? split[1].trim() : undefined;
-                               }
-                            });
-
-                            attr['style'] = styles;
-                        }
+                for (const def of attributes) {
+                    if (def.name === 'style') {
+                        attr['style'] = await ParseStyleUtils.convertStyle(def.value);
                     } else {
                         attr[def.name] = def.value;
                     }
-                })
+                }
             }
 
             resolve(attr);
