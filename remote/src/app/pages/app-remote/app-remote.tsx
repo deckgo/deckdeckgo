@@ -21,6 +21,7 @@ import {ParseSlidesUtils} from '../../utils/parse-slides.utils';
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
 import {AccelerometerService} from '../../services/accelerometer/accelerometer.service';
 import {NotesService} from '../../services/notes/notes.service';
+import {ParseAttributesUtils} from '../../utils/parse-attributes.utils';
 
 @Component({
     tag: 'app-remote',
@@ -44,6 +45,7 @@ export class AppRemote {
 
     @State() private slides: JSX.IntrinsicElements[] = [];
     @State() private slideIndex: number = 0;
+    @State() private deckAttributes: any;
 
     @State() drawing: boolean = false;
 
@@ -140,6 +142,8 @@ export class AppRemote {
             if ($event && $event.deck) {
                 const slidesElements: JSX.IntrinsicElements[] = await ParseSlidesUtils.parseSlides($event.deck);
                 this.slides = [...slidesElements];
+
+                this.deckAttributes = await ParseAttributesUtils.parseAttributes($event.deck.attributes);
             } else {
                 this.slides = undefined;
             }
@@ -558,10 +562,8 @@ export class AppRemote {
     }
 
     private renderDeck() {
-        // TODO deck style
-
         return <div class="deck">
-            <deckgo-deck embedded={true}
+            <deckgo-deck embedded={true} {...this.deckAttributes}
                          onSlidesDidLoad={() => this.initDeck()}
                          onSlideNextDidChange={() => this.nextSlide(false)}
                          onSlidePrevDidChange={() => this.prevSlide(false)}

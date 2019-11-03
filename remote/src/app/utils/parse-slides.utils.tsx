@@ -2,10 +2,10 @@ import {h, JSX} from '@stencil/core';
 
 import uuid from 'uuid/v4';
 
-import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
+import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
 import {ParseElementsUtils} from './parse-elements.utils';
-import {ParseStyleUtils} from './parse-style.utils';
+import {ParseAttributesUtils} from './parse-attributes.utils';
 
 export class ParseSlidesUtils {
 
@@ -37,7 +37,7 @@ export class ParseSlidesUtils {
         return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             const SlideElement: string = slide.template;
 
-            const attributes: any = await this.parseAttributes(slide.attributes);
+            const attributes: any = await ParseAttributesUtils.parseAttributes(slide.attributes);
 
             // Create a div to parse back to JSX its children
             const div = document.createElement('div');
@@ -51,24 +51,6 @@ export class ParseSlidesUtils {
 
             resolve(result);
         });
-    }
-
-    private static parseAttributes(attributes: DeckdeckgoAttributeDefinition[]): Promise<any> {
-        return new Promise<any>(async (resolve) => {
-            const attr: any = {};
-
-            if (attributes && attributes.length > 0) {
-                for (const def of attributes) {
-                    if (def.name === 'style') {
-                        attr['style'] = await ParseStyleUtils.convertStyle(def.value);
-                    } else {
-                        attr[def.name] = def.value;
-                    }
-                }
-            }
-
-            resolve(attr);
-        })
     }
 
     private static isSupportedTemplate(slide: DeckdeckgoSlideDefinition): boolean {
