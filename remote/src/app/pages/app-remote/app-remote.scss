@@ -129,6 +129,10 @@ app-remote {
     --pager-text-slides-display: block;
     --pager-size: 64px;
     --pager-text-size: 0.6rem;
+
+    a, deckgo-social {
+      pointer-events: none;
+    }
   }
 
   ion-spinner {
