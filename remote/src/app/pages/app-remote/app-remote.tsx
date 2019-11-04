@@ -579,8 +579,8 @@ export class AppRemote {
             return [<main>
                     {this.renderDeck()}
                     <div class="deck-navigation-buttons">
-                        <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevSlide(true)}><ion-label>Previous slide</ion-label></ion-button></div>
-                        <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.nextSlide(true)}><ion-label>Next slide</ion-label></ion-button></div>
+                        <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevSlide(true)}><ion-label>Previous</ion-label></ion-button></div>
+                        <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.nextSlide(true)}><ion-label>Next</ion-label></ion-button></div>
 
                         {this.renderExtraActions()}
                     </div>
