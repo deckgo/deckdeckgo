@@ -21,6 +21,7 @@ import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
+import {ParseContentUtils} from '../../../../utils/editor/parse-content.utils';
 
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
@@ -711,10 +712,7 @@ export class DeckEventsHandler {
                 return;
             }
 
-            let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable="false"|contenteditable/gi, '');
-            result = result.replace(/editable=""|editable="true"|editable/gi, '');
-            result = result.replace(/highlighted=""|highlighted="true"|highlighted/gi, '');
-            result = result.replace(/class="[a-zA-Z0-9:;\.\s\(\)\-\,]*"/gi, '');
+            let result: string = await ParseContentUtils.cleanContent(content);
 
             if (!slide.hasAttribute('custom-background')) {
                 result = result.replace(/<div slot="background">(.*?)<\/div>/g, '');

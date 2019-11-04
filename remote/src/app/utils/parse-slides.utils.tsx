@@ -6,6 +6,7 @@ import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition} from '@deckdeckgo/t
 
 import {ParseElementsUtils} from './parse-elements.utils';
 import {ParseAttributesUtils} from './parse-attributes.utils';
+import {ParseContentUtils} from './parse-content.utils';
 
 export class ParseSlidesUtils {
 
@@ -45,7 +46,7 @@ export class ParseSlidesUtils {
 
             // Create a div to parse back to JSX its children
             const div = document.createElement('div');
-            div.innerHTML = slide.content;
+            div.innerHTML = await ParseContentUtils.cleanContent(slide.content);
 
             const content = await ParseElementsUtils.parseElements(div, true);
 
