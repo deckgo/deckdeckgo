@@ -526,8 +526,8 @@ export class DeckdeckgoDeck {
             name: attribute.name
           };
 
-          if (attribute.value && attribute.value) {
-            attr.value = attribute.value;
+          if (attribute.value !== undefined) {
+            attr.value = `${attribute.value}`;
           }
 
           results.push(attr);
