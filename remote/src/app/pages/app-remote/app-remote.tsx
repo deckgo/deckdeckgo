@@ -636,7 +636,9 @@ export class AppRemote {
 
     private renderDeck() {
         return <div class="deck">
-            <deckgo-deck embedded={true} {...this.deckAttributes} revealOnMobile={this.deckRevealOnMobile} reveal={this.deckReveal}
+            <deckgo-deck embedded={true} {...this.deckAttributes}
+                         keyboard={false}
+                         revealOnMobile={this.deckRevealOnMobile} reveal={this.deckReveal}
                          onSlidesDidLoad={() => this.initDeck()}
                          onSlideNextDidChange={() => this.slideDidChange(false)}
                          onSlidePrevDidChange={() => this.slideDidChange(true)}
