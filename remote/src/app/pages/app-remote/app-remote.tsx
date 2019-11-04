@@ -257,7 +257,7 @@ export class AppRemote {
         const element: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.slideIndex + 1) + ')');
 
         this.extraPlayAction = element && element.nodeName && (
-            element.nodeName.toLowerCase() === 'deckgo-slide-youtube'.toUpperCase() || element.nodeName.toLowerCase() === 'deckgo-slide-video'.toUpperCase()
+            element.nodeName.toLowerCase() === 'deckgo-slide-youtube' || element.nodeName.toLowerCase() === 'deckgo-slide-video'
         );
     }
 
