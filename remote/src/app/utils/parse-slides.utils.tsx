@@ -61,6 +61,7 @@ export class ParseSlidesUtils {
     private static isSupportedTemplate(slide: DeckdeckgoSlideDefinition): boolean {
         return slide.template && ['deckgo-slide-title',
             'deckgo-slide-author',
+            'deckgo-slide-code',
             'deckgo-slide-chart',
             'deckgo-slide-split',
             'deckgo-slide-qrcode',

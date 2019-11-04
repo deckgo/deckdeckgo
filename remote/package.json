@@ -23,6 +23,7 @@
     "@deckdeckgo/slide-author": "^1.0.0-rc.1",
     "@deckdeckgo/slide-big-img": "^1.0.0-rc.1",
     "@deckdeckgo/slide-chart": "^1.0.0-rc.2",
+    "@deckdeckgo/slide-code": "^1.0.0-rc.1",
     "@deckdeckgo/slide-content": "^1.0.0-rc.1",
     "@deckdeckgo/slide-countdown": "^1.0.0-rc.1",
     "@deckdeckgo/slide-gif": "^1.0.0-rc.1-1",

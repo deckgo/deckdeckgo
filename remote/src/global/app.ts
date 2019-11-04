@@ -8,6 +8,7 @@ import '@deckdeckgo/charts';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-author';
+import '@deckdeckgo/slide-code';
 import '@deckdeckgo/slide-chart';
 import '@deckdeckgo/slide-split';
 import '@deckdeckgo/slide-qrcode';
