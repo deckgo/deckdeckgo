@@ -58,7 +58,17 @@ export class ParseSlidesUtils {
     }
 
     private static isSupportedTemplate(slide: DeckdeckgoSlideDefinition): boolean {
-        return slide.template && ['deckgo-slide-title'].indexOf(slide.template) > -1;
+        return slide.template && ['deckgo-slide-title',
+            'deckgo-slide-author',
+            'deckgo-slide-chart',
+            'deckgo-slide-split',
+            'deckgo-slide-qrcode',
+            'deckgo-slide-content',
+            'deckgo-slide-gif',
+            'deckgo-slide-countdown',
+            'deckgo-slide-youtube',
+            'deckgo-slide-big-img',
+            'deckgo-slide-video'].indexOf(slide.template) > -1;
     }
 
     private static parseDummySlide(index: number): Promise<JSX.IntrinsicElements> {
