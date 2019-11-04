@@ -10,8 +10,10 @@ import {
     DeckdeckgoEventType,
     DeckdeckgoEventDeck,
     DeckdeckgoEventSlideTo,
-    DeckdeckgoSlideAction, DeckdeckgoEventSlideAction,
-    DeckdeckgoEventSlide
+    DeckdeckgoSlideAction,
+    DeckdeckgoEventSlideAction,
+    DeckdeckgoEventSlide,
+    DeckdeckgoEventNextPrevSlide
 } from '@deckdeckgo/types';
 
 // Utils
@@ -93,9 +95,9 @@ export class AppRemote {
                     await this.updateSlide(($event as DeckdeckgoEventSlide));
                     await this.setNotes();
                 } else if ($event.type === DeckdeckgoEventType.NEXT_SLIDE) {
-                    await this.animateNextSlide();
+                    await this.animateNextSlide(($event as DeckdeckgoEventNextPrevSlide).slideAnimation);
                 } else if ($event.type === DeckdeckgoEventType.PREV_SLIDE) {
-                    await this.animatePrevSlide();
+                    await this.animatePrevSlide(($event as DeckdeckgoEventNextPrevSlide).slideAnimation);
                 } else if ($event.type === DeckdeckgoEventType.SLIDE_TO) {
                     const index: number = ($event as DeckdeckgoEventSlideTo).index;
                     const speed: number = ($event as DeckdeckgoEventSlideTo).speed;
@@ -110,13 +112,7 @@ export class AppRemote {
         });
 
         this.acceleratorSubscription = this.accelerometerService.watch().subscribe(async (prev: boolean) => {
-            if (prev) {
-                await this.prevSlide(false);
-                await this.animatePrevSlide();
-            } else {
-                await this.nextSlide(false);
-                await this.animateNextSlide();
-            }
+            await this.prevNextSlide(prev, false);
 
             setTimeout(async () => {
                 await this.startAccelerometer();
@@ -215,18 +211,36 @@ export class AppRemote {
         });
     }
 
-    private async nextSlide(slideAnimation: boolean): Promise<void> {
-        await this.prevNextSlide(DeckdeckgoEventType.NEXT_SLIDE, slideAnimation);
+    private async prevNextSlide(prev: boolean, slideAnimation: boolean) {
+        if (prev) {
+            await this.emitPrevSlide(slideAnimation);
+            await this.animatePrevSlide(slideAnimation);
+        } else {
+            await this.emitNextSlide(slideAnimation);
+            await this.animateNextSlide(slideAnimation);
+        }
     }
 
-    private async prevSlide(slideAnimation: boolean) {
-        await this.prevNextSlide(DeckdeckgoEventType.PREV_SLIDE, slideAnimation);
-    }
-
-    private async prevNextSlide(type: DeckdeckgoEventType, slideAnimation: boolean) {
-        this.emitSlidePrevNext(type, slideAnimation);
+    private async slideDidChange(prev: boolean) {
+        if (prev) {
+            await this.emitPrevSlide(false);
+        } else {
+            await this.emitNextSlide(false);
+        }
 
         await this.afterSwipe();
+    }
+
+    private async emitNextSlide(slideAnimation: boolean): Promise<void> {
+        await this.emitPrevNextSlide(DeckdeckgoEventType.NEXT_SLIDE, slideAnimation);
+    }
+
+    private async emitPrevSlide(slideAnimation: boolean) {
+        await this.emitPrevNextSlide(DeckdeckgoEventType.PREV_SLIDE, slideAnimation);
+    }
+
+    private async emitPrevNextSlide(type: DeckdeckgoEventType, slideAnimation: boolean) {
+        this.emitSlidePrevNext(type, slideAnimation);
     }
 
     private async afterSwipe() {
@@ -279,19 +293,19 @@ export class AppRemote {
         });
     }
 
-    private async animateNextSlide() {
-        await this.animatePrevNextSlide(true);
+    private async animateNextSlide(slideAnimation: boolean) {
+        await this.animatePrevNextSlide(true, slideAnimation);
 
         await this.afterSwipe();
     }
 
-    private async animatePrevSlide() {
-        await this.animatePrevNextSlide(false);
+    private async animatePrevSlide(slideAnimation: boolean) {
+        await this.animatePrevNextSlide(false, slideAnimation);
 
         await this.afterSwipe();
     }
 
-    private async animatePrevNextSlide(next: boolean) {
+    private async animatePrevNextSlide(next: boolean, slideAnimation: boolean) {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (!deck) {
@@ -299,9 +313,9 @@ export class AppRemote {
         }
 
         if (next) {
-            await (deck as any).slideNext(false, false);
+            await (deck as any).slideNext(slideAnimation, false);
         } else {
-            await (deck as any).slidePrev(false, false);
+            await (deck as any).slidePrev(slideAnimation, false);
         }
     }
 
@@ -579,8 +593,8 @@ export class AppRemote {
             return [<main>
                     {this.renderDeck()}
                     <div class="deck-navigation-buttons">
-                        <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevSlide(true)}><ion-label>Previous</ion-label></ion-button></div>
-                        <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.nextSlide(true)}><ion-label>Next</ion-label></ion-button></div>
+                        <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevNextSlide(true, true)}><ion-label>Previous</ion-label></ion-button></div>
+                        <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.prevNextSlide(false, true)}><ion-label>Next</ion-label></ion-button></div>
 
                         {this.renderExtraActions()}
                     </div>
@@ -617,8 +631,8 @@ export class AppRemote {
         return <div class="deck">
             <deckgo-deck embedded={true} {...this.deckAttributes}
                          onSlidesDidLoad={() => this.initDeck()}
-                         onSlideNextDidChange={() => this.nextSlide(false)}
-                         onSlidePrevDidChange={() => this.prevSlide(false)}
+                         onSlideNextDidChange={() => this.slideDidChange(false)}
+                         onSlidePrevDidChange={() => this.slideDidChange(true)}
                          onSlideWillChange={(event: CustomEvent<number>) => this.moveDraw(event)}
                          onSlideDrag={(event: CustomEvent<number>) => this.scrollDraw(event)}>
                 {this.slides}

@@ -66,11 +66,19 @@ export class RemoteEventsHandler {
             });
 
             deck.removeEventListener('slideNextDidChange', async () => {
-                await this.slidePrevNext(true)
+                await this.slidePrevNext(true, false)
             });
 
             deck.removeEventListener('slidePrevDidChange', async () => {
-                await this.slidePrevNext(false)
+                await this.slidePrevNext(false, false)
+            });
+
+            deck.removeEventListener('slideNextDidAnimate', async () => {
+                await this.slidePrevNext(true, true)
+            });
+
+            deck.removeEventListener('slidePrevDidAnimate', async () => {
+                await this.slidePrevNext(false, true)
             });
 
             deck.removeEventListener('slideWillChange', async (event) => {
@@ -142,10 +150,10 @@ export class RemoteEventsHandler {
 
             if (type === 'next_slide') {
                 const slideAnimation = $event.detail.slideAnimation;
-                await deck.slideNext(slideAnimation, slideAnimation);
+                await deck.slideNext(slideAnimation, false);
             } else if (type === 'prev_slide') {
                 const slideAnimation = $event.detail.slideAnimation;
-                await deck.slidePrev(slideAnimation, slideAnimation);
+                await deck.slidePrev(slideAnimation, false);
             } else if (type === 'slide_action') {
                 await this.youtubePlayPause($event);
             } else if (type === 'slide_to') {
@@ -260,11 +268,19 @@ export class RemoteEventsHandler {
             }
 
             deck.addEventListener('slideNextDidChange', async () => {
-                await this.slidePrevNext(true)
+                await this.slidePrevNext(true, false)
             });
 
             deck.addEventListener('slidePrevDidChange', async () => {
-                await this.slidePrevNext(false)
+                await this.slidePrevNext(false, false)
+            });
+
+            deck.addEventListener('slideNextDidAnimate', async () => {
+                await this.slidePrevNext(true, true)
+            });
+
+            deck.addEventListener('slidePrevDidAnimate', async () => {
+                await this.slidePrevNext(false, true)
             });
 
             deck.addEventListener('slideWillChange', async (event) => {
@@ -283,7 +299,7 @@ export class RemoteEventsHandler {
         });
     }
 
-    private slidePrevNext(next) {
+    private slidePrevNext(next: boolean, animation: boolean) {
         return new Promise(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
@@ -293,9 +309,9 @@ export class RemoteEventsHandler {
             }
 
             if (next) {
-                await deckgoRemoteElement.nextSlide();
+                await deckgoRemoteElement.nextSlide(animation);
             } else {
-                await deckgoRemoteElement.prevSlide();
+                await deckgoRemoteElement.prevSlide(animation);
             }
 
             resolve();

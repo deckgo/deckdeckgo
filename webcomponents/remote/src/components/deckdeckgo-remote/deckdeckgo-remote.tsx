@@ -397,13 +397,13 @@ export class DeckdeckgoRemote {
   }
 
   @Method()
-  async nextSlide() {
-    this.emitSlidePrevNext(DeckdeckgoEventType.NEXT_SLIDE);
+  async nextSlide(slideAnimation: boolean = false) {
+    this.emitSlidePrevNext(DeckdeckgoEventType.NEXT_SLIDE, slideAnimation);
   }
 
   @Method()
-  async prevSlide() {
-    this.emitSlidePrevNext(DeckdeckgoEventType.PREV_SLIDE);
+  async prevSlide(slideAnimation: boolean = false) {
+    this.emitSlidePrevNext(DeckdeckgoEventType.PREV_SLIDE, slideAnimation);
   }
 
   @Method()
@@ -445,8 +445,8 @@ export class DeckdeckgoRemote {
     });
   }
 
-  private emitSlidePrevNext(type: DeckdeckgoEventType) {
-    this.communicationService.emit({type: type, emitter: DeckdeckgoEventEmitter.DECK});
+  private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
+    this.communicationService.emit({type: type, emitter: DeckdeckgoEventEmitter.DECK, slideAnimation: slideAnimation});
   }
 
   render() {

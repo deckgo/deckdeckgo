@@ -26,10 +26,10 @@ export namespace Components {
     'height': number;
     'length': number;
     'moveDraw': (leftOffset: number, transitionDuration: string) => Promise<void>;
-    'nextSlide': () => Promise<void>;
+    'nextSlide': (slideAnimation?: boolean) => Promise<void>;
     'pause': () => Promise<void>;
     'play': () => Promise<void>;
-    'prevSlide': () => Promise<void>;
+    'prevSlide': (slideAnimation?: boolean) => Promise<void>;
     'room': string;
     'server': string;
     'slideTo': (index: number, speed?: number) => Promise<void>;

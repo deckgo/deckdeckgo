@@ -8,7 +8,8 @@ import {
   DeckdeckgoEventSlideAction,
   DeckdeckgoEventDeck,
   DeckdeckgoEventSlide,
-  DeckdeckgoEventSlideTo
+  DeckdeckgoEventSlideTo,
+  DeckdeckgoEventNextPrevSlide
 } from '@deckdeckgo/types';
 
 const configuration: RTCConfiguration = {
@@ -234,7 +235,7 @@ export class CommunicationService {
     this.event.next(data);
   };
 
-  emit(data: DeckdeckgoEvent | DeckdeckgoEventDeck | DeckdeckgoEventSlide | DeckdeckgoEventSlideTo | DeckdeckgoEventSlideAction) {
+  emit(data: DeckdeckgoEvent | DeckdeckgoEventDeck | DeckdeckgoEventSlide | DeckdeckgoEventSlideTo | DeckdeckgoEventSlideAction | DeckdeckgoEventNextPrevSlide) {
     if (this.dataChannelOut) {
       this.dataChannelOut.send(JSON.stringify(data));
     }

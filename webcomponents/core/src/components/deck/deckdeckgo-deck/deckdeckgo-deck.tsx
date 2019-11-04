@@ -48,6 +48,8 @@ export class DeckdeckgoDeck {
   private length: number = 0;
 
   @Event() slidesDidLoad: EventEmitter;
+  @Event() slideNextDidAnimate: EventEmitter<void>;
+  @Event() slidePrevDidAnimate: EventEmitter<void>;
   @Event() slideNextDidChange: EventEmitter<number>;
   @Event() slidePrevDidChange: EventEmitter<number>;
   @Event() slideToChange: EventEmitter<number>;
@@ -662,6 +664,12 @@ export class DeckdeckgoDeck {
       await this.afterSwipe(swipeLeft);
 
       await this.initSlidePagerColor();
+    } else if (emitEvent) {
+      if (swipeLeft) {
+        this.slideNextDidAnimate.emit();
+      } else {
+        this.slidePrevDidAnimate.emit();
+      }
     }
   }
 

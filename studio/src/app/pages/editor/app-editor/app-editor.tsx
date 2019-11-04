@@ -275,9 +275,9 @@ export class AppEditor {
         }
 
         if ($event.detail) {
-            await (deck as any).slideNext(false, false);
+            await (deck as any).slideNext(false, true);
         } else {
-            await (deck as any).slidePrev(false, false);
+            await (deck as any).slidePrev(false, true);
         }
     }
 

@@ -101,7 +101,9 @@ declare namespace LocalJSX {
     'keyboard'?: boolean;
     'onMouseInactivity'?: (event: CustomEvent<boolean>) => void;
     'onSlideDrag'?: (event: CustomEvent<number>) => void;
+    'onSlideNextDidAnimate'?: (event: CustomEvent<void>) => void;
     'onSlideNextDidChange'?: (event: CustomEvent<number>) => void;
+    'onSlidePrevDidAnimate'?: (event: CustomEvent<void>) => void;
     'onSlidePrevDidChange'?: (event: CustomEvent<number>) => void;
     'onSlideToChange'?: (event: CustomEvent<number>) => void;
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
