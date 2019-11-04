@@ -4,5 +4,7 @@ app-draw {
 
     transition-duration: var(--left-offset-transition, 0ms);
     transform: translate3d(var(--left-offset, 0px), 0px, 0px);
+
+    pointer-events: none;
   }
 }

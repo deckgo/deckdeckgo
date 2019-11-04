@@ -168,7 +168,7 @@ export class AppDraw {
                 return;
             }
 
-            this.canvas.style.zIndex = '1';
+            this.canvas.style.pointerEvents = 'all';
 
             this.canvas.addEventListener('mousedown', this.startEvent, {passive: true});
             this.canvas.addEventListener('touchstart', this.startEvent, {passive: true});
@@ -190,7 +190,7 @@ export class AppDraw {
                 return;
             }
 
-            this.canvas.style.zIndex = '0';
+            this.canvas.style.pointerEvents = 'none';
 
             this.canvas.removeEventListener('mousedown', this.startEvent, true);
             this.canvas.removeEventListener('touchstart', this.startEvent, true);
