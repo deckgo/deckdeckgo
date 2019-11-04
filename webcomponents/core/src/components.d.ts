@@ -23,6 +23,7 @@ export namespace Components {
     'getActiveIndex': () => Promise<number>;
     'getDeckDefinition': () => Promise<DeckdeckgoDeckDefinition>;
     'getLength': () => Promise<number>;
+    'getSlideDefinition': (index: number) => Promise<DeckdeckgoSlideDefinition>;
     'initSlideSize': () => Promise<void>;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;

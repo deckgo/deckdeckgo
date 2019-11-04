@@ -18,7 +18,7 @@ export class ParseSlidesUtils {
 
             const promises: Promise<JSX.IntrinsicElements | undefined>[] = [];
             deck.slides.forEach((slide: DeckdeckgoSlideDefinition, index: number) => {
-                promises.push(this.isSupportedTemplate(slide) ? this.parseSlide(slide) : this.parseDummySlide(index));
+                promises.push(this.parseSlide(slide, index));
             });
 
             if (!promises || promises.length <= 0) {
@@ -33,7 +33,11 @@ export class ParseSlidesUtils {
 
     }
 
-    private static parseSlide(slide: DeckdeckgoSlideDefinition): Promise<JSX.IntrinsicElements> {
+    static parseSlide(slide: DeckdeckgoSlideDefinition, index: number): Promise<JSX.IntrinsicElements> {
+        return this.isSupportedTemplate(slide) ? this.parseSupportedSlide(slide) : this.parseDummySlide(index);
+    }
+
+    private static parseSupportedSlide(slide: DeckdeckgoSlideDefinition): Promise<JSX.IntrinsicElements> {
         return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             const SlideElement: string = slide.template;
 

@@ -7,6 +7,7 @@ import {
   DeckdeckgoEvent,
   DeckdeckgoEventSlideAction,
   DeckdeckgoEventDeck,
+  DeckdeckgoEventSlide,
   DeckdeckgoEventSlideTo
 } from '@deckdeckgo/types';
 
@@ -233,7 +234,7 @@ export class CommunicationService {
     this.event.next(data);
   };
 
-  emit(data: DeckdeckgoEvent | DeckdeckgoEventDeck | DeckdeckgoEventSlideTo | DeckdeckgoEventSlideAction) {
+  emit(data: DeckdeckgoEvent | DeckdeckgoEventDeck | DeckdeckgoEventSlide | DeckdeckgoEventSlideTo | DeckdeckgoEventSlideAction) {
     if (this.dataChannelOut) {
       this.dataChannelOut.send(JSON.stringify(data));
     }

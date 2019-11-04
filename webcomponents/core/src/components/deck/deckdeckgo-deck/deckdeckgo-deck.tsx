@@ -448,7 +448,7 @@ export class DeckdeckgoDeck {
   }
 
   @Method()
-  getDeckDefinition(): Promise<DeckdeckgoDeckDefinition> {
+  getDeckDefinition(): Promise<DeckdeckgoDeckDefinition | null> {
     return new Promise<DeckdeckgoDeckDefinition | null>(async (resolve) => {
       const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
 
@@ -489,6 +489,26 @@ export class DeckdeckgoDeck {
       };
 
       resolve(deck);
+    });
+  }
+
+  @Method()
+  getSlideDefinition(index: number): Promise<DeckdeckgoSlideDefinition | null> {
+    return new Promise<DeckdeckgoSlideDefinition | null>(async (resolve) => {
+      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+      if (!slide) {
+        resolve(null);
+        return;
+      }
+
+      const attributes: DeckdeckgoAttributeDefinition[] = await this.getAttributesDefinition(slide.attributes);
+
+      resolve({
+        template: slide.tagName ? slide.tagName.toLowerCase() : undefined,
+        content: slide.innerHTML,
+        attributes: attributes
+      });
     });
   }
 

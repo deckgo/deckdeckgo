@@ -10,7 +10,8 @@ import {
   DeckdeckgoEventEmitter,
   DeckdeckgoEventType,
   DeckdeckgoSlideAction,
-  DeckdeckgoDeckDefinition
+  DeckdeckgoDeckDefinition,
+  DeckdeckgoSlideDefinition
 } from '@deckdeckgo/types';
 
 // Services
@@ -93,7 +94,7 @@ export class DeckdeckgoRemote {
   @Prop() height: number;
   @Prop() length: number;
 
-  @Prop() deck: DeckdeckgoDeckDefinition;
+  @Prop({mutable: true}) deck: DeckdeckgoDeckDefinition;
 
   @Prop() autoConnect: boolean = true;
 
@@ -335,7 +336,33 @@ export class DeckdeckgoRemote {
 
   @Method()
   async updateSlides() {
-    await this.sendSlidesToApp(DeckdeckgoEventType.SLIDES_UPDATE);
+    await this.sendSlidesToApp(DeckdeckgoEventType.DECK_UPDATE);
+  }
+
+  @Method()
+  async updateSlide(index: number, slide: DeckdeckgoSlideDefinition) {
+    return new Promise<void>((resolve) => {
+      if (!this.deck || !this.deck.slides || this.deck.slides.length <= index || index < 0) {
+        resolve();
+        return;
+      }
+
+      this.deck.slides[index] = slide;
+
+      if (!slide) {
+        resolve();
+        return;
+      }
+
+      this.communicationService.emit({
+        type: DeckdeckgoEventType.SLIDE_UPDATE,
+        emitter: DeckdeckgoEventEmitter.DECK,
+        index: index,
+        slide: slide
+      });
+
+      resolve();
+    });
   }
 
   @Method()

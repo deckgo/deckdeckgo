@@ -10,7 +10,8 @@ import {
     DeckdeckgoEventType,
     DeckdeckgoEventDeck,
     DeckdeckgoEventSlideTo,
-    DeckdeckgoSlideAction, DeckdeckgoEventSlideAction
+    DeckdeckgoSlideAction, DeckdeckgoEventSlideAction,
+    DeckdeckgoEventSlide
 } from '@deckdeckgo/types';
 
 // Utils
@@ -84,9 +85,12 @@ export class AppRemote {
                 if ($event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
                     await this.initSlides(($event as DeckdeckgoEventDeck));
                     await this.slidePickerTo(0);
-                } else if ($event.type === DeckdeckgoEventType.SLIDES_UPDATE) {
+                } else if ($event.type === DeckdeckgoEventType.DECK_UPDATE) {
                     await this.initSlides(($event as DeckdeckgoEventDeck));
                     await this.slideToLastSlide();
+                    await this.setNotes();
+                } else if ($event.type === DeckdeckgoEventType.SLIDE_UPDATE) {
+                    await this.updateSlide(($event as DeckdeckgoEventSlide));
                     await this.setNotes();
                 } else if ($event.type === DeckdeckgoEventType.NEXT_SLIDE) {
                     await this.animateNextSlide();
@@ -147,6 +151,20 @@ export class AppRemote {
                 this.deckAttributes = await ParseAttributesUtils.parseAttributes($event.deck.attributes);
             } else {
                 this.slides = undefined;
+            }
+
+            resolve();
+        });
+    }
+
+    private updateSlide($event: DeckdeckgoEventSlide): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if ($event && $event.slide  && this.slides && this.slides.length >= $event.index) {
+
+                const slideElement: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide($event.slide, $event.index);
+                this.slides[$event.index] = slideElement;
+
+                this.slides = [...this.slides];
             }
 
             resolve();
@@ -318,6 +336,8 @@ export class AppRemote {
             if (deckLength > 0) {
                 await this.slideTo(deckLength - 1);
             }
+
+            await this.setActiveIndex();
         }, {once: true});
     }
 

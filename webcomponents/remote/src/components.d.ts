@@ -10,6 +10,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   DeckdeckgoDeckDefinition,
   DeckdeckgoEvent,
+  DeckdeckgoSlideDefinition,
 } from '@deckdeckgo/types';
 import {
   ConnectionState,
@@ -32,6 +33,7 @@ export namespace Components {
     'room': string;
     'server': string;
     'slideTo': (index: number, speed?: number) => Promise<void>;
+    'updateSlide': (index: number, slide: DeckdeckgoSlideDefinition) => Promise<void>;
     'updateSlides': () => Promise<void>;
     'width': number;
   }
