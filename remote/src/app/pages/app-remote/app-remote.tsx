@@ -388,8 +388,8 @@ export class AppRemote {
         });
     }
 
-    private emitAction(e: UIEvent) {
-        e.stopPropagation();
+    private async emitAction($event: UIEvent) {
+        $event.stopPropagation();
 
         this.action = this.action === DeckdeckgoSlideAction.PLAY ? DeckdeckgoSlideAction.PAUSE : DeckdeckgoSlideAction.PLAY;
 
@@ -397,6 +397,36 @@ export class AppRemote {
             type: DeckdeckgoEventType.SLIDE_ACTION,
             emitter: DeckdeckgoEventEmitter.APP,
             action: this.action
+        });
+
+        await this.actionPlayPause();
+    }
+
+    private actionPlayPause() {
+        return new Promise(async (resolve) => {
+            const deck = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                resolve();
+                return;
+            }
+
+            const index = await deck.getActiveIndex();
+
+            const slideElement: any = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+            if (!slideElement) {
+                resolve();
+                return;
+            }
+
+            if (this.action === DeckdeckgoSlideAction.PAUSE) {
+                await slideElement.pause();
+            } else {
+                await slideElement.play();
+            }
+
+            resolve();
         });
     }
 
