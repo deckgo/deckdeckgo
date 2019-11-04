@@ -1,6 +1,7 @@
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
 
 import {Subscription} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 import {debounce} from '@deckdeckgo/utils';
 
@@ -413,7 +414,7 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            await this.updateRemoteSlides();
+            await this.updateRemoteSlides(this);
 
             resolve();
         });
@@ -429,7 +430,7 @@ export class RemoteEventsHandler {
             }
 
             const observer: MutationObserver = new MutationObserver(async (_mutations: MutationRecord[], _observer: MutationObserver) => {
-                await this.updateRemoteDeckWithDefinition();
+                this.executeIfConnected(this.updateRemoteDeckWithDefinition);
 
                 observer.disconnect();
             });
@@ -440,9 +441,9 @@ export class RemoteEventsHandler {
         });
     }
 
-    private updateRemoteDeckWithDefinition(): Promise<void> {
+    private updateRemoteDeckWithDefinition(self): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+            const deck: HTMLElement = self.el.querySelector('deckgo-deck');
 
             if (!deck || !deck.hasChildNodes()) {
                 resolve();
@@ -452,12 +453,12 @@ export class RemoteEventsHandler {
             const deckDefinition: any = await (deck as any).getDeckDefinition();
 
             if (deckDefinition) {
-                const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+                const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
 
                 if (deckgoRemoteElement) {
                     deckgoRemoteElement.deck = deckDefinition;
 
-                    await this.updateRemoteSlides();
+                    await this.updateRemoteSlides(self);
                 }
             }
 
@@ -465,9 +466,9 @@ export class RemoteEventsHandler {
         });
     }
 
-    private updateCurrentSlideWithDefinition(): Promise<void> {
+    private updateCurrentSlideWithDefinition(self): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+            const deck: HTMLElement = self.el.querySelector('deckgo-deck');
 
             if (!deck || !deck.hasChildNodes()) {
                 resolve();
@@ -479,7 +480,7 @@ export class RemoteEventsHandler {
             const slideDefinition: any = await (deck as any).getSlideDefinition(index);
 
             if (slideDefinition) {
-                const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+                const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
 
                 if (deckgoRemoteElement) {
                     await deckgoRemoteElement.updateSlide(index, slideDefinition);
@@ -490,9 +491,9 @@ export class RemoteEventsHandler {
         });
     }
 
-    private updateRemoteSlides(): Promise<void> {
+    private updateRemoteSlides(self): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+            const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
 
             if (!deckgoRemoteElement) {
                 resolve();
@@ -510,7 +511,7 @@ export class RemoteEventsHandler {
             return;
         }
 
-        await this.deleteRemoteSlide();
+        this.executeIfConnected(this.deleteRemoteSlide);
     };
 
     private slideDidUpdate = async ($event: CustomEvent) => {
@@ -518,7 +519,7 @@ export class RemoteEventsHandler {
             return;
         }
 
-        await this.updateCurrentSlideWithDefinition();
+        this.executeIfConnected(this.updateCurrentSlideWithDefinition);
     };
 
     private deckDidChange = async ($event: CustomEvent) => {
@@ -526,12 +527,20 @@ export class RemoteEventsHandler {
             return;
         }
 
-        await this.updateRemoteDeckWithDefinition();
+        this.executeIfConnected(this.updateRemoteDeckWithDefinition);
     };
 
-    private deleteRemoteSlide(): Promise<void> {
+    private executeIfConnected(func: (self) => Promise<void>) {
+        this.remoteService.watch().pipe(take(1)).subscribe(async (enable: boolean) => {
+            if (enable) {
+                await func(this);
+            }
+        });
+    }
+
+    private deleteRemoteSlide(self): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+            const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
 
             if (!deckgoRemoteElement) {
                 resolve();
