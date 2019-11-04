@@ -14,6 +14,8 @@ import {
   DeckdeckgoSlideDefinition
 } from '@deckdeckgo/types';
 
+import {isMobile} from '@deckdeckgo/utils';
+
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
 
@@ -327,7 +329,8 @@ export class DeckdeckgoRemote {
         type: type,
         emitter: DeckdeckgoEventEmitter.DECK,
         length: this.length,
-        deck: this.deck
+        deck: this.deck,
+        mobile: isMobile()
       });
 
       resolve();

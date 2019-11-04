@@ -74,6 +74,7 @@ export interface DeckdeckgoEventSlideTo extends DeckdeckgoEvent {
 
 export interface DeckdeckgoEventDeck extends DeckdeckgoEvent {
     length: number;
+    mobile: boolean;
     deck: DeckdeckgoDeckDefinition;
 }
 

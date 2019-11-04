@@ -63,6 +63,7 @@ export class DeckdeckgoDeck {
   @Event() mouseInactivity: EventEmitter<boolean>;
 
   @Prop() reveal: boolean = true;
+  @Prop() revealOnMobile: boolean = false;
 
   @State()
   private pagerColor: PagerColor;
@@ -439,7 +440,7 @@ export class DeckdeckgoDeck {
 
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
       // Or we display also all reveal elements on mobile devices as there is no keyboard on mobile device to reveal elements
-      if (!this.reveal || isMobile()) {
+      if (!this.reveal || (!this.revealOnMobile && isMobile())) {
         promises.push(this.revealAllContent());
       }
 

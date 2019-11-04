@@ -31,6 +31,7 @@ export namespace Components {
     'keyboard': boolean;
     'loadBackground': () => Promise<void>;
     'reveal': boolean;
+    'revealOnMobile': boolean;
     'slideNext': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
@@ -109,6 +110,7 @@ declare namespace LocalJSX {
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
     'onSlidesDidLoad'?: (event: CustomEvent<any>) => void;
     'reveal'?: boolean;
+    'revealOnMobile'?: boolean;
   }
   interface DeckgoPager {
     'activeIndex'?: number;

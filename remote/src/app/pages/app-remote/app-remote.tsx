@@ -49,7 +49,11 @@ export class AppRemote {
 
     @State() private slides: JSX.IntrinsicElements[] = [];
     @State() private slideIndex: number = 0;
+
     @State() private deckAttributes: any;
+
+    @State() private deckReveal: boolean = true;
+    @State() private deckRevealOnMobile: boolean = false;
 
     @State() drawing: boolean = false;
 
@@ -85,10 +89,10 @@ export class AppRemote {
         this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async ($event: DeckdeckgoEvent) => {
             if ($event.emitter === DeckdeckgoEventEmitter.DECK) {
                 if ($event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
-                    await this.initSlides(($event as DeckdeckgoEventDeck));
+                    await this.initDeckAndSlides(($event as DeckdeckgoEventDeck));
                     await this.slidePickerTo(0);
                 } else if ($event.type === DeckdeckgoEventType.DECK_UPDATE) {
-                    await this.initSlides(($event as DeckdeckgoEventDeck));
+                    await this.initDeckAndSlides(($event as DeckdeckgoEventDeck));
                     await this.slideToLastSlide();
                     await this.setNotes();
                 } else if ($event.type === DeckdeckgoEventType.SLIDE_UPDATE) {
@@ -138,13 +142,16 @@ export class AppRemote {
         await this.autoConnect();
     }
 
-    private initSlides($event: DeckdeckgoEventDeck): Promise<void> {
+    private initDeckAndSlides($event: DeckdeckgoEventDeck): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if ($event && $event.deck) {
                 const slidesElements: JSX.IntrinsicElements[] = await ParseSlidesUtils.parseSlides($event.deck);
                 this.slides = [...slidesElements];
 
                 this.deckAttributes = await ParseAttributesUtils.parseAttributes($event.deck.attributes);
+
+                this.deckRevealOnMobile = !$event.mobile;
+                this.deckReveal = !$event.mobile;
             } else {
                 this.slides = undefined;
             }
@@ -425,7 +432,7 @@ export class AppRemote {
                 return;
             }
 
-            const index = await deck.getActiveIndex();
+            const index = await (deck as any).getActiveIndex();
 
             const slideElement: any = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
@@ -629,7 +636,7 @@ export class AppRemote {
 
     private renderDeck() {
         return <div class="deck">
-            <deckgo-deck embedded={true} {...this.deckAttributes}
+            <deckgo-deck embedded={true} {...this.deckAttributes} revealOnMobile={this.deckRevealOnMobile} reveal={this.deckReveal}
                          onSlidesDidLoad={() => this.initDeck()}
                          onSlideNextDidChange={() => this.slideDidChange(false)}
                          onSlidePrevDidChange={() => this.slideDidChange(true)}

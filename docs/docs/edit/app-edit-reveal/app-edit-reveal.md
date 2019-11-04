@@ -22,9 +22,9 @@ The animation of such elements will happen when you or your user will use the na
 
 ## Exception
 
-Elements set as "to be animated" are going to be displayed in any case on mobile devices, that's a design choice.
+Elements set as "to be animated" are going to be displayed on mobile devices, that's a design choice, but if you wish to activate the animation for mobile too, you could set the deck's property `revealOnMobile` to `true`.
 
-> I (David here) think that it is better in terms of mobile UX. For example, if a slide would contain for example 10 elements, the users would have to swipe the slide 10 times before being able to read the entire content and navigate. I'm open to suggestion and discussion about it, ping me, open a feature request or even submit a PR if you see this differently.
+> I (David here) think that it is better in terms of mobile UX. For example, if a slide would contain for example 10 elements, the users would have to swipe the slide 10 times before being able to read the entire content and navigate. I'm open to suggestion and discussion about it, if you would rather like a different default behavior.
 
 ## Edit
 
