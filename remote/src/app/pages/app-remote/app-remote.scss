@@ -133,6 +133,10 @@ app-remote {
     a, deckgo-social {
       pointer-events: none;
     }
+
+    h1, h2, h3 {
+      text-transform: inherit;
+    }
   }
 
   ion-spinner {
