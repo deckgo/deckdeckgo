@@ -856,7 +856,11 @@ export class AppEditorToolbar {
                     await this.appendImage(detail.data);
                 }
             }
+
+            this.blockSlide.emit(false);
         });
+
+        this.blockSlide.emit(true);
 
         await modal.present();
     }

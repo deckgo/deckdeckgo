@@ -76,7 +76,7 @@ export class EditorEventsHandler {
         await this.blockSlide($event.detail);
     };
 
-    private blockSlide(blockState: boolean): Promise<void> {
+    blockSlide(blockState: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
