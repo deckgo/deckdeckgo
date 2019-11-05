@@ -139,6 +139,10 @@ app-remote {
     }
 
     font-size: 12px;
+
+    deckgo-lazy-img {
+      pointer-events: none;
+    }
   }
 
   ion-spinner {
