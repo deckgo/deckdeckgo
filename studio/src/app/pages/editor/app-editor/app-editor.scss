@@ -2,13 +2,14 @@
 
 app-editor {
   @import "../../../../global/theme/editor/editor-deck";
-  @import "../../../../global/theme/editor/editor-deck-deck";
-  @import "../../../../global/theme/editor/editor-deck-fonts";
   @import "../../../../global/theme/editor/editor-deck-placeholder";
   @import "../../../../global/theme/editor/editor-deck-img";
-  @import "../../../../global/theme/editor/editor-deck-rtl";
 
   @import "../../../../global/theme/editor/editor-loading";
+
+  @import "./deckdeckgo-deck";
+  @import "./deckdeckgo-deck-fonts";
+  @import "./deckdeckgo-deck-rtl";
 
   app-navigation, app-help {
     &.hidden {

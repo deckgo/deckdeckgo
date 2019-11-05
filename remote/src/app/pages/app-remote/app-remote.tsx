@@ -1,25 +1,33 @@
-import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
+import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
 import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
+
+import {isMobile} from '@deckdeckgo/utils';
 
 // Types
 import {
     DeckdeckgoEvent,
     DeckdeckgoEventEmitter,
     DeckdeckgoEventType,
-    DeckdeckgoEventSlides,
+    DeckdeckgoEventDeck,
     DeckdeckgoEventSlideTo,
-    DeckdeckgoSlideAction, DeckdeckgoSlideDefinition, DeckdeckgoEventSlideAction
+    DeckdeckgoSlideAction,
+    DeckdeckgoEventSlideAction,
+    DeckdeckgoEventSlide,
+    DeckdeckgoEventNextPrevSlide,
+    DeckdeckgoEventDeckReveal
 } from '@deckdeckgo/types';
 
 // Utils
 import {IonControllerUtils} from '../../services/utils/ion-controller-utils';
+import {ParseSlidesUtils} from '../../utils/parse-slides.utils';
 
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
 import {AccelerometerService} from '../../services/accelerometer/accelerometer.service';
 import {NotesService} from '../../services/notes/notes.service';
+import {ParseAttributesUtils} from '../../utils/parse-attributes.utils';
 
 @Component({
     tag: 'app-remote',
@@ -39,14 +47,22 @@ export class AppRemote {
 
     @State() private deckWidth: number;
     @State() private deckHeight: number;
-    @State() private headerHeight: number;
+    @State() private drawHeightOffset: number;
+    @State() private drawWidthOffset: number;
 
-    @State() private slides: DeckdeckgoSlideDefinition[] = [];
+    @State() private slides: JSX.IntrinsicElements[] = [];
     @State() private slideIndex: number = 0;
+
+    @State() private deckAttributes: any;
+
+    @State() private deckReveal: boolean = true;
+    @State() private deckRevealOnMobile: boolean = false;
 
     @State() drawing: boolean = false;
 
     @State() action: DeckdeckgoSlideAction;
+
+    @State() extraPlayAction: boolean = false;
 
     private acceleratorSubscription: Subscription;
     private acceleratorInitSubscription: Subscription;
@@ -76,16 +92,19 @@ export class AppRemote {
         this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async ($event: DeckdeckgoEvent) => {
             if ($event.emitter === DeckdeckgoEventEmitter.DECK) {
                 if ($event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
-                    await this.initSlides(($event as DeckdeckgoEventSlides));
+                    await this.initDeckAndSlides(($event as DeckdeckgoEventDeck));
                     await this.slidePickerTo(0);
-                } else if ($event.type === DeckdeckgoEventType.SLIDES_UPDATE) {
-                    await this.initSlides(($event as DeckdeckgoEventSlides));
+                } else if ($event.type === DeckdeckgoEventType.DECK_UPDATE) {
+                    await this.initDeckAndSlides(($event as DeckdeckgoEventDeck));
                     await this.slideToLastSlide();
                     await this.setNotes();
+                } else if ($event.type === DeckdeckgoEventType.SLIDE_UPDATE) {
+                    await this.updateSlide(($event as DeckdeckgoEventSlide));
+                    await this.setNotes();
                 } else if ($event.type === DeckdeckgoEventType.NEXT_SLIDE) {
-                    await this.animateNextSlide();
+                    await this.animateNextSlide(($event as DeckdeckgoEventNextPrevSlide).slideAnimation);
                 } else if ($event.type === DeckdeckgoEventType.PREV_SLIDE) {
-                    await this.animatePrevSlide();
+                    await this.animatePrevSlide(($event as DeckdeckgoEventNextPrevSlide).slideAnimation);
                 } else if ($event.type === DeckdeckgoEventType.SLIDE_TO) {
                     const index: number = ($event as DeckdeckgoEventSlideTo).index;
                     const speed: number = ($event as DeckdeckgoEventSlideTo).speed;
@@ -95,18 +114,14 @@ export class AppRemote {
                     await this.deleteSlide();
                 } else if ($event.type === DeckdeckgoEventType.SLIDE_ACTION) {
                     this.action = ($event as DeckdeckgoEventSlideAction).action;
+                } else if ($event.type === DeckdeckgoEventType.DECK_REVEAL_UPDATE) {
+                    this.deckReveal = ($event as DeckdeckgoEventDeckReveal).reveal;
                 }
             }
         });
 
         this.acceleratorSubscription = this.accelerometerService.watch().subscribe(async (prev: boolean) => {
-            if (prev) {
-                await this.prevSlide(false);
-                await this.animatePrevSlide();
-            } else {
-                await this.nextSlide(false);
-                await this.animateNextSlide();
-            }
+            await this.prevNextSlide(prev, false);
 
             setTimeout(async () => {
                 await this.startAccelerometer();
@@ -132,19 +147,33 @@ export class AppRemote {
         await this.autoConnect();
     }
 
-    private initSlides(event: DeckdeckgoEventSlides): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (event.slides) {
-                this.slides = event.slides;
-            } else {
-                // If the slides definition is not provided, we generate a pseudo list of slides for the deck length
-                const length: number = event.length;
+    private initDeckAndSlides($event: DeckdeckgoEventDeck): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if ($event && $event.deck) {
+                const slidesElements: JSX.IntrinsicElements[] = await ParseSlidesUtils.parseSlides($event.deck);
+                this.slides = [...slidesElements];
 
-                for (let i: number = 0; i < length; i++) {
-                    this.slides.push({
-                        name: 'deckgo-slide-title'
-                    });
-                }
+                this.deckAttributes = await ParseAttributesUtils.parseAttributes($event.deck.attributes);
+
+                this.deckRevealOnMobile = !$event.mobile && isMobile() ? $event.deck.reveal : $event.deck.revealOnMobile;
+                this.deckReveal = $event.mobile && isMobile() ? $event.deck.reveal : $event.deck.revealOnMobile;
+
+            } else {
+                this.slides = undefined;
+            }
+
+            resolve();
+        });
+    }
+
+    private updateSlide($event: DeckdeckgoEventSlide): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if ($event && $event.slide && this.slides && this.slides.length >= $event.index) {
+
+                const slideElement: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide($event.slide, $event.index);
+                this.slides[$event.index] = slideElement;
+
+                this.slides = [...this.slides];
             }
 
             resolve();
@@ -188,24 +217,43 @@ export class AppRemote {
                 return;
             }
 
-            this.headerHeight = header.offsetHeight;
+            this.drawHeightOffset = header.offsetHeight + parseInt(window.getComputedStyle(container).marginTop);
+            this.drawWidthOffset = parseInt(window.getComputedStyle(container).marginLeft);
 
             resolve();
         });
     }
 
-    private async nextSlide(slideAnimation: boolean): Promise<void> {
-        await this.prevNextSlide(DeckdeckgoEventType.NEXT_SLIDE, slideAnimation);
+    private async prevNextSlide(prev: boolean, slideAnimation: boolean) {
+        if (prev) {
+            await this.emitPrevSlide(slideAnimation);
+            await this.animatePrevSlide(slideAnimation);
+        } else {
+            await this.emitNextSlide(slideAnimation);
+            await this.animateNextSlide(slideAnimation);
+        }
     }
 
-    private async prevSlide(slideAnimation: boolean) {
-        await this.prevNextSlide(DeckdeckgoEventType.PREV_SLIDE, slideAnimation);
-    }
-
-    private async prevNextSlide(type: DeckdeckgoEventType, slideAnimation: boolean) {
-        this.emitSlidePrevNext(type, slideAnimation);
+    private async slideDidChange(prev: boolean) {
+        if (prev) {
+            await this.emitPrevSlide(false);
+        } else {
+            await this.emitNextSlide(false);
+        }
 
         await this.afterSwipe();
+    }
+
+    private async emitNextSlide(slideAnimation: boolean): Promise<void> {
+        await this.emitPrevNextSlide(DeckdeckgoEventType.NEXT_SLIDE, slideAnimation);
+    }
+
+    private async emitPrevSlide(slideAnimation: boolean) {
+        await this.emitPrevNextSlide(DeckdeckgoEventType.PREV_SLIDE, slideAnimation);
+    }
+
+    private async emitPrevNextSlide(type: DeckdeckgoEventType, slideAnimation: boolean) {
+        this.emitSlidePrevNext(type, slideAnimation);
     }
 
     private async afterSwipe() {
@@ -226,12 +274,28 @@ export class AppRemote {
 
             this.slideIndex = await (deck as any).getActiveIndex();
 
+            this.setExtraPlayAction();
+
             resolve();
         });
     }
 
+    private setExtraPlayAction() {
+        const element: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.slideIndex + 1) + ')');
+
+        this.extraPlayAction = element && element.nodeName && (
+            element.nodeName.toLowerCase() === 'deckgo-slide-youtube' || element.nodeName.toLowerCase() === 'deckgo-slide-video'
+        );
+    }
+
     private async setNotes() {
-        this.notesService.nextSlideDefinition(this.slides && this.slides.length > this.slideIndex ? this.slides[this.slideIndex] : null);
+        let next: HTMLElement = null;
+
+        if (this.slides && this.slides.length > this.slideIndex) {
+            next = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.slideIndex + 1) + ')');
+        }
+
+        this.notesService.next(next);
     }
 
     private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
@@ -242,19 +306,19 @@ export class AppRemote {
         });
     }
 
-    private async animateNextSlide() {
-        await this.animatePrevNextSlide(true);
+    private async animateNextSlide(slideAnimation: boolean) {
+        await this.animatePrevNextSlide(true, slideAnimation);
 
         await this.afterSwipe();
     }
 
-    private async animatePrevSlide() {
-        await this.animatePrevNextSlide(false);
+    private async animatePrevSlide(slideAnimation: boolean) {
+        await this.animatePrevNextSlide(false, slideAnimation);
 
         await this.afterSwipe();
     }
 
-    private async animatePrevNextSlide(next: boolean) {
+    private async animatePrevNextSlide(next: boolean, slideAnimation: boolean) {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (!deck) {
@@ -262,9 +326,9 @@ export class AppRemote {
         }
 
         if (next) {
-            await (deck as any).slideNext(false, false);
+            await (deck as any).slideNext(slideAnimation, false);
         } else {
-            await (deck as any).slidePrev(false, false);
+            await (deck as any).slidePrev(slideAnimation, false);
         }
     }
 
@@ -299,6 +363,8 @@ export class AppRemote {
             if (deckLength > 0) {
                 await this.slideTo(deckLength - 1);
             }
+
+            await this.setActiveIndex();
         }, {once: true});
     }
 
@@ -314,6 +380,8 @@ export class AppRemote {
         if (this.slides && this.slides.length > this.slideIndex && this.slideIndex >= 0) {
             this.slides.splice(this.slideIndex, 1);
             this.slideIndex = this.slideIndex > 0 ? this.slideIndex - 1 : 0;
+
+            this.setExtraPlayAction();
         }
     }
 
@@ -347,8 +415,8 @@ export class AppRemote {
         });
     }
 
-    private emitAction(e: UIEvent) {
-        e.stopPropagation();
+    private async emitAction($event: UIEvent) {
+        $event.stopPropagation();
 
         this.action = this.action === DeckdeckgoSlideAction.PLAY ? DeckdeckgoSlideAction.PAUSE : DeckdeckgoSlideAction.PLAY;
 
@@ -356,6 +424,36 @@ export class AppRemote {
             type: DeckdeckgoEventType.SLIDE_ACTION,
             emitter: DeckdeckgoEventEmitter.APP,
             action: this.action
+        });
+
+        await this.actionPlayPause();
+    }
+
+    private actionPlayPause() {
+        return new Promise(async (resolve) => {
+            const deck = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                resolve();
+                return;
+            }
+
+            const index = await (deck as any).getActiveIndex();
+
+            const slideElement: any = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+            if (!slideElement) {
+                resolve();
+                return;
+            }
+
+            if (this.action === DeckdeckgoSlideAction.PAUSE) {
+                await slideElement.pause();
+            } else {
+                await slideElement.play();
+            }
+
+            resolve();
         });
     }
 
@@ -376,9 +474,6 @@ export class AppRemote {
     }
 
     private async openSlidePicker() {
-
-        console.log('emit');
-
         const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
             component: 'app-remote-slide-picker',
             componentProps: {
@@ -489,11 +584,13 @@ export class AppRemote {
     }
 
     private renderHeaderButtons() {
-        if (this.connectionState  !== ConnectionState.CONNECTED) {
+        if (this.connectionState !== ConnectionState.CONNECTED) {
             return undefined;
         }
 
         return <ion-buttons slot="end">
+            <app-stopwatch-time></app-stopwatch-time>
+
             <ion-button onClick={() => this.openSlidePicker()}>
                 <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
             </ion-button>
@@ -507,15 +604,23 @@ export class AppRemote {
     private renderContent() {
         if (this.connectionState === ConnectionState.CONNECTED) {
             return [<main>
-                    {this.renderDeck()}
-                    <div class="deck-navigation-buttons">
-                        <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevSlide(true)}><ion-label>Previous slide</ion-label></ion-button></div>
-                        <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.nextSlide(true)}><ion-label>Next slide</ion-label></ion-button></div>
-
-                        {this.renderExtraActions()}
+                {this.renderDeck()}
+                <div class="deck-navigation-buttons">
+                    <div class="deck-navigation-button-prev">
+                        <ion-button color="secondary" onClick={() => this.prevNextSlide(true, true)}>
+                            <ion-label>Previous</ion-label>
+                        </ion-button>
                     </div>
-                    <app-notes></app-notes>
-                </main>
+                    <div class="deck-navigation-button-next">
+                        <ion-button color="primary" onClick={() => this.prevNextSlide(false, true)}>
+                            <ion-label>Next</ion-label>
+                        </ion-button>
+                    </div>
+
+                    {this.renderExtraActions()}
+                </div>
+                <app-notes></app-notes>
+            </main>
             ];
         } else if (this.connectionState !== ConnectionState.DISCONNECTED) {
             let text: string = 'Not connected';
@@ -545,42 +650,22 @@ export class AppRemote {
 
     private renderDeck() {
         return <div class="deck">
-            <deckgo-deck embedded={true}
+            <deckgo-deck embedded={true} {...this.deckAttributes}
+                         keyboard={false}
+                         revealOnMobile={this.deckRevealOnMobile} reveal={this.deckReveal}
                          onSlidesDidLoad={() => this.initDeck()}
-                         onSlideNextDidChange={() => this.nextSlide(false)}
-                         onSlidePrevDidChange={() => this.prevSlide(false)}
+                         onSlideNextDidChange={() => this.slideDidChange(false)}
+                         onSlidePrevDidChange={() => this.slideDidChange(true)}
                          onSlideWillChange={(event: CustomEvent<number>) => this.moveDraw(event)}
                          onSlideDrag={(event: CustomEvent<number>) => this.scrollDraw(event)}>
-                {this.renderSlides()}
+                {this.slides}
             </deckgo-deck>
             <app-draw width={this.deckWidth}
                       height={this.deckHeight}
                       slides={this.slides.length}
-                      heightOffset={this.headerHeight}></app-draw>
+                      heightOffset={this.drawHeightOffset}
+                      widthOffset={this.drawWidthOffset}></app-draw>
         </div>;
-    }
-
-    private renderSlides() {
-        return (
-            this.slides.map((_slideDefinition: DeckdeckgoSlideDefinition, _i: number) => {
-                return <deckgo-slide-title>
-                    <div slot="content" class="ion-padding">
-                        <div class="floating-slide-timer">
-                            <app-stopwatch-time></app-stopwatch-time>
-                        </div>
-                        {this.renderSlideHint()}
-                    </div>
-                </deckgo-slide-title>
-            })
-        );
-    }
-
-    private renderSlideHint() {
-        if (this.drawing) {
-            return <ion-icon name="brush"></ion-icon>;
-        } else {
-            return <ion-icon name="swap"></ion-icon>;
-        }
     }
 
     private renderActions() {
@@ -598,10 +683,7 @@ export class AppRemote {
     }
 
     private renderExtraActions() {
-        if (this.slides && this.slides.length > 0 &&
-            (this.slides[this.slideIndex].name === 'deckgo-slide-youtube'.toUpperCase() ||
-             this.slides[this.slideIndex].name === 'deckgo-slide-big-img'.toUpperCase())) {
-
+        if (this.extraPlayAction) {
             const icon: string = this.action === DeckdeckgoSlideAction.PLAY ? 'pause' : 'play';
 
             return (
@@ -612,7 +694,7 @@ export class AppRemote {
                 </div>
             )
         } else {
-            return null;
+            return undefined;
         }
     }
 }

@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
+
 // Types
 import {
   DeckdeckgoDrawAction,
@@ -9,8 +10,12 @@ import {
   DeckdeckgoEventEmitter,
   DeckdeckgoEventType,
   DeckdeckgoSlideAction,
+  DeckdeckgoDeckDefinition,
   DeckdeckgoSlideDefinition
 } from '@deckdeckgo/types';
+
+import {isMobile} from '@deckdeckgo/utils';
+
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
 
@@ -91,7 +96,7 @@ export class DeckdeckgoRemote {
   @Prop() height: number;
   @Prop() length: number;
 
-  @Prop() slides: DeckdeckgoSlideDefinition[];
+  @Prop({mutable: true}) deck: DeckdeckgoDeckDefinition;
 
   @Prop() autoConnect: boolean = true;
 
@@ -324,7 +329,8 @@ export class DeckdeckgoRemote {
         type: type,
         emitter: DeckdeckgoEventEmitter.DECK,
         length: this.length,
-        slides: this.slides
+        deck: this.deck,
+        mobile: isMobile()
       });
 
       resolve();
@@ -333,7 +339,33 @@ export class DeckdeckgoRemote {
 
   @Method()
   async updateSlides() {
-    await this.sendSlidesToApp(DeckdeckgoEventType.SLIDES_UPDATE);
+    await this.sendSlidesToApp(DeckdeckgoEventType.DECK_UPDATE);
+  }
+
+  @Method()
+  async updateSlide(index: number, slide: DeckdeckgoSlideDefinition) {
+    return new Promise<void>((resolve) => {
+      if (!this.deck || !this.deck.slides || this.deck.slides.length <= index || index < 0) {
+        resolve();
+        return;
+      }
+
+      this.deck.slides[index] = slide;
+
+      if (!slide) {
+        resolve();
+        return;
+      }
+
+      this.communicationService.emit({
+        type: DeckdeckgoEventType.SLIDE_UPDATE,
+        emitter: DeckdeckgoEventEmitter.DECK,
+        index: index,
+        slide: slide
+      });
+
+      resolve();
+    });
   }
 
   @Method()
@@ -342,6 +374,19 @@ export class DeckdeckgoRemote {
       this.communicationService.emit({
         type: DeckdeckgoEventType.DELETE_SLIDE,
         emitter: DeckdeckgoEventEmitter.DECK
+      });
+
+      resolve();
+    });
+  }
+
+  @Method()
+  updateReveal(reveal: boolean): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.communicationService.emit({
+        type: DeckdeckgoEventType.DECK_REVEAL_UPDATE,
+        emitter: DeckdeckgoEventEmitter.DECK,
+        reveal: reveal
       });
 
       resolve();
@@ -368,13 +413,13 @@ export class DeckdeckgoRemote {
   }
 
   @Method()
-  async nextSlide() {
-    this.emitSlidePrevNext(DeckdeckgoEventType.NEXT_SLIDE);
+  async nextSlide(slideAnimation: boolean = false) {
+    this.emitSlidePrevNext(DeckdeckgoEventType.NEXT_SLIDE, slideAnimation);
   }
 
   @Method()
-  async prevSlide() {
-    this.emitSlidePrevNext(DeckdeckgoEventType.PREV_SLIDE);
+  async prevSlide(slideAnimation: boolean = false) {
+    this.emitSlidePrevNext(DeckdeckgoEventType.PREV_SLIDE, slideAnimation);
   }
 
   @Method()
@@ -416,8 +461,8 @@ export class DeckdeckgoRemote {
     });
   }
 
-  private emitSlidePrevNext(type: DeckdeckgoEventType) {
-    this.communicationService.emit({type: type, emitter: DeckdeckgoEventEmitter.DECK});
+  private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
+    this.communicationService.emit({type: type, emitter: DeckdeckgoEventEmitter.DECK, slideAnimation: slideAnimation});
   }
 
   render() {

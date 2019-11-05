@@ -8,16 +8,31 @@ export enum DeckdeckgoSlideAction {
     PAUSE = 'pause'
 }
 
-export interface DeckdeckgoSlideDefinition {
+export interface DeckdeckgoAttributeDefinition {
     name: string;
-    title?: string;
-    notes?: string;
+    value?: any;
+}
+
+export interface DeckdeckgoSlideDefinition {
+    template: string;
+    content?: string;
+    attributes?: DeckdeckgoAttributeDefinition[];
+}
+
+export interface DeckdeckgoDeckDefinition {
+    slides: DeckdeckgoSlideDefinition[];
+    attributes?: DeckdeckgoAttributeDefinition[];
+    background?: string;
+
+    reveal: boolean;
+    revealOnMobile: boolean;
 }
 
 export enum DeckdeckgoEventType {
     SLIDES_REQUEST = 'slides_request',
     SLIDES_ANSWER = 'slides_answer',
-    SLIDES_UPDATE = 'slides_update',
+    DECK_UPDATE = 'deck_update',
+    SLIDE_UPDATE = 'slide_update',
     NEXT_SLIDE = 'next_slide',
     PREV_SLIDE = 'prev_slide',
     SLIDE_TO = 'slide_to',
@@ -26,7 +41,8 @@ export enum DeckdeckgoEventType {
     DRAW = 'draw',
     END_DRAWING = 'end_drawing',
     SLIDE_ACTION = 'slide_action',
-    DELETE_SLIDE = 'delete_slide'
+    DELETE_SLIDE = 'delete_slide',
+    DECK_REVEAL_UPDATE = 'deck_reveal_update'
 }
 
 export enum DeckdeckgoEventEmitter {
@@ -55,14 +71,24 @@ export interface DeckdeckgoEventNextPrevSlide extends DeckdeckgoEvent {
     slideAnimation: boolean;
 }
 
+export interface DeckdeckgoEventDeckReveal extends DeckdeckgoEvent {
+    reveal: boolean;
+}
+
 export interface DeckdeckgoEventSlideTo extends DeckdeckgoEvent {
     index: number;
     speed?: number
 }
 
-export interface DeckdeckgoEventSlides extends DeckdeckgoEvent {
+export interface DeckdeckgoEventDeck extends DeckdeckgoEvent {
     length: number;
-    slides: DeckdeckgoSlideDefinition[];
+    mobile: boolean;
+    deck: DeckdeckgoDeckDefinition;
+}
+
+export interface DeckdeckgoEventSlide extends DeckdeckgoEvent {
+    index: number;
+    slide: DeckdeckgoSlideDefinition;
 }
 
 export interface DeckdeckgoEventSlideAction extends DeckdeckgoEvent {

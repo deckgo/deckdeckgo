@@ -3,6 +3,8 @@ import {ItemReorderEventDetail} from '@ionic/core';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
+import {cleanContent} from '@deckdeckgo/deck-utils';
+
 import {firebase} from '@firebase/app';
 import '@firebase/firestore';
 
@@ -78,6 +80,8 @@ export class DeckEventsHandler {
 
             this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
                 await this.updateSlide(element);
+
+                await this.emitSlideDidUpdate(element);
             });
 
             this.updateDeckTitleSubscription = this.updateDeckTitleSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
@@ -709,10 +713,7 @@ export class DeckEventsHandler {
                 return;
             }
 
-            let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable="false"|contenteditable/gi, '');
-            result = result.replace(/editable=""|editable="true"|editable/gi, '');
-            result = result.replace(/highlighted=""|highlighted="true"|highlighted/gi, '');
-            result = result.replace(/class="[a-zA-Z0-9:;\.\s\(\)\-\,]*"/gi, '');
+            let result: string = await cleanContent(content);
 
             if (!slide.hasAttribute('custom-background')) {
                 result = result.replace(/<div slot="background">(.*?)<\/div>/g, '');
@@ -828,6 +829,19 @@ export class DeckEventsHandler {
             } catch (err) {
                 reject(err);
             }
+        });
+    }
+
+    private emitSlideDidUpdate(element: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slideDidUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>('slideDidUpdate', {
+                bubbles: true,
+                detail: element
+            });
+
+            this.el.dispatchEvent(slideDidUpdate);
+
+            resolve();
         });
     }
 }

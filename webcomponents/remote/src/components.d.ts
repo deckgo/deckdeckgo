@@ -8,6 +8,7 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  DeckdeckgoDeckDefinition,
   DeckdeckgoEvent,
   DeckdeckgoSlideDefinition,
 } from '@deckdeckgo/types';
@@ -19,19 +20,21 @@ export namespace Components {
   interface DeckgoRemote {
     'autoConnect': boolean;
     'connect': () => Promise<void>;
+    'deck': DeckdeckgoDeckDefinition;
     'deleteSlide': () => Promise<void>;
     'disconnect': () => Promise<void>;
     'height': number;
     'length': number;
     'moveDraw': (leftOffset: number, transitionDuration: string) => Promise<void>;
-    'nextSlide': () => Promise<void>;
+    'nextSlide': (slideAnimation?: boolean) => Promise<void>;
     'pause': () => Promise<void>;
     'play': () => Promise<void>;
-    'prevSlide': () => Promise<void>;
+    'prevSlide': (slideAnimation?: boolean) => Promise<void>;
     'room': string;
     'server': string;
     'slideTo': (index: number, speed?: number) => Promise<void>;
-    'slides': DeckdeckgoSlideDefinition[];
+    'updateReveal': (reveal: boolean) => Promise<void>;
+    'updateSlide': (index: number, slide: DeckdeckgoSlideDefinition) => Promise<void>;
     'updateSlides': () => Promise<void>;
     'width': number;
   }
@@ -53,13 +56,13 @@ declare global {
 declare namespace LocalJSX {
   interface DeckgoRemote {
     'autoConnect'?: boolean;
+    'deck'?: DeckdeckgoDeckDefinition;
     'height'?: number;
     'length'?: number;
     'onEvent'?: (event: CustomEvent<DeckdeckgoEvent>) => void;
     'onState'?: (event: CustomEvent<ConnectionState>) => void;
     'room'?: string;
     'server'?: string;
-    'slides'?: DeckdeckgoSlideDefinition[];
     'width'?: number;
   }
 

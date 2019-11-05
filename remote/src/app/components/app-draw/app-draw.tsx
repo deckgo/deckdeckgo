@@ -78,7 +78,10 @@ export class AppDraw {
 
     @Prop() width: number;
     @Prop() height: number;
+
+    @Prop() widthOffset: number = 0;
     @Prop() heightOffset: number = 0;
+
     @Prop() slides: number;
 
     @State() private canvasWidth: number;
@@ -91,7 +94,7 @@ export class AppDraw {
 
     private drawables: Drawable[] = [];
 
-    private leftOffset: number = 0;
+    private deckLeftOffset: number = 0;
 
     private drawEvents: boolean = false;
     private drawAction: boolean = false;
@@ -147,9 +150,9 @@ export class AppDraw {
                 return;
             }
 
-            this.leftOffset = leftOffset;
+            this.deckLeftOffset = leftOffset;
 
-            canvas.style.setProperty('--left-offset', '' + this.leftOffset + 'px');
+            canvas.style.setProperty('--left-offset', '' + this.deckLeftOffset + 'px');
             canvas.style.setProperty('--left-offset-transition', transitionDuration);
 
             resolve();
@@ -165,7 +168,7 @@ export class AppDraw {
                 return;
             }
 
-            this.canvas.style.zIndex = '1';
+            this.canvas.style.pointerEvents = 'all';
 
             this.canvas.addEventListener('mousedown', this.startEvent, {passive: true});
             this.canvas.addEventListener('touchstart', this.startEvent, {passive: true});
@@ -187,7 +190,7 @@ export class AppDraw {
                 return;
             }
 
-            this.canvas.style.zIndex = '0';
+            this.canvas.style.pointerEvents = 'none';
 
             this.canvas.removeEventListener('mousedown', this.startEvent, true);
             this.canvas.removeEventListener('touchstart', this.startEvent, true);
@@ -203,7 +206,7 @@ export class AppDraw {
     private startEvent = (e: MouseEvent) => {
         this.emit(DeckdeckgoEventType.START_DRAWING, e);
 
-        this.startX = unifyEvent(e).clientX - this.leftOffset;
+        this.startX = unifyEvent(e).clientX - this.deckLeftOffset - this.widthOffset;
         this.startY = unifyEvent(e).clientY - this.heightOffset;
 
         if (this.action === DeckdeckgoDrawAction.CIRCLE) {
@@ -219,7 +222,7 @@ export class AppDraw {
     private endEvent = (e: MouseEvent) => {
         this.emit(DeckdeckgoEventType.END_DRAWING, e);
 
-        const toX: number = unifyEvent(e).clientX - this.leftOffset;
+        const toX: number = unifyEvent(e).clientX - this.deckLeftOffset - this.widthOffset;
         const toY: number = unifyEvent(e).clientY - this.heightOffset;
 
 
@@ -240,7 +243,7 @@ export class AppDraw {
 
         this.emit(DeckdeckgoEventType.DRAW, e);
 
-        const toX: number = unifyEvent(e).clientX - this.leftOffset;
+        const toX: number = unifyEvent(e).clientX - this.deckLeftOffset - this.widthOffset;
         const toY: number = unifyEvent(e).clientY - this.heightOffset;
 
         if (this.action === DeckdeckgoDrawAction.PENCIL) {
@@ -259,7 +262,7 @@ export class AppDraw {
     };
 
     private draw() {
-        this.ctx.clearRect(-1 * this.leftOffset, 0, this.width, this.height);
+        this.ctx.clearRect(-1 * this.deckLeftOffset, 0, this.width, this.height);
         for (const drawable of this.drawables) {
             drawable.draw(this.ctx);
         }
@@ -295,7 +298,7 @@ export class AppDraw {
             type: type,
             emitter: DeckdeckgoEventEmitter.APP,
             action: this.action,
-            clientX: unifyEvent(e).clientX,
+            clientX: unifyEvent(e).clientX - this.widthOffset,
             clientY: unifyEvent(e).clientY - this.heightOffset,
             windowWidth: this.width,
             windowHeight: this.height,
@@ -313,7 +316,7 @@ export class AppDraw {
             });
 
             this.ctx.beginPath();
-            this.ctx.clearRect(-1 * this.leftOffset, 0, this.width, this.height);
+            this.ctx.clearRect(-1 * this.deckLeftOffset, 0, this.width, this.height);
             this.ctx.stroke();
             this.ctx.closePath();
 
@@ -329,7 +332,7 @@ export class AppDraw {
 
         return ([
             <canvas width={this.canvasWidth} height={this.height}></canvas>,
-            <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin">
+            <ion-fab vertical="bottom" horizontal="end" slot="fixed">
                 <ion-fab-button onClick={() => this.startStopDrawing()} color="dark">
                     <ion-icon name="brush"></ion-icon>
                 </ion-fab-button>

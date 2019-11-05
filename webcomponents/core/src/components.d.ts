@@ -8,6 +8,8 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  DeckdeckgoAttributeDefinition,
+  DeckdeckgoDeckDefinition,
   DeckdeckgoSlideDefinition,
 } from '@deckdeckgo/types';
 
@@ -19,8 +21,9 @@ export namespace Components {
     'doPrint': () => Promise<void>;
     'embedded': boolean;
     'getActiveIndex': () => Promise<number>;
+    'getDeckDefinition': () => Promise<DeckdeckgoDeckDefinition>;
     'getLength': () => Promise<number>;
-    'getSlidesDefinition': () => Promise<DeckdeckgoSlideDefinition[]>;
+    'getSlideDefinition': (index: number) => Promise<DeckdeckgoSlideDefinition>;
     'initSlideSize': () => Promise<void>;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;
@@ -28,6 +31,7 @@ export namespace Components {
     'keyboard': boolean;
     'loadBackground': () => Promise<void>;
     'reveal': boolean;
+    'revealOnMobile': boolean;
     'slideNext': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slidePrev': (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
     'slideTo': (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
@@ -98,12 +102,15 @@ declare namespace LocalJSX {
     'keyboard'?: boolean;
     'onMouseInactivity'?: (event: CustomEvent<boolean>) => void;
     'onSlideDrag'?: (event: CustomEvent<number>) => void;
+    'onSlideNextDidAnimate'?: (event: CustomEvent<void>) => void;
     'onSlideNextDidChange'?: (event: CustomEvent<number>) => void;
+    'onSlidePrevDidAnimate'?: (event: CustomEvent<void>) => void;
     'onSlidePrevDidChange'?: (event: CustomEvent<number>) => void;
     'onSlideToChange'?: (event: CustomEvent<number>) => void;
     'onSlideWillChange'?: (event: CustomEvent<number>) => void;
     'onSlidesDidLoad'?: (event: CustomEvent<any>) => void;
     'reveal'?: boolean;
+    'revealOnMobile'?: boolean;
   }
   interface DeckgoPager {
     'activeIndex'?: number;

@@ -25,7 +25,7 @@
     "@deckdeckgo/utils": "^1.0.0-rc.1"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0-rc.1",
+    "@deckdeckgo/types": "file:../types",
     "@stencil/core": "^1.7.5",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",

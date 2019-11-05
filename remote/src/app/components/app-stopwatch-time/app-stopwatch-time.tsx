@@ -74,7 +74,7 @@ export class AppStopwatchTime {
         }
 
         if (this.remainingText) {
-            return <ion-chip color={color}>
+            return <ion-chip color="danger" style={{background: `var(--ion-color-${color})`, color: 'var(--ion-color-light)'}}>
                 <ion-label>{this.remainingText}</ion-label>
             </ion-chip>
         } else {

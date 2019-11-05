@@ -1,12 +1,10 @@
 import {BehaviorSubject, Observable} from 'rxjs';
 
-import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
-
 export class NotesService {
 
     private static instance: NotesService;
 
-    private currentSlide: BehaviorSubject<DeckdeckgoSlideDefinition> = new BehaviorSubject<DeckdeckgoSlideDefinition>(null);
+    private currentSlide: BehaviorSubject<HTMLElement> = new BehaviorSubject<HTMLElement>(null);
 
     private constructor() {
         // Private constructor, singleton
@@ -19,11 +17,11 @@ export class NotesService {
         return NotesService.instance;
     }
 
-    watch(): Observable<DeckdeckgoSlideDefinition> {
+    watch(): Observable<HTMLElement> {
         return this.currentSlide.asObservable();
     }
 
-    nextSlideDefinition(slide: DeckdeckgoSlideDefinition) {
+    next(slide: HTMLElement) {
         this.currentSlide.next(slide);
     }
 

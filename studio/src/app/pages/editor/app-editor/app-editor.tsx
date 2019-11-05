@@ -7,12 +7,13 @@ import {filter, take} from 'rxjs/operators';
 
 import {isFullscreen, isMobile, debounce, isIOS} from '@deckdeckgo/utils';
 
+import {convertStyle} from '@deckdeckgo/deck-utils';
+
 import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
 import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
-import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
 import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
@@ -230,7 +231,7 @@ export class AppEditor {
         return new Promise<void>((resolve) => {
             this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
                 if (deck && deck.data && deck.data.attributes && deck.data.attributes.style) {
-                    this.style = await ParseStyleUtils.convertStyle(deck.data.attributes.style);
+                    this.style = await convertStyle(deck.data.attributes.style);
                 } else {
                     this.style = undefined;
                 }
@@ -251,7 +252,7 @@ export class AppEditor {
     }
 
     async inactivity($event: CustomEvent) {
-        this.presenting = !$event.detail;
+        await this.updatePresenting(!$event.detail);
 
         if (!this.presenting) {
             await this.hideToolbar();
@@ -275,9 +276,9 @@ export class AppEditor {
         }
 
         if ($event.detail) {
-            await (deck as any).slideNext(false, false);
+            await (deck as any).slideNext(false, true);
         } else {
-            await (deck as any).slidePrev(false, false);
+            await (deck as any).slidePrev(false, true);
         }
     }
 
@@ -462,11 +463,11 @@ export class AppEditor {
         }
     }
 
-    private onWindowResize = () => {
+    private onWindowResize = async () => {
         this.fullscreen = isFullscreen();
 
         // Per default, when we switch to the fullscreen mode, we want to present the presentation not edit it
-        this.presenting = this.fullscreen;
+        await this.updatePresenting(this.fullscreen);
     };
 
     @Listen('signIn', {target: 'document'})
@@ -543,6 +544,12 @@ export class AppEditor {
 
             resolve();
         });
+    }
+
+    private async updatePresenting(presenting: boolean) {
+        this.presenting = presenting;
+
+        await this.remoteEventsHandler.updateRemoteReveal(this.fullscreen && this.presenting);
     }
 
     render() {

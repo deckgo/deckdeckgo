@@ -2,7 +2,8 @@ import {h, JSX} from '@stencil/core';
 
 import uuid from 'uuid/v4';
 
-import {ParseStyleUtils} from './parse-style.utils';
+import {convertStyle} from '@deckdeckgo/deck-utils';
+
 import {ParseElementsUtils} from './parse-elements.utils';
 
 import {QRCodeUtils} from './qrcode.utils';
@@ -41,7 +42,7 @@ export class ParseSlidesUtils {
             const content = await ParseElementsUtils.parseElements(div, true, contentEditable);
 
             const attributes = {
-                style: slide.data.attributes ? await ParseStyleUtils.convertStyle(slide.data.attributes.style) : undefined,
+                style: slide.data.attributes ? await convertStyle(slide.data.attributes.style) : undefined,
                 src: slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined,
                 'custom-background': slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined,
                 'img-src': slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined,
