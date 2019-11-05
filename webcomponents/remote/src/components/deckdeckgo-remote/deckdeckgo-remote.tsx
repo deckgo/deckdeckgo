@@ -457,6 +457,8 @@ export class DeckdeckgoRemote {
       this.ctx.stroke();
       this.ctx.closePath();
 
+      this.drawables = [];
+
       resolve();
     });
   }
