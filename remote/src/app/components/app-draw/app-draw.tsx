@@ -268,7 +268,6 @@ export class AppDraw {
         }
     }
 
-
     private switchTool(e: UIEvent, action: DeckdeckgoDrawAction) {
         e.stopPropagation();
 
@@ -319,6 +318,8 @@ export class AppDraw {
             this.ctx.clearRect(-1 * this.deckLeftOffset, 0, this.width, this.height);
             this.ctx.stroke();
             this.ctx.closePath();
+
+            this.drawables = [];
 
             resolve();
         });
