@@ -1,3 +1,16 @@
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-11-05)
+
+### Breaking Changes
+
+* `getSlidesDefinition` replaced by `getDeckDefinition` with the goal to sync content between decks and remote control
+
+### Features
+
+* new events `slideNextDidAnimate` and `slidePrevDidAnimate`
+* new property `revealOnMobile` in case you would like to use the animation on mobile too
+* new method `getSlideDefinition(index)` to retrieve the definition of a particular slide, used to sync content between decks and remote
+ 
 <a name="1.0.0-rc.1-3"></a>
 # 1.0.0-rc.1-3 (2019-11-03)
 
