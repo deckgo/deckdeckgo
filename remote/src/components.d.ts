@@ -42,85 +42,85 @@ declare global {
 
 
   interface HTMLAppDrawElement extends Components.AppDraw, HTMLStencilElement {}
-  const HTMLAppDrawElement: {
+  var HTMLAppDrawElement: {
     prototype: HTMLAppDrawElement;
     new (): HTMLAppDrawElement;
   };
 
   interface HTMLAppExperimentalSettingsElement extends Components.AppExperimentalSettings, HTMLStencilElement {}
-  const HTMLAppExperimentalSettingsElement: {
+  var HTMLAppExperimentalSettingsElement: {
     prototype: HTMLAppExperimentalSettingsElement;
     new (): HTMLAppExperimentalSettingsElement;
   };
 
   interface HTMLAppGeneralSettingsElement extends Components.AppGeneralSettings, HTMLStencilElement {}
-  const HTMLAppGeneralSettingsElement: {
+  var HTMLAppGeneralSettingsElement: {
     prototype: HTMLAppGeneralSettingsElement;
     new (): HTMLAppGeneralSettingsElement;
   };
 
   interface HTMLAppHeaderElement extends Components.AppHeader, HTMLStencilElement {}
-  const HTMLAppHeaderElement: {
+  var HTMLAppHeaderElement: {
     prototype: HTMLAppHeaderElement;
     new (): HTMLAppHeaderElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
-  const HTMLAppLogoElement: {
+  var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
     new (): HTMLAppLogoElement;
   };
 
   interface HTMLAppNotesElement extends Components.AppNotes, HTMLStencilElement {}
-  const HTMLAppNotesElement: {
+  var HTMLAppNotesElement: {
     prototype: HTMLAppNotesElement;
     new (): HTMLAppNotesElement;
   };
 
   interface HTMLAppRemoteElement extends Components.AppRemote, HTMLStencilElement {}
-  const HTMLAppRemoteElement: {
+  var HTMLAppRemoteElement: {
     prototype: HTMLAppRemoteElement;
     new (): HTMLAppRemoteElement;
   };
 
   interface HTMLAppRemoteConnectElement extends Components.AppRemoteConnect, HTMLStencilElement {}
-  const HTMLAppRemoteConnectElement: {
+  var HTMLAppRemoteConnectElement: {
     prototype: HTMLAppRemoteConnectElement;
     new (): HTMLAppRemoteConnectElement;
   };
 
   interface HTMLAppRemoteSlidePickerElement extends Components.AppRemoteSlidePicker, HTMLStencilElement {}
-  const HTMLAppRemoteSlidePickerElement: {
+  var HTMLAppRemoteSlidePickerElement: {
     prototype: HTMLAppRemoteSlidePickerElement;
     new (): HTMLAppRemoteSlidePickerElement;
   };
 
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
-  const HTMLAppRootElement: {
+  var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
     new (): HTMLAppRootElement;
   };
 
   interface HTMLAppSettingsElement extends Components.AppSettings, HTMLStencilElement {}
-  const HTMLAppSettingsElement: {
+  var HTMLAppSettingsElement: {
     prototype: HTMLAppSettingsElement;
     new (): HTMLAppSettingsElement;
   };
 
   interface HTMLAppStopwatchElement extends Components.AppStopwatch, HTMLStencilElement {}
-  const HTMLAppStopwatchElement: {
+  var HTMLAppStopwatchElement: {
     prototype: HTMLAppStopwatchElement;
     new (): HTMLAppStopwatchElement;
   };
 
   interface HTMLAppStopwatchTimeElement extends Components.AppStopwatchTime, HTMLStencilElement {}
-  const HTMLAppStopwatchTimeElement: {
+  var HTMLAppStopwatchTimeElement: {
     prototype: HTMLAppStopwatchTimeElement;
     new (): HTMLAppStopwatchTimeElement;
   };
 
   interface HTMLAppTimerElement extends Components.AppTimer, HTMLStencilElement {}
-  const HTMLAppTimerElement: {
+  var HTMLAppTimerElement: {
     prototype: HTMLAppTimerElement;
     new (): HTMLAppTimerElement;
   };
