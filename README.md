@@ -15,7 +15,7 @@
   ![Website](https://img.shields.io/website?label=Remotre%20control&url=https%3A%2F%2Fdeckdeckgo.app)
   [![GitHub release](https://img.shields.io/github/release/deckgo/deckdeckgo/all?logo=GitHub)](https://github.com/deckgo/deckdeckgo/releases/latest)
   [![Chat on Slack](https://img.shields.io/badge/chat-Slack-EBB424?logo=Slack)](https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY)
-  ![Tweet](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fdeckdeckgo.com&text=DeckDeckGo%20-%20The%20web%20open%20source%20editor%20for%20presentations%20%F0%9F%9A%80%20https%3A%2F%2Fdeckdeckgo.com%20%40deckdeckgo)
+  [![Tweet](https://img.shields.io/twitter/url?url=https%3A%2F%2Fdeckdeckgo.com)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fdeckdeckgo.com&text=DeckDeckGo%20-%20The%20web%20open%20source%20editor%20for%20presentations%20%F0%9F%9A%80%20%40deckdeckgo)
 </div>
 
 ---
