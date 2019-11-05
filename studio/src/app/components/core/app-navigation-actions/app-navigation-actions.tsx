@@ -1,12 +1,13 @@
 import {Component, Event, EventEmitter, Prop, State, h} from '@stencil/core';
 
+import {popoverController} from '@ionic/core';
+
 import {Subscription} from 'rxjs';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 import {User} from '../../../models/data/user';
 
 import {Utils} from '../../../utils/core/utils';
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
@@ -70,7 +71,7 @@ export class AppNavigationActions {
     }
 
     private async openMenu($event: UIEvent) {
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-user-menu',
             event: $event,
             mode: 'ios'

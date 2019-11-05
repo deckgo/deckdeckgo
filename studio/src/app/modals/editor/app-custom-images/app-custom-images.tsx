@@ -1,8 +1,8 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {get, set} from 'idb-keyval';
+import {alertController} from '@ionic/core';
 
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
+import {get, set} from 'idb-keyval';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {StorageService} from '../../../services/storage/storage.service';
@@ -187,7 +187,7 @@ export class AppCustomImages {
     }
 
     private async openCustomImagesPublicInfo() {
-        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
+        const alert: HTMLIonAlertElement = await alertController.create({
             header: 'About your images',
             message: 'Please note that currently, all the images you would upload, will be publicly visible on the internet.',
             cssClass: 'custom-info',

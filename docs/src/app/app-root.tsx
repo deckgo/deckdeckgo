@@ -159,9 +159,6 @@ export class AppRoot {
         </ion-menu>
 
         <ion-nav id="menu-content"/>
-
-        <ion-menu-controller></ion-menu-controller>
-        <ion-modal-controller></ion-modal-controller>
       </ion-app>
     ]);
   }

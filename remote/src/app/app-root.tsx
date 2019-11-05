@@ -104,9 +104,6 @@ export class AppRoot {
 
                 <ion-nav id="menu-content"/>
                 
-                <ion-modal-controller></ion-modal-controller>
-                <ion-alert-controller></ion-alert-controller>
-                
             </ion-app>
         );
     }

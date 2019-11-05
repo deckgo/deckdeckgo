@@ -1,6 +1,6 @@
 import {Component, h, Element} from '@stencil/core';
 
-import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
+import {popoverController} from '@ionic/core';
 
 @Component({
     tag: 'app-help-action'
@@ -10,7 +10,7 @@ export class AppHelpAction {
     @Element() el: HTMLElement;
 
     private async openGetHelp() {
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-get-help',
             mode: 'ios',
             cssClass: 'info'
