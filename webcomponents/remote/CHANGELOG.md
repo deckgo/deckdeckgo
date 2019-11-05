@@ -1,3 +1,15 @@
+<a name="1.0.0-rc.4"></a>
+# 1.0.0-rc.4 (2019-11-05)
+
+### Breaking Changes
+
+* update component in order to sync content between decks and remote
+
+### Features
+
+* add a method to update a particular slide
+* add a method to update the "reveal" settings of the deck of the remote control
+
 <a name="1.0.0-rc.3"></a>
 # 1.0.0-rc.3 (2019-10-25)
 
