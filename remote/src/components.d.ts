@@ -7,9 +7,7 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-import {
-  DeckdeckgoSlideDefinition,
-} from '@deckdeckgo/types';
+
 
 export namespace Components {
   interface AppDraw {
@@ -29,9 +27,7 @@ export namespace Components {
     'room': string;
   }
   interface AppRemoteConnect {}
-  interface AppRemoteSlidePicker {
-    'slides': DeckdeckgoSlideDefinition[];
-  }
+  interface AppRemoteSlidePicker {}
   interface AppRoot {}
   interface AppSettings {}
   interface AppStopwatch {
@@ -164,9 +160,7 @@ declare namespace LocalJSX {
     'room'?: string;
   }
   interface AppRemoteConnect {}
-  interface AppRemoteSlidePicker {
-    'slides'?: DeckdeckgoSlideDefinition[];
-  }
+  interface AppRemoteSlidePicker {}
   interface AppRoot {}
   interface AppSettings {}
   interface AppStopwatch {

@@ -1,6 +1,6 @@
-import {Component, Listen, Element, Prop, h} from '@stencil/core';
+import {Component, Listen, Element, h, State} from '@stencil/core';
 
-import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
+import {findSlidesTitle} from '@deckdeckgo/deck-utils';
 
 @Component({
     tag: 'app-remote-slide-picker',
@@ -10,11 +10,13 @@ export class AppRemoteSettings {
 
     @Element() el: HTMLElement;
 
-    @Prop()
-    slides: DeckdeckgoSlideDefinition[];
+    @State()
+    private slides: string[];
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
+
+        this.slides = await findSlidesTitle();
     }
 
     @Listen('popstate', {target: 'window'})
@@ -54,13 +56,13 @@ export class AppRemoteSettings {
     private renderSlides() {
         if (this.slides && this.slides.length > 0) {
             return (
-                this.slides.map((slideDefinition: DeckdeckgoSlideDefinition, i: number) => {
+                this.slides.map((slideTitle: string, i: number) => {
 
-                    // TODO: display content and load all components
-                    const text = 'Slide ' + (i + 1) + (slideDefinition.template ? ': ' + slideDefinition.template : '');
+                    const text = 'Slide ' + (i + 1) + (slideTitle ? ': ' + slideTitle : '');
 
-                    return <ion-item ion-item button onClick={() => this.jumpToSlide(i)}>
+                    return <ion-item ion-item button onClick={() => this.jumpToSlide(i)} detail={false}>
                         <ion-label>{text}</ion-label>
+                        <ion-reorder slot="end"></ion-reorder>
                     </ion-item>
                 })
             );
