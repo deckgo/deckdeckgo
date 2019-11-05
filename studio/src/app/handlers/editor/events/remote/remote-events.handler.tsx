@@ -474,7 +474,7 @@ export class RemoteEventsHandler {
                 if (deckgoRemoteElement) {
                     deckgoRemoteElement.deck = deckDefinition;
 
-                    await this.updateRemoteSlides(self);
+                    await self.updateRemoteSlides(self);
                 }
             }
 
