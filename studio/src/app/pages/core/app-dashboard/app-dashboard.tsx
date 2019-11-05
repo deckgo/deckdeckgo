@@ -2,6 +2,8 @@ import {Component, h, JSX, State} from '@stencil/core';
 
 import {filter, take} from 'rxjs/operators';
 
+import {convertStyle} from '@deckdeckgo/deck-utils';
+
 import {AuthUser} from '../../../models/auth/auth.user';
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
@@ -11,7 +13,6 @@ import {DeckService} from '../../../services/data/deck/deck.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {SlideService} from '../../../services/data/slide/slide.service';
-import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
 
 interface DeckAndFirstSlide {
@@ -89,7 +90,7 @@ export class AppDashboard {
 
                 let style: any;
                 if (deck.data && deck.data.attributes && deck.data.attributes.style) {
-                    style = await ParseStyleUtils.convertStyle(deck.data.attributes.style);
+                    style = await convertStyle(deck.data.attributes.style);
                 } else {
                     style = undefined;
                 }

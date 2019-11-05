@@ -1,6 +1,6 @@
 import {h} from '@stencil/core';
 
-import {ParseStyleUtils} from './parse-style.utils';
+import {convertStyle} from '@deckdeckgo/deck-utils';
 
 export class ParseElementsUtils {
 
@@ -39,7 +39,7 @@ export class ParseElementsUtils {
 
             const attributes: any = this.getAttributes(element);
             if (attributes.style) {
-                attributes.style = await ParseStyleUtils.convertStyle(attributes.style);
+                attributes.style = await convertStyle(attributes.style);
             }
 
             resolve(<Elem {...attributes}>{content}</Elem>);

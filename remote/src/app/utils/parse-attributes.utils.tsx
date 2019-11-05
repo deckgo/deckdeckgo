@@ -1,6 +1,6 @@
 import {DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
 
-import {ParseStyleUtils} from './parse-style.utils';
+import {convertStyle} from '@deckdeckgo/deck-utils';
 
 export class ParseAttributesUtils {
 
@@ -11,7 +11,7 @@ export class ParseAttributesUtils {
             if (attributes && attributes.length > 0) {
                 for (const def of attributes) {
                     if (def.name === 'style') {
-                        attr['style'] = await ParseStyleUtils.convertStyle(def.value);
+                        attr['style'] = await convertStyle(def.value);
                     } else {
                         attr[def.name] = def.value;
                     }

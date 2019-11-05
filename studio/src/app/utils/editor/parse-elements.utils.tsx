@@ -1,6 +1,7 @@
 import {h} from '@stencil/core';
 
-import {ParseStyleUtils} from './parse-style.utils';
+import {convertStyle} from '@deckdeckgo/deck-utils';
+
 import {SlotType} from './slot-type';
 import {SlotUtils} from './slot.utils';
 
@@ -41,7 +42,7 @@ export class ParseElementsUtils {
 
             const attributes: any = this.getAttributes(element);
             if (attributes.style) {
-                attributes.style = await ParseStyleUtils.convertStyle(attributes.style);
+                attributes.style = await convertStyle(attributes.style);
             }
 
             if (contentEditable && this.isContentEditable(element, attributes)) {

@@ -3,6 +3,8 @@ import {ItemReorderEventDetail} from '@ionic/core';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
+import {cleanContent} from '@deckdeckgo/deck-utils';
+
 import {firebase} from '@firebase/app';
 import '@firebase/firestore';
 
@@ -21,7 +23,6 @@ import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
-import {ParseContentUtils} from '../../../../utils/editor/parse-content.utils';
 
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
@@ -712,7 +713,7 @@ export class DeckEventsHandler {
                 return;
             }
 
-            let result: string = await ParseContentUtils.cleanContent(content);
+            let result: string = await cleanContent(content);
 
             if (!slide.hasAttribute('custom-background')) {
                 result = result.replace(/<div slot="background">(.*?)<\/div>/g, '');
