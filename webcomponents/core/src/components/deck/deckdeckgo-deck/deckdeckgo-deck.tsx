@@ -488,7 +488,9 @@ export class DeckdeckgoDeck {
       const deck: DeckdeckgoDeckDefinition = {
         slides: orderedSlidesTagNames,
         attributes: attributes,
-        background: background ? background.innerHTML : null
+        background: background ? background.innerHTML : null,
+        reveal: this.reveal,
+        revealOnMobile: this.revealOnMobile
       };
 
       resolve(deck);

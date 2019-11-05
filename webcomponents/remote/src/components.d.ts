@@ -33,6 +33,7 @@ export namespace Components {
     'room': string;
     'server': string;
     'slideTo': (index: number, speed?: number) => Promise<void>;
+    'updateReveal': (reveal: boolean) => Promise<void>;
     'updateSlide': (index: number, slide: DeckdeckgoSlideDefinition) => Promise<void>;
     'updateSlides': () => Promise<void>;
     'width': number;

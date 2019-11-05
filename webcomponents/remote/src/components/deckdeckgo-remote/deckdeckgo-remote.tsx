@@ -381,6 +381,19 @@ export class DeckdeckgoRemote {
   }
 
   @Method()
+  updateReveal(reveal: boolean): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.communicationService.emit({
+        type: DeckdeckgoEventType.DECK_REVEAL_UPDATE,
+        emitter: DeckdeckgoEventEmitter.DECK,
+        reveal: reveal
+      });
+
+      resolve();
+    });
+  }
+
+  @Method()
   moveDraw(leftOffset: number, transitionDuration: string): Promise<void> {
     return new Promise<void>((resolve) => {
       const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');

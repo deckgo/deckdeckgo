@@ -23,6 +23,9 @@ export interface DeckdeckgoDeckDefinition {
     slides: DeckdeckgoSlideDefinition[];
     attributes?: DeckdeckgoAttributeDefinition[];
     background?: string;
+
+    reveal: boolean;
+    revealOnMobile: boolean;
 }
 
 export enum DeckdeckgoEventType {
@@ -38,7 +41,8 @@ export enum DeckdeckgoEventType {
     DRAW = 'draw',
     END_DRAWING = 'end_drawing',
     SLIDE_ACTION = 'slide_action',
-    DELETE_SLIDE = 'delete_slide'
+    DELETE_SLIDE = 'delete_slide',
+    DECK_REVEAL_UPDATE = 'deck_reveal_update'
 }
 
 export enum DeckdeckgoEventEmitter {
@@ -65,6 +69,10 @@ export interface DeckdeckgoEventDraw extends DeckdeckgoEvent {
 
 export interface DeckdeckgoEventNextPrevSlide extends DeckdeckgoEvent {
     slideAnimation: boolean;
+}
+
+export interface DeckdeckgoEventDeckReveal extends DeckdeckgoEvent {
+    reveal: boolean;
 }
 
 export interface DeckdeckgoEventSlideTo extends DeckdeckgoEvent {

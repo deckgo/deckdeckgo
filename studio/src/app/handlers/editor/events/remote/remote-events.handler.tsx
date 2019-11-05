@@ -568,4 +568,19 @@ export class RemoteEventsHandler {
             resolve();
         });
     }
+
+    updateRemoteReveal(reveal: boolean): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+
+            if (!deckgoRemoteElement) {
+                resolve();
+                return;
+            }
+
+            await deckgoRemoteElement.updateReveal(reveal);
+
+            resolve();
+        });
+    }
 }

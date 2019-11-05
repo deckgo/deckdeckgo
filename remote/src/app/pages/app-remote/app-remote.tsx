@@ -3,6 +3,8 @@ import {OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
+import {isMobile} from '@deckdeckgo/utils';
+
 // Types
 import {
     DeckdeckgoEvent,
@@ -13,7 +15,8 @@ import {
     DeckdeckgoSlideAction,
     DeckdeckgoEventSlideAction,
     DeckdeckgoEventSlide,
-    DeckdeckgoEventNextPrevSlide
+    DeckdeckgoEventNextPrevSlide,
+    DeckdeckgoEventDeckReveal
 } from '@deckdeckgo/types';
 
 // Utils
@@ -111,6 +114,8 @@ export class AppRemote {
                     await this.deleteSlide();
                 } else if ($event.type === DeckdeckgoEventType.SLIDE_ACTION) {
                     this.action = ($event as DeckdeckgoEventSlideAction).action;
+                } else if ($event.type === DeckdeckgoEventType.DECK_REVEAL_UPDATE) {
+                    this.deckReveal = ($event as DeckdeckgoEventDeckReveal).reveal;
                 }
             }
         });
@@ -150,8 +155,9 @@ export class AppRemote {
 
                 this.deckAttributes = await ParseAttributesUtils.parseAttributes($event.deck.attributes);
 
-                this.deckRevealOnMobile = !$event.mobile;
-                this.deckReveal = !$event.mobile;
+                this.deckRevealOnMobile = !$event.mobile && isMobile() ? $event.deck.reveal : $event.deck.revealOnMobile;
+                this.deckReveal = $event.mobile && isMobile() ? $event.deck.reveal : $event.deck.revealOnMobile;
+
             } else {
                 this.slides = undefined;
             }
@@ -162,7 +168,7 @@ export class AppRemote {
 
     private updateSlide($event: DeckdeckgoEventSlide): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if ($event && $event.slide  && this.slides && this.slides.length >= $event.index) {
+            if ($event && $event.slide && this.slides && this.slides.length >= $event.index) {
 
                 const slideElement: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide($event.slide, $event.index);
                 this.slides[$event.index] = slideElement;
@@ -578,7 +584,7 @@ export class AppRemote {
     }
 
     private renderHeaderButtons() {
-        if (this.connectionState  !== ConnectionState.CONNECTED) {
+        if (this.connectionState !== ConnectionState.CONNECTED) {
             return undefined;
         }
 
@@ -598,15 +604,23 @@ export class AppRemote {
     private renderContent() {
         if (this.connectionState === ConnectionState.CONNECTED) {
             return [<main>
-                    {this.renderDeck()}
-                    <div class="deck-navigation-buttons">
-                        <div class="deck-navigation-button-prev"><ion-button color="secondary" onClick={() => this.prevNextSlide(true, true)}><ion-label>Previous</ion-label></ion-button></div>
-                        <div class="deck-navigation-button-next"><ion-button color="primary" onClick={() => this.prevNextSlide(false, true)}><ion-label>Next</ion-label></ion-button></div>
-
-                        {this.renderExtraActions()}
+                {this.renderDeck()}
+                <div class="deck-navigation-buttons">
+                    <div class="deck-navigation-button-prev">
+                        <ion-button color="secondary" onClick={() => this.prevNextSlide(true, true)}>
+                            <ion-label>Previous</ion-label>
+                        </ion-button>
                     </div>
-                    <app-notes></app-notes>
-                </main>
+                    <div class="deck-navigation-button-next">
+                        <ion-button color="primary" onClick={() => this.prevNextSlide(false, true)}>
+                            <ion-label>Next</ion-label>
+                        </ion-button>
+                    </div>
+
+                    {this.renderExtraActions()}
+                </div>
+                <app-notes></app-notes>
+            </main>
             ];
         } else if (this.connectionState !== ConnectionState.DISCONNECTED) {
             let text: string = 'Not connected';

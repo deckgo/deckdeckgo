@@ -252,7 +252,7 @@ export class AppEditor {
     }
 
     async inactivity($event: CustomEvent) {
-        this.presenting = !$event.detail;
+        await this.updatePresenting(!$event.detail);
 
         if (!this.presenting) {
             await this.hideToolbar();
@@ -463,11 +463,11 @@ export class AppEditor {
         }
     }
 
-    private onWindowResize = () => {
+    private onWindowResize = async () => {
         this.fullscreen = isFullscreen();
 
         // Per default, when we switch to the fullscreen mode, we want to present the presentation not edit it
-        this.presenting = this.fullscreen;
+        await this.updatePresenting(this.fullscreen);
     };
 
     @Listen('signIn', {target: 'document'})
@@ -544,6 +544,12 @@ export class AppEditor {
 
             resolve();
         });
+    }
+
+    private async updatePresenting(presenting: boolean) {
+        this.presenting = presenting;
+
+        await this.remoteEventsHandler.updateRemoteReveal(this.fullscreen && this.presenting);
     }
 
     render() {
