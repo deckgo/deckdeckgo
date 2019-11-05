@@ -1,10 +1,20 @@
-# DeckDeckGo
+<div align="center">
+  <a href="https://deckdeckgo.com"><img src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" alt="DeckDeckGo logo" height="160"></a>
+  
+  <p><strong>DeckDeckGo</strong> - The open source web editor for presentations. 🚀</p>
+  
+  <p>Create a PWA presentation using either our <a href="https://deckdeckgo.com">online editor</a> or our developer kit with HTML or Markdown.</p>
+  
+  <p>Cherry on the cake 🍒🎂 DeckDeckGo comes with a Progressive Web App to <a href="https://deckdeckgo.app">remote control</a> your slides. 📱</p>
+  
+  ![Website](https://img.shields.io/website?label=Editor&url=https%3A%2F%2Fdeckdeckgo.com)
+  ![Website](https://img.shields.io/website?label=Remotre%20control&url=https%3A%2F%2Fdeckdeckgo.app)
+  [![GitHub release](https://img.shields.io/github/release/deckgo/deckdeckgo/all?logo=GitHub)](https://github.com/deckgo/deckdeckgo/releases/latest)
+  [![Chat on Slack](https://img.shields.io/badge/chat-Slack-EBB424?logo=Slack)](https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY)
+  ![Tweet](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fdeckdeckgo.com&text=DeckDeckGo%20-%20The%20web%20open%20source%20editor%20for%20presentations%20%F0%9F%9A%80%20https%3A%2F%2Fdeckdeckgo.com%20%40deckdeckgo)
+</div>
 
-The web open source editor for presentations. 🚀
-
-Create a PWA presentation using Web Components, [Ionic](http://ionicframework.com) components and HTML or Markdown.
-
-Cherry on the cake 🍒🎂 [DeckDeckGo] comes with a [Progressive Web App](https://deckdeckgo.app) to remote control your slides. 📱
+---
 
 ## Table of contents
 
