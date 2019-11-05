@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-3"></a>
+# 1.0.0-rc.1-3 (2019-11-05)
+
+### Refactoring
+
+* source moved and renamed (no functional changes)
+
 <a name="1.0.0-rc.1-2"></a>
 # 1.0.0-rc.1-2 (2019-09-21)
 

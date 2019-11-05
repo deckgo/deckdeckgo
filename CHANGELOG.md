@@ -12,6 +12,7 @@
 
 ### Others
 * starter kit: v1.0.0-rc.4-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+* utils: v1.0.0-rc.1-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.16"></a>
 # [1.0.0-rc.16](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.15...v1.0.0-rc.16) (2019-10-20)
@@ -93,7 +94,7 @@
 
 ### Others
 
-* utils: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/utils/CHANGELOG.md))
+* utils: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.13"></a>
 # [1.0.0-rc.13](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-3...v1.0.0-rc.13) (2019-09-20)
@@ -198,7 +199,7 @@
 
 ### Others
 
-* utils: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/utils/CHANGELOG.md))
+* utils: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.10"></a>
 # [1.0.0-rc.10](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.9...v1.0.0-rc.10) (2019-08-30)
@@ -206,7 +207,7 @@
 ### BREAKING: Web Components
 
 * core: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
-* utils: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/utils/CHANGELOG.md))
+* utils: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
 
 ### Applications
 
@@ -508,7 +509,7 @@ The first users began to test, and to create content in, our web open source edi
 * qrcode: v1.0.0-alpha.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/qrcode/CHANGELOG.md))
 * remote: v1.0.0-alpha.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 * types: v1.0.0-alpha.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
-* utils: v1.0.0-alpha.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/utils/CHANGELOG.md))
+* utils: v1.0.0-alpha.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
 
 <a name="1.0.0-beta.42"></a>
 # [1.0.0-beta.42](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.41...v1.0.0-beta.42) (2019-05-30)

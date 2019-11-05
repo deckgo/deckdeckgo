@@ -1,2 +1,2 @@
-export * from './utils/deckdeckgo-utils';
-export * from './utils/deckdeckgo-image-utils';
+export * from './utils/utils';
+export * from './utils/image-utils';
