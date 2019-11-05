@@ -13,7 +13,7 @@ If you would like to install and compile locally this project, proceed as follow
 
 ```
 git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/slides/utils
+cd deckdeckgo/utils/slides/utils
 npm install
 npm run build
 ```

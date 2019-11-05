@@ -14,7 +14,7 @@ If you would like to install and compile locally this project, proceed as follow
 
 ```
 git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/utils
+cd deckdeckgo/utils/utils
 npm install
 npm run build
 ```
