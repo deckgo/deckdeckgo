@@ -205,409 +205,409 @@ declare global {
 
 
   interface HTMLAppAboutElement extends Components.AppAbout, HTMLStencilElement {}
-  const HTMLAppAboutElement: {
+  var HTMLAppAboutElement: {
     prototype: HTMLAppAboutElement;
     new (): HTMLAppAboutElement;
   };
 
   interface HTMLAppAddSlideActionElement extends Components.AppAddSlideAction, HTMLStencilElement {}
-  const HTMLAppAddSlideActionElement: {
+  var HTMLAppAddSlideActionElement: {
     prototype: HTMLAppAddSlideActionElement;
     new (): HTMLAppAddSlideActionElement;
   };
 
   interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {}
-  const HTMLAppAvatarElement: {
+  var HTMLAppAvatarElement: {
     prototype: HTMLAppAvatarElement;
     new (): HTMLAppAvatarElement;
   };
 
   interface HTMLAppCodeElement extends Components.AppCode, HTMLStencilElement {}
-  const HTMLAppCodeElement: {
+  var HTMLAppCodeElement: {
     prototype: HTMLAppCodeElement;
     new (): HTMLAppCodeElement;
   };
 
   interface HTMLAppColorElement extends Components.AppColor, HTMLStencilElement {}
-  const HTMLAppColorElement: {
+  var HTMLAppColorElement: {
     prototype: HTMLAppColorElement;
     new (): HTMLAppColorElement;
   };
 
   interface HTMLAppColorChartElement extends Components.AppColorChart, HTMLStencilElement {}
-  const HTMLAppColorChartElement: {
+  var HTMLAppColorChartElement: {
     prototype: HTMLAppColorChartElement;
     new (): HTMLAppColorChartElement;
   };
 
   interface HTMLAppColorDeckSlideElement extends Components.AppColorDeckSlide, HTMLStencilElement {}
-  const HTMLAppColorDeckSlideElement: {
+  var HTMLAppColorDeckSlideElement: {
     prototype: HTMLAppColorDeckSlideElement;
     new (): HTMLAppColorDeckSlideElement;
   };
 
   interface HTMLAppColorQrcodeElement extends Components.AppColorQrcode, HTMLStencilElement {}
-  const HTMLAppColorQrcodeElement: {
+  var HTMLAppColorQrcodeElement: {
     prototype: HTMLAppColorQrcodeElement;
     new (): HTMLAppColorQrcodeElement;
   };
 
   interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {}
-  const HTMLAppContactElement: {
+  var HTMLAppContactElement: {
     prototype: HTMLAppContactElement;
     new (): HTMLAppContactElement;
   };
 
   interface HTMLAppCreateSlideElement extends Components.AppCreateSlide, HTMLStencilElement {}
-  const HTMLAppCreateSlideElement: {
+  var HTMLAppCreateSlideElement: {
     prototype: HTMLAppCreateSlideElement;
     new (): HTMLAppCreateSlideElement;
   };
 
   interface HTMLAppCustomDataElement extends Components.AppCustomData, HTMLStencilElement {}
-  const HTMLAppCustomDataElement: {
+  var HTMLAppCustomDataElement: {
     prototype: HTMLAppCustomDataElement;
     new (): HTMLAppCustomDataElement;
   };
 
   interface HTMLAppCustomImagesElement extends Components.AppCustomImages, HTMLStencilElement {}
-  const HTMLAppCustomImagesElement: {
+  var HTMLAppCustomImagesElement: {
     prototype: HTMLAppCustomImagesElement;
     new (): HTMLAppCustomImagesElement;
   };
 
   interface HTMLAppDashboardElement extends Components.AppDashboard, HTMLStencilElement {}
-  const HTMLAppDashboardElement: {
+  var HTMLAppDashboardElement: {
     prototype: HTMLAppDashboardElement;
     new (): HTMLAppDashboardElement;
   };
 
   interface HTMLAppDeckDeleteElement extends Components.AppDeckDelete, HTMLStencilElement {}
-  const HTMLAppDeckDeleteElement: {
+  var HTMLAppDeckDeleteElement: {
     prototype: HTMLAppDeckDeleteElement;
     new (): HTMLAppDeckDeleteElement;
   };
 
   interface HTMLAppDeleteDeckActionElement extends Components.AppDeleteDeckAction, HTMLStencilElement {}
-  const HTMLAppDeleteDeckActionElement: {
+  var HTMLAppDeleteDeckActionElement: {
     prototype: HTMLAppDeleteDeckActionElement;
     new (): HTMLAppDeleteDeckActionElement;
   };
 
   interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
-  const HTMLAppDeveloperElement: {
+  var HTMLAppDeveloperElement: {
     prototype: HTMLAppDeveloperElement;
     new (): HTMLAppDeveloperElement;
   };
 
   interface HTMLAppEditSlideElement extends Components.AppEditSlide, HTMLStencilElement {}
-  const HTMLAppEditSlideElement: {
+  var HTMLAppEditSlideElement: {
     prototype: HTMLAppEditSlideElement;
     new (): HTMLAppEditSlideElement;
   };
 
   interface HTMLAppEditSlideChartElement extends Components.AppEditSlideChart, HTMLStencilElement {}
-  const HTMLAppEditSlideChartElement: {
+  var HTMLAppEditSlideChartElement: {
     prototype: HTMLAppEditSlideChartElement;
     new (): HTMLAppEditSlideChartElement;
   };
 
   interface HTMLAppEditSlideQrcodeElement extends Components.AppEditSlideQrcode, HTMLStencilElement {}
-  const HTMLAppEditSlideQrcodeElement: {
+  var HTMLAppEditSlideQrcodeElement: {
     prototype: HTMLAppEditSlideQrcodeElement;
     new (): HTMLAppEditSlideQrcodeElement;
   };
 
   interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {}
-  const HTMLAppEditorElement: {
+  var HTMLAppEditorElement: {
     prototype: HTMLAppEditorElement;
     new (): HTMLAppEditorElement;
   };
 
   interface HTMLAppEditorActionsElement extends Components.AppEditorActions, HTMLStencilElement {}
-  const HTMLAppEditorActionsElement: {
+  var HTMLAppEditorActionsElement: {
     prototype: HTMLAppEditorActionsElement;
     new (): HTMLAppEditorActionsElement;
   };
 
   interface HTMLAppEditorToolbarElement extends Components.AppEditorToolbar, HTMLStencilElement {}
-  const HTMLAppEditorToolbarElement: {
+  var HTMLAppEditorToolbarElement: {
     prototype: HTMLAppEditorToolbarElement;
     new (): HTMLAppEditorToolbarElement;
   };
 
   interface HTMLAppFaqElement extends Components.AppFaq, HTMLStencilElement {}
-  const HTMLAppFaqElement: {
+  var HTMLAppFaqElement: {
     prototype: HTMLAppFaqElement;
     new (): HTMLAppFaqElement;
   };
 
   interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
-  const HTMLAppFeedElement: {
+  var HTMLAppFeedElement: {
     prototype: HTMLAppFeedElement;
     new (): HTMLAppFeedElement;
   };
 
   interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {}
-  const HTMLAppFeedCardElement: {
+  var HTMLAppFeedCardElement: {
     prototype: HTMLAppFeedCardElement;
     new (): HTMLAppFeedCardElement;
   };
 
   interface HTMLAppFeedCardTagsElement extends Components.AppFeedCardTags, HTMLStencilElement {}
-  const HTMLAppFeedCardTagsElement: {
+  var HTMLAppFeedCardTagsElement: {
     prototype: HTMLAppFeedCardTagsElement;
     new (): HTMLAppFeedCardTagsElement;
   };
 
   interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
-  const HTMLAppFooterElement: {
+  var HTMLAppFooterElement: {
     prototype: HTMLAppFooterElement;
     new (): HTMLAppFooterElement;
   };
 
   interface HTMLAppFullscreenInfoElement extends Components.AppFullscreenInfo, HTMLStencilElement {}
-  const HTMLAppFullscreenInfoElement: {
+  var HTMLAppFullscreenInfoElement: {
     prototype: HTMLAppFullscreenInfoElement;
     new (): HTMLAppFullscreenInfoElement;
   };
 
   interface HTMLAppGetHelpElement extends Components.AppGetHelp, HTMLStencilElement {}
-  const HTMLAppGetHelpElement: {
+  var HTMLAppGetHelpElement: {
     prototype: HTMLAppGetHelpElement;
     new (): HTMLAppGetHelpElement;
   };
 
   interface HTMLAppGifElement extends Components.AppGif, HTMLStencilElement {}
-  const HTMLAppGifElement: {
+  var HTMLAppGifElement: {
     prototype: HTMLAppGifElement;
     new (): HTMLAppGifElement;
   };
 
   interface HTMLAppHelpActionElement extends Components.AppHelpAction, HTMLStencilElement {}
-  const HTMLAppHelpActionElement: {
+  var HTMLAppHelpActionElement: {
     prototype: HTMLAppHelpActionElement;
     new (): HTMLAppHelpActionElement;
   };
 
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
-  const HTMLAppHomeElement: {
+  var HTMLAppHomeElement: {
     prototype: HTMLAppHomeElement;
     new (): HTMLAppHomeElement;
   };
 
   interface HTMLAppImageElement extends Components.AppImage, HTMLStencilElement {}
-  const HTMLAppImageElement: {
+  var HTMLAppImageElement: {
     prototype: HTMLAppImageElement;
     new (): HTMLAppImageElement;
   };
 
   interface HTMLAppImageColumnsElement extends Components.AppImageColumns, HTMLStencilElement {}
-  const HTMLAppImageColumnsElement: {
+  var HTMLAppImageColumnsElement: {
     prototype: HTMLAppImageColumnsElement;
     new (): HTMLAppImageColumnsElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
-  const HTMLAppLogoElement: {
+  var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
     new (): HTMLAppLogoElement;
   };
 
   interface HTMLAppMenuElement extends Components.AppMenu, HTMLStencilElement {}
-  const HTMLAppMenuElement: {
+  var HTMLAppMenuElement: {
     prototype: HTMLAppMenuElement;
     new (): HTMLAppMenuElement;
   };
 
   interface HTMLAppMoreActionsElement extends Components.AppMoreActions, HTMLStencilElement {}
-  const HTMLAppMoreActionsElement: {
+  var HTMLAppMoreActionsElement: {
     prototype: HTMLAppMoreActionsElement;
     new (): HTMLAppMoreActionsElement;
   };
 
   interface HTMLAppMoreShareOptionsElement extends Components.AppMoreShareOptions, HTMLStencilElement {}
-  const HTMLAppMoreShareOptionsElement: {
+  var HTMLAppMoreShareOptionsElement: {
     prototype: HTMLAppMoreShareOptionsElement;
     new (): HTMLAppMoreShareOptionsElement;
   };
 
   interface HTMLAppNavigationElement extends Components.AppNavigation, HTMLStencilElement {}
-  const HTMLAppNavigationElement: {
+  var HTMLAppNavigationElement: {
     prototype: HTMLAppNavigationElement;
     new (): HTMLAppNavigationElement;
   };
 
   interface HTMLAppNavigationActionsElement extends Components.AppNavigationActions, HTMLStencilElement {}
-  const HTMLAppNavigationActionsElement: {
+  var HTMLAppNavigationActionsElement: {
     prototype: HTMLAppNavigationActionsElement;
     new (): HTMLAppNavigationActionsElement;
   };
 
   interface HTMLAppNewsletterElement extends Components.AppNewsletter, HTMLStencilElement {}
-  const HTMLAppNewsletterElement: {
+  var HTMLAppNewsletterElement: {
     prototype: HTMLAppNewsletterElement;
     new (): HTMLAppNewsletterElement;
   };
 
   interface HTMLAppNotesElement extends Components.AppNotes, HTMLStencilElement {}
-  const HTMLAppNotesElement: {
+  var HTMLAppNotesElement: {
     prototype: HTMLAppNotesElement;
     new (): HTMLAppNotesElement;
   };
 
   interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
-  const HTMLAppOpensourceElement: {
+  var HTMLAppOpensourceElement: {
     prototype: HTMLAppOpensourceElement;
     new (): HTMLAppOpensourceElement;
   };
 
   interface HTMLAppPhotoElement extends Components.AppPhoto, HTMLStencilElement {}
-  const HTMLAppPhotoElement: {
+  var HTMLAppPhotoElement: {
     prototype: HTMLAppPhotoElement;
     new (): HTMLAppPhotoElement;
   };
 
   interface HTMLAppPopularElement extends Components.AppPopular, HTMLStencilElement {}
-  const HTMLAppPopularElement: {
+  var HTMLAppPopularElement: {
     prototype: HTMLAppPopularElement;
     new (): HTMLAppPopularElement;
   };
 
   interface HTMLAppPressElement extends Components.AppPress, HTMLStencilElement {}
-  const HTMLAppPressElement: {
+  var HTMLAppPressElement: {
     prototype: HTMLAppPressElement;
     new (): HTMLAppPressElement;
   };
 
   interface HTMLAppPrivacyElement extends Components.AppPrivacy, HTMLStencilElement {}
-  const HTMLAppPrivacyElement: {
+  var HTMLAppPrivacyElement: {
     prototype: HTMLAppPrivacyElement;
     new (): HTMLAppPrivacyElement;
   };
 
   interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {}
-  const HTMLAppPublishElement: {
+  var HTMLAppPublishElement: {
     prototype: HTMLAppPublishElement;
     new (): HTMLAppPublishElement;
   };
 
   interface HTMLAppPublishDoneElement extends Components.AppPublishDone, HTMLStencilElement {}
-  const HTMLAppPublishDoneElement: {
+  var HTMLAppPublishDoneElement: {
     prototype: HTMLAppPublishDoneElement;
     new (): HTMLAppPublishDoneElement;
   };
 
   interface HTMLAppPublishEditElement extends Components.AppPublishEdit, HTMLStencilElement {}
-  const HTMLAppPublishEditElement: {
+  var HTMLAppPublishEditElement: {
     prototype: HTMLAppPublishEditElement;
     new (): HTMLAppPublishEditElement;
   };
 
   interface HTMLAppRemoteElement extends Components.AppRemote, HTMLStencilElement {}
-  const HTMLAppRemoteElement: {
+  var HTMLAppRemoteElement: {
     prototype: HTMLAppRemoteElement;
     new (): HTMLAppRemoteElement;
   };
 
   interface HTMLAppRevealElement extends Components.AppReveal, HTMLStencilElement {}
-  const HTMLAppRevealElement: {
+  var HTMLAppRevealElement: {
     prototype: HTMLAppRevealElement;
     new (): HTMLAppRevealElement;
   };
 
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
-  const HTMLAppRootElement: {
+  var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
     new (): HTMLAppRootElement;
   };
 
   interface HTMLAppSelectTargetElementElement extends Components.AppSelectTargetElement, HTMLStencilElement {}
-  const HTMLAppSelectTargetElementElement: {
+  var HTMLAppSelectTargetElementElement: {
     prototype: HTMLAppSelectTargetElementElement;
     new (): HTMLAppSelectTargetElementElement;
   };
 
   interface HTMLAppServicesElement extends Components.AppServices, HTMLStencilElement {}
-  const HTMLAppServicesElement: {
+  var HTMLAppServicesElement: {
     prototype: HTMLAppServicesElement;
     new (): HTMLAppServicesElement;
   };
 
   interface HTMLAppSettingsElement extends Components.AppSettings, HTMLStencilElement {}
-  const HTMLAppSettingsElement: {
+  var HTMLAppSettingsElement: {
     prototype: HTMLAppSettingsElement;
     new (): HTMLAppSettingsElement;
   };
 
   interface HTMLAppShareActionElement extends Components.AppShareAction, HTMLStencilElement {}
-  const HTMLAppShareActionElement: {
+  var HTMLAppShareActionElement: {
     prototype: HTMLAppShareActionElement;
     new (): HTMLAppShareActionElement;
   };
 
   interface HTMLAppShareDeckElement extends Components.AppShareDeck, HTMLStencilElement {}
-  const HTMLAppShareDeckElement: {
+  var HTMLAppShareDeckElement: {
     prototype: HTMLAppShareDeckElement;
     new (): HTMLAppShareDeckElement;
   };
 
   interface HTMLAppShareOptionsElement extends Components.AppShareOptions, HTMLStencilElement {}
-  const HTMLAppShareOptionsElement: {
+  var HTMLAppShareOptionsElement: {
     prototype: HTMLAppShareOptionsElement;
     new (): HTMLAppShareOptionsElement;
   };
 
   interface HTMLAppSigninElement extends Components.AppSignin, HTMLStencilElement {}
-  const HTMLAppSigninElement: {
+  var HTMLAppSigninElement: {
     prototype: HTMLAppSigninElement;
     new (): HTMLAppSigninElement;
   };
 
   interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {}
-  const HTMLAppSlideNavigateElement: {
+  var HTMLAppSlideNavigateElement: {
     prototype: HTMLAppSlideNavigateElement;
     new (): HTMLAppSlideNavigateElement;
   };
 
   interface HTMLAppSlotTypeElement extends Components.AppSlotType, HTMLStencilElement {}
-  const HTMLAppSlotTypeElement: {
+  var HTMLAppSlotTypeElement: {
     prototype: HTMLAppSlotTypeElement;
     new (): HTMLAppSlotTypeElement;
   };
 
   interface HTMLAppTeamElement extends Components.AppTeam, HTMLStencilElement {}
-  const HTMLAppTeamElement: {
+  var HTMLAppTeamElement: {
     prototype: HTMLAppTeamElement;
     new (): HTMLAppTeamElement;
   };
 
   interface HTMLAppTermsElement extends Components.AppTerms, HTMLStencilElement {}
-  const HTMLAppTermsElement: {
+  var HTMLAppTermsElement: {
     prototype: HTMLAppTermsElement;
     new (): HTMLAppTermsElement;
   };
 
   interface HTMLAppUserDeleteElement extends Components.AppUserDelete, HTMLStencilElement {}
-  const HTMLAppUserDeleteElement: {
+  var HTMLAppUserDeleteElement: {
     prototype: HTMLAppUserDeleteElement;
     new (): HTMLAppUserDeleteElement;
   };
 
   interface HTMLAppUserInfoElement extends Components.AppUserInfo, HTMLStencilElement {}
-  const HTMLAppUserInfoElement: {
+  var HTMLAppUserInfoElement: {
     prototype: HTMLAppUserInfoElement;
     new (): HTMLAppUserInfoElement;
   };
 
   interface HTMLAppUserMenuElement extends Components.AppUserMenu, HTMLStencilElement {}
-  const HTMLAppUserMenuElement: {
+  var HTMLAppUserMenuElement: {
     prototype: HTMLAppUserMenuElement;
     new (): HTMLAppUserMenuElement;
   };
 
   interface HTMLAppYoutubeElement extends Components.AppYoutube, HTMLStencilElement {}
-  const HTMLAppYoutubeElement: {
+  var HTMLAppYoutubeElement: {
     prototype: HTMLAppYoutubeElement;
     new (): HTMLAppYoutubeElement;
   };
