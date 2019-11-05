@@ -11,6 +11,7 @@
 * remote: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
 
 ### Others
+* slide-utils: v1.0.0-rc.3-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slides/utils/CHANGELOG.md))
 * starter kit: v1.0.0-rc.4-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 * types: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 * utils: v1.0.0-rc.1-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
@@ -53,7 +54,7 @@
 
 ### Others
 
-* slide-utils: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/utils/CHANGELOG.md))
+* slide-utils: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slides/utils/CHANGELOG.md))
 * starter kit: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 * webpack: v1.0.0-rc.2-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webpack/CHANGELOG.md))
 
@@ -128,7 +129,7 @@
 
 * types: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 * starter kit: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
-* slide-utils: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/utils/CHANGELOG.md))
+* slide-utils: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slides/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.12-2"></a>
 # [1.0.0-rc.12-2](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.12-1...v1.0.0-rc.12-2) (2019-09-13)
@@ -237,7 +238,7 @@
 * slide-gif: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/gif/CHANGELOG.md))
 * slide-qrcode: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/qrcode/CHANGELOG.md))
 * slide-split: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/split/CHANGELOG.md))
-* slide-utils: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/utils/CHANGELOG.md))
+* slide-utils: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slides/utils/CHANGELOG.md))
 * slide-youtube: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/youtube/CHANGELOG.md))
 
 ### Others
