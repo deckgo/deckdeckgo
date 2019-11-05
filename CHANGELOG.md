@@ -12,6 +12,7 @@
 
 ### Others
 * starter kit: v1.0.0-rc.4-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+* types: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 * utils: v1.0.0-rc.1-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
 
 <a name="1.0.0-rc.16"></a>
@@ -125,7 +126,7 @@
 
 ### Others
 
-* types: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* types: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 * starter kit: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 * slide-utils: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/utils/CHANGELOG.md))
 
@@ -224,7 +225,7 @@
 * lazy-img: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
 * qrcode: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/qrcode/CHANGELOG.md))
 * remote: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
-* types: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* types: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 
 ### New: Web Components
 
@@ -508,7 +509,7 @@ The first users began to test, and to create content in, our web open source edi
 * lazy-img: v1.0.0-alpha.6 and v1.0.0-alpha.7 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
 * qrcode: v1.0.0-alpha.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/qrcode/CHANGELOG.md))
 * remote: v1.0.0-alpha.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
-* types: v1.0.0-alpha.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* types: v1.0.0-alpha.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 * utils: v1.0.0-alpha.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
 
 <a name="1.0.0-beta.42"></a>
@@ -516,7 +517,7 @@ The first users began to test, and to create content in, our web open source edi
 
 ### Web Components - First release
 
-* utils: v1.0.0-alpha.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* utils: v1.0.0-alpha.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 
 ### Web Components
 
@@ -534,7 +535,7 @@ The first users began to test, and to create content in, our web open source edi
 
 ### BREAKING: Web Components - Org scoped packages
 
-* types: v1.0.0-alpha.10 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* types: v1.0.0-alpha.10 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 
 ### Web Components
 
@@ -650,7 +651,7 @@ The first users began to test, and to create content in, our web open source edi
 * core: v1.0.0-beta.30 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 * inline-editor: 1.0.0-alpha.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 * remote: v1.0.0-alpha.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
-* types: v1.0.0-alpha.9 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/types/CHANGELOG.md))
+* types: v1.0.0-alpha.9 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 
 <a name="1.0.0-beta.32"></a>
 # [1.0.0-beta.32](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.31...v1.0.0-beta.32) (2019-04-14)

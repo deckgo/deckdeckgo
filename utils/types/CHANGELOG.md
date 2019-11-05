@@ -1,3 +1,19 @@
+<a name="1.0.0-rc.23></a>
+# 1.0.0-rc.3 (2019-11-05)
+
+### Breaking Changes
+
+* `SLIDES_UPDATE` replaced by `DECK_UPDATE` and `SLIDE_UPDATE`
+* `DeckdeckgoSlideDefinition` definition modified and included in a new `DeckdeckgoEventDeck`
+
+### Features
+
+* new event `DECK_REVEAL_UPDATE`
+
+### Refactoring
+
+* source package moved in our monorepo
+
 <a name="1.0.0-rc.2"></a>
 # 1.0.0-rc.2 (2019-09-15)
 
