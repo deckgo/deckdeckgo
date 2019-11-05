@@ -26,7 +26,9 @@ export const config: Config = {
     globalScript: globalScript,
     globalStyle: 'src/global/app.scss',
     plugins: [
-        sass(),
+        sass({
+            includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
+        }),
         postcss({
             plugins: [autoprefixer()]
         }),
@@ -34,7 +36,8 @@ export const config: Config = {
     ],
     nodeResolve: { browser: true },
     devServer: {
-        openBrowser: false
+        openBrowser: false,
+        port: 3334
     },
     copy: [
         { src: 'robots.txt' }

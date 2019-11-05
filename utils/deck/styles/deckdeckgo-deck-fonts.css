@@ -1,0 +1,69 @@
+deckgo-deck *:not(b), deckgo-deck h3, deckgo-deck h4, deckgo-deck h5, deckgo-deck h6 {
+    font-weight: 300;
+}
+
+deckgo-deck strong {
+    font-weight: 500;
+}
+
+deckgo-deck a {
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    text-decoration: underline;
+}
+
+deckgo-deck h1 {
+    font-size: 3em;
+    min-height: 1.5em;
+}
+
+deckgo-deck h2 {
+    font-size: 2em;
+    min-height: 1.7em;
+}
+
+deckgo-deck h3 {
+    font-size: 1.4em;
+    min-height: 2em;
+}
+
+deckgo-deck section, deckgo-deck ol, deckgo-deck ul {
+    font-size: 1.4em;
+    min-height: 2em;
+}
+
+deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck h4, deckgo-deck h5, deckgo-deck h6 {
+    max-width: 100%
+}
+
+deckgo-deck {
+    --deckgo-highlight-code-font-family: Menlo, monospace;
+    --deckgo-highlight-code-scroll: auto;
+
+    --pager-text-size: 0.6rem;
+}
+
+deckgo-deck ion-label, deckgo-deck ion-label[text-wrap].sc-ion-label-md-h, deckgo-deck p {
+    font-size: 1em;
+}
+
+@media(max-width: 768px) {
+    deckgo-deck h1 {
+        font-size: 2.4em;
+    }
+
+    deckgo-deck h3 {
+        font-size: 1.2em;
+    }
+}
+
+@media(min-width: 992px) {
+    deckgo-deck {
+        font-size: 32px;
+    }
+
+    deckgo-deck ion-label, deckgo-deck ion-label[text-wrap].sc-ion-label-md-h, deckgo-deck p {
+        font-size: 32px;
+    }
+}
