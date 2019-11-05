@@ -70,6 +70,7 @@ Are you interested to contribute to our open source project? That would be aweso
 
 | Project | Package | Version | Links |
 | ------- | ------- | ------- |:-----:|
+| **Deck Utils** | [`@deckdeckgo/deck-utils`](https://www.npmjs.com/package/@deckdeckgo/deck-utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/deck-utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/deck-utils) | [`README.md`](utils/deck/README.md)
 | **Slide Utils** | [`@deckdeckgo/slide-utils`](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [`README.md`](utils/slide/README.md)
 | **Types** | [`@deckdeckgo/types`](https://www.npmjs.com/package/@deckdeckgo/types) | [![version](https://img.shields.io/npm/v/@deckdeckgo/types/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/types) | [`README.md`](utils/types/README.md)
 | **Utils** | [`@deckdeckgo/utils`](https://www.npmjs.com/package/@deckdeckgo/utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/utils) | [`README.md`](utils/utils/README.md)

@@ -11,6 +11,7 @@
 * remote: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
 
 ### Others
+* deck-utils: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
 * slide-utils: v1.0.0-rc.3-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
 * starter kit: v1.0.0-rc.4-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 * types: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
