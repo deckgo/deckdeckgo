@@ -1,5 +1,5 @@
 import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
-import {OverlayEventDetail} from '@ionic/core';
+import {alertController, modalController, OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
@@ -20,7 +20,6 @@ import {
 } from '@deckdeckgo/types';
 
 // Utils
-import {IonControllerUtils} from '../../services/utils/ion-controller-utils';
 import {ParseSlidesUtils} from '../../utils/parse-slides.utils';
 
 // Services
@@ -458,7 +457,7 @@ export class AppRemote {
     }
 
     private async openConnectModal() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-remote-connect'
         });
 
@@ -474,7 +473,7 @@ export class AppRemote {
     }
 
     private async openSlidePicker() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-remote-slide-picker',
             componentProps: {
                 slides: this.slides
@@ -512,7 +511,7 @@ export class AppRemote {
     }
 
     private async openDisconnectConfirm() {
-        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
+        const alert: HTMLIonAlertElement = await alertController.create({
             header: 'Disconnect',
             message: 'The remote control must be disconnected from the presentation?',
             cssClass: 'custom-info',
