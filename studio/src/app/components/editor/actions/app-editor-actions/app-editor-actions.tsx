@@ -1,5 +1,5 @@
 import {Component, Element, Event, EventEmitter, h, JSX, Listen, Prop, State} from '@stencil/core';
-import {OverlayEventDetail} from '@ionic/core';
+import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {isIPad} from '@deckdeckgo/utils';
 
@@ -9,7 +9,6 @@ import {SlideAttributes, SlideTemplate} from '../../../../models/data/slide';
 
 import {MoreAction} from '../../../../utils/editor/more-action';
 
-import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 import {AnonymousService} from '../../../../services/editor/anonymous/anonymous.service';
 import {CreateSlidesUtils} from '../../../../utils/editor/create-slides.utils';
 
@@ -70,7 +69,7 @@ export class AppEditorActions {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-create-slide',
             event: $event.detail,
             mode: 'md',
@@ -97,7 +96,7 @@ export class AppEditorActions {
     }
 
     private async openGifPicker() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-gif'
         });
 
@@ -109,7 +108,7 @@ export class AppEditorActions {
     }
 
     private async openYoutube() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-youtube'
         });
 
@@ -121,7 +120,7 @@ export class AppEditorActions {
     }
 
     private async openChart(attributes: SlideAttributes) {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-custom-data'
         });
 
@@ -201,7 +200,7 @@ export class AppEditorActions {
     }
 
     private async openSlideNavigate() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-slide-navigate'
         });
 
@@ -215,7 +214,7 @@ export class AppEditorActions {
     }
 
     private async openRemoteControl() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-remote'
         });
 
@@ -227,7 +226,7 @@ export class AppEditorActions {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-more-actions',
             event: $event,
             mode: 'ios'
@@ -269,7 +268,7 @@ export class AppEditorActions {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-fullscreen-info',
             mode: 'ios',
             cssClass: 'info'

@@ -1,9 +1,7 @@
 import {Component, Event, EventEmitter, h, Prop} from '@stencil/core';
-import {OverlayEventDetail} from '@ionic/core';
+import {loadingController, modalController, OverlayEventDetail} from '@ionic/core';
 
 import {Deck} from '../../../models/data/deck';
-
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {DeckService} from '../../../services/data/deck/deck.service';
 
@@ -31,7 +29,7 @@ export class AppDeleteDeckAction {
             return;
         }
 
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-deck-delete',
             componentProps: {
                 deckName: this.deck.data.name,
@@ -55,7 +53,7 @@ export class AppDeleteDeckAction {
                 return;
             }
 
-            const loading: HTMLIonLoadingElement = await IonControllerUtils.createLoading({});
+            const loading: HTMLIonLoadingElement = await loadingController.create({});
 
             await loading.present();
 

@@ -1,12 +1,10 @@
 import {Component, Element, Event, EventEmitter, h, Listen, Method, State} from '@stencil/core';
-import {OverlayEventDetail} from '@ionic/core';
+import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 
 import {isFullscreen} from '@deckdeckgo/utils';
-
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {SlideHelper} from '../../../helpers/editor/slide.helper';
 
@@ -493,7 +491,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-slot-type',
             componentProps: {
                 selectedElement: this.selectedElement
@@ -516,7 +514,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-edit-slide',
             componentProps: {
                 selectedElement: this.selectedElement,
@@ -548,7 +546,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-reveal',
             componentProps: {
                 selectedElement: this.selectedElement
@@ -571,7 +569,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-code',
             componentProps: {
                 selectedElement: this.selectedElement,
@@ -589,7 +587,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-youtube',
             componentProps: {
                 selectedElement: this.selectedElement
@@ -606,7 +604,7 @@ export class AppEditorToolbar {
     }
 
     private async openNotes() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-notes',
             componentProps: {
                 selectedElement: this.selectedElement
@@ -795,7 +793,7 @@ export class AppEditorToolbar {
     }
 
     private async openColor() {
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-color',
             componentProps: {
                 deckOrSlide: this.deckOrSlide,
@@ -809,7 +807,7 @@ export class AppEditorToolbar {
     }
 
     private async openImage() {
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-image',
             componentProps: {
                 selectedElement: this.selectedElement,
@@ -844,7 +842,7 @@ export class AppEditorToolbar {
     }
 
     private async openModal(componentTag: string, action?: EditAction) {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: componentTag
         });
 

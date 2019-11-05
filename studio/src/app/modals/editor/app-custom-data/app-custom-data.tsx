@@ -1,8 +1,8 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {get, set} from 'idb-keyval';
+import {alertController} from '@ionic/core';
 
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
+import {get, set} from 'idb-keyval';
 
 import {StorageService} from '../../../services/storage/storage.service';
 
@@ -170,7 +170,7 @@ export class AppCustomData {
     }
 
     private async openCustomDataPublicInfo() {
-        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
+        const alert: HTMLIonAlertElement = await alertController.create({
             header: 'About your data',
             message: 'Please note that currently, all the data you would upload, will be publicly visible on the internet.',
             cssClass: 'custom-info',

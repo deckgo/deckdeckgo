@@ -1,6 +1,6 @@
 import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
 
-import {ItemReorderEventDetail} from '@ionic/core';
+import {ItemReorderEventDetail, modalController} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
@@ -15,7 +15,6 @@ import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
@@ -330,7 +329,7 @@ export class AppEditor {
             return;
         }
 
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-publish',
             cssClass: 'fullscreen'
         });

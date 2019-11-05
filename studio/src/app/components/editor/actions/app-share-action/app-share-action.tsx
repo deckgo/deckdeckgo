@@ -1,13 +1,11 @@
 import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
-import {OverlayEventDetail} from '@ionic/core';
+import {OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {take} from 'rxjs/operators';
 
 import {Deck} from '../../../../models/data/deck';
 
 import {MoreAction} from '../../../../utils/editor/more-action';
-
-import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
 
@@ -49,7 +47,7 @@ export class AppShareAction {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-more-share-options',
             event: $event,
             mode: 'ios'

@@ -1,5 +1,6 @@
 import {Component, Listen, State, h, Element} from '@stencil/core';
-import {OverlayEventDetail} from '@ionic/core';
+import {loadingController, modalController, OverlayEventDetail} from '@ionic/core';
+
 import {filter, take} from 'rxjs/operators';
 
 import firebase from '@firebase/app';
@@ -10,7 +11,6 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {User} from '../../../models/data/user';
 
 import {UserUtils} from '../../../utils/core/user-utils';
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {AuthService} from '../../../services/auth/auth.service';
@@ -304,7 +304,7 @@ export class AppHome {
     }
 
     private async presentConfirmDelete() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-user-delete',
             componentProps: {
                 username: this.apiUser.username
@@ -323,7 +323,7 @@ export class AppHome {
     private deleteUser(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             try {
-                const loading: HTMLIonLoadingElement = await IonControllerUtils.createLoading({});
+                const loading: HTMLIonLoadingElement = await loadingController.create({});
 
                 await loading.present();
 

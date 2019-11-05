@@ -1,5 +1,7 @@
 import {Component, Element, EventEmitter, h, Prop, State, Event} from '@stencil/core';
 
+import {alertController} from '@ionic/core';
+
 import {take} from 'rxjs/operators';
 
 import {Deck} from '../../../../models/data/deck';
@@ -8,7 +10,6 @@ import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
 import {EditAction} from '../../../../utils/editor/edit-action';
 
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
-import {IonControllerUtils} from '../../../../utils/core/ion-controller-utils';
 
 @Component({
     tag: 'app-edit-slide-qrcode'
@@ -132,7 +133,7 @@ export class AppEditSlideQRCode {
     }
 
     private async presentQRCodeInfo() {
-        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
+        const alert: HTMLIonAlertElement = await alertController.create({
             message: 'The QR codes you add to your presentations are by default linked with the homepage.<br/><br/>As soon as you share them, their content will automatically be updated with their online urls.<br/><br/>Alternatively, you could also provide a custom url for their content.',
             buttons: ['Ok']
         });

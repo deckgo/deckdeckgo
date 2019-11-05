@@ -1,8 +1,8 @@
 import {Build, Component, Element, h, Listen} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
+import {toastController} from '@ionic/core';
 
-import {IonControllerUtils} from './utils/core/ion-controller-utils';
+import {Subscription} from 'rxjs';
 
 import {ErrorService} from './services/core/error/error.service';
 import {AuthService} from './services/auth/auth.service';
@@ -58,7 +58,7 @@ export class AppRoot {
     }
 
     private async toastError(error: string) {
-        const popover: HTMLIonToastElement = await IonControllerUtils.createToast({
+        const popover: HTMLIonToastElement = await toastController.create({
             message: error,
             showCloseButton: true,
             position: 'top',
@@ -142,12 +142,6 @@ export class AppRoot {
                 <ion-nav id="menu-content"/>
 
                 <app-share-deck></app-share-deck>
-
-                <ion-modal-controller></ion-modal-controller>
-                <ion-popover-controller></ion-popover-controller>
-                <ion-alert-controller></ion-alert-controller>
-                <ion-loading-controller></ion-loading-controller>
-                <ion-toast-controller></ion-toast-controller>
             </ion-app>
         ]);
     }
