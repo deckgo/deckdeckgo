@@ -1,6 +1,6 @@
 import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
 
-import {ItemReorderEventDetail, modalController} from '@ionic/core';
+import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
@@ -329,9 +329,15 @@ export class AppEditor {
             return;
         }
 
+        await this.editorEventsHandler.blockSlide(true);
+
         const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-publish',
             cssClass: 'fullscreen'
+        });
+
+        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+            await this.editorEventsHandler.blockSlide(false);
         });
 
         await modal.present();
