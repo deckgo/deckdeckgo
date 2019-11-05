@@ -1,5 +1,6 @@
 import {Component, Prop, h} from '@stencil/core';
-import {IonControllerUtils} from '../../utils/ion-controller-utils';
+
+import {modalController} from '@ionic/core';
 
 @Component({
   tag: 'app-navigation',
@@ -51,7 +52,7 @@ export class AppNavigation {
   }
 
   private async openNavigationMenuModal() {
-    const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+    const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-navigation-modal'
     });
 
