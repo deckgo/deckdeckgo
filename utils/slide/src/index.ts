@@ -3,6 +3,6 @@ export {DeckdeckgoSlideResize} from './interfaces/deckdeckgo-slide-resize';
 export {DeckdeckgoSlidePlay} from './interfaces/deckdeckgo-slide-play';
 export {DeckdeckgoComponent} from './interfaces/deckdeckgo-component';
 
-export * from './utils/deckdeckgo-component-utils';
-export * from './utils/deckdeckgo-deck-utils';
-export * from './utils/deckdeckgo-slide-utils';
+export * from './utils/component-utils';
+export * from './utils/images-utils';
+export * from './utils/slide-utils';

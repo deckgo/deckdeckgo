@@ -48,7 +48,6 @@ Are you interested to contribute to our open source project? That would be aweso
 | **Lazy image** | [`@deckdeckgo/lazy-img`](https://www.npmjs.com/package/@deckdeckgo/lazy-img) | [![version](https://img.shields.io/npm/v/@deckdeckgo/lazy-img/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/lazy-img) | [`README.md`](webcomponents/lazy-img/README.md)
 | **QR-Code** | [`@deckdeckgo/qrcode`](https://www.npmjs.com/package/@deckdeckgo/qrcode) | [![version](https://img.shields.io/npm/v/@deckdeckgo/qrcode/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/qrcode) | [`README.md`](webcomponents/qrcode/README.md)
 | **Remote** | [`@deckdeckgo/remote`](https://www.npmjs.com/package/@deckdeckgo/remote) | [![version](https://img.shields.io/npm/v/@deckdeckgo/remote/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/remote) | [`README.md`](webcomponents/remote/README.md)
-| **Types** | [`@deckdeckgo/types`](https://www.npmjs.com/package/@deckdeckgo/types) | [![version](https://img.shields.io/npm/v/@deckdeckgo/types/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/types) | [`README.md`](webcomponents/types/README.md)
 
 ## Web Components - Slides/Templates
 
@@ -71,8 +70,10 @@ Are you interested to contribute to our open source project? That would be aweso
 
 | Project | Package | Version | Links |
 | ------- | ------- | ------- |:-----:|
-| **Slide Utils** | [`@deckdeckgo/slide-utils`](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [`README.md`](webcomponents/slides/utils/README.md)
-| **Utils** | [`@deckdeckgo/utils`](https://www.npmjs.com/package/@deckdeckgo/utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/utils) | [`README.md`](webcomponents/utils/README.md)
+| **Deck Utils** | [`@deckdeckgo/deck-utils`](https://www.npmjs.com/package/@deckdeckgo/deck-utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/deck-utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/deck-utils) | [`README.md`](utils/deck/README.md)
+| **Slide Utils** | [`@deckdeckgo/slide-utils`](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-utils) | [`README.md`](utils/slide/README.md)
+| **Types** | [`@deckdeckgo/types`](https://www.npmjs.com/package/@deckdeckgo/types) | [![version](https://img.shields.io/npm/v/@deckdeckgo/types/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/types) | [`README.md`](utils/types/README.md)
+| **Utils** | [`@deckdeckgo/utils`](https://www.npmjs.com/package/@deckdeckgo/utils) | [![version](https://img.shields.io/npm/v/@deckdeckgo/utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/utils) | [`README.md`](utils/utils/README.md)
 
 ## Others
 | Project | Package | Version | Links |

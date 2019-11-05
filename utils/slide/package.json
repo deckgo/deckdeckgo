@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-utils",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.3-2",
   "author": "David Dal Busco",
   "description": "Utils and interfaces for the DeckDeckGo slide templates",
   "license": "MIT",
@@ -13,7 +13,7 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0-rc.1"
+    "@deckdeckgo/utils": "^1.0.0-rc.1-3"
   },
   "devDependencies": {
     "typescript": "^3.5.1"

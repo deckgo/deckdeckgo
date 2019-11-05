@@ -1,5 +1,5 @@
-import {lazyLoadImages} from './deckdeckgo-deck-utils';
-import {lazyLoadComponentContent} from './deckdeckgo-component-utils';
+import {lazyLoadImages} from './images-utils';
+import {lazyLoadComponentContent} from './component-utils';
 
 function showRevealElement(el: HTMLElement): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {

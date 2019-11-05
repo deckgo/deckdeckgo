@@ -1,12 +1,12 @@
 {
-  "name": "@deckdeckgo/types",
-  "version": "1.0.0-rc.2",
+  "name": "@deckdeckgo/utils",
+  "version": "1.0.0-rc.1-3",
   "author": "David Dal Busco",
-  "description": "Present and interact with your DeckDeckGo's PWA presentation",
+  "description": "A collection of utils methods and functions developed for DeckDeckGo",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/deckgo/deckdeckgo-types.git"
+    "url": "git://github.com/deckgo/deckdeckgo.git"
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
