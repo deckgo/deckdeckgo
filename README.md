@@ -1,15 +1,11 @@
 <div align="center">
   <a href="https://deckdeckgo.com"><img src="studio/src/assets/img/deckdeckgo-logo.svg" alt="DeckDeckGo logo" height="160"></a>
   
-  <br/>
-  
-  <p><strong>DeckDeckGo</strong> - The open source web editor for presentations. 🚀</p>
+  <p style="margin-top: 16px;"><strong>DeckDeckGo</strong> - The open source web editor for presentations. 🚀</p>
   
   <p>Create a PWA presentation using either our <a href="https://deckdeckgo.com">online editor</a> or our developer kit with HTML or Markdown.</p>
   
-  <p>Cherry on the cake 🍒🎂 DeckDeckGo comes with a Progressive Web App to <a href="https://deckdeckgo.app">remote control</a> your slides. 📱</p>
-  
-  <br/>
+  <p style="margin-bottom: 32px;">Cherry on the cake 🍒🎂 DeckDeckGo comes with a Progressive Web App to <a href="https://deckdeckgo.app">remote control</a> your slides. 📱</p>
   
   ![Website](https://img.shields.io/website?label=Editor&url=https%3A%2F%2Fdeckdeckgo.com)
   ![Website](https://img.shields.io/website?label=Remotre%20control&url=https%3A%2F%2Fdeckdeckgo.app)
