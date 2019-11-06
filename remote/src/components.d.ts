@@ -10,6 +10,9 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
+  interface AppBottomSheet {
+    'toolbarOffset': number;
+  }
   interface AppDraw {
     'height': number;
     'heightOffset': number;
@@ -40,6 +43,12 @@ export namespace Components {
 
 declare global {
 
+
+  interface HTMLAppBottomSheetElement extends Components.AppBottomSheet, HTMLStencilElement {}
+  var HTMLAppBottomSheetElement: {
+    prototype: HTMLAppBottomSheetElement;
+    new (): HTMLAppBottomSheetElement;
+  };
 
   interface HTMLAppDrawElement extends Components.AppDraw, HTMLStencilElement {}
   var HTMLAppDrawElement: {
@@ -125,6 +134,7 @@ declare global {
     new (): HTMLAppTimerElement;
   };
   interface HTMLElementTagNameMap {
+    'app-bottom-sheet': HTMLAppBottomSheetElement;
     'app-draw': HTMLAppDrawElement;
     'app-experimental-settings': HTMLAppExperimentalSettingsElement;
     'app-general-settings': HTMLAppGeneralSettingsElement;
@@ -143,6 +153,9 @@ declare global {
 }
 
 declare namespace LocalJSX {
+  interface AppBottomSheet {
+    'toolbarOffset'?: number;
+  }
   interface AppDraw {
     'height'?: number;
     'heightOffset'?: number;
@@ -171,6 +184,7 @@ declare namespace LocalJSX {
   interface AppTimer {}
 
   interface IntrinsicElements {
+    'app-bottom-sheet': AppBottomSheet;
     'app-draw': AppDraw;
     'app-experimental-settings': AppExperimentalSettings;
     'app-general-settings': AppGeneralSettings;
@@ -194,6 +208,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
+      'app-bottom-sheet': LocalJSX.AppBottomSheet & JSXBase.HTMLAttributes<HTMLAppBottomSheetElement>;
       'app-draw': LocalJSX.AppDraw & JSXBase.HTMLAttributes<HTMLAppDrawElement>;
       'app-experimental-settings': LocalJSX.AppExperimentalSettings & JSXBase.HTMLAttributes<HTMLAppExperimentalSettingsElement>;
       'app-general-settings': LocalJSX.AppGeneralSettings & JSXBase.HTMLAttributes<HTMLAppGeneralSettingsElement>;

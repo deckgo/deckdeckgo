@@ -24,14 +24,6 @@ app-notes {
     }
   }
 
-  bottom-sheet {
-    --sheet-content-padding-top: 4px;
-    --sheet-z-index: 1000;
-    --sheet-background-color: var(--ion-background-color, white);
-    --sheet-indicator-color: var(--ion-text-color);
-    --sheet-max-width: 540px;
-  }
-
   div.landscape-notes {
     border-radius: 10px;
     height: calc(100% - 28px);
@@ -39,6 +31,12 @@ app-notes {
     border: 1px solid var(--ion-color-light-shade);
     overflow: scroll;
     margin: 16px 16px 0 4px;
+  }
+
+  div.notes {
+    p {
+      padding: 16px 0;
+    }
   }
 
   @media screen and (orientation: landscape) {

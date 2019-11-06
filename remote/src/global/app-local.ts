@@ -19,8 +19,6 @@ import '@deckdeckgo/slide-youtube';
 import '@deckdeckgo/slide-big-img';
 import '@deckdeckgo/slide-video';
 
-import 'bottom-sheet';
-
 import {setupConfig} from '../app/services/environment/environment-config';
 
 setupConfig({
