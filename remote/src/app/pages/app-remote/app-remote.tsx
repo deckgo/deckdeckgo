@@ -155,7 +155,7 @@ export class AppRemote {
                 this.deckAttributes = await ParseAttributesUtils.parseAttributes($event.deck.attributes);
 
                 this.deckRevealOnMobile = !$event.mobile && isMobile() ? $event.deck.reveal : $event.deck.revealOnMobile;
-                this.deckReveal = $event.mobile && isMobile() ? $event.deck.reveal : $event.deck.revealOnMobile;
+                this.deckReveal = $event.deck.reveal;
 
             } else {
                 this.slides = undefined;
