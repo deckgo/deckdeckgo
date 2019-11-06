@@ -101,8 +101,6 @@ app-remote {
           align-items: center;
           justify-content: center;
 
-          font-size: 6rem;
-
           border: 0;
           outline: 0;
 
@@ -114,6 +112,8 @@ app-remote {
 
           ion-icon {
             color: var(--ion-color-light);
+
+            font-size: 6rem;
 
             &.deck-action-button-icon-play {
               padding-left: 12px;
