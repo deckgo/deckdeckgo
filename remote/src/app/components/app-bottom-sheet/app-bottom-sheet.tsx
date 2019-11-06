@@ -132,9 +132,10 @@ export class AppBottomSheet {
 
     render() {
         return <Host style={{'--bottom-sheet-top': `${this.bottomSheetTop}px`, '--bottom-sheet-toolbaroffset': `${this.toolbarOffset}px`, '--contentheight': `${this.contentHeight}px`}}>
+            <div class="indicator"></div>
             <div class="container ion-padding-top">
                 <slot></slot>
-             </div>
+            </div>
         </Host>
     }
 
