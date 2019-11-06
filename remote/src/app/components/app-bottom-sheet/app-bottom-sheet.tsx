@@ -23,6 +23,9 @@ export class AppBottomSheet {
     @State()
     private bottomSheetTop: number = this.bottomSheetMinHeight;
 
+    private container: HTMLElement;
+    private content: HTMLElement;
+
     async componentDidLoad() {
         await this.initSize();
         await this.init();
@@ -70,15 +73,13 @@ export class AppBottomSheet {
 
     private init(): Promise<void> {
         return new Promise<void>((resolve) => {
-            const div: HTMLElement = this.el.querySelector('app-bottom-sheet div.container div.content');
-
-            if (!div) {
+            if (!this.container) {
                 resolve();
                 return;
             }
 
-            div.addEventListener('mousedown', this.startEvent, {passive: false});
-            div.addEventListener('touchstart', this.startEvent, {passive: false});
+            this.container.addEventListener('mousedown', this.startEvent, {passive: false});
+            this.container.addEventListener('touchstart', this.startEvent, {passive: false});
             document.addEventListener('mouseup', this.endEvent, {passive: false});
             document.addEventListener('touchend', this.endEvent, {passive: false});
 
@@ -88,15 +89,13 @@ export class AppBottomSheet {
 
     private destroy(): Promise<void> {
         return new Promise<void>((resolve) => {
-            const div: HTMLElement = this.el.querySelector('app-bottom-sheet div.container div.content');
-
-            if (!div) {
+            if (!this.container) {
                 resolve();
                 return;
             }
 
-            div.removeEventListener('mousedown', this.startEvent, true);
-            div.removeEventListener('touchstart', this.startEvent, true);
+            this.container.removeEventListener('mousedown', this.startEvent, true);
+            this.container.removeEventListener('touchstart', this.startEvent, true);
             document.removeEventListener('mouseup', this.endEvent, true);
             document.removeEventListener('touchend', this.endEvent, true);
 
@@ -119,10 +118,8 @@ export class AppBottomSheet {
 
         const toY: number = unifyEvent($event).clientY;
 
-        const div: HTMLElement = this.el.querySelector('app-bottom-sheet div.container div.content');
-
         if (this.startY > toY) {
-            this.bottomSheetTop = this.bottomSheetTop <= this.bottomSheetMinHeight ? this.heightOffset : (this.bottomSheetTop + this.heightOffset >= div.offsetHeight ? div.offsetHeight : (this.bottomSheetTop + this.heightOffset));
+            this.bottomSheetTop = this.bottomSheetTop <= this.bottomSheetMinHeight ? this.heightOffset : (this.bottomSheetTop + this.heightOffset >= this.content.offsetHeight ? this.content.offsetHeight : (this.bottomSheetTop + this.heightOffset));
         } else {
             this.bottomSheetTop = this.bottomSheetMinHeight;
         }
@@ -133,9 +130,9 @@ export class AppBottomSheet {
     render() {
         return <Host style={{'--bottom-sheet-top': `${this.bottomSheetTop}px`, '--bottom-sheet-toolbaroffset': `${this.toolbarOffset}px`, '--contentheight': `${this.contentHeight}px`}}>
             {this.renderBackdrop()}
-            <div class="container">
+            <div class="container" ref={el => this.container = el}>
                 <div class="indicator"></div>
-                <div class="content ion-padding-top">
+                <div class="content ion-padding-top" ref={el => this.content = el}>
                     <slot></slot>
                 </div>
             </div>
