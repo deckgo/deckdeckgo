@@ -2,7 +2,7 @@ import {h, JSX} from '@stencil/core';
 
 import uuid from 'uuid/v4';
 
-import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
+import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
 
@@ -47,7 +47,7 @@ export class ParseSlidesUtils {
 
             // Create a div to parse back to JSX its children
             const div = document.createElement('div');
-            div.innerHTML = await cleanContent(slide.content);
+            div.innerHTML = await this.getCleanContent(slide);
 
             const content = await ParseElementsUtils.parseElements(div, true);
 
@@ -56,6 +56,42 @@ export class ParseSlidesUtils {
             </SlideElement>;
 
             resolve(result);
+        });
+    }
+
+    private static getCleanContent(slide: DeckdeckgoSlideDefinition): Promise<string | undefined> {
+        return new Promise<string | undefined>(async (resolve) => {
+            if (!slide || !slide.content || slide.content === undefined || slide.content === '')  {
+                resolve(undefined);
+                return;
+            }
+
+            let result: string = await cleanContent(slide.content);
+
+            const customBackground: boolean = await this.hasCustomBackground(slide);
+
+            if (!customBackground) {
+                result = result.replace(/<div slot="background">(.*?)<\/div>/g, '');
+            }
+
+            result = result.replace(/<a slot="actions"(.*?)<\/a>/g, '');
+
+            resolve(result);
+        });
+    }
+
+    private static hasCustomBackground(slide: DeckdeckgoSlideDefinition): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            let customBackground: boolean = false;
+            if (slide.attributes && slide.attributes.length > 0) {
+                let attr: DeckdeckgoAttributeDefinition = slide.attributes.find((attr: DeckdeckgoAttributeDefinition) => {
+                    return attr.name && (attr.name.toLowerCase() === 'custom-background' || attr.name === 'customBackground');
+                });
+
+                customBackground = attr !== null;
+            }
+
+            resolve(customBackground);
         });
     }
 
