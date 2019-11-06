@@ -70,7 +70,7 @@ export class AppBottomSheet {
 
     private init(): Promise<void> {
         return new Promise<void>((resolve) => {
-            const div: HTMLElement = this.el.querySelector('app-bottom-sheet div.container');
+            const div: HTMLElement = this.el.querySelector('app-bottom-sheet div.container div.content');
 
             if (!div) {
                 resolve();
@@ -88,7 +88,7 @@ export class AppBottomSheet {
 
     private destroy(): Promise<void> {
         return new Promise<void>((resolve) => {
-            const div: HTMLElement = this.el.querySelector('app-bottom-sheet div.container');
+            const div: HTMLElement = this.el.querySelector('app-bottom-sheet div.container div.content');
 
             if (!div) {
                 resolve();
@@ -119,7 +119,7 @@ export class AppBottomSheet {
 
         const toY: number = unifyEvent($event).clientY;
 
-        const div: HTMLElement = this.el.querySelector('app-bottom-sheet div.container');
+        const div: HTMLElement = this.el.querySelector('app-bottom-sheet div.container div.content');
 
         if (this.startY > toY) {
             this.bottomSheetTop = this.bottomSheetTop <= this.bottomSheetMinHeight ? this.heightOffset : (this.bottomSheetTop + this.heightOffset >= div.offsetHeight ? div.offsetHeight : (this.bottomSheetTop + this.heightOffset));
@@ -132,11 +132,22 @@ export class AppBottomSheet {
 
     render() {
         return <Host style={{'--bottom-sheet-top': `${this.bottomSheetTop}px`, '--bottom-sheet-toolbaroffset': `${this.toolbarOffset}px`, '--contentheight': `${this.contentHeight}px`}}>
-            <div class="indicator"></div>
-            <div class="container ion-padding-top">
-                <slot></slot>
+            {this.renderBackdrop()}
+            <div class="container">
+                <div class="indicator"></div>
+                <div class="content ion-padding-top">
+                    <slot></slot>
+                </div>
             </div>
         </Host>
+    }
+
+    private renderBackdrop() {
+        if (this.bottomSheetTop > this.bottomSheetMinHeight) {
+            return <ion-backdrop></ion-backdrop>
+        } else {
+            return undefined;
+        }
     }
 
 }
