@@ -10,9 +10,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-  interface AppBottomSheet {
-    'toolbarOffset': number;
-  }
+  interface AppBottomSheet {}
   interface AppDraw {
     'height': number;
     'heightOffset': number;
@@ -153,9 +151,7 @@ declare global {
 }
 
 declare namespace LocalJSX {
-  interface AppBottomSheet {
-    'toolbarOffset'?: number;
-  }
+  interface AppBottomSheet {}
   interface AppDraw {
     'height'?: number;
     'heightOffset'?: number;

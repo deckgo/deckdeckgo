@@ -1,4 +1,4 @@
-import {Component, h, Element, Prop, Host, State} from '@stencil/core';
+import {Component, h, Element, Host, State} from '@stencil/core';
 
 import {debounce, unifyEvent} from '@deckdeckgo/utils';
 
@@ -9,8 +9,6 @@ import {debounce, unifyEvent} from '@deckdeckgo/utils';
 export class AppBottomSheet {
     @Element() el: HTMLElement;
 
-    @Prop() toolbarOffset: number = 56;
-
     private startY: number;
 
     private bottomSheetMinHeight: number = 48;
@@ -18,6 +16,9 @@ export class AppBottomSheet {
 
     @State()
     private contentHeight: number;
+
+    @State()
+    private toolbarOffset: number = 56;
 
     @State()
     private bottomSheetTop: number = this.bottomSheetMinHeight;
@@ -56,6 +57,12 @@ export class AppBottomSheet {
             this.bottomSheetTop = this.bottomSheetMinHeight;
             this.heightOffset = (window.innerHeight || screen.height) * 0.8;
             this.contentHeight = (window.innerHeight || screen.height);
+
+            const header: HTMLElement = document.querySelector('ion-nav ion-header');
+
+            if (header) {
+                this.toolbarOffset = header.offsetHeight;
+            }
 
             resolve();
         });
