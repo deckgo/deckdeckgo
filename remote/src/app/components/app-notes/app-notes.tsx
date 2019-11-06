@@ -80,9 +80,9 @@ export class AppNotes {
 
     render() {
         if (this.portrait) {
-            return <bottom-sheet arrow={true}>
+            return <app-bottom-sheet>
                 {this.renderNotes()}
-            </bottom-sheet>;
+            </app-bottom-sheet>;
         } else {
             return <div class="ion-padding landscape-notes">
                 {this.renderNotes()}
@@ -92,7 +92,7 @@ export class AppNotes {
 
     private renderNotes() {
         return [
-            <p slot="sheet-header" class="ion-margin-start ion-margin-end ion-text-uppercase">Notes</p>,
+            <p class="ion-margin-start ion-margin-end ion-text-uppercase">Notes</p>,
             this.renderNote()
         ]
     }
