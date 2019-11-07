@@ -61,7 +61,7 @@ export class AppBottomSheet {
             this.heightOffset = (window.innerHeight || screen.height) * 0.8;
             this.contentHeight = (window.innerHeight || screen.height);
 
-            const header: HTMLElement = document.querySelector('ion-nav ion-header');
+            const header: HTMLElement = document.querySelector('ion-nav app-remote ion-header');
 
             if (header) {
                 this.toolbarOffset = header.offsetHeight;

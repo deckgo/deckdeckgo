@@ -576,8 +576,6 @@ export class AppRemote {
             </app-header>,
             <ion-content>
                 {this.renderContent()}
-
-                {this.renderActions()}
             </ion-content>
         ];
     }
@@ -602,7 +600,7 @@ export class AppRemote {
 
     private renderContent() {
         if (this.connectionState === ConnectionState.CONNECTED) {
-            return [<main>
+            return [<main class="connected">
                 {this.renderDeck()}
                 <div class="deck-navigation-buttons">
                     <div class="deck-navigation-button-prev">
@@ -632,18 +630,23 @@ export class AppRemote {
                 text = 'Can\' connect, shit happens 😉 Try to reload your presentation...'
             }
 
-            return [
-                <h1 class="ion-padding">{text}</h1>,
+            return <main>
+                <h1 class="ion-padding">{text}</h1>
                 <ion-spinner name="dots" color="primary"></ion-spinner>
-            ];
+            </main>;
         } else {
-            return [
-                <h1 class="ion-padding">The DeckDeckGo remote control</h1>,
+            return <main>
+                <h1 class="ion-padding">The DeckDeckGo remote control</h1>
                 <a onClick={() => this.openConnectModal()} class="link-to-modal">
-                    <p class="ion-padding-start ion-padding-end">Not connected yet, <strong>click here</strong> to find
-                        your presentation or use the link button below <ion-icon name="link"></ion-icon></p>
+                    <p class="ion-padding-start ion-padding-end">Not connected yet. Click here to find
+                        your presentation or start with the button below.</p>
                 </a>
-            ];
+                <div class="deck-action-button deck-action-button-screen-center">
+                    <button onClick={() => this.openConnectModal()} area-label="Connect a presentation" style={{'--action-button-background': 'var(--ion-color-primary'}}>
+                        <ion-icon name="play" class="deck-action-button-icon-play"></ion-icon>
+                    </button>
+                </div>
+            </main>;
         }
     }
 
@@ -667,27 +670,13 @@ export class AppRemote {
         </div>;
     }
 
-    private renderActions() {
-        if (this.connectionState === ConnectionState.CONNECTED) {
-            return undefined;
-        } else {
-            return (
-                <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-                    <ion-fab-button onClick={() => this.openConnectModal()}>
-                        <ion-icon name="link"></ion-icon>
-                    </ion-fab-button>
-                </ion-fab>
-            );
-        }
-    }
-
     private renderExtraActions() {
         if (this.extraPlayAction) {
             const icon: string = this.action === DeckdeckgoSlideAction.PLAY ? 'pause' : 'play';
 
             return (
                 <div class="deck-action-button">
-                    <button onClick={(e: UIEvent) => this.emitAction(e)} area-label={icon}>
+                    <button onClick={(e: UIEvent) => this.emitAction(e)} area-label={icon} style={{'--action-button-background': 'var(--ion-color-tertiary'}}>
                         <ion-icon name={icon} class={`deck-action-button-icon-${icon}`}></ion-icon>
                     </button>
                 </div>

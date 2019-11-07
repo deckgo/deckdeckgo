@@ -1,0 +1,60 @@
+div.deck-action-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 9rem;
+  height: 9rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--background);
+
+  border-radius: 50%;
+
+  button {
+    width: calc(9rem - 16px);
+    height: calc(9rem - 16px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    outline: 0;
+
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+
+    background: var(--action-button-background);
+
+    border-radius: 50%;
+
+    ion-icon {
+      color: var(--ion-color-light);
+
+      font-size: 6rem;
+
+      &.deck-action-button-icon-play {
+        padding-left: 12px;
+      }
+    }
+  }
+
+  &.deck-action-button-screen-center {
+    @media screen and (max-height: 630px), screen and (max-width: 320px) {
+      position: relative;
+      transform: none;
+      top: unset;
+      left: unset;
+
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}
