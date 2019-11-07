@@ -142,12 +142,26 @@ export class AppTimer {
                 <app-stopwatch length={this.timerLength} remaining={this.timerRemaining}></app-stopwatch>
             </div>
         } else {
-            return <h1 class="ion-padding-bottom">The DeckDeckGo remote timer</h1>;
+            return <main>
+                <h1 class="ion-padding">The DeckDeckGo remote timer</h1>
+                <a onClick={() => this.openDatetime()} class="link-to-timer">
+                    <p class="ion-padding-start ion-padding-end">Not timer running. Click here to start a countdown or start it with the button below.</p>
+                </a>
+                <div class="deck-action-button deck-action-button-screen-center">
+                    <button onClick={() => this.openDatetime()} area-label="Start timer" style={{'--action-button-background': 'var(--ion-color-primary'}}>
+                        <ion-icon name="stopwatch" class="deck-action-button-icon-stopwatch"></ion-icon>
+                    </button>
+                </div>
+            </main>;
         }
     }
 
     private renderActions() {
         if (this.timerRunning === null || (this.timerRunning && this.timerRemaining === null)) {
+            return undefined;
+        }
+
+        if (this.timerRemaining === null || this.timerRemaining === undefined) {
             return undefined;
         }
 
