@@ -30,12 +30,14 @@ export class AppGeneralSettings {
     private darkTheme: boolean;
 
     render() {
-        return <ion-list class="ion-padding-top ion-padding-bottom">
+        return [
+            <h1 class="ion-padding-top">Settings</h1>,
+            <ion-list class="ion-padding-top ion-padding-bottom">
             <ion-item>
                 <ion-label>{this.darkTheme ? 'Dark' : 'Light'} theme {this.darkTheme ? '🌑' : '☀️'}</ion-label>
                 <ion-toggle slot="end" checked={this.darkTheme} mode="md" color="switcher" onIonChange={() => this.toggleTheme()}></ion-toggle>
             </ion-item>
-        </ion-list>;
+        </ion-list>];
     }
 
 }
