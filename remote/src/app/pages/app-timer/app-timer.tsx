@@ -122,70 +122,6 @@ export class AppTimer {
         }
     }
 
-    render() {
-        return [
-            <app-header></app-header>,
-
-            <ion-content class="ion-padding">
-                {this.renderContent()}
-                {this.renderActions()}
-                <ion-datetime display-format="HH:mm" pickerOptions={{backdropDismiss: false}} value={startOfDay(new Date()).toDateString()}
-                              onIonCancel={() => this.toggleFabActivated()}
-                              onIonChange={(e: CustomEvent<DatetimeChangeEventDetail>) => this.initTimerLengthAndStartTimer(e)}></ion-datetime>
-            </ion-content>
-        ];
-    }
-
-    private renderContent() {
-        if (this.timerRemaining >= 0) {
-            return <div class="content">
-                <app-stopwatch length={this.timerLength} remaining={this.timerRemaining}></app-stopwatch>
-            </div>
-        } else {
-            return <main>
-                <h1 class="ion-padding">The DeckDeckGo remote timer</h1>
-                <a onClick={() => this.openDatetime()} class="link-to-timer">
-                    <p class="ion-padding-start ion-padding-end">Not timer running. Click here to start a countdown or start it with the button below.</p>
-                </a>
-                <div class="deck-action-button deck-action-button-screen-center">
-                    <button onClick={() => this.openDatetime()} area-label="Start timer" style={{'--action-button-background': 'var(--ion-color-primary'}}>
-                        <ion-icon name="stopwatch" class="deck-action-button-icon-stopwatch"></ion-icon>
-                    </button>
-                </div>
-            </main>;
-        }
-    }
-
-    private renderActions() {
-        if (this.timerRunning === null || (this.timerRunning && this.timerRemaining === null)) {
-            return undefined;
-        }
-
-        const style = {visibility: `${this.timerRemaining === null || this.timerRemaining === undefined ? 'hidden' : 'inherit'}`};
-
-        return <ion-fab vertical="bottom" horizontal="end" slot="fixed" onClick={(e: UIEvent) => e.stopPropagation()} style={style}>
-            <ion-fab-button onClick={() => this.startStopAction()}>
-                <ion-icon name="stopwatch"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-list side="start">
-                {this.renderActionsPause()}
-            </ion-fab-list>
-        </ion-fab>
-    }
-
-    private renderActionsPause() {
-        if (this.timerPause) {
-            return <ion-fab-button color="medium" onClick={(e: UIEvent) => this.pauseTimer(e, false)}>
-                <ion-icon name="play"></ion-icon>
-            </ion-fab-button>
-        } else {
-            return <ion-fab-button color="medium" onClick={(e: UIEvent) => this.pauseTimer(e, true)}>
-                <ion-icon name="pause"></ion-icon>
-            </ion-fab-button>
-        }
-
-    }
-
     private openDatetime(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const datetimeElement: HTMLIonDatetimeElement = this.el.querySelector('ion-datetime');
@@ -252,6 +188,18 @@ export class AppTimer {
         });
     }
 
+    private startAction(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            await this.notificationService.askPermission();
+
+            await this.toggleFabActivated();
+
+            await this.openDatetime();
+
+            resolve();
+        });
+    }
+
     private toggleFabActivated(): Promise<void> {
         return new Promise<void>((resolve) => {
             const ionFabElement: HTMLIonFabElement = this.el.querySelector('ion-fab');
@@ -280,5 +228,69 @@ export class AppTimer {
 
             resolve();
         });
+    }
+
+    render() {
+        return [
+            <app-header></app-header>,
+
+            <ion-content class="ion-padding">
+                {this.renderContent()}
+                {this.renderActions()}
+                <ion-datetime display-format="HH:mm" pickerOptions={{backdropDismiss: false}} value={startOfDay(new Date()).toDateString()}
+                              onIonCancel={() => this.toggleFabActivated()}
+                              onIonChange={(e: CustomEvent<DatetimeChangeEventDetail>) => this.initTimerLengthAndStartTimer(e)}></ion-datetime>
+            </ion-content>
+        ];
+    }
+
+    private renderContent() {
+        if (this.timerRemaining >= 0) {
+            return <div class="content">
+                <app-stopwatch length={this.timerLength} remaining={this.timerRemaining}></app-stopwatch>
+            </div>
+        } else {
+            return <main>
+                <h1 class="ion-padding">The DeckDeckGo remote timer</h1>
+                <a onClick={() => this.openDatetime()} class="link-to-timer">
+                    <p class="ion-padding-start ion-padding-end">Not timer running. Click here to start a countdown or start it with the button below.</p>
+                </a>
+                <div class="deck-action-button deck-action-button-screen-center">
+                    <button onClick={() => this.startAction()} area-label="Start timer" style={{'--action-button-background': 'var(--ion-color-primary'}}>
+                        <ion-icon name="stopwatch" class="deck-action-button-icon-stopwatch"></ion-icon>
+                    </button>
+                </div>
+            </main>;
+        }
+    }
+
+    private renderActions() {
+        if (this.timerRunning === null || (this.timerRunning && this.timerRemaining === null)) {
+            return undefined;
+        }
+
+        const style = {visibility: `${this.timerRemaining === null || this.timerRemaining === undefined ? 'hidden' : 'inherit'}`};
+
+        return <ion-fab vertical="bottom" horizontal="end" slot="fixed" onClick={(e: UIEvent) => e.stopPropagation()} style={style}>
+            <ion-fab-button onClick={() => this.startStopAction()}>
+                <ion-icon name="stopwatch"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-list side="start">
+                {this.renderActionsPause()}
+            </ion-fab-list>
+        </ion-fab>
+    }
+
+    private renderActionsPause() {
+        if (this.timerPause) {
+            return <ion-fab-button color="medium" onClick={(e: UIEvent) => this.pauseTimer(e, false)}>
+                <ion-icon name="play"></ion-icon>
+            </ion-fab-button>
+        } else {
+            return <ion-fab-button color="medium" onClick={(e: UIEvent) => this.pauseTimer(e, true)}>
+                <ion-icon name="pause"></ion-icon>
+            </ion-fab-button>
+        }
+
     }
 }
