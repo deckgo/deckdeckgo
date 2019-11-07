@@ -34,6 +34,16 @@ export class AppDeckEvents {
 <td>Emitted when the deck and all slides have loaded. Emit the an ordered list of all the tag names of the slides.</td>
 </tr>
 <tr>
+<td>slideNextDidAnimate</td>
+<td>void</td>
+<td>Emitted when the slide didn&#39;t change but an animation occurred towards the next slide.</td>
+</tr>
+<tr>
+<td>slidePrevDidAnimate</td>
+<td>void</td>
+<td>Emitted when the slide didn&#39;t change but an animation occurred towards the previous slide.</td>
+</tr>
+<tr>
 <td>slideNextDidChange</td>
 <td>number</td>
 <td>Emitted when the next slide has started. Emit the index of the new active slide.</td>

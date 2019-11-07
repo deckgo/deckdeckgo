@@ -30,10 +30,10 @@ export class AppIntroduction {
 <p>Run the following command in a terminal to create a new deck:</p>
 <deckgo-highlight-code language="bash">
       <code slot="code">npm init deckdeckgo</code>
-    </deckgo-highlight-code><p>After running init you will be provided with a prompt so that you can set the base information for your new deck and choose if you rather like to edit it in <strong>HTML</strong> or <strong>markdown</strong>:</p>
+    </deckgo-highlight-code><p>After running init you will be provided with a prompt which asks you to set the base information for your new deck and choose if you&#39;d rather like to edit it in <strong>HTML</strong> or <strong>markdown</strong>:</p>
 <deckgo-highlight-code language="bash">
       <code slot="code">Cool, let&#039;s kick start a new DeckDeckGo presentation{'\n'}{'\n'}? What&#039;s your project name (will be use to create a new folder)? (deckdeckgo){'\n'}{'\n'}? What&#039;s your presentation name (max. 45 characters, will be use for meta tags and manifest information)? (DeckDeckGo){'\n'}{'\n'}? What&#039;s your presentation about (its description)? (Create a lightweight presentation using Web Components 🚀){'\n'}{'\n'}? What&#039;s your name (will be use for the author meta information)? (David){'\n'}{'\n'}? What method do you want to use to edit your presentation? (Use arrow keys){'\n'}  ❯ HTML{'\n'}    Markdown</code>
-    </deckgo-highlight-code><p>Once your presentation created, go to your new project&#39;s folder and start editing your slides and content for your talk 😉</p>
+    </deckgo-highlight-code><p>Once your presentation is created, navigate to your new project&#39;s folder and start editing your slides and content for your talk 😉</p>
 </main>
 
         <app-footer></app-footer>

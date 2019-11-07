@@ -10,7 +10,7 @@ export class AppEditReveal {
 
       <ion-content class="ion-padding">
         <main><h1 id="app-edit-reveal-reveal">Reveal</h1>
-<p>Make elements and texts appear one line at a time in <a href="https://deckdeckgo.com">DeckDeckGo</a>.</p>
+<p>Make elements and text appear one line at a time in <a href="https://deckdeckgo.com">DeckDeckGo</a>.</p>
 <h2 id="app-edit-reveal-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-edit-reveal-introduction">Introduction</a></li>
@@ -26,18 +26,18 @@ export class AppEditReveal {
 </li>
 </ul>
 <h2 id="app-edit-reveal-introduction">Introduction</h2>
-<p>Per default all the content of each slides and components is visible. If you wish to make elements and texts appear one line at a time, it&#39;s up to you using the following supported options.</p>
+<p>Per default all the content of each slide and component is visible. If you wish to make elements and text appear one line at a time, it&#39;s up to you using the following supported options.</p>
 <h2 id="app-edit-reveal-triggers">Triggers</h2>
-<p>The animation of such elements will happen when you or your users will use the keyboard, the navigation buttons or the navigation buttons in the <a href="https://deckdeckgo.app">remote control</a>.</p>
+<p>The animation of such elements will happen when you or your user will use the navigation buttons on the keyboard or the navigation buttons in the <a href="https://deckdeckgo.app">remote control</a>.</p>
 <h2 id="app-edit-reveal-exception">Exception</h2>
-<p>Elements set as &quot;to be animated&quot; are going to be displayed in any case on mobile devices, that&#39;s a design choice.</p>
+<p>Elements set as &quot;to be animated&quot; are going to be displayed on mobile devices, that&#39;s a design choice, but if you wish to activate the animation for mobile too, you could set the deck&#39;s property <code>revealOnMobile</code> to <code>true</code>.</p>
 <blockquote>
-<p>I (David here) think that it is better in terms of mobile UX. For example, if a slides would contains for example 10 elements, the users would have to swipe the slide 10 times before being able to read the all content and navigate. I&#39;m open to suggestion and discussion about it, ping me, open a feature request or even submit a PR if you see this differently.   </p>
+<p>I (David here) think that it is better in terms of mobile UX. For example, if a slide would contain for example 10 elements, the users would have to swipe the slide 10 times before being able to read the entire content and navigate. I&#39;m open to suggestion and discussion about it, if you would rather like a different default behavior.</p>
 </blockquote>
 <h2 id="app-edit-reveal-edit">Edit</h2>
-<p><a href="https://deckdeckgo.com">DeckDeckGo</a> provide a component <code>&lt;deckgo-reveal/&gt;</code> which should be use in case you would like to make elements appear one at a time. Simply put your element with your content inside, that&#39;s it.</p>
+<p><a href="https://deckdeckgo.com">DeckDeckGo</a> provides a component <code>&lt;deckgo-reveal/&gt;</code> which should be used in case you would like to make elements appear one at a time. Simply put your element with your content inside, that&#39;s it.</p>
 <p>Good to know, the component could be use as a child of a <code>slot</code> you would pass to a slide or could also be use as <code>slot</code> value, as you wish.</p>
-<p>Notabene, at least an element should be provided, adding only text inside the component would not work as the detection is based on elements. </p>
+<p>Nota bene, at least one element should be provided, adding only text inside the component would not work as the detection is based on elements.</p>
 <h3 id="app-edit-reveal-examples">Examples</h3>
 <p>The component <code>deckgo-reveal</code> use as <code>slot</code>:</p>
 <deckgo-highlight-code language="javascript">
@@ -49,10 +49,10 @@ export class AppEditReveal {
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-title&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'}    &lt;div slot=&quot;content&quot;&gt;{'\n'}      &lt;deckgo-reveal&gt;{'\n'}         &lt;p&gt;Hello World One 🚀&lt;&#47;p&gt;{'\n'}         &lt;p&gt;Hello World Two 🚀&lt;&#47;p&gt;{'\n'}         &lt;p&gt;Hello World Three 🚀&lt;&#47;p&gt;{'\n'}      &lt;&#47;deckgo-reveal&gt;{'\n'}    &lt;&#47;div&gt;{'\n'}  &lt;&#47;deckgo-slide-title&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
     </deckgo-highlight-code><h2 id="app-edit-reveal-list">List</h2>
-<p>You could use the above component to encapsulate each <code>li</code> elements of your lists, I guess that would work out, but <a href="https://deckdeckgo.com">DeckDeckGo</a> also provide a dedicated component <code>&lt;deckgo-reveal-list/&gt;</code> to reveal list.</p>
+<p>You could use the above component to encapsulate each <code>li</code> element of your lists, I guess that would work out, but <a href="https://deckdeckgo.com">DeckDeckGo</a> also provides a dedicated component <code>&lt;deckgo-reveal-list/&gt;</code> to reveal list.</p>
 <p>To use it, simply replace the opening tag of your list (<code>ul</code>, <code>ol</code> or <code>dl</code>) with it.</p>
 <h3 id="app-edit-reveal-attributes">Attributes</h3>
-<p>The following attribute could be applied to the element:</p>
+<p>The following attributes could be applied to the element:</p>
 <table>
 <thead>
 <tr>
@@ -130,7 +130,7 @@ export class AppEditReveal {
 </tr>
 </tbody></table>
 <h2 id="app-edit-reveal-examples-for-list">Examples for list</h2>
-<p>Likewise, the component could be use as a child of a <code>slot</code> you would pass to a slide or could also be use as <code>slot</code> value, as you wish.</p>
+<p>Likewise, the component could be used as a child of a <code>slot</code> you would pass to a slide or could also be use as <code>slot</code> value, as you wish.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-title&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'}    &lt;div slot=&quot;content&quot;&gt;{'\n'}      &lt;deckgo-reveal-list list-tag=&quot;ul&quot;&gt;{'\n'}         &lt;li&gt;Hello World One 🚀&lt;&#47;li&gt;{'\n'}         &lt;li&gt;Hello World Two 🚀&lt;&#47;li&gt;{'\n'}         &lt;li&gt;Hello World Three 🚀&lt;&#47;li&gt;{'\n'}      &lt;&#47;deckgo-reveal-list&gt;{'\n'}    &lt;&#47;div&gt;{'\n'}  &lt;&#47;deckgo-slide-title&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
     </deckgo-highlight-code></main>
