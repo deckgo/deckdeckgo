@@ -615,7 +615,11 @@ export class AppEditorToolbar {
             if (detail && detail.data && this.selectedElement) {
                 this.notesDidChange.emit(this.selectedElement);
             }
+
+            this.blockSlide.emit(false);
         });
+
+        this.blockSlide.emit(true);
 
         await modal.present();
     }
