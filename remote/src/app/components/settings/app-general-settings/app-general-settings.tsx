@@ -31,12 +31,8 @@ export class AppGeneralSettings {
 
     render() {
         return <ion-list class="ion-padding-top ion-padding-bottom">
-            <ion-list-header class="ion-padding-bottom ion-padding-top">
-                <ion-label>Hello darkness my old friend</ion-label>
-            </ion-list-header>
-
             <ion-item>
-                <ion-label>{this.darkTheme ? 'Dark' : 'Light'} theme 🔦</ion-label>
+                <ion-label>{this.darkTheme ? 'Dark' : 'Light'} theme {this.darkTheme ? '🌑' : '☀️'}</ion-label>
                 <ion-toggle slot="end" checked={this.darkTheme} mode="md" color="switcher" onIonChange={() => this.toggleTheme()}></ion-toggle>
             </ion-item>
         </ion-list>;

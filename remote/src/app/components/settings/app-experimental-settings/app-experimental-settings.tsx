@@ -83,10 +83,6 @@ export class AppExperimentalSettings {
 
     render() {
         return <ion-list class="ion-padding-top ion-padding-bottom">
-            <ion-list-header class="ion-padding-bottom ion-padding-top">
-                <ion-label>Use the force, Luke</ion-label>
-            </ion-list-header>
-
             <p>
                 Enabling this feature will allow you to swipe your slides like a Jedi or like if you were playing tennis with your phone. To detect the direction, your phone's accelerometer will be used. Therefore understand that this is pretty experimental 😅
             </p>
