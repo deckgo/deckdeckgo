@@ -234,7 +234,7 @@ export class AppTimer {
         return [
             <app-header></app-header>,
 
-            <ion-content class="ion-padding">
+            <ion-content>
                 {this.renderContent()}
                 {this.renderActions()}
                 <ion-datetime display-format="HH:mm" pickerOptions={{backdropDismiss: false}} value={startOfDay(new Date()).toDateString()}
