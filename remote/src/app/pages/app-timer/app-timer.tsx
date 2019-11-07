@@ -161,11 +161,9 @@ export class AppTimer {
             return undefined;
         }
 
-        if (this.timerRemaining === null || this.timerRemaining === undefined) {
-            return undefined;
-        }
+        const style = {visibility: `${this.timerRemaining === null || this.timerRemaining === undefined ? 'hidden' : 'inherit'}`};
 
-        return <ion-fab vertical="bottom" horizontal="end" slot="fixed" onClick={(e: UIEvent) => e.stopPropagation()}>
+        return <ion-fab vertical="bottom" horizontal="end" slot="fixed" onClick={(e: UIEvent) => e.stopPropagation()} style={style}>
             <ion-fab-button onClick={() => this.startStopAction()}>
                 <ion-icon name="stopwatch"></ion-icon>
             </ion-fab-button>
