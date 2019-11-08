@@ -91,7 +91,7 @@ export class AppRoot {
                                 </ion-item>
                                 <ion-item detail={false}>
                                     <ion-label class="ion-padding-start ion-padding-end ion-text-uppercase">
-                                        <a href="https://deckdeckgo.com" target="_blank" class="deckdeckgo">
+                                        <a href="https://deckdeckgo.com" target="_blank" rel="noopener" class="deckdeckgo">
                                             <app-logo></app-logo>
                                             <span>DeckDeckGo</span>
                                         </a>
