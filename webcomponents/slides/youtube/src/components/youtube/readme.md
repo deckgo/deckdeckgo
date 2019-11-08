@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property     | Attribute     | Description | Type     | Default     |
-| ------------ | ------------- | ----------- | -------- | ----------- |
-| `frameTitle` | `frame-title` |             | `string` | `undefined` |
-| `height`     | `height`      |             | `number` | `undefined` |
-| `src`        | `src`         |             | `string` | `undefined` |
-| `width`      | `width`       |             | `number` | `undefined` |
+| Property          | Attribute          | Description | Type      | Default     |
+| ----------------- | ------------------ | ----------- | --------- | ----------- |
+| `allowFullscreen` | `allow-fullscreen` |             | `boolean` | `true`      |
+| `frameTitle`      | `frame-title`      |             | `string`  | `undefined` |
+| `height`          | `height`           |             | `number`  | `undefined` |
+| `src`             | `src`              |             | `string`  | `undefined` |
+| `width`           | `width`            |             | `number`  | `undefined` |
 
 
 ## Methods

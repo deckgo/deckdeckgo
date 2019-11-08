@@ -11,6 +11,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface DeckgoSlideYoutube {
     'afterSwipe': () => Promise<void>;
+    'allowFullscreen': boolean;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
@@ -26,6 +27,7 @@ export namespace Components {
     'width': number;
   }
   interface DeckgoYoutube {
+    'allowFullscreen': boolean;
     'frameTitle': string;
     'height': number;
     'lazyLoadContent': () => Promise<void>;
@@ -59,6 +61,7 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlideYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoSlideYoutubeElement> {
+    'allowFullscreen'?: boolean;
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'height'?: number;
@@ -67,6 +70,7 @@ declare namespace LocalJSX {
     'width'?: number;
   }
   interface DeckgoYoutube extends JSXBase.HTMLAttributes<HTMLDeckgoYoutubeElement> {
+    'allowFullscreen'?: boolean;
     'frameTitle'?: string;
     'height'?: number;
     'src'?: string;

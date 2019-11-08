@@ -9,6 +9,7 @@
 
 | Property           | Attribute           | Description | Type      | Default     |
 | ------------------ | ------------------- | ----------- | --------- | ----------- |
+| `allowFullscreen`  | `allow-fullscreen`  |             | `boolean` | `true`      |
 | `customActions`    | `custom-actions`    |             | `boolean` | `false`     |
 | `customBackground` | `custom-background` |             | `boolean` | `false`     |
 | `height`           | `height`            |             | `number`  | `undefined` |
