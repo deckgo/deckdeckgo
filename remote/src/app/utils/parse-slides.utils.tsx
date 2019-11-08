@@ -43,7 +43,8 @@ export class ParseSlidesUtils {
         return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             const SlideElement: string = slide.template;
 
-            const attributes: any = await ParseAttributesUtils.parseAttributes(slide.attributes);
+            let attributes: any = await ParseAttributesUtils.parseAttributes(slide.attributes);
+            attributes = await this.setCustomAttributes(slide, attributes);
 
             // Create a div to parse back to JSX its children
             const div = document.createElement('div');
@@ -119,6 +120,16 @@ export class ParseSlidesUtils {
             </SlideElement>;
 
             resolve(result);
+        });
+    }
+
+    private static setCustomAttributes(slide: DeckdeckgoSlideDefinition, attributes: any): Promise<any> {
+        return new Promise<any>((resolve) => {
+            if (slide.template && 'deckgo-slide-youtube' === slide.template) {
+                attributes['allowFullscreen'] = false;
+            }
+
+            resolve(attributes);
         });
     }
 }
