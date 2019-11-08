@@ -328,7 +328,7 @@ export class AppDraw {
     render() {
 
         const styleColorPicker = {
-            color: this.color
+            color: this.color === 'red' ? 'black' : 'red'
         };
 
         return ([
@@ -358,14 +358,14 @@ export class AppDraw {
             return (
                 <ion-fab-button color="light"
                                 onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.PENCIL)}>
-                    <ion-icon name="radio-button-off"></ion-icon>
+                    <ion-icon name="create"></ion-icon>
                 </ion-fab-button>
             );
         } else {
             return (
                 <ion-fab-button color="light"
                                 onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.CIRCLE)}>
-                    <ion-icon name="create"></ion-icon>
+                    <ion-icon name="radio-button-off"></ion-icon>
                 </ion-fab-button>
             );
         }
