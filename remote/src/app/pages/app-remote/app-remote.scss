@@ -6,6 +6,8 @@ app-remote {
     grid-template-rows: calc((100% - 64px) / 2) calc((100% - 64px) / 2) 64px;
     height: 100%;
 
+    max-width: inherit;
+
     @media screen and (orientation: landscape) {
       grid-template-rows: 50% 50%;
       grid-template-columns: 50% 50%;
