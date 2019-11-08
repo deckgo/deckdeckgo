@@ -18,6 +18,8 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   @Prop() width: number;
   @Prop() height: number;
 
+  @Prop() allowFullscreen: boolean = true;
+
   @State() videoWidth: number;
   @State() videoHeight: number;
 
@@ -190,7 +192,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   }
 
   private renderVideo() {
-    return <deckgo-youtube src={this.src} width={this.videoWidth} height={this.videoHeight} frame-title={this.frameTitle}></deckgo-youtube>
+    return <deckgo-youtube src={this.src} width={this.videoWidth} height={this.videoHeight} frame-title={this.frameTitle} allowFullscreen={this.allowFullscreen}></deckgo-youtube>
   }
 
 }

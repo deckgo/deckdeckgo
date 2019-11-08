@@ -18,6 +18,8 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
 
   @Prop() frameTitle: string;
 
+  @Prop() allowFullscreen: boolean = true;
+
   @State()
   private loading: boolean = false;
 
@@ -98,14 +100,28 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
 
       const allow: Attr = document.createAttribute('allow');
       allow.value = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-
-      const allowFullScreen: Attr = document.createAttribute('allowfullscreen');
-      allowFullScreen.value = '';
-
       element.setAttributeNode(allow);
-      element.setAttributeNode(allowFullScreen);
 
-      element.src = await this.formatSrc();
+      if (this.allowFullscreen) {
+        const allowFullScreen: Attr = document.createAttribute('allowfullscreen');
+        allowFullScreen.value = '';
+        element.setAttributeNode(allowFullScreen);
+      }
+
+      let src: string = await this.formatSrc();
+
+      if (!this.allowFullscreen) {
+        // Not auto fullscreen on iOS: https://developers.google.com/youtube/player_parameters
+        const playsinline: Attr = document.createAttribute('playsinline');
+        playsinline.value = '1';
+        element.setAttributeNode(playsinline);
+
+        const split: string[] = src.split('?');
+
+        src += `${(split && split.length > 0) ? '&' : '?'}playsinline=1`;
+      }
+
+      element.src = src;
       element.width = '' + this.width;
       element.height = '' + this.height;
       element.frameBorder = '0';
