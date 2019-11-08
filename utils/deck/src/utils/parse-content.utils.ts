@@ -5,9 +5,9 @@ export function cleanContent(content: string): Promise<string> {
             return;
         }
 
-        let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable="false"|contenteditable/gi, '');
-        result = result.replace(/editable=""|editable="true"|editable/gi, '');
-        result = result.replace(/highlighted=""|highlighted="true"|highlighted/gi, '');
+        let result: string = content.replace(/(<.*?)(contenteditable=""|contenteditable="true"|contenteditable="false"|contenteditable)(.*?>)/gi, '$1$3');
+        result = result.replace(/(<.*?)(editable=""|editable="true"|editable)(.*?>)/gi, '$1$3');
+        result = result.replace(/(<.*?)(highlighted=""|highlighted="true"|highlighted)(.*?>)/gi, '$1$3');
         result = result.replace(/class="[a-zA-Z0-9:;\.\s\(\)\-\,]*"/gi, '');
 
         resolve(result);
