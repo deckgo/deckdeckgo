@@ -30,11 +30,54 @@ export class AppRemote {
         });
 
         await this.initQRCodeURI();
+
+        await this.initCloseOnConnected();
+    }
+
+    async componentDidUnload() {
+        await this.destroyCloseOnConnected();
     }
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
     }
+
+    private initCloseOnConnected(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const deckgoRemoteElement = document.querySelector('deckgo-remote');
+
+            if (!deckgoRemoteElement) {
+                resolve();
+                return;
+            }
+
+            deckgoRemoteElement.addEventListener('state', this.onWatchState, { passive: true });
+
+            resolve();
+        });
+    }
+
+    private destroyCloseOnConnected(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const deckgoRemoteElement = document.querySelector('deckgo-remote');
+
+            if (!deckgoRemoteElement) {
+                resolve();
+                return;
+            }
+
+            deckgoRemoteElement.removeEventListener('state', this.onWatchState);
+
+            resolve();
+        });
+    }
+
+    private onWatchState = async ($event) => {
+        // See ConnectionState.CONNECTED which is 3
+        if ($event && $event.detail === 3) {
+            await this.closeModal();
+        }
+    };
 
     @Listen('popstate', { target: 'window' })
     async handleHardwareBackButton(_e: PopStateEvent) {
