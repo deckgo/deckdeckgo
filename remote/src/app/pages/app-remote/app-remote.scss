@@ -86,6 +86,17 @@ app-remote {
     --pager-size: 64px;
     --pager-text-size: 0.6rem;
 
+    --slide-padding-top: 16px;
+    --slide-padding-end: 32px;
+    --slide-padding-bottom: 16px;
+    --slide-padding-start: 32px;
+
+    @media screen and (min-width: 992px) {
+      ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
+        font-size: 1.2em;
+      }
+    }
+
     a, deckgo-social {
       pointer-events: none;
     }
