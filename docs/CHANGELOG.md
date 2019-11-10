@@ -1,3 +1,14 @@
+<a name="1.0.0-rc.6"></a>
+# 1.0.0-rc.6 (2019-11-10)
+
+### Features
+
+* lighthouse improvements
+* solve Ionic deprecated controllers
+* improve grammar, typo and syntax
+* update doc about sync reveal for mobile
+* update demo website url
+
 <a name="1.0.0-rc.5"></a>
 # 1.0.0-rc.5 (2019-10-20)
 
