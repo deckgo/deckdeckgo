@@ -208,6 +208,7 @@ export class PublishService {
             };
 
             const cleanApiSlide: ApiSlide = await this.convertSlideQRCode(apiSlide);
+            cleanApiSlide.content = await this.cleanNotes(apiSlide.content);
 
             resolve(cleanApiSlide);
         });
@@ -230,6 +231,19 @@ export class PublishService {
                 resolve(undefined);
                 return;
             }
+
+            resolve(result);
+        });
+    }
+
+    private cleanNotes(content: string): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!content || content === undefined || content === '') {
+                resolve(content);
+                return;
+            }
+
+            let result: string = content.replace(/<div slot="notes">(.*?)<\/div>/gis, '');
 
             resolve(result);
         });
