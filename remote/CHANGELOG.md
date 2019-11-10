@@ -1,3 +1,11 @@
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-11-10)
+
+### Features
+
+* rework UX and design of the remote controller ([#228](https://github.com/deckgo/deckdeckgo/issues/228))
+* sync and display deck and slides content ([#450](https://github.com/deckgo/deckdeckgo/issues/450))
+
 <a name="1.0.0-beta.2"></a>
 # 1.0.0-beta.2 (2019-09-15)
 
