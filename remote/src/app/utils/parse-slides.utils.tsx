@@ -76,6 +76,7 @@ export class ParseSlidesUtils {
             }
 
             result = result.replace(/<a slot="actions"(.*?)<\/a>/g, '');
+            result = result.replace(/<!--.*?-->/g, '');
 
             resolve(result);
         });
