@@ -22,7 +22,7 @@ rec
   function-unsplash =
     pkgs.runCommand "build-lambda" {}
       ''
-        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        cp ${./main.js} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${unsplashProxy}/bin/unsplash-proxy" main_hs
         mkdir $out
