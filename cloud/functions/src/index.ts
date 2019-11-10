@@ -5,7 +5,7 @@ const app: admin.app.App = admin.initializeApp();
 app.firestore().settings({timestampsInSnapshots: true});
 
 import {applyWatchDeckDelete, applyWatchDeckUpdate} from './watch/watch-deck';
-import {applyWatchUserCreate, applyWatchUserDelete} from './watch/watch-user';
+import {applyWatchUserCreate, applyWatchUserDelete, applyWatchUserUpdate} from './watch/watch-user';
 
 const runtimeOpts = {
     timeoutSeconds: 120,
@@ -15,6 +15,8 @@ const runtimeOpts = {
 export const watchDeckUpdate = functions.runWith(runtimeOpts).firestore.document('decks/{deckId}').onUpdate(applyWatchDeckUpdate);
 
 export const watchDeckDelete = functions.firestore.document('decks/{deckId}').onDelete(applyWatchDeckDelete);
+
+export const watchUserUpdate = functions.firestore.document('users/{userId}').onUpdate(applyWatchUserUpdate);
 
 export const watchUserDelete = functions.auth.user().onDelete(applyWatchUserDelete);
 
