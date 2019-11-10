@@ -243,7 +243,7 @@ export class PublishService {
                 return;
             }
 
-            let result: string = content.replace(/<div slot="notes">(.*?)<\/div>/gis, '');
+            let result: string = content.replace(/<div slot="notes".*?>.*?<\/div>/gis, '');
 
             resolve(result);
         });
