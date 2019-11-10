@@ -1,3 +1,20 @@
+<a name="1.0.0-beta.8"></a>
+# 1.0.0-beta.8 (2019-11-10)
+
+### Features
+
+* add notes to the editor ([#247](https://github.com/deckgo/deckdeckgo/issues/247))
+* rework UX and design of the remote controller ([#228](https://github.com/deckgo/deckdeckgo/issues/228))
+* sync and display deck and slides content ([#450](https://github.com/deckgo/deckdeckgo/issues/450))
+* close remote connect modal on successful connection with the remote ([#464](https://github.com/deckgo/deckdeckgo/pull/464))
+* refactor deprecated Ionic controllers ([#454](https://github.com/deckgo/deckdeckgo/issues/454))
+* move utils, types and slides-utils to new package utils ([#453](https://github.com/deckgo/deckdeckgo/issues/453))
+
+### Fix
+
+* if modal open, arrow key should not be interpreted ([#443](https://github.com/deckgo/deckdeckgo/issues/443))
+* clear draw doesn't clear history ([#452](https://github.com/deckgo/deckdeckgo/issues/452))
+
 <a name="1.0.0-beta.7-1"></a>
 # 1.0.0-beta.7-1 (2019-10-21)
 
