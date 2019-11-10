@@ -91,6 +91,13 @@ app-remote {
     --slide-padding-bottom: 16px;
     --slide-padding-start: 32px;
 
+    --slide-author-social-padding-top: 8px;
+
+    --slide-author-padding-top: 16px;
+    --slide-author-padding-end: 32px;
+    --slide-author-padding-bottom: 16px;
+    --slide-author-padding-start: 32px;
+
     @media screen and (min-width: 992px) {
       ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
         font-size: 1.2em;
