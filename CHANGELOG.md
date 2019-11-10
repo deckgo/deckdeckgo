@@ -20,6 +20,7 @@
 * starter kit: v1.0.0-rc.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 * types: v1.0.0-rc.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 * utils: v1.0.0-rc.1-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
+* infra: update NodeJS 10 and starter kit
 
 <a name="1.0.0-rc.16-1"></a>
 # [1.0.0-rc.16-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.16...v1.0.0-rc.16-1) (In progress)
