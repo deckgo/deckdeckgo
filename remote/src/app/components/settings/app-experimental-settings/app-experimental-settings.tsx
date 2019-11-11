@@ -48,6 +48,10 @@ export class AppExperimentalSettings {
     private async toggleAccelerometerSupport() {
         try {
             this.accelerometerEnabled = await this.accelerometerService.toggle();
+
+            if (this.accelerometerEnabled) {
+                await this.accelerometerService.start();
+            }
         } catch (err) {
             this.accelerometerEnabled = false;
         }
