@@ -1,6 +1,6 @@
 # DeckDeckGo - Slide "QR Code"
 
-This component is the slide/template "Author" of [DeckDeckGo].
+This component is the slide/template "QR Code" of [DeckDeckGo].
 
 It is developed with [Stencil](https://stenciljs.com).
 
