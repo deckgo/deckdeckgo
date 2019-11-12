@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+
+  <title>DeckDeckGo - Slide QR Code Template</title>
+
+  <script type="module" src="/build/deckdeckgo-slide-poll.esm.js"></script>
+  <script nomodule src="/build/deckdeckgo-slide-poll.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.js"></script>
+
+</head>
+<body style="margin: 0; overflow: hidden;">
+
+<deckgo-deck>
+  <deckgo-slide-poll link="https://deckdeckgo.com" style="--deckgo-qrcode-color-fill: black;">
+    <h1 slot="question">Do you like my presentation so far?</h1>
+    <p slot="answer-1">It is super</p>
+    <p slot="answer-2">Meh</p>
+    <p slot="answer-3">I could'nt care less</p>
+    <p slot="answer-4">Tell me why</p>
+    <p slot="answer-5">Ain't nothin' but a heartache</p>
+    <p slot="how_to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code 78 34 93</p>
+  </deckgo-slide-poll>
+</deckgo-deck>
+
+</body>
+</html>
