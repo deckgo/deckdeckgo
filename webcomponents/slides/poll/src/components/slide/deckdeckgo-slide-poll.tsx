@@ -3,6 +3,8 @@ import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} f
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
+import '@deckdeckgo/charts';
+
 @Component({
   tag: 'deckgo-slide-poll',
   styleUrl: 'deckdeckgo-slide-poll.scss',
@@ -32,6 +34,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @State()
   private chartHeight: number;
 
+  @State()
+  private chartData: HTMLDeckgoBarChartElement['data'];
+
   componentWillLoad() {
     this.answerSlots = Array.from({length: this.answers}, (_v, i) => i);
   }
@@ -42,6 +47,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     this.initWindowResize();
 
     this.slideDidLoad.emit();
+
+    this.chartData = await this.initChartData();
   }
 
   async componentDidUpdate() {
@@ -101,7 +108,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-poll-chart');
 
       if (container) {
-        this.chartWidth = container.clientWidth - 64;
+        this.chartWidth = container.clientWidth - 128;
         this.chartHeight = this.chartWidth * 9 / 16;
 
         const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
@@ -147,6 +154,51 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       const paddingBottom: number = css ? parseInt(css.paddingBottom) : 0;
 
       resolve(howToElement.offsetHeight + marginBottom + marginTop + paddingBottom + paddingTop);
+    });
+  }
+
+  private initChartData(): Promise<HTMLDeckgoBarChartElement['data']> {
+    return new Promise<HTMLDeckgoBarChartElement["data"]>(async (resolve) => {
+      if (this.answers <= 0 || !this.answerSlots || this.answerSlots.length <= 0) {
+        resolve(null);
+        return;
+      }
+
+      const promises = [];
+      Array.from(this.answerSlots).forEach((answer: number) => {
+        promises.push(this.initChartDataBar(`answer-${answer + 1}`));
+      });
+
+      const bars: any[] = await Promise.all(promises);
+
+      if (!bars || bars.length <= 0) {
+        resolve(null);
+        return;
+      }
+
+      const question: HTMLElement = this.el.querySelector(`:scope > [slot=\'question\']`);
+
+      resolve([{
+        label: question ? question.innerHTML : 'Poll',
+        values: bars
+      }]);
+    });
+  }
+
+  private initChartDataBar(answerSlotName: string): Promise<any> {
+    return new Promise<any>((resolve) => {
+      const element: HTMLElement = this.el.querySelector(`:scope > [slot=\'${answerSlotName}\']`);
+
+      if (!element) {
+        resolve(undefined);
+        return;
+      }
+
+      resolve({
+        key: answerSlotName,
+        title: element.innerHTML,
+        value: 5
+      });
     });
   }
 
@@ -244,9 +296,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       return undefined;
     }
 
-    return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight}
-                             src={'https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare-with-titles.csv'}
-                             animation={true}></deckgo-bar-chart>
+    return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} data={this.chartData}
+                             animation={true} yAxis={false}></deckgo-bar-chart>
   }
 
 }

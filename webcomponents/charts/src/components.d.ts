@@ -7,12 +7,15 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  DeckdeckgoBarChartData,
+} from './components/charts/deckdeckgo-bar-chart/deckdeckgo-bar-chart-data';
 
 export namespace Components {
   interface DeckgoBarChart {
     'animation': boolean;
     'animationDuration': number;
+    'data': DeckdeckgoBarChartData[];
     'draw': (width?: number, height?: number) => Promise<void>;
     'height': number;
     'isBeginning': () => Promise<boolean>;
@@ -26,6 +29,7 @@ export namespace Components {
     'separator': string;
     'src': string;
     'width': number;
+    'yAxis': boolean;
   }
   interface DeckgoLineChart {
     'animation': boolean;
@@ -97,6 +101,7 @@ declare namespace LocalJSX {
   interface DeckgoBarChart {
     'animation'?: boolean;
     'animationDuration'?: number;
+    'data'?: DeckdeckgoBarChartData[];
     'height'?: number;
     'marginBottom'?: number;
     'marginLeft'?: number;
@@ -105,6 +110,7 @@ declare namespace LocalJSX {
     'separator'?: string;
     'src'?: string;
     'width'?: number;
+    'yAxis'?: boolean;
   }
   interface DeckgoLineChart {
     'animation'?: boolean;

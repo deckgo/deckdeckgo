@@ -8,17 +8,7 @@ import {max} from 'd3-array';
 import {Axis, axisBottom, axisLeft} from 'd3-axis';
 import {transition} from 'd3-transition';
 
-interface DeckdeckgoBarChartDataValue {
-  key: string;
-  title: string;
-  value: number;
-  randomFillColor: string;
-}
-
-interface DeckdeckgoBarChartData {
-  label: any;
-  values: DeckdeckgoBarChartDataValue[];
-}
+import {DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue} from './deckdeckgo-bar-chart-data';
 
 @Component({
   tag: 'deckgo-bar-chart',
@@ -48,9 +38,13 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   private x1: any;
   private y: any;
 
-  private data: DeckdeckgoBarChartData[];
+  @Prop({mutable: true}) data: DeckdeckgoBarChartData[];
 
   private barDataIndex: number = 0;
+
+  private randomColors: string[];
+
+  @Prop() yAxis: boolean = true;
 
   async componentDidLoad() {
     await this.draw();
@@ -72,7 +66,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         this.height = height;
       }
 
-      if (!this.width || !this.height || !this.src) {
+      if (!this.width || !this.height) {
         resolve();
         return;
       }
@@ -82,9 +76,11 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
       this.svg = this.svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
 
-      this.data = await this.fetchData();
+      if (this.src) {
+        this.data = await this.fetchData();
+      }
 
-      if (!this.data || this.data.length <= 0) {
+      if (!this.data || this.data === undefined || this.data.length <= 0) {
         resolve();
         return;
       }
@@ -92,6 +88,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       await this.initAxis();
 
       await this.drawAxis();
+
+      this.randomColors = Array.from({ length: this.data[0].values.length }, (_v, _i) => (Math.floor(Math.random()*16777215).toString(16)));
 
       await this.drawBars(0, 0);
 
@@ -162,15 +160,21 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   private drawAxis(): Promise<void> {
     return new Promise<void>((resolve) => {
       const bottomAxis: Axis<any> = axisBottom(this.x0);
-      const leftAxis: Axis<any> = axisLeft(this.y);
 
       this.svg.append('g')
         .attr('class', 'axis axis-x')
         .attr('transform', 'translate(0,' + this.height + ')')
         .call(bottomAxis)
         .selectAll('text')
-        .attr('transform', 'translate(-10,0)rotate(-45)')
+        .attr('transform', 'translate(-8,8)rotate(-45)')
         .style('text-anchor', 'end');
+
+      if (!this.yAxis) {
+        resolve();
+        return;
+      }
+
+      const leftAxis: Axis<any> = axisLeft(this.y);
 
       this.svg.append('g')
         .attr('class', 'axis axis-y')
@@ -230,8 +234,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         .enter()
         .append('rect')
         .merge(section)
-        .attr('style', (d) => {
-          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (d.randomFillColor ? `#${d.randomFillColor}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+        .attr('style', (d, i) => {
+          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
         })
         .transition(t).duration(animationDuration)
         .attr('x', (d) => {
@@ -274,8 +278,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         .attr('height', (d) => {
           return this.height - this.y(d.value);
         })
-        .attr('style', (d) => {
-          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (d.randomFillColor ? `#${d.randomFillColor}` : '')  + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+        .attr('style', (d, i) => {
+          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '')  + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
         });
 
       resolve();
@@ -306,7 +310,6 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
       let results: DeckdeckgoBarChartData[] = [];
       let keys: (number | string)[];
-      let randomColors: string[];
 
       lines.forEach((line: string, lineCount: number) => {
         const values: string[] = line.split(this.separator);
@@ -318,10 +321,6 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
             keys = Array.apply(null, {length: values.length}).map(Number.call, Number).slice(1);
           }
 
-          if (!randomColors) {
-            randomColors = Array.from({ length: values.length }, (_v, _i) => (Math.floor(Math.random()*16777215).toString(16)));
-          }
-
           let dataValues: DeckdeckgoBarChartDataValue[] = [];
           for (let i = 1; i < values.length; i++) {
             const tmp: number = parseInt(values[i]);
@@ -330,8 +329,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
               dataValues.push({
                 key: `${i}`,
                 title: keys.length >= i ? `${keys[i - 1]}` : `${i}`,
-                value: tmp,
-                randomFillColor: randomColors.length >= (i + 1) ? randomColors[i] : undefined
+                value: tmp
               });
             } else if (lineCount === 0 && keys.length >= i) {
               keys[i - 1] = values[i];

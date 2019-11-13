@@ -1,6 +1,7 @@
 text {
   fill: var(--deckgo-chart-text-color, black);
   display: var(--deckgo-chart-text-display);
+  font-size: var(--deckgo-chart-text-font-size);
 }
 
 .axis path,
@@ -8,4 +9,8 @@ text {
   fill: none;
   stroke: var(--deckgo-chart-axis-color, black);
   shape-rendering: crispEdges;
+}
+
+svg {
+  overflow: var(--deckgo-chart-overflow);
 }

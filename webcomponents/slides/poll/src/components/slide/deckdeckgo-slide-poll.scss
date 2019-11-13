@@ -13,6 +13,8 @@ div.deckgo-slide-poll {
   display: grid;
   grid-template-columns: 40% 60%;
 
+  grid-column-gap: var(--slide-poll-grid-column-gap, 32px);
+
   min-height: 0;
 
   > * {
@@ -38,6 +40,9 @@ div.deckgo-slide-poll {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+
+    --deckgo-chart-text-font-size: 1rem;
+    --deckgo-chart-overflow: visible;
   }
 
 }
