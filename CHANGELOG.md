@@ -1,3 +1,15 @@
+<a name="1.0.0-rc.18"></a>
+# [1.0.0-rc.18](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.17...v1.0.0-rc.18) (In progress)
+
+### Applications
+
+* studio: v1.0.0-beta.8-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+* remote: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+
+### Others
+* deck-utils: v1.0.0-rc.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
+* starter kit: v1.0.0-rc.5-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+
 <a name="1.0.0-rc.17"></a>
 # [1.0.0-rc.17](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.16-1...v1.0.0-rc.17) (2019-11-10)
 

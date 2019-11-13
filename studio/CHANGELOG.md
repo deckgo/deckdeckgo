@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.8-1"></a>
+# 1.0.0-beta.8-1 (2019-11-13)
+
+### Fix
+
+* fix notes displayed on template split ([#472](https://github.com/deckgo/deckdeckgo/issues/472))
+
 <a name="1.0.0-beta.8"></a>
 # 1.0.0-beta.8 (2019-11-10)
 

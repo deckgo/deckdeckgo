@@ -18,7 +18,7 @@ deckgo-deck h1, deckgo-deck h2, deckgo-deck h3, deckgo-deck section, deckgo-deck
 
 /* Slide split */
 
-deckgo-slide-split > *:not([slot="title"]) {
+deckgo-slide-split > *[slot="start"], deckgo-slide-split > *[slot="end"] {
     display: flex;
     flex-direction: column;
     align-items: center;
