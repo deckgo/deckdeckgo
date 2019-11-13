@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-11-13)
+
+### Fix
+
+* fix notes displayed on template split ([#472](https://github.com/deckgo/deckdeckgo/issues/472))
+
 <a name="1.0.0-rc.1"></a>
 # 1.0.0-rc.1 (2019-11-10)
 
