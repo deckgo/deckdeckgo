@@ -37,7 +37,6 @@ export function isIOS(): boolean {
     return /iPad|iPhone|iPod/i.test(a);
 }
 
-
 export function isIPad(): boolean {
     if (!window || !navigator) {
         return false;
@@ -54,4 +53,14 @@ export function isFullscreen(): boolean {
     }
 
     return window.innerHeight == screen.height;
+}
+
+export function isFirefox(): boolean {
+    if (!window || !navigator) {
+        return false;
+    }
+
+    const a: string = navigator.userAgent || navigator.vendor || (window as any).opera;
+
+    return /firefox/i.test(a);
 }
