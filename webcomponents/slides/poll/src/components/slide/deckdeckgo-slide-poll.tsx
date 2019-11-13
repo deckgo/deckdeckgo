@@ -4,6 +4,8 @@ import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 import '@deckdeckgo/charts';
+import {CommunicationService} from '../../services/communication/communication.service';
+import {filter, take} from 'rxjs/operators';
 
 @Component({
   tag: 'deckgo-slide-poll',
@@ -37,8 +39,17 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @State()
   private chartData: HTMLDeckgoBarChartElement['data'];
 
+  @State()
+  private pollKey: string;
+
+  private communicationService: CommunicationService = CommunicationService.getInstance();
+
   componentWillLoad() {
     this.answerSlots = Array.from({length: this.answers}, (_v, i) => i);
+
+    this.communicationService.watchPollKey().pipe(filter((key: string) => key !== undefined), take(1)).subscribe((key: string) => {
+      this.pollKey = key;
+    });
   }
 
   async componentDidLoad() {
@@ -57,6 +68,10 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     if (img && this.imgSrc) {
       await this.lazyLoadContent();
     }
+  }
+
+  async componentDidUnload() {
+    await this.communicationService.disconnect();
   }
 
   private initWindowResize() {
@@ -202,6 +217,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
+  private async initPoll() {
+    if (this.chartData && this.chartData.length >= 1) {
+      await this.communicationService.connect(this.chartData[0]);
+    }
+  }
+
   @Method()
   beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
@@ -220,6 +241,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       const promises = [];
       promises.push(lazyLoadContent(this.el));
       promises.push(this.init());
+      promises.push(this.initPoll());
 
       await Promise.all(promises);
 
@@ -249,30 +271,40 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <style>{`
-        ::slotted(*:not([slot="question"]):nth-child(-n+${this.answers + 1})) {
+        ::slotted(*:not([slot="question"]):not([slot="how_to"]):nth-child(-n+${this.answers + 1})) {
           display: none;
         }
       `}</style>
       <div class="deckgo-slide">
         <slot name="question"></slot>
         {this.renderAnswers()}
-        <div class="deckgo-slide-poll">
-          <div class="deckgo-slide-poll-qrcode">
-            <deckgo-qrcode content={this.link}>
-              {this.renderLogo()}
-            </deckgo-qrcode>
-            <slot name="how_to"></slot>
-          </div>
-
-          <div class="deckgo-slide-poll-chart">
-            {this.renderChart()}
-          </div>
-        </div>
+        {this.renderPoll()}
         <slot name="notes"></slot>
         <slot name="actions"></slot>
         <slot name="background"></slot>
       </div>
     </Host>;
+  }
+
+  private renderPoll() {
+    if (!this.pollKey) {
+      return undefined;
+    }
+
+    return <div class="deckgo-slide-poll">
+      <div class="deckgo-slide-poll-qrcode">
+        <deckgo-qrcode content={this.link}>
+          {this.renderLogo()}
+        </deckgo-qrcode>
+        <p>
+          <slot name="how_to"></slot> {this.pollKey.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ' ')}
+        </p>
+      </div>
+
+      <div class="deckgo-slide-poll-chart">
+        {this.renderChart()}
+      </div>
+    </div>;
   }
 
   private renderLogo() {

@@ -5,7 +5,7 @@ module.exports = (server) => {
 
     socketIO.set('origins', '*:*');
 
-    console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Socket listening');
+    console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo-Api]', 'Socket listening');
 
     socketIO.sockets.on('connection', (socket) => {
 
