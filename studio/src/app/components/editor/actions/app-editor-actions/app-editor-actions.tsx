@@ -215,7 +215,7 @@ export class AppEditorActions {
 
     private async openRemoteControl() {
         const modal: HTMLIonModalElement = await modalController.create({
-            component: 'app-remote'
+            component: 'app-remote-connect'
         });
 
         await modal.present();
