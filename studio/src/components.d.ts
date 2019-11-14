@@ -163,6 +163,7 @@ export namespace Components {
   }
   interface AppPublishEdit {}
   interface AppRemote {}
+  interface AppRemoteConnect {}
   interface AppReveal {
     'selectedElement': HTMLElement;
   }
@@ -510,6 +511,12 @@ declare global {
     new (): HTMLAppRemoteElement;
   };
 
+  interface HTMLAppRemoteConnectElement extends Components.AppRemoteConnect, HTMLStencilElement {}
+  var HTMLAppRemoteConnectElement: {
+    prototype: HTMLAppRemoteConnectElement;
+    new (): HTMLAppRemoteConnectElement;
+  };
+
   interface HTMLAppRevealElement extends Components.AppReveal, HTMLStencilElement {}
   var HTMLAppRevealElement: {
     prototype: HTMLAppRevealElement;
@@ -663,6 +670,7 @@ declare global {
     'app-publish-done': HTMLAppPublishDoneElement;
     'app-publish-edit': HTMLAppPublishEditElement;
     'app-remote': HTMLAppRemoteElement;
+    'app-remote-connect': HTMLAppRemoteConnectElement;
     'app-reveal': HTMLAppRevealElement;
     'app-root': HTMLAppRootElement;
     'app-select-target-element': HTMLAppSelectTargetElementElement;
@@ -842,6 +850,7 @@ declare namespace LocalJSX {
     'onPublished'?: (event: CustomEvent<string>) => void;
   }
   interface AppRemote {}
+  interface AppRemoteConnect {}
   interface AppReveal {
     'selectedElement'?: HTMLElement;
   }
@@ -937,6 +946,7 @@ declare namespace LocalJSX {
     'app-publish-done': AppPublishDone;
     'app-publish-edit': AppPublishEdit;
     'app-remote': AppRemote;
+    'app-remote-connect': AppRemoteConnect;
     'app-reveal': AppReveal;
     'app-root': AppRoot;
     'app-select-target-element': AppSelectTargetElement;
@@ -1014,6 +1024,7 @@ declare module "@stencil/core" {
       'app-publish-done': LocalJSX.AppPublishDone & JSXBase.HTMLAttributes<HTMLAppPublishDoneElement>;
       'app-publish-edit': LocalJSX.AppPublishEdit & JSXBase.HTMLAttributes<HTMLAppPublishEditElement>;
       'app-remote': LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
+      'app-remote-connect': LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
       'app-reveal': LocalJSX.AppReveal & JSXBase.HTMLAttributes<HTMLAppRevealElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'app-select-target-element': LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;

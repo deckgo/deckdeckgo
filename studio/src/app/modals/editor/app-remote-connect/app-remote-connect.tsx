@@ -5,10 +5,10 @@ import {take} from 'rxjs/operators';
 import {RemoteService} from '../../../services/editor/remote/remote.service';
 
 @Component({
-    tag: 'app-remote',
-    styleUrl: 'app-remote.scss'
+    tag: 'app-remote-connect',
+    styleUrl: 'app-remote-connect.scss'
 })
-export class AppRemote {
+export class AppRemoteConnect {
 
     @Element() el: HTMLElement;
 
