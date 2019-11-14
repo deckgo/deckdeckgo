@@ -1,9 +1,14 @@
 <a name="1.0.0-beta.8-1"></a>
 # 1.0.0-beta.8-1 (2019-11-13)
 
+### Features
+
+* fetch more cards on the main feed ([#476](https://github.com/deckgo/deckdeckgo/pull/476))
+
 ### Fix
 
 * fix notes displayed on template split ([#472](https://github.com/deckgo/deckdeckgo/issues/472))
+* Firefox and Safari doesn't support click in input type file ([#474](https://github.com/deckgo/deckdeckgo/issues/474))
 
 <a name="1.0.0-beta.8"></a>
 # 1.0.0-beta.8 (2019-11-10)
