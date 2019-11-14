@@ -23,6 +23,26 @@ module.exports = (server) => {
             }
         });
 
+        socket.on('join', async (req) => {
+            if (req && req.key) {
+                socket.join(req.key);
+
+                const poll = await findPoll(req.key);
+
+                socket.emit('poll_desc', poll);
+            }
+        });
+
+        socket.on('vote', async (req) => {
+            if (req && req.key && req.answer) {
+                const poll = await findPoll(req.key);
+
+                if (poll) {
+                    // TODO
+                }
+            }
+        });
+
         socket.on('leave', async (req) => {
             if (req && req.key) {
                 socket.leave(req.key);
@@ -62,7 +82,7 @@ function addPoll(key, poll) {
 
 function generateUniqueAvailableKey(loop) {
     return new Promise( async (resolve) => {
-        let key = Math.floor(100000 + Math.random() * 900000);
+        let key = `${Math.floor(100000 + Math.random() * 900000)}`;
 
         if (!polls) {
             resolve(key);
@@ -80,9 +100,25 @@ function generateUniqueAvailableKey(loop) {
                 return;
             }
 
-            key = await generateKey(loop + 1);
+            key = await generateUniqueAvailableKey(loop + 1);
         }
 
         resolve(key);
+    });
+}
+
+
+function findPoll(key) {
+    return new Promise(async (resolve) => {
+        if (!polls) {
+            resolve(undefined);
+            return;
+        }
+
+        const poll = polls.find((filteredPoll) => {
+            return filteredPoll.key === key;
+        });
+
+        resolve(poll);
     });
 }

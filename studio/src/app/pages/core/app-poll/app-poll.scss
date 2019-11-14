@@ -1,0 +1,20 @@
+app-poll {
+  main {
+    background: white;
+    --ion-background-color: white;
+    --ion-border-color: white;
+
+    ion-list.list-ios {
+      margin-bottom: 0;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+    ion-list {
+      ion-item {
+        --padding-start: 0;
+        --ripple-color: var(--ion-color-primary);
+      }
+    }
+  }
+}

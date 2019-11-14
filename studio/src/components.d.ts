@@ -151,6 +151,9 @@ export namespace Components {
   }
   interface AppOpensource {}
   interface AppPhoto {}
+  interface AppPoll {
+    'pollKey': string;
+  }
   interface AppPopular {
     'description': boolean;
     'help': boolean;
@@ -469,6 +472,12 @@ declare global {
     new (): HTMLAppPhotoElement;
   };
 
+  interface HTMLAppPollElement extends Components.AppPoll, HTMLStencilElement {}
+  var HTMLAppPollElement: {
+    prototype: HTMLAppPollElement;
+    new (): HTMLAppPollElement;
+  };
+
   interface HTMLAppPopularElement extends Components.AppPopular, HTMLStencilElement {}
   var HTMLAppPopularElement: {
     prototype: HTMLAppPopularElement;
@@ -663,6 +672,7 @@ declare global {
     'app-notes': HTMLAppNotesElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-photo': HTMLAppPhotoElement;
+    'app-poll': HTMLAppPollElement;
     'app-popular': HTMLAppPopularElement;
     'app-press': HTMLAppPressElement;
     'app-privacy': HTMLAppPrivacyElement;
@@ -835,6 +845,9 @@ declare namespace LocalJSX {
   }
   interface AppOpensource {}
   interface AppPhoto {}
+  interface AppPoll {
+    'pollKey'?: string;
+  }
   interface AppPopular {
     'description'?: boolean;
     'help'?: boolean;
@@ -939,6 +952,7 @@ declare namespace LocalJSX {
     'app-notes': AppNotes;
     'app-opensource': AppOpensource;
     'app-photo': AppPhoto;
+    'app-poll': AppPoll;
     'app-popular': AppPopular;
     'app-press': AppPress;
     'app-privacy': AppPrivacy;
@@ -1017,6 +1031,7 @@ declare module "@stencil/core" {
       'app-notes': LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
       'app-opensource': LocalJSX.AppOpensource & JSXBase.HTMLAttributes<HTMLAppOpensourceElement>;
       'app-photo': LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;
+      'app-poll': LocalJSX.AppPoll & JSXBase.HTMLAttributes<HTMLAppPollElement>;
       'app-popular': LocalJSX.AppPopular & JSXBase.HTMLAttributes<HTMLAppPopularElement>;
       'app-press': LocalJSX.AppPress & JSXBase.HTMLAttributes<HTMLAppPressElement>;
       'app-privacy': LocalJSX.AppPrivacy & JSXBase.HTMLAttributes<HTMLAppPrivacyElement>;

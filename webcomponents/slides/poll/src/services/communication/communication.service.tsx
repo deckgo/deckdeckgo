@@ -60,9 +60,9 @@ export class CommunicationService {
 
         this.socket.removeAllListeners();
         this.socket.disconnect();
-      });
 
-      resolve();
+        resolve();
+      });
     });
   }
 

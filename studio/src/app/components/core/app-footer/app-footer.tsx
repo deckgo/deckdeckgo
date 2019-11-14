@@ -38,6 +38,10 @@ export class AppFooter {
 
                 <ion-label class="ion-padding-top">Interact</ion-label>
 
+                <ion-router-link href="/poll" routerDirection="forward">
+                    <ion-label>Poll</ion-label>
+                </ion-router-link>
+
                 <ion-router-link href="/remote" routerDirection="forward">
                     <ion-label>Remote control</ion-label>
                 </ion-router-link>
