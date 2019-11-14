@@ -9,7 +9,7 @@
 
 | Property           | Attribute           | Description | Type      | Default     |
 | ------------------ | ------------------- | ----------- | --------- | ----------- |
-| `answers`          | `answers`           |             | `number`  | `5`         |
+| `countAnswers`     | `count-answers`     |             | `number`  | `5`         |
 | `customActions`    | `custom-actions`    |             | `boolean` | `false`     |
 | `customBackground` | `custom-background` |             | `boolean` | `false`     |
 | `imgAlt`           | `img-alt`           |             | `string`  | `undefined` |
@@ -86,19 +86,6 @@ Type: `Promise<void>`
 
 
 
-
-## Dependencies
-
-### Depends on
-
-- deckgo-bar-chart
-
-### Graph
-```mermaid
-graph TD;
-  deckgo-slide-poll --> deckgo-bar-chart
-  style deckgo-slide-poll fill:#f9f,stroke:#333,stroke-width:4px
-```
 
 ----------------------------------------------
 

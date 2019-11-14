@@ -12,8 +12,8 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface DeckgoSlidePoll {
     'afterSwipe': () => Promise<void>;
-    'answers': number;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+    'countAnswers': number;
     'customActions': boolean;
     'customBackground': boolean;
     'hideContent': () => Promise<void>;
@@ -41,7 +41,7 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlidePoll {
-    'answers'?: number;
+    'countAnswers'?: number;
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'imgAlt'?: string;

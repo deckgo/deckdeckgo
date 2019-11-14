@@ -51,8 +51,23 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   }
 
   @Watch('src')
-  async redraw() {
+  async onSrcChange() {
     await this.draw();
+  }
+
+  @Watch('data')
+  async onDataChange() {
+    if (!this.animation) {
+      return;
+    }
+
+    if (!this.data || this.data.length <= 0) {
+      return;
+    }
+
+    if (this.barDataIndex < this.data.length) {
+      await this.drawBars(this.barDataIndex, this.animationDuration);
+    }
   }
 
   @Method()
@@ -98,11 +113,25 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   }
 
   private async drawBars(index: number, animationDuration: number) {
+    await this.initAxisYDomain();
+
     if (this.animation) {
       await this.drawAnimatedBars(index, animationDuration);
     } else {
       await this.drawInstantBars();
     }
+  }
+
+  private initAxisYDomain(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.y.domain([0, max(this.data, (category) => {
+        return max(category.values, (d) => {
+          return d.value;
+        });
+      })]);
+
+      resolve();
+    });
   }
 
   @Method()
@@ -185,7 +214,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   }
 
   private initAxis(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       this.x0 = scaleBand().rangeRound([0, this.width]);
 
       this.x1 = scaleBand().padding(0.05);
@@ -201,11 +230,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         this.initInstantAxisX(xDomains);
       }
 
-      this.y.domain([0, max(this.data, (category) => {
-        return max(category.values, (d) => {
-          return d.value;
-        });
-      })]);
+      await this.initAxisYDomain();
 
       resolve();
     });

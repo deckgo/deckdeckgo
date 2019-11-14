@@ -38,7 +38,7 @@ module.exports = (server) => {
                 const poll = await findPoll(req.key);
 
                 if (poll) {
-                    // TODO
+                    socket.broadcast.to(req.key).emit('vote', req.answer);
                 }
             }
         });

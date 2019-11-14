@@ -1,11 +1,14 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} from '@stencil/core';
 
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime, filter, take} from 'rxjs/operators';
+
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 import '@deckdeckgo/charts';
+
 import {CommunicationService} from '../../services/communication/communication.service';
-import {filter, take} from 'rxjs/operators';
 
 @Component({
   tag: 'deckgo-slide-poll',
@@ -26,7 +29,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Prop({reflectToAttr: true}) imgSrc: string;
   @Prop({reflectToAttr: true}) imgAlt: string;
 
-  @Prop() answers: number = 5;
+  @Prop() countAnswers: number = 5;
 
   private answerSlots: number[];
 
@@ -44,11 +47,28 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private communicationService: CommunicationService = CommunicationService.getInstance();
 
+  private answers = {};
+
+  private updateChart: Subject<void> = new Subject<void>();
+
+  private subscription: Subscription;
+  private updateChartSubscription: Subscription;
+
   componentWillLoad() {
-    this.answerSlots = Array.from({length: this.answers}, (_v, i) => i);
+    this.answerSlots = Array.from({length: this.countAnswers}, (_v, i) => i);
 
     this.communicationService.watchPollKey().pipe(filter((key: string) => key !== undefined), take(1)).subscribe((key: string) => {
       this.pollKey = key;
+    });
+
+    this.subscription = this.communicationService.watchVote().subscribe((answer: string) => {
+      this.answers[answer]++;
+
+      this.updateChart.next();
+    });
+
+    this.updateChartSubscription = this.updateChart.pipe(debounceTime(500)).subscribe(async () => {
+      await this.updateChartData();
     });
   }
 
@@ -72,6 +92,14 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   async componentDidUnload() {
     await this.communicationService.disconnect();
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    if (this.updateChartSubscription) {
+      this.updateChartSubscription.unsubscribe();
+    }
   }
 
   private initWindowResize() {
@@ -92,7 +120,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private async init() {
     await this.initQRCodeSize();
-    await this.drawChart();
+    await this.initSizeAndDraw();
   }
 
   private initQRCodeSize(): Promise<void> {
@@ -118,7 +146,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
-  private drawChart(): Promise<void> {
+  private initSizeAndDraw(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-poll-chart');
 
@@ -174,13 +202,16 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private initChartData(): Promise<HTMLDeckgoBarChartElement['data']> {
     return new Promise<HTMLDeckgoBarChartElement["data"]>(async (resolve) => {
-      if (this.answers <= 0 || !this.answerSlots || this.answerSlots.length <= 0) {
+      if (this.countAnswers <= 0 || !this.answerSlots || this.answerSlots.length <= 0) {
         resolve(null);
         return;
       }
 
       const promises = [];
       Array.from(this.answerSlots).forEach((answer: number) => {
+
+        this.answers[`answer-${answer + 1}`] = 0;
+
         promises.push(this.initChartDataBar(`answer-${answer + 1}`));
       });
 
@@ -200,6 +231,39 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
+  private updateChartData(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.chartData || this.chartData.length < 1) {
+        resolve();
+        return;
+      }
+
+      if (!this.answers) {
+        resolve();
+        return;
+      }
+
+      const keys: string[] = Object.keys(this.answers);
+
+      if (!keys || keys.length <= 0) {
+        resolve();
+        return;
+      }
+
+      keys.forEach((key: string) => {
+        const dataBar = this.chartData[0].values.find((value) => {
+          return value.key === key;
+        });
+
+        dataBar.value = this.answers[key];
+      });
+
+      this.chartData = [...this.chartData];
+
+      resolve();
+    });
+  }
+
   private initChartDataBar(answerSlotName: string): Promise<any> {
     return new Promise<any>((resolve) => {
       const element: HTMLElement = this.el.querySelector(`:scope > [slot=\'${answerSlotName}\']`);
@@ -212,7 +276,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       resolve({
         key: answerSlotName,
         title: element.innerHTML,
-        value: 5
+        value: Math.floor((Math.random() * 10) + 1)
       });
     });
   }
@@ -271,7 +335,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <style>{`
-        ::slotted(*:not([slot="question"]):not([slot="how_to"]):nth-child(-n+${this.answers + 1})) {
+        ::slotted(*:not([slot="question"]):not([slot="how_to"]):nth-child(-n+${this.countAnswers + 1})) {
           display: none;
         }
       `}</style>
@@ -297,7 +361,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
           {this.renderLogo()}
         </deckgo-qrcode>
         <p>
-          <slot name="how_to"></slot> {this.pollKey.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ' ')}
+          <slot name="how_to"></slot>
+          {this.pollKey.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ' ')}
         </p>
       </div>
 
