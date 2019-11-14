@@ -165,6 +165,9 @@ export namespace Components {
     'publishedUrl': string;
   }
   interface AppPublishEdit {}
+  interface AppRandomGif {
+    'keyword': string;
+  }
   interface AppRemote {}
   interface AppRemoteConnect {}
   interface AppReveal {
@@ -514,6 +517,12 @@ declare global {
     new (): HTMLAppPublishEditElement;
   };
 
+  interface HTMLAppRandomGifElement extends Components.AppRandomGif, HTMLStencilElement {}
+  var HTMLAppRandomGifElement: {
+    prototype: HTMLAppRandomGifElement;
+    new (): HTMLAppRandomGifElement;
+  };
+
   interface HTMLAppRemoteElement extends Components.AppRemote, HTMLStencilElement {}
   var HTMLAppRemoteElement: {
     prototype: HTMLAppRemoteElement;
@@ -679,6 +688,7 @@ declare global {
     'app-publish': HTMLAppPublishElement;
     'app-publish-done': HTMLAppPublishDoneElement;
     'app-publish-edit': HTMLAppPublishEditElement;
+    'app-random-gif': HTMLAppRandomGifElement;
     'app-remote': HTMLAppRemoteElement;
     'app-remote-connect': HTMLAppRemoteConnectElement;
     'app-reveal': HTMLAppRevealElement;
@@ -862,6 +872,9 @@ declare namespace LocalJSX {
   interface AppPublishEdit {
     'onPublished'?: (event: CustomEvent<string>) => void;
   }
+  interface AppRandomGif {
+    'keyword'?: string;
+  }
   interface AppRemote {}
   interface AppRemoteConnect {}
   interface AppReveal {
@@ -959,6 +972,7 @@ declare namespace LocalJSX {
     'app-publish': AppPublish;
     'app-publish-done': AppPublishDone;
     'app-publish-edit': AppPublishEdit;
+    'app-random-gif': AppRandomGif;
     'app-remote': AppRemote;
     'app-remote-connect': AppRemoteConnect;
     'app-reveal': AppReveal;
@@ -1038,6 +1052,7 @@ declare module "@stencil/core" {
       'app-publish': LocalJSX.AppPublish & JSXBase.HTMLAttributes<HTMLAppPublishElement>;
       'app-publish-done': LocalJSX.AppPublishDone & JSXBase.HTMLAttributes<HTMLAppPublishDoneElement>;
       'app-publish-edit': LocalJSX.AppPublishEdit & JSXBase.HTMLAttributes<HTMLAppPublishEditElement>;
+      'app-random-gif': LocalJSX.AppRandomGif & JSXBase.HTMLAttributes<HTMLAppRandomGifElement>;
       'app-remote': LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
       'app-remote-connect': LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
       'app-reveal': LocalJSX.AppReveal & JSXBase.HTMLAttributes<HTMLAppRevealElement>;
