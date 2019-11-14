@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-4"></a>
+# 1.0.0-rc.1-4 (2019-11-13)
+
+### Features
+
+* add function `isFirefox`
+
 <a name="1.0.0-rc.1-3"></a>
 # 1.0.0-rc.1-3 (2019-11-05)
 
