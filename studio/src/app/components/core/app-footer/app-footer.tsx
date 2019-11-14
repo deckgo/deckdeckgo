@@ -36,6 +36,12 @@ export class AppFooter {
                     <ion-label>FAQ</ion-label>
                 </ion-router-link>
 
+                <ion-label class="ion-padding-top">Interact</ion-label>
+
+                <ion-router-link href="/remote" routerDirection="forward">
+                    <ion-label>Remote control</ion-label>
+                </ion-router-link>
+
                 <ion-label class="ion-padding-top">Developers</ion-label>
 
                 <ion-router-link href="/opensource" routerDirection="forward">
