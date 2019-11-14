@@ -19,7 +19,7 @@ export class FeedService {
 
     private nextQueryAfter: firebase.firestore.DocumentSnapshot;
 
-    private queryLimit: number = 10;
+    private queryLimit: number = 20;
 
     private decks: Deck[] = [];
 
