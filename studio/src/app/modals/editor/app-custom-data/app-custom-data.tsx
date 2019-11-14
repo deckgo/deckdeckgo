@@ -27,8 +27,15 @@ export class AppCustomData {
     @State()
     private uploading: boolean = false;
 
+    @State()
+    private infoDisplayedOnce: boolean = false;
+
     constructor() {
         this.storageService = StorageService.getInstance();
+    }
+
+    async componentWillLoad() {
+        this.infoDisplayedOnce = await get<boolean>('deckdeckgo_display_custom_data');
     }
 
     async componentDidLoad() {
@@ -118,29 +125,14 @@ export class AppCustomData {
         });
     }
 
-    async uploadNewData() {
-        const infoDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_custom_data');
+    private openFilePicker() {
+        const filePicker: HTMLInputElement = this.el.querySelector('input');
 
-        if (!infoDisplayedOnce) {
-            await this.openCustomDataPublicInfo();
-        } else {
-            await this.openFilePicker();
+        if (!filePicker) {
+            return;
         }
-    }
 
-    private openFilePicker(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const filePicker: HTMLInputElement = this.el.querySelector('input');
-
-            if (!filePicker) {
-                resolve();
-                return;
-            }
-
-            filePicker.click();
-
-            resolve();
-        });
+        filePicker.click();
     }
 
     private upload(): Promise<void> {
@@ -185,6 +177,8 @@ export class AppCustomData {
                     text: 'Ok',
                     handler: async () => {
                         await set('deckdeckgo_display_custom_data', true);
+
+                        this.infoDisplayedOnce = true;
 
                         await this.openFilePicker();
                     }
@@ -265,7 +259,7 @@ export class AppCustomData {
 
     private renderToolbarAction() {
         if (!this.uploading) {
-            return <ion-button onClick={() => this.uploadNewData()} shape="round" color="tertiary">
+            return <ion-button onClick={() => (this.infoDisplayedOnce ? this.openFilePicker() : this.openCustomDataPublicInfo())} shape="round" color="tertiary">
                 <ion-icon name="cloud-upload" slot="start"></ion-icon>
                 <ion-label>Upload a new data</ion-label>
             </ion-button>

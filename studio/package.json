@@ -31,7 +31,7 @@
     "@deckdeckgo/slide-split": "^1.0.0-rc.1",
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
     "@deckdeckgo/slide-youtube": "^1.0.0-rc.1-3",
-    "@deckdeckgo/utils": "^1.0.0-rc.1-2",
+    "@deckdeckgo/utils": "^1.0.0-rc.1-4",
     "@ionic/core": "4.11.3",
     "firebase": "^7.2.3",
     "idb-keyval": "^3.2.0",
