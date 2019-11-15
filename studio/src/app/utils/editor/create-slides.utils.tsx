@@ -12,9 +12,11 @@ import {Deck} from '../../models/data/deck';
 
 import {QRCodeUtils} from './qrcode.utils';
 
+import {DEFAULT_FIRST_SLIDE_PALETTE} from './random-palette';
+
 export class CreateSlidesUtils {
 
-    static createSlide(template: SlideTemplate, deck?: Deck, user?: User): Promise<JSX.IntrinsicElements> {
+    static createSlide(template: SlideTemplate, randomColor: boolean, deck?: Deck, user?: User): Promise<JSX.IntrinsicElements> {
         return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             if (!document) {
                 resolve(null);
@@ -22,7 +24,7 @@ export class CreateSlidesUtils {
             }
 
             if (template === SlideTemplate.TITLE) {
-                resolve(await this.createSlideTitle());
+                resolve(await this.createSlideTitle(randomColor));
             } else if (template === SlideTemplate.CONTENT) {
                 resolve(await this.createSlideContent());
             } else if (template === SlideTemplate.SPLIT) {
@@ -43,8 +45,8 @@ export class CreateSlidesUtils {
         });
     }
 
-    private static createSlideTitle(): Promise<JSX.IntrinsicElements> {
-        return new Promise<JSX.IntrinsicElements>((resolve) => {
+    private static createSlideTitle(randomColor: boolean): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>(async (resolve) => {
             if (!document) {
                 resolve();
                 return;
@@ -54,12 +56,37 @@ export class CreateSlidesUtils {
 
             const content = <section slot="content"></section>;
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-title key={uuid()}>
+            const style = await this.getRandomStyleColors(randomColor);
+
+            const slide: JSX.IntrinsicElements = <deckgo-slide-title key={uuid()} {...style}>
                 {title}
                 {content}
             </deckgo-slide-title>;
 
             resolve(slide);
+        });
+    }
+
+    private static getRandomStyleColors(randomColor: boolean): Promise<any | undefined> {
+        return new Promise<any | undefined>((resolve) => {
+            if (!randomColor) {
+                resolve(undefined);
+                return;
+            }
+
+            if (!DEFAULT_FIRST_SLIDE_PALETTE || DEFAULT_FIRST_SLIDE_PALETTE.length <= 0) {
+                resolve(undefined);
+                return;
+            }
+
+            const index: number = Math.floor(Math.random() * DEFAULT_FIRST_SLIDE_PALETTE.length);
+
+            resolve({
+                style: {
+                    '--color': DEFAULT_FIRST_SLIDE_PALETTE[index].contrast.rgba,
+                    '--background': DEFAULT_FIRST_SLIDE_PALETTE[index].color.rgba
+                }
+            });
         });
     }
 
