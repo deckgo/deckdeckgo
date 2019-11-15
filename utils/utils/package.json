@@ -10,13 +10,18 @@
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
-    "typescript": "^3.5.1"
+    "rimraf": "^3.0.0",
+    "rollup": "^1.27.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.2"
   },
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "tsc"
+    "build": "rimraf lib && rollup -c && tsc"
   },
   "files": [
     "lib",
