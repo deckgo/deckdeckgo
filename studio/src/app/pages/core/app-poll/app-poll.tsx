@@ -26,6 +26,14 @@ export class AppPoll {
     @State()
     private pollNotFound: boolean = false;
 
+    @State()
+    private hasVoted: boolean = false;
+
+    @State()
+    private keywordIndex: number = Math.floor(Math.random() * 4);
+
+    private keywords: string[] = ['You did it', 'Applause', 'Thumbs up', 'Congratulations'];
+
     private pollService: PollService;
 
     private subscription: Subscription;
@@ -70,7 +78,9 @@ export class AppPoll {
 
         await this.pollService.vote(this.poll.key, this.choice);
 
-        // TODO
+        // TODO: What do do if error, hasVoted =  true?
+
+        this.hasVoted = true;
     }
 
     private async handleSubmitJoin($event: Event) {
@@ -94,16 +104,20 @@ export class AppPoll {
         return [
             <app-navigation presentation={true}></app-navigation>,
             <ion-content class="ion-padding">
-                <main class="ion-padding">
+                <main class="ion-padding" style={this.hasVoted ? {height: '100%'} : undefined}>
                     {this.renderPoll()}
-
                     {this.renderJoinPoll()}
+                    {this.renderHasVoted()}
                 </main>
             </ion-content>
         ];
     }
 
     private renderPoll() {
+        if (this.hasVoted) {
+            return undefined;
+        }
+
         if (!this.poll || !this.poll.poll) {
             return undefined;
         }
@@ -138,6 +152,10 @@ export class AppPoll {
     }
 
     private renderJoinPoll() {
+        if (this.hasVoted) {
+            return undefined;
+        }
+
         if (this.poll && this.poll.poll) {
             return undefined;
         }
@@ -189,6 +207,22 @@ export class AppPoll {
                            shape="round">
             <ion-label>Submit</ion-label>
         </ion-button>;
+    }
+
+    private renderHasVoted() {
+        if (!this.hasVoted) {
+            return undefined;
+        }
+
+        return <article>
+            <app-random-gif keyword={this.keywords[this.keywordIndex]}></app-random-gif>
+
+            <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your vote has been counted.</h1>
+
+            <p class="ion-text-center">Enjoy the presentation and watch out the screen for the real-time polling.</p>
+
+            <div class="by-deckdeckgo">Created with <ion-router-link href="/" routerDirection="forward"><div><app-logo></app-logo> DeckDeckGo</div></ion-router-link></div>
+        </article>
     }
 
 }

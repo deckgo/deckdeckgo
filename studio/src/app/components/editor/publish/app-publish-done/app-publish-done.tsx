@@ -14,7 +14,7 @@ export class AppPublishDone {
     @State()
     private keywordIndex: number = Math.floor(Math.random() * 4);
 
-    private keywords: string[] = ['Hooray', 'You did it', 'Applause', 'Thumbs up', 'Congratulations'];
+    private keywords: string[] = ['Hooray', 'You did it', 'Applause', 'Thumbs up'];
 
     @Event() private openShare: EventEmitter<void>;
 

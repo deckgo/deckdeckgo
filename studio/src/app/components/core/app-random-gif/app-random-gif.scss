@@ -6,6 +6,8 @@ app-random-gif {
     --deckgo-lazy-img-height: 10rem;
     width: 10rem;
     height: 10rem;
+    min-width: 10rem;
+    min-height: 10rem;
 
     border: 1px solid var(--ion-color-tertiary);
     background: rgba(var(--ion-color-tertiary-rgb), 0.4);

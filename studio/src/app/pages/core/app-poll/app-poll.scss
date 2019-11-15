@@ -4,6 +4,8 @@ app-poll {
     --ion-background-color: white;
     --ion-border-color: white;
 
+    min-height: 100%;
+
     ion-list.list-ios {
       margin-bottom: 0;
       padding-top: 8px;
@@ -14,6 +16,33 @@ app-poll {
       ion-item {
         --padding-start: 0;
         --ripple-color: var(--ion-color-primary);
+      }
+    }
+
+    article {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      height: 100%;
+
+      div.by-deckdeckgo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-router-link > div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          margin: 0 4px;
+
+          app-logo {
+            margin: 2px;
+          }
+        }
       }
     }
   }

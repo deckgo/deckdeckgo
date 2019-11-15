@@ -20,7 +20,7 @@ export class AppRandomGif {
         this.gifService = GifService.getInstance();
     }
 
-    async componentWillLoad() {
+    async componentDidLoad() {
         await this.initRandomGifUrl();
     }
 
