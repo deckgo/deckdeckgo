@@ -438,7 +438,7 @@ export class AppEditorToolbar {
         const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-element-delete',
             event: $event,
-            mode: 'ios'
+            mode: 'md'
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
