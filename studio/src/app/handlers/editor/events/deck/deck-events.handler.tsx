@@ -525,6 +525,9 @@ export class DeckEventsHandler {
 
             if (slide.getAttribute('style')) {
                 attributes.style = slide.getAttribute('style');
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.style = firebase.firestore.FieldValue.delete();
             }
 
             if ((slide as any).src) {
