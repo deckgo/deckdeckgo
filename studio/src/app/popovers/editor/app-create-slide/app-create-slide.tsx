@@ -109,7 +109,7 @@ export class AppCreateSlide {
     }
 
     private async addSlide(template: SlideTemplate, deck?: Deck) {
-        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, deck, this.user);
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, false, deck, this.user);
         await this.closePopover(template, slide);
     }
     
@@ -134,7 +134,7 @@ export class AppCreateSlide {
             return;
         }
 
-        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, null, this.user);
+        const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, false, null, this.user);
         await this.closePopover(template, slide);
     }
 
