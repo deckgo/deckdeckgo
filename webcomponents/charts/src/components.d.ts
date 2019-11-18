@@ -9,7 +9,7 @@
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   DeckdeckgoBarChartData,
-} from './components/charts/deckdeckgo-bar-chart/deckdeckgo-bar-chart-data';
+} from '@deckdeckgo/types';
 
 export namespace Components {
   interface DeckgoBarChart {

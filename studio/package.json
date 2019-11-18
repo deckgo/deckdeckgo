@@ -42,7 +42,7 @@
     "web-social-share": "^6.2.0"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0-rc.3",
+    "@deckdeckgo/types": "file:../utils/types",
     "@stencil/core": "^1.7.5",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",

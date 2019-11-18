@@ -8,7 +8,7 @@ import {max} from 'd3-array';
 import {Axis, axisBottom, axisLeft} from 'd3-axis';
 import {transition} from 'd3-transition';
 
-import {DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue} from './deckdeckgo-bar-chart-data';
+import {DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue} from '@deckdeckgo/types';
 
 @Component({
   tag: 'deckgo-bar-chart',
@@ -221,7 +221,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       this.y = scaleLinear().rangeRound([this.height, 0]);
 
       const xDomains = this.data[0].values.map((d) => {
-        return d.title;
+        return d.label;
       });
 
       if (this.animation) {
@@ -264,7 +264,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .transition(t).duration(animationDuration)
         .attr('x', (d) => {
-          return this.x0(d.title);
+          return this.x0(d.label);
         })
         .attr('y', (d) => {
           return this.y(d.value);
@@ -294,7 +294,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .enter().append('rect')
         .attr('x', (d) => {
-          return this.x1(d.title);
+          return this.x1(d.label);
         })
         .attr('y', (d) => {
           return this.y(d.value);
@@ -353,7 +353,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
             if (!isNaN(tmp)) {
               dataValues.push({
                 key: `${i}`,
-                title: keys.length >= i ? `${keys[i - 1]}` : `${i}`,
+                label: keys.length >= i ? `${keys[i - 1]}` : `${i}`,
                 value: tmp
               });
             } else if (lineCount === 0 && keys.length >= i) {

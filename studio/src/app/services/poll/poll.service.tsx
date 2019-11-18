@@ -3,13 +3,13 @@ import * as io from 'socket.io-client';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import {Poll} from '../../models/poll/poll';
+import {DeckdeckgoPoll} from '@deckdeckgo/types';
 
 export class PollService {
 
   private socket: SocketIOClient.Socket;
 
-  private poll: BehaviorSubject<Poll | undefined> = new BehaviorSubject<Poll|undefined>(undefined);
+  private poll: BehaviorSubject<DeckdeckgoPoll | undefined> = new BehaviorSubject<DeckdeckgoPoll|undefined>(undefined);
 
   private static instance: PollService;
 
@@ -43,7 +43,7 @@ export class PollService {
         this.socket.emit('join', {key: pollKey});
       });
 
-      this.socket.on('poll_desc', async (data) => {
+      this.socket.on('poll_desc', async (data: DeckdeckgoPoll) => {
         this.poll.next(data);
       });
 
@@ -74,7 +74,7 @@ export class PollService {
         return;
       }
 
-      this.watch().pipe(take(1)).subscribe((poll: Poll) => {
+      this.watch().pipe(take(1)).subscribe((poll: DeckdeckgoPoll) => {
         if (poll) {
           this.socket.emit('leave', {
             key: poll.key
@@ -89,7 +89,7 @@ export class PollService {
     });
   }
 
-  watch(): Observable<Poll | undefined> {
+  watch(): Observable<DeckdeckgoPoll | undefined> {
     return this.poll.asObservable();
   }
 

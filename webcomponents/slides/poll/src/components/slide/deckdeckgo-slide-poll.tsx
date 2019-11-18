@@ -5,6 +5,7 @@ import {debounceTime, filter, take} from 'rxjs/operators';
 
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue, DeckdeckgoPollQuestion} from '@deckdeckgo/types';
 
 import '@deckdeckgo/charts';
 
@@ -40,7 +41,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   private chartHeight: number;
 
   @State()
-  private chartData: HTMLDeckgoBarChartElement['data'];
+  private chartData: DeckdeckgoBarChartData[];
 
   @State()
   private pollKey: string;
@@ -207,8 +208,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
-  private initChartData(): Promise<HTMLDeckgoBarChartElement['data']> {
-    return new Promise<HTMLDeckgoBarChartElement["data"]>(async (resolve) => {
+  private initChartData(): Promise<DeckdeckgoBarChartData[]> {
+    return new Promise<DeckdeckgoBarChartData[]>(async (resolve) => {
       if (this.countAnswers <= 0 || !this.answerSlots || this.answerSlots.length <= 0) {
         resolve(null);
         return;
@@ -222,7 +223,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         promises.push(this.initChartDataBar(`answer-${answer + 1}`));
       });
 
-      const bars: any[] = await Promise.all(promises);
+      const bars: DeckdeckgoBarChartDataValue[] = await Promise.all(promises);
 
       if (!bars || bars.length <= 0) {
         resolve(null);
@@ -271,8 +272,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
-  private initChartDataBar(answerSlotName: string): Promise<any> {
-    return new Promise<any>((resolve) => {
+  private initChartDataBar(answerSlotName: string): Promise<DeckdeckgoBarChartDataValue> {
+    return new Promise<DeckdeckgoBarChartDataValue>((resolve) => {
       const element: HTMLElement = this.el.querySelector(`:scope > [slot=\'${answerSlotName}\']`);
 
       if (!element) {
@@ -282,7 +283,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
       resolve({
         key: answerSlotName,
-        title: element.innerHTML,
+        label: element.innerHTML,
         value: Math.floor((Math.random() * 10) + 1)
       });
     });
@@ -290,7 +291,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private async initPoll() {
     if (this.chartData && this.chartData.length >= 1) {
-      await this.communicationService.connect(this.chartData[0]);
+      await this.communicationService.connect(this.chartData[0] as DeckdeckgoPollQuestion);
     }
   }
 

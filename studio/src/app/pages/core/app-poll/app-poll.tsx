@@ -1,9 +1,10 @@
 import {Component, h, Prop, State} from '@stencil/core';
 
-import {Poll} from '../../../models/poll/poll';
+import {Subscription} from 'rxjs';
+
+import {DeckdeckgoPoll, DeckdeckgoPollAnswer} from '@deckdeckgo/types';
 
 import {PollService} from '../../../services/poll/poll.service';
-import {Subscription} from 'rxjs';
 
 @Component({
     tag: 'app-poll',
@@ -15,7 +16,7 @@ export class AppPoll {
     pollKey: string;
 
     @State()
-    private poll: Poll;
+    private poll: DeckdeckgoPoll;
 
     @State()
     private choice: string;
@@ -43,7 +44,7 @@ export class AppPoll {
     }
 
     async componentWillLoad() {
-        this.subscription = this.pollService.watch().subscribe((poll: Poll) => {
+        this.subscription = this.pollService.watch().subscribe((poll: DeckdeckgoPoll) => {
             this.poll = poll;
             this.pollNotFound = this.pollKey && (!poll || poll === undefined);
 
@@ -79,6 +80,8 @@ export class AppPoll {
         await this.pollService.vote(this.poll.key, this.choice);
 
         // TODO: What do do if error, hasVoted =  true?
+
+        // TODO: local db has voted => don't allow multiple vote
 
         this.hasVoted = true;
     }
@@ -141,10 +144,10 @@ export class AppPoll {
             return undefined;
         }
 
-        return this.poll.poll.values.map((choice) => {
+        return this.poll.poll.values.map((choice: DeckdeckgoPollAnswer) => {
             return (
                 <ion-item>
-                    <ion-label>{choice.title}</ion-label>
+                    <ion-label>{choice.label}</ion-label>
                     <ion-radio slot="start" value={choice.key} mode="md"></ion-radio>
                 </ion-item>
             )

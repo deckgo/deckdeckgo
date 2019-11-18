@@ -3,6 +3,8 @@ import * as io from 'socket.io-client';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {take} from 'rxjs/operators';
 
+import {DeckdeckgoPollQuestion} from '@deckdeckgo/types';
+
 export class CommunicationService {
 
   private socket: SocketIOClient.Socket;
@@ -24,7 +26,7 @@ export class CommunicationService {
     return CommunicationService.instance;
   }
 
-  connect(poll): Promise<void> {
+  connect(poll: DeckdeckgoPollQuestion): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.socket) {
         resolve();
@@ -42,7 +44,7 @@ export class CommunicationService {
         this.socket.emit('poll', {poll: poll});
       });
 
-      this.socket.on('poll_key', async (data) => {
+      this.socket.on('poll_key', async (data: string) => {
         this.pollKey.next(data);
       });
 
