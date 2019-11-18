@@ -451,6 +451,7 @@ presentationsPut
   -> PresentationInfo
   -> Servant.Handler (Item PresentationId PresentationResult)
 presentationsPut env conn _uid pid pinfo = do
+    liftIO $ putStrLn $ "PUT PRESENTATION" <> show pid
     liftIO $ putStrLn $ unwords
       [ "PUT presentation"
       , show pinfo
