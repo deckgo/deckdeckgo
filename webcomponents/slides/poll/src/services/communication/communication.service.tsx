@@ -26,14 +26,17 @@ export class CommunicationService {
     return CommunicationService.instance;
   }
 
-  connect(poll: DeckdeckgoPollQuestion): Promise<void> {
+  connect(url: string, poll: DeckdeckgoPollQuestion): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.socket) {
         resolve();
         return;
       }
 
-      const url: string = 'http://localhost:3003';
+      if (!url || url === undefined) {
+        resolve();
+        return;
+      }
 
       this.socket = io.connect(url, {
         'transports': ['websocket', 'xhr-polling'],

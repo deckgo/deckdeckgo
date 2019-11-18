@@ -22,7 +22,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflectToAttr: true}) link: string;
+  @Prop() pollServer: string;
+
+  @Prop({reflectToAttr: true}) pollLink: string;
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
@@ -291,7 +293,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private async initPoll() {
     if (this.chartData && this.chartData.length >= 1) {
-      await this.communicationService.connect(this.chartData[0] as DeckdeckgoPollQuestion);
+      await this.communicationService.connect(this.pollServer, this.chartData[0] as DeckdeckgoPollQuestion);
     }
   }
 
@@ -382,7 +384,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
     return <div class="deckgo-slide-poll">
       <div class="deckgo-slide-poll-qrcode">
-        <deckgo-qrcode content={this.link}>
+        <deckgo-qrcode content={this.pollLink}>
           {this.renderLogo()}
         </deckgo-qrcode>
         <p>

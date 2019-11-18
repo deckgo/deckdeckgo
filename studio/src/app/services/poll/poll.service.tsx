@@ -5,6 +5,9 @@ import {take} from 'rxjs/operators';
 
 import {DeckdeckgoPoll} from '@deckdeckgo/types';
 
+import {EnvironmentDeckDeckGoConfig} from '../core/environment/environment-config';
+import {EnvironmentConfigService} from '../core/environment/environment-config.service';
+
 export class PollService {
 
   private socket: SocketIOClient.Socket;
@@ -32,9 +35,9 @@ export class PollService {
         return;
       }
 
-      const url: string = 'http://localhost:3003';
+      const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-      this.socket = io.connect(url, {
+      this.socket = io.connect(config.pollServerUrl, {
         'transports': ['websocket', 'xhr-polling'],
         'query': 'type=app'
       });

@@ -14,7 +14,8 @@
 | `customBackground` | `custom-background` |             | `boolean` | `false`     |
 | `imgAlt`           | `img-alt`           |             | `string`  | `undefined` |
 | `imgSrc`           | `img-src`           |             | `string`  | `undefined` |
-| `link`             | `link`              |             | `string`  | `undefined` |
+| `pollLink`         | `poll-link`         |             | `string`  | `undefined` |
+| `pollServer`       | `poll-server`       |             | `string`  | `undefined` |
 
 
 ## Events

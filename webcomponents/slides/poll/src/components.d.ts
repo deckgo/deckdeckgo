@@ -20,7 +20,8 @@ export namespace Components {
     'imgAlt': string;
     'imgSrc': string;
     'lazyLoadContent': () => Promise<void>;
-    'link': string;
+    'pollLink': string;
+    'pollServer': string;
     'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
   }
@@ -46,8 +47,9 @@ declare namespace LocalJSX {
     'customBackground'?: boolean;
     'imgAlt'?: string;
     'imgSrc'?: string;
-    'link'?: string;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'pollLink'?: string;
+    'pollServer'?: string;
   }
 
   interface IntrinsicElements {

@@ -11,5 +11,6 @@
   "FIREBASE_APP_ID": "1:448110541714:web:3d8fd2b806465304",
   "FIREBASE_STORAGE_URL": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-beta.appspot.com/o/",
   "TENOR_KEY": "SECRET_KEY",
-  "SIGNALING_SERVER_URL": "https://api.deckdeckgo.com"
+  "SIGNALING_SERVER_URL": "https://api.deckdeckgo.com",
+  "POLL_SERVER_URL": "http://localhost:3003"
 }

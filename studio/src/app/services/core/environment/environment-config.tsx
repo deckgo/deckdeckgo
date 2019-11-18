@@ -23,7 +23,8 @@ export interface EnvironmentDeckDeckGoConfig {
     appUrl: string;
     apiUrl: string;
     presentationUrl: string;
-    globalAssetsUrl: string
+    globalAssetsUrl: string;
+    pollServerUrl: string;
 }
 
 export interface EnvironmentConfig {
