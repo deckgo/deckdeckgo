@@ -199,7 +199,7 @@ export class AppEditor {
                 return;
             }
 
-            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
+            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE, true);
 
             await this.concatSlide(slide);
 

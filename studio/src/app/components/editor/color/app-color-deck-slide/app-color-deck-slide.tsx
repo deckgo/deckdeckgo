@@ -104,14 +104,16 @@ export class AppColorDeckSlide {
                 return;
             }
 
+            const element: HTMLElement = this.deckOrSlide ? (this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement) : this.selectedElement;
+
             if (this.applyColorType === ApplyColorType.BACKGROUND) {
-                this.selectedElement.style.removeProperty('--background');
-                this.selectedElement.style.removeProperty('--slide-split-background-start');
-                this.selectedElement.style.removeProperty('--slide-split-background-end');
-                this.selectedElement.style.removeProperty('background');
+                element.style.removeProperty('--background');
+                element.style.removeProperty('--slide-split-background-start');
+                element.style.removeProperty('--slide-split-background-end');
+                element.style.removeProperty('background');
             } else {
-                this.selectedElement.style.removeProperty('--color');
-                this.selectedElement.style.removeProperty('color');
+                element.style.removeProperty('--color');
+                element.style.removeProperty('color');
             }
 
             this.color = null;

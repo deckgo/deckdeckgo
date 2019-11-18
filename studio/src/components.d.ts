@@ -104,6 +104,7 @@ export namespace Components {
     'touch': (element: HTMLElement) => Promise<void>;
     'unSelect': () => Promise<void>;
   }
+  interface AppElementDelete {}
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -341,6 +342,12 @@ declare global {
   var HTMLAppEditorToolbarElement: {
     prototype: HTMLAppEditorToolbarElement;
     new (): HTMLAppEditorToolbarElement;
+  };
+
+  interface HTMLAppElementDeleteElement extends Components.AppElementDelete, HTMLStencilElement {}
+  var HTMLAppElementDeleteElement: {
+    prototype: HTMLAppElementDeleteElement;
+    new (): HTMLAppElementDeleteElement;
   };
 
   interface HTMLAppFaqElement extends Components.AppFaq, HTMLStencilElement {}
@@ -659,6 +666,7 @@ declare global {
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
+    'app-element-delete': HTMLAppElementDeleteElement;
     'app-faq': HTMLAppFaqElement;
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
@@ -805,6 +813,7 @@ declare namespace LocalJSX {
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
+  interface AppElementDelete {}
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -943,6 +952,7 @@ declare namespace LocalJSX {
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
     'app-editor-toolbar': AppEditorToolbar;
+    'app-element-delete': AppElementDelete;
     'app-faq': AppFaq;
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;
@@ -1023,6 +1033,7 @@ declare module "@stencil/core" {
       'app-editor': LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;
       'app-editor-actions': LocalJSX.AppEditorActions & JSXBase.HTMLAttributes<HTMLAppEditorActionsElement>;
       'app-editor-toolbar': LocalJSX.AppEditorToolbar & JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement>;
+      'app-element-delete': LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
       'app-faq': LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
       'app-feed': LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
       'app-feed-card': LocalJSX.AppFeedCard & JSXBase.HTMLAttributes<HTMLAppFeedCardElement>;

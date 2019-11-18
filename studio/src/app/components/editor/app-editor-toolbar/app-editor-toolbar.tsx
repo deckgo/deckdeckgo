@@ -434,6 +434,22 @@ export class AppEditorToolbar {
         });
     }
 
+    private async confirmDeleteElement($event: UIEvent) {
+        const popover: HTMLIonPopoverElement = await popoverController.create({
+            component: 'app-element-delete',
+            event: $event,
+            mode: 'md'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data) {
+                await this.deleteElement();
+            }
+        });
+
+        await popover.present();
+    }
+
     private deleteElement(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
@@ -1047,7 +1063,7 @@ export class AppEditorToolbar {
     }
 
     private renderDelete() {
-        return <a onClick={() => this.deleteElement()} title="Delete"
+        return <a onClick={($event: UIEvent) => this.confirmDeleteElement($event)} title="Delete"
                   class={this.deckBusy && this.deckOrSlide ? "disabled" : ""}>
             <ion-icon name="trash"></ion-icon>
         </a>
