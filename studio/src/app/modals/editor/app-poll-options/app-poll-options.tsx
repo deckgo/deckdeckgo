@@ -18,7 +18,7 @@ export class AppPollOptions {
     private valid: boolean = false;
 
     componentWillLoad() {
-        this.answers = Array.from({length: 3}, (_v, _i) => '');
+        this.answers = Array.from({length: 2}, (_v, _i) => '');
 
     }
 
