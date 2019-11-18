@@ -220,7 +220,7 @@ export class AppPoll {
         return <article>
             <app-random-gif keyword={this.keywords[this.keywordIndex]}></app-random-gif>
 
-            <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your vote has been counted.</h1>
+            <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your vote has been cast.</h1>
 
             <p class="ion-text-center">Enjoy the presentation and watch out the screen for the real-time polling.</p>
 
