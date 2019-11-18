@@ -34,7 +34,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Prop({reflectToAttr: true}) imgSrc: string;
   @Prop({reflectToAttr: true}) imgAlt: string;
 
-  @Prop() countAnswers: number = 5;
+  @State()
+  private countAnswers: number = 5;
 
   private answerSlots: number[];
 
@@ -62,7 +63,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   private subscription: Subscription;
   private updateChartSubscription: Subscription;
 
-  componentWillLoad() {
+  async componentWillLoad() {
+    this.countAnswers = await this.initCountAnswers();
+
     this.answerSlots = Array.from({length: this.countAnswers}, (_v, i) => i);
 
     this.communicationService.watchPollKey().pipe(filter((key: string) => key !== undefined), take(1)).subscribe(async (key: string) => {
@@ -81,6 +84,23 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
     this.updateChartSubscription = this.updateChart.pipe(debounceTime(500)).subscribe(async () => {
       await this.updateChartData();
+    });
+  }
+
+  private initCountAnswers(): Promise<number> {
+    return new Promise<number>((resolve) => {
+      const slots: NodeListOf<HTMLElement> = this.el.querySelectorAll(':scope > [slot]');
+
+      if (!slots || slots.length <= 0) {
+        resolve(0);
+        return;
+      }
+
+      const filterAnswers: HTMLElement[] = Array.from(slots).filter((slot: HTMLElement) => {
+          return slot.getAttribute('slot').indexOf('answer') > -1
+      });
+
+      resolve(filterAnswers ? filterAnswers.length : 0);
     });
   }
 
