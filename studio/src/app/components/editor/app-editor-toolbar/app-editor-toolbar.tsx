@@ -4,7 +4,7 @@ import {modalController, OverlayEventDetail, popoverController} from '@ionic/cor
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 
-import {isFullscreen} from '@deckdeckgo/utils';
+import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
 import {SlideHelper} from '../../../helpers/editor/slide.helper';
 
@@ -438,7 +438,7 @@ export class AppEditorToolbar {
         const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-element-delete',
             event: $event,
-            mode: 'md'
+            mode: isMobile() && !isIOS() ? 'md' : 'ios'
         });
 
         popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
