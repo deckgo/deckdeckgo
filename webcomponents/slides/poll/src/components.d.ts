@@ -13,6 +13,7 @@ export namespace Components {
   interface DeckgoSlidePoll {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+    'connectPollServer': boolean;
     'countAnswers': number;
     'customActions': boolean;
     'customBackground': boolean;
@@ -42,6 +43,7 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlidePoll {
+    'connectPollServer'?: boolean;
     'countAnswers'?: number;
     'customActions'?: boolean;
     'customBackground'?: boolean;

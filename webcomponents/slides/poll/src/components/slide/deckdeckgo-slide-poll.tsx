@@ -24,6 +24,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Prop() pollServer: string;
 
+  @Prop() connectPollServer: boolean = true;
+
   @Prop({reflectToAttr: true}) pollLink: string;
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
@@ -88,8 +90,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     this.initWindowResize();
 
     this.slideDidLoad.emit();
-
-    this.chartData = await this.initChartData();
   }
 
   async componentDidUpdate() {
@@ -130,7 +130,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private async init() {
     await this.initQRCodeSize();
-    await this.initSizeAndDraw();
+    await this.initChartSize();
   }
 
   private initQRCodeSize(): Promise<void> {
@@ -156,12 +156,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
-  private initSizeAndDraw(): Promise<void> {
+  private initChartSize(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-poll-chart');
 
       if (container) {
-        this.chartWidth = container.clientWidth - 128;
+        this.chartWidth = container.clientWidth * 0.9;
         this.chartHeight = this.chartWidth * 9 / 16;
 
         const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
@@ -292,6 +292,10 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private async initPoll() {
+    if (!this.connectPollServer) {
+      return;
+    }
+
     if (this.chartData && this.chartData.length >= 1) {
       await this.communicationService.connect(this.pollServer, this.chartData[0] as DeckdeckgoPollQuestion);
     }
@@ -329,6 +333,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Method()
   lazyLoadContent(): Promise<void> {
     return new Promise<void>(async (resolve) => {
+      this.chartData = await this.initChartData();
+
       const promises = [];
       promises.push(lazyLoadContent(this.el));
       promises.push(this.init());
@@ -378,18 +384,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private renderPoll() {
-    if (!this.pollKey) {
-      return undefined;
-    }
-
     return <div class="deckgo-slide-poll">
       <div class="deckgo-slide-poll-qrcode">
         <deckgo-qrcode content={this.pollLink}>
           {this.renderLogo()}
         </deckgo-qrcode>
-        <p>
-          <slot name="how_to"></slot>
-        </p>
+        <slot name="how_to"></slot>
       </div>
 
       <div class="deckgo-slide-poll-chart">
@@ -420,7 +420,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       return undefined;
     }
 
+    if (!this.chartData || this.chartData.length <= 0) {
+      return undefined;
+    }
+
     return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} data={this.chartData}
+                             margin-top={0} margin-bottom={0} margin-left={0} margin-right={0}
                              animation={true} yAxis={false}></deckgo-bar-chart>
   }
 

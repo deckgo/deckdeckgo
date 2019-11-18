@@ -74,8 +74,9 @@ export class AppCreateSlide {
             const slideAuthor: HTMLElement = this.el.querySelector('deckgo-slide-author.showcase');
             const slideQRCode: HTMLElement = this.el.querySelector('deckgo-slide-qrcode.showcase');
             const slidesChart: HTMLElement[] = Array.from(this.el.querySelectorAll('deckgo-slide-chart.showcase'));
+            const slidesPoll: HTMLElement = this.el.querySelector('deckgo-slide-poll.showcase');
 
-            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, ...slidesChart];
+            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, ...slidesChart, slidesPoll];
 
             if (!slides || slides.length <= 0) {
                 resolve();
@@ -238,6 +239,7 @@ export class AppCreateSlide {
                         </p>
                     </deckgo-slide-content>
                 </div>
+
                 <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
                     <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
@@ -267,6 +269,16 @@ export class AppCreateSlide {
                         <p slot="social-link">Github</p>
                         <p slot="social-link">Web</p>
                     </deckgo-slide-author>
+                </div>
+
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
+                    <deckgo-slide-poll class="showcase" poll-link="https://deckdeckgo.com" poll-server="http://localhost:3003" count-answers={3} connectPollServer={false}>
+                        <p slot="question">Poll to engage your audience</p>
+                        <p slot="answer-1">Yes</p>
+                        <p slot="answer-2">No</p>
+                        <p slot="answer-3">Don't know</p>
+                        <p slot="awaiting_votes">Live votes with mobile devices</p>
+                    </deckgo-slide-poll>
                 </div>
             </div>
         ];

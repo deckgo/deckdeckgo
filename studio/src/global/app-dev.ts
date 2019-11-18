@@ -23,6 +23,7 @@ import '@deckdeckgo/slide-youtube';
 import '@deckdeckgo/slide-author';
 import '@deckdeckgo/slide-qrcode';
 import '@deckdeckgo/slide-chart';
+import '@deckdeckgo/slide-poll';
 
 import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment/environment-config';
 

@@ -7,15 +7,16 @@
 
 ## Properties
 
-| Property           | Attribute           | Description | Type      | Default     |
-| ------------------ | ------------------- | ----------- | --------- | ----------- |
-| `countAnswers`     | `count-answers`     |             | `number`  | `5`         |
-| `customActions`    | `custom-actions`    |             | `boolean` | `false`     |
-| `customBackground` | `custom-background` |             | `boolean` | `false`     |
-| `imgAlt`           | `img-alt`           |             | `string`  | `undefined` |
-| `imgSrc`           | `img-src`           |             | `string`  | `undefined` |
-| `pollLink`         | `poll-link`         |             | `string`  | `undefined` |
-| `pollServer`       | `poll-server`       |             | `string`  | `undefined` |
+| Property            | Attribute             | Description | Type      | Default     |
+| ------------------- | --------------------- | ----------- | --------- | ----------- |
+| `connectPollServer` | `connect-poll-server` |             | `boolean` | `true`      |
+| `countAnswers`      | `count-answers`       |             | `number`  | `5`         |
+| `customActions`     | `custom-actions`      |             | `boolean` | `false`     |
+| `customBackground`  | `custom-background`   |             | `boolean` | `false`     |
+| `imgAlt`            | `img-alt`             |             | `string`  | `undefined` |
+| `imgSrc`            | `img-src`             |             | `string`  | `undefined` |
+| `pollLink`          | `poll-link`           |             | `string`  | `undefined` |
+| `pollServer`        | `poll-server`         |             | `string`  | `undefined` |
 
 
 ## Events

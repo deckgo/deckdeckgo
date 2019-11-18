@@ -102,15 +102,15 @@ app-create-slide {
       --slide-padding-start: 0;
     }
 
-    deckgo-slide-gif, deckgo-slide-author {
+    deckgo-slide-gif, deckgo-slide-author, deckgo-slide-poll {
       --slide-width: 216px;
     }
 
-    deckgo-slide-gif, deckgo-slide-author {
+    deckgo-slide-gif {
       --slide-gif-height: 110px;
     }
 
-    deckgo-slide-author {
+    deckgo-slide-author, deckgo-slide-poll {
       --slide-height: 110px;
     }
 
@@ -143,6 +143,32 @@ app-create-slide {
 
       &[area="false"] {
         --deckgo-chart-stroke: black;
+      }
+    }
+
+    deckgo-slide-poll {
+      --slide-padding-top: 4px;
+      --slide-padding-start: 2px;
+      --slide-padding-end: 6px;
+      --slide-padding-bottom: 2px;
+
+      --slide-poll-grid-column-gap: 0;
+
+      --deckgo-chart-fill-color-answer-1: var(--ion-color-primary);
+      --deckgo-chart-fill-color-answer-2: var(--ion-color-secondary);
+      --deckgo-chart-fill-color-answer-3: var(--ion-color-tertiary);
+
+      --slide-chart-margin-end: 0;
+      --slide-chart-margin-start: 4px;
+      --slide-chart-margin-top: 6px;
+      --slide-chart-margin-bottom: 8px;
+
+      --deckgo-chart-text-display: none;
+
+      p[slot="awaiting_votes"] {
+        text-align: center;
+        width: 75%;
+        border: 0;
       }
     }
 

@@ -61,6 +61,10 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       return;
     }
 
+    if (!this.x0 || !this.x1 || !this.y) {
+      return;
+    }
+
     if (!this.data || this.data.length <= 0) {
       return;
     }
