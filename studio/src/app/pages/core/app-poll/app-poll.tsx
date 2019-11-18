@@ -2,6 +2,8 @@ import {Component, h, Prop, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
+import {get, set} from 'idb-keyval';
+
 import {DeckdeckgoPoll, DeckdeckgoPollAnswer} from '@deckdeckgo/types';
 
 import {PollService} from '../../../services/poll/poll.service';
@@ -52,6 +54,8 @@ export class AppPoll {
         });
 
         await this.pollService.connect(this.pollKey);
+
+        await this.initHasVoted();
     }
 
     async componentDidUnload() {
@@ -81,9 +85,9 @@ export class AppPoll {
 
         // TODO: What do do if error, hasVoted =  true?
 
-        // TODO: local db has voted => don't allow multiple vote
-
         this.hasVoted = true;
+
+        await set(`deckdeckgo_poll_${this.poll.key}`, new Date().getTime());
     }
 
     private async handleSubmitJoin($event: Event) {
@@ -95,12 +99,29 @@ export class AppPoll {
 
         this.connecting = true;
 
+        await this.initHasVoted();
+
+        if (this.hasVoted) {
+            return;
+        }
+
         await this.pollService.disconnect();
         await this.pollService.connect(this.pollKey);
     }
 
     private handlePollKeyInput($event: CustomEvent<KeyboardEvent>) {
         this.pollKey = ($event.target as InputTargetEvent).value;
+    }
+
+    private async initHasVoted() {
+        if (this.pollKey && this.pollKey !== undefined && this.pollKey !== '') {
+            const lastVote: number = await get(`deckdeckgo_poll_${this.pollKey}`);
+
+            // Can't vote for the same poll for two hours
+            this.hasVoted = lastVote > 0 && lastVote >= (new Date().getTime() - (2 * 60 * 60 * 1000));
+        } else {
+            this.hasVoted = false;
+        }
     }
 
     render() {
