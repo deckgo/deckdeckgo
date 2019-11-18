@@ -41,6 +41,8 @@ div.deckgo-slide-poll {
     flex-direction: column;
     align-items: center;
 
+    position: relative;
+
     --deckgo-chart-text-font-size: 1rem;
     --deckgo-chart-overflow: visible;
   }
@@ -49,4 +51,15 @@ div.deckgo-slide-poll {
 
 ::slotted([slot="how_to"]) {
   max-width: var(--slide-poll-how-to-max-width, calc(100% - 64px));
+}
+
+::slotted([slot="awaiting_votes"]) {
+  position: absolute;
+  z-index: var(--slide-poll-awaiting-votes-z-index, 1);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--slide-poll-awaiting-votes-background, rgba(255,255,255,0.9));
+  border-radius: var(--slide-poll-awaiting-votes-border-radius, 8px);
+  padding: var(--slide-poll-awaiting-votes-padding, 8px);
 }

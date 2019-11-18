@@ -2,6 +2,7 @@ text {
   fill: var(--deckgo-chart-text-color, black);
   display: var(--deckgo-chart-text-display);
   font-size: var(--deckgo-chart-text-font-size);
+  font-family: var(--deckgo-chart-text-font-family, initial);
 }
 
 .axis path,

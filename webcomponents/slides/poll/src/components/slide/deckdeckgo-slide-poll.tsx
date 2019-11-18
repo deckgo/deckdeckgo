@@ -49,6 +49,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private answers = {};
 
+  @State()
+  private answeredOnce: boolean = false;
+
   private updateChart: Subject<void> = new Subject<void>();
 
   private subscription: Subscription;
@@ -57,11 +60,15 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   componentWillLoad() {
     this.answerSlots = Array.from({length: this.countAnswers}, (_v, i) => i);
 
-    this.communicationService.watchPollKey().pipe(filter((key: string) => key !== undefined), take(1)).subscribe((key: string) => {
+    this.communicationService.watchPollKey().pipe(filter((key: string) => key !== undefined), take(1)).subscribe(async (key: string) => {
       this.pollKey = key;
+
+      await this.updateSlotHowToText();
     });
 
     this.subscription = this.communicationService.watchVote().subscribe((answer: string) => {
+      this.answeredOnce = true;
+
       this.answers[answer]++;
 
       this.updateChart.next();
@@ -287,6 +294,23 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     }
   }
 
+  private updateSlotHowToText(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const howToElement: HTMLElement = this.el.querySelector(':scope > [slot=\'how_to\']');
+
+      if (!howToElement || !howToElement.innerHTML || howToElement.innerHTML === undefined || howToElement.innerHTML.indexOf('{0}') === -1) {
+        resolve();
+        return;
+      }
+
+      const replaceWith: string = this.pollKey ? this.pollKey.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ' ') : this.pollKey;
+
+      howToElement.innerHTML = howToElement.innerHTML.replace(/\{0\}/g, replaceWith);
+
+      resolve();
+    });
+  }
+
   @Method()
   beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
@@ -362,12 +386,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         </deckgo-qrcode>
         <p>
           <slot name="how_to"></slot>
-          {this.pollKey.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ' ')}
         </p>
       </div>
 
       <div class="deckgo-slide-poll-chart">
         {this.renderChart()}
+        {this.renderNoVotes()}
       </div>
     </div>;
   }
@@ -397,4 +421,11 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
                              animation={true} yAxis={false}></deckgo-bar-chart>
   }
 
+  private renderNoVotes() {
+    if (this.answeredOnce) {
+      return undefined;
+    }
+
+    return <slot name="awaiting_votes"></slot>;
+  }
 }
