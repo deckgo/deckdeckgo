@@ -33,7 +33,8 @@ setupDeckGoConfig({
         apiUrl: '<@API_URL@>',
         presentationUrl: '<@PRESENTATION_URL@>',
         globalAssetsUrl: 'https://deckdeckgo.com/assets',
-        pollServerUrl: '<@POLL_SERVER_URL@>'
+        pollServerUrl: '<@POLL_SERVER_URL@>',
+        signalingServerUrl: '<@SIGNALING_SERVER_URL@>'
     },
     firebase: {
         apiKey: '<@FIREBASE_API_KEY@>',
@@ -52,7 +53,6 @@ setupDeckGoConfig({
     unsplash: {
         url: '<@UNSPLASH_URL@>'
     },
-    signalingServerUrl: '<@SIGNALING_SERVER_URL@>',
     prismComponentsUrl: 'https://raw.githubusercontent.com/PrismJS/prism/886698d5b759ef46162a5723a2493f97c689dc94/components.json',
     gifExampleSrc: 'https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/200w_d.gif'
 });

@@ -1,9 +1,10 @@
-import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
-
 import {Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {debounce} from '@deckdeckgo/utils';
+
+import {EnvironmentDeckDeckGoConfig} from '../../../../services/core/environment/environment-config';
+import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
 
 import {RemoteService} from '../../../../services/editor/remote/remote.service';
 
@@ -108,7 +109,8 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            deckgoRemoteElement.server = EnvironmentConfigService.getInstance().get('signalingServerUrl');
+            const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+            deckgoRemoteElement.server = config.signalingServerUrl;
 
             deckgoRemoteElement.addEventListener('event', async ($event) => {
                 await this.remoteEvent($event)
