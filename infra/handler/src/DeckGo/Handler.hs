@@ -36,7 +36,7 @@ import Data.Aeson ((.=), (.:), (.!=), (.:?))
 import Data.Bifunctor
 import Data.Char
 import Data.Int
-import Data.List (find)
+import Data.List (find, isPrefixOf, isSuffixOf)
 import Data.List (foldl')
 import Data.Maybe
 import Data.Proxy
@@ -1228,7 +1228,24 @@ withPresentationFiles uname psname presentationInfo act = do
     deckgoStarterDist <- getEnv "DECKGO_STARTER_DIST"
     Temp.withSystemTempDirectory "dist" $ \dir -> do
       Tar.extract dir deckgoStarterDist
+
+      -- Here we deal with workbox' precache by updating index.html and then
+      -- propagate the new etag (md5) through precache-manifest.js and
+      -- service-worker.js.
+
+      oldIndexMd5 <- fileETag $ dir </> "index.html"
+      precacheFile <- findPrecache dir >>= \case
+        Nothing -> error "No precache manifest!"
+        Just n -> pure n
+      oldPrecacheMd5 <- fileETag $ dir </> precacheFile
       mapFile processIndex $ dir </> "index.html"
+      newIndexMd5 <- fileETag $ dir </> "index.html"
+      mapFile (T.replace oldIndexMd5 newIndexMd5) $ dir </> precacheFile
+      newPrecacheMd5 <- fileETag $ dir </> precacheFile
+      Dir.renameFile (dir </> precacheFile) $
+        dir </> ("precache-manifest." <> T.unpack newPrecacheMd5 <> ".js")
+      mapFile (T.replace oldPrecacheMd5 newPrecacheMd5) $ dir </> "service-worker.js"
+
       mapFile interpol $ dir </> "manifest.json"
       putStrLn "Listing files..."
       files <- listDirectoryRecursive dir
@@ -1254,6 +1271,12 @@ withPresentationFiles uname psname presentationInfo act = do
       T.replace "{{DECKDECKGO_DECKNAME}}" (unPresShortname psname) .
       T.replace "{{DECKDECKGO_BASE_HREF}}"
         ("/" <> unPresentationPrefix (presentationPrefix uname psname))
+    findPrecache dir = find isPrecache <$> Dir.listDirectory dir
+    isPrecache n =
+      "precache-manifest." `isPrefixOf` n &&
+      ".js" `isSuffixOf` n
+
+
 
 mapFile :: (T.Text -> T.Text) -> FilePath -> IO ()
 mapFile f fp = do
@@ -1412,7 +1435,8 @@ mkObjectKey :: Username -> PresShortname -> [T.Text] -> S3.ObjectKey
 mkObjectKey uname pname components = S3.ObjectKey $
     unPresentationPrefix (presentationPrefix uname pname) <> T.intercalate "/" components
 
-fileETag :: FilePath -> IO S3.ETag
+-- | calculates the MD5 sum of a file, hex representation.
+fileETag :: IsString a => FilePath -> IO a
 fileETag fp =
     -- XXX: The 'show' step is very import, it's what converts the Digest to
     -- the Hex representation
