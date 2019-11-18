@@ -7,6 +7,7 @@ import {get, set} from 'idb-keyval';
 import {DeckdeckgoPoll, DeckdeckgoPollAnswer} from '@deckdeckgo/types';
 
 import {PollService} from '../../../services/poll/poll.service';
+import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
     tag: 'app-poll',
@@ -27,9 +28,6 @@ export class AppPoll {
     private connecting: boolean = false;
 
     @State()
-    private pollNotFound: boolean = false;
-
-    @State()
     private hasVoted: boolean = false;
 
     @State()
@@ -38,17 +36,22 @@ export class AppPoll {
     private keywords: string[] = ['You did it', 'Applause', 'Thumbs up', 'Congratulations'];
 
     private pollService: PollService;
+    private errorService: ErrorService;
 
     private subscription: Subscription;
 
     constructor() {
         this.pollService = PollService.getInstance();
+        this.errorService = ErrorService.getInstance();
     }
 
     async componentWillLoad() {
         this.subscription = this.pollService.watch().subscribe((poll: DeckdeckgoPoll) => {
             this.poll = poll;
-            this.pollNotFound = this.pollKey && (!poll || poll === undefined);
+
+            if (this.pollKey && (!poll || poll === undefined)) {
+                this.errorService.error('Oopsie the poll was not found. Double check that the code is correct and try again.');
+            }
 
             this.connecting = false;
         });
@@ -81,13 +84,16 @@ export class AppPoll {
             return;
         }
 
-        await this.pollService.vote(this.poll.key, this.choice);
+        try {
+            await this.pollService.vote(this.poll.key, this.choice);
 
-        // TODO: What do do if error, hasVoted =  true?
+            this.hasVoted = true;
 
-        this.hasVoted = true;
+            await set(`deckdeckgo_poll_${this.poll.key}`, new Date().getTime());
+        } catch (err) {
+            this.errorService.error(err);
+        }
 
-        await set(`deckdeckgo_poll_${this.poll.key}`, new Date().getTime());
     }
 
     private async handleSubmitJoin($event: Event) {
@@ -204,17 +210,7 @@ export class AppPoll {
             </ion-list>
 
             {this.renderSubmitJoinPollForm()}
-
-            {this.renderPollNotFound()}
         </form>
-    }
-
-    private renderPollNotFound() {
-        if (!this.pollNotFound) {
-            return undefined;
-        }
-
-        return <p>Oopsie the poll was not found. Double check that the code is the correct one and try again.</p>
     }
 
     private renderSubmitJoinPollForm() {

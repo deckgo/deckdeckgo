@@ -55,9 +55,9 @@ export class PollService {
   }
 
   vote(key: string, answer: string): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.socket) {
-        resolve();
+    return new Promise<void>((resolve, reject) => {
+      if (!this.socket || (!this.socket.connected || this.socket.disconnected)) {
+        reject('Vote could not be registered, poll server is not reachable.');
         return;
       }
 
