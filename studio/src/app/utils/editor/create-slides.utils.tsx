@@ -39,6 +39,9 @@ export class CreateSlidesUtils {
                 resolve(await this.createSlideQRCode(deck));
             } else if (template === SlideTemplate.CHART) {
                 resolve(await this.createSlideChart());
+                resolve(await this.createSlideQRCode(deck));
+            } else if (template === SlideTemplate.POLL) {
+                resolve(await this.createSlidePoll());
             } else {
                 resolve(null);
             }
@@ -288,6 +291,29 @@ export class CreateSlidesUtils {
             const slide: JSX.IntrinsicElements = <deckgo-slide-chart key={uuid()} {...attributes}>
                 {title}
             </deckgo-slide-chart>;
+
+            resolve(slide);
+        });
+    }
+
+    static createSlidePoll(question: string = undefined, answers: string[] = undefined): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>((resolve) => {
+            if (!document) {
+                resolve();
+                return;
+            }
+
+            const questionSlot = <h1 slot="question">{question}</h1>;
+
+            const answerSlots = [];
+            answers.forEach((answer: string, i: number) => {
+                answerSlots.push(<h2 slot={`answer-${i + 1}`}>{answer}</h2>);
+            });
+
+            const slide: JSX.IntrinsicElements = <deckgo-slide-poll key={uuid()}>
+                {questionSlot}
+                {...answerSlots}
+            </deckgo-slide-poll>;
 
             resolve(slide);
         });

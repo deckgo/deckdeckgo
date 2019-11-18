@@ -1,0 +1,22 @@
+app-poll-options {
+  ion-content {
+    --background: var(--ion-color-light);
+
+    ion-item.item-input ion-input[class*=sc-ion-input] {
+      --background: white;
+      background: white;
+    }
+
+    div.add-answer {
+      display: inline-flex;
+      width: 100%;
+      justify-content: center;
+    }
+
+    ion-list {
+      h2:first-of-type {
+        margin-top: 0;
+      }
+    }
+  }
+}

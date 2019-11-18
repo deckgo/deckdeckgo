@@ -161,7 +161,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-poll-chart');
 
       if (container) {
-        this.chartWidth = container.clientWidth * 0.9;
+        this.chartWidth = container.clientWidth * 0.75;
         this.chartHeight = this.chartWidth * 9 / 16;
 
         const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
