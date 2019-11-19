@@ -1,5 +1,7 @@
 import {Component, h, Prop, EventEmitter, Event, Element, Host, State, Watch} from '@stencil/core';
 
+import {debounce} from '@deckdeckgo/utils';
+
 import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../utils/deckdeckgo-palette';
 
 @Component({
@@ -28,14 +30,31 @@ export class DeckdeckgoColor {
   @State()
   private selectedColorPalette: boolean = false;
 
+  @State()
+  private selectedCustomColorRgb: string;
+
   @Event()
   colorChange: EventEmitter<DeckdeckgoPaletteColor>;
+
+  private readonly debounceInitSelectedColorPalette: Function;
+
+  constructor() {
+    this.debounceInitSelectedColorPalette = debounce(async () => {
+      this.selectedColorPalette = await this.initSelectedColorPalette();
+
+      this.selectedCustomColorRgb = !this.selectedColorPalette ? this.selectedColorRgb : undefined;
+    }, 150);
+  }
 
   async componentWillLoad() {
     this.selectedColorHex = this.colorHex;
     this.selectedColorRgb = this.colorRgb ? this.colorRgb : await this.hexToRgb(this.colorHex);
 
     this.selectedColorPalette = await this.initSelectedColorPalette();
+
+    if (!this.selectedColorPalette) {
+      this.selectedCustomColorRgb = this.selectedColorRgb;
+    }
   }
 
   async componentDidLoad() {
@@ -48,13 +67,10 @@ export class DeckdeckgoColor {
 
   @Watch('colorHex')
   async onColorHexChange() {
-    // To avoid quick repaint glitch
-    this.selectedColorPalette = true;
-
     this.selectedColorHex = this.colorHex;
-    this.selectedColorRgb = await this.hexToRgb(this.colorHex);
+    this.selectedColorRgb = undefined;
 
-    this.selectedColorPalette = await this.initSelectedColorPalette();
+    this.debounceInitSelectedColorPalette();
 
     // Render component again
     this.palette = [...this.palette];
@@ -62,13 +78,10 @@ export class DeckdeckgoColor {
 
   @Watch('colorRgb')
   async onColorRgbChange() {
-    // To avoid quick repaint glitch
-    this.selectedColorPalette = true;
-
     this.selectedColorHex = undefined;
     this.selectedColorRgb = this.colorRgb;
 
-    this.selectedColorPalette = await this.initSelectedColorPalette();
+    this.debounceInitSelectedColorPalette();
 
     // Render component again
     this.palette = [...this.palette];
@@ -87,6 +100,8 @@ export class DeckdeckgoColor {
       this.colorChange.emit(paletteColor.color);
 
       this.selectedColorPalette = true;
+
+      this.selectedCustomColorRgb = undefined;
 
       resolve();
     });
@@ -135,6 +150,8 @@ export class DeckdeckgoColor {
     };
 
     this.colorHex = selectedColor;
+
+    this.selectedCustomColorRgb = await this.hexToRgb(this.colorHex);
 
     this.colorChange.emit(color);
   };
@@ -230,13 +247,13 @@ export class DeckdeckgoColor {
         style['--deckdeckgo-palette-color-hex'] = this.selectedColorHex;
       }
 
-      if (!this.selectedColorPalette && this.selectedColorRgb) {
-        style['--deckdeckgo-palette-color-rgb'] = this.selectedColorRgb;
+      if (!this.selectedColorPalette && this.selectedCustomColorRgb) {
+        style['--deckdeckgo-palette-color-rgb'] = this.selectedCustomColorRgb;
       }
 
       return <div class="more">
         <button aria-label={this.more} style={style}
-                class={!this.selectedColorPalette && (this.selectedColorHex || this.selectedColorRgb) ? 'selected' : undefined}
+                class={!this.selectedColorPalette && (this.selectedColorHex || this.selectedCustomColorRgb) ? 'selected' : undefined}
                 onClick={() => this.openColorPicker()}>
           <slot name="more"></slot>
         </button>
