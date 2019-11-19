@@ -170,18 +170,28 @@ export class AppComponentsColor {
 </tr>
 <tr>
 <td>--deckgo-button-more-border-radius</td>
-<td></td>
+<td>50%</td>
 <td>The border radius of the more button</td>
 </tr>
 <tr>
 <td>--deckgo-button-more-border</td>
-<td></td>
+<td>none</td>
 <td>The border of the more button</td>
+</tr>
+<tr>
+<td>--deckgo-button-more-outline</td>
+<td>none</td>
+<td>The outline of the more button</td>
 </tr>
 <tr>
 <td>--deckgo-flex-wrap</td>
 <td>wrap</td>
 <td>Wrap properties of the buttons&#39; container</td>
+</tr>
+<tr>
+<td>--deckgo-button-more-background</td>
+<td>transparent</td>
+<td>The background of the more button</td>
 </tr>
 </tbody></table>
 <h3 id="app-components-color-events">Events</h3>
