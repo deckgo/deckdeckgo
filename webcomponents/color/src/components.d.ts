@@ -26,7 +26,7 @@ declare global {
 
 
   interface HTMLDeckgoColorElement extends Components.DeckgoColor, HTMLStencilElement {}
-  const HTMLDeckgoColorElement: {
+  var HTMLDeckgoColorElement: {
     prototype: HTMLDeckgoColorElement;
     new (): HTMLDeckgoColorElement;
   };
