@@ -310,9 +310,12 @@ export class CreateSlidesUtils {
                 answerSlots.push(<h2 slot={`answer-${i + 1}`}>{answer}</h2>);
             });
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-poll key={uuid()}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-poll key={uuid()} poll-link={'https://poll.deckdeckgo.com'}>
                 {questionSlot}
                 {...answerSlots}
+
+                <p slot="how_to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {0}</p>
+                <p slot="awaiting_votes">Awaiting votes</p>
             </deckgo-slide-poll>;
 
             resolve(slide);
