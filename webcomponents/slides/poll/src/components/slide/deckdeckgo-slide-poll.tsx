@@ -26,7 +26,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Prop() connectPollServer: boolean = true;
 
-  @Prop({reflectToAttr: true}) pollLink: string;
+  @Prop() pollLink: string;
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
