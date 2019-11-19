@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-1"></a>
+# 1.0.0-rc.3-1 (2019-11-19)
+
+### Fix
+
+* double bindings (like in studio)
+
 <a name="1.0.0-rc.3"></a>
 # 1.0.0-rc.3 (2019-11-19)
 
