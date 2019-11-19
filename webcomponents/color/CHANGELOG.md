@@ -1,3 +1,17 @@
+<a name="1.0.0-rc.3-1"></a>
+# 1.0.0-rc.3-1 (2019-11-19)
+
+### Fix
+
+* double bindings (like in studio)
+
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-11-19)
+
+### Features
+
+* highlight custom color ([#488](https://github.com/deckgo/deckdeckgo/issues/488))
+
 <a name="1.0.0-rc.2-3"></a>
 # 1.0.0-rc.2-3 (2019-10-19)
 

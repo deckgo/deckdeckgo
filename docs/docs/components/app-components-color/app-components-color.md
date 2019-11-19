@@ -207,9 +207,11 @@ The following theming options will affect this component if set on its host or p
 | --deckgo-button-outline | none | The outline of a button to select a color and the more button |
 | --deckgo-button-border | none | The border of a button to select a color and the more button |
 | --deckgo-button-border-radius | 50% | The border radius of a button to select a color |
-| --deckgo-button-more-border-radius | | The border radius of the more button |
-| --deckgo-button-more-border | | The border of the more button |
+| --deckgo-button-more-border-radius | 50% | The border radius of the more button |
+| --deckgo-button-more-border | none | The border of the more button |
+| --deckgo-button-more-outline | none | The outline of the more button |
 | --deckgo-flex-wrap | wrap | Wrap properties of the buttons' container |
+| --deckgo-button-more-background | transparent | The background of the more button |
 
 ### Events
 

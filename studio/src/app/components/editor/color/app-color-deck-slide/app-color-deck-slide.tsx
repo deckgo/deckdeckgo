@@ -38,12 +38,6 @@ export class AppColorDeckSlide {
 
     @Event() colorChange: EventEmitter<boolean>;
 
-    @State()
-    private colorText: string;
-
-    @State()
-    private colorBackground: string;
-
     async componentWillLoad() {
         await this.initCurrentColors();
     }
@@ -75,22 +69,6 @@ export class AppColorDeckSlide {
 
         this.color = styleColor.rgb;
         this.colorOpacity = styleColor.opacity;
-
-        await this.initCurrentRadioButtonsColors();
-    }
-
-    private async initCurrentRadioButtonsColors() {
-        const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-        if (!element) {
-            return;
-        }
-
-        const styleColorBackground: InitStyleColor = await ColorUtils.splitColor(element.style.getPropertyValue('--background') ? element.style.getPropertyValue('--background') : element.style.background);;
-        const styleColorText: InitStyleColor = await ColorUtils.splitColor(element.style.getPropertyValue('--color') ? element.style.getPropertyValue('--color') : element.style.color);
-
-        this.colorText = styleColorText.rgb === '255, 255, 255' ? 'var(--ion-color-medium-rgb)' : styleColorText.rgb;
-        this.colorBackground = styleColorBackground.rgb === '255, 255, 255' ? 'var(--ion-color-medium-rgb)' : styleColorBackground.rgb;
     }
 
     private async selectApplyType($event: CustomEvent) {
@@ -109,8 +87,6 @@ export class AppColorDeckSlide {
         this.color = $event.detail.rgb;
 
         await this.applyColor();
-
-        await this.initCurrentRadioButtonsColors();
     }
 
     private async applyColor() {
@@ -235,12 +211,12 @@ export class AppColorDeckSlide {
 
                     <ion-item>
                         <ion-label>Text</ion-label>
-                        <ion-radio slot="start" value={ApplyColorType.TEXT} checked mode="md" style={{'--color': `rgb(${this.colorText})`, '--color-checked': `rgb(${this.colorText})`}}></ion-radio>
+                        <ion-radio slot="start" value={ApplyColorType.TEXT} checked mode="md"></ion-radio>
                     </ion-item>
 
                     <ion-item>
                         <ion-label>Background</ion-label>
-                        <ion-radio slot="start" value={ApplyColorType.BACKGROUND} mode="md" style={{'--color': `rgb(${this.colorBackground})`, '--color-checked': `rgb(${this.colorBackground})`}}></ion-radio>
+                        <ion-radio slot="start" value={ApplyColorType.BACKGROUND} mode="md"></ion-radio>
                     </ion-item>
                 </ion-radio-group>
                 <ion-item-divider class="ion-padding-top">
