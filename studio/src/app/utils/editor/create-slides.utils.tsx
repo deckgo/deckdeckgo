@@ -270,7 +270,7 @@ export class CreateSlidesUtils {
 
             const content: string = QRCodeUtils.getPresentationUrl(deck);
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode key={uuid()} content={content} img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
+            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode key={uuid()} content={content} img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
                 {title}
             </deckgo-slide-qrcode>;
 
@@ -310,12 +310,14 @@ export class CreateSlidesUtils {
                 answerSlots.push(<h2 slot={`answer-${i + 1}`}>{answer}</h2>);
             });
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-poll key={uuid()} pollLink={'https://poll.deckdeckgo.com'}>
+            const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+            const slide: JSX.IntrinsicElements = <deckgo-slide-poll key={uuid()} pollLink={deckDeckGoConfig.pollUrl} pollServer={deckDeckGoConfig.pollServerUrl}>
                 {questionSlot}
                 {...answerSlots}
 
-                <p slot="how_to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {'{0}'}</p>
-                <p slot="awaiting_votes">Awaiting votes</p>
+                <div slot="how_to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {'{0}'}</div>
+                <div slot="awaiting_votes">Awaiting votes</div>
             </deckgo-slide-poll>;
 
             resolve(slide);

@@ -252,7 +252,7 @@ export class AppCreateSlide {
                 {this.renderCharts()}
 
                 <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
-                    <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com" img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
+                    <deckgo-slide-qrcode class="showcase" content={EnvironmentConfigService.getInstance().get('deckdeckgo').appUrl} img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
                         <p slot="title">QR code</p>
                     </deckgo-slide-qrcode>
                 </div>
@@ -272,7 +272,7 @@ export class AppCreateSlide {
                 </div>
 
                 <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
-                    <deckgo-slide-poll class="showcase" poll-link="https://deckdeckgo.com" poll-server="http://localhost:3003" count-answers={3} connectPollServer={false}>
+                    <deckgo-slide-poll class="showcase" poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl} poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl} count-answers={3} connectPollServer={false}>
                         <p slot="question">Poll to engage your audience</p>
                         <p slot="answer-1">Yes</p>
                         <p slot="answer-2">No</p>

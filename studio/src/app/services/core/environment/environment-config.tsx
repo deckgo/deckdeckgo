@@ -21,9 +21,10 @@ export interface EnvironmentUnsplashConfig {
 export interface EnvironmentDeckDeckGoConfig {
     prod: boolean;
     appUrl: string;
+    globalAssetsUrl: string;
+    pollUrl: string;
     apiUrl: string;
     presentationUrl: string;
-    globalAssetsUrl: string;
     pollServerUrl: string;
     signalingServerUrl: string;
 }

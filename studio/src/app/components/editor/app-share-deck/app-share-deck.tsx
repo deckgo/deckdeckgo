@@ -130,7 +130,8 @@ export class AppShareDeck {
                     resolve(config.presentationUrl + deck.data.meta.pathname);
                 } else {
                     // Should not happens
-                    resolve('https://deckdeckgo.com');
+                    const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+                    resolve(deckDeckGoConfig.appUrl);
                 }
             });
         });

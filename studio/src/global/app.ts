@@ -31,10 +31,11 @@ setupDeckGoConfig({
     deckdeckgo: {
         prod: true,
         appUrl: 'https://deckdeckgo.com',
+        globalAssetsUrl: 'https://deckdeckgo.com/assets',
+        pollUrl: 'https://poll.deckdeckgo.com',
+        pollServerUrl: '<@POLL_SERVER_URL@>',
         apiUrl: '<@API_URL@>',
         presentationUrl: '<@PRESENTATION_URL@>',
-        globalAssetsUrl: 'https://deckdeckgo.com/assets',
-        pollServerUrl: '<@POLL_SERVER_URL@>',
         signalingServerUrl: '<@SIGNALING_SERVER_URL@>'
     },
     firebase: {

@@ -10,7 +10,8 @@ export class QRCodeUtils {
             return config.presentationUrl + deck.data.meta.pathname;
         }
 
-        return 'https://deckdeckgo.com';
+        const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+        return deckDeckGoConfig.appUrl;
     }
 
 }
