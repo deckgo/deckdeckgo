@@ -628,7 +628,7 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openYoutube() {
+    private async openEditYoutubeSlide() {
         if (!this.youtube) {
             return;
         }
@@ -1076,12 +1076,11 @@ export class AppEditorToolbar {
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
-                {this.renderSlotType()}
+                {this.renderEdit()}
                 {this.renderReveal()}
                 {this.renderColor()}
                 {this.renderList()}
                 {this.renderImages()}
-                {this.renderYoutube()}
                 {this.renderCodeOptions()}
 
                 <div class="editor-toolbar-edit">
@@ -1128,13 +1127,13 @@ export class AppEditorToolbar {
         </a>
     }
 
-    private renderSlotType() {
+    private renderEdit() {
         if (this.deckOrSlide) {
-            if (!this.qrCode && !this.chart && !this.poll) {
+            if (!this.qrCode && !this.chart && !this.poll && !this.youtube) {
                 return undefined;
             }
 
-            return <a onClick={() => this.poll ? this.openEditPollSlide() : this.openEditSlide()} title="Slide options">
+            return <a onClick={() => this.poll ? this.openEditPollSlide() : (this.youtube ? this.openEditYoutubeSlide() : this.openEditSlide())} title="Edit slide options">
                 <ion-icon src="/assets/icons/ionicons/md-create.svg"></ion-icon>
             </a>
         } else {
@@ -1161,16 +1160,6 @@ export class AppEditorToolbar {
             return <a onClick={() => this.openImage()} title={this.deckOrSlide ? 'Background' : 'Image'}>
                 <ion-icon name="images"></ion-icon>
             </a>
-        }
-    }
-
-    private renderYoutube() {
-        if (this.deckOrSlide && this.youtube) {
-            return <a onClick={() => this.openYoutube()} title="Modify Youtube url">
-                <ion-icon name="logo-youtube"></ion-icon>
-            </a>
-        } else {
-            return undefined;
         }
     }
 
