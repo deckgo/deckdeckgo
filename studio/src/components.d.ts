@@ -155,7 +155,10 @@ export namespace Components {
   interface AppPoll {
     'pollKey': string;
   }
-  interface AppPollOptions {}
+  interface AppPollOptions {
+    'selectedElement': HTMLElement;
+    'slideDidChange': EventEmitter<HTMLElement>;
+  }
   interface AppPopular {
     'description': boolean;
     'help': boolean;
@@ -875,7 +878,10 @@ declare namespace LocalJSX {
   interface AppPoll {
     'pollKey'?: string;
   }
-  interface AppPollOptions {}
+  interface AppPollOptions {
+    'selectedElement'?: HTMLElement;
+    'slideDidChange'?: EventEmitter<HTMLElement>;
+  }
   interface AppPopular {
     'description'?: boolean;
     'help'?: boolean;

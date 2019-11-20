@@ -34,9 +34,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Prop({reflectToAttr: true}) imgSrc: string;
   @Prop({reflectToAttr: true}) imgAlt: string;
 
-  @State()
-  private countAnswers: number = 5;
-
   private answerSlots: number[];
 
   @State()
@@ -64,9 +61,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   private updateChartSubscription: Subscription;
 
   async componentWillLoad() {
-    this.countAnswers = await this.initCountAnswers();
-
-    this.answerSlots = Array.from({length: this.countAnswers}, (_v, i) => i);
+    await this.initAnswerSlots();
 
     this.communicationService.watchPollKey().pipe(filter((key: string) => key !== undefined), take(1)).subscribe(async (key: string) => {
       this.pollKey = key;
@@ -85,6 +80,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     this.updateChartSubscription = this.updateChart.pipe(debounceTime(500)).subscribe(async () => {
       await this.updateChartData();
     });
+  }
+
+  private async initAnswerSlots() {
+    const countAnswers: number = await this.initCountAnswers();
+
+    this.answerSlots = Array.from({length: countAnswers}, (_v, i) => i);
   }
 
   private initCountAnswers(): Promise<number> {
@@ -232,7 +233,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private initChartData(): Promise<DeckdeckgoBarChartData[]> {
     return new Promise<DeckdeckgoBarChartData[]>(async (resolve) => {
-      if (this.countAnswers <= 0 || !this.answerSlots || this.answerSlots.length <= 0) {
+      if (!this.answerSlots || this.answerSlots.length <= 0) {
         resolve(null);
         return;
       }
@@ -388,7 +389,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <style>{`
-        ::slotted(*:not([slot="question"]):not([slot="how_to"]):nth-child(-n+${this.countAnswers + 1})) {
+        ::slotted([slot^=\'answer\']) {
           display: none;
         }
       `}</style>

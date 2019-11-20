@@ -48,6 +48,9 @@ export class AppEditorToolbar {
     private youtube: boolean = false;
 
     @State()
+    private poll: boolean = false;
+
+    @State()
     private image: boolean = false;
 
     @State()
@@ -243,6 +246,10 @@ export class AppEditorToolbar {
 
     private isElementChartSlide(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-chart';
+    }
+
+    private isElementPollSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-poll';
     }
 
     private isElementList(element: HTMLElement): SlotType {
@@ -536,6 +543,7 @@ export class AppEditorToolbar {
                 selectedElement: this.selectedElement,
                 qrCode: this.qrCode,
                 chart: this.chart,
+                poll: this.poll,
                 slideDidChange: this.slideDidChange
             },
             mode: 'md',
@@ -555,6 +563,28 @@ export class AppEditorToolbar {
         });
 
         await popover.present();
+    }
+
+    private async openEditPollSlide() {
+        if (!this.deckOrSlide || !this.poll) {
+            return;
+        }
+
+        const modal: HTMLIonModalElement = await modalController.create({
+            component: 'app-poll-options',
+            componentProps: {
+                selectedElement: this.selectedElement,
+                slideDidChange: this.slideDidChange
+            }
+        });
+
+        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+            this.blockSlide.emit(false);
+        });
+
+        this.blockSlide.emit(true);
+
+        await modal.present();
     }
 
     private async openReveal() {
@@ -732,6 +762,7 @@ export class AppEditorToolbar {
             this.youtube = this.isElementYoutubeSlide(element);
             this.qrCode = this.isElementQRCodeSlide(element);
             this.chart = this.isElementChartSlide(element);
+            this.poll = this.isElementPollSlide(element);
 
             this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
             this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
@@ -1099,11 +1130,11 @@ export class AppEditorToolbar {
 
     private renderSlotType() {
         if (this.deckOrSlide) {
-            if (!this.qrCode && !this.chart) {
+            if (!this.qrCode && !this.chart && !this.poll) {
                 return undefined;
             }
 
-            return <a onClick={() => this.openEditSlide()} title="Slide options">
+            return <a onClick={() => this.poll ? this.openEditPollSlide() : this.openEditSlide()} title="Slide options">
                 <ion-icon src="/assets/icons/ionicons/md-create.svg"></ion-icon>
             </a>
         } else {

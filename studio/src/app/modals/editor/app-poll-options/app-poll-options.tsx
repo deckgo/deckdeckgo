@@ -1,4 +1,4 @@
-import {Component, Element, h, Listen, State} from '@stencil/core';
+import {Component, Element, EventEmitter, h, Listen, Prop, State} from '@stencil/core';
 
 @Component({
     tag: 'app-poll-options',
@@ -7,6 +7,12 @@ import {Component, Element, h, Listen, State} from '@stencil/core';
 export class AppPollOptions {
 
     @Element() el: HTMLElement;
+
+    @Prop()
+    selectedElement: HTMLElement;
+
+    @Prop()
+    slideDidChange: EventEmitter<HTMLElement>;
 
     @State()
     private question: string;
@@ -17,9 +23,52 @@ export class AppPollOptions {
     @State()
     private valid: boolean = false;
 
-    componentWillLoad() {
-        this.answers = Array.from({length: 2}, (_v, _i) => '');
+    async componentWillLoad() {
+        this.question = await this.initQuestion();
+        this.answers = await this.initAnswers();
 
+        this.valid = await this.isValid();
+    }
+
+    private initQuestion(): Promise<string | undefined> {
+        return new Promise<string | undefined>((resolve) => {
+            if (!this.selectedElement || this.selectedElement === undefined) {
+                resolve(undefined);
+                return;
+            }
+
+            const slot: HTMLElement = this.selectedElement.querySelector(':scope > [slot=\'question\']');
+
+            resolve(!slot ? undefined : slot.innerHTML);
+        });
+    }
+
+    private initAnswers(): Promise<string[]> {
+        return new Promise<string[]>((resolve) => {
+            if (!this.selectedElement || this.selectedElement === undefined) {
+                resolve(this.initEmptyAnswers());
+                return;
+            }
+
+            const slots: NodeListOf<HTMLElement> = this.selectedElement.querySelectorAll(':scope > [slot]');
+
+            if (!slots || slots.length <= 0) {
+                resolve(this.initEmptyAnswers());
+                return;
+            }
+
+            const answers: string[] = Array.from(slots).filter((slot: HTMLElement) => {
+                return slot.hasAttribute('slot') && slot.getAttribute('slot').indexOf('answer') > -1;
+            }).map((slot: HTMLElement) => {
+                return slot.innerHTML;
+            });
+
+            resolve(answers);
+        });
+    }
+
+    private initEmptyAnswers(): string[] {
+        return Array.from({length: 2}, (_v, _i) => '');
     }
 
     async componentDidLoad() {
@@ -39,6 +88,8 @@ export class AppPollOptions {
         if (!this.valid) {
             return;
         }
+
+        await this.updateSlide();
 
         const filterAnswers: string[] = this.answers.filter((answer: string) => {
             return answer !== '';
@@ -87,6 +138,60 @@ export class AppPollOptions {
             });
 
             resolve(atLeastOneAnswer !== -1);
+        });
+    }
+
+    private updateSlide(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || this.selectedElement === undefined || !document) {
+                resolve(undefined);
+                return;
+            }
+
+            const slots: NodeListOf<HTMLElement> = this.selectedElement.querySelectorAll(':scope > [slot]');
+
+            if (!slots || slots.length <= 0) {
+                resolve();
+                return;
+            }
+
+            const promises: Promise<void>[] = [];
+            promises.push(this.updateSlot('question', 'h1', this.question));
+
+            if (this.answers && this.answers.length > 0) {
+                this.answers.forEach((answer: string, i: number) => {
+                   promises.push(this.updateSlot(`answer-${i + 1}`,'h2', answer));
+                });
+            }
+
+            await Promise.all(promises);
+
+            this.slideDidChange.emit(this.selectedElement);
+
+            resolve();
+        });
+    }
+
+    private updateSlot(slotName: string, elementName: string, value: string): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const slot: HTMLElement = this.selectedElement.querySelector(`:scope > [slot=\'${slotName}\']`);
+            if (!slot) {
+                if (value && value !== undefined && value !== '') {
+                    const newSlot: HTMLElement = document.createElement(elementName);
+                    newSlot.setAttribute('slot', slotName);
+                    newSlot.innerHTML = value;
+
+                    this.selectedElement.appendChild(newSlot);
+                }
+            } else {
+                if (value && value !== undefined && value !== '') {
+                    slot.innerHTML = value;
+                } else {
+                    this.selectedElement.removeChild(slot);
+                }
+            }
+
+            resolve();
         });
     }
 
