@@ -12,8 +12,6 @@
 | `connectPollServer` | `connect-poll-server` |             | `boolean` | `true`      |
 | `customActions`     | `custom-actions`      |             | `boolean` | `false`     |
 | `customBackground`  | `custom-background`   |             | `boolean` | `false`     |
-| `imgAlt`            | `img-alt`             |             | `string`  | `undefined` |
-| `imgSrc`            | `img-src`             |             | `string`  | `undefined` |
 | `pollLink`          | `poll-link`           |             | `string`  | `undefined` |
 | `pollServer`        | `poll-server`         |             | `string`  | `undefined` |
 

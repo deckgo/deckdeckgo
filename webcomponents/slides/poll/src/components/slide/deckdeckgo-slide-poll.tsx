@@ -31,9 +31,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
-  @Prop({reflectToAttr: true}) imgSrc: string;
-  @Prop({reflectToAttr: true}) imgAlt: string;
-
   private answerSlots: string[];
 
   @State()
@@ -97,14 +94,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
 
     this.slideDidLoad.emit();
-  }
-
-  async componentDidUpdate() {
-    const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
-
-    if (img && this.imgSrc) {
-      await this.lazyLoadContent();
-    }
   }
 
   async componentDidUnload() {
@@ -480,7 +469,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     return <div class="deckgo-slide-poll">
       <div class="deckgo-slide-poll-qrcode">
         <deckgo-qrcode content={this.pollLink}>
-          {this.renderLogo()}
         </deckgo-qrcode>
         <slot name="how_to"></slot>
       </div>
@@ -490,14 +478,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         {this.renderNoVotes()}
       </div>
     </div>;
-  }
-
-  private renderLogo() {
-    if (this.imgSrc) {
-      return <img slot="logo" data-src={this.imgSrc} alt={this.imgAlt}/>;
-    } else {
-      return undefined;
-    }
   }
 
   private renderAnswers() {
