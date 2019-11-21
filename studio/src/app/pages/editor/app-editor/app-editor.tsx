@@ -19,6 +19,7 @@ import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
 import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
+import {PollEventsHandler} from '../../../handlers/editor/events/poll/poll-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
@@ -60,6 +61,7 @@ export class AppEditor {
     private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
     private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
     private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
+    private pollEventsHandler: PollEventsHandler = new PollEventsHandler();
 
     private editorHelper: EditorHelper = new EditorHelper();
 
@@ -150,6 +152,7 @@ export class AppEditor {
         this.deckEventsHandler.destroy();
         this.editorEventsHandler.destroy();
         await this.remoteEventsHandler.destroy();
+        this.pollEventsHandler.destroy();
 
         if (this.busySubscription) {
             this.busySubscription.unsubscribe();
@@ -162,6 +165,7 @@ export class AppEditor {
         await this.updateInlineEditorListener();
 
         await this.remoteEventsHandler.init(this.el);
+        await this.pollEventsHandler.init(this.el);
 
         this.initWindowResize();
     }

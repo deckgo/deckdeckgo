@@ -190,10 +190,6 @@ export class AppPollOptions {
 
             this.slideDidChange.emit(this.selectedElement);
 
-            if (typeof (this.selectedElement as any).update === 'function') {
-                await (this.selectedElement as any).update();
-            }
-
             resolve();
         });
     }

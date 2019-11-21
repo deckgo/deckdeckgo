@@ -326,8 +326,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private async initPoll() {
-    this.answeredOnce = false;
-
     if (!this.connectPollServer) {
       return;
     }
@@ -436,6 +434,11 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Method()
   async update() {
+    // Poll in progress should not be updated
+    if (this.answeredOnce) {
+      return;
+    }
+
     await this.initAnswerSlots();
 
     this.chartData = await this.initChartData();
