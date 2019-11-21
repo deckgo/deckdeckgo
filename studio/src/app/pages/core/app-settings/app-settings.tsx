@@ -20,6 +20,8 @@ import {ImageHistoryService} from '../../../services/editor/image-history/image-
 import {UserService} from '../../../services/data/user/user.service';
 import {StorageService} from '../../../services/storage/storage.service';
 import {ApiUserFactoryService} from '../../../services/api/user/api.user.factory.service';
+import {ThemeService} from '../../../services/theme/theme.service';
+
 
 @Component({
     tag: 'app-settings',
@@ -65,6 +67,8 @@ export class AppHome {
 
     private storageService: StorageService;
 
+    private themeService: ThemeService;
+
     @State()
     private twitter: string = undefined;
 
@@ -83,6 +87,9 @@ export class AppHome {
     @State()
     private custom: string = undefined;
 
+    @State()
+    private darkTheme: boolean;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.apiUserService = ApiUserFactoryService.getInstance();
@@ -91,6 +98,7 @@ export class AppHome {
         this.imageHistoryService = ImageHistoryService.getInstance();
         this.userService = UserService.getInstance();
         this.storageService = StorageService.getInstance();
+        this.themeService = ThemeService.getInstance();
     }
 
     componentWillLoad() {
@@ -114,6 +122,10 @@ export class AppHome {
             this.user = user;
 
             await this.initSocial();
+        });
+
+        this.themeService.watch().pipe(take(1)).subscribe((dark: boolean) => {
+            this.darkTheme = dark;
         });
     }
 
@@ -380,6 +392,7 @@ export class AppHome {
             <ion-content class="ion-padding fullscreen-padding">
                 <main class="ion-padding">
                     {this.renderGuardedContent()}
+                    {this.renderDarkLightToggle()}
                     {this.renderDangerZone()}
                 </main>
             </ion-content>
@@ -420,6 +433,7 @@ export class AppHome {
                             {this.renderSocial()}
 
                             {this.renderSubmitForm()}
+
                         </form>,
             <p class="info">Note that your update has no effect on the presentations you would have already published.</p>
         ]
@@ -449,6 +463,22 @@ export class AppHome {
                 <ion-label>Send me newsletter emails</ion-label>
                 <ion-checkbox slot="end" value="pepperoni" checked={this.user && this.user.data ? this.user.data.newsletter : false} disabled={this.saving} onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
             </div>];
+    }
+
+    async toggleTheme() {
+        this.darkTheme = !this.darkTheme;
+        await this.themeService.switch(this.darkTheme);
+    }
+
+    private renderDarkLightToggle() {
+        return [
+            <ion-list>
+            <ion-item>
+                <ion-label>{this.darkTheme ? 'Dark' : 'Light'} theme {this.darkTheme ? '🌑' : '☀️'}</ion-label>
+                <ion-toggle slot="end" checked={this.darkTheme} mode="md" color="switcher" onIonChange={() => this.toggleTheme()}></ion-toggle>
+            </ion-item>
+            </ion-list>
+        ]
     }
 
     private renderUsername() {
