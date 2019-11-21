@@ -28,11 +28,60 @@
     <p slot="answer-2">Meh</p>
     <p slot="answer-3">I could'nt care less</p>
     <p slot="answer-4">Tell me why</p>
-    <p slot="answer-5">Ain't nothin' but a heartache</p>
     <p slot="how_to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {0}</p>
     <p slot="awaiting_votes">Awaiting first votes</p>
+    <p slot="answer-5">Ain't nothin' but a heartache</p>
   </deckgo-slide-poll>
 </deckgo-deck>
+
+<div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
+  <button onclick="removeSecondAnswer()">Remove answer-2 slot</button>
+  <button onclick="removeAnswer()">Remove last answer</button>
+  <button onclick="addAnswer()">Add an answer</button>
+</div>
+
+<script type="text/javascript">
+    const addAnswer = async () => {
+        const elem = document.querySelector('deckgo-slide-poll');
+        if (elem) {
+            const slots = document.querySelectorAll('[slot^=\'answer\']');
+
+            const p = document.createElement('p');
+            p.setAttribute('slot', 'answer-' + (slots.length + 1));
+            p.innerHTML = 'Yolo ' + (slots.length + 1);
+
+            elem.appendChild(p);
+
+            await elem.update();
+        }
+    };
+
+    const removeAnswer = async () => {
+        const elem = document.querySelector('deckgo-slide-poll');
+        if (elem) {
+            const slots = document.querySelectorAll('[slot^=\'answer\']');
+
+            if (slots && slots.length > 0) {
+                elem.removeChild(slots[slots.length - 1]);
+
+                await elem.update();
+            }
+        }
+    };
+
+    const removeSecondAnswer = async () => {
+        const elem = document.querySelector('deckgo-slide-poll');
+        if (elem) {
+            const slot = document.querySelector('[slot^=\'answer-2\']');
+
+            if (slot) {
+                elem.removeChild(slot);
+
+                await elem.update();
+            }
+        }
+    };
+</script>
 
 </body>
 </html>

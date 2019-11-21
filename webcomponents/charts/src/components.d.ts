@@ -9,6 +9,7 @@
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   DeckdeckgoBarChartData,
+  DeckdeckgoBarChartDataValue,
 } from '@deckdeckgo/types';
 
 export namespace Components {
@@ -28,6 +29,7 @@ export namespace Components {
     'prev': () => Promise<void>;
     'separator': string;
     'src': string;
+    'update': (values: DeckdeckgoBarChartDataValue[]) => Promise<void>;
     'width': number;
     'yAxis': boolean;
   }

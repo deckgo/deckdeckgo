@@ -24,6 +24,7 @@ export namespace Components {
     'pollServer': string;
     'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
+    'update': () => Promise<void>;
   }
 }
 

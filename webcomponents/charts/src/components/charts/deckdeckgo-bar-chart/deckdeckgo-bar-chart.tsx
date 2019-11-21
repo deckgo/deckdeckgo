@@ -57,10 +57,11 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   @Watch('data')
   async onDataChange() {
-    if (!this.animation) {
-      return;
-    }
+    await this.draw();
+  }
 
+  @Method()
+  async update(values: DeckdeckgoBarChartDataValue[]) {
     if (!this.x0 || !this.x1 || !this.y) {
       return;
     }
@@ -69,9 +70,13 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       return;
     }
 
-    if (this.barDataIndex < this.data.length) {
-      await this.drawBars(this.barDataIndex, this.animationDuration);
+    if (this.barDataIndex < 0 || this.barDataIndex >= this.data.length) {
+      return;
     }
+
+    this.data[this.barDataIndex].values = values;
+
+    await this.drawBars(this.barDataIndex, this.animationDuration);
   }
 
   @Method()
@@ -117,6 +122,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   }
 
   private async drawBars(index: number, animationDuration: number) {
+    await this.initAxisXDomain();
     await this.initAxisYDomain();
 
     if (this.animation) {
@@ -124,6 +130,22 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     } else {
       await this.drawInstantBars();
     }
+  }
+
+  private initAxisXDomain(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const xDomains = this.data[0].values.map((d) => {
+        return d.label;
+      });
+
+      if (this.animation) {
+        this.initAnimatedAxisX(xDomains);
+      } else {
+        this.initInstantAxisX(xDomains);
+      }
+
+      resolve();
+    });
   }
 
   private initAxisYDomain(): Promise<void> {
@@ -224,16 +246,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       this.x1 = scaleBand().padding(0.05);
       this.y = scaleLinear().rangeRound([this.height, 0]);
 
-      const xDomains = this.data[0].values.map((d) => {
-        return d.label;
-      });
-
-      if (this.animation) {
-        this.initAnimatedAxisX(xDomains);
-      } else {
-        this.initInstantAxisX(xDomains);
-      }
-
+      await this.initAxisXDomain();
       await this.initAxisYDomain();
 
       resolve();

@@ -87,6 +87,16 @@ Type: `Promise<void>`
 
 
 
+### `update() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Dependencies
 

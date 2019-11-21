@@ -49,8 +49,12 @@ div.deckgo-slide-poll {
 
 }
 
-::slotted([slot="how_to"]) {
+.how_to {
   max-width: var(--slide-poll-how-to-max-width, calc(100% - 64px));
+}
+
+::slotted([slot="how_to"]) {
+  display: none;
 }
 
 ::slotted([slot="awaiting_votes"]) {

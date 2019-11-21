@@ -1,7 +1,7 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} from '@stencil/core';
 
 import {Subject, Subscription} from 'rxjs';
-import {debounceTime, filter, take} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
@@ -34,7 +34,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Prop({reflectToAttr: true}) imgSrc: string;
   @Prop({reflectToAttr: true}) imgAlt: string;
 
-  private answerSlots: number[];
+  private answerSlots: string[];
 
   @State()
   private chartWidth: number;
@@ -57,19 +57,14 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private updateChart: Subject<void> = new Subject<void>();
 
-  private subscription: Subscription;
+  private pollKeySubscription: Subscription;
+  private voteSubscription: Subscription;
   private updateChartSubscription: Subscription;
 
   async componentWillLoad() {
     await this.initAnswerSlots();
 
-    this.communicationService.watchPollKey().pipe(filter((key: string) => key !== undefined), take(1)).subscribe(async (key: string) => {
-      this.pollKey = key;
-
-      await this.updateSlotHowToText();
-    });
-
-    this.subscription = this.communicationService.watchVote().subscribe((answer: string) => {
+    this.voteSubscription = this.communicationService.watchVote().subscribe((answer: string) => {
       this.answeredOnce = true;
 
       this.answers[answer]++;
@@ -78,30 +73,15 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
 
     this.updateChartSubscription = this.updateChart.pipe(debounceTime(500)).subscribe(async () => {
-      await this.updateChartData();
-    });
-  }
+      await this.updateChartAnswersData();
 
-  private async initAnswerSlots() {
-    const countAnswers: number = await this.initCountAnswers();
+      if (this.chartData && this.chartData.length >= 1) {
+        const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
 
-    this.answerSlots = Array.from({length: countAnswers}, (_v, i) => i);
-  }
-
-  private initCountAnswers(): Promise<number> {
-    return new Promise<number>((resolve) => {
-      const slots: NodeListOf<HTMLElement> = this.el.querySelectorAll(':scope > [slot]');
-
-      if (!slots || slots.length <= 0) {
-        resolve(0);
-        return;
+        if (element) {
+          await (element as any).update(this.chartData[0].values);
+        }
       }
-
-      const filterAnswers: HTMLElement[] = Array.from(slots).filter((slot: HTMLElement) => {
-          return slot.getAttribute('slot').indexOf('answer') > -1
-      });
-
-      resolve(filterAnswers ? filterAnswers.length : 0);
     });
   }
 
@@ -109,6 +89,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     await hideLazyLoadImages(this.el);
 
     this.initWindowResize();
+
+    this.pollKeySubscription = this.communicationService.watchPollKey().subscribe(async (key: string) => {
+      this.pollKey = key;
+
+      await this.initHowTo();
+    });
 
     this.slideDidLoad.emit();
   }
@@ -124,12 +110,16 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   async componentDidUnload() {
     await this.communicationService.disconnect();
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.voteSubscription) {
+      this.voteSubscription.unsubscribe();
     }
 
     if (this.updateChartSubscription) {
       this.updateChartSubscription.unsubscribe();
+    }
+
+    if (this.pollKeySubscription) {
+      this.pollKeySubscription.unsubscribe();
     }
   }
 
@@ -196,6 +186,29 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
+  private async initAnswerSlots() {
+    const answers: string[] | undefined = await this.initAnswerSlotsList();
+
+    this.answerSlots = answers ? [...answers] : undefined;
+  }
+
+  private initAnswerSlotsList(): Promise<string[] | undefined> {
+    return new Promise<string[] | undefined>((resolve) => {
+      const slots: NodeListOf<HTMLElement> = this.el.querySelectorAll(':scope > [slot^=\'answer\']');
+
+      if (!slots || slots.length <= 0) {
+        resolve(undefined);
+        return;
+      }
+
+      const answers: string[] = Array.from(slots).map((slot: HTMLElement) => {
+        return slot.getAttribute('slot');
+      });
+
+      resolve(answers);
+    });
+  }
+
   private getSlideContainerPaddingBottom(): Promise<number> {
     return new Promise<number>((resolve) => {
       const slideContainer: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide');
@@ -239,11 +252,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       }
 
       const promises = [];
-      Array.from(this.answerSlots).forEach((answer: number) => {
-
-        this.answers[`answer-${answer + 1}`] = 0;
-
-        promises.push(this.initChartDataBar(`answer-${answer + 1}`));
+      Array.from(this.answerSlots).forEach((answer: string) => {
+        this.answers[answer] = 0;
+        promises.push(this.initChartDataBar(answer));
       });
 
       const bars: DeckdeckgoBarChartDataValue[] = await Promise.all(promises);
@@ -253,16 +264,22 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         return;
       }
 
+      const activeBars: DeckdeckgoBarChartDataValue[] = bars.filter((value: DeckdeckgoBarChartDataValue) => {
+        return value !== undefined;
+      });
+
+      console.log(activeBars, bars, this.answerSlots);
+
       const question: HTMLElement = this.el.querySelector(`:scope > [slot=\'question\']`);
 
       resolve([{
         label: question ? question.innerHTML : 'Poll',
-        values: bars
+        values: activeBars
       }]);
     });
   }
 
-  private updateChartData(): Promise<void> {
+  private updateChartAnswersData(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.chartData || this.chartData.length < 1) {
         resolve();
@@ -288,8 +305,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
         dataBar.value = this.answers[key];
       });
-
-      this.chartData = [...this.chartData];
 
       resolve();
     });
@@ -317,25 +332,58 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       return;
     }
 
+    await this.communicationService.disconnect();
+
     if (this.chartData && this.chartData.length >= 1) {
       await this.communicationService.connect(this.pollServer, this.chartData[0] as DeckdeckgoPollQuestion);
     }
   }
 
-  private updateSlotHowToText(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const howToElement: HTMLElement = this.el.querySelector(':scope > [slot=\'how_to\']');
+  private initHowTo(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const howToSlotElement: HTMLElement = this.el.querySelector(':scope > [slot=\'how_to\']');
 
-      if (!howToElement || !howToElement.innerHTML || howToElement.innerHTML === undefined || howToElement.innerHTML.indexOf('{0}') === -1) {
+      if (!howToSlotElement) {
         resolve();
         return;
       }
 
-      const replaceWith: string = this.pollKey ? this.pollKey.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ' ') : this.pollKey;
+      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-poll-qrcode');
 
-      howToElement.innerHTML = howToElement.innerHTML.replace(/\{0\}/g, replaceWith);
+      if (!container) {
+        resolve();
+        return;
+      }
+
+      const howTo: HTMLElement = container.querySelector('.how_to');
+
+      if (howTo) {
+        container.removeChild(howTo);
+      }
+
+      const element: HTMLElement = await this.cloneHowTo(howToSlotElement);
+      container.appendChild(element);
 
       resolve();
+    });
+  }
+
+  private cloneHowTo(howToSlotElement: HTMLElement): Promise<HTMLElement> {
+    return new Promise<HTMLElement>((resolve) => {
+      const element: HTMLElement = howToSlotElement.cloneNode(true) as HTMLElement;
+      element.removeAttribute('slot');
+      element.classList.add('how_to');
+
+      if (!element.innerHTML || element.innerHTML === undefined || element.innerHTML.indexOf('{0}') === -1) {
+        resolve(element);
+        return;
+      }
+
+      const replaceWith: string = this.pollKey ? this.pollKey.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ' ') : '{0}';
+
+      element.innerHTML = element.innerHTML.replace(/\{0\}/g, replaceWith);
+
+      resolve(element);
     });
   }
 
@@ -386,6 +434,17 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
+  @Method()
+  async update() {
+    await this.initAnswerSlots();
+
+    this.chartData = await this.initChartData();
+
+    this.chartData = this.chartData ? [...this.chartData] : undefined;
+
+    await this.initPoll();
+  }
+
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <style>{`
@@ -430,8 +489,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private renderAnswers() {
     return (
-      this.answerSlots.map((i: number) => {
-        return <slot name={`answer-${i + 1}`}></slot>
+      this.answerSlots.map((answer: string) => {
+        return <slot name={answer}></slot>
       })
     );
   }
