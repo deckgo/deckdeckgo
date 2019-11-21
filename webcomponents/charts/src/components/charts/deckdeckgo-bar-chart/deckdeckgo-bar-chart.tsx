@@ -288,7 +288,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .attr('width', this.x0.bandwidth())
         .attr('height', (d) => {
-          return this.height - this.y(d.value);
+          const height: number = this.height - this.y(d.value);
+          return height >= 0 ? height : 0;
         });
 
       resolve();
@@ -318,7 +319,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .attr('width', this.x1.bandwidth())
         .attr('height', (d) => {
-          return this.height - this.y(d.value);
+          const height: number = this.height - this.y(d.value);
+          return height >= 0 ? height : 0;
         })
         .attr('style', (d, i) => {
           return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '')  + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';

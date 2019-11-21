@@ -174,12 +174,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       if (container) {
         this.chartWidth = container.clientWidth * 0.75;
         this.chartHeight = this.chartWidth * 9 / 16;
-
-        const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
-
-        if (element) {
-          await (element as any).draw(this.chartWidth, this.chartHeight);
-        }
       }
 
       resolve();
@@ -400,12 +394,10 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Method()
   lazyLoadContent(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      this.chartData = await this.initChartData();
-
       const promises = [];
       promises.push(lazyLoadContent(this.el));
       promises.push(this.init());
-      promises.push(this.initPoll());
+      promises.push(this.initDataAndPoll(true));
 
       await Promise.all(promises);
 
@@ -441,11 +433,24 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
     await this.initAnswerSlots();
 
-    this.chartData = await this.initChartData();
+    await this.initDataAndPoll(false);
+  }
 
-    this.chartData = this.chartData ? [...this.chartData] : undefined;
+  private initDataAndPoll(once: boolean): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (once && this.chartData && this.chartData.length > 0) {
+        resolve();
+        return;
+      }
 
-    await this.initPoll();
+      this.chartData = await this.initChartData();
+
+      this.chartData = this.chartData ? [...this.chartData] : undefined;
+
+      await this.initPoll();
+
+      resolve();
+    });
   }
 
   @Method()
