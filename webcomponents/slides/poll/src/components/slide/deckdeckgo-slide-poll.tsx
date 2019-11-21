@@ -268,8 +268,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         return value !== undefined;
       });
 
-      console.log(activeBars, bars, this.answerSlots);
-
       const question: HTMLElement = this.el.querySelector(`:scope > [slot=\'question\']`);
 
       resolve([{
@@ -328,6 +326,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private async initPoll() {
+    this.answeredOnce = false;
+
     if (!this.connectPollServer) {
       return;
     }
@@ -443,6 +443,11 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     this.chartData = this.chartData ? [...this.chartData] : undefined;
 
     await this.initPoll();
+  }
+
+  @Method()
+  async isAnswered() {
+    return this.answeredOnce;
   }
 
   render() {

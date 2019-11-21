@@ -23,11 +23,33 @@ export class AppPollOptions {
     @State()
     private valid: boolean = false;
 
+    @State()
+    private editDisabled: boolean = false;
+
     async componentWillLoad() {
+        this.editDisabled = await this.isPollAnswered();
+
         this.question = await this.initQuestion();
         this.answers = await this.initAnswers();
 
         this.valid = await this.isValid();
+    }
+
+    private isPollAnswered(): Promise<boolean> {
+        return new Promise<boolean>(async (resolve) => {
+           if  (!this.selectedElement) {
+               resolve(false);
+               return;
+           }
+
+           if (typeof (this.selectedElement as any).isAnswered === 'function') {
+               const result: boolean = await (this.selectedElement as any).isAnswered();
+               resolve(result);
+               return;
+           }
+
+           resolve(true);
+        });
     }
 
     private initQuestion(): Promise<string | undefined> {
@@ -85,7 +107,7 @@ export class AppPollOptions {
     }
 
     async save() {
-        if (!this.valid) {
+        if (!this.valid || this.editDisabled) {
             return;
         }
 
@@ -215,7 +237,7 @@ export class AppPollOptions {
                 <ion-list class="inputs-list">
                     <h2>Question</h2>
                     <ion-item>
-                        <ion-input value={this.question} placeholder="Enter your question" debounce={500}
+                        <ion-input value={this.question} placeholder="Enter your question" debounce={500} disabled={this.editDisabled}
                                    onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleQuestionInput(e)}></ion-input>
                     </ion-item>
 
@@ -223,7 +245,7 @@ export class AppPollOptions {
                     {this.renderAnswers()}
 
                     <div class="add-answer">
-                        <ion-button fill="clear" color="medium" onClick={() => this.addAnswer()}>
+                        <ion-button fill="clear" color="medium" onClick={() => this.addAnswer()} disabled={this.editDisabled}>
                             <ion-icon name="add" slot="start"></ion-icon>
                             <ion-label>Add an answer</ion-label>
                         </ion-button>
@@ -231,7 +253,7 @@ export class AppPollOptions {
                 </ion-list>
 
                 <ion-button
-                    disabled={!this.valid}
+                    disabled={!this.valid || this.editDisabled}
                     color="dark" shape="round" onClick={() => this.save()}>
                     <ion-label>Save</ion-label>
                 </ion-button>
@@ -243,7 +265,7 @@ export class AppPollOptions {
         return (
             this.answers.map((answer: string, i: number) => {
                 return <ion-item>
-                    <ion-input value={answer} placeholder={`Enter answer ${i + 1}`} debounce={500}
+                    <ion-input value={answer} placeholder={`Enter answer ${i + 1}`} debounce={500} disabled={this.editDisabled}
                                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleAnswerInput(e, i)}></ion-input>
                 </ion-item>
             })

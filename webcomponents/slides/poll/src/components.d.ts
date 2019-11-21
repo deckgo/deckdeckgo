@@ -19,6 +19,7 @@ export namespace Components {
     'hideContent': () => Promise<void>;
     'imgAlt': string;
     'imgSrc': string;
+    'isAnswered': () => Promise<boolean>;
     'lazyLoadContent': () => Promise<void>;
     'pollLink': string;
     'pollServer': string;

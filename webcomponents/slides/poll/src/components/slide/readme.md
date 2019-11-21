@@ -57,6 +57,16 @@ Type: `Promise<void>`
 
 
 
+### `isAnswered() => Promise<boolean>`
+
+
+
+#### Returns
+
+Type: `Promise<boolean>`
+
+
+
 ### `lazyLoadContent() => Promise<void>`
 
 
