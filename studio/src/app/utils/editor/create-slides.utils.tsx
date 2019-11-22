@@ -303,11 +303,11 @@ export class CreateSlidesUtils {
                 return;
             }
 
-            const questionSlot = <h1 slot="question">{question}</h1>;
+            const questionSlot = <h2 slot="question">{question}</h2>;
 
             const answerSlots = [];
             answers.forEach((answer: string, i: number) => {
-                answerSlots.push(<h2 slot={`answer-${i + 1}`}>{answer}</h2>);
+                answerSlots.push(<h3 slot={`answer-${i + 1}`}>{answer}</h3>);
             });
 
             const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
