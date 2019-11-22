@@ -246,9 +246,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       }
 
       const promises = [];
-      Array.from(this.answerSlots).forEach((answer: string) => {
+      Array.from(this.answerSlots).forEach((answer: string, i: number) => {
         this.answers[answer] = 0;
-        promises.push(this.initChartDataBar(answer));
+        promises.push(this.initChartDataBar(answer, i));
       });
 
       const bars: DeckdeckgoBarChartDataValue[] = await Promise.all(promises);
@@ -302,7 +302,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
-  private initChartDataBar(answerSlotName: string): Promise<DeckdeckgoBarChartDataValue> {
+  private initChartDataBar(answerSlotName: string, index: number): Promise<DeckdeckgoBarChartDataValue> {
     return new Promise<DeckdeckgoBarChartDataValue>((resolve) => {
       const element: HTMLElement = this.el.querySelector(`:scope > [slot=\'${answerSlotName}\']`);
 
@@ -312,7 +312,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       }
 
       resolve({
-        key: answerSlotName,
+        key: `${index + 1}`,
         label: element.innerHTML,
         value: Math.floor((Math.random() * 10) + 1)
       });
