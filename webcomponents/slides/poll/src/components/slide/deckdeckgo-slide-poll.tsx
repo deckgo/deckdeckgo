@@ -364,6 +364,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     return new Promise<HTMLElement>((resolve) => {
       const element: HTMLElement = howToSlotElement.cloneNode(true) as HTMLElement;
       element.removeAttribute('slot');
+      element.removeAttribute('contenteditable');
       element.classList.add('how_to');
 
       if (!element.innerHTML || element.innerHTML === undefined || element.innerHTML.indexOf('{0}') === -1) {
