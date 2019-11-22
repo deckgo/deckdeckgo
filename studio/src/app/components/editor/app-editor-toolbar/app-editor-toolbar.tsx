@@ -855,7 +855,7 @@ export class AppEditorToolbar {
                 selectedElement: this.selectedElement
             },
             mode: 'md',
-            cssClass: 'popover-menu'
+            cssClass: `popover-menu ${this.poll ? 'popover-menu-wide' : ''}`
         });
 
         await popover.present();
