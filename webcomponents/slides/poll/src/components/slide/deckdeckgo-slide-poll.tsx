@@ -220,7 +220,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private getSlotHowToHeight(): Promise<number> {
     return new Promise<number>((resolve) => {
-      const howToElement: HTMLElement = this.el.querySelector(':scope > [slot=\'how_to\']');
+      const howToElement: HTMLElement = this.el.querySelector(':scope > [slot=\'how-to\']');
 
       if (!howToElement || !window) {
         resolve(0);
@@ -333,7 +333,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private initHowTo(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const howToSlotElement: HTMLElement = this.el.querySelector(':scope > [slot=\'how_to\']');
+      const howToSlotElement: HTMLElement = this.el.querySelector(':scope > [slot=\'how-to\']');
 
       if (!howToSlotElement) {
         resolve();
@@ -347,7 +347,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         return;
       }
 
-      const howTo: HTMLElement = container.querySelector('.how_to');
+      const howTo: HTMLElement = container.querySelector('.how-to');
 
       if (howTo) {
         container.removeChild(howTo);
@@ -364,8 +364,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     return new Promise<HTMLElement>((resolve) => {
       const element: HTMLElement = howToSlotElement.cloneNode(true) as HTMLElement;
       element.removeAttribute('slot');
-      element.removeAttribute('contenteditable');
-      element.classList.add('how_to');
+      element.classList.add('how-to');
 
       if (!element.innerHTML || element.innerHTML === undefined || element.innerHTML.indexOf('{0}') === -1) {
         resolve(element);
@@ -484,7 +483,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       <div class="deckgo-slide-poll-qrcode">
         <deckgo-qrcode content={this.pollLink}>
         </deckgo-qrcode>
-        <slot name="how_to"></slot>
+        <slot name="how-to"></slot>
       </div>
 
       <div class="deckgo-slide-poll-chart">
@@ -521,6 +520,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       return undefined;
     }
 
-    return <slot name="awaiting_votes"></slot>;
+    return <slot name="awaiting-votes"></slot>;
   }
 }

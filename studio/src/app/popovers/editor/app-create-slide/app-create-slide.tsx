@@ -293,7 +293,7 @@ export class AppCreateSlide {
                         <p slot="answer-1">Yes</p>
                         <p slot="answer-2">No</p>
                         <p slot="answer-3">Don't know</p>
-                        <p slot="awaiting_votes">Live votes with mobile devices</p>
+                        <p slot="awaiting-votes">Live votes with mobile devices</p>
                     </deckgo-slide-poll>
                 </div>
             </div>

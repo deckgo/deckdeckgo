@@ -49,15 +49,15 @@ div.deckgo-slide-poll {
 
 }
 
-.how_to {
+.how-to {
   max-width: var(--slide-poll-how-to-max-width, calc(100% - 64px));
 }
 
-::slotted([slot="how_to"]) {
+::slotted([slot="how-to"]) {
   display: none;
 }
 
-::slotted([slot="awaiting_votes"]) {
+::slotted([slot="awaiting-votes"]) {
   position: absolute;
   z-index: var(--slide-poll-awaiting-votes-z-index, 1);
   top: 50%;

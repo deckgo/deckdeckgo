@@ -316,8 +316,8 @@ export class CreateSlidesUtils {
                 {questionSlot}
                 {...answerSlots}
 
-                <div slot="how_to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {'{0}'}</div>
-                <div slot="awaiting_votes">Awaiting votes</div>
+                <div slot="how-to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {'{0}'}</div>
+                <div slot="awaiting-votes">Awaiting votes</div>
             </deckgo-slide-poll>;
 
             resolve(slide);
