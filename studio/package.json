@@ -22,7 +22,7 @@
     "@deckdeckgo/inline-editor": "^1.0.0-rc.3-2",
     "@deckdeckgo/lazy-img": "^1.0.0-rc.1",
     "@deckdeckgo/qrcode": "^1.0.0-rc.1-1",
-    "@deckdeckgo/remote": "^1.0.0-rc.4-1",
+    "@deckdeckgo/remote": "file:../webcomponents/remote",
     "@deckdeckgo/slide-author": "^1.0.0-rc.1",
     "@deckdeckgo/slide-chart": "^1.0.0-rc.2",
     "@deckdeckgo/slide-content": "^1.0.0-rc.1",

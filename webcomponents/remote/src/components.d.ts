@@ -31,8 +31,9 @@ export namespace Components {
     'play': () => Promise<void>;
     'prevSlide': (slideAnimation?: boolean) => Promise<void>;
     'room': string;
-    'server': string;
     'slideTo': (index: number, speed?: number) => Promise<void>;
+    'socketPath': string;
+    'socketUrl': string;
     'updateReveal': (reveal: boolean) => Promise<void>;
     'updateSlide': (index: number, slide: DeckdeckgoSlideDefinition) => Promise<void>;
     'updateSlides': () => Promise<void>;
@@ -62,7 +63,8 @@ declare namespace LocalJSX {
     'onEvent'?: (event: CustomEvent<DeckdeckgoEvent>) => void;
     'onState'?: (event: CustomEvent<ConnectionState>) => void;
     'room'?: string;
-    'server'?: string;
+    'socketPath'?: string;
+    'socketUrl'?: string;
     'width'?: number;
   }
 

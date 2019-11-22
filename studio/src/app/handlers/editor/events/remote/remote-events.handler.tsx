@@ -110,7 +110,7 @@ export class RemoteEventsHandler {
             }
 
             const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-            deckgoRemoteElement.server = config.signalingServerUrl;
+            deckgoRemoteElement.socketUrl = config.socketUrl;
 
             deckgoRemoteElement.addEventListener('event', async ($event) => {
                 await this.remoteEvent($event)

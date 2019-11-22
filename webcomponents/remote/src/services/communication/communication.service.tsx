@@ -28,7 +28,8 @@ const dataChannelOptions = {
   maxPacketLifeTime: 1000, //milliseconds
 };
 
-const DEFAULT_SERVER_URL: string = 'https://api.deckdeckgo.com';
+const DEFAULT_SOCKET_URL: string = 'https://api.deckdeckgo.com';
+const DEFAULT_SOCKET_PATH: string = '/remote';
 
 export enum ConnectionState {
   DISCONNECTED,
@@ -54,7 +55,8 @@ export class CommunicationService {
   private dataChannelOut: RTCDataChannel;
 
   room: string;
-  serverUrl: string;
+  socketUrl: string;
+  socketPath: string;
 
   private state: BehaviorSubject<ConnectionState> = new BehaviorSubject<ConnectionState>(ConnectionState.DISCONNECTED);
   private event: Subject<DeckdeckgoEvent> = new Subject<DeckdeckgoEvent>();
@@ -78,13 +80,16 @@ export class CommunicationService {
         return;
       }
 
-      const url: string = this.serverUrl ? this.serverUrl : DEFAULT_SERVER_URL;
+      const url: string = this.socketUrl ? this.socketUrl : DEFAULT_SOCKET_URL;
+      const path: string = this.socketPath ? this.socketPath : DEFAULT_SOCKET_PATH;
 
       this.state.next(ConnectionState.CONNECTING);
 
       this.socket = io.connect(url, {
+        'reconnectionAttempts': 5,
         'transports': ['websocket', 'xhr-polling'],
-        'query': 'type=app'
+        'query': 'type=app',
+        'path': path
       });
 
       this.socket.on('connect', async () => {

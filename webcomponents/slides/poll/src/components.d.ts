@@ -13,14 +13,15 @@ export namespace Components {
   interface DeckgoSlidePoll {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-    'connectPollServer': boolean;
+    'connectPollSocket': boolean;
     'customActions': boolean;
     'customBackground': boolean;
     'hideContent': () => Promise<void>;
     'isAnswered': () => Promise<boolean>;
     'lazyLoadContent': () => Promise<void>;
     'pollLink': string;
-    'pollServer': string;
+    'pollSocketPath': string;
+    'pollSocketUrl': string;
     'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
     'update': () => Promise<void>;
@@ -42,12 +43,13 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlidePoll {
-    'connectPollServer'?: boolean;
+    'connectPollSocket'?: boolean;
     'customActions'?: boolean;
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'pollLink'?: string;
-    'pollServer'?: string;
+    'pollSocketPath'?: string;
+    'pollSocketUrl'?: string;
   }
 
   interface IntrinsicElements {

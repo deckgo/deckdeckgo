@@ -26,7 +26,7 @@ export class CommunicationService {
     return CommunicationService.instance;
   }
 
-  connect(url: string, poll: DeckdeckgoPollQuestion): Promise<void> {
+  connect(url: string, path: string, poll: DeckdeckgoPollQuestion): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.socket) {
         resolve();
@@ -39,8 +39,10 @@ export class CommunicationService {
       }
 
       this.socket = io.connect(url, {
+        'reconnectionAttempts': 5,
         'transports': ['websocket', 'xhr-polling'],
-        'query': 'type=app'
+        'query': 'type=app',
+        'path': path
       });
 
       this.socket.on('connect', async () => {

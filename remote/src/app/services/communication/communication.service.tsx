@@ -82,8 +82,10 @@ export class CommunicationService {
             const url: string = EnvironmentConfigService.getInstance().get('signalingServerUrl');
 
             this.socket = io.connect(url, {
+                'reconnectionAttempts': 5,
                 'transports': ['websocket', 'xhr-polling'],
-                'query': 'type=app'
+                'query': 'type=app',
+                'path': '/remote'
             });
 
             this.socket.on('connect', async () => {

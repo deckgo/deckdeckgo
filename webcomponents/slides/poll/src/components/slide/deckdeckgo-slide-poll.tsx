@@ -22,9 +22,10 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() pollServer: string;
+  @Prop() socketUrl: string;
+  @Prop() socketPath: string = '/poll';
 
-  @Prop() connectPollServer: boolean = true;
+  @Prop() connectPollSocket: boolean = true;
 
   @Prop() pollLink: string;
 
@@ -163,6 +164,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       if (container) {
         this.chartWidth = container.clientWidth * 0.75;
         this.chartHeight = this.chartWidth * 9 / 16;
+
+        const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
+
+        if (element) {
+          await (element as any).draw(this.chartWidth, this.chartHeight);
+        }
       }
 
       resolve();
@@ -309,14 +316,14 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private async initPoll() {
-    if (!this.connectPollServer) {
+    if (!this.connectPollSocket) {
       return;
     }
 
     await this.communicationService.disconnect();
 
     if (this.chartData && this.chartData.length >= 1) {
-      await this.communicationService.connect(this.pollServer, this.chartData[0] as DeckdeckgoPollQuestion);
+      await this.communicationService.connect(this.socketUrl, this.socketPath, this.chartData[0] as DeckdeckgoPollQuestion);
     }
   }
 

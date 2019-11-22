@@ -312,7 +312,7 @@ export class CreateSlidesUtils {
 
             const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-poll key={uuid()} pollLink={deckDeckGoConfig.pollUrl} pollServer={deckDeckGoConfig.pollServerUrl}>
+            const slide: JSX.IntrinsicElements = <deckgo-slide-poll key={uuid()} pollLink={deckDeckGoConfig.pollUrl} socketUrl={deckDeckGoConfig.socketUrl}>
                 {questionSlot}
                 {...answerSlots}
 

@@ -9,11 +9,12 @@
 
 | Property            | Attribute             | Description | Type      | Default     |
 | ------------------- | --------------------- | ----------- | --------- | ----------- |
-| `connectPollServer` | `connect-poll-server` |             | `boolean` | `true`      |
+| `connectPollSocket` | `connect-poll-socket` |             | `boolean` | `true`      |
 | `customActions`     | `custom-actions`      |             | `boolean` | `false`     |
 | `customBackground`  | `custom-background`   |             | `boolean` | `false`     |
 | `pollLink`          | `poll-link`           |             | `string`  | `undefined` |
-| `pollServer`        | `poll-server`         |             | `string`  | `undefined` |
+| `pollSocketPath`    | `poll-socket-path`    |             | `string`  | `'/poll'`   |
+| `pollSocketUrl`     | `poll-socket-url`     |             | `string`  | `undefined` |
 
 
 ## Events

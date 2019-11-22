@@ -33,10 +33,9 @@ setupDeckGoConfig({
         appUrl: 'http://localhost:3333',
         globalAssetsUrl: 'https://deckdeckgo.com/assets',
         pollUrl: 'https://localhost:3333/poll',
-        pollServerUrl: '<@POLL_SERVER_URL@>',
         apiUrl: '<@API_URL@>',
         presentationUrl: '<@PRESENTATION_URL@>',
-        signalingServerUrl: '<@SIGNALING_SERVER_URL@>'
+        socketUrl: '<@SOCKET_URL@>'
     },
     firebase: {
         apiKey: '<@FIREBASE_API_KEY@>',

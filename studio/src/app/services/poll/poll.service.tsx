@@ -37,9 +37,11 @@ export class PollService {
 
       const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-      this.socket = io.connect(config.pollServerUrl, {
+      this.socket = io.connect(config.socketUrl, {
+        'reconnectionAttempts': 5,
         'transports': ['websocket', 'xhr-polling'],
-        'query': 'type=app'
+        'query': 'type=app',
+        'path': '/poll'
       });
 
       this.socket.on('connect', async () => {

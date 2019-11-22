@@ -1,14 +1,13 @@
 let polls = [];
 
 module.exports = (server) => {
-    const socketIO = require('socket.io').listen(server, {'transports': ['websocket', 'xhr-polling']});
+    const socketIO = require('socket.io').listen(server, {'transports': ['websocket', 'xhr-polling'], path: '/poll'});
 
     socketIO.set('origins', '*:*');
 
-    console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo-Poll]', 'Socket listening');
+    console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Socket listening. Path: /poll');
 
     socketIO.sockets.on('connection', (socket) => {
-
         socket.on('poll', async (req) => {
             if (req && req.poll) {
                 const key = await generateUniqueAvailableKey(0);

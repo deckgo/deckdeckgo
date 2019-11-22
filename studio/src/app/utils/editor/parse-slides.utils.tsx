@@ -76,7 +76,7 @@ export class ParseSlidesUtils {
             if (slide.data.template === SlideTemplate.POLL) {
                 const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
                 attributes['pollLink'] = deckDeckGoConfig.pollUrl;
-                attributes['pollServerUrl'] = deckDeckGoConfig.pollServerUrl;
+                attributes['socketUrl'] = deckDeckGoConfig.socketUrl;
             }
 
             const SlideElement: string = slideTag;

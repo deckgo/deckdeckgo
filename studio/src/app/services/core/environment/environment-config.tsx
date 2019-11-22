@@ -25,8 +25,7 @@ export interface EnvironmentDeckDeckGoConfig {
     pollUrl: string;
     apiUrl: string;
     presentationUrl: string;
-    pollServerUrl: string;
-    signalingServerUrl: string;
+    socketUrl: string;
 }
 
 export interface EnvironmentConfig {
