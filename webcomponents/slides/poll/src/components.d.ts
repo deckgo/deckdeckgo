@@ -20,10 +20,10 @@ export namespace Components {
     'isAnswered': () => Promise<boolean>;
     'lazyLoadContent': () => Promise<void>;
     'pollLink': string;
-    'pollSocketPath': string;
-    'pollSocketUrl': string;
     'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
+    'socketPath': string;
+    'socketUrl': string;
     'update': () => Promise<void>;
   }
 }
@@ -48,8 +48,8 @@ declare namespace LocalJSX {
     'customBackground'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'pollLink'?: string;
-    'pollSocketPath'?: string;
-    'pollSocketUrl'?: string;
+    'socketPath'?: string;
+    'socketUrl'?: string;
   }
 
   interface IntrinsicElements {

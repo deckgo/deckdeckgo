@@ -13,8 +13,8 @@
 | `customActions`     | `custom-actions`      |             | `boolean` | `false`     |
 | `customBackground`  | `custom-background`   |             | `boolean` | `false`     |
 | `pollLink`          | `poll-link`           |             | `string`  | `undefined` |
-| `pollSocketPath`    | `poll-socket-path`    |             | `string`  | `'/poll'`   |
-| `pollSocketUrl`     | `poll-socket-url`     |             | `string`  | `undefined` |
+| `socketPath`        | `socket-path`         |             | `string`  | `'/poll'`   |
+| `socketUrl`         | `socket-url`          |             | `string`  | `undefined` |
 
 
 ## Events
