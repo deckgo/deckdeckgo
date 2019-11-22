@@ -12,20 +12,6 @@ export class CommunicationService {
   private pollKey: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
   private vote: Subject<string> = new Subject<string>();
 
-  private static instance: CommunicationService;
-
-  private constructor() {
-    // Private constructor, singleton
-  }
-
-  static getInstance() {
-    if (!CommunicationService.instance) {
-      CommunicationService.instance = new CommunicationService();
-    }
-
-    return CommunicationService.instance;
-  }
-
   connect(url: string, path: string, poll: DeckdeckgoPollQuestion): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.socket) {

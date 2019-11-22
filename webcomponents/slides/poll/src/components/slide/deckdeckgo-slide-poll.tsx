@@ -46,7 +46,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @State()
   private pollKey: string;
 
-  private communicationService: CommunicationService = CommunicationService.getInstance();
+  private communicationService: CommunicationService = new CommunicationService();
 
   private answers = {};
 
