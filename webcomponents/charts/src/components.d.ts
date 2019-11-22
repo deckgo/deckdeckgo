@@ -29,7 +29,7 @@ export namespace Components {
     'prev': () => Promise<void>;
     'separator': string;
     'src': string;
-    'update': (values: DeckdeckgoBarChartDataValue[]) => Promise<void>;
+    'updateCurrentBar': (values: DeckdeckgoBarChartDataValue[]) => Promise<void>;
     'width': number;
     'yAxis': boolean;
   }

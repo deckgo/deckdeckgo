@@ -77,7 +77,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
 
         if (element) {
-          await (element as any).update(this.chartData[0].values);
+          await (element as any).updateCurrentBar(this.chartData[0].values);
         }
       }
     });
@@ -120,16 +120,26 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private onResizeContent = async () => {
-    await this.init();
+    await this.initSize();
 
-    const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-qrcode');
+    const qrCodeElement: HTMLElement = this.el.shadowRoot.querySelector('deckgo-qrcode');
 
-    if (element) {
-      await (element as any).generate();
+    if (qrCodeElement) {
+      await (qrCodeElement as any).generate();
     }
+
+    await this.drawChart();
   };
 
-  private async init() {
+  private async drawChart() {
+    const chartElement: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
+
+    if (chartElement) {
+      await (chartElement as any).draw(this.chartWidth, this.chartHeight);
+    }
+  }
+
+  private async initSize() {
     await this.initQRCodeSize();
     await this.initChartSize();
   }
@@ -164,12 +174,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       if (container) {
         this.chartWidth = container.clientWidth * 0.75;
         this.chartHeight = this.chartWidth * 9 / 16;
-
-        const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
-
-        if (element) {
-          await (element as any).draw(this.chartWidth, this.chartHeight);
-        }
       }
 
       resolve();
@@ -392,7 +396,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     return new Promise<void>(async (resolve) => {
       const promises = [];
       promises.push(lazyLoadContent(this.el));
-      promises.push(this.init());
+      promises.push(this.initSize());
       promises.push(this.initDataAndPoll(true));
 
       await Promise.all(promises);

@@ -38,7 +38,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   private x1: any;
   private y: any;
 
-  @Prop({mutable: true}) data: DeckdeckgoBarChartData[];
+  @Prop() data: DeckdeckgoBarChartData[];
+  private chartData: DeckdeckgoBarChartData[];
 
   private barDataIndex: number = 0;
 
@@ -61,20 +62,20 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   }
 
   @Method()
-  async update(values: DeckdeckgoBarChartDataValue[]) {
+  async updateCurrentBar(values: DeckdeckgoBarChartDataValue[]) {
     if (!this.x0 || !this.x1 || !this.y) {
       return;
     }
 
-    if (!this.data || this.data.length <= 0) {
+    if (!this.chartData || this.chartData.length <= 0) {
       return;
     }
 
-    if (this.barDataIndex < 0 || this.barDataIndex >= this.data.length) {
+    if (this.barDataIndex < 0 || this.barDataIndex >= this.chartData.length) {
       return;
     }
 
-    this.data[this.barDataIndex].values = values;
+    this.chartData[this.barDataIndex].values = values;
 
     await this.drawBars(this.barDataIndex, this.animationDuration);
   }
@@ -95,16 +96,17 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         return;
       }
 
-      this.barDataIndex = 0;
-
       this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
       this.svg = this.svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
 
+      this.barDataIndex = 0;
+      this.chartData = this.data;
+
       if (this.src) {
-        this.data = await this.fetchData();
+        this.chartData = await this.fetchData();
       }
 
-      if (!this.data || this.data === undefined || this.data.length <= 0) {
+      if (!this.chartData || this.chartData === undefined || this.chartData.length <= 0) {
         resolve();
         return;
       }
@@ -113,7 +115,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
       await this.drawAxis();
 
-      this.randomColors = Array.from({ length: this.data[0].values.length }, (_v, _i) => (Math.floor(Math.random()*16777215).toString(16)));
+      this.randomColors = Array.from({ length: this.chartData[0].values.length }, (_v, _i) => (Math.floor(Math.random()*16777215).toString(16)));
 
       await this.drawBars(0, 0);
 
@@ -134,7 +136,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   private initAxisXDomain(): Promise<void> {
     return new Promise<void>((resolve) => {
-      const xDomains = this.data[0].values.map((d) => {
+      const xDomains = this.chartData[0].values.map((d) => {
         return d.label;
       });
 
@@ -150,7 +152,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   private initAxisYDomain(): Promise<void> {
     return new Promise<void>((resolve) => {
-      this.y.domain([0, max(this.data, (category) => {
+      this.y.domain([0, max(this.chartData, (category) => {
         return max(category.values, (d) => {
           return d.value;
         });
@@ -175,11 +177,11 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       return;
     }
 
-    if (!this.data || this.data.length <= 0) {
+    if (!this.chartData || this.chartData.length <= 0) {
       return;
     }
 
-    if (next && this.barDataIndex + 1 < this.data.length) {
+    if (next && this.barDataIndex + 1 < this.chartData.length) {
       this.barDataIndex++;
       await this.drawBars(this.barDataIndex, this.animationDuration);
     } else if (!next && this.barDataIndex > 0) {
@@ -208,7 +210,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         return;
       }
 
-      resolve(this.barDataIndex === this.data.length - 1);
+      resolve(this.barDataIndex === this.chartData.length - 1);
     });
   }
 
@@ -258,7 +260,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   }
 
   private initInstantAxisX(xDomains: string[]) {
-    const categoriesNames = this.data.map((d) => {
+    const categoriesNames = this.chartData.map((d) => {
       return d.label;
     });
 
@@ -270,7 +272,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     return new Promise<void>((resolve) => {
       const t = transition();
 
-      const section: any = this.svg.selectAll('rect').data(this.data[index].values);
+      const section: any = this.svg.selectAll('rect').data(this.chartData[index].values);
 
       section
         .enter()
@@ -301,7 +303,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
       this.svg.append('g')
         .selectAll('g')
-        .data(this.data)
+        .data(this.chartData)
         .enter().append('g')
         .attr('transform', (d) => {
           return 'translate(' + this.x0(d.label) + ',0)';
