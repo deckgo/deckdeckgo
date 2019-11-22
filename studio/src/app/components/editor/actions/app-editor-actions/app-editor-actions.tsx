@@ -30,6 +30,8 @@ export class AppEditorActions {
     @Prop()
     slides: JSX.IntrinsicElements[] = [];
 
+    @Event() private blockSlide: EventEmitter<boolean>;
+
     private anonymousService: AnonymousService;
 
     @Event() signIn: EventEmitter<void>;
@@ -128,7 +130,11 @@ export class AppEditorActions {
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             await this.addSlidePoll(detail.data.question, detail.data.answers);
+
+            this.blockSlide.emit(false);
         });
+
+        this.blockSlide.emit(true);
 
         await modal.present();
     }

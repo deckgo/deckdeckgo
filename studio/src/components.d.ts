@@ -807,6 +807,7 @@ declare namespace LocalJSX {
     'onActionPublish'?: (event: CustomEvent<void>) => void;
     'onAddSlide'?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
     'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
+    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideTo'?: (event: CustomEvent<number>) => void;

@@ -644,7 +644,11 @@ export class AppEditorToolbar {
             if (detail && detail.data && this.selectedElement && this.youtube) {
                 await this.updateYoutube(detail.data);
             }
+
+            this.blockSlide.emit(false);
         });
+
+        this.blockSlide.emit(true);
 
         await modal.present();
     }
