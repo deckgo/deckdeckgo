@@ -443,6 +443,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         return;
       }
 
+      await this.initChartSize();
+
       this.chartData = await this.initChartData();
 
       this.chartData = this.chartData ? [...this.chartData] : undefined;

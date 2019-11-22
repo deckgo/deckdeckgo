@@ -56,6 +56,7 @@ export class AppCreateSlide {
     async componentDidLoad() {
         await this.lazyLoadContent();
         await this.drawChart();
+        await this.updatePollChart();
     }
 
     componentDidUnload() {
@@ -109,11 +110,26 @@ export class AppCreateSlide {
         });
     }
 
+    private updatePollChart(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slidePoll: HTMLElement = this.el.querySelector('deckgo-slide-poll.showcase');
+
+            if (!slidePoll) {
+                resolve();
+                return;
+            }
+
+            await (slidePoll as any).update();
+
+            resolve();
+        });
+    }
+
     private async addSlide(template: SlideTemplate, deck?: Deck) {
         const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, false, deck, this.user);
         await this.closePopover(template, slide);
     }
-    
+
     private async addSlideSplit(template: SlideTemplate, attributes: SlideAttributes = undefined) {
         const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(attributes);
         await this.closePopover(template, slide);
