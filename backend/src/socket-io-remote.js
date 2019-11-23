@@ -1,11 +1,11 @@
 let rooms = [];
 
 module.exports = (server) => {
-    const socketIO = require('socket.io').listen(server, {'transports': ['websocket', 'xhr-polling'], path: '/remote'});
+    const socketIO = require('socket.io').listen(server, {'transports': ['websocket', 'xhr-polling']});
 
     socketIO.set('origins', '*:*');
 
-    console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Socket listening. Path: /remote');
+    console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Socket listening. Path: /');
 
     socketIO.sockets.on('connection', (socket) => {
         socket.on('rooms', async () => {

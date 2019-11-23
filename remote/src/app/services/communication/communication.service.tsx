@@ -84,8 +84,7 @@ export class CommunicationService {
             this.socket = io.connect(url, {
                 'reconnectionAttempts': 5,
                 'transports': ['websocket', 'xhr-polling'],
-                'query': 'type=app',
-                'path': '/remote'
+                'query': 'type=app'
             });
 
             this.socket.on('connect', async () => {

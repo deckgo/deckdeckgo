@@ -91,7 +91,6 @@ export class DeckdeckgoRemote {
 
   @Prop() room: string;
   @Prop() socketUrl: string;
-  @Prop() socketPath: string;
 
   @Prop() width: number;
   @Prop() height: number;
@@ -185,11 +184,6 @@ export class DeckdeckgoRemote {
     await this.initConnect();
   }
 
-  @Watch('socketPath')
-  async onSocketPathChange() {
-    await this.initConnect();
-  }
-
   private async initConnect() {
     if (!this.autoConnect) {
       return;
@@ -208,7 +202,6 @@ export class DeckdeckgoRemote {
 
       this.communicationService.room = this.room;
       this.communicationService.socketUrl = this.socketUrl;
-      this.communicationService.socketPath = this.socketPath;
 
       await this.communicationService.disconnect();
       await this.communicationService.connect();
