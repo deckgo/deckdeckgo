@@ -1240,10 +1240,13 @@ withPresentationFiles uname psname presentationInfo act = do
       oldPrecacheMd5 <- fileETag $ dir </> precacheFile
       mapFile processIndex $ dir </> "index.html"
       newIndexMd5 <- fileETag $ dir </> "index.html"
+      putStrLn $ "Changing index.html MD5 from " <>
+        show oldIndexMd5 <> " to " <> show newIndexMd5
       mapFile (T.replace oldIndexMd5 newIndexMd5) $ dir </> precacheFile
       newPrecacheMd5 <- fileETag $ dir </> precacheFile
-      Dir.renameFile (dir </> precacheFile) $
-        dir </> ("precache-manifest." <> T.unpack newPrecacheMd5 <> ".js")
+      let newPrecacheFile = ("precache-manifest." <> T.unpack newPrecacheMd5 <> ".js")
+      putStrLn $ "replacing " <> precacheFile <> " with " <> newPrecacheFile
+      Dir.renameFile (dir </> precacheFile) $ dir </> newPrecacheFile
       mapFile (T.replace oldPrecacheMd5 newPrecacheMd5) $ dir </> "service-worker.js"
 
       mapFile interpol $ dir </> "manifest.json"
@@ -1440,7 +1443,7 @@ fileETag :: IsString a => FilePath -> IO a
 fileETag fp =
     -- XXX: The 'show' step is very import, it's what converts the Digest to
     -- the Hex representation
-    (fromString . show . MD5.md5) <$> BL.readFile fp
+    (fromString . show . MD5.md5 . BL.fromStrict) <$> BS.readFile fp
 
 inferContentType :: T.Text -> Maybe T.Text
 inferContentType = Just . T.decodeUtf8 .
