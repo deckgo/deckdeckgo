@@ -71,6 +71,21 @@ export class CommunicationService {
     });
   }
 
+  update(poll: DeckdeckgoPollQuestion): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.socket) {
+        resolve();
+        return;
+      }
+
+      this.watchPollKey().pipe(take(1)).subscribe((key: string) => {
+        if (key) {
+          this.socket.emit('update', {key: key, poll: poll});
+        }
+      });
+    });
+  }
+
   watchPollKey(): Observable<string | undefined> {
     return this.pollKey.asObservable();
   }

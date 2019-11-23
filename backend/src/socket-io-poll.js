@@ -15,7 +15,7 @@ module.exports = (server) => {
                 if (key >= 0) {
                     socket.join(key);
 
-                    await addPoll(key, req.poll);
+                    await addOrUpdatePoll(key, req.poll);
 
                     socket.emit('poll_key', key);
                 }
@@ -29,6 +29,14 @@ module.exports = (server) => {
                 const poll = await findPoll(req.key);
 
                 socket.emit('poll_desc', poll);
+            }
+        });
+
+        socket.on('update', async (req) => {
+            if (req && req.key && req.poll) {
+                await addOrUpdatePoll(req.key, req.poll);
+
+                socket.emit('poll_updated');
             }
         });
 
@@ -50,9 +58,9 @@ module.exports = (server) => {
     });
 };
 
-function addPoll(key, poll) {
+function addOrUpdatePoll(key, poll) {
     return new Promise(async (resolve) => {
-        if (!polls) {
+        if (!polls || polls.length <= 0) {
             polls.push({
                 key: key,
                 poll: poll

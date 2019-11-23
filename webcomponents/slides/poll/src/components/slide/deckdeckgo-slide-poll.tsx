@@ -65,7 +65,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     this.voteSubscription = this.communicationService.watchVote().subscribe((answer: string) => {
       this.answeredOnce = true;
 
-      this.answers[answer]++;
+      this.answers[`answer-${answer}`]++;
 
       this.updateChart.next();
     });
@@ -238,10 +238,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
-  private initChartData(): Promise<DeckdeckgoBarChartData[]> {
-    return new Promise<DeckdeckgoBarChartData[]>(async (resolve) => {
+  private initChartData(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
       if (!this.answerSlots || this.answerSlots.length <= 0) {
-        resolve(null);
+        this.chartData = undefined;
+
+        resolve();
         return;
       }
 
@@ -254,7 +256,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       const bars: DeckdeckgoBarChartDataValue[] = await Promise.all(promises);
 
       if (!bars || bars.length <= 0) {
-        resolve(null);
+        this.chartData = undefined;
+
+        resolve();
         return;
       }
 
@@ -264,10 +268,14 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
       const question: HTMLElement = this.el.querySelector(`:scope > [slot=\'question\']`);
 
-      resolve([{
+      this.chartData = [{
         label: question ? question.innerHTML : 'Poll',
         values: activeBars
-      }]);
+      }];
+
+      this.chartData = [...this.chartData];
+
+      resolve();
     });
   }
 
@@ -292,7 +300,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
       keys.forEach((key: string) => {
         const dataBar = this.chartData[0].values.find((value) => {
-          return value.key === key;
+          return `answer-${value.key}` === key;
         });
 
         dataBar.value = this.answers[key];
@@ -328,6 +336,16 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
     if (this.chartData && this.chartData.length >= 1) {
       await this.communicationService.connect(this.socketUrl, this.socketPath, this.chartData[0] as DeckdeckgoPollQuestion);
+    }
+  }
+
+  private async updatePoll() {
+    if (!this.connectPollSocket) {
+      return;
+    }
+
+    if (this.chartData && this.chartData.length >= 1) {
+      await this.communicationService.update(this.chartData[0] as DeckdeckgoPollQuestion);
     }
   }
 
@@ -397,7 +415,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       const promises = [];
       promises.push(lazyLoadContent(this.el));
       promises.push(this.initSize());
-      promises.push(this.initDataAndPoll(true));
+      promises.push(this.initChartAndPoll());
 
       await Promise.all(promises);
 
@@ -433,23 +451,37 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
     await this.initAnswerSlots();
 
-    await this.initDataAndPoll(false);
+    await this.updateChartAndPoll();
   }
 
-  private initDataAndPoll(once: boolean): Promise<void> {
+  private initChartAndPoll(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (once && this.chartData && this.chartData.length > 0) {
+      if (this.chartData && this.chartData.length > 0) {
         resolve();
         return;
       }
 
       await this.initChartSize();
 
-      this.chartData = await this.initChartData();
-
-      this.chartData = this.chartData ? [...this.chartData] : undefined;
+      await this.initChartData();
 
       await this.initPoll();
+
+      resolve();
+    });
+  }
+
+  private updateChartAndPoll(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      await this.initChartSize();
+
+      await this.initChartData();
+
+      if (this.pollKey) {
+        await this.updatePoll();
+      } else {
+        await this.initPoll();
+      }
 
       resolve();
     });
