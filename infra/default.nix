@@ -4,7 +4,7 @@ rec
 { function = # TODO: rename to handler
     pkgs.runCommand "build-lambda" {}
       ''
-        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        cp ${./main.js} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${handler}/bin/handler" main_hs
         cp ${deckdeckgo-starter-dist}/dist.tar dist.tar
@@ -37,7 +37,7 @@ rec
   function-google-key-updater =
     pkgs.runCommand "build-lambda" {}
       ''
-        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        cp ${./main.js} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${googleKeyUpdater}/bin/google-key-updater" main_hs
         mkdir $out
@@ -52,7 +52,7 @@ rec
   function-dirty =
     pkgs.runCommand "build-lambda-dirty" {}
       ''
-        cp ${pkgs.wai-lambda.wai-lambda-js-wrapper} main.js
+        cp ${./main.js} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${handler}/bin/dirty" main_hs
         mkdir -p $out
