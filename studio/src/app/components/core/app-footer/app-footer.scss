@@ -42,7 +42,7 @@ app-footer {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+body.dark {
   app-footer {
     div {
       > ion-label {

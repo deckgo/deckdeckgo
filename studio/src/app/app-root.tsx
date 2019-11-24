@@ -9,6 +9,9 @@ import {AuthService} from './services/auth/auth.service';
 
 import {NavDirection, NavParams, NavService} from './services/core/nav/nav.service';
 
+import {ThemeService} from './services/theme/theme.service';
+
+
 @Component({
     tag: 'app-root',
     styleUrl: 'app-root.scss'
@@ -25,16 +28,24 @@ export class AppRoot {
     private navSubscription: Subscription;
     private navService: NavService;
 
+    private themeSubscription: Subscription;
+    private themeService: ThemeService;
+
+    private domBodyClassList: DOMTokenList = document.body.classList;
+
     constructor() {
         this.errorService = ErrorService.getInstance();
         this.authService = AuthService.getInstance();
         this.navService = NavService.getInstance();
+        this.themeService = ThemeService.getInstance();
     }
 
     async componentWillLoad() {
         if (Build.isBrowser) {
             await this.authService.init();
         }
+
+        await this.themeService.initDarkModePreference();
     }
 
     async componentDidLoad() {
@@ -45,6 +56,11 @@ export class AppRoot {
         this.navSubscription = this.navService.watch().subscribe(async (params: NavParams) => {
             await this.navigate(params);
         });
+
+        this.themeSubscription = this.themeService.watch().subscribe((dark: boolean) => {
+            this.updateDarkModePreferences(dark);
+        });
+
     }
 
     async componentDidUnload() {
@@ -54,6 +70,10 @@ export class AppRoot {
 
         if (this.navSubscription) {
             this.navSubscription.unsubscribe();
+        }
+
+        if(this.themeSubscription){
+            this.themeSubscription.unsubscribe();
         }
     }
 
@@ -67,6 +87,12 @@ export class AppRoot {
         });
 
         await popover.present();
+    }
+
+    private updateDarkModePreferences(dark: boolean) {
+        dark ?
+            this.domBodyClassList.add('dark') :
+            this.domBodyClassList.remove('dark');
     }
 
     private async navigate(params: NavParams) {

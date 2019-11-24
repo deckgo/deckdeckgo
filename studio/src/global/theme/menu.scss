@@ -75,7 +75,7 @@ ion-menu {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+body.dark {
   ion-menu {
     --background: white;
     --ion-background-color: white;
