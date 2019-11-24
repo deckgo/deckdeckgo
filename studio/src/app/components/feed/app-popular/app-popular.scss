@@ -21,7 +21,7 @@ app-popular {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+body.dark {
   app-popular {
     h1 {
       color: black;

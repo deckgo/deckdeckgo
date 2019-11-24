@@ -17,7 +17,7 @@ app-navigation-actions {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+body.dark {
   app-navigation-actions {
     a {
       color: white;

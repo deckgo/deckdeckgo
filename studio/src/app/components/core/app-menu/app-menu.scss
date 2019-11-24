@@ -27,7 +27,7 @@ ion-menu {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+body.dark {
   ion-menu {
     ion-content {
       ion-list {
