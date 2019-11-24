@@ -1,0 +1,48 @@
+app-notes {
+  p {
+    line-height: 1.5rem;
+    margin: 0;
+
+    &.notes-title {
+      font-size: var(--font-size-normal);
+    }
+  }
+
+  p, div {
+    font-size: var(--font-size-small);
+    color: var(--ion-text-color);
+  }
+
+  deckgo-highlight-code {
+    &.inline {
+      --deckgo-highlight-code-container-display: inline-flex;
+      --deckgo-highlight-code-margin: 0;
+    }
+
+    &:not(.inline) {
+      --deckgo-highlight-code-margin: 16px 0;
+    }
+  }
+
+  div.landscape-notes {
+    border-radius: 10px;
+    height: calc(100% - 28px);
+    box-shadow: var(--remote-box-shadow);
+    border: 1px solid var(--ion-color-light-shade);
+    overflow: scroll;
+    margin: 16px 16px 0 4px;
+  }
+
+  div.notes {
+    p {
+      padding: 16px 0;
+    }
+  }
+
+  @media screen and (orientation: landscape) {
+    bottom-sheet {
+      display: none;
+    }
+  }
+}
+

@@ -1,19 +1,20 @@
-import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
-import {OverlayEventDetail} from '@ionic/core';
+import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
+
+import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {isFullscreen, isMobile, debounce, isIOS} from '@deckdeckgo/utils';
 
-import {AuthUser} from '../../../models/auth-user';
-import {Slide, SlideTemplate} from '../../../models/slide';
-import {Deck} from '../../../models/deck';
+import {convertStyle} from '@deckdeckgo/deck-utils';
 
-import {CreateSlidesUtils, SlotType} from '../../../utils/editor/create-slides.utils';
-import {ParseStyleUtils} from '../../../utils/editor/parse-style.utils';
+import {AuthUser} from '../../../models/auth/auth.user';
+import {SlideTemplate} from '../../../models/data/slide';
+import {Deck} from '../../../models/data/deck';
+
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
@@ -21,11 +22,14 @@ import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
+import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
+
+import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
-import {EditorAction} from '../../../popovers/editor/app-editor-actions/editor-action';
 import {BusyService} from '../../../services/editor/busy/busy.service';
 
 @Component({
@@ -40,7 +44,7 @@ export class AppEditor {
     deckId: string;
 
     @State()
-    private slides: any[] = [];
+    private slides: JSX.IntrinsicElements[] = [];
 
     @State()
     private background: any;
@@ -56,6 +60,8 @@ export class AppEditor {
     private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
     private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
     private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
+
+    private editorHelper: EditorHelper = new EditorHelper();
 
     private authService: AuthService;
     private anonymousService: AnonymousService;
@@ -89,7 +95,7 @@ export class AppEditor {
         this.busyService = BusyService.getInstance();
     }
 
-    @Listen('ionRouteDidChange', { target: 'window' })
+    @Listen('ionRouteDidChange', {target: 'window'})
     async onRouteDidChange($event: CustomEvent) {
         if (!$event || !$event.detail) {
             return;
@@ -135,11 +141,9 @@ export class AppEditor {
             this.slidesEditable = true;
 
             await this.contentEditable(slide);
-
-            await this.showHelp();
         });
 
-        this.fullscreen = DeckDeckGoUtils.isFullscreen();
+        this.fullscreen = isFullscreen();
     }
 
     async destroy() {
@@ -150,6 +154,8 @@ export class AppEditor {
         if (this.busySubscription) {
             this.busySubscription.unsubscribe();
         }
+
+        this.deckEditorService.next(null);
     }
 
     async componentDidLoad() {
@@ -193,7 +199,7 @@ export class AppEditor {
                 return;
             }
 
-            const slide: any = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
+            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE, true);
 
             await this.concatSlide(slide);
 
@@ -208,8 +214,7 @@ export class AppEditor {
                 return;
             }
 
-            const helper: EditorHelper = new EditorHelper();
-            const slides: Slide[] = await helper.loadDeckAndRetrieveSlides(this.deckId);
+            const slides: any[] = await this.editorHelper.loadDeckAndRetrieveSlides(this.deckId);
 
             if (slides && slides.length > 0) {
                 this.slides = [...slides];
@@ -224,20 +229,20 @@ export class AppEditor {
     private initDeckStyle(): Promise<void> {
         return new Promise<void>((resolve) => {
             this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                if (deck && deck.attributes && deck.attributes.style) {
-                    this.style = await ParseStyleUtils.convertStyle(deck.attributes.style);
+                if (deck && deck.data && deck.data.attributes && deck.data.attributes.style) {
+                    this.style = await convertStyle(deck.data.attributes.style);
                 } else {
                     this.style = undefined;
                 }
 
-                this.background = await ParseBackgroundUtils.convertBackground(deck.background);
+                this.background = await ParseBackgroundUtils.convertBackground(deck.data.background, true);
 
                 resolve();
             });
         });
     }
 
-    private concatSlide(extraSlide: any): Promise<void> {
+    private concatSlide(extraSlide: JSX.IntrinsicElements): Promise<void> {
         return new Promise<void>((resolve) => {
             this.slides = [...this.slides, extraSlide];
 
@@ -246,9 +251,11 @@ export class AppEditor {
     }
 
     async inactivity($event: CustomEvent) {
-        this.presenting = !$event.detail;
+        await this.updatePresenting(!$event.detail);
 
-        await this.editorEventsHandler.selectDeck();
+        if (!this.presenting) {
+            await this.hideToolbar();
+        }
 
         // Wait a bit for the display/repaint of the footer
         setTimeout(async () => {
@@ -256,121 +263,56 @@ export class AppEditor {
         }, 100);
     }
 
-    private async animatePrevNextSlide(next: boolean) {
+    private async animatePrevNextSlide($event: CustomEvent<boolean>) {
+        if (!$event) {
+            return;
+        }
+
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (!deck) {
             return;
         }
 
-        if (next) {
-            await (deck as any).slideNext(false, false);
+        if ($event.detail) {
+            await (deck as any).slideNext(false, true);
         } else {
-            await (deck as any).slidePrev(false, false);
+            await (deck as any).slidePrev(false, true);
         }
     }
 
-    private async slideTo(index: number, speed?: number | undefined) {
+    private async slideTo($event: CustomEvent<number>) {
+        if (!$event) {
+            return;
+        }
+
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
         if (!deck) {
             return;
         }
 
-        await (deck as any).slideTo(index, speed);
+        await (deck as any).slideTo($event.detail);
     }
 
-    @Listen('pagerClick', {target: 'document'})
-    async onPagerClick() {
-        await this.openSlideNavigate();
-    }
-
-    private async openSlideNavigate() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-slide-navigate'
-        });
-
-        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail.data >= 0) {
-                await this.slideTo(detail.data);
-            }
-        });
-
-        await modal.present();
-    }
-
-    private async openRemoteControl() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-remote'
-        });
-
-        await modal.present();
-    }
-
-    async onActionOpenSlideAdd($event: CustomEvent) {
+    private async copySlide($event: CustomEvent<HTMLElement>) {
         if (!$event || !$event.detail) {
             return;
         }
 
-        const couldAddSlide: boolean = await this.anonymousService.couldAddSlide(this.slides);
+        const slide: JSX.IntrinsicElements = await this.editorHelper.copySlide($event.detail);
 
-        if (!couldAddSlide) {
-            await this.signIn();
+        if (slide) {
+            await this.concatSlide(slide);
+        }
+    }
+
+    private async addSlide($event: CustomEvent<JSX.IntrinsicElements>) {
+        if (!$event) {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-slide-type',
-            event: $event.detail,
-            mode: 'md',
-            cssClass: 'popover-menu'
-        });
-
-        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail && detail.data) {
-                if (detail.data.template === SlideTemplate.GIF) {
-                    await this.openGifPicker();
-                }
-
-                if (detail.data.slide) {
-                    await this.addSlide(detail.data.slide);
-                }
-            }
-        });
-
-        await popover.present();
-    }
-
-    private async addSlide(slide: any) {
-        await this.concatSlide(slide);
-    }
-
-    private async openGifPicker() {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
-            component: 'app-gif'
-        });
-
-        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            await this.addSlideGif(detail.data);
-        });
-
-        await modal.present();
-    }
-
-    private addSlideGif(gif: TenorGif): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!gif || !gif.media || gif.media.length <= 0 || !gif.media[0].gif || !gif.media[0].gif.url) {
-                resolve();
-                return;
-            }
-
-            const url: string = gif.media[0].gif.url;
-            const slide: any = await CreateSlidesUtils.createSlideGif(url);
-
-            await this.addSlide(slide);
-
-            resolve();
-        });
+        await this.concatSlide($event.detail);
     }
 
     @Listen('actionPublish')
@@ -380,26 +322,43 @@ export class AppEditor {
             return;
         }
 
-        const couldAddSlide: boolean = await this.anonymousService.couldPublish(this.slides);
+        const couldPublish: boolean = await this.anonymousService.couldPublish(this.slides);
 
-        if (!couldAddSlide) {
+        if (!couldPublish) {
             await this.signIn();
             return;
         }
 
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+        await this.editorEventsHandler.blockSlide(true);
+
+        const modal: HTMLIonModalElement = await modalController.create({
             component: 'app-publish',
             cssClass: 'fullscreen'
         });
 
         modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-            // TODO Publish or publish from the modal and do nothing here?
+            await this.editorEventsHandler.blockSlide(false);
         });
 
         await modal.present();
     }
 
     private hideToolbar(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+
+            if (!toolbar) {
+                resolve();
+                return;
+            }
+
+            await toolbar.hideToolbar();
+
+            resolve();
+        });
+    }
+
+    private onSlideChangeHideToolbar(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
 
@@ -441,7 +400,19 @@ export class AppEditor {
                 return;
             }
 
-            if ($event instanceof MouseEvent && DeckDeckGoUtils.isMobile()) {
+            if ($event instanceof MouseEvent && isMobile()) {
+                resolve();
+                return;
+            }
+
+            // Click on the pager
+            if (!($event.target as HTMLElement).nodeName || ($event.target as HTMLElement).nodeName.toLowerCase() === 'deckgo-deck') {
+                resolve();
+                return;
+            }
+
+            // Need to move a bit the mouse first to detect that we want to edit, otherwise we might select the deck with a click without displaying the toolbar footer
+            if (this.fullscreen && this.presenting) {
                 resolve();
                 return;
             }
@@ -478,6 +449,7 @@ export class AppEditor {
                 return;
             }
 
+            await this.editorEventsHandler.selectDeck();
             await (deck as any).toggleFullScreen();
 
             resolve();
@@ -486,51 +458,29 @@ export class AppEditor {
 
     private initWindowResize() {
         if (window) {
-            window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
-                this.fullscreen = DeckDeckGoUtils.isFullscreen();
-            }, 300));
+            window.addEventListener('resize', debounce(this.onWindowResize));
         }
     }
 
     private removeWindowResize() {
         if (window) {
-            window.removeEventListener('resize', DeckDeckGoUtils.debounce(async () => {
-                this.fullscreen = DeckDeckGoUtils.isFullscreen();
-            }, 300));
+            window.removeEventListener('resize', debounce(this.onWindowResize));
         }
     }
 
-    private async signIn() {
+    private onWindowResize = async () => {
+        this.fullscreen = isFullscreen();
+
+        // Per default, when we switch to the fullscreen mode, we want to present the presentation not edit it
+        await this.updatePresenting(this.fullscreen);
+    };
+
+    @Listen('signIn', {target: 'document'})
+    async signIn() {
         this.navService.navigate({
             url: '/signin' + (window && window.location ? window.location.pathname : ''),
             direction: NavDirection.FORWARD
         });
-    }
-
-    async openDeckActions($event: UIEvent) {
-        if (!$event || !$event.detail) {
-            return;
-        }
-
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
-            component: 'app-editor-actions',
-            event: $event,
-            mode: 'ios'
-        });
-
-        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail && detail.data) {
-                if (detail.data.action === EditorAction.FULLSCREEN) {
-                    await this.toggleFullScreen();
-                } else if (detail.data.action === EditorAction.JUMP_TO) {
-                    await this.openSlideNavigate();
-                } else if (detail.data.action === EditorAction.REMOTE) {
-                    await this.openRemoteControl();
-                }
-            }
-        });
-
-        await popover.present();
     }
 
     private contentEditable(slide: HTMLElement): Promise<void> {
@@ -542,27 +492,69 @@ export class AppEditor {
 
             const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
             elements.forEach((e: HTMLElement) => {
-                e.setAttribute(e.nodeName && e.nodeName.toLowerCase() === SlotType.CODE ? 'editable' : 'contentEditable', '');
+                if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
+                    if (e.nodeName.toLowerCase() === SlotType.CODE) {
+                        e.setAttribute('editable', '');
+                    } else if (ParseElementsUtils.isElementContentEditable(e)) {
+                        e.setAttribute('contentEditable', '');
+                    } else if (SlotUtils.isNodeReveal(e) && e.firstElementChild) {
+                        e.firstElementChild.setAttribute('contentEditable', '');
+                    }
+                }
             });
 
             resolve();
         });
     }
 
-    private showHelp(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-           const help: HTMLElement = this.el.querySelector('app-help');
-           if (help) {
-               await (help as any).displayHelp();
-           }
+    private stickyToolbarActivated($event: CustomEvent) {
+        this.hideFooterActions = $event ? $event.detail : false;
+        this.hideNavigation = $event ? isIOS() && $event.detail : false;
+    }
 
-           resolve();
+    @Listen('reorder', {target: 'document'})
+    async onReorderSlides($event: CustomEvent<ItemReorderEventDetail>) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        await this.reorderSlides($event.detail);
+    }
+
+    private reorderSlides(detail: ItemReorderEventDetail): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!detail) {
+                resolve();
+                return;
+            }
+
+            try {
+                await this.deckEventsHandler.updateDeckSlidesOrder(detail);
+
+                if (detail.from < 0 || detail.to < 0 || !this.slides || detail.to >= this.slides.length || detail.from === detail.to) {
+                    resolve();
+                    return;
+                }
+
+                await this.remoteEventsHandler.updateRemoteSlidesOnMutation();
+
+                this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
+                this.slides = [...this.slides];
+            } catch (err) {
+                // We ignore the error here
+            }
+
+            // Finish the reorder and position the item in the DOM based on where the gesture ended. This method can also be called directly by the reorder group
+            detail.complete();
+
+            resolve();
         });
     }
 
-    private stickyToolbarActivated($event: CustomEvent) {
-        this.hideFooterActions = $event ? $event.detail : false;
-        this.hideNavigation = $event ? DeckDeckGoUtils.isIOS() && $event.detail : false;
+    private async updatePresenting(presenting: boolean) {
+        this.presenting = presenting;
+
+        await this.remoteEventsHandler.updateRemoteReveal(this.fullscreen && this.presenting);
     }
 
     render() {
@@ -573,66 +565,32 @@ export class AppEditor {
 
                     {this.renderLoading()}
 
-                    <deckgo-deck embedded={true} style={this.style}
+                    <deckgo-deck embedded={true} style={this.style} reveal={this.fullscreen && this.presenting}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
-                                 onSlideNextDidChange={() => this.hideToolbar()}
-                                 onSlidePrevDidChange={() => this.hideToolbar()}
-                                 onSlideToChange={() => this.hideToolbar()}
+                                 onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}
+                                 onSlidePrevDidChange={() => this.onSlideChangeHideToolbar()}
+                                 onSlideToChange={() => this.onSlideChangeHideToolbar()}
                                  onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}>
                         {this.slides}
                         {this.background}
                     </deckgo-deck>
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
-                <app-editor-toolbar></app-editor-toolbar>
+                <app-editor-toolbar onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}></app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
-                <ion-toolbar>
-                    <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
-                        <app-add-slide-action
-                            onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
-                        </app-add-slide-action>
-
-                        <ion-tab-button onClick={() => this.animatePrevNextSlide(false)} color="primary" mode="md">
-                            <ion-icon name="arrow-back"></ion-icon>
-                            <ion-label>Previous</ion-label>
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={() => this.animatePrevNextSlide(true)} color="primary" mode="md">
-                            <ion-icon name="arrow-forward"></ion-icon>
-                            <ion-label>Next</ion-label>
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices" mode="md">
-                            <ion-icon src="/assets/icons/chapters.svg"></ion-icon>
-                            <ion-label>Jump to</ion-label>
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={() => this.toggleFullScreen()} color="primary" class="wider-devices" mode="md">
-                            {this.renderFullscreen()}
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices" mode="md">
-                            <ion-icon name="phone-portrait"></ion-icon>
-                            <ion-label>Remote</ion-label>
-                        </ion-tab-button>
-
-                        <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices" mode="md">
-                            <ion-icon name="more" md="md-more" ios="md-more"></ion-icon>
-                            <ion-label>More</ion-label>
-                        </ion-tab-button>
-                    </ion-buttons>
-
-                    <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
-                        <app-help></app-help>
-                    </ion-buttons>
-                </ion-toolbar>
+                <app-editor-actions hideFooterActions={this.hideFooterActions} fullscreen={this.fullscreen}
+                                    slides={this.slides}
+                                    onSignIn={() => this.signIn()}
+                                    onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
+                                    onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
+                                    onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
+                                    onToggleFullScreen={() => this.toggleFullScreen()}></app-editor-actions>
             </ion-footer>,
-            <deckgo-inline-editor containers="h1,h2,h3,section" sticky-mobile="true"
+            <deckgo-inline-editor containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul" sticky-mobile="true"
                                   onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
-                                  img-anchor="deckgo-lazy-img" img-property-width="--deckgo-lazy-img-width"
-                                  img-property-css-float="--deckgo-lazy-img-float">
+                                  img-anchor="deckgo-lazy-img" list={false}>
             </deckgo-inline-editor>
         ];
     }
@@ -641,21 +599,9 @@ export class AppEditor {
         if (this.slidesFetched) {
             return undefined;
         } else {
-            return <ion-spinner color="primary"></ion-spinner>;
-        }
-    }
-
-    private renderFullscreen() {
-        if (this.fullscreen) {
-            return [
-                <ion-icon name="contract"></ion-icon>,
-                <ion-label>Exit fullscreen</ion-label>
-            ];
-        } else {
-            return [
-                <ion-icon name="expand"></ion-icon>,
-                <ion-label>Fullscreen</ion-label>
-            ];
+            return <div class="spinner">
+                <ion-spinner color="primary"></ion-spinner>
+            </div>;
         }
     }
 }

@@ -1,11 +1,13 @@
 ion-nav, ion-modal.fullscreen {
   ion-content {
     --background: var(--ion-color-light);
+    background: var(--ion-color-light);
 
     main {
-      max-width: calc(1200px - 64px);
+      max-width: 1400px;
       margin-left: auto;
       margin-right: auto;
     }
   }
 }
+

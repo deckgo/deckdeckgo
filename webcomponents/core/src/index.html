@@ -8,47 +8,67 @@
   <script type="module" src="/build/deckdeckgo.esm.js"></script>
   <script nomodule src="/build/deckdeckgo.js"></script>
 
-  <script src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code.js"></script>
+  <script type="module" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-title@latest/dist/deckdeckgo-slide-title/deckdeckgo-slide-title.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-title@latest/dist/deckdeckgo-slide-title/deckdeckgo-slide-title.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-content@latest/dist/deckdeckgo-slide-content/deckdeckgo-slide-content.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-content@latest/dist/deckdeckgo-slide-content/deckdeckgo-slide-content.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-split@latest/dist/deckdeckgo-slide-split/deckdeckgo-slide-split.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-split@latest/dist/deckdeckgo-slide-split/deckdeckgo-slide-split.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-gif@latest/dist/deckdeckgo-slide-gif/deckdeckgo-slide-gif.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-gif@latest/dist/deckdeckgo-slide-gif/deckdeckgo-slide-gif.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-chart@latest/dist/deckdeckgo-slide-chart/deckdeckgo-slide-chart.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-chart@latest/dist/deckdeckgo-slide-chart/deckdeckgo-slide-chart.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-youtube@latest/dist/deckdeckgo-slide-youtube/deckdeckgo-slide-youtube.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-youtube@latest/dist/deckdeckgo-slide-youtube/deckdeckgo-slide-youtube.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-code@latest/dist/deckdeckgo-slide-code/deckdeckgo-slide-code.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-code@latest/dist/deckdeckgo-slide-code/deckdeckgo-slide-code.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-author@latest/dist/deckdeckgo-slide-author/deckdeckgo-slide-author.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-author@latest/dist/deckdeckgo-slide-author/deckdeckgo-slide-author.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-qrcode@latest/dist/deckdeckgo-slide-qrcode/deckdeckgo-slide-qrcode.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-qrcode@latest/dist/deckdeckgo-slide-qrcode/deckdeckgo-slide-qrcode.js"></script>
+
+  <script type="module" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.js"></script>
 
 </head>
 <body style="margin: 0; overflow: hidden;">
 
 <deckgo-deck id="slider">
-  <deckgo-slide-title>
+
+  <deckgo-slide-countdown until="2019-08-05T23:25:59.000+02:00">
+    <h1 slot="title">My presentation will start in</h1>
+    <span slot="days">Days</span>
+    <span slot="hours">Hours</span>
+    <span slot="minutes">Minutes</span>
+    <span slot="seconds">Seconds</span>
+  </deckgo-slide-countdown>
+
+  <deckgo-slide-title custom-background="true" style="--background: red;">
     <h1 slot="title">DeckDeckGo</h1>
     <p slot="content">
       Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px"/>
     </p>
     <div slot="notes">This are some notes about this particular slide</div>
   </deckgo-slide-title>
 
-  <deckgo-slide-title custom-background="true">
+  <deckgo-slide-title custom-background="true" style="--background: yellow;">
     <h1 slot="title">Custom slide background</h1>
     <div slot="background">
       <img src="https://deckdeckgo.com/assets/img/deckdeckgo-homecoming.png"/>
     </div>
   </deckgo-slide-title>
-
-  <deckgo-slide-author img-alt="David" img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
-    <div slot="author">
-      <h2>David Dal Busco</h2>
-      <p>Founder of <a href="https://fluster.io">Fluster</a>. Creator of <a href="https://deckdeckgo.com">DeckDeckGo</a>.</p>
-      <p>Organizer of the Ionic Zürich <a href="https://www.meetup.com/Ionic-Zurich">Meetup</a></p>
-      <p>Zürich, Switzerland</p>
-    </div>
-    <div slot="social-link">
-      <deckgo-social twitter="daviddalbusco">
-        <img slot="icon" alt="DeckDeckGo" src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 20px; vertical-align: middle;"/>
-        twitter
-      </deckgo-social>
-    </div>
-    <div slot="social-link"><deckgo-social linkedin="david-dal-busco/">linkedin</deckgo-social></div>
-    <div slot="social-link"><deckgo-social medium="david.dalbusco">medium</deckgo-social></div>
-    <div slot="social-link"><deckgo-social github="peterpeterparker">github</deckgo-social></div>
-    <div slot="social-link"><deckgo-social full-url="https://forum.ionicframework.com/u/reedrichards/summary">forum</deckgo-social></div>
-    <div slot="social-link"><deckgo-social full-url="https://stackoverflow.com/users/5404186/peter-parker">stackoverflow</deckgo-social></div>
-  </deckgo-slide-author>
 
   <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My title">
     <h1 slot="title">Gif</h1>
@@ -61,23 +81,81 @@
     <h2 slot="content">A subtitle or something about the video</h2>
   </deckgo-slide-youtube>
 
-  <deckgo-slide-content reveal="true">
-    <h1 slot="title">DeckDeckGo - Reveal</h1>
+  <deckgo-slide-youtube src="https://youtu.be/e63Cgln6Yag">
+    <h1 slot="title">Another video</h1>
+    <h2 slot="content">Url provided as short Url</h2>
+  </deckgo-slide-youtube>
+
+  <deckgo-slide-title>
+    <h1 slot="title">Reveal as slot</h1>
+    <deckgo-reveal slot="content">
+      <p contenteditable="true">
+        Hello World EDITABLE EDITABLE HERE <a href="https://ionicframework.com">Ionic</a> 🚀
+        <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px"/>
+      </p>
+
+      <p>
+        Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+        <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px"/>
+      </p>
+
+      <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px"/>
+    </deckgo-reveal>
+
+  </deckgo-slide-title>
+
+  <deckgo-slide-title>
+    <h1 slot="title">Reveal inside slot</h1>
     <div slot="content">
-      <ul>
+      <deckgo-reveal>
+        <p>
+          Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px"/>
+        </p>
+      </deckgo-reveal>
+
+      <deckgo-reveal>
+        <p>
+          Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px"/>
+        </p>
+      </deckgo-reveal>
+
+      <p>
+        Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+        <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px"/>
+      </p>
+    </div>
+
+  </deckgo-slide-title>
+
+  <deckgo-slide-content>
+    <h1 slot="title">Reveal after element</h1>
+
+    <div slot="content">
+      <deckgo-reveal-list list-tag="ul" style="list-style-type: square;" contenteditable="true">
         <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
         <li><strong>Ionic</strong> components and icons to create your content</li>
         <li><strong>Style</strong> your presentation quickly</li>
         <li>Lightweight and <strong>lazy</strong> loaded images</li>
         <li>Bundles the presentation with an <strong>offline</strong> support</li>
-      </ul>
+      </deckgo-reveal-list>
 
-      <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+      <deckgo-reveal-list>
+        <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
+        <li><strong>Ionic</strong> components and icons to create your content</li>
+        <li><strong>Style</strong> your presentation quickly</li>
+        <li>Lightweight and <strong>lazy</strong> loaded images</li>
+        <li>Bundles the presentation with an <strong>offline</strong> support</li>
+      </deckgo-reveal-list>
 
+      <deckgo-reveal>
+        <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px"/>
 
-      <p>
-        <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-      </p>
+        <p>
+          <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px"/>
+        </p>
+      </deckgo-reveal>
     </div>
   </deckgo-slide-content>
 
@@ -88,20 +166,7 @@
     </div>
     <div slot="end">
      Cool beans
-      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" alt="DeckDeckGo" style="width: 50px"/>
-    </div>
-  </deckgo-slide-split>
-
-  <deckgo-slide-split reveal="true">
-    <div slot="start">
-      <p>Hello World 1 <a href="https://ionicframework.com">Ionic</a> 🚀</p>
-      <p>Cool</p>
-    </div>
-    <div slot="end">
-      <p>Cool</p>
-      <p>Cool cool</p>
-      <p>Cool cool cool</p>
-      <p>Cool beans</p>
+      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" alt="DeckDeckGo" style="width: 50px"/>
     </div>
   </deckgo-slide-split>
 
@@ -114,19 +179,7 @@
     </ul>
   </deckgo-slide-title>
 
-  <deckgo-slide-title reveal="true" reveal-show-first="true">
-    <h1 slot="title">Reveal list</h1>
-    <div slot="content">
-      <ul>
-        <li>Blue cheese</li>
-        <li>Feta</li>
-        <li>Gruyère</li>
-      </ul>
-      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-    </div>
-  </deckgo-slide-title>
-
-  <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+  <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx">
     <h1 slot="title">Code</h1>
   </deckgo-slide-code>
 
@@ -148,7 +201,9 @@ public static void main(String args[]) {
 }</code>
   </deckgo-slide-code>
 
-  <img slot="background" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png">
+  <div slot="background">
+    <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png">
+  </div>
 
   <button onclick="slideNext()" slot="actions">Action slide next</button>
 </deckgo-deck>
@@ -213,10 +268,53 @@ public static void main(String args[]) {
     });
   }
 
+  function updateVideo() {
+    return new Promise(async (resolve) => {
+      const deck = document.getElementById('slider');
+
+      if (!deck) {
+        resolve();
+        return;
+      }
+
+      const index = await deck.getActiveIndex();
+
+      const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+      if (!youtubeSlideElement || youtubeSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase()) {
+        resolve();
+        return;
+      }
+
+      youtubeSlideElement.src = 'https://www.youtube.com/watch?v=-6Zc8Co2H3w';
+
+      console.log(youtubeSlideElement);
+
+      resolve();
+    });
+  }
+
+  function toggleReveal() {
+      return new Promise(async (resolve) => {
+          const deck = document.getElementById('slider');
+
+          if (!deck) {
+              resolve();
+              return;
+          }
+
+          deck.reveal = !deck.reveal;
+
+          resolve();
+      });
+  }
+
   document.addEventListener('pagerClick', function() { console.log('Pager clicked'); });
 </script>
 
 <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
+  <button onclick="toggleReveal()">Toggle deck reveal</button>
+  <button onclick="updateVideo()">Update video</button>
   <button onclick="toggleVideo()">Toggle video</button>
   <button onclick="slidePrev()">Prev</button>
   <button onclick="slideNext()">Next</button>

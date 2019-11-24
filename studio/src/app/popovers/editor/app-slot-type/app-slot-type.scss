@@ -1,4 +1,8 @@
 app-slot-type {
+  ion-toolbar {
+    padding: 16px;
+  }
+
   div {
     h2 {
       color: var(--ion-color-primary);
@@ -9,6 +13,14 @@ app-slot-type {
     margin-bottom: 0;
     padding-top: 8px;
     padding-bottom: 8px;
+  }
+
+  ion-list {
+    ion-item {
+      p {
+        margin: 0;
+      }
+    }
   }
 
   ion-item {

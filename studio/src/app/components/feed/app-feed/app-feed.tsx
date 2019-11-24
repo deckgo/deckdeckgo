@@ -1,4 +1,11 @@
-import {Component, h} from '@stencil/core';
+import {Component, h, State} from '@stencil/core';
+
+import {Subscription} from 'rxjs';
+
+import {Deck} from '../../../models/data/deck';
+
+import {FeedService} from '../../../services/data/feed/feed.service';
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 
 @Component({
     tag: 'app-feed',
@@ -7,17 +14,90 @@ import {Component, h} from '@stencil/core';
 })
 export class AppFeed {
 
+    private feedService: FeedService;
+
+    @State()
+    private decks: Deck[] = [];
+
+    @State()
+    private lastPageReached: boolean = false;
+
+    @State()
+    private decksFetched: boolean = false;
+
+    private presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
+
+    private subscription: Subscription;
+    private lastPageSubscription: Subscription;
+
+    constructor() {
+        this.feedService = FeedService.getInstance();
+    }
+
+    async componentWillLoad() {
+        this.subscription = this.feedService.watchDecks().subscribe((decks: Deck[]) => {
+            this.decks = decks;
+            this.decksFetched = true;
+        });
+
+        this.lastPageSubscription = this.feedService.watchLastPageReached().subscribe((lastPageReached: boolean) => {
+            this.lastPageReached = lastPageReached;
+            this.decksFetched = lastPageReached;
+        })
+    }
+
+    async componentDidLoad() {
+        await this.feedService.find();
+    }
+
+    async componentDidUnload() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+
+        if (this.lastPageSubscription) {
+            this.lastPageSubscription.unsubscribe();
+        }
+    }
+
+    private async findNextDecks($event) {
+        setTimeout(async () => {
+            await this.feedService.find();
+            $event.target.complete();
+        }, 500);
+    }
+
     render() {
         return [
-            <app-feed-card compact={false} caption="Card Title" description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate"></app-feed-card>,
-            <app-feed-card caption="Card Title" description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate"></app-feed-card>,
-            <app-feed-card caption="Card Title" description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate"></app-feed-card>,
-            <app-feed-card caption="Card Title" description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate"></app-feed-card>,
-            <app-feed-card caption="Card Title" description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate"></app-feed-card>,
-            <app-feed-card caption="Card Title" description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate"></app-feed-card>,
-            <app-feed-card caption="Card Title" description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate"></app-feed-card>,
-            <app-feed-card caption="Card Title" description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate"></app-feed-card>,
-            <app-feed-card caption="Card Title" description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate"></app-feed-card>
-        ];
+            this.renderDecks(),
+            <ion-infinite-scroll onIonInfinite={($event: CustomEvent) => this.findNextDecks($event)} disabled={this.lastPageReached}>
+                <ion-infinite-scroll-content>
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        ]
+    }
+
+    private renderDecks() {
+        if (this.decks && this.decks.length > 0) {
+            return (
+                this.decks.map((deck: Deck, i: number) => {
+                    return <a href={this.presentationUrl + deck.data.meta.pathname} target="_blank">
+                        <app-feed-card compact={i > 0} deck={deck}></app-feed-card>
+                    </a>
+                })
+            );
+        } else {
+            return this.renderLoading();
+        }
+    }
+
+    private renderLoading() {
+        if (this.decksFetched) {
+            return undefined;
+        } else {
+            return <div class="spinner">
+                <ion-spinner color="primary"></ion-spinner>
+            </div>;
+        }
     }
 }

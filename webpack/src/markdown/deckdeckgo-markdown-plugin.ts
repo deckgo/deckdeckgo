@@ -4,12 +4,16 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
-const Remarkable = require('remarkable');
-const {replaceEntities, escapeHtml, unescapeMd} = require('remarkable/lib/common/utils');
+const {Remarkable} = require('remarkable');
+const {replaceEntities, escapeHtml, unescapeMd} = require('remarkable');
 
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
+
+interface DeckDeckGoMarkdownPluginOptions {
+    src: string;
+}
 
 class DeckDeckGoMarkdownPlugin {
 
@@ -25,23 +29,33 @@ class DeckDeckGoMarkdownPlugin {
 
     private md;
 
-    constructor() {
+    private readonly options: DeckDeckGoMarkdownPluginOptions;
+
+    constructor(options?: DeckDeckGoMarkdownPluginOptions) {
+        this.options = options;
     }
 
     apply(compiler) {
 
         // Hook a watch on the source markdown file
         compiler.hooks.afterCompile.tap('after-compile', (compilation) => {
-            compilation.fileDependencies.add(path.resolve(resources.Constants.SRC));
+            compilation.fileDependencies.add(this.getSrc());
         });
 
         // Parse the markdown file into the index.html
         compiler.hooks.afterEmit.tap('DeckDeckGoMarkdownPlugin', async () => {
-            const indexMd: boolean = fs.existsSync(resources.Constants.SRC);
+            const indexMd: boolean = fs.existsSync(this.getSrc());
             if (indexMd) {
                 await this.processLineByLine();
             }
         });
+    }
+
+    /**
+     * Path per default index.md if no src provided
+     */
+    private getSrc(): string {
+        return this.options && this.options.src ? this.options.src : path.resolve(resources.Constants.SRC);
     }
 
     private renderMarkdown(line: string): string {
@@ -76,7 +90,7 @@ class DeckDeckGoMarkdownPlugin {
     }
 
     private async processLineByLine() {
-        const fileStream = fs.createReadStream(resources.Constants.SRC);
+        const fileStream = fs.createReadStream(this.getSrc());
 
         const rl = readline.createInterface({
             input: fileStream,
@@ -303,7 +317,7 @@ class DeckDeckGoMarkdownPlugin {
 
         return result;
     }
-    
+
     private renderLineWithoutFormatting(line: string): string {
         return this.escapeUnsafe(line) + '\n';
     }

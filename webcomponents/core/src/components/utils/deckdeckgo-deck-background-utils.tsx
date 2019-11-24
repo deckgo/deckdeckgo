@@ -1,4 +1,4 @@
-import {DeckdeckgoDeckUtils} from './deckdeckgo-deck-utils';
+import {lazyLoadSelectedImages, lazyLoadSelectedLazyImagesComponent} from '@deckdeckgo/utils';
 
 export class DeckdeckgoDeckBackgroundUtils {
 
@@ -23,7 +23,7 @@ export class DeckdeckgoDeckBackgroundUtils {
 
       const images: HTMLElement[] = Array.from(allSlottedImages).concat(Array.from(allShadowImages));
 
-      await DeckdeckgoDeckUtils.lazyLoadSelectedImages(images);
+      await lazyLoadSelectedImages(images);
 
       resolve();
     });
@@ -35,7 +35,7 @@ export class DeckdeckgoDeckBackgroundUtils {
 
       const images: HTMLElement[] = Array.from(allShadowImagesComponents);
 
-      await DeckdeckgoDeckUtils.lazyLoadSelectedLazyImagesComponent(images);
+      await lazyLoadSelectedLazyImagesComponent(images);
 
       resolve();
     });

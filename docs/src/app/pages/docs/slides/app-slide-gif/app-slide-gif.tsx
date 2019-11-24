@@ -1,29 +1,24 @@
-import {Component, Element, h} from '@stencil/core';
+import {Component, Element, h, Listen} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
-import {MenuService} from '../../../../services/menu/menu.service';
-
 @Component({
   tag: 'app-slide-gif',
-  styleUrl: 'app-slides-gif.scss'
+  styleUrl: 'app-slide-gif.scss'
 })
 export class AppSlideGif {
 
   @Element() el: HTMLElement;
 
-  private menuService: MenuService;
-
-  constructor() {
-    this.menuService = MenuService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.menuService.enable();
-  }
-
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.reloadCode(this.el);
+  }
+
+  @Listen('slidesDidLoad')
+  async onSlidesDidLoad($event: CustomEvent) {
+    if ($event) {
+      await DeckdeckgoDocsUtils.initSlideSize($event.target as HTMLElement);
+    }
   }
 
   render() {
@@ -36,6 +31,13 @@ export class AppSlideGif {
 <h2 id="app-slide-gif-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-slide-gif-layout">Layout</a></li>
+<li><a href="#app-slide-gif-video">Video</a></li>
+<li><a href="#app-slide-gif-installation">Installation</a><ul>
+<li><a href="#app-slide-gif-from-a-cdn">From a CDN</a></li>
+<li><a href="#app-slide-gif-from-npm">From NPM</a></li>
+<li><a href="#app-slide-gif-framework-integration">Framework integration</a></li>
+</ul>
+</li>
 <li><a href="#app-slide-gif-for-images-too">For images too</a></li>
 <li><a href="#app-slide-gif-usage">Usage</a><ul>
 <li><a href="#app-slide-gif-slots">Slots</a></li>
@@ -57,7 +59,33 @@ export class AppSlideGif {
   </deckgo-deck>
 </div>
 
-<h2 id="app-slide-gif-for-images-too">For images too</h2>
+<h2 id="app-slide-gif-video">Video</h2>
+<p>Have a look at this video where we demonstrate how to use it!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0X3k3-yP7-Q" frameborder="0"></iframe>
+
+<h2 id="app-slide-gif-installation">Installation</h2>
+<p>This template could be added to your presentation using the following methods.</p>
+<blockquote>
+<p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+</blockquote>
+<h3 id="app-slide-gif-from-a-cdn">From a CDN</h3>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-gif@latest&#47;dist&#47;deckdeckgo-slide-gif&#47;deckdeckgo-slide-gif.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-gif@latest&#47;dist&#47;deckdeckgo-slide-gif&#47;deckdeckgo-slide-gif.js&quot;&gt;&lt;&#47;script&gt;</code>
+    </deckgo-highlight-code><h3 id="app-slide-gif-from-npm">From NPM</h3>
+<p>To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:</p>
+<deckgo-highlight-code language="bash">
+      <code slot="code">npm install @deckdeckgo&#47;slide-gif</code>
+    </deckgo-highlight-code><h3 id="app-slide-gif-framework-integration">Framework integration</h3>
+<p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
+<p>That being said, commonly, you might either <code>import</code> or <code>load</code> it:</p>
+<h4 id="app-slide-gif-import">Import</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#039;@deckdeckgo&#47;slide-gif&#039;;</code>
+    </deckgo-highlight-code><h4 id="app-slide-gif-loader">Loader</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#123; defineCustomElements as deckDeckGoSlideElement &#125; from &#039;@deckdeckgo&#47;slide-gif&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoSlideElement(window);</code>
+    </deckgo-highlight-code><h2 id="app-slide-gif-for-images-too">For images too</h2>
 <p>The slide Gif is useful for Gifs but could be use for any images too, in case you would like for example to display an image fullscreen.</p>
 <h2 id="app-slide-gif-usage">Usage</h2>
 <p>The &quot;Gif&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-gif/&gt;</code>.</p>

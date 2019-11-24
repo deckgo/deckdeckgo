@@ -1,8 +1,9 @@
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
 
 import {Subscription} from 'rxjs';
+import {take} from 'rxjs/operators';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {debounce} from '@deckdeckgo/utils';
 
 import {RemoteService} from '../../../../services/editor/remote/remote.service';
 
@@ -65,11 +66,19 @@ export class RemoteEventsHandler {
             });
 
             deck.removeEventListener('slideNextDidChange', async () => {
-                await this.slidePrevNext(true)
+                await this.slidePrevNext(true, false)
             });
 
             deck.removeEventListener('slidePrevDidChange', async () => {
-                await this.slidePrevNext(false)
+                await this.slidePrevNext(false, false)
+            });
+
+            deck.removeEventListener('slideNextDidAnimate', async () => {
+                await this.slidePrevNext(true, true)
+            });
+
+            deck.removeEventListener('slidePrevDidAnimate', async () => {
+                await this.slidePrevNext(false, true)
             });
 
             deck.removeEventListener('slideWillChange', async (event) => {
@@ -86,6 +95,8 @@ export class RemoteEventsHandler {
         }
 
         this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
+        this.el.removeEventListener('slideDidUpdate', this.slideDidUpdate, true);
+        this.el.removeEventListener('deckDidChange', this.deckDidChange, true);
     }
 
     private initRemote(): Promise<void> {
@@ -103,7 +114,7 @@ export class RemoteEventsHandler {
                 await this.remoteEvent($event)
             });
 
-            window.addEventListener('resize', DeckDeckGoUtils.debounce(async () => {
+            window.addEventListener('resize', debounce(async () => {
                 await this.initRemoteSize();
             }, 300));
 
@@ -114,6 +125,8 @@ export class RemoteEventsHandler {
             await this.remoteService.init();
 
             this.el.addEventListener('slideDelete', this.onSlideDelete, false);
+            this.el.addEventListener('slideDidUpdate', this.slideDidUpdate, false);
+            this.el.addEventListener('deckDidChange', this.deckDidChange, false);
 
             resolve();
         });
@@ -137,10 +150,10 @@ export class RemoteEventsHandler {
 
             if (type === 'next_slide') {
                 const slideAnimation = $event.detail.slideAnimation;
-                await deck.slideNext(slideAnimation, slideAnimation);
+                await deck.slideNext(slideAnimation, false);
             } else if (type === 'prev_slide') {
                 const slideAnimation = $event.detail.slideAnimation;
-                await deck.slidePrev(slideAnimation, slideAnimation);
+                await deck.slidePrev(slideAnimation, false);
             } else if (type === 'slide_action') {
                 await this.youtubePlayPause($event);
             } else if (type === 'slide_to') {
@@ -199,7 +212,7 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            if ($event.detail.action === 'youtube_pause') {
+            if ($event.detail.action === 'pause') {
                 await youtubeSlideElement.pause();
             } else {
                 await youtubeSlideElement.play();
@@ -237,9 +250,9 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            deckgoRemoteElement.slides = $event.detail;
+            deckgoRemoteElement.deck = $event.detail;
 
-            await this.updateRemoteSlides($event);
+            await this.updateRemoteSlidesOnSlidesDidLoad($event);
 
             resolve();
         });
@@ -255,11 +268,19 @@ export class RemoteEventsHandler {
             }
 
             deck.addEventListener('slideNextDidChange', async () => {
-                await this.slidePrevNext(true)
+                await this.slidePrevNext(true, false)
             });
 
             deck.addEventListener('slidePrevDidChange', async () => {
-                await this.slidePrevNext(false)
+                await this.slidePrevNext(false, false)
+            });
+
+            deck.addEventListener('slideNextDidAnimate', async () => {
+                await this.slidePrevNext(true, true)
+            });
+
+            deck.addEventListener('slidePrevDidAnimate', async () => {
+                await this.slidePrevNext(false, true)
             });
 
             deck.addEventListener('slideWillChange', async (event) => {
@@ -278,7 +299,7 @@ export class RemoteEventsHandler {
         });
     }
 
-    private slidePrevNext(next) {
+    private slidePrevNext(next: boolean, animation: boolean) {
         return new Promise(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
@@ -288,9 +309,9 @@ export class RemoteEventsHandler {
             }
 
             if (next) {
-                await deckgoRemoteElement.nextSlide();
+                await deckgoRemoteElement.nextSlide(animation);
             } else {
-                await deckgoRemoteElement.prevSlide();
+                await deckgoRemoteElement.prevSlide(animation);
             }
 
             resolve();
@@ -392,7 +413,7 @@ export class RemoteEventsHandler {
         });
     }
 
-    private updateRemoteSlides($event: CustomEvent): Promise<void> {
+    private updateRemoteSlidesOnSlidesDidLoad($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
@@ -409,7 +430,86 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+            await this.updateRemoteSlides(this);
+
+            resolve();
+        });
+    }
+
+    updateRemoteSlidesOnMutation(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck || !deck.hasChildNodes()) {
+                resolve();
+                return;
+            }
+
+            const observer: MutationObserver = new MutationObserver(async (_mutations: MutationRecord[], _observer: MutationObserver) => {
+                this.executeIfConnected(this.updateRemoteDeckWithDefinition);
+
+                observer.disconnect();
+            });
+
+            observer.observe(deck, {childList: true, subtree: true});
+
+            resolve();
+        });
+    }
+
+    private updateRemoteDeckWithDefinition(self): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = self.el.querySelector('deckgo-deck');
+
+            if (!deck || !deck.hasChildNodes()) {
+                resolve();
+                return;
+            }
+
+            const deckDefinition: any = await (deck as any).getDeckDefinition();
+
+            if (deckDefinition) {
+                const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
+
+                if (deckgoRemoteElement) {
+                    deckgoRemoteElement.deck = deckDefinition;
+
+                    await self.updateRemoteSlides(self);
+                }
+            }
+
+            resolve();
+        });
+    }
+
+    private updateCurrentSlideWithDefinition(self): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = self.el.querySelector('deckgo-deck');
+
+            if (!deck || !deck.hasChildNodes()) {
+                resolve();
+                return;
+            }
+
+            const index = await (deck as any).getActiveIndex();
+
+            const slideDefinition: any = await (deck as any).getSlideDefinition(index);
+
+            if (slideDefinition) {
+                const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
+
+                if (deckgoRemoteElement) {
+                    await deckgoRemoteElement.updateSlide(index, slideDefinition);
+                }
+            }
+
+            resolve();
+        });
+    }
+
+    private updateRemoteSlides(self): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
 
             if (!deckgoRemoteElement) {
                 resolve();
@@ -427,10 +527,49 @@ export class RemoteEventsHandler {
             return;
         }
 
-        await this.deleteRemoteSlide();
+        this.executeIfConnected(this.deleteRemoteSlide);
     };
 
-    private deleteRemoteSlide(): Promise<void> {
+    private slideDidUpdate = async ($event: CustomEvent) => {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        this.executeIfConnected(this.updateCurrentSlideWithDefinition);
+    };
+
+    private deckDidChange = async ($event: CustomEvent) => {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        this.executeIfConnected(this.updateRemoteDeckWithDefinition);
+    };
+
+    private executeIfConnected(func: (self) => Promise<void>) {
+        this.remoteService.watch().pipe(take(1)).subscribe(async (enable: boolean) => {
+            if (enable) {
+                await func(this);
+            }
+        });
+    }
+
+    private deleteRemoteSlide(self): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
+
+            if (!deckgoRemoteElement) {
+                resolve();
+                return;
+            }
+
+            await deckgoRemoteElement.deleteSlide();
+
+            resolve();
+        });
+    }
+
+    updateRemoteReveal(reveal: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
@@ -439,7 +578,7 @@ export class RemoteEventsHandler {
                 return;
             }
 
-            await deckgoRemoteElement.deleteSlide();
+            await deckgoRemoteElement.updateReveal(reveal);
 
             resolve();
         });

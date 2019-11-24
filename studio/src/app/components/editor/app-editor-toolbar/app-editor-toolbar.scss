@@ -45,6 +45,10 @@ app-editor-toolbar {
 
       ion-label {
         font-family: sans-serif;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       &.disabled {
@@ -55,10 +59,14 @@ app-editor-toolbar {
           color: var(--ion-color-light);
         }
       }
+    }
 
-      &.delete {
-        margin-left: auto;
-      }
+    div.editor-toolbar-edit {
+      margin-left: auto;
+
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
     }
   }
 }

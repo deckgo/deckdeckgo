@@ -5,6 +5,12 @@ The "Split" slide is a simple slide which display two panes on the page.
 ## Table of contents
 
 - [Layout](#app-slide-split-layout)
+  - [Horizontal](#app-slide-split-layout-horizontal)
+  - [Vertical](#app-slide-split-layout-vertical)
+- [Installation](#app-slide-split-installation)
+  - [From a CDN](#app-slide-split-from-a-cdn)
+  - [From NPM](#app-slide-split-from-npm)
+  - [Framework integration](#app-slide-split-framework-integration)
 - [Usage](#app-slide-split-usage)
   - [Slots](#app-slide-split-slots)
   - [Notes](#app-slide-split-notes)
@@ -13,10 +19,13 @@ The "Split" slide is a simple slide which display two panes on the page.
 
 ## Layout
 
+This template could split the content in two different ways.
+
+### Horizontal
+
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-split>
-        <h1 slot="title">Two columns subject</h1>
         <p slot="start">
           The content you want to display on the left side of the page
         </p>
@@ -26,6 +35,64 @@ The "Split" slide is a simple slide which display two panes on the page.
       </deckgo-slide-split>
   </deckgo-deck>
 </div>
+
+### Vertical
+
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-split vertical={true}>
+        <p slot="start">
+          The content you want to display on the top of the page
+        </p>
+        <p slot="end">
+          The content you want to display on the bottom of the page
+        </p>
+      </deckgo-slide-split>
+  </deckgo-deck>
+</div>
+
+## Installation
+
+This template could be added to your presentation using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+ 
+### From a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/slide-split@latest/dist/deckdeckgo-slide-split/deckdeckgo-slide-split.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-split@latest/dist/deckdeckgo-slide-split/deckdeckgo-slide-split.js"></script>
+```
+
+### From NPM
+
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+
+```bash
+npm install @deckdeckgo/slide-split
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/slide-split';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-split/dist/loader';
+deckDeckGoSlideElement(window);
+```
 
 ## Usage
 
@@ -65,10 +132,9 @@ This component offers the following options which could be set using attributes:
 
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |-----------------|-----------------|-----------------|
-| reveal | boolean | false | Hide the slotted elements `li`, `p` an `img` and display them when navigating using `slideNext()` or `slidePrev()` (see [documention](/doc/features/navigation.md)) |
-| reveal-show-first | boolean | false | Show the first elements which would be hidden if `reveal` is set to `true` |
 | custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
 | custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| vertical| boolean | false | Per default this template is horizontally split (two columns). Turn this property to `true` too display two rows respectively split vertically |
 
 ## Theming
 

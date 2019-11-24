@@ -1,33 +1,36 @@
-import {Slide} from '../../models/slide';
+import {JSX} from '@stencil/core';
+import {take} from 'rxjs/operators';
 
-import {Deck} from '../../models/deck';
+import {Slide} from '../../models/data/slide';
+import {Deck} from '../../models/data/deck';
 
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 
-import {SlideService} from '../../services/api/slide/slide.service';
-import {DeckService} from '../../services/api/deck/deck.service';
 import {ErrorService} from '../../services/core/error/error.service';
 import {BusyService} from '../../services/editor/busy/busy.service';
 import {DeckEditorService} from '../../services/editor/deck/deck-editor.service';
+import {DeckService} from '../../services/data/deck/deck.service';
+import {SlideService} from '../../services/data/slide/slide.service';
 
 export class EditorHelper {
-
-    private slideService: SlideService;
-    private deckService: DeckService;
 
     private errorService: ErrorService;
     private busyService: BusyService;
 
     private deckEditorService: DeckEditorService;
 
+    private slideService: SlideService;
+    private deckService: DeckService;
+
     constructor() {
         this.slideService = SlideService.getInstance();
-        this.deckService = DeckService.getInstance();
 
         this.errorService = ErrorService.getInstance();
         this.busyService = BusyService.getInstance();
 
         this.deckEditorService = DeckEditorService.getInstance();
+
+        this.deckService = DeckService.getInstance();
     }
 
     loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
@@ -43,7 +46,7 @@ export class EditorHelper {
             try {
                 const deck: Deck = await this.deckService.get(deckId);
 
-                if (!deck) {
+                if (!deck || !deck.data) {
                     this.errorService.error('No deck could be fetched');
                     resolve(null);
                     return;
@@ -51,29 +54,29 @@ export class EditorHelper {
 
                 this.deckEditorService.next(deck);
 
-                if (!deck.slides || deck.slides.length <= 0) {
+                if (!deck.data.slides || deck.data.slides.length <= 0) {
                     resolve([]);
                     return;
                 }
 
-                const promises: Promise<Slide>[] = [];
-                deck.slides.forEach((slideId: string) => {
-                    promises.push(this.fetchSlide(deck.id, slideId));
+                const promises: Promise<any>[] = [];
+                deck.data.slides.forEach((slideId: string) => {
+                    promises.push(this.fetchSlide(deck, slideId));
                 });
 
-                let slides: Slide[] = [];
+                let parsedSlides: any[] = [];
                 if (promises.length > 0) {
-                    slides = await Promise.all(promises);
+                    parsedSlides = await Promise.all(promises);
                 }
 
-                if (!slides || slides.length <= 0) {
+                if (!parsedSlides || parsedSlides.length <= 0) {
                     resolve([]);
                     return;
                 }
 
                 this.busyService.deckBusy(false);
 
-                resolve(slides);
+                resolve(parsedSlides);
             } catch (err) {
                 this.errorService.error(err);
                 this.busyService.deckBusy(false);
@@ -82,16 +85,52 @@ export class EditorHelper {
         });
     }
 
-    private fetchSlide(deckId: string, slideId: string): Promise<any> {
+    private fetchSlide(deck: Deck, slideId: string): Promise<JSX.IntrinsicElements> {
         return new Promise<any>(async (resolve) => {
             try {
-                const slide: Slide = await this.slideService.get(deckId, slideId);
-                const element: any = await ParseSlidesUtils.parseSlide(slide);
+                const slide: Slide = await this.slideService.get(deck.id, slideId);
+                const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, true);
 
                 resolve(element);
             } catch (err) {
                 this.errorService.error('Something went wrong while loading and parsing a slide');
-                resolve();
+                resolve(null);
+            }
+        });
+    }
+
+    copySlide(slide: HTMLElement): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>(async (resolve) => {
+            try {
+                if (!slide) {
+                    resolve(null);
+                    return;
+                }
+
+                if (!slide.getAttribute('slide_id')) {
+                    this.errorService.error('Slide is not defined');
+                    resolve(null);
+                    return;
+                }
+
+                const slideId: string = slide.getAttribute('slide_id');
+
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    let element: JSX.IntrinsicElements = null;
+
+                    if (deck && deck.data) {
+                        const slide: Slide = await this.slideService.get(deck.id, slideId);
+                        element = await ParseSlidesUtils.parseSlide(deck, slide, true, true);
+                    }
+
+                    this.busyService.deckBusy(false);
+
+                    resolve(element);
+                });
+            } catch (err) {
+                this.errorService.error(err);
+                this.busyService.deckBusy(false);
+                resolve(null);
             }
         });
     }

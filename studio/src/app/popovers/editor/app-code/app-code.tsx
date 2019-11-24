@@ -1,8 +1,8 @@
 import {Component, Element, EventEmitter, Prop, State, h} from '@stencil/core';
 
-import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
+import {alertController} from '@ionic/core';
 
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
+import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
 enum CodeColorType {
     COMMENTS,
@@ -12,7 +12,8 @@ enum CodeColorType {
     OPERATOR,
     KEYWORD,
     FUNCTION,
-    REGEX
+    REGEX,
+    LINE_NUMBERS
 }
 
 enum CodeFontSize {
@@ -37,8 +38,6 @@ export class AppCode {
     @Prop()
     codeDidChange: EventEmitter<HTMLElement>;
 
-    private hidePopoverTimer;
-
     private prismService: PrismService;
 
     private currentLanguage: string = 'javascript';
@@ -58,6 +57,9 @@ export class AppCode {
 
     @State()
     private currentFontSize: CodeFontSize = undefined;
+
+    @State()
+    private lineNumbers: boolean = false;
 
     constructor() {
         this.prismService = PrismService.getInstance();
@@ -79,6 +81,7 @@ export class AppCode {
             this.currentLanguage = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
             this.codeColor = await this.initColor();
             this.currentFontSize = await this.initFontSize();
+            this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
 
             resolve();
         });
@@ -93,19 +96,17 @@ export class AppCode {
         });
     }
 
-    private selectColor($event, colorFunction: Function): Promise<void> {
+    private selectColor($event: CustomEvent, colorFunction: Function): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
                 resolve();
                 return;
             }
 
-            if (!$event || !$event.target || !$event.target.value) {
+            if (!$event || !$event.detail) {
                 resolve();
                 return;
             }
-
-            await this.privateHideShowPopover();
 
             colorFunction($event);
 
@@ -115,33 +116,15 @@ export class AppCode {
         });
     }
 
-    private setCodeColor = ($event) => {
-        this.codeColor = $event.target.value;
-        this.selectedElement.style.setProperty(this.getStyle(), $event.target.value);
+    private setCodeColor = ($event: CustomEvent) => {
+        this.codeColor = $event.detail.hex;
+        this.selectedElement.style.setProperty(this.getStyle(), $event.detail.hex);
     };
 
-    private setHighlightColor = ($event) => {
-        this.highlightColor = $event.target.value;
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', $event.target.value);
+    private setHighlightColor = ($event: CustomEvent) => {
+        this.highlightColor = $event.detail.hex;
+        this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', $event.detail.hex);
     };
-
-    private privateHideShowPopover(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const popover: HTMLIonPopoverElement = this.el.closest('ion-popover');
-
-            popover.style.visibility = 'hidden';
-
-            if (this.hidePopoverTimer) {
-                clearTimeout(this.hidePopoverTimer);
-            }
-
-            this.hidePopoverTimer = setTimeout(() => {
-                popover.style.visibility = 'initial';
-            }, 1000);
-
-            resolve();
-        });
-    }
 
     private toggleCodeLanguage($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
@@ -206,6 +189,8 @@ export class AppCode {
             return '--deckgo-highlight-code-token-function';
         } else if (this.codeColorType === CodeColorType.REGEX) {
             return '--deckgo-highlight-code-token-regex';
+        } else if (this.codeColorType === CodeColorType.LINE_NUMBERS) {
+            return '--deckgo-highlight-code-line-numbers';
         } else {
             return '--deckgo-highlight-code-token-comment';
         }
@@ -232,6 +217,8 @@ export class AppCode {
                 resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') : '#DD4A68');
             } else if (this.codeColorType === CodeColorType.REGEX) {
                 resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') : '#EE9900');
+            } else if (this.codeColorType === CodeColorType.LINE_NUMBERS) {
+                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') : '#999');
             } else {
                 resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') : '#999999');
             }
@@ -268,8 +255,8 @@ export class AppCode {
     }
 
     private async presentHighlightInfo() {
-        const alert: HTMLIonAlertElement = await IonControllerUtils.createAlert({
-            message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 0,2 7,7 13,15<br/><br/>Which would highlight lines 0 to 2, line 7 and lines 13 to 15.',
+        const alert: HTMLIonAlertElement = await alertController.create({
+            message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 1,2 7,7 13,15<br/><br/>Which would highlight lines 1 to 2, line 7 and lines 13 to 15.',
             buttons: ['Ok']
         });
 
@@ -331,28 +318,57 @@ export class AppCode {
         });
     }
 
+    private toggleLineNumbers($event: CustomEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.setAttribute('line-numbers', $event.detail.checked);
+
+            this.emitCodeDidChange();
+
+            resolve();
+        });
+    }
+
     render() {
-        return [<ion-toolbar class="ion-margin ion-padding-end">
-                <h2>Code attributes</h2>
-                <ion-anchor slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-anchor>
-            </ion-toolbar>,
+        return [<ion-toolbar>
+            <h2>Code attributes</h2>
+            <ion-router-link slot="end" onClick={() => this.closePopover()}>
+                <ion-icon name="close"></ion-icon>
+            </ion-router-link>
+        </ion-toolbar>,
             <ion-list>
-                <ion-item-divider><ion-label>Language</ion-label></ion-item-divider>
+                <ion-item-divider>
+                    <ion-label>Language</ion-label>
+                </ion-item-divider>
 
                 <ion-item class="select">
                     <ion-label>Language</ion-label>
-                    <ion-select value={this.currentLanguage} onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)} class="ion-padding-start ion-padding-end" interfaceOptions={{backdropDismiss: false}}>
+                    <ion-select value={this.currentLanguage}
+                                onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)}
+                                class="ion-padding-start ion-padding-end" interfaceOptions={{backdropDismiss: false}}>
                         {this.renderSelectOptions()}
                     </ion-select>
                 </ion-item>
 
-                <ion-item-divider class="ion-padding-top"><ion-label>Font size</ion-label></ion-item-divider>
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>Font size</ion-label>
+                </ion-item-divider>
 
                 <ion-item class="select">
                     <ion-label>Size</ion-label>
 
                     <ion-select value={this.currentFontSize} placeholder="Select a font size"
-                                onIonChange={(e: CustomEvent) => this.toggleFontSize(e)} class="ion-padding-start ion-padding-end">
+                                onIonChange={(e: CustomEvent) => this.toggleFontSize(e)}
+                                class="ion-padding-start ion-padding-end">
                         <ion-select-option value={CodeFontSize.VERY_SMALL}>Very small</ion-select-option>
                         <ion-select-option value={CodeFontSize.SMALL}>Small</ion-select-option>
                         <ion-select-option value={CodeFontSize.NORMAL}>Normal</ion-select-option>
@@ -361,13 +377,26 @@ export class AppCode {
                     </ion-select>
                 </ion-item>
 
-                <ion-item-divider class="ion-padding-top"><ion-label>Colors</ion-label></ion-item-divider>
+                <ion-item-divider>
+                    <ion-label>Lines</ion-label>
+                </ion-item-divider>
+
+                <ion-item>
+                    <ion-label>Display line numbers</ion-label>
+                    <ion-checkbox slot="end" checked={this.lineNumbers}
+                                  onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
+                </ion-item>
+
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>Colors</ion-label>
+                </ion-item-divider>
 
                 <ion-item class="select">
                     <ion-label>Apply color to</ion-label>
 
                     <ion-select value={this.codeColorType} placeholder="Select a category"
-                                onIonChange={(e: CustomEvent) => this.toggleColorType(e)} class="ion-padding-start ion-padding-end">
+                                onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
+                                class="ion-padding-start ion-padding-end">
                         <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
                         <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
                         <ion-select-option value={CodeColorType.KEYWORD}>Keywords</ion-select-option>
@@ -376,12 +405,14 @@ export class AppCode {
                         <ion-select-option value={CodeColorType.PROPERTY}>Properties</ion-select-option>
                         <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
                         <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
+                        <ion-select-option value={CodeColorType.LINE_NUMBERS}>Line numbers</ion-select-option>
                     </ion-select>
                 </ion-item>
 
                 <ion-item disabled={this.codeColorType === undefined}>
-                    <ion-label>Color</ion-label>
-                    <input type="color" value={this.codeColor} onChange={(e) => this.selectColor(e, this.setCodeColor)}></input>
+                    <deckgo-color class="ion-padding-top ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)} color-hex={this.codeColor}>
+                        <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+                    </deckgo-color>
                 </ion-item>
 
                 <ion-item-divider class="ion-padding-top">
@@ -394,14 +425,15 @@ export class AppCode {
                 <ion-item class="with-padding">
                     <ion-input value={this.highlightLines} placeholder="List your lines here" debounce={500}
                                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-                                onIonChange={() => this.highlightSelectedLines()}></ion-input>
+                               onIonChange={() => this.highlightSelectedLines()}></ion-input>
                 </ion-item>
 
                 <ion-item disabled={!this.highlightLines}>
-                    <ion-label>Color</ion-label>
-                    <input type="color" value={this.highlightColor} onChange={(e) => this.selectColor(e, this.setHighlightColor)}></input>
+                    <deckgo-color class="ion-padding-top ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)} color-hex={this.highlightColor}>
+                        <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+                    </deckgo-color>
                 </ion-item>
-        </ion-list>]
+            </ion-list>]
     }
 
     private renderSelectOptions() {

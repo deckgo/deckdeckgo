@@ -2,43 +2,66 @@ app-footer {
   div {
     font-size: var(--font-size-small);
 
+    &.footer-container {
+      margin-top: 32px;
+    }
+
     > ion-label {
       display: block;
       padding-bottom: 6px;
+
+      color: white;
+      font-weight: bold;
     }
 
-    ion-anchor {
+    ion-router-link {
       padding: 4px 0;
       display: block;
       width: max-content;
       font-weight: 300;
+
+      color: white;
+
+      &:hover, &.active {
+        color: white;
+
+        border-bottom-color: transparent;
+      }
     }
-  }
 
-  hr {
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
-  }
-}
+    div.social {
+      ion-icon {
+        color: white;
+        font-size: 1rem;
 
-ion-split-pane {
-
-  &:not(.split-pane-visible) {
-    app-footer {
-      div {
-        > ion-label {
-          color: white;
-          font-weight: bold;
-        }
-
-        ion-anchor {
-          color: white;
-
-          &:hover, &.active {
-            color: var(--ion-color-secondary);
-          }
+        &:not(last-of-type) {
+          margin-right: 4px;
         }
       }
     }
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  app-footer {
+    div {
+      > ion-label {
+        color: black;
+      }
+
+      ion-router-link {
+        color: var(--ion-color-medium);
+
+        &:hover, &.active {
+          color: var(--ion-color-medium);
+        }
+      }
+
+      div.social {
+        ion-icon {
+          color: var(--ion-color-medium);
+        }
+      }
+    }
+  }
+}

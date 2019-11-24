@@ -7,6 +7,7 @@ import {get, set, del} from 'idb-keyval';
 
 import {Comparator, Converter} from '../utils/utils';
 import {NotificationService} from '../notification/notification.service';
+import {Build} from '@stencil/core';
 
 export interface TimerInterval {
     timerProgression: number;
@@ -190,6 +191,11 @@ export class TimerService {
     isTimerStarted(): Promise<boolean> {
         return new Promise<boolean>(async (resolve) => {
             try {
+                if (!Build.isBrowser) {
+                    resolve(false);
+                    return;
+                }
+
                 const end: string = await get('deckdeckgo_timer_end');
 
                 resolve(Comparator.isStringNotEmpty(end));

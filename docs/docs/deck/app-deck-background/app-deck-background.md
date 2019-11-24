@@ -54,7 +54,7 @@ An example with an image cloned as background for each slides:
     </p>
   </deckgo-slide-title>
   
-  <img slot="background" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png">
+  <img slot="background" data-src="https://deckdeckgo.com/assets/favicon/android-chrome-512x512.png">
 </deckgo-deck>
 ```
 

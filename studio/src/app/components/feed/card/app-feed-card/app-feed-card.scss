@@ -6,16 +6,43 @@ app-feed-card {
     ion-card-content {
 
       &.compact {
-        ion-card-header, p.content {
+        p.content {
           display: none;
         }
       }
 
+      p.content {
+        margin: 0;
+      }
+
       ion-card-title {
+        display: none;
         white-space: nowrap;
         overflow: hidden;
         font-size: var(--font-size-h1);
       }
+
+      deckgo-lazy-img {
+        display: block;
+        height: 48vw;
+        max-height: 400px;
+        --deckgo-lazy-img-width: 100%;
+        --deckgo-lazy-img-height: auto;
+      }
+    }
+
+    p.author {
+      display: flex;
+      align-items: center;
+
+      app-avatar {
+        margin: 0 8px 0 0;
+      }
+    }
+
+    app-feed-card-tags {
+      display: block;
+      height: 100%;
     }
   }
 

@@ -2,24 +2,12 @@ import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
-import {MenuService} from '../../../../services/menu/menu.service';
-
 @Component({
   tag: 'app-components-youtube'
 })
 export class AppComponentsYoutube {
 
   @Element() el: HTMLElement;
-
-  private menuService: MenuService;
-
-  constructor() {
-    this.menuService = MenuService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.menuService.enable();
-  }
 
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.loadVideo(this.el);
@@ -35,6 +23,7 @@ export class AppComponentsYoutube {
 <h2 id="app-components-youtube-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-components-youtube-showcase">Showcase</a></li>
+<li><a href="#app-components-youtube-installation">Installation</a></li>
 <li><a href="#app-components-youtube-usage">Usage</a><ul>
 <li><a href="#app-components-youtube-slots">Slots</a></li>
 <li><a href="#app-components-youtube-attributes">Attributes</a></li>
@@ -47,6 +36,11 @@ export class AppComponentsYoutube {
   </deckgo-youtube>
 </div>
 
+<h2 id="app-components-youtube-installation">Installation</h2>
+<p>This component is part of the &quot;Youtube&quot; template. Therefore, if you would like to use it, install the related slide as described in its <a href="/slides/youtube">installation</a> chapter.</p>
+<blockquote>
+<p>If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+</blockquote>
 <h2 id="app-components-youtube-usage">Usage</h2>
 <p>The &quot;Youtube&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-youtube/&gt;</code>.</p>
 <deckgo-highlight-code language="javascript">

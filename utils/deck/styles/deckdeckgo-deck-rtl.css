@@ -1,0 +1,6 @@
+deckgo-deck h1 div[style*="direction"] span,
+deckgo-deck h2 div[style*="direction"] span,
+deckgo-deck h3 div[style*="direction"] span,
+deckgo-deck section div[style*="direction"] span {
+    font-size: inherit !important;
+}

@@ -38,14 +38,6 @@ h4 a {
   letter-spacing: 0.04em;
 }
 
-p,
-ul,
-ol {
-  font-size: var(--font-size-normal);
-  line-height: 1.8;
-  margin: 14px 0px;
-}
-
 ul,
 ol {
   padding: 0 0 0 16px;
@@ -55,7 +47,7 @@ p a,
 ul a,
 ol a,
 td a,
-ion-anchor {
+ion-router-link {
   text-decoration: none;
   transition: border 0.3s;
   border-bottom: 1px solid transparent;
@@ -66,7 +58,7 @@ p a:hover,
 ul a:hover,
 ol a:hover,
 td a:hover,
-ion-anchor:hover {
+ion-router-link:hover {
   border-bottom-color: var(--ion-color-primary);
 }
 

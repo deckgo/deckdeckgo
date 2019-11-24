@@ -1,152 +1,113 @@
-ion-split-pane {
+ion-menu {
+  --background: var(--ion-color-primary);
+  --ion-background-color: var(--ion-color-primary);
 
-  &:not(.split-pane-visible) {
-    ion-menu {
-      --background: var(--ion-color-primary);
-      --ion-background-color: var(--ion-color-primary);
+  --border: 0px;
 
-      ion-item-divider {
-        background: var(--ion-color-primary);
-      }
+  ion-item-divider {
+    background: var(--ion-color-primary);
+  }
 
-      ion-header {
-        ion-toolbar {
-          --color: white;
-          --border-color: transparent;
-        }
-      }
-
-      ion-content {
-        ion-list {
-          ion-item-divider {
-            --color: white;
-            font-weight: bold;
-          }
-
-          ion-item {
-            --color: white;
-
-            --background-activated: var(--ion-color-primary);
-
-            ion-icon {
-              color: white;
-            }
-          }
-        }
-
-        ion-button {
-          --background: white;
-          --color: var(--ion-color-dark);
-          --color-activated: var(--ion-color-dark);
-        }
-      }
+  ion-header {
+    ion-toolbar {
+      --color: white;
+      --border-color: transparent;
     }
   }
 
-  &.split-pane-visible {
-    ion-menu {
-      ion-content {
-        --padding-top: 40px;
-
-        app-menu-footer {
-          --deckgo-menu-footer-color: var(--ion-color-medium);
-        }
-      }
-    }
-
-    ion-content {
-      --padding-top: 40px;
-    }
-  }
-
-  &.split-pane-md.split-pane-visible {
-    > ion-menu.split-pane-side {
-      max-width: 270px;
-    }
-  }
-
-  ion-menu {
+  ion-header {
     --border: 0px;
+  }
 
-    ion-header {
-      --border: 0px;
-    }
+  ion-content {
+    ion-list {
+      ion-item-divider {
+        border: 0;
+        font-size: var(--font-size-small);
+        --padding-top: 32px;
+        --background: transparent;
 
-    ion-content {
-      border-right: 1px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+        --color: white;
+        font-weight: bold;
 
-      ion-list {
-        ion-item-divider {
-          border: 0;
-          --color: var(--ion-color-dark);
-          font-size: var(--font-size-small);
-          --padding-top: 32px;
-          --background: transparent;
-
-          &:not(:first-of-type) {
-            margin-top: 8px;
-          }
-        }
-
-        ion-item-divider + ion-item {
-          margin-top: 16px;
-        }
-
-        ion-item {
-          --border-color: transparent;
-          --color: var(--ion-color-medium);
-          --min-height: inherit;
-          font-size: var(--font-size-small);
-          height: inherit;
-
-          ion-label {
-            margin-top: 6px;
-            margin-bottom: 6px;
-          }
-
-          ion-icon {
-            margin: 8px 8px 8px 0;
-          }
-
-          app-avatar {
-            margin: 0 8px 0 0;
-          }
+        &:not(:first-of-type) {
+          margin-top: 8px;
         }
       }
+
+      ion-item-divider + ion-item {
+        margin-top: 16px;
+      }
+
+      ion-item {
+        --border-color: transparent;
+        --min-height: inherit;
+        font-size: var(--font-size-small);
+        height: inherit;
+
+        --color: white;
+        --background-activated: var(--ion-color-primary);
+        --background-hover: var(--ion-color-primary);
+
+        ion-label {
+          margin-top: 6px;
+          margin-bottom: 6px;
+        }
+
+        ion-icon {
+          color: white;
+          margin: 8px 8px 8px 0;
+        }
+
+        app-avatar {
+          margin: 0 8px 0 0;
+        }
+      }
+    }
+
+    ion-button {
+      --background: white;
+      --background-focused: white;
+      --background-hover: white;
+      --color: var(--ion-color-dark);
+      --color-activated: var(--ion-color-dark);
     }
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  ion-split-pane {
-    ion-menu {
+  ion-menu {
+    --background: white;
+    --ion-background-color: white;
 
-      --background: white;
-      --ion-background-color: white;
+    ion-content {
 
-      ion-content {
+      border-right: 1px solid rgba(0,0,0,.13);
 
-        border-right: 1px solid rgba(0,0,0,.13);
-
-        ion-list {
-          ion-item-divider {
-            --color: black;
-          }
-
-          ion-item {
-            --color: var(--ion-color-medium);
-
-            ion-icon {
-              color: var(--ion-color-medium);
-            }
-          }
+      ion-list {
+        ion-item-divider {
+          background: white;
+          --color: black;
         }
 
-        ion-button {
-          --background: var(--ion-color-primary);
-          --color: white;
-          --color-activated: white;
+        ion-item {
+          --color: var(--ion-color-medium);
+
+          --background-activated: white;
+          --background-hover: white;
+
+          ion-icon {
+            color: var(--ion-color-medium);
+          }
         }
+      }
+
+      ion-button {
+        --background: var(--ion-color-primary);
+        --background-focused: var(--ion-color-primary);
+        --background-hover: var(--ion-color-primary);
+        --color: white;
+        --color-activated: white;
       }
     }
   }

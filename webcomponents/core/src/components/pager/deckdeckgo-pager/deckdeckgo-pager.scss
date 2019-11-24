@@ -18,13 +18,13 @@
 .deckgo-pager-circle-bg {
   fill: none;
   stroke: var(--pager-background, #eee);
-  stroke-width: var(--pager-stroke-outer-width, 2.8);
+  stroke-width: var(--pager-stroke-outer-width, 2.2);
 }
 
 .deckgo-pager-circle {
-  stroke: var(--pager-color, #4c8dff);
+  stroke: var(--pager-color, black);
   fill: none;
-  stroke-width: var(--pager-stroke-inner-width, 1.8);
+  stroke-width: var(--pager-stroke-inner-width, 2.2);
   stroke-linecap: round;
   transition: stroke-dasharray 500ms cubic-bezier(0.23, 1, 0.320, 1);
 }

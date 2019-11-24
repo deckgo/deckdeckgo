@@ -1,3 +1,55 @@
+<a name="1.0.0-rc.3-1"></a>
+# 1.0.0-rc.3-1 (2019-10-20)
+
+### Fix
+
+* custom labels for x-axis compatible with ES5
+
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-10-19)
+
+### Breaking changes
+
+* indexing of the style of `line bar` chart has been moved from index `0` to begin with `1`
+* property `range` replaced by CSS4 variables generated dynamically 
+
+### Features
+
+* add a new CSS4 variable `--deckgo-chart-stroke` in case you would like to use a default styling color for all the graphs' lines
+* update most recent libs
+
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-10-09)
+
+### Features
+
+* when using animation bar, allow custom labels for x-axis ([#340](https://github.com/deckgo/deckdeckgo/issues/340))
+
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`) 
+
+<a name="1.0.0-alpha.8"></a>
+# 1.0.0-alpha.8 (2019-06-24)
+
+### Features
+
+* animated charts: it is now possible to display several data in the same graphs. these could be displayed one after the others with a nice transition between these
+
+### Breaking
+
+* the styling (fill color, etc.) of the `line` and `bar` chart has been modified
+* per default, the labels of the axis of the  `line` and `bar` will be displayed
+
+Referer to the updated [documentation](https://docs.deckdeckgo.com) for more information.
+
 <a name="1.0.0-alpha.7"></a>
 # 1.0.0-alpha.7 (2019-06-04)
 

@@ -1,0 +1,31 @@
+app-remote-connect {
+  ion-list {
+    ion-item {
+      --border-color: transparent;
+
+      ion-label[class*="sc-ion-label"] {
+        &.disabled {
+          opacity: 0.2;
+        }
+      }
+    }
+  }
+
+  p {
+    font-size: var(--font-size-very-small);
+  }
+
+  div.qrcode-container {
+    display: flex;
+    justify-content: center;
+
+    deckgo-qrcode {
+      --deckgo-qrcode-size: 300px;
+      --deckgo-qrcode-color-fill: var(--ion-color-primary);
+    }
+
+    ion-icon {
+      color: transparent;
+    }
+  }
+}

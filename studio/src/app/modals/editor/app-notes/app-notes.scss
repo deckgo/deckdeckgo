@@ -1,0 +1,32 @@
+app-notes {
+  ion-content {
+    --background: var(--ion-color-light);
+
+    p {
+      margin-top: 8px;
+
+      ion-icon {
+        vertical-align: text-bottom;
+      }
+    }
+
+    ion-item.item-input ion-textarea[class*=sc-ion-textarea] {
+      --background: white;
+      background: white;
+    }
+
+    ion-list.list-ios {
+      margin-bottom: 0;
+    }
+
+    div.notes-actions {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      ion-button:first-of-type {
+        margin-right: 4px;
+      }
+    }
+  }
+}

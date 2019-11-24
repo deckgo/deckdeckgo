@@ -26,6 +26,11 @@ available. Running `terraform apply` will package everything needed by the
 lambda function and upload it to AWS. **NOTE**: if you are deploying from a new
 machine you may need to run `terraform init`.
 
+## License
+
+This project, respectively the infrastructure of [DeckDeckGo], is released under the GNU Affero General Public License. Copyright [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com), Zürich, Switzerland. See COPYING for more details.
+
+[DeckDeckGo] is developed by [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com).
 
 [DeckDeckGo]: https://deckdeckgo.com
 [Terraform]: https://www.terraform.io/

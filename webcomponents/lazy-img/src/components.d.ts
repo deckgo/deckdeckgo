@@ -10,13 +10,17 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 export namespace Components {
   interface DeckgoLazyImg {
+    'ariaLabel': string;
     'imgAlt': string;
+    'imgErrorSrc': string;
     'imgSizes': string;
     'imgSrc': string;
     'imgSrcSet': string;
+    'intrinsicsize': string;
     'lazyLoad': () => Promise<void>;
     'observerRootMargin': string;
     'observerThreshold': number | number[];
+    'svgSrc': string;
   }
 }
 
@@ -35,13 +39,17 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoLazyImg extends JSXBase.HTMLAttributes<HTMLDeckgoLazyImgElement> {
+    'ariaLabel'?: string;
     'imgAlt'?: string;
+    'imgErrorSrc'?: string;
     'imgSizes'?: string;
     'imgSrc'?: string;
     'imgSrcSet'?: string;
+    'intrinsicsize'?: string;
     'observerRootMargin'?: string;
     'observerThreshold'?: number | number[];
     'onLazyImgDidLoad'?: (event: CustomEvent<any>) => void;
+    'svgSrc'?: string;
   }
 
   interface IntrinsicElements {

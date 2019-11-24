@@ -1,8 +1,8 @@
 import {take} from 'rxjs/operators';
 
-import {AuthUser} from '../../../models/auth-user';
+import {AuthUser} from '../../../models/auth/auth.user';
 
-import {AuthService} from '../../api/auth/auth.service';
+import {AuthService} from '../../auth/auth.service';
 
 export class AnonymousService {
 
@@ -63,6 +63,19 @@ export class AnonymousService {
                 }
 
                 resolve(!authUser.anonymous);
+            });
+        });
+    }
+
+    isAnonymous(): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            this.authService.watch().pipe(take(1)).subscribe((authUser: AuthUser) => {
+                if (!authUser) {
+                    resolve(true);
+                    return;
+                }
+
+                resolve(authUser.anonymous);
             });
         });
     }

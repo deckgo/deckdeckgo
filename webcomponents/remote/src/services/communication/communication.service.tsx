@@ -3,7 +3,15 @@ import * as io from 'socket.io-client';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 // Types
-import {DeckdeckgoEvent, DeckdeckgoEventSlides, DeckdeckgoEventSlideTo} from '@deckdeckgo/types';
+import {
+  DeckdeckgoEvent,
+  DeckdeckgoEventSlideAction,
+  DeckdeckgoEventDeck,
+  DeckdeckgoEventSlide,
+  DeckdeckgoEventSlideTo,
+  DeckdeckgoEventNextPrevSlide,
+  DeckdeckgoEventDeckReveal
+} from '@deckdeckgo/types';
 
 const configuration: RTCConfiguration = {
   iceServers: [
@@ -228,7 +236,7 @@ export class CommunicationService {
     this.event.next(data);
   };
 
-  emit(data: DeckdeckgoEvent | DeckdeckgoEventSlides | DeckdeckgoEventSlideTo) {
+  emit(data: DeckdeckgoEvent | DeckdeckgoEventDeck | DeckdeckgoEventSlide | DeckdeckgoEventSlideTo | DeckdeckgoEventSlideAction | DeckdeckgoEventNextPrevSlide | DeckdeckgoEventDeckReveal) {
     if (this.dataChannelOut) {
       this.dataChannelOut.send(JSON.stringify(data));
     }

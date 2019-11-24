@@ -1,0 +1,59 @@
+div.deckgo-gif {
+  position: relative;
+  border-radius: var(--border-radius);
+
+  img {
+    width: var(--width);
+    height: var(--height);
+  }
+
+  ::slotted([slot="header"]), ::slotted([slot="footer"]) {
+    position: absolute;
+
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    text-align: center;
+
+    background: var(--background);
+    color: var(--color);
+    padding: var(--padding, 8px);
+  }
+
+  ::slotted([slot="header"]) {
+    top: 0;
+  }
+
+  ::slotted([slot="footer"]) {
+    bottom: 0;
+  }
+}
+
+:host(.deckgo-gif-fullscreen) {
+
+  div.deckgo-gif {
+    width: var(--slide-width);
+    height: var(--slide-gif-height, 100vh);
+
+    --width: var(--slide-width);
+
+    overflow: hidden;
+
+    img {
+      transform: translate(-50%, -50%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+
+    ::slotted([slot="header"]), ::slotted([slot="footer"]) {
+      z-index: var(--zIndex, 2);
+    }
+  }
+}
+
+:host(.deckgo-gif-hidden) {
+  ::slotted([slot="header"]), ::slotted([slot="footer"]) {
+    display: none;
+  }
+}

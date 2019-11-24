@@ -30,5 +30,17 @@
   https://beta.ionicframework.com/docs/theming/color-generator
 */
 
-@import 'variables';
-@import 'theme';
+@import 'theme/variables';
+@import 'theme/fonts';
+@import 'theme/content';
+@import 'theme/main';
+@import 'theme/menu';
+@import 'theme/toolbar';
+@import 'theme/list';
+@import 'theme/segment';
+@import 'theme/alert';
+@import 'theme/shadow';
+
+@import "./deckdeckgo-deck";
+@import "./deckdeckgo-deck-fonts";
+@import "./deckdeckgo-deck-rtl";

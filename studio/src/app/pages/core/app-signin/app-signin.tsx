@@ -8,18 +8,18 @@ import {filter, take} from 'rxjs/operators';
 
 import {del, get, set} from 'idb-keyval';
 
-import {User} from '../../../models/user';
-import {AuthUser} from '../../../models/auth-user';
-import {Deck} from '../../../models/deck';
+import {AuthUser} from '../../../models/auth/auth.user';
+import {Deck} from '../../../models/data/deck';
 
 import {Utils} from '../../../utils/core/utils';
+import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {MergeService} from '../../../services/api/merge/merge.service';
-import {UserService} from '../../../services/api/user/user.service';
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+import {UserService} from '../../../services/data/user/user.service';
+import {DeckService} from '../../../services/data/deck/deck.service';
 
 @Component({
     tag: 'app-signin',
@@ -40,9 +40,9 @@ export class AppSignIn {
 
     private navService: NavService;
 
-    private mergeService: MergeService;
     private userService: UserService;
     private authService: AuthService;
+    private deckService: DeckService;
 
     private firebaseUser: firebase.User;
 
@@ -50,7 +50,7 @@ export class AppSignIn {
 
     constructor() {
         this.navService = NavService.getInstance();
-        this.mergeService = MergeService.getInstance();
+        this.deckService = DeckService.getInstance();
         this.userService = UserService.getInstance();
         this.authService = AuthService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
@@ -84,7 +84,9 @@ export class AppSignIn {
             'https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.css'
         );
 
-        const appUrl: string = EnvironmentConfigService.getInstance().get('appUrl');
+        const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+        const appUrl: string = deckDeckGoConfig.appUrl;
 
         const redirectUrl: string = await get<string>('deckdeckgo_redirect');
         const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
@@ -125,6 +127,7 @@ export class AppSignIn {
             }
         };
 
+        // @ts-ignore
         window['firebase'] = firebase;
 
         await this.saveRedirect();
@@ -165,17 +168,15 @@ export class AppSignIn {
                 return;
             }
 
-            await this.userService.signOut();
-
-            this.userService.watch().pipe(
-                filter((user: User) => user !== null && user !== undefined && user.id && user.id !== mergeInfo.userId),
-                take(1)).subscribe(async (user: User) => {
+            this.authService.watch().pipe(
+                filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && authUser.uid && authUser.uid !== mergeInfo.userId),
+                take(1)).subscribe(async (authUser: AuthUser) => {
 
                 // Merge deck to new user
-                await this.mergeService.mergeDeck(mergeInfo.deckId, mergeInfo.userToken, user.id);
+                await this.deckService.mergeDeck(mergeInfo.deckId, authUser.uid);
 
-                // Delete previous anonymous user from our backend
-                await this.userService.delete(mergeInfo.userId, mergeInfo.userToken);
+                // Delete previous anonymous user from the database
+                await this.userService.delete(mergeInfo.userId);
 
                 // Delete previous anonymous user from Firebase
                 if (this.firebaseUser) {
@@ -206,13 +207,12 @@ export class AppSignIn {
 
             const observables = [];
             observables.push(this.authService.watch().pipe(take(1)));
-            observables.push(this.userService.watch().pipe(take(1)));
             observables.push(this.deckEditorService.watch().pipe(take(1)));
 
-            forkJoin(observables).subscribe(async ([authUser, user, deck]: [AuthUser, User, Deck]) => {
+            forkJoin(observables).subscribe(async ([authUser, deck]: [AuthUser, Deck]) => {
                 await set('deckdeckgo_redirect_info', {
                     deckId: deck ? deck.id : null,
-                    userId: user ? user.id : null,
+                    userId: authUser ? authUser.uid : null,
                     userToken: authUser ? authUser.token : null,
                     anonymous: authUser ? authUser.anonymous : true
                 });
@@ -272,14 +272,12 @@ export class AppSignIn {
         if (this.redirect === 'editor') {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
-                <p class="ion-text-center ion-padding">Sign in to extend your deck, to publish your presentation and to
-                    get soon a personalized feed of recommendations.</p>
+                <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor like adding more slides, uploading and using your own images, using the author template or being able to share your presentation as an app.</p>
             ]
         } else {
             return [
                 <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Welcome back.</h1>,
-                <p class="ion-text-center ion-padding">Sign in to publish your presentation and to get soon a
-                    personalized feed of recommendations.</p>
+                <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to be able to share your presentation as an app.</p>
             ]
         }
     }

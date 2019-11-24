@@ -1,3 +1,59 @@
+<a name="1.0.0-rc.1-3"></a>
+# 1.0.0-rc.1-3 (2019-10-21)
+
+### Fix
+
+* missing place holder (not displayed)
+
+<a name="1.0.0-rc.1-2"></a>
+# 1.0.0-rc.1-2 (2019-10-21)
+
+### Fix
+
+* wrong code highlight when line numbers are off ([#423](https://github.com/deckgo/deckdeckgo/issues/423))
+
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-09-09)
+
+### Features
+
+* display code container as `block` per default
+
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
+<a name="1.0.0-alpha.19"></a>
+# 1.0.0-alpha.19 (2019-08-15)
+
+* add some CSS4 variables to style the code's container
+
+<a name="1.0.0-alpha.18"></a>
+# 1.0.0-alpha.18 (2019-08-09)
+
+## Features
+
+* improve lines highlighting detection with ResizeObserver for modern browsers
+
+## Fix
+
+* the component displayed line numbers from 1 but the highlight used to expect line numbers from 0. this is now fixed, highlight will also begin with 1.
+* add empty lines if line numbers has to be displayed to avoid sizing problem regarding font-size
+
+<a name="1.0.0-alpha.17"></a>
+# 1.0.0-alpha.17 (2019-07-30)
+
+### Features
+
+* display optional line numbers [#115](https://github.com/deckgo/deckdeckgo/issues/115)
+
 <a name="1.0.0-alpha.16"></a>
 # 1.0.0-alpha.16 (2019-06-04)
 

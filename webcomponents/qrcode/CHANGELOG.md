@@ -1,3 +1,28 @@
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.2 (2019-10-07)
+
+### Features
+
+* `watch` property `content` to generate QR code again if its value is modified
+
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
+<a name="1.0.0-alpha.9"></a>
+# 1.0.0-alpha9 (2019-07-11)
+
+### Fix
+
+* pre-rendering
+
 <a name="1.0.0-alpha.8"></a>
 # 1.0.0-alpha.8 (2019-06-04)
 

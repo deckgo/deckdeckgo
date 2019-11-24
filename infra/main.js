@@ -89,10 +89,8 @@ exports.handler = function(event, context, callback) {
 
                 // Clean up the directory and finally reply
                 console.log("cleaning up");
-                fs.unlink(responseFile, (err) => {
-                    if (err) throw err;
-                    fs.rmdir(responseDir);
-                });
+                fs.unlinkSync(responseFile);
+                fs.rmdirSync(responseDir);
                 callback(null, response);
             }
         });

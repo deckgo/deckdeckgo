@@ -1,0 +1,66 @@
+ion-toolbar {
+  padding: 16px;
+}
+
+ion-list.list-ios {
+  margin-bottom: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+ion-item {
+  --border-width: 0;
+  --inner-border-width: 0;
+
+  &.action-button {
+    --min-height: 42px;
+
+    ion-button {
+      width: 100%;
+    }
+  }
+
+  &.select {
+    ion-label:first-of-type {
+      display: none;
+    }
+
+    ion-select {
+      min-width: 100%;
+    }
+  }
+
+  small {
+    color: var(--ion-color-medium);
+  }
+}
+
+ion-item-divider {
+  --color: black;
+  --background: inherit;
+  --ion-item-border-color: transparent;
+  --ion-padding: 0;
+
+  ion-label {
+    margin: 16px 0 4px;
+  }
+}
+
+ion-button.delete {
+  --color: var(--ion-color-medium);
+  --color-activated: var(--ion-color-medium);
+  --border-color: var(--ion-color-light);
+  --background-activated: white;
+}
+
+ion-segment {
+  ion-segment-button {
+    &:first-of-type {
+      margin-left: 8px;
+    }
+
+    &:last-of-type {
+      margin-right: 8px;
+    }
+  }
+}

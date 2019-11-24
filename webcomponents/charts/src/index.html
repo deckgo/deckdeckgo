@@ -17,38 +17,90 @@
 </head>
 <body>
 
-  <deckgo-pie-chart width="500" height="400" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv"></deckgo-pie-chart>
+  <deckgo-line-chart width="500" height="400" y-axis-domain="extent" date-pattern="dd.MM.yyyy" animation="true"
+                     src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv"></deckgo-line-chart>
 
-  <deckgo-pie-chart width="500" height="400" inner-radius="100" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart-single-column.csv"></deckgo-pie-chart>
+  <div>
+    <button onclick="prev('deckgo-line-chart')">Prev</button>
+    <button onclick="next('deckgo-line-chart')">Next</button>
+    <button onclick="drawLine()">Redraw</button>
+  </div>
 
-  <deckgo-line-chart width="500" height="400" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
-                     src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-to-compare.csv"></deckgo-line-chart>
+  <deckgo-bar-chart animation="true" width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare-with-titles.csv" style="--deckgo-chart-fill-color-1: #3880ff; --deckgo-chart-fill-color-2: #0cd1e8; --deckgo-chart-fill-color-3: #7044ff;"></deckgo-bar-chart>
 
-  <deckgo-line-chart width="500" height="400" smooth="false" ticks="5" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart.csv" date-pattern="dd.MM.yyyy"></deckgo-line-chart>
+  <div>
+    <button onclick="prev('deckgo-bar-chart')">Prev</button>
+    <button onclick="next('deckgo-bar-chart')">Next</button>
+  </div>
 
-  <deckgo-line-chart width="500" height="400" area="false" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-no-dates.csv" style="--deckgo-chart-fill-color: none; --deckgo-chart-stroke: #3880ff; --deckgo-chart-compare-fill-color: none; --deckgo-chart-compare-fill-opacity: 1; --deckgo-chart-compare-stroke: #7044ff; --deckgo-chart-compare-stroke-width: 3px"></deckgo-line-chart>
+  <deckgo-bar-chart animation="true" width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv" style="--deckgo-chart-fill-color-1: #ff0000; --deckgo-chart-fill-color-2: #00ff00; --deckgo-chart-fill-color-3: #0000ff;"></deckgo-bar-chart>
 
-  <deckgo-line-chart width="500" height="400" smooth="false" area="false" grid="true" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-no-dates.csv" style="--deckgo-chart-fill-color: none; --deckgo-chart-stroke: #3880ff; --deckgo-chart-compare-fill-color: none; --deckgo-chart-compare-fill-opacity: 1; --deckgo-chart-compare-stroke: #7044ff; --deckgo-chart-compare-stroke-width: 3px"></deckgo-line-chart>
+  <deckgo-pie-chart animation="true" width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv" style="--deckgo-chart-fill-color-1: #3880ff; --deckgo-chart-fill-color-2: #0cd1e8; --deckgo-chart-fill-color-3: #7044ff;"></deckgo-pie-chart>
 
-  <deckgo-bar-chart id="test" width="500" height="400" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-bar-chart-to-compare.csv" style="--deckgo-chart-fill-color-bar1: #3880ff; --deckgo-chart-fill-color-bar2: #0cd1e8; --deckgo-chart-fill-color-bar3: #7044ff;"></deckgo-bar-chart>
+  <div>
+    <button onclick="prev('deckgo-pie-chart')">Prev</button>
+    <button onclick="next('deckgo-pie-chart')">Next</button>
+  </div>
 
-  <deckgo-bar-chart width="500" height="400" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv" style="--deckgo-chart-fill-color-bar1: #3880ff;"></deckgo-bar-chart>
+  <deckgo-pie-chart width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv" style="--deckgo-chart-text-display: none;"></deckgo-pie-chart>
+
+  <div>
+    <button onclick="draw()">Redraw</button>
+  </div>
+
+  <deckgo-line-chart width="500" height="400" y-axis-domain="extent" date-pattern="dd.MM.yyyy" style="--deckgo-chart-text-display: none;"
+                     src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv"></deckgo-line-chart>
+
+  <deckgo-line-chart width="500" height="400" y-axis-domain="extent" date-pattern="dd.MM.yyyy" style="--deckgo-chart-fill-color-0: #3880ff; --deckgo-chart-fill-color-1: #7044ff; --deckgo-chart-fill-opacity-1: 0.7;"
+                   src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv"></deckgo-line-chart>
+
+  <deckgo-line-chart width="500" height="400" smooth="false" ticks="5" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv" date-pattern="dd.MM.yyyy"></deckgo-line-chart>
+
+  <deckgo-line-chart width="500" height="400" area="false" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv" style="--deckgo-chart-fill-color-0: none; --deckgo-chart-stroke: red; --deckgo-chart-fill-color-1: none; --deckgo-chart-fill-opacity-1: 1; --deckgo-chart-stroke-width-1: 3px"></deckgo-line-chart>
+
+  <deckgo-line-chart width="500" height="400" smooth="false" area="false" grid="true" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv" style="--deckgo-chart-fill-color-0: none; --deckgo-chart-stroke: red; --deckgo-chart-stroke-0: #3880ff; --deckgo-chart-fill-color-1: none; --deckgo-chart-fill-opacity-1: 1; --deckgo-chart-stroke-1: #7044ff; --deckgo-chart-stroke-width-1: 3px"></deckgo-line-chart>
+
+  <deckgo-bar-chart id="test" width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv" style="--deckgo-chart-fill-color-1: #3880ff; --deckgo-chart-fill-color-2: #0cd1e8; --deckgo-chart-fill-color-3: #7044ff;"></deckgo-bar-chart>
+
+  <deckgo-bar-chart width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare-with-titles.csv" style="--deckgo-chart-fill-color-1: #3880ff; --deckgo-chart-fill-color-2: #0cd1e8; --deckgo-chart-fill-color-3: #7044ff;"></deckgo-bar-chart>
+
+  <deckgo-bar-chart width="500" height="400" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv" style="--deckgo-chart-fill-color-1: #3880ff; --deckgo-chart-text-display: none;"></deckgo-bar-chart>
 
   <script type="text/javascript">
     function draw() {
       const elem = document.getElementsByTagName('deckgo-pie-chart');
+      if (elem && elem.length > 1) {
+        elem[1].width = 200;
+        elem[1].height = 200;
+        elem[1].range = ['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00'];
+        elem[1].stroke = "#ffffff";
+        elem[1].draw();
+      }
+    }
+
+    function drawLine() {
+      const elem = document.getElementsByTagName('deckgo-line-chart');
       if (elem && elem.length > 0) {
-        elem[0].width = 200;
-        elem[0].height = 200;
-        elem[0].range = ['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00'];
-        elem[0].stroke = "#ffffff";
+        elem[0].width = 500;
+        elem[0].height = 500;
         elem[0].draw();
       }
     }
-    </script>
 
-  <div style="position: fixed; bottom: 0; right: 0;">
-    <button onclick="draw()">Draw</button>
-  </div>
+    function prev(cmp) {
+      const elem = document.getElementsByTagName(cmp);
+      if (elem && elem.length > 0) {
+        elem[0].prev().then(() => {});
+      }
+    }
+
+    function next(cmp) {
+      const elem = document.getElementsByTagName(cmp);
+      if (elem && elem.length > 0) {
+        elem[0].next().then(() => {});
+      }
+    }
+
+    </script>
 </body>
 </html>

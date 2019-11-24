@@ -1,13 +1,16 @@
 import {Component, Prop, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
 
-import {AuthUser} from '../../../models/auth-user';
-import {User} from '../../../models/user';
+import {AuthUser} from '../../../models/auth/auth.user';
+import {User} from '../../../models/data/user';
 
-import {UserService} from '../../../services/api/user/user.service';
-import {AuthService} from '../../../services/api/auth/auth.service';
+import {ApiUser} from '../../../models/api/api.user';
+
+import {AuthService} from '../../../services/auth/auth.service';
+import {UserService} from '../../../services/data/user/user.service';
+import {ApiUserService} from '../../../services/api/user/api.user.service';
+import {ApiUserFactoryService} from '../../../services/api/user/api.user.factory.service';
 
 @Component({
     tag: 'app-user-info',
@@ -21,6 +24,9 @@ export class AppUserInfo {
     private authService: AuthService;
     private authSubscription: Subscription;
 
+    private apiUserService: ApiUserService;
+    private apiUserSubscription: Subscription;
+
     private userService: UserService;
     private userSubscription: Subscription;
 
@@ -28,10 +34,17 @@ export class AppUserInfo {
     private authUser: AuthUser;
 
     @State()
-    private user: User;
+    private apiUser: ApiUser;
+
+    @State()
+    private name: string;
+
+    @State()
+    private photoUrl: string;
 
     constructor() {
         this.authService = AuthService.getInstance();
+        this.apiUserService = ApiUserFactoryService.getInstance();
         this.userService = UserService.getInstance();
     }
 
@@ -40,15 +53,23 @@ export class AppUserInfo {
             this.authUser = authUser;
         });
 
-        this.userSubscription = this.userService.watch().pipe(
-            filter((user: User) => user && !user.anonymous)).subscribe(async (user: User) => {
-            this.user = user;
+        this.apiUserSubscription = this.apiUserService.watch().subscribe((user: ApiUser) => {
+            this.apiUser = user;
+        });
+
+        this.userSubscription = this.userService.watch().subscribe((user: User) => {
+            this.name = user && user.data ? user.data.name : undefined;
+            this.photoUrl = user && user.data ? user.data.photo_url : undefined;
         });
     }
 
     componentDidUnload() {
         if (this.authSubscription) {
             this.authSubscription.unsubscribe();
+        }
+
+        if (this.apiUserSubscription) {
+            this.apiUserSubscription.unsubscribe();
         }
 
         if (this.userSubscription) {
@@ -60,10 +81,10 @@ export class AppUserInfo {
         if (this.authUser) {
             return <ion-grid>
                 <ion-row class="ion-align-items-center">
-                    <ion-col size={'' + this.avatarColSize}><app-avatar src={this.authUser.photo_url}></app-avatar></ion-col>
+                    <ion-col size={'' + this.avatarColSize}><app-avatar src={this.photoUrl} aria-hidden="true"></app-avatar></ion-col>
                     <ion-col size={'' + (12 - this.avatarColSize)} class="user-info">
-                        <ion-label>{this.authUser.name}</ion-label>
-                        <ion-label>{this.user && this.user.username ? '@' + this.user.username : undefined}</ion-label>
+                        <ion-label>{this.name}</ion-label>
+                        <ion-label>{!this.authUser.anonymous && this.apiUser && this.apiUser.username ? '@' + this.apiUser.username : undefined}</ion-label>
                     </ion-col>
                 </ion-row>
             </ion-grid>

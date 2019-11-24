@@ -8,20 +8,18 @@ import replace from 'rollup-plugin-replace';
 
 // @ts-ignore
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
+// @ts-ignore
+const staging: boolean = process.argv && process.argv.indexOf('--staging') > -1;
 
 const globalScript: string = dev ? 'src/global/app-dev.ts' : 'src/global/app.ts';
 
-// @ts-ignore
-import devConfig from './config.dev.json';
-// @ts-ignore
-import prodConfig from './config.prod.json';
-
-const configValues = dev ? devConfig : prodConfig;
+const configDataFile = dev ? (staging ? './config.staging.json' : './config.dev.json') : './config.prod.json';
+const configValues = require(configDataFile);
 
 export const config: Config = {
     outputTargets: [{
         type: 'www',
-        baseUrl: 'https://beta.deckdeckgo.com'
+        baseUrl: 'https://deckdeckgo.com'
     }],
     globalScript: globalScript,
     globalStyle: 'src/global/app.scss',
@@ -31,7 +29,9 @@ export const config: Config = {
             delimiters: ['<@', '@>'],
             values: configValues
         }),
-        sass(),
+        sass({
+            includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
+        }),
         postcss({
             plugins: [autoprefixer()]
         })

@@ -6,43 +6,46 @@ To create and draw the charts, this project is using [D3js](https://d3js.org).
 
 ## Table of contents
 
-- [Showcase](#app-components-chart-showcase)
-	- [Pie](#app-components-chart-pie)
-	- [Donut](#app-components-chart-donut)
-	- [Compare two graphs](#app-components-chart-compare-two-graphs)
-	- [Line and area](#app-components-chart-line-and-area)
-	- [Compare two lines and smoothing effect](#app-components-chart-compare-two-lines-and-smoothing-effect)
-	- [Compare two lines and display a grid](#app-components-chart-compare-two-lines-and-display-a-grid)
-	- [Bar](#app-components-chart-bar)
-	- [Compare multiple bars](#app-components-chart-compare-multiple-bars)
-- [Getting started](#app-components-chart-getting-started)
-	- [Using DeckDeckGo charts from a CDN](#app-components-chart-using-deckdeckgo-charts-from-a-cdn)
-	- [Install DeckDeckGo charts from NPM](#app-components-chart-install-deckdeckgo-charts-from-npm)
-	- [Framework integration](#app-components-chart-framework-integration)
-- [Usage](#app-components-chart-usage)
-	- [Pie usage](#app-components-chart-pie-usage)
-		- [CSV](#app-components-chart-csv)
-			- [Single column](#app-components-chart-single-column)
-			- [Two columns](#app-components-chart-two-columns)
-		- [Properties](#app-components-chart-properties)
-		- [Styling](#app-components-chart-styling)
-		- [Methods](#app-components-chart-methods)
-		- [Examples](#app-components-chart-examples)
-	- [Line usage](#app-components-chart-line-usage)
-		- [CSV](#app-components-chart-csv-1)
-			- [Two columns](#app-components-chart-two-columns-1)
-			- [Three columns](#app-components-chart-three-columns)
-		- [Properties](#app-components-chart-properties-1)
-		- [Styling](#app-components-chart-styling-1)
-		- [Methods](#app-components-chart-methods-1)
-		- [Examples](#app-components-chart-examples-1)
-	- [Bar usage](#app-components-chart-bar-usage)
-		- [CSV](#app-components-chart-csv-2)
-			- [Multiple columns](#app-components-chart-multiple-columns)
-		- [Properties](#app-components-chart-properties-2)
-		- [Styling](#app-components-chart-styling-2)
-		- [Methods](#app-components-chart-methods-2)
-		- [Examples](#app-components-chart-examples-2)
+- [Showcase](#app-components-charts-showcase)
+	- [Pie](#app-components-charts-pie)
+	- [Donut](#app-components-charts-donut)
+	- [Animated pie](#app-components-charts-animated-pie)
+	- [Compare two graphs](#app-components-charts-compare-two-graphs)
+	- [Line and area](#app-components-charts-line-and-area)
+	- [Compare two lines and smoothing effect](#app-components-charts-compare-two-lines-and-smoothing-effect)
+	- [Compare two lines and display a grid](#app-components-charts-compare-two-lines-and-display-a-grid)
+	- [Animated lines](#app-components-charts-animated-lines)
+	- [Bar](#app-components-charts-bar)
+	- [Compare multiple bars](#app-components-charts-compare-multiple-bars)
+	- [Animated bars](#app-components-charts-animated-bars)
+	- [Video](#app-components-charts-video)
+- [Installation](#app-components-charts-installation)
+	- [Using DeckDeckGo charts from a CDN](#app-components-charts-using-deckdeckgo-charts-from-a-cdn)
+	- [Install DeckDeckGo charts from NPM](#app-components-charts-install-deckdeckgo-charts-from-npm)
+	- [Framework integration](#app-components-charts-framework-integration)
+- [Usage](#app-components-charts-usage)
+	- [Pie usage](#app-components-charts-pie-usage)
+		- [CSV](#app-components-charts-csv)
+			- [Example](#app-components-charts-example)
+		- [Properties](#app-components-charts-properties)
+		- [Styling](#app-components-charts-styling)
+		- [Methods](#app-components-charts-methods)
+		- [Examples](#app-components-charts-examples)
+	- [Line usage](#app-components-charts-line-usage)
+		- [CSV](#app-components-charts-csv-1)
+			- [Two columns](#app-components-charts-two-columns-1)
+			- [Three columns or more](#app-components-charts-three-columns-or-more)
+		- [Properties](#app-components-charts-properties-1)
+		- [Styling](#app-components-charts-styling-1)
+		- [Methods](#app-components-charts-methods-1)
+		- [Examples](#app-components-charts-examples-1)
+	- [Bar usage](#app-components-charts-bar-usage)
+		- [CSV](#app-components-charts-csv-2)
+			- [Multiple columns](#app-components-charts-multiple-columns)
+		- [Properties](#app-components-charts-properties-2)
+		- [Styling](#app-components-charts-styling-2)
+		- [Methods](#app-components-charts-methods-2)
+		- [Examples](#app-components-charts-examples-2)
 
 ## Showcase
 
@@ -61,7 +64,18 @@ npm run start
 
 ### Donut
 
-<deckgo-pie-chart width={500} height={400} inner-radius={100} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart-single-column.csv"></deckgo-pie-chart>
+<deckgo-pie-chart width={500} height={400} inner-radius={100} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"></deckgo-pie-chart>
+
+### Animated pie
+
+<div>
+  <deckgo-pie-chart id="animatedPie" animation={true} width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"></deckgo-pie-chart>
+  
+  <div>
+    <ion-button fill="outline" size="small" onClick={() => this.prev('animatedPie')}><ion-label>Prev</ion-label></ion-button>
+    <ion-button fill="outline" size="small" onClick={() => this.next('animatedPie')}><ion-label>Next</ion-label></ion-button>
+  </div>
+</div>
 
 ### Compare two graphs
 
@@ -75,45 +89,72 @@ npm run start
 
 <div>
   <deckgo-line-chart width={500} height={400} area={false} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
-                    style={{'--deckgo-chart-fill-color': 'none', '--deckgo-chart-stroke': 'var(--ion-color-primary)', '--deckgo-chart-compare-fill-color': 'none', '--deckgo-chart-compare-fill-opacity': '1', '--deckgo-chart-compare-stroke': 'var(--ion-color-secondary)', '--deckgo-chart-compare-stroke-width': '3px'}}></deckgo-line-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-stroke-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'none', '--deckgo-chart-fill-opacity-2': '1', '--deckgo-chart-stroke-2': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-2': '3px'}}></deckgo-line-chart>
 </div>
 
 ### Compare two lines and display a grid
 
 <div>
   <deckgo-line-chart width={500} height={400} smooth={false} area={false} grid={true} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv"
-                    style={{'--deckgo-chart-fill-color': 'none', '--deckgo-chart-stroke': 'var(--ion-color-primary)', '--deckgo-chart-compare-fill-color': 'none', '--deckgo-chart-compare-fill-opacity': '1', '--deckgo-chart-compare-stroke': 'var(--ion-color-secondary)', '--deckgo-chart-compare-stroke-width': '3px'}}></deckgo-line-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'none', '--deckgo-chart-stroke-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'none', '--deckgo-chart-fill-opacity-2': '1', '--deckgo-chart-stroke-2': 'var(--ion-color-secondary)', '--deckgo-chart-stroke-width-2': '3px'}}></deckgo-line-chart>
 </div>
 
+### Animated lines
+
+<div>
+  <deckgo-line-chart id="animatedLine" animation={true} y-axis-domain="extent" date-pattern="dd.MM.yyyy" width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv"></deckgo-line-chart>
+  
+  <div>
+    <ion-button fill="outline" size="small" onClick={() => this.prev('animatedLine')}><ion-label>Prev</ion-label></ion-button>
+    <ion-button fill="outline" size="small" onClick={() => this.next('animatedLine')}><ion-label>Next</ion-label></ion-button>
+  </div>
+</div>
 
 ### Bar
 
 <div>
   <deckgo-bar-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
-                    style={{'--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-bar2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-bar3': 'var(--ion-color-tertiary)'}}></deckgo-bar-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}></deckgo-bar-chart>
 </div>
                     
 ### Compare multiple bars
 
 <div>
   <deckgo-bar-chart width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv" 
-                    style={{'--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)'}}></deckgo-bar-chart>
+                    style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)'}}></deckgo-bar-chart>
 </div>
 
-## Getting started
+### Animated bars
 
-To create easily your PWA presentation and to enjoy all the options, I suggest you to create your slides using the CLI as described in the [Getting started chapter](/docs/introduction).
+<div>
+  <deckgo-bar-chart id="animatedBar" animation={true} width={500} height={400} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare-with-titles.csv"
+                      style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'}}></deckgo-bar-chart>
+  
+  <div>
+    <ion-button fill="outline" size="small" onClick={() => this.prev('animatedBar')}><ion-label>Prev</ion-label></ion-button>
+    <ion-button fill="outline" size="small" onClick={() => this.next('animatedBar')}><ion-label>Next</ion-label></ion-button>
+  </div>
+</div>
 
-Doing so you will use the [DeckDeckGo] starter kit which already includes this Web Component.
+### Video
 
-However, if you are looking to use this Web Component as a standalone component, to add a charts to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/@deckdeckgo/charts).
+Have a look at this video where we demonstrate it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CaEwUXO7BYA" frameborder="0"></iframe>
+
+## Installation
+
+This component could be added to your web application using the following methods.
+
+> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
 
 ### Using DeckDeckGo charts from a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] charts from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
-<script src="https://unpkg.com/deckdeckgo-charts@latest/dist/deckdeckgo-charts.js"></script>
+<script type="module" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.js"></script>
 ```
 ### Install DeckDeckGo charts from NPM
 
@@ -127,6 +168,21 @@ npm install @deckdeckgo/charts
 
 The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
 
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/charts';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/charts/dist/loader';
+deckDeckGoElement(window);
+```
+
 ## Usage
 
 The main idea behind the [DeckDeckGo] charts is to be able to drop a **csv** file, provide it to the component and let it do the job respectively draw the chart.
@@ -137,21 +193,15 @@ The `<deckgo-pie-chart/>` Web Component draw a Pie chart.
 
 #### CSV
 
-The csv file should contains one or two columns. The values could be provided as `number` or `percent`.
+The csv file should contains at least two columns. The first one should be a label, which could be displayed or not, and the second one should be a value.
 
-##### Single column
+If more than two columns are provided, all columns beside the first one will be interpreted as values for comparison, in case you would like to displayed multiple graphs.
 
-If a single column is used, it should contains the values.
+The values could be provided as `number` or `percent`.
 
-```
-60
-20
-20
-```
+##### Example
 
-##### Two columns
-
-If two columns are provided, the first column should contains the description of the value.
+In this example, the first column contains a label for the category and the second contains the value in percent.
 
 ```
 Wind;53.13%
@@ -172,8 +222,9 @@ The `<deckgo-pie-chart/>` expose the following properties:
 | `width`       | `width`        | X | The width of the chart            | `number`                | |
 | `height`      | `height`       | X | The height of the chart            | `number`                | |
 | `innerRadius` | `inner-radius` |  | To plot a `donut` instead of a `pie`, provide an inner radius            | `number`                | `0`         |
-| `range`       | `range`        |  | A list of custom colors which should be to draw the chart | `string[]` | |
 | `separator`   | `separator`    |  | The line separator use in your csv file           | `string`                | `';'`       |
+| `animation`         | `animation`          | | Display multiple graphs and animate the transition between these | `boolean`                | `false` |
+| `animationDuration`         | `animation-duration`          | | Duration of the transition between graphs | `numer`                | `1000` (aka 1 second) |
 
 #### Styling
 
@@ -181,16 +232,45 @@ The `<deckgo-pie-chart/>` could be styled using the following CSS4 variables:
 
 | CSS4 variable                      | Default | Note |
 | -------------------------- |-----------------|-----------------|
-| --deckgo-chart-text-color |  | The color of the labels |
+| --deckgo-chart-text-color | black | The color of the labels |
 | --deckgo-chart-text-display |  | The display property of the labels |
 | --deckgo-chart-path-stroke | | The stroke property of the pie, in case you would like to display a line between the slices |
 
+Furthermore, as the Pie chart contains probably more than one slice, it will generate dynamically the following CSS4 variable for each slice of the pie where `X` is an index between `1` and the number of slices.
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |-----------------|-----------------|
+| --deckgo-chart-fill-color-index | | The fill color of the slice identified with index `X` |
+| --deckgo-chart-fill-opacity-index | | The opacity of the slice identified with index `X` |
+| --deckgo-chart-stroke-index | | The stroke of the slice identified with index `X` |
+| --deckgo-chart-stroke-width-index | | The stroke width of the slice identified with index `X` |
+
 #### Methods
 
-The `<deckgo-pie-chart/>` expose the following method in case you would like to redraw your chart, for example on resize of the window:
+The `<deckgo-pie-chart/>` expose the following methods.
+ 
+##### Draw
+ 
+In case you would like to redraw your chart, for example on resize of the window:
 
 ```
-draw() => Promise<void>
+draw(width?: number, height?: number) => Promise<void>
+```
+
+##### Next
+
+If you are using `animation`, this method is used to display the next data respectively the next chart.
+
+```
+async next()
+```
+
+##### Previous
+
+If you are using `animation`, this method is used to display the previous data respectively the previous chart.
+
+```
+async prev()
 ```
 
 #### Examples
@@ -207,11 +287,13 @@ The `<deckgo-line-chart/>` Web Component draw a line chart.
 
 #### CSV
 
-The csv file should contains two or three columns.
+The csv file should contains two or multiple columns.
 
 The first column contains the values for the `x` axis. These should be provided as `date` or `number`.
 
-The second and third columns contains the values for the `y` axis. These should be provided as `number`.
+The second and other columns contains the values for the `y` axis. These should be provided as `number`.
+
+Use multiple columns in case you would like to compare multiple graphs.
 
 ##### Two columns
 
@@ -231,9 +313,9 @@ With numbers as `x` axis:
 3;8
 ```
 
-##### Three columns
+##### Three columns or more
 
-The third columns is optional, it could be use in case you would like to plot two charts on the same graph. 
+The third columns or any others is optional, it could be use in case you would like to plot multiple charts on the same graph or animate a transition between these. 
 
 With dates as `x` axis:
 
@@ -271,6 +353,8 @@ The `<deckgo-line-chart/>` expose the following properties:
 | `ticks`        | `ticks`         |           | Specify the ticks of the axis           | `number`  | ``                         |
 | `grid`         | `grid`          |           | Draw a grid behin the graph           | `boolean` | `false`                             |
 | `separator`   | `separator`    |  | The line separator use in your csv file           | `string`                | `';'`       |
+| `animation`         | `animation`          | | Display multiple graphs and animate the transition between these | `boolean`                | `false` |
+| `animationDuration`         | `animation-duration`          | | Duration of the transition between graphs | `numer`                | `1000` (aka 1 second) |
 
 #### Styling
 
@@ -279,25 +363,49 @@ The `<deckgo-line-chart/>` could be styled using the following CSS4 variables:
 | CSS4 variable                      | Default | Note |
 | -------------------------- |-----------------|-----------------|
 | --deckgo-chart-axis-color | black | The color of the axis |
-| --deckgo-chart-text-color |  | The color of the labels |
+| --deckgo-chart-text-color | black | The color of the labels |
 | --deckgo-chart-text-display |  | The display property of the labels |
-| --deckgo-chart-fill-color | #3880ff | The fill color of the area of the main chart |
-| --deckgo-chart-fill-opacity | | The opacity of the area of the main chart |
-| --deckgo-chart-stroke | | The stroke of the area of the main chart |
-| --deckgo-chart-stroke-width | | The stroke width of the area of the main chart |
-| --deckgo-chart-compare-fill-color | #0cd1e8 | The fill color of the area of the chart to compare |
-| --deckgo-chart-compare-fill-opacity | 0.7 | The opacity of the area of the chart to compare |
-| --deckgo-chart-compare-stroke | | The stroke of the area of the chart to compare |
-| --deckgo-chart-compare-stroke-width | | The stroke width of the area of the chart to compare |
 | --deckgo-chart-grid-stroke | #989aa2 | The stroke of the grid |
 | --deckgo-chart-grid-stroke-opacity | 0.7 | The stroke opacity of the grid |
+| --deckgo-chart-stroke | | A default stroke which could be applied to all graphs' line |
+
+Furthermore, for each generated charts, the following CSS4 variables could be applied:
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |-----------------|-----------------|
+| --deckgo-chart-fill-color-index | #3880ff | The fill color of the area of the chart |
+| --deckgo-chart-fill-opacity-index | | The opacity of the area of the chart |
+| --deckgo-chart-stroke-index | | The stroke of the area of the chart |
+| --deckgo-chart-stroke-width-index | | The stroke width of the area of the chart |
+
+Note: Replace `-index` with the index of the chart, for example: `--deckgo-chart-fill-color-1: red;`
 
 #### Methods
 
-The `<deckgo-line-chart/>` expose the following method in case you would like to redraw your chart, for example on resize of the window:
+The `<deckgo-line-chart/>` expose the following methods.
+
+##### Draw
+ 
+In case you would like to redraw your chart, for example on resize of the window:
 
 ```
-draw() => Promise<void>
+draw(width?: number, height?: number) => Promise<void>
+```
+
+##### Next
+
+If you are using `animation`, this method is used to display the next data respectively the next chart.
+
+```
+async next()
+```
+
+##### Previous
+
+If you are using `animation`, this method is used to display the previous data respectively the previous chart.
+
+```
+async prev()
 ```
 
 #### Examples
@@ -314,13 +422,28 @@ The `<deckgo-bar-chart/>` Web Component draw a Bar chart.
 
 #### CSV
 
-The csv file should contains at lest two columns. The values could be provided as `number` or `percent`.
+The csv file should contains at least two columns. The first column should contains the labels. The other columns should contains values.
+
+Use multiple columns in case you would like to compare multiple graphs.
+
+The values could be provided as `number` or `percent`.
 
 ##### Multiple columns
 
 The first column should contains the labels or groups used for the X axis. The other columns are the values use for the Y axis.
 
 ```
+Group A;5;0;10
+Group B;10;6;12
+Group C;8;14;8
+Group D;14;8;16
+Group E;18;4;5
+```
+
+If you want to provide title for the bars, add a first row in your data with an empty value for the first column.
+
+```
+;Salami;Pastrami;Prosciutto
 Group A;5;0;10
 Group B;10;6;12
 Group C;8;14;8
@@ -342,6 +465,8 @@ The `<deckgo-bar-chart/>` expose the following properties:
 | `marginRight`  | `margin-right`  |           | The margin right of the chart in pixel           | `number`  | `32`                                |
 | `marginTop`    | `margin-top`    |           | The margin top of the chart in pixel           | `number`  | `32`                                |
 | `separator`   | `separator`    |  | The line separator use in your csv file           | `string`                | `';'`       |
+| `animation`         | `animation`          | | Display multiple graphs and animate the transition between these | `boolean`                | `false` |
+| `animationDuration`         | `animation-duration`          | | Duration of the transition between graphs | `numer`                | `1000` (aka 1 second) |
 
 #### Styling
 
@@ -357,17 +482,37 @@ Furthermore, as the Bar chart could draw dynamically multiple bars, it will gene
 | -------------------------- |-----------------|-----------------|
 | --deckgo-chart-text-color |  | The color of the labels |
 | --deckgo-chart-text-display |  | The display property of the labels |
-| --deckgo-chart-fill-color-barX | | The fill color of the bar chart identified with index `X` |
-| --deckgo-chart-fill-opacity-baxX | | The opacity of the bar chart identified with index `X` |
-| --deckgo-chart-stroke-barX | | The stroke of the bar chart identified with index `X` |
-| --deckgo-chart-stroke-width-barX | | The stroke width of the chart identified with index `X` |
+| --deckgo-chart-fill-color-index | | The fill color of the bar chart identified with index `X` |
+| --deckgo-chart-fill-opacity-index | | The opacity of the bar chart identified with index `X` |
+| --deckgo-chart-stroke-index | | The stroke of the bar chart identified with index `X` |
+| --deckgo-chart-stroke-width-index | | The stroke width of the chart identified with index `X` |
 
 #### Methods
 
-The `<deckgo-bar-chart/>` expose the following method in case you would like to redraw your chart, for example on resize of the window:
+The `<deckgo-bar-chart/>` expose the following methods:
+
+##### Draw
+ 
+In case you would like to redraw your chart, for example on resize of the window:
 
 ```
-draw() => Promise<void>
+draw(width?: number, height?: number) => Promise<void>
+```
+
+##### Next
+
+If you are using `animation`, this method is used to display the next data respectively the next chart.
+
+```
+async next()
+```
+
+##### Previous
+
+If you are using `animation`, this method is used to display the previous data respectively the previous chart.
+
+```
+async prev()
 ```
 
 #### Examples
@@ -378,7 +523,7 @@ You could find other examples of bar charts in the [src/index.html](https://gith
 <deckgo-bar-chart width={500} 
                   height={400}
                    src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"
-                   style="--deckgo-chart-fill-color-bar1: #3880ff;">
+                   style="--deckgo-chart-fill-color-1: #3880ff;">
 </deckgo-bar-chart>
 ```
 

@@ -1,35 +1,12 @@
 import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method, h} from '@stencil/core';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
+
+import '@deckdeckgo/color';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
-
-interface AnchorLink {
-  range: Range;
-  text: string;
-}
-
-interface InputTargetEvent extends EventTarget {
-  value: string;
-}
-
-enum ToolbarActions {
-  SELECTION,
-  LINK,
-  IMAGE
-}
-
-enum ImageSize {
-  SMALL = '25%',
-  MEDIUM = '50%',
-  LARGE = '75%',
-  ORIGINAL = '100%'
-}
-
-enum ImageAlign {
-  STANDARD,
-  START
-}
+import {ImageSize, ImageAlign, ToolbarActions} from '../../utils/enums';
+import {AnchorLink, InlineAction, InputTargetEvent} from './deckdeckgo-inline-editor.interface';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -79,6 +56,11 @@ export class DeckdeckgoInlineEditor {
   @State()
   private toolsActivated: boolean = false;
 
+  @State()
+  private displayToolsActivated: boolean = false;
+
+  private debounceDisplayToolsActivated: Function;
+
   private selection: Selection = null;
 
   private anchorLink: AnchorLink = null;
@@ -102,6 +84,8 @@ export class DeckdeckgoInlineEditor {
 
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
+  @Event() private linkCreated: EventEmitter<HTMLElement>;
+
   @Prop()
   imgAnchor: string = 'img';
 
@@ -113,21 +97,39 @@ export class DeckdeckgoInlineEditor {
 
   private iOSTimerScroll: number;
 
+  @Prop()
+  imgEditable: boolean = false;
+
+  @Prop()
+  list: boolean = true;
+
+  @Prop()
+  customActions: string; // Comma separated list of additional action components
+
+  @Event()
+  customAction: EventEmitter<InlineAction>;
+
+  constructor() {
+    this.resetDisplayToolsActivated();
+  }
+
+  private resetDisplayToolsActivated() {
+    this.debounceDisplayToolsActivated = debounce(() => {
+      this.displayToolsActivated = true;
+    });
+  }
+
   async componentWillLoad() {
     await this.attachListener();
   }
 
   async componentDidLoad() {
-    await this.colorPickerListener(true);
-
     if (!this.mobile) {
-      this.mobile = DeckDeckGoUtils.isMobile();
+      this.mobile = isMobile();
     }
   }
 
   async componentDidUnload() {
-    await this.colorPickerListener(false);
-
     await this.detachListener(this.attachTo ? this.attachTo : document);
   }
 
@@ -145,8 +147,8 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>((resolve) => {
       const listenerElement: HTMLElement | Document = this.attachTo ? this.attachTo : document;
       if (listenerElement) {
-        listenerElement.addEventListener('mousedown', this.mousedown, {passive: true});
-        listenerElement.addEventListener('touchstart', this.touchstart, {passive: true});
+        listenerElement.addEventListener('mousedown', this.startSelection, {passive: true});
+        listenerElement.addEventListener('touchstart', this.startSelection, {passive: true});
       }
 
       resolve();
@@ -156,36 +158,58 @@ export class DeckdeckgoInlineEditor {
   private detachListener(listenerElement: HTMLElement | Document): Promise<void> {
     return new Promise<void>((resolve) => {
       if (listenerElement) {
-        listenerElement.removeEventListener('mousedown', this.mousedown);
-        listenerElement.removeEventListener('touchstart', this.touchstart);
+        listenerElement.removeEventListener('mousedown', this.startSelection);
+        listenerElement.removeEventListener('touchstart', this.startSelection);
       }
 
       resolve();
     });
   }
 
-  private mousedown = async ($event: MouseEvent) => {
+  private startSelection = async ($event: MouseEvent | TouchEvent) => {
+    if (this.toolbarActions !== ToolbarActions.IMAGE) {
+      this.anchorEvent = $event;
+    }
+
     if (this.toolsActivated) {
+      await this.resetImageToolbarActions($event);
+
       return;
     }
 
-    this.anchorEvent = $event;
+    if (this.toolbarActions === ToolbarActions.IMAGE) {
+      this.anchorEvent = $event;
+    }
 
     await this.displayImageActions($event);
   };
 
-  private touchstart = async ($event: TouchEvent) => {
-    if (this.toolsActivated) {
-      return;
-    }
+  private resetImageToolbarActions($event: MouseEvent | TouchEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (this.toolbarActions !== ToolbarActions.IMAGE) {
+        resolve();
+        return;
+      }
 
-    this.anchorEvent = $event;
+      if ($event && $event.target && ($event.target instanceof HTMLElement)) {
+        const target: HTMLElement = $event.target as HTMLElement;
 
-    await this.displayImageActions($event);
-  };
+        if (target && target.nodeName && target.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
+          await this.reset(false);
+        }
+      }
+
+      resolve();
+    });
+  }
 
   private displayImageActions($event: MouseEvent | TouchEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
+      if (!this.imgEditable) {
+        resolve();
+        return;
+      }
+
       const isAnchorImg: boolean = await this.isAnchorImage();
       if (!isAnchorImg) {
         resolve();
@@ -226,6 +250,7 @@ export class DeckdeckgoInlineEditor {
       }
 
       this.toolbarActions = ToolbarActions.IMAGE;
+      this.color = undefined;
       await this.setToolsActivated(true);
 
       resolve();
@@ -290,12 +315,6 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      // Quirk when use click at the begin of the selection after having already selected something
-      if (this.selection && selection.toString() === this.selection.toString()) {
-        resolve();
-        return;
-      }
-
       const activated: boolean = await this.activateToolbar(selection);
       await this.setToolsActivated(activated);
 
@@ -306,7 +325,8 @@ export class DeckdeckgoInlineEditor {
           const range: Range = selection.getRangeAt(0);
           this.anchorLink = {
             range: range,
-            text: selection.toString()
+            text: selection.toString(),
+            element: document.activeElement
           };
 
           await this.setToolbarAnchorPosition();
@@ -329,8 +349,8 @@ export class DeckdeckgoInlineEditor {
       const tools: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-tools');
 
       if (tools) {
-        let top: number = DeckDeckGoUtils.unifyEvent(this.anchorEvent).clientY;
-        let left: number = DeckDeckGoUtils.unifyEvent(this.anchorEvent).clientX;
+        let top: number = unifyEvent(this.anchorEvent).clientY;
+        let left: number = unifyEvent(this.anchorEvent).clientX;
 
         if (this.mobile) {
           top = top + 40;
@@ -338,10 +358,10 @@ export class DeckdeckgoInlineEditor {
           top = top + 10;
         }
 
-        const innerWidth: number = DeckDeckGoUtils.isIOS() ? screen.width : window.innerWidth;
+        const innerWidth: number = isIOS() ? screen.width : window.innerWidth;
 
-        if (innerWidth > 0 && left > innerWidth - 340) {
-          left = innerWidth - 340;
+        if (innerWidth > 0 && left > innerWidth - tools.offsetWidth) {
+          left = innerWidth - tools.offsetWidth;
         }
 
         tools.style.top = '' + (top) + 'px';
@@ -354,7 +374,7 @@ export class DeckdeckgoInlineEditor {
 
   private handlePositionIOS(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!DeckDeckGoUtils.isIOS() || !this.anchorEvent) {
+      if (!isIOS() || !this.anchorEvent) {
         resolve();
         return;
       }
@@ -370,12 +390,12 @@ export class DeckdeckgoInlineEditor {
 
   private setStickyPositionIOS(): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (!this.stickyMobile || !DeckDeckGoUtils.isIOS() || !window) {
+      if (!this.stickyMobile || !isIOS() || !window) {
         resolve();
         return;
       }
 
-      if(this.iOSTimerScroll > 0) {
+      if (this.iOSTimerScroll > 0) {
         clearTimeout(this.iOSTimerScroll);
       }
 
@@ -574,6 +594,8 @@ export class DeckdeckgoInlineEditor {
 
       await this.setToolsActivated(false);
 
+      this.resetDisplayToolsActivated();
+
       this.selection = null;
 
       this.toolbarActions = ToolbarActions.SELECTION;
@@ -757,14 +779,14 @@ export class DeckdeckgoInlineEditor {
         const textAfter: string = (index + this.anchorLink.text.length) > -1 ? target.textContent.substr((index + this.anchorLink.text.length)) : null;
 
         if (textBefore) {
-          target.parentElement.appendChild(document.createTextNode(textBefore));
+          target.parentElement.insertBefore(document.createTextNode(textBefore), target);
         }
 
         const a: HTMLAnchorElement = await this.createLinkElement();
-        target.parentElement.appendChild(a);
+        target.parentElement.insertBefore(a, target);
 
         if (textAfter) {
-          target.parentElement.appendChild(document.createTextNode(textAfter));
+          target.parentElement.insertBefore(document.createTextNode(textAfter), target);
         }
 
         target.parentElement.removeChild(target);
@@ -774,6 +796,8 @@ export class DeckdeckgoInlineEditor {
 
         target.parentElement.replaceChild(a, target);
       }
+
+      this.linkCreated.emit(container as HTMLElement);
 
       this.toolbarActions = ToolbarActions.SELECTION;
 
@@ -811,7 +835,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private isSticky(): boolean {
-    const mobile: boolean = DeckDeckGoUtils.isMobile();
+    const mobile: boolean = isMobile();
 
     return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile);
   }
@@ -819,6 +843,12 @@ export class DeckdeckgoInlineEditor {
   private setToolsActivated(activated: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       this.toolsActivated = activated;
+
+      if (activated) {
+        this.debounceDisplayToolsActivated();
+      } else {
+        this.displayToolsActivated = false;
+      }
 
       if (this.isSticky()) {
         this.stickyToolbarActivated.emit(this.toolsActivated);
@@ -828,34 +858,12 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  // Color picker
-
-  private colorPickerListener(bind: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
-
-      if (!colorPicker) {
-        resolve();
-        return;
-      }
-
-      if (bind) {
-        colorPicker.addEventListener('change', this.selectColor, false);
-      } else {
-        colorPicker.removeEventListener('change', this.selectColor, true);
-      }
-
-
-      resolve();
-    });
-  }
-
-  private selectColor = async ($event) => {
-    if (!this.selection) {
+  private async selectColor($event: CustomEvent) {
+    if (!this.selection || !$event || !$event.detail) {
       return;
     }
 
-    this.color = $event.target.value;
+    this.color = $event.detail.hex;
 
     if (!this.selection || this.selection.rangeCount <= 0 || !document) {
       return;
@@ -868,20 +876,13 @@ export class DeckdeckgoInlineEditor {
     }
 
     document.execCommand('foreColor', false, this.color);
-  };
+
+    await this.reset(true);
+  }
 
   private openColorPicker(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
-
-      if (!colorPicker) {
-        resolve();
-        return;
-      }
-
-      colorPicker.click();
-
-      await this.setToolsActivated(false);
+      this.toolbarActions = ToolbarActions.COLOR;
 
       resolve();
     });
@@ -981,8 +982,18 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private async onCustomAction($event: UIEvent, action: string): Promise<void> {
+    $event.stopPropagation();
+
+    this.customAction.emit({
+      action: action,
+      selection: this.selection,
+      anchorLink: this.anchorLink
+    });
+  }
+
   render() {
-    let classNames: string = this.toolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
+    let classNames: string = this.displayToolsActivated ? (this.mobile ? 'deckgo-tools deckgo-tools-activated deckgo-tools-mobile' : 'deckgo-tools deckgo-tools-activated') : (this.mobile ? 'deckgo-tools deckgo-tools-mobile' : 'deckgo-tools');
 
     if (this.isSticky()) {
       classNames += ' deckgo-tools-sticky';
@@ -990,7 +1001,6 @@ export class DeckdeckgoInlineEditor {
 
     return <div class={classNames}>
       {this.renderActions()}
-      <input type="color" name="color-picker" value={this.color}></input>
     </div>;
   }
 
@@ -1004,6 +1014,12 @@ export class DeckdeckgoInlineEditor {
           ></input>
         </div>
       );
+    } else if (this.toolbarActions === ToolbarActions.COLOR) {
+      return <div class="color">
+        <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} more={false}>
+          <div slot="more"></div>
+        </deckgo-color>
+      </div>
     } else if (this.toolbarActions === ToolbarActions.IMAGE) {
       return this.renderImageActions();
     } else {
@@ -1026,32 +1042,63 @@ export class DeckdeckgoInlineEditor {
         <span>U</span>
       </button>,
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button onClick={() => this.openColorPicker()} class="pick-color">
         <div style={styleColor}></div>
       </button>,
 
-      <button
-        disabled={this.disabledTitle}
-        onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
-        class={this.orderedList ? "ordered-list active" : "ordered-list"}>
-        <div></div>
-      </button>,
+      (this.renderList()),
 
-      <button
-        disabled={this.disabledTitle}
-        onClick={(e: UIEvent) => this.toggleList(e, 'insertUnorderedList')}
-        class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
-        <div></div>
-      </button>,
-
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button onClick={() => this.toggleLink()} class={this.link ? "link active" : "link"}>
         <div></div>
-      </button>
+      </button>,
+
+      this.renderCustomActions()
     ];
+  }
+
+  private renderSeparator() {
+    return <div class="separator"></div>;
+  }
+
+  private renderCustomActions() {
+    return this.customActions ?
+      this.customActions.split(',').map((customAction: string) => this.renderCustomAction(customAction))
+      : undefined
+  }
+
+  private renderCustomAction(customAction: string) {
+    return [
+      this.renderSeparator(),
+      <button onClick={($event: UIEvent) => this.onCustomAction($event, customAction)}>
+        <slot name={customAction}></slot>
+      </button>
+    ]
+  }
+
+  private renderList() {
+    if (this.list) {
+      return [
+        <button
+          disabled={this.disabledTitle}
+          onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
+          class={this.orderedList ? "ordered-list active" : "ordered-list"}>
+          <div></div>
+        </button>,
+
+        <button
+          disabled={this.disabledTitle}
+          onClick={(e: UIEvent) => this.toggleList(e, 'insertUnorderedList')}
+          class={this.unorderedList ? "unordered-list active" : "unordered-list"}>
+          <div></div>
+        </button>
+      ]
+    } else {
+      return undefined;
+    }
   }
 
   private renderImageActions() {
@@ -1077,7 +1124,7 @@ export class DeckdeckgoInlineEditor {
         <div></div>
       </button>,
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button
         onClick={(e: UIEvent) => this.styleImage(e, this.setImageAlignment, ImageAlign.STANDARD)}
@@ -1090,7 +1137,7 @@ export class DeckdeckgoInlineEditor {
         <div></div>
       </button>,
 
-      <div class="separator"></div>,
+      this.renderSeparator(),
 
       <button
         onClick={(e: UIEvent) => this.deleteImage(e)} class="image-delete">
@@ -1104,7 +1151,7 @@ export class DeckdeckgoInlineEditor {
   hostData() {
     return {
       class: {
-        'deckgo-tools-ios': DeckDeckGoUtils.isIOS()
+        'deckgo-tools-ios': isIOS()
       }
     }
   }

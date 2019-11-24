@@ -6,49 +6,21 @@ app-navigation-actions {
   }
 
   a {
+    color: black;
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 540px) {
+    a.signin {
+      display: none;
+    }
   }
 }
 
-ion-split-pane {
-
+@media (prefers-color-scheme: dark) {
   app-navigation-actions {
-    ion-button {
-      &.presentation, &.publish {
-        --background: white;
-        --color: #000;
-        --color-activated: var(--ion-color-tertiary);
-      }
-    }
-
-    a.signin {
+    a {
       color: white;
-
-      &:hover, &:active {
-        color: white;
-      }
-    }
-  }
-
-  &:not(.split-pane-visible) {
-    app-navigation-actions {
-      ion-button {
-        &.publish {
-          --background: var(--ion-color-tertiary);
-          --color: white;
-          --color-activated: var(--ion-color-secondary);
-        }
-
-        &.presentation {
-          --background: var(--ion-color-primary);
-          --color: white;
-          --color-activated: var(--ion-color-secondary);
-        }
-      }
-
-      a.signin {
-        display: none;
-      }
     }
   }
 }

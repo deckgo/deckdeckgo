@@ -3,6 +3,12 @@ app-publish-edit {
     margin-bottom: 0;
   }
 
+  ion-list.list-ios {
+    margin-bottom: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
   app-feed-card-tags {
     --card-tags-background: rgba(var(--ion-color-tertiary-rgb), 0.08);
     --card-tags-color: var(--ion-color-tertiary-shade);
@@ -11,7 +17,7 @@ app-publish-edit {
     padding-top: 8px;
   }
 
-  p.social {
+  p.small {
     font-size: var(--font-size-small);
   }
 
@@ -24,11 +30,13 @@ app-publish-edit {
 
     div.publishing {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
 
       ion-label {
-        margin-right: 8px;
+        margin-top: 8px;
+        font-size: var(--font-size-small);
       }
     }
   }

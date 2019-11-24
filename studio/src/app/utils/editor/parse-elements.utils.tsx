@@ -1,11 +1,13 @@
 import {h} from '@stencil/core';
 
-import {ParseStyleUtils} from './parse-style.utils';
-import {SlotType} from './create-slides.utils';
+import {convertStyle} from '@deckdeckgo/deck-utils';
+
+import {SlotType} from './slot-type';
+import {SlotUtils} from './slot.utils';
 
 export class ParseElementsUtils {
 
-    static parseElements(element: HTMLElement, root: boolean): Promise<any> {
+    static parseElements(element: HTMLElement, root: boolean, contentEditable: boolean): Promise<any> {
         return new Promise<any>(async (resolve) => {
             if (!element) {
                 resolve(undefined);
@@ -23,32 +25,32 @@ export class ParseElementsUtils {
                 const elements: HTMLElement[] = Array.prototype.slice.call(element.childNodes);
 
                 for (const elem of elements) {
-                    const result = await this.parseElements(elem, false);
+                    const result = await this.parseElements(elem, false, contentEditable);
                     results.push(result);
                 }
 
-                resolve(root ? results : await this.parseElement(element, results));
+                resolve(root ? results : await this.parseElement(element, results, contentEditable));
             } else {
-                resolve(await this.parseElement(element, element.textContent));
+                resolve(await this.parseElement(element, element.textContent, contentEditable));
             }
         });
     }
 
-    private static parseElement(element: HTMLElement, content: any): Promise<any> {
+    private static parseElement(element: HTMLElement, content: any, contentEditable: boolean): Promise<any> {
         return new Promise<any>(async (resolve) => {
-            const Elem: string = element.nodeName;
+            const Elem: string = element.nodeName.toLowerCase();
 
             const attributes: any = this.getAttributes(element);
             if (attributes.style) {
-                attributes.style = await ParseStyleUtils.convertStyle(attributes.style);
+                attributes.style = await convertStyle(attributes.style);
             }
 
-            if (this.isElementContentEditable(element, attributes)) {
-                attributes['contenteditable'] = true;
-            }
-
-            if (element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img') {
-                attributes['contenteditable'] = 'false';
+            if (contentEditable && this.isContentEditable(element, attributes)) {
+                if (contentEditable && SlotUtils.isNodeReveal(element) && element.firstElementChild) {
+                    element.firstElementChild.setAttribute('contenteditable', `${true}`);
+                } else {
+                    attributes['contenteditable'] = true;
+                }
             }
 
             resolve(<Elem {...attributes}>{content}</Elem>);
@@ -68,10 +70,14 @@ export class ParseElementsUtils {
             }, {});
     }
 
-    private static isElementContentEditable(element: HTMLElement, attributes: any): boolean {
-        return attributes.slot &&
-            attributes.slot !== 'background' &&
-            (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.CODE));
+    private static isContentEditable(element: HTMLElement, attributes: any): boolean {
+        return attributes.slot !== undefined && attributes.slot !== 'background' && this.isElementContentEditable(element);
     }
 
+    static isElementContentEditable(element: HTMLElement): boolean {
+        return (!element.nodeName || (element.nodeName.toLowerCase() !== 'code' && element.nodeName.toLowerCase() !== SlotType.CODE)) &&
+            (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-social' && element.nodeName.toLowerCase() !== SlotType.SOCIAL)) &&
+            (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-lazy-img' && element.nodeName.toLowerCase() !== SlotType.IMG)) &&
+            (!element.nodeName || (element.nodeName.toLowerCase() !== 'deckgo-reveal' && element.nodeName.toLowerCase() !== SlotType.REVEAL));
+    }
 }

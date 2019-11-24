@@ -1,20 +1,14 @@
 deckgo-deck {
-  --background: white;
-  --color: black;
   --padding-end: 64px;
 
   --slide-user-select: text;
 
   --pager-text-slides-display: block;
+  --pager-text-color: black;
 
-  h1, h2, h3, section, deckgo-highlight-code {
-    width: 100%;
-    overflow: hidden;
-
+  h1, h2, h3, section, ol, ul, deckgo-reveal-list, deckgo-highlight-code {
     border-radius: 2px;
     border: 1px solid var(--ion-color-light);
-
-    padding: 8px;
   }
 
   h1 {
@@ -32,7 +26,6 @@ deckgo-deck {
   section {
     min-height: calc(var(--font-size-normal) + 4px);
     margin-top: 16px;
-    overflow: auto;
   }
 
   deckgo-highlight-code {
@@ -43,53 +36,7 @@ deckgo-deck {
     }
   }
 
-  deckgo-slide-split {
-    --slide-split-padding-top: 64px;
-    --slide-split-padding-bottom: 64px;
-
-    @media screen and (max-width: 1024px) {
-      --slide-split-padding-top: 32px;
-      --slide-split-padding-bottom: 32px;
-    }
-
-    section, deckgo-highlight-code {
-      height: fit-content;
-    }
-  }
-
-  ol, ul {
-    list-style-position: inside;
-  }
-
-  ul {
-    list-style-type: disc;
-  }
-
   a {
     cursor: pointer;
-  }
-
-  > * div[slot="background"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  :not([slot="background"]) > deckgo-lazy-img {
-    --deckgo-lazy-img-padding: 16px;
-  }
-
-  [slot="background"] > deckgo-lazy-img {
-    min-width: 100%;
-    min-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    --deckgo-lazy-img-min-width: 100%;
   }
 }

@@ -5,6 +5,8 @@ The [DeckDeckGo] deck triggers the following events:
 | Event                     | Emitted value | Description |
 | -------------------------- |-----------------|-----------------|
 | slidesDidLoad | string[] | Emitted when the deck and all slides have loaded. Emit the an ordered list of all the tag names of the slides. |
+| slideNextDidAnimate | void | Emitted when the slide didn't change but an animation occurred towards the next slide. |
+| slidePrevDidAnimate | void | Emitted when the slide didn't change but an animation occurred towards the previous slide. |
 | slideNextDidChange | number | Emitted when the next slide has started. Emit the index of the new active slide. |
 | slidePrevDidChange | number | Emitted when the previous slide has ended. Emit the index of the new active slide. |
 | slideToChange | number | Emitted when a specific slide has been selected. Emit the index of the new selected slide. |

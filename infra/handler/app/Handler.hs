@@ -1,11 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE LambdaCase #-}
 
 import UnliftIO
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Char8 as BS8
+import Data.Conduit.Binary as C
 import qualified DeckGo.Handler
-import qualified Network.AWS as Aws
+import qualified Network.AWS.Extended as AWS
 import qualified Network.HTTP.Types as HTTP
 import qualified Network.Wai as Wai
 import qualified Network.Wai.Handler.Lambda as Lambda
@@ -14,6 +16,9 @@ import qualified Hasql.Connection as Hasql
 import System.Environment (getEnv)
 import qualified Servant.Auth.Firebase as Firebase
 import qualified Data.Text as T
+import qualified Network.AWS.S3 as S3
+import Control.Lens
+import Control.Monad.Trans.Resource
 
 main :: IO ()
 main = do
@@ -21,36 +26,57 @@ main = do
     hSetBuffering stdout LineBuffering
 
     liftIO $ putStrLn "Booting..."
-    env <- Aws.newEnv Aws.Discover
+    env <- AWS.newEnv
 
     liftIO $ putStrLn "Booted!"
 
-    settings <- getFirebaseSettings
+    settings <- getFirebaseSettings env
     conn <- getPostgresqlConnection
 
-    Lambda.run $ cors $ DeckGo.Handler.application settings env conn
+    putStrLn "Connection acquired, starting lambda..."
 
+    Lambda.runSettings settings' $ cors $ DeckGo.Handler.application settings env conn
+  where
+    settings' = Lambda.defaultSettings
+      { Lambda.timeoutValue = 20 * 1000 * 1000 }
 
 -- TODO: factor out
-getFirebaseSettings :: IO Firebase.FirebaseLoginSettings
-getFirebaseSettings = do
-    pkeys <- getEnv "GOOGLE_PUBLIC_KEYS"
+getFirebaseSettings :: AWS.Env -> IO Firebase.FirebaseLoginSettings
+getFirebaseSettings env = do
     pid <- getEnv "FIREBASE_PROJECT_ID"
-    keyMap <- Aeson.decodeFileStrict pkeys >>= \case
-      Nothing -> error "Could not decode key file"
-      Just keyMap -> pure keyMap
+
+    metaBucketName <- getEnv "META_BUCKET_NAME"
+    let metaBucket = S3.BucketName (T.pack metaBucketName)
+    putStrLn $ "META Bucket is: " <> show metaBucket
+
+    let fetchKeys = AWS.runResourceT $ do
+          let okey = "google-public-keys"
+
+          runAWS' env (
+            AWS.send $ S3.getObject metaBucket okey
+            ) >>= \case
+              Right gors -> do
+                keysRaw <- (gors ^. S3.gorsBody) `AWS.sinkBody` C.sinkLbs
+                liftIO $ putStrLn $ "got new keys"
+                case Aeson.decode keysRaw of
+                  Nothing -> error "Could not decode key file"
+                  Just keyMap -> pure keyMap
+              Left e -> error $ "Error in get: " <> show e
+
     pure Firebase.FirebaseLoginSettings
       { Firebase.firebaseLoginProjectId = Firebase.ProjectId (T.pack pid)
-      , Firebase.firebaseLoginGetKeys = pure keyMap
+      , Firebase.firebaseLoginGetKeys = fetchKeys
       }
 
 getPostgresqlConnection :: IO Hasql.Connection
 getPostgresqlConnection = do
+    putStrLn "Reading connection info..."
     user <- getEnv "PGUSER"
     password <- getEnv "PGPASSWORD"
     host <- getEnv "PGHOST"
     db <- getEnv "PGDATABASE"
     port <- getEnv "PGPORT"
+    putStrLn "Acquiring connection..."
     Hasql.acquire (
       Hasql.settings
         (BS8.pack host)
@@ -75,3 +101,11 @@ methods =
     , "DELETE"
     , "PUT"
     ]
+
+runAWS'
+  :: (MonadResource m, MonadIO m, MonadUnliftIO m)
+  => AWS.Env -> AWS.AWS a -> m (Either SomeException a)
+runAWS' env =
+    tryAny .
+    AWS.runAWS env .
+    AWS.within AWS.NorthVirginia

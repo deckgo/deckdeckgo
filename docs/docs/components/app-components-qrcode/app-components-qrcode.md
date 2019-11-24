@@ -7,7 +7,7 @@ To generate the QR code, the project [qrcode-generator](https://github.com/kazuh
 ## Table of contents
 
 - [Showcase](#app-components-qrcode-showcase)
-- [Getting started](#app-components-qrcode-getting-started)
+- [Installation](#app-components-qrcode-installation)
 	- [Using DeckDeckGo QR Code from a CDN](#app-components-qrcode-using-deckdeckgo-qr-code-from-a-cdn)
 	- [Install DeckDeckGo QR Code from NPM](#app-components-qrcode-install-deckdeckgo-qr-code-from-npm)
 	- [Framework integration](#app-components-qrcode-framework-integration)
@@ -37,20 +37,19 @@ Optionally you could also display a logo over your QR code:
   </deckgo-qrcode>
 </div>
 
-## Getting started
+## Installation
 
-To create easily your PWA presentation and to enjoy all the options, I suggest you to create your slides using the CLI as described in the [Getting started chapter](/docs/introduction).
+This component could be added to your web application using the following methods.
 
-Doing so you will use the [DeckDeckGo] starter kit which already includes this Web Component.
-
-However, if you are looking to use this Web Component as a standalone component, to add a QR codes to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode).
+> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
 
 ### Using DeckDeckGo QR Code from a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] Code from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
-<script src="https://unpkg.com/deckdeckgo-qrcode@latest/dist/deckdeckgo-qrcode.js"></script>
+<script type="module" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.js"></script>
 ```
 ### Install DeckDeckGo QR Code from NPM
 
@@ -63,6 +62,21 @@ npm install @deckdeckgo/qrcode
 ### Framework integration
 
 The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/qrcode';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/qrcode/dist/loader';
+deckDeckGoElement(window);
+```
 
 ## Usage
 

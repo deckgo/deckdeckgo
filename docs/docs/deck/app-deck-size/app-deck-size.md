@@ -17,4 +17,8 @@ However, it is possible to include or use [DeckDeckGo] in any container, for tha
 </div>
 ```
 
+## Tips and tricks
+
+To detect the size of the container, the `offsetParent` property is used which returns the nearest ancestor that has a position other than static. Therefore, if the size would not be detected, try to set the `position` of your container to `relative` or `fixed`.  
+
 [DeckDeckGo]: https://deckdeckgo.com

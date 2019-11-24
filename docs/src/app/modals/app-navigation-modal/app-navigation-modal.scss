@@ -6,7 +6,7 @@ app-navigation-modal {
   }
 
   ion-content {
-    div {
+    > div {
       height: 100%;
 
       display: flex;
@@ -15,6 +15,18 @@ app-navigation-modal {
       align-items: center;
 
       font-size: var(--font-size-h1);
+
+      div.toggle-theme {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        h1 {
+          margin: 0;
+          font-weight: 500;
+          color: var(--ion-color-primary, #3880ff);
+        }
+      }
     }
   }
 }

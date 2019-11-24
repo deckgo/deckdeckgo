@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["http://localhost:3333", "http://localhost:3334", "https://deckdeckgo.app", "https://deckdeckgo-studio-beta.web.app", "https://deckdeckgo-studio-beta.firebaseapp.com", "https://deckdeckgo-app-beta.web.app", "https://deckdeckgo-app-beta.firebaseapp.com"],
+    "responseHeader": ["Content-Type"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]

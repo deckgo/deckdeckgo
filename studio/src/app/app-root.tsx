@@ -1,11 +1,11 @@
-import {Build, Component, Element, h} from '@stencil/core';
+import {Build, Component, Element, h, Listen} from '@stencil/core';
+
+import {toastController} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import {IonControllerUtils} from './utils/core/ion-controller-utils';
-
 import {ErrorService} from './services/core/error/error.service';
-import {AuthService} from './services/api/auth/auth.service';
+import {AuthService} from './services/auth/auth.service';
 
 import {NavDirection, NavParams, NavService} from './services/core/nav/nav.service';
 
@@ -58,11 +58,10 @@ export class AppRoot {
     }
 
     private async toastError(error: string) {
-        const popover: HTMLIonToastElement = await IonControllerUtils.createToast({
+        const popover: HTMLIonToastElement = await toastController.create({
             message: error,
             showCloseButton: true,
             position: 'top',
-            closeButtonText: 'Ok, sh*t happens',
             color: 'danger',
             duration: 6000
         });
@@ -90,6 +89,17 @@ export class AppRoot {
         }
     }
 
+    @Listen('openShare', {target: 'document'})
+    async openShare() {
+        const shareDeck: HTMLElement = this.el.querySelector('app-share-deck');
+
+        if (!shareDeck) {
+            return;
+        }
+
+        await (shareDeck as any).openShare();
+    }
+
     render() {
         return ([
             <ion-app>
@@ -101,10 +111,13 @@ export class AppRoot {
 
                     <ion-route url="/settings" component="app-settings"/>
 
+                    <ion-route url="/dashboard" component="app-dashboard"/>
+
                     <ion-route url="/signin" component="app-signin"/>
                     <ion-route url="/signin/:redirect" component="app-signin"/>
 
                     <ion-route url="/about" component="app-about"/>
+                    <ion-route url="/faq" component="app-faq"/>
                     <ion-route url="/team" component="app-team"/>
                     <ion-route url="/opensource" component="app-opensource"/>
                     <ion-route url="/privacy" component="app-privacy"/>
@@ -113,28 +126,24 @@ export class AppRoot {
                     <ion-route url="/developer" component="app-developer"/>
                     <ion-route url="/contact" component="app-contact"/>
                     <ion-route url="/newsletter" component="app-newsletter"/>
+                    <ion-route url="/press" component="app-press"/>
+
+                    <ion-route url="/remote" component="app-remote"/>
                 </ion-router>
 
-                <ion-split-pane when="lg" contentId="menu-content">
-                    <ion-menu id="ion-menu" side="start" type="push" swipeGesture={false} contentId="menu-content">
-                        <app-navigation logo={true} menuToggle={false} user={false}></app-navigation>
-                        <ion-content>
-                            <ion-menu-toggle autoHide={false}>
-                                <app-menu></app-menu>
+                <ion-menu id="ion-menu" side="start" type="overlay" swipeGesture={false} content-id="menu-content">
+                    <ion-content>
+                        <ion-menu-toggle autoHide={false}>
+                            <app-menu></app-menu>
 
-                                <app-footer></app-footer>
-                            </ion-menu-toggle>
-                        </ion-content>
-                    </ion-menu>
+                            <app-footer></app-footer>
+                        </ion-menu-toggle>
+                    </ion-content>
+                </ion-menu>
 
-                    <ion-nav id="menu-content"/>
-                </ion-split-pane>
+                <ion-nav id="menu-content"/>
 
-                <ion-modal-controller></ion-modal-controller>
-                <ion-popover-controller></ion-popover-controller>
-                <ion-alert-controller></ion-alert-controller>
-                <ion-loading-controller></ion-loading-controller>
-                <ion-toast-controller></ion-toast-controller>
+                <app-share-deck></app-share-deck>
             </ion-app>
         ]);
     }

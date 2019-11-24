@@ -1,6 +1,6 @@
-import {Component, Listen, Element, Prop, h} from '@stencil/core';
+import {Component, Listen, Element, h, State} from '@stencil/core';
 
-import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
+import {findSlidesTitle} from '@deckdeckgo/deck-utils';
 
 @Component({
     tag: 'app-remote-slide-picker',
@@ -10,11 +10,13 @@ export class AppRemoteSettings {
 
     @Element() el: HTMLElement;
 
-    @Prop()
-    slides: DeckdeckgoSlideDefinition[];
+    @State()
+    private slides: string[];
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
+
+        this.slides = await findSlidesTitle();
     }
 
     @Listen('popstate', {target: 'window'})
@@ -32,16 +34,13 @@ export class AppRemoteSettings {
 
     render() {
         return [
-            <ion-header>
-                <ion-toolbar color="primary">
-                    <ion-buttons slot="start">
-                        <ion-button onClick={() => this.closeModal()}>
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
-                    <ion-title class="ion-text-uppercase">DeckDeckGo</ion-title>
-                </ion-toolbar>
-            </ion-header>,
+            <app-header>
+                <ion-buttons slot="start">
+                    <ion-button onClick={() => this.closeModal()}>
+                        <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </app-header>,
             <ion-content class="ion-padding">
                 <ion-list>
                     <ion-list-header class="ion-padding-bottom ion-padding-top">
@@ -57,12 +56,13 @@ export class AppRemoteSettings {
     private renderSlides() {
         if (this.slides && this.slides.length > 0) {
             return (
-                this.slides.map((slideDefinition: DeckdeckgoSlideDefinition, i: number) => {
+                this.slides.map((slideTitle: string, i: number) => {
 
-                    const text = 'Slide ' + (i + 1) + (slideDefinition.title ? ': ' + slideDefinition.title : '');
+                    const text = 'Slide ' + (i + 1) + (slideTitle ? ': ' + slideTitle : '');
 
-                    return <ion-item ion-item button onClick={() => this.jumpToSlide(i)}>
-                        <ion-label class="ion-padding-start">{text}</ion-label>
+                    return <ion-item ion-item button onClick={() => this.jumpToSlide(i)} detail={false}>
+                        <ion-label>{text}</ion-label>
+                        <ion-reorder slot="end"></ion-reorder>
                     </ion-item>
                 })
             );

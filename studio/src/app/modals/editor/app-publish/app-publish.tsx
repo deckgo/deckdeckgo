@@ -24,10 +24,36 @@ export class AppPublish {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private published($event: CustomEvent) {
+    private async published($event: CustomEvent) {
         if ($event && $event.detail) {
             this.publishedUrl = $event.detail;
+
+            await this.updateSlidesQRCode();
         }
+    }
+
+    private updateSlidesQRCode(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!document) {
+                resolve();
+                return;
+            }
+
+            const slides: NodeListOf<HTMLElement> = document.querySelectorAll('deckgo-slide-qrcode');
+
+            if (!slides) {
+                resolve();
+                return;
+            }
+
+            for (const slide of Array.from(slides)) {
+                if (!slide.hasAttribute('custom-qrcode')) {
+                    slide.setAttribute('content', this.publishedUrl);
+                }
+            }
+
+            resolve();
+        });
     }
 
     render() {

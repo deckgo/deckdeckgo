@@ -1,61 +1,41 @@
-ion-split-pane {
+ion-menu {
+  ion-content {
+    ion-list {
+      ion-searchbar[class*="sc-ion-searchbar"] {
+        --cancel-button-color: white;
+        --clear-button-color: white;
+        --icon-color: white;
+        color: white;
+        --background: transparent;
 
-  &:not(.split-pane-visible) {
-    ion-menu {
-      ion-content {
-        ion-list {
-          ion-searchbar[class*="sc-ion-searchbar"] {
-            display: none;
-          }
+        input.searchbar-input[class*="sc-ion-searchbar"] {
+          font-size: var(--font-size-small);
+        }
+      }
 
-          ion-item {
-            &.user {
-              * {
-                display: none;
-              }
-            }
-          }
+      ion-item {
+        --detail-icon-opacity: 0;
 
-          ion-button.new {
-            --color: var(--ion-color-primary);
-          }
+        --deckgo-user-info-padding: 0;
+        --deckgo-user-info-margin: 0;
+
+        &.user {
+          min-height: 32px;
         }
       }
     }
   }
+}
 
+@media (prefers-color-scheme: dark) {
   ion-menu {
     ion-content {
       ion-list {
         ion-searchbar[class*="sc-ion-searchbar"] {
-          padding-left: 0;
-
           --cancel-button-color: var(--ion-color-medium);
           --clear-button-color: var(--ion-color-medium);
           --icon-color: var(--ion-color-medium);
-
-          input.searchbar-input[class*="sc-ion-searchbar"] {
-            box-shadow: none;
-            font-size: var(--font-size-small);
-
-            -webkit-padding-start: 48px;
-            padding-inline-start: 48px;
-          }
-        }
-
-        ion-item {
-          --detail-icon-opacity: 0;
-
-          --deckgo-user-info-padding: 0;
-          --deckgo-user-info-margin: 0;
-
-          &.user {
-            min-height: 32px;
-          }
-
-          &.signout {
-            --padding-top: 40px;
-          }
+          color: var(--ion-color-medium);
         }
       }
     }

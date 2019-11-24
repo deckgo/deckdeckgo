@@ -1,3 +1,37 @@
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-11-13)
+
+### Fix
+
+* fix notes displayed on template split ([#472](https://github.com/deckgo/deckdeckgo/issues/472))
+
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-11-10)
+
+### Features
+
+* rework UX and design of the remote controller ([#228](https://github.com/deckgo/deckdeckgo/issues/228))
+* sync and display deck and slides content ([#450](https://github.com/deckgo/deckdeckgo/issues/450))
+
+<a name="1.0.0-beta.2"></a>
+# 1.0.0-beta.2 (2019-09-15)
+
+### Features
+
+* support `play` and `pause` for the youtube and big-img slides
+* update `play` and `pause` if performed in the deck
+
+<a name="1.0.0-beta.1"></a>
+# 1.0.0-beta.1 (2019-08-30)
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-beta.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`) but there is still a UX/design improvement I would like to develop for the remote ([#228](https://github.com/deckgo/deckdeckgo/issues/228))
+
 <a name="1.0.0-alpha.12"></a>
 # 1.0.0-alpha.12 (2019-06-06)
 

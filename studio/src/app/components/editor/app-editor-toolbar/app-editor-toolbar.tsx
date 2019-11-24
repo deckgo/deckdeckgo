@@ -1,20 +1,22 @@
-import {Component, Element, Method, State, Event, EventEmitter, Listen, h} from '@stencil/core';
-import {OverlayEventDetail} from '@ionic/core';
+import {Component, Element, Event, EventEmitter, h, Listen, Method, State} from '@stencil/core';
+import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 
-import {DeckDeckGoUtils} from '@deckdeckgo/utils';
+import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
-import {SlotType} from '../../../utils/editor/create-slides.utils';
+import {SlideHelper} from '../../../helpers/editor/slide.helper';
+
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
-import {IonControllerUtils} from '../../../utils/core/ion-controller-utils';
+import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
+import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
 
-import {ImageHelper} from '../../../helpers/editor/image.helper';
-
-import {ImageAction} from '../../../popovers/editor/app-image/image-action';
+import {EditAction} from '../../../utils/editor/edit-action';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
+import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -28,12 +30,6 @@ export class AppEditorToolbar {
     @State()
     private displayed: boolean = false;
 
-    @State()
-    private color: string;
-
-    @State()
-    private background: string;
-
     private selectedElement: HTMLElement;
 
     @State()
@@ -41,6 +37,21 @@ export class AppEditorToolbar {
 
     @State()
     private code: boolean = false;
+
+    @State()
+    private qrCode: boolean = false;
+
+    @State()
+    private chart: boolean = false;
+
+    @State()
+    private youtube: boolean = false;
+
+    @State()
+    private image: boolean = false;
+
+    @State()
+    private list: SlotType;
 
     private applyToAllDeck: boolean = false;
 
@@ -51,6 +62,10 @@ export class AppEditorToolbar {
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
     @Event() private codeDidChange: EventEmitter<HTMLElement>;
+    @Event() private imgDidChange: EventEmitter<HTMLElement>;
+    @Event() private notesDidChange: EventEmitter<HTMLElement>;
+
+    @Event() private slideCopy: EventEmitter<HTMLElement>;
 
     private subscription: Subscription;
     private busyService: BusyService;
@@ -63,8 +78,13 @@ export class AppEditorToolbar {
     private moveToolbarSubscription: Subscription;
     private moveToolbarSubject: Subject<void> = new Subject();
 
+    private anonymousService: AnonymousService;
+
+    @Event() signIn: EventEmitter<void>;
+
     constructor() {
         this.busyService = BusyService.getInstance();
+        this.anonymousService = AnonymousService.getInstance();
     }
 
     async componentWillLoad() {
@@ -74,6 +94,7 @@ export class AppEditorToolbar {
 
         this.moveToolbarSubscription = this.moveToolbarSubject.pipe(debounceTime(250)).subscribe(async () => {
             await this.moveToolbar();
+            await this.resizeSlideContent();
         });
     }
 
@@ -105,9 +126,9 @@ export class AppEditorToolbar {
         }
     }
 
-    @Listen('mouseInactivity', { target: 'document' })
+    @Listen('mouseInactivity', {target: 'document'})
     async inactivity($event: CustomEvent) {
-        if (!DeckDeckGoUtils.isFullscreen()) {
+        if (!isFullscreen()) {
             return;
         }
 
@@ -149,12 +170,22 @@ export class AppEditorToolbar {
 
             await this.initSelectedElement(selected);
 
+            // In case of slot deckgo-lazy-img, if user doesn't have yet defined a src for the image, we display the image picker/popover first instead of the toolbar
+            if (this.isImgNotDefined(element)) {
+                await this.openImage();
+            }
+
             await this.displayToolbar(selected);
 
             this.blockSlide.emit(!this.deckOrSlide);
 
             resolve();
         });
+    }
+
+    private isImgNotDefined(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG &&
+            !element.hasAttribute('img-src')
     }
 
     @Method()
@@ -200,6 +231,34 @@ export class AppEditorToolbar {
 
     private isElementCode(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-highlight-code';
+    }
+
+    private isElementYoutubeSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-youtube';
+    }
+
+    private isElementQRCodeSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-qrcode';
+    }
+
+    private isElementChartSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-chart';
+    }
+
+    private isElementList(element: HTMLElement): SlotType {
+        if (!SlotUtils.isNodeList(element)) {
+            return undefined;
+        }
+
+        if (SlotUtils.isNodeRevealList(element)) {
+            return element && element.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
+        } else {
+            return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.OL ? SlotType.OL : SlotType.UL;
+        }
+    }
+
+    private isElementImage(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG;
     }
 
     private cleanOnPaste = async ($event) => {
@@ -296,28 +355,6 @@ export class AppEditorToolbar {
 
             this.displayed = true;
 
-            const style: CSSStyleDeclaration = window.getComputedStyle(element);
-            this.color = style.color;
-            this.background = style.backgroundColor;
-
-            const colorPicker: HTMLElement = this.el.querySelector('input[name=\'color-picker\']');
-
-            if (!colorPicker) {
-                resolve();
-                return;
-            }
-
-            await this.setToolbarPosition(element, colorPicker, 38);
-
-            const backgroundPicker: HTMLElement = this.el.querySelector('input[name=\'background-picker\']');
-
-            if (!backgroundPicker) {
-                resolve();
-                return;
-            }
-
-            await this.setToolbarPosition(element, backgroundPicker, 78);
-
             resolve();
         });
     }
@@ -382,6 +419,11 @@ export class AppEditorToolbar {
         });
     }
 
+    @Listen('pagerClick', {target: 'document'})
+    async onPagerClick() {
+        await this.hideToolbar();
+    }
+
     @Method()
     hideToolbar(): Promise<void> {
         return new Promise<void>(async (resolve) => {
@@ -390,6 +432,22 @@ export class AppEditorToolbar {
 
             resolve();
         });
+    }
+
+    private async confirmDeleteElement($event: UIEvent) {
+        const popover: HTMLIonPopoverElement = await popoverController.create({
+            component: 'app-element-delete',
+            event: $event,
+            mode: isMobile() && !isIOS() ? 'md' : 'ios'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data) {
+                await this.deleteElement();
+            }
+        });
+
+        await popover.present();
     }
 
     private deleteElement(): Promise<void> {
@@ -412,7 +470,31 @@ export class AppEditorToolbar {
                 const parent: HTMLElement = this.selectedElement.parentElement;
                 this.selectedElement.parentElement.removeChild(this.selectedElement);
                 this.slideDidChange.emit(parent);
+
+                await this.resizeSlideContent(parent);
             }
+
+            await this.hideToolbar();
+
+            resolve();
+        });
+    }
+
+    private cloneSlide(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (this.deckBusy || !this.deckOrSlide) {
+                resolve();
+                return;
+            }
+
+            this.busyService.deckBusy(true);
+
+            this.slideCopy.emit(this.selectedElement);
 
             await this.hideToolbar();
 
@@ -425,7 +507,7 @@ export class AppEditorToolbar {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-slot-type',
             componentProps: {
                 selectedElement: this.selectedElement
@@ -443,12 +525,67 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openEditSlide() {
+        if (!this.deckOrSlide || (!this.qrCode && !this.chart)) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await popoverController.create({
+            component: 'app-edit-slide',
+            componentProps: {
+                selectedElement: this.selectedElement,
+                qrCode: this.qrCode,
+                chart: this.chart,
+                slideDidChange: this.slideDidChange
+            },
+            mode: 'md',
+            cssClass: 'popover-menu'
+        });
+
+        popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                if (detail.data.action === EditAction.DELETE_LOGO) {
+                    await this.deleteLogo();
+                } else if (detail.data.action === EditAction.OPEN_CUSTOM_LOGO) {
+                    await this.openCustomModalRestricted('app-custom-images', detail.data.action);
+                } else if (detail.data.action === EditAction.OPEN_DATA) {
+                    await this.openCustomModalRestricted('app-custom-data', detail.data.action);
+                }
+            }
+        });
+
+        await popover.present();
+    }
+
+    private async openReveal() {
+        if (this.deckOrSlide) {
+            return;
+        }
+
+        const popover: HTMLIonPopoverElement = await popoverController.create({
+            component: 'app-reveal',
+            componentProps: {
+                selectedElement: this.selectedElement
+            },
+            mode: 'md',
+            cssClass: 'popover-menu'
+        });
+
+        popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail.data) {
+                await this.toggleReveal(detail.data.reveal);
+            }
+        });
+
+        await popover.present();
+    }
+
     private async openCode() {
         if (!this.code) {
             return;
         }
 
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-code',
             componentProps: {
                 selectedElement: this.selectedElement,
@@ -461,6 +598,48 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
+    private async openYoutube() {
+        if (!this.youtube) {
+            return;
+        }
+
+        const modal: HTMLIonModalElement = await modalController.create({
+            component: 'app-youtube',
+            componentProps: {
+                selectedElement: this.selectedElement
+            }
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data && this.selectedElement && this.youtube) {
+                await this.updateYoutube(detail.data);
+            }
+        });
+
+        await modal.present();
+    }
+
+    private async openNotes() {
+        const modal: HTMLIonModalElement = await modalController.create({
+            component: 'app-notes',
+            componentProps: {
+                selectedElement: this.selectedElement
+            }
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data && this.selectedElement) {
+                this.notesDidChange.emit(this.selectedElement);
+            }
+
+            this.blockSlide.emit(false);
+        });
+
+        this.blockSlide.emit(true);
+
+        await modal.present();
+    }
+
     private toggleSlotType(type: SlotType): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.parentElement) {
@@ -470,11 +649,41 @@ export class AppEditorToolbar {
 
             const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement, type);
 
+            await this.replaceSlot(element);
+
+            resolve();
+        });
+    }
+
+    private toggleReveal(reveal: boolean): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, reveal);
+
+            await this.replaceSlot(element);
+
+            resolve();
+        });
+    }
+
+    private replaceSlot(element: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.selectedElement.parentElement || !element) {
+                resolve();
+                return;
+            }
+
             this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
 
             await this.initSelectedElement(element);
 
             await this.emitChange();
+
+            await this.resizeSlideContent();
 
             await this.hideToolbar();
 
@@ -482,8 +691,12 @@ export class AppEditorToolbar {
         });
     }
 
-    @Listen('colorDidChange')
-    async onColorDidChange(_element: HTMLElement) {
+    @Listen('colorDidChange', {target: 'document'})
+    async onColorDidChange($event: CustomEvent) {
+        if ($event) {
+            this.applyToAllDeck = $event.detail;
+        }
+
         await this.emitChange();
     }
 
@@ -508,14 +721,47 @@ export class AppEditorToolbar {
 
     private initSelectedElement(element: HTMLElement): Promise<void> {
         return new Promise<void>(async (resolve) => {
+            // If needed, remove highlight on previous element
+            if (!element && this.selectedElement) {
+                await this.highlightElement(false);
+            }
+
             this.selectedElement = element;
             this.deckOrSlide = this.isElementSlideOrDeck(element);
-            this.code = this.isElementCode(element);
+
+            this.youtube = this.isElementYoutubeSlide(element);
+            this.qrCode = this.isElementQRCodeSlide(element);
+            this.chart = this.isElementChartSlide(element);
+
+            this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
+            this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
+
+            this.list = this.isElementList(element);
 
             if (element) {
                 element.addEventListener('paste', this.cleanOnPaste, false);
 
                 await this.attachMoveToolbarOnElement();
+
+                await this.highlightElement(true);
+            }
+
+            resolve();
+        });
+    }
+
+    private highlightElement(highlight: boolean): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            // No highlight on deck
+            if (!this.selectedElement || this.deckOrSlide) {
+                resolve();
+                return;
+            }
+
+            if (highlight) {
+                this.selectedElement.setAttribute('highlighted', '');
+            } else {
+                this.selectedElement.removeAttribute('highlighted');
             }
 
             resolve();
@@ -532,8 +778,13 @@ export class AppEditorToolbar {
             if (window && 'ResizeObserver' in window) {
                 await this.detachMoveToolbarOnElement();
 
-                this.elementResizeObserver = new ResizeObserver(async (_entries) => {
+                this.elementResizeObserver = new ResizeObserver(async (entries) => {
                     await this.moveToolbar();
+
+                    if (entries && entries.length > 0 && entries[0].target
+                        && entries[0].target.nodeName && entries[0].target.nodeName.toLowerCase().indexOf('deckgo-slide') === -1) {
+                        await this.resizeSlideContent();
+                    }
                 });
                 this.elementResizeObserver.observe(this.selectedElement);
             } else {
@@ -562,12 +813,10 @@ export class AppEditorToolbar {
     }
 
     private async openColor() {
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-color',
             componentProps: {
                 deckOrSlide: this.deckOrSlide,
-                color: this.color,
-                background: this.background,
                 selectedElement: this.selectedElement
             },
             mode: 'md',
@@ -577,11 +826,13 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openBackground() {
-        const popover: HTMLIonPopoverElement = await IonControllerUtils.createPopover({
+    private async openImage() {
+        const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-image',
             componentProps: {
-                deckOrSlide: this.deckOrSlide
+                selectedElement: this.selectedElement,
+                deckOrSlide: this.deckOrSlide,
+                imgDidChange: this.imgDidChange
             },
             mode: 'md',
             cssClass: 'popover-menu'
@@ -593,14 +844,16 @@ export class AppEditorToolbar {
                     this.applyToAllDeck = detail.data.applyToAllDeck;
                 }
 
-                if (detail.data.action === ImageAction.OPEN_PHOTOS) {
-                    await this.openImagesModal('app-photo');
-                } else if (detail.data.action === ImageAction.DELETE_BACKGROUND) {
+                if (detail.data.action === EditAction.OPEN_PHOTOS) {
+                    await this.openModal('app-photo');
+                } else if (detail.data.action === EditAction.DELETE_BACKGROUND) {
                     await this.deleteBackground();
-                } else if (detail.data.action === ImageAction.ADD_IMAGE && detail.data.image) {
+                } else if (detail.data.action === EditAction.ADD_IMAGE && detail.data.image) {
                     await this.appendImage(detail.data.image);
-                } else if (detail.data.action === ImageAction.OPEN_GIFS) {
-                    await this.openImagesModal('app-gif');
+                } else if (detail.data.action === EditAction.OPEN_GIFS) {
+                    await this.openModal('app-gif');
+                } else if (detail.data.action === EditAction.OPEN_CUSTOM) {
+                    await this.openCustomModalRestricted('app-custom-images', EditAction.OPEN_CUSTOM);
                 }
             }
         });
@@ -608,21 +861,31 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openImagesModal(componentTag: string) {
-        const modal: HTMLIonModalElement = await IonControllerUtils.createModal({
+    private async openModal(componentTag: string, action?: EditAction) {
+        const modal: HTMLIonModalElement = await modalController.create({
             component: componentTag
         });
 
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && this.selectedElement) {
-                await this.appendImage(detail.data);
+                if (action === EditAction.OPEN_CUSTOM_LOGO) {
+                    await this.updateSlideAttribute(detail.data, 'img-src');
+                } else if (action === EditAction.OPEN_DATA) {
+                    await this.updateSlideAttribute(detail.data, 'src');
+                } else {
+                    await this.appendImage(detail.data);
+                }
             }
+
+            this.blockSlide.emit(false);
         });
+
+        this.blockSlide.emit(true);
 
         await modal.present();
     }
 
-    private appendImage(image: UnsplashPhoto | TenorGif): Promise<void> {
+    private appendImage(image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
                 resolve();
@@ -634,11 +897,22 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
             await helper.appendImage(this.selectedElement, image, this.deckOrSlide, this.applyToAllDeck);
 
             resolve();
         });
+    }
+
+    private async openCustomModalRestricted(componentTag: string, action: EditAction) {
+        const isAnonymous: boolean = await this.anonymousService.isAnonymous();
+
+        if (isAnonymous) {
+            this.signIn.emit();
+            return;
+        }
+
+        await this.openModal(componentTag, action);
     }
 
     private deleteBackground(): Promise<void> {
@@ -648,8 +922,123 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const helper: ImageHelper = new ImageHelper(this.slideDidChange, this.deckDidChange);
+            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
             await helper.deleteBackground(this.selectedElement, this.applyToAllDeck);
+
+            resolve();
+        });
+    }
+
+    private deleteLogo(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
+            await helper.deleteSlideAttributeImgSrc(this.selectedElement);
+
+            resolve();
+        });
+    }
+
+    private updateSlideAttribute(data: StorageFile, attribute: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            if (!data) {
+                resolve();
+                return;
+            }
+
+            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
+            await helper.updateSlideAttribute(this.selectedElement, attribute, data);
+
+            resolve();
+        });
+    }
+
+    private updateYoutube(youtubeUrl: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.youtube) {
+                resolve();
+                return;
+            }
+
+            if (!youtubeUrl || youtubeUrl === undefined || youtubeUrl === '') {
+                resolve();
+                return;
+            }
+
+            // Just in case
+            if (!this.isElementYoutubeSlide(this.selectedElement)) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.setAttribute('src', youtubeUrl);
+            this.slideDidChange.emit(this.selectedElement);
+
+            resolve();
+        });
+    }
+
+    private toggleList(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement || !this.list) {
+                resolve();
+                return;
+            }
+
+            const destinationListType: SlotType = this.list === SlotType.UL ? SlotType.OL : SlotType.UL;
+
+            if (SlotUtils.isNodeRevealList(this.selectedElement)) {
+                await this.updateRevealListAttribute(destinationListType);
+            } else {
+                await this.toggleSlotType(destinationListType)
+            }
+
+            this.list = destinationListType;
+
+            resolve();
+        });
+    }
+
+    private updateRevealListAttribute(type: SlotType): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.setAttribute('list-tag', type);
+
+            await this.emitChange();
+
+            await this.hideToolbar();
+
+            resolve();
+        });
+    }
+
+    private resizeSlideContent(slideElement?: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            const element: HTMLElement = slideElement ? slideElement : (this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
+
+            if (!element) {
+                resolve();
+                return;
+            }
+
+            if (typeof (element as any).resizeContent === 'function') {
+                await (element as any).resizeContent();
+            }
+
+            resolve();
         });
     }
 
@@ -657,19 +1046,49 @@ export class AppEditorToolbar {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
                 {this.renderSlotType()}
-                {this.renderPhotos()}
+                {this.renderReveal()}
                 {this.renderColor()}
+                {this.renderList()}
+                {this.renderImages()}
+                {this.renderYoutube()}
                 {this.renderCodeOptions()}
-                {this.renderDelete()}
+
+                <div class="editor-toolbar-edit">
+                    {this.renderNotes()}
+                    {this.renderCopy()}
+                    {this.renderDelete()}
+                </div>
             </div>
         ];
     }
 
     private renderDelete() {
-        return <a onClick={() => this.deleteElement()} title="Delete"
-                  class={this.deckBusy && this.deckOrSlide ? "delete disabled" : "delete"}>
+        return <a onClick={($event: UIEvent) => this.confirmDeleteElement($event)} title="Delete"
+                  class={this.deckBusy && this.deckOrSlide ? "disabled" : ""}>
             <ion-icon name="trash"></ion-icon>
         </a>
+    }
+
+    private renderNotes() {
+        if (!this.deckOrSlide) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.openNotes()} title="Notes"
+                      class={this.deckBusy ? "disabled" : ""}>
+                <ion-icon src="/assets/icons/notes.svg"></ion-icon>
+            </a>
+        }
+    }
+
+    private renderCopy() {
+        if (!this.deckOrSlide) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.cloneSlide()} title="Copy"
+                      class={this.deckBusy ? "disabled" : ""}>
+                <ion-icon name="copy"></ion-icon>
+            </a>
+        }
     }
 
     private renderColor() {
@@ -680,10 +1099,16 @@ export class AppEditorToolbar {
 
     private renderSlotType() {
         if (this.deckOrSlide) {
-            return undefined;
+            if (!this.qrCode && !this.chart) {
+                return undefined;
+            }
+
+            return <a onClick={() => this.openEditSlide()} title="Slide options">
+                <ion-icon src="/assets/icons/ionicons/md-create.svg"></ion-icon>
+            </a>
         } else {
             return <a onClick={() => this.openSlotType()} title="Toggle element type">
-                <ion-label>T</ion-label>
+                <ion-icon src="/assets/icons/ionicons/md-add.svg"></ion-icon>
             </a>
         }
     }
@@ -698,10 +1123,47 @@ export class AppEditorToolbar {
         }
     }
 
-    private renderPhotos() {
-        return <a onClick={() => this.openBackground()} title="Background">
-            <ion-icon name="images"></ion-icon>
-        </a>
+    private renderImages() {
+        if (!this.image && !this.deckOrSlide) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.openImage()} title={this.deckOrSlide ? 'Background' : 'Image'}>
+                <ion-icon name="images"></ion-icon>
+            </a>
+        }
     }
 
+    private renderYoutube() {
+        if (this.deckOrSlide && this.youtube) {
+            return <a onClick={() => this.openYoutube()} title="Modify Youtube url">
+                <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderReveal() {
+        if (this.deckOrSlide || this.code || this.youtube) {
+            return undefined;
+        } else {
+            return <a onClick={() => this.openReveal()} title="Edit element animation">
+                <ion-icon src="/assets/icons/album.svg"></ion-icon>
+            </a>
+        }
+    }
+
+    private renderList() {
+        if (this.deckOrSlide || !this.list) {
+            return undefined;
+        } else if (this.list === SlotType.OL) {
+            return <a onClick={() => this.toggleList()} title="Toggle to an unordered list">
+                <ion-icon src="/assets/icons/ionicons/ios-list.svg"></ion-icon>
+            </a>
+        } else {
+            return <a onClick={() => this.toggleList()} title="Toggle to an ordered list">
+                <ion-icon src="/assets/icons/list-ol.svg"></ion-icon>
+            </a>
+        }
+    }
 }

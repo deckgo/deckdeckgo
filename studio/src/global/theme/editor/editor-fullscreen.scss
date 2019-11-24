@@ -32,10 +32,6 @@
     --padding-bottom: 0;
   }
 
-  ion-split-pane.split-pane-visible ion-content:not(.fullscreen-padding) {
-    --padding-top: 0;
-  }
-
   ion-footer {
     position: absolute;
     bottom: 0;
@@ -50,8 +46,12 @@
 
     &.idle {
       deckgo-deck {
-        h1, h2, h3, section, deckgo-highlight-code {
+        h1, h2, h3, section, ol, ul, deckgo-reveal-list, deckgo-highlight-code, *:not([slot="background"]) > deckgo-lazy-img, deckgo-reveal[img] {
           border: 1px solid transparent;
+        }
+
+        [highlighted] {
+          box-shadow: none;
         }
       }
     }
@@ -59,15 +59,6 @@
     &:not(.idle) {
       deckgo-deck {
         --pager-display: none;
-      }
-    }
-
-    // Fonts
-    deckgo-deck {
-      font-size: 32px;
-
-      ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
-        font-size: 32px;
       }
     }
   }

@@ -2,8 +2,45 @@ app-settings {
   main {
     background: white;
 
-    ion-anchor {
+    ion-router-link {
       cursor: pointer;
+    }
+
+    div.newsletter, div.avatar {
+      padding: 8px;
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    div.newsletter {
+      ion-checkbox {
+        margin-left: 8px;
+      }
+    }
+
+    div.avatar {
+      --deckgo-avatar-size: 3rem;
+
+      input {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+    }
+
+    p.info {
+      font-size: var(--font-size-small);
+    }
+
+    ion-list {
+      p {
+        margin: 0;
+      }
+    }
+
+    h1.danger-zone {
+      margin-top: 64px;
     }
   }
 }

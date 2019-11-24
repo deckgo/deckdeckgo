@@ -13,18 +13,18 @@ interface UnsplashUserProfileImage {
 }
 
 interface UnsplashUser {
-    id: string,
-    username: string,
+    id?: string,
+    username?: string,
     name: string,
-    portfolio_url: string,
-    bio: string,
-    location: string,
-    total_likes: number,
-    total_photos: number,
-    total_collections: number,
-    instagram_username: string,
-    twitter_username: string,
-    profile_image: UnsplashUserProfileImage,
+    portfolio_url?: string,
+    bio?: string,
+    location?: string,
+    total_likes?: number,
+    total_photos?: number,
+    total_collections?: number,
+    instagram_username?: string,
+    twitter_username?: string,
+    profile_image?: UnsplashUserProfileImage,
     links: UnsplashUserLinks
 }
 
@@ -55,17 +55,17 @@ interface UnsplashPhotoLinks {
 
 interface UnsplashPhoto {
     id: string
-    created_at: string | Date;
-    updated_at: string | Date;
-    width: number;
-    height: number;
-    color: string;
-    likes: number;
-    liked_by_user: boolean;
-    description: string;
+    created_at?: string | Date;
+    updated_at?: string | Date;
+    width?: number;
+    height?: number;
+    color?: string;
+    likes?: number;
+    liked_by_user?: boolean;
+    description?: string;
 
     user: UnsplashUser;
-    current_user_collections: UserCollection[];
+    current_user_collections?: UserCollection[];
     urls: UnsplashPhotoUrls;
     links: UnsplashPhotoLinks;
 }

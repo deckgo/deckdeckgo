@@ -21,6 +21,12 @@ The parent deck should be declared using the tag `<deckgo-deck/>` and each slide
 
 In the previous example, the presentation contains two slides. The first slide use the template `deckgo-slide-title` and the second slide use the template `deckgo-slide-content`.
 
+# Installation
+
+The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slides, these have to be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.
+
+> If you are using the Starter Kit, per default, all our templates, these listed here behind, are pre-installed and pre-imported.
+
 # Templates
 
 [DeckDeckGo] provide the following templates:
@@ -79,19 +85,32 @@ In the previous example, the presentation contains two slides. The first slide u
   </deckgo-deck>
 </div>
 
+* Slide: [Big Image](/slides/bigimg)
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-big-img
+             img-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/big-img/showcase/big-deckdeckgo-h.jpg"
+             img-divisions="900;1500;2200"
+             axis="x"
+             reverse>
+    </deckgo-slide-big-img>
+  </deckgo-deck>
+</div>
+
 * Slide: [Chart](/slides/chart)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
-    <deckgo-slide-chart width={200} height={100} src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-pie-chart.csv">
+    <deckgo-slide-chart width={200} height={100} src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-chart>
     <deckgo-slide-chart width={200} height={100} type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
-                        src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-line-chart-to-compare.csv">
+                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-chart>
     <deckgo-slide-chart width={200} height={100}
-                        type="bar" src="https://raw.githubusercontent.com/fluster/deckdeckgo-charts/master/showcase/data-bar-chart-to-compare.csv"
+                        type="bar" src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
                         style={{'--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-bar2': 'var(--ion-color-secondary)', '--deckgo-chart-fill-color-bar3': 'var(--ion-color-tertiary)'}}
                         >
       <h1 slot="title">slot="title"</h1>
@@ -109,18 +128,28 @@ In the previous example, the presentation contains two slides. The first slide u
   </deckgo-deck>
 </div>
 
+* Slide: [Video](/slides/video)
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
+      <h1 slot="title">A Gif as video</h1>
+      <button slot="actions" onClick={() => this.playPauseVideo()}>Play/pause</button>
+    </deckgo-slide-video>
+  </deckgo-deck>
+</div>
+
 * Slide: [Code](/slides/code)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
-    <deckgo-slide-code src="https://raw.githubusercontent.com/fluster/deckdeckgo/master/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+    <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/code/src/components/slide/deckdeckgo-slide-code.tsx">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-code>
   </deckgo-deck>
 </div>
 
 * Slide: [Author](/slides/author)
-
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -144,8 +173,17 @@ In the previous example, the presentation contains two slides. The first slide u
   </deckgo-deck>
 </div>
 
-## Note
+* Slide: [Countdown](/slides/countdown)
 
-If you would miss or need further templates, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more options.
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-countdown hours={1} minutes={0} seconds={5}>
+        <h1 slot="title">slot="title"</h1>
+        <p slot="hours">slot="hours"</p>
+        <p slot="minutes">slot="minutes"</p>
+        <p slot="seconds">slot="seconds"</p>
+    </deckgo-slide-countdown>
+  </deckgo-deck>
+</div>
 
 [DeckDeckGo]: https://deckdeckgo.com 

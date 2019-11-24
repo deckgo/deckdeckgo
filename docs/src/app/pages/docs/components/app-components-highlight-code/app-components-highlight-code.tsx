@@ -2,24 +2,12 @@ import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
-import {MenuService} from '../../../../services/menu/menu.service';
-
 @Component({
   tag: 'app-components-highlight-code'
 })
 export class AppComponentsHighlightCode {
 
   @Element() el: HTMLElement;
-
-  private menuService: MenuService;
-
-  constructor() {
-    this.menuService = MenuService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.menuService.enable();
-  }
 
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.reloadCode(this.el);
@@ -36,7 +24,7 @@ export class AppComponentsHighlightCode {
 <h2 id="app-components-highlight-code-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-components-highlight-code-showcase">Showcase</a></li>
-<li><a href="#app-components-highlight-code-getting-started">Getting started</a><ul>
+<li><a href="#app-components-highlight-code-installation">Installation</a><ul>
 <li><a href="#app-components-highlight-code-using-deckdeckgo-highlight-code-from-a-cdn">Using DeckDeckGo Highlight Code from a CDN</a></li>
 <li><a href="#app-components-highlight-code-install-deckdeckgo-highlight-code-from-npm">Install DeckDeckGo Highlight Code from NPM</a></li>
 <li><a href="#app-components-highlight-code-framework-integration">Framework integration</a></li>
@@ -59,21 +47,29 @@ export class AppComponentsHighlightCode {
 <h2 id="app-components-highlight-code-showcase">Showcase</h2>
 <deckgo-highlight-code language="java">
       <code slot="code">public static void main(String args[]) &#123; {'\n'}  System.out.println(&quot;Hello World&quot;);{'\n'}&#125;</code>
-    </deckgo-highlight-code><h2 id="app-components-highlight-code-getting-started">Getting started</h2>
-<p>To create easily your PWA presentation and to enjoy all the options, I suggest you to create your slides using the CLI as described in the <a href="/docs/introduction">Getting started chapter</a>.</p>
-<p>Doing so you will use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit which already includes this Web Component.</p>
-<p>However, if you are looking to use this Web Component as a standalone component, to add a code highlighter feature to your web applications, it could be use directly in your project from a CDN, using a simple script include, or could be installed from <a href="https://www.npmjs.com/package/@deckdeckgo/highlight-code">npm</a>.</p>
+    </deckgo-highlight-code><h2 id="app-components-highlight-code-installation">Installation</h2>
+<p>This component could be added to your web application using the following methods.</p>
+<blockquote>
+<p>If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+</blockquote>
 <h3 id="app-components-highlight-code-using-deckdeckgo-highlight-code-from-a-cdn">Using DeckDeckGo Highlight Code from a CDN</h3>
 <p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> Code from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;script src=&quot;https:&#47;&#47;unpkg.com&#47;deckdeckgo-highlight-code@latest&#47;dist&#47;deckdeckgo-highlight-code.js&quot;&gt;&lt;&#47;script&gt;</code>
+      <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;highlight-code@latest&#47;dist&#47;deckdeckgo-highlight-code&#47;deckdeckgo-highlight-code.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;highlight-code@latest&#47;dist&#47;deckdeckgo-highlight-code&#47;deckdeckgo-highlight-code.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-components-highlight-code-install-deckdeckgo-highlight-code-from-npm">Install DeckDeckGo Highlight Code from NPM</h3>
 <p>Install <a href="https://deckdeckgo.com">DeckDeckGo</a> - Highlight Code in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/highlight-code">npm</a> using the following command:</p>
 <deckgo-highlight-code language="bash">
       <code slot="code">npm install @deckdeckgo&#47;highlight-code</code>
     </deckgo-highlight-code><h3 id="app-components-highlight-code-framework-integration">Framework integration</h3>
 <p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
-<h2 id="app-components-highlight-code-usage">Usage</h2>
+<p>That being said, commonly, you might either <code>import</code> or <code>load</code> it:</p>
+<h4 id="app-components-highlight-code-import">Import</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#039;@deckdeckgo&#47;highlight-code&#039;;</code>
+    </deckgo-highlight-code><h4 id="app-components-highlight-code-loader">Loader</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#123; defineCustomElements as deckDeckGoElement &#125; from &#039;@deckdeckgo&#47;highlight-code&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoElement(window);</code>
+    </deckgo-highlight-code><h2 id="app-components-highlight-code-usage">Usage</h2>
 <p>The <code>&lt;deckgo-highlight-code/&gt;</code> Web Component will highlight your code using <a href="https://prismjs.com">Prism.js</a>. You could inject a <code>&lt;code/&gt;</code> tag using slot or provide an URI to the file containing your code.</p>
 <h3 id="app-components-highlight-code-properties">Properties</h3>
 <p>The <code>&lt;deckgo-highlight-code/&gt;</code> expose the following properties:</p>
@@ -128,6 +124,13 @@ export class AppComponentsHighlightCode {
 <td>If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with space. For example: &quot;3,5 8,9 13,13 14,17&quot;</td>
 <td><code>string</code></td>
 <td></td>
+</tr>
+<tr>
+<td><code>lineNumbers</code></td>
+<td><code>line-numbers</code></td>
+<td>Display the number of the lines of code</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
 </tr>
 <tr>
 <td><code>editable</code></td>
@@ -198,6 +201,11 @@ export class AppComponentsHighlightCode {
 <td>The background of the lines you wish to highlight</td>
 </tr>
 <tr>
+<td>--deckgo-highlight-code-line-numbers</td>
+<td>#999999</td>
+<td>The color of the line numbers and divider</td>
+</tr>
+<tr>
 <td>--deckgo-highlight-code-line-padding</td>
 <td></td>
 <td>A padding for each lines you wish to highlight</td>
@@ -266,6 +274,36 @@ export class AppComponentsHighlightCode {
 <td>--deckgo-highlight-code-scroll</td>
 <td>scroll</td>
 <td>In case you would like to change the scroll property of the shadowed code block</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-width</td>
+<td></td>
+<td>The attribute width of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-height</td>
+<td></td>
+<td>The attribute height of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-display</td>
+<td></td>
+<td>The attribute display of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-justify-content</td>
+<td></td>
+<td>The attribute justify-content of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-flex-direction</td>
+<td></td>
+<td>The attribute flex-direction of the code&#39;s container</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-container-align-items</td>
+<td></td>
+<td>The attribute align-items of the code&#39;s container</td>
 </tr>
 </tbody></table>
 <h3 id="app-components-highlight-code-methods">Methods</h3>

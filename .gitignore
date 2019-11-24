@@ -41,5 +41,5 @@ firebase.json
 result
 result-*
 
-config.dev.json
+config.staging.json
 config.prod.json

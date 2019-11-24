@@ -1,29 +1,24 @@
-import {Component, Element, h} from '@stencil/core';
+import {Component, Element, h, Listen} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
-import {MenuService} from '../../../../services/menu/menu.service';
-
 @Component({
   tag: 'app-slide-content',
-  styleUrl: 'app-slides-content.scss'
+  styleUrl: 'app-slide-content.scss'
 })
 export class AppConcept {
 
   @Element() el: HTMLElement;
 
-  private menuService: MenuService;
-
-  constructor() {
-    this.menuService = MenuService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.menuService.enable();
-  }
-
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.reloadCode(this.el);
+  }
+
+  @Listen('slidesDidLoad')
+  async onSlidesDidLoad($event: CustomEvent) {
+    if ($event) {
+      await DeckdeckgoDocsUtils.initSlideSize($event.target as HTMLElement);
+    }
   }
 
   render() {
@@ -37,6 +32,12 @@ export class AppConcept {
 <h2 id="app-slide-content-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-slide-content-layout">Layout</a></li>
+<li><a href="#app-slide-content-installation">Installation</a><ul>
+<li><a href="#app-slide-content-from-a-cdn">From a CDN</a></li>
+<li><a href="#app-slide-content-from-npm">From NPM</a></li>
+<li><a href="#app-slide-content-framework-integration">Framework integration</a></li>
+</ul>
+</li>
 <li><a href="#app-slide-content-usage">Usage</a><ul>
 <li><a href="#app-slide-content-slots">Slots</a></li>
 <li><a href="#app-slide-content-notes">Notes</a></li>
@@ -60,7 +61,29 @@ export class AppConcept {
   </deckgo-deck>
 </div>
 
-<h2 id="app-slide-content-usage">Usage</h2>
+<h2 id="app-slide-content-installation">Installation</h2>
+<p>This template could be added to your presentation using the following methods.</p>
+<blockquote>
+<p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+</blockquote>
+<h3 id="app-slide-content-from-a-cdn">From a CDN</h3>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-content@latest&#47;dist&#47;deckdeckgo-slide-content&#47;deckdeckgo-slide-content.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-content@latest&#47;dist&#47;deckdeckgo-slide-content&#47;deckdeckgo-slide-content.js&quot;&gt;&lt;&#47;script&gt;</code>
+    </deckgo-highlight-code><h3 id="app-slide-content-from-npm">From NPM</h3>
+<p>To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:</p>
+<deckgo-highlight-code language="bash">
+      <code slot="code">npm install @deckdeckgo&#47;slide-content</code>
+    </deckgo-highlight-code><h3 id="app-slide-content-framework-integration">Framework integration</h3>
+<p>The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>, <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.</p>
+<p>That being said, commonly, you might either <code>import</code> or <code>load</code> it:</p>
+<h4 id="app-slide-content-import">Import</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#039;@deckdeckgo&#47;slide-content&#039;;</code>
+    </deckgo-highlight-code><h4 id="app-slide-content-loader">Loader</h4>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">import &#123; defineCustomElements as deckDeckGoSlideElement &#125; from &#039;@deckdeckgo&#47;slide-content&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoSlideElement(window);</code>
+    </deckgo-highlight-code><h2 id="app-slide-content-usage">Usage</h2>
 <p>The &quot;Content&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-content/&gt;</code>.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-content&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;Something related to my topic&lt;&#47;h1&gt;{'\n'}    &lt;p slot=&quot;content&quot;&gt;{'\n'}      Cool beans{'\n'}    &lt;&#47;p&gt;{'\n'}  &lt;&#47;deckgo-slide-content&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
@@ -81,18 +104,6 @@ export class AppConcept {
 </tr>
 </thead>
 <tbody><tr>
-<td>reveal</td>
-<td>boolean</td>
-<td>false</td>
-<td>Hide the slotted elements <code>li</code>, <code>p</code> an <code>img</code> and display them when navigating using <code>slideNext()</code> or <code>slidePrev()</code> (see <a href="/doc/features/navigation.md">documention</a>)</td>
-</tr>
-<tr>
-<td>reveal-show-first</td>
-<td>boolean</td>
-<td>false</td>
-<td>Show the first elements which would be hidden if <code>reveal</code> is set to <code>true</code></td>
-</tr>
-<tr>
 <td>custom-background</td>
 <td>boolean</td>
 <td>false</td>
@@ -107,7 +118,7 @@ export class AppConcept {
 </tbody></table>
 <h3 id="app-slide-content-example">Example</h3>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-content reveal=&quot;true&quot; reveal-show-first=&quot;true&quot;&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;Something related to my topic&lt;&#47;h1&gt;{'\n'}    &lt;ul slot=&quot;content&quot;&gt;{'\n'}      &lt;li&gt;Cool&lt;&#47;li&gt;{'\n'}      &lt;li&gt;Beans&lt;&#47;li&gt;{'\n'}    &lt;&#47;ul&gt;{'\n'}  &lt;&#47;deckgo-slide-content&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
+      <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-content&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;Something related to my topic&lt;&#47;h1&gt;{'\n'}    &lt;ul slot=&quot;content&quot;&gt;{'\n'}      &lt;li&gt;Cool&lt;&#47;li&gt;{'\n'}      &lt;li&gt;Beans&lt;&#47;li&gt;{'\n'}    &lt;&#47;ul&gt;{'\n'}  &lt;&#47;deckgo-slide-content&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
     </deckgo-highlight-code><h2 id="app-slide-content-theming">Theming</h2>
 <p>The following theming options will affect this component if set on its host or parent.</p>
 <table>

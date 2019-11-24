@@ -5,6 +5,8 @@ export interface EnvironmentFirebaseConfig {
     storageBucket: string;
     projectId: string;
     messagingSenderId: string;
+    storageUrl: string;
+    appId: string;
 }
 
 export interface EnvironmentTenorConfig {
@@ -16,9 +18,16 @@ export interface EnvironmentUnsplashConfig {
     url: string;
 }
 
-export interface EnvironmentConfig {
+export interface EnvironmentDeckDeckGoConfig {
+    prod: boolean;
     appUrl: string;
     apiUrl: string;
+    presentationUrl: string;
+    globalAssetsUrl: string
+}
+
+export interface EnvironmentConfig {
+    deckdeckgo: EnvironmentDeckDeckGoConfig;
     firebase: EnvironmentFirebaseConfig;
     tenor: EnvironmentTenorConfig;
     unsplash: EnvironmentUnsplashConfig;

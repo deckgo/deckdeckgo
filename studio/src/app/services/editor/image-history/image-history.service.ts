@@ -19,21 +19,25 @@ export class ImageHistoryService {
         return del('deckdeckgo_images');
     }
 
-    push(image: UnsplashPhoto | TenorGif): Promise<void> {
+    push(image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!image) {
                 resolve();
                 return;
             }
 
-            let images: (UnsplashPhoto | TenorGif)[] = await this.get();
+            let images: (UnsplashPhoto | TenorGif | StorageFile)[] = await this.get();
 
             if (!images) {
                 images = [];
             }
 
-            const index: number = images.findIndex((filteredPhoto: UnsplashPhoto | TenorGif) => {
-               return filteredPhoto.id === image.id
+            const index: number = images.findIndex((filteredPhoto: UnsplashPhoto | TenorGif | StorageFile) => {
+                if (filteredPhoto.hasOwnProperty('fullPath')) {
+                    return (filteredPhoto as StorageFile).fullPath === (image as StorageFile).fullPath;
+                } else {
+                    return (filteredPhoto as UnsplashPhoto | TenorGif).id === (image as UnsplashPhoto | TenorGif).id
+                }
             });
 
             if (index >= 0) {
@@ -53,7 +57,7 @@ export class ImageHistoryService {
         });
     }
 
-    get(): Promise<(UnsplashPhoto | TenorGif)[]> {
+    get(): Promise<(UnsplashPhoto | TenorGif | StorageFile)[]> {
         return get('deckdeckgo_images');
     }
 

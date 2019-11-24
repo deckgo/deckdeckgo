@@ -1,3 +1,42 @@
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
+<a name="1.0.0-alpha.12"></a>
+# 1.0.0-alpha.12 (2019-08-07)
+
+### Features
+
+* `lazy-img` component now lazy load images using native lazy-loading
+
+<a name="1.0.0-alpha.11"></a>
+# 1.0.0-alpha.11 (2019-08-06)
+
+* add a CSS variable for the property `object-fit`
+
+<a name="1.0.0-alpha.10"></a>
+# 1.0.0-alpha.10 (2019-07-17)
+
+* optionally, parse SVG instead of using such images in `<img/>` tags
+
+<a name="1.0.0-alpha.9"></a>
+# 1.0.0-alpha.9 (2019-07-06)
+
+* add two new CSS variables for styling
+
+<a name="1.0.0-alpha.8"></a>
+# 1.0.0-alpha.8 (2019-06-27)
+
+* don't display alt while loading
+* add an `imgErrorSrc` which could be displayed in case the image would not be resolved
+
 <a name="1.0.0-alpha.7"></a>
 # 1.0.0-alpha.7 (2019-06-04)
 

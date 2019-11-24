@@ -5,6 +5,10 @@ The "Code" slide is a the slide to use if you would like to showcase code during
 ## Table of contents
 
 - [Layout](#app-slide-code-layout)
+- [Installation](#app-slide-code-installation)
+  - [From a CDN](#app-slide-code-from-a-cdn)
+  - [From NPM](#app-slide-code-from-npm)
+  - [Framework integration](#app-slide-code-framework-integration)
 - [Usage](#app-slide-code-usage)
   - [Usage with file URI](#app-slide-code-usage-with-file-uri)
   - [Usage with slotted element](#app-slide-code-usage-with-slotted-element)
@@ -21,11 +25,53 @@ The "Code" slide is a the slide to use if you would like to showcase code during
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
-    <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/slides/deckdeckgo-slide-code/deckdeckgo-slide-code.tsx">
+    <deckgo-slide-code src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/code/src/components/slide/deckdeckgo-slide-code.tsx">
           <h1 slot="title">slot="title"</h1>
         </deckgo-slide-code>
   </deckgo-deck>
 </div>
+
+## Installation
+
+This template could be added to your presentation using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+ 
+### From a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/slide-code@latest/dist/deckdeckgo-slide-code/deckdeckgo-slide-code.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-code@latest/dist/deckdeckgo-slide-code/deckdeckgo-slide-code.js"></script>
+```
+
+### From NPM
+
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+
+```bash
+npm install @deckdeckgo/slide-code
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/slide-code';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-code/dist/loader';
+deckDeckGoSlideElement(window);
+```
 
 ## Usage
 

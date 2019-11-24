@@ -1,11 +1,32 @@
 app-feed {
 
-  deckgo-lazy-img {
-    min-height: 400px;
-    display: block;
+  width: 100%;
+
+  a,
+  a:link,
+  a:visited,
+  a:hover,
+  a:active{
+    text-decoration: none;
+
+    touch-action: manipulation;
+    cursor: pointer;
   }
 
   ion-card[class*="sc-ion-card"] {
     --background: white;
+  }
+
+  ion-infinite-scroll {
+    ion-spinner {
+      color: var(--ion-color-primary);
+    }
+  }
+
+  div.spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 }

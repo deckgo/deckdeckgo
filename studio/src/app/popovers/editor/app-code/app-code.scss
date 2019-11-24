@@ -1,39 +1,4 @@
 app-code {
   @import "../../../../global/theme/editor/editor-info";
-
-  ion-list.list-ios {
-    margin-bottom: 0;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-
-  ion-item {
-    --border-width: 0;
-    --inner-border-width: 0;
-    
-    &.select {
-      ion-label:first-of-type {
-        display: none;
-      }
-
-      ion-select {
-        min-width: 100%;
-      }
-    }
-
-    small {
-      color: var(--ion-color-medium);
-    }
-  }
-
-  ion-item-divider {
-    --color: black;
-    --background: inherit;
-    --ion-item-border-color: transparent;
-    --ion-padding: 0;
-
-    ion-label {
-      margin: 16px 0 4px;
-    }
-  }
+  @import "../../../../global/theme/editor/editor-popover";
 }

@@ -1,3 +1,54 @@
+<a name="1.0.0-rc.4-1"></a>
+# 1.0.0-rc.4-1 (2019-11-05)
+
+### Fix
+
+* clear draw history
+
+<a name="1.0.0-rc.4"></a>
+# 1.0.0-rc.4 (2019-11-05)
+
+### Breaking Changes
+
+* update component in order to sync content between decks and remote
+
+### Features
+
+* add a method to update a particular slide
+* add a method to update the "reveal" settings of the deck of the remote control
+
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-10-25)
+
+### Features
+
+* drawing circle clear the all pane ([#66](https://github.com/deckgo/deckdeckgo/issues/66))
+
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-09-15)
+
+### Features
+
+* add methods to forward play and pause from the deck to the remote app
+
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-09-15)
+
+### Libs
+
+* update `@deckdeckgo/types` last definition
+
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
 <a name="1.0.0-alpha.11"></a>
 # 1.0.0-alpha.11 (2019-06-04)
 

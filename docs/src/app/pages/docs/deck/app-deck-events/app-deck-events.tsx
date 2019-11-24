@@ -2,24 +2,12 @@ import {Component, Element, h} from '@stencil/core';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
-import {MenuService} from '../../../../services/menu/menu.service';
-
 @Component({
   tag: 'app-deck-events'
 })
 export class AppDeckEvents {
 
   @Element() el: HTMLElement;
-
-  private menuService: MenuService;
-
-  constructor() {
-    this.menuService = MenuService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.menuService.enable();
-  }
 
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.reloadCode(this.el);
@@ -44,6 +32,16 @@ export class AppDeckEvents {
 <td>slidesDidLoad</td>
 <td>string[]</td>
 <td>Emitted when the deck and all slides have loaded. Emit the an ordered list of all the tag names of the slides.</td>
+</tr>
+<tr>
+<td>slideNextDidAnimate</td>
+<td>void</td>
+<td>Emitted when the slide didn&#39;t change but an animation occurred towards the next slide.</td>
+</tr>
+<tr>
+<td>slidePrevDidAnimate</td>
+<td>void</td>
+<td>Emitted when the slide didn&#39;t change but an animation occurred towards the previous slide.</td>
 </tr>
 <tr>
 <td>slideNextDidChange</td>

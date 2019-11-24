@@ -1,4 +1,7 @@
-import {Component, Listen, Element, State, h} from '@stencil/core';
+import {Component, Listen, Element, State, h, EventEmitter, Event} from '@stencil/core';
+import {ItemReorderEventDetail} from '@ionic/core';
+
+import {findSlidesTitle} from '@deckdeckgo/deck-utils';
 
 @Component({
     tag: 'app-slide-navigate',
@@ -9,12 +12,14 @@ export class AppSlideNavigate {
     @Element() el: HTMLElement;
 
     @State()
-    slides: string[];
+    private slides: string[];
+
+    @Event() private reorder: EventEmitter<ItemReorderEventDetail>;
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
 
-        this.slides = await this.getSlidesTitle();
+        this.slides = await findSlidesTitle();
     }
 
     @Listen('popstate', { target: 'window' })
@@ -26,48 +31,20 @@ export class AppSlideNavigate {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
     }
 
-    private async jumpToSlide(index: number) {
+    async jumpToSlide(index: number) {
         await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(index);
     }
 
-    private getSlidesTitle(): Promise<string[]> {
-        return new Promise<string[]>((resolve) => {
-            if (!document) {
+    private onReorder($event: CustomEvent<ItemReorderEventDetail>): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!$event) {
                 resolve();
                 return;
             }
 
-            const results: string[] = [];
+            this.reorder.emit($event.detail);
 
-            const slides: NodeListOf<HTMLElement> = document.querySelectorAll('deckgo-deck > *');
-
-            if (slides) {
-                for (const slide of Array.from(slides)) {
-                    if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                        const title: HTMLElement = slide.querySelector('[slot="title"]');
-
-                        if (title && title.textContent !== '') {
-                            results.push(title.textContent);
-                        } else {
-                            const start: HTMLElement = slide.querySelector('[slot="start"],[slot="header"]');
-
-                            if (start && start.textContent !== '') {
-                                results.push(start.textContent);
-                            } else {
-                                const end: HTMLElement = slide.querySelector('[slot="end"],[slot="footer"]');
-
-                                if (end && end.textContent !== '') {
-                                    results.push(end.textContent);
-                                } else {
-                                    results.push('');
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            resolve(results);
+            resolve();
         });
     }
 
@@ -80,13 +57,15 @@ export class AppSlideNavigate {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Jump to slide</ion-title>
+                    <ion-title class="ion-text-uppercase">Slides</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
-                <ion-list>
+                <p class="ion-padding-start ion-padding-end">Jump to a specific slide or change the order of your slides.</p>
+
+                <ion-reorder-group onIonItemReorder={($event: CustomEvent<ItemReorderEventDetail>) => this.onReorder($event)} disabled={!this.slides || this.slides.length <= 1}>
                     {this.renderSlides()}
-                </ion-list>
+                </ion-reorder-group>
             </ion-content>
         ];
     }
@@ -98,8 +77,9 @@ export class AppSlideNavigate {
 
                     const text = 'Slide ' + (i + 1) + (slideTitle ? ': ' + slideTitle : '');
 
-                    return <ion-item ion-item button onClick={() => this.jumpToSlide(i)}>
+                    return <ion-item ion-item button onClick={() => this.jumpToSlide(i)} detail={false}>
                         <ion-label>{text}</ion-label>
+                        <ion-reorder slot="end"></ion-reorder>
                     </ion-item>
                 })
             );

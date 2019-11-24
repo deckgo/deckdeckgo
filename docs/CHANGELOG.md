@@ -1,3 +1,199 @@
+<a name="1.0.0-rc.6"></a>
+# 1.0.0-rc.6 (2019-11-10)
+
+### Features
+
+* lighthouse improvements
+* solve Ionic deprecated controllers
+* improve grammar, typo and syntax
+* update doc about sync reveal for mobile
+* update demo website url
+
+<a name="1.0.0-rc.5"></a>
+# 1.0.0-rc.5 (2019-10-20)
+
+### Features
+
+* update `slide chart` and `charts` components to follow their integration in the editor
+* update most recent libs
+* hello darkness my old friend switcher ([#419](https://github.com/deckgo/deckdeckgo/issues/419))
+* add youtube video to documentation ([#60](https://github.com/deckgo/deckdeckgo/issues/60))
+
+<a name="1.0.0-rc.4-3"></a>
+# 1.0.0-rc.4-3 (2019-10-13)
+
+### Features
+
+* new split `vertical` property
+
+<a name="1.0.0-rc.4-2"></a>
+# 1.0.0-rc.4-2 (2019-10-09)
+
+### Features
+
+* new animated bar charts title options
+
+<a name="1.0.0-rc.4-1"></a>
+# 1.0.0-rc.4-1 (2019-10-01)
+
+### Features
+
+* new features of the slide QR code
+
+### Libs
+
+* update to most recent DeckDeckGo dependencies
+
+<a name="1.0.0-rc.4"></a>
+# 1.0.0-rc.4 (2019-10-01)
+
+### Features
+
+* new custom actions for the `@deckdeckgo/inline-editor`
+
+<a name="1.0.0-rc.3-2"></a>
+# 1.0.0-rc.3-2 (2019-09-29)
+
+### Features
+
+* new property `color-hex` of the `@deckdeckgo/color` component
+
+<a name="1.0.0-rc.3-1"></a>
+# 1.0.0-rc.3-1 (2019-09-21)
+
+### Features
+
+* new property `--deckgo-flex-wrap` of the `@deckdeckgo/color` component
+
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-09-21)
+
+### Features
+
+* new CSS variable of the `@deckdeckgo/color` component
+
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-09-21)
+
+### Features
+
+* new `@deckdeckgo/color` Web Component documented
+
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-09-15)
+
+### Features
+
+* document modifications related to remote
+
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-09-13)
+
+### Features
+
+* document webpack markdown plugin option to provide an alternative path as source file
+
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-31)
+
+### Features
+
+* remove `ion-split-pane` in order to be able to `prerender` the documentation ([#59](https://github.com/deckgo/deckdeckgo/issues/59))
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
+<a name="1.0.0-alpha.25"></a>
+# 1.0.0-alpha.25 (2019-08-15)
+
+### Breaking Changes
+
+* add new components `<deckgo-reveal/>` and `<deckgo-reveal-list/>` to make elements and texts appear one line at a time
+
+### Features
+
+* add new CSS4 variables to the `highlight-code` component
+
+<a name="1.0.0-alpha.24-1"></a>
+# 1.0.0-alpha.24-1 (2019-08-09)
+
+### Features
+
+* add `linkCreated` to inline editor component
+
+<a name="1.0.0-alpha.24"></a>
+# 1.0.0-alpha.24 (2019-08-07)
+
+### Features
+
+* `lazy-img` component now lazy load images using native lazy-loading
+
+<a name="1.0.0-alpha.23"></a>
+# 1.0.0-alpha.23 (2019-08-06)
+
+### Features
+
+* improve demo slides in the documentation ([#199](https://github.com/deckgo/deckdeckgo/issues/199))
+* add new attributes to the component `inline-editor`
+* add new template `deckgo-slide-countdown`
+* add new attribute to the component `lazy-img`
+
+<a name="1.0.0-alpha.22"></a>
+# 1.0.0-alpha.22 (2019-07-30)
+
+### Features
+
+* add new `lineNumbers` option and relative CSS4 variables to the component `highlight-code`
+
+<a name="1.0.0-alpha.21"></a>
+# 1.0.0-alpha.21 (2019-07-17)
+
+### Features
+
+* add new option `SVG` to component `lazy-img`
+
+<a name="1.0.0-alpha.20"></a>
+# 1.0.0-alpha.20 (2019-07-13)
+
+### Features
+
+* add new component social option `dev`
+* style menu hover in dark mode
+
+<a name="1.0.0-alpha.19"></a>
+# 1.0.0-alpha.19 (2019-07-11)
+
+### Fix
+
+* pre-rendering
+
+<a name="1.0.0-alpha.18"></a>
+# 1.0.0-alpha.18 (2019-06-27)
+
+### Features
+
+* new `lazy-img` component error image option
+
+<a name="1.0.0-alpha.17"></a>
+# 1.0.0-alpha.17 (2019-06-24)
+
+### Features
+
+* update `chart` slide
+* update `charts` components with the animated charts feature
+
+<a name="1.0.0-alpha.16"></a>
+# 1.0.0-alpha.16 (2019-06-16)
+
+### Fix
+
+* post migration to Stencil One
+
 <a name="1.0.0-alpha.15"></a>
 # 1.0.0-alpha.15 (2019-06-14)
 

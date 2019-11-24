@@ -1,8 +1,8 @@
-import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
+import { Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host } from '@stencil/core';
 
 import Prism from 'prismjs';
 
-import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
+import { DeckdeckgoHighlightCodeAnchor } from '../declarations/deckdeckgo-highlight-code-anchor';
 
 @Component({
   tag: 'deckgo-highlight-code',
@@ -22,9 +22,10 @@ export class DeckdeckgoHighlightCode {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  @Prop({reflectToAttr: true}) language: string = 'javascript';
+  @Prop({ reflectToAttr: true }) language: string = 'javascript';
 
-  @Prop({reflectToAttr: true}) highlightLines: string;
+  @Prop({ reflectToAttr: true }) highlightLines: string;
+  @Prop({ reflectToAttr: true }) lineNumbers: boolean = false;
 
   @Prop() editable: boolean = false;
 
@@ -42,7 +43,7 @@ export class DeckdeckgoHighlightCode {
     }
   }
 
-  @Listen('prismLanguageLoaded', {target: 'document'})
+  @Listen('prismLanguageLoaded', { target: 'document' })
   async languageLoaded($event: CustomEvent) {
     if (!$event || !$event.detail) {
       return;
@@ -113,6 +114,11 @@ export class DeckdeckgoHighlightCode {
     });
   }
 
+  @Watch('lineNumbers')
+  async onLineNumbersChange() {
+    await this.fetchOrParse();
+  }
+
   @Method()
   load(): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -173,20 +179,40 @@ export class DeckdeckgoHighlightCode {
 
   private parseCode(code: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-
       const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-highlight-code-container');
+
+      if (!code || code === undefined || code === '') {
+        resolve();
+        return;
+      }
 
       if (container) {
         try {
-          const highlightedCode: string = Prism.highlight(code, Prism.languages[this.language], this.language);
+          // clear the container first
+          container.children[0].innerHTML = '';
 
-          container.children[0].innerHTML = highlightedCode;
+          // split the code on linebreaks
+          const regEx = RegExp(/\n(?!$)/g); //
+          const match = code.split(regEx);
+          match.forEach((m, idx, array) => {
+            // On last element
+            if (idx === array.length - 1) {
+              this.attachHighlightObserver(container);
+            }
 
+            let div: HTMLElement = document.createElement('div');
+            if (this.lineNumbers) {
+              div.classList.add('deckgo-highlight-code-line-number');
+            }
+
+            const highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
+
+            // If empty, use \u200B as zero width text spacer
+            div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
+
+            container.children[0].appendChild(div);
+          });
           await this.addAnchors();
-
-          setTimeout(async () => {
-            await this.addHighlight();
-          }, 0);
 
           resolve();
         } catch (err) {
@@ -194,6 +220,24 @@ export class DeckdeckgoHighlightCode {
         }
       }
     });
+  }
+
+  private attachHighlightObserver(container: HTMLElement) {
+    if (window && 'ResizeObserver' in window) {
+      // @ts-ignore
+      const observer: ResizeObserver = new ResizeObserver(async (_entries) => {
+        await this.addHighlight();
+
+        observer.disconnect();
+      });
+
+      observer.observe(container);
+    } else {
+      // Back in my days...
+      setTimeout(async () => {
+        await this.addHighlight();
+      }, 100);
+    }
   }
 
   private addAnchors(): Promise<void> {
@@ -240,7 +284,7 @@ export class DeckdeckgoHighlightCode {
           if (containerCode && containerCode.hasChildNodes()) {
             const elements: HTMLElement[] = Array.prototype.slice.call(containerCode.childNodes);
 
-            let rowIndex: number = -1;
+            let rowIndex: number = 0;
             let lastOffsetTop: number = -1;
             let offsetHeight: number = -1;
 
@@ -388,7 +432,7 @@ export class DeckdeckgoHighlightCode {
       if (slottedCode) {
         setTimeout(() => {
           slottedCode.setAttribute('contentEditable', 'true');
-          slottedCode.addEventListener('blur', this.applyCode, {once: true});
+          slottedCode.addEventListener('blur', this.applyCode, { once: true });
           slottedCode.addEventListener('keydown', this.catchNewLine);
 
           slottedCode.focus();
@@ -458,10 +502,10 @@ export class DeckdeckgoHighlightCode {
 
   render() {
     return (
-      <Host class={{'deckgo-highlight-code-edit': this.editing}}>
+      <Host class={{ 'deckgo-highlight-code-edit': this.editing }}>
         <div class="deckgo-highlight-code-container"
-             onMouseDown={() => this.edit()}
-             onTouchStart={() => this.edit()}>
+          onMouseDown={() => this.edit()}
+          onTouchStart={() => this.edit()}>
           <code></code>
           <slot name="code"></slot>
         </div>

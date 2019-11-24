@@ -1,28 +1,76 @@
 app-navigation {
 
-  ion-anchor {
-    --color: white;
+  ion-header {
+    ion-toolbar {
+      --background: inherit;
+    }
+  }
 
-    &:hover, &:active {
-      color: white;
+  div.title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    ion-label {
+      font-weight: 400;
     }
 
-    div {
-      display: flex;
-      align-items: center;
+    ion-label.deck-name {
+      transition: opacity 1s;
 
-      margin-left: 8px;
+      visibility: hidden;
+      opacity: 0;
 
-      app-logo {
-        margin-right: 4px;
-        padding: 4px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
+
+      user-select: none;
+    }
+
+    &.deck-name-visible {
+      ion-label.deck-name {
+        visibility: initial;
+        opacity: 1;
       }
 
-      mark {
-        background-color: transparent;
-        font-style: italic;
-        color: white;
-        font-size: calc(var(--font-size-small) * 0.9);
+      ion-router-link.home ion-label {
+        display: none;
+      }
+    }
+
+    ion-router-link {
+      color: black;
+
+      &:hover, &:active {
+        color: black;
+        border-bottom-color: transparent;
+      }
+
+      > div {
+        display: flex;
+        align-items: center;
+
+        margin-left: 8px;
+
+        app-logo {
+          margin-right: 4px;
+          padding: 4px;
+        }
+
+        ion-label {
+          display: flex;
+          align-items: baseline;
+
+          mark {
+            background-color: transparent;
+            font-style: italic;
+            color: inherit;
+            font-size: calc(var(--font-size-small) * 0.9);
+            margin-left: 2px;
+          }
+        }
       }
     }
   }
@@ -30,27 +78,38 @@ app-navigation {
   div[slot="end"] {
     z-index: 2;
   }
-
 }
 
 @media (prefers-color-scheme: dark) {
   app-navigation {
-    ion-anchor {
-      &:hover, &:active {
-        border-bottom: 1px solid transparent;
+    div.title {
+      color: white;
+
+      ion-router-link {
+        color: white;
+
+        &:hover, &:active {
+          color: white;
+        }
       }
     }
   }
 }
 
-ion-split-pane {
-
-  &.split-pane-visible {
-    app-navigation {
-
-      ion-toolbar {
-        --min-height: 52px;
+@media screen and (max-width: 720px) {
+  ion-nav {
+    div.title {
+      ion-label.deck-name, ion-router-link.home ion-label {
+        display: none;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 540px) {
+  ion-nav {
+    div.title {
+      display: none;
     }
   }
 }

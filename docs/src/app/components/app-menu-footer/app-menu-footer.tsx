@@ -10,7 +10,7 @@ export class AppMenuFooter {
   render() {
     return <footer>
       <p>
-        Created by <a href="https://twitter.com/daviddalbusco">David Dal Busco</a> | Zürich🇨🇭
+        Created with passion in Zürich🇨🇭
       </p>
     </footer>
   }

@@ -1,0 +1,57 @@
+{
+  "name": "@deckdeckgo/slide-chart",
+  "version": "1.0.0-rc.2",
+  "description": "The Chart template is handy to plot and animate charts in your presentations",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-slide-chart/deckdeckgo-slide-chart.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {
+    "@deckdeckgo/slide-utils": "^1.0.0-rc.3",
+    "@deckdeckgo/utils": "^1.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@stencil/core": "^1.7.3",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.0.1",
+    "@stencil/utils": "0.0.5",
+    "autoprefixer": "^9.6.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "David Dal Busco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk",
+    "d3js"
+  ]
+}

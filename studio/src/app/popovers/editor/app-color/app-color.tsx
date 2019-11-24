@@ -1,4 +1,8 @@
-import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+
+import {isIPad} from '@deckdeckgo/utils';
+
+import {TargetElement} from '../../../utils/editor/target-element';
 
 @Component({
     tag: 'app-color',
@@ -12,181 +16,93 @@ export class AppColor {
     deckOrSlide: boolean = false;
 
     @Prop()
-    color: string;
-
-    @Prop()
-    background: string;
-
-    @Prop()
     selectedElement: HTMLElement;
 
-    @Event() private colorDidChange: EventEmitter<HTMLElement>;
+    @Event() colorDidChange: EventEmitter<boolean>;
 
-    private applyToAllDeck: boolean = false;
+    @State()
+    private applyToTargetElement: TargetElement = TargetElement.SLIDE;
 
-    async componentDidLoad() {
-        await this.colorPickerListener(true);
-        await this.backgroundPickerListener(true);
-    }
+    @State()
+    private moreColors: boolean = true;
 
-    async componentDidUnload() {
-        await this.colorPickerListener(false);
-        await this.backgroundPickerListener(false);
+    @State()
+    private qrCode: boolean = false;
+
+    @State()
+    private chart: boolean = false;
+
+    async componentWillLoad() {
+        if (this.deckOrSlide) {
+            this.qrCode = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
+            this.chart = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-chart'.toUpperCase();
+
+            this.applyToTargetElement = this.qrCode ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : TargetElement.SLIDE);
+        }
+
+        this.moreColors = !isIPad();
     }
 
     private async closePopover() {
         await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
     }
 
-    private async selectApplyToAllDeck($event: CustomEvent) {
+    private async selectApplyToTargetElement($event: CustomEvent<TargetElement>) {
+        if ($event && $event.detail) {
+            this.applyToTargetElement = $event.detail;
+
+            await this.initCurrentColors();
+        }
+    }
+
+    private async initCurrentColors() {
+        let element: HTMLElement;
+
+        if (this.applyToTargetElement === TargetElement.QR_CODE) {
+            element = this.el.querySelector('app-color-qrcode');
+        } else {
+             element = this.el.querySelector('app-color-deck-slide');
+        }
+
+        if (element) {
+            await (element as any).initCurrentColors();
+        }
+    }
+
+    private colorChange($event: CustomEvent<boolean>) {
         if ($event) {
-            this.applyToAllDeck = $event.detail;
+            this.colorDidChange.emit($event.detail);
         }
     }
-
-    // Color
-
-    private colorPickerListener(bind: boolean): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
-
-            if (!colorPicker) {
-                resolve();
-                return;
-            }
-
-            if (bind) {
-                colorPicker.addEventListener('change', this.selectColor, false);
-            } else {
-                colorPicker.removeEventListener('change', this.selectColor, true);
-            }
-
-
-            resolve();
-        });
-    }
-
-    private openColorPicker(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const colorPicker: HTMLInputElement = this.el.querySelector('input[name=\'color-picker\']');
-
-            if (!colorPicker) {
-                resolve();
-                return;
-            }
-
-            colorPicker.click();
-
-            resolve();
-        });
-    }
-
-    private selectColor = async ($event) => {
-        if (!this.selectedElement) {
-            return;
-        }
-
-        this.color = $event.target.value;
-
-        if (this.deckOrSlide) {
-            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-            element.style.setProperty('--color', $event.target.value);
-        } else {
-            this.selectedElement.style.color = $event.target.value;
-        }
-
-        await this.colorDidChange.emit(this.selectedElement);
-    };
-
-    // Background
-
-    private backgroundPickerListener(bind: boolean): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
-
-            if (!backgroundPicker) {
-                resolve();
-                return;
-            }
-
-            if (bind) {
-                backgroundPicker.addEventListener('change', this.selectBackground, false);
-            } else {
-                backgroundPicker.removeEventListener('change', this.selectBackground, true);
-            }
-
-
-            resolve();
-        });
-    }
-
-    private openBackgroundPicker(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const backgroundPicker: HTMLInputElement = this.el.querySelector('input[name=\'background-picker\']');
-
-            if (!backgroundPicker) {
-                resolve();
-                return;
-            }
-
-            backgroundPicker.click();
-
-            resolve();
-        });
-    }
-
-    private selectBackground = async ($event) => {
-        if (!this.selectedElement) {
-            return;
-        }
-
-        this.background = $event.target.value;
-
-        if (this.deckOrSlide) {
-            const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-            element.style.setProperty('--background', $event.target.value);
-        } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
-            const element: HTMLElement = this.selectedElement.parentElement;
-
-            if (this.selectedElement.getAttribute('slot') === 'start') {
-                element.style.setProperty('--slide-split-background-start', $event.target.value);
-            } else if (this.selectedElement.getAttribute('slot') === 'end') {
-                element.style.setProperty('--slide-split-background-end', $event.target.value);
-            } else {
-                this.selectedElement.style.background = $event.target.value;
-            }
-        } else {
-            this.selectedElement.style.background = $event.target.value;
-        }
-
-        await this.colorDidChange.emit(this.selectedElement);
-    };
 
     render() {
-        return [<ion-toolbar class="ion-margin ion-padding-end">
-                <h2>Color</h2>
-                <ion-anchor slot="end" onClick={() => this.closePopover()}><ion-icon name="close"></ion-icon></ion-anchor>
-            </ion-toolbar>,
-            <ion-list>
-                <app-deck-or-slide deckOrSlide={this.deckOrSlide} onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-deck-or-slide>
+        return [<ion-toolbar>
+            <h2>Color</h2>
+            <ion-router-link slot="end" onClick={() => this.closePopover()}>
+                <ion-icon name="close"></ion-icon>
+            </ion-router-link>
+        </ion-toolbar>,
+            <app-select-target-element deckOrSlide={this.deckOrSlide} qrCode={this.qrCode} chart={this.chart}
+                                       onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
-                <ion-item class="ion-margin-top action-button">
-                    <ion-button shape="round" onClick={() => this.openColorPicker()} color="primary">
-                        <ion-label class="ion-text-uppercase">Text color</ion-label>
-                    </ion-button>
-                </ion-item>
-
-                <ion-item class="action-button">
-                    <ion-button shape="round" onClick={() => this.openBackgroundPicker()} color="secondary">
-                        <ion-label class="ion-text-uppercase">Background color</ion-label>
-                    </ion-button>
-                </ion-item>
-            </ion-list>,
-            <input type="color" name="color-picker" value={this.color}></input>,
-            <input type="color" name="background-picker" value={this.background}></input>
+            this.renderColorOptions()
         ]
     }
 
+    private renderColorOptions() {
+        if (this.applyToTargetElement === TargetElement.QR_CODE) {
+            return <app-color-qrcode selectedElement={this.selectedElement}
+                                     onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
+                                     moreColors={this.moreColors}></app-color-qrcode>
+        } else if (this.applyToTargetElement === TargetElement.CHART) {
+            return <app-color-chart selectedElement={this.selectedElement}
+                                     onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
+                                     moreColors={this.moreColors}></app-color-chart>
+        } else {
+            return <app-color-deck-slide selectedElement={this.selectedElement} moreColors={this.moreColors}
+                                            deckOrSlide={this.deckOrSlide}
+                                            onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
+                                            applyToAllDeck={this.applyToTargetElement === TargetElement.DECK}></app-color-deck-slide>
+        }
+    }
 }

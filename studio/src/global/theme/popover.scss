@@ -1,6 +1,6 @@
 ion-popover {
   ion-toolbar {
-    ion-anchor[slot="end"] {
+    ion-router-link[slot="end"] {
       margin-bottom: 56px;
       cursor: pointer;
       border-bottom-color: transparent;
@@ -21,4 +21,8 @@ ion-popover.popover-menu {
     box-shadow: none;
     border-radius: 0;
   }
+}
+
+ion-popover.info {
+  --min-width: 300px;
 }

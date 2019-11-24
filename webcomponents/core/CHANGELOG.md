@@ -1,3 +1,163 @@
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-11-05)
+
+### Breaking Changes
+
+* `getSlidesDefinition` replaced by `getDeckDefinition` with the goal to sync content between decks and remote control
+
+### Features
+
+* new events `slideNextDidAnimate` and `slidePrevDidAnimate`
+* new property `revealOnMobile` in case you would like to use the animation on mobile too
+* new method `getSlideDefinition(index)` to retrieve the definition of a particular slide, used to sync content between decks and remote
+ 
+<a name="1.0.0-rc.1-3"></a>
+# 1.0.0-rc.1-3 (2019-11-03)
+
+### Features
+
+* update keyboard assist to support PageUp/PageDown
+
+### Libs
+
+* update to most recent dependencies
+
+<a name="1.0.0-rc.1-2"></a>
+# 1.0.0-rc.1-2 (2019-10-07)
+
+### Features
+
+* update keyboard assist to support Vim key bindings (`k` and `j` to swipe slides too)
+
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-09-04)
+
+### Features
+
+* slide height on mobile devices ([#300](https://github.com/deckgo/deckdeckgo/issues/300))
+
+<a name="1.0.0-rc.1"></a>
+# 1.0.0-rc.1 (2019-08-30)
+
+### Breaking Changes
+
+* extract slides and extra components to separate components ([#230](https://github.com/deckgo/deckdeckgo/issues/230))
+
+#### But why?
+
+These are the reasons behind the above breaking change:
+
+* more flexibility
+
+* better performances
+
+With this change, you will now be able to include in your web project only the selected slides/templates you would like.
+Doing so, even if already every web components were lazy loaded and only loaded when needed, this could now help to even minimize the dependencies and therefore reduce the size of the bundle of your application.
+
+Note that per default, the `starter kit` will embed all slides/templates, therefore this change is going to be transparent for all new presentations you would create.
+
+### Features
+
+* `pager` color per default black
+* `pager` change its color, if not explicitly specified, to match the `--background` color of the `slide` or the `deck` if provided
+
+### Libs
+
+* update to most recent dependencies
+
+### Note about v1.0.0-rc.1
+
+The first users began to test, and to create content in, our web open source editor for presentations (`studio`)
+
+<a name="1.0.0-beta.46"></a>
+# 1.0.0-beta.46 (2019-08-15)
+
+### Breaking Changes
+
+* add new components `<deckgo-reveal/>` and `<deckgo-reveal-list/>` to make elements and texts appear one line at a time ([#224](https://github.com/deckgo/deckdeckgo/issues/224))
+
+#### But why?
+
+There are two main reasons behind the above breaking change:
+
+1. More flexibility. With this new approach of the "reveal" effect, you could decide which elements should or should not be revealed respectively the option doesn't apply anymore on a all slide. It's now totally up to you.
+
+2. In our upcoming editor, we had to obfuscate the "reveal" states of the elements in order to not save them in the database such information as it is not related to the deck itself but only information related to the current state of the presentation.
+
+#### How to migrate?
+
+1. Remove all attributes `reveal="true"` you would have set on any of your slides
+
+2. Wrap the new above components around your elements, which should appear one at a time, as highlighted in the new [documentation](https://docs.deckdeckgo.com/edit/reveal).  
+
+<a name="1.0.0-beta.45-2"></a>
+# 1.0.0-beta.45-2 (2019-08-07)
+
+### Features
+
+* expose attributes social for studio
+
+<a name="1.0.0-beta.45"></a>
+# 1.0.0-beta.45 (2019-08-06)
+
+### Features
+
+* add a new template `countdown` ([#45](https://github.com/deckgo/deckdeckgo/issues/45) and [#217](https://github.com/deckgo/deckdeckgo/issues/217))
+
+<a name="1.0.0-beta.44"></a>
+# 1.0.0-beta.44 (2019-07-30)
+
+### Fix
+
+* on iOS sometimes `screen.width` is the property to use to determine the screen size, sometime it's `window.innerWidth` ([#212](https://github.com/deckgo/deckdeckgo/issues/212))
+
+### Features
+
+* handle Youtube short URL ([#204](https://github.com/deckgo/deckdeckgo/issues/204))
+
+<a name="1.0.0-beta.43"></a>
+# 1.0.0-beta.43 (2019-06-19)
+
+### Features
+
+* watch `deckgo-youtube` property `src` to refresh video
+* reflect attribute `src` in `deckgo-slide-youtube`
+
+<a name="1.0.0-beta.42"></a>
+# 1.0.0-beta.42 (2019-06-18)
+
+### Features
+
+* add a new function to query the slide definitions which could be used to update the remote connection
+
+<a name="1.0.0-beta.41"></a>
+# 1.0.0-beta.41 (2019-06-13)
+
+### Features
+
+* add `dev.to` to the social component
+
+<a name="1.0.0-beta.40"></a>
+# 1.0.0-beta.40 (2019-06-24)
+
+### Features
+
+* update `chart` slide to support animation with reveal actions
+
+<a name="1.0.0-beta.39-3"></a>
+# 1.0.0-beta.39-3 (2019-06-16)
+
+### Fix
+
+* post migration to Stencil One for the slide `code`
+
+<a name="1.0.0-beta.39-2"></a>
+# 1.0.0-beta.39-2 (2019-06-16)
+
+### Style
+
+* slide `split` height inherit CSS4 variables
+
 <a name="1.0.0-beta.39-1"></a>
 # 1.0.0-beta.39-1 (2019-06-14)
 
@@ -19,7 +179,7 @@ fix: don't track mouse movement if deck is triggered to be blocked
 <a name="1.0.0-beta.38"></a>
 # 1.0.0-beta.38 (2019-06-06)
 
-### Breaking changes
+### Breaking Changes
 
 * hide pager progression with a CSS4 variable
 
@@ -295,7 +455,7 @@ fix: don't track mouse movement if deck is triggered to be blocked
 <a name="1.0.0-beta.7"></a>
 # [1.0.0-beta.7](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2018-11-28)
 
-### Breaking changes
+### Breaking Changes
 
 * event `slideNextStart` renamed to `slideNextDidChange` ([#90df088](https://github.com/deckgo/deckdeckgo/commit/90df0889345c15a3969a92cec00e90e4a3e79649))
 * event `slidePrevStart` renamed to `slidePrevDidChange` ([#90df088](https://github.com/deckgo/deckdeckgo/commit/90df0889345c15a3969a92cec00e90e4a3e79649))

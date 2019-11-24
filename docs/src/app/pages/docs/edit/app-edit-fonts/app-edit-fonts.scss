@@ -6,7 +6,7 @@ app-edit-fonts {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+body.dark {
   app-edit-fonts {
     deckgo-highlight-code {
       --deckgo-highlight-code-token-selector:  white;

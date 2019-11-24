@@ -1,0 +1,20 @@
+@import "./deckdeckgo-slide";
+
+div.deckgo-slide {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+div.deckgo-chart-container {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  align-self: center;
+
+  overflow: var(--slide-chart-overflow, hidden);
+}

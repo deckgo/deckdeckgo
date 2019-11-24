@@ -29,7 +29,7 @@ table {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+body.dark {
   table {
     tr:nth-child(even) td {
       background: var(--ion-color-dark);

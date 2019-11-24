@@ -6,15 +6,20 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  InlineAction,
+} from './components/inline-editor/deckdeckgo-inline-editor.interface';
 
 export namespace Components {
   interface DeckgoInlineEditor {
     'attachTo': HTMLElement;
     'containers': string;
+    'customActions': string;
     'imgAnchor': string;
+    'imgEditable': boolean;
     'imgPropertyCssFloat': string;
     'imgPropertyWidth': string;
+    'list': boolean;
     'mobile': boolean;
     'reset': (clearSelection: boolean, blurActiveElement?: boolean) => Promise<void>;
     'stickyDesktop': boolean;
@@ -39,11 +44,16 @@ declare namespace LocalJSX {
   interface DeckgoInlineEditor extends JSXBase.HTMLAttributes<HTMLDeckgoInlineEditorElement> {
     'attachTo'?: HTMLElement;
     'containers'?: string;
+    'customActions'?: string;
     'imgAnchor'?: string;
+    'imgEditable'?: boolean;
     'imgPropertyCssFloat'?: string;
     'imgPropertyWidth'?: string;
+    'list'?: boolean;
     'mobile'?: boolean;
+    'onCustomAction'?: (event: CustomEvent<InlineAction>) => void;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onLinkCreated'?: (event: CustomEvent<HTMLElement>) => void;
     'onStickyToolbarActivated'?: (event: CustomEvent<boolean>) => void;
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;

@@ -1,31 +1,44 @@
+import {ItemReorderEventDetail} from '@ionic/core';
+
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
-import {Slide, SlideAttributes, SlideTemplate} from '../../../../models/slide';
-import {User} from '../../../../models/user';
-import {Deck, DeckAttributes} from '../../../../models/deck';
+import {cleanContent} from '@deckdeckgo/deck-utils';
+
+import {firebase} from '@firebase/app';
+import '@firebase/firestore';
+
+import {AuthUser} from '../../../../models/auth/auth.user';
+import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
+import {
+    Slide,
+    SlideAttributes,
+    SlideAttributesYAxisDomain,
+    SlideChartType,
+    SlideData,
+    SlideTemplate
+} from '../../../../models/data/slide';
 
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
 
-import {SlideService} from '../../../../services/api/slide/slide.service';
-import {DeckService} from '../../../../services/api/deck/deck.service';
+import {SlotUtils} from '../../../../utils/editor/slot.utils';
+
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
-import {UserService} from '../../../../services/api/user/user.service';
 import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
+import {AuthService} from '../../../../services/auth/auth.service';
+import {DeckService} from '../../../../services/data/deck/deck.service';
+import {SlideService} from '../../../../services/data/slide/slide.service';
 
 export class DeckEventsHandler {
 
     private el: HTMLElement;
 
-    private slideService: SlideService;
-    private deckService: DeckService;
-
     private errorService: ErrorService;
     private busyService: BusyService;
 
-    private userService: UserService;
+    private authService: AuthService;
 
     private updateSlideSubscription: Subscription;
     private updateSlideSubject: Subject<HTMLElement> = new Subject();
@@ -35,16 +48,19 @@ export class DeckEventsHandler {
     private updateDeckTitleSubscription: Subscription;
     private updateDeckTitleSubject: Subject<string> = new Subject();
 
-    constructor() {
-        this.slideService = SlideService.getInstance();
-        this.deckService = DeckService.getInstance();
+    private deckService: DeckService;
+    private slideService: SlideService;
 
+    constructor() {
         this.errorService = ErrorService.getInstance();
         this.busyService = BusyService.getInstance();
 
-        this.userService = UserService.getInstance();
+        this.authService = AuthService.getInstance();
 
         this.deckEditorService = DeckEditorService.getInstance();
+
+        this.deckService = DeckService.getInstance();
+        this.slideService = SlideService.getInstance();
     }
 
     init(el: HTMLElement): Promise<void> {
@@ -59,9 +75,13 @@ export class DeckEventsHandler {
             this.el.addEventListener('slideDelete', this.onSlideDelete, false);
             this.el.addEventListener('codeDidChange', this.onCustomEventChange, false);
             this.el.addEventListener('imgDidChange', this.onCustomEventChange, false);
+            this.el.addEventListener('linkCreated', this.onCustomEventChange, false);
+            this.el.addEventListener('notesDidChange', this.onSlideChange, false);
 
             this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
                 await this.updateSlide(element);
+
+                await this.emitSlideDidUpdate(element);
             });
 
             this.updateDeckTitleSubscription = this.updateDeckTitleSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
@@ -81,6 +101,8 @@ export class DeckEventsHandler {
         this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
         this.el.removeEventListener('codeDidChange', this.onCustomEventChange, true);
         this.el.removeEventListener('imgDidChange', this.onCustomEventChange, true);
+        this.el.removeEventListener('linkCreated', this.onCustomEventChange, true);
+        this.el.removeEventListener('notesDidChange', this.onSlideChange, true);
 
         if (this.updateSlideSubscription) {
             this.updateSlideSubscription.unsubscribe();
@@ -143,7 +165,11 @@ export class DeckEventsHandler {
 
         const element: HTMLElement = $event.target as HTMLElement;
 
-        const parent: HTMLElement = element.parentElement;
+        let parent: HTMLElement = element.parentElement;
+
+        if (SlotUtils.isNodeReveal(parent)) {
+            parent = parent.parentElement;
+        }
 
         if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
             return;
@@ -190,7 +216,8 @@ export class DeckEventsHandler {
 
                     const persistedSlide: Slide = await this.postSlide(deck, slide);
 
-                    await this.updateDeckSlideList(persistedSlide);
+                    // TODO: Ultimately, when using reactive data, move this to a Cloud Function
+                    await this.updateDeckSlideList(deck, persistedSlide);
 
                     this.busyService.deckBusy(false);
 
@@ -206,22 +233,22 @@ export class DeckEventsHandler {
 
     private postSlide(deck: Deck, slide: HTMLElement): Promise<Slide> {
         return new Promise<Slide>(async (resolve) => {
-            const slidePost: Slide = {
+            const slideData: SlideData = {
                 template: this.getSlideTemplate(slide)
             };
 
             const content: string = await this.cleanSlideContent(slide);
             if (content && content.length > 0) {
-                slidePost.content = content
+                slideData.content = content
             }
 
-            const attributes: SlideAttributes = await this.getSlideAttributes(slide);
+            const attributes: SlideAttributes = await this.getSlideAttributes(slide, false);
 
             if (attributes && Object.keys(attributes).length > 0) {
-                slidePost.attributes = attributes;
+                slideData.attributes = attributes;
             }
 
-            const persistedSlide: Slide = await this.slideService.post(deck.id, slidePost);
+            const persistedSlide: Slide = await this.slideService.create(deck.id, slideData);
 
             if (persistedSlide && persistedSlide.id) {
                 slide.setAttribute('slide_id', persistedSlide.id);
@@ -236,14 +263,13 @@ export class DeckEventsHandler {
     private createDeck(): Promise<Deck> {
         return new Promise<Deck>(async (resolve, reject) => {
             try {
-                this.userService.watch().pipe(filter((user: User) => user !== null && user !== undefined), take(1)).subscribe(async (user: User) => {
-                    const deck: Deck = {
-                        slides: [],
+                this.authService.watch().pipe(filter((user: AuthUser) => user !== null && user !== undefined), take(1)).subscribe(async (authUser: AuthUser) => {
+                    const deck: DeckData = {
                         name: `Presentation ${await Utils.getNow()}`,
-                        owner_id: user.id
+                        owner_id: authUser.uid
                     };
 
-                    const persistedDeck: Deck = await this.deckService.post(deck);
+                    const persistedDeck: Deck = await this.deckService.create(deck);
                     this.deckEditorService.next(persistedDeck);
 
                     await this.updateNavigation(persistedDeck);
@@ -256,28 +282,29 @@ export class DeckEventsHandler {
         });
     }
 
-    private updateDeckSlideList(slide: Slide): Promise<void> {
+    private updateDeckSlideList(deck: Deck, slide: Slide): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
-                if (!slide || !slide.id) {
+                if (!deck && !deck.data) {
+                    reject('Missing deck to add the slide to the list');
+                    return;
+                }
+
+                if (!slide || !slide.id || !slide.data) {
                     reject('Missing slide to create or update the deck');
                     return;
                 }
 
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                    if (deck) {
-                        if (!deck.slides || deck.slides.length <= 0) {
-                            deck.slides = [];
-                        }
+                if (!deck.data.slides || deck.data.slides.length <= 0) {
+                    deck.data.slides = [];
+                }
 
-                        deck.slides.push(slide.id);
+                deck.data.slides.push(slide.id);
 
-                        const updatedDeck: Deck = await this.deckService.put(deck);
-                        this.deckEditorService.next(updatedDeck);
-                    }
+                const updatedDeck: Deck = await this.deckService.update(deck);
+                this.deckEditorService.next(updatedDeck);
 
-                    resolve();
-                });
+                resolve();
             } catch (err) {
                 reject(err);
             }
@@ -308,18 +335,19 @@ export class DeckEventsHandler {
                 this.busyService.deckBusy(true);
 
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: Deck) => {
-                    if (!currentDeck) {
+                    if (!currentDeck || !currentDeck.data) {
                         resolve();
                         return;
                     }
 
                     const attributes: DeckAttributes = await this.getDeckAttributes(deck);
-                    currentDeck.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : null;
+                    currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : null;
 
                     const background: string = await this.getDeckBackground(deck);
-                    currentDeck.background = background && background !== undefined && background !== '' ? background : null;
+                    currentDeck.data.background = background && background !== undefined && background !== '' ? background : null;
 
-                    const updatedDeck: Deck = await this.deckService.put(currentDeck);
+                    const updatedDeck: Deck = await this.deckService.update(currentDeck);
+
                     this.deckEditorService.next(updatedDeck);
 
                     this.busyService.deckBusy(false);
@@ -345,7 +373,7 @@ export class DeckEventsHandler {
                 this.busyService.deckBusy(true);
 
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (currentDeck: Deck) => {
-                    if (!currentDeck) {
+                    if (!currentDeck || !currentDeck.data) {
                         resolve();
                         return;
                     }
@@ -356,9 +384,10 @@ export class DeckEventsHandler {
                         title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
                     }
 
-                    currentDeck.name = title;
+                    currentDeck.data.name = title;
 
-                    const updatedDeck: Deck = await this.deckService.put(currentDeck);
+                    const updatedDeck: Deck = await this.deckService.update(currentDeck);
+
                     this.deckEditorService.next(updatedDeck);
 
                     this.busyService.deckBusy(false);
@@ -389,23 +418,28 @@ export class DeckEventsHandler {
 
                 const slideUpdate: Slide = {
                     id: slide.getAttribute('slide_id'),
-                    template: this.getSlideTemplate(slide)
+                    data: {
+                        template: this.getSlideTemplate(slide)
+                    }
                 };
 
                 const content: string = await this.cleanSlideContent(slide);
                 if (content && content.length > 0) {
-                    slideUpdate.content = content
+                    slideUpdate.data.content = content
+                } else {
+                    // @ts-ignore
+                    slideUpdate.data.content = firebase.firestore.FieldValue.delete();
                 }
 
-                const attributes: SlideAttributes = await this.getSlideAttributes(slide);
+                const attributes: SlideAttributes = await this.getSlideAttributes(slide, true);
 
                 if (attributes && Object.keys(attributes).length > 0) {
-                    slideUpdate.attributes = attributes;
+                    slideUpdate.data.attributes = attributes;
                 }
 
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
                     if (deck) {
-                        await this.slideService.put(deck.id, slideUpdate);
+                        await this.slideService.update(deck.id, slideUpdate);
                     }
 
                     this.busyService.deckBusy(false);
@@ -437,15 +471,22 @@ export class DeckEventsHandler {
                 const slideId: string = slide.getAttribute('slide_id');
 
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                    if (deck) {
-                        await this.slideService.delete(deck.id, slideId);
+                    if (deck && deck.data) {
+                        const slide: Slide = await this.slideService.get(deck.id, slideId);
 
-                        // Update list of slide in the deck
-                        if (deck.slides && deck.slides.indexOf(slideId) > -1) {
-                            deck.slides.splice(deck.slides.indexOf(slideId), 1);
+                        if (slide && slide.data) {
+                            // TODO: no rush but ultimately maybe should we move step 1. and 2. below in a cloud function?
 
-                            const updatedDeck: Deck = await this.deckService.put(deck);
-                            this.deckEditorService.next(updatedDeck);
+                            // 1. Delete the slide in Firestore
+                            await this.slideService.delete(deck.id, slideId);
+
+                            // 2. Update list of slide in the deck (in Firestore)
+                            if (deck.data.slides && deck.data.slides.indexOf(slideId) > -1) {
+                                deck.data.slides.splice(deck.data.slides.indexOf(slideId), 1);
+
+                                const updatedDeck: Deck = await this.deckService.update(deck);
+                                this.deckEditorService.next(updatedDeck);
+                            }
                         }
                     }
 
@@ -478,12 +519,15 @@ export class DeckEventsHandler {
         });
     }
 
-    private getSlideAttributes(slide: HTMLElement): Promise<SlideAttributes> {
-        return new Promise<SlideAttributes>((resolve) => {
+    private getSlideAttributes(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>(async (resolve) => {
             let attributes: SlideAttributes = {};
 
             if (slide.getAttribute('style')) {
                 attributes.style = slide.getAttribute('style');
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.style = firebase.firestore.FieldValue.delete();
             }
 
             if ((slide as any).src) {
@@ -492,10 +536,150 @@ export class DeckEventsHandler {
 
             if (slide.hasAttribute('custom-background')) {
                 attributes.customBackground = '' + true;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.customBackground = firebase.firestore.FieldValue.delete();
             }
+
+            if ((slide as any).imgSrc) {
+                attributes.imgSrc = (slide as any).imgSrc;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.imgSrc = firebase.firestore.FieldValue.delete();
+            }
+
+            if ((slide as any).imgAlt) {
+                attributes.imgAlt = (slide as any).imgAlt;
+            }
+
+            const qrCodeAttributes: SlideAttributes = await this.getSlideAttributesQRCode(slide, cleanFields);
+            const chartAttributes: SlideAttributes = await this.getSlideAttributesChart(slide, cleanFields);
+            const splitAttributes: SlideAttributes = await this.getSlideAttributesSplit(slide, cleanFields);
+
+            attributes = {...attributes, ...qrCodeAttributes, ...chartAttributes, ...splitAttributes};
 
             resolve(attributes);
         })
+    }
+
+    private getSlideAttributesSplit(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-split') {
+                resolve({});
+                return;
+            }
+
+            let attributes: SlideAttributes = {};
+
+            if ((slide as any).vertical) {
+                attributes.vertical = true;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.vertical = firebase.firestore.FieldValue.delete();
+            }
+
+            resolve(attributes);
+        });
+    }
+
+    private getSlideAttributesQRCode(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-qrcode') {
+                resolve({});
+                return;
+            }
+
+            let attributes: SlideAttributes = {};
+
+            if (slide.hasAttribute('custom-qrcode')) {
+                attributes.customQRCode = true;
+                attributes.content = (slide as any).content;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.customQRCode = firebase.firestore.FieldValue.delete();
+                // @ts-ignore
+                attributes.content = firebase.firestore.FieldValue.delete();
+            }
+
+            resolve(attributes);
+        });
+    }
+
+    private getSlideAttributesChart(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-chart') {
+                resolve({});
+                return;
+            }
+
+            let attributes: SlideAttributes = {};
+
+            if (slide.hasAttribute('inner-radius')) {
+                attributes.innerRadius = parseInt(slide.getAttribute('inner-radius'));
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.innerRadius = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.hasAttribute('type')) {
+                attributes.type = SlideChartType[slide.getAttribute('type').toUpperCase()];
+            }
+
+            if (slide.hasAttribute('animation')) {
+                attributes.animation = slide.hasAttribute('animation');
+            }
+
+            if (slide.hasAttribute('date-pattern')) {
+                attributes.datePattern = slide.getAttribute('date-pattern');
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.datePattern = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.hasAttribute('y-axis-domain')) {
+                attributes.yAxisDomain = slide.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.yAxisDomain = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.getAttribute('smooth') === 'false') {
+                attributes.smooth = false;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.smooth = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.getAttribute('area') === 'false') {
+                attributes.area = false;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.area = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.hasAttribute('ticks')) {
+                attributes.ticks = parseInt(slide.getAttribute('ticks'));
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.ticks = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.getAttribute('grid') === 'true') {
+                attributes.grid = true;
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.grid = firebase.firestore.FieldValue.delete();
+            }
+
+            if (slide.hasAttribute('separator')) {
+                attributes.separator = slide.getAttribute('separator');
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.separator = firebase.firestore.FieldValue.delete();
+            }
+
+            resolve(attributes);
+        });
     }
 
     private getDeckAttributes(deck: HTMLElement): Promise<DeckAttributes> {
@@ -524,29 +708,48 @@ export class DeckEventsHandler {
     }
 
     private cleanSlideContent(slide: HTMLElement): Promise<string> {
-        return new Promise<string>((resolve) => {
-            if (!slide) {
-                resolve(null);
-                return;
-            }
-
-            const content: string = slide.innerHTML;
+        return new Promise<string>(async (resolve) => {
+            const content: string = await this.filterSlideContentSlots(slide);
 
             if (!content || content.length <= 0) {
                 resolve(content);
                 return;
             }
 
-            let result: string = content.replace(/contenteditable=""|contenteditable="true"|contenteditable="false"|contenteditable/gi, '');
-            result = result.replace(/editable=""|editable="true"|editable/gi, '');
-            result = result.replace(/hydrated/gi, '');
-            result = result.replace(/class=""/g, '');
+            let result: string = await cleanContent(content);
 
             if (!slide.hasAttribute('custom-background')) {
                 result = result.replace(/<div slot="background">(.*?)<\/div>/g, '');
             }
 
             resolve(result);
+        });
+    }
+
+    private filterSlideContentSlots(slide: HTMLElement): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!slide || !document) {
+                resolve(null);
+                return;
+            }
+
+            const div = document.createElement('div');
+
+            const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
+            elements.forEach((e: HTMLElement) => {
+                if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
+                    div.appendChild(e.cloneNode(true));
+                }
+            });
+
+            if (!div || div.childElementCount <= 0) {
+                resolve(null);
+                return;
+            }
+
+            const content: string = div.innerHTML;
+
+            resolve(content);
         });
     }
 
@@ -598,6 +801,48 @@ export class DeckEventsHandler {
             }
 
             await (deck as any).initSlideSize();
+
+            resolve();
+        });
+    }
+
+    updateDeckSlidesOrder(detail: ItemReorderEventDetail): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                if (!detail) {
+                    reject('No new order provided for the slides');
+                    return;
+                }
+
+                if (detail.from < 0 || detail.to < 0 || detail.from === detail.to) {
+                    reject('The new order provided for the slides is not valid');
+                    return;
+                }
+
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    if (deck && deck.data && deck.data.slides && detail.to < deck.data.slides.length) {
+                        deck.data.slides.splice(detail.to, 0, ...deck.data.slides.splice(detail.from, 1));
+
+                        const updatedDeck: Deck = await this.deckService.update(deck);
+                        this.deckEditorService.next(updatedDeck);
+                    }
+
+                    resolve();
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    private emitSlideDidUpdate(element: HTMLElement): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slideDidUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>('slideDidUpdate', {
+                bubbles: true,
+                detail: element
+            });
+
+            this.el.dispatchEvent(slideDidUpdate);
 
             resolve();
         });

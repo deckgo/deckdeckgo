@@ -1,0 +1,78 @@
+app-dashboard {
+  main {
+    background: white;
+
+    a,
+    a:link,
+    a:visited,
+    a:hover,
+    a:active{
+      text-decoration: none;
+
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+
+    deckgo-deck {
+      --background: white;
+      --color: black;
+
+      --pager-display: none;
+
+      --font-size-very-small: 4px;
+      --font-size-small: 8px;
+      --font-size-normal: 10px;
+
+      --font-size-h1: 18px;
+      --font-size-h2: 10px;
+      --font-size-h3: 7px;
+
+      --slide-width: 100%;
+      --slide-height: 100%;
+
+      --slide-padding-top-default: 0;
+      --slide-padding-end-default: 0;
+      --slide-padding-bottom-default: 0;
+      --slide-padding-start-default: 0;
+    }
+
+    ion-searchbar[class*="sc-ion-searchbar"] {
+      --background: var(--ion-color-light);
+      background: var(--ion-color-light);
+      border: 1px solid #dedede;
+      border-radius: 4px;
+
+      --placeholder-opacity: 0.33;
+    }
+
+    div.container {
+      display: grid;
+      grid-gap: 16px;
+      grid-template-columns: repeat(auto-fill, 1fr);
+
+      ion-card.item {
+        position: relative;
+
+        width: 100%;
+        height: 24vh;
+
+        cursor: pointer;
+
+        @media screen and (min-width: 540px) {
+          height: 38vh;
+        }
+
+        app-delete-deck-action {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+      }
+
+      @media screen and (min-width: 540px) {
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      }
+
+    }
+  }
+}

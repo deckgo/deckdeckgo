@@ -7,16 +7,17 @@ app-feed-card-tags {
     overflow: hidden;
   }
 
+  height: 42px;
+
   div.chips {
-    background: var(--card-tags-background, rgba(var(--ion-color-primary-rgb), 0.08));
-    color: var(--card-tags-color, var(--ion-color-primary-shade));
+    background: var(--card-tags-background, rgba(var(--ion-color-medium-rgb), 0.08));
+    color: var(--card-tags-color, var(--ion-color-medium));
     border-radius: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 8px;
-    margin: 4px 4px 4px 0;
-    height: 100%;
+    padding: 2px 8px;
+    margin: 4px 2px;
 
     font-size: var(--font-size-normal);
 
@@ -32,6 +33,23 @@ app-feed-card-tags {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    button {
+      padding: 0;
+      border: none;
+      outline: none;
+      font: inherit;
+      color: inherit;
+      background: none;
+      display: inline-flex;
+
+      cursor: pointer;
+
+      &[disabled] {
+        color: rgba(var(--ion-color-tertiary-rgb), 0.2);
+        cursor: inherit;
+      }
     }
   }
 }

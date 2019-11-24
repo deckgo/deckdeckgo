@@ -9,7 +9,7 @@ export class DeckdeckgoDocsUtils {
       } else {
         elements.forEach(async (element: HTMLElement) => {
 
-          if (element.hasOwnProperty('load')) {
+          if (element && 'load' in element) {
             await await (element as any).load();
           }
         });
@@ -60,4 +60,15 @@ export class DeckdeckgoDocsUtils {
     }
   }
 
+  static initSlideSize(deck: HTMLElement): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!deck) {
+        return;
+      }
+
+      await (deck as any).initSlideSize();
+
+      resolve();
+    });
+  }
 }

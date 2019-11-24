@@ -11,7 +11,7 @@ div.container {
   border-radius: 8px;
 
   deckgo-deck {
-    --pager-display: false;
+    --pager-display: none;
 
     --font-size-h1: 18px;
 
@@ -41,5 +41,50 @@ div.container {
     --slide-author-padding-end: 4px;
     --slide-author-padding-start: 4px;
     --slide-author-padding-bottom: 4px;
+
+    h1[slot], h2[slot], p[slot], div[slot="author"] {
+      border-radius: 2px;
+      width: 100%;
+      padding: 8px;
+    }
+
+    h1[slot], div[slot="author"] {
+      border: 1px dashed var(--ion-color-primary);
+    }
+
+    h2[slot], p[slot] {
+      border: 1px dashed var(--ion-color-tertiary);
+    }
+
+    deckgo-slide-split {
+      *[slot="start"], *[slot="end"] {
+        height: fit-content;
+      }
+    }
+
+    deckgo-slide-countdown {
+      --slide-countdown-digits-height: 2em;
+      --slide-countdown-digits-font-size: 1.4em;
+      --slide-countdown-container-padding-bottom: 16px;
+      --slide-countdown-digits-color: var(--ion-color-dark);
+    }
+
+    deckgo-slide-big-img {
+      --slide-img-max-width: 400px;
+    }
+  }
+}
+
+body.dark {
+  div.container {
+    deckgo-deck {
+      h1[slot], div[slot="author"] {
+        border: 1px dashed var(--ion-color-light);
+      }
+
+      h2[slot], p[slot] {
+        border: 1px dashed var(--ion-color-secondary);
+      }
+    }
   }
 }

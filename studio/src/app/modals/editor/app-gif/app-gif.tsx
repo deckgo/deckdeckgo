@@ -1,6 +1,6 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {GifService} from '../../../services/api/gif/gif.service';
+import {GifService} from '../../../services/tenor/gif/gif.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
@@ -36,6 +36,9 @@ export class AppGif {
     private paginationNext: string | number = 0;
 
     private imageHistoryService: ImageHistoryService;
+
+    @State()
+    private searching: boolean = false;
 
     constructor() {
         this.gifService = GifService.getInstance();
@@ -78,7 +81,11 @@ export class AppGif {
 
     private fetchCategories(): Promise<void> {
         return new Promise<void>(async (resolve) => {
+            this.searching = true;
+
             const categories: TenorCategory[] = await this.gifService.getCategories();
+
+            this.searching = false;
 
             if (!categories || categories.length <= 0) {
                 resolve();
@@ -104,7 +111,11 @@ export class AppGif {
                 return;
             }
 
+            this.searching = true;
+
             const tenorResponse: TenorSearchResponse = await this.gifService.getGifs(this.searchTerm, this.paginationNext);
+
+            this.searching = false;
 
             if (!tenorResponse) {
                 this.emptyGifs();
@@ -174,6 +185,8 @@ export class AppGif {
 
     private clear(): Promise<void> {
         return new Promise<void>((resolve) => {
+            this.searchTerm = undefined;
+
             this.gifsOdd = null;
             this.gifsEven = null;
 
@@ -207,13 +220,11 @@ export class AppGif {
     render() {
         return [
             <ion-header>
-                <ion-toolbar color="primary">
+                <ion-toolbar color="secondary">
                     <ion-buttons slot="start">
-                        <ion-button onClick={() => this.closeModal()}>
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
+                        {this.renderCloseButton()}
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Pick a Gif</ion-title>
+                    <ion-title class="ion-text-uppercase">Gif</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
@@ -224,8 +235,7 @@ export class AppGif {
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
                                      onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
                     <ion-infinite-scroll-content
-                        loadingSpinner="bubbles"
-                        loadingText="Loading more data...">
+                        loadingText="Loading more Gifs...">
                     </ion-infinite-scroll-content>
                 </ion-infinite-scroll>
             </ion-content>,
@@ -238,6 +248,18 @@ export class AppGif {
                 </ion-toolbar>
             </ion-footer>
         ];
+    }
+
+    private renderCloseButton() {
+        if ((this.gifsEven || this.gifsOdd) && !this.searching) {
+            return <ion-button onClick={() => this.clear()}>
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>;
+        } else {
+            return <ion-button onClick={() => this.closeModal()}>
+                <ion-icon name="close"></ion-icon>
+            </ion-button>;
+        }
     }
 
     private renderCategories() {

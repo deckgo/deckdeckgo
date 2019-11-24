@@ -131,15 +131,15 @@ await remote.prevSlide();
 This method will emit an event from the deck to slide to a specific slide.
 
 ```
-await deck.slideTo(0); // parameters: index: number, speed?: number | undefined
+await remote.slideTo(0); // parameters: index: number, speed?: number | undefined
 ```
 
 ### Update slides
 
-This method will emit an event from the deck to slide in order to update the list of slides.
+This method will emit an event from the deck to the remote in order to update the list of slides.
 
 ```
-await deck.updateSlides();
+await remote.updateSlides();
 ```
 
 ### Delete slide
@@ -147,7 +147,39 @@ await deck.updateSlides();
 This method will delete the current slide in the remote app.
 
 ```
-await deck.deleteSlide();
+await remote.deleteSlide();
+```
+
+### Update slide
+
+This method will emit an event to update a particular slide in the remote.
+
+```
+await remote.updateSlides(index, slideDefinition);
+```
+
+### Update reveal
+
+This method will emit an event to update the reveal settings of the deck of the remote.
+
+```
+await remote.updateReveal(reveal);
+```
+
+### Play
+
+This method will tell the remote app that the play action was performed in the deck.
+
+```
+await remote.play();
+```
+
+### Pause
+
+This method will tell the remote app that the pause action was performed in the deck.
+
+```
+await remote.pause();
 ```
 
 ## License

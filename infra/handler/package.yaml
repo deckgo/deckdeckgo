@@ -6,13 +6,16 @@ license: AGPL-3
 dependencies:
     - aeson
     - amazonka
+    - amazonka-cloudfront
     - amazonka-core
-    - amazonka-dynamodb
     - amazonka-s3
     - amazonka-sqs
     - base
     - bytestring
+    - cases
     - contravariant
+    - conduit
+    - conduit-extra
     - directory
     - filepath
     - firebase-login
@@ -24,12 +27,15 @@ dependencies:
     - mtl
     - pureMD5
     - random
+    - resourcet
     - servant
     - servant-server
     - servant-swagger
     - servant-swagger-ui
     - swagger2
+    - tagsoup
     - text
+    - time
     - unliftio
     - temporary
     - unordered-containers
@@ -52,20 +58,12 @@ executables:
         dependencies:
             - deckdeckgo-handler
 
-    # The AWS presenter
-    presenter:
-        main: app/Presenter.hs
-        dependencies:
-            - deckdeckgo-handler
-
     # The API
-    swagger:
-        main: app/Swagger.hs
+    dirty:
+        main: app/Dirty.hs
         dependencies:
             - warp
             - deckdeckgo-handler
-            - servant-swagger
-            - servant-swagger-ui
 
     test:
         main: app/Test.hs

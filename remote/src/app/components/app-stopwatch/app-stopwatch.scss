@@ -1,6 +1,8 @@
 .stopwatch-circular-chart {
-  height: var(--stopwatch-size, 20rem);
-  width: var(--stopwatch-size, 20rem);
+  height: var(--stopwatch-size, 18rem);
+  width: var(--stopwatch-size, 18rem);
+  max-height: var(--stopwatch-max-size, calc(100vh - 64px));
+  max-width: var(--stopwatch-max-size, calc(100vh - 64px));
   margin: var(--stopwatch-margin-top, 8px) var(--stopwatch-margin-end, 8px) var(--stopwatch-margin-bottom, 8px) var(--stopwatch-margin-start, 8px);
   display: block;
 }
@@ -9,10 +11,6 @@
   fill: none;
   stroke: var(--stopwatch-background, #eee);
   stroke-width: var(--stopwatch-stroke-outer-width, 2.8);
-
-  @media (prefers-color-scheme: dark) {
-    stroke: var(--ion-tab-bar-background);
-  }
 }
 
 .stopwatch-circle {
@@ -34,8 +32,5 @@
   font-size: var(--stopwatch-text-size, 0.2em);
   text-anchor: middle;
   font-weight: 300;
-
-  @media (prefers-color-scheme: dark) {
-    fill: var(--ion-text-color);
-  }
+  fill: var(--ion-text-color);
 }

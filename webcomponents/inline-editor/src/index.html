@@ -11,6 +11,8 @@
 </head>
 <body>
 
+  <p contenteditable>Bet on the Web</p>
+
   <p contenteditable>Environment variables with StencilJS</p>
 
   <div><p contenteditable>I noticed that the question regarding how to handle environment variables in Stencil’s projects or projects created with the Ionic PWA toolkit often pops up 🤔</p></div>
@@ -21,9 +23,26 @@
 
   <p contenteditable>The following solution was inspired by the one developed in the Ionic core project. One of the entry point for me was discovering the method setupConfig in their source code. Therefore kudos to the awesome <a href="https://ionicframework.com">Ionic</a> team ❤️</p>
 
-  <p contenteditable><img style="width: 100px;" src="https://deckdeckgo.com/assets/img/deckdeckgo.png"/></p>
+  <p contenteditable><img style="width: 100px;" src="https://deckdeckgo.com/assets/favicon/android-chrome-512x512.png"/></p>
 
-  <deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p"></deckgo-inline-editor>
+  <deckgo-inline-editor sticky-mobile="true" containers="h1,h2,h3,h4,h5,h6,p" img-editable="true"
+                        custom-actions="my-inline-action">
+
+    <span style="color: red;" slot="my-inline-action">My action</span>
+
+  </deckgo-inline-editor>
+
+  <script type="text/javascript">
+      function myActions(e) {
+          if (e && e.detail && e.detail.action === 'my-inline-action') {
+              document.execCommand('insertHTML', false, `<acme-placeholder class="own-class">${e.detail.selection}</acme-placeholder>`);
+          }
+      }
+
+      document.addEventListener('customAction', myActions);
+  </script>
+
+
 
 </body>
 </html>

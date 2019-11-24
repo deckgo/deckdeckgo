@@ -38,8 +38,15 @@ div.deckgo-highlight-code-container {
   direction: var(--deckgo-highlight-code-direction, ltr);
   text-align: var(--deckgo-highlight-code-text-align, start);
 
+  width: var(--deckgo-highlight-code-container-width);
+  height: var(--deckgo-highlight-code-container-height);
+  display: var(--deckgo-highlight-code-container-display, block);
+  justify-content: var(--deckgo-highlight-code-container-justify-content);
+  flex-direction: var(--deckgo-highlight-code-container-flex-direction);
+  align-items: var(--deckgo-highlight-code-container-align-items);
+
   code {
-    overflow-y: var(--deckgo-highlight-code-scroll, scroll);;
+    overflow-y: var(--deckgo-highlight-code-scroll, scroll);
 
     white-space: pre-wrap;
 
@@ -48,17 +55,33 @@ div.deckgo-highlight-code-container {
 
     display: var(--deckgo-highlight-code-display, block);
 
-    div:empty {
-      min-height: 1rem;
+    counter-reset: linenumber;
+
+    > div.deckgo-highlight-code-line-number {
+      counter-increment: linenumber;
+      position: relative;
+      padding-left: 3.5em;
+
+      &:before {
+        content: counter(linenumber);
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 2.5em;
+        background: inherit;
+        border-right: 1px solid var(--deckgo-highlight-code-line-numbers, #999);
+        color: var(--deckgo-highlight-code-line-numbers, #999);
+      }
     }
 
     span.deckgo-highlight-code-anchor-hidden {
       visibility: hidden;
     }
 
-    span.deckgo-highlight-code-line {
+    .deckgo-highlight-code-line {
       background: var(--deckgo-highlight-code-line-background, #3880ff);
-      padding: var(--deckgo-highlight-code-line-padding);
       border-top: var(--deckgo-highlight-code-line-border-top);
       border-bottom: var(--deckgo-highlight-code-line-border-bottom);
     }

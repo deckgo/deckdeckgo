@@ -46,6 +46,10 @@ app-signin {
 
   p.firebaseui-tos {
     color: var(--ion-color-medium);
+
+    a, a:hover, a:active, a:focus {
+      text-decoration: none;
+    }
   }
 
   a.firebaseui-link {

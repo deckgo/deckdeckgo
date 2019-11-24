@@ -1,0 +1,25 @@
+{
+  "name": "@deckdeckgo/utils",
+  "version": "1.0.0-rc.1-4",
+  "author": "David Dal Busco",
+  "description": "A collection of utils methods and functions developed for DeckDeckGo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo.git"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "devDependencies": {
+    "typescript": "^3.5.1"
+  },
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc"
+  },
+  "files": [
+    "lib",
+    "README.md"
+  ]
+}

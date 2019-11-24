@@ -5,6 +5,7 @@ The "Gif" component allows you to easily add a Gif, like those provided by [Giph
 ## Table of contents
 
 - [Showcase](#app-components-gif-showcase)
+- [Installation](#app-components-gif-installation)
 - [Usage](#app-components-gif-usage)
   - [Slots](#app-components-gif-slots)
 - [Attributes](#app-components-gif-attributes)
@@ -19,6 +20,12 @@ The "Gif" component allows you to easily add a Gif, like those provided by [Giph
     <h2 slot="footer">It's a cool gif</h2>
   </deckgo-gif>
 </div>
+
+## Installation
+
+This component is part of the "Gif" template. Therefore, if you would like to use it, install the related slide as described in its [installation](/slides/gif) chapter.
+
+> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
 
 ## Usage
 

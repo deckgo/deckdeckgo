@@ -1,6 +1,7 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {PhotoService} from '../../../services/api/photo/photo.service';
+import {ApiPhotoService} from '../../../services/api/photo/api.photo.service';
+import {ApiPhotoFactoryService} from '../../../services/api/photo/api.photo.factory.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class AppPhoto {
 
     @Element() el: HTMLElement;
 
-    private photoService: PhotoService;
+    private photoService: ApiPhotoService;
     private imageHistoryService: ImageHistoryService;
 
     @State()
@@ -34,7 +35,7 @@ export class AppPhoto {
     private searching: boolean = false;
 
     constructor() {
-        this.photoService = PhotoService.getInstance();
+        this.photoService = ApiPhotoFactoryService.getInstance();
         this.imageHistoryService = ImageHistoryService.getInstance();
     }
 
@@ -72,6 +73,8 @@ export class AppPhoto {
 
     private clear(): Promise<void> {
         return new Promise<void>((resolve) => {
+            this.searchTerm = undefined;
+
             this.photosOdd = null;
             this.photosEven = null;
 
@@ -187,11 +190,9 @@ export class AppPhoto {
             <ion-header>
                 <ion-toolbar color="primary">
                     <ion-buttons slot="start">
-                        <ion-button onClick={() => this.closeModal()}>
-                            <ion-icon name="close"></ion-icon>
-                        </ion-button>
+                        {this.renderCloseButton()}
                     </ion-buttons>
-                    <ion-title class="ion-text-uppercase">Pick a photo</ion-title>
+                    <ion-title class="ion-text-uppercase">Stock photo</ion-title>
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
@@ -204,8 +205,7 @@ export class AppPhoto {
                 <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll}
                                      onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
                     <ion-infinite-scroll-content
-                        loadingSpinner="bubbles"
-                        loadingText="Loading more data...">
+                        loadingText="Loading more photos...">
                     </ion-infinite-scroll-content>
                 </ion-infinite-scroll>
             </ion-content>,
@@ -222,12 +222,24 @@ export class AppPhoto {
         ];
     }
 
+    private renderCloseButton() {
+        if (!this.searchTerm || this.searchTerm.length <= 0 || this.searching) {
+            return <ion-button onClick={() => this.closeModal()}>
+                <ion-icon name="close"></ion-icon>
+            </ion-button>;
+        } else {
+            return <ion-button onClick={() => this.clear()}>
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>;
+        }
+    }
+
     private renderPhotosPlaceHolder() {
         if ((!this.photosOdd || this.photosOdd.length <= 0) && (!this.photosEven || this.photosEven.length <= 0)) {
             return <div class="photos-placeholder">
                 <div>
                     <ion-icon name="images"></ion-icon>
-                    <ion-label>Photos by Unsplash</ion-label>
+                    <ion-label class="ion-text-center">Photos by Unsplash</ion-label>
                     {this.renderPlaceHolderSearching()}
                 </div>
             </div>
