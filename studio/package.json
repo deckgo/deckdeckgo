@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "stencil build --prerender",
+    "postbuild": "./scripts/config.index.js",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watch"
@@ -41,12 +42,12 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-rc.3",
+    "@rollup/plugin-replace": "^2.2.1",
     "@stencil/core": "^1.7.5",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",
     "@types/uuid": "^3.4.6",
     "autoprefixer": "^9.7.1",
-    "rollup-plugin-replace": "^2.2.0",
     "workbox-build": "4.3.1"
   },
   "repository": {

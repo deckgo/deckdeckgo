@@ -4,7 +4,7 @@ import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
 import autoprefixer from 'autoprefixer';
 
-import replace from 'rollup-plugin-replace';
+import replace from '@rollup/plugin-replace';
 
 // @ts-ignore
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
