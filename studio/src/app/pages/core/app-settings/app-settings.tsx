@@ -477,7 +477,7 @@ export class AppHome {
             <ion-list class="inputs-list dark-light-list">
                 <ion-item>
                     <ion-label>{this.darkTheme ? 'Dark' : 'Light'} theme {this.darkTheme ? '🌑' : '☀️'}</ion-label>
-                    <ion-toggle slot="end" checked={this.darkTheme} mode="md" color="switcher" onIonChange={() => this.toggleTheme()}></ion-toggle>
+                    <ion-toggle slot="end" checked={this.darkTheme} mode="md" color="medium" onIonChange={() => this.toggleTheme()}></ion-toggle>
                 </ion-item>
             </ion-list>
         ]
