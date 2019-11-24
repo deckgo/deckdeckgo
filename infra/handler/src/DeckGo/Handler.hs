@@ -1412,7 +1412,8 @@ putObject env bucket (fp, okey, etag) = do
     runAWS env (
       AWS.send $ S3.putObject bucket okey body &
           -- XXX: partial, though technically should never fail
-          S3.poContentType .~ inferContentType (T.pack fp)
+          S3.poContentType .~ inferContentType (T.pack fp) &
+          S3.poCacheControl .~ Just "no-cache"
       ) >>= \case
         Right r -> do
           putStrLn $ "Copied: " <> fp <> " to " <> show okey <> " with ETag " <> show etag
