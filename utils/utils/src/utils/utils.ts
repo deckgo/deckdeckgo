@@ -3,7 +3,7 @@ export function unifyEvent(e: any): any {
 }
 
 export function debounce(func: Function, timeout?: number) {
-    let timer: number | undefined;
+    let timer: NodeJS.Timer | undefined;
 
     return (...args: any[]) => {
         const next = () => func(...args);
