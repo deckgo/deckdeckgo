@@ -1,18 +1,15 @@
-// Source to setup the build
-// https://github.com/rollup/rollup-starter-lib
-// https://buzut.net/configurer-rollup-bundles-esm-cjs/
-// https://dev.to/proticm/how-to-setup-rollup-config-45mk
-
 import typescript from 'rollup-plugin-typescript';
 import commonjs from 'rollup-plugin-commonjs';
+import resolve from 'rollup-plugin-node-resolve';
 
 import pkg from './package.json';
 
 export default {
     input: './src/index.ts',
     plugins: [
-        commonjs(),
-        typescript()
+        typescript(),
+        resolve(),
+        commonjs()
     ],
     output: {
         format: 'cjs',
