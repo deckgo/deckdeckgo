@@ -38,7 +38,7 @@ This template could be added to your presentation using the following methods.
  
 ### From a CDN
 
-It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template to from a CDN. To do so, add the following include script in the main HTML file of your project:
+It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/slide-author@latest/dist/deckdeckgo-slide-author/deckdeckgo-slide-author.esm.js"></script>
