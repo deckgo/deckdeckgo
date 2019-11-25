@@ -41,7 +41,7 @@ export class AppColor {
             this.chart = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-chart'.toUpperCase();
             this.poll = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-poll'.toUpperCase();
 
-            this.applyToTargetElement = this.qrCode ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : TargetElement.SLIDE);
+            this.applyToTargetElement = this.qrCode || this.poll ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : TargetElement.SLIDE);
         }
 
         this.moreColors = !isIPad();
