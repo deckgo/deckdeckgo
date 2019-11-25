@@ -40,12 +40,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Event()
   private pollConnected: EventEmitter<void>;
 
-  @Prop({reflect: true}) socketUrl: string;
+  @Prop({reflect: true}) socketUrl: string = 'https://api.deckdeckgo.com';
   @Prop({reflect: true}) socketPath: string = '/poll';
 
   @Prop() connectPollSocket: boolean = true;
 
-  @Prop({reflect: true}) pollLink: string;
+  @Prop({reflect: true}) pollLink: string = 'https://poll.deckdeckgo.com';
 
   @Prop({reflect: true, mutable: true})
   pollKey: string;

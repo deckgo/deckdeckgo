@@ -121,8 +121,8 @@ export class AppSlidePoll {
 <tbody><tr>
 <td>socketUrl</td>
 <td>string</td>
-<td></td>
-<td>The url of the socket (server) where the poll (chat room) is going to be created. No default value but we do offer a solution. If you wish to use it, use the value <code>https://api.deckdeckgo.com</code>.</td>
+<td><code>https://api.deckdeckgo.com</code></td>
+<td>The url of the socket (server) where the poll (chat room) is going to be created.</td>
 </tr>
 <tr>
 <td>socketPath</td>
@@ -139,8 +139,8 @@ export class AppSlidePoll {
 <tr>
 <td>pollLink</td>
 <td>string</td>
-<td></td>
-<td>The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote. No default value but we do offer a solution. If you wish to use it, use the value <code>https://poll.deckdeckgo.com</code>.</td>
+<td><code>https://poll.deckdeckgo.com</code></td>
+<td>The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote.</td>
 </tr>
 <tr>
 <td>pollKey</td>

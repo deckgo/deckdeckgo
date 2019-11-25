@@ -126,10 +126,10 @@ This component offers the following options which could be set using attributes:
 
 | Attribute                      | Type   | Default   | Description   |
 | -------------------------- |-----------------|-----------------|-----------------|
-| socketUrl | string | | The url of the socket (server) where the poll (chat room) is going to be created. No default value but we do offer a solution. If you wish to use it, use the value `https://api.deckdeckgo.com`. |
+| socketUrl | string | `https://api.deckdeckgo.com` | The url of the socket (server) where the poll (chat room) is going to be created. |
 | socketPath | string | `/poll` | The path to reach the socket server |
 | connectPollSocket | boolean | `true` | In case you would not like that the template try to reach the socket server |
-| pollLink | string | | The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote. No default value but we do offer a solution. If you wish to use it, use the value `https://poll.deckdeckgo.com`. |
+| pollLink | string | `https://poll.deckdeckgo.com` | The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote. |
 | pollKey | string | | Per default the template will always try to create a new poll but if you set this value, it will try to retrieve an existing poll |
 
 ## Theming

@@ -7,15 +7,15 @@
 
 ## Properties
 
-| Property            | Attribute             | Description | Type      | Default     |
-| ------------------- | --------------------- | ----------- | --------- | ----------- |
-| `connectPollSocket` | `connect-poll-socket` |             | `boolean` | `true`      |
-| `customActions`     | `custom-actions`      |             | `boolean` | `false`     |
-| `customBackground`  | `custom-background`   |             | `boolean` | `false`     |
-| `pollKey`           | `poll-key`            |             | `string`  | `undefined` |
-| `pollLink`          | `poll-link`           |             | `string`  | `undefined` |
-| `socketPath`        | `socket-path`         |             | `string`  | `'/poll'`   |
-| `socketUrl`         | `socket-url`          |             | `string`  | `undefined` |
+| Property            | Attribute             | Description | Type      | Default                         |
+| ------------------- | --------------------- | ----------- | --------- | ------------------------------- |
+| `connectPollSocket` | `connect-poll-socket` |             | `boolean` | `true`                          |
+| `customActions`     | `custom-actions`      |             | `boolean` | `false`                         |
+| `customBackground`  | `custom-background`   |             | `boolean` | `false`                         |
+| `pollKey`           | `poll-key`            |             | `string`  | `undefined`                     |
+| `pollLink`          | `poll-link`           |             | `string`  | `'https://poll.deckdeckgo.com'` |
+| `socketPath`        | `socket-path`         |             | `string`  | `'/poll'`                       |
+| `socketUrl`         | `socket-url`          |             | `string`  | `'https://api.deckdeckgo.com'`  |
 
 
 ## Events
