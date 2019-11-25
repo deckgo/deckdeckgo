@@ -1,6 +1,6 @@
 # Slide: Author
 
-The "Author" slide let you introduce the author of the presentation.
+The "Author" slide lets you introduce the author of the presentation.
 
 ## Table of contents
 
@@ -34,11 +34,11 @@ The "Author" slide let you introduce the author of the presentation.
 
 This template could be added to your presentation using the following methods.
 
-> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+> If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
  
-### From a CDN
+### Form a CDN
 
-It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template to form a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/slide-author@latest/dist/deckdeckgo-slide-author/deckdeckgo-slide-author.esm.js"></script>
@@ -47,7 +47,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use this template from a 
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project form [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-author
@@ -91,19 +91,19 @@ The "Author" slide's Web Component could be integrated using the tag `<deckgo-sl
 
 ### Slots
 
-Both slots `title`, `author` and `social-link` are optional, but of course the slide would looks better with at least the slot `author` would be provided.
+Slots for `title`, `author` and `social-link` are optional. It is recommended that the slot `author` be filled as to improve the appearance of the slide. 
 
 Notes: 
 
-* The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be use for the navigation modal
+* The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be used for the navigation model.
 
 * You could provide up to six `social-link` slots. Each of these could be your custom code or you could use the component `<deckgo-social/>` to easily provide a link to an external URI.
 
 ### Notes
 
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
+Optionally a slot `notes` could be used to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
 
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ### Social components
 
@@ -117,8 +117,8 @@ This component offers the following options which could be set using attributes:
 | -------------------------- |-----------------|-----------------|-----------------|
 | img-src | string |  | An image URI, for example a picture of the author. Note: this image will be displayed as a circle. |
 | img-alt | string |  | An optional accessibility alt for the image. |
-| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` | 
+| custom-background | boolean | false | If you will provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions | boolean | false | If you will provide actions for the all deck and a specific one for this slide, set this option to `true` | 
 
 ### Example
 
