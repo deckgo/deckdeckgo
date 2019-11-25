@@ -436,9 +436,19 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private renderPoll() {
+    let url: string = this.pollLink;
+
+    if (!this.pollLink.match(/\/$/)) {
+      url += '/';
+    }
+
+    if (this.pollKey) {
+      url += this.pollKey;
+    }
+
     return <div class="deckgo-slide-poll">
       <div class="deckgo-slide-poll-qrcode">
-        <deckgo-qrcode content={this.pollLink}>
+        <deckgo-qrcode content={url}>
         </deckgo-qrcode>
         <slot name="how-to"></slot>
       </div>
