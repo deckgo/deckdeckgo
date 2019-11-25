@@ -14,6 +14,7 @@ import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-youtube';
 import '@deckdeckgo/slide-video';
 import '@deckdeckgo/slide-big-img';
+import '@deckdeckgo/slide-poll';
 
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/charts';

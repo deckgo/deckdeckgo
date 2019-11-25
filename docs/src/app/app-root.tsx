@@ -45,6 +45,7 @@ export class AppRoot {
           <ion-route url="/slides/author" component="app-slide-author"/>
           <ion-route url="/slides/qrcode" component="app-slide-qrcode"/>
           <ion-route url="/slides/countdown" component="app-slide-countdown"/>
+          <ion-route url="/slides/poll" component="app-slide-poll"/>
 
           <ion-route url="/components" component="app-concept"/>
           <ion-route url="/components/charts" component="app-components-charts"/>
@@ -116,6 +117,7 @@ export class AppRoot {
                   <ion-item detail={false} href="/slides/author" routerDirection="forward"><ion-label>Author</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/qrcode" routerDirection="forward"><ion-label>QR Code</ion-label></ion-item>
                   <ion-item detail={false} href="/slides/countdown" routerDirection="forward"><ion-label>Countdown</ion-label></ion-item>
+                  <ion-item detail={false} href="/slides/poll" routerDirection="forward"><ion-label>Poll</ion-label></ion-item>
 
                   <ion-item-divider>
                     <ion-label>Components</ion-label>
