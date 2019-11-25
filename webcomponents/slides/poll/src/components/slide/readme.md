@@ -12,6 +12,7 @@
 | `connectPollSocket` | `connect-poll-socket` |             | `boolean` | `true`      |
 | `customActions`     | `custom-actions`      |             | `boolean` | `false`     |
 | `customBackground`  | `custom-background`   |             | `boolean` | `false`     |
+| `pollKey`           | `poll-key`            |             | `string`  | `undefined` |
 | `pollLink`          | `poll-link`           |             | `string`  | `undefined` |
 | `socketPath`        | `socket-path`         |             | `string`  | `'/poll'`   |
 | `socketUrl`         | `socket-url`          |             | `string`  | `undefined` |
@@ -19,9 +20,10 @@
 
 ## Events
 
-| Event          | Description | Type                |
-| -------------- | ----------- | ------------------- |
-| `slideDidLoad` |             | `CustomEvent<void>` |
+| Event           | Description | Type                |
+| --------------- | ----------- | ------------------- |
+| `pollConnected` |             | `CustomEvent<void>` |
+| `slideDidLoad`  |             | `CustomEvent<void>` |
 
 
 ## Methods

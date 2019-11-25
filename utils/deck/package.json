@@ -16,6 +16,7 @@
     "@deckdeckgo/utils": "^1.0.0-rc.1-3"
   },
   "devDependencies": {
+    "@deckdeckgo/types": "file:../types",
     "typescript": "^3.5.1"
   },
   "main": "lib/index.js",

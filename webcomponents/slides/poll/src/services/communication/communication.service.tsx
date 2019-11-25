@@ -3,7 +3,7 @@ import * as io from 'socket.io-client';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import {DeckdeckgoPollQuestion} from '@deckdeckgo/types';
+import {DeckdeckgoPollQuestion, DeckdeckgoPoll} from '@deckdeckgo/types';
 
 export class CommunicationService {
 
@@ -11,6 +11,7 @@ export class CommunicationService {
 
   private pollKey: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
   private vote: Subject<string> = new Subject<string>();
+  private poll: Subject<DeckdeckgoPoll | undefined> = new Subject<DeckdeckgoPoll|undefined>();
 
   connect(url: string, path: string, poll: DeckdeckgoPollQuestion): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -37,6 +38,41 @@ export class CommunicationService {
 
       this.socket.on('poll_key', async (data: string) => {
         this.pollKey.next(data);
+      });
+
+      this.socket.on('vote', async (answer: string) => {
+        this.vote.next(answer);
+      });
+
+      resolve();
+    });
+  }
+
+  retrieve(url: string, path: string, pollKey: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (this.socket) {
+        resolve();
+        return;
+      }
+
+      if (!url || url === undefined) {
+        resolve();
+        return;
+      }
+
+      this.socket = io.connect(url, {
+        'reconnectionAttempts': 5,
+        'transports': ['websocket', 'xhr-polling'],
+        'query': 'type=app',
+        'path': path
+      });
+
+      this.socket.on('connect', async () => {
+        this.socket.emit('join', {key: pollKey});
+      });
+
+      this.socket.on('poll_desc', async (data: DeckdeckgoPoll) => {
+        this.poll.next(data);
       });
 
       this.socket.on('vote', async (answer: string) => {
@@ -92,6 +128,10 @@ export class CommunicationService {
 
   watchVote(): Observable<string> {
     return this.vote.asObservable();
+  }
+
+  watchPoll(): Observable<DeckdeckgoPoll> {
+    return this.poll.asObservable();
   }
 
 }

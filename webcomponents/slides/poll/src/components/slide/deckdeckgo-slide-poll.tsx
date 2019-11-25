@@ -1,11 +1,16 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} from '@stencil/core';
 
 import {Subject, Subscription} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import {debounceTime, take} from 'rxjs/operators';
 
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
-import {DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue, DeckdeckgoPollQuestion} from '@deckdeckgo/types';
+import {
+  DeckdeckgoBarChartData,
+  DeckdeckgoBarChartDataValue,
+  DeckdeckgoPollQuestion,
+  DeckdeckgoPoll
+} from '@deckdeckgo/types';
 
 import '@deckdeckgo/charts';
 
@@ -22,12 +27,20 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop() socketUrl: string;
-  @Prop() socketPath: string = '/poll';
+  @Event()
+  private pollConnected: EventEmitter<void>;
+
+  @Prop({reflect: true}) socketUrl: string;
+  @Prop({reflect: true}) socketPath: string = '/poll';
 
   @Prop() connectPollSocket: boolean = true;
 
-  @Prop() pollLink: string;
+  @Prop({reflect: true}) pollLink: string;
+
+  @Prop({reflect: true, mutable: true})
+  pollKey: string;
+
+  private oldPollKey: string;
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
@@ -42,9 +55,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @State()
   private chartData: DeckdeckgoBarChartData[];
-
-  @State()
-  private pollKey: string;
 
   private communicationService: CommunicationService = new CommunicationService();
 
@@ -74,11 +84,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       await this.updateChartAnswersData();
 
       if (this.chartData && this.chartData.length >= 1) {
-        const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
+        await this.updateCurrentBar();
 
-        if (element) {
-          await (element as any).updateCurrentBar(this.chartData[0].values);
-        }
+        await this.updatePoll();
       }
     });
   }
@@ -89,9 +97,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     this.initWindowResize();
 
     this.pollKeySubscription = this.communicationService.watchPollKey().subscribe(async (key: string) => {
-      this.pollKey = key;
+      if (key) {
+        this.oldPollKey = this.pollKey;
+        this.pollKey = key;
 
-      await this.initHowTo();
+        await this.initHowTo();
+      }
     });
 
     this.slideDidLoad.emit();
@@ -110,6 +121,12 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
     if (this.pollKeySubscription) {
       this.pollKeySubscription.unsubscribe();
+    }
+  }
+
+  componentDidUpdate() {
+    if ((!this.oldPollKey || this.oldPollKey === undefined) && this.pollKey && this.pollKey !== undefined && this.pollKey !== '') {
+      this.pollConnected.emit();
     }
   }
 
@@ -310,6 +327,28 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     });
   }
 
+  private initAnswersData(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.answers = {};
+
+      if (!this.chartData || this.chartData.length < 1) {
+        resolve();
+        return;
+      }
+
+      if (!this.chartData[0].values || this.chartData[0].values.length <= 0) {
+        resolve();
+        return;
+      }
+
+      this.chartData[0].values.forEach((value: DeckdeckgoBarChartDataValue) => {
+        this.answers[`answer-${value.key}`] = value.value;
+      });
+
+      resolve();
+    });
+  }
+
   private initChartDataBar(answerSlotName: string, index: number): Promise<DeckdeckgoBarChartDataValue> {
     return new Promise<DeckdeckgoBarChartDataValue>((resolve) => {
       const element: HTMLElement = this.el.querySelector(`:scope > [slot=\'${answerSlotName}\']`);
@@ -336,6 +375,39 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
     if (this.chartData && this.chartData.length >= 1) {
       await this.communicationService.connect(this.socketUrl, this.socketPath, this.chartData[0] as DeckdeckgoPollQuestion);
+    }
+  }
+
+  private async retrievePoll() {
+    if (!this.connectPollSocket || !this.pollKey) {
+      return;
+    }
+
+    this.communicationService.watchPoll().pipe(take(1)).subscribe(async (poll: DeckdeckgoPoll) => {
+      this.answeredOnce = true;
+
+      if (poll && poll.poll) {
+        this.chartData = [];
+        this.chartData.push(poll.poll as DeckdeckgoBarChartData);
+
+        await this.initAnswersData();
+
+        await this.drawChart();
+      }
+
+      this.pollConnected.emit();
+    });
+
+    await this.communicationService.disconnect();
+
+    await this.communicationService.retrieve(this.socketUrl, this.socketPath, this.pollKey);
+  }
+
+  private async updateCurrentBar() {
+    const element: HTMLElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
+
+    if (element) {
+      await (element as any).updateCurrentBar(this.chartData[0].values);
     }
   }
 
@@ -465,7 +537,11 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
       await this.initChartData();
 
-      await this.initPoll();
+      if (this.pollKey) {
+        await this.retrievePoll();
+      } else {
+        await this.initPoll();
+      }
 
       resolve();
     });

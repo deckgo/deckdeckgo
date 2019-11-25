@@ -14,9 +14,9 @@ export interface DeckdeckgoAttributeDefinition {
 }
 
 export interface DeckdeckgoSlideDefinition {
-    template: string;
+    template: string | undefined;
     content?: string;
-    attributes?: DeckdeckgoAttributeDefinition[];
+    attributes?: DeckdeckgoAttributeDefinition[] | null;
 }
 
 export interface DeckdeckgoDeckDefinition {

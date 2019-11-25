@@ -1,5 +1,3 @@
-
-
 export class PollEventsHandler {
 
     private el: HTMLElement;

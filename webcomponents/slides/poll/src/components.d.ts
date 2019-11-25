@@ -19,6 +19,7 @@ export namespace Components {
     'hideContent': () => Promise<void>;
     'isAnswered': () => Promise<boolean>;
     'lazyLoadContent': () => Promise<void>;
+    'pollKey': string;
     'pollLink': string;
     'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
@@ -46,7 +47,9 @@ declare namespace LocalJSX {
     'connectPollSocket'?: boolean;
     'customActions'?: boolean;
     'customBackground'?: boolean;
+    'onPollConnected'?: (event: CustomEvent<void>) => void;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'pollKey'?: string;
     'pollLink'?: string;
     'socketPath'?: string;
     'socketUrl'?: string;

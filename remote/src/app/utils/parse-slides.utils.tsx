@@ -109,7 +109,8 @@ export class ParseSlidesUtils {
             'deckgo-slide-countdown',
             'deckgo-slide-youtube',
             'deckgo-slide-big-img',
-            'deckgo-slide-video'].indexOf(slide.template) > -1;
+            'deckgo-slide-video',
+            'deckgo-slide-poll'].indexOf(slide.template) > -1;
     }
 
     private static parseDummySlide(index: number): Promise<JSX.IntrinsicElements> {
