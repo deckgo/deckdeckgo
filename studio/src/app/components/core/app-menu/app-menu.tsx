@@ -239,7 +239,8 @@ export class AppMenu {
             {this.renderUser()}
 
             {this.renderHome()}
-            {this.renderUserMenuItems()}
+            {this.renderDashboard()}
+            {this.renderSettings()}
             {this.renderSignInOut()}
 
             <ion-item-divider>
@@ -276,18 +277,12 @@ export class AppMenu {
         }
     }
 
-    private renderUserMenuItems() {
+    private renderDashboard() {
         if (Utils.isLoggedIn(this.authUser)) {
-            return [
-                <ion-item button class="home" href="/dashboard" routerDirection="forward">
+            return <ion-item button class="home" href="/dashboard" routerDirection="forward">
                     <ion-icon name="apps" slot="start"></ion-icon>
                     <ion-label>Dashboard</ion-label>
-                </ion-item>,
-                <ion-item button class="home" href="/settings" routerDirection="forward">
-                    <ion-icon name="settings" slot="start"></ion-icon>
-                    <ion-label>Settings</ion-label>
-                </ion-item>
-            ];
+                </ion-item>;
         } else {
             return undefined;
         }
@@ -311,6 +306,13 @@ export class AppMenu {
         return <ion-item button class="home" href="/" routerDirection="forward">
             <ion-icon name="home" slot="start"></ion-icon>
             <ion-label>Home</ion-label>
+        </ion-item>;
+    }
+
+    private renderSettings() {
+        return <ion-item button class="home" href="/settings" routerDirection="forward">
+            <ion-icon name="settings" slot="start"></ion-icon>
+            <ion-label>Settings</ion-label>
         </ion-item>;
     }
 

@@ -80,7 +80,7 @@ app-navigation {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+body.dark {
   app-navigation {
     div.title {
       color: white;

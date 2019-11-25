@@ -36,7 +36,7 @@ import Data.Aeson ((.=), (.:), (.!=), (.:?))
 import Data.Bifunctor
 import Data.Char
 import Data.Int
-import Data.List (find)
+import Data.List (find, isPrefixOf, isSuffixOf)
 import Data.List (foldl')
 import Data.Maybe
 import Data.Proxy
@@ -451,6 +451,7 @@ presentationsPut
   -> PresentationInfo
   -> Servant.Handler (Item PresentationId PresentationResult)
 presentationsPut env conn _uid pid pinfo = do
+    liftIO $ putStrLn $ "PUT PRESENTATION" <> show pid
     liftIO $ putStrLn $ unwords
       [ "PUT presentation"
       , show pinfo
@@ -1227,7 +1228,27 @@ withPresentationFiles uname psname presentationInfo act = do
     deckgoStarterDist <- getEnv "DECKGO_STARTER_DIST"
     Temp.withSystemTempDirectory "dist" $ \dir -> do
       Tar.extract dir deckgoStarterDist
+
+      -- Here we deal with workbox' precache by updating index.html and then
+      -- propagate the new etag (md5) through precache-manifest.js and
+      -- service-worker.js.
+
+      oldIndexMd5 <- fileETag $ dir </> "index.html"
+      precacheFile <- findPrecache dir >>= \case
+        Nothing -> error "No precache manifest!"
+        Just n -> pure n
+      oldPrecacheMd5 <- fileETag $ dir </> precacheFile
       mapFile processIndex $ dir </> "index.html"
+      newIndexMd5 <- fileETag $ dir </> "index.html"
+      putStrLn $ "Changing index.html MD5 from " <>
+        show oldIndexMd5 <> " to " <> show newIndexMd5
+      mapFile (T.replace oldIndexMd5 newIndexMd5) $ dir </> precacheFile
+      newPrecacheMd5 <- fileETag $ dir </> precacheFile
+      let newPrecacheFile = ("precache-manifest." <> T.unpack newPrecacheMd5 <> ".js")
+      putStrLn $ "replacing " <> precacheFile <> " with " <> newPrecacheFile
+      Dir.renameFile (dir </> precacheFile) $ dir </> newPrecacheFile
+      mapFile (T.replace oldPrecacheMd5 newPrecacheMd5) $ dir </> "service-worker.js"
+
       mapFile interpol $ dir </> "manifest.json"
       putStrLn "Listing files..."
       files <- listDirectoryRecursive dir
@@ -1253,6 +1274,12 @@ withPresentationFiles uname psname presentationInfo act = do
       T.replace "{{DECKDECKGO_DECKNAME}}" (unPresShortname psname) .
       T.replace "{{DECKDECKGO_BASE_HREF}}"
         ("/" <> unPresentationPrefix (presentationPrefix uname psname))
+    findPrecache dir = find isPrecache <$> Dir.listDirectory dir
+    isPrecache n =
+      "precache-manifest." `isPrefixOf` n &&
+      ".js" `isSuffixOf` n
+
+
 
 mapFile :: (T.Text -> T.Text) -> FilePath -> IO ()
 mapFile f fp = do
@@ -1385,7 +1412,8 @@ putObject env bucket (fp, okey, etag) = do
     runAWS env (
       AWS.send $ S3.putObject bucket okey body &
           -- XXX: partial, though technically should never fail
-          S3.poContentType .~ inferContentType (T.pack fp)
+          S3.poContentType .~ inferContentType (T.pack fp) &
+          S3.poCacheControl .~ Just "no-cache"
       ) >>= \case
         Right r -> do
           putStrLn $ "Copied: " <> fp <> " to " <> show okey <> " with ETag " <> show etag
@@ -1411,11 +1439,12 @@ mkObjectKey :: Username -> PresShortname -> [T.Text] -> S3.ObjectKey
 mkObjectKey uname pname components = S3.ObjectKey $
     unPresentationPrefix (presentationPrefix uname pname) <> T.intercalate "/" components
 
-fileETag :: FilePath -> IO S3.ETag
+-- | calculates the MD5 sum of a file, hex representation.
+fileETag :: IsString a => FilePath -> IO a
 fileETag fp =
     -- XXX: The 'show' step is very import, it's what converts the Digest to
     -- the Hex representation
-    (fromString . show . MD5.md5) <$> BL.readFile fp
+    (fromString . show . MD5.md5 . BL.fromStrict) <$> BS.readFile fp
 
 inferContentType :: T.Text -> Maybe T.Text
 inferContentType = Just . T.decodeUtf8 .
