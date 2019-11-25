@@ -8,7 +8,7 @@ If you wish to do so, use it directly in your project via a CDN. Use a simple sc
 
 > Installing the core component as displayed below will "only" install the "engine" of [DeckDeckGo] respectively, its core doesn't contain any slides.
 >
-> Splitting the core and the templates allows you to minimize dependencies and the amount of external code required in your project. Doing this gives the best performance while runing the presentation upfront.
+> Splitting the core and the templates allows you to minimize dependencies and the amount of external code required in your project. Doing this gives the best performance while running the presentation upfront.
 
 ## Table of contents
 
