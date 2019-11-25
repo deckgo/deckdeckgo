@@ -393,6 +393,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         await this.initAnswersData();
 
         await this.drawChart();
+
+        await this.initHowTo();
       }
 
       this.pollConnected.emit();
