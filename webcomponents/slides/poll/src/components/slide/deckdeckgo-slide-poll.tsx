@@ -94,7 +94,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       await this.updateChartAnswersData();
 
       if (this.chartData && this.chartData.length >= 1) {
-        await updateCurrentBar(this.el);
+        await updateCurrentBar(this.el, this.chartData[0].values);
 
         await this.updatePoll();
       }
@@ -111,7 +111,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         this.oldPollKey = this.pollKey;
         this.pollKey = key;
 
-        await initHowTo(this.el);
+        await initHowTo(this.el, this.pollKey);
       }
     });
 
@@ -297,7 +297,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
         await drawChart(this.el, this.chartWidth, this.chartHeight);
 
-        await initHowTo(this.el);
+        await initHowTo(this.el, this.pollKey);
       }
 
       this.pollConnected.emit();

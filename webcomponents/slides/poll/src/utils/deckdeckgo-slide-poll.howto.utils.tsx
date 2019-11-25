@@ -1,4 +1,4 @@
-export function initHowTo(el: HTMLElement): Promise<void> {
+export function initHowTo(el: HTMLElement, pollKey: string): Promise<void> {
   return new Promise<void>(async (resolve) => {
     const howToSlotElement: HTMLElement = el.querySelector(':scope > [slot=\'how-to\']');
 
@@ -20,14 +20,14 @@ export function initHowTo(el: HTMLElement): Promise<void> {
       container.removeChild(howTo);
     }
 
-    const element: HTMLElement = await cloneHowTo(howToSlotElement);
+    const element: HTMLElement = await cloneHowTo(howToSlotElement, pollKey);
     container.appendChild(element);
 
     resolve();
   });
 }
 
-function cloneHowTo(howToSlotElement: HTMLElement): Promise<HTMLElement> {
+function cloneHowTo(howToSlotElement: HTMLElement, pollKey: string): Promise<HTMLElement> {
   return new Promise<HTMLElement>((resolve) => {
     const element: HTMLElement = howToSlotElement.cloneNode(true) as HTMLElement;
     element.removeAttribute('slot');
@@ -38,7 +38,7 @@ function cloneHowTo(howToSlotElement: HTMLElement): Promise<HTMLElement> {
       return;
     }
 
-    const replaceWith: string = this.pollKey ? this.pollKey.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ' ') : '{0}';
+    const replaceWith: string = pollKey ? pollKey.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ' ') : '{0}';
 
     element.innerHTML = element.innerHTML.replace(/\{0\}/g, replaceWith);
 

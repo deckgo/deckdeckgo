@@ -45,10 +45,10 @@ export function initChartDataBar(el: HTMLElement, answerSlotName: string, index:
   });
 }
 
-export async function updateCurrentBar(el: HTMLElement) {
+export async function updateCurrentBar(el: HTMLElement, values: DeckdeckgoBarChartDataValue[]) {
   const element: HTMLElement = el.shadowRoot.querySelector('deckgo-bar-chart');
 
   if (element) {
-    await (element as any).updateCurrentBar(this.chartData[0].values);
+    await (element as any).updateCurrentBar(values);
   }
 }
