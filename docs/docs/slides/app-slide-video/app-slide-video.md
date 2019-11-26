@@ -40,7 +40,7 @@ This template could be added to your presentation using the following methods.
  
 ### From a CDN
 
-It's recommended to use [unpkg](https://unpkg.com/) to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
+It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/slide-video@latest/dist/deckdeckgo-slide-video/deckdeckgo-slide-video.esm.js"></script>
@@ -92,7 +92,7 @@ The slot `title` and `content` are optional. The slot `content` is displayed bef
 
 Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
 
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
+If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Attributes
 

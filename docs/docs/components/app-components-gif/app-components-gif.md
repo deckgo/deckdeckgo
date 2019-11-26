@@ -25,7 +25,7 @@ The "Gif" component allows you to easily add a Gif, like those provided by [Giph
 
 This component is part of the "Gif" template. Therefore, if you would like to use it, install the related slide as described in its [installation](/slides/gif) chapter.
 
-> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
+> If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
 
 ## Usage
 
