@@ -1,14 +1,14 @@
 # Installation
 
-To easily create your PWA presentation and enjoy all the options, I suggest you to create your slides using the CLI and the starter kit as described in the [previous chapter](/docs/introduction).
+To easily create your PWA presentation it is suggested you create your slides using the CLI and the starter kit as described in the [previous chapter](/docs/introduction), so you can enjoy all the features.
 
-However, the [DeckDeckGo] core component, could be installed in any project too.
+However, the [DeckDeckGo] core component could be installed in any project too.
 
-If you wish to do so, use it directly in your project via a CDN, using a simple script include, or install it from [npm](https://www.npmjs.com/package/@deckdeckgo/core).
+If you wish to do so, use it directly in your project via a CDN. Use a simple script and include, or install it from [npm](https://www.npmjs.com/package/@deckdeckgo/core).
 
-> Installing the core component as displayed below will "only" install the "engine" of [DeckDeckGo] respectively its core doesn't contain any slides.
+> Installing the core component as displayed below will "only" install the "engine" of [DeckDeckGo] respectively, its core doesn't contain any slides.
 >
-> Splitting the core and the templates allows you to minimize dependencies and amount of external code required in your project, thus unleashing the best performances used to run presentation upfront.
+> Splitting the core and the templates allows you to minimize dependencies and the amount of external code required in your project. Doing this gives the best performance while running the presentation upfront.
 
 ## Table of contents
 
