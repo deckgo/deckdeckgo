@@ -34,6 +34,6 @@ Cool, let's kick start a new DeckDeckGo presentation
     Markdown
 ```
 
-Once your presentation is created, navigate to your new project's folder and start editing your slides and content for your talk 😉
+Once your presentation is created, navigate to your new project's folder to start editing your slides and content for your talk 😉
 
 [deckdeckgo]: https://deckdeckgo.com
