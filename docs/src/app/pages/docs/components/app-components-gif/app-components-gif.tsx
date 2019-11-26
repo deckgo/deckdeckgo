@@ -61,7 +61,7 @@ export class AppComponentsGif {
 <h2 id="app-components-gif-installation">Installation</h2>
 <p>This component is part of the &quot;Gif&quot; template. Therefore, if you would like to use it, install the related slide as described in its <a href="/slides/gif">installation</a> chapter.</p>
 <blockquote>
-<p>If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+<p>If you are using our Starter Kit this template is included. You don&#39;t need to install it so therefore you should skip the &quot;Installation&quot; chapter.</p>
 </blockquote>
 <h2 id="app-components-gif-usage">Usage</h2>
 <p>The &quot;Gif&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-gif/&gt;</code>.</p>

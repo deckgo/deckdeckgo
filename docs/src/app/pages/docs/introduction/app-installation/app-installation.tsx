@@ -20,12 +20,12 @@ export class AppInstallation {
 
       <ion-content class="ion-padding">
         <main><h1 id="app-installation-installation">Installation</h1>
-<p>To easily create your PWA presentation and enjoy all the options, I suggest you to create your slides using the CLI and the starter kit as described in the <a href="/docs/introduction">previous chapter</a>.</p>
-<p>However, the <a href="https://deckdeckgo.com">DeckDeckGo</a> core component, could be installed in any project too.</p>
-<p>If you wish to do so, use it directly in your project via a CDN, using a simple script include, or install it from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a>.</p>
+<p>To easily create your PWA presentation it is suggested you create your slides using the CLI and the starter kit as described in the <a href="/docs/introduction">previous chapter</a>, so you can enjoy all the features.</p>
+<p>However, the <a href="https://deckdeckgo.com">DeckDeckGo</a> core component could be installed in any project too.</p>
+<p>If you wish to do so, use it directly in your project via a CDN. Use a simple script and include, or install it from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a>.</p>
 <blockquote>
-<p>Installing the core component as displayed below will &quot;only&quot; install the &quot;engine&quot; of <a href="https://deckdeckgo.com">DeckDeckGo</a> respectively its core doesn&#39;t contain any slides.</p>
-<p>Splitting the core and the templates allows you to minimize dependencies and amount of external code required in your project, thus unleashing the best performances used to run presentation upfront.</p>
+<p>Installing the core component as displayed below will &quot;only&quot; install the &quot;engine&quot; of <a href="https://deckdeckgo.com">DeckDeckGo</a> respectively, its core doesn&#39;t contain any slides.</p>
+<p>Splitting the core and the templates allows you to minimize dependencies and the amount of external code required in your project. Doing this gives the best performance while running the presentation upfront.</p>
 </blockquote>
 <h2 id="app-installation-table-of-contents">Table of contents</h2>
 <ul>

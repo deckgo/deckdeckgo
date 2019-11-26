@@ -63,7 +63,7 @@ export class AppSlideBigImg {
 <p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
 </blockquote>
 <h3 id="app-slide-big-img-from-a-cdn">From a CDN</h3>
-<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-big-img@latest&#47;dist&#47;deckdeckgo-slide-big-img&#47;deckdeckgo-slide-big-img.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-big-img@latest&#47;dist&#47;deckdeckgo-slide-big-img&#47;deckdeckgo-slide-big-img.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-slide-big-img-from-npm">From NPM</h3>
@@ -87,7 +87,7 @@ export class AppSlideBigImg {
 <p>The slots <code>title</code> is optional (it is not displayed but could be use for the navigation). Otherwise no particular slots are currently available in order to display additional information on this template.</p>
 <h3 id="app-slide-big-img-notes">Notes</h3>
 <p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
-<p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
+<p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute <code>show</code>.</p>
 <h2 id="app-slide-big-img-attributes">Attributes</h2>
 <p>This component offers the following options which could be set using attributes:</p>
 <table>

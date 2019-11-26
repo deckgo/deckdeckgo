@@ -68,7 +68,7 @@ export class AppSlideCode {
 <p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
 </blockquote>
 <h3 id="app-slide-code-from-a-cdn">From a CDN</h3>
-<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-code@latest&#47;dist&#47;deckdeckgo-slide-code&#47;deckdeckgo-slide-code.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-code@latest&#47;dist&#47;deckdeckgo-slide-code&#47;deckdeckgo-slide-code.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-slide-code-from-npm">From NPM</h3>
@@ -98,7 +98,7 @@ export class AppSlideCode {
 <p>This template also exposes a slot <code>info</code> which would let you display an information over your code on mobile devices, useful to explain your reader that they should click to switch between vertical and horizontal scrolling. Find an example of the use of that slot on the <a href="https://deckdeckgo.com">DeckDeckGo</a> website.</p>
 <h3 id="app-slide-code-notes">Notes</h3>
 <p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
-<p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
+<p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute <code>show</code>.</p>
 <h2 id="app-slide-code-code-components">Code components</h2>
 <p>The slide &quot;Code&quot; relies on the code component <code>&lt;deckgo-highlight-code/&gt;</code> which is described in the components <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.</p>
 <h2 id="app-slide-code-installation-1">Installation</h2>
