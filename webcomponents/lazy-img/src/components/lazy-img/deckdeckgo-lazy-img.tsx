@@ -189,12 +189,14 @@ export class DeckdeckgoLazyImg {
   }
 
   render() {
+    const hostClass: string = this.imgLoaded ? 'loaded' : '';
+
     if (this.svgContent) {
-      return <Host>
+      return <Host class={hostClass}>
         <div innerHTML={this.svgContent}></div>
       </Host>
     } else {
-      return <Host>
+      return <Host class={hostClass}>
         {this.renderImage()}
       </Host>;
     }
