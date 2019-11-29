@@ -1,6 +1,6 @@
 # DeckDeckGo - Docs
 
-This project is the documentation of [DeckDeckGo].
+This project is the documentation for developer of [DeckDeckGo].
 
 The documentation is written in markdown and developed with the [Ionic PWA Toolkit](https://ionicframework.com/pwa/toolkit).
 
