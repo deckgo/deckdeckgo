@@ -110,6 +110,9 @@ The following theming options will affect this component if set on its host or p
 | --deckgo-lazy-img-display | | The display property of the image |
 | --deckgo-lazy-img-border-radius | | In case you would like to specify a border radius for the image |
 | --deckgo-lazy-img-object-fit  | | The property object-fit of the image |
+| --deckgo-lazy-img-opacity-not-loaded  | 0 | The opacity of the image when not loaded |
+| --deckgo-lazy-img-opacity-loaded  | 1 | The opacity of the image when loaded |
+| --deckgo-lazy-img-transition  | opacity 0.15s linear | The animation of the image, notably use to display smoothly the image when loaded |
 
 ### Methods
 

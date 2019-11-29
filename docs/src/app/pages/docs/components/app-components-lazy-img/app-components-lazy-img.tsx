@@ -215,6 +215,21 @@ export class AppComponentsLazyImg {
 <td></td>
 <td>The property object-fit of the image</td>
 </tr>
+<tr>
+<td>--deckgo-lazy-img-opacity-not-loaded</td>
+<td>0</td>
+<td>The opacity of the image when not loaded</td>
+</tr>
+<tr>
+<td>--deckgo-lazy-img-opacity-loaded</td>
+<td>1</td>
+<td>The opacity of the image when loaded</td>
+</tr>
+<tr>
+<td>--deckgo-lazy-img-transition</td>
+<td>opacity 0.15s linear</td>
+<td>The animation of the image, notably use to display smoothly the image when loaded</td>
+</tr>
 </tbody></table>
 <h3 id="app-components-lazy-img-methods">Methods</h3>
 <p>This component also export an async method <code>lazyLoad()</code> in case you would like to trigger &quot;manually&quot; the loading of the image.</p>
