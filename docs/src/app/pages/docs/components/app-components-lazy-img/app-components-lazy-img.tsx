@@ -110,6 +110,18 @@ export class AppComponentsLazyImg {
 <td>The image alternate text</td>
 </tr>
 <tr>
+<td>img-width</td>
+<td>number</td>
+<td></td>
+<td>The image width</td>
+</tr>
+<tr>
+<td>img-height</td>
+<td>number</td>
+<td></td>
+<td>The image height</td>
+</tr>
+<tr>
 <td>svg-src</td>
 <td>string</td>
 <td></td>
