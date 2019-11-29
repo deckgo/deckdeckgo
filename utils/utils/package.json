@@ -11,7 +11,7 @@
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
     "rimraf": "^3.0.0",
-    "rollup": "^1.27.0",
+    "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-typescript": "^1.0.1",
     "tslib": "^1.10.0",
