@@ -13,12 +13,12 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "file:../utils"
+    "@deckdeckgo/utils": "^1.0.0-rc.2"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "file:../types",
+    "@deckdeckgo/types": "^1.0.0-rc.4",
     "rimraf": "^3.0.0",
-    "rollup": "^1.27.0",
+    "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript": "^1.0.1",
