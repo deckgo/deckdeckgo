@@ -472,6 +472,7 @@ The `<deckgo-bar-chart/>` expose the following properties:
 | `animation`         | `animation`          | | Display multiple graphs and animate the transition between these | `boolean`                | `false` |
 | `animationDuration`         | `animation-duration`          | | Duration of the transition between graphs | `numer`                | `1000` (aka 1 second) |
 | `data`         | `data`          |  | Instead of a source file it is also possible to provide the data of the chart as an object | `DeckdeckgoBarChartData`                | |
+| `yAxis`         | `y-axis`          | | If `false`, no axis y will be draw. | `boolean`                | |
 
 #### Styling
 

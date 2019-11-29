@@ -733,6 +733,14 @@ export class AppComponentsCharts {
 <td><code>DeckdeckgoBarChartData</code></td>
 <td></td>
 </tr>
+<tr>
+<td><code>yAxis</code></td>
+<td><code>y-axis</code></td>
+<td></td>
+<td>If <code>false</code>, no axis y will be draw.</td>
+<td><code>boolean</code></td>
+<td></td>
+</tr>
 </tbody></table>
 <h4 id="app-components-charts-styling-2">Styling</h4>
 <p>The <code>&lt;deckgo-bar-chart/&gt;</code> could be styled using the following CSS4 variables:</p>
