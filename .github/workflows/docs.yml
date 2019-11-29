@@ -24,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: docs
-          path: docs
+          path: docs/dist
   deploy:
     name: Deploy
     needs: build

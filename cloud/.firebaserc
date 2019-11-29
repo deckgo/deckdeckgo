@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "deckdeckgo-studio-prod",
+    "staging": "deckdeckgo-studio-beta"
+  }
+}
