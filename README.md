@@ -101,3 +101,4 @@ Are you interested to contribute to our open source project? That would be aweso
 | **Webpack plugins** | [`deckdeckgo-webpack-plugins`](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [![version](https://img.shields.io/npm/v/deckdeckgo-webpack-plugins/latest.svg?color=success)](https://www.npmjs.com/package/deckdeckgo-webpack-plugins) | [`README.md`](webpack/README.md) 
 
 [DeckDeckGo]: https://deckdeckgo.com
+
