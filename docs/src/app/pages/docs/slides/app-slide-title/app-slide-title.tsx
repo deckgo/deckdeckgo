@@ -65,7 +65,7 @@ export class AppSlideTitle {
 <p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
 </blockquote>
 <h3 id="app-slide-title-from-a-cdn">From a CDN</h3>
-<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-title@latest&#47;dist&#47;deckdeckgo-slide-title&#47;deckdeckgo-slide-title.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-title@latest&#47;dist&#47;deckdeckgo-slide-title&#47;deckdeckgo-slide-title.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-slide-title-from-npm">From NPM</h3>
@@ -91,7 +91,7 @@ export class AppSlideTitle {
 <p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-title&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'}    &lt;div slot=&quot;notes&quot;&gt;A note regarding this particular slide&lt;&#47;div&gt;{'\n'}{'\n'}And another note on a new line about it too.{'\n'}  &lt;&#47;deckgo-slide-title&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
-    </deckgo-highlight-code><p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
+    </deckgo-highlight-code><p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute <code>show</code>.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-title&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'}    &lt;div slot=&quot;notes&quot; show&gt;A note displayed in the presentation within a modal accessible for anyone&lt;&#47;div&gt;{'\n'}  &lt;&#47;deckgo-slide-title&gt;{'\n'}&lt;&#47;deckgo-deck&gt;</code>
     </deckgo-highlight-code><h2 id="app-slide-title-attributes">Attributes</h2>

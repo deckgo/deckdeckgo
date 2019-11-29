@@ -44,7 +44,7 @@ Have a look at this video where we demonstrate how to use it!
 
 This component could be added to your web application using the following methods.
 
-> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
+> If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
 
 ### Using from a CDN
 

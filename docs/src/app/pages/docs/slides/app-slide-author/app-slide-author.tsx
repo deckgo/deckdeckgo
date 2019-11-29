@@ -27,7 +27,7 @@ export class AppSlideAuthor {
 
       <ion-content class="ion-padding">
         <main><h1 id="app-slide-author-slide-author">Slide: Author</h1>
-<p>The &quot;Author&quot; slide let you introduce the author of the presentation.</p>
+<p>The &quot;Author&quot; slide lets you introduce the author of the presentation.</p>
 <h2 id="app-slide-author-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-slide-author-layout">Layout</a></li>
@@ -64,10 +64,10 @@ export class AppSlideAuthor {
 <h2 id="app-slide-author-installation">Installation</h2>
 <p>This template could be added to your presentation using the following methods.</p>
 <blockquote>
-<p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
+<p>If you are using our Starter Kit this template is included. You don&#39;t need to install it so therefore you should skip the &quot;Installation&quot; chapter.</p>
 </blockquote>
 <h3 id="app-slide-author-from-a-cdn">From a CDN</h3>
-<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-author@latest&#47;dist&#47;deckdeckgo-slide-author&#47;deckdeckgo-slide-author.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-author@latest&#47;dist&#47;deckdeckgo-slide-author&#47;deckdeckgo-slide-author.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-slide-author-from-npm">From NPM</h3>
@@ -88,17 +88,17 @@ export class AppSlideAuthor {
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-author img-src=&quot;&#47;assets&#47;author.jpeg&quot; img-alt=&quot;My self&quot;&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;Author&lt;&#47;h1&gt;{'\n'}    &lt;div slot=&quot;author&quot;&gt;{'\n'}      &lt;h2&gt;David&lt;&#47;h2&gt;{'\n'}      &lt;p&gt;Something about me&lt;&#47;p&gt;{'\n'}    &lt;&#47;div&gt;{'\n'}    &lt;div slot=&quot;social-link&quot;&gt;&lt;deckgo-social twitter=&quot;daviddalbusco&quot;&gt;twitter&lt;&#47;deckgo-social&gt;&lt;&#47;div&gt;{'\n'}  &lt;&#47;deckgo-slide-author&gt;{'\n'}&lt;&#47;deckgo-deck&gt;  </code>
     </deckgo-highlight-code><h3 id="app-slide-author-slots">Slots</h3>
-<p>Both slots <code>title</code>, <code>author</code> and <code>social-link</code> are optional, but of course the slide would looks better with at least the slot <code>author</code> would be provided.</p>
+<p>Slots for <code>title</code>, <code>author</code> and <code>social-link</code> are optional. It is recommended that the slot <code>author</code> be filled as to improve the appearance of the slide. </p>
 <p>Notes: </p>
 <ul>
-<li><p>The slot <code>title</code> is hidden. If you use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter, it will be use for the navigation modal</p>
+<li><p>The slot <code>title</code> is hidden. If you use the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter, it will be used for the navigation model.</p>
 </li>
 <li><p>You could provide up to six <code>social-link</code> slots. Each of these could be your custom code or you could use the component <code>&lt;deckgo-social/&gt;</code> to easily provide a link to an external URI.</p>
 </li>
 </ul>
 <h3 id="app-slide-author-notes">Notes</h3>
-<p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
-<p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
+<p>Optionally a slot <code>notes</code> could be used to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
+<p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute <code>show</code>.</p>
 <h3 id="app-slide-author-social-components">Social components</h3>
 <p>The details of the component <code>&lt;deckgo-social/&gt;</code> is described in the components <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.</p>
 <h2 id="app-slide-author-attributes">Attributes</h2>
@@ -128,13 +128,13 @@ export class AppSlideAuthor {
 <td>custom-background</td>
 <td>boolean</td>
 <td>false</td>
-<td>If you would provide a background for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+<td>If you will provide a background for the all deck and a specific one for this slide, set this option to <code>true</code></td>
 </tr>
 <tr>
 <td>custom-actions</td>
 <td>boolean</td>
 <td>false</td>
-<td>If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
+<td>If you will provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
 </tr>
 </tbody></table>
 <h3 id="app-slide-author-example">Example</h3>

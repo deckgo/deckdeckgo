@@ -24,7 +24,7 @@ An `<img/>` tag is per default use to display the image but optionally it could 
 
 This component could be added to your web application using the following methods.
 
-> If you are using our Starter Kit to develop your presentation, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
+> If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
 
 ### Using from a CDN
 
@@ -85,6 +85,8 @@ This component offers the following options which could be set using attributes:
 | img-error-src | string |  | An optional image which could be displayed in case the main image would not be resolved |
 | img-sizes | string |  | The set of media conditions to indicates what image size would be best to choose |
 | img-alt | string |  | The image alternate text |
+| img-width | number |  | The image width |
+| img-height | number |  | The image height |
 | svg-src | string |  | The SVG image source (= URI) to lazy load and to parse (no `<img/>` tag will be use to render the svg) |
 | aria-label | string |  | If you are using the above SVG option, provide the accessibility information using this attribute |
 | observer-root-margin | string | 100px 0px | A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
@@ -110,6 +112,9 @@ The following theming options will affect this component if set on its host or p
 | --deckgo-lazy-img-display | | The display property of the image |
 | --deckgo-lazy-img-border-radius | | In case you would like to specify a border radius for the image |
 | --deckgo-lazy-img-object-fit  | | The property object-fit of the image |
+| --deckgo-lazy-img-opacity-not-loaded  | 0 | The opacity of the image when not loaded |
+| --deckgo-lazy-img-opacity-loaded  | 1 | The opacity of the image when loaded |
+| --deckgo-lazy-img-transition  | opacity 0.15s linear | The animation of the image, notably use to display smoothly the image when loaded |
 
 ### Methods
 

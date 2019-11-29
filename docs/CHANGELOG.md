@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.6-1"></a>
+# 1.0.0-rc.6-1 (2019-11-26)
+
+### Features
+
+* grammar improvements by [jasdeepgill](https://github.com/jasdeepgill)
+
 <a name="1.0.0-rc.6"></a>
 # 1.0.0-rc.6 (2019-11-10)
 

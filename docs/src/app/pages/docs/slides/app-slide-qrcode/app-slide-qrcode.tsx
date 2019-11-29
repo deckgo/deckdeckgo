@@ -67,7 +67,7 @@ export class AppSlideQRCode {
 <p>If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the &quot;Installation&quot; chapter.</p>
 </blockquote>
 <h3 id="app-slide-qrcode-from-a-cdn">From a CDN</h3>
-<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
+<p>It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;script type=&quot;module&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-qrcode@latest&#47;dist&#47;deckdeckgo-slide-qrcode&#47;deckdeckgo-slide-qrcode.esm.js&quot;&gt;&lt;&#47;script&gt;{'\n'}&lt;script nomodule=&quot;&quot; src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-qrcode@latest&#47;dist&#47;deckdeckgo-slide-qrcode&#47;deckdeckgo-slide-qrcode.js&quot;&gt;&lt;&#47;script&gt;</code>
     </deckgo-highlight-code><h3 id="app-slide-qrcode-from-npm">From NPM</h3>
@@ -92,7 +92,7 @@ export class AppSlideQRCode {
 <p>The slots <code>title</code> and <code>content</code> are optional.</p>
 <h3 id="app-slide-qrcode-notes">Notes</h3>
 <p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
-<p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute <code>show</code>.</p>
+<p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute <code>show</code>.</p>
 <h2 id="app-slide-qrcode-code-components">Code components</h2>
 <p>The slide &quot;QR Code&quot; relies on the code component <code>&lt;deckgo-qrcode/&gt;</code> which is described in the components <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.</p>
 <h2 id="app-slide-qrcode-installation-1">Installation</h2>
