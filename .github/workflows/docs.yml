@@ -18,7 +18,7 @@ jobs:
         run: npm ci
         working-directory: ./docs
       - name: Build
-        run: npm run build --prod
+        run: npm run build
         working-directory: ./docs
       - name: Archive Artifact
         uses: actions/upload-artifact@master
