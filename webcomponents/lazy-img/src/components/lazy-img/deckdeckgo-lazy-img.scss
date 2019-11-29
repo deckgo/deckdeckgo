@@ -2,6 +2,12 @@
   fill: currentColor;
 }
 
+:host(.loaded) {
+  img, svg {
+    opacity: var(--deckgo-lazy-img-opacity-loaded, 1);
+  }
+}
+
 img, svg {
   pointer-events: var(--deckgo-lazy-img-pointer-events, none);
 
@@ -25,4 +31,8 @@ img, svg {
   border-radius: var(--deckgo-lazy-img-border-radius);
 
   object-fit: var(--deckgo-lazy-img-object-fit);
+
+  opacity: var(--deckgo-lazy-img-opacity-not-loaded, 0);
+
+  transition: var(--deckgo-lazy-img-transition, opacity 0.15s linear);
 }
