@@ -1,3 +1,11 @@
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-11-29)
+
+### Features
+
+* add `getSlideDefinition` and `getAttributesDefinition` functions to deck utils as these are notably used in the editor now too
+* bundle package with rollup
+
 <a name="1.0.0-rc.1-2"></a>
 # 1.0.0-rc.1-2 (2019-11-13)
 
