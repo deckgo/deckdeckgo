@@ -29,8 +29,6 @@ UserInterfaceState.xcuserstate
 lib/
 
 .firebase/
-firebase.json
-.firebaserc
 
 .terraform
 

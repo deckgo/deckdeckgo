@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.6-2"></a>
+# 1.0.0-rc.6-2 (2019-11-29)
+
+### Features
+
+* update lazy-img component documentation (smooth loading and new properties)
+
 <a name="1.0.0-rc.6-1"></a>
 # 1.0.0-rc.6-1 (2019-11-26)
 
