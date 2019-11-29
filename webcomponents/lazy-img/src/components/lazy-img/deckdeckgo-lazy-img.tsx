@@ -43,6 +43,12 @@ export class DeckdeckgoLazyImg {
   @Prop()
   intrinsicsize: string;
 
+  @Prop()
+  imgWidth: number;
+
+  @Prop()
+  imgHeight: number;
+
   @State()
   private svgContent: string;
 
@@ -205,6 +211,7 @@ export class DeckdeckgoLazyImg {
   private renderImage() {
     // @ts-ignore
     return <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} loading="lazy" sizes={this.imgSizes ? this.imgSizes : undefined} intrinsicsize={this.intrinsicsize}
+                width={this.imgWidth} height={this.imgHeight}
                 onLoad={() => this.imgLoaded = true} onError={() => this.loadError()}/>
   }
 }

@@ -13,9 +13,11 @@ export namespace Components {
     'ariaLabel': string;
     'imgAlt': string;
     'imgErrorSrc': string;
+    'imgHeight': number;
     'imgSizes': string;
     'imgSrc': string;
     'imgSrcSet': string;
+    'imgWidth': number;
     'intrinsicsize': string;
     'lazyLoad': () => Promise<void>;
     'observerRootMargin': string;
@@ -42,9 +44,11 @@ declare namespace LocalJSX {
     'ariaLabel'?: string;
     'imgAlt'?: string;
     'imgErrorSrc'?: string;
+    'imgHeight'?: number;
     'imgSizes'?: string;
     'imgSrc'?: string;
     'imgSrcSet'?: string;
+    'imgWidth'?: number;
     'intrinsicsize'?: string;
     'observerRootMargin'?: string;
     'observerThreshold'?: number | number[];
