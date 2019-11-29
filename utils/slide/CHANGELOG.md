@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.4"></a>
+# 1.0.0-rc.4 (2019-11-29)
+
+### Features
+
+* bundle package with rollup
+
 <a name="1.0.0-rc.3-2"></a>
 # 1.0.0-rc.3-2 (2019-11-05)
 
