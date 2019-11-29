@@ -85,6 +85,8 @@ This component offers the following options which could be set using attributes:
 | img-error-src | string |  | An optional image which could be displayed in case the main image would not be resolved |
 | img-sizes | string |  | The set of media conditions to indicates what image size would be best to choose |
 | img-alt | string |  | The image alternate text |
+| img-width | number |  | The image width |
+| img-height | number |  | The image height |
 | svg-src | string |  | The SVG image source (= URI) to lazy load and to parse (no `<img/>` tag will be use to render the svg) |
 | aria-label | string |  | If you are using the above SVG option, provide the accessibility information using this attribute |
 | observer-root-margin | string | 100px 0px | A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
