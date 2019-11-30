@@ -1,7 +1,7 @@
 {
   "name": "@deckdeckgo/slide-poll",
   "version": "1.0.0-beta.1",
-  "description": "Interact with your audience, add a dynamic poll to your presentation",
+  "description": "Interact with your audience, add a live poll to your presentation",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "es2015": "dist/esm/index.mjs",

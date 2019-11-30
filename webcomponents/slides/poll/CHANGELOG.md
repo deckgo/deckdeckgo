@@ -1,6 +1,6 @@
 <a name="1.0.0-beta.1"></a>
-# 1.0.0-rc.2 (2019-11-XX)
+# 1.0.0-beta.1 (2019-11-30)
 
 ### Features
 
-* hello world probably
+* interact with your audience with this new `poll` template ([#471](https://github.com/deckgo/deckdeckgo/issues/471))
