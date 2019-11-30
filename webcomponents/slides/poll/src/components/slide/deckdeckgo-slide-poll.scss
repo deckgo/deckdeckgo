@@ -51,6 +51,8 @@ div.deckgo-slide-poll {
 
 .how-to {
   max-width: var(--slide-poll-how-to-max-width, calc(100% - 64px));
+  pointer-events: none;
+  user-select: none;
 }
 
 ::slotted([slot="how-to"]) {
@@ -66,4 +68,6 @@ div.deckgo-slide-poll {
   background: var(--slide-poll-awaiting-votes-background, rgba(255,255,255,0.9));
   border-radius: var(--slide-poll-awaiting-votes-border-radius, 8px);
   padding: var(--slide-poll-awaiting-votes-padding, 8px);
+  pointer-events: none;
+  user-select: none;
 }
