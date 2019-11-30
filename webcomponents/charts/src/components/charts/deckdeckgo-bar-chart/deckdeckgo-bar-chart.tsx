@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop, Watch, h} from '@stencil/core';
+import {Component, Element, Method, Prop, Watch, h, Host} from '@stencil/core';
 
 import {DeckdeckgoChart, DeckdeckgoChartUtils} from '../deckdeckgo-chart';
 
@@ -97,7 +97,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       }
 
       this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
-      this.svg = this.svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
+      this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
 
       this.barDataIndex = 0;
       this.chartData = this.data;
@@ -220,7 +220,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
       this.svg.append('g')
         .attr('class', 'axis axis-x')
-        .attr('transform', 'translate(0,' + this.height + ')')
+        .attr('transform', 'translate(0,' + (this.height - this.marginTop - this.marginBottom) + ')')
         .call(bottomAxis)
         .selectAll('text')
         .attr('transform', 'translate(-8,8)rotate(-45)')
@@ -243,10 +243,10 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   private initAxis(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      this.x0 = scaleBand().rangeRound([0, this.width]);
+      this.x0 = scaleBand().rangeRound([0, this.width - this.marginLeft - this.marginRight]);
 
       this.x1 = scaleBand().padding(0.05);
-      this.y = scaleLinear().rangeRound([this.height, 0]);
+      this.y = scaleLinear().rangeRound([this.height - this.marginTop - this.marginBottom, 0]);
 
       await this.initAxisXDomain();
       await this.initAxisYDomain();
@@ -290,7 +290,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .attr('width', this.x0.bandwidth())
         .attr('height', (d) => {
-          const height: number = this.height - this.y(d.value);
+          const height: number = (this.height - this.marginTop - this.marginBottom) - this.y(d.value);
           return height >= 0 ? height : 0;
         });
 
@@ -321,7 +321,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .attr('width', this.x1.bandwidth())
         .attr('height', (d) => {
-          const height: number = this.height - this.y(d.value);
+          const height: number = (this.height - this.marginTop - this.marginBottom) - this.y(d.value);
           return height >= 0 ? height : 0;
         })
         .attr('style', (d, i) => {
@@ -396,7 +396,9 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   }
 
   render() {
-    return <svg></svg>;
+    return <Host style={{'width': `${this.width}px`, 'height': `${this.height}px`}}>
+      <svg></svg>
+    </Host>;
   }
 
 }

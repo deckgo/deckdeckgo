@@ -1,4 +1,4 @@
-import {Component, Prop, Element, Method, Watch, h} from '@stencil/core';
+import {Component, Prop, Element, Method, Watch, h, Host} from '@stencil/core';
 
 import {BaseType, Selection} from 'd3-selection';
 import {pie, arc, Pie, Arc, DefaultArcObject} from 'd3-shape';
@@ -29,6 +29,11 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
   @Prop({mutable: true}) width: number;
   @Prop({mutable: true}) height: number;
+
+  @Prop() marginTop: number = 8;
+  @Prop() marginBottom: number = 64;
+  @Prop() marginLeft: number = 32;
+  @Prop() marginRight: number = 32;
 
   // Specify a number for a donut chart
   @Prop() innerRadius: number = 0;
@@ -73,10 +78,13 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
       this.pieDataIndex = 0;
 
-      this.svg = DeckdeckgoChartUtils.initSvg(this.el, this.width, this.height);
-      this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.width / 2) + ',' + (this.height / 2) + ')');
+      const maxWidth: number = this.width > (this.marginLeft + this.marginRight) ? this.width - this.marginLeft - this.marginRight : this.width;
+      const maxHeight: number = this.height > (this.marginTop + this.marginBottom) ? this.height - this.marginTop - this.marginBottom : this.height;
 
-      const radius: number = Math.min(this.width, this.height) / 2;
+      this.svg = DeckdeckgoChartUtils.initSvg(this.el, maxWidth, maxHeight);
+      this.svg = this.svg.append('g').attr('transform', 'translate(' + (maxWidth / 2) + ',' + (maxHeight / 2) + ')');
+
+      const radius: number = Math.min(maxWidth, maxHeight) / 2;
 
       this.myPath = arc().innerRadius(this.innerRadius).outerRadius(radius);
 
@@ -311,6 +319,8 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
   }
 
   render() {
-    return <svg></svg>;
+    return <Host style={{'width': `${this.width}px`, 'height': `${this.height}px`}}>
+      <svg></svg>
+    </Host>;
   }
 }

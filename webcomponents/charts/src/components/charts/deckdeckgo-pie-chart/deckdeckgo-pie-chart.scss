@@ -1,3 +1,9 @@
+:host {
+  position: var(--deckgo-chart-position, relative);
+  display: var(--deckgo-chart-display, block);
+  margin: var(--deckgo-chart-margin, 0);
+}
+
 text {
   fill: var(--deckgo-chart-text-color, black);
   display: var(--deckgo-chart-text-display);
@@ -7,4 +13,13 @@ text {
 
 path {
   stroke: var(--deckgo-chart-path-stroke);
+}
+
+svg {
+  overflow: var(--deckgo-chart-svg-overflow);
+
+  position: var(--deckgo-chart-svg-position, absolute);
+  top:  var(--deckgo-chart-svg-top, 50%);
+  left: var(--deckgo-chart-svg-left, 50%);
+  transform: var(--deckgo-chart-svg-translate, translate(-50%, -50%));
 }

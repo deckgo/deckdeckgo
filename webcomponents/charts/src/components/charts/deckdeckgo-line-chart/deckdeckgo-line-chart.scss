@@ -1,3 +1,9 @@
+:host {
+  position: var(--deckgo-chart-position, relative);
+  display: var(--deckgo-chart-display, block);
+  margin: var(--deckgo-chart-margin, 32px);
+}
+
 text {
   fill: var(--deckgo-chart-text-color, black);
   display: var(--deckgo-chart-text-display);
@@ -16,4 +22,13 @@ text {
   stroke: var(--deckgo-chart-grid-stroke, #989aa2);
   stroke-opacity: var(--deckgo-chart-grid-stroke-opacity, 0.7);
   shape-rendering: crispEdges;
+}
+
+svg {
+  overflow: var(--deckgo-chart-svg-overflow);
+
+  position: var(--deckgo-chart-svg-position, absolute);
+  top:  var(--deckgo-chart-svg-top, 50%);
+  left: var(--deckgo-chart-svg-left, 50%);
+  transform: var(--deckgo-chart-svg-translate, translate(-50%, -50%));
 }

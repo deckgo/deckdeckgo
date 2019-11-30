@@ -1,3 +1,8 @@
+<a name="1.0.0-rc.5"></a>
+# 1.0.0-rc.5 (2019-11-30)
+
+* update margin and positioning of the charts
+
 <a name="1.0.0-rc.4"></a>
 # 1.0.0-rc.4 (2019-11-30)
 
