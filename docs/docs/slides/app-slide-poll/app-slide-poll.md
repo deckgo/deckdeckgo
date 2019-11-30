@@ -150,6 +150,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-poll-text-align | center | The QR code column text alignment |
 | --slide-poll-background | | The background behind the QR code component |
 | --slide-poll-how-to-max-width | calc(100% - 64px) | The maximal width of the "how-to" slot |
+| --slide-poll-how-to-font-size | 0.8em | The font-size of the text of thee slot "how-to" |
 | --slide-poll-awaiting-votes-z-index | 1 | The z-index  of the "awaiting-votes" slot |
 | --slide-poll-awaiting-votes-background | rgba(255,255,255,0.9) | The background of the "awaiting-votes" slot |
 | --slide-poll-awaiting-votes-border-radius | 8px | The border-radios of the "awaiting-votes" slot |

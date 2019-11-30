@@ -51,6 +51,7 @@ div.deckgo-slide-poll {
 
 .how-to {
   max-width: var(--slide-poll-how-to-max-width, calc(100% - 64px));
+  font-size: var(--slide-poll-how-to-font-size, 0.8em);
   pointer-events: none;
   user-select: none;
 }

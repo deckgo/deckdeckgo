@@ -220,6 +220,11 @@ export class AppSlidePoll {
 <td>The maximal width of the &quot;how-to&quot; slot</td>
 </tr>
 <tr>
+<td>--slide-poll-how-to-font-size</td>
+<td>0.8em</td>
+<td>The font-size of the text of thee slot &quot;how-to&quot;</td>
+</tr>
+<tr>
 <td>--slide-poll-awaiting-votes-z-index</td>
 <td>1</td>
 <td>The z-index  of the &quot;awaiting-votes&quot; slot</td>
