@@ -76,19 +76,19 @@ declare global {
 
 
   interface HTMLDeckgoBarChartElement extends Components.DeckgoBarChart, HTMLStencilElement {}
-  const HTMLDeckgoBarChartElement: {
+  var HTMLDeckgoBarChartElement: {
     prototype: HTMLDeckgoBarChartElement;
     new (): HTMLDeckgoBarChartElement;
   };
 
   interface HTMLDeckgoLineChartElement extends Components.DeckgoLineChart, HTMLStencilElement {}
-  const HTMLDeckgoLineChartElement: {
+  var HTMLDeckgoLineChartElement: {
     prototype: HTMLDeckgoLineChartElement;
     new (): HTMLDeckgoLineChartElement;
   };
 
   interface HTMLDeckgoPieChartElement extends Components.DeckgoPieChart, HTMLStencilElement {}
-  const HTMLDeckgoPieChartElement: {
+  var HTMLDeckgoPieChartElement: {
     prototype: HTMLDeckgoPieChartElement;
     new (): HTMLDeckgoPieChartElement;
   };
