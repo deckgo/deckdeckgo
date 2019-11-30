@@ -22,7 +22,6 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/charts": "file:../../charts",
     "@deckdeckgo/slide-utils": "file:../../../utils/slide",
     "@deckdeckgo/utils": "file:../../../utils/utils",
     "rxjs": "^6.5.3",

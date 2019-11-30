@@ -109,19 +109,6 @@ Type: `Promise<void>`
 
 
 
-## Dependencies
-
-### Depends on
-
-- deckgo-bar-chart
-
-### Graph
-```mermaid
-graph TD;
-  deckgo-slide-poll --> deckgo-bar-chart
-  style deckgo-slide-poll fill:#f9f,stroke:#333,stroke-width:4px
-```
-
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

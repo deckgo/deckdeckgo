@@ -12,8 +12,6 @@ import {
   DeckdeckgoPoll
 } from '@deckdeckgo/types';
 
-import '@deckdeckgo/charts';
-
 import {
   drawChart,
   initChartDataBar,
