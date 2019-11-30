@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.7"></a>
+# 1.0.0-rc.7 (2019-11-30)
+
+### Features
+
+* new template slide `poll`
+
 <a name="1.0.0-rc.6-2"></a>
 # 1.0.0-rc.6-2 (2019-11-29)
 
