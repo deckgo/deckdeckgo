@@ -125,6 +125,8 @@ app-create-slide {
     }
 
     deckgo-slide-chart {
+      --deckgo-chart-margin: 4px 10px 4px 16px;
+
       --slide-chart-margin-end: 0;
       --slide-chart-margin-start: 4px;
       --slide-chart-margin-top: 6px;
