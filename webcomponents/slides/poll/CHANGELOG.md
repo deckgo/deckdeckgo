@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.3"></a>
+# 1.0.0-beta.3 (2019-12-01)
+
+### Features
+
+* expose `answeredOnce` as an attribute to sync the information between deck and remote
+
+### Breaking Changes
+
+* event `pollConnected` replaced by event `pollUpdated` triggered on each component updated 
+
 <a name="1.0.0-beta.2"></a>
 # 1.0.0-beta.2 (2019-12-01)
 
