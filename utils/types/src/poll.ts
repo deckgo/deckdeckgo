@@ -6,6 +6,7 @@ export interface DeckdeckgoPollAnswer {
 export interface DeckdeckgoPollQuestion {
     label: string;
     values: DeckdeckgoPollAnswer[];
+    answered: boolean;
 }
 
 export interface DeckdeckgoPoll {
