@@ -98,6 +98,7 @@ export class AppRemote {
                     await this.slideToLastSlide();
                     await this.setNotes();
                 } else if ($event.type === DeckdeckgoEventType.SLIDE_UPDATE) {
+                    await this.lazyLoadPollContent(($event as DeckdeckgoEventSlide));
                     await this.updateSlide(($event as DeckdeckgoEventSlide));
                     await this.setNotes();
                 } else if ($event.type === DeckdeckgoEventType.NEXT_SLIDE) {
@@ -295,6 +296,26 @@ export class AppRemote {
         }
 
         this.notesService.next(next);
+    }
+
+    private async lazyLoadPollContent($slideEvent: DeckdeckgoEventSlide) {
+        if (!$slideEvent || !$slideEvent.slide || !document) {
+            return;
+        }
+
+        if ($slideEvent.slide.template !== 'deckgo-slide-poll') {
+            return;
+        }
+
+        if (this.slides.length < $slideEvent.index) {
+            return;
+        }
+
+        document.addEventListener('slideDidLoad', async ($event: CustomEvent) => {
+            if ($event && $event.target && typeof ($event.target as any).lazyLoadContent === 'function') {
+                await ($event.target as any).lazyLoadContent();
+            }
+        }, { once: true });
     }
 
     private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
