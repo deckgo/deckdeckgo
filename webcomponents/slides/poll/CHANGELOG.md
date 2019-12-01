@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.4"></a>
+# 1.0.0-beta.4 (2019-12-01)
+
+### Breaking Changes
+
+* update the poll displayed in the remote with the values of the deck (after the answers have been cast)
+* `answeredOnce` as state
+
 <a name="1.0.0-beta.3"></a>
 # 1.0.0-beta.3 (2019-12-01)
 

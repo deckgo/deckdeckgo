@@ -8,7 +8,7 @@
 * remote: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 
 ### New: Web Components
-* slide-poll: v1.0.0-beta.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/poll/CHANGELOG.md))
+* slide-poll: v1.0.0-beta.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/poll/CHANGELOG.md))
 
 ### Web Components
 * charts: v1.0.0-rc.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
