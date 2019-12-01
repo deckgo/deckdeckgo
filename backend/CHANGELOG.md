@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.1-1"></a>
+# 1.0.0-rc.1-1 (2019-12-01)
+
+### Features
+
+* broadcast poll after update
+
 <a name="1.0.0-rc.1"></a>
 # 1.0.0-rc.1 (2019-11-30)
 
