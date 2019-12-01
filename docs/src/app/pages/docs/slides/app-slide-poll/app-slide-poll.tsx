@@ -251,7 +251,7 @@ export class AppSlidePoll {
 <h3 id="app-slide-poll-update">Update</h3>
 <p>Update not in progress, update the answers and chart of the poll.</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">const slide = deck.getElementsByTagName(&#039;deckgo-slide-poll&#039;);{'\n'}await slide.updatee();</code>
+      <code slot="code">const slide = deck.getElementsByTagName(&#039;deckgo-slide-poll&#039;);{'\n'}await slide.update();</code>
     </deckgo-highlight-code><h3 id="app-slide-poll-is-answered">Is answered</h3>
 <p>Test if the poll has been at least answered once by a member of your audience.</p>
 <deckgo-highlight-code language="javascript">

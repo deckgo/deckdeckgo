@@ -28,7 +28,7 @@
     "@deckdeckgo/slide-chart": "^1.0.0-rc.2-1",
     "@deckdeckgo/slide-content": "^1.0.0-rc.1",
     "@deckdeckgo/slide-gif": "^1.0.0-rc.1-1",
-    "@deckdeckgo/slide-poll": "^1.0.0-beta.2",
+    "@deckdeckgo/slide-poll": "^1.0.0-beta.3",
     "@deckdeckgo/slide-qrcode": "^1.0.0-rc.2-1",
     "@deckdeckgo/slide-split": "^1.0.0-rc.2",
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",

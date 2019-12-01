@@ -99,7 +99,7 @@ export class RemoteEventsHandler {
 
         this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
         this.el.removeEventListener('slideDidUpdate', this.slideDidUpdate, true);
-        this.el.removeEventListener('pollConnected', this.pollConnected, true);
+        this.el.removeEventListener('pollUpdated', this.pollUpdated, true);
         this.el.removeEventListener('deckDidChange', this.deckDidChange, true);
     }
 
@@ -131,7 +131,7 @@ export class RemoteEventsHandler {
 
             this.el.addEventListener('slideDelete', this.onSlideDelete, false);
             this.el.addEventListener('slideDidUpdate', this.slideDidUpdate, false);
-            this.el.addEventListener('pollConnected', this.pollConnected, false);
+            this.el.addEventListener('pollUpdated', this.pollUpdated, false);
             this.el.addEventListener('deckDidChange', this.deckDidChange, false);
 
             resolve();
@@ -572,7 +572,7 @@ export class RemoteEventsHandler {
         this.executeIfConnected(this.updateCurrentSlideWithDefinition);
     };
 
-    private pollConnected = async ($event: CustomEvent) => {
+    private pollUpdated = async ($event: CustomEvent) => {
         if (!$event || !$event.target) {
             return;
         }

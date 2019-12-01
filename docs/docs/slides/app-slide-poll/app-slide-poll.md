@@ -168,7 +168,7 @@ Update not in progress, update the answers and chart of the poll.
 
 ```
 const slide = deck.getElementsByTagName('deckgo-slide-poll');
-await slide.updatee();
+await slide.update();
 ```
 
 ### Is answered
