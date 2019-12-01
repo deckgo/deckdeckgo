@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.2"></a>
+# 1.0.0-beta.2 (2019-12-01)
+
+### Features
+
+* remove RxJS and use callbacks instead
+
 <a name="1.0.0-beta.1-1"></a>
 # 1.0.0-beta.1-1 (2019-11-30)
 
