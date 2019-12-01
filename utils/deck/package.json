@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/deck-utils",
-  "version": "1.0.0-rc.1-2",
+  "version": "1.0.0-rc.2",
   "author": "David Dal Busco",
   "description": "Utils and styles for the DeckDeckGo applications",
   "license": "MIT",
@@ -13,16 +13,24 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0-rc.1-3"
+    "@deckdeckgo/utils": "^1.0.0-rc.2"
   },
   "devDependencies": {
-    "typescript": "^3.5.1"
+    "@deckdeckgo/types": "^1.0.0-rc.4",
+    "rimraf": "^3.0.0",
+    "rollup": "^1.27.5",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.2"
   },
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "tsc"
+    "build": "rimraf lib && rollup -c && tsc"
   },
   "files": [
     "lib",

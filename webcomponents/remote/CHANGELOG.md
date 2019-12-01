@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.5"></a>
+# 1.0.0-rc.5 (2019-11-30)
+
+### Breaking Changes
+
+* property `server` renamed to `socketUrl`
+
 <a name="1.0.0-rc.4-1"></a>
 # 1.0.0-rc.4-1 (2019-11-05)
 

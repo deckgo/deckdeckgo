@@ -39,6 +39,9 @@ export class CreateSlidesUtils {
                 resolve(await this.createSlideQRCode(deck));
             } else if (template === SlideTemplate.CHART) {
                 resolve(await this.createSlideChart());
+                resolve(await this.createSlideQRCode(deck));
+            } else if (template === SlideTemplate.POLL) {
+                resolve(await this.createSlidePoll());
             } else {
                 resolve(null);
             }
@@ -267,7 +270,7 @@ export class CreateSlidesUtils {
 
             const content: string = QRCodeUtils.getPresentationUrl(deck);
 
-            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode key={uuid()} content={content} img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
+            const slide: JSX.IntrinsicElements = <deckgo-slide-qrcode key={uuid()} content={content} img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
                 {title}
             </deckgo-slide-qrcode>;
 
@@ -288,6 +291,34 @@ export class CreateSlidesUtils {
             const slide: JSX.IntrinsicElements = <deckgo-slide-chart key={uuid()} {...attributes}>
                 {title}
             </deckgo-slide-chart>;
+
+            resolve(slide);
+        });
+    }
+
+    static createSlidePoll(question: string = undefined, answers: string[] = undefined): Promise<JSX.IntrinsicElements> {
+        return new Promise<JSX.IntrinsicElements>((resolve) => {
+            if (!document) {
+                resolve();
+                return;
+            }
+
+            const questionSlot = <h2 slot="question">{question}</h2>;
+
+            const answerSlots = [];
+            answers.forEach((answer: string, i: number) => {
+                answerSlots.push(<h3 slot={`answer-${i + 1}`}>{answer}</h3>);
+            });
+
+            const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+            const slide: JSX.IntrinsicElements = <deckgo-slide-poll key={uuid()} pollLink={deckDeckGoConfig.pollUrl} socketUrl={deckDeckGoConfig.socketUrl}>
+                {questionSlot}
+                {...answerSlots}
+
+                <div slot="how-to">Go to <a href={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}>poll.deckdeckgo.com</a> and use the code {'{0}'}</div>
+                <div slot="awaiting-votes">Awaiting votes</div>
+            </deckgo-slide-poll>;
 
             resolve(slide);
         });

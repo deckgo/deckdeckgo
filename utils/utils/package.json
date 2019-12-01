@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/utils",
-  "version": "1.0.0-rc.1-4",
+  "version": "1.0.0-rc.2",
   "author": "David Dal Busco",
   "description": "A collection of utils methods and functions developed for DeckDeckGo",
   "license": "MIT",
@@ -11,7 +11,8 @@
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
     "rimraf": "^3.0.0",
-    "rollup": "^1.27.0",
+    "rollup": "^1.27.5",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-typescript": "^1.0.1",
     "tslib": "^1.10.0",
     "typescript": "^3.7.2"

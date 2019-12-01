@@ -32,12 +32,16 @@ export class AppColor {
     @State()
     private chart: boolean = false;
 
+    @State()
+    private poll: boolean = false;
+
     async componentWillLoad() {
         if (this.deckOrSlide) {
             this.qrCode = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
             this.chart = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-chart'.toUpperCase();
+            this.poll = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-poll'.toUpperCase();
 
-            this.applyToTargetElement = this.qrCode ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : TargetElement.SLIDE);
+            this.applyToTargetElement = this.qrCode || this.poll ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : TargetElement.SLIDE);
         }
 
         this.moreColors = !isIPad();
@@ -82,7 +86,7 @@ export class AppColor {
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
-            <app-select-target-element deckOrSlide={this.deckOrSlide} qrCode={this.qrCode} chart={this.chart}
+            <app-select-target-element deckOrSlide={this.deckOrSlide} qrCode={this.qrCode || this.poll} chart={this.chart || this.poll}
                                        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
             this.renderColorOptions()

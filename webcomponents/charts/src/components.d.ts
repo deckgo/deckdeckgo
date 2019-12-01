@@ -7,12 +7,16 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  DeckdeckgoBarChartData,
+  DeckdeckgoBarChartDataValue,
+} from '@deckdeckgo/types';
 
 export namespace Components {
   interface DeckgoBarChart {
     'animation': boolean;
     'animationDuration': number;
+    'data': DeckdeckgoBarChartData[];
     'draw': (width?: number, height?: number) => Promise<void>;
     'height': number;
     'isBeginning': () => Promise<boolean>;
@@ -25,7 +29,9 @@ export namespace Components {
     'prev': () => Promise<void>;
     'separator': string;
     'src': string;
+    'updateCurrentBar': (values: DeckdeckgoBarChartDataValue[]) => Promise<void>;
     'width': number;
+    'yAxis': boolean;
   }
   interface DeckgoLineChart {
     'animation': boolean;
@@ -58,6 +64,10 @@ export namespace Components {
     'innerRadius': number;
     'isBeginning': () => Promise<boolean>;
     'isEnd': () => Promise<boolean>;
+    'marginBottom': number;
+    'marginLeft': number;
+    'marginRight': number;
+    'marginTop': number;
     'next': () => Promise<void>;
     'prev': () => Promise<void>;
     'separator': string;
@@ -70,19 +80,19 @@ declare global {
 
 
   interface HTMLDeckgoBarChartElement extends Components.DeckgoBarChart, HTMLStencilElement {}
-  const HTMLDeckgoBarChartElement: {
+  var HTMLDeckgoBarChartElement: {
     prototype: HTMLDeckgoBarChartElement;
     new (): HTMLDeckgoBarChartElement;
   };
 
   interface HTMLDeckgoLineChartElement extends Components.DeckgoLineChart, HTMLStencilElement {}
-  const HTMLDeckgoLineChartElement: {
+  var HTMLDeckgoLineChartElement: {
     prototype: HTMLDeckgoLineChartElement;
     new (): HTMLDeckgoLineChartElement;
   };
 
   interface HTMLDeckgoPieChartElement extends Components.DeckgoPieChart, HTMLStencilElement {}
-  const HTMLDeckgoPieChartElement: {
+  var HTMLDeckgoPieChartElement: {
     prototype: HTMLDeckgoPieChartElement;
     new (): HTMLDeckgoPieChartElement;
   };
@@ -97,6 +107,7 @@ declare namespace LocalJSX {
   interface DeckgoBarChart {
     'animation'?: boolean;
     'animationDuration'?: number;
+    'data'?: DeckdeckgoBarChartData[];
     'height'?: number;
     'marginBottom'?: number;
     'marginLeft'?: number;
@@ -105,6 +116,7 @@ declare namespace LocalJSX {
     'separator'?: string;
     'src'?: string;
     'width'?: number;
+    'yAxis'?: boolean;
   }
   interface DeckgoLineChart {
     'animation'?: boolean;
@@ -129,6 +141,10 @@ declare namespace LocalJSX {
     'animationDuration'?: number;
     'height'?: number;
     'innerRadius'?: number;
+    'marginBottom'?: number;
+    'marginLeft'?: number;
+    'marginRight'?: number;
+    'marginTop'?: number;
     'separator'?: string;
     'src'?: string;
     'width'?: number;

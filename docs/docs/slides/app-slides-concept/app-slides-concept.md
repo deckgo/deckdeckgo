@@ -186,4 +186,21 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
+* Slide: [Poll](/slides/poll)
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-poll poll-link="https://poll.deckdeckgo.com" socket-url="https://api.deckdeckgo.com" connectPollSocket={false}>
+        <h1 slot="question">Do you like my presentation so far?</h1>
+        <p slot="answer-1">It is super</p>
+        <p slot="answer-2">Meh</p>
+        <p slot="answer-3">I could'nt care less</p>
+        <p slot="answer-4">Tell me why</p>
+        <p slot="how-to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {0}</p>
+        <p slot="awaiting-votes">Awaiting first votes</p>
+        <p slot="answer-5">Ain't nothin' but a heartache</p>
+      </deckgo-slide-poll>
+  </deckgo-deck>
+</div>
+
 [DeckDeckGo]: https://deckdeckgo.com 

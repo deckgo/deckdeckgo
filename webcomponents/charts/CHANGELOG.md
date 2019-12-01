@@ -1,3 +1,19 @@
+<a name="1.0.0-rc.5"></a>
+# 1.0.0-rc.5 (2019-11-30)
+
+* update margin and positioning of the charts
+
+<a name="1.0.0-rc.4"></a>
+# 1.0.0-rc.4 (2019-11-30)
+
+### Features
+
+* add new property `data` and `yAxis` to the bar chart
+* add new method `updateCurrentBar()` to the bar chart
+* add new CSS variables for the fonts to the charts
+
+Note: some **major** internal modifications where developed to the bar chart in order to integrate it to the new `poll` template  
+
 <a name="1.0.0-rc.3-1"></a>
 # 1.0.0-rc.3-1 (2019-10-20)
 

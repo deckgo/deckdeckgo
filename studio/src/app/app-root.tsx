@@ -155,6 +155,9 @@ export class AppRoot {
                     <ion-route url="/press" component="app-press"/>
 
                     <ion-route url="/remote" component="app-remote"/>
+
+                    <ion-route url="/poll" component="app-poll"/>
+                    <ion-route url="/poll/:pollKey" component="app-poll"/>
                 </ion-router>
 
                 <ion-menu id="ion-menu" side="start" type="overlay" swipeGesture={false} content-id="menu-content">

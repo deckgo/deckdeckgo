@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop, Watch, h} from '@stencil/core';
+import {Component, Element, Method, Prop, Watch, h, Host} from '@stencil/core';
 
 import parse from 'date-fns/parse';
 import isValid from 'date-fns/isValid';
@@ -96,7 +96,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       this.serieIndex = 0;
 
       this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
-      this.svg = this.svg.append('g').attr('transform', 'translate(' + this.marginLeft + ',' + this.marginTop + ')');
+      this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
 
       this.series = await this.fetchData();
 
@@ -184,8 +184,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
       const isXAxisNumber: boolean = firstSerieData && firstSerieData.length > 0 && typeof firstSerieData[0].when === 'number';
 
-      this.x = isXAxisNumber ? scaleLinear().range([0, this.width]) : scaleTime().range([0, this.width]);
-      this.y = scaleLinear().range([this.height, 0]);
+      this.x = isXAxisNumber ? scaleLinear().range([0, this.width - this.marginLeft - this.marginRight]) : scaleTime().range([0, this.width - this.marginLeft - this.marginRight]);
+      this.y = scaleLinear().range([this.height - this.marginTop - this.marginBottom, 0]);
 
       this.x.domain(extent(firstSerieData, (d: DeckdeckgoLineChartData) => d.when));
 
@@ -288,13 +288,13 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       const styleClassAxisY: string = 'axis axis-y' + (this.grid ? ' axis-grid' : '');
 
       if (this.grid) {
-        bottomAxis.tickSize(-this.height).tickFormat(null);
-        leftAxis.tickSize(-this.width).tickFormat(null);
+        bottomAxis.tickSize(-(this.height - this.marginTop - this.marginBottom)).tickFormat(null);
+        leftAxis.tickSize(-(this.width - this.marginLeft - this.marginRight)).tickFormat(null);
       }
 
       this.svg.append('g')
         .attr('class', styleClassAxisX)
-        .attr('transform', 'translate(0,' + this.height + ')')
+        .attr('transform', 'translate(0,' + (this.height - this.marginTop - this.marginBottom) + ')')
         .call(bottomAxis)
         .selectAll('text')
         .attr('transform', 'translate(-10,0)rotate(-45)')
@@ -314,7 +314,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         .x((d: DeckdeckgoLineChartData) => this.x(d.when));
 
       if (this.area) {
-        line.y0(this.height).y1((d: DeckdeckgoLineChartData) => this.y(d.value));
+        line.y0((this.height - this.marginTop - this.marginBottom)).y1((d: DeckdeckgoLineChartData) => this.y(d.value));
       } else {
         line.y((d: DeckdeckgoLineChartData) => this.y(d.value));
       }
@@ -448,7 +448,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   }
 
   render() {
-    return <svg></svg>;
+    return <Host style={{'width': `${this.width}px`, 'height': `${this.height}px`}}>
+      <svg></svg>
+    </Host>;
   }
 
 }

@@ -14,12 +14,11 @@ app.get('/googlefonts/', (req, res) => {
 const server = app.listen(3002, () => {
     const internalIp = require('internal-ip');
 
-    console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Server up and running');
+    console.log('\n\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Api up and running');
     console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Local:', 'http://localhost:' + server.address().port);
     console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Remote:', 'http://' + internalIp.v4.sync() + ':' + server.address().port);
 
-    require('./socket-io')(server);
+    require('./socket-io-remote')(server);
+
+    require('./socket-io-poll')(server);
 });
-
-
-

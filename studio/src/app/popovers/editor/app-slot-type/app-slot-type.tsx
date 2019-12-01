@@ -17,6 +17,9 @@ export class AppSlideAdd {
     @State()
     private currentType: SlotType;
 
+    @State()
+    private onlyTextTypes: boolean = false;
+
     async componentWillLoad() {
         if (this.selectedElement) {
             if (SlotUtils.isNodeRevealList(this.selectedElement)) {
@@ -25,6 +28,8 @@ export class AppSlideAdd {
                 await this.initCurrentType();
             }
         }
+
+        this.onlyTextTypes = this.selectedElement && this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-poll';
     }
 
     private initCurrentType(): Promise<void> {
@@ -74,10 +79,20 @@ export class AppSlideAdd {
                 <a onClick={() => this.closePopover(SlotType.H2)} class={this.currentType === SlotType.H2 ? "current" : ""}><ion-item><h2>Large title</h2></ion-item></a>
                 <a onClick={() => this.closePopover(SlotType.H3)} class={this.currentType === SlotType.H3 ? "current" : ""}><ion-item><h3>Small title</h3></ion-item></a>
                 <a onClick={() => this.closePopover(SlotType.SECTION)} class={this.currentType === SlotType.SECTION ? "current" : ""}><ion-item><p>Paragraph</p></ion-item></a>
-                <a onClick={() => this.closePopover(SlotType.OL)} class={this.currentType === SlotType.OL ? "current" : ""}><ion-item><p>List</p></ion-item></a>
-                <a onClick={() => this.closePopover(SlotType.IMG)} class={this.currentType === SlotType.IMG ? "current" : ""}><ion-item><p>Image</p></ion-item></a>
-                <a onClick={() => this.closePopover(SlotType.CODE)} class={this.currentType === SlotType.CODE ? "current" : ""}><ion-item><p>Code</p></ion-item></a>
+                {this.renderComplexTypes()}
             </ion-list>
+        ]
+    }
+
+    private renderComplexTypes() {
+        if (this.onlyTextTypes) {
+            return undefined;
+        }
+
+        return [
+            <a onClick={() => this.closePopover(SlotType.OL)} class={this.currentType === SlotType.OL ? "current" : ""}><ion-item><p>List</p></ion-item></a>,
+            <a onClick={() => this.closePopover(SlotType.IMG)} class={this.currentType === SlotType.IMG ? "current" : ""}><ion-item><p>Image</p></ion-item></a>,
+            <a onClick={() => this.closePopover(SlotType.CODE)} class={this.currentType === SlotType.CODE ? "current" : ""}><ion-item><p>Code</p></ion-item></a>
         ]
     }
 }

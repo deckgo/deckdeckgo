@@ -9,6 +9,10 @@ ion-popover {
 }
 
 ion-popover.popover-menu {
+  &.popover-menu-wide {
+    --width: 290px;
+  }
+
   div.popover-content {
     top: 0 !important;
     left: inherit !important;

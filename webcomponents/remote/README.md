@@ -69,7 +69,7 @@ The following options should be set using attributes:
 | Attribute                      | Type   | Description   |
 | -------------------------- |:-----------------:|:-----------------:|
 | room | string | The room respectively the presentation's name which will be displayed to the user in the app when he/she will search for presentations to connect to |
-| server | string | A server URI, in case you would implement your own signaling server |
+| socketUrl | string | A socket URI, in case you would implement your own signaling server |
 | width | number | The width of the canvas |
 | height | number | The height of the canvas |
 | length | number | How many slides contains your deck, this is useful to inform the app about it and initialize the length of the canvas |

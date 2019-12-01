@@ -38,7 +38,8 @@ export const config: Config = {
     ],
     nodeResolve: {browser: true},
     devServer: {
-        openBrowser: false
+        openBrowser: false,
+        reloadStrategy: 'pageReload'
     },
     copy: [
         {src: 'robots.txt'}

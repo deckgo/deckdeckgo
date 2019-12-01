@@ -1,4 +1,4 @@
-# Slide: Youtube
+# Slide: Video
 
 The "Video" slide let you add your own video or for example a Gif as MPEG-4 (MP4) to your presentation.
 

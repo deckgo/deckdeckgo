@@ -264,6 +264,8 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
     }
 
     return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+                             margin-top={this.marginTop} margin-bottom={this.marginBottom}
+                             margin-right={this.marginRight} margin-left={this.marginLeft}
                              animation={this.animation}
                              animation-duration={this.animationDuration} {...attrs}></deckgo-pie-chart>
   }

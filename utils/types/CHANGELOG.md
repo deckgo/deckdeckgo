@@ -1,4 +1,22 @@
-<a name="1.0.0-rc.23></a>
+<a name="1.0.0-rc.4-1></a>
+# 1.0.0-rc.4-1 (2019-12-01)
+
+### Features
+
+* exchange information if poll was answered once or not
+
+<a name="1.0.0-rc.4></a>
+# 1.0.0-rc.4 (2019-11-29)
+
+### Features
+
+* new definition for `bar chart` and `poll`, as these information are shared across components and apps 
+
+### Refactoring
+
+* remote types definition moved in a separate file
+
+<a name="1.0.0-rc.3></a>
 # 1.0.0-rc.3 (2019-11-05)
 
 ### Breaking Changes

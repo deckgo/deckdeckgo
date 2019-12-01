@@ -152,6 +152,13 @@ export namespace Components {
   }
   interface AppOpensource {}
   interface AppPhoto {}
+  interface AppPoll {
+    'pollKey': string;
+  }
+  interface AppPollOptions {
+    'selectedElement': HTMLElement;
+    'slideDidChange': EventEmitter<HTMLElement>;
+  }
   interface AppPopular {
     'description': boolean;
     'help': boolean;
@@ -163,6 +170,9 @@ export namespace Components {
     'publishedUrl': string;
   }
   interface AppPublishEdit {}
+  interface AppRandomGif {
+    'keyword': string;
+  }
   interface AppRemote {}
   interface AppRemoteConnect {}
   interface AppReveal {
@@ -476,6 +486,18 @@ declare global {
     new (): HTMLAppPhotoElement;
   };
 
+  interface HTMLAppPollElement extends Components.AppPoll, HTMLStencilElement {}
+  var HTMLAppPollElement: {
+    prototype: HTMLAppPollElement;
+    new (): HTMLAppPollElement;
+  };
+
+  interface HTMLAppPollOptionsElement extends Components.AppPollOptions, HTMLStencilElement {}
+  var HTMLAppPollOptionsElement: {
+    prototype: HTMLAppPollOptionsElement;
+    new (): HTMLAppPollOptionsElement;
+  };
+
   interface HTMLAppPopularElement extends Components.AppPopular, HTMLStencilElement {}
   var HTMLAppPopularElement: {
     prototype: HTMLAppPopularElement;
@@ -510,6 +532,12 @@ declare global {
   var HTMLAppPublishEditElement: {
     prototype: HTMLAppPublishEditElement;
     new (): HTMLAppPublishEditElement;
+  };
+
+  interface HTMLAppRandomGifElement extends Components.AppRandomGif, HTMLStencilElement {}
+  var HTMLAppRandomGifElement: {
+    prototype: HTMLAppRandomGifElement;
+    new (): HTMLAppRandomGifElement;
   };
 
   interface HTMLAppRemoteElement extends Components.AppRemote, HTMLStencilElement {}
@@ -671,12 +699,15 @@ declare global {
     'app-notes': HTMLAppNotesElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-photo': HTMLAppPhotoElement;
+    'app-poll': HTMLAppPollElement;
+    'app-poll-options': HTMLAppPollOptionsElement;
     'app-popular': HTMLAppPopularElement;
     'app-press': HTMLAppPressElement;
     'app-privacy': HTMLAppPrivacyElement;
     'app-publish': HTMLAppPublishElement;
     'app-publish-done': HTMLAppPublishDoneElement;
     'app-publish-edit': HTMLAppPublishEditElement;
+    'app-random-gif': HTMLAppRandomGifElement;
     'app-remote': HTMLAppRemoteElement;
     'app-remote-connect': HTMLAppRemoteConnectElement;
     'app-reveal': HTMLAppRevealElement;
@@ -776,6 +807,7 @@ declare namespace LocalJSX {
     'onActionPublish'?: (event: CustomEvent<void>) => void;
     'onAddSlide'?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
     'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
+    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideTo'?: (event: CustomEvent<number>) => void;
@@ -844,6 +876,13 @@ declare namespace LocalJSX {
   }
   interface AppOpensource {}
   interface AppPhoto {}
+  interface AppPoll {
+    'pollKey'?: string;
+  }
+  interface AppPollOptions {
+    'selectedElement'?: HTMLElement;
+    'slideDidChange'?: EventEmitter<HTMLElement>;
+  }
   interface AppPopular {
     'description'?: boolean;
     'help'?: boolean;
@@ -857,6 +896,9 @@ declare namespace LocalJSX {
   }
   interface AppPublishEdit {
     'onPublished'?: (event: CustomEvent<string>) => void;
+  }
+  interface AppRandomGif {
+    'keyword'?: string;
   }
   interface AppRemote {}
   interface AppRemoteConnect {}
@@ -949,12 +991,15 @@ declare namespace LocalJSX {
     'app-notes': AppNotes;
     'app-opensource': AppOpensource;
     'app-photo': AppPhoto;
+    'app-poll': AppPoll;
+    'app-poll-options': AppPollOptions;
     'app-popular': AppPopular;
     'app-press': AppPress;
     'app-privacy': AppPrivacy;
     'app-publish': AppPublish;
     'app-publish-done': AppPublishDone;
     'app-publish-edit': AppPublishEdit;
+    'app-random-gif': AppRandomGif;
     'app-remote': AppRemote;
     'app-remote-connect': AppRemoteConnect;
     'app-reveal': AppReveal;
@@ -1028,12 +1073,15 @@ declare module "@stencil/core" {
       'app-notes': LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
       'app-opensource': LocalJSX.AppOpensource & JSXBase.HTMLAttributes<HTMLAppOpensourceElement>;
       'app-photo': LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;
+      'app-poll': LocalJSX.AppPoll & JSXBase.HTMLAttributes<HTMLAppPollElement>;
+      'app-poll-options': LocalJSX.AppPollOptions & JSXBase.HTMLAttributes<HTMLAppPollOptionsElement>;
       'app-popular': LocalJSX.AppPopular & JSXBase.HTMLAttributes<HTMLAppPopularElement>;
       'app-press': LocalJSX.AppPress & JSXBase.HTMLAttributes<HTMLAppPressElement>;
       'app-privacy': LocalJSX.AppPrivacy & JSXBase.HTMLAttributes<HTMLAppPrivacyElement>;
       'app-publish': LocalJSX.AppPublish & JSXBase.HTMLAttributes<HTMLAppPublishElement>;
       'app-publish-done': LocalJSX.AppPublishDone & JSXBase.HTMLAttributes<HTMLAppPublishDoneElement>;
       'app-publish-edit': LocalJSX.AppPublishEdit & JSXBase.HTMLAttributes<HTMLAppPublishEditElement>;
+      'app-random-gif': LocalJSX.AppRandomGif & JSXBase.HTMLAttributes<HTMLAppRandomGifElement>;
       'app-remote': LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
       'app-remote-connect': LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
       'app-reveal': LocalJSX.AppReveal & JSXBase.HTMLAttributes<HTMLAppRevealElement>;

@@ -1,0 +1,66 @@
+{
+  "name": "@deckdeckgo/slide-poll",
+  "version": "1.0.0-beta.4",
+  "description": "Interact with your audience, add a live poll to your presentation",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-slide-poll/deckdeckgo-slide-poll.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {
+    "@deckdeckgo/slide-utils": "^1.0.0-rc.4",
+    "@deckdeckgo/utils": "^1.0.0-rc.2",
+    "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "@deckdeckgo/types": "^1.0.0-rc.4-1",
+    "@stencil/core": "^1.8.1",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.1.1",
+    "@stencil/utils": "0.0.5",
+    "@types/jest": "24.0.23",
+    "@types/puppeteer": "1.20.3",
+    "@types/socket.io-client": "^1.4.32",
+    "autoprefixer": "^9.7.2",
+    "jest": "24.9.0",
+    "jest-cli": "24.9.0",
+    "puppeteer": "1.20.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "David Dal Busco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk",
+    "d3js",
+    "poll"
+  ]
+}

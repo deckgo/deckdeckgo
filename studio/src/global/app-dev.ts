@@ -23,6 +23,7 @@ import '@deckdeckgo/slide-youtube';
 import '@deckdeckgo/slide-author';
 import '@deckdeckgo/slide-qrcode';
 import '@deckdeckgo/slide-chart';
+import '@deckdeckgo/slide-poll';
 
 import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment/environment-config';
 
@@ -30,9 +31,11 @@ setupDeckGoConfig({
     deckdeckgo: {
         prod: false,
         appUrl: 'http://localhost:3333',
+        globalAssetsUrl: 'https://deckdeckgo.com/assets',
+        pollUrl: 'https://localhost:3333/poll',
         apiUrl: '<@API_URL@>',
         presentationUrl: '<@PRESENTATION_URL@>',
-        globalAssetsUrl: 'https://deckdeckgo.com/assets'
+        socketUrl: '<@SOCKET_URL@>'
     },
     firebase: {
         apiKey: '<@FIREBASE_API_KEY@>',
@@ -51,7 +54,6 @@ setupDeckGoConfig({
     unsplash: {
         url: '<@UNSPLASH_URL@>'
     },
-    signalingServerUrl: '<@SIGNALING_SERVER_URL@>',
     prismComponentsUrl: 'https://raw.githubusercontent.com/PrismJS/prism/886698d5b759ef46162a5723a2493f97c689dc94/components.json',
     gifExampleSrc: 'https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/200w_d.gif'
 });

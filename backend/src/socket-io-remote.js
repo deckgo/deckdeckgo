@@ -5,10 +5,9 @@ module.exports = (server) => {
 
     socketIO.set('origins', '*:*');
 
-    console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Socket listening');
+    console.log('\x1b[36m%s\x1b[0m', '[DeckDeckGo]', 'Socket listening. Path: /');
 
     socketIO.sockets.on('connection', (socket) => {
-
         socket.on('rooms', async () => {
             await emitRooms(socketIO, socket, false);
         });

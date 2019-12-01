@@ -30,6 +30,8 @@ export class AppEditorActions {
     @Prop()
     slides: JSX.IntrinsicElements[] = [];
 
+    @Event() private blockSlide: EventEmitter<boolean>;
+
     private anonymousService: AnonymousService;
 
     @Event() signIn: EventEmitter<void>;
@@ -84,6 +86,8 @@ export class AppEditorActions {
                     await this.openYoutube();
                 } else if (detail.data.template === SlideTemplate.CHART) {
                     await this.openChart(detail.data.attributes);
+                } else if (detail.data.template === SlideTemplate.POLL) {
+                    await this.openPoll();
                 }
 
                 if (detail.data.slide) {
@@ -115,6 +119,22 @@ export class AppEditorActions {
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             await this.addSlideYoutube(detail.data);
         });
+
+        await modal.present();
+    }
+
+    private async openPoll() {
+        const modal: HTMLIonModalElement = await modalController.create({
+            component: 'app-poll-options'
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            await this.addSlidePoll(detail.data.question, detail.data.answers);
+
+            this.blockSlide.emit(false);
+        });
+
+        this.blockSlide.emit(true);
 
         await modal.present();
     }
@@ -157,6 +177,21 @@ export class AppEditorActions {
             }
 
             const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideYoutube(youtubeUrl);
+
+            this.addSlide.emit(slide);
+
+            resolve();
+        });
+    }
+
+    private addSlidePoll(question: string, answers: string[]): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!question || question === undefined || question === '' || !answers || answers.length <= 0) {
+                resolve();
+                return;
+            }
+
+            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlidePoll(question, answers);
 
             this.addSlide.emit(slide);
 

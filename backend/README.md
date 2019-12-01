@@ -1,18 +1,23 @@
 # DeckDeckGo - Backend
 
-This project is the Backend of [DeckDeckGo]. Currently it acts as the signaling server to let [DeckDeckGo]'s peers establish a real-time communication channel using [WebRTC](https://webrtc.org).
+This project is a backend for [DeckDeckGo].
+
+It acts as the signaling server to let [DeckDeckGo]'s peers establish a real-time communication channel using [WebRTC](https://webrtc.org) for the remote control.
+
+It also transmits the information for the live voting when you are interacting with your audience.
 
 ## Table of contents
 
-- [Peers](#peers)
+- [Remote control](#remote-control)
 	- [Receiver](#receiver)
 	- [Emitter](#emitter)
+- [Poll](#poll)
 - [Develop](#develop)
 - [License](#license)
 
-## Peers
+## Remote control
 
-Concretely this project is use to connect a presentation with the [DeckDeckGo's Progressive Web App](https://deckdeckgo.app) respectively the remote control.   
+This project is use to connect a presentation with the [DeckDeckGo's Progressive Web App](https://deckdeckgo.app) respectively the remote control.   
 
 The projects where the peers are implemented are the following:
 
@@ -31,6 +36,14 @@ The remote control "emitter", the Progressive Web App, which lets you present an
 | Application                      | Source |
 | -------------------------- |:-----------------:|
 |[https://deckdeckgo.app](https://deckdeckgo.app)|[https://github.com/deckgo/deckdeckgo-app](https://github.com/deckgo/deckdeckgo-app)|
+
+## Poll
+
+This project also act as a middle point for the live voting when you are interacting with your audience.
+
+The voting ("where your audience are recording their votes") is implemented in [DeckDeckGo].
+
+The question and the display of the live results is implemented with a template in your presentation.
 
 ## Develop
 

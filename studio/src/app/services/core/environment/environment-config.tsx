@@ -21,9 +21,11 @@ export interface EnvironmentUnsplashConfig {
 export interface EnvironmentDeckDeckGoConfig {
     prod: boolean;
     appUrl: string;
+    globalAssetsUrl: string;
+    pollUrl: string;
     apiUrl: string;
     presentationUrl: string;
-    globalAssetsUrl: string
+    socketUrl: string;
 }
 
 export interface EnvironmentConfig {
@@ -31,7 +33,6 @@ export interface EnvironmentConfig {
     firebase: EnvironmentFirebaseConfig;
     tenor: EnvironmentTenorConfig;
     unsplash: EnvironmentUnsplashConfig;
-    signalingServerUrl: string;
     prismComponentsUrl: string;
     gifExampleSrc: string;
 }

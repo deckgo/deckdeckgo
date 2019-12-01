@@ -1,7 +1,5 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {GifService} from '../../../../services/tenor/gif/gif.service';
-
 @Component({
     tag: 'app-publish-done',
     styleUrl: 'app-publish-done.scss'
@@ -10,44 +8,19 @@ export class AppPublishDone {
 
     @Element() el: HTMLElement;
 
-    private gifService: GifService;
-
     @Prop()
     publishedUrl: string;
 
     @State()
-    private gif: TenorGif;
+    private keywordIndex: number = Math.floor(Math.random() * 4);
 
     private keywords: string[] = ['Hooray', 'You did it', 'Applause', 'Thumbs up'];
 
-    @State()
-    private keywordIndex: number = Math.floor(Math.random() * 4);
-
     @Event() private openShare: EventEmitter<void>;
-
-    constructor() {
-        this.gifService = GifService.getInstance();
-    }
-
-    async componentWillLoad() {
-        await this.initRandomGifUrl();
-    }
-
-    private initRandomGifUrl(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const gifResponse: TenorSearchResponse = await this.gifService.getRandomGif(this.keywords[this.keywordIndex]);
-
-            this.gif = gifResponse &&  gifResponse.results && gifResponse.results.length > 0 ? gifResponse.results[0] : null;
-
-            resolve();
-        });
-    }
 
     render() {
         return <article>
-                <div class="gif-container ion-margin">
-                    {this.renderGif()}
-                </div>
+                <app-random-gif keyword={this.keywords[this.keywordIndex]}></app-random-gif>
 
                 <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your presentation has been published.</h1>
 
@@ -60,15 +33,6 @@ export class AppPublishDone {
 
                 <ion-label class="published-url ion-padding ion-text-center">Or <a href={this.publishedUrl} target="_blank">click here</a> to open it.</ion-label>
             </article>
-    }
-
-    private renderGif() {
-        if (this.gif && this.gif.media && this.gif.media.length > 0 && this.gif.media[0].nanogif && this.gif.media[0].nanogif.url) {
-            return <deckgo-lazy-img imgSrc={this.gif.media[0].nanogif.url}
-                                    imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].nanogif.url}></deckgo-lazy-img>
-        } else {
-            return undefined;
-        }
     }
 
 }

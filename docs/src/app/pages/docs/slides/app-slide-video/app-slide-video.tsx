@@ -41,7 +41,7 @@ export class AppSlideVideo {
       <app-navigation></app-navigation>,
 
       <ion-content class="ion-padding">
-        <main><h1 id="app-slide-video-slide-youtube">Slide: Youtube</h1>
+        <main><h1 id="app-slide-video-slide-video">Slide: Video</h1>
 <p>The &quot;Video&quot; slide let you add your own video or for example a Gif as MPEG-4 (MP4) to your presentation.</p>
 <h2 id="app-slide-video-table-of-contents">Table of contents</h2>
 <ul>

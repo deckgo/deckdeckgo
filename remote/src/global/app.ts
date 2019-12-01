@@ -18,6 +18,7 @@ import '@deckdeckgo/slide-countdown';
 import '@deckdeckgo/slide-youtube';
 import '@deckdeckgo/slide-big-img';
 import '@deckdeckgo/slide-video';
+import '@deckdeckgo/slide-poll';
 
 import {setupConfig} from '../app/services/environment/environment-config';
 

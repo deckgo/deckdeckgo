@@ -1,6 +1,7 @@
 import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h, Watch} from '@stencil/core';
 
 import {isIOS, unifyEvent, isMobile, isFullscreen, debounce} from '@deckdeckgo/utils';
+import {getSlideDefinition, getAttributesDefinition} from '@deckdeckgo/deck-utils';
 
 import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
 
@@ -473,7 +474,7 @@ export class DeckdeckgoDeck {
       const orderedSlidesTagNames: DeckdeckgoSlideDefinition[] = [];
 
       for (const slide of Array.from(loadedSlides)) {
-        const attributes: DeckdeckgoAttributeDefinition[] = await this.getAttributesDefinition(slide.attributes);
+        const attributes: DeckdeckgoAttributeDefinition[] = await getAttributesDefinition(slide.attributes);
 
         orderedSlidesTagNames.push({
           template: slide.tagName ? slide.tagName.toLowerCase() : undefined,
@@ -482,7 +483,7 @@ export class DeckdeckgoDeck {
         });
       }
 
-      const attributes: DeckdeckgoAttributeDefinition[] = await this.getAttributesDefinition(this.el.attributes);
+      const attributes: DeckdeckgoAttributeDefinition[] = await getAttributesDefinition(this.el.attributes);
       const background: HTMLElement = this.el.querySelector(':scope > [slot=\'background\']');
 
       const deck: DeckdeckgoDeckDefinition = {
@@ -502,44 +503,9 @@ export class DeckdeckgoDeck {
     return new Promise<DeckdeckgoSlideDefinition | null>(async (resolve) => {
       const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
-      if (!slide) {
-        resolve(null);
-        return;
-      }
+      const definition: DeckdeckgoSlideDefinition | null = await getSlideDefinition(slide);
 
-      const attributes: DeckdeckgoAttributeDefinition[] = await this.getAttributesDefinition(slide.attributes);
-
-      resolve({
-        template: slide.tagName ? slide.tagName.toLowerCase() : undefined,
-        content: slide.innerHTML,
-        attributes: attributes
-      });
-    });
-  }
-
-  private getAttributesDefinition(attributes: NamedNodeMap): Promise<DeckdeckgoAttributeDefinition[] | null> {
-    return new Promise<DeckdeckgoAttributeDefinition[] | null>(async (resolve) => {
-      if (!attributes || attributes.length <= 0) {
-        resolve(null);
-        return;
-      }
-
-      const results: DeckdeckgoAttributeDefinition[] = [];
-      Array.prototype.slice.call(attributes).forEach((attribute: Attr) => {
-        if (['id', 'hydrated', 'class', 'contenteditable'].indexOf(attribute.name.toLowerCase()) === -1) {
-          let attr: DeckdeckgoAttributeDefinition = {
-            name: attribute.name
-          };
-
-          if (attribute.value !== undefined) {
-            attr.value = `${attribute.value}`;
-          }
-
-          results.push(attr);
-        }
-      });
-
-      resolve(results && results.length > 0 ? results : null);
+      resolve(definition);
     });
   }
 

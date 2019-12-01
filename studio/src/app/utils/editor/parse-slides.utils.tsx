@@ -10,6 +10,8 @@ import {QRCodeUtils} from './qrcode.utils';
 
 import {Slide, SlideTemplate} from '../../models/data/slide';
 import {Deck} from '../../models/data/deck';
+import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
+import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 
 export class ParseSlidesUtils {
 
@@ -69,6 +71,12 @@ export class ParseSlidesUtils {
 
             if (slide.data.template === SlideTemplate.SPLIT) {
                 attributes['vertical'] = slide.data.attributes && slide.data.attributes.vertical ? 'true' : undefined;
+            }
+
+            if (slide.data.template === SlideTemplate.POLL) {
+                const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+                attributes['pollLink'] = deckDeckGoConfig.pollUrl;
+                attributes['socketUrl'] = deckDeckGoConfig.socketUrl;
             }
 
             const SlideElement: string = slideTag;

@@ -48,6 +48,9 @@ export class AppEditorToolbar {
     private youtube: boolean = false;
 
     @State()
+    private poll: boolean = false;
+
+    @State()
     private image: boolean = false;
 
     @State()
@@ -243,6 +246,10 @@ export class AppEditorToolbar {
 
     private isElementChartSlide(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-chart';
+    }
+
+    private isElementPollSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-poll';
     }
 
     private isElementList(element: HTMLElement): SlotType {
@@ -536,6 +543,7 @@ export class AppEditorToolbar {
                 selectedElement: this.selectedElement,
                 qrCode: this.qrCode,
                 chart: this.chart,
+                poll: this.poll,
                 slideDidChange: this.slideDidChange
             },
             mode: 'md',
@@ -555,6 +563,28 @@ export class AppEditorToolbar {
         });
 
         await popover.present();
+    }
+
+    private async openEditPollSlide() {
+        if (!this.deckOrSlide || !this.poll) {
+            return;
+        }
+
+        const modal: HTMLIonModalElement = await modalController.create({
+            component: 'app-poll-options',
+            componentProps: {
+                selectedElement: this.selectedElement,
+                slideDidChange: this.slideDidChange
+            }
+        });
+
+        modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+            this.blockSlide.emit(false);
+        });
+
+        this.blockSlide.emit(true);
+
+        await modal.present();
     }
 
     private async openReveal() {
@@ -598,7 +628,7 @@ export class AppEditorToolbar {
         await popover.present();
     }
 
-    private async openYoutube() {
+    private async openEditYoutubeSlide() {
         if (!this.youtube) {
             return;
         }
@@ -614,7 +644,11 @@ export class AppEditorToolbar {
             if (detail && detail.data && this.selectedElement && this.youtube) {
                 await this.updateYoutube(detail.data);
             }
+
+            this.blockSlide.emit(false);
         });
+
+        this.blockSlide.emit(true);
 
         await modal.present();
     }
@@ -732,6 +766,7 @@ export class AppEditorToolbar {
             this.youtube = this.isElementYoutubeSlide(element);
             this.qrCode = this.isElementQRCodeSlide(element);
             this.chart = this.isElementChartSlide(element);
+            this.poll = this.isElementPollSlide(element);
 
             this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
             this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
@@ -820,7 +855,7 @@ export class AppEditorToolbar {
                 selectedElement: this.selectedElement
             },
             mode: 'md',
-            cssClass: 'popover-menu'
+            cssClass: `popover-menu ${this.poll ? 'popover-menu-wide' : ''}`
         });
 
         await popover.present();
@@ -1045,12 +1080,11 @@ export class AppEditorToolbar {
     render() {
         return [
             <div class={this.displayed ? "editor-toolbar displayed" : "editor-toolbar"}>
-                {this.renderSlotType()}
+                {this.renderEdit()}
                 {this.renderReveal()}
                 {this.renderColor()}
                 {this.renderList()}
                 {this.renderImages()}
-                {this.renderYoutube()}
                 {this.renderCodeOptions()}
 
                 <div class="editor-toolbar-edit">
@@ -1097,13 +1131,13 @@ export class AppEditorToolbar {
         </a>
     }
 
-    private renderSlotType() {
+    private renderEdit() {
         if (this.deckOrSlide) {
-            if (!this.qrCode && !this.chart) {
+            if (!this.qrCode && !this.chart && !this.poll && !this.youtube) {
                 return undefined;
             }
 
-            return <a onClick={() => this.openEditSlide()} title="Slide options">
+            return <a onClick={() => this.poll ? this.openEditPollSlide() : (this.youtube ? this.openEditYoutubeSlide() : this.openEditSlide())} title="Edit slide options">
                 <ion-icon src="/assets/icons/ionicons/md-create.svg"></ion-icon>
             </a>
         } else {
@@ -1130,16 +1164,6 @@ export class AppEditorToolbar {
             return <a onClick={() => this.openImage()} title={this.deckOrSlide ? 'Background' : 'Image'}>
                 <ion-icon name="images"></ion-icon>
             </a>
-        }
-    }
-
-    private renderYoutube() {
-        if (this.deckOrSlide && this.youtube) {
-            return <a onClick={() => this.openYoutube()} title="Modify Youtube url">
-                <ion-icon name="logo-youtube"></ion-icon>
-            </a>
-        } else {
-            return undefined;
         }
     }
 

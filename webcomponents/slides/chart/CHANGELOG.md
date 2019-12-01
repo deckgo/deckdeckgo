@@ -1,3 +1,8 @@
+<a name="1.0.0-rc.2-1"></a>
+# 1.0.0-rc.2-1 (2019-11-30)
+
+* use margin for the chart pie too
+
 <a name="1.0.0-rc.2"></a>
 # 1.0.0-rc.2 (2019-10-19)
 

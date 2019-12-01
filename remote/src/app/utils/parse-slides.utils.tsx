@@ -109,7 +109,8 @@ export class ParseSlidesUtils {
             'deckgo-slide-countdown',
             'deckgo-slide-youtube',
             'deckgo-slide-big-img',
-            'deckgo-slide-video'].indexOf(slide.template) > -1;
+            'deckgo-slide-video',
+            'deckgo-slide-poll'].indexOf(slide.template) > -1;
     }
 
     private static parseDummySlide(index: number): Promise<JSX.IntrinsicElements> {
@@ -128,6 +129,13 @@ export class ParseSlidesUtils {
         return new Promise<any>((resolve) => {
             if (slide.template && 'deckgo-slide-youtube' === slide.template) {
                 attributes['allowFullscreen'] = false;
+            }
+
+            if (slide.template && 'deckgo-slide-chart' === slide.template) {
+                attributes['marginTop'] = 8;
+                attributes['marginBottom'] = 8;
+                attributes['marginLeft'] = 8;
+                attributes['marginRight'] = 8;
             }
 
             resolve(attributes);

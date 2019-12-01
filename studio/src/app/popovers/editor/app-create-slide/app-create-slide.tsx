@@ -56,6 +56,7 @@ export class AppCreateSlide {
     async componentDidLoad() {
         await this.lazyLoadContent();
         await this.drawChart();
+        await this.updatePollChart();
     }
 
     componentDidUnload() {
@@ -74,8 +75,9 @@ export class AppCreateSlide {
             const slideAuthor: HTMLElement = this.el.querySelector('deckgo-slide-author.showcase');
             const slideQRCode: HTMLElement = this.el.querySelector('deckgo-slide-qrcode.showcase');
             const slidesChart: HTMLElement[] = Array.from(this.el.querySelectorAll('deckgo-slide-chart.showcase'));
+            const slidesPoll: HTMLElement = this.el.querySelector('deckgo-slide-poll.showcase');
 
-            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, ...slidesChart];
+            const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, ...slidesChart, slidesPoll];
 
             if (!slides || slides.length <= 0) {
                 resolve();
@@ -108,11 +110,26 @@ export class AppCreateSlide {
         });
     }
 
+    private updatePollChart(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slidePoll: HTMLElement = this.el.querySelector('deckgo-slide-poll.showcase');
+
+            if (!slidePoll) {
+                resolve();
+                return;
+            }
+
+            await (slidePoll as any).update();
+
+            resolve();
+        });
+    }
+
     private async addSlide(template: SlideTemplate, deck?: Deck) {
         const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, false, deck, this.user);
         await this.closePopover(template, slide);
     }
-    
+
     private async addSlideSplit(template: SlideTemplate, attributes: SlideAttributes = undefined) {
         const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(attributes);
         await this.closePopover(template, slide);
@@ -238,6 +255,7 @@ export class AppCreateSlide {
                         </p>
                     </deckgo-slide-content>
                 </div>
+
                 <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
                     <deckgo-slide-chart class="showcase" type="line" y-axis-domain="extent" date-pattern="dd.MM.yyyy"
                                         marginTop={0} marginBottom={0} marginLeft={0} marginRight={0}
@@ -250,7 +268,7 @@ export class AppCreateSlide {
                 {this.renderCharts()}
 
                 <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
-                    <deckgo-slide-qrcode class="showcase" content="https://deckdeckgo.com" img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg">
+                    <deckgo-slide-qrcode class="showcase" content={EnvironmentConfigService.getInstance().get('deckdeckgo').appUrl} img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
                         <p slot="title">QR code</p>
                     </deckgo-slide-qrcode>
                 </div>
@@ -267,6 +285,16 @@ export class AppCreateSlide {
                         <p slot="social-link">Github</p>
                         <p slot="social-link">Web</p>
                     </deckgo-slide-author>
+                </div>
+
+                <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
+                    <deckgo-slide-poll class="showcase" poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl} poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl} count-answers={3} connectPollSocket={false}>
+                        <p slot="question">Poll: engage your audience</p>
+                        <p slot="answer-1">Yes</p>
+                        <p slot="answer-2">No</p>
+                        <p slot="answer-3">Don't know</p>
+                        <p slot="awaiting-votes">Live votes with mobile devices</p>
+                    </deckgo-slide-poll>
                 </div>
             </div>
         ];
