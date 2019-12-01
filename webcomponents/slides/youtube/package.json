@@ -26,11 +26,11 @@
     "@deckdeckgo/utils": "^1.0.0-rc.1-3"
   },
   "devDependencies": {
-    "@stencil/core": "^1.7.5",
+    "@stencil/core": "^1.8.1",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",
     "@stencil/utils": "0.0.5",
-    "autoprefixer": "^9.7.1"
+    "autoprefixer": "^9.7.3"
   },
   "repository": {
     "type": "git",
