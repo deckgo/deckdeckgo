@@ -23,6 +23,16 @@ app-poll {
       }
     }
 
+    div.submit-form {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      a {
+        cursor: pointer;
+      }
+    }
+
     article {
       display: flex;
       flex-direction: column;

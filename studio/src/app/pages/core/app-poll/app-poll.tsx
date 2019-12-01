@@ -130,6 +130,12 @@ export class AppPoll {
         }
     }
 
+    private cancel() {
+        this.pollKey = undefined;
+        this.hasVoted = false;
+        this.poll = undefined;
+    }
+
     render() {
         return [
             <app-navigation presentation={true}></app-navigation>,
@@ -222,11 +228,14 @@ export class AppPoll {
     }
 
     private renderSubmitForm() {
-        return <ion-button type="submit" class="ion-margin-top"
+        return <div class="submit-form ion-margin-top">
+            <ion-button type="submit"
                            disabled={!this.choice || this.choice === undefined || this.choice === ''} color="primary"
                            shape="round">
-            <ion-label>Submit</ion-label>
-        </ion-button>;
+                <ion-label>Submit</ion-label>
+            </ion-button>
+            <a class="ion-margin-start" onClick={() => this.cancel()}><ion-label>Cancel</ion-label></a>
+        </div>;
     }
 
     private renderHasVoted() {
