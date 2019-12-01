@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-youtube",
-  "version": "1.0.0-rc.1-4",
+  "version": "1.0.0-rc.2",
   "description": "The Content template is a simple slide which display a title and content aligned to the start of the page of the presentation",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
