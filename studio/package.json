@@ -28,7 +28,7 @@
     "@deckdeckgo/slide-chart": "^1.0.0-rc.2-1",
     "@deckdeckgo/slide-content": "^1.0.0-rc.1",
     "@deckdeckgo/slide-gif": "^1.0.0-rc.1-1",
-    "@deckdeckgo/slide-poll": "^1.0.0-beta.3",
+    "@deckdeckgo/slide-poll": "^1.0.0-beta.4",
     "@deckdeckgo/slide-qrcode": "^1.0.0-rc.2-1",
     "@deckdeckgo/slide-split": "^1.0.0-rc.2",
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
@@ -43,7 +43,7 @@
     "web-social-share": "^6.2.0"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0-rc.4",
+    "@deckdeckgo/types": "^1.0.0-rc.4-1",
     "@rollup/plugin-replace": "^2.2.1",
     "@stencil/core": "^1.7.5",
     "@stencil/postcss": "^1.0.1",
