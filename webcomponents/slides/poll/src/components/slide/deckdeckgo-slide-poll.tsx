@@ -33,7 +33,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Event() slideDidLoad: EventEmitter<void>;
 
   @Event()
-  private pollConnected: EventEmitter<void>;
+  private pollUpdated: EventEmitter<void>;
 
   @Prop({reflect: true}) socketUrl: string = 'https://api.deckdeckgo.com';
   @Prop({reflect: true}) socketPath: string = '/poll';
@@ -44,8 +44,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Prop({reflect: true, mutable: true})
   pollKey: string;
-
-  private oldPollKey: string;
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
@@ -65,8 +63,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private answers = {};
 
-  @State()
-  private answeredOnce: boolean = false;
+  // For internal purpose and to synchronize the information between the presentation and the remote control
+  @Prop({reflect: true, mutable: true})
+  answeredOnce: string;
 
   private readonly debounceUpdateChart: Function;
 
@@ -91,9 +90,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   componentDidUpdate() {
-    if ((!this.oldPollKey || this.oldPollKey === undefined) && this.pollKey && this.pollKey !== undefined && this.pollKey !== '') {
-      this.pollConnected.emit();
-    }
+    this.pollUpdated.emit();
   }
 
   private initWindowResize() {
@@ -258,6 +255,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private updateChartCallback = async () => {
+
     await this.updateChartAnswersData();
 
     if (this.chartData && this.chartData.length >= 1) {
@@ -269,7 +267,6 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private updatePollKeyCallback = async (key: string) => {
     if (key) {
-      this.oldPollKey = this.pollKey;
       this.pollKey = key;
 
       await initHowTo(this.el, this.pollKey);
@@ -277,7 +274,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   };
 
   private updateVoteCallback = async (answer: string) => {
-    this.answeredOnce = true;
+    this.answeredOnce = 'true';
 
     this.answers[`answer-${answer}`]++;
 
@@ -285,20 +282,20 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   };
 
   private updatePollAfterRetrieveCallback = async (poll: DeckdeckgoPoll) => {
-    this.answeredOnce = true;
-
     if (poll && poll.poll) {
       this.chartData = [];
       this.chartData.push(poll.poll as DeckdeckgoBarChartData);
 
-      await this.initAnswersData();
+      if (this.answeredOnce === 'true') {
+        await this.initAnswersData();
+      }
 
       await drawChart(this.el, this.chartWidth, this.chartHeight);
 
       await initHowTo(this.el, this.pollKey);
     }
 
-    this.pollConnected.emit();
+    this.pollUpdated.emit();
   };
 
   @Method()
@@ -349,7 +346,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Method()
   async update() {
     // Poll in progress should not be updated
-    if (this.answeredOnce) {
+    if (this.answeredOnce === 'true') {
       return;
     }
 
@@ -397,7 +394,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Method()
   async isAnswered() {
-    return this.answeredOnce;
+    return this.answeredOnce === 'true';
   }
 
   render() {
@@ -466,7 +463,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private renderNoVotes() {
-    if (this.answeredOnce) {
+    if (this.answeredOnce === 'true') {
       return undefined;
     }
 

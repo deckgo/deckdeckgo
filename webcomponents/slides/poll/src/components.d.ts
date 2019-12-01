@@ -12,6 +12,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface DeckgoSlidePoll {
     'afterSwipe': () => Promise<void>;
+    'answeredOnce': string;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'connectPollSocket': boolean;
     'customActions': boolean;
@@ -44,10 +45,11 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlidePoll {
+    'answeredOnce'?: string;
     'connectPollSocket'?: boolean;
     'customActions'?: boolean;
     'customBackground'?: boolean;
-    'onPollConnected'?: (event: CustomEvent<void>) => void;
+    'onPollUpdated'?: (event: CustomEvent<void>) => void;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'pollKey'?: string;
     'pollLink'?: string;
