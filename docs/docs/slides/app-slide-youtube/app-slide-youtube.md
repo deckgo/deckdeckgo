@@ -121,6 +121,9 @@ The following theming options will affect this component if set on its host or p
 | --slide-padding-bottom | 16px | Padding bottom of the all slide |
 | --slide-padding-start | 32px | Padding left of the all slide |
 | --zIndex | 1 | The z-index of the slide |
+| --slide-youtube-margin | 0 0 32px | The margin of the video's container |
+| --slide-youtube-height | calc(100% - 32px) | The height of the video's container |
+| --slide-youtube-overflow | auto | The overflow of the video's container |
 
 ## Methods
 

@@ -32,7 +32,7 @@
     "@deckdeckgo/slide-split": "^1.0.0-rc.2",
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
     "@deckdeckgo/slide-video": "^1.0.0-rc.1-1",
-    "@deckdeckgo/slide-youtube": "^1.0.0-rc.1-4",
+    "@deckdeckgo/slide-youtube": "^1.0.0-rc.2",
     "@ionic/core": "^4.11.1",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.3"

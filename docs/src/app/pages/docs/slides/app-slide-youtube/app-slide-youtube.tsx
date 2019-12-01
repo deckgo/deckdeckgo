@@ -181,6 +181,21 @@ export class AppSlideYoutube {
 <td>1</td>
 <td>The z-index of the slide</td>
 </tr>
+<tr>
+<td>--slide-youtube-margin</td>
+<td>0 0 32px</td>
+<td>The margin of the video&#39;s container</td>
+</tr>
+<tr>
+<td>--slide-youtube-height</td>
+<td>calc(100% - 32px)</td>
+<td>The height of the video&#39;s container</td>
+</tr>
+<tr>
+<td>--slide-youtube-overflow</td>
+<td>auto</td>
+<td>The overflow of the video&#39;s container</td>
+</tr>
 </tbody></table>
 <h2 id="app-slide-youtube-methods">Methods</h2>
 <p>The slide &quot;Youtube&quot; offers extra methods to play and pause the Youtube video clip. These methods are notably used by the [DeckDecGo]&#39;s remote control.</p>

@@ -32,7 +32,7 @@
     "@deckdeckgo/slide-qrcode": "^1.0.0-rc.2-1",
     "@deckdeckgo/slide-split": "^1.0.0-rc.2",
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
-    "@deckdeckgo/slide-youtube": "^1.0.0-rc.1-4",
+    "@deckdeckgo/slide-youtube": "^1.0.0-rc.2",
     "@deckdeckgo/utils": "^1.0.0-rc.1-4",
     "@ionic/core": "4.11.3",
     "firebase": "^7.5.0",

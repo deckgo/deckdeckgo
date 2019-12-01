@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-12-01)
+
+### Features
+
+* use the all element space to display the Youtube video ([#492](https://github.com/deckgo/deckdeckgo/issues/492))
+
 <a name="1.0.0-rc.1-4"></a>
 # 1.0.0-rc.1-4 (2019-11-08)
 
