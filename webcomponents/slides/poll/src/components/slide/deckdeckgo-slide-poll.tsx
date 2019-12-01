@@ -1,8 +1,5 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} from '@stencil/core';
 
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime, take} from 'rxjs/operators';
-
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 import {
@@ -71,32 +68,14 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @State()
   private answeredOnce: boolean = false;
 
-  private updateChart: Subject<void> = new Subject<void>();
+  private readonly debounceUpdateChart: Function;
 
-  private pollKeySubscription: Subscription;
-  private voteSubscription: Subscription;
-  private updateChartSubscription: Subscription;
+  constructor() {
+    this.debounceUpdateChart = debounce(this.updateChartCallback, 500);
+  }
 
   async componentWillLoad() {
     await this.initAnswerSlots();
-
-    this.voteSubscription = this.communicationService.watchVote().subscribe((answer: string) => {
-      this.answeredOnce = true;
-
-      this.answers[`answer-${answer}`]++;
-
-      this.updateChart.next();
-    });
-
-    this.updateChartSubscription = this.updateChart.pipe(debounceTime(500)).subscribe(async () => {
-      await this.updateChartAnswersData();
-
-      if (this.chartData && this.chartData.length >= 1) {
-        await updateCurrentBar(this.el, this.chartData[0].values);
-
-        await this.updatePoll();
-      }
-    });
   }
 
   async componentDidLoad() {
@@ -104,32 +83,11 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
     this.initWindowResize();
 
-    this.pollKeySubscription = this.communicationService.watchPollKey().subscribe(async (key: string) => {
-      if (key) {
-        this.oldPollKey = this.pollKey;
-        this.pollKey = key;
-
-        await initHowTo(this.el, this.pollKey);
-      }
-    });
-
     this.slideDidLoad.emit();
   }
 
   async componentDidUnload() {
-    await this.communicationService.disconnect();
-
-    if (this.voteSubscription) {
-      this.voteSubscription.unsubscribe();
-    }
-
-    if (this.updateChartSubscription) {
-      this.updateChartSubscription.unsubscribe();
-    }
-
-    if (this.pollKeySubscription) {
-      this.pollKeySubscription.unsubscribe();
-    }
+    await this.communicationService.disconnect(this.pollKey);
   }
 
   componentDidUpdate() {
@@ -272,10 +230,10 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       return;
     }
 
-    await this.communicationService.disconnect();
+    await this.communicationService.disconnect(this.pollKey);
 
     if (this.chartData && this.chartData.length >= 1) {
-      await this.communicationService.connect(this.socketUrl, this.socketPath, this.chartData[0] as DeckdeckgoPollQuestion);
+      await this.communicationService.connect(this.socketUrl, this.socketPath, this.chartData[0] as DeckdeckgoPollQuestion, this.updatePollKeyCallback, this.updateVoteCallback);
     }
   }
 
@@ -284,26 +242,9 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       return;
     }
 
-    this.communicationService.watchPoll().pipe(take(1)).subscribe(async (poll: DeckdeckgoPoll) => {
-      this.answeredOnce = true;
+    await this.communicationService.disconnect(this.pollKey);
 
-      if (poll && poll.poll) {
-        this.chartData = [];
-        this.chartData.push(poll.poll as DeckdeckgoBarChartData);
-
-        await this.initAnswersData();
-
-        await drawChart(this.el, this.chartWidth, this.chartHeight);
-
-        await initHowTo(this.el, this.pollKey);
-      }
-
-      this.pollConnected.emit();
-    });
-
-    await this.communicationService.disconnect();
-
-    await this.communicationService.retrieve(this.socketUrl, this.socketPath, this.pollKey);
+    await this.communicationService.retrieve(this.socketUrl, this.socketPath, this.pollKey, this.updateVoteCallback, this.updatePollAfterRetrieveCallback);
   }
 
   private async updatePoll() {
@@ -312,9 +253,53 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     }
 
     if (this.chartData && this.chartData.length >= 1) {
-      await this.communicationService.update(this.chartData[0] as DeckdeckgoPollQuestion);
+      await this.communicationService.update(this.chartData[0] as DeckdeckgoPollQuestion, this.pollKey);
     }
   }
+
+  private updateChartCallback = async () => {
+    await this.updateChartAnswersData();
+
+    if (this.chartData && this.chartData.length >= 1) {
+      await updateCurrentBar(this.el, this.chartData[0].values);
+
+      await this.updatePoll();
+    }
+  };
+
+  private updatePollKeyCallback = async (key: string) => {
+    if (key) {
+      this.oldPollKey = this.pollKey;
+      this.pollKey = key;
+
+      await initHowTo(this.el, this.pollKey);
+    }
+  };
+
+  private updateVoteCallback = async (answer: string) => {
+    this.answeredOnce = true;
+
+    this.answers[`answer-${answer}`]++;
+
+    this.debounceUpdateChart();
+  };
+
+  private updatePollAfterRetrieveCallback = async (poll: DeckdeckgoPoll) => {
+    this.answeredOnce = true;
+
+    if (poll && poll.poll) {
+      this.chartData = [];
+      this.chartData.push(poll.poll as DeckdeckgoBarChartData);
+
+      await this.initAnswersData();
+
+      await drawChart(this.el, this.chartWidth, this.chartHeight);
+
+      await initHowTo(this.el, this.pollKey);
+    }
+
+    this.pollConnected.emit();
+  };
 
   @Method()
   beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {

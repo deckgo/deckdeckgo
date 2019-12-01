@@ -1,19 +1,12 @@
 import * as io from 'socket.io-client';
 
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {take} from 'rxjs/operators';
-
 import {DeckdeckgoPollQuestion, DeckdeckgoPoll} from '@deckdeckgo/types';
 
 export class CommunicationService {
 
   private socket: SocketIOClient.Socket;
 
-  private pollKey: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
-  private vote: Subject<string> = new Subject<string>();
-  private poll: Subject<DeckdeckgoPoll | undefined> = new Subject<DeckdeckgoPoll|undefined>();
-
-  connect(url: string, path: string, poll: DeckdeckgoPollQuestion): Promise<void> {
+  connect(url: string, path: string, poll: DeckdeckgoPollQuestion, updatePollKey: Function, updateVote: Function): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.socket) {
         resolve();
@@ -37,18 +30,18 @@ export class CommunicationService {
       });
 
       this.socket.on('poll_key', async (data: string) => {
-        this.pollKey.next(data);
+        updatePollKey(data);
       });
 
       this.socket.on('vote', async (answer: string) => {
-        this.vote.next(answer);
+        updateVote(answer);
       });
 
       resolve();
     });
   }
 
-  retrieve(url: string, path: string, pollKey: string): Promise<void> {
+  retrieve(url: string, path: string, pollKey: string, updateVote: Function, updatePollAfterRetrieve: Function): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.socket) {
         resolve();
@@ -72,66 +65,50 @@ export class CommunicationService {
       });
 
       this.socket.on('poll_desc', async (data: DeckdeckgoPoll) => {
-        this.poll.next(data);
+        updatePollAfterRetrieve(data);
       });
 
       this.socket.on('vote', async (answer: string) => {
-        this.vote.next(answer);
+        updateVote(answer);
       });
 
       resolve();
     });
   }
 
-  disconnect(): Promise<void> {
+  disconnect(pollKey: string): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.socket) {
         resolve();
         return;
       }
 
-      this.watchPollKey().pipe(take(1)).subscribe((key: string) => {
-        if (key) {
-          this.socket.emit('leave', {
-            key: key
-          });
-        }
+      if (pollKey) {
+        this.socket.emit('leave', {
+          key: pollKey
+        });
+      }
 
-        this.socket.removeAllListeners();
-        this.socket.disconnect();
+      this.socket.removeAllListeners();
+      this.socket.disconnect();
 
-        this.socket = undefined;
+      this.socket = undefined;
 
-        resolve();
-      });
+      resolve();
     });
   }
 
-  update(poll: DeckdeckgoPollQuestion): Promise<void> {
+  update(poll: DeckdeckgoPollQuestion, pollKey: string): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.socket) {
         resolve();
         return;
       }
 
-      this.watchPollKey().pipe(take(1)).subscribe((key: string) => {
-        if (key) {
-          this.socket.emit('update', {key: key, poll: poll});
-        }
-      });
+      if (pollKey) {
+        this.socket.emit('update', {key: pollKey, poll: poll});
+      }
     });
-  }
-
-  watchPollKey(): Observable<string | undefined> {
-    return this.pollKey.asObservable();
-  }
-
-  watchVote(): Observable<string> {
-    return this.vote.asObservable();
-  }
-
-  watchPoll(): Observable<DeckdeckgoPoll> {
-    return this.poll.asObservable();
   }
 
 }

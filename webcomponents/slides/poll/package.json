@@ -24,7 +24,6 @@
   "dependencies": {
     "@deckdeckgo/slide-utils": "^1.0.0-rc.4",
     "@deckdeckgo/utils": "^1.0.0-rc.2",
-    "rxjs": "^6.5.3",
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
