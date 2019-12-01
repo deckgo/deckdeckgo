@@ -131,6 +131,13 @@ export class ParseSlidesUtils {
                 attributes['allowFullscreen'] = false;
             }
 
+            if (slide.template && 'deckgo-slide-chart' === slide.template) {
+                attributes['marginTop'] = 8;
+                attributes['marginBottom'] = 8;
+                attributes['marginLeft'] = 8;
+                attributes['marginRight'] = 8;
+            }
+
             resolve(attributes);
         });
     }
