@@ -33,7 +33,7 @@
     "@deckdeckgo/slide-split": "^1.0.0-rc.2",
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
     "@deckdeckgo/slide-video": "^1.0.0-rc.1-1",
-    "@deckdeckgo/slide-youtube": "^1.0.0-rc.1-4",
+    "@deckdeckgo/slide-youtube": "^1.0.0-rc.2",
     "@deckdeckgo/utils": "^1.0.0-rc.1-2",
     "@ionic/core": "^4.11.3",
     "date-fns": "^2.8.1",
