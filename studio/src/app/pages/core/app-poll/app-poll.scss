@@ -13,9 +13,13 @@ app-poll {
     }
 
     ion-list {
-      ion-item {
+      ion-item.item {
         --padding-start: 0;
         --ripple-color: var(--ion-color-primary);
+
+        ion-label[class*=sc-ion-label] {
+          white-space: normal;
+        }
       }
     }
 
