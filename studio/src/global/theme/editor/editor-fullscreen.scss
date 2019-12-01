@@ -56,10 +56,8 @@
       }
     }
 
-    &:not(.idle) {
-      deckgo-deck {
-        --pager-display: none;
-      }
+    deckgo-deck {
+      --pager-display: none;
     }
   }
 
