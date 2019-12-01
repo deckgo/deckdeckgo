@@ -501,7 +501,7 @@ export class RemoteEventsHandler {
 
             const slideDefinition: DeckdeckgoSlideDefinition | null = await (deck as any).getSlideDefinition(index);
 
-            await this.updateSlideDefinition(self, slideDefinition, index);
+            await self.updateSlideDefinition(self, slideDefinition, index);
 
             resolve();
         });
@@ -531,7 +531,7 @@ export class RemoteEventsHandler {
         });
     }
 
-    private async updateSlideDefinition(self, slideDefinition: DeckdeckgoSlideDefinition | null, index: number) {
+    async updateSlideDefinition(self, slideDefinition: DeckdeckgoSlideDefinition | null, index: number) {
         if (slideDefinition) {
             const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
 
