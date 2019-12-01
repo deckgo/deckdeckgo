@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.4-1></a>
+# 1.0.0-rc.4-1 (2019-12-01)
+
+### Features
+
+* exchange information if poll was answered once or not
+
 <a name="1.0.0-rc.4></a>
 # 1.0.0-rc.4 (2019-11-29)
 
