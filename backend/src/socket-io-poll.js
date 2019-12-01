@@ -36,7 +36,7 @@ module.exports = (server) => {
             if (req && req.key && req.poll) {
                 await addOrUpdatePoll(req.key, req.poll);
 
-                socket.emit('poll_updated');
+                socket.broadcast.to(req.key).emit('poll_updated', req.poll);
             }
         });
 
