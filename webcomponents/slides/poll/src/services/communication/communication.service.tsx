@@ -41,7 +41,7 @@ export class CommunicationService {
     });
   }
 
-  retrieve(url: string, path: string, pollKey: string, updateVote: Function, updatePollAfterRetrieve: Function): Promise<void> {
+  retrieve(url: string, path: string, pollKey: string, updatePoll: Function): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.socket) {
         resolve();
@@ -65,11 +65,14 @@ export class CommunicationService {
       });
 
       this.socket.on('poll_desc', async (data: DeckdeckgoPoll) => {
-        updatePollAfterRetrieve(data);
+        updatePoll(data);
       });
 
-      this.socket.on('vote', async (answer: string) => {
-        updateVote(answer);
+      this.socket.on('poll_updated', async (data: DeckdeckgoPoll) => {
+        updatePoll({
+          key: pollKey,
+          poll: data
+        });
       });
 
       resolve();

@@ -9,7 +9,6 @@
 
 | Property            | Attribute             | Description | Type      | Default                         |
 | ------------------- | --------------------- | ----------- | --------- | ------------------------------- |
-| `answeredOnce`      | `answered-once`       |             | `string`  | `undefined`                     |
 | `connectPollSocket` | `connect-poll-socket` |             | `boolean` | `true`                          |
 | `customActions`     | `custom-actions`      |             | `boolean` | `false`                         |
 | `customBackground`  | `custom-background`   |             | `boolean` | `false`                         |

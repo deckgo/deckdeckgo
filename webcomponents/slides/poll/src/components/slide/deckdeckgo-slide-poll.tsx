@@ -5,7 +5,6 @@ import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} 
 import {
   DeckdeckgoBarChartData,
   DeckdeckgoBarChartDataValue,
-  DeckdeckgoPollQuestion,
   DeckdeckgoPoll
 } from '@deckdeckgo/types';
 
@@ -63,14 +62,15 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private answers = {};
 
-  // For internal purpose and to synchronize the information between the presentation and the remote control
-  @Prop({reflect: true, mutable: true})
-  answeredOnce: string;
+  @State()
+  private answeredOnce: boolean = false;
 
   private readonly debounceUpdateChart: Function;
+  private readonly debounceUpdatePoll: Function;
 
   constructor() {
     this.debounceUpdateChart = debounce(this.updateChartCallback, 500);
+    this.debounceUpdatePoll = debounce(this.updatePollCallback);
   }
 
   async componentWillLoad() {
@@ -230,7 +230,11 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     await this.communicationService.disconnect(this.pollKey);
 
     if (this.chartData && this.chartData.length >= 1) {
-      await this.communicationService.connect(this.socketUrl, this.socketPath, this.chartData[0] as DeckdeckgoPollQuestion, this.updatePollKeyCallback, this.updateVoteCallback);
+      await this.communicationService.connect(this.socketUrl, this.socketPath, {
+        label: this.chartData[0].label as string,
+        values:  this.chartData[0].values,
+        answered: this.answeredOnce
+      }, this.updatePollKeyCallback, this.updateVoteCallback);
     }
   }
 
@@ -241,7 +245,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
     await this.communicationService.disconnect(this.pollKey);
 
-    await this.communicationService.retrieve(this.socketUrl, this.socketPath, this.pollKey, this.updateVoteCallback, this.updatePollAfterRetrieveCallback);
+    await this.communicationService.retrieve(this.socketUrl, this.socketPath, this.pollKey, this.debounceUpdatePoll);
   }
 
   private async updatePoll() {
@@ -250,7 +254,11 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     }
 
     if (this.chartData && this.chartData.length >= 1) {
-      await this.communicationService.update(this.chartData[0] as DeckdeckgoPollQuestion, this.pollKey);
+      await this.communicationService.update({
+        label: this.chartData[0].label as string,
+        values: this.chartData[0].values,
+        answered: this.answeredOnce
+      }, this.pollKey);
     }
   }
 
@@ -274,20 +282,27 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   };
 
   private updateVoteCallback = async (answer: string) => {
-    this.answeredOnce = 'true';
+    this.answeredOnce = true;
 
     this.answers[`answer-${answer}`]++;
 
     this.debounceUpdateChart();
   };
 
-  private updatePollAfterRetrieveCallback = async (poll: DeckdeckgoPoll) => {
+  private updatePollCallback = async (poll: DeckdeckgoPoll) => {
     if (poll && poll.poll) {
-      this.chartData = [];
-      this.chartData.push(poll.poll as DeckdeckgoBarChartData);
+      this.answeredOnce = poll.poll.answered;
 
-      if (this.answeredOnce === 'true') {
-        await this.initAnswersData();
+      this.chartData = [];
+      this.chartData.push({
+        label: poll.poll.label,
+        values: poll.poll.values as DeckdeckgoBarChartDataValue[]
+      });
+
+      await this.initAnswersData();
+
+      if (!this.chartData || this.chartData.length < 1) {
+        return;
       }
 
       await drawChart(this.el, this.chartWidth, this.chartHeight);
@@ -346,7 +361,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Method()
   async update() {
     // Poll in progress should not be updated
-    if (this.answeredOnce === 'true') {
+    if (this.answeredOnce) {
       return;
     }
 
@@ -394,7 +409,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Method()
   async isAnswered() {
-    return this.answeredOnce === 'true';
+    return this.answeredOnce;
   }
 
   render() {
@@ -463,7 +478,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   }
 
   private renderNoVotes() {
-    if (this.answeredOnce === 'true') {
+    if (this.answeredOnce) {
       return undefined;
     }
 
