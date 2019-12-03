@@ -1,29 +1,66 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
+const path = require('path');
+
+const crypto = require('crypto');
 
 const configProd = require('../config.prod');
 const configDev = require('../config.dev');
 
 const dev = process.argv && process.argv.indexOf('--dev') > -1;
 
-// https://stackoverflow.com/a/14181136/5404186
-function updateIndexHml(filename) {
-    fs.readFile(`./www/${filename}`, 'utf8', function (err, data) {
+function updateCSP(filename) {
+    fs.readFile(`${filename}`, 'utf8', function (err, data) {
         if (err) {
             return console.log(err);
         }
 
-        const result = data.replace(/<@API_URL@>/g, dev ? configDev.API_URL : configProd.API_URL);
+        // 1. Replace API Url
+        let result = data.replace(/<@API_URL@>/g, dev ? configDev.API_URL : configProd.API_URL);
 
-        fs.writeFile(`./www/${filename}`, result, 'utf8', function (err) {
+        // 2. Update service worker loader hash
+        const swHash = findSWHash(data);
+        if (swHash) {
+            result = result.replace(/<@SW_LOADER@>/g, swHash);
+        }
+
+        // 3. Update CSS link until https://github.com/ionic-team/stencil/issues/2039 solved
+        result = result.replace(/rel=stylesheet media="\(max-width: 0px\)" importance=low onload="this\.media=''"/g, 'rel=stylesheet importance=low');
+
+        fs.writeFile(`${filename}`, result, 'utf8', function (err) {
             if (err) return console.log(err);
         });
     });
 }
 
-updateIndexHml('index.html');
+function findSWHash(data) {
+    const sw = /(<.?script data-build.*?>)([\s\S]*?)(<\/script>)/gm;
 
-if (!dev) {
-    updateIndexHml('index-org.html');
+    let m;
+    while (m = sw.exec(data)) {
+        if (m && m.length >= 3 && m[2].indexOf('serviceWorker') > -1) {
+            return `'sha256-${crypto.createHash('sha256').update(m[2]).digest('base64')}'`;
+        }
+    }
+
+    return undefined;
+}
+
+function findHTMLFiles(dir, files) {
+    fs.readdirSync(dir).forEach(file => {
+        const fullPath = path.join(dir, file);
+        if (fs.lstatSync(fullPath).isDirectory()) {
+            findHTMLFiles(fullPath, files);
+        } else if (path.extname(fullPath) === '.html') {
+            files.push(fullPath);
+        }
+    });
+}
+
+let htmlFiles = [];
+findHTMLFiles('./www/', htmlFiles);
+
+for (const file of htmlFiles) {
+    updateCSP(`./${file}`);
 }
