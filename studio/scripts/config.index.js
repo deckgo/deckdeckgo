@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
+const path = require('path');
 
 const crypto = require('crypto');
 
@@ -10,7 +11,7 @@ const configDev = require('../config.dev');
 const dev = process.argv && process.argv.indexOf('--dev') > -1;
 
 function updateCSP(filename) {
-    fs.readFile(`./www/${filename}`, 'utf8', function (err, data) {
+    fs.readFile(`${filename}`, 'utf8', function (err, data) {
         if (err) {
             return console.log(err);
         }
@@ -27,7 +28,7 @@ function updateCSP(filename) {
         // 3. Update CSS link until https://github.com/ionic-team/stencil/issues/2039 solved
         result = result.replace(/rel=stylesheet media="\(max-width: 0px\)" importance=low onload="this\.media=''"/g, 'rel=stylesheet importance=low');
 
-        fs.writeFile(`./www/${filename}`, result, 'utf8', function (err) {
+        fs.writeFile(`${filename}`, result, 'utf8', function (err) {
             if (err) return console.log(err);
         });
     });
@@ -46,8 +47,20 @@ function findSWHash(data) {
     return undefined;
 }
 
-updateCSP('index.html');
+function findHTMLFiles(dir, files) {
+    fs.readdirSync(dir).forEach(file => {
+        const fullPath = path.join(dir, file);
+        if (fs.lstatSync(fullPath).isDirectory()) {
+            findHTMLFiles(fullPath, files);
+        } else if (path.extname(fullPath) === '.html') {
+            files.push(fullPath);
+        }
+    });
+}
 
-if (!dev) {
-    updateCSP('index-org.html');
+let htmlFiles = [];
+findHTMLFiles('./www/', htmlFiles);
+
+for (const file of htmlFiles) {
+    updateCSP(`./${file}`);
 }
