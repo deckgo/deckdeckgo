@@ -2,19 +2,27 @@
 
 const fs = require('fs');
 
+const crypto = require('crypto');
+
 const configProd = require('../config.prod');
 const configDev = require('../config.dev');
 
 const dev = process.argv && process.argv.indexOf('--dev') > -1;
 
-// https://stackoverflow.com/a/14181136/5404186
-function updateIndexHml(filename) {
+function updateCSP(filename) {
     fs.readFile(`./www/${filename}`, 'utf8', function (err, data) {
         if (err) {
             return console.log(err);
         }
 
-        const result = data.replace(/<@API_URL@>/g, dev ? configDev.API_URL : configProd.API_URL);
+        // 1. Replace API Url
+        let result = data.replace(/<@API_URL@>/g, dev ? configDev.API_URL : configProd.API_URL);
+
+        // 2. Update service worker loader hash
+        const swHash = findSWHash(data);
+        if (swHash) {
+            result = result.replace(/<@SW_LOADER@>/g, swHash);
+        }
 
         fs.writeFile(`./www/${filename}`, result, 'utf8', function (err) {
             if (err) return console.log(err);
@@ -22,8 +30,21 @@ function updateIndexHml(filename) {
     });
 }
 
-updateIndexHml('index.html');
+function findSWHash(data) {
+    const sw = /(<.?script data-build.*?>)([\s\S]*?)(<\/script>)/gm;
+
+    let m;
+    while (m = sw.exec(data)) {
+        if (m && m.length >= 3 && m[2].indexOf('serviceWorker') > -1) {
+            return `'sha256-${crypto.createHash('sha256').update(m[2]).digest('base64')}'`;
+        }
+    }
+
+    return undefined;
+}
+
+updateCSP('index.html');
 
 if (!dev) {
-    updateIndexHml('index-org.html');
+    updateCSP('index-org.html');
 }
