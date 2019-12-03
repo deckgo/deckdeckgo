@@ -24,6 +24,9 @@ function updateCSP(filename) {
             result = result.replace(/<@SW_LOADER@>/g, swHash);
         }
 
+        // 3. Update CSS link until https://github.com/ionic-team/stencil/issues/2039 solved
+        result = result.replace(/rel=stylesheet media="\(max-width: 0px\)" importance=low onload="this\.media=''"/g, 'rel=stylesheet importance=low');
+
         fs.writeFile(`./www/${filename}`, result, 'utf8', function (err) {
             if (err) return console.log(err);
         });
