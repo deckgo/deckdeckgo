@@ -5,13 +5,13 @@ describe('deckgo-slide-poll', () => {
 
   beforeEach(async () => {
     page = await newE2EPage();
-    await page.setContent(`<deckgo-slide-poll poll-link="https://deckdeckgo.com" socket-url="http://localhost:3002" style="--deckgo-qrcode-color-fill: yellow; --deckgo-chart-fill-color-1: red;">
+    await page.setContent(`<deckgo-slide-poll style="--deckgo-qrcode-color-fill: yellow; --deckgo-chart-fill-color-1: red;">
     <h1 slot="question">Do you like my presentation so far?</h1>
     <p slot="answer-1">It is super</p>
     <p slot="answer-2">Meh</p>
     <p slot="answer-3">I could'nt care less</p>
     <p slot="answer-4">Tell me why</p>
-    <p slot="how-to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {0}</p>
+    <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> and use the code {0}</p>
     <p slot="awaiting-votes">Awaiting first votes</p>
     <p slot="answer-5">Ain't nothin' but a heartache</p>
   </deckgo-slide-poll>`);

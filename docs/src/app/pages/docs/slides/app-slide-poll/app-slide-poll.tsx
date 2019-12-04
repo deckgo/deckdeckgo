@@ -58,13 +58,13 @@ export class AppSlidePoll {
 <h2 id="app-slide-poll-layout">Layout</h2>
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
-    <deckgo-slide-poll poll-link="https://poll.deckdeckgo.com" socket-url="https://api.deckdeckgo.com">
+    <deckgo-slide-poll poll-link="https://deckdeckgo.com/poll" socket-url="https://api.deckdeckgo.com">
         <h1 slot="question">Do you like my presentation so far?</h1>
         <p slot="answer-1">It is super</p>
         <p slot="answer-2">Meh</p>
         <p slot="answer-3">I could'nt care less</p>
         <p slot="answer-4">Tell me why</p>
-        <p slot="how-to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {0}</p>
+        <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> and use the code {0}</p>
         <p slot="awaiting-votes">Awaiting first votes</p>
         <p slot="answer-5">Ain't nothin' but a heartache</p>
       </deckgo-slide-poll>
@@ -99,7 +99,7 @@ export class AppSlidePoll {
     </deckgo-highlight-code><h2 id="app-slide-poll-usage">Usage</h2>
 <p>The &quot;Poll&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-poll/&gt;</code>.</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-slide-poll poll-link=&quot;https:&#47;&#47;deckdeckgo.com&quot; socket-url=&quot;https:&#47;&#47;api.deckdeckgo.com&quot;&gt;{'\n'}    &lt;h1 slot=&quot;question&quot;&gt;Do you like my presentation so far?&lt;&#47;h1&gt;{'\n'}    &lt;p slot=&quot;answer-1&quot;&gt;It is super&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;answer-2&quot;&gt;Meh&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;answer-3&quot;&gt;I could&#039;nt care less&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;answer-4&quot;&gt;Tell me why&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;answer-5&quot;&gt;Ain&#039;t nothin&#039; but a heartache&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;how-to&quot;&gt;Go to &lt;a href=&quot;https:&#47;&#47;poll.deckdeckgo.com&quot;&gt;poll.deckdeckgo.com&lt;&#47;a&gt; and use the code &#123;0&#125;&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;awaiting-votes&quot;&gt;Awaiting first votes&lt;&#47;p&gt;{'\n'}&lt;&#47;deckgo-slide-poll&gt;</code>
+      <code slot="code">&lt;deckgo-slide-poll poll-link=&quot;https:&#47;&#47;deckdeckgo.com&quot; socket-url=&quot;https:&#47;&#47;api.deckdeckgo.com&quot;&gt;{'\n'}    &lt;h1 slot=&quot;question&quot;&gt;Do you like my presentation so far?&lt;&#47;h1&gt;{'\n'}    &lt;p slot=&quot;answer-1&quot;&gt;It is super&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;answer-2&quot;&gt;Meh&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;answer-3&quot;&gt;I could&#039;nt care less&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;answer-4&quot;&gt;Tell me why&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;answer-5&quot;&gt;Ain&#039;t nothin&#039; but a heartache&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;how-to&quot;&gt;Go to &lt;a href=&quot;https:&#47;&#47;deckdeckgo.com&#47;poll&quot;&gt;deckdeckgo.com&#47;poll&lt;&#47;a&gt; and use the code &#123;0&#125;&lt;&#47;p&gt;{'\n'}    &lt;p slot=&quot;awaiting-votes&quot;&gt;Awaiting first votes&lt;&#47;p&gt;{'\n'}&lt;&#47;deckgo-slide-poll&gt;</code>
     </deckgo-highlight-code><h3 id="app-slide-poll-slots">Slots</h3>
 <p>The slots <code>question</code> and at least one <code>answer</code> should be provided. Answer slots have to be provided as <code>answer-x</code> where  <code>x</code> is a number bigger than 0.</p>
 <p>The slot <code>how-to</code> and <code>awaiting-votes</code> are optional, still, it&#39;s probably for best of your audience to provide these.</p>
@@ -139,7 +139,7 @@ export class AppSlidePoll {
 <tr>
 <td>pollLink</td>
 <td>string</td>
-<td><code>https://poll.deckdeckgo.com</code></td>
+<td><code>https://deckdeckgo.com/poll</code></td>
 <td>The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote.</td>
 </tr>
 <tr>
