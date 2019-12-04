@@ -1,3 +1,27 @@
+<a name="1.0.0-beta.9"></a>
+# 1.0.0-beta.9 (2019-12-04)
+
+### Features
+
+* interact with your audience with a **live poll** ([#471](interact with your audience))
+* dark and light mode theme switcher ([#445](https://github.com/deckgo/deckdeckgo/issues/445))
+* hide pager in fullscreen mode on mouse inactivity ([#494](https://github.com/deckgo/deckdeckgo/issues/494))
+* size of the video element improved ([#492](https://github.com/deckgo/deckdeckgo/issues/492))
+* display smoothly lazy loaded loaded images ([#508](https://github.com/deckgo/deckdeckgo/issues/508))
+* improve developer documentation grammar ([#506](https://github.com/deckgo/deckdeckgo/pull/506) | [#505](https://github.com/deckgo/deckdeckgo/pull/505) | [#504](https://github.com/deckgo/deckdeckgo/pull/504))
+* improve contributing guide grammar ([#502](https://github.com/deckgo/deckdeckgo/pull/502))
+* color picker better highlight ([#488](https://github.com/deckgo/deckdeckgo/issues/488))
+* confirm slides delete ([#478](https://github.com/deckgo/deckdeckgo/issues/478))
+* add an information page about the remote control ([#477](https://github.com/deckgo/deckdeckgo/pull/477))
+* fetch more cards on the main feed (each steps) ([#476](https://github.com/deckgo/deckdeckgo/pull/476))
+
+### Fix
+
+* notes not hidden on template `split` ([#472](https://github.com/deckgo/deckdeckgo/issues/472))
+* QR code URL `DECKDECKGO_BASE_HREF` wasn't updated ([#490](https://github.com/deckgo/deckdeckgo/issues/490))
+* reset deck background color doesn't work ([#479](https://github.com/deckgo/deckdeckgo/issues/479))
+* support click in input type file ([#474](https://github.com/deckgo/deckdeckgo/issues/474))
+
 <a name="1.0.0-beta.8-1"></a>
 # 1.0.0-beta.8-1 (2019-11-13)
 
