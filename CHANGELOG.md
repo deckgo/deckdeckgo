@@ -1,5 +1,5 @@
 <a name="1.0.0-rc.18"></a>
-# [1.0.0-rc.18](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.17...v1.0.0-rc.18) (In progress)
+# [1.0.0-rc.18](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.17...v1.0.0-rc.18) (2019-12-04)
 
 ### Applications
 
