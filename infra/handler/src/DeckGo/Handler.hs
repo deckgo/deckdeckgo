@@ -1261,8 +1261,7 @@ withPresentationFiles uname psname presentationInfo act = do
     pname = presentationName presentationInfo
     processIndex :: T.Text -> T.Text
     processIndex =
-      TagSoup.renderTags . processTags presentationInfo . TagSoup.parseTags .
-      interpol
+      interpol . TagSoup.renderTags . processTags presentationInfo . TagSoup.parseTags
     interpol =
       T.replace "{{DECKDECKGO_TITLE}}" (unPresentationName pname) .
       T.replace "{{DECKDECKGO_TITLE_SHORT}}" (T.take 12 $ unPresentationName pname) .
