@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.5"></a>
+# 1.0.0-beta.5 (2019-12-04)
+
+### Features
+
+* Firebase can't redirect subdomain to path, therefore use `deckdeckgo.com/poll` instead of `poll.deckdeckgo.com`
+
 <a name="1.0.0-beta.4"></a>
 # 1.0.0-beta.4 (2019-12-01)
 

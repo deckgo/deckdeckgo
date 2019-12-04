@@ -28,13 +28,13 @@ Add a slide "Poll" to your presentation.
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
-    <deckgo-slide-poll poll-link="https://poll.deckdeckgo.com" socket-url="https://api.deckdeckgo.com">
+    <deckgo-slide-poll poll-link="https://deckdeckgo.com/poll" socket-url="https://api.deckdeckgo.com">
         <h1 slot="question">Do you like my presentation so far?</h1>
         <p slot="answer-1">It is super</p>
         <p slot="answer-2">Meh</p>
         <p slot="answer-3">I could'nt care less</p>
         <p slot="answer-4">Tell me why</p>
-        <p slot="how-to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {0}</p>
+        <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> and use the code {0}</p>
         <p slot="awaiting-votes">Awaiting first votes</p>
         <p slot="answer-5">Ain't nothin' but a heartache</p>
       </deckgo-slide-poll>
@@ -101,7 +101,7 @@ The "Poll" slide's Web Component could be integrated using the tag `<deckgo-slid
     <p slot="answer-3">I could'nt care less</p>
     <p slot="answer-4">Tell me why</p>
     <p slot="answer-5">Ain't nothin' but a heartache</p>
-    <p slot="how-to">Go to <a href="https://poll.deckdeckgo.com">poll.deckdeckgo.com</a> and use the code {0}</p>
+    <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> and use the code {0}</p>
     <p slot="awaiting-votes">Awaiting first votes</p>
 </deckgo-slide-poll>
 ```
@@ -129,7 +129,7 @@ This component offers the following options which could be set using attributes:
 | socketUrl | string | `https://api.deckdeckgo.com` | The url of the socket (server) where the poll (chat room) is going to be created. |
 | socketPath | string | `/poll` | The path to reach the socket server |
 | connectPollSocket | boolean | `true` | In case you would not like that the template try to reach the socket server |
-| pollLink | string | `https://poll.deckdeckgo.com` | The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote. |
+| pollLink | string | `https://deckdeckgo.com/poll` | The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote. |
 | pollKey | string | | Per default the template will always try to create a new poll but if you set this value, it will try to retrieve an existing poll |
 
 ## Theming

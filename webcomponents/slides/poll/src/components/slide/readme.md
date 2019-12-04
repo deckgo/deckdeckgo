@@ -13,7 +13,7 @@
 | `customActions`     | `custom-actions`      |             | `boolean` | `false`                         |
 | `customBackground`  | `custom-background`   |             | `boolean` | `false`                         |
 | `pollKey`           | `poll-key`            |             | `string`  | `undefined`                     |
-| `pollLink`          | `poll-link`           |             | `string`  | `'https://poll.deckdeckgo.com'` |
+| `pollLink`          | `poll-link`           |             | `string`  | `'https://deckdeckgo.com/poll'` |
 | `socketPath`        | `socket-path`         |             | `string`  | `'/poll'`                       |
 | `socketUrl`         | `socket-url`          |             | `string`  | `'https://api.deckdeckgo.com'`  |
 
