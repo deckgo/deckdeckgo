@@ -1,5 +1,6 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
-import {alertController} from '@ionic/core';
+import {alertController, RangeChangeEventDetail} from '@ionic/core';
+import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
 enum CodeColorType {
     COMMENTS,
@@ -14,7 +15,8 @@ enum CodeColorType {
 }
 
 @Component({
-    tag: 'app-color-code'
+    tag: 'app-color-code',
+    styleUrl: 'app-color-code.scss'
 })
 export class AppColorCode {
 
@@ -33,22 +35,34 @@ export class AppColorCode {
     private codeColor: string;
 
     @State()
+    private codeColorOpacity: number = 100;
+
+    @State()
     private highlightLines: string;
 
     @State()
     private highlightColor: string;
 
+    @State()
+    private highlightColorOpacity: number = 100;
+
     @Event() colorChange: EventEmitter<boolean>;
 
     async componentWillLoad() {
-        this.codeColor = await this.initColor();
+        await this.initColor();
         await this.initCurrentHiglight();
     }
 
     private initCurrentHiglight(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             this.highlightLines = this.selectedElement && this.selectedElement.getAttribute('highlight-lines') ? this.selectedElement.getAttribute('highlight-lines') : null;
-            this.highlightColor = this.selectedElement && this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background') : '#3880ff';
+
+            const color: string = this.selectedElement && this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background') : '56,128,255';
+
+            let styleColor: InitStyleColor = await ColorUtils.splitColor(color);
+
+            this.highlightColor = styleColor.rgb ? styleColor.rgb : color;
+            this.highlightColorOpacity = styleColor.opacity;
 
             resolve();
         });
@@ -74,15 +88,45 @@ export class AppColorCode {
         });
     }
 
-    private setCodeColor = ($event: CustomEvent) => {
-        this.codeColor = $event.detail.hex;
-        this.selectedElement.style.setProperty(this.getStyle(), $event.detail.hex);
+    private setCodeColor = async ($event: CustomEvent) => {
+        this.codeColor = $event.detail.rgb ? $event.detail.rgb : $event.detail.hex;
+        await this.applyCodeColor();
     };
 
-    private setHighlightColor = ($event: CustomEvent) => {
-        this.highlightColor = $event.detail.hex;
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', $event.detail.hex);
+    private setHighlightColor = async ($event: CustomEvent) => {
+        this.highlightColor = $event.detail.rgb ? $event.detail.rgb : $event.detail.hex;
+        await this.applyHighlightColor();
     };
+
+    private applyCodeColor(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.selectedElement || !this.codeColor) {
+                resolve();
+                return;
+            }
+
+            const selectedColor: string = `rgba(${this.codeColor},${ColorUtils.transformOpacity(this.codeColorOpacity)})`;
+
+            this.selectedElement.style.setProperty(this.getStyle(), selectedColor);
+
+            resolve();
+        });
+    }
+
+    private applyHighlightColor(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!this.selectedElement || !this.highlightColor) {
+                resolve();
+                return;
+            }
+
+            const selectedColor: string = `rgba(${this.highlightColor},${ColorUtils.transformOpacity(this.highlightColorOpacity)})`;
+
+            this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', selectedColor);
+
+            resolve();
+        });
+    }
 
     private toggleColorType($event: CustomEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
@@ -92,7 +136,7 @@ export class AppColorCode {
             }
 
             this.codeColorType = $event.detail.value;
-            this.codeColor = await this.initColor();
+            await this.initColor();
 
             resolve();
         });
@@ -121,31 +165,43 @@ export class AppColorCode {
     }
 
     private initColor(): Promise<string> {
-        return new Promise<string>((resolve) => {
+        return new Promise<string>(async (resolve) => {
             if (!this.selectedElement || !this.selectedElement.style) {
+                this.codeColor = undefined;
+                this.codeColorOpacity = 100;
+
                 resolve(null);
                 return;
             }
 
+            let color: string;
+
             if (this.codeColorType === CodeColorType.PUNCTUATION) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') : '#708090');
+                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') : '112,128,144';
             } else if (this.codeColorType === CodeColorType.PROPERTY) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') : '#990055');
+                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') : '153,0,85';
             } else if (this.codeColorType === CodeColorType.SELECTOR) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') : '#669900');
+                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') : '102,153,0';
             } else if (this.codeColorType === CodeColorType.OPERATOR) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') : '#9a6e3a');
+                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') : '154,110,58';
             } else if (this.codeColorType === CodeColorType.KEYWORD) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') : '#0077AA');
+                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') : '0,119,170';
             } else if (this.codeColorType === CodeColorType.FUNCTION) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') : '#DD4A68');
+                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') : '221,74,104';
             } else if (this.codeColorType === CodeColorType.REGEX) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') : '#EE9900');
+                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') : '238,153,0';
             } else if (this.codeColorType === CodeColorType.LINE_NUMBERS) {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') : '#999');
+                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') : '153,153,153';
             } else {
-                resolve(this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') : '#999999');
+                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') : '153,153,153';
             }
+
+            let styleColor: InitStyleColor = await ColorUtils.splitColor(color);
+
+            this.codeColor = styleColor.rgb ? styleColor.rgb : color;
+            this.codeColorOpacity = styleColor.opacity;
+
+            resolve();
         });
     }
 
@@ -191,6 +247,36 @@ export class AppColorCode {
         this.colorChange.emit(false);
     }
 
+    private updateOpacity($event: CustomEvent<RangeChangeEventDetail>, opacityFunction: Function): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+
+            if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
+                resolve();
+                return;
+            }
+
+            $event.stopPropagation();
+
+            const opacity: number = $event.detail.value as number;
+
+            opacityFunction(opacity);
+
+            this.emitColorChange();
+
+            resolve();
+        });
+    }
+
+    private setCodeOpacity = async (opacity: number) => {
+        this.codeColorOpacity = opacity;
+        await this.applyCodeColor();
+    };
+
+    private setHighlightOpacity = async (opacity: number) => {
+        this.highlightColorOpacity = opacity;
+        await this.applyHighlightColor();
+    };
+
     render() {
         return [
             <ion-list>
@@ -216,13 +302,23 @@ export class AppColorCode {
                     </ion-select>
                 </ion-item>
 
-                <ion-item disabled={this.codeColorType === undefined}>
-                    <deckgo-color class="ion-padding-top ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)} color-hex={this.codeColor} more={this.moreColors}>
-                        <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
-                    </deckgo-color>
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>Opacity</ion-label>
+                </ion-item-divider>
+
+                <ion-item class="item-opacity">
+                    <ion-range color="primary" min={0} max={100} disabled={!this.codeColor || this.codeColor === undefined || this.codeColorType === undefined}
+                               value={this.codeColorOpacity} mode="md"
+                               onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity($event, this.setCodeOpacity)}></ion-range>
                 </ion-item>
 
-                <ion-item-divider class="ion-padding-top">
+                <div class={this.codeColorType === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
+                    <deckgo-color class="ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)} color-rgb={this.codeColor} more={this.moreColors}>
+                        <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+                    </deckgo-color>
+                </div>
+
+                <ion-item-divider class="ion-padding-top ion-margin-top">
                     <ion-label>Highlight lines</ion-label>
                     <button slot="end" class="info" onClick={() => this.presentHighlightInfo()}>
                         <ion-icon name="help"></ion-icon>
@@ -235,11 +331,21 @@ export class AppColorCode {
                                onIonChange={() => this.highlightSelectedLines()}></ion-input>
                 </ion-item>
 
-                <ion-item disabled={!this.highlightLines}>
-                    <deckgo-color class="ion-padding-top ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)} color-hex={this.highlightColor} more={this.moreColors}>
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>Opacity</ion-label>
+                </ion-item-divider>
+
+                <ion-item class="item-opacity">
+                    <ion-range color="primary" min={0} max={100} disabled={!this.highlightColor || this.highlightColor === undefined || !this.highlightLines || this.highlightLines === undefined}
+                               value={this.highlightColorOpacity} mode="md"
+                               onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity($event, this.setHighlightOpacity)}></ion-range>
+                </ion-item>
+
+                <div class={!this.highlightLines || this.highlightLines === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
+                    <deckgo-color class="ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)} color-rgb={this.highlightColor} more={this.moreColors}>
                         <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
                     </deckgo-color>
-                </ion-item>
+                </div>
             </ion-list>
         ]
     }
