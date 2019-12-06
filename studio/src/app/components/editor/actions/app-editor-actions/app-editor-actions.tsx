@@ -256,7 +256,7 @@ export class AppEditorActions {
         await modal.present();
     }
 
-    async openDeckActions($event: UIEvent) {
+    async openMoreActions($event: UIEvent) {
         if (!$event || !$event.detail) {
             return;
         }
@@ -279,6 +279,8 @@ export class AppEditorActions {
                     this.openShare.emit();
                 } else if (detail.data.action === MoreAction.PUBLISH) {
                     this.actionPublish.emit();
+                } else if (detail.data.action === MoreAction.OPTIONS) {
+                    await this.openDeckOptions()
                 }
             }
         });
@@ -316,12 +318,23 @@ export class AppEditorActions {
         await popover.present();
     }
 
+    async openDeckOptions() {
+        const popover: HTMLIonPopoverElement = await popoverController.create({
+            component: 'app-deck-options',
+            mode: 'md',
+            cssClass: 'popover-menu'
+        });
+
+        await popover.present();
+    }
+
     render() {
         return <ion-toolbar>
             <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
-                <app-add-slide-action
-                    onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
-                </app-add-slide-action>
+                <app-editor-busy-action iconName="add"
+                    onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+                    <ion-label>Add slide</ion-label>
+                </app-editor-busy-action>
 
                 <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(false)} color="primary" mode="md">
                     <ion-icon name="arrow-back"></ion-icon>
@@ -339,6 +352,11 @@ export class AppEditorActions {
                     <ion-label>Slides</ion-label>
                 </ion-tab-button>
 
+                <app-editor-busy-action iconName="options" class="wider-devices"
+                    onActionReady={() => this.openDeckOptions()}>
+                    <ion-label>Options</ion-label>
+                </app-editor-busy-action>
+
                 {this.renderFullscreenButton()}
 
                 <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices"
@@ -349,7 +367,7 @@ export class AppEditorActions {
 
                 <app-share-action class="wider-devices"></app-share-action>
 
-                <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices"
+                <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices"
                                 mode="md">
                     <ion-icon name="more" md="md-more" ios="md-more"></ion-icon>
                     <ion-label>More</ion-label>

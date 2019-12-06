@@ -3,5 +3,6 @@ export enum MoreAction {
     JUMP_TO,
     REMOTE,
     SHARE,
-    PUBLISH
+    PUBLISH,
+    OPTIONS
 }

@@ -1,17 +1,17 @@
-import {Component, Event, EventEmitter, State, h} from '@stencil/core';
+import {Component, Event, EventEmitter, State, h, Prop} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
 import {BusyService} from '../../../../services/editor/busy/busy.service';
 
 @Component({
-    tag: 'app-add-slide-action',
-    styleUrl: 'app-add-slide-action.scss',
+    tag: 'app-editor-busy-action',
+    styleUrl: 'app-editor-busy-action.scss',
     shadow: false
 })
-export class AppAddSlideAction {
+export class AppEditorBusyAction {
 
-    @Event() private actionOpenSlideAdd: EventEmitter<UIEvent>;
+    @Event() private actionReady: EventEmitter<UIEvent>;
 
     private subscription: Subscription;
     private busyService: BusyService;
@@ -19,12 +19,15 @@ export class AppAddSlideAction {
     @State()
     private deckBusy: boolean = false;
 
+    @Prop()
+    iconName: string;
+
     constructor() {
         this.busyService = BusyService.getInstance();
     }
 
-    private openSlideAdd($event: UIEvent) {
-        this.actionOpenSlideAdd.emit($event);
+    private action($event: UIEvent) {
+        this.actionReady.emit($event);
     }
 
     async componentWillLoad() {
@@ -40,9 +43,9 @@ export class AppAddSlideAction {
     }
 
     render() {
-        return <ion-tab-button onClick={(e: UIEvent) => this.openSlideAdd(e)} color="primary" disabled={this.deckBusy} mode="md">
-            <ion-icon name="add"></ion-icon>
-            <ion-label>Add slide</ion-label>
+        return <ion-tab-button onClick={(e: UIEvent) => this.action(e)} color="primary" disabled={this.deckBusy} mode="md">
+            <ion-icon name={this.iconName}></ion-icon>
+            <slot></slot>
         </ion-tab-button>;
     }
 
