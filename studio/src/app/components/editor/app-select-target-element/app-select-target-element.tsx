@@ -17,10 +17,13 @@ export class AppSelectTargetElement {
     @Prop()
     chart: boolean = false;
 
+    @Prop()
+    code: boolean = false;
+
     @Event()
     applyTo: EventEmitter<TargetElement>;
 
-    private selectApplyToAllDeck($event: CustomEvent) {
+    private selectApplyToAll($event: CustomEvent) {
         if ($event && $event.detail) {
             this.applyTo.emit($event.detail.value);
         }
@@ -28,9 +31,20 @@ export class AppSelectTargetElement {
 
     render() {
         if (!this.deckOrSlide) {
-            return undefined;
+            if (!this.code) {
+                return undefined;
+            }
+
+            return <ion-segment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
+                <ion-segment-button value={TargetElement.CODE} checked={true} mode="md">
+                    <ion-label>Code</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value={TargetElement.SECTION} mode="md">
+                    <ion-label>Section</ion-label>
+                </ion-segment-button>
+            </ion-segment>
         } else{
-            return <ion-segment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => this.selectApplyToAllDeck($event)}>
+            return <ion-segment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
                 {this.renderQRCode()}
                 {this.renderChart()}
                 <ion-segment-button value={TargetElement.SLIDE} checked={!this.qrCode} mode="md">
