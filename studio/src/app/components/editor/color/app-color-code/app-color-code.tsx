@@ -277,6 +277,23 @@ export class AppColorCode {
         await this.applyHighlightColor();
     };
 
+    private resetCodeColor(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.selectedElement) {
+                resolve();
+                return;
+            }
+
+            this.selectedElement.style.removeProperty(this.getStyle());
+
+            await this.initColor();
+
+            this.emitColorChange();
+
+            resolve();
+        });
+    }
+
     render() {
         return [
             <ion-list>
@@ -317,6 +334,13 @@ export class AppColorCode {
                         <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
                     </deckgo-color>
                 </div>
+
+                <ion-item class="action-button ion-margin-bottom">
+                    <ion-button shape="round" onClick={() => this.resetCodeColor()}
+                                fill="outline" class="delete">
+                        <ion-label class="ion-text-uppercase">Reset color</ion-label>
+                    </ion-button>
+                </ion-item>
 
                 <ion-item-divider class="ion-padding-top ion-margin-top">
                     <ion-label>Highlight lines</ion-label>
