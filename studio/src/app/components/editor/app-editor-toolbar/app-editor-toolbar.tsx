@@ -33,7 +33,7 @@ export class AppEditorToolbar {
     private selectedElement: HTMLElement;
 
     @State()
-    private deckOrSlide: boolean = false;
+    private slide: boolean = false;
 
     @State()
     private code: boolean = false;
@@ -180,7 +180,7 @@ export class AppEditorToolbar {
 
             await this.displayToolbar(selected);
 
-            this.blockSlide.emit(!this.deckOrSlide);
+            this.blockSlide.emit(!this.slide);
 
             resolve();
         });
@@ -212,7 +212,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if (this.isElementSlideOrDeck(element)) {
+            if (this.isElementSlide(element)) {
                 resolve(element);
                 return;
             }
@@ -228,8 +228,8 @@ export class AppEditorToolbar {
         });
     }
 
-    private isElementSlideOrDeck(element: HTMLElement): boolean {
-        return element && element.nodeName && (element.nodeName.toLowerCase().indexOf('deckgo-deck') > -1 || element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1);
+    private isElementSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1;
     }
 
     private isElementCode(element: HTMLElement): boolean {
@@ -402,7 +402,7 @@ export class AppEditorToolbar {
 
             // Set top position
             const topPosition: string = `${(top - extraTop > 0 ? top - extraTop : 0)}px`;
-            applyTo.style.top = this.deckOrSlide ? `calc(${topPosition} + var(--editor-toolbar-padding, 0px))` : `${topPosition}`;
+            applyTo.style.top = this.slide ? `calc(${topPosition} + var(--editor-toolbar-padding, 0px))` : `${topPosition}`;
 
             const windowWidth: number = window.innerWidth | screen.width;
 
@@ -410,17 +410,17 @@ export class AppEditorToolbar {
 
             // Set left position
             const leftPosition: string = `${leftStandardPosition + width > windowWidth ? windowWidth - width : leftStandardPosition}px`;
-            applyTo.style.left = this.deckOrSlide ? `calc(${leftPosition} + var(--editor-toolbar-padding, 0px))` : `${leftPosition}`;
+            applyTo.style.left = this.slide ? `calc(${leftPosition} + var(--editor-toolbar-padding, 0px))` : `${leftPosition}`;
 
             // If not slide or deck selected, move a bit the toolbar
-            if (!this.deckOrSlide) {
+            if (!this.slide) {
                 applyTo.style.transform = 'translate(0, -2.4rem)';
             } else {
                 applyTo.style.transform = 'translate(0,0)';
             }
 
             // Set a width in order to align right the delete button
-            applyTo.style.width = this.deckOrSlide ? `calc(${width}px - var(--editor-toolbar-padding, 0px) - var(--editor-toolbar-padding, 0px))` : `${width}px`;
+            applyTo.style.width = this.slide ? `calc(${width}px - var(--editor-toolbar-padding, 0px) - var(--editor-toolbar-padding, 0px))` : `${width}px`;
 
             resolve();
         });
@@ -464,7 +464,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if (this.deckBusy && this.deckOrSlide) {
+            if (this.deckBusy && this.slide) {
                 resolve();
                 return;
             }
@@ -494,7 +494,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if (this.deckBusy || !this.deckOrSlide) {
+            if (this.deckBusy || !this.slide) {
                 resolve();
                 return;
             }
@@ -510,7 +510,7 @@ export class AppEditorToolbar {
     }
 
     private async openSlotType() {
-        if (this.deckOrSlide) {
+        if (this.slide) {
             return;
         }
 
@@ -533,7 +533,7 @@ export class AppEditorToolbar {
     }
 
     private async openEditSlide() {
-        if (!this.deckOrSlide || (!this.qrCode && !this.chart)) {
+        if (!this.slide || (!this.qrCode && !this.chart)) {
             return;
         }
 
@@ -566,7 +566,7 @@ export class AppEditorToolbar {
     }
 
     private async openEditPollSlide() {
-        if (!this.deckOrSlide || !this.poll) {
+        if (!this.slide || !this.poll) {
             return;
         }
 
@@ -588,7 +588,7 @@ export class AppEditorToolbar {
     }
 
     private async openReveal() {
-        if (this.deckOrSlide) {
+        if (this.slide) {
             return;
         }
 
@@ -742,11 +742,11 @@ export class AppEditorToolbar {
             }
 
             if (this.applyToAllDeck) {
-                const deckElement: HTMLElement = this.deckOrSlide ? this.selectedElement.parentElement : this.selectedElement.parentElement.parentElement;
+                const deckElement: HTMLElement = this.slide ? this.selectedElement.parentElement : this.selectedElement.parentElement.parentElement;
                 this.deckDidChange.emit(deckElement);
             } else {
                 // If not deck or slide, then parent is the container slide
-                this.slideDidChange.emit(this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
+                this.slideDidChange.emit(this.slide ? this.selectedElement : this.selectedElement.parentElement);
             }
 
             resolve();
@@ -761,7 +761,7 @@ export class AppEditorToolbar {
             }
 
             this.selectedElement = element;
-            this.deckOrSlide = this.isElementSlideOrDeck(element);
+            this.slide = this.isElementSlide(element);
 
             this.youtube = this.isElementYoutubeSlide(element);
             this.qrCode = this.isElementQRCodeSlide(element);
@@ -788,7 +788,7 @@ export class AppEditorToolbar {
     private highlightElement(highlight: boolean): Promise<void> {
         return new Promise<void>(async (resolve) => {
             // No highlight on deck
-            if (!this.selectedElement || this.deckOrSlide) {
+            if (!this.selectedElement || this.slide) {
                 resolve();
                 return;
             }
@@ -851,7 +851,7 @@ export class AppEditorToolbar {
         const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-color',
             componentProps: {
-                deckOrSlide: this.deckOrSlide,
+                slide: this.slide,
                 selectedElement: this.selectedElement
             },
             mode: 'md',
@@ -866,7 +866,7 @@ export class AppEditorToolbar {
             component: 'app-image',
             componentProps: {
                 selectedElement: this.selectedElement,
-                deckOrSlide: this.deckOrSlide,
+                slide: this.slide,
                 imgDidChange: this.imgDidChange
             },
             mode: 'md',
@@ -933,7 +933,7 @@ export class AppEditorToolbar {
             }
 
             const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
-            await helper.appendImage(this.selectedElement, image, this.deckOrSlide, this.applyToAllDeck);
+            await helper.appendImage(this.selectedElement, image, this.slide, this.applyToAllDeck);
 
             resolve();
         });
@@ -952,7 +952,7 @@ export class AppEditorToolbar {
 
     private deleteBackground(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!this.deckOrSlide) {
+            if (!this.slide) {
                 resolve();
                 return;
             }
@@ -1062,7 +1062,7 @@ export class AppEditorToolbar {
                 return;
             }
 
-            const element: HTMLElement = slideElement ? slideElement : (this.deckOrSlide ? this.selectedElement : this.selectedElement.parentElement);
+            const element: HTMLElement = slideElement ? slideElement : (this.slide ? this.selectedElement : this.selectedElement.parentElement);
 
             if (!element) {
                 resolve();
@@ -1098,13 +1098,13 @@ export class AppEditorToolbar {
 
     private renderDelete() {
         return <a onClick={($event: UIEvent) => this.confirmDeleteElement($event)} title="Delete"
-                  class={this.deckBusy && this.deckOrSlide ? "disabled" : ""}>
+                  class={this.deckBusy && this.slide ? "disabled" : ""}>
             <ion-icon name="trash"></ion-icon>
         </a>
     }
 
     private renderNotes() {
-        if (!this.deckOrSlide) {
+        if (!this.slide) {
             return undefined;
         } else {
             return <a onClick={() => this.openNotes()} title="Notes"
@@ -1115,7 +1115,7 @@ export class AppEditorToolbar {
     }
 
     private renderCopy() {
-        if (!this.deckOrSlide) {
+        if (!this.slide) {
             return undefined;
         } else {
             return <a onClick={() => this.cloneSlide()} title="Copy"
@@ -1132,7 +1132,7 @@ export class AppEditorToolbar {
     }
 
     private renderEdit() {
-        if (this.deckOrSlide) {
+        if (this.slide) {
             if (!this.qrCode && !this.chart && !this.poll && !this.youtube) {
                 return undefined;
             }
@@ -1158,17 +1158,17 @@ export class AppEditorToolbar {
     }
 
     private renderImages() {
-        if (!this.image && !this.deckOrSlide) {
+        if (!this.image && !this.slide) {
             return undefined;
         } else {
-            return <a onClick={() => this.openImage()} title={this.deckOrSlide ? 'Background' : 'Image'}>
+            return <a onClick={() => this.openImage()} title={this.slide ? 'Background' : 'Image'}>
                 <ion-icon name="images"></ion-icon>
             </a>
         }
     }
 
     private renderReveal() {
-        if (this.deckOrSlide || this.code || this.youtube) {
+        if (this.slide || this.code || this.youtube) {
             return undefined;
         } else {
             return <a onClick={() => this.openReveal()} title="Edit element animation">
@@ -1178,7 +1178,7 @@ export class AppEditorToolbar {
     }
 
     private renderList() {
-        if (this.deckOrSlide || !this.list) {
+        if (this.slide || !this.list) {
             return undefined;
         } else if (this.list === SlotType.OL) {
             return <a onClick={() => this.toggleList()} title="Toggle to an unordered list">

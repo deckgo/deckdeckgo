@@ -14,7 +14,7 @@ export class AppColor {
     @Element() el: HTMLElement;
 
     @Prop()
-    deckOrSlide: boolean = false;
+    slide: boolean = false;
 
     @Prop()
     selectedElement: HTMLElement;
@@ -40,7 +40,7 @@ export class AppColor {
     private code: boolean = false;
 
     async componentWillLoad() {
-        if (this.deckOrSlide) {
+        if (this.slide) {
             this.qrCode = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
             this.chart = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-chart'.toUpperCase();
             this.poll = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-poll'.toUpperCase();
@@ -71,7 +71,7 @@ export class AppColor {
         if (this.applyToTargetElement === TargetElement.QR_CODE) {
             element = this.el.querySelector('app-color-qrcode');
         } else {
-             element = this.el.querySelector('app-color-deck-slide');
+             element = this.el.querySelector('app-color-text-background');
         }
 
         if (element) {
@@ -92,7 +92,7 @@ export class AppColor {
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
-            <app-select-target-element deckOrSlide={this.deckOrSlide} qrCode={this.qrCode || this.poll} chart={this.chart || this.poll} code={this.code}
+            <app-select-target-element slide={this.slide} qrCode={this.qrCode || this.poll} chart={this.chart || this.poll} code={this.code}
                                        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
             this.renderColorOptions()
@@ -113,10 +113,9 @@ export class AppColor {
                                    onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
                                    moreColors={this.moreColors}></app-color-code>
         } else {
-            return <app-color-deck-slide selectedElement={this.selectedElement} moreColors={this.moreColors}
-                                         deckOrSlide={this.deckOrSlide}
-                                         onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
-                                         applyToAllDeck={this.applyToTargetElement === TargetElement.DECK}></app-color-deck-slide>
+            return <app-color-text-background selectedElement={this.selectedElement} moreColors={this.moreColors}
+                                         slide={this.slide}
+                                         onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}></app-color-text-background>
         }
     }
 }

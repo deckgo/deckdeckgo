@@ -244,7 +244,7 @@ export class AppImage {
             </ion-router-link>
         </ion-toolbar>,
             <ion-list>
-                <app-select-target-element deckOrSlide={this.deckOrSlide}
+                <app-select-target-element slide={this.deckOrSlide} deck={this.deckOrSlide}
                                    onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-select-target-element>
 
                 {this.renderImageSize()}

@@ -9,7 +9,10 @@ import {TargetElement} from '../../../utils/editor/target-element';
 export class AppSelectTargetElement {
 
     @Prop()
-    deckOrSlide: boolean = false;
+    slide: boolean = false;
+
+    @Prop()
+    deck: boolean = false;
 
     @Prop()
     qrCode: boolean = false;
@@ -30,7 +33,7 @@ export class AppSelectTargetElement {
     }
 
     render() {
-        if (!this.deckOrSlide) {
+        if (!this.deck && !this.slide) {
             if (!this.code) {
                 return undefined;
             }
@@ -47,12 +50,8 @@ export class AppSelectTargetElement {
             return <ion-segment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
                 {this.renderQRCode()}
                 {this.renderChart()}
-                <ion-segment-button value={TargetElement.SLIDE} checked={!this.qrCode} mode="md">
-                    <ion-label>Slide</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value={TargetElement.DECK} mode="md">
-                    <ion-label>Deck</ion-label>
-                </ion-segment-button>
+                {this.renderSlide()}
+                {this.renderDeck()}
             </ion-segment>
         }
     }
@@ -72,6 +71,26 @@ export class AppSelectTargetElement {
             return <ion-segment-button value={TargetElement.CHART} checked={this.chart} mode="md">
                 <ion-label>Chart</ion-label>
             </ion-segment-button>
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderSlide() {
+        if (this.slide) {
+            return <ion-segment-button value={TargetElement.SLIDE} checked={!this.qrCode && !this.chart} mode="md">
+                <ion-label>Slide</ion-label>
+            </ion-segment-button>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderDeck() {
+        if (this.deck) {
+            return <ion-segment-button value={TargetElement.DECK} mode="md">
+                <ion-label>Deck</ion-label>
+            </ion-segment-button>;
         } else {
             return undefined;
         }

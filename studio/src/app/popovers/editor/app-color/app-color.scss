@@ -1,11 +1,6 @@
 app-color {
 
-  @import "../../../../global/theme/editor/editor-info";
   @import "../../../../global/theme/editor/editor-popover";
-
-  deckgo-color {
-    --deckgo-button-more-border: 1px solid var(--ion-color-medium);
-  }
 
   ion-icon.more {
     font-size: 1.4rem;

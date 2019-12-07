@@ -50,7 +50,7 @@ export class AppDeck {
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
-            <app-select-target-element deckOrSlide={true}
+            <app-select-target-element deck={true}
                                        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
             this.renderOptions()
@@ -59,9 +59,9 @@ export class AppDeck {
 
     private renderOptions() {
         if (this.applyToTargetElement === TargetElement.DECK) {
-            return <app-color-deck-slide selectedElement={this.deckElement} moreColors={this.moreColors}
-                                         deckOrSlide={true} applyToAllDeck={true}
-                                         onColorChange={() => this.deckOptionsChange()}></app-color-deck-slide>
+            return <app-color-text-background selectedElement={this.deckElement} moreColors={this.moreColors}
+                                         deck={true}
+                                         onColorChange={() => this.deckOptionsChange()}></app-color-text-background>
         } else {
             return undefined;
         }
