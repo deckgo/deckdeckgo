@@ -21,7 +21,7 @@ export class AppSlideAdd {
     }
 
     private async closePopover(reveal: boolean) {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
             reveal: reveal
         });
     }

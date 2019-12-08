@@ -140,7 +140,7 @@ export class AppImage {
     }
 
     private async closePopoverWithoutResults() {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
     }
 
     private async closePopover(action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile) {
@@ -156,7 +156,7 @@ export class AppImage {
             data['image'] = image;
         }
 
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss(data);
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss(data);
     }
 
     private selectImageFromHistory($event: CustomEvent): Promise<void> {
