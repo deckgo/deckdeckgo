@@ -54,6 +54,7 @@ app-editor-toolbar {
       &.disabled {
         cursor: initial;
         border: 1px solid var(--ion-color-light);
+        pointer-events: none;
 
         ion-icon {
           color: var(--ion-color-light);

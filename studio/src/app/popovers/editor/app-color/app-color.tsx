@@ -54,7 +54,7 @@ export class AppColor {
     }
 
     private async closePopover() {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
     }
 
     private async selectApplyToTargetElement($event: CustomEvent<TargetElement>) {

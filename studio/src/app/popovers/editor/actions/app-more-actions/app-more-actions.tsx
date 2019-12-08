@@ -20,7 +20,7 @@ export class AppMoreActions {
     }
 
     private async closePopover(action: MoreAction) {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
             action: action
         });
     }

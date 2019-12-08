@@ -20,7 +20,7 @@ export class AppImageSlide {
     imgDidChange: EventEmitter<HTMLElement>;
 
     private async closePopoverWithoutResults() {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
     }
 
     private onImgDidChange($event: CustomEvent<HTMLElement>) {
@@ -31,7 +31,7 @@ export class AppImageSlide {
 
     private async onAction($event: CustomEvent<ImageAction>) {
         if ($event && $event.detail) {
-            await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss($event.detail);
+            await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss($event.detail);
         }
     }
 
