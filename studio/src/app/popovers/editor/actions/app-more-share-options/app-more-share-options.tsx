@@ -10,7 +10,7 @@ export class AppMoreShareOptions {
     @Element() el: HTMLElement;
 
     private async closePopover($event: CustomEvent<MoreAction>) {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
             action: $event ? $event.detail : null
         });
     }

@@ -23,7 +23,7 @@ export class AppEditSlide {
     slideDidChange: EventEmitter<HTMLElement>;
 
     private async closePopoverWithoutResults() {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
     }
 
     private async closePopover($event: CustomEvent<EditAction>) {
@@ -35,7 +35,7 @@ export class AppEditSlide {
             action: $event.detail
         };
 
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss(data);
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss(data);
     }
 
     render() {

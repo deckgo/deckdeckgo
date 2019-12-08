@@ -8,7 +8,7 @@ export class AppFullscreenInfo {
     @Element() el: HTMLElement;
 
     private async closePopover() {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
     }
 
     render() {

@@ -12,7 +12,7 @@ export class AppElementDelete {
     }
 
     async closePopover(confirm: boolean) {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss(confirm);
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss(confirm);
     }
 
     render() {

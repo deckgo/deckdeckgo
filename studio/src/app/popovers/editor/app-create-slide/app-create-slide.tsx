@@ -169,11 +169,11 @@ export class AppCreateSlide {
     }
 
     private async closePopoverWithoutResults() {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
     }
 
     private async closePopover(template: SlideTemplate, slide?: JSX.IntrinsicElements, attributes?: SlideAttributes) {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss({
+        await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
             template: template,
             slide: slide,
             attributes: attributes
