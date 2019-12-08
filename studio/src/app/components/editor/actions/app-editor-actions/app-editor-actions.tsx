@@ -34,19 +34,21 @@ export class AppEditorActions {
 
     private anonymousService: AnonymousService;
 
-    @Event() signIn: EventEmitter<void>;
+    @Event() private signIn: EventEmitter<void>;
 
-    @Event() addSlide: EventEmitter<JSX.IntrinsicElements>;
+    @Event() private addSlide: EventEmitter<JSX.IntrinsicElements>;
 
-    @Event() animatePrevNextSlide: EventEmitter<boolean>;
+    @Event() private animatePrevNextSlide: EventEmitter<boolean>;
 
-    @Event() slideTo: EventEmitter<number>;
+    @Event() private slideTo: EventEmitter<number>;
 
-    @Event() toggleFullScreen: EventEmitter<void>;
+    @Event() private toggleFullScreen: EventEmitter<void>;
 
     @Event() private actionPublish: EventEmitter<void>;
 
     @Event() private openShare: EventEmitter<void>;
+
+    @Event() private selectDeck: EventEmitter<void>;
 
     @State()
     private fullscreenEnable: boolean = true;
@@ -319,10 +321,12 @@ export class AppEditorActions {
     }
 
     async openDeckOptions() {
+        this.selectDeck.emit();
+
         const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-deck-options',
             mode: 'md',
-            cssClass: 'popover-menu'
+            cssClass: 'popover-menu popover-menu-wide'
         });
 
         await popover.present();

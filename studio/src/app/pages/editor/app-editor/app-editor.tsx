@@ -460,6 +460,10 @@ export class AppEditor {
         });
     }
 
+    private async onSelectDeck() {
+        await this.editorEventsHandler.selectDeck();
+    }
+
     private initWindowResize() {
         if (window) {
             window.addEventListener('resize', debounce(this.onWindowResize));
@@ -590,7 +594,8 @@ export class AppEditor {
                                     onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
                                     onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
                                     onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
-                                    onToggleFullScreen={() => this.toggleFullScreen()}></app-editor-actions>
+                                    onToggleFullScreen={() => this.toggleFullScreen()}
+                                    onSelectDeck={() => this.onSelectDeck()}></app-editor-actions>
             </ion-footer>,
             <deckgo-inline-editor containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul" sticky-mobile="true"
                                   onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}

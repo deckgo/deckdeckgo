@@ -12,9 +12,6 @@ export class AppSelectTargetElement {
     slide: boolean = false;
 
     @Prop()
-    deck: boolean = false;
-
-    @Prop()
     qrCode: boolean = false;
 
     @Prop()
@@ -22,6 +19,13 @@ export class AppSelectTargetElement {
 
     @Prop()
     code: boolean = false;
+
+    // color is a reserved prop word
+    @Prop()
+    colorTarget: boolean = false;
+
+    @Prop()
+    background: boolean = false;
 
     @Event()
     applyTo: EventEmitter<TargetElement>;
@@ -33,7 +37,7 @@ export class AppSelectTargetElement {
     }
 
     render() {
-        if (!this.deck && !this.slide) {
+        if (!this.colorTarget && !this.slide) {
             if (!this.code) {
                 return undefined;
             }
@@ -46,12 +50,13 @@ export class AppSelectTargetElement {
                     <ion-label>Section</ion-label>
                 </ion-segment-button>
             </ion-segment>
-        } else{
+        } else {
             return <ion-segment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
                 {this.renderQRCode()}
                 {this.renderChart()}
                 {this.renderSlide()}
-                {this.renderDeck()}
+                {this.renderColor()}
+                {this.renderImage()}
             </ion-segment>
         }
     }
@@ -86,10 +91,20 @@ export class AppSelectTargetElement {
         }
     }
 
-    private renderDeck() {
-        if (this.deck) {
-            return <ion-segment-button value={TargetElement.DECK} mode="md">
-                <ion-label>Deck</ion-label>
+    private renderColor() {
+        if (this.colorTarget) {
+            return <ion-segment-button value={TargetElement.COLOR} mode="md" checked={true}>
+                <ion-label>Color</ion-label>
+            </ion-segment-button>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderImage() {
+        if (this.background) {
+            return <ion-segment-button value={TargetElement.BACKGROUND} mode="md">
+                <ion-label>Background</ion-label>
             </ion-segment-button>;
         } else {
             return undefined;

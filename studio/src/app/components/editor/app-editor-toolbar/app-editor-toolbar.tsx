@@ -6,7 +6,7 @@ import {debounceTime} from 'rxjs/operators';
 
 import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
-import {SlideHelper} from '../../../helpers/editor/slide.helper';
+import {ImageHelper} from '../../../helpers/editor/image.helper';
 
 import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
@@ -16,7 +16,6 @@ import {SlotUtils} from '../../../utils/editor/slot.utils';
 import {EditAction} from '../../../utils/editor/edit-action';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
-import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 
 @Component({
     tag: 'app-editor-toolbar',
@@ -56,14 +55,11 @@ export class AppEditorToolbar {
     @State()
     private list: SlotType;
 
-    private applyToAllDeck: boolean = false;
-
     @Event() private blockSlide: EventEmitter<boolean>;
 
     @Event() private slideDelete: EventEmitter<HTMLElement>;
 
     @Event() private slideDidChange: EventEmitter<HTMLElement>;
-    @Event() private deckDidChange: EventEmitter<HTMLElement>;
     @Event() private codeDidChange: EventEmitter<HTMLElement>;
     @Event() private imgDidChange: EventEmitter<HTMLElement>;
     @Event() private notesDidChange: EventEmitter<HTMLElement>;
@@ -81,13 +77,12 @@ export class AppEditorToolbar {
     private moveToolbarSubscription: Subscription;
     private moveToolbarSubject: Subject<void> = new Subject();
 
-    private anonymousService: AnonymousService;
-
     @Event() signIn: EventEmitter<void>;
+
+    private imageHelper: ImageHelper;
 
     constructor() {
         this.busyService = BusyService.getInstance();
-        this.anonymousService = AnonymousService.getInstance();
     }
 
     async componentWillLoad() {
@@ -99,6 +94,8 @@ export class AppEditorToolbar {
             await this.moveToolbar();
             await this.resizeSlideContent();
         });
+
+        this.imageHelper = new ImageHelper(this.slideDidChange, this.blockSlide, this.signIn);
     }
 
     async componentDidLoad() {
@@ -555,9 +552,9 @@ export class AppEditorToolbar {
                 if (detail.data.action === EditAction.DELETE_LOGO) {
                     await this.deleteLogo();
                 } else if (detail.data.action === EditAction.OPEN_CUSTOM_LOGO) {
-                    await this.openCustomModalRestricted('app-custom-images', detail.data.action);
+                    await this.imageHelper.openCustomModalRestricted(this.selectedElement, this.slide, false, 'app-custom-images', detail.data.action);
                 } else if (detail.data.action === EditAction.OPEN_DATA) {
-                    await this.openCustomModalRestricted('app-custom-data', detail.data.action);
+                    await this.imageHelper.openCustomModalRestricted(this.selectedElement, this.slide, false, 'app-custom-data', detail.data.action);
                 }
             }
         });
@@ -726,11 +723,7 @@ export class AppEditorToolbar {
     }
 
     @Listen('colorDidChange', {target: 'document'})
-    async onColorDidChange($event: CustomEvent) {
-        if ($event) {
-            this.applyToAllDeck = $event.detail;
-        }
-
+    async onColorDidChange(_$event: CustomEvent) {
         await this.emitChange();
     }
 
@@ -741,13 +734,8 @@ export class AppEditorToolbar {
                 return;
             }
 
-            if (this.applyToAllDeck) {
-                const deckElement: HTMLElement = this.slide ? this.selectedElement.parentElement : this.selectedElement.parentElement.parentElement;
-                this.deckDidChange.emit(deckElement);
-            } else {
-                // If not deck or slide, then parent is the container slide
-                this.slideDidChange.emit(this.slide ? this.selectedElement : this.selectedElement.parentElement);
-            }
+            // If not deck or slide, then parent is the container slide
+            this.slideDidChange.emit(this.slide ? this.selectedElement : this.selectedElement.parentElement);
 
             resolve();
         });
@@ -863,10 +851,10 @@ export class AppEditorToolbar {
 
     private async openImage() {
         const popover: HTMLIonPopoverElement = await popoverController.create({
-            component: 'app-image',
+            component: 'app-image-slide',
             componentProps: {
                 selectedElement: this.selectedElement,
-                slide: this.slide,
+                deckOrSlide: this.slide,
                 imgDidChange: this.imgDidChange
             },
             mode: 'md',
@@ -875,121 +863,15 @@ export class AppEditorToolbar {
 
         popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail.data) {
-                if (detail.data.hasOwnProperty('applyToAllDeck')) {
-                    this.applyToAllDeck = detail.data.applyToAllDeck;
-                }
-
-                if (detail.data.action === EditAction.OPEN_PHOTOS) {
-                    await this.openModal('app-photo');
-                } else if (detail.data.action === EditAction.DELETE_BACKGROUND) {
-                    await this.deleteBackground();
-                } else if (detail.data.action === EditAction.ADD_IMAGE && detail.data.image) {
-                    await this.appendImage(detail.data.image);
-                } else if (detail.data.action === EditAction.OPEN_GIFS) {
-                    await this.openModal('app-gif');
-                } else if (detail.data.action === EditAction.OPEN_CUSTOM) {
-                    await this.openCustomModalRestricted('app-custom-images', EditAction.OPEN_CUSTOM);
-                }
+                await this.imageHelper.imageAction(this.selectedElement, this.slide, false, detail.data);
             }
         });
 
         await popover.present();
     }
 
-    private async openModal(componentTag: string, action?: EditAction) {
-        const modal: HTMLIonModalElement = await modalController.create({
-            component: componentTag
-        });
-
-        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail && detail.data && this.selectedElement) {
-                if (action === EditAction.OPEN_CUSTOM_LOGO) {
-                    await this.updateSlideAttribute(detail.data, 'img-src');
-                } else if (action === EditAction.OPEN_DATA) {
-                    await this.updateSlideAttribute(detail.data, 'src');
-                } else {
-                    await this.appendImage(detail.data);
-                }
-            }
-
-            this.blockSlide.emit(false);
-        });
-
-        this.blockSlide.emit(true);
-
-        await modal.present();
-    }
-
-    private appendImage(image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!this.selectedElement) {
-                resolve();
-                return;
-            }
-
-            if (!image) {
-                resolve();
-                return;
-            }
-
-            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
-            await helper.appendImage(this.selectedElement, image, this.slide, this.applyToAllDeck);
-
-            resolve();
-        });
-    }
-
-    private async openCustomModalRestricted(componentTag: string, action: EditAction) {
-        const isAnonymous: boolean = await this.anonymousService.isAnonymous();
-
-        if (isAnonymous) {
-            this.signIn.emit();
-            return;
-        }
-
-        await this.openModal(componentTag, action);
-    }
-
-    private deleteBackground(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!this.slide) {
-                resolve();
-                return;
-            }
-
-            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
-            await helper.deleteBackground(this.selectedElement, this.applyToAllDeck);
-
-            resolve();
-        });
-    }
-
-    private deleteLogo(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
-            await helper.deleteSlideAttributeImgSrc(this.selectedElement);
-
-            resolve();
-        });
-    }
-
-    private updateSlideAttribute(data: StorageFile, attribute: string): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!this.selectedElement) {
-                resolve();
-                return;
-            }
-
-            if (!data) {
-                resolve();
-                return;
-            }
-
-            const helper: SlideHelper = new SlideHelper(this.slideDidChange, this.deckDidChange);
-            await helper.updateSlideAttribute(this.selectedElement, attribute, data);
-
-            resolve();
-        });
+    private async deleteLogo() {
+        await this.imageHelper.deleteSlideAttributeImgSrc(this.selectedElement);
     }
 
     private updateYoutube(youtubeUrl: string): Promise<void> {

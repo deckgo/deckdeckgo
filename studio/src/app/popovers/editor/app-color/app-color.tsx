@@ -92,11 +92,19 @@ export class AppColor {
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
-            <app-select-target-element slide={this.slide} qrCode={this.qrCode || this.poll} chart={this.chart || this.poll} code={this.code}
-                                       onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
+            this.renderSelectTarget(),
 
             this.renderColorOptions()
         ]
+    }
+
+    private renderSelectTarget() {
+        if (this.slide && !this.qrCode && !this.poll && !this.chart) {
+            return undefined;
+        }
+
+        return <app-select-target-element slide={this.slide} qrCode={this.qrCode || this.poll} chart={this.chart || this.poll} code={this.code}
+                                          onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>;
     }
 
     private renderColorOptions() {

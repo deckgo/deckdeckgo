@@ -1,11 +1,12 @@
-import {Component, Element, Prop, State, h, EventEmitter} from '@stencil/core';
+import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/core';
 
 import {alertController} from '@ionic/core';
 
 import {EditAction} from '../../../utils/editor/edit-action';
-import {TargetElement} from '../../../utils/editor/target-element';
+import {ImageAction} from '../../../utils/editor/image-action';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+
 
 enum ImageSize {
     SMALL = '25%',
@@ -28,16 +29,18 @@ export class AppImage {
 
     @Element() el: HTMLElement;
 
+    @Event() private action: EventEmitter<ImageAction>;
+
+    @Event() private imgDidChange: EventEmitter<HTMLElement>;
+
     @Prop()
     selectedElement: HTMLElement;
 
     @Prop()
-    deckOrSlide: boolean = false;
+    slide: boolean = false;
 
     @Prop()
-    imgDidChange: EventEmitter<HTMLElement>;
-
-    private applyToAllDeck: boolean = false;
+    deck: boolean = false;
 
     private imageHistoryService: ImageHistoryService;
 
@@ -139,24 +142,16 @@ export class AppImage {
         });
     }
 
-    private async closePopoverWithoutResults() {
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss();
-    }
-
-    private async closePopover(action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile) {
-        const data = {
+    private async selectAction(action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile) {
+        const data: ImageAction = {
             action: action
         };
-
-        if (this.deckOrSlide) {
-            data['applyToAllDeck'] = this.applyToAllDeck;
-        }
 
         if (image) {
             data['image'] = image;
         }
 
-        await (this.el.closest('ion-popover') as HTMLIonModalElement).dismiss(data);
+        this.action.emit(data);
     }
 
     private selectImageFromHistory($event: CustomEvent): Promise<void> {
@@ -166,16 +161,10 @@ export class AppImage {
                 return;
             }
 
-            await this.closePopover(EditAction.ADD_IMAGE, $event.detail);
+            await this.selectAction(EditAction.ADD_IMAGE, $event.detail);
 
             resolve();
         });
-    }
-
-    private selectApplyToAllDeck($event: CustomEvent) {
-        if ($event) {
-            this.applyToAllDeck = $event.detail === TargetElement.DECK;
-        }
     }
 
     private async presentHistoryInfo() {
@@ -237,60 +226,50 @@ export class AppImage {
     }
 
     render() {
-        return [<ion-toolbar>
-            <h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2>
-            <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
-                <ion-icon name="close"></ion-icon>
-            </ion-router-link>
-        </ion-toolbar>,
-            <ion-list>
-                <app-select-target-element slide={this.deckOrSlide} deck={this.deckOrSlide}
-                                   onApplyTo={($event: CustomEvent) => this.selectApplyToAllDeck($event)}></app-select-target-element>
+        return <ion-list>
+            {this.renderImageSize()}
+            {this.renderImageAlignment()}
 
-                {this.renderImageSize()}
-                {this.renderImageAlignment()}
+            <ion-item class="action-button action-button-margin">
+                <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_PHOTOS)}
+                            color="primary">
+                    <ion-label class="ion-text-uppercase">Stock photo</ion-label>
+                </ion-button>
+            </ion-item>
 
-                <ion-item class="action-button action-button-margin">
-                    <ion-button shape="round" onClick={() => this.closePopover(EditAction.OPEN_PHOTOS)}
-                                color="primary">
-                        <ion-label class="ion-text-uppercase">Stock photo</ion-label>
-                    </ion-button>
-                </ion-item>
+            <ion-item class="action-button">
+                <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_GIFS)}
+                            color="secondary">
+                    <ion-label class="ion-text-uppercase">Gif</ion-label>
+                </ion-button>
+            </ion-item>
 
-                <ion-item class="action-button">
-                    <ion-button shape="round" onClick={() => this.closePopover(EditAction.OPEN_GIFS)}
-                                color="secondary">
-                        <ion-label class="ion-text-uppercase">Gif</ion-label>
-                    </ion-button>
-                </ion-item>
+            <ion-item class="action-button">
+                <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_CUSTOM)}
+                            color="tertiary">
+                    <ion-label class="ion-text-uppercase">Your images</ion-label>
+                </ion-button>
+            </ion-item>
 
-                <ion-item class="action-button">
-                    <ion-button shape="round" onClick={() => this.closePopover(EditAction.OPEN_CUSTOM)}
-                                color="tertiary">
-                        <ion-label class="ion-text-uppercase">Your images</ion-label>
-                    </ion-button>
-                </ion-item>
+            {this.renderDeleteAction()}
 
-                {this.renderDeleteAction()}
+            <ion-item-divider class="ion-padding-top ion-margin-top">
+                <ion-label>History</ion-label>
+                <button slot="end" class="info" onClick={() => this.presentHistoryInfo()}>
+                    <ion-icon name="help"></ion-icon>
+                </button>
+            </ion-item-divider>
 
-                <ion-item-divider class="ion-padding-top ion-margin-top">
-                    <ion-label>History</ion-label>
-                    <button slot="end" class="info" onClick={() => this.presentHistoryInfo()}>
-                        <ion-icon name="help"></ion-icon>
-                    </button>
-                </ion-item-divider>
-
-                {this.renderImagesHistory()}
-            </ion-list>
-        ];
+            {this.renderImagesHistory()}
+        </ion-list>;
     }
 
     private renderDeleteAction() {
-        if (!this.deckOrSlide) {
+        if (!this.deck && !this.slide) {
             return undefined;
         } else {
             return <ion-item class="action-button ion-margin-bottom">
-                <ion-button shape="round" onClick={() => this.closePopover(EditAction.DELETE_BACKGROUND)}
+                <ion-button shape="round" onClick={() => this.selectAction(EditAction.DELETE_BACKGROUND)}
                             fill="outline" class="delete">
                     <ion-label class="ion-text-uppercase">Delete background</ion-label>
                 </ion-button>
@@ -312,7 +291,7 @@ export class AppImage {
     }
 
     private renderImageSize() {
-        if (this.deckOrSlide) {
+        if (this.deck || this.slide) {
             return undefined;
         } else {
             return [
@@ -337,7 +316,7 @@ export class AppImage {
     }
 
     private renderImageAlignment() {
-        if (this.deckOrSlide) {
+        if (this.deck || this.slide) {
             return undefined;
         } else {
             return [

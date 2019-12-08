@@ -21,6 +21,9 @@ import {
   EditAction,
 } from './app/utils/editor/edit-action';
 import {
+  ImageAction,
+} from './app/utils/editor/image-action';
+import {
   TargetElement,
 } from './app/utils/editor/target-element';
 import {
@@ -130,13 +133,18 @@ export namespace Components {
   interface AppHelpAction {}
   interface AppHome {}
   interface AppImage {
-    'deckOrSlide': boolean;
-    'imgDidChange': EventEmitter<HTMLElement>;
+    'deck': boolean;
     'selectedElement': HTMLElement;
+    'slide': boolean;
   }
   interface AppImageColumns {
     'imagesEven': (UnsplashPhoto | TenorGif | StorageFile)[];
     'imagesOdd': (UnsplashPhoto | TenorGif | StorageFile)[];
+  }
+  interface AppImageSlide {
+    'deckOrSlide': boolean;
+    'imgDidChange': EventEmitter<HTMLElement>;
+    'selectedElement': HTMLElement;
   }
   interface AppLogo {}
   interface AppMenu {}
@@ -187,9 +195,10 @@ export namespace Components {
   }
   interface AppRoot {}
   interface AppSelectTargetElement {
+    'background': boolean;
     'chart': boolean;
     'code': boolean;
-    'deck': boolean;
+    'colorTarget': boolean;
     'qrCode': boolean;
     'slide': boolean;
   }
@@ -445,6 +454,12 @@ declare global {
   var HTMLAppImageColumnsElement: {
     prototype: HTMLAppImageColumnsElement;
     new (): HTMLAppImageColumnsElement;
+  };
+
+  interface HTMLAppImageSlideElement extends Components.AppImageSlide, HTMLStencilElement {}
+  var HTMLAppImageSlideElement: {
+    prototype: HTMLAppImageSlideElement;
+    new (): HTMLAppImageSlideElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
@@ -712,6 +727,7 @@ declare global {
     'app-home': HTMLAppHomeElement;
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
+    'app-image-slide': HTMLAppImageSlideElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-actions': HTMLAppMoreActionsElement;
@@ -802,7 +818,10 @@ declare namespace LocalJSX {
     'published'?: string;
   }
   interface AppDeckOptions {
-    'onDeckOptionsDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onSignIn'?: (event: CustomEvent<void>) => void;
   }
   interface AppDeleteDeckAction {
     'deck'?: Deck;
@@ -837,6 +856,7 @@ declare namespace LocalJSX {
     'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
+    'onSelectDeck'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideTo'?: (event: CustomEvent<number>) => void;
     'onToggleFullScreen'?: (event: CustomEvent<void>) => void;
@@ -849,7 +869,6 @@ declare namespace LocalJSX {
   interface AppEditorToolbar {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onNotesDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
@@ -877,14 +896,21 @@ declare namespace LocalJSX {
   interface AppHelpAction {}
   interface AppHome {}
   interface AppImage {
-    'deckOrSlide'?: boolean;
-    'imgDidChange'?: EventEmitter<HTMLElement>;
+    'deck'?: boolean;
+    'onAction'?: (event: CustomEvent<ImageAction>) => void;
+    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'selectedElement'?: HTMLElement;
+    'slide'?: boolean;
   }
   interface AppImageColumns {
     'imagesEven'?: (UnsplashPhoto | TenorGif | StorageFile)[];
     'imagesOdd'?: (UnsplashPhoto | TenorGif | StorageFile)[];
     'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
+  }
+  interface AppImageSlide {
+    'deckOrSlide'?: boolean;
+    'imgDidChange'?: EventEmitter<HTMLElement>;
+    'selectedElement'?: HTMLElement;
   }
   interface AppLogo {}
   interface AppMenu {}
@@ -939,9 +965,10 @@ declare namespace LocalJSX {
   }
   interface AppRoot {}
   interface AppSelectTargetElement {
+    'background'?: boolean;
     'chart'?: boolean;
     'code'?: boolean;
-    'deck'?: boolean;
+    'colorTarget'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
     'slide'?: boolean;
@@ -1017,6 +1044,7 @@ declare namespace LocalJSX {
     'app-home': AppHome;
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
+    'app-image-slide': AppImageSlide;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-more-actions': AppMoreActions;
@@ -1101,6 +1129,7 @@ declare module "@stencil/core" {
       'app-home': LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
+      'app-image-slide': LocalJSX.AppImageSlide & JSXBase.HTMLAttributes<HTMLAppImageSlideElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-menu': LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
       'app-more-actions': LocalJSX.AppMoreActions & JSXBase.HTMLAttributes<HTMLAppMoreActionsElement>;

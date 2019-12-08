@@ -12,7 +12,7 @@ export class EditorEventsHandler {
                 deck.addEventListener('keyup', this.onKeyUp, false);
             }
 
-            this.el.addEventListener('blockSlide', this.onBlockSlide, false);
+            document.addEventListener('blockSlide', this.onBlockSlide, false);
             document.addEventListener('keydown', this.onKeyDown, false);
 
             resolve();
@@ -26,7 +26,7 @@ export class EditorEventsHandler {
             deck.removeEventListener('keyup', this.onKeyUp, true);
         }
 
-        this.el.removeEventListener('blockSlide', this.onBlockSlide, true);
+        document.removeEventListener('blockSlide', this.onBlockSlide, true);
         document.removeEventListener('keydown', this.onKeyDown, true);
     }
 

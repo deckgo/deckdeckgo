@@ -68,7 +68,6 @@ export class DeckEventsHandler {
             this.el = el;
 
             this.el.addEventListener('input', this.onInputChange, false);
-            this.el.addEventListener('deckDidChange', this.onDeckChange, false);
             this.el.addEventListener('slideDidChange', this.onSlideChange, false);
             this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
             this.el.addEventListener('slidesDidLoad', this.onSlidesDidLoad, false);
@@ -79,7 +78,7 @@ export class DeckEventsHandler {
             this.el.addEventListener('notesDidChange', this.onSlideChange, false);
 
             if (document) {
-                document.addEventListener('deckOptionsDidChange', this.onDeckChange, false);
+                document.addEventListener('deckDidChange', this.onDeckChange, false);
             }
 
             this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
@@ -98,7 +97,6 @@ export class DeckEventsHandler {
 
     destroy() {
         this.el.removeEventListener('input', this.onInputChange, true);
-        this.el.removeEventListener('deckDidChange', this.onDeckChange, true);
         this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
         this.el.removeEventListener('slidesDidLoad', this.onSlidesDidLoad, true);
@@ -109,7 +107,7 @@ export class DeckEventsHandler {
         this.el.removeEventListener('notesDidChange', this.onSlideChange, true);
 
         if (document) {
-            document.removeEventListener('deckOptionsDidChange', this.onDeckChange, true);
+            document.removeEventListener('deckDidChange', this.onDeckChange, true);
         }
 
         if (this.updateSlideSubscription) {
@@ -135,6 +133,9 @@ export class DeckEventsHandler {
     };
 
     private onDeckChange = async ($event: CustomEvent) => {
+
+        console.log('onDeckChange');
+
         if (!$event || !$event.detail) {
             return;
         }
