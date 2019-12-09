@@ -9,6 +9,8 @@ import {isFullscreen, isMobile, debounce, isIOS} from '@deckdeckgo/utils';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
+import {generateRandomStyleColors} from '../../../utils/editor/random-palette';
+
 import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
 import {Deck} from '../../../models/data/deck';
@@ -203,9 +205,11 @@ export class AppEditor {
                 return;
             }
 
-            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE, true);
+            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
 
             await this.concatSlide(slide);
+
+            await this.initRandomDeckStyle();
 
             resolve();
         });
@@ -228,6 +232,10 @@ export class AppEditor {
 
             resolve();
         });
+    }
+
+    private async initRandomDeckStyle() {
+        this.style = await generateRandomStyleColors();
     }
 
     private initDeckStyle(): Promise<void> {
