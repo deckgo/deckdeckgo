@@ -77,7 +77,11 @@ export namespace Components {
     'deckName': string;
     'published': string;
   }
-  interface AppDeckOptions {}
+  interface AppDeckOptions {
+    'blockSlide': EventEmitter<boolean>;
+    'deckDidChange': EventEmitter<HTMLElement>;
+    'signIn': EventEmitter<void>;
+  }
   interface AppDeleteDeckAction {
     'deck': Deck;
   }
@@ -818,10 +822,10 @@ declare namespace LocalJSX {
     'published'?: string;
   }
   interface AppDeckOptions {
-    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
-    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'blockSlide'?: EventEmitter<boolean>;
+    'deckDidChange'?: EventEmitter<HTMLElement>;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-    'onSignIn'?: (event: CustomEvent<void>) => void;
+    'signIn'?: EventEmitter<void>;
   }
   interface AppDeleteDeckAction {
     'deck'?: Deck;
@@ -855,6 +859,7 @@ declare namespace LocalJSX {
     'onAddSlide'?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
     'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
     'onSelectDeck'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;

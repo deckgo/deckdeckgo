@@ -50,6 +50,8 @@ export class AppEditorActions {
 
     @Event() private selectDeck: EventEmitter<void>;
 
+    @Event() private deckDidChange: EventEmitter<HTMLElement>;
+
     @State()
     private fullscreenEnable: boolean = true;
 
@@ -325,6 +327,11 @@ export class AppEditorActions {
 
         const popover: HTMLIonPopoverElement = await popoverController.create({
             component: 'app-deck-options',
+            componentProps: {
+                signIn: this.signIn,
+                blockSlide: this.blockSlide,
+                deckDidChange: this.deckDidChange
+            },
             mode: 'md',
             cssClass: 'popover-menu popover-menu-wide'
         });
@@ -336,7 +343,7 @@ export class AppEditorActions {
         return <ion-toolbar>
             <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
                 <app-editor-busy-action iconName="add"
-                    onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+                                        onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
                     <ion-label>Add slide</ion-label>
                 </app-editor-busy-action>
 
@@ -357,7 +364,7 @@ export class AppEditorActions {
                 </ion-tab-button>
 
                 <app-editor-busy-action iconName="options" class="wider-devices"
-                    onActionReady={() => this.openDeckOptions()}>
+                                        onActionReady={() => this.openDeckOptions()}>
                     <ion-label>Options</ion-label>
                 </app-editor-busy-action>
 
@@ -386,7 +393,8 @@ export class AppEditorActions {
 
     private renderFullscreenButton() {
         if (this.fullscreenEnable) {
-            return <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices" mode="md">
+            return <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices"
+                                   mode="md">
                 {this.renderFullscreen()}
             </ion-tab-button>;
         } else {

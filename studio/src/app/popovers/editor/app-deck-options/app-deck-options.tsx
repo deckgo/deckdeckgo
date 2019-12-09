@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {isIPad} from '@deckdeckgo/utils';
 
@@ -14,6 +14,15 @@ export class AppDeck {
 
     @Element() el: HTMLElement;
 
+    @Prop()
+    signIn: EventEmitter<void>;
+
+    @Prop()
+    blockSlide: EventEmitter<boolean>;
+
+    @Prop()
+    deckDidChange: EventEmitter<HTMLElement>;
+
     @State()
     private applyToTargetElement: TargetElement = TargetElement.COLOR;
 
@@ -25,13 +34,7 @@ export class AppDeck {
 
     private imageHelper: ImageHelper;
 
-    @Event() private blockSlide: EventEmitter<boolean>;
-
-    @Event() private deckDidChange: EventEmitter<HTMLElement>;
-
-    @Event() signIn: EventEmitter<void>;
-
-    @Event() imgDidChange: EventEmitter<HTMLElement>;
+    @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
     async componentWillLoad() {
         this.moreColors = !isIPad();
