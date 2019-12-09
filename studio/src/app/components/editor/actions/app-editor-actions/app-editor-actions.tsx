@@ -283,8 +283,8 @@ export class AppEditorActions {
                     this.openShare.emit();
                 } else if (detail.data.action === MoreAction.PUBLISH) {
                     this.actionPublish.emit();
-                } else if (detail.data.action === MoreAction.OPTIONS) {
-                    await this.openDeckOptions()
+                } else if (detail.data.action === MoreAction.STYLE) {
+                    await this.openDeckStyle()
                 }
             }
         });
@@ -322,11 +322,11 @@ export class AppEditorActions {
         await popover.present();
     }
 
-    async openDeckOptions() {
+    async openDeckStyle() {
         this.selectDeck.emit();
 
         const popover: HTMLIonPopoverElement = await popoverController.create({
-            component: 'app-deck-options',
+            component: 'app-deck-style',
             componentProps: {
                 signIn: this.signIn,
                 blockSlide: this.blockSlide,
@@ -363,9 +363,9 @@ export class AppEditorActions {
                     <ion-label>Slides</ion-label>
                 </ion-tab-button>
 
-                <app-editor-busy-action iconName="options" class="wider-devices"
-                                        onActionReady={() => this.openDeckOptions()}>
-                    <ion-label>Options</ion-label>
+                <app-editor-busy-action iconName="brush" class="wider-devices"
+                                        onActionReady={() => this.openDeckStyle()}>
+                    <ion-label>Style</ion-label>
                 </app-editor-busy-action>
 
                 {this.renderFullscreenButton()}

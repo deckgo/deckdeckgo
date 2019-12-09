@@ -4,5 +4,5 @@ export enum MoreAction {
     REMOTE,
     SHARE,
     PUBLISH,
-    OPTIONS
+    STYLE
 }

@@ -7,8 +7,8 @@ import {ImageAction} from '../../../utils/editor/image-action';
 import {ImageHelper} from '../../../helpers/editor/image.helper';
 
 @Component({
-    tag: 'app-deck-options',
-    styleUrl: 'app-deck-options.scss'
+    tag: 'app-deck-style',
+    styleUrl: 'app-deck-style.scss'
 })
 export class AppDeck {
 
@@ -78,7 +78,7 @@ export class AppDeck {
 
     render() {
         return [<ion-toolbar>
-            <h2>Deck options</h2>
+            <h2>Deck style</h2>
             <ion-router-link slot="end" onClick={() => this.closePopover()}>
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>

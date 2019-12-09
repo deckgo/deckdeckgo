@@ -77,7 +77,7 @@ export namespace Components {
     'deckName': string;
     'published': string;
   }
-  interface AppDeckOptions {
+  interface AppDeckStyle {
     'blockSlide': EventEmitter<boolean>;
     'deckDidChange': EventEmitter<HTMLElement>;
     'signIn': EventEmitter<void>;
@@ -322,10 +322,10 @@ declare global {
     new (): HTMLAppDeckDeleteElement;
   };
 
-  interface HTMLAppDeckOptionsElement extends Components.AppDeckOptions, HTMLStencilElement {}
-  var HTMLAppDeckOptionsElement: {
-    prototype: HTMLAppDeckOptionsElement;
-    new (): HTMLAppDeckOptionsElement;
+  interface HTMLAppDeckStyleElement extends Components.AppDeckStyle, HTMLStencilElement {}
+  var HTMLAppDeckStyleElement: {
+    prototype: HTMLAppDeckStyleElement;
+    new (): HTMLAppDeckStyleElement;
   };
 
   interface HTMLAppDeleteDeckActionElement extends Components.AppDeleteDeckAction, HTMLStencilElement {}
@@ -708,7 +708,7 @@ declare global {
     'app-custom-images': HTMLAppCustomImagesElement;
     'app-dashboard': HTMLAppDashboardElement;
     'app-deck-delete': HTMLAppDeckDeleteElement;
-    'app-deck-options': HTMLAppDeckOptionsElement;
+    'app-deck-style': HTMLAppDeckStyleElement;
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-edit-slide': HTMLAppEditSlideElement;
@@ -821,7 +821,7 @@ declare namespace LocalJSX {
     'deckName'?: string;
     'published'?: string;
   }
-  interface AppDeckOptions {
+  interface AppDeckStyle {
     'blockSlide'?: EventEmitter<boolean>;
     'deckDidChange'?: EventEmitter<HTMLElement>;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
@@ -1026,7 +1026,7 @@ declare namespace LocalJSX {
     'app-custom-images': AppCustomImages;
     'app-dashboard': AppDashboard;
     'app-deck-delete': AppDeckDelete;
-    'app-deck-options': AppDeckOptions;
+    'app-deck-style': AppDeckStyle;
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
     'app-edit-slide': AppEditSlide;
@@ -1111,7 +1111,7 @@ declare module "@stencil/core" {
       'app-custom-images': LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
       'app-dashboard': LocalJSX.AppDashboard & JSXBase.HTMLAttributes<HTMLAppDashboardElement>;
       'app-deck-delete': LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
-      'app-deck-options': LocalJSX.AppDeckOptions & JSXBase.HTMLAttributes<HTMLAppDeckOptionsElement>;
+      'app-deck-style': LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
       'app-delete-deck-action': LocalJSX.AppDeleteDeckAction & JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement>;
       'app-developer': LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
       'app-edit-slide': LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
