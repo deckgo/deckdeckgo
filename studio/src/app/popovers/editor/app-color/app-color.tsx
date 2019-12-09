@@ -87,7 +87,7 @@ export class AppColor {
 
     render() {
         return [<ion-toolbar>
-            <h2>Color</h2>
+            <h2>{this.slide ? 'Slide colors' : 'Colors'}</h2>
             <ion-router-link slot="end" onClick={() => this.closePopover()}>
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>

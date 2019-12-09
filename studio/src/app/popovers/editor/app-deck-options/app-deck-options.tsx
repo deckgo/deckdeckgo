@@ -75,7 +75,7 @@ export class AppDeck {
 
     render() {
         return [<ion-toolbar>
-            <h2>Options</h2>
+            <h2>Deck options</h2>
             <ion-router-link slot="end" onClick={() => this.closePopover()}>
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>

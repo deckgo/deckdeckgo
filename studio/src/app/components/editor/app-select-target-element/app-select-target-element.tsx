@@ -94,7 +94,7 @@ export class AppSelectTargetElement {
     private renderColor() {
         if (this.colorTarget) {
             return <ion-segment-button value={TargetElement.COLOR} mode="md" checked={true}>
-                <ion-label>Color</ion-label>
+                <ion-label>Colors</ion-label>
             </ion-segment-button>;
         } else {
             return undefined;

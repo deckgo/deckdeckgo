@@ -37,7 +37,7 @@ export class AppImageSlide {
 
     render() {
         return [<ion-toolbar>
-            <h2>{this.deckOrSlide ? 'Background' : 'Image'}</h2>
+            <h2>{this.deckOrSlide ? 'Slide background' : 'Image'}</h2>
             <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
