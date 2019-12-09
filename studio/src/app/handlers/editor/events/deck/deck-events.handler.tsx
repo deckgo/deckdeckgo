@@ -133,9 +133,6 @@ export class DeckEventsHandler {
     };
 
     private onDeckChange = async ($event: CustomEvent) => {
-
-        console.log('onDeckChange');
-
         if (!$event || !$event.detail) {
             return;
         }

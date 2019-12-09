@@ -854,7 +854,7 @@ export class AppEditorToolbar {
             component: 'app-image-slide',
             componentProps: {
                 selectedElement: this.selectedElement,
-                deckOrSlide: this.slide,
+                slide: this.slide,
                 imgDidChange: this.imgDidChange
             },
             mode: 'md',

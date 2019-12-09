@@ -142,9 +142,9 @@ export namespace Components {
     'imagesOdd': (UnsplashPhoto | TenorGif | StorageFile)[];
   }
   interface AppImageSlide {
-    'deckOrSlide': boolean;
     'imgDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
+    'slide': boolean;
   }
   interface AppLogo {}
   interface AppMenu {}
@@ -908,9 +908,9 @@ declare namespace LocalJSX {
     'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
   }
   interface AppImageSlide {
-    'deckOrSlide'?: boolean;
     'imgDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
+    'slide'?: boolean;
   }
   interface AppLogo {}
   interface AppMenu {}

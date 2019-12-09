@@ -14,7 +14,7 @@ export class AppImageSlide {
     selectedElement: HTMLElement;
 
     @Prop()
-    deckOrSlide: boolean = false;
+    slide: boolean = false;
 
     @Prop()
     imgDidChange: EventEmitter<HTMLElement>;
@@ -37,12 +37,12 @@ export class AppImageSlide {
 
     render() {
         return [<ion-toolbar>
-            <h2>{this.deckOrSlide ? 'Slide background' : 'Image'}</h2>
+            <h2>{this.slide ? 'Slide background' : 'Image'}</h2>
             <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
-            <app-image selectedElement={this.selectedElement} slide={this.deckOrSlide}
+            <app-image selectedElement={this.selectedElement} slide={this.slide}
                              onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}
                              onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>
         ];
