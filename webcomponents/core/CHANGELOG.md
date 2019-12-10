@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-3"></a>
+# 1.0.0-rc.3-3 (2019-12-10)
+
+### Features
+
+* add and inherit a CSS variable --slide-transition
+
 <a name="1.0.0-rc.3-2"></a>
 # 1.0.0-rc.3-2 (2019-12-10)
 
