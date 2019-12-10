@@ -7,7 +7,6 @@ app-deck-transition {
 
     div.item {
       border-radius: 8px;
-      border: 1px solid var(--ion-color-primary);
       margin: 8px 0;
       width: calc(100% - 32px);
       height: 7rem;
@@ -15,6 +14,32 @@ app-deck-transition {
       display: block;
       overflow: hidden;
       position: relative;
+
+      &.slide {
+        border: 1px solid var(--ion-color-primary);
+      }
+
+      &.fade {
+        border: 1px solid var(--ion-color-secondary);
+      }
+
+      &.none {
+        border: 1px solid var(--ion-color-tertiary);
+      }
+
+      &.selected {
+        &.slide {
+          box-shadow: 0 0 8px 4px rgba(var(--ion-color-primary-rgb), 0.4);
+        }
+
+        &.fade {
+          box-shadow: 0 0 8px 4px rgba(var(--ion-color-secondary-rgb), 0.4);
+        }
+
+        &.none {
+          box-shadow: 0 0 8px 4px rgba(var(--ion-color-tertiary-rgb), 0.4);
+        }
+      }
 
       deckgo-deck {
         --pager-display: none;
