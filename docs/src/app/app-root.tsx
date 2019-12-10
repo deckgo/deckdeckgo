@@ -58,7 +58,8 @@ export class AppRoot {
           <ion-route url="/components/lazy-img" component="app-components-lazy-img"/>
           <ion-route url="/components/color" component="app-components-color"/>
 
-          <ion-route url="/deck" component="app-deck-navigation"/>
+          <ion-route url="/deck" component="app-deck-transition"/>
+          <ion-route url="/deck/transition" component="app-deck-transition"/>
           <ion-route url="/deck/navigation" component="app-deck-navigation"/>
           <ion-route url="/deck/pager" component="app-deck-pager"/>
           <ion-route url="/deck/size" component="app-deck-size"/>
@@ -135,6 +136,7 @@ export class AppRoot {
                   <ion-item-divider>
                     <ion-label>Deck</ion-label>
                   </ion-item-divider>
+                  <ion-item detail={false} href="/deck/transition" routerDirection="forward"><ion-label>Transition</ion-label></ion-item>
                   <ion-item detail={false} href="/deck/navigation" routerDirection="forward"><ion-label>Navigation</ion-label></ion-item>
                   <ion-item detail={false} href="/deck/pager" routerDirection="forward"><ion-label>Pager</ion-label></ion-item>
                   <ion-item detail={false} href="/deck/size" routerDirection="forward"><ion-label>Size</ion-label></ion-item>
