@@ -71,7 +71,7 @@ export class DeckdeckgoDeck {
   @State()
   private pagerColor: PagerColor;
 
-  @Prop() transition: 'slide' | 'fade' | 'none' = 'slide';
+  @Prop({reflect: true}) transition: 'slide' | 'fade' | 'none' = 'slide';
 
   async componentWillLoad() {
     await this.initRtl();
