@@ -41,6 +41,27 @@ export class AppDeckTransition {
 <td><code>slide</code></td>
 </tr>
 </tbody></table>
+<h4 id="app-deck-transition-styling">Styling</h4>
+<p>It is also possible to style the <code>fade</code> transition using the following CSS4 variables:</p>
+<table>
+<thead>
+<tr>
+<th>CSS4 variable</th>
+<th>Default</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>--transition-fade-duration</td>
+<td>500ms</td>
+<td>The duration of the animation.</td>
+</tr>
+<tr>
+<td>--transition-fade-hidden-opacity</td>
+<td>0.4</td>
+<td>The base opacity when the slide is not displayed.</td>
+</tr>
+</tbody></table>
 </main>
 
         <app-footer></app-footer>
