@@ -9,7 +9,7 @@ import {TargetElement} from '../../../utils/editor/target-element';
 export class AppSelectTargetElement {
 
     @Prop()
-    deckOrSlide: boolean = false;
+    slide: boolean = false;
 
     @Prop()
     qrCode: boolean = false;
@@ -19,6 +19,13 @@ export class AppSelectTargetElement {
 
     @Prop()
     code: boolean = false;
+
+    // color is a reserved prop word
+    @Prop()
+    colorTarget: boolean = false;
+
+    @Prop()
+    background: boolean = false;
 
     @Event()
     applyTo: EventEmitter<TargetElement>;
@@ -30,7 +37,7 @@ export class AppSelectTargetElement {
     }
 
     render() {
-        if (!this.deckOrSlide) {
+        if (!this.colorTarget && !this.slide) {
             if (!this.code) {
                 return undefined;
             }
@@ -43,16 +50,13 @@ export class AppSelectTargetElement {
                     <ion-label>Section</ion-label>
                 </ion-segment-button>
             </ion-segment>
-        } else{
+        } else {
             return <ion-segment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
                 {this.renderQRCode()}
                 {this.renderChart()}
-                <ion-segment-button value={TargetElement.SLIDE} checked={!this.qrCode} mode="md">
-                    <ion-label>Slide</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value={TargetElement.DECK} mode="md">
-                    <ion-label>Deck</ion-label>
-                </ion-segment-button>
+                {this.renderSlide()}
+                {this.renderColor()}
+                {this.renderImage()}
             </ion-segment>
         }
     }
@@ -72,6 +76,36 @@ export class AppSelectTargetElement {
             return <ion-segment-button value={TargetElement.CHART} checked={this.chart} mode="md">
                 <ion-label>Chart</ion-label>
             </ion-segment-button>
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderSlide() {
+        if (this.slide) {
+            return <ion-segment-button value={TargetElement.SLIDE} checked={!this.qrCode && !this.chart} mode="md">
+                <ion-label>Slide</ion-label>
+            </ion-segment-button>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderColor() {
+        if (this.colorTarget) {
+            return <ion-segment-button value={TargetElement.COLOR} mode="md" checked={true}>
+                <ion-label>Colors</ion-label>
+            </ion-segment-button>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderImage() {
+        if (this.background) {
+            return <ion-segment-button value={TargetElement.BACKGROUND} mode="md">
+                <ion-label>Background</ion-label>
+            </ion-segment-button>;
         } else {
             return undefined;
         }

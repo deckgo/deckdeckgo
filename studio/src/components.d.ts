@@ -21,6 +21,9 @@ import {
   EditAction,
 } from './app/utils/editor/edit-action';
 import {
+  ImageAction,
+} from './app/utils/editor/image-action';
+import {
   TargetElement,
 } from './app/utils/editor/target-element';
 import {
@@ -32,7 +35,6 @@ import {
 
 export namespace Components {
   interface AppAbout {}
-  interface AppAddSlideAction {}
   interface AppAvatar {
     'ariaLabel': string;
     'src': string;
@@ -42,8 +44,8 @@ export namespace Components {
     'selectedElement': HTMLElement;
   }
   interface AppColor {
-    'deckOrSlide': boolean;
     'selectedElement': HTMLElement;
+    'slide': boolean;
   }
   interface AppColorChart {
     'initCurrentColors': () => Promise<void>;
@@ -54,17 +56,17 @@ export namespace Components {
     'moreColors': boolean;
     'selectedElement': HTMLElement;
   }
-  interface AppColorDeckSlide {
-    'applyToAllDeck': boolean;
-    'deckOrSlide': boolean;
-    'initCurrentColors': () => Promise<void>;
-    'moreColors': boolean;
-    'selectedElement': HTMLElement;
-  }
   interface AppColorQrcode {
     'initCurrentColors': () => Promise<void>;
     'moreColors': boolean;
     'selectedElement': HTMLElement;
+  }
+  interface AppColorTextBackground {
+    'deck': boolean;
+    'initCurrentColors': () => Promise<void>;
+    'moreColors': boolean;
+    'selectedElement': HTMLElement;
+    'slide': boolean;
   }
   interface AppContact {}
   interface AppCreateSlide {}
@@ -74,6 +76,11 @@ export namespace Components {
   interface AppDeckDelete {
     'deckName': string;
     'published': string;
+  }
+  interface AppDeckStyle {
+    'blockSlide': EventEmitter<boolean>;
+    'deckDidChange': EventEmitter<HTMLElement>;
+    'signIn': EventEmitter<void>;
   }
   interface AppDeleteDeckAction {
     'deck': Deck;
@@ -102,6 +109,9 @@ export namespace Components {
     'hideFooterActions': boolean;
     'slides': JSX.IntrinsicElements[];
   }
+  interface AppEditorBusyAction {
+    'iconName': string;
+  }
   interface AppEditorToolbar {
     'blurSelectedElement': () => Promise<void>;
     'hideToolbar': () => Promise<void>;
@@ -127,13 +137,18 @@ export namespace Components {
   interface AppHelpAction {}
   interface AppHome {}
   interface AppImage {
-    'deckOrSlide': boolean;
-    'imgDidChange': EventEmitter<HTMLElement>;
+    'deck': boolean;
     'selectedElement': HTMLElement;
+    'slide': boolean;
   }
   interface AppImageColumns {
     'imagesEven': (UnsplashPhoto | TenorGif | StorageFile)[];
     'imagesOdd': (UnsplashPhoto | TenorGif | StorageFile)[];
+  }
+  interface AppImageSlide {
+    'imgDidChange': EventEmitter<HTMLElement>;
+    'selectedElement': HTMLElement;
+    'slide': boolean;
   }
   interface AppLogo {}
   interface AppMenu {}
@@ -184,10 +199,12 @@ export namespace Components {
   }
   interface AppRoot {}
   interface AppSelectTargetElement {
+    'background': boolean;
     'chart': boolean;
     'code': boolean;
-    'deckOrSlide': boolean;
+    'colorTarget': boolean;
     'qrCode': boolean;
+    'slide': boolean;
   }
   interface AppServices {}
   interface AppSettings {}
@@ -227,12 +244,6 @@ declare global {
     new (): HTMLAppAboutElement;
   };
 
-  interface HTMLAppAddSlideActionElement extends Components.AppAddSlideAction, HTMLStencilElement {}
-  var HTMLAppAddSlideActionElement: {
-    prototype: HTMLAppAddSlideActionElement;
-    new (): HTMLAppAddSlideActionElement;
-  };
-
   interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {}
   var HTMLAppAvatarElement: {
     prototype: HTMLAppAvatarElement;
@@ -263,16 +274,16 @@ declare global {
     new (): HTMLAppColorCodeElement;
   };
 
-  interface HTMLAppColorDeckSlideElement extends Components.AppColorDeckSlide, HTMLStencilElement {}
-  var HTMLAppColorDeckSlideElement: {
-    prototype: HTMLAppColorDeckSlideElement;
-    new (): HTMLAppColorDeckSlideElement;
-  };
-
   interface HTMLAppColorQrcodeElement extends Components.AppColorQrcode, HTMLStencilElement {}
   var HTMLAppColorQrcodeElement: {
     prototype: HTMLAppColorQrcodeElement;
     new (): HTMLAppColorQrcodeElement;
+  };
+
+  interface HTMLAppColorTextBackgroundElement extends Components.AppColorTextBackground, HTMLStencilElement {}
+  var HTMLAppColorTextBackgroundElement: {
+    prototype: HTMLAppColorTextBackgroundElement;
+    new (): HTMLAppColorTextBackgroundElement;
   };
 
   interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {}
@@ -309,6 +320,12 @@ declare global {
   var HTMLAppDeckDeleteElement: {
     prototype: HTMLAppDeckDeleteElement;
     new (): HTMLAppDeckDeleteElement;
+  };
+
+  interface HTMLAppDeckStyleElement extends Components.AppDeckStyle, HTMLStencilElement {}
+  var HTMLAppDeckStyleElement: {
+    prototype: HTMLAppDeckStyleElement;
+    new (): HTMLAppDeckStyleElement;
   };
 
   interface HTMLAppDeleteDeckActionElement extends Components.AppDeleteDeckAction, HTMLStencilElement {}
@@ -351,6 +368,12 @@ declare global {
   var HTMLAppEditorActionsElement: {
     prototype: HTMLAppEditorActionsElement;
     new (): HTMLAppEditorActionsElement;
+  };
+
+  interface HTMLAppEditorBusyActionElement extends Components.AppEditorBusyAction, HTMLStencilElement {}
+  var HTMLAppEditorBusyActionElement: {
+    prototype: HTMLAppEditorBusyActionElement;
+    new (): HTMLAppEditorBusyActionElement;
   };
 
   interface HTMLAppEditorToolbarElement extends Components.AppEditorToolbar, HTMLStencilElement {}
@@ -435,6 +458,12 @@ declare global {
   var HTMLAppImageColumnsElement: {
     prototype: HTMLAppImageColumnsElement;
     new (): HTMLAppImageColumnsElement;
+  };
+
+  interface HTMLAppImageSlideElement extends Components.AppImageSlide, HTMLStencilElement {}
+  var HTMLAppImageSlideElement: {
+    prototype: HTMLAppImageSlideElement;
+    new (): HTMLAppImageSlideElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
@@ -666,20 +695,20 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'app-about': HTMLAppAboutElement;
-    'app-add-slide-action': HTMLAppAddSlideActionElement;
     'app-avatar': HTMLAppAvatarElement;
     'app-code': HTMLAppCodeElement;
     'app-color': HTMLAppColorElement;
     'app-color-chart': HTMLAppColorChartElement;
     'app-color-code': HTMLAppColorCodeElement;
-    'app-color-deck-slide': HTMLAppColorDeckSlideElement;
     'app-color-qrcode': HTMLAppColorQrcodeElement;
+    'app-color-text-background': HTMLAppColorTextBackgroundElement;
     'app-contact': HTMLAppContactElement;
     'app-create-slide': HTMLAppCreateSlideElement;
     'app-custom-data': HTMLAppCustomDataElement;
     'app-custom-images': HTMLAppCustomImagesElement;
     'app-dashboard': HTMLAppDashboardElement;
     'app-deck-delete': HTMLAppDeckDeleteElement;
+    'app-deck-style': HTMLAppDeckStyleElement;
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-edit-slide': HTMLAppEditSlideElement;
@@ -687,6 +716,7 @@ declare global {
     'app-edit-slide-qrcode': HTMLAppEditSlideQrcodeElement;
     'app-editor': HTMLAppEditorElement;
     'app-editor-actions': HTMLAppEditorActionsElement;
+    'app-editor-busy-action': HTMLAppEditorBusyActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-element-delete': HTMLAppElementDeleteElement;
     'app-faq': HTMLAppFaqElement;
@@ -701,6 +731,7 @@ declare global {
     'app-home': HTMLAppHomeElement;
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
+    'app-image-slide': HTMLAppImageSlideElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-actions': HTMLAppMoreActionsElement;
@@ -744,9 +775,6 @@ declare global {
 
 declare namespace LocalJSX {
   interface AppAbout {}
-  interface AppAddSlideAction {
-    'onActionOpenSlideAdd'?: (event: CustomEvent<UIEvent>) => void;
-  }
   interface AppAvatar {
     'ariaLabel'?: string;
     'src'?: string;
@@ -756,9 +784,9 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
   }
   interface AppColor {
-    'deckOrSlide'?: boolean;
     'onColorDidChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
+    'slide'?: boolean;
   }
   interface AppColorChart {
     'moreColors'?: boolean;
@@ -770,17 +798,17 @@ declare namespace LocalJSX {
     'onColorChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
   }
-  interface AppColorDeckSlide {
-    'applyToAllDeck'?: boolean;
-    'deckOrSlide'?: boolean;
-    'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
-    'selectedElement'?: HTMLElement;
-  }
   interface AppColorQrcode {
     'moreColors'?: boolean;
     'onColorChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
+  }
+  interface AppColorTextBackground {
+    'deck'?: boolean;
+    'moreColors'?: boolean;
+    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'selectedElement'?: HTMLElement;
+    'slide'?: boolean;
   }
   interface AppContact {}
   interface AppCreateSlide {
@@ -792,6 +820,12 @@ declare namespace LocalJSX {
   interface AppDeckDelete {
     'deckName'?: string;
     'published'?: string;
+  }
+  interface AppDeckStyle {
+    'blockSlide'?: EventEmitter<boolean>;
+    'deckDidChange'?: EventEmitter<HTMLElement>;
+    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'signIn'?: EventEmitter<void>;
   }
   interface AppDeleteDeckAction {
     'deck'?: Deck;
@@ -825,16 +859,21 @@ declare namespace LocalJSX {
     'onAddSlide'?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
     'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
+    'onSelectDeck'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideTo'?: (event: CustomEvent<number>) => void;
     'onToggleFullScreen'?: (event: CustomEvent<void>) => void;
     'slides'?: JSX.IntrinsicElements[];
   }
+  interface AppEditorBusyAction {
+    'iconName'?: string;
+    'onActionReady'?: (event: CustomEvent<UIEvent>) => void;
+  }
   interface AppEditorToolbar {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onNotesDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
@@ -862,14 +901,21 @@ declare namespace LocalJSX {
   interface AppHelpAction {}
   interface AppHome {}
   interface AppImage {
-    'deckOrSlide'?: boolean;
-    'imgDidChange'?: EventEmitter<HTMLElement>;
+    'deck'?: boolean;
+    'onAction'?: (event: CustomEvent<ImageAction>) => void;
+    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'selectedElement'?: HTMLElement;
+    'slide'?: boolean;
   }
   interface AppImageColumns {
     'imagesEven'?: (UnsplashPhoto | TenorGif | StorageFile)[];
     'imagesOdd'?: (UnsplashPhoto | TenorGif | StorageFile)[];
     'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
+  }
+  interface AppImageSlide {
+    'imgDidChange'?: EventEmitter<HTMLElement>;
+    'selectedElement'?: HTMLElement;
+    'slide'?: boolean;
   }
   interface AppLogo {}
   interface AppMenu {}
@@ -924,11 +970,13 @@ declare namespace LocalJSX {
   }
   interface AppRoot {}
   interface AppSelectTargetElement {
+    'background'?: boolean;
     'chart'?: boolean;
     'code'?: boolean;
-    'deckOrSlide'?: boolean;
+    'colorTarget'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
+    'slide'?: boolean;
   }
   interface AppServices {}
   interface AppSettings {}
@@ -965,20 +1013,20 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'app-about': AppAbout;
-    'app-add-slide-action': AppAddSlideAction;
     'app-avatar': AppAvatar;
     'app-code': AppCode;
     'app-color': AppColor;
     'app-color-chart': AppColorChart;
     'app-color-code': AppColorCode;
-    'app-color-deck-slide': AppColorDeckSlide;
     'app-color-qrcode': AppColorQrcode;
+    'app-color-text-background': AppColorTextBackground;
     'app-contact': AppContact;
     'app-create-slide': AppCreateSlide;
     'app-custom-data': AppCustomData;
     'app-custom-images': AppCustomImages;
     'app-dashboard': AppDashboard;
     'app-deck-delete': AppDeckDelete;
+    'app-deck-style': AppDeckStyle;
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
     'app-edit-slide': AppEditSlide;
@@ -986,6 +1034,7 @@ declare namespace LocalJSX {
     'app-edit-slide-qrcode': AppEditSlideQrcode;
     'app-editor': AppEditor;
     'app-editor-actions': AppEditorActions;
+    'app-editor-busy-action': AppEditorBusyAction;
     'app-editor-toolbar': AppEditorToolbar;
     'app-element-delete': AppElementDelete;
     'app-faq': AppFaq;
@@ -1000,6 +1049,7 @@ declare namespace LocalJSX {
     'app-home': AppHome;
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
+    'app-image-slide': AppImageSlide;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-more-actions': AppMoreActions;
@@ -1048,20 +1098,20 @@ declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'app-about': LocalJSX.AppAbout & JSXBase.HTMLAttributes<HTMLAppAboutElement>;
-      'app-add-slide-action': LocalJSX.AppAddSlideAction & JSXBase.HTMLAttributes<HTMLAppAddSlideActionElement>;
       'app-avatar': LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
       'app-code': LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
       'app-color': LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
       'app-color-chart': LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;
       'app-color-code': LocalJSX.AppColorCode & JSXBase.HTMLAttributes<HTMLAppColorCodeElement>;
-      'app-color-deck-slide': LocalJSX.AppColorDeckSlide & JSXBase.HTMLAttributes<HTMLAppColorDeckSlideElement>;
       'app-color-qrcode': LocalJSX.AppColorQrcode & JSXBase.HTMLAttributes<HTMLAppColorQrcodeElement>;
+      'app-color-text-background': LocalJSX.AppColorTextBackground & JSXBase.HTMLAttributes<HTMLAppColorTextBackgroundElement>;
       'app-contact': LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
       'app-create-slide': LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
       'app-custom-data': LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
       'app-custom-images': LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
       'app-dashboard': LocalJSX.AppDashboard & JSXBase.HTMLAttributes<HTMLAppDashboardElement>;
       'app-deck-delete': LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
+      'app-deck-style': LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
       'app-delete-deck-action': LocalJSX.AppDeleteDeckAction & JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement>;
       'app-developer': LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
       'app-edit-slide': LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
@@ -1069,6 +1119,7 @@ declare module "@stencil/core" {
       'app-edit-slide-qrcode': LocalJSX.AppEditSlideQrcode & JSXBase.HTMLAttributes<HTMLAppEditSlideQrcodeElement>;
       'app-editor': LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;
       'app-editor-actions': LocalJSX.AppEditorActions & JSXBase.HTMLAttributes<HTMLAppEditorActionsElement>;
+      'app-editor-busy-action': LocalJSX.AppEditorBusyAction & JSXBase.HTMLAttributes<HTMLAppEditorBusyActionElement>;
       'app-editor-toolbar': LocalJSX.AppEditorToolbar & JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement>;
       'app-element-delete': LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
       'app-faq': LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
@@ -1083,6 +1134,7 @@ declare module "@stencil/core" {
       'app-home': LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
+      'app-image-slide': LocalJSX.AppImageSlide & JSXBase.HTMLAttributes<HTMLAppImageSlideElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-menu': LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
       'app-more-actions': LocalJSX.AppMoreActions & JSXBase.HTMLAttributes<HTMLAppMoreActionsElement>;

@@ -9,6 +9,8 @@ import {isFullscreen, isMobile, debounce, isIOS} from '@deckdeckgo/utils';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
+import {generateRandomStyleColors} from '../../../utils/editor/random-palette';
+
 import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
 import {Deck} from '../../../models/data/deck';
@@ -203,9 +205,11 @@ export class AppEditor {
                 return;
             }
 
-            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE, true);
+            const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
 
             await this.concatSlide(slide);
+
+            await this.initRandomDeckStyle();
 
             resolve();
         });
@@ -228,6 +232,10 @@ export class AppEditor {
 
             resolve();
         });
+    }
+
+    private async initRandomDeckStyle() {
+        this.style = await generateRandomStyleColors();
     }
 
     private initDeckStyle(): Promise<void> {
@@ -460,6 +468,10 @@ export class AppEditor {
         });
     }
 
+    private async onSelectDeck() {
+        await this.editorEventsHandler.selectDeck();
+    }
+
     private initWindowResize() {
         if (window) {
             window.addEventListener('resize', debounce(this.onWindowResize));
@@ -590,7 +602,8 @@ export class AppEditor {
                                     onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
                                     onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
                                     onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
-                                    onToggleFullScreen={() => this.toggleFullScreen()}></app-editor-actions>
+                                    onToggleFullScreen={() => this.toggleFullScreen()}
+                                    onSelectDeck={() => this.onSelectDeck()}></app-editor-actions>
             </ion-footer>,
             <deckgo-inline-editor containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul" sticky-mobile="true"
                                   onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}

@@ -9,9 +9,9 @@ enum ApplyColorType {
 }
 
 @Component({
-    tag: 'app-color-deck-slide'
+    tag: 'app-color-text-background'
 })
-export class AppColorDeckSlide {
+export class AppColorTextBackground {
 
     @Element() el: HTMLElement;
 
@@ -22,10 +22,10 @@ export class AppColorDeckSlide {
     moreColors: boolean = true;
 
     @Prop()
-    applyToAllDeck: boolean = false;
+    slide: boolean = false;
 
     @Prop()
-    deckOrSlide: boolean = false;
+    deck: boolean = false;
 
     @State()
     private color: string;
@@ -53,18 +53,12 @@ export class AppColorDeckSlide {
             return;
         }
 
-        const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-        if (!element) {
-            return;
-        }
-
         let styleColor: InitStyleColor;
 
         if (this.applyColorType === ApplyColorType.BACKGROUND) {
-            styleColor = await ColorUtils.splitColor(element.style.getPropertyValue('--background') ? element.style.getPropertyValue('--background') : element.style.background);
+            styleColor = await ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--background') ? this.selectedElement.style.getPropertyValue('--background') : this.selectedElement.style.background);
         } else {
-            styleColor = await ColorUtils.splitColor(element.style.getPropertyValue('--color') ? element.style.getPropertyValue('--color') : element.style.color);
+            styleColor = await ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--color') ? this.selectedElement.style.getPropertyValue('--color') : this.selectedElement.style.color);
         }
 
         this.color = styleColor.rgb;
@@ -104,22 +98,20 @@ export class AppColorDeckSlide {
                 return;
             }
 
-            const element: HTMLElement = this.deckOrSlide ? (this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement) : this.selectedElement;
-
             if (this.applyColorType === ApplyColorType.BACKGROUND) {
-                element.style.removeProperty('--background');
-                element.style.removeProperty('--slide-split-background-start');
-                element.style.removeProperty('--slide-split-background-end');
-                element.style.removeProperty('background');
+                this.selectedElement.style.removeProperty('--background');
+                this.selectedElement.style.removeProperty('--slide-split-background-start');
+                this.selectedElement.style.removeProperty('--slide-split-background-end');
+                this.selectedElement.style.removeProperty('background');
             } else {
-                element.style.removeProperty('--color');
-                element.style.removeProperty('color');
+                this.selectedElement.style.removeProperty('--color');
+                this.selectedElement.style.removeProperty('color');
             }
 
             this.color = null;
             this.colorOpacity = 100;
 
-            this.colorChange.emit(this.applyToAllDeck);
+            this.colorChange.emit(this.deck);
 
             resolve();
         });
@@ -134,15 +126,13 @@ export class AppColorDeckSlide {
 
             const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
 
-            if (this.deckOrSlide) {
-                const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-                element.style.setProperty('--color', selectedColor);
+            if (this.deck || this.slide) {
+                this.selectedElement.style.setProperty('--color', selectedColor);
             } else {
                 this.selectedElement.style.color = selectedColor;
             }
 
-            this.colorChange.emit(this.applyToAllDeck);
+            this.colorChange.emit(this.deck);
 
             resolve();
         });
@@ -157,10 +147,8 @@ export class AppColorDeckSlide {
 
             const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
 
-            if (this.deckOrSlide) {
-                const element: HTMLElement = this.applyToAllDeck ? this.selectedElement.parentElement : this.selectedElement;
-
-                element.style.setProperty('--background', selectedColor);
+            if (this.deck || this.slide) {
+                this.selectedElement.style.setProperty('--background', selectedColor);
             } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
                 const element: HTMLElement = this.selectedElement.parentElement;
 
@@ -175,7 +163,7 @@ export class AppColorDeckSlide {
                 this.selectedElement.style.background = selectedColor;
             }
 
-            this.colorChange.emit(this.applyToAllDeck);
+            this.colorChange.emit(this.deck);
 
             resolve();
         });

@@ -8,7 +8,7 @@ export interface Palette {
     contrast: PaletteColor;
 }
 
-export const DEFAULT_FIRST_SLIDE_PALETTE: Palette[] = [
+export const DEFAULT_DECK_PALETTE: Palette[] = [
     {
         color: {
             hex: '#ffffff',
@@ -100,3 +100,19 @@ export const DEFAULT_FIRST_SLIDE_PALETTE: Palette[] = [
         }
     }
 ];
+
+export function generateRandomStyleColors(): Promise<any | undefined> {
+    return new Promise<any | undefined>((resolve) => {
+        if (!DEFAULT_DECK_PALETTE || DEFAULT_DECK_PALETTE.length <= 0) {
+            resolve(undefined);
+            return;
+        }
+
+        const index: number = Math.floor(Math.random() * DEFAULT_DECK_PALETTE.length);
+
+        resolve({
+            '--color': DEFAULT_DECK_PALETTE[index].contrast.rgba,
+            '--background': DEFAULT_DECK_PALETTE[index].color.rgba
+        });
+    });
+}

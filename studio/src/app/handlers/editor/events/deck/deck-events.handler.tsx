@@ -68,7 +68,6 @@ export class DeckEventsHandler {
             this.el = el;
 
             this.el.addEventListener('input', this.onInputChange, false);
-            this.el.addEventListener('deckDidChange', this.onDeckChange, false);
             this.el.addEventListener('slideDidChange', this.onSlideChange, false);
             this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
             this.el.addEventListener('slidesDidLoad', this.onSlidesDidLoad, false);
@@ -77,6 +76,10 @@ export class DeckEventsHandler {
             this.el.addEventListener('imgDidChange', this.onCustomEventChange, false);
             this.el.addEventListener('linkCreated', this.onCustomEventChange, false);
             this.el.addEventListener('notesDidChange', this.onSlideChange, false);
+
+            if (document) {
+                document.addEventListener('deckDidChange', this.onDeckChange, false);
+            }
 
             this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
                 await this.updateSlide(element);
@@ -94,7 +97,6 @@ export class DeckEventsHandler {
 
     destroy() {
         this.el.removeEventListener('input', this.onInputChange, true);
-        this.el.removeEventListener('deckDidChange', this.onDeckChange, true);
         this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
         this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
         this.el.removeEventListener('slidesDidLoad', this.onSlidesDidLoad, true);
@@ -103,6 +105,10 @@ export class DeckEventsHandler {
         this.el.removeEventListener('imgDidChange', this.onCustomEventChange, true);
         this.el.removeEventListener('linkCreated', this.onCustomEventChange, true);
         this.el.removeEventListener('notesDidChange', this.onSlideChange, true);
+
+        if (document) {
+            document.removeEventListener('deckDidChange', this.onDeckChange, true);
+        }
 
         if (this.updateSlideSubscription) {
             this.updateSlideSubscription.unsubscribe();
@@ -264,10 +270,17 @@ export class DeckEventsHandler {
         return new Promise<Deck>(async (resolve, reject) => {
             try {
                 this.authService.watch().pipe(filter((user: AuthUser) => user !== null && user !== undefined), take(1)).subscribe(async (authUser: AuthUser) => {
-                    const deck: DeckData = {
+                    let deck: DeckData = {
                         name: `Presentation ${await Utils.getNow()}`,
                         owner_id: authUser.uid
                     };
+
+                    // Retrieve text and background color style randomly generated in the editor
+                    const deckElement: HTMLElement = this.el.querySelector('deckgo-deck');
+                    if (deckElement) {
+                        const attributes: DeckAttributes = await this.getDeckAttributes(deckElement);
+                        deck.attributes = attributes;
+                    }
 
                     const persistedDeck: Deck = await this.deckService.create(deck);
                     this.deckEditorService.next(persistedDeck);

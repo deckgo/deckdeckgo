@@ -34,19 +34,23 @@ export class AppEditorActions {
 
     private anonymousService: AnonymousService;
 
-    @Event() signIn: EventEmitter<void>;
+    @Event() private signIn: EventEmitter<void>;
 
-    @Event() addSlide: EventEmitter<JSX.IntrinsicElements>;
+    @Event() private addSlide: EventEmitter<JSX.IntrinsicElements>;
 
-    @Event() animatePrevNextSlide: EventEmitter<boolean>;
+    @Event() private animatePrevNextSlide: EventEmitter<boolean>;
 
-    @Event() slideTo: EventEmitter<number>;
+    @Event() private slideTo: EventEmitter<number>;
 
-    @Event() toggleFullScreen: EventEmitter<void>;
+    @Event() private toggleFullScreen: EventEmitter<void>;
 
     @Event() private actionPublish: EventEmitter<void>;
 
     @Event() private openShare: EventEmitter<void>;
+
+    @Event() private selectDeck: EventEmitter<void>;
+
+    @Event() private deckDidChange: EventEmitter<HTMLElement>;
 
     @State()
     private fullscreenEnable: boolean = true;
@@ -256,7 +260,7 @@ export class AppEditorActions {
         await modal.present();
     }
 
-    async openDeckActions($event: UIEvent) {
+    async openMoreActions($event: UIEvent) {
         if (!$event || !$event.detail) {
             return;
         }
@@ -279,6 +283,8 @@ export class AppEditorActions {
                     this.openShare.emit();
                 } else if (detail.data.action === MoreAction.PUBLISH) {
                     this.actionPublish.emit();
+                } else if (detail.data.action === MoreAction.STYLE) {
+                    await this.openDeckStyle()
                 }
             }
         });
@@ -316,12 +322,30 @@ export class AppEditorActions {
         await popover.present();
     }
 
+    async openDeckStyle() {
+        this.selectDeck.emit();
+
+        const popover: HTMLIonPopoverElement = await popoverController.create({
+            component: 'app-deck-style',
+            componentProps: {
+                signIn: this.signIn,
+                blockSlide: this.blockSlide,
+                deckDidChange: this.deckDidChange
+            },
+            mode: 'md',
+            cssClass: 'popover-menu popover-menu-wide'
+        });
+
+        await popover.present();
+    }
+
     render() {
         return <ion-toolbar>
             <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
-                <app-add-slide-action
-                    onActionOpenSlideAdd={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
-                </app-add-slide-action>
+                <app-editor-busy-action iconName="add"
+                                        onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+                    <ion-label>Add slide</ion-label>
+                </app-editor-busy-action>
 
                 <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(false)} color="primary" mode="md">
                     <ion-icon name="arrow-back"></ion-icon>
@@ -339,6 +363,11 @@ export class AppEditorActions {
                     <ion-label>Slides</ion-label>
                 </ion-tab-button>
 
+                <app-editor-busy-action iconName="brush" class="wider-devices"
+                                        onActionReady={() => this.openDeckStyle()}>
+                    <ion-label>Style</ion-label>
+                </app-editor-busy-action>
+
                 {this.renderFullscreenButton()}
 
                 <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices"
@@ -349,7 +378,7 @@ export class AppEditorActions {
 
                 <app-share-action class="wider-devices"></app-share-action>
 
-                <ion-tab-button onClick={(e: UIEvent) => this.openDeckActions(e)} color="primary" class="small-devices"
+                <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices"
                                 mode="md">
                     <ion-icon name="more" md="md-more" ios="md-more"></ion-icon>
                     <ion-label>More</ion-label>
@@ -364,7 +393,8 @@ export class AppEditorActions {
 
     private renderFullscreenButton() {
         if (this.fullscreenEnable) {
-            return <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices" mode="md">
+            return <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices"
+                                   mode="md">
                 {this.renderFullscreen()}
             </ion-tab-button>;
         } else {
