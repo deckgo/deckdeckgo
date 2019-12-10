@@ -37,6 +37,7 @@ export namespace Components {
     'slideTo': (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
     'toggleFullScreen': () => Promise<void>;
     'toggleKeyboardAssist': (state: boolean) => Promise<void>;
+    'transition': 'slide' | 'fade' | 'none';
   }
   interface DeckgoPager {
     'activeIndex': number;
@@ -111,6 +112,7 @@ declare namespace LocalJSX {
     'onSlidesDidLoad'?: (event: CustomEvent<any>) => void;
     'reveal'?: boolean;
     'revealOnMobile'?: boolean;
+    'transition'?: 'slide' | 'fade' | 'none';
   }
   interface DeckgoPager {
     'activeIndex'?: number;

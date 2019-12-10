@@ -7,6 +7,8 @@ import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttribute
 
 import {DeckdeckgoDeckBackgroundUtils} from '../../utils/deckdeckgo-deck-background-utils';
 
+import {HideSlides, RevealSlide} from '../../utils/deckdeckgo-deck-transition';
+
 interface DeltaX {
   slider: HTMLElement
   swipeLeft: boolean;
@@ -68,6 +70,8 @@ export class DeckdeckgoDeck {
 
   @State()
   private pagerColor: PagerColor;
+
+  @Prop() transition: 'slide' | 'fade' | 'none' = 'slide';
 
   async componentWillLoad() {
     await this.initRtl();
@@ -358,7 +362,10 @@ export class DeckdeckgoDeck {
   private doSwipeSlide(slider: HTMLElement, speed?: number | undefined): Promise<void> {
     return new Promise<void>((resolve) => {
       slider.style.setProperty('--transformX', this.deckTranslateX + 'px');
-      slider.style.setProperty('--transformXDuration', '' + (!isNaN(speed) ? speed : 300) + 'ms');
+
+      if (this.transition === 'slide') {
+        slider.style.setProperty('--transformXDuration', '' + (!isNaN(speed) ? speed : 300) + 'ms');
+      }
 
       this.slideWillChange.emit(this.deckTranslateX);
 
@@ -1005,6 +1012,7 @@ export class DeckdeckgoDeck {
 
   render() {
     return [
+      this.renderTransition(),
       <div class="deckgo-deck">
         <slot/>
         <slot name="actions"></slot>
@@ -1027,6 +1035,17 @@ export class DeckdeckgoDeck {
     }
 
     return <deckgo-pager active-index={this.activeIndex} length={this.length} style={pagerStyle}></deckgo-pager>;
+  }
+
+  private renderTransition() {
+    if (this.transition !== 'fade') {
+      return undefined;
+    }
+
+    return [
+      <HideSlides/>,
+      <RevealSlide index={this.activeIndex}/>,
+    ];
   }
 
 }
