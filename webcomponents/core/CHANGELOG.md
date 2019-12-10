@@ -1,3 +1,14 @@
+<a name="1.0.0-rc.3-1"></a>
+# 1.0.0-rc.3-1 (2019-12-10)
+
+### Features
+
+* improve fade transition flash
+
+### Fix
+
+* modify transition on the fly (reset transition duration)
+
 <a name="1.0.0-rc.3"></a>
 # 1.0.0-rc.3 (2019-12-10)
 
