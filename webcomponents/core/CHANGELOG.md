@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2019-12-10)
+
+### Features
+
+* add a `transition` option. available animations are `slide` (default), `fade` or `none`
+
 <a name="1.0.0-rc.2-1"></a>
 # 1.0.0-rc.2-1 (2019-11-30)
 
