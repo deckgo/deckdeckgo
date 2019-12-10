@@ -44,7 +44,7 @@
 </head>
 <body style="margin: 0; overflow: hidden;">
 
-<deckgo-deck id="slider" transition="fade">
+<deckgo-deck id="slider">
 
   <deckgo-slide-countdown until="2019-08-05T23:25:59.000+02:00">
     <h1 slot="title">My presentation will start in</h1>
@@ -307,10 +307,26 @@ public static void main(String args[]) {
       });
   }
 
+  function setTransitionFade() {
+    return new Promise(async (resolve) => {
+      const deck = document.getElementById('slider');
+
+      if (!deck) {
+        resolve();
+        return;
+      }
+
+      deck.transition = 'fade';
+
+      resolve();
+    });
+  }
+
   document.addEventListener('pagerClick', function() { console.log('Pager clicked'); });
 </script>
 
 <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
+  <button onclick="setTransitionFade()">Transition fade</button>
   <button onclick="toggleReveal()">Toggle deck reveal</button>
   <button onclick="updateVideo()">Update video</button>
   <button onclick="toggleVideo()">Toggle video</button>

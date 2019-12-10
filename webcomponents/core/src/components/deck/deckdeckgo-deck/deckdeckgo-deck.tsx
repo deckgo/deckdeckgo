@@ -365,6 +365,8 @@ export class DeckdeckgoDeck {
 
       if (this.transition === 'slide') {
         slider.style.setProperty('--transformXDuration', '' + (!isNaN(speed) ? speed : 300) + 'ms');
+      } else {
+        slider.style.setProperty('--transformXDuration', '0ms');
       }
 
       this.slideWillChange.emit(this.deckTranslateX);
