@@ -1,0 +1,13 @@
+main {
+  &.ready {
+    deckgo-deck {
+      > *.deckgo-slide-container {
+        transition: background 300ms, color 300ms;
+
+        [slot] {
+          transition: background 300ms, color 300ms;
+        }
+      }
+    }
+  }
+}

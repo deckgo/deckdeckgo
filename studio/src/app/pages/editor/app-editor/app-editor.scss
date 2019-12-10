@@ -7,6 +7,8 @@ app-editor {
 
   @import "../../../../global/theme/editor/editor-loading";
 
+  @import "../../../../global/theme/editor/editor-deck-transition";
+
   @import "./deckdeckgo-deck";
   @import "./deckdeckgo-deck-fonts";
   @import "./deckdeckgo-deck-rtl";
