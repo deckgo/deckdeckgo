@@ -1,0 +1,37 @@
+app-deck-transition {
+  div.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    div.item {
+      border-radius: 8px;
+      border: 1px solid var(--ion-color-primary);
+      margin: 8px 0;
+      width: calc(100% - 32px);
+      height: 7rem;
+
+      display: block;
+      overflow: hidden;
+      position: relative;
+
+      deckgo-deck {
+        --pager-display: none;
+
+        --transition-fade-duration: 2000ms;
+
+        deckgo-slide-title {
+          --slide-padding-start: 4px;
+          --slide-padding-bottom: 4px;
+          --slide-padding-top: 4px;
+          --slide-padding-end: 4px;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
