@@ -59,7 +59,7 @@ export class AppDeckTransition {
     }
 
     render() {
-        return <div class="container">
+        return <div class="container ion-margin-top ion-margin-bottom">
             {this.renderDeckItem('slide', 'var(--ion-color-primary)', 'Slide animation')}
 
             {this.renderDeckItem('fade', 'var(--ion-color-secondary)', 'Fade effect')}
