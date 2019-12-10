@@ -20,5 +20,6 @@ It is also possible to style the `fade` transition using the following CSS4 vari
 | -------------------------- |-----------------|-----------------|
 | --transition-fade-duration | 500ms | The duration of the animation. |
 | --transition-fade-hidden-opacity | 0.4 | The base opacity when the slide is not displayed. |
+| --slide-transition | | An optional transition effect for each slide container. |
 
 [DeckDeckGo]: https://deckdeckgo.com

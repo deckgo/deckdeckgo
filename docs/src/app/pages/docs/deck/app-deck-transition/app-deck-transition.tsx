@@ -61,6 +61,11 @@ export class AppDeckTransition {
 <td>0.4</td>
 <td>The base opacity when the slide is not displayed.</td>
 </tr>
+<tr>
+<td>--slide-transition</td>
+<td></td>
+<td>An optional transition effect for each slide container.</td>
+</tr>
 </tbody></table>
 </main>
 
