@@ -5,5 +5,6 @@ export enum TargetElement {
     SECTION = 'section',
     CODE = 'code',
     COLOR = 'color',
-    BACKGROUND = 'background'
+    BACKGROUND = 'background',
+    TRANSITION = 'transition'
 }

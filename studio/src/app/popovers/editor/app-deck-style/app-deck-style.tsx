@@ -54,7 +54,7 @@ export class AppDeck {
         }
     }
 
-    private onColorChange() {
+    private onDeckDidChange() {
         this.deckDidChange.emit(this.deckElement);
     }
 
@@ -83,7 +83,7 @@ export class AppDeck {
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
-            <app-select-target-element colorTarget={true} background={true}
+            <app-select-target-element colorTarget={true} background={true} transition={true}
                                        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
             this.renderOptions()
@@ -94,11 +94,14 @@ export class AppDeck {
         if (this.applyToTargetElement === TargetElement.COLOR) {
             return <app-color-text-background selectedElement={this.deckElement} moreColors={this.moreColors}
                                               deck={true}
-                                              onColorChange={() => this.onColorChange()}></app-color-text-background>
+                                              onColorChange={() => this.onDeckDidChange()}></app-color-text-background>
         } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
             return <app-image selectedElement={this.deckElement} deck={true}
                        onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}
                        onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>
+        } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
+            return <app-deck-transition deckElement={this.deckElement}
+                                        onTransitionChange={() => this.onDeckDidChange()}></app-deck-transition>
         } else {
             return undefined;
         }

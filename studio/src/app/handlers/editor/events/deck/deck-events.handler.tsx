@@ -278,7 +278,7 @@ export class DeckEventsHandler {
                     // Retrieve text and background color style randomly generated in the editor
                     const deckElement: HTMLElement = this.el.querySelector('deckgo-deck');
                     if (deckElement) {
-                        const attributes: DeckAttributes = await this.getDeckAttributes(deckElement);
+                        const attributes: DeckAttributes = await this.getDeckAttributes(deckElement, false);
                         deck.attributes = attributes;
                     }
 
@@ -353,7 +353,7 @@ export class DeckEventsHandler {
                         return;
                     }
 
-                    const attributes: DeckAttributes = await this.getDeckAttributes(deck);
+                    const attributes: DeckAttributes = await this.getDeckAttributes(deck, true);
                     currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : null;
 
                     const background: string = await this.getDeckBackground(deck);
@@ -695,12 +695,19 @@ export class DeckEventsHandler {
         });
     }
 
-    private getDeckAttributes(deck: HTMLElement): Promise<DeckAttributes> {
+    private getDeckAttributes(deck: HTMLElement, updateDeck: boolean): Promise<DeckAttributes> {
         return new Promise<DeckAttributes>((resolve) => {
             let attributes: DeckAttributes = {};
 
-            if (deck.getAttribute('style')) {
+            if (deck.hasAttribute('style')) {
                 attributes.style = deck.getAttribute('style');
+            }
+
+            if (deck.hasAttribute('transition') && deck.getAttribute('transition') !== 'slide') {
+                attributes.transition = deck.getAttribute('transition') as 'slide' | 'fade' | 'none';
+            } else if (updateDeck) {
+                // @ts-ignore
+                attributes.transition = firebase.firestore.FieldValue.delete();
             }
 
             resolve(attributes);

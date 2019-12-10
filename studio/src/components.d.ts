@@ -82,6 +82,9 @@ export namespace Components {
     'deckDidChange': EventEmitter<HTMLElement>;
     'signIn': EventEmitter<void>;
   }
+  interface AppDeckTransition {
+    'deckElement': HTMLElement;
+  }
   interface AppDeleteDeckAction {
     'deck': Deck;
   }
@@ -205,6 +208,7 @@ export namespace Components {
     'colorTarget': boolean;
     'qrCode': boolean;
     'slide': boolean;
+    'transition': boolean;
   }
   interface AppServices {}
   interface AppSettings {}
@@ -326,6 +330,12 @@ declare global {
   var HTMLAppDeckStyleElement: {
     prototype: HTMLAppDeckStyleElement;
     new (): HTMLAppDeckStyleElement;
+  };
+
+  interface HTMLAppDeckTransitionElement extends Components.AppDeckTransition, HTMLStencilElement {}
+  var HTMLAppDeckTransitionElement: {
+    prototype: HTMLAppDeckTransitionElement;
+    new (): HTMLAppDeckTransitionElement;
   };
 
   interface HTMLAppDeleteDeckActionElement extends Components.AppDeleteDeckAction, HTMLStencilElement {}
@@ -709,6 +719,7 @@ declare global {
     'app-dashboard': HTMLAppDashboardElement;
     'app-deck-delete': HTMLAppDeckDeleteElement;
     'app-deck-style': HTMLAppDeckStyleElement;
+    'app-deck-transition': HTMLAppDeckTransitionElement;
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-edit-slide': HTMLAppEditSlideElement;
@@ -826,6 +837,10 @@ declare namespace LocalJSX {
     'deckDidChange'?: EventEmitter<HTMLElement>;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'signIn'?: EventEmitter<void>;
+  }
+  interface AppDeckTransition {
+    'deckElement'?: HTMLElement;
+    'onTransitionChange'?: (event: CustomEvent<void>) => void;
   }
   interface AppDeleteDeckAction {
     'deck'?: Deck;
@@ -977,6 +992,7 @@ declare namespace LocalJSX {
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
     'slide'?: boolean;
+    'transition'?: boolean;
   }
   interface AppServices {}
   interface AppSettings {}
@@ -1027,6 +1043,7 @@ declare namespace LocalJSX {
     'app-dashboard': AppDashboard;
     'app-deck-delete': AppDeckDelete;
     'app-deck-style': AppDeckStyle;
+    'app-deck-transition': AppDeckTransition;
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
     'app-edit-slide': AppEditSlide;
@@ -1112,6 +1129,7 @@ declare module "@stencil/core" {
       'app-dashboard': LocalJSX.AppDashboard & JSXBase.HTMLAttributes<HTMLAppDashboardElement>;
       'app-deck-delete': LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
       'app-deck-style': LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
+      'app-deck-transition': LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
       'app-delete-deck-action': LocalJSX.AppDeleteDeckAction & JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement>;
       'app-developer': LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
       'app-edit-slide': LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
