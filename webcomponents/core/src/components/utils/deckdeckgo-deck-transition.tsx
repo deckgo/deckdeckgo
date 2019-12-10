@@ -10,7 +10,7 @@ export const HideSlides: FunctionalComponent = () => {
       ::slotted(.deckgo-slide-container) {
         opacity: var(--transition-fade-hidden-opacity, 0.4);
         visibility: hidden;
-        transition: all var(--transition-fade-duration, 500ms) cubic-bezier(0.23, 1, 0.320, 1);
+        transition: opacity var(--transition-fade-duration, 500ms) cubic-bezier(0.23, 1, 0.320, 1);
       };
     `}</style>
   );
