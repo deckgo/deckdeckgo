@@ -7,7 +7,7 @@ import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttribute
 
 import {DeckdeckgoDeckBackgroundUtils} from '../../utils/deckdeckgo-deck-background-utils';
 
-import {HideSlides, RevealSlide} from '../../utils/deckdeckgo-deck-transition';
+import {HideSlides, RevealSlide, TransitionSlide} from '../../utils/deckdeckgo-deck-transition';
 
 interface DeltaX {
   slider: HTMLElement
@@ -1041,7 +1041,7 @@ export class DeckdeckgoDeck {
 
   private renderTransition() {
     if (this.transition !== 'fade') {
-      return undefined;
+      return <TransitionSlide/>;
     }
 
     return [
