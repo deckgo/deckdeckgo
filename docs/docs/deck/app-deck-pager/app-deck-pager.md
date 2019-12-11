@@ -1,6 +1,8 @@
 # Pager
 
-[DeckDeckGo] will per default display a pager in form of a progress circle bar. It's possible to hide it or to customize the following various style options.
+[DeckDeckGo] displays a pager in form of a progress circle bar if the presentation is not displayed in fullscreen. 
+
+It's possible to hide it or to customize the following various style options.
 
 Also worth to notice that the pager inherits per default the document and deck direction (LTR or RTL for example).
 

@@ -55,6 +55,9 @@ export class AppEditor {
     @State()
     private style: any;
 
+    @State()
+    private transition: 'slide' | 'fade' | 'none' = 'slide';
+
     private slideIndex: number = 0;
 
     @State()
@@ -247,6 +250,10 @@ export class AppEditor {
                     this.style = undefined;
                 }
 
+                if (deck && deck.data && deck.data.attributes && deck.data.attributes.transition) {
+                    this.transition = deck.data.attributes.transition;
+                }
+
                 this.background = await ParseBackgroundUtils.convertBackground(deck.data.background, true);
 
                 resolve();
@@ -255,8 +262,10 @@ export class AppEditor {
     }
 
     private concatSlide(extraSlide: JSX.IntrinsicElements): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             this.slides = [...this.slides, extraSlide];
+
+            await ParseBackgroundUtils.stickDeckBackgroundLastChild(this.el);
 
             resolve();
         });
@@ -581,7 +590,7 @@ export class AppEditor {
 
                     {this.renderLoading()}
 
-                    <deckgo-deck embedded={true} style={this.style} reveal={this.fullscreen && this.presenting}
+                    <deckgo-deck embedded={true} style={this.style} reveal={this.fullscreen && this.presenting} transition={this.transition}
                                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
                                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
                                  onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}

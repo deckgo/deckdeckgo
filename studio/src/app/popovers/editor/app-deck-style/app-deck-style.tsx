@@ -58,6 +58,14 @@ export class AppDeck {
         this.deckDidChange.emit(this.deckElement);
     }
 
+    private async onTransitionChange() {
+        this.deckDidChange.emit(this.deckElement);
+
+        const popover = this.el.closest('ion-popover') as HTMLIonPopoverElement;
+
+        await popover.dismiss();
+    }
+
     private async onImageAction($event: CustomEvent<ImageAction>) {
         if ($event && $event.detail) {
             const popover = this.el.closest('ion-popover') as HTMLIonPopoverElement;
@@ -83,7 +91,7 @@ export class AppDeck {
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
-            <app-select-target-element colorTarget={true} background={true}
+            <app-select-target-element colorTarget={true} background={true} transition={true}
                                        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
             this.renderOptions()
@@ -99,6 +107,9 @@ export class AppDeck {
             return <app-image selectedElement={this.deckElement} deck={true}
                        onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}
                        onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>
+        } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
+            return <app-deck-transition deckElement={this.deckElement}
+                                        onTransitionChange={() => this.onTransitionChange()}></app-deck-transition>
         } else {
             return undefined;
         }

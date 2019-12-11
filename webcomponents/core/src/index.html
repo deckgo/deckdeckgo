@@ -307,10 +307,26 @@ public static void main(String args[]) {
       });
   }
 
+  function setTransitionFade() {
+    return new Promise(async (resolve) => {
+      const deck = document.getElementById('slider');
+
+      if (!deck) {
+        resolve();
+        return;
+      }
+
+      deck.transition = 'fade';
+
+      resolve();
+    });
+  }
+
   document.addEventListener('pagerClick', function() { console.log('Pager clicked'); });
 </script>
 
 <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
+  <button onclick="setTransitionFade()">Transition fade</button>
   <button onclick="toggleReveal()">Toggle deck reveal</button>
   <button onclick="updateVideo()">Update video</button>
   <button onclick="toggleVideo()">Toggle video</button>

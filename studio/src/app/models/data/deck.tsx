@@ -23,6 +23,7 @@ export interface DeckMeta {
 
 export interface DeckAttributes {
     style?: string;
+    transition?: 'slide' | 'fade' | 'none';
 }
 
 export interface DeckData {

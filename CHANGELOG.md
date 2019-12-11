@@ -1,3 +1,12 @@
+<a name="1.0.0-rc.19"></a>
+# [1.0.0-rc.19](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.18...v1.0.0-rc.19) (In Progress)
+
+### Applications
+* docs: v1.0.0-rc.8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
+### Web Components
+* core: v1.0.0-rc.3-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+
 <a name="1.0.0-rc.18"></a>
 # [1.0.0-rc.18](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.17...v1.0.0-rc.18) (2019-12-04)
 

@@ -19,7 +19,8 @@ export class AppDeckPager {
 
       <ion-content class="ion-padding">
         <main><h1 id="app-deck-pager-pager">Pager</h1>
-<p><a href="https://deckdeckgo.com">DeckDeckGo</a> will per default display a pager in form of a progress circle bar. It&#39;s possible to hide it or to customize the following various style options.</p>
+<p><a href="https://deckdeckgo.com">DeckDeckGo</a> displays a pager in form of a progress circle bar if the presentation is not displayed in fullscreen. </p>
+<p>It&#39;s possible to hide it or to customize the following various style options.</p>
 <p>Also worth to notice that the pager inherits per default the document and deck direction (LTR or RTL for example).</p>
 <ul>
 <li><a href="#app-deck-pager-deck">Deck</a></li>

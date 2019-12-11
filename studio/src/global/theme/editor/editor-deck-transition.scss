@@ -1,0 +1,11 @@
+main {
+  &.ready {
+    deckgo-deck {
+      --slide-transition: background 300ms, color 300ms;
+
+      [slot] {
+        transition: background 300ms, color 300ms;
+      }
+    }
+  }
+}

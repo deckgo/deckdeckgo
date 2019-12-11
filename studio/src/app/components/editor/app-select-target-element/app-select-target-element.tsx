@@ -27,6 +27,9 @@ export class AppSelectTargetElement {
     @Prop()
     background: boolean = false;
 
+    @Prop()
+    transition: boolean = false;
+
     @Event()
     applyTo: EventEmitter<TargetElement>;
 
@@ -56,7 +59,8 @@ export class AppSelectTargetElement {
                 {this.renderChart()}
                 {this.renderSlide()}
                 {this.renderColor()}
-                {this.renderImage()}
+                {this.renderBackground()}
+                {this.renderTransition()}
             </ion-segment>
         }
     }
@@ -101,10 +105,20 @@ export class AppSelectTargetElement {
         }
     }
 
-    private renderImage() {
+    private renderBackground() {
         if (this.background) {
             return <ion-segment-button value={TargetElement.BACKGROUND} mode="md">
                 <ion-label>Background</ion-label>
+            </ion-segment-button>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderTransition() {
+        if (this.transition) {
+            return <ion-segment-button value={TargetElement.TRANSITION} mode="md">
+                <ion-label>Transition</ion-label>
             </ion-segment-button>;
         } else {
             return undefined;

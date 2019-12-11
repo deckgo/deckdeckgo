@@ -26,6 +26,7 @@ export namespace Components {
   interface AppDeckNavigation {}
   interface AppDeckPager {}
   interface AppDeckSize {}
+  interface AppDeckTransition {}
   interface AppEditDefault {}
   interface AppEditFonts {}
   interface AppEditLazyLoading {}
@@ -170,6 +171,12 @@ declare global {
   var HTMLAppDeckSizeElement: {
     prototype: HTMLAppDeckSizeElement;
     new (): HTMLAppDeckSizeElement;
+  };
+
+  interface HTMLAppDeckTransitionElement extends Components.AppDeckTransition, HTMLStencilElement {}
+  var HTMLAppDeckTransitionElement: {
+    prototype: HTMLAppDeckTransitionElement;
+    new (): HTMLAppDeckTransitionElement;
   };
 
   interface HTMLAppEditDefaultElement extends Components.AppEditDefault, HTMLStencilElement {}
@@ -422,6 +429,7 @@ declare global {
     'app-deck-navigation': HTMLAppDeckNavigationElement;
     'app-deck-pager': HTMLAppDeckPagerElement;
     'app-deck-size': HTMLAppDeckSizeElement;
+    'app-deck-transition': HTMLAppDeckTransitionElement;
     'app-edit-default': HTMLAppEditDefaultElement;
     'app-edit-fonts': HTMLAppEditFontsElement;
     'app-edit-lazy-loading': HTMLAppEditLazyLoadingElement;
@@ -481,6 +489,7 @@ declare namespace LocalJSX {
   interface AppDeckNavigation {}
   interface AppDeckPager {}
   interface AppDeckSize {}
+  interface AppDeckTransition {}
   interface AppEditDefault {}
   interface AppEditFonts {}
   interface AppEditLazyLoading {}
@@ -544,6 +553,7 @@ declare namespace LocalJSX {
     'app-deck-navigation': AppDeckNavigation;
     'app-deck-pager': AppDeckPager;
     'app-deck-size': AppDeckSize;
+    'app-deck-transition': AppDeckTransition;
     'app-edit-default': AppEditDefault;
     'app-edit-fonts': AppEditFonts;
     'app-edit-lazy-loading': AppEditLazyLoading;
@@ -608,6 +618,7 @@ declare module "@stencil/core" {
       'app-deck-navigation': LocalJSX.AppDeckNavigation & JSXBase.HTMLAttributes<HTMLAppDeckNavigationElement>;
       'app-deck-pager': LocalJSX.AppDeckPager & JSXBase.HTMLAttributes<HTMLAppDeckPagerElement>;
       'app-deck-size': LocalJSX.AppDeckSize & JSXBase.HTMLAttributes<HTMLAppDeckSizeElement>;
+      'app-deck-transition': LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
       'app-edit-default': LocalJSX.AppEditDefault & JSXBase.HTMLAttributes<HTMLAppEditDefaultElement>;
       'app-edit-fonts': LocalJSX.AppEditFonts & JSXBase.HTMLAttributes<HTMLAppEditFontsElement>;
       'app-edit-lazy-loading': LocalJSX.AppEditLazyLoading & JSXBase.HTMLAttributes<HTMLAppEditLazyLoadingElement>;
