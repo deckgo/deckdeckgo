@@ -11,6 +11,7 @@
 | ---------------- | ----------------- | ----------- | --------- | --------------------- |
 | `anchor`         | `anchor`          |             | `string`  | `'// DeckDeckGo'`     |
 | `anchorZoom`     | `anchor-zoom`     |             | `string`  | `'// DeckDeckGoZoom'` |
+| `carbon`         | `carbon`          |             | `boolean` | `true`                |
 | `editable`       | `editable`        |             | `boolean` | `false`               |
 | `hideAnchor`     | `hide-anchor`     |             | `boolean` | `true`                |
 | `highlightLines` | `highlight-lines` |             | `string`  | `undefined`           |
