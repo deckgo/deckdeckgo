@@ -262,8 +262,10 @@ export class AppEditor {
     }
 
     private concatSlide(extraSlide: JSX.IntrinsicElements): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             this.slides = [...this.slides, extraSlide];
+
+            await ParseBackgroundUtils.stickDeckBackgroundLastChild(this.el);
 
             resolve();
         });
