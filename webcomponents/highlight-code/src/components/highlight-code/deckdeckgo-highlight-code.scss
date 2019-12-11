@@ -23,13 +23,28 @@
   }
 }
 
+:host(.deckgo-highlight-code-carbon) {
+  display: var(--deckgo-highlight-code-carbon-display, block);
+  overflow: var(--deckgo-highlight-code-carbon-overflow, auto);
+  border: var(--deckgo-highlight-code-carbon-border);
+  border-radius: var(--deckgo-highlight-code-carbon-border-radius, 4px);
+  background: var(--deckgo-highlight-code-carbon-background, #282a36);
+  color: var(--deckgo-highlight-code-carbon-color, white);
+  box-shadow: var(--deckgo-highlight-code-carbon-box-shadow, rgba(0, 0, 0, 0.55) 0 8px 16px);
+  margin: var(--deckgo-highlight-code-carbon-margin, 16px);
+}
+
+:host(.deckgo-highlight-code-carbon) ::slotted([slot="code"]) {
+  color: var(deckgo-highlight-code-carbon-color, white);
+}
+
 div.deckgo-highlight-code-container {
   color: var(--deckgo-highlight-code-color, inherit);
   background: var(--deckgo-highlight-code-background);
-  padding: var(--deckgo-highlight-code-padding);
+  padding: var(--deckgo-highlight-code-padding, 0 16px);
   border-radius: var(--deckgo-highlight-code-border-radius);
 
-  margin: var(--deckgo-highlight-code-margin, 0 0 64px);
+  margin: var(--deckgo-highlight-code-margin, 0 0 16px);
 
   transform-origin: bottom left;
   transition: all .2s ease-in-out;
@@ -99,11 +114,11 @@ div.deckgo-highlight-code-container {
     .token.prolog,
     .token.doctype,
     .token.cdata {
-      color: var(--deckgo-highlight-code-token-comment, slategray);
+      color: var(--deckgo-highlight-code-token-comment, #6272a4);
     }
 
     .token.punctuation {
-      color: var(--deckgo-highlight-code-token-punctuation, #999);
+      color: var(--deckgo-highlight-code-token-punctuation, inherit);
     }
 
     .token.property,
@@ -113,7 +128,7 @@ div.deckgo-highlight-code-container {
     .token.constant,
     .token.symbol,
     .token.deleted {
-      color: var(--deckgo-highlight-code-token-property, #905);
+      color: var(--deckgo-highlight-code-token-property, #bd93f9);
     }
 
     .token.selector,
@@ -122,7 +137,7 @@ div.deckgo-highlight-code-container {
     .token.char,
     .token.builtin,
     .token.inserted {
-      color: var(--deckgo-highlight-code-token-selector, #690);
+      color: var(--deckgo-highlight-code-token-selector, #50fa7b);
     }
 
     .token.operator,
@@ -130,24 +145,54 @@ div.deckgo-highlight-code-container {
     .token.url,
     .language-css .token.string,
     .style .token.string {
-      color: var(--deckgo-highlight-code-token-operator, #9a6e3a);
+      color: var(--deckgo-highlight-code-token-operator, #ff79c6);
     }
 
     .token.atrule,
     .token.attr-value,
     .token.keyword {
-      color: var(--deckgo-highlight-code-token-atrule, #07a);
+      color: var(--deckgo-highlight-code-token-atrule, #ff79c6);
     }
 
     .token.function,
     .token.class-name {
-      color: var(--deckgo-highlight-code-token-function, #DD4A68);
+      color: var(--deckgo-highlight-code-token-function, #ffb86c);
     }
 
     .token.regex,
     .token.important,
     .token.variable {
-      color: var(--deckgo-highlight-code-token-regex, #e90);
+      color: var(--deckgo-highlight-code-token-regex, #f1fa8c);
     }
   }
+}
+
+
+div.carbon {
+  display: flex;
+  justify-content: flex-start;
+  padding: var(--deckgo-highlight-code-carbon-header-padding, 16px);
+
+  > div {
+    width: var(--deckgo-highlight-code-carbon-header-button-width, 12px);
+    height: var(--deckgo-highlight-code-carbon-header-button-heeght, 12px);
+    border-radius: var(--deckgo-highlight-code-carbon-header-button-border-radius, 50%);
+    margin: var(--deckgo-highlight-code-carbon-header-button-margin, 0 6px 0 0);
+
+    &.red {
+      background: var(--deckgo-highlight-code-carbon-header-button-red-background, #FF5F56);
+      border: var(--deckgo-highlight-code-carbon-header-button-red-border, 0.5px solid #E0443E);
+    }
+
+    &.yellow {
+      background: var(--deckgo-highlight-code-carbon-header-button-yellow-background, #FFBD2E);
+      border: var(--deckgo-highlight-code-carbon-header-button-yellow-border, 0.5px solid #DEA123);
+    }
+
+    &.green {
+      background: var(--deckgo-highlight-code-carbon-header-button-green-background, #27C93F);
+      border: var(--deckgo-highlight-code-carbon-header-button-green-border, 0.5px solid #1AAB29);
+    }
+  }
+
 }
