@@ -41,7 +41,7 @@ export class AppDeckTransition {
 <td><code>slide</code></td>
 </tr>
 </tbody></table>
-<h4 id="app-deck-transition-styling">Styling</h4>
+<h2 id="app-deck-transition-styling">Styling</h2>
 <p>It is also possible to style the <code>fade</code> transition using the following CSS4 variables:</p>
 <table>
 <thead>
@@ -67,6 +67,8 @@ export class AppDeckTransition {
 <td>An optional transition effect for each slide container.</td>
 </tr>
 </tbody></table>
+<h2 id="app-deck-transition-nota-bene">Nota bene</h2>
+<p>In case you would select the <code>fade</code> or <code>none</code> transition effect and would use the deck&#39;s slots <code>actions</code> or <code>background</code> too, please notes that these have to be ordered in last positions of the deck&#39;s children otherwise the animation effect will not be able to determine correctly the index of the next slide to animate. </p>
 </main>
 
         <app-footer></app-footer>
