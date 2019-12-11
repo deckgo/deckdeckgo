@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.8"></a>
+# 1.0.0-rc.8 (2019-12-11)
+
+### Features
+
+* new page about the transition options of the `deck`
+
 <a name="1.0.0-rc.7"></a>
 # 1.0.0-rc.7 (2019-11-30)
 
