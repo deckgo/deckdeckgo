@@ -141,7 +141,7 @@ Furthermore the following styles apply if the code is displayed as a "windowed" 
 | --deckgo-highlight-code-carbon-background | #282a36 | The background property of the host container. |
 | --deckgo-highlight-code-carbon-color | white | The color property of the host container. |
 | --deckgo-highlight-code-carbon-box-shadow | rgba(0, 0, 0, 0.55) 0 8px 16px | The box-shadow property of the host container. |
-| --deckgo-highlight-code-carbon-margin | 16px | The margin property of the host container. |
+| --deckgo-highlight-code-carbon-margin | 16px 0 | The margin property of the host container. |
 | --deckgo-highlight-code-carbon-header-padding | 16px | The padding property of the card header. |
 | --deckgo-highlight-code-carbon-header-button-width | 12px | The width of a button of the card header. |
 | --deckgo-highlight-code-carbon-header-button-heeght | 12px | The height of a button of the card header. |

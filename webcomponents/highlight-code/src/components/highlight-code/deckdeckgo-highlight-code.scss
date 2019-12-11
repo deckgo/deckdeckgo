@@ -31,7 +31,7 @@
   background: var(--deckgo-highlight-code-carbon-background, #282a36);
   color: var(--deckgo-highlight-code-carbon-color, white);
   box-shadow: var(--deckgo-highlight-code-carbon-box-shadow, rgba(0, 0, 0, 0.55) 0 8px 16px);
-  margin: var(--deckgo-highlight-code-carbon-margin, 16px);
+  margin: var(--deckgo-highlight-code-carbon-margin, 16px 0);
 }
 
 :host(.deckgo-highlight-code-carbon) ::slotted([slot="code"]) {

@@ -360,7 +360,7 @@ export class AppComponentsHighlightCode {
 </tr>
 <tr>
 <td>--deckgo-highlight-code-carbon-margin</td>
-<td>16px</td>
+<td>16px 0</td>
 <td>The margin property of the host container.</td>
 </tr>
 <tr>
