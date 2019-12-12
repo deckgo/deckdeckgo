@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-1"></a>
+# 1.0.0-rc.2-1 (2019-12-12)
+
+### Features
+
+* if the language definition doesn't exist or if unpkg is down, display code anyway
+
 <a name="1.0.0-rc.2"></a>
 # 1.0.0-rc.2 (2019-12-12)
 
