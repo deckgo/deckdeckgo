@@ -115,6 +115,11 @@ export class DeckdeckgoHighlightCode {
         this.prismLanguageLoaded.emit(this.language);
       };
 
+      script.onerror = async () => {
+        // if the language definition doesn't exist or if unpkg is down, display code anyway
+        this.prismLanguageLoaded.emit(this.language);
+      };
+
       script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + this.language + '.js';
       script.setAttribute('deckdeckgo-prism', this.language);
       script.defer = true;
