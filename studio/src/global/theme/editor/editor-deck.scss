@@ -30,7 +30,10 @@ deckgo-deck {
 
   deckgo-highlight-code {
     code[slot] {
-      min-height: 26px;
+      min-height: 20px;
+
+      font-size: var(--deckgo-highlight-code-font-size);
+      font-family: var(--deckgo-highlight-code-font-family, monospace);
     }
   }
 
