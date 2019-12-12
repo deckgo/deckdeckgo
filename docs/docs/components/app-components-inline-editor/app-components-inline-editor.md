@@ -101,6 +101,7 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | `stickyDesktop`       | `sticky-desktop`         | Use a sticky footer toolbar on desktop | `boolean`     | `false`                   |
 | `stickyMobile`        | `sticky-mobile`          | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top. | `boolean`     | `false`                   |
 | `customActions`       | `custom-actions`         | You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions | `string`      |  |
+| `palette`             | `palette`                | In case you would like to define a custom list of colors for the palette of colors. See [@deckdeckgo/color](https://docs.deckdeckgo.com/components/color) for the default list of colors. | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
 
 ### Custom actions slots
 

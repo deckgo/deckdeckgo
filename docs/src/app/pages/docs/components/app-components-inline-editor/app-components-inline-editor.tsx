@@ -167,6 +167,13 @@ export class AppComponentsInlineEditor {
 <td><code>string</code></td>
 <td></td>
 </tr>
+<tr>
+<td><code>palette</code></td>
+<td><code>palette</code></td>
+<td>In case you would like to define a custom list of colors for the palette of colors. See <a href="https://docs.deckdeckgo.com/components/color">@deckdeckgo/color</a> for the default list of colors.</td>
+<td><code>DeckdeckgoPalette[]</code></td>
+<td><code>DEFAULT_PALETTE</code></td>
+</tr>
 </tbody></table>
 <h3 id="app-components-inline-editor-custom-actions-slots">Custom actions slots</h3>
 <p>If you provide custom actions, a <code>slot</code> is going to be generated on the flight for every actions you would provide. For example:</p>
