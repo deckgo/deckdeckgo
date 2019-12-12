@@ -4,7 +4,7 @@ This component is the code highlighter of [DeckDeckGo].
 
 It is developed with [Stencil](https://stenciljs.com) and use [Prism.js](https://prismjs.com) from [Lea Verou](http://lea.verou.me) and [James DiGioia](https://twitter.com/jamesdigioia) for the highlighting itself.
 
-Furthermore, the design inspiration comes from the amazing [carbon](https://carbon.now.sh), a tool to create and share beautiful images of your source code.
+Furthermore, the inspiration for the design of the cards comes from the amazing [carbon](https://carbon.now.sh), a tool to create and share beautiful images of your source code.
 
 ## Table of contents
 
