@@ -96,7 +96,7 @@ div.deckgo-highlight-code-container {
     }
 
     .deckgo-highlight-code-line {
-      background: var(--deckgo-highlight-code-line-background, #3880ff);
+      background: var(--deckgo-highlight-code-line-background, #3E4564);
       border-top: var(--deckgo-highlight-code-line-border-top);
       border-bottom: var(--deckgo-highlight-code-line-border-bottom);
     }
@@ -118,7 +118,7 @@ div.deckgo-highlight-code-container {
     }
 
     .token.punctuation {
-      color: var(--deckgo-highlight-code-token-punctuation, inherit);
+      color: var(--deckgo-highlight-code-token-punctuation, #6272a4);
     }
 
     .token.property,
@@ -156,7 +156,7 @@ div.deckgo-highlight-code-container {
 
     .token.function,
     .token.class-name {
-      color: var(--deckgo-highlight-code-token-function, #ffb86c);
+        color: var(--deckgo-highlight-code-token-function, #ffb86c);
     }
 
     .token.regex,
