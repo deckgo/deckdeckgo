@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.8-2"></a>
+# 1.0.0-rc.8-2 (2019-12-12)
+
+### Features
+
+* new property `palette` of colors for the `inline-editor` component
+
 <a name="1.0.0-rc.8-1"></a>
 # 1.0.0-rc.8-1 (2019-12-12)
 
