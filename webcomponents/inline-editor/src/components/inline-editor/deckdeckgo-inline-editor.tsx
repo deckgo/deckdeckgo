@@ -7,6 +7,7 @@ import '@deckdeckgo/color';
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 import {ImageSize, ImageAlign, ToolbarActions} from '../../utils/enums';
 import {AnchorLink, InlineAction, InputTargetEvent} from './deckdeckgo-inline-editor.interface';
+import { DeckdeckgoPalette } from "@deckdeckgo/color";
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -16,6 +17,8 @@ import {AnchorLink, InlineAction, InputTargetEvent} from './deckdeckgo-inline-ed
 export class DeckdeckgoInlineEditor {
 
   @Element() el: HTMLElement;
+
+  @Prop({ mutable: true }) palette: DeckdeckgoPalette[];
 
   @State()
   private bold: boolean = false;

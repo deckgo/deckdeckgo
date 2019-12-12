@@ -2,7 +2,7 @@ import {Component, h, Prop, EventEmitter, Event, Element, Host, State, Watch} fr
 
 import {debounce} from '@deckdeckgo/utils';
 
-import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../utils/deckdeckgo-palette';
+import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../../utils/deckdeckgo-palette';
 
 @Component({
   tag: 'deckgo-color',
