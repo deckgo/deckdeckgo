@@ -103,7 +103,7 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 | --deckgo-highlight-code-background | | The background of the displayed code |
 | --deckgo-highlight-code-padding | 0 16px | The padding of the displayed code |
 | --deckgo-highlight-code-border-radius |  | The border radius of the displayed code |
-| --deckgo-highlight-code-margin-bottom | 0 16px | Margin bottom of the code scroller |
+| --deckgo-highlight-code-margin-bottom | 16px 0 or 0 0 16px | Margin bottom of the code |
 | --deckgo-highlight-code-zoom | 1 | If you wish to manually zoom the code |
 | --deckgo-highlight-code-font-size |  | The size of the font for the code |
 | --deckgo-highlight-code-font-family | monospace | The family of the font for the code |

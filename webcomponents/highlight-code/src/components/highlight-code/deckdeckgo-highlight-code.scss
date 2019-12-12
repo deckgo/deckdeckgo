@@ -32,6 +32,10 @@
   color: var(--deckgo-highlight-code-carbon-color, white);
   box-shadow: var(--deckgo-highlight-code-carbon-box-shadow, rgba(0, 0, 0, 0.55) 0 8px 16px);
   margin: var(--deckgo-highlight-code-carbon-margin, 16px 0);
+
+  div.deckgo-highlight-code-container {
+    margin: var(--deckgo-highlight-code-margin, 0 0 16px);
+  }
 }
 
 :host(.deckgo-highlight-code-carbon) ::slotted([slot="code"]) {
@@ -44,7 +48,7 @@ div.deckgo-highlight-code-container {
   padding: var(--deckgo-highlight-code-padding, 0 16px);
   border-radius: var(--deckgo-highlight-code-border-radius);
 
-  margin: var(--deckgo-highlight-code-margin, 0 0 16px);
+  margin: var(--deckgo-highlight-code-margin, 16px 0);
 
   transform-origin: bottom left;
   transition: all .2s ease-in-out;

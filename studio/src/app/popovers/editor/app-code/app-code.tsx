@@ -35,6 +35,9 @@ export class AppCode {
     @State()
     private lineNumbers: boolean = false;
 
+    @State()
+    private carbon: boolean = false;
+
     constructor() {
         this.prismService = PrismService.getInstance();
     }
@@ -54,6 +57,7 @@ export class AppCode {
             this.currentLanguage = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
             this.currentFontSize = await this.initFontSize();
             this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
+            this.carbon = this.selectedElement && this.selectedElement.hasAttribute('carbon');
 
             resolve();
         });
@@ -148,7 +152,7 @@ export class AppCode {
         });
     }
 
-    private toggleLineNumbers($event: CustomEvent): Promise<void> {
+    private togglePropertyAttribute($event: CustomEvent, prop: string): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!this.selectedElement) {
                 resolve();
@@ -160,7 +164,7 @@ export class AppCode {
                 return;
             }
 
-            this.selectedElement.setAttribute('line-numbers', $event.detail.checked);
+            this.selectedElement.setAttribute(prop, $event.detail.checked);
 
             this.emitCodeDidChange();
 
@@ -207,14 +211,16 @@ export class AppCode {
                     </ion-select>
                 </ion-item>
 
-                <ion-item-divider>
-                    <ion-label>Lines</ion-label>
-                </ion-item-divider>
-
                 <ion-item>
                     <ion-label>Display line numbers</ion-label>
                     <ion-checkbox slot="end" checked={this.lineNumbers}
-                                  onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
+                                  onIonChange={($event: CustomEvent) => this.togglePropertyAttribute($event, 'line-numbers')}></ion-checkbox>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Wrap code in a card</ion-label>
+                    <ion-checkbox slot="end" checked={this.carbon}
+                                  onIonChange={($event: CustomEvent) => this.togglePropertyAttribute($event, 'carbon')}></ion-checkbox>
                 </ion-item>
             </ion-list>
         ]

@@ -1,8 +1,8 @@
-import { Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host } from '@stencil/core';
+import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
 import Prism from 'prismjs';
 
-import { DeckdeckgoHighlightCodeAnchor } from '../declarations/deckdeckgo-highlight-code-anchor';
+import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
 
 @Component({
   tag: 'deckgo-highlight-code',
@@ -22,18 +22,20 @@ export class DeckdeckgoHighlightCode {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  @Prop({ reflectToAttr: true }) language: string = 'javascript';
+  @Prop({reflectToAttr: true}) language: string = 'javascript';
 
-  @Prop({ reflectToAttr: true }) highlightLines: string;
-  @Prop({ reflectToAttr: true }) lineNumbers: boolean = false;
+  @Prop({reflectToAttr: true}) highlightLines: string;
+  @Prop({reflectToAttr: true}) lineNumbers: boolean = false;
 
-  @Prop({ reflectToAttr: true }) carbon: boolean = true;
+  @Prop({reflectToAttr: true}) carbon: boolean = true;
 
   @Prop() editable: boolean = false;
 
   @State() editing: boolean = false;
 
   private anchorOffsetTop: number = 0;
+
+  private fetchOrParseAfterUpdate: boolean = false;
 
   async componentDidLoad() {
     const languageWasLoaded: boolean = await this.languageDidLoad();
@@ -45,7 +47,14 @@ export class DeckdeckgoHighlightCode {
     }
   }
 
-  @Listen('prismLanguageLoaded', { target: 'document' })
+  async componentDidUpdate() {
+    if (this.fetchOrParseAfterUpdate) {
+      await this.fetchOrParse();
+      this.fetchOrParseAfterUpdate = false;
+    }
+  }
+
+  @Listen('prismLanguageLoaded', {target: 'document'})
   async languageLoaded($event: CustomEvent) {
     if (!$event || !$event.detail) {
       return;
@@ -119,6 +128,11 @@ export class DeckdeckgoHighlightCode {
   @Watch('lineNumbers')
   async onLineNumbersChange() {
     await this.fetchOrParse();
+  }
+
+  @Watch('carbon')
+  async onCarbonChange() {
+    this.fetchOrParseAfterUpdate = true;
   }
 
   @Method()
@@ -214,6 +228,7 @@ export class DeckdeckgoHighlightCode {
 
             container.children[0].appendChild(div);
           });
+
           await this.addAnchors();
 
           resolve();
@@ -434,7 +449,7 @@ export class DeckdeckgoHighlightCode {
       if (slottedCode) {
         setTimeout(() => {
           slottedCode.setAttribute('contentEditable', 'true');
-          slottedCode.addEventListener('blur', this.applyCode, { once: true });
+          slottedCode.addEventListener('blur', this.applyCode, {once: true});
           slottedCode.addEventListener('keydown', this.catchNewLine);
 
           slottedCode.focus();
@@ -510,8 +525,8 @@ export class DeckdeckgoHighlightCode {
       }}>
         {this.renderCarbon()}
         <div class="deckgo-highlight-code-container"
-          onMouseDown={() => this.edit()}
-          onTouchStart={() => this.edit()}>
+             onMouseDown={() => this.edit()}
+             onTouchStart={() => this.edit()}>
           <code></code>
           <slot name="code"></slot>
         </div>
