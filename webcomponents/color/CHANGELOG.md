@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-2"></a>
+# 1.0.0-rc.3-2 (2019-12-12)
+
+### Features
+
+* refactor component to exposes the interfaces and `DEFAULT_PALETTE`
+
 <a name="1.0.0-rc.3-1"></a>
 # 1.0.0-rc.3-1 (2019-11-19)
 
