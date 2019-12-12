@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.8-1"></a>
+# 1.0.0-rc.8-1 (2019-12-12)
+
+### Features
+
+* new highlight-code properties and variables related to the display card breaking change
+
 <a name="1.0.0-rc.8"></a>
 # 1.0.0-rc.8 (2019-12-11)
 

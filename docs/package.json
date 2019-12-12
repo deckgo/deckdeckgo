@@ -17,7 +17,7 @@
     "@deckdeckgo/charts": "^1.0.0-rc.5",
     "@deckdeckgo/color": "^1.0.0-rc.3-1",
     "@deckdeckgo/core": "^1.0.0-rc.3-3",
-    "@deckdeckgo/highlight-code": "file:../webcomponents/highlight-code",
+    "@deckdeckgo/highlight-code": "^1.0.0-rc.2",
     "@deckdeckgo/inline-editor": "^1.0.0-rc.3-2",
     "@deckdeckgo/qrcode": "^1.0.0-rc.1-1",
     "@deckdeckgo/slide-author": "^1.0.0-rc.1",
@@ -33,7 +33,7 @@
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
     "@deckdeckgo/slide-video": "^1.0.0-rc.1-1",
     "@deckdeckgo/slide-youtube": "^1.0.0-rc.2",
-    "@ionic/core": "^4.11.1",
+    "@ionic/core": "^4.11.6",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.3"
   },
@@ -44,8 +44,8 @@
     "@stencil/sass": "^1.1.1",
     "@types/glob": "^7.1.1",
     "@types/marked": "^0.7.2",
-    "@types/node": "^12.12.14",
-    "autoprefixer": "^9.7.2",
+    "@types/node": "^12.12.17",
+    "autoprefixer": "^9.7.3",
     "glob": "^7.1.6",
     "marked": "^0.7.0",
     "workbox-build": "4.3.1"
