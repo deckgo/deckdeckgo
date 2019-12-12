@@ -3,11 +3,11 @@ import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Met
 import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
 
 import '@deckdeckgo/color';
+import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
 import {ImageSize, ImageAlign, ToolbarActions} from '../../utils/enums';
 import {AnchorLink, InlineAction, InputTargetEvent} from './deckdeckgo-inline-editor.interface';
-import { DeckdeckgoPalette } from "@deckdeckgo/color";
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -18,7 +18,7 @@ export class DeckdeckgoInlineEditor {
 
   @Element() el: HTMLElement;
 
-  @Prop({ mutable: true }) palette: DeckdeckgoPalette[];
+  @Prop() palette: DeckdeckgoPalette[] = DEFAULT_PALETTE;
 
   @State()
   private bold: boolean = false;
@@ -1019,7 +1019,7 @@ export class DeckdeckgoInlineEditor {
       );
     } else if (this.toolbarActions === ToolbarActions.COLOR) {
       return <div class="color">
-        <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} more={false}>
+        <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} more={false} palette={this.palette}>
           <div slot="more"></div>
         </deckgo-color>
       </div>
