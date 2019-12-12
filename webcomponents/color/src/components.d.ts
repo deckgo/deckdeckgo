@@ -10,7 +10,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   DeckdeckgoPalette,
   DeckdeckgoPaletteColor,
-} from './components/utils/deckdeckgo-palette';
+} from './utils/deckdeckgo-palette';
 
 export namespace Components {
   interface DeckgoColor {

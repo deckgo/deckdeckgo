@@ -7,6 +7,9 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  DeckdeckgoPalette,
+} from '@deckdeckgo/color';
+import {
   InlineAction,
 } from './components/inline-editor/deckdeckgo-inline-editor.interface';
 
@@ -21,6 +24,7 @@ export namespace Components {
     'imgPropertyWidth': string;
     'list': boolean;
     'mobile': boolean;
+    'palette': DeckdeckgoPalette[];
     'reset': (clearSelection: boolean, blurActiveElement?: boolean) => Promise<void>;
     'stickyDesktop': boolean;
     'stickyMobile': boolean;
@@ -55,6 +59,7 @@ declare namespace LocalJSX {
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onLinkCreated'?: (event: CustomEvent<HTMLElement>) => void;
     'onStickyToolbarActivated'?: (event: CustomEvent<boolean>) => void;
+    'palette'?: DeckdeckgoPalette[];
     'stickyDesktop'?: boolean;
     'stickyMobile'?: boolean;
   }
