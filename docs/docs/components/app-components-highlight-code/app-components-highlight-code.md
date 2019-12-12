@@ -4,6 +4,8 @@ The "Highlight Code" component is an extra component which let you highlight cod
 
 To highlight your code, this component is using [Prism.js](https://prismjs.com) from [Lea Verou](http://lea.verou.me) and [James DiGioia](https://twitter.com/jamesdigioia).
 
+Moreover, per default, your code will be displayed in form of a stylish "windowed" card as the amazing [carbon](https://carbon.now.sh), the tool to create and share beautiful images of your source code, would do.
+
 ## Table of contents
 
 - [Showcase](#app-components-highlight-code-showcase)
@@ -87,7 +89,8 @@ The `<deckgo-highlight-code/>` expose the following properties:
 | `language`   | `language`    |  Define the language to be used for the syntax highlighting. The list of [supported languages](https://prismjs.com/#languages-list) is defined by [Prism.js](https://prismjs.com/#languages-list)            | `string`  | `'javascript'`        |
 | `highlightLines` | `highlight-lines` | If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with space. For example: "3,5 8,9 13,13 14,17" | `string`  |            |
 | `lineNumbers`    | `line-numbers`    | Display the number of the lines of code | `boolean` | `false`               |
-| `editable` | `editable` | In case you would like to set the code component as being editable. | `boolean` | `false`                | 
+| `editable` | `editable` | In case you would like to set the code component as being editable. | `boolean` | `false`                |
+| `carbon` | `carbon` | Present the code in a stylish "windowed" card. | `boolean` | `true`                | 
 
 ### Styling
 
@@ -98,26 +101,26 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 | --deckgo-highlight-code-display | block | The display property of the code |
 | --deckgo-highlight-code-color | inherit | The color of the displayed code |
 | --deckgo-highlight-code-background | | The background of the displayed code |
-| --deckgo-highlight-code-padding |  | The padding of the displayed code |
+| --deckgo-highlight-code-padding | 0 16px | The padding of the displayed code |
 | --deckgo-highlight-code-border-radius |  | The border radius of the displayed code |
-| --deckgo-highlight-code-margin-bottom | 64px | Margin bottom of the code scroller |
+| --deckgo-highlight-code-margin-bottom | 16px 0 or 0 0 16px | Margin bottom of the code |
 | --deckgo-highlight-code-zoom | 1 | If you wish to manually zoom the code |
 | --deckgo-highlight-code-font-size |  | The size of the font for the code |
 | --deckgo-highlight-code-font-family | monospace | The family of the font for the code |
-| --deckgo-highlight-code-line-background | #3880ff | The background of the lines you wish to highlight |
+| --deckgo-highlight-code-line-background | #3E4564 | The background of the lines you wish to highlight |
 | --deckgo-highlight-code-line-numbers | #999999  | The color of the line numbers and divider |
 | --deckgo-highlight-code-line-padding |  | A padding for each lines you wish to highlight |
 | --deckgo-highlight-code-line-border-top |  | The border-top property of the lines you wish to highlight |
 | --deckgo-highlight-code-direction | ltr | The direction of the displayed code |
 | --deckgo-highlight-code-text-align | start | The text alignment of your code |
-| --deckgo-highlight-code-token-comment |  | Highlighted code tokens comment, prolog, doctype and cdata |
-| --deckgo-highlight-code-token-punctuation |  | Highlighted code token punctuation |
-| --deckgo-highlight-code-token-property |  | Highlighted code tokens property, tag, boolean, number, constant, symbol, deleted |
-| --deckgo-highlight-code-token-selector |  | Highlighted code tokens selector, attr-name, string, char, builtin, inserted |
-| --deckgo-highlight-code-token-operator |  | Highlighted code tokens operator, entity, url, string |
-| --deckgo-highlight-code-token-atrule |  | Highlighted code tokens atrule, attr-value, keyword |
-| --deckgo-highlight-code-token-function |  | Highlighted code function, class-name |
-| --deckgo-highlight-code-token-regex |  | Highlighted code tokens regex, important, variable |
+| --deckgo-highlight-code-token-comment | #6272a4 | Highlighted code tokens comment, prolog, doctype and cdata |
+| --deckgo-highlight-code-token-punctuation | inherit | Highlighted code token punctuation |
+| --deckgo-highlight-code-token-property | #bd93f9 | Highlighted code tokens property, tag, boolean, number, constant, symbol, deleted |
+| --deckgo-highlight-code-token-selector | #50fa7b | Highlighted code tokens selector, attr-name, string, char, builtin, inserted |
+| --deckgo-highlight-code-token-operator | #ff79c6 | Highlighted code tokens operator, entity, url, string |
+| --deckgo-highlight-code-token-atrule | #ff79c6 | Highlighted code tokens atrule, attr-value, keyword |
+| --deckgo-highlight-code-token-function | #ffb86c | Highlighted code function, class-name |
+| --deckgo-highlight-code-token-regex | #f1fa8c | Highlighted code tokens regex, important, variable |
 | --deckgo-highlight-code-empty-text | "Click to add your code" | Place holder in case the `editable` is set to `true` |
 | --deckgo-highlight-code-scroll | scroll | In case you would like to change the scroll property of the shadowed code block |
 | --deckgo-highlight-code-container-width | | The attribute width of the code's container |
@@ -126,6 +129,30 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 | --deckgo-highlight-code-container-justify-content | | The attribute justify-content of the code's container |
 | --deckgo-highlight-code-container-flex-direction | | The attribute flex-direction of the code's container |
 | --deckgo-highlight-code-container-align-items | | The attribute align-items of the code's container |
+
+Furthermore the following styles apply if the code is displayed as a "windowed" card (`carbon` property equals to `true`):
+
+| CSS4 variable                      | Default | Note |
+| -------------------------- |-----------------|-----------------|
+| --deckgo-highlight-code-carbon-display | block | The display property of the host container. |
+| --deckgo-highlight-code-carbon-overflow | auto | The overflow property of the host container. |
+| --deckgo-highlight-code-carbon-border |  | The border property of the host container. |
+| --deckgo-highlight-code-carbon-border-radius | 4px | The border-radius property of the host container. |
+| --deckgo-highlight-code-carbon-background | #282a36 | The background property of the host container. |
+| --deckgo-highlight-code-carbon-color | white | The color property of the host container. |
+| --deckgo-highlight-code-carbon-box-shadow | rgba(0, 0, 0, 0.55) 0 8px 16px | The box-shadow property of the host container. |
+| --deckgo-highlight-code-carbon-margin | 16px 0 | The margin property of the host container. |
+| --deckgo-highlight-code-carbon-header-padding | 16px | The padding property of the card header. |
+| --deckgo-highlight-code-carbon-header-button-width | 12px | The width of a button of the card header. |
+| --deckgo-highlight-code-carbon-header-button-heeght | 12px | The height of a button of the card header. |
+| --deckgo-highlight-code-carbon-header-button-border-radius | 50% | The border-radius of a button of the card header. |
+| --deckgo-highlight-code-carbon-header-button-margin | 0 6px 0 0 | The margin of a button of the card header. |
+| --deckgo-highlight-code-carbon-header-button-red-background | #FF5F56 | The background of the first button of the card header. |
+| --deckgo-highlight-code-carbon-header-button-red-border | 0.5px solid #E0443E | The border of the first button of the card header. |
+| --deckgo-highlight-code-carbon-header-button-yellow-background | #FFBD2E | The background of the second button of the card header. |
+| --deckgo-highlight-code-carbon-header-button-yellow-border | 0.5px solid #DEA123 | The border of the second button of the card header. |
+| --deckgo-highlight-code-carbon-header-button-green-background | #27C93F | The background of the third button of the card header. |
+| --deckgo-highlight-code-carbon-header-button-green-border | 0.5px solid #1AAB29 | The color of the third button of the card header. |
 
 ### Methods
 

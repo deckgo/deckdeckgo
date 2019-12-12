@@ -21,6 +21,7 @@ export class AppComponentsHighlightCode {
         <main><h1 id="app-components-highlight-code-highlight-code">Highlight Code</h1>
 <p>The &quot;Highlight Code&quot; component is an extra component which let you highlight code easily.</p>
 <p>To highlight your code, this component is using <a href="https://prismjs.com">Prism.js</a> from <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://twitter.com/jamesdigioia">James DiGioia</a>.</p>
+<p>Moreover, per default, your code will be displayed in form of a stylish &quot;windowed&quot; card as the amazing <a href="https://carbon.now.sh">carbon</a>, the tool to create and share beautiful images of your source code, would do.</p>
 <h2 id="app-components-highlight-code-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-components-highlight-code-showcase">Showcase</a></li>
@@ -139,6 +140,13 @@ export class AppComponentsHighlightCode {
 <td><code>boolean</code></td>
 <td><code>false</code></td>
 </tr>
+<tr>
+<td><code>carbon</code></td>
+<td><code>carbon</code></td>
+<td>Present the code in a stylish &quot;windowed&quot; card.</td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+</tr>
 </tbody></table>
 <h3 id="app-components-highlight-code-styling">Styling</h3>
 <p>The <code>&lt;deckgo-highlight-code/&gt;</code> could be styled using the following CSS4 variables:</p>
@@ -167,7 +175,7 @@ export class AppComponentsHighlightCode {
 </tr>
 <tr>
 <td>--deckgo-highlight-code-padding</td>
-<td></td>
+<td>0 16px</td>
 <td>The padding of the displayed code</td>
 </tr>
 <tr>
@@ -177,7 +185,7 @@ export class AppComponentsHighlightCode {
 </tr>
 <tr>
 <td>--deckgo-highlight-code-margin-bottom</td>
-<td>64px</td>
+<td>0 16px</td>
 <td>Margin bottom of the code scroller</td>
 </tr>
 <tr>
@@ -197,7 +205,7 @@ export class AppComponentsHighlightCode {
 </tr>
 <tr>
 <td>--deckgo-highlight-code-line-background</td>
-<td>#3880ff</td>
+<td>#3E4564</td>
 <td>The background of the lines you wish to highlight</td>
 </tr>
 <tr>
@@ -227,42 +235,42 @@ export class AppComponentsHighlightCode {
 </tr>
 <tr>
 <td>--deckgo-highlight-code-token-comment</td>
-<td></td>
+<td>#6272a4</td>
 <td>Highlighted code tokens comment, prolog, doctype and cdata</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-token-punctuation</td>
-<td></td>
+<td>inherit</td>
 <td>Highlighted code token punctuation</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-token-property</td>
-<td></td>
+<td>#bd93f9</td>
 <td>Highlighted code tokens property, tag, boolean, number, constant, symbol, deleted</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-token-selector</td>
-<td></td>
+<td>#50fa7b</td>
 <td>Highlighted code tokens selector, attr-name, string, char, builtin, inserted</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-token-operator</td>
-<td></td>
+<td>#ff79c6</td>
 <td>Highlighted code tokens operator, entity, url, string</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-token-atrule</td>
-<td></td>
+<td>#ff79c6</td>
 <td>Highlighted code tokens atrule, attr-value, keyword</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-token-function</td>
-<td></td>
+<td>#ffb86c</td>
 <td>Highlighted code function, class-name</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-token-regex</td>
-<td></td>
+<td>#f1fa8c</td>
 <td>Highlighted code tokens regex, important, variable</td>
 </tr>
 <tr>
@@ -304,6 +312,111 @@ export class AppComponentsHighlightCode {
 <td>--deckgo-highlight-code-container-align-items</td>
 <td></td>
 <td>The attribute align-items of the code&#39;s container</td>
+</tr>
+</tbody></table>
+<p>Furthermore the following styles apply if the code is displayed as a &quot;windowed&quot; card (<code>carbon</code> property equals to <code>true</code>):</p>
+<table>
+<thead>
+<tr>
+<th>CSS4 variable</th>
+<th>Default</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>--deckgo-highlight-code-carbon-display</td>
+<td>block</td>
+<td>The display property of the host container.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-overflow</td>
+<td>auto</td>
+<td>The overflow property of the host container.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-border</td>
+<td></td>
+<td>The border property of the host container.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-border-radius</td>
+<td>4px</td>
+<td>The border-radius property of the host container.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-background</td>
+<td>#282a36</td>
+<td>The background property of the host container.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-color</td>
+<td>white</td>
+<td>The color property of the host container.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-box-shadow</td>
+<td>rgba(0, 0, 0, 0.55) 0 8px 16px</td>
+<td>The box-shadow property of the host container.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-margin</td>
+<td>16px 0</td>
+<td>The margin property of the host container.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-padding</td>
+<td>16px</td>
+<td>The padding property of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-width</td>
+<td>12px</td>
+<td>The width of a button of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-heeght</td>
+<td>12px</td>
+<td>The height of a button of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-border-radius</td>
+<td>50%</td>
+<td>The border-radius of a button of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-margin</td>
+<td>0 6px 0 0</td>
+<td>The margin of a button of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-red-background</td>
+<td>#FF5F56</td>
+<td>The background of the first button of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-red-border</td>
+<td>0.5px solid #E0443E</td>
+<td>The border of the first button of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-yellow-background</td>
+<td>#FFBD2E</td>
+<td>The background of the second button of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-yellow-border</td>
+<td>0.5px solid #DEA123</td>
+<td>The border of the second button of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-green-background</td>
+<td>#27C93F</td>
+<td>The background of the third button of the card header.</td>
+</tr>
+<tr>
+<td>--deckgo-highlight-code-carbon-header-button-green-border</td>
+<td>0.5px solid #1AAB29</td>
+<td>The color of the third button of the card header.</td>
 </tr>
 </tbody></table>
 <h3 id="app-components-highlight-code-methods">Methods</h3>

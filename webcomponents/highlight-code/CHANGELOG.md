@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2"></a>
+# 1.0.0-rc.2 (2019-12-12)
+
+### Breaking Changes
+
+* as of now, code will be per default displayed in a stylish card. you could opt out setting the property `carbon` to `false` ([#525](https://github.com/deckgo/deckdeckgo/issues/525))
+
 <a name="1.0.0-rc.1-3"></a>
 # 1.0.0-rc.1-3 (2019-10-21)
 

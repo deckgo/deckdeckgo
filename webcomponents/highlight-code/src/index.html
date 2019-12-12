@@ -18,6 +18,8 @@
     boolean computeTest(int n);
     }
 
+    // Yolo
+
     public static void main(String args[]) {
     NumericTest isEven = (n) -> (n % 2) == 0;
     NumericTest isNegative = (n) -> (n < 0);
@@ -37,9 +39,17 @@
             elem[0].lineNumbers = !elem[0].lineNumbers;
         }
     }
+
+    function toggleCarbon() {
+      const elem = document.getElementsByTagName('deckgo-highlight-code');
+      if (elem && elem.length > 0) {
+        elem[0].carbon = !elem[0].carbon;
+      }
+    }
 </script>
 
 <button onclick="toggleLineNumbers()">Toggle line numbers</button>
+<button onclick="toggleCarbon()">Toggle carbon</button>
 
 <h1>Editable empty:</h1>
 
@@ -60,7 +70,7 @@
 
 <button onclick="toggleSrcLineNumbers()" style="margin-bottom: 16px;">Toggle fetched line numbers</button>
 
-<deckgo-highlight-code line-numbers="true" id="deckGoCode"
+<deckgo-highlight-code line-numbers="true" id="deckGoCode" carbon="false"
                        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx">
 </deckgo-highlight-code>
 

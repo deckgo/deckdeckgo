@@ -6,7 +6,7 @@ deckgo-deck {
   --pager-text-slides-display: block;
   --pager-text-color: black;
 
-  h1, h2, h3, section, ol, ul, deckgo-reveal-list, deckgo-highlight-code {
+  h1, h2, h3, section, ol, ul, deckgo-reveal-list {
     border-radius: 2px;
     border: 1px solid var(--ion-color-light);
   }
@@ -29,10 +29,11 @@ deckgo-deck {
   }
 
   deckgo-highlight-code {
-    --deckgo-highlight-code-margin: 0;
-
     code[slot] {
-      min-height: 26px;
+      min-height: 20px;
+
+      font-size: var(--deckgo-highlight-code-font-size);
+      font-family: var(--deckgo-highlight-code-font-family, monospace);
     }
   }
 
