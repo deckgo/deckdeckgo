@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-3"></a>
+# 1.0.0-rc.3-3 (2019-12-12)
+
+### Features
+
+* add new property `palette` to allow customization of the palette of colors to be picked
+
 <a name="1.0.0-rc.3-2"></a>
 # 1.0.0-rc.3-2 (2019-10-14)
 
