@@ -6,6 +6,7 @@
 
 ### Web Components
 * core: v1.0.0-rc.3-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+* highlight-code: v1.0.0-rc.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
 <a name="1.0.0-rc.18"></a>
 # [1.0.0-rc.18](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.17...v1.0.0-rc.18) (2019-12-04)
