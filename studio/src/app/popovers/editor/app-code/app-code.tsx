@@ -57,7 +57,7 @@ export class AppCode {
             this.currentLanguage = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
             this.currentFontSize = await this.initFontSize();
             this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
-            this.carbon = this.selectedElement && this.selectedElement.hasAttribute('carbon');
+            this.carbon = this.selectedElement && this.selectedElement.getAttribute('carbon') === 'true';
 
             resolve();
         });

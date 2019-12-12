@@ -27,7 +27,7 @@ export class DeckdeckgoHighlightCode {
   @Prop({reflectToAttr: true}) highlightLines: string;
   @Prop({reflectToAttr: true}) lineNumbers: boolean = false;
 
-  @Prop({reflectToAttr: true}) carbon: boolean = true;
+  @Prop({reflectToAttr: true}) carbon: string = 'true';
 
   @Prop() editable: boolean = false;
 
@@ -521,7 +521,7 @@ export class DeckdeckgoHighlightCode {
     return (
       <Host class={{
         'deckgo-highlight-code-edit': this.editing,
-        'deckgo-highlight-code-carbon': this.carbon
+        'deckgo-highlight-code-carbon': this.carbon === 'true'
       }}>
         {this.renderCarbon()}
         <div class="deckgo-highlight-code-container"
@@ -535,7 +535,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   private renderCarbon() {
-    if (!this.carbon) {
+    if (this.carbon !== 'true') {
       return undefined;
     }
 

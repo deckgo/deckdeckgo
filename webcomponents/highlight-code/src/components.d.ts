@@ -14,7 +14,7 @@ export namespace Components {
   interface DeckgoHighlightCode {
     'anchor': string;
     'anchorZoom': string;
-    'carbon': boolean;
+    'carbon': string;
     'editable': boolean;
     'findNextAnchor': (enter: boolean) => Promise<DeckdeckgoHighlightCodeAnchor>;
     'hideAnchor': boolean;
@@ -44,7 +44,7 @@ declare namespace LocalJSX {
   interface DeckgoHighlightCode extends JSXBase.HTMLAttributes<HTMLDeckgoHighlightCodeElement> {
     'anchor'?: string;
     'anchorZoom'?: string;
-    'carbon'?: boolean;
+    'carbon'?: string;
     'editable'?: boolean;
     'hideAnchor'?: boolean;
     'highlightLines'?: string;
