@@ -185,8 +185,8 @@ export class AppComponentsHighlightCode {
 </tr>
 <tr>
 <td>--deckgo-highlight-code-margin-bottom</td>
-<td>0 16px</td>
-<td>Margin bottom of the code scroller</td>
+<td>16px 0 or 0 0 16px</td>
+<td>Margin bottom of the code</td>
 </tr>
 <tr>
 <td>--deckgo-highlight-code-zoom</td>
