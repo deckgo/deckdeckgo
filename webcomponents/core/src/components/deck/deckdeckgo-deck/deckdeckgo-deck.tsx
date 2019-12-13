@@ -265,6 +265,10 @@ export class DeckdeckgoDeck {
       return;
     }
 
+    if (this.transition !== 'slide') {
+      return;
+    }
+
     const deltaX: DeltaX = await this.getDeltaX(e);
 
     if (!deltaX) {
