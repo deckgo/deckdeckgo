@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-2"></a>
+# 1.0.0-rc.2-2 (2019-12-13)
+
+### Fix
+
+* svg weren't displayed anymore since v1.0.0-rc.2
+
 <a name="1.0.0-rc.2-1"></a>
 # 1.0.0-rc.2-1 (2019-11-29)
 
