@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-4"></a>
+# 1.0.0-rc.3-4 (2019-12-13)
+
+### Features
+
+* don't drag slide if transition is not "slide"
+
 <a name="1.0.0-rc.3-3"></a>
 # 1.0.0-rc.3-3 (2019-12-10)
 
