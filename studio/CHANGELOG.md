@@ -1,3 +1,23 @@
+<a name="1.0.0-beta.10"></a>
+# 1.0.0-beta.10 (2019-12-04)
+
+### Breaking Changes
+
+* code elements displayed per default as stylish cards with syntax highlighting ([#525](https://github.com/deckgo/deckdeckgo/issues/525))
+
+### Features
+
+* select the transition style of the animation between your slides ([#57](https://github.com/deckgo/deckdeckgo/issues/57))
+* improve the accessibility options of the deck by moving the style to a separate popover ([#520](https://github.com/deckgo/deckdeckgo/issues/520)) 
+* move color options for the code to the specific color options pane. this unify the UX of the color options ([#394](https://github.com/deckgo/deckdeckgo/issues/394))
+* invert order of information and inputs on the voting page to avoid the input being under the keyboard on iOS ([#518](https://github.com/deckgo/deckdeckgo/issues/518)) 
+
+### Fix
+
+* `lazy-img` component wasn't displaying svg anymore ([#532](https://github.com/deckgo/deckdeckgo/pull/532))
+* if action are disabled, events on toolbar buttons should be blocked too ([#522](https://github.com/deckgo/deckdeckgo/pull/522))
+* code typo as popover are `HTMLIonPopoverElement` ([#523](https://github.com/deckgo/deckdeckgo/pull/523)) 
+
 <a name="1.0.0-beta.9"></a>
 # 1.0.0-beta.9 (2019-12-04)
 
