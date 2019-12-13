@@ -1,5 +1,5 @@
 <a name="1.0.0-rc.19"></a>
-# [1.0.0-rc.19](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.18...v1.0.0-rc.19) (In Progress)
+# [1.0.0-rc.19](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.18...v1.0.0-rc.19) (2019-12-13)
 
 ### Applications
 * studio: v1.0.0-beta.10 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
