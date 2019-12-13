@@ -5,7 +5,7 @@
 * studio: v1.0.0-beta.10 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 * docs: v1.0.0-rc.8-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 * remote: v1.0.0-rc.2-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
-* demo: v1.0.0-rc.4-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
+* demo: v1.0.0-rc.4-4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
 
 ### Web Components
 * color: v1.0.0-rc.3-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
@@ -15,7 +15,7 @@
 * lazy-img: v1.0.0-rc.2-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/CHANGELOG.md))
 
 ### Others
-* starter kit: v1.0.0-rc.6-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+* starter kit: v1.0.0-rc.6-4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.0.0-rc.18"></a>
 # [1.0.0-rc.18](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.17...v1.0.0-rc.18) (2019-12-04)
