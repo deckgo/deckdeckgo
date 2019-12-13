@@ -195,7 +195,7 @@ export class DeckdeckgoLazyImg {
   }
 
   render() {
-    const hostClass: string = this.imgLoaded ? 'loaded' : '';
+    const hostClass: string = this.imgLoaded || this.svgContent ? 'loaded' : '';
 
     if (this.svgContent) {
       return <Host class={hostClass}>
