@@ -81,7 +81,7 @@ export class AppFeed {
         if (this.decks && this.decks.length > 0) {
             return (
                 this.decks.map((deck: Deck, i: number) => {
-                    return <a href={this.presentationUrl + deck.data.meta.pathname} target="_blank">
+                    return <a href={this.presentationUrl + deck.data.meta.pathname} aria-label={deck.data.meta.title} target="_blank">
                         <app-feed-card compact={i > 0} deck={deck}></app-feed-card>
                     </a>
                 })
