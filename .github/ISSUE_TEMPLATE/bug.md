@@ -8,7 +8,12 @@ about: Report a bug found in DeckDeckGo
 - [ ] Remote control
 - [ ] Documentation
 - [ ] Demo
+- [ ] Starter kit
+- [ ] Poll
+- [ ] Web Components
+- [ ] Templates
 
+* in case the affected part would be a Web Component or Template, please specify which of them
 
 #### Reproduction
 
