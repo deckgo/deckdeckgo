@@ -14,12 +14,12 @@ labels: feature
 - [ ] Web Components
 - [ ] Templates
 
-* in case the affected part would be a Web Component or Template, please specify which of them
+<!-- In case the affected part would be a Web Component or Template, please specify which of them -->
  
-#### Feature Description
+### Feature Description
 
-Provide a brief summary of the feature you would like to see.
+<!-- Provide a brief summary of the feature you would like to see. -->
 
-#### Use Case
+### Use Case
 
-Describe the use case(s) that the proposed feature would enable.
+<!-- Describe the use case(s) that the proposed feature would enable. -->

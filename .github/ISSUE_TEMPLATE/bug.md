@@ -13,26 +13,26 @@ about: Report a bug found in DeckDeckGo
 - [ ] Web Components
 - [ ] Templates
 
-* in case the affected part would be a Web Component or Template, please specify which of them
+<!-- In case the affected part would be a Web Component or Template, please specify which of them -->
 
-#### Reproduction
+### Reproduction
 
 Steps to reproduce:
 1. 
 2. 
  
  
-#### Expected Behavior
+### Expected Behavior
 
-What behavior were you expecting to see?
-
-
-#### Actual Behavior
-
-What behavior did you actually see?
+<!-- What behavior were you expecting to see? -->
 
 
-#### Environment
+### Actual Behavior
+
+<!-- What behavior did you actually see? -->
+
+
+### Environment
 
 <!-- Please provide any useful other information. -->
 
