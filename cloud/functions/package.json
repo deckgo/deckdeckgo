@@ -1,6 +1,6 @@
 {
   "name": "functions",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
@@ -12,15 +12,17 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "firebase-admin": "^8.7.0",
+    "firebase-admin": "^8.8.0",
     "firebase-functions": "^3.3.0",
     "mailchimp-api-v3": "^1.13.1",
+    "nodemailer": "^6.4.2",
     "puppeteer": "^2.0.0"
   },
   "devDependencies": {
-    "@types/puppeteer": "^1.20.2",
+    "@types/nodemailer": "^6.2.2",
+    "@types/puppeteer": "^2.0.0",
     "tslint": "^5.20.1",
-    "typescript": "^3.2.2"
+    "typescript": "^3.7.3"
   },
   "private": true,
   "engines": {
