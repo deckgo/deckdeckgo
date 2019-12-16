@@ -15,9 +15,11 @@
     "firebase-admin": "^8.8.0",
     "firebase-functions": "^3.3.0",
     "mailchimp-api-v3": "^1.13.1",
+    "nodemailer": "^6.4.2",
     "puppeteer": "^2.0.0"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.2.2",
     "@types/puppeteer": "^2.0.0",
     "tslint": "^5.20.1",
     "typescript": "^3.7.3"
