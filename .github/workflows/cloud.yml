@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@master
       - name: Install Dependencies
         run: npm ci
-        working-directory: ./cloud
+        working-directory: ./cloud/functions
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
