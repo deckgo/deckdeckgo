@@ -141,7 +141,7 @@ function saveScreenshot(deckData: DeckData, imageBuffer: string): Promise<string
         // path[0] = ''
         // path[1] = user
         // path[2] = presentation-name
-        const file = bucket.file(`/${deckData.owner_id}/${Resources.Constants.PRESENTATION.FOLDER}/${path[2]}/${Resources.Constants.PRESENTATION.IMAGE}`);
+        const file = bucket.file(`${deckData.owner_id}/${Resources.Constants.PRESENTATION.FOLDER}/${path[2]}/${Resources.Constants.PRESENTATION.IMAGE}`);
 
         try {
             await file.save(imageBuffer);
