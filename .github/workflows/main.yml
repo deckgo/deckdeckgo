@@ -1,0 +1,27 @@
+name: CI - Cloud
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'cloud/**'
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: ./cloud
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: "default"
+          PROJECT_PATH: "./cloud"
