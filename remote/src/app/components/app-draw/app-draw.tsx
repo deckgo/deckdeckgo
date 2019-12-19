@@ -134,7 +134,7 @@ export class AppDraw {
                 return;
             }
 
-            this.ctx = canvas.getContext("2d");
+            this.ctx = canvas.getContext("2d", { desynchronized: true });
 
             resolve();
         });
