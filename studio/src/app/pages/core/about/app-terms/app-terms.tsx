@@ -25,7 +25,7 @@ export class AppAbout {
                         <li>modify or copy the materials;</li>
                         <li>attempt to decompile or reverse engineer any software contained on DeckDeckGo's web site;</li>
                         <li>remove any copyright or other proprietary notations from the materials; or</li>
-                        <ll>transfer the materials to another person or "mirror" the materials on any other server.</ll>
+                        <li>transfer the materials to another person or "mirror" the materials on any other server.</li>
                     </ul>
 
                     <p>b. This license shall automatically terminate if you violate any of these restrictions and may be terminated by DeckDeckGo at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.</p>
