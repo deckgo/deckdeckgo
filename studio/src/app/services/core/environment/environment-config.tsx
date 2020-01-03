@@ -18,6 +18,10 @@ export interface EnvironmentUnsplashConfig {
     url: string;
 }
 
+export interface EnvironmentGoogleConfig {
+    fontsUrl: string
+}
+
 export interface EnvironmentDeckDeckGoConfig {
     prod: boolean;
     appUrl: string;
@@ -33,6 +37,7 @@ export interface EnvironmentConfig {
     firebase: EnvironmentFirebaseConfig;
     tenor: EnvironmentTenorConfig;
     unsplash: EnvironmentUnsplashConfig;
+    google: EnvironmentGoogleConfig;
     prismComponentsUrl: string;
     gifExampleSrc: string;
 }

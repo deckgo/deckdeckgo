@@ -77,6 +77,9 @@ export namespace Components {
     'deckName': string;
     'published': string;
   }
+  interface AppDeckFonts {
+    'deckElement': HTMLElement;
+  }
   interface AppDeckStyle {
     'blockSlide': EventEmitter<boolean>;
     'deckDidChange': EventEmitter<HTMLElement>;
@@ -206,6 +209,7 @@ export namespace Components {
     'chart': boolean;
     'code': boolean;
     'colorTarget': boolean;
+    'fonts': boolean;
     'qrCode': boolean;
     'slide': boolean;
     'transition': boolean;
@@ -324,6 +328,12 @@ declare global {
   var HTMLAppDeckDeleteElement: {
     prototype: HTMLAppDeckDeleteElement;
     new (): HTMLAppDeckDeleteElement;
+  };
+
+  interface HTMLAppDeckFontsElement extends Components.AppDeckFonts, HTMLStencilElement {}
+  var HTMLAppDeckFontsElement: {
+    prototype: HTMLAppDeckFontsElement;
+    new (): HTMLAppDeckFontsElement;
   };
 
   interface HTMLAppDeckStyleElement extends Components.AppDeckStyle, HTMLStencilElement {}
@@ -718,6 +728,7 @@ declare global {
     'app-custom-images': HTMLAppCustomImagesElement;
     'app-dashboard': HTMLAppDashboardElement;
     'app-deck-delete': HTMLAppDeckDeleteElement;
+    'app-deck-fonts': HTMLAppDeckFontsElement;
     'app-deck-style': HTMLAppDeckStyleElement;
     'app-deck-transition': HTMLAppDeckTransitionElement;
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
@@ -831,6 +842,10 @@ declare namespace LocalJSX {
   interface AppDeckDelete {
     'deckName'?: string;
     'published'?: string;
+  }
+  interface AppDeckFonts {
+    'deckElement'?: HTMLElement;
+    'onFontsChange'?: (event: CustomEvent<void>) => void;
   }
   interface AppDeckStyle {
     'blockSlide'?: EventEmitter<boolean>;
@@ -989,6 +1004,7 @@ declare namespace LocalJSX {
     'chart'?: boolean;
     'code'?: boolean;
     'colorTarget'?: boolean;
+    'fonts'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
     'slide'?: boolean;
@@ -1042,6 +1058,7 @@ declare namespace LocalJSX {
     'app-custom-images': AppCustomImages;
     'app-dashboard': AppDashboard;
     'app-deck-delete': AppDeckDelete;
+    'app-deck-fonts': AppDeckFonts;
     'app-deck-style': AppDeckStyle;
     'app-deck-transition': AppDeckTransition;
     'app-delete-deck-action': AppDeleteDeckAction;
@@ -1128,6 +1145,7 @@ declare module "@stencil/core" {
       'app-custom-images': LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
       'app-dashboard': LocalJSX.AppDashboard & JSXBase.HTMLAttributes<HTMLAppDashboardElement>;
       'app-deck-delete': LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
+      'app-deck-fonts': LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
       'app-deck-style': LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
       'app-deck-transition': LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
       'app-delete-deck-action': LocalJSX.AppDeleteDeckAction & JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement>;

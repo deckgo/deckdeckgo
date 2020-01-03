@@ -30,6 +30,9 @@ export class AppSelectTargetElement {
     @Prop()
     transition: boolean = false;
 
+    @Prop()
+    fonts: boolean = false;
+
     @Event()
     applyTo: EventEmitter<TargetElement>;
 
@@ -60,6 +63,7 @@ export class AppSelectTargetElement {
                 {this.renderSlide()}
                 {this.renderColor()}
                 {this.renderBackground()}
+                {this.renderFonts()}
                 {this.renderTransition()}
             </ion-segment>
         }
@@ -119,6 +123,16 @@ export class AppSelectTargetElement {
         if (this.transition) {
             return <ion-segment-button value={TargetElement.TRANSITION} mode="md">
                 <ion-label>Transition</ion-label>
+            </ion-segment-button>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderFonts() {
+        if (this.fonts) {
+            return <ion-segment-button value={TargetElement.FONTS} mode="md">
+                <ion-label>Fonts</ion-label>
             </ion-segment-button>;
         } else {
             return undefined;
