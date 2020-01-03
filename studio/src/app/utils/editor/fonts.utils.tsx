@@ -1,48 +1,58 @@
 import {Utils} from '../core/utils';
 
-interface GoogleFont {
+export interface GoogleFont {
     id: string;
     name: string;
+    family: string;
 }
 
 export class FontsUtils {
 
-    private static fonts: GoogleFont[]  = [
+    static fonts: GoogleFont[]  = [
         {
             id: 'google-fonts-lora',
-            name: 'Lora'
+            name: 'Lora',
+            family: '\'Lora\', serif'
         },
         {
             id: 'google-fonts-roboto',
-            name: 'Roboto'
+            name: 'Roboto',
+            family: '\'Roboto\', sans-serif'
         },
         {
             id: 'google-fonts-open-sans',
-            name: 'Open Sans'
+            name: 'Open Sans',
+            family: '\'Open Sans\', sans-serif'
         },
         {
             id: 'google-fonts-montserrat',
-            name: 'Montserrat'
+            name: 'Montserrat',
+            family: '\'Montserrat\', sans-serif'
         },
         {
             id: 'google-fonts-cabin',
-            name: 'Cabin'
+            name: 'Cabin',
+            family: '\'Cabin\', sans-serif'
         },
         {
             id: 'google-fonts-lato',
-            name: 'Lato'
+            name: 'Lato',
+            family: '\'Lato\', sans-serif'
         },
         {
             id: 'google-fonts-muli',
-            name: 'Muli'
+            name: 'Muli',
+            family: '\'Muli\', sans-serif'
         },
         {
             id: 'google-fonts-source-sans-pro',
-            name: 'Source Sans Pro'
+            name: 'Source Sans Pro',
+            family: '\'Source Sans Pro\', sans-serif'
         },
         {
             id: 'google-fonts-libre-baskerville',
-            name: 'Libre Baskerville'
+            name: 'Libre Baskerville',
+            family: '\'Libre Baskerville\', serif'
         }
     ];
 
