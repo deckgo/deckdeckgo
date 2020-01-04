@@ -5,7 +5,7 @@
 * docs: v1.0.0-rc.9 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 
 ### New: Web Components
-* social: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/social/CHANGELOG.md))
+* social: v1.0.0-rc.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/social/CHANGELOG.md))
 
 ### Others
 * cloud: v1.0.0-rc.3-1  ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cloud/CHANGELOG.md))
