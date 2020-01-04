@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/social",
-  "version": "1.0.0-rc.1-2",
+  "version": "1.0.0-rc.1-3",
   "description": "A Web Component to generate social link to your Twitter, Dev, Medium, LinkedIn, GitHub accounts or a custom uri",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -13,7 +13,7 @@
   "files": [
     "dist/",
     "README.md",
-    "loader/"
+    "LICENSE"
   ],
   "scripts": {
     "build": "stencil build --docs",
