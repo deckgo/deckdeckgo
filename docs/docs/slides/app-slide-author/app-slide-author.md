@@ -158,5 +158,6 @@ The following theming options will affect this component if set on its host or p
 | --slide-author-img-size | 80% | The size of the image of the left pane |
 | --slide-author-social-padding-top | 32px | The spacing between the author description and the social links |
 | --zIndex | 1 | The z-index of the slide |
+| --slide-author-social-link-padding | 8px | Padding for the social links |
 
 [DeckDeckGo]: https://deckdeckgo.com

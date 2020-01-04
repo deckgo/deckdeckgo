@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.9"></a>
+# 1.0.0-rc.9 (2020-01-04)
+
+### Features
+
+* new component `<deckgo-social/>`
+
 <a name="1.0.0-rc.8-2"></a>
 # 1.0.0-rc.8-2 (2019-12-12)
 

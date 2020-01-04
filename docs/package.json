@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-docs",
-  "version": "1.0.0-rc.8-2",
+  "version": "1.0.0-rc.9",
   "description": "The Progressive Web App alternative for simple presentations",
   "license": "MIT",
   "files": [
@@ -17,11 +17,11 @@
     "@deckdeckgo/charts": "^1.0.0-rc.5",
     "@deckdeckgo/color": "^1.0.0-rc.3-2",
     "@deckdeckgo/core": "^1.0.0-rc.3-4",
-    "@deckdeckgo/highlight-code": "^1.0.0-rc.2",
+    "@deckdeckgo/highlight-code": "^1.0.0-rc.2-1",
     "@deckdeckgo/inline-editor": "^1.0.0-rc.3-3",
     "@deckdeckgo/lazy-img": "^1.0.0-rc.2-2",
     "@deckdeckgo/qrcode": "^1.0.0-rc.1-1",
-    "@deckdeckgo/slide-author": "^1.0.0-rc.1",
+    "@deckdeckgo/slide-author": "^1.0.0-rc.2",
     "@deckdeckgo/slide-big-img": "^1.0.0-rc.1",
     "@deckdeckgo/slide-chart": "^1.0.0-rc.2-1",
     "@deckdeckgo/slide-code": "^1.0.0-rc.1",
@@ -34,21 +34,22 @@
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
     "@deckdeckgo/slide-video": "^1.0.0-rc.1-1",
     "@deckdeckgo/slide-youtube": "^1.0.0-rc.2",
-    "@ionic/core": "^4.11.6",
+    "@deckdeckgo/social": "^1.0.0-rc.1-2",
+    "@ionic/core": "^4.11.7",
     "idb-keyval": "^3.2.0",
-    "rxjs": "^6.5.3"
+    "rxjs": "^6.5.4"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-rc.4-1",
-    "@stencil/core": "^1.8.1",
+    "@stencil/core": "^1.8.3",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",
     "@types/glob": "^7.1.1",
     "@types/marked": "^0.7.2",
-    "@types/node": "^12.12.17",
+    "@types/node": "^13.1.4",
     "autoprefixer": "^9.7.3",
     "glob": "^7.1.6",
-    "marked": "^0.7.0",
+    "marked": "^0.8.0",
     "workbox-build": "4.3.1"
   },
   "repository": {

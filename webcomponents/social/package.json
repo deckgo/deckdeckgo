@@ -1,7 +1,7 @@
 {
-  "name": "@deckdeckgo/slide-author",
-  "version": "1.0.0-rc.2",
-  "description": "The Author template lets you quickly some information about yourself or about the author of the presentation",
+  "name": "@deckdeckgo/social",
+  "version": "1.0.0-rc.1-2",
+  "description": "A Web Component to generate social link to your Twitter, Dev, Medium, LinkedIn, GitHub accounts or a custom uri",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "es2015": "dist/esm/index.mjs",
@@ -9,34 +9,36 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-author/deckdeckgo-slide-author.js",
+  "unpkg": "dist/deckdeckgo-social/deckdeckgo-social.js",
   "files": [
     "dist/",
     "README.md",
-    "LICENSE"
+    "loader/"
   ],
   "scripts": {
     "build": "stencil build --docs",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
-  },
-  "dependencies": {
-    "@deckdeckgo/slide-utils": "^1.0.0-rc.1-1"
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate"
   },
   "devDependencies": {
     "@stencil/core": "^1.8.3",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",
-    "@stencil/utils": "0.0.5",
-    "autoprefixer": "^9.7.3"
+    "@types/jest": "24.0.25",
+    "@types/puppeteer": "1.20.3",
+    "autoprefixer": "^9.7.3",
+    "jest": "24.9.0",
+    "jest-cli": "24.9.0",
+    "puppeteer": "1.20.0"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deckgo/deckdeckgo.git"
   },
   "author": "David Dal Busco",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/deckgo/deckdeckgo"
   },
@@ -50,6 +52,14 @@
     "presentation",
     "slides",
     "slideshow",
-    "talk"
+    "talk",
+    "social",
+    "link",
+    "twitter",
+    "linkedin",
+    "medium",
+    "dev",
+    "thepracticaldev",
+    "github"
   ]
 }

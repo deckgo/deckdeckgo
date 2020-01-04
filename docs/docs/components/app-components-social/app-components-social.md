@@ -1,11 +1,14 @@
 # Social
 
-The "Social" component allows you to easily add a social link to your presentation.
+The "Social" component helps you generate a social link to your Twitter, Dev, Medium, LinkedIn, GitHub accounts or a custom uri.
 
 ## Table of contents
 
 - [Showcase](#app-components-social-showcase)
-- [Installation](#app-components-social-installation)
+- [Installation](#app-components-color-installation)
+	- [Using from a CDN](#app-components-color-from-a-cdn)
+	- [Install from NPM](#app-components-color-from-npm)
+	- [Framework integration](#app-components-color-framework-integration)
 - [Usage](#app-components-social-usage)
   - [Slots](#app-components-social-slots)
   - [Attributes](#app-components-social-attributes)
@@ -14,18 +17,51 @@ The "Social" component allows you to easily add a social link to your presentati
 ## Showcase
 
 <p>
-  <deckgo-social twitter="daviddalbusco"><ion-icon slot="icon" name="logo-twitter"></ion-icon> Twitter</deckgo-social>
+  <deckgo-social twitter="daviddalbusco"><ion-icon slot="icon" name="logo-twitter"></ion-icon></deckgo-social>
 </p>
 
 <p>
-  <deckgo-social github="fluster/deckdeckgo"><ion-icon slot="icon" name="logo-github"></ion-icon> DeckDeckGo on Github</deckgo-social>
+  <deckgo-social github="deckgo/deckdeckgo"><ion-icon slot="icon" name="logo-github"></ion-icon> DeckDeckGo on Github</deckgo-social>
 </p>
 
 ## Installation
 
-This component is part of the "Author" template. Therefore, if you would like to use it, install the related slide as described in its [installation](/slides/author) chapter.
+This component could be added to your web application using the following methods.
 
-> If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
+### Using from a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy image component from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.js"></script>
+```
+### Install from NPM
+
+Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
+
+```bash
+npm install @deckdeckgo/social
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/social';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/social/dist/loader';
+deckDeckGoElement(window);
+```
 
 ## Usage
 
@@ -34,13 +70,52 @@ The "Social" Web Component could be integrated using the tag `<deckgo-social/>`.
 ```
 <deckgo-social twitter="daviddalbusco">
   <img data-src="/assets/twitter.svg" slot="icon"/>
-  Twitter
 </deckgo-social>
 ```
 
 ### Slots
 
-The slot `icon` and the text are both optional. Of course, if you provide nothing, nothing will be rendered.
+The slot `icon` and the text are both optional.
+
+If you don't provide a text, component will renders a corresponding text for you.
+
+#### Examples
+
+Automatic text:
+
+<p>
+  <deckgo-social twitter="daviddalbusco"><ion-icon slot="icon" name="logo-twitter"></ion-icon></deckgo-social>
+</p>
+
+```
+<deckgo-social twitter="daviddalbusco">
+  <ion-icon slot="icon" name="logo-twitter"></ion-icon>
+</deckgo-social>
+```
+
+Custom text:
+
+<p>
+  <deckgo-social twitter="daviddalbusco"><ion-icon slot="icon" name="logo-twitter"></ion-icon><span>A link to Twitter</span></deckgo-social>
+</p>
+
+```
+<deckgo-social twitter="daviddalbusco">
+  <ion-icon slot="icon" name="logo-twitter"></ion-icon>
+    <span>A link to Twitter</span>
+</deckgo-social>
+```
+
+Without icon:
+
+<p>
+  <deckgo-social twitter="daviddalbusco"></deckgo-social>
+</p>
+
+```
+<deckgo-social twitter="daviddalbusco">
+</deckgo-social>
+```
 
 ### Attributes
 

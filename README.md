@@ -47,7 +47,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | ------- | ------- | ------- |:-----:|
 | **Studio** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-beta.10&color=success)](https://deckdeckgo.com)| [https://deckdeckgo.com](https://deckdeckgo.com) | [`README.md`](studio/README.md)
 | **Remote control** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.2&color=success)](https://deckdeckgo.app) | [https://deckdeckgo.app](https://deckdeckgo.app) | [`README.md`](remote/README.md)
-| **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.8-2&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
+| **Documentation** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.9&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) | [`README.md`](docs/README.md)
 | **Demo** | [![version](https://img.shields.io/static/v1.svg?label=production&message=v1.0.0-rc.4-4&color=success)](https://demo.deckdeckgo.com) | [https://demo.deckdeckgo.com](https://demo.deckdeckgo.com) | [`Repo`](https://github.com/deckgo/deckdeckgo-demo/)
 
 ## Web Components
@@ -62,6 +62,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | **Lazy image** | [`@deckdeckgo/lazy-img`](https://www.npmjs.com/package/@deckdeckgo/lazy-img) | [![version](https://img.shields.io/npm/v/@deckdeckgo/lazy-img/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/lazy-img) | [`README.md`](webcomponents/lazy-img/README.md)
 | **QR-Code** | [`@deckdeckgo/qrcode`](https://www.npmjs.com/package/@deckdeckgo/qrcode) | [![version](https://img.shields.io/npm/v/@deckdeckgo/qrcode/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/qrcode) | [`README.md`](webcomponents/qrcode/README.md)
 | **Remote** | [`@deckdeckgo/remote`](https://www.npmjs.com/package/@deckdeckgo/remote) | [![version](https://img.shields.io/npm/v/@deckdeckgo/remote/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/remote) | [`README.md`](webcomponents/remote/README.md)
+| **Social** | [`@deckdeckgo/social`](https://www.npmjs.com/package/@deckdeckgo/social) | [![version](https://img.shields.io/npm/v/@deckdeckgo/social/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/social) | [`README.md`](webcomponents/social/README.md)
 
 ## Web Components - Slides/Templates
 

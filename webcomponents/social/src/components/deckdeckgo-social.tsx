@@ -1,13 +1,11 @@
-import {Component, Method, Prop, State, Watch, h} from '@stencil/core';
-
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import {Component, Method, Prop, State, Watch, h, Host} from '@stencil/core';
 
 @Component({
   tag: 'deckgo-social',
   styleUrl: 'deckdeckgo-social.scss',
   shadow: true
 })
-export class DeckdeckgoSocial implements DeckdeckgoComponent {
+export class DeckdeckgoSocial {
 
   @State() url: string;
 
@@ -18,7 +16,7 @@ export class DeckdeckgoSocial implements DeckdeckgoComponent {
   @Prop({reflect: true}) github: string;
   @Prop({reflect: true}) fullUrl: string;
 
-  componentDidLoad() {
+  componentWillLoad() {
     this.concatTwitterUrl();
     this.concatLinkedinUrl();
     this.concatMediumUrl();
@@ -67,7 +65,7 @@ export class DeckdeckgoSocial implements DeckdeckgoComponent {
       return;
     }
 
-    this.url = 'https://dev.to/' + this.dev ;
+    this.url = 'https://dev.to/' + this.dev;
   }
 
   @Watch('github')
@@ -88,10 +86,35 @@ export class DeckdeckgoSocial implements DeckdeckgoComponent {
     this.url = this.fullUrl;
   }
 
+  private ariaLabel() {
+    if (this.twitter) {
+      return `twitter/${this.twitter}`
+    } else if (this.linkedin) {
+      return `linkedin/${this.linkedin}`
+    } else if (this.medium) {
+      return `medium/${this.medium}`
+    } else if (this.dev) {
+      return `thepracticaldev/${this.dev}`
+    } else if (this.github) {
+      return `github/${this.github}`
+    } else {
+      return this.fullUrl;
+    }
+  }
+
   render() {
-    return <a href={this.url}>
-      <slot name="icon"></slot>
-      <slot></slot>
-    </a>
+    return <Host aria-label={this.ariaLabel()}>
+      <a href={this.url}>
+        <slot name="icon"></slot>
+        <slot>
+          {this.twitter ? <span>{`${this.twitter}`}</span> : undefined}
+          {this.linkedin ? <span>{`${this.linkedin}`}</span> : undefined}
+          {this.medium ? <span>{`${this.medium}`}</span> : undefined}
+          {this.dev ? <span>{`${this.dev}`}</span> : undefined}
+          {this.github ? <span>{`${this.github}`}</span> : undefined}
+          {this.fullUrl ? <span>{`${this.fullUrl}`}</span> : undefined}
+        </slot>
+      </a>
+    </Host>
   }
 }
