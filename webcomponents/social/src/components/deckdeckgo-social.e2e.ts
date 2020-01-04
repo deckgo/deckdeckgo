@@ -45,7 +45,7 @@ describe('deckgo-social', () => {
 
     let span: E2EElement = await page.find('div:nth-of-type(3) deckgo-social >>> span');
     expect(span).not.toBeNull();
-    expect(span.innerHTML).toEqual('@david.dalbusco');
+    expect(span.innerHTML).toEqual('david.dalbusco');
   });
 
   it('rendersCustomHandle', async () => {

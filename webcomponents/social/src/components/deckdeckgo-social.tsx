@@ -16,7 +16,7 @@ export class DeckdeckgoSocial {
   @Prop({reflect: true}) github: string;
   @Prop({reflect: true}) fullUrl: string;
 
-  componentDidLoad() {
+  componentWillLoad() {
     this.concatTwitterUrl();
     this.concatLinkedinUrl();
     this.concatMediumUrl();
@@ -107,11 +107,11 @@ export class DeckdeckgoSocial {
       <a href={this.url}>
         <slot name="icon"></slot>
         <slot>
-          {this.twitter ? <span>{`@${this.twitter}`}</span> : undefined}
-          {this.linkedin ? <span>{`@${this.linkedin}`}</span> : undefined}
-          {this.medium ? <span>{`@${this.medium}`}</span> : undefined}
-          {this.dev ? <span>{`@${this.dev}`}</span> : undefined}
-          {this.github ? <span>{`@${this.github}`}</span> : undefined}
+          {this.twitter ? <span>{`${this.twitter}`}</span> : undefined}
+          {this.linkedin ? <span>{`${this.linkedin}`}</span> : undefined}
+          {this.medium ? <span>{`${this.medium}`}</span> : undefined}
+          {this.dev ? <span>{`${this.dev}`}</span> : undefined}
+          {this.github ? <span>{`${this.github}`}</span> : undefined}
           {this.fullUrl ? <span>{`${this.fullUrl}`}</span> : undefined}
         </slot>
       </a>
