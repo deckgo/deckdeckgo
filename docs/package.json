@@ -34,7 +34,7 @@
     "@deckdeckgo/slide-title": "^1.0.0-rc.1",
     "@deckdeckgo/slide-video": "^1.0.0-rc.1-1",
     "@deckdeckgo/slide-youtube": "^1.0.0-rc.2",
-    "@deckdeckgo/social": "^1.0.0-rc.1",
+    "@deckdeckgo/social": "^1.0.0-rc.1-1",
     "@ionic/core": "^4.11.7",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.4"
