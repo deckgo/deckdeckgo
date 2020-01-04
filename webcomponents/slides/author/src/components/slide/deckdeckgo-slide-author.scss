@@ -38,9 +38,10 @@ div.deckgo-slide-author {
     justify-content: center;
 
     div.deckgo-slide-author-social {
-      display: grid;
-      grid-template-columns: 50% 50%;
-      grid-gap: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
 
       padding-top: var(--slide-author-social-padding-top, var(--slide-padding-top-default));
     }
@@ -55,10 +56,6 @@ div.deckgo-slide-author {
 
     &.deckgo-slide-author-end {
       width: calc(100% / 3 * 2);
-
-      div.deckgo-slide-author-social {
-        grid-template-columns: 30% 30% 30%;
-      }
     }
   }
 }
@@ -68,15 +65,14 @@ div.deckgo-slide-author {
     &.deckgo-slide-author-start {
       padding-right: var(--slide-author-padding-end, 0);
     }
-
-    &.deckgo-slide-author-end {
-      div.deckgo-slide-author-social {
-        grid-template-columns: 100%;
-      }
-    }
   }
 }
 
 ::slotted([slot="title"]) {
   display: none;
+}
+
+::slotted([slot="social-link"]) {
+  padding: var(--slide-author-social-link-padding, 8px);
+  max-width: 100%;
 }

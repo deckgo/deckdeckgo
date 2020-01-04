@@ -91,7 +91,14 @@ export class DeckdeckgoSocial implements DeckdeckgoComponent {
   render() {
     return <a href={this.url}>
       <slot name="icon"></slot>
-      <slot></slot>
+      <slot>
+        {this.twitter ? <span>{`@${this.twitter}`}</span> : undefined}
+        {this.linkedin ? <span>{`@${this.linkedin}`}</span> : undefined}
+        {this.medium ? <span>{`@${this.medium}`}</span> : undefined}
+        {this.dev ? <span>{`@${this.dev}`}</span> : undefined}
+        {this.github ? <span>{`@${this.github}`}</span> : undefined}
+        {this.fullUrl ? <span>{`${this.fullUrl}`}</span> : undefined}
+      </slot>
     </a>
   }
 }
