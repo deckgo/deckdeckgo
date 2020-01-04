@@ -1,6 +1,9 @@
 <a name="1.0.0-rc.20"></a>
 # [1.0.0-rc.20](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.19...v1.0.0-rc.20) (In progress)
 
+### New: Web Components
+* social: v1.0.0-rc.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/social/CHANGELOG.md))
+
 ### Others
 * cloud: v1.0.0-rc.3-1  ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cloud/CHANGELOG.md))
 
