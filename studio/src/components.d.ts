@@ -122,6 +122,7 @@ export namespace Components {
     'unSelect': () => Promise<void>;
   }
   interface AppElementDelete {}
+  interface AppEmbed {}
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -396,6 +397,12 @@ declare global {
   var HTMLAppElementDeleteElement: {
     prototype: HTMLAppElementDeleteElement;
     new (): HTMLAppElementDeleteElement;
+  };
+
+  interface HTMLAppEmbedElement extends Components.AppEmbed, HTMLStencilElement {}
+  var HTMLAppEmbedElement: {
+    prototype: HTMLAppEmbedElement;
+    new (): HTMLAppEmbedElement;
   };
 
   interface HTMLAppFaqElement extends Components.AppFaq, HTMLStencilElement {}
@@ -730,6 +737,7 @@ declare global {
     'app-editor-busy-action': HTMLAppEditorBusyActionElement;
     'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-element-delete': HTMLAppElementDeleteElement;
+    'app-embed': HTMLAppEmbedElement;
     'app-faq': HTMLAppFaqElement;
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
@@ -897,6 +905,7 @@ declare namespace LocalJSX {
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
   }
   interface AppElementDelete {}
+  interface AppEmbed {}
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -998,6 +1007,7 @@ declare namespace LocalJSX {
   interface AppSettings {}
   interface AppShareAction {
     'onActionPublish'?: (event: CustomEvent<void>) => void;
+    'onOpenEmbed'?: (event: CustomEvent<void>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
   }
   interface AppShareDeck {}
@@ -1054,6 +1064,7 @@ declare namespace LocalJSX {
     'app-editor-busy-action': AppEditorBusyAction;
     'app-editor-toolbar': AppEditorToolbar;
     'app-element-delete': AppElementDelete;
+    'app-embed': AppEmbed;
     'app-faq': AppFaq;
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;
@@ -1140,6 +1151,7 @@ declare module "@stencil/core" {
       'app-editor-busy-action': LocalJSX.AppEditorBusyAction & JSXBase.HTMLAttributes<HTMLAppEditorBusyActionElement>;
       'app-editor-toolbar': LocalJSX.AppEditorToolbar & JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement>;
       'app-element-delete': LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
+      'app-embed': LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
       'app-faq': LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
       'app-feed': LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
       'app-feed-card': LocalJSX.AppFeedCard & JSXBase.HTMLAttributes<HTMLAppFeedCardElement>;
