@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-1"></a>
+# 1.0.0-rc.2-1 (2020-01-04)
+
+### Features
+
+* align icon center for social link
+
 <a name="1.0.0-rc.2"></a>
 # 1.0.0-rc.2 (2019-11-29)
 
