@@ -21,3 +21,4 @@ import '@deckdeckgo/charts';
 import '@deckdeckgo/qrcode';
 import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/color';
+import '@deckdeckgo/social';

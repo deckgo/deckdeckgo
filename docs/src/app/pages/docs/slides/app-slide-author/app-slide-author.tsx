@@ -230,6 +230,11 @@ export class AppSlideAuthor {
 <td>1</td>
 <td>The z-index of the slide</td>
 </tr>
+<tr>
+<td>--slide-author-social-link-padding</td>
+<td>8px</td>
+<td>Padding for the social links</td>
+</tr>
 </tbody></table>
 </main>
 
