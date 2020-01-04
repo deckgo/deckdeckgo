@@ -31,4 +31,27 @@ describe('deckgo-social', () => {
     expect(hydratedElements).toHaveLength(6);
   });
 
+  it('rendersIcon', async () => {
+    const element: E2EElement = await page.find('div:nth-of-type(1) deckgo-social');
+    expect(element).not.toBeNull();
+
+    let icon: E2EElement = await page.find('div:nth-of-type(1) deckgo-social >>> slot[name="icon"]');
+    expect(icon).not.toBeNull();
+  });
+
+  it('rendersAutomaticHandle', async () => {
+    const element: E2EElement = await page.find('div:nth-of-type(3) deckgo-social');
+    expect(element).not.toBeNull();
+
+    let span: E2EElement = await page.find('div:nth-of-type(3) deckgo-social >>> span');
+    expect(span).not.toBeNull();
+    expect(span.innerHTML).toEqual('@david.dalbusco');
+  });
+
+  it('rendersCustomHandle', async () => {
+    const element: E2EElement = await page.find('div:nth-of-type(5) deckgo-social');
+    expect(element).not.toBeNull();
+    expect(element.textContent).toEqual('+daviddalbusco');
+  });
+
 });
