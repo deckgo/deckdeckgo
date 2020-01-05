@@ -49,7 +49,7 @@ export class AppMoreShareOptions {
 
     private renderUpdate() {
         if (this.published) {
-            return <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}><p>Update your published presentation</p></a>;
+            return <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}><p>Publish to update share</p></a>;
         } else {
             return undefined;
         }
