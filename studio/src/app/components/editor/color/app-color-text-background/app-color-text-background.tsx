@@ -100,8 +100,6 @@ export class AppColorTextBackground {
 
             if (this.applyColorType === ApplyColorType.BACKGROUND) {
                 this.selectedElement.style.removeProperty('--background');
-                this.selectedElement.style.removeProperty('--slide-split-background-start');
-                this.selectedElement.style.removeProperty('--slide-split-background-end');
                 this.selectedElement.style.removeProperty('background');
             } else {
                 this.selectedElement.style.removeProperty('--color');
@@ -149,16 +147,6 @@ export class AppColorTextBackground {
 
             if (this.deck || this.slide) {
                 this.selectedElement.style.setProperty('--background', selectedColor);
-            } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
-                const element: HTMLElement = this.selectedElement.parentElement;
-
-                if (this.selectedElement.getAttribute('slot') === 'start') {
-                    element.style.setProperty('--slide-split-background-start', selectedColor);
-                } else if (this.selectedElement.getAttribute('slot') === 'end') {
-                    element.style.setProperty('--slide-split-background-end', selectedColor);
-                } else {
-                    this.selectedElement.style.background = selectedColor;
-                }
             } else {
                 this.selectedElement.style.background = selectedColor;
             }
