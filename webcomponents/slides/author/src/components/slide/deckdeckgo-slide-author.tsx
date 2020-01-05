@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State, Watch} from '@stencil/core';
 
 import {isMobile} from '@deckdeckgo/utils';
 
@@ -26,6 +26,8 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @State()
   private mobile: boolean = false;
 
+  private lazyLoadAfterUpdate: boolean = false;
+
   componentWillLoad() {
     this.mobile = isMobile();
   }
@@ -34,6 +36,18 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
     await hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
+  }
+
+  @Watch('imgMode')
+  async onPropChanges() {
+    this.lazyLoadAfterUpdate = true;
+  }
+
+  async componentDidUpdate() {
+    if (this.lazyLoadAfterUpdate) {
+      await this.lazyLoadContent();
+      this.lazyLoadAfterUpdate = false;
+    }
   }
 
   @Method()

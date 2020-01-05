@@ -68,7 +68,10 @@
     <div slot="social-link"><deckgo-social full-url="https://googlegooglegooglegoogle.com"></deckgo-social></div>
   </deckgo-slide-author>
 
-  <button onclick="slideNext()" slot="actions">Action slide next</button>
+  <div slot="actions">
+    <button onclick="toggleMode()">Toggle mode</button>
+    <button onclick="slideNext()">Action slide next</button>
+  </div>
 </deckgo-deck>
 
 <script type="text/javascript">
@@ -77,6 +80,24 @@
         if (elem && elem.length > 0) {
             elem[0].slideNext(false);
         }
+    }
+
+    async function toggleMode() {
+        const deck = document.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        const index = await deck.getActiveIndex();
+
+        const slideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+        if (!slideElement || slideElement.tagName !== 'deckgo-slide-author'.toUpperCase()) {
+            return;
+        }
+
+        slideElement.setAttribute('img-mode', slideElement.getAttribute('img-mode') === 'circle' ? 'cover' : 'circle');
     }
 </script>
 
