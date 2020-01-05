@@ -20,6 +20,9 @@ export class AppSelectTargetElement {
     @Prop()
     code: boolean = false;
 
+    @Prop()
+    sides: boolean = false;
+
     // color is a reserved prop word
     @Prop()
     colorTarget: boolean = false;
@@ -57,6 +60,7 @@ export class AppSelectTargetElement {
             return <ion-segment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
                 {this.renderQRCode()}
                 {this.renderChart()}
+                {this.renderSides()}
                 {this.renderSlide()}
                 {this.renderColor()}
                 {this.renderBackground()}
@@ -120,6 +124,16 @@ export class AppSelectTargetElement {
             return <ion-segment-button value={TargetElement.TRANSITION} mode="md">
                 <ion-label>Transition</ion-label>
             </ion-segment-button>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderSides() {
+        if (this.sides) {
+            return <ion-segment-button value={TargetElement.SIDES} checked={this.sides} mode="md">
+                <ion-label>Sides</ion-label>
+            </ion-segment-button>
         } else {
             return undefined;
         }

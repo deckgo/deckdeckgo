@@ -61,6 +61,12 @@ export namespace Components {
     'moreColors': boolean;
     'selectedElement': HTMLElement;
   }
+  interface AppColorSides {
+    'initCurrentColors': () => Promise<void>;
+    'moreColors': boolean;
+    'selectedElement': HTMLElement;
+    'template': 'split' | 'author';
+  }
   interface AppColorTextBackground {
     'deck': boolean;
     'initCurrentColors': () => Promise<void>;
@@ -208,6 +214,7 @@ export namespace Components {
     'code': boolean;
     'colorTarget': boolean;
     'qrCode': boolean;
+    'sides': boolean;
     'slide': boolean;
     'transition': boolean;
   }
@@ -283,6 +290,12 @@ declare global {
   var HTMLAppColorQrcodeElement: {
     prototype: HTMLAppColorQrcodeElement;
     new (): HTMLAppColorQrcodeElement;
+  };
+
+  interface HTMLAppColorSidesElement extends Components.AppColorSides, HTMLStencilElement {}
+  var HTMLAppColorSidesElement: {
+    prototype: HTMLAppColorSidesElement;
+    new (): HTMLAppColorSidesElement;
   };
 
   interface HTMLAppColorTextBackgroundElement extends Components.AppColorTextBackground, HTMLStencilElement {}
@@ -718,6 +731,7 @@ declare global {
     'app-color-chart': HTMLAppColorChartElement;
     'app-color-code': HTMLAppColorCodeElement;
     'app-color-qrcode': HTMLAppColorQrcodeElement;
+    'app-color-sides': HTMLAppColorSidesElement;
     'app-color-text-background': HTMLAppColorTextBackgroundElement;
     'app-contact': HTMLAppContactElement;
     'app-create-slide': HTMLAppCreateSlideElement;
@@ -821,6 +835,12 @@ declare namespace LocalJSX {
     'moreColors'?: boolean;
     'onColorChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
+  }
+  interface AppColorSides {
+    'moreColors'?: boolean;
+    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'selectedElement'?: HTMLElement;
+    'template'?: 'split' | 'author';
   }
   interface AppColorTextBackground {
     'deck'?: boolean;
@@ -1000,6 +1020,7 @@ declare namespace LocalJSX {
     'colorTarget'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
+    'sides'?: boolean;
     'slide'?: boolean;
     'transition'?: boolean;
   }
@@ -1045,6 +1066,7 @@ declare namespace LocalJSX {
     'app-color-chart': AppColorChart;
     'app-color-code': AppColorCode;
     'app-color-qrcode': AppColorQrcode;
+    'app-color-sides': AppColorSides;
     'app-color-text-background': AppColorTextBackground;
     'app-contact': AppContact;
     'app-create-slide': AppCreateSlide;
@@ -1132,6 +1154,7 @@ declare module "@stencil/core" {
       'app-color-chart': LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;
       'app-color-code': LocalJSX.AppColorCode & JSXBase.HTMLAttributes<HTMLAppColorCodeElement>;
       'app-color-qrcode': LocalJSX.AppColorQrcode & JSXBase.HTMLAttributes<HTMLAppColorQrcodeElement>;
+      'app-color-sides': LocalJSX.AppColorSides & JSXBase.HTMLAttributes<HTMLAppColorSidesElement>;
       'app-color-text-background': LocalJSX.AppColorTextBackground & JSXBase.HTMLAttributes<HTMLAppColorTextBackgroundElement>;
       'app-contact': LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
       'app-create-slide': LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
