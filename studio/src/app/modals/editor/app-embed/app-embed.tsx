@@ -46,7 +46,15 @@ export class AppEmbed {
         }
     }
 
-    // TODO: Add "copy" button
+    private async copyEmbedCode() {
+        if (!document) {
+            return;
+        }
+
+        await this.selectEmbedCode();
+
+        document.execCommand('copy');
+    }
 
     render() {
         return [
@@ -72,6 +80,10 @@ export class AppEmbed {
                         ></ion-textarea>
                     </ion-item>
                 </ion-list>
+
+                <ion-button color="primary" shape="round" onClick={() => this.copyEmbedCode()}>
+                    <ion-label>Copy to clipboard</ion-label>
+                </ion-button>
             </ion-content>
         ];
     }
