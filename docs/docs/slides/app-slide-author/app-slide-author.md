@@ -118,7 +118,8 @@ This component offers the following options which could be set using attributes:
 | img-src | string |  | An image URI, for example a picture of the author. Note: this image will be displayed as a circle. |
 | img-alt | string |  | An optional accessibility alt for the image. |
 | custom-background | boolean | false | If you will provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you will provide actions for the all deck and a specific one for this slide, set this option to `true` | 
+| custom-actions | boolean | false | If you will provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| mode | `"circle" \| "cover" \| "none"` | `'cover'` | The design to be applied to the image. `cover` fits the image to the start pane, `circle` displays it in a circle and `none` in case you would not like to display an image | 
 
 ### Example
 
@@ -156,6 +157,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-author-align | inherit | Modify for example to center if you want to align the content in the middle |
 | --slide-author-text-align | inherit | Modify for example to center if you want to align the text in the middle |
 | --slide-author-img-size | 80% | The size of the image of the left pane |
+| --slide-author-img-border | | The border of the image of the left pane (only apply if `circle` mode is specified) |
 | --slide-author-social-padding-top | 32px | The spacing between the author description and the social links |
 | --zIndex | 1 | The z-index of the slide |
 | --slide-author-social-link-padding | 8px | Padding for the social links |

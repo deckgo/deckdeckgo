@@ -186,7 +186,7 @@ export class AppSlidesConcept {
 </ul>
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
-    <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
+    <deckgo-slide-author img-mode="circle" img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>
         <div slot="author">slot="author"</div>
         <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social twitter="daviddalbusco"><ion-icon area-label="David on Twitter" slot="icon" name="logo-twitter"></ion-icon> twitter</deckgo-social></div>

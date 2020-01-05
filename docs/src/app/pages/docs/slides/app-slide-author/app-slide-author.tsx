@@ -136,6 +136,12 @@ export class AppSlideAuthor {
 <td>false</td>
 <td>If you will provide actions for the all deck and a specific one for this slide, set this option to <code>true</code></td>
 </tr>
+<tr>
+<td>mode</td>
+<td><code>&quot;circle&quot; | &quot;cover&quot; | &quot;none&quot;</code></td>
+<td><code>&#39;cover&#39;</code></td>
+<td>The design to be applied to the image. <code>cover</code> fits the image to the start pane, <code>circle</code> displays it in a circle and <code>none</code> in case you would not like to display an image</td>
+</tr>
 </tbody></table>
 <h3 id="app-slide-author-example">Example</h3>
 <deckgo-highlight-code language="javascript">
@@ -219,6 +225,11 @@ export class AppSlideAuthor {
 <td>--slide-author-img-size</td>
 <td>80%</td>
 <td>The size of the image of the left pane</td>
+</tr>
+<tr>
+<td>--slide-author-img-border</td>
+<td></td>
+<td>The border of the image of the left pane (only apply if <code>circle</code> mode is specified)</td>
 </tr>
 <tr>
 <td>--slide-author-social-padding-top</td>
