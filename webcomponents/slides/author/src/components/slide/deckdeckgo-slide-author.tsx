@@ -1,4 +1,6 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State} from '@stencil/core';
+
+import {isMobile} from '@deckdeckgo/utils';
 
 import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
@@ -20,6 +22,13 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
+
+  @State()
+  private mobile: boolean = false;
+
+  componentWillLoad() {
+    this.mobile = isMobile();
+  }
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
@@ -55,7 +64,7 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   }
 
   render() {
-    const classAuthorImg: string = `deckgo-slide-author deckgo-slide-author-start deckgo-slide-author-${this.imgMode}`;
+    const classAuthorImg: string = `deckgo-slide-author deckgo-slide-author-start deckgo-slide-author-${this.imgMode} ${this.mobile ? 'deckgo-slide-author-mobile' : ''}`;
 
     return <Host class={{'deckgo-slide-container': true}}>
       <div class="deckgo-slide">

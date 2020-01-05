@@ -43,6 +43,12 @@ div.deckgo-slide-author {
         background-repeat: no-repeat;
         background-size: cover;
       }
+
+      &.deckgo-slide-author-mobile {
+        &:before {
+          background-position: center;
+        }
+      }
     }
   }
 
