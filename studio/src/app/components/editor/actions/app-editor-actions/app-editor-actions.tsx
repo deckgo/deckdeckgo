@@ -260,6 +260,14 @@ export class AppEditorActions {
         await modal.present();
     }
 
+    private async openEmbed() {
+        const modal: HTMLIonModalElement = await modalController.create({
+            component: 'app-embed'
+        });
+
+        await modal.present();
+    }
+
     async openMoreActions($event: UIEvent) {
         if (!$event || !$event.detail) {
             return;
@@ -285,6 +293,8 @@ export class AppEditorActions {
                     this.actionPublish.emit();
                 } else if (detail.data.action === MoreAction.STYLE) {
                     await this.openDeckStyle()
+                } else if (detail.data.action === MoreAction.EMBED) {
+                    await this.openEmbed();
                 }
             }
         });
@@ -376,7 +386,7 @@ export class AppEditorActions {
                     <ion-label>Remote</ion-label>
                 </ion-tab-button>
 
-                <app-share-action class="wider-devices"></app-share-action>
+                <app-share-action class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-share-action>
 
                 <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices"
                                 mode="md">

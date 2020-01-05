@@ -1,17 +1,8 @@
 import {Component, Element, h, Method} from '@stencil/core';
 
-import {take} from 'rxjs/operators';
-
 import 'web-social-share';
 
-import {Deck} from '../../../models/data/deck';
-import {AuthUser} from '../../../models/auth/auth.user';
-
-import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
-
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
-import {AuthService} from '../../../services/auth/auth.service';
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {ShareService} from '../../../services/editor/share/share.service';
 
 @Component({
     tag: 'app-share-deck',
@@ -22,12 +13,10 @@ export class AppShareDeck {
 
     @Element() el: HTMLElement;
 
-    private deckEditorService: DeckEditorService;
-    private authService: AuthService;
+    private shareService: ShareService;
 
     constructor() {
-        this.deckEditorService = DeckEditorService.getInstance();
-        this.authService = AuthService.getInstance();
+        this.shareService = ShareService.getInstance();
     }
 
     @Method()
@@ -46,8 +35,8 @@ export class AppShareDeck {
 
     private shareMobile() {
         return new Promise(async (resolve) => {
-            const text: string = await this.getShareText();
-            const publishedUrl: string = await this.getPublishedUrl();
+            const text: string = await this.shareService.getShareText();
+            const publishedUrl: string = await this.shareService.getPublishedUrl();
 
             // @ts-ignore
             await navigator.share({
@@ -67,7 +56,7 @@ export class AppShareDeck {
                 return;
             }
 
-            const publishedUrl: string = await this.getPublishedUrl();
+            const publishedUrl: string = await this.shareService.getPublishedUrl();
 
             const shareOptions = {
                 displayNames: true,
@@ -101,39 +90,6 @@ export class AppShareDeck {
             webSocialShare.show = true;
 
             resolve();
-        });
-    }
-
-    private getShareText(): Promise<string> {
-        return new Promise<string>((resolve) => {
-            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                if (deck && deck.data && deck.data.name && deck.data.name !== '') {
-                    this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
-                        if (authUser && !authUser.anonymous && authUser.name && authUser.name !== '') {
-                            resolve(`"${deck.data.name}" by ${authUser.name} created with DeckDeckGo`);
-                        } else {
-                            resolve(`"${deck.data.name}" created with DeckDeckGo`);
-                        }
-                    });
-                } else {
-                    resolve('A presentation created with DeckDeckGo');
-                }
-            });
-        });
-    }
-
-    private getPublishedUrl(): Promise<string> {
-        return new Promise<string>((resolve) => {
-            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                if (deck && deck.data && deck.data.meta && deck.data.meta.pathname && deck.data.meta.pathname !== '') {
-                    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-                    resolve(config.presentationUrl + deck.data.meta.pathname);
-                } else {
-                    // Should not happens
-                    const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-                    resolve(deckDeckGoConfig.appUrl);
-                }
-            });
         });
     }
 
