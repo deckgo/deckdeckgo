@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-3"></a>
+# 1.0.0-rc.2-3 (2020-01-05)
+
+### Features
+
+* new template `author` design
+
 <a name="1.0.0-rc.2-2"></a>
 # 1.0.0-rc.2-2 (2020-01-04)
 
