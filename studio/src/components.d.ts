@@ -61,6 +61,12 @@ export namespace Components {
     'moreColors': boolean;
     'selectedElement': HTMLElement;
   }
+  interface AppColorSides {
+    'initCurrentColors': () => Promise<void>;
+    'moreColors': boolean;
+    'selectedElement': HTMLElement;
+    'template': 'split' | 'author';
+  }
   interface AppColorTextBackground {
     'deck': boolean;
     'initCurrentColors': () => Promise<void>;
@@ -90,8 +96,13 @@ export namespace Components {
   }
   interface AppDeveloper {}
   interface AppEditSlide {
+    'author': boolean;
     'chart': boolean;
     'qrCode': boolean;
+    'selectedElement': HTMLElement;
+    'slideDidChange': EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideAuthor {
     'selectedElement': HTMLElement;
     'slideDidChange': EventEmitter<HTMLElement>;
   }
@@ -100,7 +111,6 @@ export namespace Components {
     'slideDidChange': EventEmitter<HTMLElement>;
   }
   interface AppEditSlideQrcode {
-    'qrCode': boolean;
     'selectedElement': HTMLElement;
     'slideDidChange': EventEmitter<HTMLElement>;
   }
@@ -208,6 +218,7 @@ export namespace Components {
     'code': boolean;
     'colorTarget': boolean;
     'qrCode': boolean;
+    'sides': boolean;
     'slide': boolean;
     'transition': boolean;
   }
@@ -285,6 +296,12 @@ declare global {
     new (): HTMLAppColorQrcodeElement;
   };
 
+  interface HTMLAppColorSidesElement extends Components.AppColorSides, HTMLStencilElement {}
+  var HTMLAppColorSidesElement: {
+    prototype: HTMLAppColorSidesElement;
+    new (): HTMLAppColorSidesElement;
+  };
+
   interface HTMLAppColorTextBackgroundElement extends Components.AppColorTextBackground, HTMLStencilElement {}
   var HTMLAppColorTextBackgroundElement: {
     prototype: HTMLAppColorTextBackgroundElement;
@@ -355,6 +372,12 @@ declare global {
   var HTMLAppEditSlideElement: {
     prototype: HTMLAppEditSlideElement;
     new (): HTMLAppEditSlideElement;
+  };
+
+  interface HTMLAppEditSlideAuthorElement extends Components.AppEditSlideAuthor, HTMLStencilElement {}
+  var HTMLAppEditSlideAuthorElement: {
+    prototype: HTMLAppEditSlideAuthorElement;
+    new (): HTMLAppEditSlideAuthorElement;
   };
 
   interface HTMLAppEditSlideChartElement extends Components.AppEditSlideChart, HTMLStencilElement {}
@@ -718,6 +741,7 @@ declare global {
     'app-color-chart': HTMLAppColorChartElement;
     'app-color-code': HTMLAppColorCodeElement;
     'app-color-qrcode': HTMLAppColorQrcodeElement;
+    'app-color-sides': HTMLAppColorSidesElement;
     'app-color-text-background': HTMLAppColorTextBackgroundElement;
     'app-contact': HTMLAppContactElement;
     'app-create-slide': HTMLAppCreateSlideElement;
@@ -730,6 +754,7 @@ declare global {
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-edit-slide': HTMLAppEditSlideElement;
+    'app-edit-slide-author': HTMLAppEditSlideAuthorElement;
     'app-edit-slide-chart': HTMLAppEditSlideChartElement;
     'app-edit-slide-qrcode': HTMLAppEditSlideQrcodeElement;
     'app-editor': HTMLAppEditorElement;
@@ -822,6 +847,12 @@ declare namespace LocalJSX {
     'onColorChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
   }
+  interface AppColorSides {
+    'moreColors'?: boolean;
+    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'selectedElement'?: HTMLElement;
+    'template'?: 'split' | 'author';
+  }
   interface AppColorTextBackground {
     'deck'?: boolean;
     'moreColors'?: boolean;
@@ -856,8 +887,13 @@ declare namespace LocalJSX {
   }
   interface AppDeveloper {}
   interface AppEditSlide {
+    'author'?: boolean;
     'chart'?: boolean;
     'qrCode'?: boolean;
+    'selectedElement'?: HTMLElement;
+    'slideDidChange'?: EventEmitter<HTMLElement>;
+  }
+  interface AppEditSlideAuthor {
     'selectedElement'?: HTMLElement;
     'slideDidChange'?: EventEmitter<HTMLElement>;
   }
@@ -868,7 +904,6 @@ declare namespace LocalJSX {
   }
   interface AppEditSlideQrcode {
     'onAction'?: (event: CustomEvent<EditAction>) => void;
-    'qrCode'?: boolean;
     'selectedElement'?: HTMLElement;
     'slideDidChange'?: EventEmitter<HTMLElement>;
   }
@@ -1000,6 +1035,7 @@ declare namespace LocalJSX {
     'colorTarget'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
+    'sides'?: boolean;
     'slide'?: boolean;
     'transition'?: boolean;
   }
@@ -1045,6 +1081,7 @@ declare namespace LocalJSX {
     'app-color-chart': AppColorChart;
     'app-color-code': AppColorCode;
     'app-color-qrcode': AppColorQrcode;
+    'app-color-sides': AppColorSides;
     'app-color-text-background': AppColorTextBackground;
     'app-contact': AppContact;
     'app-create-slide': AppCreateSlide;
@@ -1057,6 +1094,7 @@ declare namespace LocalJSX {
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
     'app-edit-slide': AppEditSlide;
+    'app-edit-slide-author': AppEditSlideAuthor;
     'app-edit-slide-chart': AppEditSlideChart;
     'app-edit-slide-qrcode': AppEditSlideQrcode;
     'app-editor': AppEditor;
@@ -1132,6 +1170,7 @@ declare module "@stencil/core" {
       'app-color-chart': LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;
       'app-color-code': LocalJSX.AppColorCode & JSXBase.HTMLAttributes<HTMLAppColorCodeElement>;
       'app-color-qrcode': LocalJSX.AppColorQrcode & JSXBase.HTMLAttributes<HTMLAppColorQrcodeElement>;
+      'app-color-sides': LocalJSX.AppColorSides & JSXBase.HTMLAttributes<HTMLAppColorSidesElement>;
       'app-color-text-background': LocalJSX.AppColorTextBackground & JSXBase.HTMLAttributes<HTMLAppColorTextBackgroundElement>;
       'app-contact': LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
       'app-create-slide': LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
@@ -1144,6 +1183,7 @@ declare module "@stencil/core" {
       'app-delete-deck-action': LocalJSX.AppDeleteDeckAction & JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement>;
       'app-developer': LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
       'app-edit-slide': LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
+      'app-edit-slide-author': LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
       'app-edit-slide-chart': LocalJSX.AppEditSlideChart & JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement>;
       'app-edit-slide-qrcode': LocalJSX.AppEditSlideQrcode & JSXBase.HTMLAttributes<HTMLAppEditSlideQrcodeElement>;
       'app-editor': LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;

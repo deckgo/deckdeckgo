@@ -27,6 +27,33 @@ div.deckgo-slide-author {
     img {
       border-radius: 50%;
       width: var(--slide-author-img-size, 80%);
+      border: var(--slide-author-img-border);
+    }
+
+    position:relative;
+
+    &.deckgo-slide-author-none {
+      display: none;
+    }
+
+    &.deckgo-slide-author-cover {
+      &:before {
+        content: "";
+        width: 100%;
+        height: var(--slide-height);
+        top: 0;
+        left: 0;
+        position: absolute;
+        background-image: var(--slide-author-color-start-img-url);
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      &.deckgo-slide-author-mobile {
+        &:before {
+          background-position: center;
+        }
+      }
     }
   }
 
@@ -36,6 +63,10 @@ div.deckgo-slide-author {
 
     flex-direction: column;
     justify-content: center;
+
+    &.deckgo-slide-author-none {
+      width: 100%;
+    }
 
     div.deckgo-slide-author-social {
       display: flex;

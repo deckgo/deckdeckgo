@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-author",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3-1",
   "description": "The Author template lets you quickly some information about yourself or about the author of the presentation",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -22,7 +22,8 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "^1.0.0-rc.1-1"
+    "@deckdeckgo/slide-utils": "^1.0.0-rc.1-1",
+    "@deckdeckgo/utils": "^1.0.0-rc.2"
   },
   "devDependencies": {
     "@stencil/core": "^1.8.3",

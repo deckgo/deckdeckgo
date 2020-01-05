@@ -38,7 +38,10 @@ export interface SlideAttributes {
     ticks?: number;
     grid?: boolean;
     separator?: string;
+
     vertical?: boolean;
+
+    imgMode?: string;
 }
 
 export interface SlideData {

@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property           | Attribute           | Description | Type      | Default     |
-| ------------------ | ------------------- | ----------- | --------- | ----------- |
-| `customActions`    | `custom-actions`    |             | `boolean` | `false`     |
-| `customBackground` | `custom-background` |             | `boolean` | `false`     |
-| `imgAlt`           | `img-alt`           |             | `string`  | `undefined` |
-| `imgSrc`           | `img-src`           |             | `string`  | `undefined` |
+| Property           | Attribute           | Description | Type                            | Default     |
+| ------------------ | ------------------- | ----------- | ------------------------------- | ----------- |
+| `customActions`    | `custom-actions`    |             | `boolean`                       | `false`     |
+| `customBackground` | `custom-background` |             | `boolean`                       | `false`     |
+| `imgAlt`           | `img-alt`           |             | `string`                        | `undefined` |
+| `imgMode`          | `img-mode`          |             | `"circle" \| "cover" \| "none"` | `'cover'`   |
+| `imgSrc`           | `img-src`           |             | `string`                        | `undefined` |
 
 
 ## Events

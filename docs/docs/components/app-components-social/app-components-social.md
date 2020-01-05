@@ -136,7 +136,7 @@ Without any icons:
 
 ```
 <deckgo-social twitter="daviddalbusco">Twitter</deckgo-social>
-<deckgo-social linkedin="david-dal-busco/">Linkedin</deckgo-social>
+<deckgo-social linkedin="david-dal-busco">Linkedin</deckgo-social>
 <deckgo-social medium="david.dalbusco">Medium</deckgo-social>
 <deckgo-social full-url="https://stackoverflow.com/users/5404186/peter-parker">Stackoverflow</deckgo-social>
 ```

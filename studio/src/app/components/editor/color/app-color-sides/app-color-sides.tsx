@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
@@ -9,9 +9,9 @@ enum ApplyColorType {
 }
 
 @Component({
-    tag: 'app-color-text-background'
+    tag: 'app-color-sides'
 })
-export class AppColorTextBackground {
+export class AppColorSides {
 
     @Element() el: HTMLElement;
 
@@ -22,10 +22,7 @@ export class AppColorTextBackground {
     moreColors: boolean = true;
 
     @Prop()
-    slide: boolean = false;
-
-    @Prop()
-    deck: boolean = false;
+    template: 'split' | 'author';
 
     @State()
     private color: string;
@@ -38,12 +35,10 @@ export class AppColorTextBackground {
 
     @Event() colorChange: EventEmitter<boolean>;
 
-    async componentWillLoad() {
-        await this.initCurrentColors();
-    }
+    @State()
+    private endSide: boolean = false;
 
-    @Watch('applyToAllDeck')
-    async onApplyToAllDeckChange() {
+    async componentWillLoad() {
         await this.initCurrentColors();
     }
 
@@ -53,12 +48,18 @@ export class AppColorTextBackground {
             return;
         }
 
+        const element: HTMLElement = this.selectedElement;
+
+        if (!element) {
+            return;
+        }
+
         let styleColor: InitStyleColor;
 
         if (this.applyColorType === ApplyColorType.BACKGROUND) {
-            styleColor = await ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--background') ? this.selectedElement.style.getPropertyValue('--background') : this.selectedElement.style.background);
+            styleColor = await ColorUtils.splitColor(element.style.getPropertyValue(`--slide-${this.template}-background-${this.endSide ? 'end' : 'start'}`));
         } else {
-            styleColor = await ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--color') ? this.selectedElement.style.getPropertyValue('--color') : this.selectedElement.style.color);
+            styleColor = await ColorUtils.splitColor(element.style.getPropertyValue(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`));
         }
 
         this.color = styleColor.rgb;
@@ -83,14 +84,6 @@ export class AppColorTextBackground {
         await this.applyColor();
     }
 
-    private async applyColor() {
-        if (this.applyColorType === ApplyColorType.BACKGROUND) {
-            await this.applyBackground();
-        } else {
-            await this.applyTextColor();
-        }
-    }
-
     private resetColor(): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!this.selectedElement) {
@@ -99,23 +92,21 @@ export class AppColorTextBackground {
             }
 
             if (this.applyColorType === ApplyColorType.BACKGROUND) {
-                this.selectedElement.style.removeProperty('--background');
-                this.selectedElement.style.removeProperty('background');
+                this.selectedElement.style.removeProperty(`--slide-${this.template}-background-${this.endSide ? 'end' : 'start'}`);
             } else {
-                this.selectedElement.style.removeProperty('--color');
-                this.selectedElement.style.removeProperty('color');
+                this.selectedElement.style.removeProperty(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`);
             }
 
             this.color = null;
             this.colorOpacity = 100;
 
-            this.colorChange.emit(this.deck);
+            this.colorChange.emit(false);
 
             resolve();
         });
     }
 
-    private applyTextColor(): Promise<void> {
+    private applyColor(): Promise<void> {
         return new Promise<void>((resolve) => {
             if (!this.selectedElement || !this.color) {
                 resolve();
@@ -124,34 +115,13 @@ export class AppColorTextBackground {
 
             const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
 
-            if (this.deck || this.slide) {
-                this.selectedElement.style.setProperty('--color', selectedColor);
+            if (this.applyColorType === ApplyColorType.BACKGROUND) {
+                this.selectedElement.style.setProperty(`--slide-${this.template}-background-${this.endSide ? 'end' : 'start'}`, selectedColor);
             } else {
-                this.selectedElement.style.color = selectedColor;
+                this.selectedElement.style.setProperty(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`, selectedColor);
             }
 
-            this.colorChange.emit(this.deck);
-
-            resolve();
-        });
-    }
-
-    private applyBackground(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!this.selectedElement || !this.color) {
-                resolve();
-                return;
-            }
-
-            const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
-
-            if (this.deck || this.slide) {
-                this.selectedElement.style.setProperty('--background', selectedColor);
-            } else {
-                this.selectedElement.style.background = selectedColor;
-            }
-
-            this.colorChange.emit(this.deck);
+            this.colorChange.emit(false);
 
             resolve();
         });
@@ -177,10 +147,23 @@ export class AppColorTextBackground {
         });
     }
 
+    async toggleSide() {
+        this.endSide = !this.endSide;
+
+        await this.initCurrentColors();
+    }
+
     render() {
         return [
             <ion-list>
-                <ion-radio-group onIonChange={($event) => this.selectApplyType($event)}>
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>Selected side</ion-label>
+                </ion-item-divider>
+                <ion-item>
+                    <ion-label>{this.endSide ? 'End' : 'Start'}</ion-label>
+                    <ion-toggle slot="end" checked={this.endSide} mode="md" color="primary" onIonChange={() => this.toggleSide()}></ion-toggle>
+                </ion-item>
+                <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} class="ion-padding-top">
                     <ion-item-divider class="ion-padding-top">
                         <ion-label>Apply color to</ion-label>
                     </ion-item-divider>
@@ -218,10 +201,11 @@ export class AppColorTextBackground {
     }
 
     private resetLabelContent() {
-        if (this.applyColorType === ApplyColorType.BACKGROUND) {
-            return "Reset background";
+        if (this.applyColorType === ApplyColorType.TEXT) {
+            return "Reset text color";
         } else {
-            return "Reset color";
+            return "Reset background";
         }
     }
+
 }

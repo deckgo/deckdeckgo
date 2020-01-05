@@ -144,7 +144,7 @@ export class AppComponentsSocial {
 <h3 id="app-components-social-examples-1">Examples</h3>
 <p>Without any icons:</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">&lt;deckgo-social twitter=&quot;daviddalbusco&quot;&gt;Twitter&lt;&#47;deckgo-social&gt;{'\n'}&lt;deckgo-social linkedin=&quot;david-dal-busco&#47;&quot;&gt;Linkedin&lt;&#47;deckgo-social&gt;{'\n'}&lt;deckgo-social medium=&quot;david.dalbusco&quot;&gt;Medium&lt;&#47;deckgo-social&gt;{'\n'}&lt;deckgo-social full-url=&quot;https:&#47;&#47;stackoverflow.com&#47;users&#47;5404186&#47;peter-parker&quot;&gt;Stackoverflow&lt;&#47;deckgo-social&gt;</code>
+      <code slot="code">&lt;deckgo-social twitter=&quot;daviddalbusco&quot;&gt;Twitter&lt;&#47;deckgo-social&gt;{'\n'}&lt;deckgo-social linkedin=&quot;david-dal-busco&quot;&gt;Linkedin&lt;&#47;deckgo-social&gt;{'\n'}&lt;deckgo-social medium=&quot;david.dalbusco&quot;&gt;Medium&lt;&#47;deckgo-social&gt;{'\n'}&lt;deckgo-social full-url=&quot;https:&#47;&#47;stackoverflow.com&#47;users&#47;5404186&#47;peter-parker&quot;&gt;Stackoverflow&lt;&#47;deckgo-social&gt;</code>
     </deckgo-highlight-code><p>With for example <code>ion-icon</code>:</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-social twitter=&quot;daviddalbusco&quot;&gt;{'\n'}  &lt;ion-icon slot=&quot;icon&quot; name=&quot;logo-twitter&quot;&gt;&lt;&#47;ion-icon&gt;{'\n'}  Twitter{'\n'}&lt;&#47;deckgo-social&gt;{'\n'}{'\n'}&lt;deckgo-social github=&quot;fluster&#47;deckdeckgo&quot;&gt;{'\n'}  &lt;ion-icon slot=&quot;icon&quot; name=&quot;logo-github&quot;&gt;&lt;&#47;ion-icon&gt;{'\n'}  DeckDeckGo on Github{'\n'}&lt;&#47;deckgo-social&gt;</code>

@@ -568,8 +568,9 @@ export class DeckEventsHandler {
             const qrCodeAttributes: SlideAttributes = await this.getSlideAttributesQRCode(slide, cleanFields);
             const chartAttributes: SlideAttributes = await this.getSlideAttributesChart(slide, cleanFields);
             const splitAttributes: SlideAttributes = await this.getSlideAttributesSplit(slide, cleanFields);
+            const authorAttributes: SlideAttributes = await this.getSlideAttributesAuthor(slide, cleanFields);
 
-            attributes = {...attributes, ...qrCodeAttributes, ...chartAttributes, ...splitAttributes};
+            attributes = {...attributes, ...qrCodeAttributes, ...chartAttributes, ...splitAttributes, ...authorAttributes};
 
             resolve(attributes);
         })
@@ -589,6 +590,26 @@ export class DeckEventsHandler {
             } else if (cleanFields) {
                 // @ts-ignore
                 attributes.vertical = firebase.firestore.FieldValue.delete();
+            }
+
+            resolve(attributes);
+        });
+    }
+
+    private getSlideAttributesAuthor(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+        return new Promise<SlideAttributes>((resolve) => {
+            if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-author') {
+                resolve({});
+                return;
+            }
+
+            let attributes: SlideAttributes = {};
+
+            if (slide.hasAttribute('img-mode') && slide.getAttribute('img-mode') !== 'cover') {
+                attributes.imgMode = slide.getAttribute('img-mode');
+            } else if (cleanFields) {
+                // @ts-ignore
+                attributes.imgMode = firebase.firestore.FieldValue.delete();
             }
 
             resolve(attributes);
