@@ -1,4 +1,5 @@
 import {Component, Element, h, Listen, State} from '@stencil/core';
+import {ShareService} from '../../../services/editor/share/share.service';
 
 
 @Component({
@@ -14,10 +15,15 @@ export class AppEmbed {
 
     private embedCodeElement!: HTMLIonTextareaElement;
 
-    componentWillLoad() {
-        // TODO: Replace with real presentation Uri
-        // Don't forget "?embed"
-        this.embedCode = '<iframe src="https://beta.deckdeckgo.io/daviddalbusco/learn-make-publish-repeat/?embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+    private shareService: ShareService;
+
+    constructor() {
+        this.shareService = ShareService.getInstance();
+    }
+
+    async componentWillLoad() {
+        const url: string = await this.shareService.getPublishedUrl();
+        this.embedCode = `<iframe src="${url}?embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
     }
 
     async componentDidLoad() {
@@ -74,7 +80,7 @@ export class AppEmbed {
                         <ion-label>Copy the following code to embed your presentation.</ion-label>
                     </ion-item>
                     <ion-item>
-                        <ion-textarea rows={3} value={this.embedCode} readonly={true}
+                        <ion-textarea rows={4} value={this.embedCode} readonly={true}
                                       ref={(el) => this.embedCodeElement = el as HTMLIonTextareaElement}
                                       onClick={() => this.selectEmbedCode()}
                         ></ion-textarea>
