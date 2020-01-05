@@ -79,6 +79,10 @@ export class ParseSlidesUtils {
                 attributes['socketUrl'] = deckDeckGoConfig.socketUrl;
             }
 
+            if (slide.data.template === SlideTemplate.AUTHOR) {
+                attributes['img-mode'] = slide.data.attributes && slide.data.attributes.imgMode ? slide.data.attributes.imgMode : undefined;
+            }
+
             const SlideElement: string = slideTag;
 
             const result: JSX.IntrinsicElements = <SlideElement key={uuid()} slide_id={ignoreSlideId ? undefined : slide.id} {...attributes}>

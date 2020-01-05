@@ -22,9 +22,6 @@ export class AppEditSlideQRCode {
     selectedElement: HTMLElement;
 
     @Prop()
-    qrCode: boolean;
-
-    @Prop()
     slideDidChange: EventEmitter<HTMLElement>;
 
     @State()
@@ -43,8 +40,8 @@ export class AppEditSlideQRCode {
     }
 
     async componentWillLoad() {
-        this.customQRCode = this.qrCode && this.selectedElement && this.selectedElement.hasAttribute('custom-qrcode');
-        this.customContent = this.qrCode && this.customQRCode && this.selectedElement ? this.selectedElement.getAttribute('content') : undefined;
+        this.customQRCode = this.selectedElement && this.selectedElement.hasAttribute('custom-qrcode');
+        this.customContent = this.customQRCode && this.selectedElement ? this.selectedElement.getAttribute('content') : undefined;
     }
 
     private async onRadioCustomLink($event: CustomEvent) {

@@ -50,6 +50,9 @@ export class AppEditorToolbar {
     private poll: boolean = false;
 
     @State()
+    private author: boolean = false;
+
+    @State()
     private image: boolean = false;
 
     @State()
@@ -239,6 +242,10 @@ export class AppEditorToolbar {
 
     private isElementQRCodeSlide(element: HTMLElement): boolean {
         return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-qrcode';
+    }
+
+    private isElementAuthorSlide(element: HTMLElement): boolean {
+        return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-author';
     }
 
     private isElementChartSlide(element: HTMLElement): boolean {
@@ -530,7 +537,7 @@ export class AppEditorToolbar {
     }
 
     private async openEditSlide() {
-        if (!this.slide || (!this.qrCode && !this.chart)) {
+        if (!this.slide || (!this.qrCode && !this.chart && !this.author)) {
             return;
         }
 
@@ -540,7 +547,7 @@ export class AppEditorToolbar {
                 selectedElement: this.selectedElement,
                 qrCode: this.qrCode,
                 chart: this.chart,
-                poll: this.poll,
+                author: this.author,
                 slideDidChange: this.slideDidChange
             },
             mode: 'md',
@@ -755,6 +762,7 @@ export class AppEditorToolbar {
             this.qrCode = this.isElementQRCodeSlide(element);
             this.chart = this.isElementChartSlide(element);
             this.poll = this.isElementPollSlide(element);
+            this.author = this.isElementAuthorSlide(element);
 
             this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
             this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? element.firstElementChild as HTMLElement : element);
@@ -1015,7 +1023,7 @@ export class AppEditorToolbar {
 
     private renderEdit() {
         if (this.slide) {
-            if (!this.qrCode && !this.chart && !this.poll && !this.youtube) {
+            if (!this.qrCode && !this.chart && !this.poll && !this.youtube && !this.author) {
                 return undefined;
             }
 
