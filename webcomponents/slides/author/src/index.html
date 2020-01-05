@@ -6,14 +6,14 @@
 
   <title>DeckDeckGo - Slide Author Template</title>
 
-  <script type="module" src="/build/deckdeckgo-slide-author.esm.js"></script>
-  <script nomodule src="/build/deckdeckgo-slide-author.js"></script>
-
   <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
   <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
 
   <script type="module" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.esm.js"></script>
   <script nomodule="" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.js"></script>
+
+  <script type="module" src="/build/deckdeckgo-slide-author.esm.js"></script>
+  <script nomodule src="/build/deckdeckgo-slide-author.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
 
@@ -38,7 +38,24 @@
     <div slot="social-link"><deckgo-social full-url="https://daviddalbusco.com">https://daviddalbusco.com</deckgo-social></div>
     <div slot="social-link"><deckgo-social full-url="https://googlegooglegooglegoogle.com"></deckgo-social></div>
   </deckgo-slide-author>
+
+  <deckgo-slide-author img-mode="circle" img-alt="David" img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
+    <div slot="author">
+      <h2>David Dal Busco</h2>
+    </div>
+  </deckgo-slide-author>
+
+  <button onclick="slideNext()" slot="actions">Action slide next</button>
 </deckgo-deck>
+
+<script type="text/javascript">
+    function slideNext() {
+        const elem = document.getElementsByTagName('deckgo-deck');
+        if (elem && elem.length > 0) {
+            elem[0].slideNext(false);
+        }
+    }
+</script>
 
 </body>
 </html>

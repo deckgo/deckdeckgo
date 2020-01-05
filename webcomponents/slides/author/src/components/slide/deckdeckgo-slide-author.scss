@@ -28,6 +28,22 @@ div.deckgo-slide-author {
       border-radius: 50%;
       width: var(--slide-author-img-size, 80%);
     }
+
+    position:relative;
+
+    &.deckgo-slide-author-cover {
+      &:before {
+        content: "";
+        width: 100%;
+        height: var(--slide-height);
+        top: 0;
+        left: 0;
+        position: absolute;
+        background-image: var(--slide-author-color-start-img-url);
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    }
   }
 
   &.deckgo-slide-author-end {

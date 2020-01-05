@@ -16,6 +16,8 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Prop() imgSrc: string;
   @Prop() imgAlt: string;
 
+  @Prop({reflectToAttr: true}) imgMode: 'cover' | 'circle' = 'cover';
+
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
@@ -53,11 +55,13 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   }
 
   render() {
+    const classAuthorImg: string = `deckgo-slide-author deckgo-slide-author-start deckgo-slide-author-${this.imgMode}`;
+
     return <Host class={{'deckgo-slide-container': true}}>
-        <div class="deckgo-slide">
+      <div class="deckgo-slide">
         <slot name="title"></slot>
-        <div class="deckgo-slide-author deckgo-slide-author-start">
-          <img data-src={this.imgSrc} alt={this.imgAlt}/>
+        <div class={classAuthorImg} style={{'--slide-author-color-start-img-url': `url(${this.imgSrc})`}}>
+          {this.renderImage()}
         </div>
         <div class="deckgo-slide-author deckgo-slide-author-end">
           <slot name="author"></slot>
@@ -75,6 +79,14 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
         <slot name="background"></slot>
       </div>
     </Host>;
+  }
+
+  private renderImage() {
+    if (this.imgMode === 'cover') {
+      return undefined;
+    }
+
+    return <img data-src={this.imgSrc} alt={this.imgAlt}/>;
   }
 
 }
