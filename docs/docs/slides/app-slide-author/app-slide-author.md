@@ -24,8 +24,8 @@ The "Author" slide lets you introduce the author of the presentation.
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>
         <div slot="author">slot="author"</div>
-        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social twitter="daviddalbusco"><ion-icon area-label="David on Twitter" slot="icon" name="logo-twitter"></ion-icon> twitter</deckgo-social></div>
-        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social linkedin="david-dal-busco/"><ion-icon area-label="David on Linkedin" slot="icon" name="logo-linkedin"></ion-icon> linkedin</deckgo-social></div>
+        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social twitter="daviddalbusco"><ion-icon area-label="David on Twitter" slot="icon" name="logo-twitter"></ion-icon></deckgo-social></div>
+        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social linkedin="david-dal-busco"><ion-icon area-label="David on Linkedin" slot="icon" name="logo-linkedin"></ion-icon></deckgo-social></div>
     </deckgo-slide-author>
   </deckgo-deck>
 </div>
@@ -84,7 +84,7 @@ The "Author" slide's Web Component could be integrated using the tag `<deckgo-sl
       <h2>David</h2>
       <p>Something about me</p>
     </div>
-    <div slot="social-link"><deckgo-social twitter="daviddalbusco">twitter</deckgo-social></div>
+    <div slot="social-link"><deckgo-social twitter="daviddalbusco"></deckgo-social></div>
   </deckgo-slide-author>
 </deckgo-deck>  
 ```
@@ -130,9 +130,9 @@ This component offers the following options which could be set using attributes:
       <h2>David</h2>
       <p>Something about me</p>
     </div>
-    <div slot="social-link"><deckgo-social twitter="daviddalbusco">twitter</deckgo-social></div>
-    <div slot="social-link"><deckgo-social linkedin="david-dal-busco/">linkedin</deckgo-social></div>
-    <div slot="social-link"><deckgo-social medium="david.dalbusco">medium</deckgo-social></div>
+    <div slot="social-link"><deckgo-social twitter="daviddalbusco"></deckgo-social></div>
+    <div slot="social-link"><deckgo-social linkedin="david-dal-busco"></deckgo-social></div>
+    <div slot="social-link"><deckgo-social medium="david.dalbusco"></deckgo-social></div>
   </deckgo-slide-author>
 </deckgo-deck>
 ```
