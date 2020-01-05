@@ -27,6 +27,7 @@ div.deckgo-slide-author {
     img {
       border-radius: 50%;
       width: var(--slide-author-img-size, 80%);
+      border: var(--slide-author-img-border);
     }
 
     position:relative;
