@@ -17,6 +17,8 @@ app-landing {
         --font-size-h2: 32px;
         --font-size-h3: 24px;
 
+        --deckgo-highlight-code-font-size: 125%;
+
         h1 {
           font-weight: 600;
           margin-bottom: 0;
@@ -33,6 +35,7 @@ app-landing {
         div[slot="background"] {
           width: calc(100% + 2px);
           height: 100%;
+          z-index: 1;
 
           > img {
             position: absolute;

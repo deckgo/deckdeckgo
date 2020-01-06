@@ -44,6 +44,41 @@ export class AppLanding {
                             <img src="/assets/img/landing/wave-end.svg"/>
                         </div>
                     </deckgo-slide-title>
+
+                    <deckgo-slide-author img-src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" img-alt="Predefined rich and responsive templates for a quick editing">
+                        <h2 slot="author" class="ion-text-center" style={{'margin-bottom': '48px'}}>
+                            Use predefined rich and responsive templates for a quick editing.
+                        </h2>
+                        <div slot="background">
+                            <img src="/assets/img/landing/wave-start.svg"/>
+                        </div>
+                    </deckgo-slide-author>
+
+                    <deckgo-slide-title>
+                        <h2 slot="title">Showcase your code.</h2>
+                        <div slot="content" style={{'margin-bottom': '48px'}}>
+                            <deckgo-highlight-code class="ion-margin-top">
+                                <code slot="code">{`import React, { useState } from 'react';
+
+function Example() {
+  // Declare a new state variable, which we'll call "count"
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}`}</code>
+                            </deckgo-highlight-code>
+                        </div>
+                        <div slot="background">
+                            <img src="/assets/img/landing/wave-end.svg"/>
+                        </div>
+                    </deckgo-slide-title>
                 </deckgo-deck>
             </section>
 
