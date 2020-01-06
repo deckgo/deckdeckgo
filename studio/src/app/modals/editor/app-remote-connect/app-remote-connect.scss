@@ -12,7 +12,7 @@ app-remote-connect {
   }
 
   p {
-    font-size: var(--font-size-very-small);
+    font-size: var(--font-size-small);
   }
 
   div.qrcode-container {
@@ -20,7 +20,7 @@ app-remote-connect {
     justify-content: center;
 
     deckgo-qrcode {
-      --deckgo-qrcode-size: 300px;
+      --deckgo-qrcode-size: 280px;
       --deckgo-qrcode-color-fill: var(--ion-color-primary);
     }
 
