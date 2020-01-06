@@ -54,6 +54,18 @@ export class AppLanding {
                         </div>
                     </deckgo-slide-author>
 
+                    <deckgo-slide-poll style={{'--deckgo-qrcode-color-fill': 'var(--ion-color-dark)', '--slide-padding-top': '48px', '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'}}>
+                        <h2 slot="question">Interact with your audience with live polls</h2>
+                        <p slot="answer-1">Cool</p>
+                        <p slot="answer-2">Awesome</p>
+                        <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> {'and use the code {0}'}</p>
+                        <p slot="awaiting-votes">Awaiting your vote</p>
+
+                        <div slot="background">
+                            <img src="/assets/img/landing/wave-end.svg"/>
+                        </div>
+                    </deckgo-slide-poll>
+
                     <deckgo-slide-title>
                         <h2 slot="title">Showcase your code.</h2>
                         <div slot="content" style={{'margin-bottom': '48px'}}>
@@ -74,6 +86,20 @@ function Example() {
   );
 }`}</code>
                             </deckgo-highlight-code>
+                        </div>
+                        <div slot="background">
+                            <img src="/assets/img/landing/wave-start.svg"/>
+                        </div>
+                    </deckgo-slide-title>
+
+                    <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
+                        <h1 slot="title">And many more features.</h1>
+                        <div slot="content" style={{'margin-bottom': '48px'}}>
+                            <h3>Start now. Create your slides with DeckDeckGo.</h3>
+
+                            <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="light">
+                                <ion-label style={{'text-transform': 'none'}}>Write a presentation</ion-label>
+                            </ion-button>
                         </div>
                         <div slot="background">
                             <img src="/assets/img/landing/wave-end.svg"/>
