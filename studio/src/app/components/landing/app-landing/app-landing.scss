@@ -2,20 +2,22 @@ app-landing {
   section {
     width: 100%;
 
+    --font-size-h1: 48px;
+    --font-size-h2: 32px;
+    --font-size-h3: 24px;
+
+    h1 {
+      font-size: 48px;
+    }
+
     &.header {
       width: 100%;
       height: calc(100vh - 56px);
 
-      &.ios {
-        height: calc(100vh - 44px);
-      }
+      background: red;
 
       deckgo-deck {
         --pager-display: none;
-
-        --font-size-h1: 48px;
-        --font-size-h2: 32px;
-        --font-size-h3: 24px;
 
         --deckgo-highlight-code-font-size: 125%;
 
@@ -45,6 +47,35 @@ app-landing {
         }
       }
     }
+  }
 
+  div.introducing {
+    background: white;
+
+    section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      grid-template-rows: auto;
+      grid-gap: 64px;
+      align-items: center;
+
+      padding-top: 64px;
+
+      p {
+        font-size: 24px;
+        line-height: 28px;
+        font-weight: 300;
+      }
+
+      iframe {
+        box-shadow: 8px 8px 16px rgba(0,0,0,.12);
+        border-radius: 8px;
+      }
+
+      @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+    }
   }
 }

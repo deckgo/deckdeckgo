@@ -1,6 +1,6 @@
 import {Component, Element, h, Host, State} from '@stencil/core';
 
-import {isIOS} from '@deckdeckgo/utils';
+import {debounce, isIOS} from '@deckdeckgo/utils';
 
 @Component({
     tag: 'app-landing',
@@ -12,11 +12,59 @@ export class AppLanding {
     @Element() el: HTMLElement;
 
     @State()
-    private iOS: boolean = isIOS();
+    private videoWidth: number | undefined = undefined;
+
+    @State()
+    private videoHeight: number | undefined =  undefined;
+
+    async componentWillLoad() {
+        await this.initVideoSize();
+
+        this.initWindowResize();
+    }
+
+    async componentDidUnload() {
+        this.removeWindowResize();
+    }
+
+    private initWindowResize() {
+        if (window) {
+            window.addEventListener('resize', debounce(this.onWindowResize));
+        }
+    }
+
+    private removeWindowResize() {
+        if (window) {
+            window.removeEventListener('resize', debounce(this.onWindowResize));
+        }
+    }
+
+    private onWindowResize = async () => {
+        await this.initVideoSize();
+
+        const iframe: HTMLIFrameElement = this.el.querySelector('iframe');
+
+        if (iframe) {
+            iframe.width = '' + this.videoWidth;
+            iframe.height = '' + this.videoHeight;
+        }
+    };
+
+    private initVideoSize(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const windowWidth: number = isIOS() ? screen.width : window.innerWidth;
+            const maxWidth: number = (windowWidth > 1400 ? 1400 : windowWidth) - 64;
+
+            this.videoWidth = windowWidth <= 768 ? windowWidth - 32 : maxWidth / 2;
+            this.videoHeight = (this.videoWidth * 9) / 16;
+
+            resolve();
+        });
+    }
 
     render() {
         return <Host>
-            <section class={this.iOS ? 'header ios' : 'header'}>
+            <section class="header">
                 <deckgo-deck embedded={true}>
                     <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
                         <h1 slot="title">Make more than presentations</h1>
@@ -108,10 +156,28 @@ function Example() {
                 </deckgo-deck>
             </section>
 
-            <section>
-                hello
-            </section>
+            <div class="introducing">
+                <main>
+                    <section class="ion-padding">
+                        {this.renderIntroducingVideo()}
+
+                        <div>
+                            <h2>DeckDeckGo is a web open source editor for presentations</h2>
+
+                            <p>It works on any devices (desktop, mobile or tablets), without any prior installation, and even makes your content editable in full screen mode. Unlike other presentation software, your slides are published as online applications, making them the fastest way to be shared.</p>
+                        </div>
+                    </section>
+                </main>
+            </div>
         </Host>
+    }
+
+    private renderIntroducingVideo() {
+        if (this.videoHeight === undefined || this.videoWidth === undefined) {
+            return undefined;
+        }
+
+        return <iframe width={this.videoWidth} height={this.videoHeight} src="https://www.youtube.com/embed/Y97mEj9ZYmE" frameborder="0"></iframe>;
     }
 
 }
