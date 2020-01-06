@@ -164,6 +164,7 @@ export namespace Components {
     'selectedElement': HTMLElement;
     'slide': boolean;
   }
+  interface AppLanding {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
@@ -506,6 +507,12 @@ declare global {
     new (): HTMLAppImageSlideElement;
   };
 
+  interface HTMLAppLandingElement extends Components.AppLanding, HTMLStencilElement {}
+  var HTMLAppLandingElement: {
+    prototype: HTMLAppLandingElement;
+    new (): HTMLAppLandingElement;
+  };
+
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
   var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
@@ -776,6 +783,7 @@ declare global {
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
     'app-image-slide': HTMLAppImageSlideElement;
+    'app-landing': HTMLAppLandingElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-actions': HTMLAppMoreActionsElement;
@@ -976,6 +984,7 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
   }
+  interface AppLanding {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
@@ -1116,6 +1125,7 @@ declare namespace LocalJSX {
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
     'app-image-slide': AppImageSlide;
+    'app-landing': AppLanding;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-more-actions': AppMoreActions;
@@ -1205,6 +1215,7 @@ declare module "@stencil/core" {
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
       'app-image-slide': LocalJSX.AppImageSlide & JSXBase.HTMLAttributes<HTMLAppImageSlideElement>;
+      'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-menu': LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
       'app-more-actions': LocalJSX.AppMoreActions & JSXBase.HTMLAttributes<HTMLAppMoreActionsElement>;

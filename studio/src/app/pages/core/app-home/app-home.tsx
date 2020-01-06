@@ -1,8 +1,8 @@
 import {Component, h, State} from '@stencil/core';
 
-import {isMobile} from '@deckdeckgo/utils';
+import {AuthUser} from '../../../models/auth/auth.user';
 
-import {FeedService} from '../../../services/data/feed/feed.service';
+import {AuthService} from '../../../services/auth/auth.service';
 
 @Component({
     tag: 'app-home',
@@ -10,56 +10,40 @@ import {FeedService} from '../../../services/data/feed/feed.service';
 })
 export class AppHome {
 
-    @State()
-    private mobile: boolean = false;
+    private authService: AuthService;
 
-    private feedService: FeedService;
+    @State()
+    private landing: boolean | undefined = undefined;
 
     constructor() {
-        this.feedService = FeedService.getInstance();
+        this.authService = AuthService.getInstance();
     }
 
-    componentWillLoad() {
-        this.mobile = isMobile();
-    }
-
-    private async refreshFeed($event) {
-        if (!$event || !$event.target) {
-            return;
-        }
-
-        await this.feedService.refresh();
-
-        $event.target.complete();
-    }
+    async componentWillLoad() {
+        const localUser: AuthUser = await this.authService.getLocalAuthUser();
+        this.landing = localUser === undefined || localUser.anonymous;
+     }
 
     render() {
+        if (this.landing === undefined) {
+            return undefined;
+        }
+
         return [
             <app-navigation presentation={true}></app-navigation>,
-            <ion-content class="ion-padding">
-
-                {this.renderRefresher()}
-
-                <main>
-                    <app-popular description={true}></app-popular>
-
-                    <app-feed></app-feed>
-
-                    <app-popular help={true}></app-popular>
-                </main>
-
-            </ion-content>
+            this.renderContent()
         ];
     }
 
-    private renderRefresher() {
-        if (this.mobile) {
-            return <ion-refresher slot="fixed" onIonRefresh={($event: CustomEvent) => this.refreshFeed($event)}>
-                <ion-refresher-content></ion-refresher-content>
-            </ion-refresher>;
+    private renderContent() {
+        if (this.landing) {
+            return <ion-content>
+                <app-landing></app-landing>
+            </ion-content>
         } else {
-            // Only on mobile devices otherwise conflict with click action to open presentations from cards
-            return undefined;
+            return <ion-content class="ion-padding">
+                <app-feed></app-feed>
+            </ion-content>
         }
     }
 }

@@ -46,7 +46,7 @@ export class AuthService {
     init(): Promise<void> {
         return new Promise<void>(async (resolve) => {
             // We also save the user in the local storage to avoid a flickering in the GUI till Firebase as correctly fetched the user
-            const localUser: AuthUser = await get<AuthUser>('deckdeckgo_auth_user');
+            const localUser: AuthUser = await this.getLocalAuthUser();
             this.authUserSubject.next(localUser);
 
             firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
@@ -126,5 +126,9 @@ export class AuthService {
                 resolve(`Bearer ${authUser ? authUser.token : ''}`)
             });
         });
+    }
+
+    async getLocalAuthUser(): Promise<AuthUser> {
+        return get<AuthUser>('deckdeckgo_auth_user');
     }
 }
