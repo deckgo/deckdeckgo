@@ -10,11 +10,17 @@ app-landing {
       font-size: 48px;
     }
 
+    p {
+      font-size: 24px;
+      line-height: 28px;
+      font-weight: 300;
+    }
+
     &.header {
       width: 100%;
       height: calc(100vh - 56px);
 
-      background: red;
+      background: var(--ion-color-primary);
 
       deckgo-deck {
         --pager-display: none;
@@ -44,6 +50,53 @@ app-landing {
             bottom: 0;
             left: -1px;
           }
+
+          button.action {
+            border: none;
+            outline: none;
+            font: inherit;
+            color: inherit;
+            background: none;
+            padding: 0;
+
+            font-size: 3.8rem;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            cursor: pointer;
+            pointer-events: all;
+
+            transition: font-size 300ms;
+
+            &:hover, &:active {
+              font-size: 4.6rem;
+            }
+
+            &.next, &.prev {
+              position: absolute;
+              top: 50%;
+            }
+
+            &.next {
+              right: 0;
+              transform: translate(0, -50%);
+            }
+
+            &.prev {
+              left: 0;
+              transform: translate(0, -50%);
+            }
+
+            @media (max-width: 768px) {
+              &.next, &.prev {
+                top: unset;
+                bottom: 4rem;
+                transform: translate(0, 0);
+              }
+            }
+          }
         }
       }
     }
@@ -61,12 +114,6 @@ app-landing {
 
       padding-top: 64px;
 
-      p {
-        font-size: 24px;
-        line-height: 28px;
-        font-weight: 300;
-      }
-
       iframe {
         box-shadow: 8px 8px 16px rgba(0,0,0,.12);
         border-radius: 8px;
@@ -76,6 +123,12 @@ app-landing {
         display: flex;
         flex-direction: column-reverse;
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .wider-devices {
+      display: none;
     }
   }
 }

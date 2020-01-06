@@ -15,7 +15,13 @@ export class AppLanding {
     private videoWidth: number | undefined = undefined;
 
     @State()
-    private videoHeight: number | undefined =  undefined;
+    private videoHeight: number | undefined =  undefined
+
+    @State()
+    private deckIsBeginning: boolean = true;
+
+    @State()
+    private deckIsEnd: boolean = false;
 
     async componentWillLoad() {
         await this.initVideoSize();
@@ -62,22 +68,48 @@ export class AppLanding {
         });
     }
 
+    private async prevNextSlide(next: boolean) {
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        if (next) {
+            await (deck as any).slideNext(false, true);
+        } else {
+            await (deck as any).slidePrev(false, true);
+        }
+    }
+
+    private async updateDeckPosition() {
+        const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        this.deckIsBeginning = await (deck as any).isBeginning();
+        this.deckIsEnd = await (deck as any).isEnd();
+    }
+
     render() {
         return <Host>
             <section class="header">
-                <deckgo-deck embedded={true}>
+                <deckgo-deck embedded={true}
+                     onSlideNextDidChange={() => this.updateDeckPosition()}
+                     onSlidePrevDidChange={() => this.updateDeckPosition()}>
                     <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
                         <h1 slot="title">Make more than presentations</h1>
                         <div slot="content" style={{'margin-bottom': '48px'}}>
-                            <h3>Create, present and share decks. Interact with your audience.</h3>
+                            <h3>Create, present and share apps. Interact with your audience.</h3>
 
                             <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="light">
                                 <ion-label style={{'text-transform': 'none'}}>Get started with DeckDeckGo</ion-label>
                             </ion-button>
                         </div>
-                        <div slot="background">
-                            <img src="/assets/img/landing/wave-start.svg"/>
-                        </div>
+
+                        {this.renderSlideBackground('start')}
                     </deckgo-slide-title>
 
                     <deckgo-slide-title>
@@ -88,30 +120,29 @@ export class AppLanding {
                             <ion-icon class="ion-padding" src="/assets/img/landing/desktop-light.svg" style={{'font-size': '6.6rem'}}></ion-icon>
                             <ion-icon class="ion-padding" src="/assets/img/landing/projector.svg" style={{'font-size': '6.6rem'}}></ion-icon>
                         </div>
-                        <div slot="background">
-                            <img src="/assets/img/landing/wave-end.svg"/>
-                        </div>
+
+                        {this.renderSlideBackground('end')}
                     </deckgo-slide-title>
 
                     <deckgo-slide-author img-src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" img-alt="Predefined rich and responsive templates for a quick editing">
-                        <h2 slot="author" class="ion-text-center" style={{'margin-bottom': '48px'}}>
+                        <h2 slot="author" class="ion-text-center" style={{'margin-top': '64px'}}>
                             Use predefined rich and responsive templates for a quick editing.
                         </h2>
-                        <div slot="background">
-                            <img src="/assets/img/landing/wave-start.svg"/>
-                        </div>
+
+                        {this.renderSlideBackground('start')}
                     </deckgo-slide-author>
 
                     <deckgo-slide-poll style={{'--deckgo-qrcode-color-fill': 'var(--ion-color-dark)', '--slide-padding-top': '48px', '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'}}>
-                        <h2 slot="question">Interact with your audience with live polls</h2>
+                        <div slot="question">
+                            <h2>Live interactive audience participation.</h2>
+                            <p class="wider-devices">Engage your audience or class in real time. Involve them to contribute to your presentations with their smartphones and show the results live.</p>
+                        </div>
                         <p slot="answer-1">Cool</p>
                         <p slot="answer-2">Awesome</p>
                         <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> {'and use the code {0}'}</p>
                         <p slot="awaiting-votes">Awaiting your vote</p>
 
-                        <div slot="background">
-                            <img src="/assets/img/landing/wave-end.svg"/>
-                        </div>
+                        {this.renderSlideBackground('end')}
                     </deckgo-slide-poll>
 
                     <deckgo-slide-title>
@@ -135,9 +166,8 @@ function Example() {
 }`}</code>
                             </deckgo-highlight-code>
                         </div>
-                        <div slot="background">
-                            <img src="/assets/img/landing/wave-start.svg"/>
-                        </div>
+
+                        {this.renderSlideBackground('start')}
                     </deckgo-slide-title>
 
                     <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
@@ -149,9 +179,8 @@ function Example() {
                                 <ion-label style={{'text-transform': 'none'}}>Write a presentation</ion-label>
                             </ion-button>
                         </div>
-                        <div slot="background">
-                            <img src="/assets/img/landing/wave-end.svg"/>
-                        </div>
+
+                        {this.renderSlideBackground('end')}
                     </deckgo-slide-title>
                 </deckgo-deck>
             </section>
@@ -180,4 +209,17 @@ function Example() {
         return <iframe width={this.videoWidth} height={this.videoHeight} src="https://www.youtube.com/embed/Y97mEj9ZYmE" frameborder="0"></iframe>;
     }
 
+    private renderSlideBackground(wave: 'start' | 'end') {
+        return <div slot="background">
+            {
+                !this.deckIsEnd ? <button type="button" class="action next" onClick={() => this.prevNextSlide(true)}><ion-icon src="/assets/icons/ionicons/arrow-forward.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
+            }
+
+            {
+                !this.deckIsBeginning ? <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)}><ion-icon src="/assets/icons/ionicons/arrow-back.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
+            }
+
+            <img src={`/assets/img/landing/wave-${wave}.svg`}/>
+        </div>
+    }
 }
