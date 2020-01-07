@@ -1,4 +1,13 @@
 app-landing {
+
+  deckgo-lazy-img {
+    --deckgo-lazy-img-display: block;
+  }
+
+  deckgo-deck {
+    --pager-display: none;
+  }
+
   section {
     width: 100%;
 
@@ -23,8 +32,6 @@ app-landing {
       background: var(--ion-color-primary);
 
       deckgo-deck {
-        --pager-display: none;
-
         --deckgo-highlight-code-font-size: 125%;
 
         h1 {
@@ -104,10 +111,12 @@ app-landing {
 
   div.introducing {
     background: white;
+  }
 
+  div.introducing, div.audience {
     section {
       display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      grid-template-columns: 1fr 1fr;
       grid-template-rows: auto;
       grid-gap: 64px;
       align-items: center;
@@ -121,7 +130,22 @@ app-landing {
 
       @media (max-width: 768px) {
         display: flex;
+      }
+    }
+  }
+
+  div.introducing {
+    section {
+      @media (max-width: 768px) {
         flex-direction: column-reverse;
+      }
+    }
+  }
+
+  div.audience {
+    section {
+      @media (max-width: 768px) {
+        flex-direction: column;
       }
     }
   }
@@ -130,5 +154,42 @@ app-landing {
     .wider-devices {
       display: none;
     }
+  }
+
+  div.audience {
+
+    div.deck {
+      position: relative;
+      display: block;
+
+      width: 100%;
+      height: 320px;
+
+      --slide-width: 100%;
+      --slide-height: 240px;
+
+      box-shadow: 8px 8px 16px rgba(0,0,0,.12);
+      border-radius: 8px;
+
+      background: white;
+
+      deckgo-slide-poll {
+        --slide-padding-top: 8px;
+        --slide-padding-start: 16px;
+        --slide-padding-end: 16px;
+        --slide-padding-bottom: 8px;
+
+        --slide-poll-grid-column-gap: 0;
+
+        --slide-poll-justify-content: flex-start;
+
+      p[slot="awaiting-votes"] {
+          text-align: center;
+          width: 75%;
+          border: 0;
+        }
+      }
+    }
+
   }
 }

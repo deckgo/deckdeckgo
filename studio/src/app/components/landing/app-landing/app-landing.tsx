@@ -15,7 +15,7 @@ export class AppLanding {
     private videoWidth: number | undefined = undefined;
 
     @State()
-    private videoHeight: number | undefined =  undefined
+    private videoHeight: number | undefined =  undefined;
 
     @State()
     private deckIsBeginning: boolean = true;
@@ -93,7 +93,32 @@ export class AppLanding {
         this.deckIsEnd = await (deck as any).isEnd();
     }
 
+    private loadPoll(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const slidePoll: HTMLElement = this.el.querySelector('deckgo-slide-poll.showcase');
+
+            if (!slidePoll) {
+                resolve();
+                return;
+            }
+
+            await (slidePoll as any).lazyLoadContent();
+
+            slidePoll.addEventListener('pollUpdated', debounce(async () => {
+                await (slidePoll as any).resizeContent();
+            }), {once: true});
+
+            resolve();
+        });
+    }
+
     render() {
+
+        // TODO add slide services (unsplash, gif and youtube)
+        // TODO add deep linking with QR code
+        // TODO add remote control video
+        // TODO add footer
+
         return <Host>
             <section class="header">
                 <deckgo-deck embedded={true}
@@ -132,18 +157,12 @@ export class AppLanding {
                         {this.renderSlideBackground('start')}
                     </deckgo-slide-author>
 
-                    <deckgo-slide-poll style={{'--deckgo-qrcode-color-fill': 'var(--ion-color-dark)', '--slide-padding-top': '48px', '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'}}>
-                        <div slot="question">
-                            <h2>Live interactive audience participation.</h2>
-                            <p class="wider-devices">Engage your audience or class in real time. Involve them to contribute to your presentations with their smartphones and show the results live.</p>
-                        </div>
-                        <p slot="answer-1">Cool</p>
-                        <p slot="answer-2">Awesome</p>
-                        <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> {'and use the code {0}'}</p>
-                        <p slot="awaiting-votes">Awaiting your vote</p>
+                    <deckgo-slide-title>
+                        <h2 slot="title">Interact with your audience with a live poll.</h2>
+                        <h2 slot="content">Interact with your presentation with a remote control.</h2>
 
                         {this.renderSlideBackground('end')}
-                    </deckgo-slide-poll>
+                    </deckgo-slide-title>
 
                     <deckgo-slide-title>
                         <h2 slot="title">Showcase your code.</h2>
@@ -197,6 +216,22 @@ function Example() {
                         </div>
                     </section>
                 </main>
+
+                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-introducing.svg`} aria-label="Section introducing separator"></deckgo-lazy-img>
+            </div>
+
+            <div class="audience">
+                <main>
+                    <section class="ion-padding">
+                        <div>
+                            <h2>Live interactive audience participation</h2>
+
+                            <p>Engage your audience or class in real time. Involve them to contribute to your presentations with their smartphones and show the results live.</p>
+                        </div>
+
+                        {this.renderPollDemo()}
+                    </section>
+                </main>
             </div>
         </Host>
     }
@@ -207,6 +242,18 @@ function Example() {
         }
 
         return <iframe width={this.videoWidth} height={this.videoHeight} src="https://www.youtube.com/embed/Y97mEj9ZYmE" frameborder="0"></iframe>;
+    }
+
+    private renderPollDemo() {
+        return <div class="deck">
+            <deckgo-slide-poll onSlideDidLoad={async () => await this.loadPoll()} class="showcase" style={{'--deckgo-qrcode-color-fill': 'var(--ion-color-dark)', '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'}}>
+                <p slot="question">Interact with your audience</p>
+                <p slot="answer-1">Cool</p>
+                <p slot="answer-2">Awesome</p>
+                <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> {'and use the code {0}'}</p>
+                <p slot="awaiting-votes" style={{'font-size': 'var(--font-size-normal)'}}>Awaiting your vote</p>
+            </deckgo-slide-poll>
+        </div>
     }
 
     private renderSlideBackground(wave: 'start' | 'end') {
