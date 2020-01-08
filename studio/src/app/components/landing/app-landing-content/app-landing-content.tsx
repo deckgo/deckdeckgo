@@ -17,7 +17,9 @@ export class AppLandingContent {
     @State()
     private videoHeight: number | undefined = undefined;
 
-    private observer: IntersectionObserver;
+    private videoObserver: IntersectionObserver;
+
+    private pollObserver: IntersectionObserver;
 
     async componentWillLoad() {
         await this.initVideoSize();
@@ -27,7 +29,8 @@ export class AppLandingContent {
 
     async componentDidLoad() {
         if (window && 'IntersectionObserver' in window) {
-            await this.deferIntersectionObserverLoad();
+            await this.deferVideoIntersectionObserverLoad();
+            await this.deferPollIntersectionObserverLoad();
         } else {
             await this.unfortunatelyLoadVideoNow();
         }
@@ -35,6 +38,14 @@ export class AppLandingContent {
 
     async componentDidUnload() {
         this.removeWindowResize();
+
+        if (this.videoObserver) {
+            this.videoObserver.disconnect();
+        }
+
+        if (this.pollObserver) {
+            this.pollObserver.disconnect();
+        }
     }
 
     private initWindowResize() {
@@ -49,9 +60,9 @@ export class AppLandingContent {
         }
     }
 
-    private deferIntersectionObserverLoad(): Promise<void> {
+    private deferVideoIntersectionObserverLoad(): Promise<void> {
         return new Promise<void>((resolve) => {
-            this.observer = new IntersectionObserver(this.onIntersection, {
+            this.videoObserver = new IntersectionObserver(this.onVideoIntersection, {
                 rootMargin: '100px 0px',
                 threshold: 0.25
             });
@@ -60,7 +71,7 @@ export class AppLandingContent {
 
             if (elements) {
                 Array.from(elements).forEach((element: HTMLElement) => {
-                    this.observer.observe(element);
+                    this.videoObserver.observe(element);
                 });
             }
 
@@ -68,23 +79,59 @@ export class AppLandingContent {
         });
     }
 
-    private onIntersection = async (entries: IntersectionObserverEntry[]) => {
+     private deferPollIntersectionObserverLoad(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.pollObserver = new IntersectionObserver(this.onPollIntersection, {
+                rootMargin: '100px 0px',
+                threshold: 0.25
+            });
+
+            const element: HTMLElement = this.el.querySelector('deckgo-slide-poll');
+
+            if (element) {
+                this.pollObserver.observe(element);
+            }
+
+            resolve();
+        });
+    }
+
+    private onVideoIntersection = async (entries: IntersectionObserverEntry[]) => {
         if (!entries || entries.length <= 0) {
             return;
         }
 
-        await this.handleIntersection(entries);
+        await this.handleVideoIntersection(entries);
     };
 
-    private handleIntersection(entries: IntersectionObserverEntry[]): Promise<void> {
+    private onPollIntersection = async (entries: IntersectionObserverEntry[]) => {
+        if (!entries || entries.length <= 0) {
+            return;
+        }
+
+        await this.handlePollIntersection(entries[0]);
+    };
+
+    private handleVideoIntersection(entries: IntersectionObserverEntry[]): Promise<void> {
         return new Promise<void>(async (resolve) => {
             for (const entry of entries) {
                 if (entry.isIntersecting) {
-                    if (this.observer && entry.target) {
+                    if (this.videoObserver && entry.target) {
                         await (entry.target as any).lazyLoadContent();
-                        this.observer.unobserve(entry.target);
+                        this.videoObserver.unobserve(entry.target);
                     }
                 }
+            }
+
+            resolve();
+        });
+    }
+
+    private handlePollIntersection(entry: IntersectionObserverEntry): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (entry.isIntersecting) {
+                await this.loadPoll();
+                this.pollObserver.unobserve(entry.target)
             }
 
             resolve();
@@ -127,6 +174,14 @@ export class AppLandingContent {
 
             resolve();
         });
+    }
+
+    private async loadPollWithoutIntersectionObserver() {
+        if (window && 'IntersectionObserver' in window) {
+            return;
+        }
+
+        await this.loadPoll();
     }
 
     private loadPoll(): Promise<void> {
@@ -206,7 +261,7 @@ export class AppLandingContent {
 
     private renderPollDemo() {
         return <div class="deck">
-            <deckgo-slide-poll onSlideDidLoad={async () => await this.loadPoll()} class="showcase" style={{'--deckgo-qrcode-color-fill': 'var(--ion-color-dark)', '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'}}>
+            <deckgo-slide-poll onSlideDidLoad={async () => await this.loadPollWithoutIntersectionObserver()} class="showcase" style={{'--deckgo-qrcode-color-fill': 'var(--ion-color-dark)', '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'}}>
                 <p slot="question">Interact with your audience</p>
                 <p slot="answer-1">Cool</p>
                 <p slot="answer-2">Awesome</p>
