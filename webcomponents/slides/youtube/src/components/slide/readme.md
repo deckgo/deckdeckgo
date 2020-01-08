@@ -117,19 +117,6 @@ Type: `Promise<void>`
 
 
 
-## Dependencies
-
-### Depends on
-
-- [deckgo-youtube](../youtube)
-
-### Graph
-```mermaid
-graph TD;
-  deckgo-slide-youtube --> deckgo-youtube
-  style deckgo-slide-youtube fill:#f9f,stroke:#333,stroke-width:4px
-```
-
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
