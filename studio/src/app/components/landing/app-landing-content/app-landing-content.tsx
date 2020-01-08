@@ -17,14 +17,35 @@ export class AppLandingContent {
     @State()
     private videoHeight: number | undefined = undefined;
 
+    private videoObserver: IntersectionObserver;
+
+    private pollObserver: IntersectionObserver;
+
     async componentWillLoad() {
         await this.initVideoSize();
 
         this.initWindowResize();
     }
 
+    async componentDidLoad() {
+        if (window && 'IntersectionObserver' in window) {
+            await this.deferVideoIntersectionObserverLoad();
+            await this.deferPollIntersectionObserverLoad();
+        } else {
+            await this.unfortunatelyLoadVideoNow();
+        }
+    }
+
     async componentDidUnload() {
         this.removeWindowResize();
+
+        if (this.videoObserver) {
+            this.videoObserver.disconnect();
+        }
+
+        if (this.pollObserver) {
+            this.pollObserver.disconnect();
+        }
     }
 
     private initWindowResize() {
@@ -39,16 +60,107 @@ export class AppLandingContent {
         }
     }
 
+    private deferVideoIntersectionObserverLoad(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.videoObserver = new IntersectionObserver(this.onVideoIntersection, {
+                rootMargin: '100px 0px',
+                threshold: 0.25
+            });
+
+            const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('div.video');
+
+            if (elements) {
+                Array.from(elements).forEach((element: HTMLElement) => {
+                    this.videoObserver.observe(element);
+                });
+            }
+
+            resolve();
+        });
+    }
+
+     private deferPollIntersectionObserverLoad(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.pollObserver = new IntersectionObserver(this.onPollIntersection, {
+                rootMargin: '100px 0px',
+                threshold: 0.25
+            });
+
+            const element: HTMLElement = this.el.querySelector('deckgo-slide-poll');
+
+            if (element) {
+                this.pollObserver.observe(element);
+            }
+
+            resolve();
+        });
+    }
+
+    private onVideoIntersection = async (entries: IntersectionObserverEntry[]) => {
+        if (!entries || entries.length <= 0) {
+            return;
+        }
+
+        await this.handleVideoIntersection(entries);
+    };
+
+    private onPollIntersection = async (entries: IntersectionObserverEntry[]) => {
+        if (!entries || entries.length <= 0) {
+            return;
+        }
+
+        await this.handlePollIntersection(entries[0]);
+    };
+
+    private handleVideoIntersection(entries: IntersectionObserverEntry[]): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            for (const entry of entries) {
+                if (entry.isIntersecting) {
+                    if (this.videoObserver && entry.target) {
+                        await (entry.target.firstChild as any).lazyLoadContent();
+                        this.videoObserver.unobserve(entry.target);
+                    }
+                }
+            }
+
+            resolve();
+        });
+    }
+
+    private handlePollIntersection(entry: IntersectionObserverEntry): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (entry.isIntersecting) {
+                await this.loadPoll();
+                this.pollObserver.unobserve(entry.target)
+            }
+
+            resolve();
+        });
+    }
+
+    private unfortunatelyLoadVideoNow(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-youtube');
+
+            if (elements && elements.length > 0) {
+                Array.from(elements).forEach(async (element: HTMLElement) => {
+                    await (element as any).lazyLoadContent();
+                });
+            }
+
+            resolve();
+        });
+    }
+
     private onWindowResize = async () => {
         await this.initVideoSize();
 
-        const iframes: NodeListOf<HTMLIFrameElement> = this.el.querySelectorAll('iframe');
+        const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-youtube');
 
-        if (iframes && iframes.length > 0) {
-            Array.from(iframes).forEach((iframe: HTMLIFrameElement) => {
-                iframe.width = '' + this.videoWidth;
-                iframe.height = '' + this.videoHeight;
-            });
+        if (elements && elements.length > 0) {
+            for (const element of Array.from(elements)) {
+                await (element as any).updateIFrame(this.videoWidth, this.videoHeight);
+            }
         }
     };
 
@@ -62,6 +174,14 @@ export class AppLandingContent {
 
             resolve();
         });
+    }
+
+    private async loadPollWithoutIntersectionObserver() {
+        if (window && 'IntersectionObserver' in window) {
+            return;
+        }
+
+        await this.loadPoll();
     }
 
     private loadPoll(): Promise<void> {
@@ -88,7 +208,7 @@ export class AppLandingContent {
             <div class="introducing">
                 <main>
                     <section class="ion-padding">
-                        {this.renderVideo('https://www.youtube.com/embed/Y97mEj9ZYmE')}
+                        {this.renderVideo('https://www.youtube.com/embed/Y97mEj9ZYmE', 'Demo of the editor')}
 
                         <div>
                             <h2>DeckDeckGo is a web open source editor for presentations</h2>
@@ -98,7 +218,7 @@ export class AppLandingContent {
                     </section>
                 </main>
 
-                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-introducing.svg`} aria-label="Section introducing separator"></deckgo-lazy-img>
+                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-introducing.svg`} role="presentation"></deckgo-lazy-img>
             </div>
 
             <div class="audience">
@@ -114,13 +234,13 @@ export class AppLandingContent {
                     </section>
                 </main>
 
-                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-audience.svg`} aria-label="Section introducing separator"></deckgo-lazy-img>
+                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-audience.svg`} role="presentation"></deckgo-lazy-img>
             </div>
 
             <div class="remote">
                 <main>
                     <section class="ion-padding">
-                        {this.renderVideo('https://www.youtube.com/embed/PnSNT5WpauE')}
+                        {this.renderVideo('https://www.youtube.com/embed/PnSNT5WpauE', 'Interact with your presentation')}
 
                         <div>
                             <h2>Interact with your presentation</h2>
@@ -133,17 +253,15 @@ export class AppLandingContent {
         </Host>
     }
 
-    private renderVideo(url: string) {
-        if (this.videoHeight === undefined || this.videoWidth === undefined) {
-            return undefined;
-        }
-
-        return <iframe width={this.videoWidth} height={this.videoHeight} src={url} frameborder="0"></iframe>;
+    private renderVideo(url: string, alt: string) {
+        return <div class="video" style={{'width': `${this.videoWidth}px`, 'height': `${this.videoHeight}px`}}>
+            <deckgo-youtube width={this.videoWidth} height={this.videoHeight} src={url} frameTitle={alt}></deckgo-youtube>
+        </div>;
     }
 
     private renderPollDemo() {
         return <div class="deck">
-            <deckgo-slide-poll onSlideDidLoad={async () => await this.loadPoll()} class="showcase" style={{'--deckgo-qrcode-color-fill': 'var(--ion-color-dark)', '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'}}>
+            <deckgo-slide-poll onSlideDidLoad={async () => await this.loadPollWithoutIntersectionObserver()} class="showcase" style={{'--deckgo-qrcode-color-fill': 'var(--ion-color-dark)', '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)', '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'}}>
                 <p slot="question">Interact with your audience</p>
                 <p slot="answer-1">Cool</p>
                 <p slot="answer-2">Awesome</p>

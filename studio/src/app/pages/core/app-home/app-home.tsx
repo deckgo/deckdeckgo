@@ -24,10 +24,6 @@ export class AppHome {
      }
 
     render() {
-        if (this.landing === undefined) {
-            return undefined;
-        }
-
         return [
             <app-navigation presentation={true}></app-navigation>,
             this.renderContent()
@@ -35,6 +31,10 @@ export class AppHome {
     }
 
     private renderContent() {
+        if (this.landing === undefined) {
+            return undefined;
+        }
+
         if (this.landing) {
             return <ion-content>
                 <app-landing></app-landing>

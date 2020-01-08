@@ -1,4 +1,6 @@
-import {Component, Element, Event, EventEmitter, h, State} from '@stencil/core';
+import {Component, Element, h, State} from '@stencil/core';
+
+import {isMobile} from '@deckdeckgo/utils';
 
 @Component({
     tag: 'app-landing-deck',
@@ -16,9 +18,7 @@ export class AppLandingDeck {
     private deckIsEnd: boolean = false;
 
     @State()
-    private deckLearnMore: boolean = false;
-
-    @Event() learnMore: EventEmitter<void>;
+    private deckTransition: 'slide' | 'fade' = isMobile() ? 'fade' : 'slide';
 
     private async updateDeckPosition() {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
@@ -29,12 +29,6 @@ export class AppLandingDeck {
 
         this.deckIsBeginning = await (deck as any).isBeginning();
         this.deckIsEnd = await (deck as any).isEnd();
-
-        const index: number = await (deck as any).getActiveIndex();
-
-        setTimeout(async () => {
-            this.deckLearnMore = (index === 3);
-        }, index === 3 ? 150 : 0);
     }
 
     private async prevNextSlide(next: boolean) {
@@ -52,7 +46,7 @@ export class AppLandingDeck {
     }
 
     render() {
-        return <deckgo-deck embedded={true}
+        return <deckgo-deck embedded={true} transition={this.deckTransition}
                             onSlideNextDidChange={() => this.updateDeckPosition()}
                             onSlidePrevDidChange={() => this.updateDeckPosition()}>
             <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
@@ -152,14 +146,7 @@ function Example() {
                 !this.deckIsBeginning ? <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)}><ion-icon src="/assets/icons/ionicons/arrow-back.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
             }
 
-            {
-                this.deckLearnMore ? <button type="button" class="action more" onClick={() => this.learnMore.emit()}>
-                    <ion-label>Learn more</ion-label>
-                    <ion-icon src="/assets/icons/ionicons/arrow-down.svg" aria-label="Scroll down to lean more about this feature"></ion-icon>
-                </button> : undefined
-            }
-
-            <img class="wave" src={`/assets/img/landing/wave-${wave}.svg`}/>
+            <img class="wave" src={`/assets/img/landing/wave-${wave}.svg`} role="presentation"/>
 
             {
                 imgSrc && imgAlt ? <deckgo-lazy-img img-src={imgSrc} img-alt={imgAlt}></deckgo-lazy-img> : undefined

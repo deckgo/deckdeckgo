@@ -75,25 +75,6 @@ app-landing-deck {
           transform: translate(0, -50%);
         }
 
-        &.more {
-          position: absolute;
-          bottom: 0;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 3;
-
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-
-          font-size: var(--font-size-normal);
-
-          &:hover, &:active {
-            font-size: 1.2rem;
-          }
-        }
-
         @media (max-width: 768px) {
           &.next, &.prev {
             top: unset;

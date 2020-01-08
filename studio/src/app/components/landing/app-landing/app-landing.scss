@@ -27,7 +27,7 @@ app-landing {
 
     &.header {
       width: 100%;
-      height: calc(100vh - 56px);
+      height: calc(100% - 56px);
 
       background: var(--ion-color-primary);
     }
