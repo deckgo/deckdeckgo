@@ -94,8 +94,8 @@ with rec
 
   haskellPackages =
     survey.pkgsWithStaticHaskellBinaries.haskellPackages;
+
+  terraform = pkgs.callPackage ./terraform.nix { inherit sources; };
 };
 
-pkgs //
-{ inherit haskellPackages sources wai-lambda; } //
-{ terraform = pkgs.terraform_0_12 ; }
+pkgs // { inherit haskellPackages sources wai-lambda terraform; }

@@ -54,15 +54,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
-        "branch": "master",
+        "branch": "release-19.09",
         "description": "Nixpkgs/NixOS branches that track the Nixpkgs/NixOS channels",
         "homepage": null,
-        "owner": "nh2",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a2d7e9b875e8ba7fd15b989cf2d80be4e183dc72",
-        "sha256": "1hnmp637r99qd6g0sbx4w3za564gbzwl5c4z0x7fvn7kfi2jp1hx",
+        "rev": "db5273ce2abd66117e1ee8affc8098c75238489f",
+        "sha256": "1fvmkvh7jgi9a2k09bhjv3gv8cbnxaii6rn0ka6m34kwdl0zwswv",
         "type": "tarball",
-        "url": "https://github.com/nh2/nixpkgs/archive/a2d7e9b875e8ba7fd15b989cf2d80be4e183dc72.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/db5273ce2abd66117e1ee8affc8098c75238489f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "port-utils": {
@@ -81,6 +81,42 @@
         "sha256": "0nw4g23c5rs0cvaar2phpr60zim9r0qycznpifi8d8k85y4r3bdd",
         "type": "tarball",
         "url": "https://github.com/nh2/static-haskell-nix/archive/8d004d7ced9da947c785b93b4011f39367442339.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "terraform": {
+        "branch": "master",
+        "description": "Terraform enables you to safely and predictably create, change, and improve infrastructure. It is an open source tool that codifies APIs into declarative configuration files that can be shared amongst team members, treated as code, edited, reviewed, and versioned.",
+        "homepage": "https://www.terraform.io/",
+        "owner": "hashicorp",
+        "repo": "terraform",
+        "rev": "v0.12.18",
+        "sha256": "1p2rvs9dw2rzzggf3q2lifwbd82b7xb3jpb4yz5nmggn5g22qlc1",
+        "type": "tarball",
+        "url": "https://github.com/hashicorp/terraform/archive/v0.12.18.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "terraform-provider-aws": {
+        "branch": "master",
+        "description": "Terraform AWS provider",
+        "homepage": "https://www.terraform.io/docs/providers/aws/",
+        "owner": "terraform-providers",
+        "repo": "terraform-provider-aws",
+        "rev": "f1629af0aa159240fdd8d2fdd294f49b79cc17f6",
+        "sha256": "0969fcysh0jsdicjm3fgx3jx39rzizbal2blvgnf9fsaqi73z3gx",
+        "type": "tarball",
+        "url": "https://github.com/terraform-providers/terraform-provider-aws/archive/f1629af0aa159240fdd8d2fdd294f49b79cc17f6.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "terraform-provider-external": {
+        "branch": "master",
+        "description": "Terraform external provider",
+        "homepage": "https://www.terraform.io/docs/providers/external/",
+        "owner": "terraform-providers",
+        "repo": "terraform-provider-external",
+        "rev": "961bccb7b3e1ed38f941465574378cc1da094c64",
+        "sha256": "1g0s5lpnhxp23b8n4vqjnlwirz86d6xm4jab0spdywh3pdiwjd7c",
+        "type": "tarball",
+        "url": "https://github.com/terraform-providers/terraform-provider-external/archive/961bccb7b3e1ed38f941465574378cc1da094c64.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "wai-lambda": {
