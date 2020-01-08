@@ -48,11 +48,13 @@ export class AppLanding {
     private onWindowResize = async () => {
         await this.initVideoSize();
 
-        const iframe: HTMLIFrameElement = this.el.querySelector('iframe');
+        const iframes: NodeListOf<HTMLIFrameElement> = this.el.querySelectorAll('iframe');
 
-        if (iframe) {
-            iframe.width = '' + this.videoWidth;
-            iframe.height = '' + this.videoHeight;
+        if (iframes && iframes.length > 0) {
+            Array.from(iframes).forEach((iframe: HTMLIFrameElement) => {
+                iframe.width = '' + this.videoWidth;
+                iframe.height = '' + this.videoHeight;
+            });
         }
     };
 
@@ -116,7 +118,6 @@ export class AppLanding {
 
         // TODO add slide services (unsplash, gif and youtube)
         // TODO add deep linking with QR code
-        // TODO add remote control video
         // TODO add footer
 
         return <Host>
@@ -207,7 +208,7 @@ function Example() {
             <div class="introducing">
                 <main>
                     <section class="ion-padding">
-                        {this.renderIntroducingVideo()}
+                        {this.renderVideo('https://www.youtube.com/embed/Y97mEj9ZYmE')}
 
                         <div>
                             <h2>DeckDeckGo is a web open source editor for presentations</h2>
@@ -232,16 +233,32 @@ function Example() {
                         {this.renderPollDemo()}
                     </section>
                 </main>
+
+                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-remote.svg`} aria-label="Section introducing separator"></deckgo-lazy-img>
+            </div>
+
+            <div class="remote">
+                <main>
+                    <section class="ion-padding">
+                        {this.renderVideo('https://www.youtube.com/embed/PnSNT5WpauE')}
+
+                        <div>
+                            <h2>Interact with your presentation</h2>
+
+                            <p>Remote control your deck and access your speaker notes with our “remote control” application. No special hardware or configuration needed, it works on every devices and even synchronize the content of your slides.</p>
+                        </div>
+                    </section>
+                </main>
             </div>
         </Host>
     }
 
-    private renderIntroducingVideo() {
+    private renderVideo(url: string) {
         if (this.videoHeight === undefined || this.videoWidth === undefined) {
             return undefined;
         }
 
-        return <iframe width={this.videoWidth} height={this.videoHeight} src="https://www.youtube.com/embed/Y97mEj9ZYmE" frameborder="0"></iframe>;
+        return <iframe width={this.videoWidth} height={this.videoHeight} src={url} frameborder="0"></iframe>;
     }
 
     private renderPollDemo() {

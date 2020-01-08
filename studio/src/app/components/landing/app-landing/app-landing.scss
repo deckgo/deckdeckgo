@@ -109,11 +109,11 @@ app-landing {
     }
   }
 
-  div.introducing {
+  div.introducing, div.remote {
     background: white;
   }
 
-  div.introducing, div.audience {
+  div.introducing, div.audience, div.remote {
     section {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -134,7 +134,7 @@ app-landing {
     }
   }
 
-  div.introducing {
+  div.introducing, div.remote {
     section {
       @media (max-width: 768px) {
         flex-direction: column-reverse;
