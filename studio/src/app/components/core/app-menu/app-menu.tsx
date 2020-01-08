@@ -239,6 +239,7 @@ export class AppMenu {
             {this.renderUser()}
 
             {this.renderHome()}
+            {this.renderDiscover()}
             {this.renderDashboard()}
             {this.renderSettings()}
             {this.renderSignInOut()}
@@ -306,6 +307,17 @@ export class AppMenu {
         return <ion-item button class="home" href="/" routerDirection="forward">
             <ion-icon name="home" slot="start"></ion-icon>
             <ion-label>Home</ion-label>
+        </ion-item>;
+    }
+
+    private renderDiscover() {
+        if (Utils.isLoggedIn(this.authUser)) {
+            return undefined;
+        }
+
+        return <ion-item button class="home" href="/discover" routerDirection="forward">
+            <ion-icon name="search" slot="start"></ion-icon>
+            <ion-label>Discover</ion-label>
         </ion-item>;
     }
 

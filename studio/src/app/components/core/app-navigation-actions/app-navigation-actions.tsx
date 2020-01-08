@@ -89,6 +89,7 @@ export class AppNavigationActions {
 
     render() {
         return <div>
+            {this.renderFeed()}
             {this.renderSignIn()}
             {this.renderPresentationButton()}
             {this.renderPublishButton()}
@@ -96,11 +97,21 @@ export class AppNavigationActions {
         </div>;
     }
 
+    private renderFeed() {
+        if (Utils.isLoggedIn(this.authUser) || !this.signIn) {
+            return undefined;
+        } else if (this.presentation || this.publish) {
+            return <ion-router-link href="/discover" routerDirection="forward" class="wide-device ion-padding-start ion-padding-end">
+                <ion-label>Discover</ion-label>
+            </ion-router-link>;
+        }
+    }
+
     private renderSignIn() {
         if (Utils.isLoggedIn(this.authUser) || !this.signIn) {
             return undefined;
         } else if (this.presentation || this.publish) {
-            return <a class="signin ion-padding-start ion-padding-end" onClick={() => this.navigateSignIn()}>
+            return <a class="wide-device ion-padding-start ion-padding-end" onClick={() => this.navigateSignIn()}>
                 <ion-label>Sign in</ion-label>
             </a>;
         }

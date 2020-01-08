@@ -95,6 +95,7 @@ export namespace Components {
     'deck': Deck;
   }
   interface AppDeveloper {}
+  interface AppDiscover {}
   interface AppEditSlide {
     'author': boolean;
     'chart': boolean;
@@ -144,7 +145,9 @@ export namespace Components {
     'editable': boolean;
     'tags': string[];
   }
-  interface AppFooter {}
+  interface AppFooter {
+    'display': 'menu' | 'landing';
+  }
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
@@ -164,6 +167,10 @@ export namespace Components {
     'selectedElement': HTMLElement;
     'slide': boolean;
   }
+  interface AppLanding {}
+  interface AppLandingContent {}
+  interface AppLandingDeck {}
+  interface AppLandingFooter {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
@@ -368,6 +375,12 @@ declare global {
     new (): HTMLAppDeveloperElement;
   };
 
+  interface HTMLAppDiscoverElement extends Components.AppDiscover, HTMLStencilElement {}
+  var HTMLAppDiscoverElement: {
+    prototype: HTMLAppDiscoverElement;
+    new (): HTMLAppDiscoverElement;
+  };
+
   interface HTMLAppEditSlideElement extends Components.AppEditSlide, HTMLStencilElement {}
   var HTMLAppEditSlideElement: {
     prototype: HTMLAppEditSlideElement;
@@ -504,6 +517,30 @@ declare global {
   var HTMLAppImageSlideElement: {
     prototype: HTMLAppImageSlideElement;
     new (): HTMLAppImageSlideElement;
+  };
+
+  interface HTMLAppLandingElement extends Components.AppLanding, HTMLStencilElement {}
+  var HTMLAppLandingElement: {
+    prototype: HTMLAppLandingElement;
+    new (): HTMLAppLandingElement;
+  };
+
+  interface HTMLAppLandingContentElement extends Components.AppLandingContent, HTMLStencilElement {}
+  var HTMLAppLandingContentElement: {
+    prototype: HTMLAppLandingContentElement;
+    new (): HTMLAppLandingContentElement;
+  };
+
+  interface HTMLAppLandingDeckElement extends Components.AppLandingDeck, HTMLStencilElement {}
+  var HTMLAppLandingDeckElement: {
+    prototype: HTMLAppLandingDeckElement;
+    new (): HTMLAppLandingDeckElement;
+  };
+
+  interface HTMLAppLandingFooterElement extends Components.AppLandingFooter, HTMLStencilElement {}
+  var HTMLAppLandingFooterElement: {
+    prototype: HTMLAppLandingFooterElement;
+    new (): HTMLAppLandingFooterElement;
   };
 
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
@@ -753,6 +790,7 @@ declare global {
     'app-deck-transition': HTMLAppDeckTransitionElement;
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
+    'app-discover': HTMLAppDiscoverElement;
     'app-edit-slide': HTMLAppEditSlideElement;
     'app-edit-slide-author': HTMLAppEditSlideAuthorElement;
     'app-edit-slide-chart': HTMLAppEditSlideChartElement;
@@ -776,6 +814,10 @@ declare global {
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
     'app-image-slide': HTMLAppImageSlideElement;
+    'app-landing': HTMLAppLandingElement;
+    'app-landing-content': HTMLAppLandingContentElement;
+    'app-landing-deck': HTMLAppLandingDeckElement;
+    'app-landing-footer': HTMLAppLandingFooterElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-actions': HTMLAppMoreActionsElement;
@@ -886,6 +928,7 @@ declare namespace LocalJSX {
     'onDeckDeleted'?: (event: CustomEvent<string>) => void;
   }
   interface AppDeveloper {}
+  interface AppDiscover {}
   interface AppEditSlide {
     'author'?: boolean;
     'chart'?: boolean;
@@ -953,7 +996,9 @@ declare namespace LocalJSX {
     'onRemoveTag'?: (event: CustomEvent<string>) => void;
     'tags'?: string[];
   }
-  interface AppFooter {}
+  interface AppFooter {
+    'display'?: 'menu' | 'landing';
+  }
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
@@ -976,6 +1021,12 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
   }
+  interface AppLanding {}
+  interface AppLandingContent {}
+  interface AppLandingDeck {
+    'onLearnMore'?: (event: CustomEvent<void>) => void;
+  }
+  interface AppLandingFooter {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
@@ -1093,6 +1144,7 @@ declare namespace LocalJSX {
     'app-deck-transition': AppDeckTransition;
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
+    'app-discover': AppDiscover;
     'app-edit-slide': AppEditSlide;
     'app-edit-slide-author': AppEditSlideAuthor;
     'app-edit-slide-chart': AppEditSlideChart;
@@ -1116,6 +1168,10 @@ declare namespace LocalJSX {
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
     'app-image-slide': AppImageSlide;
+    'app-landing': AppLanding;
+    'app-landing-content': AppLandingContent;
+    'app-landing-deck': AppLandingDeck;
+    'app-landing-footer': AppLandingFooter;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-more-actions': AppMoreActions;
@@ -1182,6 +1238,7 @@ declare module "@stencil/core" {
       'app-deck-transition': LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
       'app-delete-deck-action': LocalJSX.AppDeleteDeckAction & JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement>;
       'app-developer': LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
+      'app-discover': LocalJSX.AppDiscover & JSXBase.HTMLAttributes<HTMLAppDiscoverElement>;
       'app-edit-slide': LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
       'app-edit-slide-author': LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
       'app-edit-slide-chart': LocalJSX.AppEditSlideChart & JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement>;
@@ -1205,6 +1262,10 @@ declare module "@stencil/core" {
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
       'app-image-slide': LocalJSX.AppImageSlide & JSXBase.HTMLAttributes<HTMLAppImageSlideElement>;
+      'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
+      'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
+      'app-landing-deck': LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;
+      'app-landing-footer': LocalJSX.AppLandingFooter & JSXBase.HTMLAttributes<HTMLAppLandingFooterElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-menu': LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
       'app-more-actions': LocalJSX.AppMoreActions & JSXBase.HTMLAttributes<HTMLAppMoreActionsElement>;
