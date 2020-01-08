@@ -1,13 +1,10 @@
 import {Component, Element, Method, Prop, h, Watch, State} from '@stencil/core';
 
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
-
 @Component({
   tag: 'deckgo-youtube',
-  styleUrl: 'deckdeckgo-youtube.scss',
   shadow: true
 })
-export class DeckdeckgoYoutube implements DeckdeckgoComponent {
+export class DeckdeckgoYoutube {
 
   @Element() el: HTMLElement;
 
@@ -20,35 +17,19 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
 
   @Prop() allowFullscreen: boolean = true;
 
+  @Prop() instant: boolean = false;
+
   @State()
   private loading: boolean = false;
 
-  async componentDidLoad() {
+  async componentWillLoad() {
     await this.addPreconnectLink();
   }
 
-  private addPreconnectLink(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.src) {
-        resolve();
-        return;
-      }
-
-      const links: NodeListOf<HTMLElement> = document.head.querySelectorAll('link[rel=\'preconnect\']');
-
-      if (links && links.length > 0) {
-        resolve();
-        return;
-      }
-
-      const link: HTMLLinkElement = document.createElement('link');
-      link.rel = 'preconnect';
-      link.href = 'https://www.youtube.com';
-
-      document.head.appendChild(link);
-
-      resolve();
-    });
+  async componentDidLoad() {
+    if (this.instant) {
+      await this.lazyLoadContent();
+    }
   }
 
   @Method()
@@ -69,6 +50,41 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
   @Watch('src')
   async onSrcUpdate() {
     await this.createIFrame();
+  }
+
+  @Method()
+  play(): Promise<void> {
+    return this.playPauseVideo(true);
+  }
+
+  @Method()
+  pause(): Promise<void> {
+    return this.playPauseVideo(false);
+  }
+
+  private addPreconnectLink(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.src || !document) {
+        resolve();
+        return;
+      }
+
+      const links: NodeListOf<HTMLElement> = document.head.querySelectorAll('link[rel=\'preconnect\'][youtube]');
+
+      if (links && links.length > 0) {
+        resolve();
+        return;
+      }
+
+      const link: HTMLLinkElement = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = 'https://www.youtube.com';
+      link.setAttribute('youtube', '');
+
+      document.head.appendChild(link);
+
+      resolve();
+    });
   }
 
   private createIFrame(): Promise<void> {
@@ -182,16 +198,6 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
     });
   }
 
-  @Method()
-  play(): Promise<void> {
-    return this.playPauseVideo(true);
-  }
-
-  @Method()
-  pause(): Promise<void> {
-    return this.playPauseVideo(false);
-  }
-
   private playPauseVideo(play: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
@@ -208,7 +214,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
       }), '*');
 
       resolve();
-    })
+    });
   }
 
   render() {

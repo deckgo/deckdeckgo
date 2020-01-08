@@ -35,6 +35,7 @@ export class AppSlideAuthor {
 <li><a href="#app-slide-author-from-a-cdn">From a CDN</a></li>
 <li><a href="#app-slide-author-from-npm">From NPM</a></li>
 <li><a href="#app-slide-author-framework-integration">Framework integration</a></li>
+<li><a href="#app-slide-author-social-component">Social component</a></li>
 </ul>
 </li>
 <li><a href="#app-slide-author-usage">Usage</a><ul>
@@ -62,7 +63,7 @@ export class AppSlideAuthor {
 </div>
 
 <h2 id="app-slide-author-installation">Installation</h2>
-<p>This template could be added to your presentation using the following methods.</p>
+<p>This template could be added to your presentation using the following methods. </p>
 <blockquote>
 <p>If you are using our Starter Kit this template is included. You don&#39;t need to install it so therefore you should skip the &quot;Installation&quot; chapter.</p>
 </blockquote>
@@ -83,7 +84,9 @@ export class AppSlideAuthor {
     </deckgo-highlight-code><h4 id="app-slide-author-loader">Loader</h4>
 <deckgo-highlight-code language="javascript">
       <code slot="code">import &#123; defineCustomElements as deckDeckGoSlideElement &#125; from &#039;@deckdeckgo&#47;slide-author&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoSlideElement(window);</code>
-    </deckgo-highlight-code><h2 id="app-slide-author-usage">Usage</h2>
+    </deckgo-highlight-code><h3 id="app-slide-author-social-component">Social component</h3>
+<p>This templates relies on the <code>@deckdeckgo/social</code> component without any explicit dependency. Therefore it should also be installed, see its related <a href="/components/social">installation</a> guide.</p>
+<h2 id="app-slide-author-usage">Usage</h2>
 <p>The &quot;Author&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-author/&gt;</code>.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-deck&gt;{'\n'}  &lt;deckgo-slide-author img-src=&quot;&#47;assets&#47;author.jpeg&quot; img-alt=&quot;My self&quot;&gt;{'\n'}    &lt;h1 slot=&quot;title&quot;&gt;Author&lt;&#47;h1&gt;{'\n'}    &lt;div slot=&quot;author&quot;&gt;{'\n'}      &lt;h2&gt;David&lt;&#47;h2&gt;{'\n'}      &lt;p&gt;Something about me&lt;&#47;p&gt;{'\n'}    &lt;&#47;div&gt;{'\n'}    &lt;div slot=&quot;social-link&quot;&gt;&lt;deckgo-social twitter=&quot;daviddalbusco&quot;&gt;&lt;&#47;deckgo-social&gt;&lt;&#47;div&gt;{'\n'}  &lt;&#47;deckgo-slide-author&gt;{'\n'}&lt;&#47;deckgo-deck&gt;  </code>

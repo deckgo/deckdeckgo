@@ -1,4 +1,4 @@
-# deckgo-youtube
+# deckgo-social
 
 
 
@@ -12,6 +12,7 @@
 | `allowFullscreen` | `allow-fullscreen` |             | `boolean` | `true`      |
 | `frameTitle`      | `frame-title`      |             | `string`  | `undefined` |
 | `height`          | `height`           |             | `number`  | `undefined` |
+| `instant`         | `instant`          |             | `boolean` | `false`     |
 | `src`             | `src`              |             | `string`  | `undefined` |
 | `width`           | `width`            |             | `number`  | `undefined` |
 
@@ -58,19 +59,6 @@ Type: `Promise<void>`
 
 
 
-
-## Dependencies
-
-### Used by
-
- - [deckgo-slide-youtube](../slide)
-
-### Graph
-```mermaid
-graph TD;
-  deckgo-slide-youtube --> deckgo-youtube
-  style deckgo-youtube fill:#f9f,stroke:#333,stroke-width:4px
-```
 
 ----------------------------------------------
 

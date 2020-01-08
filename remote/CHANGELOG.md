@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-4"></a>
+# 1.0.0-rc.2-4 (2020-01-08)
+
+### Features
+
+* update last libs and add new component `@deckdeckgo/youtube`
+
 <a name="1.0.0-rc.2-3"></a>
 # 1.0.0-rc.2-3 (2020-01-05)
 

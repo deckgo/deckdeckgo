@@ -5,10 +5,10 @@ The "Social" component helps you generate a social link to your Twitter, Dev, Me
 ## Table of contents
 
 - [Showcase](#app-components-social-showcase)
-- [Installation](#app-components-color-installation)
-	- [Using from a CDN](#app-components-color-from-a-cdn)
-	- [Install from NPM](#app-components-color-from-npm)
-	- [Framework integration](#app-components-color-framework-integration)
+- [Installation](#app-components-social-installation)
+	- [Using from a CDN](#app-components-social-from-a-cdn)
+	- [Install from NPM](#app-components-social-from-npm)
+	- [Framework integration](#app-components-social-framework-integration)
 - [Usage](#app-components-social-usage)
   - [Slots](#app-components-social-slots)
   - [Attributes](#app-components-social-attributes)

@@ -35,6 +35,7 @@ export class AppSlideYoutube {
 <li><a href="#app-slide-youtube-from-a-cdn">From a CDN</a></li>
 <li><a href="#app-slide-youtube-from-npm">From NPM</a></li>
 <li><a href="#app-slide-youtube-framework-integration">Framework integration</a></li>
+<li><a href="#app-slide-youtube-youtube-component">Youtube component</a></li>
 </ul>
 </li>
 <li><a href="#app-slide-youtube-usage">Usage</a><ul>
@@ -83,7 +84,9 @@ export class AppSlideYoutube {
     </deckgo-highlight-code><h4 id="app-slide-youtube-loader">Loader</h4>
 <deckgo-highlight-code language="javascript">
       <code slot="code">import &#123; defineCustomElements as deckDeckGoSlideElement &#125; from &#039;@deckdeckgo&#47;slide-youtube&#47;dist&#47;loader&#039;;{'\n'}deckDeckGoSlideElement(window);</code>
-    </deckgo-highlight-code><h2 id="app-slide-youtube-usage">Usage</h2>
+    </deckgo-highlight-code><h3 id="app-slide-youtube-youtube-component">Youtube component</h3>
+<p>This templates relies on the <code>@deckdeckgo/youtube</code> component without any explicit dependency. Therefore it should also be installed, see its related <a href="/components/youtube">installation</a> guide.</p>
+<h2 id="app-slide-youtube-usage">Usage</h2>
 <p>The &quot;Youtube&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-youtube/&gt;</code>.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">&lt;deckgo-slide-youtube src=&quot;https:&#47;&#47;www.youtube.com&#47;watch?v=oUOjJIfPIjw&quot;&gt;{'\n'}  &lt;h1 slot=&quot;title&quot;&gt;A 16&#47;9 video&lt;&#47;h1&gt;{'\n'}&lt;&#47;deckgo-slide-youtube&gt;</code>
@@ -92,7 +95,7 @@ export class AppSlideYoutube {
 <h3 id="app-slide-youtube-notes">Notes</h3>
 <p>Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.</p>
 <p>If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute <code>show</code>.</p>
-<h3 id="app-slide-youtube-youtube-component">Youtube component</h3>
+<h3 id="app-slide-youtube-youtube-component-1">Youtube component</h3>
 <p>The slide &quot;Youtube&quot; relies on the component <code>&lt;deckgo-youtube/&gt;</code> which is described in the components <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.</p>
 <h2 id="app-slide-youtube-attributes">Attributes</h2>
 <p>This component offers the following options which could be set using attributes:</p>

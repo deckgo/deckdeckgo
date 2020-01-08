@@ -63,6 +63,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | **QR-Code** | [`@deckdeckgo/qrcode`](https://www.npmjs.com/package/@deckdeckgo/qrcode) | [![version](https://img.shields.io/npm/v/@deckdeckgo/qrcode/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/qrcode) | [`README.md`](webcomponents/qrcode/README.md)
 | **Remote** | [`@deckdeckgo/remote`](https://www.npmjs.com/package/@deckdeckgo/remote) | [![version](https://img.shields.io/npm/v/@deckdeckgo/remote/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/remote) | [`README.md`](webcomponents/remote/README.md)
 | **Social** | [`@deckdeckgo/social`](https://www.npmjs.com/package/@deckdeckgo/social) | [![version](https://img.shields.io/npm/v/@deckdeckgo/social/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/social) | [`README.md`](webcomponents/social/README.md)
+| **Youtube** | [`@deckdeckgo/youtube`](https://www.npmjs.com/package/@deckdeckgo/youtube) | [![version](https://img.shields.io/npm/v/@deckdeckgo/youtube/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/youtube) | [`README.md`](webcomponents/youtube/README.md)
 
 ## Web Components - Slides/Templates
 
