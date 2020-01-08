@@ -1,0 +1,87 @@
+app-landing-deck {
+  deckgo-deck {
+    --deckgo-highlight-code-font-size: 125%;
+
+    h1 {
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    h2, h3 {
+      font-weight: 500;
+    }
+
+    h1, h2, h3 {
+      margin-top: 4px;
+    }
+
+    *[slot]:not([slot="background"]) {
+      z-index: 2;
+    }
+
+    div[slot="background"] {
+      width: calc(100% + 2px);
+      height: 100%;
+      z-index: 1;
+
+      > img.wave {
+        position: absolute;
+        bottom: 0;
+        left: -1px;
+      }
+
+      deckgo-lazy-img {
+        --deckgo-lazy-img-height: 100%;
+        --deckgo-lazy-img-min-width: 100%;
+        --deckgo-lazy-img-object-fit: cover;
+      }
+
+      button.action {
+        border: none;
+        outline: none;
+        font: inherit;
+        color: inherit;
+        background: none;
+        padding: 0;
+
+        font-size: 3.8rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+        pointer-events: all;
+
+        transition: font-size 300ms;
+
+        &:hover, &:active {
+          font-size: 4.6rem;
+        }
+
+        &.next, &.prev {
+          position: absolute;
+          top: 50%;
+        }
+
+        &.next {
+          right: 0;
+          transform: translate(0, -50%);
+        }
+
+        &.prev {
+          left: 0;
+          transform: translate(0, -50%);
+        }
+
+        @media (max-width: 768px) {
+          &.next, &.prev {
+            top: unset;
+            bottom: 4rem;
+            transform: translate(0, 0);
+          }
+        }
+      }
+    }
+  }
+}

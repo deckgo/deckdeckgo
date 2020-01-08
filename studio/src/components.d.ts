@@ -165,6 +165,8 @@ export namespace Components {
     'slide': boolean;
   }
   interface AppLanding {}
+  interface AppLandingContent {}
+  interface AppLandingDeck {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
@@ -513,6 +515,18 @@ declare global {
     new (): HTMLAppLandingElement;
   };
 
+  interface HTMLAppLandingContentElement extends Components.AppLandingContent, HTMLStencilElement {}
+  var HTMLAppLandingContentElement: {
+    prototype: HTMLAppLandingContentElement;
+    new (): HTMLAppLandingContentElement;
+  };
+
+  interface HTMLAppLandingDeckElement extends Components.AppLandingDeck, HTMLStencilElement {}
+  var HTMLAppLandingDeckElement: {
+    prototype: HTMLAppLandingDeckElement;
+    new (): HTMLAppLandingDeckElement;
+  };
+
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
   var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
@@ -784,6 +798,8 @@ declare global {
     'app-image-columns': HTMLAppImageColumnsElement;
     'app-image-slide': HTMLAppImageSlideElement;
     'app-landing': HTMLAppLandingElement;
+    'app-landing-content': HTMLAppLandingContentElement;
+    'app-landing-deck': HTMLAppLandingDeckElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-actions': HTMLAppMoreActionsElement;
@@ -985,6 +1001,8 @@ declare namespace LocalJSX {
     'slide'?: boolean;
   }
   interface AppLanding {}
+  interface AppLandingContent {}
+  interface AppLandingDeck {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
@@ -1126,6 +1144,8 @@ declare namespace LocalJSX {
     'app-image-columns': AppImageColumns;
     'app-image-slide': AppImageSlide;
     'app-landing': AppLanding;
+    'app-landing-content': AppLandingContent;
+    'app-landing-deck': AppLandingDeck;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-more-actions': AppMoreActions;
@@ -1216,6 +1236,8 @@ declare module "@stencil/core" {
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
       'app-image-slide': LocalJSX.AppImageSlide & JSXBase.HTMLAttributes<HTMLAppImageSlideElement>;
       'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
+      'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
+      'app-landing-deck': LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-menu': LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
       'app-more-actions': LocalJSX.AppMoreActions & JSXBase.HTMLAttributes<HTMLAppMoreActionsElement>;
