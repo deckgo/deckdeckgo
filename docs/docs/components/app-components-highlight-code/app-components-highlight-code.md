@@ -156,7 +156,7 @@ Furthermore the following styles apply if the code is displayed as a "windowed" 
 
 ### Methods
 
-The `<deckgo-highlight-code/>` expose the following methods:
+The `<deckgo-highlight-code/>` exposes the following methods:
 
 #### Find the next anchor
 

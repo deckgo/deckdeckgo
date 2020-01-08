@@ -9,6 +9,7 @@ The "Author" slide lets you introduce the author of the presentation.
   - [From a CDN](#app-slide-author-from-a-cdn)
   - [From NPM](#app-slide-author-from-npm)
   - [Framework integration](#app-slide-author-framework-integration)
+  - [Social component](#app-slide-author-social-component)
 - [Usage](#app-slide-author-usage)
   - [Slots](#app-slide-author-slots)
   - [Notes](#app-slide-author-notes)
@@ -32,7 +33,7 @@ The "Author" slide lets you introduce the author of the presentation.
 
 ## Installation
 
-This template could be added to your presentation using the following methods.
+This template could be added to your presentation using the following methods. 
 
 > If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
  
@@ -71,6 +72,10 @@ import '@deckdeckgo/slide-author';
 import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-author/dist/loader';
 deckDeckGoSlideElement(window);
 ```
+
+### Social component
+
+This templates relies on the `@deckdeckgo/social` component without any explicit dependency. Therefore it should also be installed, see its related [installation](/components/social) guide.
 
 ## Usage
 

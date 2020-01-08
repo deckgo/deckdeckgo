@@ -23,10 +23,10 @@ export class AppComponentsSocial {
 <h2 id="app-components-social-table-of-contents">Table of contents</h2>
 <ul>
 <li><a href="#app-components-social-showcase">Showcase</a></li>
-<li><a href="#app-components-color-installation">Installation</a><ul>
-<li><a href="#app-components-color-from-a-cdn">Using from a CDN</a></li>
-<li><a href="#app-components-color-from-npm">Install from NPM</a></li>
-<li><a href="#app-components-color-framework-integration">Framework integration</a></li>
+<li><a href="#app-components-social-installation">Installation</a><ul>
+<li><a href="#app-components-social-from-a-cdn">Using from a CDN</a></li>
+<li><a href="#app-components-social-from-npm">Install from NPM</a></li>
+<li><a href="#app-components-social-framework-integration">Framework integration</a></li>
 </ul>
 </li>
 <li><a href="#app-components-social-usage">Usage</a><ul>
