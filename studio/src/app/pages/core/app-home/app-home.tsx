@@ -5,8 +5,7 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {AuthService} from '../../../services/auth/auth.service';
 
 @Component({
-    tag: 'app-home',
-    styleUrl: 'app-home.scss'
+    tag: 'app-home'
 })
 export class AppHome {
 

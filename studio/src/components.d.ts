@@ -95,6 +95,7 @@ export namespace Components {
     'deck': Deck;
   }
   interface AppDeveloper {}
+  interface AppDiscover {}
   interface AppEditSlide {
     'author': boolean;
     'chart': boolean;
@@ -372,6 +373,12 @@ declare global {
   var HTMLAppDeveloperElement: {
     prototype: HTMLAppDeveloperElement;
     new (): HTMLAppDeveloperElement;
+  };
+
+  interface HTMLAppDiscoverElement extends Components.AppDiscover, HTMLStencilElement {}
+  var HTMLAppDiscoverElement: {
+    prototype: HTMLAppDiscoverElement;
+    new (): HTMLAppDiscoverElement;
   };
 
   interface HTMLAppEditSlideElement extends Components.AppEditSlide, HTMLStencilElement {}
@@ -783,6 +790,7 @@ declare global {
     'app-deck-transition': HTMLAppDeckTransitionElement;
     'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
+    'app-discover': HTMLAppDiscoverElement;
     'app-edit-slide': HTMLAppEditSlideElement;
     'app-edit-slide-author': HTMLAppEditSlideAuthorElement;
     'app-edit-slide-chart': HTMLAppEditSlideChartElement;
@@ -920,6 +928,7 @@ declare namespace LocalJSX {
     'onDeckDeleted'?: (event: CustomEvent<string>) => void;
   }
   interface AppDeveloper {}
+  interface AppDiscover {}
   interface AppEditSlide {
     'author'?: boolean;
     'chart'?: boolean;
@@ -1135,6 +1144,7 @@ declare namespace LocalJSX {
     'app-deck-transition': AppDeckTransition;
     'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
+    'app-discover': AppDiscover;
     'app-edit-slide': AppEditSlide;
     'app-edit-slide-author': AppEditSlideAuthor;
     'app-edit-slide-chart': AppEditSlideChart;
@@ -1228,6 +1238,7 @@ declare module "@stencil/core" {
       'app-deck-transition': LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
       'app-delete-deck-action': LocalJSX.AppDeleteDeckAction & JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement>;
       'app-developer': LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
+      'app-discover': LocalJSX.AppDiscover & JSXBase.HTMLAttributes<HTMLAppDiscoverElement>;
       'app-edit-slide': LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
       'app-edit-slide-author': LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
       'app-edit-slide-chart': LocalJSX.AppEditSlideChart & JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement>;

@@ -5,13 +5,19 @@ app-navigation-actions {
     align-items: center;
   }
 
-  a {
+  a, ion-router-link {
     color: black;
     cursor: pointer;
+
+    font-weight: 400;
+
+    &:hover, &:active {
+      border-bottom-color: transparent;
+    }
   }
 
   @media screen and (max-width: 540px) {
-    a.signin {
+    a.wide-device, ion-router-link.wide-device {
       display: none;
     }
   }
@@ -19,7 +25,7 @@ app-navigation-actions {
 
 body.dark {
   app-navigation-actions {
-    a {
+    a, ion-router-link {
       color: white;
     }
   }
