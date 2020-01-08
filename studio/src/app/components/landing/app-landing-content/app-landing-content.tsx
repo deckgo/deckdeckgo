@@ -67,7 +67,7 @@ export class AppLandingContent {
                 threshold: 0.25
             });
 
-            const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-youtube');
+            const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('div.video');
 
             if (elements) {
                 Array.from(elements).forEach((element: HTMLElement) => {
@@ -117,7 +117,7 @@ export class AppLandingContent {
             for (const entry of entries) {
                 if (entry.isIntersecting) {
                     if (this.videoObserver && entry.target) {
-                        await (entry.target as any).lazyLoadContent();
+                        await (entry.target.firstChild as any).lazyLoadContent();
                         this.videoObserver.unobserve(entry.target);
                     }
                 }
