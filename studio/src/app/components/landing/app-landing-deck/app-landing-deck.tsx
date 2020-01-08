@@ -130,10 +130,10 @@ function Example() {
             <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
                 <h1 slot="title">And many more features</h1>
                 <div slot="content" style={{'margin-bottom': '48px'}}>
-                    <h3>Create your slides with DeckDeckGo.</h3>
+                    <h3>Create your slides with DeckDeckGo now.</h3>
 
                     <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="light">
-                        <ion-label style={{'text-transform': 'none'}}>Write a presentation</ion-label>
+                        <ion-label style={{'text-transform': 'none'}}>Start a presentation</ion-label>
                     </ion-button>
                 </div>
 
