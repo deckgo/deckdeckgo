@@ -1014,7 +1014,9 @@ declare namespace LocalJSX {
   }
   interface AppLanding {}
   interface AppLandingContent {}
-  interface AppLandingDeck {}
+  interface AppLandingDeck {
+    'onLearnMore'?: (event: CustomEvent<void>) => void;
+  }
   interface AppLandingFooter {}
   interface AppLogo {}
   interface AppMenu {}

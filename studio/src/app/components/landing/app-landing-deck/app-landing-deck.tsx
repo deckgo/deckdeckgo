@@ -1,4 +1,4 @@
-import {Component, Element, h, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, State} from '@stencil/core';
 
 @Component({
     tag: 'app-landing-deck',
@@ -15,6 +15,11 @@ export class AppLandingDeck {
     @State()
     private deckIsEnd: boolean = false;
 
+    @State()
+    private deckLearnMore: boolean = false;
+
+    @Event() learnMore: EventEmitter<void>;
+
     private async updateDeckPosition() {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
@@ -24,6 +29,11 @@ export class AppLandingDeck {
 
         this.deckIsBeginning = await (deck as any).isBeginning();
         this.deckIsEnd = await (deck as any).isEnd();
+
+        setTimeout(async () => {
+            const index: number = await (deck as any).getActiveIndex();
+            this.deckLearnMore = (index === 3);
+        }, 150);
     }
 
     private async prevNextSlide(next: boolean) {
@@ -78,7 +88,7 @@ export class AppLandingDeck {
             </deckgo-slide-author>
 
             <deckgo-slide-title>
-                <h2 slot="title">Interact with your audience with a <strong>live poll</strong>.</h2>
+                <h2 slot="title">Interact with your audience with a live poll.</h2>
                 <h3 slot="content">Interact with your presentation with a remote control.</h3>
 
                 {this.renderSlideBackground('end')}
@@ -139,6 +149,13 @@ function Example() {
 
             {
                 !this.deckIsBeginning ? <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)}><ion-icon src="/assets/icons/ionicons/arrow-back.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
+            }
+
+            {
+                this.deckLearnMore ? <button type="button" class="action more" onClick={() => this.learnMore.emit()}>
+                    <ion-label>Learn more</ion-label>
+                    <ion-icon src="/assets/icons/ionicons/arrow-down.svg" aria-label="Scroll down to lean more about this feature"></ion-icon>
+                </button> : undefined
             }
 
             <img class="wave" src={`/assets/img/landing/wave-${wave}.svg`}/>

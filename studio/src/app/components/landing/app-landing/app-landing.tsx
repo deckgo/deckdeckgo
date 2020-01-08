@@ -9,11 +9,19 @@ export class AppLanding {
 
     @Element() el: HTMLElement;
 
+    private scrollToAudience() {
+        const audienceSection: HTMLElement = this.el.querySelector('app-landing-content div.audience');
+
+        if (audienceSection) {
+            audienceSection.scrollIntoView({behavior: 'smooth'});
+        }
+    }
+
     render() {
 
         return <Host>
             <section class="header">
-                <app-landing-deck></app-landing-deck>
+                <app-landing-deck onLearnMore={() => this.scrollToAudience()}></app-landing-deck>
             </section>
 
             <app-landing-content></app-landing-content>
