@@ -43,9 +43,14 @@ app-footer {
 
   div.footer-landing {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 8px;
+    grid-template-columns: auto;
     grid-template-rows: auto;
     justify-items: center;
+
+    @media (max-width: 375px) {
+      grid-template-columns: 50% 50%;
+    }
 
     section {
       width: inherit;
@@ -63,6 +68,11 @@ app-footer {
     div.social {
       grid-column-start: 1;
       grid-column-end: 5;
+
+      @media (max-width: 375px) {
+        grid-column-start: 1;
+        grid-column-end: 3;
+      }
     }
   }
 }

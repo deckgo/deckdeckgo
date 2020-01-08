@@ -1,0 +1,19 @@
+app-landing-footer {
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    section.links {
+      margin-top: 48px;
+      max-width: 768px;
+    }
+
+    @media (max-width: 768px) {
+      section.links {
+        margin-top: 16px;
+      }
+    }
+  }
+}

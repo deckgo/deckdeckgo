@@ -21,7 +21,7 @@ export class AppLandingFooter {
                     </ion-button>
                 </section>
 
-                <section class="ion-padding ion-margin-top">
+                <section class="ion-padding links">
                     <app-footer display="landing"></app-footer>
                 </section>
             </main>
