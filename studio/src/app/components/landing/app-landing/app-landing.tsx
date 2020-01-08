@@ -158,8 +158,8 @@ export class AppLanding {
                     </deckgo-slide-author>
 
                     <deckgo-slide-title>
-                        <h2 slot="title">Interact with your audience with a live poll.</h2>
-                        <h2 slot="content">Interact with your presentation with a remote control.</h2>
+                        <h2 slot="title">Interact with your audience with a <strong>live poll</strong>.</h2>
+                        <h3 slot="content">Interact with your presentation with a remote control.</h3>
 
                         {this.renderSlideBackground('end')}
                     </deckgo-slide-title>
