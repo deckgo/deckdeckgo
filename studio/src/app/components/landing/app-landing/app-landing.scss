@@ -47,15 +47,25 @@ app-landing {
           margin-top: 4px;
         }
 
+        *[slot]:not([slot="background"]) {
+          z-index: 2;
+        }
+
         div[slot="background"] {
           width: calc(100% + 2px);
           height: 100%;
           z-index: 1;
 
-          > img {
+          > img.wave {
             position: absolute;
             bottom: 0;
             left: -1px;
+          }
+
+          deckgo-lazy-img {
+            --deckgo-lazy-img-height: 100%;
+            --deckgo-lazy-img-min-width: 100%;
+            --deckgo-lazy-img-object-fit: cover;
           }
 
           button.action {

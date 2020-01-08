@@ -116,7 +116,6 @@ export class AppLanding {
 
     render() {
 
-        // TODO add slide services (unsplash, gif and youtube)
         // TODO add deep linking with QR code
         // TODO add footer
 
@@ -163,6 +162,13 @@ export class AppLanding {
                         <h2 slot="content">Interact with your presentation with a remote control.</h2>
 
                         {this.renderSlideBackground('end')}
+                    </deckgo-slide-title>
+
+                    <deckgo-slide-title>
+                        <h2 slot="title">Search Unsplash and Tenor GIFs.</h2>
+                        <h3 slot="content">Integrate easily Youtube video.</h3>
+
+                        {this.renderSlideBackground('start', 'https://images.unsplash.com/photo-1516476892398-bdcab4c8dab8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjcyMTQyfQ', 'Photo by Rodrigo Gonçalves on Unsplash')}
                     </deckgo-slide-title>
 
                     <deckgo-slide-title>
@@ -273,7 +279,7 @@ function Example() {
         </div>
     }
 
-    private renderSlideBackground(wave: 'start' | 'end') {
+    private renderSlideBackground(wave: 'start' | 'end', imgSrc?: string, imgAlt?: string) {
         return <div slot="background">
             {
                 !this.deckIsEnd ? <button type="button" class="action next" onClick={() => this.prevNextSlide(true)}><ion-icon src="/assets/icons/ionicons/arrow-forward.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
@@ -283,7 +289,11 @@ function Example() {
                 !this.deckIsBeginning ? <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)}><ion-icon src="/assets/icons/ionicons/arrow-back.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
             }
 
-            <img src={`/assets/img/landing/wave-${wave}.svg`}/>
+            <img class="wave" src={`/assets/img/landing/wave-${wave}.svg`}/>
+
+            {
+                imgSrc && imgAlt ? <deckgo-lazy-img img-src={imgSrc} img-alt={imgAlt}></deckgo-lazy-img> : undefined
+            }
         </div>
     }
 }
