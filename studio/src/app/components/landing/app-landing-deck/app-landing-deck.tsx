@@ -1,5 +1,7 @@
 import {Component, Element, h, State} from '@stencil/core';
 
+import {isMobile} from '@deckdeckgo/utils';
+
 @Component({
     tag: 'app-landing-deck',
     styleUrl: 'app-landing-deck.scss',
@@ -14,6 +16,9 @@ export class AppLandingDeck {
 
     @State()
     private deckIsEnd: boolean = false;
+
+    @State()
+    private deckTransition: 'slide' | 'fade' = isMobile() ? 'fade' : 'slide';
 
     private async updateDeckPosition() {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
@@ -41,7 +46,7 @@ export class AppLandingDeck {
     }
 
     render() {
-        return <deckgo-deck embedded={true}
+        return <deckgo-deck embedded={true} transition={this.deckTransition}
                             onSlideNextDidChange={() => this.updateDeckPosition()}
                             onSlidePrevDidChange={() => this.updateDeckPosition()}>
             <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
