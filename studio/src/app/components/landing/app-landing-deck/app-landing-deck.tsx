@@ -30,10 +30,11 @@ export class AppLandingDeck {
         this.deckIsBeginning = await (deck as any).isBeginning();
         this.deckIsEnd = await (deck as any).isEnd();
 
+        const index: number = await (deck as any).getActiveIndex();
+
         setTimeout(async () => {
-            const index: number = await (deck as any).getActiveIndex();
             this.deckLearnMore = (index === 3);
-        }, 150);
+        }, index === 3 ? 150 : 0);
     }
 
     private async prevNextSlide(next: boolean) {
