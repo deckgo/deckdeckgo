@@ -1,3 +1,23 @@
+@mixin footerColorDark() {
+  section > ion-label {
+    color: black;
+  }
+
+  ion-router-link {
+    color: var(--ion-color-medium);
+
+    &:hover, &.active {
+      color: var(--ion-color-medium);
+    }
+  }
+
+  div.social {
+    ion-icon {
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
 app-footer {
   div.footer-container {
     font-size: var(--font-size-small);
@@ -48,6 +68,8 @@ app-footer {
     grid-template-rows: auto;
     justify-items: center;
 
+    @include footerColorDark();
+
     @media (max-width: 375px) {
       grid-template-columns: 50% 50%;
     }
@@ -80,23 +102,7 @@ app-footer {
 body.dark {
   app-footer {
     div.footer-container {
-      section > ion-label {
-        color: black;
-      }
-
-      ion-router-link {
-        color: var(--ion-color-medium);
-
-        &:hover, &.active {
-          color: var(--ion-color-medium);
-        }
-      }
-
-      div.social {
-        ion-icon {
-          color: var(--ion-color-medium);
-        }
-      }
+      @include footerColorDark();
     }
   }
 }
