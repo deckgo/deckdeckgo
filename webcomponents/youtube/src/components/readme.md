@@ -12,6 +12,7 @@
 | `allowFullscreen` | `allow-fullscreen` |             | `boolean` | `true`      |
 | `frameTitle`      | `frame-title`      |             | `string`  | `undefined` |
 | `height`          | `height`           |             | `number`  | `undefined` |
+| `instant`         | `instant`          |             | `boolean` | `false`     |
 | `src`             | `src`              |             | `string`  | `undefined` |
 | `width`           | `width`            |             | `number`  | `undefined` |
 
