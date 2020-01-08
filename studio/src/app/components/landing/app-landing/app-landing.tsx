@@ -18,21 +18,7 @@ export class AppLanding {
 
             <app-landing-content></app-landing-content>
 
-            <footer>
-                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-remote.svg`} aria-label="Section introducing separator"></deckgo-lazy-img>
-
-                <main>
-                    <section class="ion-padding ion-text-center">
-                        <h3>Start now.</h3>
-
-                        <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="primary">
-                            <ion-label>Write a presentation</ion-label>
-                        </ion-button>
-                    </section>
-                </main>
-
-
-            </footer>
+            <app-landing-footer></app-landing-footer>
         </Host>
     }
 }

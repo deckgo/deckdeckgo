@@ -144,7 +144,9 @@ export namespace Components {
     'editable': boolean;
     'tags': string[];
   }
-  interface AppFooter {}
+  interface AppFooter {
+    'display': 'menu' | 'landing';
+  }
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
@@ -167,6 +169,7 @@ export namespace Components {
   interface AppLanding {}
   interface AppLandingContent {}
   interface AppLandingDeck {}
+  interface AppLandingFooter {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
@@ -527,6 +530,12 @@ declare global {
     new (): HTMLAppLandingDeckElement;
   };
 
+  interface HTMLAppLandingFooterElement extends Components.AppLandingFooter, HTMLStencilElement {}
+  var HTMLAppLandingFooterElement: {
+    prototype: HTMLAppLandingFooterElement;
+    new (): HTMLAppLandingFooterElement;
+  };
+
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
   var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
@@ -800,6 +809,7 @@ declare global {
     'app-landing': HTMLAppLandingElement;
     'app-landing-content': HTMLAppLandingContentElement;
     'app-landing-deck': HTMLAppLandingDeckElement;
+    'app-landing-footer': HTMLAppLandingFooterElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-actions': HTMLAppMoreActionsElement;
@@ -977,7 +987,9 @@ declare namespace LocalJSX {
     'onRemoveTag'?: (event: CustomEvent<string>) => void;
     'tags'?: string[];
   }
-  interface AppFooter {}
+  interface AppFooter {
+    'display'?: 'menu' | 'landing';
+  }
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
@@ -1003,6 +1015,7 @@ declare namespace LocalJSX {
   interface AppLanding {}
   interface AppLandingContent {}
   interface AppLandingDeck {}
+  interface AppLandingFooter {}
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreActions {}
@@ -1146,6 +1159,7 @@ declare namespace LocalJSX {
     'app-landing': AppLanding;
     'app-landing-content': AppLandingContent;
     'app-landing-deck': AppLandingDeck;
+    'app-landing-footer': AppLandingFooter;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-more-actions': AppMoreActions;
@@ -1238,6 +1252,7 @@ declare module "@stencil/core" {
       'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
       'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
       'app-landing-deck': LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;
+      'app-landing-footer': LocalJSX.AppLandingFooter & JSXBase.HTMLAttributes<HTMLAppLandingFooterElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-menu': LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
       'app-more-actions': LocalJSX.AppMoreActions & JSXBase.HTMLAttributes<HTMLAppMoreActionsElement>;
