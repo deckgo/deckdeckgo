@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/youtube",
-  "version": "1.0.0-rc.1-3",
+  "version": "1.0.0-rc.1",
   "description": "A Youtube Web Component player",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
