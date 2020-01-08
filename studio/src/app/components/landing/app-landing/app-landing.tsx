@@ -197,9 +197,9 @@ function Example() {
                     </deckgo-slide-title>
 
                     <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
-                        <h1 slot="title">And many more features.</h1>
+                        <h1 slot="title">And many more features</h1>
                         <div slot="content" style={{'margin-bottom': '48px'}}>
-                            <h3>Start now. Create your slides with DeckDeckGo.</h3>
+                            <h3>Create your slides with DeckDeckGo.</h3>
 
                             <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="light">
                                 <ion-label style={{'text-transform': 'none'}}>Write a presentation</ion-label>
@@ -240,7 +240,7 @@ function Example() {
                     </section>
                 </main>
 
-                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-remote.svg`} aria-label="Section introducing separator"></deckgo-lazy-img>
+                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-audience.svg`} aria-label="Section introducing separator"></deckgo-lazy-img>
             </div>
 
             <div class="remote">
@@ -256,6 +256,22 @@ function Example() {
                     </section>
                 </main>
             </div>
+
+            <footer>
+                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-remote.svg`} aria-label="Section introducing separator"></deckgo-lazy-img>
+
+                <main>
+                    <section class="ion-padding ion-text-center">
+                        <h3>Start now.</h3>
+
+                        <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="primary">
+                            <ion-label>Write a presentation</ion-label>
+                        </ion-button>
+                    </section>
+                </main>
+
+
+            </footer>
         </Host>
     }
 
