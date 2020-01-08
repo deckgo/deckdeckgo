@@ -13,9 +13,10 @@ app-landing-content {
 
       padding-top: 64px;
 
-      iframe {
+      div.video {
         box-shadow: 8px 8px 16px rgba(0, 0, 0, .12);
         border-radius: 8px;
+        overflow: hidden;
       }
 
       @media (max-width: 768px) {

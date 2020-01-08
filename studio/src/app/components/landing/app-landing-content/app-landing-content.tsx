@@ -17,10 +17,20 @@ export class AppLandingContent {
     @State()
     private videoHeight: number | undefined = undefined;
 
+    private observer: IntersectionObserver;
+
     async componentWillLoad() {
         await this.initVideoSize();
 
         this.initWindowResize();
+    }
+
+    async componentDidLoad() {
+        if (window && 'IntersectionObserver' in window) {
+            await this.deferIntersectionObserverLoad();
+        } else {
+            await this.unfortunatelyLoadVideoNow();
+        }
     }
 
     async componentDidUnload() {
@@ -39,16 +49,71 @@ export class AppLandingContent {
         }
     }
 
+    private deferIntersectionObserverLoad(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.observer = new IntersectionObserver(this.onIntersection, {
+                rootMargin: '100px 0px',
+                threshold: 0.25
+            });
+
+            const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-youtube');
+
+            if (elements) {
+                Array.from(elements).forEach((element: HTMLElement) => {
+                    this.observer.observe(element);
+                });
+            }
+
+            resolve();
+        });
+    }
+
+    private onIntersection = async (entries: IntersectionObserverEntry[]) => {
+        if (!entries || entries.length <= 0) {
+            return;
+        }
+
+        await this.handleIntersection(entries);
+    };
+
+    private handleIntersection(entries: IntersectionObserverEntry[]): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            for (const entry of entries) {
+                if (entry.isIntersecting) {
+                    if (this.observer && entry.target) {
+                        await (entry.target as any).lazyLoadContent();
+                        this.observer.unobserve(entry.target);
+                    }
+                }
+            }
+
+            resolve();
+        });
+    }
+
+    private unfortunatelyLoadVideoNow(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-youtube');
+
+            if (elements && elements.length > 0) {
+                Array.from(elements).forEach(async (element: HTMLElement) => {
+                    await (element as any).lazyLoadContent();
+                });
+            }
+
+            resolve();
+        });
+    }
+
     private onWindowResize = async () => {
         await this.initVideoSize();
 
-        const iframes: NodeListOf<HTMLIFrameElement> = this.el.querySelectorAll('iframe');
+        const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-youtube');
 
-        if (iframes && iframes.length > 0) {
-            Array.from(iframes).forEach((iframe: HTMLIFrameElement) => {
-                iframe.width = '' + this.videoWidth;
-                iframe.height = '' + this.videoHeight;
-            });
+        if (elements && elements.length > 0) {
+            for (const element of Array.from(elements)) {
+                await (element as any).updateIFrame(this.videoWidth, this.videoHeight);
+            }
         }
     };
 
@@ -88,7 +153,7 @@ export class AppLandingContent {
             <div class="introducing">
                 <main>
                     <section class="ion-padding">
-                        {this.renderVideo('https://www.youtube.com/embed/Y97mEj9ZYmE')}
+                        {this.renderVideo('https://www.youtube.com/embed/Y97mEj9ZYmE', 'Demo of the editor')}
 
                         <div>
                             <h2>DeckDeckGo is a web open source editor for presentations</h2>
@@ -120,7 +185,7 @@ export class AppLandingContent {
             <div class="remote">
                 <main>
                     <section class="ion-padding">
-                        {this.renderVideo('https://www.youtube.com/embed/PnSNT5WpauE')}
+                        {this.renderVideo('https://www.youtube.com/embed/PnSNT5WpauE', 'Interact with your presentation')}
 
                         <div>
                             <h2>Interact with your presentation</h2>
@@ -133,12 +198,10 @@ export class AppLandingContent {
         </Host>
     }
 
-    private renderVideo(url: string) {
-        if (this.videoHeight === undefined || this.videoWidth === undefined) {
-            return undefined;
-        }
-
-        return <iframe width={this.videoWidth} height={this.videoHeight} src={url} frameborder="0"></iframe>;
+    private renderVideo(url: string, alt: string) {
+        return <div class="video" style={{'width': `${this.videoWidth}px`, 'height': `${this.videoHeight}px`}}>
+            <deckgo-youtube width={this.videoWidth} height={this.videoHeight} src={url} frameTitle={alt}></deckgo-youtube>
+        </div>;
     }
 
     private renderPollDemo() {
