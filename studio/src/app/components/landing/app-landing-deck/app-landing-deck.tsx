@@ -149,7 +149,7 @@ function Example() {
             <img class="wave" src={`/assets/img/landing/wave-${wave}.svg`} role="presentation"/>
 
             {
-                imgSrc && imgAlt ? <deckgo-lazy-img img-src={imgSrc} img-alt={imgAlt}></deckgo-lazy-img> : undefined
+                imgSrc && imgAlt ? <img class="background" data-src={imgSrc} alt={imgAlt}></img> : undefined
             }
         </div>
     }

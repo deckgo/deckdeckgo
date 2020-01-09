@@ -30,10 +30,10 @@ app-landing-deck {
         left: -1px;
       }
 
-      deckgo-lazy-img {
-        --deckgo-lazy-img-height: 100%;
-        --deckgo-lazy-img-min-width: 100%;
-        --deckgo-lazy-img-object-fit: cover;
+      img.background {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
       }
 
       button.action {
