@@ -35,7 +35,7 @@
     "@deckdeckgo/slide-video": "^1.0.0-rc.1-1",
     "@deckdeckgo/slide-youtube": "^1.0.0-rc.3",
     "@deckdeckgo/social": "^1.0.0-rc.1-3",
-    "@deckdeckgo/youtube": "^1.0.0-rc.1",
+    "@deckdeckgo/youtube": "^1.0.0-rc.1-1",
     "@ionic/core": "^4.11.7",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.4"
@@ -47,7 +47,7 @@
     "@stencil/sass": "^1.1.1",
     "@types/glob": "^7.1.1",
     "@types/marked": "^0.7.2",
-    "@types/node": "^13.1.4",
+    "@types/node": "^13.1.5",
     "autoprefixer": "^9.7.3",
     "glob": "^7.1.6",
     "marked": "^0.8.0",
