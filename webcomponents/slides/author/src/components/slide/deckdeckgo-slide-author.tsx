@@ -26,6 +26,9 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @State()
   private mobile: boolean = false;
 
+  @State()
+  private isLazyLoaded: boolean = false;
+
   private lazyLoadAfterUpdate: boolean = false;
 
   componentWillLoad() {
@@ -64,7 +67,13 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return lazyLoadContent(this.el);
+    return new Promise<void>(async (resolve) => {
+      await lazyLoadContent(this.el);
+
+      this.isLazyLoaded = true;
+
+      resolve();
+    });
   }
 
   @Method()
@@ -84,7 +93,7 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
     return <Host class={{'deckgo-slide-container': true}}>
       <div class="deckgo-slide">
         <slot name="title"></slot>
-        <div class={classAuthorStart} style={{'--slide-author-color-start-img-url': `url(${this.imgSrc})`}}>
+        <div class={classAuthorStart} style={{'--slide-author-color-start-img-url': this.isLazyLoaded ? `url(${this.imgSrc})` : undefined}}>
           {this.renderImage()}
         </div>
         <div class={classAuthorEnd}>

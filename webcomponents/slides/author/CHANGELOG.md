@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-2"></a>
+# 1.0.0-rc.3-2 (2020-01-09)
+
+### Fix
+
+* new slide design lazy loading (CSS was evaluating prior lazy loading)
+
 <a name="1.0.0-rc.3-1"></a>
 # 1.0.0-rc.3-1 (2020-01-05)
 
