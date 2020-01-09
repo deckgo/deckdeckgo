@@ -168,7 +168,22 @@ export class DeckdeckgoYoutube {
         resolve('https://www.youtube.com/embed/' + videoId + '?enablejsapi=1');
       } else {
         // Otherwise we try the provided url
-        resolve(this.src);
+
+        if (!this.src) {
+          resolve(this.src);
+          return;
+        }
+
+        // But first, if an embed link, like https://www.youtube.com/embed/PnSNT5WpauE, would be passed, a parameter to enable js should be added otherwise play and pause could not be triggered
+        // Therefore we add enablejsapi if needed in any case
+
+        const url: URL = new URL(this.src);
+
+        if (!url.searchParams.get('enablejsapi')) {
+          url.searchParams.append('enablejsapi', '1');
+        }
+
+        resolve(url.href);
       }
     });
   }
@@ -206,6 +221,8 @@ export class DeckdeckgoYoutube {
         resolve();
         return;
       }
+
+      console.log('here', iframe);
 
       iframe.contentWindow.postMessage(JSON.stringify({
         event: 'command',

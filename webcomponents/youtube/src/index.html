@@ -18,6 +18,8 @@
 
   <div slot="actions">
     <button onclick="loadYoutube()">Load video</button>
+    <button onclick="play()">Play</button>
+    <button onclick="pause()">Pause</button>
   </div>
 
   <deckgo-youtube id="youtube" width="500" height="400" src="https://www.youtube.com/embed/PnSNT5WpauE" frameTitle="Interact with your presentation"></deckgo-youtube>
@@ -27,6 +29,20 @@
           const elem = document.getElementById('youtube');
           if (elem) {
               await elem.lazyLoadContent();
+          }
+      }
+
+      async function play() {
+          const elem = document.getElementById('youtube');
+          if (elem) {
+              await elem.play();
+          }
+      }
+
+      async function pause() {
+          const elem = document.getElementById('youtube');
+          if (elem) {
+              await elem.pause();
           }
       }
     </script>
