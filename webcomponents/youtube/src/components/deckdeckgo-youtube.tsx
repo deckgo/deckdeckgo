@@ -222,8 +222,6 @@ export class DeckdeckgoYoutube {
         return;
       }
 
-      console.log('here', iframe);
-
       iframe.contentWindow.postMessage(JSON.stringify({
         event: 'command',
         func: play ? 'playVideo' : 'pauseVideo',
