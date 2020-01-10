@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
@@ -39,11 +39,6 @@ export class AppColorTextBackground {
     @Event() colorChange: EventEmitter<boolean>;
 
     async componentWillLoad() {
-        await this.initCurrentColors();
-    }
-
-    @Watch('applyToAllDeck')
-    async onApplyToAllDeckChange() {
         await this.initCurrentColors();
     }
 
