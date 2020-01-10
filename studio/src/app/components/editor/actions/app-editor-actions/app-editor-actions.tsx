@@ -390,7 +390,7 @@ export class AppEditorActions {
 
                 <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices"
                                 mode="md">
-                    <ion-icon name="more" md="md-more" ios="md-more"></ion-icon>
+                    <ion-icon src="/assets/icons/ionicons/md-more.svg"></ion-icon>
                     <ion-label>More</ion-label>
                 </ion-tab-button>
             </ion-buttons>

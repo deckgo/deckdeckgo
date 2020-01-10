@@ -21,7 +21,7 @@ export class AppHelpAction {
 
     render() {
         return <ion-tab-button onClick={() => this.openGetHelp()} color="primary" mode="md" class="get-help-action">
-            <ion-icon name="help" md="md-help" ios="md-help"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/md-help.svg"></ion-icon>
             <ion-label>Help</ion-label>
         </ion-tab-button>
     }
