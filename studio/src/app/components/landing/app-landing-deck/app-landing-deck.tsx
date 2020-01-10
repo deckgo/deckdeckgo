@@ -139,11 +139,11 @@ function Example() {
     private renderSlideBackground(wave: 'start' | 'end', imgSrc?: string, imgAlt?: string) {
         return <div slot="background">
             {
-                !this.deckIsEnd ? <button type="button" class="action next" onClick={() => this.prevNextSlide(true)}><ion-icon src="/assets/icons/ionicons/arrow-forward.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
+                !this.deckIsEnd ? <button type="button" class="action next" onClick={() => this.prevNextSlide(true)}><ion-icon src="/assets/icons/ionicons/ios-arrow-forward.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
             }
 
             {
-                !this.deckIsBeginning ? <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)}><ion-icon src="/assets/icons/ionicons/arrow-back.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
+                !this.deckIsBeginning ? <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)}><ion-icon src="/assets/icons/ionicons/ios-arrow-back.svg" aria-label="Next DeckDeckGo feature"></ion-icon></button> : undefined
             }
 
             <img class="wave" src={`/assets/img/landing/wave-${wave}.svg`} role="presentation"/>
