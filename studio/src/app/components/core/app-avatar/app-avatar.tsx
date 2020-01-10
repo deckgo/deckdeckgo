@@ -18,7 +18,7 @@ export class AppAvatar {
             </ion-avatar>
         } else {
             return <ion-avatar>
-                <ion-icon name="person" md="md-person" ios="md-person" aria-label={this.ariaLabel}></ion-icon>
+                <ion-icon src="/assets/icons/ionicons/md-person.svg" aria-label={this.ariaLabel}></ion-icon>
             </ion-avatar>
         }
     }

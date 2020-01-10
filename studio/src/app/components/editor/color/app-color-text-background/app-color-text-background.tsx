@@ -206,7 +206,7 @@ export class AppColorTextBackground {
             </ion-list>,
             <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors}
                           onColorChange={($event: CustomEvent) => this.selectColor($event)} color-rgb={this.color}>
-                <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+                <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>,
             <ion-item class="action-button ion-margin-bottom">
                 <ion-button shape="round" onClick={() => this.resetColor()}
