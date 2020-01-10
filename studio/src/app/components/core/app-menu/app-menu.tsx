@@ -247,7 +247,7 @@ export class AppMenu {
             <ion-item-divider>
                 <ion-label>Presentations</ion-label>
                 <ion-button size="small" slot="end" shape="round" onClick={() => this.navigateEditor()} class="new ion-margin-end">
-                    <ion-icon name="book" slot="start"></ion-icon>
+                    <ion-icon lazy={true} name="book" slot="start"></ion-icon>
                     <ion-label>New</ion-label>
                 </ion-button>
             </ion-item-divider>
@@ -281,7 +281,7 @@ export class AppMenu {
     private renderDashboard() {
         if (Utils.isLoggedIn(this.authUser)) {
             return <ion-item button class="home" href="/dashboard" routerDirection="forward">
-                    <ion-icon name="apps" slot="start"></ion-icon>
+                    <ion-icon lazy={true} name="apps" slot="start"></ion-icon>
                     <ion-label>Dashboard</ion-label>
                 </ion-item>;
         } else {
@@ -292,12 +292,12 @@ export class AppMenu {
     private renderSignInOut() {
         if (Utils.isLoggedIn(this.authUser)) {
             return <ion-item button class="signout" onClick={() => this.signOut()}>
-                <ion-icon name="log-out" slot="start"></ion-icon>
+                <ion-icon lazy={true} name="log-out" slot="start"></ion-icon>
                 <ion-label>Sign out</ion-label>
             </ion-item>;
         } else {
             return <ion-item button onClick={() => this.signIn()}>
-                <ion-icon name="log-in" slot="start"></ion-icon>
+                <ion-icon lazy={true} name="log-in" slot="start"></ion-icon>
                 <ion-label>Sign in</ion-label>
             </ion-item>;
         }
@@ -305,7 +305,7 @@ export class AppMenu {
 
     private renderHome() {
         return <ion-item button class="home" href="/" routerDirection="forward">
-            <ion-icon name="home" slot="start"></ion-icon>
+            <ion-icon lazy={true} name="home" slot="start"></ion-icon>
             <ion-label>Home</ion-label>
         </ion-item>;
     }
@@ -316,14 +316,14 @@ export class AppMenu {
         }
 
         return <ion-item button class="home" href="/discover" routerDirection="forward">
-            <ion-icon name="search" slot="start"></ion-icon>
+            <ion-icon lazy={true} name="search" slot="start"></ion-icon>
             <ion-label>Discover</ion-label>
         </ion-item>;
     }
 
     private renderSettings() {
         return <ion-item button class="home" href="/settings" routerDirection="forward">
-            <ion-icon name="settings" slot="start"></ion-icon>
+            <ion-icon lazy={true} name="settings" slot="start"></ion-icon>
             <ion-label>Settings</ion-label>
         </ion-item>;
     }
@@ -341,7 +341,7 @@ export class AppMenu {
                     const url: string = `/editor/${deck.id}`;
 
                     return <ion-item href={url} routerDirection="root" key={deck.id}>
-                        <ion-icon name="book" slot="start"></ion-icon>
+                        <ion-icon lazy={true} name="book" slot="start"></ion-icon>
                         <ion-label>{deck.data.name}</ion-label>
                     </ion-item>
                 })
@@ -364,7 +364,7 @@ export class AppMenu {
             return (
                 this.skeletons.map((_value: number) => {
                     return <ion-item>
-                        <ion-icon name="book" slot="start"></ion-icon>
+                        <ion-icon lazy={true} name="book" slot="start"></ion-icon>
                         <ion-skeleton-text animated></ion-skeleton-text>
                     </ion-item>
                 })

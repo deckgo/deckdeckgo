@@ -69,7 +69,7 @@ export class DeckdeckgoLazyImg {
   }
 
   private async init() {
-    if ('loading' in HTMLImageElement.prototype) {
+    if ('loading' in HTMLImageElement.prototype && !this.svgSrc) {
       // In this case, loadImmediately apply the attributes but the platform will takes care of lazy loading the images
       await this.loadImmediately();
     } else if (window && 'IntersectionObserver' in window) {
