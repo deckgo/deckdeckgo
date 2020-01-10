@@ -30,7 +30,7 @@ app-footer {
       display: block;
       padding-bottom: 6px;
 
-      color: white;
+      color: black;
       font-weight: bold;
     }
 
@@ -40,10 +40,10 @@ app-footer {
       width: max-content;
       font-weight: 300;
 
-      color: white;
+      color: var(--ion-color-medium);
 
       &:hover, &.active {
-        color: white;
+        color: var(--ion-color-medium);
 
         border-bottom-color: transparent;
       }
@@ -51,7 +51,7 @@ app-footer {
 
     div.social {
       ion-icon {
-        color: white;
+        color: var(--ion-color-medium);
         font-size: 1rem;
 
         &:not(last-of-type) {
@@ -100,9 +100,27 @@ app-footer {
 }
 
 body.dark {
-  app-footer {
-    div.footer-container {
-      @include footerColorDark();
+  ion-menu-toggle {
+    app-footer {
+      div.footer-container {
+        section > ion-label {
+          color: var(--ion-color-dark-contrast);
+        }
+
+        ion-router-link {
+          color: var(--ion-color-dark-contrast);
+
+          &:hover, &.active {
+            color: var(--ion-color-dark-contrast);
+          }
+        }
+
+        div.social {
+          ion-icon {
+            color: var(--ion-color-dark-contrast);
+          }
+        }
+      }
     }
   }
 }

@@ -340,7 +340,7 @@ export class AppMenu {
                 this.filteredDecks.map((deck: Deck) => {
                     const url: string = `/editor/${deck.id}`;
 
-                    return <ion-item href={url} routerDirection="root" key={deck.id}>
+                    return <ion-item href={url} routerDirection="root" key={deck.id} class="deck">
                         <ion-icon lazy={true} name="book" slot="start"></ion-icon>
                         <ion-label>{deck.data.name}</ion-label>
                     </ion-item>

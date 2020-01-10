@@ -1,16 +1,16 @@
 ion-menu {
-  --background: var(--ion-color-primary);
-  --ion-background-color: var(--ion-color-primary);
+  --background: var(--ion-color-light);
+  --ion-background-color: var(--ion-color-light);
 
   --border: 0px;
 
   ion-item-divider {
-    background: var(--ion-color-primary);
+    background: var(--ion-color-light);
+    color: black;
   }
 
   ion-header {
     ion-toolbar {
-      --color: white;
       --border-color: transparent;
     }
   }
@@ -27,7 +27,7 @@ ion-menu {
         --padding-top: 32px;
         --background: transparent;
 
-        --color: white;
+        --color: var(--ion-color-medium);
         font-weight: bold;
 
         &:not(:first-of-type) {
@@ -45,9 +45,17 @@ ion-menu {
         font-size: var(--font-size-small);
         height: inherit;
 
-        --color: white;
-        --background-activated: var(--ion-color-primary);
-        --background-hover: var(--ion-color-primary);
+        &.ion-activatable:not(.deck) {
+          --color: black;
+
+          ion-icon {
+            color: black;
+          }
+        }
+
+        --color: var(--ion-color-medium);
+        --background-activated: var(--ion-color-light);
+        --background-hover: var(--ion-color-light);
 
         ion-label {
           margin-top: 6px;
@@ -55,7 +63,7 @@ ion-menu {
         }
 
         ion-icon {
-          color: white;
+          color: var(--ion-color-medium);
           margin: 8px 8px 8px 0;
         }
 
@@ -66,19 +74,23 @@ ion-menu {
     }
 
     ion-button {
-      --background: white;
-      --background-focused: white;
-      --background-hover: white;
-      --color: var(--ion-color-dark);
-      --color-activated: var(--ion-color-dark);
+      --background: var(--ion-color-primary);
+      --background-focused: var(--ion-color-primary);
+      --background-hover: var(--ion-color-primary);
+      --color: var(--ion-color-primary-contrast);
+      --color-activated: var(--ion-color-primary-contrast);
     }
   }
 }
 
 body.dark {
   ion-menu {
-    --background: white;
-    --ion-background-color: white;
+    --background: var(--ion-color-dark);
+    --ion-background-color: var(--ion-color-dark);
+
+    ion-item-divider {
+      color: var(--ion-color-dark-contrast);
+    }
 
     ion-content {
 
@@ -86,18 +98,26 @@ body.dark {
 
       ion-list {
         ion-item-divider {
-          background: white;
-          --color: black;
+          background: var(--ion-color-dark);
+          --color: var(--ion-color-dark-contrast);
         }
 
         ion-item {
-          --color: var(--ion-color-medium);
+          --color: var(--ion-color-dark-contrast);
 
-          --background-activated: white;
-          --background-hover: white;
+          --background-activated: var(--ion-color-dark);
+          --background-hover: var(--ion-color-dark);
 
           ion-icon {
-            color: var(--ion-color-medium);
+            color: var(--ion-color-dark-contrast);
+          }
+
+          &.ion-activatable:not(.deck) {
+            --color: var(--ion-color-dark-contrast);
+
+            ion-icon {
+              color: var(--ion-color-dark-contrast);
+            }
           }
         }
       }
