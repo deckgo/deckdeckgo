@@ -69,6 +69,8 @@ export class AppEditorToolbar {
 
     @Event() private slideCopy: EventEmitter<HTMLElement>;
 
+    @Event() private elementFocus: EventEmitter<HTMLElement>;
+
     private subscription: Subscription;
     private busyService: BusyService;
 
@@ -775,6 +777,8 @@ export class AppEditorToolbar {
                 await this.attachMoveToolbarOnElement();
 
                 await this.highlightElement(true);
+
+                this.elementFocus.emit(element);
             }
 
             resolve();
@@ -826,7 +830,6 @@ export class AppEditorToolbar {
             resolve();
         });
     }
-
 
     private detachMoveToolbarOnElement(): Promise<void> {
         return new Promise<void>((resolve) => {
