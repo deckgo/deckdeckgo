@@ -409,6 +409,57 @@ export class AppEditor {
         });
     }
 
+    /**
+     * When an element is focused, we check if its related slide index is the current one aka is the element on a previous or next slide.
+     * If these index doesn't match, we move the deck to the new slide.
+     * This could happens in case the user tap "Tab" to switch between elements.
+     * @param $event
+     */
+    private onElementFocus($event: CustomEvent<HTMLElement>): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!$event || !$event.detail) {
+                resolve();
+                return;
+            }
+
+            const selectedElement: HTMLElement = $event.detail;
+
+            if (!selectedElement.nodeName || selectedElement.nodeName.toLowerCase().indexOf('deckgo-slide') >= 0) {
+                resolve();
+                return;
+            }
+
+            const slide: HTMLElement = selectedElement.parentElement;
+
+            if (!slide || !slide.parentNode) {
+                resolve();
+                return;
+            }
+
+            const selectedElementSlideIndex: number = Array.prototype.indexOf.call(slide.parentNode.children, slide);
+
+            if (selectedElementSlideIndex === this.slideIndex) {
+                resolve();
+                return;
+            }
+
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck || !deck.parentElement) {
+                resolve();
+                return;
+            }
+
+            await (deck as any).slideTo(selectedElementSlideIndex);
+
+            // Selecting an element with "Tab" outside of what's displayed in the viewport will cause a scroll on the parent element, <main/>.
+            // This is applied by the browser. Therefore we set it back to the origin, as we takes care of the positioning of the slider.
+            deck.parentElement.scrollTo(0, 0);
+
+            resolve();
+        });
+    }
+
     private deckTouched($event: MouseEvent | TouchEvent): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!$event) {
@@ -602,7 +653,10 @@ export class AppEditor {
                     </deckgo-deck>
                     <deckgo-remote autoConnect={false}></deckgo-remote>
                 </main>
-                <app-editor-toolbar onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}></app-editor-toolbar>
+                <app-editor-toolbar
+                    onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
+                    onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}>
+                </app-editor-toolbar>
             </ion-content>,
             <ion-footer class={this.presenting ? 'idle' : undefined}>
                 <app-editor-actions hideFooterActions={this.hideFooterActions} fullscreen={this.fullscreen}
