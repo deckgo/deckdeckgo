@@ -4,6 +4,7 @@ import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 import {generateDeckScreenshot} from './screenshot/generate-deck-screenshot';
 import {infoDeckPublish} from './info/info-deck-publish';
 import {deleteDeckSlides} from './delete/delete-deck-slides';
+import {cloneDeckSlides} from './clone/clone-deck-slides';
 
 export async function applyWatchDeckUpdate(change: Change<DocumentSnapshot>, context: EventContext) {
     await generateDeckScreenshot(change);
@@ -12,4 +13,8 @@ export async function applyWatchDeckUpdate(change: Change<DocumentSnapshot>, con
 
 export async function applyWatchDeckDelete(snapshot: DocumentSnapshot, context: EventContext) {
     await deleteDeckSlides(snapshot, context);
+}
+
+export async function applyWatchDeckCreate(snapshot: DocumentSnapshot, context: EventContext) {
+    await cloneDeckSlides(snapshot, context);
 }
