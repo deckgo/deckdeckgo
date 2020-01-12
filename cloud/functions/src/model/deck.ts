@@ -25,6 +25,11 @@ export interface DeckAttributes {
     style?: string;
 }
 
+export interface DeckClone {
+    deck_id_from?: string;
+    deck_id_to?: string;
+}
+
 export interface DeckData {
     name: string;
 
@@ -38,6 +43,8 @@ export interface DeckData {
     api_id?: string;
 
     meta?: DeckMeta;
+
+    clone?: DeckClone;
 
     created_at?: firestore.Timestamp;
     updated_at?: firestore.Timestamp;

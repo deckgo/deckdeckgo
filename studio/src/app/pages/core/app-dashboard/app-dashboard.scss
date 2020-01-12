@@ -62,10 +62,23 @@ app-dashboard {
           height: 38vh;
         }
 
-        app-delete-deck-action {
+        app-dashboard-deck-actions {
           position: absolute;
           top: 0;
           right: 0;
+        }
+
+        div.spinner {
+          width: var(--slide-width);
+          height: var(--slide-height);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          ion-label {
+            margin: 8px;
+          }
         }
       }
 
