@@ -1,8 +1,11 @@
+import {firebase} from '@firebase/app';
+import '@firebase/firestore';
+
 import {Deck, DeckData} from '../../../models/data/deck';
 
 import {DeckService} from '../../data/deck/deck.service';
 
-export interface DeckCloneResult {
+export interface DeckDashboardCloneResult {
     from: Deck;
     to: Deck;
 }
@@ -24,8 +27,8 @@ export class DeckDashboardService {
         return DeckDashboardService.instance;
     }
 
-    clone(deck: Deck): Promise<DeckCloneResult> {
-        return new Promise<DeckCloneResult>(async (resolve, reject) => {
+    clone(deck: Deck): Promise<DeckDashboardCloneResult> {
+        return new Promise<DeckDashboardCloneResult>(async (resolve, reject) => {
             try {
                 const clone: Deck = await this.cloneDeck(deck);
 
@@ -64,6 +67,25 @@ export class DeckDashboardService {
             } catch (err) {
                 reject(err);
             }
+        });
+    }
+
+    snapshot(deck: Deck, updateFunction: Function): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!deck && !deck.id) {
+                resolve();
+                return;
+            }
+
+            const firestore: firebase.firestore.Firestore = firebase.firestore();
+            const unsubscribe = firestore.collection('decks').doc(deck.id).onSnapshot((deckSnapshot: firebase.firestore.DocumentSnapshot<DeckData>) => {
+                updateFunction({
+                    id: deckSnapshot.id,
+                    data: deckSnapshot.data()
+                }, unsubscribe);
+            });
+
+            resolve();
         });
     }
 }

@@ -4,7 +4,7 @@ import {loadingController, modalController, OverlayEventDetail} from '@ionic/cor
 import {Deck} from '../../../models/data/deck';
 
 import {DeckService} from '../../../services/data/deck/deck.service';
-import {DeckCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
+import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
 import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class AppDashboardDeckActions {
     private errorService: ErrorService;
 
     @Event() deckDeleted: EventEmitter<string>;
-    @Event() deckCloned: EventEmitter<DeckCloneResult>;
+    @Event() deckCloned: EventEmitter<DeckDashboardCloneResult>;
 
     @State()
     private actionInProgress: boolean = false;
@@ -130,7 +130,7 @@ export class AppDashboardDeckActions {
             await loading.present();
 
             try {
-                const clone: DeckCloneResult = await this.deckDashboardService.clone(this.deck);
+                const clone: DeckDashboardCloneResult = await this.deckDashboardService.clone(this.deck);
 
                 this.deckCloned.emit(clone);
             } catch (err) {

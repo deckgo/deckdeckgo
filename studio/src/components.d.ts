@@ -18,7 +18,7 @@ import {
   Deck,
 } from './app/models/data/deck';
 import {
-  DeckCloneResult,
+  DeckDashboardCloneResult,
 } from './app/services/dashboard/deck/deck-dashboard.service';
 import {
   EditAction,
@@ -914,7 +914,7 @@ declare namespace LocalJSX {
   interface AppDashboard {}
   interface AppDashboardDeckActions {
     'deck'?: Deck;
-    'onDeckCloned'?: (event: CustomEvent<DeckCloneResult>) => void;
+    'onDeckCloned'?: (event: CustomEvent<DeckDashboardCloneResult>) => void;
     'onDeckDeleted'?: (event: CustomEvent<string>) => void;
   }
   interface AppDeckDelete {

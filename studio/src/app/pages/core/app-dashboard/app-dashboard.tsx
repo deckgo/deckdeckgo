@@ -16,7 +16,7 @@ import {DeckService} from '../../../services/data/deck/deck.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {SlideService} from '../../../services/data/slide/slide.service';
 
-import {DeckCloneResult} from '../../../services/dashboard/deck/deck-dashboard.service';
+import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
 
 interface DeckAndFirstSlide {
     deck: Deck;
@@ -46,11 +46,14 @@ export class AppDashboard {
     private deckService: DeckService;
     private slideService: SlideService;
 
+    private deckDashboardService: DeckDashboardService;
+
     constructor() {
         this.authService = AuthService.getInstance();
         this.navService = NavService.getInstance();
         this.deckService = DeckService.getInstance();
         this.slideService = SlideService.getInstance();
+        this.deckDashboardService = DeckDashboardService.getInstance();
     }
 
     componentWillLoad() {
@@ -252,7 +255,7 @@ export class AppDashboard {
                 return;
             }
 
-            const clone: DeckCloneResult = $event.detail;
+            const clone: DeckDashboardCloneResult = $event.detail;
 
             const index: number = await this.findDeckIndex(clone && clone.from ? clone.from.id : undefined);
 
@@ -266,6 +269,9 @@ export class AppDashboard {
             await this.addClonedDeck(clone.to, index);
 
             await this.filterDecks(null);
+
+            await this.deckDashboardService.snapshot(clone.from, this.watchClonedDeck);
+            await this.deckDashboardService.snapshot(clone.to, this.watchClonedDeck);
 
             resolve();
         });
@@ -299,7 +305,6 @@ export class AppDashboard {
             }
 
             this.decks[index] = await this.initDeckAndFirstSlide(deck, deck.data.slides[0]);
-            // We don't rerender this.decks = [...this.decks] because we will do that once when we will add the cloned deck
 
             resolve();
         });
@@ -322,6 +327,33 @@ export class AppDashboard {
             resolve();
         });
     }
+
+    private watchClonedDeck = async (deck: Deck, unsubscribe) => {
+        if (!deck || !deck.data) {
+            return;
+        }
+
+        if (!deck.data.slides || deck.data.slides.length <= 0) {
+            return;
+        }
+
+        // if element still contains cloned data we don't update it
+        if (deck.data.clone !== undefined) {
+            return;
+        }
+
+        const index: number = await this.findDeckIndex(deck.id);
+
+        if (index < 0) {
+            return;
+        }
+
+        this.decks[index] = await this.initDeckAndFirstSlide(deck, deck.data.slides[0]);
+
+        await this.filterDecks(null);
+
+        unsubscribe();
+    };
 
     render() {
         return [
@@ -346,7 +378,9 @@ export class AppDashboard {
         return <main class="ion-padding">
             <h1>Oh, hi! Good to have you.</h1>
             <p class="ion-padding-top">
-                <ion-router-link onClick={() => this.signIn()}>Sign in</ion-router-link> to access to your presentations.</p>
+                <ion-router-link onClick={() => this.signIn()}>Sign in</ion-router-link>
+                to access to your presentations.
+            </p>
         </main>
     }
 
@@ -374,9 +408,9 @@ export class AppDashboard {
     private renderDecksFilter() {
         if (this.filteredDecks.length > 0) {
             return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
-                                onClick={($event) => $event.stopImmediatePropagation()}
-                                onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
-                                class="ion-no-padding ion-margin-top ion-margin-bottom" />
+                                  onClick={($event) => $event.stopImmediatePropagation()}
+                                  onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
+                                  class="ion-no-padding ion-margin-top ion-margin-bottom"/>
         } else {
             return undefined;
         }
@@ -384,14 +418,14 @@ export class AppDashboard {
 
     private renderCreateButton() {
         if (this.filteredDecks.length === 0) {
-            return  <ion-grid>
+            return <ion-grid>
                 <ion-row class="ion-justify-content-center">
                     <ion-column>
-                        <ion-button slot="end" shape="round" fill="outline" 
-                                    onClick={() => this.navigateEditor()} 
+                        <ion-button slot="end" shape="round" fill="outline"
+                                    onClick={() => this.navigateEditor()}
                                     class="ion-margin-top">
                             <ion-label>Start one now 🚀</ion-label>
-                        </ion-button>   
+                        </ion-button>
                     </ion-column>
                 </ion-row>
             </ion-grid>;
@@ -429,7 +463,8 @@ export class AppDashboard {
         if (!deck) {
             return undefined;
         } else {
-            return <deckgo-deck embedded={true} keyboard={false} style={deck.style} onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
+            return <deckgo-deck embedded={true} keyboard={false} style={deck.style}
+                                onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
                 {deck.slide}
                 {deck.background}
             </deckgo-deck>
