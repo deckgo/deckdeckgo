@@ -18,6 +18,9 @@ import {
   Deck,
 } from './app/models/data/deck';
 import {
+  DeckCloneResult,
+} from './app/services/data/deck/deck.service';
+import {
   EditAction,
 } from './app/utils/editor/edit-action';
 import {
@@ -79,6 +82,9 @@ export namespace Components {
   interface AppCustomData {}
   interface AppCustomImages {}
   interface AppDashboard {}
+  interface AppDashboardDeckActions {
+    'deck': Deck;
+  }
   interface AppDeckDelete {
     'deckName': string;
     'published': string;
@@ -90,9 +96,6 @@ export namespace Components {
   }
   interface AppDeckTransition {
     'deckElement': HTMLElement;
-  }
-  interface AppDeleteDeckAction {
-    'deck': Deck;
   }
   interface AppDeveloper {}
   interface AppDiscover {}
@@ -345,6 +348,12 @@ declare global {
     new (): HTMLAppDashboardElement;
   };
 
+  interface HTMLAppDashboardDeckActionsElement extends Components.AppDashboardDeckActions, HTMLStencilElement {}
+  var HTMLAppDashboardDeckActionsElement: {
+    prototype: HTMLAppDashboardDeckActionsElement;
+    new (): HTMLAppDashboardDeckActionsElement;
+  };
+
   interface HTMLAppDeckDeleteElement extends Components.AppDeckDelete, HTMLStencilElement {}
   var HTMLAppDeckDeleteElement: {
     prototype: HTMLAppDeckDeleteElement;
@@ -361,12 +370,6 @@ declare global {
   var HTMLAppDeckTransitionElement: {
     prototype: HTMLAppDeckTransitionElement;
     new (): HTMLAppDeckTransitionElement;
-  };
-
-  interface HTMLAppDeleteDeckActionElement extends Components.AppDeleteDeckAction, HTMLStencilElement {}
-  var HTMLAppDeleteDeckActionElement: {
-    prototype: HTMLAppDeleteDeckActionElement;
-    new (): HTMLAppDeleteDeckActionElement;
   };
 
   interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
@@ -785,10 +788,10 @@ declare global {
     'app-custom-data': HTMLAppCustomDataElement;
     'app-custom-images': HTMLAppCustomImagesElement;
     'app-dashboard': HTMLAppDashboardElement;
+    'app-dashboard-deck-actions': HTMLAppDashboardDeckActionsElement;
     'app-deck-delete': HTMLAppDeckDeleteElement;
     'app-deck-style': HTMLAppDeckStyleElement;
     'app-deck-transition': HTMLAppDeckTransitionElement;
-    'app-delete-deck-action': HTMLAppDeleteDeckActionElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-discover': HTMLAppDiscoverElement;
     'app-edit-slide': HTMLAppEditSlideElement;
@@ -909,6 +912,11 @@ declare namespace LocalJSX {
   interface AppCustomData {}
   interface AppCustomImages {}
   interface AppDashboard {}
+  interface AppDashboardDeckActions {
+    'deck'?: Deck;
+    'onDeckCloned'?: (event: CustomEvent<DeckCloneResult>) => void;
+    'onDeckDeleted'?: (event: CustomEvent<string>) => void;
+  }
   interface AppDeckDelete {
     'deckName'?: string;
     'published'?: string;
@@ -922,10 +930,6 @@ declare namespace LocalJSX {
   interface AppDeckTransition {
     'deckElement'?: HTMLElement;
     'onTransitionChange'?: (event: CustomEvent<void>) => void;
-  }
-  interface AppDeleteDeckAction {
-    'deck'?: Deck;
-    'onDeckDeleted'?: (event: CustomEvent<string>) => void;
   }
   interface AppDeveloper {}
   interface AppDiscover {}
@@ -1138,10 +1142,10 @@ declare namespace LocalJSX {
     'app-custom-data': AppCustomData;
     'app-custom-images': AppCustomImages;
     'app-dashboard': AppDashboard;
+    'app-dashboard-deck-actions': AppDashboardDeckActions;
     'app-deck-delete': AppDeckDelete;
     'app-deck-style': AppDeckStyle;
     'app-deck-transition': AppDeckTransition;
-    'app-delete-deck-action': AppDeleteDeckAction;
     'app-developer': AppDeveloper;
     'app-discover': AppDiscover;
     'app-edit-slide': AppEditSlide;
@@ -1232,10 +1236,10 @@ declare module "@stencil/core" {
       'app-custom-data': LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
       'app-custom-images': LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
       'app-dashboard': LocalJSX.AppDashboard & JSXBase.HTMLAttributes<HTMLAppDashboardElement>;
+      'app-dashboard-deck-actions': LocalJSX.AppDashboardDeckActions & JSXBase.HTMLAttributes<HTMLAppDashboardDeckActionsElement>;
       'app-deck-delete': LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
       'app-deck-style': LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
       'app-deck-transition': LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
-      'app-delete-deck-action': LocalJSX.AppDeleteDeckAction & JSXBase.HTMLAttributes<HTMLAppDeleteDeckActionElement>;
       'app-developer': LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
       'app-discover': LocalJSX.AppDiscover & JSXBase.HTMLAttributes<HTMLAppDiscoverElement>;
       'app-edit-slide': LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;

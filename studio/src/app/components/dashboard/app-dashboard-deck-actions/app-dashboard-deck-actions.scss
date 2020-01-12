@@ -1,3 +1,7 @@
+:host {
+  display: flex;
+}
+
 a {
   cursor: pointer;
   pointer-events: initial;
@@ -25,5 +29,13 @@ a {
   ion-icon {
     font-size: 1.2rem;
     color: var(--ion-color-primary);
+  }
+
+  &.disabled {
+    border: 1px solid var(--ion-color-light);
+
+    ion-icon {
+      color: var(--ion-color-light);
+    }
   }
 }

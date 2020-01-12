@@ -9,7 +9,7 @@ import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
 import {AuthService} from '../../../services/auth/auth.service';
-import {DeckService} from '../../../services/data/deck/deck.service';
+import {DeckCloneResult, DeckService} from '../../../services/data/deck/deck.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {SlideService} from '../../../services/data/slide/slide.service';
@@ -17,7 +17,7 @@ import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils
 
 interface DeckAndFirstSlide {
     deck: Deck;
-    slide: JSX.IntrinsicElements;
+    slide: JSX.IntrinsicElements | undefined;
     style: any;
     background: any;
 }
@@ -71,8 +71,12 @@ export class AppDashboard {
 
             const promises = [];
             decks.forEach((deck: Deck) => {
-                if (deck && deck.data && deck.data.slides && deck.data.slides.length >= 1) {
-                    promises.push(this.initDeckAndFirstSlide(deck, deck.data.slides[0]));
+                if (deck && deck.data) {
+                    if (deck.data.clone && deck.data.clone.deck_id_from) {
+                        promises.push(this.initDeckCloneInProgress(deck));
+                    } else if (deck.data.slides && deck.data.slides.length >= 1) {
+                        promises.push(this.initDeckAndFirstSlide(deck, deck.data.slides[0]));
+                    }
                 }
             });
 
@@ -88,12 +92,7 @@ export class AppDashboard {
                 const slide: Slide = await this.slideService.get(deck.id, slideId);
                 const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
-                let style: any;
-                if (deck.data && deck.data.attributes && deck.data.attributes.style) {
-                    style = await convertStyle(deck.data.attributes.style);
-                } else {
-                    style = undefined;
-                }
+                const style: any = await this.convertStyle(deck);
 
                 const background: any = await ParseBackgroundUtils.convertBackground(deck.data.background, false);
 
@@ -107,6 +106,41 @@ export class AppDashboard {
                 resolve(undefined);
             }
         });
+    }
+
+    private initDeckCloneInProgress(deck: Deck): Promise<DeckAndFirstSlide> {
+        return new Promise<DeckAndFirstSlide>(async (resolve) => {
+            try {
+                const element: JSX.IntrinsicElements = <div class="spinner">
+                    <ion-spinner color="primary"></ion-spinner>
+                    <ion-label>Copy in progress...</ion-label>
+                </div>;
+
+                const style: any = await this.convertStyle(deck);
+
+                const background: any = await ParseBackgroundUtils.convertBackground(deck.data.background, false);
+
+                resolve({
+                    deck: deck,
+                    slide: element,
+                    style: style,
+                    background: background
+                });
+            } catch (err) {
+                resolve(undefined);
+            }
+        });
+    }
+
+    private async convertStyle(deck: Deck): Promise<any> {
+        let style: any;
+        if (deck.data && deck.data.attributes && deck.data.attributes.style) {
+            style = await convertStyle(deck.data.attributes.style);
+        } else {
+            style = undefined;
+        }
+
+        return style;
     }
 
     private filterDecks(value: string): Promise<void> {
@@ -151,9 +185,9 @@ export class AppDashboard {
     }
 
     private blockSlide($event: CustomEvent): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(async (resolve) => {
             if ($event && $event.target) {
-                ($event.target as any).blockSlide(true);
+                await ($event.target as any).blockSlide(true);
             }
 
             resolve();
@@ -162,6 +196,10 @@ export class AppDashboard {
 
     private navigateDeck(deck: DeckAndFirstSlide) {
         if (!deck || !deck.deck || !deck.deck.id || deck.deck.id === undefined || deck.deck.id === '') {
+            return;
+        }
+
+        if (deck && deck.deck && deck.deck.data && deck.deck.data.clone) {
             return;
         }
 
@@ -189,14 +227,7 @@ export class AppDashboard {
 
             const deckId: string = $event.detail;
 
-            if (!this.decks || this.decks.length < 0) {
-                resolve();
-                return;
-            }
-
-            const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
-                return matchDeck.deck && matchDeck.deck.id === deckId
-            });
+            const index: number = await this.findDeckIndex(deckId);
 
             if (index < 0) {
                 resolve();
@@ -206,6 +237,84 @@ export class AppDashboard {
             this.decks.splice(index, 1);
 
             await this.filterDecks(null);
+
+            resolve();
+        });
+    }
+
+    private onClonedDeck($event: CustomEvent): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!$event || !$event.detail || $event.detail === undefined) {
+                resolve();
+                return;
+            }
+
+            const clone: DeckCloneResult = $event.detail;
+
+            const index: number = await this.findDeckIndex(clone && clone.from ? clone.from.id : undefined);
+
+            if (index < 0) {
+                resolve();
+                return;
+            }
+
+            await this.updateClonedDeck(clone.from, index);
+
+            await this.addClonedDeck(clone.to, index);
+
+            await this.filterDecks(null);
+
+            resolve();
+        });
+    }
+
+    private findDeckIndex(id: string): Promise<number> {
+        return new Promise<number>(async (resolve) => {
+            if (!this.decks || this.decks.length < 0) {
+                resolve(-1);
+                return;
+            }
+
+            if (!id || id === undefined || id === '') {
+                resolve(-1);
+                return;
+            }
+
+            const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
+                return matchDeck.deck && matchDeck.deck.id === id
+            });
+
+            resolve(index);
+        });
+    }
+
+    private updateClonedDeck(deck: Deck, index: number): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!deck.data || !deck.data.slides || deck.data.slides.length <= 0) {
+                resolve();
+                return;
+            }
+
+            this.decks[index] = await this.initDeckAndFirstSlide(deck, deck.data.slides[0]);
+            // We don't rerender this.decks = [...this.decks] because we will do that once when we will add the cloned deck
+
+            resolve();
+        });
+    }
+
+    private addClonedDeck(deck: Deck, index: number): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deckAndFirstSlide: DeckAndFirstSlide = await this.initDeckCloneInProgress(deck);
+
+            if (!this.decks || this.decks.length <= 0) {
+                // Well, should not happens
+                this.decks = [deckAndFirstSlide];
+
+                resolve();
+                return;
+            }
+
+            this.decks = [...this.decks.slice(0, index), deckAndFirstSlide, ...this.decks.slice(index)];
 
             resolve();
         });
@@ -304,7 +413,10 @@ export class AppDashboard {
                 return <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(deck)} key={deck.deck.id}>
                     {this.renderDeck(deck)}
 
-                    <app-delete-deck-action deck={deck.deck} onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}></app-delete-deck-action>
+                    <app-dashboard-deck-actions deck={deck.deck}
+                                                onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
+                                                onDeckCloned={($event: CustomEvent) => this.onClonedDeck($event)}>
+                    </app-dashboard-deck-actions>
                 </ion-card>;
             })
         );
