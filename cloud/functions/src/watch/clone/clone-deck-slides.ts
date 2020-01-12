@@ -1,7 +1,6 @@
 import {EventContext} from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
-import {DeckSlides, findSlides} from '../delete/utils/delete-slides-utils';
 import {cloneSlides, updateCloneData} from './utils/clone-slides-utils';
 
 import {DeckData} from '../../model/deck';
@@ -26,16 +25,7 @@ export async function cloneDeckSlides(snap: DocumentSnapshot, context: EventCont
     try {
         const deckIdFrom: string = deck.clone.deck_id_from;
 
-        const deckSlides: DeckSlides | null = await findSlides(deckIdFrom);
-
-        if (!deckSlides) {
-            return;
-        }
-
-        let slideIds: string[] | undefined = undefined;
-        if (deckSlides.slides && deckSlides.slides.length > 0) {
-            slideIds = await cloneSlides(deckIdTo, deckSlides.slides);
-        }
+        let slideIds: string[] | undefined = await cloneSlides(deckIdTo, deckIdFrom);
 
         await updateCloneData(deckIdTo, slideIds);
         await updateCloneData(deckIdFrom);

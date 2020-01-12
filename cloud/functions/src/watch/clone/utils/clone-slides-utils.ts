@@ -1,23 +1,27 @@
 import * as admin from 'firebase-admin';
 
 import {Slide} from '../../../model/slide';
+import {Deck, DeckData} from '../../../model/deck';
 
-export function cloneSlides(deckIdTo: string, slides: Slide[] | null): Promise<string[] | undefined> {
+export function cloneSlides(deckIdTo: string, deckIdFrom: string): Promise<string[] | undefined> {
     return new Promise<string[] | undefined>(async (resolve, reject) => {
         try {
-            if (!slides || slides.length <= 0) {
+            // We have to iterate on the deck.data.slides because it contains the order the slides
+            const deckFrom: Deck = await findDeck(deckIdFrom);
+
+            if (!deckFrom || !deckFrom.data || !deckFrom.data.slides || deckFrom.data.slides.length <= 0) {
                 resolve(undefined);
                 return;
             }
 
             const promises: Promise<string>[] = [];
-            slides.forEach((slide: Slide) => {
-                promises.push(cloneSlide(deckIdTo, slide));
+            deckFrom.data.slides.forEach((slideId: string) => {
+                promises.push(cloneSlide(deckIdTo, deckIdFrom, slideId));
             });
 
             if (promises && promises.length > 0) {
-                const slideIds: string[] = await Promise.all(promises);
-                resolve(slideIds);
+                const newSlideIds: string[] = await Promise.all(promises);
+                resolve(newSlideIds);
                 return;
             }
 
@@ -56,20 +60,73 @@ export function updateCloneData(deckId: string, slidesIds?: string[] | undefined
     });
 }
 
-function cloneSlide(deckIdTo: string, slide: Slide): Promise<string> {
+function cloneSlide(deckIdTo: string, deckIdFrom: string, slideId: string): Promise<string> {
     return new Promise<string>(async (resolve, reject) => {
-        const collectionRef: admin.firestore.CollectionReference = admin.firestore().collection(`/decks/${deckIdTo}/slides/`);
+        try {
+            // Find original slide
+            const slide: Slide = await findSlide(deckIdFrom, slideId);
 
-        const slideData = {...slide.data};
+            // Clone data
+            const slideData = {...slide.data};
 
-        const now: admin.firestore.Timestamp = admin.firestore.Timestamp.now();
-        slideData.created_at = now;
-        slideData.updated_at = now;
+            const now: admin.firestore.Timestamp = admin.firestore.Timestamp.now();
+            slideData.created_at = now;
+            slideData.updated_at = now;
 
-        collectionRef.add(slideData).then(async (doc: admin.firestore.DocumentReference) => {
-            resolve(doc.id);
-        }, (err) => {
+            // Create cloned data
+            const collectionRef: admin.firestore.CollectionReference = admin.firestore().collection(`/decks/${deckIdTo}/slides/`);
+
+            collectionRef.add(slideData).then(async (doc: admin.firestore.DocumentReference) => {
+                resolve(doc.id);
+            }, (err) => {
+                reject(err);
+            });
+        } catch (err) {
             reject(err);
-        });
+        }
     });
+}
+
+function findDeck(deckId: string): Promise<Deck> {
+    return new Promise<Deck>(async (resolve, reject) => {
+        try {
+            const snapshot: admin.firestore.DocumentSnapshot = await admin.firestore().doc(`/decks/${deckId}/`).get();
+
+            if (!snapshot.exists) {
+                reject('Deck not found');
+                return;
+            }
+
+            const deckData: DeckData = snapshot.data() as DeckData;
+
+            resolve({
+                id: snapshot.id,
+                ref: snapshot.ref,
+                data: deckData
+            });
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+function findSlide(deckId: string, slideId: string): Promise<Slide> {
+    return new Promise<Slide>(async (resolve, reject) => {
+        try {
+            const snapshot: admin.firestore.DocumentSnapshot = await admin.firestore().doc(`/decks/${deckId}/slides/${slideId}`).get();
+
+            if (!snapshot.exists) {
+                reject('Deck not found');
+                return;
+            }
+
+            resolve({
+                id: snapshot.id,
+                ref: snapshot.ref,
+                data: snapshot.data()
+            });
+        } catch (err) {
+            reject(err);
+        }
+    })
 }
