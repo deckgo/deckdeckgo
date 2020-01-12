@@ -65,6 +65,9 @@ export class AppDashboard {
             const userDecks: Deck[] = await this.deckService.getUserDecks(authUser.uid);
             this.decks = await this.fetchFirstSlides(userDecks);
             await this.filterDecks(null);
+
+            // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
+            await this.initWatchForClonedDecks();
         });
     }
 
@@ -89,6 +92,32 @@ export class AppDashboard {
             const results: DeckAndFirstSlide[] = await Promise.all(promises);
 
             resolve(results);
+        });
+    }
+
+    private initWatchForClonedDecks(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.decks || this.decks.length <= 0) {
+                resolve();
+                return;
+            }
+
+            const promises: Promise<void>[] = [];
+
+            this.decks.forEach((deck: DeckAndFirstSlide) => {
+                if (deck && deck.deck && deck.deck.data && deck.deck.data.clone !== undefined) {
+                    promises.push(this.deckDashboardService.snapshot(deck.deck, this.watchClonedDeck));
+                }
+            });
+
+            if (promises.length <= 0) {
+                resolve();
+                return;
+            }
+
+            await Promise.all(promises);
+
+            resolve();
         });
     }
 
