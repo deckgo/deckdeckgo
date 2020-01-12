@@ -3,11 +3,6 @@ import '@firebase/firestore';
 
 import {Deck, DeckData} from '../../../models/data/deck';
 
-export interface DeckCloneResult {
-    from: Deck;
-    to: Deck;
-}
-
 export class DeckService {
 
     private static instance: DeckService;
@@ -144,56 +139,6 @@ export class DeckService {
             } catch (err) {
                 reject(err);
             }
-        });
-    }
-
-    clone(deck: Deck): Promise<DeckCloneResult> {
-        return new Promise<DeckCloneResult>(async (resolve, reject) => {
-            try {
-                const clone: Deck = await this.cloneDeck(deck);
-
-                deck.data.clone = {
-                    deck_id_to: clone.id
-                };
-
-                const updatedDeck: Deck = await this.update(deck);
-
-                resolve({
-                    from: updatedDeck,
-                    to: clone
-                })
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    private cloneDeck(deck: Deck): Promise<Deck> {
-        return new Promise<Deck>(async (resolve, reject) => {
-            let clone: DeckData = {...deck.data};
-
-            clone.clone = {
-                deck_id_from: deck.id
-            };
-
-            delete clone['slides'];
-            delete clone['api_id'];
-            delete clone['meta'];
-
-            const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-            clone.created_at = now;
-            clone.updated_at = now;
-
-            const firestore: firebase.firestore.Firestore = firebase.firestore();
-
-            firestore.collection('decks').add(clone).then(async (doc: firebase.firestore.DocumentReference) => {
-                resolve({
-                    id: doc.id,
-                    data: clone
-                });
-            }, (err) => {
-                reject(err);
-            });
         });
     }
 }

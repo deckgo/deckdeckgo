@@ -8,12 +8,15 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {DeckCloneResult, DeckService} from '../../../services/data/deck/deck.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
-import {SlideService} from '../../../services/data/slide/slide.service';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
+import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
+
+import {AuthService} from '../../../services/auth/auth.service';
+import {DeckService} from '../../../services/data/deck/deck.service';
+import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {SlideService} from '../../../services/data/slide/slide.service';
+
+import {DeckCloneResult} from '../../../services/dashboard/deck/deck-dashboard.service';
 
 interface DeckAndFirstSlide {
     deck: Deck;

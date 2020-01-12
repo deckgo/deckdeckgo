@@ -19,7 +19,7 @@ import {
 } from './app/models/data/deck';
 import {
   DeckCloneResult,
-} from './app/services/data/deck/deck.service';
+} from './app/services/dashboard/deck/deck-dashboard.service';
 import {
   EditAction,
 } from './app/utils/editor/edit-action';
