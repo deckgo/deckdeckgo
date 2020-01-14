@@ -47,6 +47,25 @@ div.images-container {
           }
         }
       }
+
+      div.folder-container {
+        color: var(--ion-color-tertiary);
+
+        deckgo-lazy-img {
+          --deckgo-lazy-img-height: 200px;
+        }
+
+        ion-label.photo-credits {
+          top: 50%;
+          left: 50%;
+          bottom: unset;
+          transform: translate(-50%, -50%);
+          background: transparent;
+          font-size: var(--font-size-small);
+          text-align: center;
+          margin: 8px 0 0;
+        }
+      }
     }
   }
 }

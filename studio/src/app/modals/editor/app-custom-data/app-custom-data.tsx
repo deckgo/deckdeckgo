@@ -75,9 +75,9 @@ export class AppCustomData {
         });
     }
 
-    private search(): Promise<void> {
+    private search(path: string = 'data'): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, 'data');
+            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, path);
 
             if (!list) {
                 resolve();
@@ -143,10 +143,19 @@ export class AppCustomData {
 
             if (filePicker.files && filePicker.files.length > 0) {
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                    if (deck && deck.id) {
+                    if (deck && deck.data && deck.id) {
                         this.uploading = true;
 
-                        const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], `data/${deck.id}`, 10485760, false);
+                        const uploadInfo: StorageUploadInfo = {
+                            maxSize: 10485760,
+                            privateFile: true,
+                            folder: `data/${deck.id}`,
+                            folderMeta: {
+                                deckName: deck.data.name
+                            }
+                        };
+
+                        const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], uploadInfo);
 
                         if (storageFile) {
                             await this.selectAndClose(storageFile);
@@ -159,6 +168,19 @@ export class AppCustomData {
 
             resolve();
         });
+    }
+
+    private async searchFolder(folder: StorageFolder) {
+        if (this.uploading) {
+            return;
+        }
+
+        if (!folder.folder) {
+            return;
+        }
+
+        await this.emptyFiles();
+        await this.search(`data/${folder.name}`);
     }
 
     render() {
@@ -208,9 +230,20 @@ export class AppCustomData {
     private renderFiles() {
         return (
             this.files.map((storageFile: StorageFile) => {
-                return this.renderFile(storageFile);
+                if (storageFile.hasOwnProperty('folder') && (storageFile as StorageFolder).folder) {
+                    return this.renderFolder(storageFile as StorageFolder);
+                } else {
+                    return this.renderFile(storageFile);
+                }
             })
         );
+    }
+
+    private renderFolder(storageFile: StorageFolder) {
+        return <div class="ion-padding data folder" custom-tappable onClick={() => this.searchFolder(storageFile)}>
+            <ion-icon src="/assets/icons/ionicons/md-folder.svg"></ion-icon>
+            <ion-label>{storageFile.displayName}</ion-label>
+        </div>
     }
 
     private renderFile(storageFile: StorageFile) {

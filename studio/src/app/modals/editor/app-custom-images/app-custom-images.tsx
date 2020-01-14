@@ -87,9 +87,9 @@ export class AppCustomImages {
         });
     }
 
-    private search(): Promise<void> {
+    private search(path: string = 'images'): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, 'images');
+            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, path);
 
             if (!list) {
                 resolve();
@@ -161,10 +161,19 @@ export class AppCustomImages {
 
             if (filePicker.files && filePicker.files.length > 0) {
                 this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                    if (deck && deck.id) {
+                    if (deck && deck.data && deck.id) {
                         this.uploading = true;
 
-                        const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], `images/${deck.id}`, 10485760, true);
+                        const uploadInfo: StorageUploadInfo = {
+                            maxSize: 10485760,
+                            privateFile: true,
+                            folder: `images/${deck.id}`,
+                            folderMeta: {
+                                deckName: deck.data.name
+                            }
+                        };
+
+                        const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], uploadInfo);
 
                         if (storageFile) {
                             await this.selectAndClose(storageFile);
@@ -177,6 +186,25 @@ export class AppCustomImages {
 
             resolve();
         });
+    }
+
+    private async searchFolder($event: CustomEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        if (this.uploading) {
+            return;
+        }
+
+        const folder: StorageFolder = $event.detail;
+
+        if (!folder.folder) {
+            return;
+        }
+
+        await this.emptyImages();
+        await this.search(`images/${folder.name}`);
     }
 
     render() {
@@ -193,7 +221,8 @@ export class AppCustomImages {
             </ion-header>,
             <ion-content class="ion-padding">
                 <app-image-columns imagesOdd={this.imagesOdd} imagesEven={this.imagesEven}
-                                  onSelectImage={($event: CustomEvent) => this.selectImage($event)}>
+                                  onSelectImage={($event: CustomEvent) => this.selectImage($event)}
+                                  onSelectFolder={($event: CustomEvent) => this.searchFolder($event)}>
                 </app-image-columns>
 
                 {this.renderImagesPlaceHolder()}
