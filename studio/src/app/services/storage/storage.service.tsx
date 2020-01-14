@@ -31,7 +31,7 @@ export class StorageService {
         return StorageService.instance;
     }
 
-    uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile> {
+    uploadFile(data: File, folder: string, maxSize: number, privateFile: boolean): Promise<StorageFile> {
         return new Promise<StorageFile>((resolve) => {
             try {
                 this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
@@ -55,7 +55,9 @@ export class StorageService {
 
                     const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${folder}/${data.name}`);
 
-                    await ref.put(data);
+                    const metaData: firebase.storage.UploadMetadata = privateFile ? {customMetadata: {public: 'false'}} : undefined;
+
+                    await ref.put(data, metaData);
 
                     resolve({
                         downloadUrl: await ref.getDownloadURL(),

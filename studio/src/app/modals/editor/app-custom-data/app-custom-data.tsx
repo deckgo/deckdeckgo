@@ -1,10 +1,11 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {alertController} from '@ionic/core';
+import {take} from 'rxjs/operators';
 
-import {get, set} from 'idb-keyval';
+import {Deck} from '../../../models/data/deck';
 
 import {StorageService} from '../../../services/storage/storage.service';
+import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
     tag: 'app-custom-data',
@@ -15,6 +16,7 @@ export class AppCustomData {
     @Element() el: HTMLElement;
 
     private storageService: StorageService;
+    private deckEditorService: DeckEditorService;
 
     @State()
     private files: StorageFile[];
@@ -27,15 +29,9 @@ export class AppCustomData {
     @State()
     private uploading: boolean = false;
 
-    @State()
-    private infoDisplayedOnce: boolean = false;
-
     constructor() {
         this.storageService = StorageService.getInstance();
-    }
-
-    async componentWillLoad() {
-        this.infoDisplayedOnce = await get<boolean>('deckdeckgo_display_custom_data');
+        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentDidLoad() {
@@ -146,47 +142,23 @@ export class AppCustomData {
             }
 
             if (filePicker.files && filePicker.files.length > 0) {
-                this.uploading = true;
+                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+                    if (deck && deck.id) {
+                        this.uploading = true;
 
-                const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'data', 10485760);
+                        const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], `data/${deck.id}`, 10485760, false);
 
-                if (storageFile) {
-                    await this.selectAndClose(storageFile);
-                }
+                        if (storageFile) {
+                            await this.selectAndClose(storageFile);
+                        }
 
-                this.uploading = false;
+                        this.uploading = false;
+                    }
+                });
             }
 
             resolve();
         });
-    }
-
-    private async openCustomDataPublicInfo() {
-        const alert: HTMLIonAlertElement = await alertController.create({
-            header: 'About your data',
-            message: 'Please note that currently, all the data you would upload, will be publicly visible on the internet.',
-            cssClass: 'custom-info',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    handler: () => {
-                        this.uploading = false;
-                    }
-                }, {
-                    text: 'Ok',
-                    handler: async () => {
-                        await set('deckdeckgo_display_custom_data', true);
-
-                        this.infoDisplayedOnce = true;
-
-                        await this.openFilePicker();
-                    }
-                }
-            ]
-        });
-
-        return await alert.present();
     }
 
     render() {
@@ -259,7 +231,7 @@ export class AppCustomData {
 
     private renderToolbarAction() {
         if (!this.uploading) {
-            return <ion-button onClick={() => (this.infoDisplayedOnce ? this.openFilePicker() : this.openCustomDataPublicInfo())} shape="round" color="tertiary">
+            return <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
                 <ion-icon name="cloud-upload" slot="start"></ion-icon>
                 <ion-label>Upload a new data</ion-label>
             </ion-button>
