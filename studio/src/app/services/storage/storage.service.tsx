@@ -8,6 +8,7 @@ import {AuthUser} from '../../models/auth/auth.user';
 
 import {ErrorService} from '../core/error/error.service';
 import {AuthService} from '../auth/auth.service';
+import {Resources} from '../../utils/core/resources';
 
 export class StorageService {
 
@@ -88,7 +89,7 @@ export class StorageService {
                     return;
                 }
 
-                const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${info.folder}/meta.json`);
+                const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${info.folder}/${Resources.Constants.STORAGE.FOLDER.META_FILENAME}`);
 
                 const blob: Blob = new Blob([JSON.stringify(info.folderMeta)], {type: 'application/json'});
 
@@ -187,7 +188,9 @@ export class StorageService {
 
     private toStorageFilesItems(storageFilesRefs: Reference[]): Promise<StorageFile[] | undefined> {
         return new Promise<StorageFile[] | undefined>(async (resolve) => {
-            const storageFiles: Promise<StorageFile>[] = storageFilesRefs.map(this.toStorageFile);
+            const storageFiles: Promise<StorageFile>[] = storageFilesRefs.filter((ref: Reference) => {
+                return ref.name !== Resources.Constants.STORAGE.FOLDER.META_FILENAME;
+            }).map(this.toStorageFile);
             const items: StorageFile[] = await Promise.all(storageFiles);
 
             resolve(items);
@@ -206,7 +209,7 @@ export class StorageService {
 
     private toStorageFolder(ref: Reference): Promise<StorageFolder> {
         return new Promise<StorageFolder>(async (resolve) => {
-            const refMeta = firebase.storage().ref(`${ref.fullPath}/meta.json`);
+            const refMeta = firebase.storage().ref(`${ref.fullPath}/${Resources.Constants.STORAGE.FOLDER.META_FILENAME}`);
             const metaData = await refMeta.getMetadata();
 
             resolve({
