@@ -29,6 +29,9 @@ export class AppCustomData {
     @State()
     private uploading: boolean = false;
 
+    @State()
+    private searchFolder: string;
+
     constructor() {
         this.storageService = StorageService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
@@ -37,7 +40,9 @@ export class AppCustomData {
     async componentDidLoad() {
         history.pushState({modal: true}, null);
 
-        await this.search();
+        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+            await this.search(deck ? `data/${deck.id}` : 'data');
+        });
     }
 
     @Listen('popstate', { target: 'window' })
@@ -75,9 +80,11 @@ export class AppCustomData {
         });
     }
 
-    private search(path: string = 'data'): Promise<void> {
+    private search(path: string): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, path);
+
+            this.searchFolder = path;
 
             if (!list) {
                 resolve();
@@ -113,7 +120,7 @@ export class AppCustomData {
 
     private searchNext(e: CustomEvent<void>): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            await this.search();
+            await this.search(this.searchFolder);
 
             (e.target as HTMLIonInfiniteScrollElement).complete();
 
@@ -170,7 +177,7 @@ export class AppCustomData {
         });
     }
 
-    private async searchFolder(folder: StorageFolder) {
+    private async switchFolder(folder: StorageFolder) {
         if (this.uploading) {
             return;
         }
@@ -181,6 +188,15 @@ export class AppCustomData {
 
         await this.emptyFiles();
         await this.search(`data/${folder.name}`);
+    }
+
+    private async switchRootFolder() {
+        if (this.uploading) {
+            return;
+        }
+
+        await this.emptyFiles();
+        await this.search(`data`);
     }
 
     render() {
@@ -240,7 +256,7 @@ export class AppCustomData {
     }
 
     private renderFolder(storageFile: StorageFolder) {
-        return <div class="ion-padding data folder" custom-tappable onClick={() => this.searchFolder(storageFile)}>
+        return <div class="ion-padding data folder" custom-tappable onClick={() => this.switchFolder(storageFile)}>
             <ion-icon src="/assets/icons/ionicons/md-folder.svg"></ion-icon>
             <ion-label>{storageFile.displayName}</ion-label>
         </div>
@@ -264,16 +280,30 @@ export class AppCustomData {
 
     private renderToolbarAction() {
         if (!this.uploading) {
-            return <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
-                <ion-icon name="cloud-upload" slot="start"></ion-icon>
-                <ion-label>Upload a new data</ion-label>
-            </ion-button>
+            return [
+                <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
+                    <ion-icon name="cloud-upload" slot="start"></ion-icon>
+                    <ion-label>Upload a new data</ion-label>
+                </ion-button>,
+                this.renderNavigateRoot()
+            ]
         } else {
             return [
                 <ion-spinner color="tertiary"></ion-spinner>,
                 <ion-label class="ion-padding-start">Upload in progress</ion-label>
             ];
         }
+    }
+
+    private renderNavigateRoot() {
+        if (this.searchFolder === 'data') {
+            return undefined;
+        }
+
+        return <ion-button onClick={() => this.switchRootFolder()} shape="round" color="medium" fill="outline">
+            <ion-icon name="search" slot="start"></ion-icon>
+            <ion-label>Your presentations</ion-label>
+        </ion-button>;
     }
 
 }

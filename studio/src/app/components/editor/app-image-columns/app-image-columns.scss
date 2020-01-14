@@ -60,9 +60,14 @@ div.images-container {
           left: 50%;
           bottom: unset;
           transform: translate(-50%, -50%);
+
+          max-height: 56px;
+          overflow: hidden;
+
           background: transparent;
           font-size: var(--font-size-small);
           text-align: center;
+
           margin: 8px 0 0;
         }
       }

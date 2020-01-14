@@ -34,6 +34,9 @@ export class AppCustomImages {
     @State()
     private uploading: boolean = false;
 
+    @State()
+    private searchFolder: string;
+
     private deckEditorService: DeckEditorService;
 
     constructor() {
@@ -45,10 +48,12 @@ export class AppCustomImages {
     async componentDidLoad() {
         history.pushState({modal: true}, null);
 
-        await this.search();
+        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
+            await this.search(deck ? `images/${deck.id}` : 'images');
+        });
     }
 
-    @Listen('popstate', { target: 'window' })
+    @Listen('popstate', {target: 'window'})
     async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }
@@ -87,9 +92,11 @@ export class AppCustomImages {
         });
     }
 
-    private search(path: string = 'images'): Promise<void> {
+    private search(path: string): Promise<void> {
         return new Promise<void>(async (resolve) => {
             const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, path);
+
+            this.searchFolder = path;
 
             if (!list) {
                 resolve();
@@ -131,7 +138,7 @@ export class AppCustomImages {
 
     private searchNext(e: CustomEvent<void>): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            await this.search();
+            await this.search(this.searchFolder);
 
             (e.target as HTMLIonInfiniteScrollElement).complete();
 
@@ -188,7 +195,7 @@ export class AppCustomImages {
         });
     }
 
-    private async searchFolder($event: CustomEvent) {
+    private async switchFolder($event: CustomEvent) {
         if (!$event || !$event.detail) {
             return;
         }
@@ -207,6 +214,15 @@ export class AppCustomImages {
         await this.search(`images/${folder.name}`);
     }
 
+    private async switchRootFolder() {
+        if (this.uploading) {
+            return;
+        }
+
+        await this.emptyImages();
+        await this.search(`images`);
+    }
+
     render() {
         return [
             <ion-header>
@@ -221,8 +237,8 @@ export class AppCustomImages {
             </ion-header>,
             <ion-content class="ion-padding">
                 <app-image-columns imagesOdd={this.imagesOdd} imagesEven={this.imagesEven}
-                                  onSelectImage={($event: CustomEvent) => this.selectImage($event)}
-                                  onSelectFolder={($event: CustomEvent) => this.searchFolder($event)}>
+                                   onSelectImage={($event: CustomEvent) => this.selectImage($event)}
+                                   onSelectFolder={($event: CustomEvent) => this.switchFolder($event)}>
                 </app-image-columns>
 
                 {this.renderImagesPlaceHolder()}
@@ -246,6 +262,7 @@ export class AppCustomImages {
         ];
     }
 
+
     private renderImagesPlaceHolder() {
         if ((!this.imagesOdd || this.imagesOdd.length <= 0) && (!this.imagesEven || this.imagesEven.length <= 0)) {
             return <div class="placeholder">
@@ -261,16 +278,30 @@ export class AppCustomImages {
 
     private renderToolbarAction() {
         if (!this.uploading) {
-            return <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
-                <ion-icon name="cloud-upload" slot="start"></ion-icon>
-                <ion-label>Upload a new image</ion-label>
-            </ion-button>
+            return [
+                <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
+                    <ion-icon name="cloud-upload" slot="start"></ion-icon>
+                    <ion-label>Upload a new image</ion-label>
+                </ion-button>,
+                this.renderNavigateRoot()
+            ]
         } else {
             return [
                 <ion-spinner color="tertiary"></ion-spinner>,
                 <ion-label class="ion-padding-start">Upload in progress</ion-label>
             ];
         }
+    }
+
+    private renderNavigateRoot() {
+        if (this.searchFolder === 'images') {
+            return undefined;
+        }
+
+        return <ion-button onClick={() => this.switchRootFolder()} shape="round" color="medium" fill="outline">
+            <ion-icon name="search" slot="start"></ion-icon>
+            <ion-label>Your presentations</ion-label>
+        </ion-button>;
     }
 
 }
