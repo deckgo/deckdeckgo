@@ -8,7 +8,7 @@ import {applyWatchDeckCreate, applyWatchDeckDelete, applyWatchDeckUpdate} from '
 import {applyWatchUserCreate, applyWatchUserDelete, applyWatchUserUpdate} from './watch/watch-user';
 
 const runtimeOpts = {
-    timeoutSeconds: 120,
+    timeoutSeconds: 300,
     memory: <const> '1GB'
 };
 
