@@ -82,13 +82,17 @@ export class ImageEventsHandler {
 
                         if (!rawResponse || !rawResponse.ok) {
                             console.error(`Image ${detail.imgSrc} can not be fetched.`);
+                            resolve();
                             return;
                         }
 
                         const blob: Blob = await rawResponse.blob();
                         detail.imgElement.src = URL.createObjectURL(blob);
+
+                        resolve();
                     } catch (err) {
                         console.error(err);
+                        resolve();
                     }
                 }
             });
