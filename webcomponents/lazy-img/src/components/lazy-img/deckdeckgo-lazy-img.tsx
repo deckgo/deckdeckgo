@@ -2,6 +2,8 @@ import {Component, Element, Event, EventEmitter, Method, Prop, Watch, h, State, 
 
 import {getSvgContent} from '../utils/request';
 
+import {DeckDeckGoCustomLoad} from '../interfaces/custom-load';
+
 @Component({
   tag: 'deckgo-lazy-img',
   styleUrl: 'deckdeckgo-lazy-img.scss',
@@ -49,6 +51,9 @@ export class DeckdeckgoLazyImg {
   @Prop()
   imgHeight: number;
 
+  @Prop()
+  customLoader: boolean = false;
+
   @State()
   private svgContent: string;
 
@@ -56,6 +61,9 @@ export class DeckdeckgoLazyImg {
 
   @State()
   private imgLoaded: boolean = false;
+
+  @Event()
+  private customLoad: EventEmitter<DeckDeckGoCustomLoad>;
 
   async componentDidLoad() {
     await this.init();
@@ -144,6 +152,17 @@ export class DeckdeckgoLazyImg {
       const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
 
       if (!img) {
+        resolve();
+        return;
+      }
+
+      if (this.customLoader) {
+        this.customLoad.emit({
+          imgElement: img,
+          imgSrc: this.imgSrc,
+          imgSrcSet: this.imgSrcSet
+        });
+
         resolve();
         return;
       }
