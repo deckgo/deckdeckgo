@@ -17,6 +17,7 @@ An `<img/>` tag is per default use to display the image but optionally it could 
   - [Attributes](#app-components-lazy-img-attributes)
   - [Theming](#app-components-lazy-img-theming)
   - [Methods](#app-components-lazy-img-methods)
+  - [Events](#app-components-lazy-img-events)
 - [Fallbacks]((#app-components-lazy-img-fallbacks)
 - [Trying it out](#app-components-lazy-img-trying-it-out)
 
@@ -91,7 +92,8 @@ This component offers the following options which could be set using attributes:
 | aria-label | string |  | If you are using the above SVG option, provide the accessibility information using this attribute |
 | observer-root-margin | string | 100px 0px | A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
 | observer-threshold | number or number[] |  | Either a single number or an array of numbers between 0.0 and 1.0, specifying a ratio of intersection area to total bounding box area for the observed target. [More info.](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) |
-| intrinsicsize | string | An intrinsicsize for the native lazy-loading (see [Native lazy-loading for the web](https://web.dev/native-lazy-loading))
+| intrinsicsize | string | An intrinsicsize for the native lazy-loading (see [Native lazy-loading for the web](https://web.dev/native-lazy-loading)) |
+| custom-loader | boolean | In case you would like to take care by yourself to apply the load of the image. If turn to `true` then the component will emit an event `customLoad` when the image intersect the viewport instead of displaying it (doesn't apply for `svg` but only for `img-src` and `img-src-set`) |
 
 ### Theming
 
@@ -124,6 +126,16 @@ This component also export an async method `lazyLoad()` in case you would like t
 const element = document.querySelector('deckgo-lazy-img');
 await element.lazyLoad();
 ```
+
+### Events
+
+The `<deckgo-lazy-img/>` will bubble the following events:
+
+| Event         | Description | Type                                  |
+| ------------- | ----------- | ------------------------------------- |
+| `customLoad` |  Emitted if component property `custom-loader` is set to `true` and if an image (`img-src` or `img-src-set`) as to be loaded. | `CustomEvent<DeckDeckGoCustomLoad>` |
+
+Where `DeckDeckGoCustomLoad` contains the shadowed image element and both information `img-src` and `img-src-set`.
 
 ### Fallbacks
 
