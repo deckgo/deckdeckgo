@@ -1,7 +1,7 @@
 interface StorageFile {
     fullPath: string;
     name: string;
-    downloadUrl?: string;
+    fullUrl?: string;
 }
 
 interface StorageFolder extends StorageFile {

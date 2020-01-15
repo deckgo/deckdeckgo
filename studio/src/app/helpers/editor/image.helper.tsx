@@ -145,15 +145,17 @@ export class ImageHelper {
                 (img as any).imgSrc = gif.media[0].gif.url;
                 (img as any).imgAlt = gif.title;
             }
-        } else if (image.hasOwnProperty('downloadUrl')) {
+        } else if (image.hasOwnProperty('fullUrl')) {
             // Storage image aka image uploaded by the user
             const storageFile: StorageFile = image as StorageFile;
 
-            (img as any).imgSrc = storageFile.downloadUrl;
-            (img as any).imgAlt = storageFile.downloadUrl;
+            (img as any).imgSrc = storageFile.fullUrl;
+            (img as any).imgAlt = storageFile.fullUrl;
         }
 
         img.setAttribute('contentEditable', 'false');
+
+        (img as any).customLoader = true;
 
         return img;
     }
@@ -246,7 +248,7 @@ export class ImageHelper {
 
             this.busyService.deckBusy(true);
 
-            selectedElement.setAttribute(attribute, image.downloadUrl);
+            selectedElement.setAttribute(attribute, image.fullUrl);
 
             this.didChange.emit(selectedElement);
 

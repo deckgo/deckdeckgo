@@ -311,7 +311,7 @@ export class AppHome {
                 const storageFile: StorageFile = await this.storageService.uploadFile(this.profilePicture, uploadInfo);
 
                 if (storageFile) {
-                    this.user.data.photo_url = storageFile.downloadUrl;
+                    this.user.data.photo_url = storageFile.fullUrl;
                 }
 
                 resolve();

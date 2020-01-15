@@ -210,7 +210,7 @@ export class AppEditorActions {
                 return;
             }
 
-            const url: string = dataFile.downloadUrl;
+            const url: string = dataFile.fullUrl;
 
             if (!url || url === undefined || url === '') {
                 resolve();

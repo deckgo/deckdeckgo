@@ -23,6 +23,7 @@ export class ToggleSlotUtils {
             await this.copyAttributes(selectedElement, element);
             await this.cleanAttributes(element, type);
             await this.updateContentEditable(element, type);
+            await this.updateLazyImage(element, type);
 
             await this.copyContent(selectedElement, element, type, reveal);
 
@@ -170,6 +171,16 @@ export class ToggleSlotUtils {
                 elements.forEach((e: HTMLElement) => {
                     container.appendChild(e);
                 });
+            }
+
+            resolve();
+        });
+    }
+
+    private static updateLazyImage(selectedElement: HTMLElement, type: SlotType): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (type === SlotType.IMG) {
+                (selectedElement as any).customLoader = true;
             }
 
             resolve();

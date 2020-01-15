@@ -41,7 +41,7 @@ export class AppImageColumns {
                         return this.renderStockPhoto(image as UnsplashPhoto);
                     } else if (image.hasOwnProperty('media')) {
                         return this.renderGif(image as TenorGif);
-                    } else if (image.hasOwnProperty('downloadUrl')) {
+                    } else if (image.hasOwnProperty('fullUrl')) {
                         return this.renderCustomImage(image as StorageFile);
                     } else if (image.hasOwnProperty('folder')) {
                         return this.renderCustomFolder(image as StorageFolder);
@@ -93,10 +93,10 @@ export class AppImageColumns {
     }
 
     private renderCustomImage(storageFile: StorageFile) {
-        if (storageFile && storageFile.downloadUrl) {
+        if (storageFile && storageFile.fullUrl) {
             return <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(storageFile)}>
                 <div class="image-container">
-                    <deckgo-lazy-img imgSrc={storageFile.downloadUrl}
+                    <deckgo-lazy-img imgSrc={storageFile.fullUrl} custom-loader="true"
                                      imgAlt={storageFile.name}></deckgo-lazy-img>
                 </div>
             </div>

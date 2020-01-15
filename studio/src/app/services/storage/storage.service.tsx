@@ -6,9 +6,11 @@ import {take} from 'rxjs/operators';
 
 import {AuthUser} from '../../models/auth/auth.user';
 
+import {Resources} from '../../utils/core/resources';
+
 import {ErrorService} from '../core/error/error.service';
 import {AuthService} from '../auth/auth.service';
-import {Resources} from '../../utils/core/resources';
+import {EnvironmentConfigService} from '../core/environment/environment-config.service';
 
 export class StorageService {
 
@@ -68,8 +70,10 @@ export class StorageService {
 
                     await this.uploadFolderMetadata(authUser, info);
 
+                    const fullUrl: string = await this.getFileUrl(ref);
+
                     resolve({
-                        downloadUrl: await ref.getDownloadURL(),
+                        fullUrl: fullUrl,
                         fullPath: ref.fullPath,
                         name: ref.name
                     });
@@ -190,17 +194,21 @@ export class StorageService {
         return new Promise<StorageFile[] | undefined>(async (resolve) => {
             const storageFiles: Promise<StorageFile>[] = storageFilesRefs.filter((ref: Reference) => {
                 return ref.name !== Resources.Constants.STORAGE.FOLDER.META_FILENAME;
-            }).map(this.toStorageFile);
+            }).map((ref: Reference) => {
+                return this.toStorageFile(ref, this);
+            });
             const items: StorageFile[] = await Promise.all(storageFiles);
 
             resolve(items);
         });
     }
 
-    private toStorageFile(ref: Reference): Promise<StorageFile> {
+    private toStorageFile(ref: Reference, self): Promise<StorageFile> {
         return new Promise<StorageFile>(async (resolve) => {
+            const fullUrl: string = await self.getFileUrl(ref);
+
             resolve({
-                downloadUrl: await ref.getDownloadURL(),
+                fullUrl: fullUrl,
                 fullPath: ref.fullPath,
                 name: ref.name
             });
@@ -218,6 +226,14 @@ export class StorageService {
                 folder: true,
                 displayName: metaData && metaData.customMetadata && metaData.customMetadata.deckName ? metaData.customMetadata.deckName : 'Folder'
             });
+        });
+    }
+
+    private getFileUrl(ref: Reference): Promise<string> {
+        return new Promise<string>((resolve) => {
+            const storageUrl: string = EnvironmentConfigService.getInstance().get('firebase').storageUrl;
+
+            resolve(storageUrl + encodeURIComponent(ref.fullPath) + '?alt=media');
         });
     }
 }
