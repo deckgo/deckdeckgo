@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-import {Slide} from '../../../model/slide';
+import {Slide, SlideData} from '../../../model/slide';
 import {Deck, DeckData} from '../../../model/deck';
 
 export function cloneSlides(deckIdTo: string, deckIdFrom: string): Promise<string[] | undefined> {
@@ -42,7 +42,7 @@ export function updateCloneData(deckId: string, slidesIds?: string[] | undefined
 
             const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/decks/${deckId}/`);
 
-            let updateData: any = {
+            const updateData: any = {
                 clone: admin.firestore.FieldValue.delete(),
                 updated_at: admin.firestore.Timestamp.now()
             };
@@ -123,7 +123,7 @@ function findSlide(deckId: string, slideId: string): Promise<Slide> {
             resolve({
                 id: snapshot.id,
                 ref: snapshot.ref,
-                data: snapshot.data()
+                data: snapshot.data() as SlideData
             });
         } catch (err) {
             reject(err);

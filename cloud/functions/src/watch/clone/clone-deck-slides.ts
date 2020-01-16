@@ -25,7 +25,7 @@ export async function cloneDeckSlides(snap: DocumentSnapshot, context: EventCont
     try {
         const deckIdFrom: string = deck.clone.deck_id_from;
 
-        let slideIds: string[] | undefined = await cloneSlides(deckIdTo, deckIdFrom);
+        const slideIds: string[] | undefined = await cloneSlides(deckIdTo, deckIdFrom);
 
         await updateCloneData(deckIdTo, slideIds);
         await updateCloneData(deckIdFrom);
