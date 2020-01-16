@@ -225,6 +225,8 @@ export class AppEditorActions {
                 attributes.src = url;
             }
 
+            attributes.customLoader = true;
+
             const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideChart(attributes);
 
             this.addSlide.emit(slide);
