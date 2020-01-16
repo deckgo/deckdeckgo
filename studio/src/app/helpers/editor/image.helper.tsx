@@ -130,7 +130,7 @@ export class ImageHelper {
         });
     }
 
-    private updateDeckgoLazyImgAttributes(img: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): HTMLElement {
+    private updateDeckgoLazyImgAttributes(img: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile, background: boolean = false): HTMLElement {
         if (image.hasOwnProperty('urls')) {
             // Unsplash
             const photo: UnsplashPhoto = image as UnsplashPhoto;
@@ -151,11 +151,16 @@ export class ImageHelper {
 
             (img as any).imgSrc = storageFile.fullUrl;
             (img as any).imgAlt = storageFile.fullUrl;
+
+            (img as any).customLoader = true;
+
+            // We have to add the information as attributes because slots are going to be cloned to the slides background
+            if (background) {
+                img.setAttribute('custom-loader', 'true');
+            }
         }
 
         img.setAttribute('contentEditable', 'false');
-
-        (img as any).customLoader = true;
 
         return img;
     }
@@ -200,7 +205,7 @@ export class ImageHelper {
 
             const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
-            const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
+            const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image, true);
             div.appendChild(img);
 
             selectedElement.appendChild(div);
