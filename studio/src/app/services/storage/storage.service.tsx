@@ -64,7 +64,7 @@ export class StorageService {
 
                     const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${info.folder}/${data.name}`);
 
-                    const metaData: firebase.storage.UploadMetadata = info.privateFile ? {customMetadata: {public: 'false'}} : undefined;
+                    const metaData: firebase.storage.UploadMetadata = info.privateFile ? {customMetadata: {visible: 'false'}} : undefined;
 
                     await ref.put(data, metaData);
 
@@ -99,7 +99,7 @@ export class StorageService {
 
                 await ref.put(blob, {
                     customMetadata: {
-                        public: 'false',
+                        visible: 'false',
                         deckName: info.folderMeta.deckName
                     }
                 });

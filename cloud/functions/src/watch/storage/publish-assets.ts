@@ -76,10 +76,10 @@ function updateMetadataPublic(file: any): Promise<void> {
     return new Promise<void>(async (resolve) => {
         const [metadata] = await file.getMetadata();
 
-        const metaPublic: boolean = metadata.metadata.public === 'true';
+        const metaPublic: boolean = metadata.metadata.visible === 'true';
 
         if (!metaPublic) {
-            await file.setMetadata({metadata: {public: 'true'}});
+            await file.setMetadata({metadata: {visible: 'true'}});
         }
 
         resolve();
