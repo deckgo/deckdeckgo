@@ -8,7 +8,8 @@ export class Resources {
             STORAGE: {
                 FOLDER: {
                     META_FILENAME: 'meta.json'
-                }
+                },
+                MEDIA_PARAM: 'alt=media'
             }
         }
     }

@@ -2,6 +2,8 @@ import {Component, Prop, State, h} from '@stencil/core';
 
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
+import {Resources} from '../../../../utils/core/resources';
+
 import {Deck, DeckMetaAuthor} from '../../../../models/data/deck';
 
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
@@ -99,7 +101,7 @@ export class AppFeedCard {
             // path[0] = ''
             // path[1] = username
             // path[2] = presentation name
-            this.screenshot = `${storageUrl}${this.deck.data.owner_id}%2Fpresentations%2F${path[2]}%2Fdeckdeckgo.png?alt=media`;
+            this.screenshot = `${storageUrl}${this.deck.data.owner_id}%2Fpresentations%2F${path[2]}%2Fdeckdeckgo.png?${Resources.Constants.STORAGE.MEDIA_PARAM}`;
 
             resolve();
         });

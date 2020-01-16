@@ -21,6 +21,9 @@ import {
   DeckDashboardCloneResult,
 } from './app/services/dashboard/deck/deck-dashboard.service';
 import {
+  AssetImageAction,
+} from './app/utils/editor/asset-action';
+import {
   EditAction,
 } from './app/utils/editor/edit-action';
 import {
@@ -90,6 +93,7 @@ export namespace Components {
     'published': string;
   }
   interface AppDeckStyle {
+    'assetImageChange': EventEmitter<AssetImageAction>;
     'blockSlide': EventEmitter<boolean>;
     'deckDidChange': EventEmitter<HTMLElement>;
     'signIn': EventEmitter<void>;
@@ -922,6 +926,7 @@ declare namespace LocalJSX {
     'published'?: string;
   }
   interface AppDeckStyle {
+    'assetImageChange'?: EventEmitter<AssetImageAction>;
     'blockSlide'?: EventEmitter<boolean>;
     'deckDidChange'?: EventEmitter<HTMLElement>;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
@@ -963,6 +968,7 @@ declare namespace LocalJSX {
     'onActionPublish'?: (event: CustomEvent<void>) => void;
     'onAddSlide'?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
     'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
+    'onAssetImageChange'?: (event: CustomEvent<AssetImageAction>) => void;
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
@@ -977,6 +983,7 @@ declare namespace LocalJSX {
     'onActionReady'?: (event: CustomEvent<UIEvent>) => void;
   }
   interface AppEditorToolbar {
+    'onAssetImageChange'?: (event: CustomEvent<AssetImageAction>) => void;
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onElementFocus'?: (event: CustomEvent<HTMLElement>) => void;

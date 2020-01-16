@@ -23,6 +23,7 @@ import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote
 import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
 import {PollEventsHandler} from '../../../handlers/editor/events/poll/poll-events.handler';
 import {ImageEventsHandler} from '../../../handlers/editor/events/image/image-events.handler';
+import {AssetEventsHandler} from '../../../handlers/editor/events/asset/asset-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
@@ -35,6 +36,7 @@ import {AnonymousService} from '../../../services/editor/anonymous/anonymous.ser
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {BusyService} from '../../../services/editor/busy/busy.service';
+import {AssetEditorService} from '../../../services/editor/asset/asset-editor.service';
 
 @Component({
     tag: 'app-editor',
@@ -68,7 +70,8 @@ export class AppEditor {
     private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
     private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
     private pollEventsHandler: PollEventsHandler = new PollEventsHandler();
-    private imageEventsHanlder: ImageEventsHandler = new ImageEventsHandler();
+    private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
+    private assetEventsHandler: AssetEventsHandler = new AssetEventsHandler();
 
     private editorHelper: EditorHelper = new EditorHelper();
 
@@ -77,6 +80,7 @@ export class AppEditor {
     private navService: NavService;
 
     private deckEditorService: DeckEditorService;
+    private assetEditorService: AssetEditorService;
 
     private busySubscription: Subscription;
     private busyService: BusyService;
@@ -101,6 +105,7 @@ export class AppEditor {
         this.anonymousService = AnonymousService.getInstance();
         this.navService = NavService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
+        this.assetEditorService = AssetEditorService.getInstance();
         this.busyService = BusyService.getInstance();
     }
 
@@ -140,6 +145,8 @@ export class AppEditor {
                 await this.fetchSlides();
             }
 
+            await this.assetEditorService.init(this.deckId);
+
             this.slidesFetched = true;
         });
 
@@ -158,9 +165,11 @@ export class AppEditor {
     async destroy() {
         this.deckEventsHandler.destroy();
         this.editorEventsHandler.destroy();
-        this.imageEventsHanlder.destroy();
-        await this.remoteEventsHandler.destroy();
+        this.imageEventsHandler.destroy();
+        this.assetEventsHandler.destroy();
         this.pollEventsHandler.destroy();
+
+        await this.remoteEventsHandler.destroy();
 
         if (this.busySubscription) {
             this.busySubscription.unsubscribe();
@@ -174,7 +183,8 @@ export class AppEditor {
 
         await this.remoteEventsHandler.init(this.el);
         await this.pollEventsHandler.init(this.el);
-        await this.imageEventsHanlder.init();
+        await this.imageEventsHandler.init();
+        await this.assetEventsHandler.init();
 
         this.initWindowResize();
     }

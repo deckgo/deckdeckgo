@@ -11,6 +11,7 @@ import {MoreAction} from '../../../../utils/editor/more-action';
 
 import {AnonymousService} from '../../../../services/editor/anonymous/anonymous.service';
 import {CreateSlidesUtils} from '../../../../utils/editor/create-slides.utils';
+import {AssetImageAction} from '../../../../utils/editor/asset-action';
 
 @Component({
     tag: 'app-editor-actions',
@@ -51,6 +52,8 @@ export class AppEditorActions {
     @Event() private selectDeck: EventEmitter<void>;
 
     @Event() private deckDidChange: EventEmitter<HTMLElement>;
+
+    @Event() private assetImageChange: EventEmitter<AssetImageAction>;
 
     @State()
     private fullscreenEnable: boolean = true;
@@ -340,7 +343,8 @@ export class AppEditorActions {
             componentProps: {
                 signIn: this.signIn,
                 blockSlide: this.blockSlide,
-                deckDidChange: this.deckDidChange
+                deckDidChange: this.deckDidChange,
+                assetImageChange: this.assetImageChange
             },
             mode: 'md',
             cssClass: 'popover-menu popover-menu-wide'

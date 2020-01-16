@@ -3,11 +3,12 @@ import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import {ImageAction} from '../../utils/editor/image-action';
 import {EditAction} from '../../utils/editor/edit-action';
+import {SlotUtils} from '../../utils/editor/slot.utils';
+import {SlotType} from '../../utils/editor/slot-type';
+import {AssetImageAction} from '../../utils/editor/asset-action';
 
 import {AnonymousService} from '../../services/editor/anonymous/anonymous.service';
 import {BusyService} from '../../services/editor/busy/busy.service';
-import {SlotUtils} from '../../utils/editor/slot.utils';
-import {SlotType} from '../../utils/editor/slot-type';
 
 export class ImageHelper {
 
@@ -16,7 +17,8 @@ export class ImageHelper {
 
     constructor(private didChange: EventEmitter<HTMLElement>,
                 private blockSlide: EventEmitter<boolean>,
-                private signIn: EventEmitter<void>) {
+                private signIn: EventEmitter<void>,
+                private appendAsset: EventEmitter<AssetImageAction>) {
         this.anonymousService = AnonymousService.getInstance();
         this.busyService = BusyService.getInstance();
     }
@@ -43,7 +45,9 @@ export class ImageHelper {
         modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
             if (detail && detail.data && selectedElement) {
                 if (action === EditAction.OPEN_CUSTOM_LOGO) {
+                    const oldSrc: string | undefined = await this.getCurrentImageSrc(selectedElement);
                     await this.updateSlideAttribute(selectedElement, detail.data, 'img-src');
+                    await this.emitAssetChange(detail.data, oldSrc);
                 } else if (action === EditAction.OPEN_DATA) {
                     await this.updateSlideAttribute(selectedElement, detail.data, 'src');
                 } else {
@@ -79,13 +83,36 @@ export class ImageHelper {
 
             this.busyService.deckBusy(true);
 
+            const oldSrc: string | undefined = await this.getCurrentImageSrc(selectedElement, slide || deck);
+
             if (slide || deck) {
                 await this.appendBackgroundImg(selectedElement, image, deck);
             } else {
                 await this.appendContentImg(selectedElement, image);
             }
 
+            await this.emitAssetChange(image, oldSrc);
+
             resolve();
+        });
+    }
+
+    private getCurrentImageSrc(element: HTMLElement, background: boolean = false): Promise<string> {
+        return new Promise<string>((resolve) => {
+            if (!element) {
+                resolve(undefined);
+                return;
+            }
+
+            if (background) {
+                const currentSlotElement: HTMLElement = element.querySelector(':scope > [slot=\'background\']');
+                const img: HTMLElement = currentSlotElement ? currentSlotElement.querySelector('deckgo-lazy-img') : undefined;
+
+                resolve(img ? (img as any).imgSrc : undefined);
+                return;
+            }
+
+            resolve((element as any).imgSrc);
         });
     }
 
@@ -258,6 +285,20 @@ export class ImageHelper {
             this.didChange.emit(selectedElement);
 
             resolve();
+        });
+    }
+
+    private emitAssetChange(image: UnsplashPhoto | TenorGif | StorageFile, oldSrc: string | undefined): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (!image || !image.hasOwnProperty('fullUrl')) {
+                resolve();
+                return;
+            }
+
+            this.appendAsset.emit({
+                newPath: (image as StorageFile).fullPath,
+                oldSrc: oldSrc
+            });
         });
     }
 }

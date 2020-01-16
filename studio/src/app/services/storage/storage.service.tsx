@@ -233,7 +233,7 @@ export class StorageService {
         return new Promise<string>((resolve) => {
             const storageUrl: string = EnvironmentConfigService.getInstance().get('firebase').storageUrl;
 
-            resolve(storageUrl + encodeURIComponent(ref.fullPath) + '?alt=media');
+            resolve(storageUrl + encodeURIComponent(ref.fullPath) + `?${Resources.Constants.STORAGE.MEDIA_PARAM}`);
         });
     }
 }
