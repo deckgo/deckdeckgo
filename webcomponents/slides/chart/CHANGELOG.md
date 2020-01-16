@@ -1,3 +1,8 @@
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2020-01-16)
+
+* add option to custom load (fetch) the data
+
 <a name="1.0.0-rc.2-1"></a>
 # 1.0.0-rc.2-1 (2019-11-30)
 
