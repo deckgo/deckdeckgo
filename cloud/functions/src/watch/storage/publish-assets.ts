@@ -3,8 +3,10 @@ import * as admin from 'firebase-admin';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import {DeckData} from '../../model/deck';
+import {Asset} from '../../model/asset';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
+import {findAsset} from '../asset/utils/asset-utils';
 
 export async function publishAssets(change: Change<DocumentSnapshot>, context: EventContext) {
     const newValue: DeckData = change.after.data() as DeckData;
@@ -32,38 +34,58 @@ export async function publishAssets(change: Change<DocumentSnapshot>, context: E
     }
 
     try {
-        await updateFolderMetadataPublic(newValue.owner_id, deckId, 'images');
-        await updateFolderMetadataPublic(newValue.owner_id, deckId, 'data');
+        const asset: Asset | undefined = await findAsset(deckId);
+
+        if (!asset ||  !asset.data) {
+            return;
+        }
+
+        if ((!asset.data.data || asset.data.data.length <= 0) || (!asset.data.images || asset.data.images.length <= 0)) {
+            return;
+        }
+
+        await updateFilesMetadataPublic(asset.data.images);
+        await updateFilesMetadataPublic(asset.data.data);
     } catch (err) {
         console.error(err);
     }
 }
 
-function updateFolderMetadataPublic(ownerId: string, deckId: string, folder: string): Promise<void> {
+function updateFilesMetadataPublic(assets: string[] | undefined): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+        if (!assets || assets === undefined || assets.length <= 0) {
+            resolve();
+            return;
+        }
+
+        const promises: Promise<void>[] | undefined = assets.map((asset: string) => {
+            return updateFileMetadataPublic(asset);
+        });
+
+        if (!promises || promises === undefined || promises.length <= 0) {
+            resolve();
+            return;
+        }
+
+        await Promise.all(promises);
+
+        resolve();
+    });
+}
+
+function updateFileMetadataPublic(asset: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
        try {
            const bucket = admin.storage().bucket();
 
-           const options = {prefix: `${ownerId}/assets/${folder}/${deckId}/`};
+           const file = bucket.file(asset);
 
-           const [files] = await bucket.getFiles(options);
-
-           if (!files || files.length <= 0) {
+           if (!file) {
                resolve();
                return;
            }
 
-           const promises = [];
-           for (const file of files) {
-               promises.push(updateMetadataPublic(file));
-           }
-
-           if (promises.length <= 0) {
-               resolve();
-               return;
-           }
-
-           await Promise.all(promises);
+           await updateMetadataPublic(file);
 
            resolve();
        } catch (err) {
