@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-2"></a>
+# 1.0.0-rc.2-2 (2020-01-16)
+
+### Features
+
+* clean `custom-loader` attribute
+
 <a name="1.0.0-rc.2-1"></a>
 # 1.0.0-rc.2-1 (2020-01-04)
 
