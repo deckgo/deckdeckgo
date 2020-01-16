@@ -6,7 +6,7 @@ import {SlideData} from '../../model/slide';
 import {filterAssetPath, findAsset, findImages, updateAsset} from './utils/asset-utils';
 import {Asset} from '../../model/asset';
 
-export async function deleteSlideAsset(snap: DocumentSnapshot, context: EventContext) {
+export async function deleteSlideImageAsset(snap: DocumentSnapshot, context: EventContext) {
     const deckId: string = context.params.deckId;
 
     if (!deckId || deckId === undefined || deckId === '') {

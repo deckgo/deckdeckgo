@@ -12,7 +12,7 @@ import {
     updateAsset
 } from './utils/asset-utils';
 
-export async function updateSlideAsset(change: functions.Change<DocumentSnapshot>, context: functions.EventContext) {
+export async function updateSlideImageAsset(change: functions.Change<DocumentSnapshot>, context: functions.EventContext) {
     const newValue: SlideData = change.after.data() as SlideData;
 
     const previousValue: SlideData = change.before.data() as SlideData;
