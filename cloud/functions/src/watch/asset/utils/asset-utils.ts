@@ -60,6 +60,26 @@ export function updateAsset(deckId: string, assetData: AssetData): Promise<void>
     });
 }
 
+export function deleteAsset(deckId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+        try {
+            if (!deckId || deckId === undefined || deckId === '') {
+                resolve();
+                return;
+            }
+
+            const collectionRef: admin.firestore.CollectionReference = admin.firestore().collection(`/assets/`);
+            const doc: admin.firestore.DocumentReference = collectionRef.doc(deckId);
+
+            await doc.delete();
+
+            resolve();
+        } catch (err) {
+            reject(err);
+        }
+    });
+}
+
 function createOrUpdate(deckId: string, assetData: AssetData): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
         const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/assets/${deckId}/`);

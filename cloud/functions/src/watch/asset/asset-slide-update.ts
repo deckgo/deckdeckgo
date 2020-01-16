@@ -27,56 +27,64 @@ export async function updateSlideAsset(change: functions.Change<DocumentSnapshot
         return;
     }
 
-    const previousImages: HTMLElement[] | undefined = await findImages(previousValue);
-    const newImages: HTMLElement[] | undefined = await findImages(newValue);
+    try {
+        const previousImages: HTMLElement[] | undefined = await findImages(previousValue);
+        const newImages: HTMLElement[] | undefined = await findImages(newValue);
 
-    if (previousImages !== undefined || newImages !== undefined) {
-        const asset: Asset | undefined = await findAsset(deckId);
+        if (previousImages !== undefined || newImages !== undefined) {
+            const asset: Asset | undefined = await findAsset(deckId);
 
-        const assetData: AssetData = (asset && asset !== undefined) ? asset.data : {};
+            const assetData: AssetData = (asset && asset !== undefined) ? asset.data : {};
 
-        await removeImages(previousImages, assetData);
+            await removeImages(previousImages, assetData);
 
-        await addImages(newImages, assetData);
+            await addImages(newImages, assetData);
 
-        if (!assetData.images || assetData.images.length <= 0) {
-            assetData.images = [];
+            if (!assetData.images || assetData.images.length <= 0) {
+                assetData.images = [];
+            }
+
+            if (asset && asset.id) {
+                await createAsset(deckId, assetData);
+            } else {
+                await updateAsset(deckId, assetData);
+            }
         }
+    } catch (err) {
+        console.error(err);
+    }
+}
 
-        if (asset && asset.id) {
-            await createAsset(deckId, assetData);
-        } else {
-            await updateAsset(deckId, assetData);
+async function removeImages(previousImages: HTMLElement[] | undefined, assetData: AssetData) {
+    if (!previousImages || previousImages === undefined || previousImages.length <= 0) {
+        return;
+    }
+
+    for (const image of previousImages) {
+        const path: string | null = image.getAttribute('img-src');
+        const assetPath: string | undefined = await extractAssetPath(path);
+
+        if (assetPath !== undefined && assetData.images && assetData.images.indexOf(assetPath) > -1) {
+            assetData.images.splice(assetData.images.indexOf(assetPath), 1);
         }
     }
 }
 
-export async function removeImages(previousImages: HTMLElement[] | undefined, assetData: AssetData) {
-    if (previousImages !== undefined && previousImages.length > 0) {
-        for (const image of previousImages) {
-            const path: string | null = image.getAttribute('img-src');
-            const assetPath: string | undefined = await extractAssetPath(path);
-
-            if (assetPath !== undefined && assetData.images && assetData.images.indexOf(assetPath) > -1) {
-                assetData.images.splice(assetData.images.indexOf(assetPath), 1);
-            }
-        }
+async function addImages(newImages: HTMLElement[] | undefined, assetData: AssetData) {
+    if (!newImages || newImages === undefined || newImages.length <= 0) {
+        return;
     }
-}
 
-export async function addImages(newImages: HTMLElement[] | undefined, assetData: AssetData) {
-    if (newImages !== undefined && newImages.length > 0) {
-        for (const image of newImages) {
-            const path: string | null = image.getAttribute('img-src');
-            const assetPath: string | undefined = await extractAssetPath(path);
+    for (const image of newImages) {
+        const path: string | null = image.getAttribute('img-src');
+        const assetPath: string | undefined = await extractAssetPath(path);
 
-            if (assetPath !== undefined) {
-                if (!assetData.images) {
-                    assetData.images = [];
-                }
-
-                assetData.images.push(assetPath);
+        if (assetPath !== undefined) {
+            if (!assetData.images) {
+                assetData.images = [];
             }
+
+            assetData.images.push(assetPath);
         }
     }
 }
