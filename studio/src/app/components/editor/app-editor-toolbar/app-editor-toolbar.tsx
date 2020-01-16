@@ -14,7 +14,6 @@ import {SlotType} from '../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 import {EditAction} from '../../../utils/editor/edit-action';
-import {AssetImageAction} from '../../../utils/editor/asset-action';
 
 import {BusyService} from '../../../services/editor/busy/busy.service';
 
@@ -68,8 +67,6 @@ export class AppEditorToolbar {
     @Event() private imgDidChange: EventEmitter<HTMLElement>;
     @Event() private notesDidChange: EventEmitter<HTMLElement>;
 
-    @Event() private assetImageChange: EventEmitter<AssetImageAction>;
-
     @Event() private slideCopy: EventEmitter<HTMLElement>;
 
     @Event() private elementFocus: EventEmitter<HTMLElement>;
@@ -103,7 +100,7 @@ export class AppEditorToolbar {
             await this.resizeSlideContent();
         });
 
-        this.imageHelper = new ImageHelper(this.slideDidChange, this.blockSlide, this.signIn, this.assetImageChange);
+        this.imageHelper = new ImageHelper(this.slideDidChange, this.blockSlide, this.signIn);
     }
 
     async componentDidLoad() {

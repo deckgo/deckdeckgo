@@ -5,7 +5,6 @@ import {isIPad} from '@deckdeckgo/utils';
 import {TargetElement} from '../../../utils/editor/target-element';
 import {ImageAction} from '../../../utils/editor/image-action';
 import {ImageHelper} from '../../../helpers/editor/image.helper';
-import {AssetImageAction} from '../../../utils/editor/asset-action';
 
 @Component({
     tag: 'app-deck-style',
@@ -23,9 +22,6 @@ export class AppDeck {
 
     @Prop()
     deckDidChange: EventEmitter<HTMLElement>;
-
-    @Prop()
-    assetImageChange: EventEmitter<AssetImageAction>;
 
     @State()
     private applyToTargetElement: TargetElement = TargetElement.COLOR;
@@ -45,7 +41,7 @@ export class AppDeck {
 
         this.deckElement = document ? document.querySelector('deckgo-deck') : undefined;
 
-        this.imageHelper = new ImageHelper(this.deckDidChange, this.blockSlide, this.signIn, this.assetImageChange);
+        this.imageHelper = new ImageHelper(this.deckDidChange, this.blockSlide, this.signIn);
     }
 
     private async closePopover() {

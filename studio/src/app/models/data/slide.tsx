@@ -46,7 +46,7 @@ export interface SlideAttributes {
 
 export interface SlideData {
     content?: string;
-    template: SlideTemplate,
+    template: SlideTemplate;
     attributes?: SlideAttributes;
 
     api_id?: string;
