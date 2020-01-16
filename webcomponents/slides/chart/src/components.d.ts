@@ -18,6 +18,7 @@ export namespace Components {
     'beforeSwipe': (enter: boolean, _reveal: boolean) => Promise<boolean>;
     'customActions': boolean;
     'customBackground': boolean;
+    'customLoader': boolean;
     'datePattern': string;
     'draw': () => Promise<void>;
     'grid': string;
@@ -29,6 +30,7 @@ export namespace Components {
     'marginLeft': number;
     'marginRight': number;
     'marginTop': number;
+    'postCustomLoad': (content: string) => Promise<void>;
     'range': string[];
     'resizeContent': () => Promise<void>;
     'revealContent': () => Promise<void>;
@@ -62,6 +64,7 @@ declare namespace LocalJSX {
     'area'?: string;
     'customActions'?: boolean;
     'customBackground'?: boolean;
+    'customLoader'?: boolean;
     'datePattern'?: string;
     'grid'?: string;
     'height'?: number;

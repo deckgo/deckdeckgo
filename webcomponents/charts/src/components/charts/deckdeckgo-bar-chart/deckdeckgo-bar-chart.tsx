@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop, Watch, h, Host} from '@stencil/core';
+import {Component, Element, Method, Prop, Watch, h, Host, EventEmitter, Event} from '@stencil/core';
 
 import {DeckdeckgoChart, DeckdeckgoChartUtils} from '../deckdeckgo-chart';
 
@@ -25,6 +25,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   @Prop() src: string;
   @Prop() separator: string = ';';
 
+  @Prop() customLoader: boolean = false;
+
   @Prop() marginTop: number = 32;
   @Prop() marginBottom: number = 64;
   @Prop() marginLeft: number = 32;
@@ -46,6 +48,9 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   private randomColors: string[];
 
   @Prop() yAxis: boolean = true;
+
+  @Event()
+  private chartCustomLoad: EventEmitter<string>;
 
   async componentDidLoad() {
     await this.draw();
@@ -111,16 +116,20 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         return;
       }
 
-      await this.initAxis();
-
-      await this.drawAxis();
-
-      this.randomColors = Array.from({ length: this.chartData[0].values.length }, (_v, _i) => (Math.floor(Math.random()*16777215).toString(16)));
-
-      await this.drawBars(0, 0);
+      await this.firstDraw();
 
       resolve();
     });
+  }
+
+  private async firstDraw() {
+    await this.initAxis();
+
+    await this.drawAxis();
+
+    this.randomColors = Array.from({length: this.chartData[0].values.length}, (_v, _i) => (Math.floor(Math.random() * 16777215).toString(16)));
+
+    await this.drawBars(0, 0);
   }
 
   private async drawBars(index: number, animationDuration: number) {
@@ -325,16 +334,22 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
           return height >= 0 ? height : 0;
         })
         .attr('style', (d, i) => {
-          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '')  + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
         });
 
       resolve();
     });
   }
 
-  async fetchData(): Promise<DeckdeckgoBarChartData[]> {
+  fetchData(): Promise<DeckdeckgoBarChartData[]> {
     return new Promise<DeckdeckgoBarChartData[]>(async (resolve) => {
       if (!this.src) {
+        resolve([]);
+        return;
+      }
+
+      if (this.customLoader) {
+        this.chartCustomLoad.emit(this.src);
         resolve([]);
         return;
       }
@@ -342,7 +357,26 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       const response: Response = await fetch(this.src);
       const content: string = await response.text();
 
-      if (!content) {
+      let results: DeckdeckgoBarChartData[] = await this.loadContent(content);
+
+      resolve(results);
+    });
+  }
+
+  @Method()
+  async postCustomLoad(content: string | undefined) {
+    this.chartData = await this.loadContent(content);
+
+    if (!this.chartData || this.chartData === undefined || this.chartData.length <= 0) {
+      return;
+    }
+
+    await this.firstDraw();
+  }
+
+  private loadContent(content: string | undefined): Promise<DeckdeckgoBarChartData[]> {
+    return new Promise<DeckdeckgoBarChartData[]>(async (resolve) => {
+      if (!content || content === undefined) {
         resolve([]);
         return;
       }
