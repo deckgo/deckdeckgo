@@ -14,7 +14,7 @@
     "test.watch": "npm run docs && stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/charts": "^1.0.0-rc.5",
+    "@deckdeckgo/charts": "^1.0.0-rc.6",
     "@deckdeckgo/color": "^1.0.0-rc.3-3",
     "@deckdeckgo/core": "^1.0.0-rc.3-4",
     "@deckdeckgo/highlight-code": "^1.0.0-rc.2-1",
@@ -23,7 +23,7 @@
     "@deckdeckgo/qrcode": "^1.0.0-rc.1-1",
     "@deckdeckgo/slide-author": "^1.0.0-rc.3-2",
     "@deckdeckgo/slide-big-img": "^1.0.0-rc.1",
-    "@deckdeckgo/slide-chart": "^1.0.0-rc.2-1",
+    "@deckdeckgo/slide-chart": "^1.0.0-rc.3",
     "@deckdeckgo/slide-code": "^1.0.0-rc.1",
     "@deckdeckgo/slide-content": "^1.0.0-rc.1",
     "@deckdeckgo/slide-countdown": "^1.0.0-rc.1",
@@ -36,7 +36,7 @@
     "@deckdeckgo/slide-youtube": "^1.0.0-rc.3",
     "@deckdeckgo/social": "^1.0.0-rc.1-3",
     "@deckdeckgo/youtube": "^1.0.0-rc.1-2",
-    "@ionic/core": "^4.11.7",
+    "@ionic/core": "^4.11.8",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.4"
   },
@@ -47,8 +47,8 @@
     "@stencil/sass": "^1.1.1",
     "@types/glob": "^7.1.1",
     "@types/marked": "^0.7.2",
-    "@types/node": "^13.1.6",
-    "autoprefixer": "^9.7.3",
+    "@types/node": "^13.1.7",
+    "autoprefixer": "^9.7.4",
     "glob": "^7.1.6",
     "marked": "^0.8.0",
     "workbox-build": "4.3.1"

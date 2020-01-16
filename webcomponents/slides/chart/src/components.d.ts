@@ -48,7 +48,7 @@ declare global {
 
 
   interface HTMLDeckgoSlideChartElement extends Components.DeckgoSlideChart, HTMLStencilElement {}
-  const HTMLDeckgoSlideChartElement: {
+  var HTMLDeckgoSlideChartElement: {
     prototype: HTMLDeckgoSlideChartElement;
     new (): HTMLDeckgoSlideChartElement;
   };

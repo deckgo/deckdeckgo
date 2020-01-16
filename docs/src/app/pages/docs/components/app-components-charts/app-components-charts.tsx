@@ -302,7 +302,16 @@ export class AppComponentsCharts {
 <td><code>number</code></td>
 <td><code>8</code></td>
 </tr>
+<tr>
+<td><code>customLoader</code></td>
+<td><code>custom-loader</code></td>
+<td></td>
+<td>Set to <code>true</code> in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token.</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
 </tbody></table>
+<p>Note: if you would use <code>customLoader</code> the component will emit an event <code>customLoad</code> which the source of the data to load. You should subscribe to this event in order to process your custom load.</p>
 <h4 id="app-components-charts-styling">Styling</h4>
 <p>The <code>&lt;deckgo-pie-chart/&gt;</code> could be styled using the following CSS4 variables:</p>
 <table>
@@ -423,6 +432,10 @@ export class AppComponentsCharts {
 <p>If you are using <code>animation</code>, this method is used to display the previous data respectively the previous chart.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">async prev()</code>
+    </deckgo-highlight-code><h5 id="app-components-charts-post-load-data">Post load data</h5>
+<p>If you &quot;manually&quot; load the data, call this method once the <code>text</code> content fetched.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">postCustomLoad(content: string | undefined);</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples">Examples</h4>
 <p>You could find other examples of pie charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
@@ -590,7 +603,16 @@ export class AppComponentsCharts {
 <td><code>numer</code></td>
 <td><code>1000</code> (aka 1 second)</td>
 </tr>
+<tr>
+<td><code>customLoader</code></td>
+<td><code>custom-loader</code></td>
+<td></td>
+<td>Set to <code>true</code> in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token.</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
 </tbody></table>
+<p>Note: if you would use <code>customLoader</code> the component will emit an event <code>customLoad</code> which the source of the data to load. You should subscribe to this event in order to process your custom load.</p>
 <h4 id="app-components-charts-styling-1">Styling</h4>
 <p>The <code>&lt;deckgo-line-chart/&gt;</code> could be styled using the following CSS4 variables:</p>
 <table>
@@ -726,7 +748,11 @@ export class AppComponentsCharts {
     </deckgo-highlight-code><h5 id="app-components-charts-previous-1">Previous</h5>
 <p>If you are using <code>animation</code>, this method is used to display the previous data respectively the previous chart.</p>
 <deckgo-highlight-code language="javascript">
-      <code slot="code">async prev()</code>
+      <code slot="code">async prev(){'\n'}</code>
+    </deckgo-highlight-code><h5 id="app-components-charts-post-load-data-1">Post load data</h5>
+<p>If you &quot;manually&quot; load the data, call this method once the <code>text</code> content fetched.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">postCustomLoad(content: string | undefined);</code>
     </deckgo-highlight-code><h4 id="app-components-charts-examples-1">Examples</h4>
 <p>You could find other examples of line charts in the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webcomponents/charts/src/index.html">src/index.html</a> of the project.</p>
 <deckgo-highlight-code language="javascript">
@@ -853,7 +879,16 @@ export class AppComponentsCharts {
 <td><code>boolean</code></td>
 <td></td>
 </tr>
+<tr>
+<td><code>customLoader</code></td>
+<td><code>custom-loader</code></td>
+<td></td>
+<td>Set to <code>true</code> in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token.</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
 </tbody></table>
+<p>Note: if you would use <code>customLoader</code> the component will emit an event <code>customLoad</code> which the source of the data to load. You should subscribe to this event in order to process your custom load.</p>
 <h4 id="app-components-charts-styling-2">Styling</h4>
 <p>The <code>&lt;deckgo-bar-chart/&gt;</code> could be styled using the following CSS4 variables:</p>
 <table>
@@ -974,6 +1009,10 @@ export class AppComponentsCharts {
 <p>If you are using <code>animation</code>, this method is used to display the previous data respectively the previous chart.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">async prev()</code>
+    </deckgo-highlight-code><h5 id="app-components-charts-post-load-data-2">Post load data</h5>
+<p>If you &quot;manually&quot; load the data, call this method once the <code>text</code> content fetched.</p>
+<deckgo-highlight-code language="javascript">
+      <code slot="code">postCustomLoad(content: string | undefined);</code>
     </deckgo-highlight-code><h5 id="app-components-charts-updating-current-bar">Updating current bar</h5>
 <p>This is the method we are using to refresh the current bar chart when an audience is participating to live vote. It will not redraw the axis but it will draw and animate the bars.</p>
 <deckgo-highlight-code language="javascript">
