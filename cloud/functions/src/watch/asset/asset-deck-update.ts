@@ -27,20 +27,28 @@ export async function updateDeckAsset(change: functions.Change<DocumentSnapshot>
         const previousImage: HTMLElement | undefined = await parseBackground(previousValue);
         const newImage: HTMLElement | undefined = await parseBackground(newValue);
 
-        if (previousImage !== undefined || newImage !== undefined) {
-            const asset: Asset | undefined = await findAsset(deckId);
+        if (previousImage === undefined && newImage === undefined) {
+            return;
+        }
 
-            const assetData: AssetData = (asset && asset !== undefined) ? asset.data : {};
+        const sameAsset: boolean = await sameImage(previousImage, newImage);
 
-            await removeImage(previousImage, assetData);
+        if (sameAsset) {
+            return;
+        }
 
-            await addImage(newImage, assetData);
+        const asset: Asset | undefined = await findAsset(deckId);
 
-            if (asset && asset.id) {
-                await createAsset(deckId, assetData);
-            } else {
-                await updateAsset(deckId, assetData);
-            }
+        const assetData: AssetData = (asset && asset !== undefined) ? asset.data : {};
+
+        await removeImage(previousImage, assetData);
+
+        await addImage(newImage, assetData);
+
+        if (asset && asset.id) {
+            await createAsset(deckId, assetData);
+        } else {
+            await updateAsset(deckId, assetData);
         }
     } catch (err) {
         console.error(err);
@@ -62,13 +70,45 @@ function parseBackground(deckData: DeckData): Promise<HTMLElement | undefined> {
     });
 }
 
+function sameImage(previousImage: HTMLElement | undefined, newImage: HTMLElement | undefined): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+        if (previousImage === undefined && newImage === undefined) {
+            resolve(true);
+            return
+        }
+
+        if ((previousImage !== undefined && newImage === undefined) || (previousImage === undefined && newImage !== undefined)) {
+            resolve(false);
+            return
+        }
+
+        const previousAssetPath: string | undefined = await getPath(previousImage);
+        const newAssetPath: string | undefined = await getPath(newImage);
+
+        resolve(previousAssetPath === newAssetPath);
+    });
+}
+
+function getPath(image: HTMLElement | undefined): Promise<string | undefined> {
+    return new Promise<string|undefined>(async (resolve) => {
+        if (image === undefined) {
+            resolve(undefined);
+            return;
+        }
+
+        const path: string | null = image.getAttribute('img-src');
+        const assetPath: string | undefined = await extractAssetPath(path);
+
+        resolve(assetPath);
+    });
+}
+
 async function removeImage(image: HTMLElement | undefined, assetData: AssetData) {
     if (image === undefined) {
         return;
     }
 
-    const path: string | null = image.getAttribute('img-src');
-    const assetPath: string | undefined = await extractAssetPath(path);
+    const assetPath: string | undefined = await getPath(image);
 
     if (assetPath !== undefined && assetData.images && assetData.images.indexOf(assetPath) > -1) {
         assetData.images.splice(assetData.images.indexOf(assetPath), 1);
@@ -80,8 +120,7 @@ async function addImage(image: HTMLElement | undefined, assetData: AssetData) {
         return;
     }
 
-    const path: string | null = image.getAttribute('img-src');
-    const assetPath: string | undefined = await extractAssetPath(path);
+    const assetPath: string | undefined = await getPath(image);
 
     if (assetPath !== undefined) {
         if (!assetData.images) {

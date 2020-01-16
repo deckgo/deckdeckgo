@@ -6,7 +6,7 @@ import {Asset, AssetData} from '../../model/asset';
 
 import {
     createAsset,
-    extractAssetPath,
+    extractAssetPath, filterAssetPath,
     findAsset,
     findImages,
     updateAsset
@@ -31,28 +31,61 @@ export async function updateSlideAsset(change: functions.Change<DocumentSnapshot
         const previousImages: HTMLElement[] | undefined = await findImages(previousValue);
         const newImages: HTMLElement[] | undefined = await findImages(newValue);
 
-        if (previousImages !== undefined || newImages !== undefined) {
-            const asset: Asset | undefined = await findAsset(deckId);
+        if (previousImages === undefined && newImages === undefined) {
+            return;
+        }
 
-            const assetData: AssetData = (asset && asset !== undefined) ? asset.data : {};
+        const sameAssets: boolean = await sameImages(previousImages, newImages);
 
-            await removeImages(previousImages, assetData);
+        if (sameAssets) {
+            return;
+        }
 
-            await addImages(newImages, assetData);
+        const asset: Asset | undefined = await findAsset(deckId);
 
-            if (!assetData.images || assetData.images.length <= 0) {
-                assetData.images = [];
-            }
+        const assetData: AssetData = (asset && asset !== undefined) ? asset.data : {};
 
-            if (asset && asset.id) {
-                await createAsset(deckId, assetData);
-            } else {
-                await updateAsset(deckId, assetData);
-            }
+        await removeImages(previousImages, assetData);
+
+        await addImages(newImages, assetData);
+
+        if (!assetData.images || assetData.images.length <= 0) {
+            assetData.images = [];
+        }
+
+        if (asset && asset.id) {
+            await createAsset(deckId, assetData);
+        } else {
+            await updateAsset(deckId, assetData);
         }
     } catch (err) {
         console.error(err);
     }
+}
+
+async function sameImages(previousImages: HTMLElement[] | undefined, newImages: HTMLElement[] | undefined): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+        const previousAssets: string[] | undefined = await filterAssetPath(previousImages);
+        const newAssets: string[] | undefined = await filterAssetPath(newImages);
+
+        if (previousAssets === undefined && newAssets === undefined) {
+            resolve(true);
+            return
+        }
+
+        if ((previousAssets !== undefined && newAssets === undefined) || (previousAssets === undefined && newAssets !== undefined)) {
+            resolve(false);
+            return
+        }
+
+        const same: boolean = previousAssets !== undefined && newAssets !== undefined &&
+            previousAssets.length === newAssets.length &&
+            previousAssets.sort().every((value: string, index: number) => {
+                return value === newAssets.sort()[index];
+            });
+
+        resolve(same);
+    });
 }
 
 async function removeImages(previousImages: HTMLElement[] | undefined, assetData: AssetData) {

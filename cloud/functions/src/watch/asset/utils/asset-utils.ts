@@ -126,3 +126,31 @@ export function extractAssetPath(path: string | null): Promise<string | undefine
         resolve(decodeURIComponent(path.replace(storageUrl, '').replace(`?${Resources.Constants.STORAGE.MEDIA_PARAM}`, '')))
     });
 }
+
+export
+
+function filterAssetPath(images: HTMLElement[] | undefined): Promise<string[] | undefined> {
+    return new Promise<string[]|undefined>(async (resolve) => {
+        if (!images || images === undefined || images.length <= 0) {
+            resolve(undefined);
+            return;
+        }
+
+        const results: string[] = [];
+        for (const image of images) {
+            const path: string | null = image.getAttribute('img-src');
+            const assetPath: string | undefined = await extractAssetPath(path);
+
+            if (assetPath !== undefined) {
+                results.push(assetPath);
+            }
+        }
+
+        if (results.length <= 0) {
+            resolve(undefined);
+            return;
+        }
+
+        resolve(results);
+    });
+}
