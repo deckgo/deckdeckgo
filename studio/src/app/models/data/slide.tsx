@@ -42,8 +42,6 @@ export interface SlideAttributes {
     vertical?: boolean;
 
     imgMode?: string;
-
-    customLoader?: boolean;
 }
 
 export interface SlideData {

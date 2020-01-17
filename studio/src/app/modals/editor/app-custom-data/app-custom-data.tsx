@@ -1,11 +1,6 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {take} from 'rxjs/operators';
-
-import {Deck} from '../../../models/data/deck';
-
 import {StorageService} from '../../../services/storage/storage.service';
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
     tag: 'app-custom-data',
@@ -16,7 +11,6 @@ export class AppCustomData {
     @Element() el: HTMLElement;
 
     private storageService: StorageService;
-    private deckEditorService: DeckEditorService;
 
     @State()
     private files: StorageFile[];
@@ -30,22 +24,16 @@ export class AppCustomData {
     private uploading: boolean = false;
 
     @State()
-    private searchFolder: string;
-
-    @State()
     private loading: boolean = true;
 
     constructor() {
         this.storageService = StorageService.getInstance();
-        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
 
-        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-            await this.search(deck ? `data/${deck.id}` : 'data');
-        });
+        await this.search();
     }
 
     @Listen('popstate', { target: 'window' })
@@ -83,11 +71,9 @@ export class AppCustomData {
         });
     }
 
-    private search(path: string): Promise<void> {
+    private search(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, path);
-
-            this.searchFolder = path;
+            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, 'data');
 
             if (!list) {
                 resolve();
@@ -127,7 +113,7 @@ export class AppCustomData {
 
     private searchNext(e: CustomEvent<void>): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            await this.search(this.searchFolder);
+            await this.search();
 
             (e.target as HTMLIonInfiniteScrollElement).complete();
 
@@ -156,20 +142,9 @@ export class AppCustomData {
             }
 
             if (filePicker.files && filePicker.files.length > 0) {
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                    if (deck && deck.data && deck.id) {
                         this.uploading = true;
 
-                        const uploadInfo: StorageUploadInfo = {
-                            maxSize: 10485760,
-                            privateFile: true,
-                            folder: `data/${deck.id}`,
-                            folderMeta: {
-                                deckName: deck.data.name
-                            }
-                        };
-
-                        const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], uploadInfo);
+                const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'data', 10485760);
 
                         if (storageFile) {
                             await this.selectAndClose(storageFile);
@@ -177,37 +152,9 @@ export class AppCustomData {
 
                         this.uploading = false;
                     }
-                });
-            }
 
             resolve();
         });
-    }
-
-    private async switchFolder(folder: StorageFolder) {
-        if (this.uploading) {
-            return;
-        }
-
-        if (!folder.folder) {
-            return;
-        }
-
-        this.loading = true;
-
-        await this.emptyFiles();
-        await this.search(`data/${folder.name}`);
-    }
-
-    private async switchRootFolder() {
-        if (this.uploading) {
-            return;
-        }
-
-        this.loading = true;
-
-        await this.emptyFiles();
-        await this.search(`data`);
     }
 
     render() {
@@ -219,10 +166,7 @@ export class AppCustomData {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-
                     <ion-title class="ion-text-uppercase">Your data</ion-title>
-
-                    {this.renderNavigateRoot()}
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
@@ -260,20 +204,9 @@ export class AppCustomData {
     private renderFiles() {
         return (
             this.files.map((storageFile: StorageFile) => {
-                if (storageFile.hasOwnProperty('folder') && (storageFile as StorageFolder).folder) {
-                    return this.renderFolder(storageFile as StorageFolder);
-                } else {
-                    return this.renderFile(storageFile);
-                }
+                return this.renderFile(storageFile);
             })
         );
-    }
-
-    private renderFolder(storageFile: StorageFolder) {
-        return <div class="ion-padding data folder" custom-tappable onClick={() => this.switchFolder(storageFile)}>
-            <ion-icon src="/assets/icons/ionicons/md-folder.svg"></ion-icon>
-            <ion-label>{storageFile.displayName}</ion-label>
-        </div>
     }
 
     private renderFile(storageFile: StorageFile) {
@@ -291,7 +224,7 @@ export class AppCustomData {
         return <div class="placeholder">
             <div>
                 <ion-icon src="/assets/icons/file.svg"></ion-icon>
-                <ion-label class="ion-text-center">Your collection of data is empty for this presentation</ion-label>
+                <ion-label class="ion-text-center">Your collection of data is empty</ion-label>
             </div>
         </div>
     }
@@ -308,18 +241,6 @@ export class AppCustomData {
                 <ion-label class="ion-padding-start">Upload in progress</ion-label>
             ];
         }
-    }
-
-    private renderNavigateRoot() {
-        if (this.searchFolder === 'data') {
-            return undefined;
-        }
-
-        return <ion-buttons slot="end" aria-label="Your presentations">
-            <ion-button onClick={() => this.switchRootFolder()}>
-                <ion-icon name="search"></ion-icon>
-            </ion-button>
-        </ion-buttons>;
     }
 
 }

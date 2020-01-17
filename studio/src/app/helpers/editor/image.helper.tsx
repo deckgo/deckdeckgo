@@ -130,7 +130,7 @@ export class ImageHelper {
         });
     }
 
-    private updateDeckgoLazyImgAttributes(img: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile, background: boolean = false): HTMLElement {
+    private updateDeckgoLazyImgAttributes(img: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): HTMLElement {
         if (image.hasOwnProperty('urls')) {
             // Unsplash
             const photo: UnsplashPhoto = image as UnsplashPhoto;
@@ -145,19 +145,12 @@ export class ImageHelper {
                 (img as any).imgSrc = gif.media[0].gif.url;
                 (img as any).imgAlt = gif.title;
             }
-        } else if (image.hasOwnProperty('fullUrl')) {
+        } else if (image.hasOwnProperty('downloadUrl')) {
             // Storage image aka image uploaded by the user
             const storageFile: StorageFile = image as StorageFile;
 
-            (img as any).imgSrc = storageFile.fullUrl;
-            (img as any).imgAlt = storageFile.fullUrl;
-
-            (img as any).customLoader = true;
-
-            // We have to add the information as attributes because slots are going to be cloned to the slides background
-            if (background) {
-                img.setAttribute('custom-loader', 'true');
-            }
+            (img as any).imgSrc = storageFile.downloadUrl;
+            (img as any).imgAlt = storageFile.downloadUrl;
         }
 
         img.setAttribute('contentEditable', 'false');
@@ -205,7 +198,7 @@ export class ImageHelper {
 
             const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
-            const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image, true);
+            const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
             div.appendChild(img);
 
             selectedElement.appendChild(div);
@@ -253,7 +246,7 @@ export class ImageHelper {
 
             this.busyService.deckBusy(true);
 
-            selectedElement.setAttribute(attribute, image.fullUrl);
+            selectedElement.setAttribute(attribute, image.downloadUrl);
 
             this.didChange.emit(selectedElement);
 

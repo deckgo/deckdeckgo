@@ -15,8 +15,6 @@ export class AppImageColumns {
 
     @Event() private selectImage: EventEmitter<UnsplashPhoto | TenorGif | StorageFile>;
 
-    @Event() private selectFolder: EventEmitter<StorageFile>;
-
     render() {
         if ((!this.imagesEven || this.imagesEven.length <= 0) && (!this.imagesOdd || this.imagesOdd.length <= 0)) {
             return undefined;
@@ -41,10 +39,8 @@ export class AppImageColumns {
                         return this.renderStockPhoto(image as UnsplashPhoto);
                     } else if (image.hasOwnProperty('media')) {
                         return this.renderGif(image as TenorGif);
-                    } else if (image.hasOwnProperty('fullUrl')) {
+                    } else if (image.hasOwnProperty('downloadUrl')) {
                         return this.renderCustomImage(image as StorageFile);
-                    } else if (image.hasOwnProperty('folder')) {
-                        return this.renderCustomFolder(image as StorageFolder);
                     } else {
                         return undefined;
                     }
@@ -93,25 +89,11 @@ export class AppImageColumns {
     }
 
     private renderCustomImage(storageFile: StorageFile) {
-        if (storageFile && storageFile.fullUrl) {
+        if (storageFile && storageFile.downloadUrl) {
             return <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(storageFile)}>
                 <div class="image-container">
-                    <deckgo-lazy-img imgSrc={storageFile.fullUrl} custom-loader="true"
-                                     imgAlt={storageFile.name}></deckgo-lazy-img>
-                </div>
-            </div>
-        } else {
-            return undefined;
-        }
-    }
-
-    private renderCustomFolder(storageFile: StorageFolder) {
-        if (storageFile && storageFile.folder) {
-            return <div class="image ion-padding" custom-tappable onClick={() => this.selectFolder.emit(storageFile)}>
-                <div class="image-container folder-container">
-                    <deckgo-lazy-img svgSrc={`/assets/icons/ionicons/md-folder.svg`}
-                                     imgAlt={storageFile.displayName}></deckgo-lazy-img>
-                    <ion-label class="photo-credits">{storageFile.displayName}</ion-label>
+                    <deckgo-lazy-img imgSrc={storageFile.downloadUrl}
+                                     imgAlt={storageFile.downloadUrl}></deckgo-lazy-img>
                 </div>
             </div>
         } else {

@@ -12,7 +12,6 @@ ion-toolbar {
      display: flex;
      justify-content: center;
      align-items: center;
-     flex-wrap: wrap;
 
      &.uploading {
        ion-spinner {

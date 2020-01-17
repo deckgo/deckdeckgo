@@ -6,11 +6,8 @@ import {take} from 'rxjs/operators';
 
 import {AuthUser} from '../../models/auth/auth.user';
 
-import {Resources} from '../../utils/core/resources';
-
 import {ErrorService} from '../core/error/error.service';
 import {AuthService} from '../auth/auth.service';
-import {EnvironmentConfigService} from '../core/environment/environment-config.service';
 
 export class StorageService {
 
@@ -34,18 +31,12 @@ export class StorageService {
         return StorageService.instance;
     }
 
-    uploadFile(data: File, info: StorageUploadInfo): Promise<StorageFile> {
+    uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile> {
         return new Promise<StorageFile>((resolve) => {
             try {
                 this.authService.watch().pipe(take(1)).subscribe(async (authUser: AuthUser) => {
                     if (!authUser || !authUser.uid || authUser.uid === '' || authUser.uid === undefined) {
                         this.errorService.error('Not logged in.');
-                        resolve();
-                        return;
-                    }
-
-                    if (!info) {
-                        this.errorService.error('No upload information provided.');
                         resolve();
                         return;
                     }
@@ -57,23 +48,17 @@ export class StorageService {
                     }
 
                     if (data.size > 10485760) {
-                        this.errorService.error(`Image is too big (max. ${info.maxSize / 1048576} Mb)`);
+                        this.errorService.error(`Image is too big (max. ${maxSize / 1048576} Mb)`);
                         resolve();
                         return;
                     }
 
-                    const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${info.folder}/${data.name}`);
+                    const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${folder}/${data.name}`);
 
-                    const metaData: firebase.storage.UploadMetadata = info.privateFile ? {customMetadata: {visible: 'false'}} : undefined;
-
-                    await ref.put(data, metaData);
-
-                    await this.uploadFolderMetadata(authUser, info);
-
-                    const fullUrl: string = await this.getFileUrl(ref);
+                    await ref.put(data);
 
                     resolve({
-                        fullUrl: fullUrl,
+                        downloadUrl: await ref.getDownloadURL(),
                         fullPath: ref.fullPath,
                         name: ref.name
                     });
@@ -81,32 +66,6 @@ export class StorageService {
             } catch (err) {
                 this.errorService.error(err.message);
                 resolve();
-            }
-        });
-    }
-
-    private uploadFolderMetadata(authUser: AuthUser, info: StorageUploadInfo): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                if (!info || !info.folderMeta || info.folderMeta === undefined) {
-                    resolve();
-                    return;
-                }
-
-                const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${info.folder}/${Resources.Constants.STORAGE.FOLDER.META_FILENAME}`);
-
-                const blob: Blob = new Blob([JSON.stringify(info.folderMeta)], {type: 'application/json'});
-
-                await ref.put(blob, {
-                    customMetadata: {
-                        visible: 'false',
-                        deckName: info.folderMeta.deckName
-                    }
-                });
-
-                resolve();
-            } catch (err) {
-                reject(err);
             }
         });
     }
@@ -143,8 +102,7 @@ export class StorageService {
 
     private toStorageFileList(results: ListResult): Promise<StorageFilesList> {
         return new Promise<StorageFilesList>(async (resolve) => {
-            if (!results ||
-                ((!results.items || results.items.length <= 0) && ((!results.prefixes || results.prefixes.length <= 0)))) {
+            if (!results || !results.items || results.items.length <= 0) {
                 resolve({
                     items: [],
                     nextPageToken: null
@@ -152,19 +110,8 @@ export class StorageService {
                 return;
             }
 
-            const folders: StorageFolder[] | undefined = await this.toStorageFolderItems(results.prefixes);
-
-            const files: StorageFile[] | undefined = await this.toStorageFilesItems(results.items);
-
-            let items: StorageFile[] = [];
-
-            if (folders && folders.length > 0) {
-                items = [...folders];
-            }
-
-            if (files && files.length > 0) {
-                items = [...items, ...files];
-            }
+            const storageFiles: Promise<StorageFile>[] = results.items.map(this.toStorageFile);
+            const items: StorageFile[] = await Promise.all(storageFiles);
 
             resolve({
                 items: items,
@@ -173,67 +120,14 @@ export class StorageService {
         });
     }
 
-    private toStorageFolderItems(prefixes: Reference[]): Promise<StorageFolder[] | undefined> {
-        return new Promise<StorageFolder[] | undefined>(async (resolve) => {
-            if (!prefixes || prefixes.length <= 0) {
-                resolve(undefined);
-                return;
-            }
-
-            const storageFolders: Promise<StorageFolder>[] = prefixes.map((prefix: Reference) => {
-                return this.toStorageFolder(prefix);
-            });
-
-            const items: StorageFolder[] = await Promise.all(storageFolders);
-
-            resolve(items);
-        });
-    }
-
-    private toStorageFilesItems(storageFilesRefs: Reference[]): Promise<StorageFile[] | undefined> {
-        return new Promise<StorageFile[] | undefined>(async (resolve) => {
-            const storageFiles: Promise<StorageFile>[] = storageFilesRefs.filter((ref: Reference) => {
-                return ref.name !== Resources.Constants.STORAGE.FOLDER.META_FILENAME;
-            }).map((ref: Reference) => {
-                return this.toStorageFile(ref, this);
-            });
-            const items: StorageFile[] = await Promise.all(storageFiles);
-
-            resolve(items);
-        });
-    }
-
-    private toStorageFile(ref: Reference, self): Promise<StorageFile> {
+    private toStorageFile(ref: Reference): Promise<StorageFile> {
         return new Promise<StorageFile>(async (resolve) => {
-            const fullUrl: string = await self.getFileUrl(ref);
-
             resolve({
-                fullUrl: fullUrl,
+                downloadUrl: await ref.getDownloadURL(),
                 fullPath: ref.fullPath,
                 name: ref.name
             });
         });
     }
 
-    private toStorageFolder(ref: Reference): Promise<StorageFolder> {
-        return new Promise<StorageFolder>(async (resolve) => {
-            const refMeta = firebase.storage().ref(`${ref.fullPath}/${Resources.Constants.STORAGE.FOLDER.META_FILENAME}`);
-            const metaData = await refMeta.getMetadata();
-
-            resolve({
-                fullPath: ref.fullPath,
-                name: ref.name,
-                folder: true,
-                displayName: metaData && metaData.customMetadata && metaData.customMetadata.deckName ? metaData.customMetadata.deckName : 'Folder'
-            });
-        });
-    }
-
-    private getFileUrl(ref: Reference): Promise<string> {
-        return new Promise<string>((resolve) => {
-            const storageUrl: string = EnvironmentConfigService.getInstance().get('firebase').storageUrl;
-
-            resolve(storageUrl + encodeURIComponent(ref.fullPath) + `?${Resources.Constants.STORAGE.MEDIA_PARAM}`);
-        });
-    }
 }

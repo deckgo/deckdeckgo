@@ -6,9 +6,6 @@ export class Resources {
                 DESCRIPTION_MAX_LENGTH: 500
             },
             STORAGE: {
-                FOLDER: {
-                    META_FILENAME: 'meta.json'
-                },
                 MEDIA_PARAM: 'alt=media'
             }
         }

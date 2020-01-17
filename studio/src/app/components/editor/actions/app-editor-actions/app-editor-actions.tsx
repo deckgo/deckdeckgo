@@ -210,7 +210,7 @@ export class AppEditorActions {
                 return;
             }
 
-            const url: string = dataFile.fullUrl;
+            const url: string = dataFile.downloadUrl;
 
             if (!url || url === undefined || url === '') {
                 resolve();
@@ -224,8 +224,6 @@ export class AppEditorActions {
             } else {
                 attributes.src = url;
             }
-
-            attributes.customLoader = true;
 
             const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideChart(attributes);
 

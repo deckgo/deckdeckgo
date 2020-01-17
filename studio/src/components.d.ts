@@ -1019,7 +1019,6 @@ declare namespace LocalJSX {
   interface AppImageColumns {
     'imagesEven'?: (UnsplashPhoto | TenorGif | StorageFile)[];
     'imagesOdd'?: (UnsplashPhoto | TenorGif | StorageFile)[];
-    'onSelectFolder'?: (event: CustomEvent<StorageFile>) => void;
     'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
   }
   interface AppImageSlide {

@@ -302,16 +302,10 @@ export class AppHome {
             }
 
             try {
-                const uploadInfo: StorageUploadInfo = {
-                    maxSize: 524288,
-                    privateFile: false,
-                    folder: 'avatars'
-                };
-
-                const storageFile: StorageFile = await this.storageService.uploadFile(this.profilePicture, uploadInfo);
+                const storageFile: StorageFile = await this.storageService.uploadFile(this.profilePicture, 'avatars', 524288);
 
                 if (storageFile) {
-                    this.user.data.photo_url = storageFile.fullUrl;
+                    this.user.data.photo_url = storageFile.downloadUrl;
                 }
 
                 resolve();

@@ -1,12 +1,7 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {take} from 'rxjs/operators';
-
-import {Deck} from '../../../models/data/deck';
-
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {StorageService} from '../../../services/storage/storage.service';
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
     tag: 'app-custom-images',
@@ -37,23 +32,15 @@ export class AppCustomImages {
     @State()
     private loading: boolean = true;
 
-    @State()
-    private searchFolder: string;
-
-    private deckEditorService: DeckEditorService;
-
     constructor() {
         this.imageHistoryService = ImageHistoryService.getInstance();
         this.storageService = StorageService.getInstance();
-        this.deckEditorService = DeckEditorService.getInstance();
     }
 
     async componentDidLoad() {
         history.pushState({modal: true}, null);
 
-        this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-            await this.search(deck ? `images/${deck.id}` : 'images');
-        });
+        await this.search();
     }
 
     @Listen('popstate', {target: 'window'})
@@ -95,11 +82,9 @@ export class AppCustomImages {
         });
     }
 
-    private search(path: string): Promise<void> {
+    private search(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, path);
-
-            this.searchFolder = path;
+            const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, 'images');
 
             if (!list) {
                 resolve();
@@ -145,7 +130,7 @@ export class AppCustomImages {
 
     private searchNext(e: CustomEvent<void>): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            await this.search(this.searchFolder);
+            await this.search();
 
             (e.target as HTMLIonInfiniteScrollElement).complete();
 
@@ -174,20 +159,9 @@ export class AppCustomImages {
             }
 
             if (filePicker.files && filePicker.files.length > 0) {
-                this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                    if (deck && deck.data && deck.id) {
                         this.uploading = true;
 
-                        const uploadInfo: StorageUploadInfo = {
-                            maxSize: 10485760,
-                            privateFile: true,
-                            folder: `images/${deck.id}`,
-                            folderMeta: {
-                                deckName: deck.data.name
-                            }
-                        };
-
-                        const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], uploadInfo);
+                const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'images', 10485760);
 
                         if (storageFile) {
                             await this.selectAndClose(storageFile);
@@ -195,43 +169,9 @@ export class AppCustomImages {
 
                         this.uploading = false;
                     }
-                });
-            }
 
             resolve();
         });
-    }
-
-    private async switchFolder($event: CustomEvent) {
-        if (!$event || !$event.detail) {
-            return;
-        }
-
-        if (this.uploading) {
-            return;
-        }
-
-        const folder: StorageFolder = $event.detail;
-
-        if (!folder.folder) {
-            return;
-        }
-
-        this.loading = true;
-
-        await this.emptyImages();
-        await this.search(`images/${folder.name}`);
-    }
-
-    private async switchRootFolder() {
-        if (this.uploading) {
-            return;
-        }
-
-        this.loading = true;
-
-        await this.emptyImages();
-        await this.search(`images`);
     }
 
     render() {
@@ -243,16 +183,12 @@ export class AppCustomImages {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-
                     <ion-title class="ion-text-uppercase">Your images</ion-title>
-
-                    {this.renderNavigateRoot()}
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
                 <app-image-columns imagesOdd={this.imagesOdd} imagesEven={this.imagesEven}
-                                   onSelectImage={($event: CustomEvent) => this.selectImage($event)}
-                                   onSelectFolder={($event: CustomEvent) => this.switchFolder($event)}>
+                                  onSelectImage={($event: CustomEvent) => this.selectImage($event)}>
                 </app-image-columns>
 
                 {this.renderImagesPlaceHolder()}
@@ -286,7 +222,7 @@ export class AppCustomImages {
             return <div class="placeholder">
                 <div>
                     <ion-icon name="images"></ion-icon>
-                    <ion-label class="ion-text-center">Your collection of images is empty for this presentation</ion-label>
+                    <ion-label class="ion-text-center">Your collection of images is empty</ion-label>
                 </div>
             </div>
         } else {
@@ -306,18 +242,6 @@ export class AppCustomImages {
                 <ion-label class="ion-padding-start">Upload in progress</ion-label>
             ];
         }
-    }
-
-    private renderNavigateRoot() {
-        if (this.searchFolder === 'images') {
-            return undefined;
-        }
-
-        return <ion-buttons slot="end">
-            <ion-button onClick={() => this.switchRootFolder()} aria-label="Your presentations">
-                <ion-icon name="search"></ion-icon>
-            </ion-button>
-        </ion-buttons>;
     }
 
 }

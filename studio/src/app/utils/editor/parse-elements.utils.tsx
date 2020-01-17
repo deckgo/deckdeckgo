@@ -53,10 +53,6 @@ export class ParseElementsUtils {
                 }
             }
 
-            if (element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img') {
-                attributes['custom-loader'] = true;
-            }
-
             resolve(<Elem {...attributes}>{content}</Elem>);
         });
     }
