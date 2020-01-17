@@ -234,7 +234,7 @@ export class AppCustomData {
             return <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
                 <ion-icon name="cloud-upload" slot="start"></ion-icon>
                 <ion-label>Upload a new data</ion-label>
-            </ion-button>;
+            </ion-button>
         } else {
             return [
                 <ion-spinner color="tertiary"></ion-spinner>,

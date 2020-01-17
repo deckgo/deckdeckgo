@@ -212,7 +212,6 @@ export class AppCustomImages {
         ];
     }
 
-
     private renderImagesPlaceHolder() {
         if (this.loading) {
             return undefined;
@@ -235,7 +234,7 @@ export class AppCustomImages {
             return <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
                 <ion-icon name="cloud-upload" slot="start"></ion-icon>
                 <ion-label>Upload a new image</ion-label>
-            </ion-button>;
+            </ion-button>
         } else {
             return [
                 <ion-spinner color="tertiary"></ion-spinner>,
