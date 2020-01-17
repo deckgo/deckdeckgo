@@ -10,7 +10,7 @@ export class AppLandingFooter {
 
     render() {
         return <footer>
-            <deckgo-lazy-img svg-src={`/assets/img/landing/wave-remote.svg`} role="presentation"></deckgo-lazy-img>
+            <img src={`/assets/img/landing/wave-remote.svg`} role="presentation" loading="lazy" class="wave-section"/>
 
             <main>
                 <section class="ion-padding ion-text-center">
