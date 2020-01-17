@@ -20,6 +20,7 @@ export class FeedService {
     private nextQueryAfter: firebase.firestore.DocumentSnapshot;
 
     private queryLimit: number = 20;
+    private queryPublishedAt: Date = new Date((new Date()).getTime() - 5 * 60000);
 
     private decks: Deck[] = [];
 
@@ -118,12 +119,14 @@ export class FeedService {
         if (this.nextQueryAfter) {
             return firestore.collection('decks')
                     .where('meta.feed', '==', true)
+                    .where('meta.published_at', '<', this.queryPublishedAt)
                     .orderBy('meta.published_at', 'desc')
                     .startAfter(this.nextQueryAfter)
                     .limit(this.queryLimit).get();
         } else {
             return firestore.collection('decks')
                     .where('meta.feed', '==', true)
+                    .where('meta.published_at', '<', this.queryPublishedAt)
                     .orderBy('meta.published_at', 'desc')
                     .limit(this.queryLimit).get();
         }
