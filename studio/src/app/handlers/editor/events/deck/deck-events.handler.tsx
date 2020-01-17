@@ -354,10 +354,12 @@ export class DeckEventsHandler {
                     }
 
                     const attributes: DeckAttributes = await this.getDeckAttributes(deck, true);
-                    currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : null;
+                    // @ts-ignore
+                    currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : firebase.firestore.FieldValue.delete();
 
                     const background: string = await this.getDeckBackground(deck);
-                    currentDeck.data.background = background && background !== undefined && background !== '' ? background : null;
+                    // @ts-ignore
+                    currentDeck.data.background = background && background !== undefined && background !== '' ? background : firebase.firestore.FieldValue.delete();
 
                     const updatedDeck: Deck = await this.deckService.update(currentDeck);
 
@@ -720,8 +722,11 @@ export class DeckEventsHandler {
         return new Promise<DeckAttributes>((resolve) => {
             let attributes: DeckAttributes = {};
 
-            if (deck.hasAttribute('style')) {
+            if (deck.hasAttribute('style') && deck.getAttribute('style') !== '') {
                 attributes.style = deck.getAttribute('style');
+            } else if (updateDeck) {
+                // @ts-ignore
+                attributes.style = firebase.firestore.FieldValue.delete();
             }
 
             if (deck.hasAttribute('transition') && deck.getAttribute('transition') !== 'slide') {
