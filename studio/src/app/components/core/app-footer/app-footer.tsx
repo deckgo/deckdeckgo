@@ -80,7 +80,7 @@ export class AppFooter {
                 </ion-router-link>
             </section>
 
-            <div class="social ion-padding-top">
+            <div class="social ion-padding-top ion-margin-top">
                 <a href="https://twitter.com/deckdeckgo"><ion-icon name="logo-twitter"></ion-icon></a>
                 <a href="https://github.com/deckgo"><ion-icon name="logo-github"></ion-icon></a>
                 <a href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY"><ion-icon name="logo-slack"></ion-icon></a>
