@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-import {Slide, SlideData} from '../../../model/slide';
+import {Slide} from '../../../model/slide';
 import {Deck, DeckData} from '../../../model/deck';
 
 export function cloneSlides(deckIdTo: string, deckIdFrom: string): Promise<string[] | undefined> {
@@ -123,7 +123,7 @@ function findSlide(deckId: string, slideId: string): Promise<Slide> {
             resolve({
                 id: snapshot.id,
                 ref: snapshot.ref,
-                data: snapshot.data() as SlideData
+                data: snapshot.data()
             });
         } catch (err) {
             reject(err);

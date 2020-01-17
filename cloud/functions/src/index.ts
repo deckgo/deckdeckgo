@@ -6,10 +6,9 @@ app.firestore().settings({timestampsInSnapshots: true});
 
 import {applyWatchDeckCreate, applyWatchDeckDelete, applyWatchDeckUpdate} from './watch/watch-deck';
 import {applyWatchUserCreate, applyWatchUserDelete, applyWatchUserUpdate} from './watch/watch-user';
-import {applyWatchSlideCreate, applyWatchSlideDelete, applyWatchSlideUpdate} from './watch/watch-slide';
 
 const runtimeOpts = {
-    timeoutSeconds: 300,
+    timeoutSeconds: 120,
     memory: <const> '1GB'
 };
 
@@ -24,9 +23,3 @@ export const watchUserUpdate = functions.firestore.document('users/{userId}').on
 export const watchUserDelete = functions.auth.user().onDelete(applyWatchUserDelete);
 
 export const watchUserCreate = functions.auth.user().onCreate(applyWatchUserCreate);
-
-export const watchSlideUpdate = functions.firestore.document('decks/{deckId}/slides/{slideId}').onUpdate(applyWatchSlideUpdate);
-
-export const watchSlideDelete = functions.firestore.document('decks/{deckId}/slides/{slideId}').onDelete(applyWatchSlideDelete);
-
-export const watchSlideCreate = functions.firestore.document('decks/{deckId}/slides/{slideId}').onCreate(applyWatchSlideCreate);
