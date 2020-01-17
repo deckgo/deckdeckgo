@@ -2,6 +2,8 @@ import {BaseType, select, Selection} from 'd3-selection';
 
 export interface DeckdeckgoChart {
   draw(): Promise<void>;
+
+  postCustomLoad(content: string | undefined);
 }
 
 

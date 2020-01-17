@@ -3,7 +3,9 @@ import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import {generateDeckScreenshot} from './screenshot/generate-deck-screenshot';
 import {infoDeckPublish} from './info/info-deck-publish';
+
 import {deleteDeckSlides} from './delete/delete-deck-slides';
+
 import {cloneDeckSlides} from './clone/clone-deck-slides';
 
 export async function applyWatchDeckUpdate(change: Change<DocumentSnapshot>, context: EventContext) {

@@ -42,7 +42,7 @@ export function updateCloneData(deckId: string, slidesIds?: string[] | undefined
 
             const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/decks/${deckId}/`);
 
-            let updateData: any = {
+            const updateData: any = {
                 clone: admin.firestore.FieldValue.delete(),
                 updated_at: admin.firestore.Timestamp.now()
             };

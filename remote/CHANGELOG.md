@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.2-5"></a>
+# 1.0.0-rc.2-5 (2020-01-16)
+
+### Features
+
+* update last libs and notably `<deckgo-charts/>` and `<deckgo-lazy-img/>` which contains improvements in case of custom loader
+
 <a name="1.0.0-rc.2-4"></a>
 # 1.0.0-rc.2-4 (2020-01-08)
 

@@ -23,6 +23,8 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Prop({reflect: true, mutable: true}) src: string;
   @Prop({reflect: true}) separator: string;
 
+  @Prop() customLoader: boolean = false;
+
   @Prop() width: number;
   @Prop() height: number;
 
@@ -202,6 +204,22 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
     });
   }
 
+  @Method()
+  async postCustomLoad(content: string | undefined) {
+    let chartElement: HTMLElement;
+    if (this.type === DeckdeckgoSlideChartType.LINE) {
+      chartElement = this.el.shadowRoot.querySelector('deckgo-line-chart');
+    } else if (this.type === DeckdeckgoSlideChartType.BAR) {
+      chartElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
+    } else {
+      chartElement = this.el.shadowRoot.querySelector('deckgo-pie-chart');
+    }
+
+    if (chartElement) {
+      await (chartElement as any).postCustomLoad(content);
+    }
+  }
+
   render() {
     return <Host class={{'deckgo-slide-container': true}}>
       <div class="deckgo-slide">
@@ -224,7 +242,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
     if (this.type === DeckdeckgoSlideChartType.LINE) {
       return this.renderLineChart(attrs);
     } else if (this.type === DeckdeckgoSlideChartType.BAR) {
-      return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+      return <deckgo-bar-chart width={this.chartWidth} height={this.chartHeight} src={this.src} custom-loader={this.customLoader}
                                margin-top={this.marginTop} margin-bottom={this.marginBottom}
                                margin-right={this.marginRight} margin-left={this.marginLeft}
                                animation={this.animation}
@@ -251,7 +269,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
       attrs['ticks'] = this.ticks;
     }
 
-    return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+    return <deckgo-line-chart width={this.chartWidth} height={this.chartHeight} src={this.src} custom-loader={this.customLoader}
                               margin-top={this.marginTop} margin-bottom={this.marginBottom}
                               margin-right={this.marginRight} margin-left={this.marginLeft}
                               animation={this.animation} animation-duration={this.animationDuration}
@@ -263,7 +281,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
       attrs['inner-radius'] = this.innerRadius;
     }
 
-    return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src}
+    return <deckgo-pie-chart width={this.chartWidth} height={this.chartHeight} src={this.src} custom-loader={this.customLoader}
                              margin-top={this.marginTop} margin-bottom={this.marginBottom}
                              margin-right={this.marginRight} margin-left={this.marginLeft}
                              animation={this.animation}

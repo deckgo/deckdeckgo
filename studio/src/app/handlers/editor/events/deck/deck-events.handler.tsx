@@ -736,7 +736,7 @@ export class DeckEventsHandler {
     }
 
     private getDeckBackground(deck: HTMLElement): Promise<string> {
-        return new Promise<string>((resolve) => {
+        return new Promise<string>(async (resolve) => {
             const slotElement: HTMLElement = deck.querySelector(':scope > [slot=\'background\']');
 
             if (!slotElement) {
@@ -744,7 +744,9 @@ export class DeckEventsHandler {
                 return;
             }
 
-            resolve(slotElement.innerHTML);
+            const result: string = await cleanContent(slotElement.innerHTML);
+
+            resolve(result);
         });
     }
 

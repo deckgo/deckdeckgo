@@ -1,9 +1,5 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {alertController} from '@ionic/core';
-
-import {get, set} from 'idb-keyval';
-
 import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
@@ -28,14 +24,10 @@ export class AppCustomData {
     private uploading: boolean = false;
 
     @State()
-    private infoDisplayedOnce: boolean = false;
+    private loading: boolean = true;
 
     constructor() {
         this.storageService = StorageService.getInstance();
-    }
-
-    async componentWillLoad() {
-        this.infoDisplayedOnce = await get<boolean>('deckdeckgo_display_custom_data');
     }
 
     async componentDidLoad() {
@@ -91,6 +83,8 @@ export class AppCustomData {
             if (!list.items || list.items.length <= 0) {
                 this.emptyFiles();
 
+                this.loading = false;
+
                 resolve();
                 return;
             }
@@ -104,6 +98,8 @@ export class AppCustomData {
             this.paginationNext = list.nextPageToken;
 
             this.disableInfiniteScroll = list.items.length < this.storageService.maxQueryResults;
+
+            this.loading = false;
 
             resolve();
         });
@@ -146,47 +142,19 @@ export class AppCustomData {
             }
 
             if (filePicker.files && filePicker.files.length > 0) {
-                this.uploading = true;
+                        this.uploading = true;
 
                 const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'data', 10485760);
 
-                if (storageFile) {
-                    await this.selectAndClose(storageFile);
-                }
+                        if (storageFile) {
+                            await this.selectAndClose(storageFile);
+                        }
 
-                this.uploading = false;
-            }
+                        this.uploading = false;
+                    }
 
             resolve();
         });
-    }
-
-    private async openCustomDataPublicInfo() {
-        const alert: HTMLIonAlertElement = await alertController.create({
-            header: 'About your data',
-            message: 'Please note that currently, all the data you would upload, will be publicly visible on the internet.',
-            cssClass: 'custom-info',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    handler: () => {
-                        this.uploading = false;
-                    }
-                }, {
-                    text: 'Ok',
-                    handler: async () => {
-                        await set('deckdeckgo_display_custom_data', true);
-
-                        this.infoDisplayedOnce = true;
-
-                        await this.openFilePicker();
-                    }
-                }
-            ]
-        });
-
-        return await alert.present();
     }
 
     render() {
@@ -249,6 +217,10 @@ export class AppCustomData {
     }
 
     private renderPlaceHolder() {
+        if (this.loading) {
+            return undefined;
+        }
+
         return <div class="placeholder">
             <div>
                 <ion-icon src="/assets/icons/file.svg"></ion-icon>
@@ -259,7 +231,7 @@ export class AppCustomData {
 
     private renderToolbarAction() {
         if (!this.uploading) {
-            return <ion-button onClick={() => (this.infoDisplayedOnce ? this.openFilePicker() : this.openCustomDataPublicInfo())} shape="round" color="tertiary">
+            return <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
                 <ion-icon name="cloud-upload" slot="start"></ion-icon>
                 <ion-label>Upload a new data</ion-label>
             </ion-button>

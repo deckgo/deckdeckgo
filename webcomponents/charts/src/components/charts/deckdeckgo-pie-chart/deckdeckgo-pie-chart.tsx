@@ -1,4 +1,4 @@
-import {Component, Prop, Element, Method, Watch, h, Host} from '@stencil/core';
+import {Component, Prop, Element, Method, Watch, h, Host, Event, EventEmitter} from '@stencil/core';
 
 import {BaseType, Selection} from 'd3-selection';
 import {pie, arc, Pie, Arc, DefaultArcObject} from 'd3-shape';
@@ -41,8 +41,13 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
   @Prop() src: string;
   @Prop() separator: string = ';';
 
+  @Prop() customLoader: boolean = false;
+
   @Prop() animation: boolean = false;
   @Prop() animationDuration: number = 1000;
+
+  @Event()
+  private chartCustomLoad: EventEmitter<string>;
 
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private myPath: Arc<any, DefaultArcObject>;
@@ -238,9 +243,15 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
     });
   }
 
-  async fetchData(): Promise<DeckdeckgoPieChartData[]> {
+  fetchData(): Promise<DeckdeckgoPieChartData[]> {
     return new Promise<DeckdeckgoPieChartData[]>(async (resolve) => {
       if (!this.src) {
+        resolve([]);
+        return;
+      }
+
+      if (this.customLoader) {
+        this.chartCustomLoad.emit(this.src);
         resolve([]);
         return;
       }
@@ -248,7 +259,26 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
       const response: Response = await fetch(this.src);
       const content: string = await response.text();
 
-      if (!content) {
+      let results: DeckdeckgoPieChartData[] = await this.loadContent(content);
+
+      resolve(results);
+    });
+  }
+
+  @Method()
+  async postCustomLoad(content: string | undefined) {
+    this.data = await this.loadContent(content);
+
+    if (!this.data || this.data.length <= 0) {
+      return;
+    }
+
+    await this.drawPie(0, 0);
+  }
+
+  private loadContent(content: string | undefined): Promise<DeckdeckgoPieChartData[]> {
+    return new Promise<DeckdeckgoPieChartData[]>(async (resolve) => {
+      if (!content || content === undefined) {
         resolve([]);
         return;
       }

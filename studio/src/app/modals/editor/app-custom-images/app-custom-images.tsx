@@ -1,9 +1,5 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {alertController} from '@ionic/core';
-
-import {get, set} from 'idb-keyval';
-
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {StorageService} from '../../../services/storage/storage.service';
 
@@ -34,15 +30,11 @@ export class AppCustomImages {
     private uploading: boolean = false;
 
     @State()
-    private infoDisplayedOnce: boolean = false;
+    private loading: boolean = true;
 
     constructor() {
         this.imageHistoryService = ImageHistoryService.getInstance();
         this.storageService = StorageService.getInstance();
-    }
-
-    async componentWillLoad() {
-        this.infoDisplayedOnce = await get<boolean>('deckdeckgo_display_custom_images');
     }
 
     async componentDidLoad() {
@@ -51,7 +43,7 @@ export class AppCustomImages {
         await this.search();
     }
 
-    @Listen('popstate', { target: 'window' })
+    @Listen('popstate', {target: 'window'})
     async handleHardwareBackButton(_e: PopStateEvent) {
         await this.closeModal();
     }
@@ -102,6 +94,8 @@ export class AppCustomImages {
             if (!list.items || list.items.length <= 0) {
                 this.emptyImages();
 
+                this.loading = false;
+
                 resolve();
                 return;
             }
@@ -120,6 +114,8 @@ export class AppCustomImages {
             this.paginationNext = list.nextPageToken;
 
             this.disableInfiniteScroll = list.items.length < this.storageService.maxQueryResults;
+
+            this.loading = false;
 
             resolve();
         });
@@ -163,47 +159,19 @@ export class AppCustomImages {
             }
 
             if (filePicker.files && filePicker.files.length > 0) {
-                this.uploading = true;
+                        this.uploading = true;
 
                 const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'images', 10485760);
 
-                if (storageFile) {
-                    await this.selectAndClose(storageFile);
-                }
+                        if (storageFile) {
+                            await this.selectAndClose(storageFile);
+                        }
 
-                this.uploading = false;
-            }
+                        this.uploading = false;
+                    }
 
             resolve();
         });
-    }
-
-    private async openCustomImagesPublicInfo() {
-        const alert: HTMLIonAlertElement = await alertController.create({
-            header: 'About your images',
-            message: 'Please note that currently, all the images you would upload, will be publicly visible on the internet.',
-            cssClass: 'custom-info',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    handler: () => {
-                        this.uploading = false;
-                    }
-                }, {
-                    text: 'Ok',
-                    handler: async () => {
-                        await set('deckdeckgo_display_custom_images', true);
-
-                        this.infoDisplayedOnce = true;
-
-                        this.openFilePicker();
-                    }
-                }
-            ]
-        });
-
-        return await alert.present();
     }
 
     render() {
@@ -245,6 +213,10 @@ export class AppCustomImages {
     }
 
     private renderImagesPlaceHolder() {
+        if (this.loading) {
+            return undefined;
+        }
+
         if ((!this.imagesOdd || this.imagesOdd.length <= 0) && (!this.imagesEven || this.imagesEven.length <= 0)) {
             return <div class="placeholder">
                 <div>
@@ -259,7 +231,7 @@ export class AppCustomImages {
 
     private renderToolbarAction() {
         if (!this.uploading) {
-            return <ion-button onClick={() => (this.infoDisplayedOnce ? this.openFilePicker() : this.openCustomImagesPublicInfo())} shape="round" color="tertiary">
+            return <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
                 <ion-icon name="cloud-upload" slot="start"></ion-icon>
                 <ion-label>Upload a new image</ion-label>
             </ion-button>

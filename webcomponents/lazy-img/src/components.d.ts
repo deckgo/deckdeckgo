@@ -7,11 +7,14 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  DeckDeckGoCustomLoad,
+} from './components/interfaces/custom-load';
 
 export namespace Components {
   interface DeckgoLazyImg {
     'ariaLabel': string;
+    'customLoader': boolean;
     'imgAlt': string;
     'imgErrorSrc': string;
     'imgHeight': number;
@@ -43,6 +46,7 @@ declare global {
 declare namespace LocalJSX {
   interface DeckgoLazyImg {
     'ariaLabel'?: string;
+    'customLoader'?: boolean;
     'imgAlt'?: string;
     'imgErrorSrc'?: string;
     'imgHeight'?: number;
@@ -53,6 +57,7 @@ declare namespace LocalJSX {
     'intrinsicsize'?: string;
     'observerRootMargin'?: string;
     'observerThreshold'?: number | number[];
+    'onCustomLoad'?: (event: CustomEvent<DeckDeckGoCustomLoad>) => void;
     'onLazyImgDidLoad'?: (event: CustomEvent<any>) => void;
     'svgSrc'?: string;
   }

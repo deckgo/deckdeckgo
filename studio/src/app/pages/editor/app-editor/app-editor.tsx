@@ -156,8 +156,9 @@ export class AppEditor {
     async destroy() {
         this.deckEventsHandler.destroy();
         this.editorEventsHandler.destroy();
-        await this.remoteEventsHandler.destroy();
         this.pollEventsHandler.destroy();
+
+        await this.remoteEventsHandler.destroy();
 
         if (this.busySubscription) {
             this.busySubscription.unsubscribe();

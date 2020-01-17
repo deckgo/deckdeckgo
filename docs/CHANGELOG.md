@@ -1,3 +1,17 @@
+<a name="1.0.0-rc.9-4"></a>
+# 1.0.0-rc.9-4 (2020-01-16)
+
+### Features
+
+* document new `custom-loader` for the component `<deckgo-charts/>`
+
+<a name="1.0.0-rc.9-3"></a>
+# 1.0.0-rc.9-3 (2020-01-15)
+
+### Features
+
+* document new `custom-loader` for the component `<deckgo-lazy-img/>`
+
 <a name="1.0.0-rc.9-2"></a>
 # 1.0.0-rc.9-2 (2020-01-08)
 
