@@ -4,6 +4,10 @@ app-landing {
     --deckgo-lazy-img-display: block;
   }
 
+  img.wave-section {
+    display: block;
+  }
+
   deckgo-deck {
     --pager-display: none;
   }

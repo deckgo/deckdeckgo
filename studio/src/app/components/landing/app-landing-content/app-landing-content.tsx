@@ -218,7 +218,7 @@ export class AppLandingContent {
                     </section>
                 </main>
 
-                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-introducing.svg`} role="presentation"></deckgo-lazy-img>
+                <img src={`/assets/img/landing/wave-introducing.svg`} role="presentation" loading="lazy" class="wave-section"/>
             </div>
 
             <div class="audience">
@@ -234,7 +234,7 @@ export class AppLandingContent {
                     </section>
                 </main>
 
-                <deckgo-lazy-img svg-src={`/assets/img/landing/wave-audience.svg`} role="presentation"></deckgo-lazy-img>
+                <img src={`/assets/img/landing/wave-audience.svg`} role="presentation" loading="lazy" class="wave-section"/>
             </div>
 
             <div class="remote">
