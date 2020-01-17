@@ -32,6 +32,9 @@ export class AppCustomData {
     @State()
     private searchFolder: string;
 
+    @State()
+    private loading: boolean = true;
+
     constructor() {
         this.storageService = StorageService.getInstance();
         this.deckEditorService = DeckEditorService.getInstance();
@@ -94,6 +97,8 @@ export class AppCustomData {
             if (!list.items || list.items.length <= 0) {
                 this.emptyFiles();
 
+                this.loading = false;
+
                 resolve();
                 return;
             }
@@ -107,6 +112,8 @@ export class AppCustomData {
             this.paginationNext = list.nextPageToken;
 
             this.disableInfiniteScroll = list.items.length < this.storageService.maxQueryResults;
+
+            this.loading = false;
 
             resolve();
         });
@@ -186,6 +193,8 @@ export class AppCustomData {
             return;
         }
 
+        this.loading = true;
+
         await this.emptyFiles();
         await this.search(`data/${folder.name}`);
     }
@@ -194,6 +203,8 @@ export class AppCustomData {
         if (this.uploading) {
             return;
         }
+
+        this.loading = true;
 
         await this.emptyFiles();
         await this.search(`data`);
@@ -208,7 +219,10 @@ export class AppCustomData {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
+
                     <ion-title class="ion-text-uppercase">Your data</ion-title>
+
+                    {this.renderNavigateRoot()}
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
@@ -270,23 +284,24 @@ export class AppCustomData {
     }
 
     private renderPlaceHolder() {
+        if (this.loading) {
+            return undefined;
+        }
+
         return <div class="placeholder">
             <div>
                 <ion-icon src="/assets/icons/file.svg"></ion-icon>
-                <ion-label class="ion-text-center">Your collection of data is empty</ion-label>
+                <ion-label class="ion-text-center">Your collection of data is empty for this presentation</ion-label>
             </div>
         </div>
     }
 
     private renderToolbarAction() {
         if (!this.uploading) {
-            return [
-                <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
-                    <ion-icon name="cloud-upload" slot="start"></ion-icon>
-                    <ion-label>Upload a new data</ion-label>
-                </ion-button>,
-                this.renderNavigateRoot()
-            ]
+            return <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
+                <ion-icon name="cloud-upload" slot="start"></ion-icon>
+                <ion-label>Upload a new data</ion-label>
+            </ion-button>;
         } else {
             return [
                 <ion-spinner color="tertiary"></ion-spinner>,
@@ -300,10 +315,11 @@ export class AppCustomData {
             return undefined;
         }
 
-        return <ion-button onClick={() => this.switchRootFolder()} shape="round" color="medium" fill="outline">
-            <ion-icon name="search" slot="start"></ion-icon>
-            <ion-label>Your presentations</ion-label>
-        </ion-button>;
+        return <ion-buttons slot="end" aria-label="Your presentations">
+            <ion-button onClick={() => this.switchRootFolder()}>
+                <ion-icon name="search"></ion-icon>
+            </ion-button>
+        </ion-buttons>;
     }
 
 }

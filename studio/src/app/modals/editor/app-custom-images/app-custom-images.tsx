@@ -35,6 +35,9 @@ export class AppCustomImages {
     private uploading: boolean = false;
 
     @State()
+    private loading: boolean = true;
+
+    @State()
     private searchFolder: string;
 
     private deckEditorService: DeckEditorService;
@@ -106,6 +109,8 @@ export class AppCustomImages {
             if (!list.items || list.items.length <= 0) {
                 this.emptyImages();
 
+                this.loading = false;
+
                 resolve();
                 return;
             }
@@ -124,6 +129,8 @@ export class AppCustomImages {
             this.paginationNext = list.nextPageToken;
 
             this.disableInfiniteScroll = list.items.length < this.storageService.maxQueryResults;
+
+            this.loading = false;
 
             resolve();
         });
@@ -210,6 +217,8 @@ export class AppCustomImages {
             return;
         }
 
+        this.loading = true;
+
         await this.emptyImages();
         await this.search(`images/${folder.name}`);
     }
@@ -218,6 +227,8 @@ export class AppCustomImages {
         if (this.uploading) {
             return;
         }
+
+        this.loading = true;
 
         await this.emptyImages();
         await this.search(`images`);
@@ -232,7 +243,10 @@ export class AppCustomImages {
                             <ion-icon name="close"></ion-icon>
                         </ion-button>
                     </ion-buttons>
+
                     <ion-title class="ion-text-uppercase">Your images</ion-title>
+
+                    {this.renderNavigateRoot()}
                 </ion-toolbar>
             </ion-header>,
             <ion-content class="ion-padding">
@@ -264,11 +278,15 @@ export class AppCustomImages {
 
 
     private renderImagesPlaceHolder() {
+        if (this.loading) {
+            return undefined;
+        }
+
         if ((!this.imagesOdd || this.imagesOdd.length <= 0) && (!this.imagesEven || this.imagesEven.length <= 0)) {
             return <div class="placeholder">
                 <div>
                     <ion-icon name="images"></ion-icon>
-                    <ion-label class="ion-text-center">Your collection of images is empty</ion-label>
+                    <ion-label class="ion-text-center">Your collection of images is empty for this presentation</ion-label>
                 </div>
             </div>
         } else {
@@ -278,13 +296,10 @@ export class AppCustomImages {
 
     private renderToolbarAction() {
         if (!this.uploading) {
-            return [
-                <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
-                    <ion-icon name="cloud-upload" slot="start"></ion-icon>
-                    <ion-label>Upload a new image</ion-label>
-                </ion-button>,
-                this.renderNavigateRoot()
-            ]
+            return <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
+                <ion-icon name="cloud-upload" slot="start"></ion-icon>
+                <ion-label>Upload a new image</ion-label>
+            </ion-button>;
         } else {
             return [
                 <ion-spinner color="tertiary"></ion-spinner>,
@@ -298,10 +313,11 @@ export class AppCustomImages {
             return undefined;
         }
 
-        return <ion-button onClick={() => this.switchRootFolder()} shape="round" color="medium" fill="outline">
-            <ion-icon name="search" slot="start"></ion-icon>
-            <ion-label>Your presentations</ion-label>
-        </ion-button>;
+        return <ion-buttons slot="end">
+            <ion-button onClick={() => this.switchRootFolder()} aria-label="Your presentations">
+                <ion-icon name="search"></ion-icon>
+            </ion-button>
+        </ion-buttons>;
     }
 
 }
