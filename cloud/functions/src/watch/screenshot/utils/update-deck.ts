@@ -14,11 +14,11 @@ export function isDeckPublished(previousValue: DeckData, newValue: DeckData): Pr
 
         let updated: boolean = false;
         if (previousValue.meta && newValue.meta) {
-            const previousPuslishedAt: Date | null = getDateObj(previousValue.meta.updated_at);
-            const newPuslishedAt: Date | null = getDateObj(newValue.meta.updated_at);
+            const previousPublishedAt: Date | null = getDateObj(previousValue.meta.updated_at);
+            const newPublishedAt: Date | null = getDateObj(newValue.meta.updated_at);
 
-            if (previousPuslishedAt && newPuslishedAt && newValue.meta.published) {
-                updated = previousPuslishedAt.getTime() < newPuslishedAt.getTime();
+            if (previousPublishedAt && newPublishedAt && newValue.meta.published) {
+                updated = previousPublishedAt.getTime() < newPublishedAt.getTime();
             }
         }
 
