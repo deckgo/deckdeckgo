@@ -147,17 +147,19 @@ export class PublishService {
             try {
                 const apiSlides: ApiSlide[] = await this.convertSlides(deck);
 
-                const googleFontScript: string | undefined = await this.getGoogleFontScript(deck);
-
                 const apiDeck: ApiDeck = {
                     name: deck.data.name ? deck.data.name.trim() : deck.data.name,
                     description: description !== undefined && description !== '' ? description : deck.data.name,
                     owner_id: deck.data.owner_id,
                     attributes: deck.data.attributes,
                     background: deck.data.background,
-                    slides: apiSlides,
-                    head_extra: googleFontScript
+                    slides: apiSlides
                 };
+
+                const googleFontScript: string | undefined = await this.getGoogleFontScript(deck);
+                if (googleFontScript !== undefined) {
+                    apiDeck.head_extra = googleFontScript;
+                }
 
                 resolve(apiDeck);
             } catch (err) {
