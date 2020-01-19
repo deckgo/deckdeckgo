@@ -60,7 +60,7 @@ function findPreloadModuleLinksHash(data) {
 
     let m;
     while (m = preload.exec(data)) {
-        shas.push(`'sha256-${crypto.createHash('sha256').update(m[0]).digest('base64')}'`)
+        shas.push(`'sha256-${crypto.createHash('sha256').update(m[0]).digest('base64')}'`);
     }
 
     return shas && shas.length > 0 ? shas.join(' ') : undefined;
