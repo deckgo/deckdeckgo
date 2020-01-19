@@ -91,7 +91,7 @@ export class AppDeck {
                 <ion-icon name="close"></ion-icon>
             </ion-router-link>
         </ion-toolbar>,
-            <app-select-target-element colorTarget={true} background={true} transition={true}
+            <app-select-target-element colorTarget={true} background={true} transition={true} fonts={true}
                                        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
             this.renderOptions()
@@ -110,6 +110,9 @@ export class AppDeck {
         } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
             return <app-deck-transition deckElement={this.deckElement}
                                         onTransitionChange={() => this.onTransitionChange()}></app-deck-transition>
+        } else if (this.applyToTargetElement === TargetElement.FONTS) {
+            return <app-deck-fonts deckElement={this.deckElement}
+                                        onFontsChange={() => this.onTransitionChange()}></app-deck-fonts>
         } else {
             return undefined;
         }
