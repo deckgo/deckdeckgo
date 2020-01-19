@@ -71,24 +71,43 @@ export class FontsUtils {
     static loadGoogleFont(googleFontsUrl: string, style: string): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!style || style === undefined || !style['font-family'] || style['font-family'] === undefined) {
-                resolve();
+                resolve(undefined);
                 return;
             }
 
-            const fontFamily: string = style['font-family'].replace(/\'/g, '').replace(/"/g, '')
+            const fontFamily: string | undefined = style['font-family'];
+
+            const font: GoogleFont | undefined = await this.extractGoogleFont(fontFamily);
+
+            if (!font || font === undefined) {
+                resolve(undefined);
+                return;
+            }
+
+            await Utils.injectCSS(font.id, this.getGoogleFontUrl(googleFontsUrl, font));
+
+            resolve();
+        });
+    }
+
+    static getGoogleFontUrl(googleFontsUrl: string, font: GoogleFont): string {
+        return googleFontsUrl + font.name.replace(' ', '+');
+    }
+
+    static extractGoogleFont(fontFamilyStyle: string): Promise<GoogleFont | undefined> {
+        return new Promise<GoogleFont | undefined>(async (resolve) => {
+            if (!fontFamilyStyle || fontFamilyStyle === undefined) {
+                resolve(undefined);
+                return;
+            }
+
+            const fontFamily: string = fontFamilyStyle.replace(/\'/g, '').replace(/"/g, '');
 
             const font: GoogleFont = this.fonts.find((font: GoogleFont) => {
                 return fontFamily === font.family.replace(/\'/g, '');
             });
 
-            if (!font || font === undefined) {
-                resolve();
-                return;
-            }
-
-            await Utils.injectCSS(font.id, googleFontsUrl + font.name.replace(' ', '+'));
-
-            resolve();
+            resolve(font);
         });
     }
 }

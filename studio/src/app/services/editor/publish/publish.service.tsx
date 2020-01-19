@@ -20,7 +20,10 @@ import {DeckEditorService} from '../deck/deck-editor.service';
 import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
 import {ApiPresentationFactoryService} from '../../api/presentation/api.presentation.factory.service';
 
+import {FontsUtils, GoogleFont} from '../../../utils/editor/fonts.utils';
+
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {EnvironmentGoogleConfig} from '../../core/environment/environment-config';
 
 export class PublishService {
 
@@ -144,19 +147,66 @@ export class PublishService {
             try {
                 const apiSlides: ApiSlide[] = await this.convertSlides(deck);
 
+                const googleFontScript: string | undefined = await this.getGoogleFontScript(deck);
+
                 const apiDeck: ApiDeck = {
                     name: deck.data.name ? deck.data.name.trim() : deck.data.name,
                     description: description !== undefined && description !== '' ? description : deck.data.name,
                     owner_id: deck.data.owner_id,
                     attributes: deck.data.attributes,
                     background: deck.data.background,
-                    slides: apiSlides
+                    slides: apiSlides,
+                    head_extra: googleFontScript
                 };
 
                 resolve(apiDeck);
             } catch (err) {
                 reject(err);
             }
+        });
+    }
+
+    private getGoogleFontScript(deck: Deck): Promise<string | undefined> {
+        return new Promise<string|undefined>(async (resolve) => {
+            if (!document) {
+                resolve(undefined);
+                return;
+            }
+            if (!deck || !deck.data || !deck.data.attributes) {
+                resolve(undefined);
+                return;
+            }
+
+            if (!deck.data.attributes.style || deck.data.attributes.style === undefined || deck.data.attributes.style === '') {
+                resolve(undefined);
+                return;
+            }
+
+            const div: HTMLDivElement =  document.createElement('div');
+            div.setAttribute('style', deck.data.attributes.style);
+
+            const fontFamily: string | undefined = div.style.getPropertyValue('font-family');
+
+            if (!fontFamily || fontFamily === undefined || fontFamily === '') {
+                resolve(undefined);
+                return;
+            }
+
+            const font: GoogleFont | undefined = await FontsUtils.extractGoogleFont(fontFamily);
+
+            if (!font || font === undefined) {
+                resolve(undefined);
+                return;
+            }
+
+            const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
+            const url: string = FontsUtils.getGoogleFontUrl(google.fontsUrl, font);
+
+            const link = document.createElement('link');
+            link.setAttribute('rel', 'stylesheet');
+            link.setAttribute('href', url);
+
+            resolve(link.outerHTML);
         });
     }
 
