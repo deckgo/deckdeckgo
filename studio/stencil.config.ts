@@ -19,7 +19,10 @@ const configValues = require(configDataFile);
 export const config: Config = {
     outputTargets: [{
         type: 'www',
-        baseUrl: 'https://deckdeckgo.com'
+        baseUrl: 'https://deckdeckgo.com',
+        serviceWorker: {
+            swSrc: 'src/sw.js'
+        }
     }],
     globalScript: globalScript,
     globalStyle: 'src/global/app.scss',
