@@ -17,7 +17,7 @@ function updateCSP(filename) {
         }
 
         // 1. Replace API Url
-        let result = data.replace(/<@API_URL@>/g, dev ? configDev.API_URL : configProd.API_URL);
+        let result = data.replace(/<@API_URL@>/g, `${dev ? configDev.API_URL : configProd.API_URL}/`);
 
         // 2. Update service worker loader hash
         const swHash = findSWHash(data);
