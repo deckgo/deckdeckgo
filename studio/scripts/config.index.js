@@ -28,6 +28,12 @@ function updateCSP(filename) {
         // 3. Update CSS link until https://github.com/ionic-team/stencil/issues/2039 solved
         result = result.replace(/rel=stylesheet media="\(max-width: 0px\)" importance=low onload="this\.media=''"/g, 'rel=stylesheet importance=low');
 
+        // 4. Update preloadmodule hash in the CSP rules, this will speed up the loading (even if Audit is still displaying a warning)
+        const linksHash = findPreloadModuleLinksHash(result);
+        if (linksHash) {
+            result = result.replace(/<@PRELOADMODULE_LINKS@>/g, linksHash);
+        }
+
         fs.writeFile(`${filename}`, result, 'utf8', function (err) {
             if (err) return console.log(err);
         });
@@ -45,6 +51,19 @@ function findSWHash(data) {
     }
 
     return undefined;
+}
+
+function findPreloadModuleLinksHash(data) {
+    const preload = /(<.?link (rel=\"modulepreload\"|rel=modulepreload).*?>)/gm;
+
+    const shas = [];
+
+    let m;
+    while (m = preload.exec(data)) {
+        shas.push(`'sha256-${crypto.createHash('sha256').update(m[0]).digest('base64')}'`);
+    }
+
+    return shas && shas.length > 0 ? shas.join(' ') : undefined;
 }
 
 function findHTMLFiles(dir, files) {
