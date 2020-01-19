@@ -9,7 +9,7 @@ import {EnvironmentGoogleConfig} from '../../../services/core/environment/enviro
     tag: 'app-deck-fonts',
     styleUrl: 'app-deck-fonts.scss'
 })
-export class AppDeckTransition {
+export class AppDeckFonts {
 
     @Prop()
     deckElement: HTMLElement;
