@@ -67,4 +67,28 @@ export class FontsUtils {
             // We ignore this error. Show must go on aka will fallback on default font
         }
     }
+
+    static loadGoogleFont(googleFontsUrl: string, style: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!style || style === undefined || !style['font-family'] || style['font-family'] === undefined) {
+                resolve();
+                return;
+            }
+
+            const fontFamily: string = style['font-family'].replace(/\'/g, '').replace(/"/g, '')
+
+            const font: GoogleFont = this.fonts.find((font: GoogleFont) => {
+                return fontFamily === font.family.replace(/\'/g, '');
+            });
+
+            if (!font || font === undefined) {
+                resolve();
+                return;
+            }
+
+            await Utils.injectCSS(font.id, googleFontsUrl + font.name.replace(' ', '+'));
+
+            resolve();
+        });
+    }
 }

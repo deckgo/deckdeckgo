@@ -28,12 +28,16 @@ import {EditorHelper} from '../../../helpers/editor/editor.helper';
 import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
+import {FontsUtils} from '../../../utils/editor/fonts.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {BusyService} from '../../../services/editor/busy/busy.service';
+
+import {EnvironmentGoogleConfig} from '../../../services/core/environment/environment-config';
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 
 @Component({
     tag: 'app-editor',
@@ -256,6 +260,9 @@ export class AppEditor {
                 }
 
                 this.background = await ParseBackgroundUtils.convertBackground(deck.data.background, true);
+
+                const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
+                await FontsUtils.loadGoogleFont(google.fontsUrl, this.style);
 
                 resolve();
             });
