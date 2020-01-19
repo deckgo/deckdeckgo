@@ -491,9 +491,21 @@ presentationsPut env conn _uid pid pinfo = do
 
     liftIO $ deployPresentation env uname presName pinfo
 
+    presUrl' <- do
+      purl <- liftIO (getEnv "DECKGO_PRESENTATIONS_URL")
+      pure $ mconcat
+        [ "https://"
+        , T.pack purl
+        , "/"
+        , unPresentationPrefix $
+            presentationPrefix uname presName
+        ]
+
+    liftIO $ putStrLn $ "Replying with url: " <> show presUrl'
+
     pure $ Item
       { itemId = pid
-      , itemContent = PresentationResult { presentationUrl = presUrl }
+      , itemContent = PresentationResult { presentationUrl = presUrl' }
       }
 
 -- USERS
@@ -1298,6 +1310,7 @@ sha256digest =
     Hash.hashWith Hash.SHA256 .
     T.encodeUtf8
 
+-- | finds all inlined javascript
 findScripts :: T.Text -> [T.Text]
 findScripts (TagSoup.parseTags -> ts) = xif ts
     (\f -> \case
