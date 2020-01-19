@@ -398,7 +398,7 @@ export class AppPublishEdit {
                 </div>
             </form>
 
-            <p class="small">No images need to be uploaded for the the social card of your presentation. DeckDeckGo will automatically generate it for you based on the first slide of your deck.</p>
+            <p class="small">DeckDeckGo will automatically generate the social card of your presentation based on the first slide of your deck.</p>
 
         </article>
     }
