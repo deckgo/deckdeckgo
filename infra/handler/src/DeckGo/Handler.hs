@@ -312,6 +312,7 @@ data PresentationInfo = PresentationInfo
   , presentationAttributes :: HMS.HashMap T.Text T.Text
   , presentationSlides :: [Slide]
   , presentationDescription :: T.Text
+  , presentationHeadExtra :: Maybe T.Text
   } deriving (Show, Eq)
 
 data PresentationResult = PresentationResult
@@ -329,10 +330,11 @@ instance FromJSONObject PresentationInfo where
       obj .:? "background" <*>
       obj .:? "attributes" .!= HMS.empty <*>
       obj .: "slides" <*>
-      obj .: "description"
+      obj .: "description" <*>
+      obj .:? "head_extra"
 
 instance FromJSONObject PresentationResult where
-  parseJSONObject = undefined -- \obj ->
+  parseJSONObject = undefined
 
 instance ToJSONObject PresentationResult where
   toJSONObject pres = HMS.fromList
