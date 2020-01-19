@@ -26,7 +26,8 @@ export function findSlides(deckId: string): Promise<DeckSlides | null> {
 
                     return {
                         id: id,
-                        ref: ref
+                        ref: ref,
+                        data: doc.data()
                     } as Slide;
                 });
 

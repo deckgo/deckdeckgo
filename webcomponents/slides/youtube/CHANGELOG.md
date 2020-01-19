@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2020-01-08)
+
+### Features
+
+* extract `@deckdeckgo/youtube` to a standalone component
+
 <a name="1.0.0-rc.2"></a>
 # 1.0.0-rc.2 (2019-12-01)
 

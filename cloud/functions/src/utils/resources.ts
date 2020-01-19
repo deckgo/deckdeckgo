@@ -7,7 +7,6 @@ export class Resources {
                 FOLDER: 'presentations',
                 IMAGE: 'deckdeckgo.png'
             }
-
         };
     }
 

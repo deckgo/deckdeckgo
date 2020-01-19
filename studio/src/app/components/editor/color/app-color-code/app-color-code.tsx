@@ -331,7 +331,7 @@ export class AppColorCode {
 
                 <div class={this.codeColorType === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
                     <deckgo-color class="ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)} color-rgb={this.codeColor} more={this.moreColors}>
-                        <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+                        <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
                     </deckgo-color>
                 </div>
 
@@ -367,7 +367,7 @@ export class AppColorCode {
 
                 <div class={!this.highlightLines || this.highlightLines === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
                     <deckgo-color class="ion-padding-bottom" onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)} color-rgb={this.highlightColor} more={this.moreColors}>
-                        <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+                        <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
                     </deckgo-color>
                 </div>
             </ion-list>

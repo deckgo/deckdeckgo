@@ -28,6 +28,7 @@ ion-list[class*="list"].inputs-list  {
     &.item-title {
       height: 38px;
 
+      --border-color: transparent;
       --padding-start: 0;
       --inner-padding-end: 0;
     }

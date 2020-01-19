@@ -1,0 +1,41 @@
+:host {
+  display: flex;
+}
+
+a {
+  cursor: pointer;
+  pointer-events: initial;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+
+  border-radius: 50%;
+  border: 1px solid var(--ion-color-primary);
+
+  width: 2rem;
+  height: 2rem;
+
+  margin: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+
+  ion-icon {
+    font-size: 1.2rem;
+    color: var(--ion-color-primary);
+  }
+
+  &.disabled {
+    border: 1px solid var(--ion-color-light);
+
+    ion-icon {
+      color: var(--ion-color-light);
+    }
+  }
+}

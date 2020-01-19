@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-3"></a>
+# 1.0.0-rc.3-3 (2020-01-04)
+
+### Features
+
+* loader under `dist` (to follow other deckdeckgo components convention)
+
 <a name="1.0.0-rc.3-2"></a>
 # 1.0.0-rc.3-2 (2019-12-12)
 

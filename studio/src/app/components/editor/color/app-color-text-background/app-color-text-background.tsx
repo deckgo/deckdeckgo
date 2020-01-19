@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
@@ -39,11 +39,6 @@ export class AppColorTextBackground {
     @Event() colorChange: EventEmitter<boolean>;
 
     async componentWillLoad() {
-        await this.initCurrentColors();
-    }
-
-    @Watch('applyToAllDeck')
-    async onApplyToAllDeckChange() {
         await this.initCurrentColors();
     }
 
@@ -100,8 +95,6 @@ export class AppColorTextBackground {
 
             if (this.applyColorType === ApplyColorType.BACKGROUND) {
                 this.selectedElement.style.removeProperty('--background');
-                this.selectedElement.style.removeProperty('--slide-split-background-start');
-                this.selectedElement.style.removeProperty('--slide-split-background-end');
                 this.selectedElement.style.removeProperty('background');
             } else {
                 this.selectedElement.style.removeProperty('--color');
@@ -149,16 +142,6 @@ export class AppColorTextBackground {
 
             if (this.deck || this.slide) {
                 this.selectedElement.style.setProperty('--background', selectedColor);
-            } else if (this.selectedElement.parentElement && this.selectedElement.parentElement.nodeName && this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-split') {
-                const element: HTMLElement = this.selectedElement.parentElement;
-
-                if (this.selectedElement.getAttribute('slot') === 'start') {
-                    element.style.setProperty('--slide-split-background-start', selectedColor);
-                } else if (this.selectedElement.getAttribute('slot') === 'end') {
-                    element.style.setProperty('--slide-split-background-end', selectedColor);
-                } else {
-                    this.selectedElement.style.background = selectedColor;
-                }
             } else {
                 this.selectedElement.style.background = selectedColor;
             }
@@ -218,7 +201,7 @@ export class AppColorTextBackground {
             </ion-list>,
             <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors}
                           onColorChange={($event: CustomEvent) => this.selectColor($event)} color-rgb={this.color}>
-                <ion-icon name="more" ios="md-mode" md="md-more" slot="more" aria-label="More" class="more"></ion-icon>
+                <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>,
             <ion-item class="action-button ion-margin-bottom">
                 <ion-button shape="round" onClick={() => this.resetColor()}

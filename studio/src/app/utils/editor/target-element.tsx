@@ -7,5 +7,6 @@ export enum TargetElement {
     COLOR = 'color',
     BACKGROUND = 'background',
     TRANSITION = 'transition',
+    SIDES = 'sides',
     FONTS = 'fonts'
 }

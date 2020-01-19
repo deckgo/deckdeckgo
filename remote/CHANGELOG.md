@@ -1,3 +1,31 @@
+<a name="1.0.0-rc.2-5"></a>
+# 1.0.0-rc.2-5 (2020-01-16)
+
+### Features
+
+* update last libs and notably `<deckgo-charts/>` and `<deckgo-lazy-img/>` which contains improvements in case of custom loader
+
+<a name="1.0.0-rc.2-4"></a>
+# 1.0.0-rc.2-4 (2020-01-08)
+
+### Features
+
+* update last libs and add new component `@deckdeckgo/youtube`
+
+<a name="1.0.0-rc.2-3"></a>
+# 1.0.0-rc.2-3 (2020-01-05)
+
+### Features
+
+* new template `author` design
+
+<a name="1.0.0-rc.2-2"></a>
+# 1.0.0-rc.2-2 (2020-01-04)
+
+### Features
+
+* update last libs and add new component `@deckdeckgo/social`
+
 <a name="1.0.0-rc.2-1"></a>
 # 1.0.0-rc.2-1 (2019-12-12)
 

@@ -5,6 +5,8 @@ import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/lazy-img';
 import '@deckdeckgo/qrcode';
 import '@deckdeckgo/charts';
+import '@deckdeckgo/social';
+import '@deckdeckgo/youtube';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-author';

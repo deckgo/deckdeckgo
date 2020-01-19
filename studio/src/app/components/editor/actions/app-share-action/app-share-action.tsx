@@ -22,6 +22,8 @@ export class AppShareAction {
 
     @Event() private openShare: EventEmitter<void>;
 
+    @Event() private openEmbed: EventEmitter<void>;
+
     constructor() {
         this.deckEditorService = DeckEditorService.getInstance();
     }
@@ -59,6 +61,8 @@ export class AppShareAction {
                     this.openShare.emit();
                 } else if (detail.data.action === MoreAction.PUBLISH) {
                     this.actionPublish.emit();
+                } else if (detail.data.action === MoreAction.EMBED) {
+                    this.openEmbed.emit();
                 }
             }
         });

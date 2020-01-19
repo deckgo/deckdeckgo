@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/color",
-  "version": "1.0.0-rc.3-2",
+  "version": "1.0.0-rc.3-3",
   "description": "A color picker developed with Web Components",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -13,7 +13,7 @@
   "files": [
     "dist/",
     "README.md",
-    "loader/"
+    "LICENSE"
   ],
   "scripts": {
     "build": "stencil build --docs",

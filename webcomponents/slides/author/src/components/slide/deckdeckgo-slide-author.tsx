@@ -1,4 +1,6 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, State, Watch} from '@stencil/core';
+
+import {isMobile} from '@deckdeckgo/utils';
 
 import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
@@ -16,13 +18,39 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Prop() imgSrc: string;
   @Prop() imgAlt: string;
 
+  @Prop({reflectToAttr: true}) imgMode: 'cover' | 'circle' | 'none' = 'cover';
+
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
+
+  @State()
+  private mobile: boolean = false;
+
+  @State()
+  private isLazyLoaded: boolean = false;
+
+  private lazyLoadAfterUpdate: boolean = false;
+
+  componentWillLoad() {
+    this.mobile = isMobile();
+  }
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
+  }
+
+  @Watch('imgMode')
+  async onPropChanges() {
+    this.lazyLoadAfterUpdate = true;
+  }
+
+  async componentDidUpdate() {
+    if (this.lazyLoadAfterUpdate) {
+      await this.lazyLoadContent();
+      this.lazyLoadAfterUpdate = false;
+    }
   }
 
   @Method()
@@ -39,7 +67,13 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return lazyLoadContent(this.el);
+    return new Promise<void>(async (resolve) => {
+      await lazyLoadContent(this.el);
+
+      this.isLazyLoaded = true;
+
+      resolve();
+    });
   }
 
   @Method()
@@ -53,13 +87,16 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   }
 
   render() {
+    const classAuthorStart: string = `deckgo-slide-author deckgo-slide-author-start deckgo-slide-author-${this.imgMode} ${this.mobile ? 'deckgo-slide-author-mobile' : ''}`;
+    const classAuthorEnd: string = `deckgo-slide-author deckgo-slide-author-end deckgo-slide-author-${this.imgMode} ${this.mobile ? 'deckgo-slide-author-mobile' : ''}`;
+
     return <Host class={{'deckgo-slide-container': true}}>
-        <div class="deckgo-slide">
+      <div class="deckgo-slide">
         <slot name="title"></slot>
-        <div class="deckgo-slide-author deckgo-slide-author-start">
-          <img data-src={this.imgSrc} alt={this.imgAlt}/>
+        <div class={classAuthorStart} style={{'--slide-author-color-start-img-url': this.isLazyLoaded ? `url(${this.imgSrc})` : undefined}}>
+          {this.renderImage()}
         </div>
-        <div class="deckgo-slide-author deckgo-slide-author-end">
+        <div class={classAuthorEnd}>
           <slot name="author"></slot>
           <div class="deckgo-slide-author-social">
             <slot name="social-link"></slot>
@@ -75,6 +112,14 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
         <slot name="background"></slot>
       </div>
     </Host>;
+  }
+
+  private renderImage() {
+    if (this.imgMode === 'cover' || this.imgMode === 'none') {
+      return undefined;
+    }
+
+    return <img data-src={this.imgSrc} alt={this.imgAlt}/>;
   }
 
 }

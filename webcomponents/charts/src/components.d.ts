@@ -16,6 +16,7 @@ export namespace Components {
   interface DeckgoBarChart {
     'animation': boolean;
     'animationDuration': number;
+    'customLoader': boolean;
     'data': DeckdeckgoBarChartData[];
     'draw': (width?: number, height?: number) => Promise<void>;
     'height': number;
@@ -26,6 +27,7 @@ export namespace Components {
     'marginRight': number;
     'marginTop': number;
     'next': () => Promise<void>;
+    'postCustomLoad': (content: string) => Promise<void>;
     'prev': () => Promise<void>;
     'separator': string;
     'src': string;
@@ -37,6 +39,7 @@ export namespace Components {
     'animation': boolean;
     'animationDuration': number;
     'area': boolean;
+    'customLoader': boolean;
     'datePattern': string;
     'draw': (width?: number, height?: number) => Promise<void>;
     'grid': boolean;
@@ -48,6 +51,7 @@ export namespace Components {
     'marginRight': number;
     'marginTop': number;
     'next': () => Promise<void>;
+    'postCustomLoad': (content: string) => Promise<void>;
     'prev': () => Promise<void>;
     'separator': string;
     'smooth': boolean;
@@ -59,6 +63,7 @@ export namespace Components {
   interface DeckgoPieChart {
     'animation': boolean;
     'animationDuration': number;
+    'customLoader': boolean;
     'draw': (width?: number, height?: number) => Promise<void>;
     'height': number;
     'innerRadius': number;
@@ -69,6 +74,7 @@ export namespace Components {
     'marginRight': number;
     'marginTop': number;
     'next': () => Promise<void>;
+    'postCustomLoad': (content: string) => Promise<void>;
     'prev': () => Promise<void>;
     'separator': string;
     'src': string;
@@ -107,12 +113,14 @@ declare namespace LocalJSX {
   interface DeckgoBarChart {
     'animation'?: boolean;
     'animationDuration'?: number;
+    'customLoader'?: boolean;
     'data'?: DeckdeckgoBarChartData[];
     'height'?: number;
     'marginBottom'?: number;
     'marginLeft'?: number;
     'marginRight'?: number;
     'marginTop'?: number;
+    'onChartCustomLoad'?: (event: CustomEvent<string>) => void;
     'separator'?: string;
     'src'?: string;
     'width'?: number;
@@ -122,6 +130,7 @@ declare namespace LocalJSX {
     'animation'?: boolean;
     'animationDuration'?: number;
     'area'?: boolean;
+    'customLoader'?: boolean;
     'datePattern'?: string;
     'grid'?: boolean;
     'height'?: number;
@@ -129,6 +138,7 @@ declare namespace LocalJSX {
     'marginLeft'?: number;
     'marginRight'?: number;
     'marginTop'?: number;
+    'onChartCustomLoad'?: (event: CustomEvent<string>) => void;
     'separator'?: string;
     'smooth'?: boolean;
     'src'?: string;
@@ -139,12 +149,14 @@ declare namespace LocalJSX {
   interface DeckgoPieChart {
     'animation'?: boolean;
     'animationDuration'?: number;
+    'customLoader'?: boolean;
     'height'?: number;
     'innerRadius'?: number;
     'marginBottom'?: number;
     'marginLeft'?: number;
     'marginRight'?: number;
     'marginTop'?: number;
+    'onChartCustomLoad'?: (event: CustomEvent<string>) => void;
     'separator'?: string;
     'src'?: string;
     'width'?: number;

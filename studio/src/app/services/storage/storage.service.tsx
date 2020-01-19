@@ -42,13 +42,13 @@ export class StorageService {
                     }
 
                     if (!data || !data.name) {
-                        this.errorService.error('Image not valid.');
+                        this.errorService.error('File not valid.');
                         resolve();
                         return;
                     }
 
-                    if (data.size > 10485760) {
-                        this.errorService.error(`Image is too big (max. ${maxSize / 1048576} Mb)`);
+                    if (data.size > maxSize) {
+                        this.errorService.error(`File is too big (max. ${maxSize / 1048576} Mb)`);
                         resolve();
                         return;
                     }

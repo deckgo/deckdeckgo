@@ -1,0 +1,39 @@
+app-landing {
+
+  deckgo-lazy-img {
+    --deckgo-lazy-img-display: block;
+  }
+
+  img.wave-section {
+    display: block;
+  }
+
+  deckgo-deck {
+    --pager-display: none;
+  }
+
+  section {
+    width: 100%;
+
+    --font-size-h1: 48px;
+    --font-size-h2: 32px;
+    --font-size-h3: 24px;
+
+    h1 {
+      font-size: 48px;
+    }
+
+    p {
+      font-size: 24px;
+      line-height: 28px;
+      font-weight: 300;
+    }
+
+    &.header {
+      width: 100%;
+      height: calc(100% - 56px);
+
+      background: var(--ion-color-primary);
+    }
+  }
+}

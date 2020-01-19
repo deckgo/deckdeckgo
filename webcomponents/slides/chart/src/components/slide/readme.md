@@ -14,6 +14,7 @@
 | `area`              | `area`               |             | `string`   | `undefined`                    |
 | `customActions`     | `custom-actions`     |             | `boolean`  | `false`                        |
 | `customBackground`  | `custom-background`  |             | `boolean`  | `false`                        |
+| `customLoader`      | `custom-loader`      |             | `boolean`  | `false`                        |
 | `datePattern`       | `date-pattern`       |             | `string`   | `undefined`                    |
 | `grid`              | `grid`               |             | `string`   | `undefined`                    |
 | `height`            | `height`             |             | `number`   | `undefined`                    |
@@ -82,6 +83,16 @@ Type: `Promise<void>`
 
 
 ### `lazyLoadContent() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `postCustomLoad(content: string) => Promise<void>`
 
 
 

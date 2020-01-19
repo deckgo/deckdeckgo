@@ -5,7 +5,7 @@ import {Component, Prop, h} from '@stencil/core';
   styleUrl: 'app-footer.scss',
   shadow: true
 })
-export class AppLogo {
+export class AppFooter {
 
   @Prop() start: boolean = false;
 

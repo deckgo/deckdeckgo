@@ -20,6 +20,9 @@ export class AppEditSlide {
     chart: boolean;
 
     @Prop()
+    author: boolean;
+
+    @Prop()
     slideDidChange: EventEmitter<HTMLElement>;
 
     private async closePopoverWithoutResults() {
@@ -56,6 +59,8 @@ export class AppEditSlide {
             return <h2>QR code options</h2>;
         } else if (this.chart) {
             return <h2>Chart options</h2>;
+        } else if (this.author) {
+            return <h2>Author options</h2>;
         } else {
             return <h2>Slide options</h2>;
         }
@@ -66,6 +71,8 @@ export class AppEditSlide {
             return <app-edit-slide-qrcode selectedElement={this.selectedElement} slideDidChange={this.slideDidChange} onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-qrcode>;
         } else if (this.chart) {
             return <app-edit-slide-chart selectedElement={this.selectedElement} slideDidChange={this.slideDidChange} onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-chart>;
+        } else if (this.author) {
+            return <app-edit-slide-author selectedElement={this.selectedElement} slideDidChange={this.slideDidChange}></app-edit-slide-author>;
         } else {
             return undefined;
         }

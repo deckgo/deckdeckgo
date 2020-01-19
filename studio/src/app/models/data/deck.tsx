@@ -26,6 +26,11 @@ export interface DeckAttributes {
     transition?: 'slide' | 'fade' | 'none';
 }
 
+export interface DeckClone {
+    deck_id_from?: string;
+    deck_id_to?: string;
+}
+
 export interface DeckData {
     name: string;
 
@@ -39,6 +44,8 @@ export interface DeckData {
     api_id?: string;
 
     meta?: DeckMeta;
+
+    clone?: DeckClone;
 
     created_at?: firebase.firestore.Timestamp;
     updated_at?: firebase.firestore.Timestamp;

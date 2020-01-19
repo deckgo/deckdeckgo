@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+
+  display: flex;
+  align-items: center;
+
+  max-width: 100%;
+
+  span {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+::slotted([slot="icon"]) {
+  margin-right: 8px;
+}

@@ -3,11 +3,11 @@ import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import {ImageAction} from '../../utils/editor/image-action';
 import {EditAction} from '../../utils/editor/edit-action';
+import {SlotUtils} from '../../utils/editor/slot.utils';
+import {SlotType} from '../../utils/editor/slot-type';
 
 import {AnonymousService} from '../../services/editor/anonymous/anonymous.service';
 import {BusyService} from '../../services/editor/busy/busy.service';
-import {SlotUtils} from '../../utils/editor/slot.utils';
-import {SlotType} from '../../utils/editor/slot-type';
 
 export class ImageHelper {
 

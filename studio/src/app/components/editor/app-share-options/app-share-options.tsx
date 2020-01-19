@@ -42,15 +42,32 @@ export class AppMoreShareOptions {
     render() {
         return <Host>
             {this.renderUpdate()}
-            <a onClick={() => this.selectedOption.emit(this.published ? MoreAction.SHARE : MoreAction.PUBLISH)}><p>Share</p></a>
+            {this.renderEmbed()}
+            {this.renderShareLink()}
         </Host>
     }
 
     private renderUpdate() {
         if (this.published) {
-            return <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}><p>Update your published presentation</p></a>;
+            return <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}><p>Publish to update share</p></a>;
         } else {
             return undefined;
+        }
+    }
+
+    private renderEmbed() {
+        if (this.published) {
+            return <a onClick={() => this.selectedOption.emit(MoreAction.EMBED)}><p>Embed</p></a>;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderShareLink() {
+        if (this.published) {
+            return <a onClick={() => this.selectedOption.emit(MoreAction.SHARE)}><p>Share link</p></a>;
+        } else {
+            return <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}><p>Share</p></a>;
         }
     }
 

@@ -27,18 +27,14 @@ export class AppPopular {
 
     private renderDescription() {
         if (this.description) {
-            return [<h1 class="ion-padding ion-margin-start ion-margin-end">What the heck is DeckDeckGo?</h1>,
+            return [<h1 class="ion-padding ion-margin-start ion-margin-end">Featured presentations</h1>,
                 <ion-card>
                     <ion-card-content>
-                        <p>DeckDeckGo aims to be the <strong>open source</strong> web editor for <strong>presentations</strong>.</p>
+                        <p>These decks were made with DeckDeckGo.</p>
 
-                        <p class="ion-padding-top">What makes it different 🤔?</p>
+                        <p class="ion-padding-top">Each of them are standalone <strong>Progressive Web Apps</strong> 🚀</p>
 
-                        <p class="ion-padding-top">Every presentations published with DeckDeckGo are standalone <strong>apps</strong> 🚀</p>
-
-                        <p class="ion-padding-top">Moreover, it would be incredible if it would become an online community for sharing presentations, slides and talks about your interests and ideas.</p>
-
-                        <p class="ion-padding-top ion-padding-bottom">Edit your deck anywhere, display it everywhere.</p>
+                        <p class="ion-padding-top">We aim to improve this feed in the future with some filters (tags, periodicity, etc.) and maybe even make it cleverer to personalize your feed for your interests and ideas.</p>
                     </ion-card-content>
                 </ion-card>];
         } else {

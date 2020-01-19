@@ -1,4 +1,4 @@
-import {Component, Element, Method, Prop, Watch, h, Host} from '@stencil/core';
+import {Component, Element, Method, Prop, Watch, h, Host, Event, EventEmitter} from '@stencil/core';
 
 import parse from 'date-fns/parse';
 import isValid from 'date-fns/isValid';
@@ -43,6 +43,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   @Prop() src: string;
   @Prop() separator: string = ';';
 
+  @Prop() customLoader: boolean = false;
+
   // All supported date format: https://date-fns.org/v2.0.0-alpha.26/docs/parse
   @Prop() datePattern: string = 'yyyy-MM-dd';
 
@@ -60,6 +62,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
   @Prop() animation: boolean = false;
   @Prop() animationDuration: number = 1000;
+
+  @Event()
+  private chartCustomLoad: EventEmitter<string>;
 
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private x: any;
@@ -105,25 +110,29 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         return;
       }
 
-      await this.initAxis();
-
-      await this.drawAxis();
-
-      await this.drawLine(0);
-
-      // All other series to compare if not animated
-      if (this.series.length > 1 && !this.animation) {
-        const promises = [];
-
-        for (let i = 1; i < this.series.length; i++) {
-          promises.push(this.drawLine(i));
-        }
-
-        await Promise.all(promises);
-      }
+      await this.firstDraw();
 
       resolve();
     });
+  }
+
+  private async firstDraw() {
+    await this.initAxis();
+
+    await this.drawAxis();
+
+    await this.drawLine(0);
+
+    // All other series to compare if not animated
+    if (this.series.length > 1 && !this.animation) {
+      const promises = [];
+
+      for (let i = 1; i < this.series.length; i++) {
+        promises.push(this.drawLine(i));
+      }
+
+      await Promise.all(promises);
+    }
   }
 
   @Method()
@@ -375,9 +384,15 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       .attr('d', line);
   }
 
-  async fetchData(): Promise<DeckdeckgoLineChartSerie[]> {
+  fetchData(): Promise<DeckdeckgoLineChartSerie[]> {
     return new Promise<DeckdeckgoLineChartSerie[]>(async (resolve) => {
       if (!this.src) {
+        resolve([]);
+        return;
+      }
+
+      if (this.customLoader) {
+        this.chartCustomLoad.emit(this.src);
         resolve([]);
         return;
       }
@@ -385,7 +400,26 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       const response: Response = await fetch(this.src);
       const content: string = await response.text();
 
-      if (!content) {
+      const series: DeckdeckgoLineChartSerie[] = await this.loadContent(content);
+
+      resolve(series);
+    });
+  }
+
+  @Method()
+  async postCustomLoad(content: string | undefined) {
+    this.series = await this.loadContent(content);
+
+    if (!this.series || this.series.length <= 0) {
+      return;
+    }
+
+    await this.firstDraw();
+  }
+
+  private loadContent(content: string | undefined): Promise<DeckdeckgoLineChartSerie[]> {
+    return new Promise<DeckdeckgoLineChartSerie[]>(async (resolve) => {
+      if (!content || content === undefined) {
         resolve([]);
         return;
       }

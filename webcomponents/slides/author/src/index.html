@@ -6,12 +6,14 @@
 
   <title>DeckDeckGo - Slide Author Template</title>
 
-  <script type="module" src="/build/deckdeckgo-slide-author.esm.js"></script>
-  <script nomodule src="/build/deckdeckgo-slide-author.js"></script>
-
   <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
   <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
 
+  <script type="module" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.js"></script>
+
+  <script type="module" src="/build/deckdeckgo-slide-author.esm.js"></script>
+  <script nomodule src="/build/deckdeckgo-slide-author.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
 
@@ -19,24 +21,85 @@
   <deckgo-slide-author img-alt="David" img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
     <div slot="author">
       <h2>David Dal Busco</h2>
-      <p>Founder of <a href="https://fluster.io">Fluster</a>. Creator of <a href="https://deckdeckgo.com">DeckDeckGo</a>.</p>
+      <p>Creator of <a href="https://deckdeckgo.com">DeckDeckGo</a>.</p>
       <p>Organizer of the Ionic Zürich <a href="https://www.meetup.com/Ionic-Zurich">Meetup</a></p>
       <p>Zürich, Switzerland</p>
     </div>
     <div slot="social-link">
       <deckgo-social twitter="daviddalbusco">
-        <img slot="icon" alt="DeckDeckGo" src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 20px; vertical-align: middle;"/>
+        <img slot="icon" alt="DeckDeckGo" src="https://docs.deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 20px; vertical-align: middle;"/>
         twitter
       </deckgo-social>
     </div>
-    <div slot="social-link"><deckgo-social linkedin="david-dal-busco/">linkedin</deckgo-social></div>
-    <div slot="social-link"><deckgo-social medium="david.dalbusco">medium</deckgo-social></div>
-    <div slot="social-link"><deckgo-social dev="daviddalbusco">dev</deckgo-social></div>
-    <div slot="social-link"><deckgo-social github="peterpeterparker">github</deckgo-social></div>
-    <div slot="social-link"><deckgo-social full-url="https://forum.ionicframework.com/u/reedrichards/summary">forum</deckgo-social></div>
-    <div slot="social-link"><deckgo-social full-url="https://stackoverflow.com/users/5404186/peter-parker">stackoverflow</deckgo-social></div>
+    <div slot="social-link"><deckgo-social linkedin="david-dal-busco/">linkedin/david-dal-busco</deckgo-social></div>
+    <div slot="social-link"><deckgo-social medium="david.dalbusco"></deckgo-social></div>
+    <div slot="social-link"><deckgo-social dev="daviddalbusco"></deckgo-social></div>
+    <div slot="social-link"><deckgo-social github="peterpeterparker">+daviddalbusco</deckgo-social></div>
+    <div slot="social-link"><deckgo-social full-url="https://daviddalbusco.com">https://daviddalbusco.com</deckgo-social></div>
+    <div slot="social-link"><deckgo-social full-url="https://googlegooglegooglegoogle.com"></deckgo-social></div>
   </deckgo-slide-author>
+
+  <deckgo-slide-author  style="--slide-author-background-start: blue; --slide-author-color-end: red; --slide-author-img-border: 2px solid white;"
+                        img-mode="circle" img-alt="David" img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
+    <div slot="author">
+      <h2>David Dal Busco</h2>
+    </div>
+    <div slot="social-link"><deckgo-social dev="daviddalbusco"></deckgo-social></div>
+  </deckgo-slide-author>
+
+  <deckgo-slide-author img-mode="none" img-alt="David" img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
+    <div slot="author">
+      <h2>David Dal Busco</h2>
+      <p>Creator of <a href="https://deckdeckgo.com">DeckDeckGo</a>.</p>
+      <p>Organizer of the Ionic Zürich <a href="https://www.meetup.com/Ionic-Zurich">Meetup</a></p>
+      <p>Zürich, Switzerland</p>
+    </div>
+    <div slot="social-link">
+      <deckgo-social twitter="daviddalbusco">
+        <img slot="icon" alt="DeckDeckGo" src="https://docs.deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 20px; vertical-align: middle;"/>
+        twitter
+      </deckgo-social>
+    </div>
+    <div slot="social-link"><deckgo-social linkedin="david-dal-busco/">linkedin/david-dal-busco</deckgo-social></div>
+    <div slot="social-link"><deckgo-social medium="david.dalbusco"></deckgo-social></div>
+    <div slot="social-link"><deckgo-social dev="daviddalbusco"></deckgo-social></div>
+    <div slot="social-link"><deckgo-social github="peterpeterparker">+daviddalbusco</deckgo-social></div>
+    <div slot="social-link"><deckgo-social full-url="https://daviddalbusco.com">https://daviddalbusco.com</deckgo-social></div>
+    <div slot="social-link"><deckgo-social full-url="https://googlegooglegooglegoogle.com"></deckgo-social></div>
+  </deckgo-slide-author>
+
+  <div slot="actions">
+    <button onclick="toggleMode()">Toggle mode</button>
+    <button onclick="slideNext()">Action slide next</button>
+  </div>
 </deckgo-deck>
+
+<script type="text/javascript">
+    function slideNext() {
+        const elem = document.getElementsByTagName('deckgo-deck');
+        if (elem && elem.length > 0) {
+            elem[0].slideNext(false);
+        }
+    }
+
+    async function toggleMode() {
+        const deck = document.querySelector('deckgo-deck');
+
+        if (!deck) {
+            return;
+        }
+
+        const index = await deck.getActiveIndex();
+
+        const slideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+        if (!slideElement || slideElement.tagName !== 'deckgo-slide-author'.toUpperCase()) {
+            return;
+        }
+
+        slideElement.setAttribute('img-mode', slideElement.getAttribute('img-mode') === 'circle' ? 'cover' : 'circle');
+    }
+</script>
 
 </body>
 </html>

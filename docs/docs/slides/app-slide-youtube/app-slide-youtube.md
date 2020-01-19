@@ -9,6 +9,7 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
   - [From a CDN](#app-slide-youtube-from-a-cdn)
   - [From NPM](#app-slide-youtube-from-npm)
   - [Framework integration](#app-slide-youtube-framework-integration)
+  - [Youtube component](#app-slide-youtube-youtube-component)
 - [Usage](#app-slide-youtube-usage)
   - [Slots](#app-slide-youtube-slots)
   - [Notes](#app-slide-youtube-notes)
@@ -71,6 +72,10 @@ import '@deckdeckgo/slide-youtube';
 import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-youtube/dist/loader';
 deckDeckGoSlideElement(window);
 ```
+
+### Youtube component
+
+This templates relies on the `@deckdeckgo/youtube` component without any explicit dependency. Therefore it should also be installed, see its related [installation](/components/youtube) guide.
 
 ## Usage
 

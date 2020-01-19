@@ -35,6 +35,7 @@ export class AppComponentsLazyImg {
 <li><a href="#app-components-lazy-img-attributes">Attributes</a></li>
 <li><a href="#app-components-lazy-img-theming">Theming</a></li>
 <li><a href="#app-components-lazy-img-methods">Methods</a></li>
+<li><a href="#app-components-lazy-img-events">Events</a></li>
 </ul>
 </li>
 <li><a href="(#app-components-lazy-img-fallbacks">Fallbacks</a></li>
@@ -151,6 +152,12 @@ export class AppComponentsLazyImg {
 <td>An intrinsicsize for the native lazy-loading (see <a href="https://web.dev/native-lazy-loading">Native lazy-loading for the web</a>)</td>
 <td></td>
 </tr>
+<tr>
+<td>custom-loader</td>
+<td>boolean</td>
+<td>In case you would like to take care by yourself to apply the load of the image. If turn to <code>true</code> then the component will emit an event <code>customLoad</code> when the image intersect the viewport instead of displaying it (doesn&#39;t apply for <code>svg</code> but only for <code>img-src</code> and <code>img-src-set</code>)</td>
+<td></td>
+</tr>
 </tbody></table>
 <h3 id="app-components-lazy-img-theming">Theming</h3>
 <p>The following theming options will affect this component if set on its host or parent.</p>
@@ -247,7 +254,24 @@ export class AppComponentsLazyImg {
 <p>This component also export an async method <code>lazyLoad()</code> in case you would like to trigger &quot;manually&quot; the loading of the image.</p>
 <deckgo-highlight-code language="javascript">
       <code slot="code">const element = document.querySelector(&#039;deckgo-lazy-img&#039;);{'\n'}await element.lazyLoad();</code>
-    </deckgo-highlight-code><h3 id="app-components-lazy-img-fallbacks">Fallbacks</h3>
+    </deckgo-highlight-code><h3 id="app-components-lazy-img-events">Events</h3>
+<p>The <code>&lt;deckgo-lazy-img/&gt;</code> will bubble the following events:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>customLoad</code></td>
+<td>Emitted if component property <code>custom-loader</code> is set to <code>true</code> and if an image (<code>img-src</code> or <code>img-src-set</code>) as to be loaded.</td>
+<td><code>CustomEvent&lt;DeckDeckGoCustomLoad&gt;</code></td>
+</tr>
+</tbody></table>
+<p>Where <code>DeckDeckGoCustomLoad</code> contains the shadowed image element and both information <code>img-src</code> and <code>img-src-set</code>.</p>
+<h3 id="app-components-lazy-img-fallbacks">Fallbacks</h3>
 <p>In case the browser would not support the native native lazy-loading or the Intersection Observer API, images are going to be loaded without any delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded. </p>
 <h3 id="app-components-lazy-img-trying-it-out">Trying it out</h3>
 <p>This component lazy load images when these are not presented in the viewport. If you would use this component in a simple test containing only a couple of images, respectively no content or no real use case where the images are effectively offscreen, assign a default height to components in order to ensure that some are effectively placed outside of the window <a href="https://github.com/deckgo/deckdeckgo/issues/128#issuecomment-493979841">[#128]</a>.</p>

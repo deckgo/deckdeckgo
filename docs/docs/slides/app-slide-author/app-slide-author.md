@@ -9,6 +9,7 @@ The "Author" slide lets you introduce the author of the presentation.
   - [From a CDN](#app-slide-author-from-a-cdn)
   - [From NPM](#app-slide-author-from-npm)
   - [Framework integration](#app-slide-author-framework-integration)
+  - [Social component](#app-slide-author-social-component)
 - [Usage](#app-slide-author-usage)
   - [Slots](#app-slide-author-slots)
   - [Notes](#app-slide-author-notes)
@@ -24,15 +25,15 @@ The "Author" slide lets you introduce the author of the presentation.
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>
         <div slot="author">slot="author"</div>
-        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social twitter="daviddalbusco"><ion-icon area-label="David on Twitter" slot="icon" name="logo-twitter"></ion-icon> twitter</deckgo-social></div>
-        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social linkedin="david-dal-busco/"><ion-icon area-label="David on Linkedin" slot="icon" name="logo-linkedin"></ion-icon> linkedin</deckgo-social></div>
+        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social twitter="daviddalbusco"><ion-icon area-label="David on Twitter" slot="icon" name="logo-twitter"></ion-icon></deckgo-social></div>
+        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social linkedin="david-dal-busco"><ion-icon area-label="David on Linkedin" slot="icon" name="logo-linkedin"></ion-icon></deckgo-social></div>
     </deckgo-slide-author>
   </deckgo-deck>
 </div>
 
 ## Installation
 
-This template could be added to your presentation using the following methods.
+This template could be added to your presentation using the following methods. 
 
 > If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
  
@@ -72,6 +73,10 @@ import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slid
 deckDeckGoSlideElement(window);
 ```
 
+### Social component
+
+This templates relies on the `@deckdeckgo/social` component without any explicit dependency. Therefore it should also be installed, see its related [installation](/components/social) guide.
+
 ## Usage
 
 The "Author" slide's Web Component could be integrated using the tag `<deckgo-slide-author/>`.
@@ -84,7 +89,7 @@ The "Author" slide's Web Component could be integrated using the tag `<deckgo-sl
       <h2>David</h2>
       <p>Something about me</p>
     </div>
-    <div slot="social-link"><deckgo-social twitter="daviddalbusco">twitter</deckgo-social></div>
+    <div slot="social-link"><deckgo-social twitter="daviddalbusco"></deckgo-social></div>
   </deckgo-slide-author>
 </deckgo-deck>  
 ```
@@ -118,7 +123,8 @@ This component offers the following options which could be set using attributes:
 | img-src | string |  | An image URI, for example a picture of the author. Note: this image will be displayed as a circle. |
 | img-alt | string |  | An optional accessibility alt for the image. |
 | custom-background | boolean | false | If you will provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you will provide actions for the all deck and a specific one for this slide, set this option to `true` | 
+| custom-actions | boolean | false | If you will provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| mode | `"circle" \| "cover" \| "none"` | `'cover'` | The design to be applied to the image. `cover` fits the image to the start pane, `circle` displays it in a circle and `none` in case you would not like to display an image | 
 
 ### Example
 
@@ -129,9 +135,9 @@ This component offers the following options which could be set using attributes:
       <h2>David</h2>
       <p>Something about me</p>
     </div>
-    <div slot="social-link"><deckgo-social twitter="daviddalbusco">twitter</deckgo-social></div>
-    <div slot="social-link"><deckgo-social linkedin="david-dal-busco/">linkedin</deckgo-social></div>
-    <div slot="social-link"><deckgo-social medium="david.dalbusco">medium</deckgo-social></div>
+    <div slot="social-link"><deckgo-social twitter="daviddalbusco"></deckgo-social></div>
+    <div slot="social-link"><deckgo-social linkedin="david-dal-busco"></deckgo-social></div>
+    <div slot="social-link"><deckgo-social medium="david.dalbusco"></deckgo-social></div>
   </deckgo-slide-author>
 </deckgo-deck>
 ```
@@ -156,7 +162,9 @@ The following theming options will affect this component if set on its host or p
 | --slide-author-align | inherit | Modify for example to center if you want to align the content in the middle |
 | --slide-author-text-align | inherit | Modify for example to center if you want to align the text in the middle |
 | --slide-author-img-size | 80% | The size of the image of the left pane |
+| --slide-author-img-border | | The border of the image of the left pane (only apply if `circle` mode is specified) |
 | --slide-author-social-padding-top | 32px | The spacing between the author description and the social links |
 | --zIndex | 1 | The z-index of the slide |
+| --slide-author-social-link-padding | 8px | Padding for the social links |
 
 [DeckDeckGo]: https://deckdeckgo.com

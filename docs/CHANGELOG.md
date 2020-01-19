@@ -1,3 +1,38 @@
+<a name="1.0.0-rc.9-4"></a>
+# 1.0.0-rc.9-4 (2020-01-16)
+
+### Features
+
+* document new `custom-loader` for the component `<deckgo-charts/>`
+
+<a name="1.0.0-rc.9-3"></a>
+# 1.0.0-rc.9-3 (2020-01-15)
+
+### Features
+
+* document new `custom-loader` for the component `<deckgo-lazy-img/>`
+
+<a name="1.0.0-rc.9-2"></a>
+# 1.0.0-rc.9-2 (2020-01-08)
+
+### Features
+
+* new component `<deckgo-social/>`
+
+<a name="1.0.0-rc.9-1"></a>
+# 1.0.0-rc.9-1 (2020-01-05)
+
+### Features
+
+* new template `author` design
+
+<a name="1.0.0-rc.9"></a>
+# 1.0.0-rc.9 (2020-01-04)
+
+### Features
+
+* new component `<deckgo-social/>`
+
 <a name="1.0.0-rc.8-2"></a>
 # 1.0.0-rc.8-2 (2019-12-12)
 

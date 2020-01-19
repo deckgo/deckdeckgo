@@ -229,6 +229,9 @@ The `<deckgo-pie-chart/>` expose the following properties:
 | `marginLeft`   | `margin-left`   |           | The margin left of the chart in pixel           | `number`  | `32`                                |
 | `marginRight`  | `margin-right`  |           | The margin right of the chart in pixel           | `number`  | `32`                                |
 | `marginTop`    | `margin-top`    |           | The margin top of the chart in pixel           | `number`  | `8`                                |
+| `customLoader` | `custom-loader` | | Set to `true` in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token. | `boolean` | `false` |
+
+Note: if you would use `customLoader` the component will emit an event `customLoad` which the source of the data to load. You should subscribe to this event in order to process your custom load.
 
 #### Styling
 
@@ -285,6 +288,14 @@ If you are using `animation`, this method is used to display the previous data r
 
 ```
 async prev()
+```
+
+##### Post load data
+
+If you "manually" load the data, call this method once the `text` content fetched.
+
+```
+postCustomLoad(content: string | undefined);
 ```
 
 #### Examples
@@ -369,6 +380,9 @@ The `<deckgo-line-chart/>` expose the following properties:
 | `separator`   | `separator`    |  | The line separator use in your csv file           | `string`                | `';'`       |
 | `animation`         | `animation`          | | Display multiple graphs and animate the transition between these | `boolean`                | `false` |
 | `animationDuration`         | `animation-duration`          | | Duration of the transition between graphs | `numer`                | `1000` (aka 1 second) |
+| `customLoader` | `custom-loader` | | Set to `true` in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token. | `boolean` | `false` |
+
+Note: if you would use `customLoader` the component will emit an event `customLoad` which the source of the data to load. You should subscribe to this event in order to process your custom load.
 
 #### Styling
 
@@ -430,6 +444,14 @@ If you are using `animation`, this method is used to display the previous data r
 
 ```
 async prev()
+
+```
+##### Post load data
+
+If you "manually" load the data, call this method once the `text` content fetched.
+
+```
+postCustomLoad(content: string | undefined);
 ```
 
 #### Examples
@@ -493,6 +515,9 @@ The `<deckgo-bar-chart/>` expose the following properties:
 | `animationDuration`         | `animation-duration`          | | Duration of the transition between graphs | `numer`                | `1000` (aka 1 second) |
 | `data`         | `data`          |  | Instead of a source file it is also possible to provide the data of the chart as an object | `DeckdeckgoBarChartData`                | |
 | `yAxis`         | `y-axis`          | | If `false`, no axis y will be draw. | `boolean`                | |
+| `customLoader` | `custom-loader` | | Set to `true` in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token. | `boolean` | `false` |
+
+Note: if you would use `customLoader` the component will emit an event `customLoad` which the source of the data to load. You should subscribe to this event in order to process your custom load.
 
 #### Styling
 
@@ -549,6 +574,14 @@ If you are using `animation`, this method is used to display the previous data r
 
 ```
 async prev()
+```
+
+##### Post load data
+
+If you "manually" load the data, call this method once the `text` content fetched.
+
+```
+postCustomLoad(content: string | undefined);
 ```
 
 ##### Updating current bar

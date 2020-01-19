@@ -1,16 +1,36 @@
+@mixin footerColorDark() {
+  section > ion-label {
+    color: black;
+  }
+
+  ion-router-link {
+    color: var(--ion-color-medium);
+
+    &:hover, &.active {
+      color: var(--ion-color-medium);
+    }
+  }
+
+  div.social {
+    ion-icon {
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
 app-footer {
-  div {
+  div.footer-container {
     font-size: var(--font-size-small);
 
     &.footer-container {
-      margin-top: 32px;
+      margin-top: 8px;
     }
 
-    > ion-label {
+    section > ion-label {
       display: block;
       padding-bottom: 6px;
 
-      color: white;
+      color: black;
       font-weight: bold;
     }
 
@@ -20,10 +40,10 @@ app-footer {
       width: max-content;
       font-weight: 300;
 
-      color: white;
+      color: var(--ion-color-medium);
 
       &:hover, &.active {
-        color: white;
+        color: var(--ion-color-medium);
 
         border-bottom-color: transparent;
       }
@@ -31,7 +51,7 @@ app-footer {
 
     div.social {
       ion-icon {
-        color: white;
+        color: var(--ion-color-medium);
         font-size: 1rem;
 
         &:not(last-of-type) {
@@ -40,26 +60,65 @@ app-footer {
       }
     }
   }
+
+  div.footer-landing {
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    justify-items: center;
+
+    @include footerColorDark();
+
+    @media (max-width: 375px) {
+      grid-template-columns: 50% 50%;
+    }
+
+    section {
+      width: inherit;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      > ion-label, > ion-router-link {
+        display: inline-block;
+      }
+    }
+
+    div.social {
+      grid-column-start: 1;
+      grid-column-end: 5;
+
+      @media (max-width: 375px) {
+        grid-column-start: 1;
+        grid-column-end: 3;
+      }
+    }
+  }
 }
 
 body.dark {
-  app-footer {
-    div {
-      > ion-label {
-        color: black;
-      }
-
-      ion-router-link {
-        color: var(--ion-color-medium);
-
-        &:hover, &.active {
-          color: var(--ion-color-medium);
+  ion-menu-toggle {
+    app-footer {
+      div.footer-container {
+        section > ion-label {
+          color: var(--ion-color-dark-contrast);
         }
-      }
 
-      div.social {
-        ion-icon {
-          color: var(--ion-color-medium);
+        ion-router-link {
+          color: var(--ion-color-dark-contrast);
+
+          &:hover, &.active {
+            color: var(--ion-color-dark-contrast);
+          }
+        }
+
+        div.social {
+          ion-icon {
+            color: var(--ion-color-dark-contrast);
+          }
         }
       }
     }

@@ -18,6 +18,6 @@ export async function applyWatchUserCreate(userRecord: admin.auth.UserRecord, _c
     await createMailchimpMember(userRecord);
 }
 
-export async function applyWatchUserUpdate(change: Change<DocumentSnapshot>, context: EventContext) {
+export async function applyWatchUserUpdate(change: Change<DocumentSnapshot>, _context: EventContext) {
     await updateMailchimpMember(change);
 }

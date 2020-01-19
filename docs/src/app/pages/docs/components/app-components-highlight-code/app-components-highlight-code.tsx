@@ -420,7 +420,7 @@ export class AppComponentsHighlightCode {
 </tr>
 </tbody></table>
 <h3 id="app-components-highlight-code-methods">Methods</h3>
-<p>The <code>&lt;deckgo-highlight-code/&gt;</code> expose the following methods:</p>
+<p>The <code>&lt;deckgo-highlight-code/&gt;</code> exposes the following methods:</p>
 <h4 id="app-components-highlight-code-find-the-next-anchor">Find the next anchor</h4>
 <deckgo-highlight-code language="javascript">
       <code slot="code">findNextAnchor(enter: boolean) =&gt; Promise&lt;boolean&gt;</code>

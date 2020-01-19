@@ -281,9 +281,6 @@ export class AppCreateSlide {
                         <p slot="social-link">Twitter</p>
                         <p slot="social-link">LinkedIn</p>
                         <p slot="social-link">Dev</p>
-                        <p slot="social-link">Medium</p>
-                        <p slot="social-link">Github</p>
-                        <p slot="social-link">Web</p>
                     </deckgo-slide-author>
                 </div>
 

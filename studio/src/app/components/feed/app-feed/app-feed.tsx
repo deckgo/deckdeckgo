@@ -1,4 +1,4 @@
-import {Component, h, State} from '@stencil/core';
+import {Component, h, State, Host} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -6,6 +6,7 @@ import {Deck} from '../../../models/data/deck';
 
 import {FeedService} from '../../../services/data/feed/feed.service';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {isMobile} from '@deckdeckgo/utils';
 
 @Component({
     tag: 'app-feed',
@@ -25,6 +26,9 @@ export class AppFeed {
     @State()
     private decksFetched: boolean = false;
 
+    @State()
+    private mobile: boolean = false;
+
     private presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
 
     private subscription: Subscription;
@@ -43,7 +47,9 @@ export class AppFeed {
         this.lastPageSubscription = this.feedService.watchLastPageReached().subscribe((lastPageReached: boolean) => {
             this.lastPageReached = lastPageReached;
             this.decksFetched = lastPageReached;
-        })
+        });
+
+        this.mobile = isMobile();
     }
 
     async componentDidLoad() {
@@ -67,14 +73,48 @@ export class AppFeed {
         }, 500);
     }
 
+    private async refreshFeed($event) {
+        if (!$event || !$event.target) {
+            return;
+        }
+
+        await this.feedService.refresh();
+
+        $event.target.complete();
+    }
+
     render() {
-        return [
-            this.renderDecks(),
-            <ion-infinite-scroll onIonInfinite={($event: CustomEvent) => this.findNextDecks($event)} disabled={this.lastPageReached}>
-                <ion-infinite-scroll-content>
-                </ion-infinite-scroll-content>
-            </ion-infinite-scroll>
-        ]
+        return <Host>
+
+            {this.renderRefresher()}
+
+            <main>
+                <app-popular description={true}></app-popular>
+
+                <div class="feed">
+                    {this.renderDecks()}
+
+                    <ion-infinite-scroll onIonInfinite={($event: CustomEvent) => this.findNextDecks($event)} disabled={this.lastPageReached}>
+                        <ion-infinite-scroll-content>
+                        </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+                </div>
+
+                <app-popular help={true}></app-popular>
+            </main>
+
+        </Host>
+    }
+
+    private renderRefresher() {
+        if (this.mobile) {
+            return <ion-refresher slot="fixed" onIonRefresh={($event: CustomEvent) => this.refreshFeed($event)}>
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>;
+        } else {
+            // Only on mobile devices otherwise conflict with click action to open presentations from cards
+            return undefined;
+        }
     }
 
     private renderDecks() {

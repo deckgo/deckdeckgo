@@ -126,13 +126,13 @@ export class AppRemoteConnect {
                     </ion-item>
                 </ion-list>
 
-                <p class="ion-padding-start ion-padding-end">Remote control your presentation with your phone or any devices. Scan the following QR Code to open directly your deck or get the Progressive Web Apps at <a href="https://deckdeckgo.app" target="_blank">https://deckdeckgo.app <ion-icon name="open"></ion-icon></a></p>
-
                 <div class="qrcode-container">
                     <deckgo-qrcode content={this.qrCodeURI}>
                         <ion-icon slot="logo" src="/assets/img/deckdeckgo-logo.svg"></ion-icon>
                     </deckgo-qrcode>
                 </div>
+
+                <p class="ion-padding-start ion-padding-end">Remote control your presentation with your phone or any devices. Scan the above QR Code to open directly your deck or get the Progressive Web Apps at <a href="https://deckdeckgo.app" target="_blank">https://deckdeckgo.app <ion-icon name="open"></ion-icon></a></p>
             </ion-content>
         ];
     }

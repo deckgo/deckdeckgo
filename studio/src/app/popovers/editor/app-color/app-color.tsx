@@ -39,16 +39,24 @@ export class AppColor {
     @State()
     private code: boolean = false;
 
+    @State()
+    private author: boolean = false;
+
+    @State()
+    private split: boolean = false;
+
     async componentWillLoad() {
         if (this.slide) {
             this.qrCode = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
             this.chart = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-chart'.toUpperCase();
             this.poll = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-poll'.toUpperCase();
+            this.author = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-author'.toUpperCase();
+            this.split = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-split'.toUpperCase();
         }
 
         this.code = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.CODE;
 
-        this.applyToTargetElement = this.code ? TargetElement.CODE : (this.qrCode || this.poll ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : TargetElement.SLIDE));
+        this.applyToTargetElement = this.code ? TargetElement.CODE : (this.qrCode || this.poll ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : (this.author || this.split ? TargetElement.SIDES : TargetElement.SLIDE)));
 
         this.moreColors = !isIPad();
     }
@@ -99,11 +107,11 @@ export class AppColor {
     }
 
     private renderSelectTarget() {
-        if (this.slide && !this.qrCode && !this.poll && !this.chart) {
+        if (this.slide && !this.qrCode && !this.poll && !this.chart && !this.author && !this.split) {
             return undefined;
         }
 
-        return <app-select-target-element slide={this.slide} qrCode={this.qrCode || this.poll} chart={this.chart || this.poll} code={this.code}
+        return <app-select-target-element slide={this.slide} qrCode={this.qrCode || this.poll} chart={this.chart || this.poll} code={this.code} sides={this.author || this.split}
                                           onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>;
     }
 
@@ -120,6 +128,10 @@ export class AppColor {
             return <app-color-code selectedElement={this.selectedElement}
                                    onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
                                    moreColors={this.moreColors}></app-color-code>
+        } else if (this.applyToTargetElement === TargetElement.SIDES) {
+            return <app-color-sides selectedElement={this.selectedElement} template={this.author ? 'author' : 'split'}
+                                     onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
+                                     moreColors={this.moreColors}></app-color-sides>
         } else {
             return <app-color-text-background selectedElement={this.selectedElement} moreColors={this.moreColors}
                                          slide={this.slide}
