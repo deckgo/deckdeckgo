@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE DeriveGeneric #-}
@@ -32,6 +33,7 @@ import Control.Applicative
 import Control.Lens hiding ((.=))
 import Control.Monad
 import Control.Monad.Except
+import Data.ByteArray.Encoding (convertToBase, Base (Base64))
 import Data.Aeson ((.=), (.:), (.!=), (.:?))
 import Data.Bifunctor
 import Data.Char
@@ -53,6 +55,7 @@ import System.FilePath
 import UnliftIO
 import qualified Cases
 import qualified Codec.Archive.Tar as Tar
+import qualified Crypto.Hash as Hash
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as BS
@@ -1262,8 +1265,12 @@ withPresentationFiles uname psname presentationInfo act = do
   where
     pname = presentationName presentationInfo
     processIndex :: T.Text -> T.Text
-    processIndex =
-      interpol . TagSoup.renderTags . processTags presentationInfo . TagSoup.parseTags
+    processIndex input =
+      let content =
+            interpol . TagSoup.renderTags . processTags presentationInfo . TagSoup.parseTags $ input
+          scriptShas = (pad . sha256digest) <$> (findScripts content)
+          pad = \x -> "'sha256-" <> x <> "'"
+      in T.replace "{{DECKDECKGO_EXTRA_SHAS}}" (T.intercalate " " scriptShas) content
     interpol =
       T.replace "{{DECKDECKGO_TITLE}}" (unPresentationName pname) .
       T.replace "{{DECKDECKGO_TITLE_SHORT}}" (T.take 12 $ unPresentationName pname) .
@@ -1274,13 +1281,34 @@ withPresentationFiles uname psname presentationInfo act = do
         (unFirebaseId . unUserId $ presentationOwner presentationInfo) .
       T.replace "{{DECKDECKGO_DECKNAME}}" (unPresShortname psname) .
       T.replace "{{DECKDECKGO_BASE_HREF}}"
-        ("/" <> unPresentationPrefix (presentationPrefix uname psname))
+        ("/" <> unPresentationPrefix (presentationPrefix uname psname)) .
+      T.replace "{{DECKDECKGO_BASE_HREF}}"
+        ("/" <> unPresentationPrefix (presentationPrefix uname psname)) .
+      T.replace "{{DECKDECKGO_HEAD_EXTRA}}"
+        (fromMaybe "" (presentationHeadExtra presentationInfo))
     findPrecache dir = find isPrecache <$> Dir.listDirectory dir
     isPrecache n =
       "precache-manifest." `isPrefixOf` n &&
       ".js" `isSuffixOf` n
 
+sha256digest :: T.Text -> T.Text
+sha256digest =
+    T.decodeUtf8 .
+    convertToBase Base64 .
+    Hash.hashWith Hash.SHA256 .
+    T.encodeUtf8
 
+findScripts :: T.Text -> [T.Text]
+findScripts (TagSoup.parseTags -> ts) = xif ts
+    (\f -> \case
+      (TagSoup.TagOpen "script" _):(TagSoup.TagText t):rest ->
+        t:(f rest)
+      -- tagsoup guarantees that text nodes are not empty
+      (TagSoup.TagOpen "script" _):(TagSoup.TagClose _):rest ->
+        "":(f rest)
+      [] -> []
+      _:rest -> f rest
+    )
 
 mapFile :: (T.Text -> T.Text) -> FilePath -> IO ()
 mapFile f fp = do

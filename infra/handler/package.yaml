@@ -13,9 +13,10 @@ dependencies:
     - base
     - bytestring
     - cases
-    - contravariant
     - conduit
     - conduit-extra
+    - contravariant
+    - cryptonite
     - directory
     - filepath
     - firebase-login
@@ -23,6 +24,7 @@ dependencies:
     - http-client
     - http-types
     - lens
+    - memory
     - mime-types
     - mtl
     - pureMD5
