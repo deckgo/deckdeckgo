@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-5"></a>
+# 1.0.0-rc.3-5 (2020-01-20)
+
+### Features
+
+* emit an event "deckDidLoad" after all slides have been loaded and processed
+
 <a name="1.0.0-rc.3-4"></a>
 # 1.0.0-rc.3-4 (2019-12-13)
 
