@@ -1,3 +1,44 @@
+<a name="1.0.0-beta.11"></a>
+# 1.0.0-beta.11 (2020-01-20)
+
+### Features
+
+* Google Fonts for the presentations ([#245](https://github.com/deckgo/deckdeckgo/issues/245))
+* private assets ([#585](https://github.com/deckgo/deckdeckgo/issues/585))
+* clone decks ([#582](https://github.com/deckgo/deckdeckgo/issues/582))
+* landing page ([#561](https://github.com/deckgo/deckdeckgo/issues/561))
+* share and embed presentations anywhere ([#359](https://github.com/deckgo/deckdeckgo/issues/359))
+* prevent javascript in input field with CSP rules ([#497](https://github.com/deckgo/deckdeckgo/issues/497))
+* in db, delete deck attributes instead of keep null values ([#587](https://github.com/deckgo/deckdeckgo/issues/587))
+* improve Youtube embed for play and pause ([#569](https://github.com/deckgo/deckdeckgo/pull/569))
+* load studio with the background color set to the color once loaded ([#567](https://github.com/deckgo/deckdeckgo/pull/567))
+* extract component `<deckgo-youtube/>` ([#565](https://github.com/deckgo/deckdeckgo/issues/565))
+* add new design options to slide "author" ([#558](https://github.com/deckgo/deckdeckgo/issues/558))
+* show handles in author slide ([#424](https://github.com/deckgo/deckdeckgo/issues/424))
+* add canvas desynchronized option ([#437](https://github.com/deckgo/deckdeckgo/issues/437))
+* ping on dack published ([#547](https://github.com/deckgo/deckdeckgo/pull/547))
+
+### Accessibility
+
+* toolbar options have no focus state ([#536](https://github.com/deckgo/deckdeckgo/issues/536))
+* swipe slide with tabs ([#581](https://github.com/deckgo/deckdeckgo/issues/581))
+* main menu has not enough contrast ([#554](https://github.com/deckgo/deckdeckgo/issues/554))
+* remote control text is not readable ([#545](https://github.com/deckgo/deckdeckgo/issues/545))
+* add issue templates for issues and pull requests ([#533](https://github.com/deckgo/deckdeckgo/issues/533) and [#546](https://github.com/deckgo/deckdeckgo/pull/546))
+* presentations should have better naming ([#535](https://github.com/deckgo/deckdeckgo/issues/535))
+* remove beta from urls ([#542](https://github.com/deckgo/deckdeckgo/pull/542))
+* links should have different styling (to distinguish from emphasised text) ([#537](https://github.com/deckgo/deckdeckgo/issues/537))
+
+### Fix
+
+* remove list of presentations from side menu ([#588](https://github.com/deckgo/deckdeckgo/issues/588))
+* navigation button padding-start incorrect ([#584](https://github.com/deckgo/deckdeckgo/issues/584))
+* add poll question to list of slides on "jump to slide" ([#598](https://github.com/deckgo/deckdeckgo/issues/598))
+* replace all platform icons with local icons ([#563](https://github.com/deckgo/deckdeckgo/issues/563))
+* svg are't lazy loaded in browser which support native loading ([#575](https://github.com/deckgo/deckdeckgo/issues/575))
+* screenshot not generated anymore ([#548](https://github.com/deckgo/deckdeckgo/issues/548))
+* correct typo noscript ([#539](https://github.com/deckgo/deckdeckgo/pull/539))
+
 <a name="1.0.0-beta.10"></a>
 # 1.0.0-beta.10 (2019-12-04)
 
