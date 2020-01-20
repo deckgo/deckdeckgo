@@ -3,7 +3,7 @@
 
 ### Applications
 * docs: v1.0.0-rc.9-4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
-* remote: v1.0.0-rc.2-5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+* remote: v1.0.0-rc.2-6 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 * demo: v1.0.0-rc.4-8 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
 
 ### New: Web Components

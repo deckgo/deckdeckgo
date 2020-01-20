@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@deckdeckgo/charts": "^1.0.0-rc.6",
-    "@deckdeckgo/core": "^1.0.0-rc.3-4",
+    "@deckdeckgo/core": "^1.0.0-rc.3-5",
     "@deckdeckgo/deck-utils": "^1.0.0-rc.2-2",
     "@deckdeckgo/highlight-code": "^1.0.0-rc.2-1",
     "@deckdeckgo/lazy-img": "^1.0.0-rc.3",
@@ -43,7 +43,7 @@
     "remarkable": "^2.0.0",
     "rxjs": "^6.5.4",
     "socket.io-client": "^2.3.0",
-    "uuid": "^3.3.3"
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-rc.4-1",
