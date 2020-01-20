@@ -101,6 +101,7 @@ declare namespace LocalJSX {
     'cloneBackground'?: boolean;
     'embedded'?: boolean;
     'keyboard'?: boolean;
+    'onDeckDidLoad'?: (event: CustomEvent<void>) => void;
     'onMouseInactivity'?: (event: CustomEvent<boolean>) => void;
     'onSlideDrag'?: (event: CustomEvent<number>) => void;
     'onSlideNextDidAnimate'?: (event: CustomEvent<void>) => void;
