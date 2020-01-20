@@ -12,6 +12,7 @@ The [DeckDeckGo] deck triggers the following events:
 | slideToChange | number | Emitted when a specific slide has been selected. Emit the index of the new selected slide. |
 | slideDrag | number | Emitted when the slider is actively being moved. Emit the transformX value of the deck. |
 | slideWillChange | number | Emitted before the active slide has changed. Emit the transformX value of the deck. |
+| deckDidLoad | | Emitted after `slidesDidLoad` when all slides have been processed by the core (lazy loading, clone actions, etc.) |
 | mouseInactivity | boolean | Emitted when the mouse is idle and will be hidden. |
 
 [DeckDeckGo]: https://deckdeckgo.com
