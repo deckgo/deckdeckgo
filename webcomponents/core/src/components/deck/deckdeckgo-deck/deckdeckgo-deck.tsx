@@ -59,6 +59,8 @@ export class DeckdeckgoDeck {
   @Event() slideDrag: EventEmitter<number>;
   @Event() slideWillChange: EventEmitter<number>;
 
+  @Event() deckDidLoad: EventEmitter<void>;
+
   private fullscreen: boolean = false;
   private cursorHidden: boolean = false;
   private idleMouseTimer: number;
@@ -436,6 +438,8 @@ export class DeckdeckgoDeck {
         this.slidesDidLoad.emit(deckDefinition);
 
         await this.onAllSlidesDidLoad();
+
+        this.deckDidLoad.emit();
       }
 
       resolve();
