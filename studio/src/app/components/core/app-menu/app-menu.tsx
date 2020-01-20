@@ -47,14 +47,6 @@ export class AppMenu {
     }
   }
 
-  private async signIn() {
-    this.navService.navigate({
-      url:
-        '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
-    });
-  }
-
   private async signOut() {
     await this.authService.signOut();
 
