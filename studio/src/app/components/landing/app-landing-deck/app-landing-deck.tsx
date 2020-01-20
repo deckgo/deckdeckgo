@@ -1,4 +1,4 @@
-import {Component, Element, h, State} from '@stencil/core';
+import {Component, Element, h, Listen, State} from '@stencil/core';
 
 import {isMobile} from '@deckdeckgo/utils';
 
@@ -19,6 +19,32 @@ export class AppLandingDeck {
 
     @State()
     private deckTransition: 'slide' | 'fade' = isMobile() ? 'fade' : 'slide';
+
+    @Listen('ionRouteDidChange', {target: 'window'})
+    async onRouteDidChange($event: CustomEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        if ($event.detail.to && $event.detail.to === '/' && $event.detail.from && $event.detail.to !== $event.detail.from) {
+            await this.updateDeckSize();
+        }
+    }
+
+    private updateDeckSize(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+            if (!deck) {
+                resolve();
+                return;
+            }
+
+            await (deck as any).initSlideSize();
+
+            resolve();
+        });
+    }
 
     private async updateDeckPosition() {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
