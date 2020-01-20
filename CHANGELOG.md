@@ -1,5 +1,5 @@
 <a name="1.0.0-rc.20"></a>
-# [1.0.0-rc.20](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.19...v1.0.0-rc.20) (In progress)
+# [1.0.0-rc.20](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.19...v1.0.0-rc.20) (2020-01-20)
 
 ### Applications
 * studio: v1.0.0-beta.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
