@@ -149,7 +149,7 @@ export class AppDashboardDeckActions {
         const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
 
         return <Host>
-            <a onClick={($event: UIEvent) => this.cloneDeck($event)} title="Copy presentation" class={this.actionInProgress || disabled ? 'disabled' : undefined}>
+            <a onClick={($event: UIEvent) => this.cloneDeck($event)} title="Clone presentation" class={this.actionInProgress || disabled ? 'disabled' : undefined}>
                 <ion-icon name="copy"></ion-icon>
             </a>
 
