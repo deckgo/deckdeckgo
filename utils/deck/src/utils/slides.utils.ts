@@ -14,7 +14,7 @@ export function findSlidesTitle(): Promise<string[]> {
         if (slides) {
             for (const slide of Array.from(slides)) {
                 if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
-                    const title: HTMLElement | null = slide.querySelector('[slot="title"]');
+                    const title: HTMLElement | null = slide.querySelector('[slot="title"],[slot="question"]');
 
                     if (title && title.textContent && title.textContent !== '') {
                         results.push(title.textContent);
