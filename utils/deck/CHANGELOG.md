@@ -1,3 +1,8 @@
+<a name="1.0.0-rc.2-3"></a>
+# 1.0.0-rc.2-3 (2020-01-20)
+
+* add slide poll question to list of slides titles
+
 <a name="1.0.0-rc.2-2"></a>
 # 1.0.0-rc.2-2 (2020-01-16)
 
