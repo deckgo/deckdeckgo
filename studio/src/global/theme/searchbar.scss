@@ -1,5 +1,5 @@
 ion-searchbar[class*="sc-ion-searchbar"] {
-  > div[class*="sc-ion-searchbar"] {
+  > div[class*="sc-ion-searchbar-md"] {
     padding-left: 8px;
     padding-right: 8px;
   }
@@ -10,4 +10,8 @@ ion-searchbar[class*="sc-ion-searchbar"] {
     -webkit-padding-start: 48px;
     padding-inline-start: 48px;
   }
+}
+
+ion-footer ion-searchbar[class*="sc-ion-searchbar-ios"] {
+  margin-top: 8px;
 }

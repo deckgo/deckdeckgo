@@ -7,10 +7,16 @@ app-code-languages {
     }
   }
 
-  ion-list {
+  ion-list[class*="list"] {
+    margin-bottom: 0;
+
     ion-item.item {
       --ripple-color: var(--ion-color-primary);
       --border-color: var(--ion-color-light);
+
+      &:last-of-type {
+        --border-color: transparent;
+      }
 
       --background-hover: white;
       --background-actived: white;

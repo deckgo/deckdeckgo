@@ -168,7 +168,7 @@ export class AppCodeLanguages {
         if (this.filteredLanguages) {
             return (
                 this.filteredLanguages.map((language: PrismLanguage) => {
-                    return <ion-item key={language.language} onClick={() => this.selectCodeLanguage(language)}>
+                    return <ion-item key={language.language} onClick={() => this.selectCodeLanguage(language)} class="ion-margin-end">
                         <ion-label>{language.title}</ion-label>
                         <ion-radio value={language.language} checked={this.currentLanguage && language.language === this.currentLanguage.language} mode="ios"/>
                     </ion-item>
