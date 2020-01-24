@@ -22,6 +22,23 @@ export class PrismService {
         return PrismService.instance;
     }
 
+    getLanguage(language: string): Promise<PrismLanguage | undefined> {
+        return new Promise<PrismLanguage | undefined>(async (resolve) => {
+            const allLanguages: PrismLanguage[] = await this.getLanguages();
+
+            if (!allLanguages || allLanguages.length <= 0) {
+                resolve(undefined);
+                return;
+            }
+
+            const result: PrismLanguage = allLanguages.find((filteredLanguage: PrismLanguage) => {
+                return filteredLanguage.language.toLowerCase().indexOf(language.toLowerCase()) > -1
+            });
+
+            resolve(result);
+        });
+    }
+
     getLanguages(): Promise<PrismLanguage[]> {
         return new Promise<PrismLanguage[]>(async (resolve) => {
            if (this.languages) {
