@@ -1,18 +1,6 @@
 ion-menu {
   ion-content {
     ion-list {
-      ion-searchbar[class*="sc-ion-searchbar"] {
-        --cancel-button-color: var(--ion-color-medium);
-        --clear-button-color: var(--ion-color-medium);
-        --icon-color: var(--ion-color-medium);
-        color: var(--ion-color-medium);
-        --background: transparent;
-
-        input.searchbar-input[class*="sc-ion-searchbar"] {
-          font-size: var(--font-size-small);
-        }
-      }
-
       ion-item {
         --detail-icon-opacity: 0;
 
@@ -21,21 +9,6 @@ ion-menu {
 
         &.user {
           min-height: 32px;
-        }
-      }
-    }
-  }
-}
-
-body.dark {
-  ion-menu {
-    ion-content {
-      ion-list {
-        ion-searchbar[class*="sc-ion-searchbar"] {
-          --cancel-button-color: var(--ion-color-dark-contrast);
-          --clear-button-color: var(--ion-color-dark-contrast);
-          --icon-color: var(--ion-color-dark-contrast);
-          color: var(--ion-color-dark-contrast);
         }
       }
     }

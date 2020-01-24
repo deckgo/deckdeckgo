@@ -1,4 +1,44 @@
 app-code {
   @import "../../../../global/theme/editor/editor-info";
   @import "../../../../global/theme/editor/editor-popover";
+
+  ion-item.select-language {
+    > div {
+      background: var(--ion-color-light);
+      border: 1px solid #dedede;
+      border-radius: 4px;
+
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+
+      width: 100%;
+
+      cursor: pointer;
+
+      padding: 0 8px;
+      margin-right: 0;
+
+      ion-label[class*="sc-ion-label"] {
+        height: 38px;
+
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      div.select-icon {
+        width: 8px;
+        margin-right: 5px;
+
+        div.select-icon-inner {
+          opacity: 0.33;
+          pointer-events: none;
+          border-top: 5px solid;
+          border-right: 5px solid transparent;
+          border-left: 5px solid transparent;
+        }
+      }
+    }
+  }
 }

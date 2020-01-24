@@ -1,5 +1,7 @@
 import {Component, Element, EventEmitter, Prop, State, h} from '@stencil/core';
 
+import {modalController, OverlayEventDetail} from '@ionic/core';
+
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
 enum CodeFontSize {
@@ -24,10 +26,8 @@ export class AppCode {
     @Prop()
     codeDidChange: EventEmitter<HTMLElement>;
 
-    private prismService: PrismService;
-
-    private currentLanguage: string = 'javascript';
-    private languages: PrismLanguage[];
+    @State()
+    private currentLanguage: PrismLanguage | undefined;
 
     @State()
     private currentFontSize: CodeFontSize = undefined;
@@ -38,13 +38,13 @@ export class AppCode {
     @State()
     private carbon: boolean = false;
 
+    private prismService: PrismService;
+
     constructor() {
         this.prismService = PrismService.getInstance();
     }
 
     async componentWillLoad() {
-        this.languages = await this.prismService.getLanguages();
-
         await this.initCurrent();
     }
 
@@ -54,7 +54,8 @@ export class AppCode {
 
     private initCurrent(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            this.currentLanguage = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
+            await this.initCurrentLanguage();
+
             this.currentFontSize = await this.initFontSize();
             this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
             this.carbon = this.selectedElement && this.selectedElement.getAttribute('carbon') === 'true';
@@ -63,34 +64,9 @@ export class AppCode {
         });
     }
 
-    private toggleCodeLanguage($event: CustomEvent): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!this.selectedElement) {
-                resolve();
-                return;
-            }
-
-            if (!$event || !$event.detail || !$event.detail.value) {
-                resolve();
-                return;
-            }
-
-            const currentLanguage: string = this.selectedElement.getAttribute('language');
-
-            if ($event.detail.value === currentLanguage) {
-                resolve();
-                return;
-            }
-
-            this.selectedElement.setAttribute('language', $event.detail.value);
-
-            // Reload component with new language
-            await (this.selectedElement as any).load();
-
-            this.emitCodeDidChange();
-
-            resolve();
-        });
+    private async initCurrentLanguage() {
+        const language: string = this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
+        this.currentLanguage = await this.prismService.getLanguage(language);
     }
 
     private emitCodeDidChange() {
@@ -172,6 +148,25 @@ export class AppCode {
         });
     }
 
+    private async openCodeLanguage() {
+        const modal: HTMLIonModalElement = await modalController.create({
+            component: 'app-code-languages',
+            componentProps: {
+                selectedElement: this.selectedElement,
+                codeDidChange: this.codeDidChange,
+                currentLanguage: this.currentLanguage
+            }
+        });
+
+        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+            if (detail && detail.data) {
+                this.currentLanguage = detail.data;
+            }
+        });
+
+        await modal.present();
+    }
+
     render() {
         return [<ion-toolbar>
             <h2>Code attributes</h2>
@@ -184,13 +179,12 @@ export class AppCode {
                     <ion-label>Language</ion-label>
                 </ion-item-divider>
 
-                <ion-item class="select">
-                    <ion-label>Language</ion-label>
-                    <ion-select value={this.currentLanguage}
-                                onIonChange={(e: CustomEvent) => this.toggleCodeLanguage(e)}
-                                class="ion-padding-start ion-padding-end" interfaceOptions={{backdropDismiss: false}}>
-                        {this.renderSelectOptions()}
-                    </ion-select>
+                <ion-item onClick={() => this.openCodeLanguage()} class="select-language">
+                    <div>
+                        <ion-label>{this.currentLanguage ? this.currentLanguage.title : ''}</ion-label>
+
+                        <div class="select-icon" role="presentation"><div class="select-icon-inner"></div></div>
+                    </div>
                 </ion-item>
 
                 <ion-item-divider class="ion-padding-top">
@@ -211,7 +205,7 @@ export class AppCode {
                     </ion-select>
                 </ion-item>
 
-                <ion-item>
+                <ion-item class="ion-margin-top">
                     <ion-label>Display line numbers</ion-label>
                     <ion-checkbox slot="end" checked={this.lineNumbers}
                                   onIonChange={($event: CustomEvent) => this.togglePropertyAttribute($event, 'line-numbers')}></ion-checkbox>
@@ -224,17 +218,5 @@ export class AppCode {
                 </ion-item>
             </ion-list>
         ]
-    }
-
-    private renderSelectOptions() {
-        if (this.languages) {
-            return (
-                this.languages.map((language: PrismLanguage) => {
-                    return <ion-select-option value={language.language}>{language.title}</ion-select-option>
-                })
-            );
-        } else {
-            return undefined;
-        }
     }
 }

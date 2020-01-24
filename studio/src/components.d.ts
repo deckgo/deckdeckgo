@@ -12,6 +12,9 @@ import {
   JSX,
 } from '@stencil/core';
 import {
+  PrismLanguage,
+} from './app/services/editor/prism/prism.service';
+import {
   InitStyleColor,
 } from './app/utils/editor/color.utils';
 import {
@@ -44,6 +47,11 @@ export namespace Components {
   }
   interface AppCode {
     'codeDidChange': EventEmitter<HTMLElement>;
+    'selectedElement': HTMLElement;
+  }
+  interface AppCodeLanguages {
+    'codeDidChange': EventEmitter<HTMLElement>;
+    'currentLanguage': PrismLanguage | undefined;
     'selectedElement': HTMLElement;
   }
   interface AppColor {
@@ -284,6 +292,12 @@ declare global {
   var HTMLAppCodeElement: {
     prototype: HTMLAppCodeElement;
     new (): HTMLAppCodeElement;
+  };
+
+  interface HTMLAppCodeLanguagesElement extends Components.AppCodeLanguages, HTMLStencilElement {}
+  var HTMLAppCodeLanguagesElement: {
+    prototype: HTMLAppCodeLanguagesElement;
+    new (): HTMLAppCodeLanguagesElement;
   };
 
   interface HTMLAppColorElement extends Components.AppColor, HTMLStencilElement {}
@@ -787,6 +801,7 @@ declare global {
     'app-about': HTMLAppAboutElement;
     'app-avatar': HTMLAppAvatarElement;
     'app-code': HTMLAppCodeElement;
+    'app-code-languages': HTMLAppCodeLanguagesElement;
     'app-color': HTMLAppColorElement;
     'app-color-chart': HTMLAppColorChartElement;
     'app-color-code': HTMLAppColorCodeElement;
@@ -881,6 +896,11 @@ declare namespace LocalJSX {
   }
   interface AppCode {
     'codeDidChange'?: EventEmitter<HTMLElement>;
+    'selectedElement'?: HTMLElement;
+  }
+  interface AppCodeLanguages {
+    'codeDidChange'?: EventEmitter<HTMLElement>;
+    'currentLanguage'?: PrismLanguage | undefined;
     'selectedElement'?: HTMLElement;
   }
   interface AppColor {
@@ -1147,6 +1167,7 @@ declare namespace LocalJSX {
     'app-about': AppAbout;
     'app-avatar': AppAvatar;
     'app-code': AppCode;
+    'app-code-languages': AppCodeLanguages;
     'app-color': AppColor;
     'app-color-chart': AppColorChart;
     'app-color-code': AppColorCode;
@@ -1242,6 +1263,7 @@ declare module "@stencil/core" {
       'app-about': LocalJSX.AppAbout & JSXBase.HTMLAttributes<HTMLAppAboutElement>;
       'app-avatar': LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
       'app-code': LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
+      'app-code-languages': LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
       'app-color': LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
       'app-color-chart': LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;
       'app-color-code': LocalJSX.AppColorCode & JSXBase.HTMLAttributes<HTMLAppColorCodeElement>;
