@@ -2,7 +2,7 @@ import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent} f
 
 import {DeckdeckgoRevealUtils} from '../deckdeckgo-reveal-utils';
 
-const RevealNthChild: FunctionalComponent<{ index: number }> = ({index}) => {
+const RevealNthChild: FunctionalComponent<{index: number}> = ({index}) => {
   if (index === 0) {
     return undefined;
   }
@@ -27,7 +27,6 @@ const RevealNthChild: FunctionalComponent<{ index: number }> = ({index}) => {
   shadow: true
 })
 export class DeckdeckgoReveal {
-
   @Element() el: HTMLElement;
 
   @Prop()
@@ -70,7 +69,7 @@ export class DeckdeckgoReveal {
     return new Promise<void>(async (resolve) => {
       const elements: Node[] = await DeckdeckgoRevealUtils.findChildren(this.el);
 
-      this.visibleIndex =  elements ? elements.length : 0;
+      this.visibleIndex = elements ? elements.length : 0;
 
       this.allElementsRevealed = true;
       this.allElementsHidden = false;
@@ -92,10 +91,11 @@ export class DeckdeckgoReveal {
   }
 
   render() {
-    return <Host>
-      {<RevealNthChild index={this.visibleIndex}/>}
-      <slot/>
-    </Host>
+    return (
+      <Host>
+        {<RevealNthChild index={this.visibleIndex} />}
+        <slot />
+      </Host>
+    );
   }
-
 }

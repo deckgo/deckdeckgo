@@ -6,153 +6,162 @@ import {ErrorService} from '../../core/error/error.service';
 import {EnvironmentTenorConfig} from '../../core/environment/environment-config';
 
 export class GifService {
+  private static instance: GifService;
 
-    private static instance: GifService;
+  private errorService: ErrorService;
 
-    private errorService: ErrorService;
+  private constructor() {
+    // Private constructor, singleton
+    this.errorService = ErrorService.getInstance();
+  }
 
-    private constructor() {
-        // Private constructor, singleton
-        this.errorService = ErrorService.getInstance();
+  static getInstance() {
+    if (!GifService.instance) {
+      GifService.instance = new GifService();
     }
+    return GifService.instance;
+  }
 
-    static getInstance() {
-        if (!GifService.instance) {
-            GifService.instance = new GifService();
+  getCategories(): Promise<TenorCategory[]> {
+    return new Promise<TenorCategory[]>(async (resolve) => {
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
+
+      const anonymousId: string = await this.getAnonymousId();
+
+      const searchUrl: string = config.url + 'categories?key=' + config.key + '&anon_id=' + anonymousId + '&media_filter=minimal';
+
+      try {
+        const rawResponse: Response = await fetch(searchUrl);
+
+        const response: TenorCategoryResponse = JSON.parse(await rawResponse.text());
+
+        if (!response) {
+          this.errorService.error('Tenor trending could not be fetched');
+          return;
         }
-        return GifService.instance;
-    }
 
-    getCategories(): Promise<TenorCategory[]> {
-        return new Promise<TenorCategory[]>(async (resolve) => {
-            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
+        resolve(response.tags);
+      } catch (err) {
+        this.errorService.error(err.message);
+        resolve();
+      }
+    });
+  }
 
-            const anonymousId: string = await this.getAnonymousId();
+  getGifs(searchTerm: string, next: string | number): Promise<TenorSearchResponse> {
+    return new Promise<TenorSearchResponse>(async (resolve) => {
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
-            const searchUrl: string = config.url + 'categories?key=' + config.key + '&anon_id=' + anonymousId + '&media_filter=minimal';
+      const anonymousId: string = await this.getAnonymousId();
 
-            try {
-                const rawResponse: Response = await fetch(searchUrl);
+      const searchUrl: string =
+        config.url +
+        'search?tag=' +
+        searchTerm +
+        '&key=' +
+        config.key +
+        '&ar_range=wide&limit=' +
+        16 +
+        '&anon_id=' +
+        anonymousId +
+        '&media_filter=minimal&pos=' +
+        next;
 
-                const response: TenorCategoryResponse = JSON.parse(await rawResponse.text());
+      try {
+        const rawResponse: Response = await fetch(searchUrl);
 
-                if (!response) {
-                    this.errorService.error('Tenor trending could not be fetched');
-                    return;
-                }
+        const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
 
-                resolve(response.tags);
-            } catch (err) {
-                this.errorService.error(err.message);
-                resolve();
-            }
-        });
-    }
+        if (!response) {
+          this.errorService.error('Tenor trending could not be fetched');
+          resolve();
+          return;
+        }
 
-    getGifs(searchTerm: string, next: string | number): Promise<TenorSearchResponse> {
-        return new Promise<TenorSearchResponse>(async (resolve) => {
-            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
+        resolve(response);
+      } catch (err) {
+        this.errorService.error(err.message);
+        resolve();
+      }
+    });
+  }
 
-            const anonymousId: string = await this.getAnonymousId();
+  getRandomGif(searchTerm: string): Promise<TenorSearchResponse> {
+    return new Promise<TenorSearchResponse>(async (resolve) => {
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
-            const searchUrl: string = config.url + 'search?tag=' + searchTerm + '&key=' +
-                config.key + '&ar_range=wide&limit=' + 16 + '&anon_id=' + anonymousId + '&media_filter=minimal&pos=' + next;
+      const anonymousId: string = await this.getAnonymousId();
 
-            try {
-                const rawResponse: Response = await fetch(searchUrl);
+      const searchUrl: string =
+        config.url + 'random?q=' + searchTerm + '&key=' + config.key + '&ar_range=standard&limit=' + 1 + '&anon_id=' + anonymousId + '&media_filter=minimal';
 
-                const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
+      try {
+        const rawResponse: Response = await fetch(searchUrl);
 
-                if (!response) {
-                    this.errorService.error('Tenor trending could not be fetched');
-                    resolve();
-                    return;
-                }
+        const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
 
-                resolve(response);
-            } catch (err) {
-                this.errorService.error(err.message);
-                resolve();
-            }
-        });
-    }
+        if (!response) {
+          this.errorService.error('Tenor trending could not be fetched');
+          resolve();
+          return;
+        }
 
-    getRandomGif(searchTerm: string): Promise<TenorSearchResponse> {
-        return new Promise<TenorSearchResponse>(async (resolve) => {
-            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
+        resolve(response);
+      } catch (err) {
+        // We don't throw an error, in such a case we just not gonna display a gif
+        resolve();
+      }
+    });
+  }
 
-            const anonymousId: string = await this.getAnonymousId();
+  registerShare(gifId: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
-            const searchUrl: string = config.url + 'random?q=' + searchTerm + '&key=' +
-                config.key + '&ar_range=standard&limit=' + 1 + '&anon_id=' + anonymousId + '&media_filter=minimal';
+      // It isn't mandatory to provide the anonymous ID therefore, as we rather not like to track even if anonymous, we don't provide it
 
-            try {
-                const rawResponse: Response = await fetch(searchUrl);
+      const shareUrl: string = config.url + 'registershare?key=' + config.key + '&id=' + gifId;
 
-                const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
+      try {
+        await fetch(shareUrl);
 
-                if (!response) {
-                    this.errorService.error('Tenor trending could not be fetched');
-                    resolve();
-                    return;
-                }
+        // We don't check the status of the answer, user could still use the Gifs even if that would have failed
+        resolve();
+      } catch (err) {
+        // We ignore the error, user could still use the Gifs
+        resolve();
+      }
+    });
+  }
 
-                resolve(response);
-            } catch (err) {
-                // We don't throw an error, in such a case we just not gonna display a gif
-                resolve();
-            }
-        });
-    }
+  private getAnonymousId(): Promise<string> {
+    return new Promise<string>(async (resolve, reject) => {
+      const localAnonymousId: string = await get<string>('tenor_anonid');
 
-    registerShare(gifId: string): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
+      if (localAnonymousId) {
+        resolve(localAnonymousId);
+        return;
+      }
 
-            // It isn't mandatory to provide the anonymous ID therefore, as we rather not like to track even if anonymous, we don't provide it
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
-            const shareUrl: string = config.url + 'registershare?key=' + config.key + '&id=' + gifId;
+      try {
+        const rawResponse: Response = await fetch(config.url + 'anonid?key=' + config.key);
 
-            try {
-                await fetch(shareUrl);
+        const response: TenorAnonymousResponse = JSON.parse(await rawResponse.text());
 
-                // We don't check the status of the answer, user could still use the Gifs even if that would have failed
-                resolve();
-            } catch (err) {
-                // We ignore the error, user could still use the Gifs
-                resolve();
-            }
-        });
-    }
+        if (!response) {
+          reject('Tenor anonymous ID could not be fetched');
+        }
 
-    private getAnonymousId(): Promise<string> {
-        return new Promise<string>(async (resolve, reject) => {
-            const localAnonymousId: string = await get<string>('tenor_anonid');
+        const anonymousId: string = response.anon_id;
 
-            if (localAnonymousId) {
-                resolve(localAnonymousId);
-                return;
-            }
+        await set('tenor_anonid', anonymousId);
 
-            const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
-
-            try {
-                const rawResponse: Response = await fetch(config.url + 'anonid?key=' + config.key);
-
-                const response: TenorAnonymousResponse = JSON.parse(await rawResponse.text());
-
-                if (!response) {
-                    reject('Tenor anonymous ID could not be fetched');
-                }
-
-                const anonymousId: string = response.anon_id;
-
-                await set('tenor_anonid', anonymousId);
-
-                resolve(anonymousId);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
+        resolve(anonymousId);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }

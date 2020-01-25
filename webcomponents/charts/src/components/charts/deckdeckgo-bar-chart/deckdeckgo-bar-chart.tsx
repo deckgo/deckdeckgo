@@ -16,7 +16,6 @@ import {DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue} from '@deckdeckgo/t
   shadow: true
 })
 export class DeckdeckgoBarChart implements DeckdeckgoChart {
-
   @Element() el: HTMLElement;
 
   @Prop({mutable: true}) width: number;
@@ -101,7 +100,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         return;
       }
 
-      this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
+      this.svg = DeckdeckgoChartUtils.initSvg(this.el, this.width + this.marginLeft + this.marginRight, this.height + this.marginTop + this.marginBottom);
       this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
 
       this.barDataIndex = 0;
@@ -127,7 +126,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
     await this.drawAxis();
 
-    this.randomColors = Array.from({length: this.chartData[0].values.length}, (_v, _i) => (Math.floor(Math.random() * 16777215).toString(16)));
+    this.randomColors = Array.from({length: this.chartData[0].values.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
 
     await this.drawBars(0, 0);
   }
@@ -161,11 +160,14 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   private initAxisYDomain(): Promise<void> {
     return new Promise<void>((resolve) => {
-      this.y.domain([0, max(this.chartData, (category) => {
-        return max(category.values, (d) => {
-          return d.value;
-        });
-      })]);
+      this.y.domain([
+        0,
+        max(this.chartData, (category) => {
+          return max(category.values, (d) => {
+            return d.value;
+          });
+        })
+      ]);
 
       resolve();
     });
@@ -227,7 +229,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     return new Promise<void>((resolve) => {
       const bottomAxis: Axis<any> = axisBottom(this.x0);
 
-      this.svg.append('g')
+      this.svg
+        .append('g')
         .attr('class', 'axis axis-x')
         .attr('transform', 'translate(0,' + (this.height - this.marginTop - this.marginBottom) + ')')
         .call(bottomAxis)
@@ -242,12 +245,13 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
       const leftAxis: Axis<any> = axisLeft(this.y);
 
-      this.svg.append('g')
+      this.svg
+        .append('g')
         .attr('class', 'axis axis-y')
         .call(leftAxis);
 
       resolve();
-    })
+    });
   }
 
   private initAxis(): Promise<void> {
@@ -288,9 +292,22 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         .append('rect')
         .merge(section)
         .attr('style', (d, i) => {
-          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+          return (
+            'fill: var(--deckgo-chart-fill-color-' +
+            d.key +
+            ', ' +
+            (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') +
+            '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
+            d.key +
+            '); stroke: var(--deckgo-chart-stroke-' +
+            d.key +
+            '); stroke-width: var(--deckgo-chart-stroke-width-' +
+            d.key +
+            ')'
+          );
         })
-        .transition(t).duration(animationDuration)
+        .transition(t)
+        .duration(animationDuration)
         .attr('x', (d) => {
           return this.x0(d.label);
         })
@@ -299,7 +316,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .attr('width', this.x0.bandwidth())
         .attr('height', (d) => {
-          const height: number = (this.height - this.marginTop - this.marginBottom) - this.y(d.value);
+          const height: number = this.height - this.marginTop - this.marginBottom - this.y(d.value);
           return height >= 0 ? height : 0;
         });
 
@@ -309,11 +326,12 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   private drawInstantBars(): Promise<void> {
     return new Promise<void>((resolve) => {
-
-      this.svg.append('g')
+      this.svg
+        .append('g')
         .selectAll('g')
         .data(this.chartData)
-        .enter().append('g')
+        .enter()
+        .append('g')
         .attr('transform', (d) => {
           return 'translate(' + this.x0(d.label) + ',0)';
         })
@@ -321,7 +339,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         .data((d) => {
           return d.values;
         })
-        .enter().append('rect')
+        .enter()
+        .append('rect')
         .attr('x', (d) => {
           return this.x1(d.label);
         })
@@ -330,11 +349,23 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         })
         .attr('width', this.x1.bandwidth())
         .attr('height', (d) => {
-          const height: number = (this.height - this.marginTop - this.marginBottom) - this.y(d.value);
+          const height: number = this.height - this.marginTop - this.marginBottom - this.y(d.value);
           return height >= 0 ? height : 0;
         })
         .attr('style', (d, i) => {
-          return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+          return (
+            'fill: var(--deckgo-chart-fill-color-' +
+            d.key +
+            ', ' +
+            (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') +
+            '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
+            d.key +
+            '); stroke: var(--deckgo-chart-stroke-' +
+            d.key +
+            '); stroke-width: var(--deckgo-chart-stroke-width-' +
+            d.key +
+            ')'
+          );
         });
 
       resolve();
@@ -395,10 +426,11 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         const values: string[] = line.split(this.separator);
 
         if (values && values.length >= 2) {
-
           // Title
           if (!keys) {
-            keys = Array.apply(null, {length: values.length}).map(Number.call, Number).slice(1);
+            keys = Array.apply(null, {length: values.length})
+              .map(Number.call, Number)
+              .slice(1);
           }
 
           let dataValues: DeckdeckgoBarChartDataValue[] = [];
@@ -430,9 +462,10 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   }
 
   render() {
-    return <Host style={{'width': `${this.width}px`, 'height': `${this.height}px`}}>
-      <svg></svg>
-    </Host>;
+    return (
+      <Host style={{width: `${this.width}px`, height: `${this.height}px`}}>
+        <svg></svg>
+      </Host>
+    );
   }
-
 }

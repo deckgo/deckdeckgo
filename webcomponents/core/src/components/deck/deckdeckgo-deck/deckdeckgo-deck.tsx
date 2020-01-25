@@ -10,7 +10,7 @@ import {DeckdeckgoDeckBackgroundUtils} from '../../utils/deckdeckgo-deck-backgro
 import {HideSlides, RevealSlide, TransitionSlide} from '../../utils/deckdeckgo-deck-transition';
 
 interface DeltaX {
-  slider: HTMLElement
+  slider: HTMLElement;
   swipeLeft: boolean;
   deltaX: number;
 }
@@ -26,7 +26,6 @@ interface PagerColor {
   shadow: true
 })
 export class DeckdeckgoDeck {
-
   @Element() el: HTMLElement;
 
   @Prop() keyboard: boolean = true;
@@ -99,14 +98,17 @@ export class DeckdeckgoDeck {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', debounce(async () => {
-        await this.initSlideSize();
-        await this.slideTo(this.activeIndex);
+      window.addEventListener(
+        'resize',
+        debounce(async () => {
+          await this.initSlideSize();
+          await this.slideTo(this.activeIndex);
 
-        const toggleFullscreen: boolean = isFullscreen();
-        await this.hideOrClearMouseCursorTimer(toggleFullscreen);
-        await this.showHideActionsSlot(toggleFullscreen);
-      }, 100));
+          const toggleFullscreen: boolean = isFullscreen();
+          await this.hideOrClearMouseCursorTimer(toggleFullscreen);
+          await this.showHideActionsSlot(toggleFullscreen);
+        }, 100)
+      );
     }
   }
 
@@ -315,7 +317,7 @@ export class DeckdeckgoDeck {
       if (couldSwipeLeft || couldSwipeRight) {
         const sliderWidth: number = await this.getSliderWidth();
 
-        if (deltaX.deltaX > (sliderWidth / this.autoSwipeRatio)) {
+        if (deltaX.deltaX > sliderWidth / this.autoSwipeRatio) {
           this.deckTranslateX = deltaX.swipeLeft ? this.deckTranslateX - sliderWidth : this.deckTranslateX + sliderWidth;
 
           if (this.isNextChange(deltaX.swipeLeft)) {
@@ -409,8 +411,8 @@ export class DeckdeckgoDeck {
       resolve({
         slider: slider,
         swipeLeft: swipeLeft,
-        deltaX: swipeLeft ? (this.startX - currentX) : (currentX - this.startX)
-      })
+        deltaX: swipeLeft ? this.startX - currentX : currentX - this.startX
+      });
     });
   }
 
@@ -501,7 +503,7 @@ export class DeckdeckgoDeck {
       }
 
       const attributes: DeckdeckgoAttributeDefinition[] = await getAttributesDefinition(this.el.attributes);
-      const background: HTMLElement = this.el.querySelector(':scope > [slot=\'background\']');
+      const background: HTMLElement = this.el.querySelector(":scope > [slot='background']");
 
       const deck: DeckdeckgoDeckDefinition = {
         slides: orderedSlidesTagNames,
@@ -573,7 +575,7 @@ export class DeckdeckgoDeck {
       }
 
       const slides: Element[] = Array.from(definedSlides).filter((slide: Element) => {
-        return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1
+        return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1;
       });
 
       resolve(slides as HTMLElement[]);
@@ -718,7 +720,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    const slideWidth: number = this.length > 0 && slider.offsetWidth > 0 ? (slider.offsetWidth / this.length) : window.innerWidth;
+    const slideWidth: number = this.length > 0 && slider.offsetWidth > 0 ? slider.offsetWidth / this.length : window.innerWidth;
 
     this.deckTranslateX = index * slideWidth * (this.rtl ? 1 : -1);
     this.activeIndex = index;
@@ -991,9 +993,12 @@ export class DeckdeckgoDeck {
       }
 
       // If a pager background or color is explicitely set on the deck, then we don't define automatically a color
-      if (slide.parentElement &&
-        (slide.parentElement.style.getPropertyValue('--pager-background') !== undefined && slide.parentElement.style.getPropertyValue('--pager-background') !== '' ||
-          slide.parentElement.style.getPropertyValue('--pager-color') !== undefined && slide.parentElement.style.getPropertyValue('--pager-color') !== '')) {
+      if (
+        slide.parentElement &&
+        ((slide.parentElement.style.getPropertyValue('--pager-background') !== undefined &&
+          slide.parentElement.style.getPropertyValue('--pager-background') !== '') ||
+          (slide.parentElement.style.getPropertyValue('--pager-color') !== undefined && slide.parentElement.style.getPropertyValue('--pager-color') !== ''))
+      ) {
         this.pagerColor = undefined;
 
         resolve();
@@ -1004,12 +1009,16 @@ export class DeckdeckgoDeck {
         this.pagerColor = {
           background: '#fff',
           color: slide.style.getPropertyValue('--background')
-        }
-      } else if (slide.parentElement && slide.parentElement.style.getPropertyValue('--background') !== undefined && slide.parentElement.style.getPropertyValue('--background') !== '') {
+        };
+      } else if (
+        slide.parentElement &&
+        slide.parentElement.style.getPropertyValue('--background') !== undefined &&
+        slide.parentElement.style.getPropertyValue('--background') !== ''
+      ) {
         this.pagerColor = {
           background: '#fff',
           color: slide.parentElement.style.getPropertyValue('--background')
-        }
+        };
       } else {
         this.pagerColor = undefined;
       }
@@ -1024,14 +1033,12 @@ export class DeckdeckgoDeck {
     return [
       this.renderTransition(),
       <div class="deckgo-deck">
-        <slot/>
+        <slot />
         <slot name="actions"></slot>
         <slot name="background"></slot>
       </div>,
-      <div class="deckgo-pager">
-        {this.renderPager()}
-      </div>
-    ]
+      <div class="deckgo-pager">{this.renderPager()}</div>
+    ];
   }
 
   private renderPager() {
@@ -1041,7 +1048,7 @@ export class DeckdeckgoDeck {
       pagerStyle = {
         '--pager-background': this.pagerColor.background,
         '--pager-color': this.pagerColor.color
-      }
+      };
     }
 
     return <deckgo-pager active-index={this.activeIndex} length={this.length} style={pagerStyle}></deckgo-pager>;
@@ -1049,13 +1056,9 @@ export class DeckdeckgoDeck {
 
   private renderTransition() {
     if (this.transition !== 'fade') {
-      return <TransitionSlide/>;
+      return <TransitionSlide />;
     }
 
-    return [
-      <HideSlides/>,
-      <RevealSlide index={this.activeIndex}/>,
-    ];
+    return [<HideSlides />, <RevealSlide index={this.activeIndex} />];
   }
-
 }

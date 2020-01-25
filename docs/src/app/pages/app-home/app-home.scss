@@ -21,7 +21,9 @@ app-home {
       flex-wrap: wrap;
       margin-bottom: 38px;
 
-      > p, ul, li {
+      > p,
+      ul,
+      li {
         flex: 0 0 50%;
         box-sizing: border-box;
       }
@@ -48,7 +50,7 @@ app-home {
       background: var(--ion-color-dark);
       color: var(--ion-color-light);
 
-      box-shadow: 0 2px 4px 0 rgba(0,0,0,.19);
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.19);
       border-radius: 8px;
 
       margin-top: 64px;
@@ -115,7 +117,8 @@ app-home {
           padding: 0;
         }
 
-        > p, ul {
+        > p,
+        ul {
           flex: 1;
           max-width: 568px;
           margin-left: auto;

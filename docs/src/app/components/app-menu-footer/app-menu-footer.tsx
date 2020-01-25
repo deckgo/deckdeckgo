@@ -6,12 +6,11 @@ import {Component, h} from '@stencil/core';
   shadow: true
 })
 export class AppMenuFooter {
-
   render() {
-    return <footer>
-      <p>
-        Created with passion in Zürich🇨🇭
-      </p>
-    </footer>
+    return (
+      <footer>
+        <p>Created with passion in Zürich🇨🇭</p>
+      </footer>
+    );
   }
 }

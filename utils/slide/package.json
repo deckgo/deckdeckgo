@@ -16,6 +16,9 @@
     "@deckdeckgo/utils": "^1.0.0-rc.2"
   },
   "devDependencies": {
+    "husky": "^4.2.1",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -46,5 +49,10 @@
     "slides",
     "slideshow",
     "talk"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
 }

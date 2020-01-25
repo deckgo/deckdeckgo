@@ -50,7 +50,10 @@
     "@types/node": "^13.1.8",
     "autoprefixer": "^9.7.4",
     "glob": "^7.1.6",
+    "husky": "^4.2.1",
     "marked": "^0.8.0",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1",
     "workbox-build": "4.3.1"
   },
   "repository": {
@@ -68,5 +71,10 @@
     "slides",
     "slideshow",
     "talk"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
 }

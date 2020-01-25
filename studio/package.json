@@ -53,6 +53,9 @@
     "@types/socket.io-client": "^1.4.32",
     "@types/uuid": "^3.4.6",
     "autoprefixer": "^9.7.4",
+    "husky": "^4.2.1",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1",
     "workbox-build": "4.3.1"
   },
   "repository": {
@@ -70,5 +73,10 @@
     "slides",
     "slideshow",
     "talk"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
 }

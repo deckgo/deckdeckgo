@@ -13,7 +13,8 @@ app-editor {
   @import "./deckdeckgo-deck-fonts";
   @import "./deckdeckgo-deck-rtl";
 
-  app-navigation, app-help {
+  app-navigation,
+  app-help {
     &.hidden {
       visibility: hidden;
     }
@@ -46,7 +47,8 @@ app-editor {
       font-size: 1.2rem;
     }
 
-    ion-icon[slot="orderedList"], ion-icon[slot="unorderedList"] {
+    ion-icon[slot="orderedList"],
+    ion-icon[slot="unorderedList"] {
       padding-top: 10px;
       font-size: 1.6rem;
     }

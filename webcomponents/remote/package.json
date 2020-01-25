@@ -1,63 +1,71 @@
 {
-  "name": "@deckdeckgo/remote",
-  "version": "1.0.0-rc.5",
-  "description": "Present and interact with your DeckDeckGo's PWA presentation",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "es2015": "dist/esm/index.mjs",
-  "es2017": "dist/esm/index.mjs",
-  "types": "dist/types/index.d.ts",
-  "collection": "dist/collection/collection-manifest.json",
-  "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-remote/deckdeckgo-remotee.js",
-  "files": [
-    "dist/",
-    "README.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "build": "stencil build",
-    "start": "stencil build --dev --watch --serve",
-    "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
-  },
-  "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0-rc.1-3",
-    "rxjs": "^6.5.3",
-    "socket.io-client": "^2.3.0"
-  },
-  "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0-rc.3",
-    "@stencil/core": "^1.8.1",
-    "@stencil/postcss": "^1.0.1",
-    "@stencil/sass": "^1.1.1",
-    "@stencil/utils": "0.0.5",
-    "@types/socket.io-client": "^1.4.32",
-    "@types/webrtc": "0.0.25",
-    "autoprefixer": "^9.7.2",
-    "rollup-plugin-node-builtins": "^2.1.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/deckgo/deckdeckgo-remote.git"
-  },
-  "author": "David Dal Busco",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/deckgo/deckdeckgo-remote"
-  },
-  "homepage": "https://deckdeckgo.com",
-  "keywords": [
-    "stencil",
-    "stenciljs",
-    "web components",
-    "webrtc",
-    "socketio",
-    "canvas",
-    "canvas2d",
-    "presentation",
-    "slides",
-    "slideshow",
-    "talk"
-  ]
+    "name": "@deckdeckgo/remote",
+    "version": "1.0.0-rc.5",
+    "description": "Present and interact with your DeckDeckGo's PWA presentation",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "es2015": "dist/esm/index.mjs",
+    "es2017": "dist/esm/index.mjs",
+    "types": "dist/types/index.d.ts",
+    "collection": "dist/collection/collection-manifest.json",
+    "collection:main": "dist/collection/index.js",
+    "unpkg": "dist/deckdeckgo-remote/deckdeckgo-remotee.js",
+    "files": [
+        "dist/",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "stencil build",
+        "start": "stencil build --dev --watch --serve",
+        "test": "stencil test --spec --e2e",
+        "test.watch": "stencil test --spec --e2e --watchAll"
+    },
+    "dependencies": {
+        "@deckdeckgo/utils": "^1.0.0-rc.1-3",
+        "rxjs": "^6.5.3",
+        "socket.io-client": "^2.3.0"
+    },
+    "devDependencies": {
+        "@deckdeckgo/types": "^1.0.0-rc.3",
+        "@stencil/core": "^1.8.1",
+        "@stencil/postcss": "^1.0.1",
+        "@stencil/sass": "^1.1.1",
+        "@stencil/utils": "0.0.5",
+        "@types/socket.io-client": "^1.4.32",
+        "@types/webrtc": "0.0.25",
+        "autoprefixer": "^9.7.2",
+        "husky": "^4.2.1",
+        "prettier": "1.19.1",
+        "pretty-quick": "^2.0.1",
+        "rollup-plugin-node-builtins": "^2.1.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/deckgo/deckdeckgo-remote.git"
+    },
+    "author": "David Dal Busco",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/deckgo/deckdeckgo-remote"
+    },
+    "homepage": "https://deckdeckgo.com",
+    "keywords": [
+        "stencil",
+        "stenciljs",
+        "web components",
+        "webrtc",
+        "socketio",
+        "canvas",
+        "canvas2d",
+        "presentation",
+        "slides",
+        "slideshow",
+        "talk"
+    ],
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
+    }
 }

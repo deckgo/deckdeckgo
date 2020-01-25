@@ -52,8 +52,8 @@ export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
 
   private initCenterAlign(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
-      const content: HTMLElement = this.el.querySelector('[slot=\'content\']');
+      const title: HTMLElement = this.el.querySelector("[slot='title']");
+      const content: HTMLElement = this.el.querySelector("[slot='content']");
 
       resolve(!title || !content);
     });
@@ -135,7 +135,7 @@ export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
       this.isPlaying = play;
 
       resolve();
-    })
+    });
   }
 
   private initSize(): Promise<void> {
@@ -187,25 +187,32 @@ export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
   }
 
   render() {
-    return <Host class={{
-      'deckgo-slide-container': true,
-      'deckgo-slide-video-centered': this.alignCenter
-    }}>
-      <div class="deckgo-slide">
-        <slot name="title"></slot>
-        <slot name="content"></slot>
-        <div class="deckgo-video-container">
-          <video
-            width={this.videoWidth} height={this.videoHeight}
-            muted={this.muted} playsinline={this.playsinline} loop={this.loop} autoplay={this.autoplay}
-            onEnded={() => this.isPlaying = false}>
-            <source src={this.src} type={this.type}/>
-          </video>
+    return (
+      <Host
+        class={{
+          'deckgo-slide-container': true,
+          'deckgo-slide-video-centered': this.alignCenter
+        }}>
+        <div class="deckgo-slide">
+          <slot name="title"></slot>
+          <slot name="content"></slot>
+          <div class="deckgo-video-container">
+            <video
+              width={this.videoWidth}
+              height={this.videoHeight}
+              muted={this.muted}
+              playsinline={this.playsinline}
+              loop={this.loop}
+              autoplay={this.autoplay}
+              onEnded={() => (this.isPlaying = false)}>
+              <source src={this.src} type={this.type} />
+            </video>
+          </div>
+          <slot name="notes"></slot>
+          <slot name="actions"></slot>
+          <slot name="background"></slot>
         </div>
-        <slot name="notes"></slot>
-        <slot name="actions"></slot>
-        <slot name="background"></slot>
-      </div>
-    </Host>;
+      </Host>
+    );
   }
 }

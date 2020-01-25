@@ -10,7 +10,6 @@ import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../../
   shadow: true
 })
 export class DeckdeckgoColor {
-
   @Element() el: HTMLElement;
 
   @Prop({mutable: true}) palette: DeckdeckgoPalette[] = DEFAULT_PALETTE;
@@ -109,7 +108,7 @@ export class DeckdeckgoColor {
 
   private openColorPicker(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
+      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector("input[name='color-picker']");
 
       if (!colorPicker) {
         resolve();
@@ -124,7 +123,7 @@ export class DeckdeckgoColor {
 
   private colorPickerListener(bind: boolean): Promise<void> {
     return new Promise<void>((resolve) => {
-      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector('input[name=\'color-picker\']');
+      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector("input[name='color-picker']");
 
       if (!colorPicker) {
         resolve();
@@ -210,30 +209,32 @@ export class DeckdeckgoColor {
   }
 
   render() {
-    return <Host>
-      <div class="color-container">
-        {this.renderPalette()}
-        {this.renderMore()}
-      </div>
-    </Host>;
+    return (
+      <Host>
+        <div class="color-container">
+          {this.renderPalette()}
+          {this.renderMore()}
+        </div>
+      </Host>
+    );
   }
 
   private renderPalette() {
     if (this.palette && this.palette.length > 0) {
-      return (
-        this.palette.map((element: DeckdeckgoPalette) => {
+      return this.palette.map((element: DeckdeckgoPalette) => {
+        const style = {
+          '--deckdeckgo-palette-color-hex': `${element.color.hex}`,
+          '--deckdeckgo-palette-color-rgb': `${element.color.rgb}`
+        };
 
-          const style = {
-            '--deckdeckgo-palette-color-hex': `${element.color.hex}`,
-            '--deckdeckgo-palette-color-rgb': `${element.color.rgb}`
-          };
-
-          return <button aria-label={element.alt}
-                         class={this.isHexColorSelected(element) || this.isRgbColorSelected(element) ? 'selected' : undefined}
-                         style={style} onClick={() => this.pickColor(element)}>
-          </button>
-        })
-      );
+        return (
+          <button
+            aria-label={element.alt}
+            class={this.isHexColorSelected(element) || this.isRgbColorSelected(element) ? 'selected' : undefined}
+            style={style}
+            onClick={() => this.pickColor(element)}></button>
+        );
+      });
     } else {
       return undefined;
     }
@@ -251,14 +252,18 @@ export class DeckdeckgoColor {
         style['--deckdeckgo-palette-color-rgb'] = this.selectedCustomColorRgb;
       }
 
-      return <div class="more">
-        <button aria-label={this.more} style={style}
-                class={!this.selectedColorPalette && (this.selectedColorHex || this.selectedCustomColorRgb) ? 'selected' : undefined}
-                onClick={() => this.openColorPicker()}>
-          <slot name="more"></slot>
-        </button>
-        <input type="color" name="color-picker"></input>
-      </div>
+      return (
+        <div class="more">
+          <button
+            aria-label={this.more}
+            style={style}
+            class={!this.selectedColorPalette && (this.selectedColorHex || this.selectedCustomColorRgb) ? 'selected' : undefined}
+            onClick={() => this.openColorPicker()}>
+            <slot name="more"></slot>
+          </button>
+          <input type="color" name="color-picker"></input>
+        </div>
+      );
     } else {
       return undefined;
     }

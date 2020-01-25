@@ -1,6 +1,6 @@
 export interface DeckdeckgoPaletteColor {
-    hex: string;
-    rgb?: string;
+  hex: string;
+  rgb?: string;
 }
 
 export interface DeckdeckgoPalette {

@@ -53,5 +53,4 @@ describe('deckgo-social', () => {
     expect(element).not.toBeNull();
     expect(element.textContent).toEqual('+daviddalbusco');
   });
-
 });

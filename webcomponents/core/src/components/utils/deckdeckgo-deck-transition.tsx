@@ -1,7 +1,6 @@
 import {h, FunctionalComponent} from '@stencil/core';
 
 export const HideSlides: FunctionalComponent = () => {
-
   // Note: a start (hidden) opacity of 0 would has for effect to produce some "white flash" on transition.
   // Setting a value like 0.4 reduce the flash effect and makes the transition smoother for my eyes.
 
@@ -19,10 +18,10 @@ export const HideSlides: FunctionalComponent = () => {
   );
 };
 
-export const RevealSlide: FunctionalComponent<{ index: number }> = ({index}) => {
+export const RevealSlide: FunctionalComponent<{index: number}> = ({index}) => {
   return (
     <style>{`
-      ::slotted(.deckgo-slide-container:nth-child(${index+1})) {
+      ::slotted(.deckgo-slide-container:nth-child(${index + 1})) {
         visibility: initial;
         opacity: 1;
       };

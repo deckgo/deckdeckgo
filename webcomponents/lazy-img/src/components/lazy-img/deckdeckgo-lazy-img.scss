@@ -3,12 +3,14 @@
 }
 
 :host(.loaded) {
-  img, svg {
+  img,
+  svg {
     opacity: var(--deckgo-lazy-img-opacity-loaded, 1);
   }
 }
 
-img, svg {
+img,
+svg {
   pointer-events: var(--deckgo-lazy-img-pointer-events, none);
 
   height: var(--deckgo-lazy-img-height);

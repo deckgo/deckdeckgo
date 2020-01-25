@@ -25,7 +25,7 @@ import '@deckdeckgo/slide-poll';
 import {setupConfig} from '../app/services/environment/environment-config';
 
 setupConfig({
-    signalingServerUrl: location.protocol + '//' + location.hostname + ':3002'
+  signalingServerUrl: location.protocol + '//' + location.hostname + ':3002'
 });
 
 // import { setupConfig } from '@ionic/core';

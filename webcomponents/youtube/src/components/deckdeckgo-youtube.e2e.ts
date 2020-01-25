@@ -5,7 +5,9 @@ describe('deckgo-youtube', () => {
 
   beforeEach(async () => {
     page = await newE2EPage();
-    await page.setContent(`<deckgo-youtube width="500" height="400" src="https://www.youtube.com/embed/Y97mEj9ZYmE" frameTitle="DeckDeckGo editor demo"></deckgo-youtube>`);
+    await page.setContent(
+      `<deckgo-youtube width="500" height="400" src="https://www.youtube.com/embed/Y97mEj9ZYmE" frameTitle="DeckDeckGo editor demo"></deckgo-youtube>`
+    );
   });
 
   it('renders', async () => {
@@ -28,5 +30,4 @@ describe('deckgo-youtube', () => {
     iframe = await page.find('deckgo-youtube >>> iframe');
     expect(iframe).not.toBeNull();
   });
-
 });

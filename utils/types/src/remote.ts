@@ -1,96 +1,96 @@
 export enum DeckdeckgoDrawAction {
-    PENCIL,
-    CIRCLE
+  PENCIL,
+  CIRCLE
 }
 
 export enum DeckdeckgoSlideAction {
-    PLAY = 'play',
-    PAUSE = 'pause'
+  PLAY = 'play',
+  PAUSE = 'pause'
 }
 
 export interface DeckdeckgoAttributeDefinition {
-    name: string;
-    value?: any;
+  name: string;
+  value?: any;
 }
 
 export interface DeckdeckgoSlideDefinition {
-    template: string | undefined;
-    content?: string;
-    attributes?: DeckdeckgoAttributeDefinition[] | null;
+  template: string | undefined;
+  content?: string;
+  attributes?: DeckdeckgoAttributeDefinition[] | null;
 }
 
 export interface DeckdeckgoDeckDefinition {
-    slides: DeckdeckgoSlideDefinition[];
-    attributes?: DeckdeckgoAttributeDefinition[];
-    background?: string;
+  slides: DeckdeckgoSlideDefinition[];
+  attributes?: DeckdeckgoAttributeDefinition[];
+  background?: string;
 
-    reveal: boolean;
-    revealOnMobile: boolean;
+  reveal: boolean;
+  revealOnMobile: boolean;
 }
 
 export enum DeckdeckgoEventType {
-    SLIDES_REQUEST = 'slides_request',
-    SLIDES_ANSWER = 'slides_answer',
-    DECK_UPDATE = 'deck_update',
-    SLIDE_UPDATE = 'slide_update',
-    NEXT_SLIDE = 'next_slide',
-    PREV_SLIDE = 'prev_slide',
-    SLIDE_TO = 'slide_to',
-    CLEAR_SLIDE = 'clear_slide',
-    START_DRAWING = 'start_drawing',
-    DRAW = 'draw',
-    END_DRAWING = 'end_drawing',
-    SLIDE_ACTION = 'slide_action',
-    DELETE_SLIDE = 'delete_slide',
-    DECK_REVEAL_UPDATE = 'deck_reveal_update'
+  SLIDES_REQUEST = 'slides_request',
+  SLIDES_ANSWER = 'slides_answer',
+  DECK_UPDATE = 'deck_update',
+  SLIDE_UPDATE = 'slide_update',
+  NEXT_SLIDE = 'next_slide',
+  PREV_SLIDE = 'prev_slide',
+  SLIDE_TO = 'slide_to',
+  CLEAR_SLIDE = 'clear_slide',
+  START_DRAWING = 'start_drawing',
+  DRAW = 'draw',
+  END_DRAWING = 'end_drawing',
+  SLIDE_ACTION = 'slide_action',
+  DELETE_SLIDE = 'delete_slide',
+  DECK_REVEAL_UPDATE = 'deck_reveal_update'
 }
 
 export enum DeckdeckgoEventEmitter {
-    DECK = 'deck',
-    APP = 'app'
+  DECK = 'deck',
+  APP = 'app'
 }
 
 export interface DeckdeckgoEvent {
-    type: DeckdeckgoEventType;
-    emitter: DeckdeckgoEventEmitter
+  type: DeckdeckgoEventType;
+  emitter: DeckdeckgoEventEmitter;
 }
 
 export interface DeckdeckgoEventDraw extends DeckdeckgoEvent {
-    action: DeckdeckgoDrawAction;
+  action: DeckdeckgoDrawAction;
 
-    clientX: number;
-    clientY: number;
+  clientX: number;
+  clientY: number;
 
-    windowWidth: number;
-    windowHeight: number;
+  windowWidth: number;
+  windowHeight: number;
 
-    color?: string;
+  color?: string;
 }
 
 export interface DeckdeckgoEventNextPrevSlide extends DeckdeckgoEvent {
-    slideAnimation: boolean;
+  slideAnimation: boolean;
 }
 
 export interface DeckdeckgoEventDeckReveal extends DeckdeckgoEvent {
-    reveal: boolean;
+  reveal: boolean;
 }
 
 export interface DeckdeckgoEventSlideTo extends DeckdeckgoEvent {
-    index: number;
-    speed?: number
+  index: number;
+  speed?: number;
 }
 
 export interface DeckdeckgoEventDeck extends DeckdeckgoEvent {
-    length: number;
-    mobile: boolean;
-    deck: DeckdeckgoDeckDefinition;
+  length: number;
+  mobile: boolean;
+  deck: DeckdeckgoDeckDefinition;
 }
 
 export interface DeckdeckgoEventSlide extends DeckdeckgoEvent {
-    index: number;
-    slide: DeckdeckgoSlideDefinition;
+  index: number;
+  slide: DeckdeckgoSlideDefinition;
 }
 
 export interface DeckdeckgoEventSlideAction extends DeckdeckgoEvent {
-    action: DeckdeckgoSlideAction;
+  action: DeckdeckgoSlideAction;
 }

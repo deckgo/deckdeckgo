@@ -7,11 +7,14 @@ app-landing-deck {
       margin-bottom: 0;
     }
 
-    h2, h3 {
+    h2,
+    h3 {
       font-weight: 500;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       margin-top: 4px;
     }
 
@@ -55,11 +58,13 @@ app-landing-deck {
 
         transition: font-size 300ms;
 
-        &:hover, &:active {
+        &:hover,
+        &:active {
           font-size: 4.6rem;
         }
 
-        &.next, &.prev {
+        &.next,
+        &.prev {
           position: absolute;
           top: 50%;
           z-index: 3;
@@ -76,7 +81,8 @@ app-landing-deck {
         }
 
         @media (max-width: 768px) {
-          &.next, &.prev {
+          &.next,
+          &.prev {
             top: unset;
             bottom: 3rem;
             transform: translate(0, 0);

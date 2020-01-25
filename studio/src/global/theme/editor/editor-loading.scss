@@ -11,8 +11,8 @@ main {
     &[slot]:not([contentEditable]):not([editable]):not([slot="background"]):not([slot="social-link"]):not([slot="awaiting-votes"]):not([slot="how-to"]) {
       position: relative;
 
-      background: rgba(245,245,245,0.6);
-      border-color: rgba(245,245,245,0.6);
+      background: rgba(245, 245, 245, 0.6);
+      border-color: rgba(245, 245, 245, 0.6);
 
       color: transparent;
 
@@ -24,10 +24,10 @@ main {
 
       pointer-events: none;
 
-      overflow:hidden;
+      overflow: hidden;
 
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
@@ -42,5 +42,4 @@ main {
   &:not(.ready) {
     --pager-display: none;
   }
-
 }

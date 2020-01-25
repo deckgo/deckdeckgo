@@ -24,7 +24,6 @@ interface DeckdeckgoPieChartData {
   shadow: true
 })
 export class DeckdeckgoPieChart implements DeckdeckgoChart {
-
   @Element() el: HTMLElement;
 
   @Prop({mutable: true}) width: number;
@@ -83,15 +82,17 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
       this.pieDataIndex = 0;
 
-      const maxWidth: number = this.width > (this.marginLeft + this.marginRight) ? this.width - this.marginLeft - this.marginRight : this.width;
-      const maxHeight: number = this.height > (this.marginTop + this.marginBottom) ? this.height - this.marginTop - this.marginBottom : this.height;
+      const maxWidth: number = this.width > this.marginLeft + this.marginRight ? this.width - this.marginLeft - this.marginRight : this.width;
+      const maxHeight: number = this.height > this.marginTop + this.marginBottom ? this.height - this.marginTop - this.marginBottom : this.height;
 
       this.svg = DeckdeckgoChartUtils.initSvg(this.el, maxWidth, maxHeight);
-      this.svg = this.svg.append('g').attr('transform', 'translate(' + (maxWidth / 2) + ',' + (maxHeight / 2) + ')');
+      this.svg = this.svg.append('g').attr('transform', 'translate(' + maxWidth / 2 + ',' + maxHeight / 2 + ')');
 
       const radius: number = Math.min(maxWidth, maxHeight) / 2;
 
-      this.myPath = arc().innerRadius(this.innerRadius).outerRadius(radius);
+      this.myPath = arc()
+        .innerRadius(this.innerRadius)
+        .outerRadius(radius);
 
       this.data = await this.fetchData();
 
@@ -179,14 +180,25 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
         .append('path')
         .merge(section)
         .attr('style', (d) => {
-          return 'fill: var(--deckgo-chart-fill-color-' + d.data.key + ', ' + (d.data.randomFillColor ? `#${d.data.randomFillColor}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.data.key + '); stroke: var(--deckgo-chart-stroke-' + d.data.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.data.key + ')';
+          return (
+            'fill: var(--deckgo-chart-fill-color-' +
+            d.data.key +
+            ', ' +
+            (d.data.randomFillColor ? `#${d.data.randomFillColor}` : '') +
+            '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
+            d.data.key +
+            '); stroke: var(--deckgo-chart-stroke-' +
+            d.data.key +
+            '); stroke-width: var(--deckgo-chart-stroke-width-' +
+            d.data.key +
+            ')'
+          );
         })
-        .transition(t).duration(animationDuration)
+        .transition(t)
+        .duration(animationDuration)
         .attr('d', this.myPath);
 
-      section
-        .exit()
-        .remove();
+      section.exit().remove();
 
       resolve();
     });
@@ -195,9 +207,13 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
   private async createPieData(data: any): Promise<any[]> {
     return new Promise<any[]>(async (resolve) => {
       // Generate a pie chart
-      const myPie: Pie<any, number | { valueOf(): number }> = pie().value((d: any) => {
-        return d.value
-      }).sort((a: any, b: any) => { return ascending(a.label, b.label);} );
+      const myPie: Pie<any, number | {valueOf(): number}> = pie()
+        .value((d: any) => {
+          return d.value;
+        })
+        .sort((a: any, b: any) => {
+          return ascending(a.label, b.label);
+        });
 
       const result: any[] = myPie(data.values);
 
@@ -207,24 +223,26 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
   private appendLabel(myPieData: any[]): Promise<void> {
     return new Promise<void>((resolve) => {
-
       this.svg.selectAll('.text-arc').remove();
 
       // Create a special arcs for the labels in order to always display them above the pie's slices
-      const labelArcs: Selection<SVGElement, any, BaseType, any> = this.svg.selectAll('.text-arc')
+      const labelArcs: Selection<SVGElement, any, BaseType, any> = this.svg
+        .selectAll('.text-arc')
         .data(myPieData)
         .enter()
         .append('g')
         .attr('class', 'text-arc');
 
-      const text = labelArcs.append('text')
+      const text = labelArcs
+        .append('text')
         .attr('transform', (d: DefaultArcObject) => {
           return 'translate(' + this.myPath.centroid(d) + ')';
         })
         .attr('dy', '.35em')
         .style('text-anchor', 'middle');
 
-      text.append('tspan')
+      text
+        .append('tspan')
         .attr('x', 0)
         .attr('y', '-0.7em')
         .style('font-weight', 'bold')
@@ -232,7 +250,9 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
           return d.data.label ? d.data.label : '';
         });
 
-      text.filter((d: any) => (d.endAngle - d.startAngle) > 0.25).append('tspan')
+      text
+        .filter((d: any) => d.endAngle - d.startAngle > 0.25)
+        .append('tspan')
         .attr('x', 0)
         .attr('y', '0.7em')
         .text((d: any) => {
@@ -298,7 +318,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
         if (values && values.length >= 2) {
           if (!randomColors) {
-            randomColors = Array.from({ length: lines.length }, (_v, _i) => (Math.floor(Math.random()*16777215).toString(16)));
+            randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
           }
 
           const label: string = values[0];
@@ -349,8 +369,10 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
   }
 
   render() {
-    return <Host style={{'width': `${this.width}px`, 'height': `${this.height}px`}}>
-      <svg></svg>
-    </Host>;
+    return (
+      <Host style={{width: `${this.width}px`, height: `${this.height}px`}}>
+        <svg></svg>
+      </Host>
+    );
   }
 }

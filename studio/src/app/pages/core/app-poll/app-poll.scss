@@ -17,7 +17,7 @@ app-poll {
         --padding-start: 0;
         --ripple-color: var(--ion-color-primary);
 
-        ion-label[class*=sc-ion-label] {
+        ion-label[class*="sc-ion-label"] {
           white-space: normal;
         }
       }

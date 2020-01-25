@@ -9,7 +9,7 @@ div {
   margin: var(--deckgo-logo-margin);
 
   background-color: transparent;
-  background-image: var(--deckgo-logo-url, url('/assets/img/deckdeckgo-logo.svg'));
+  background-image: var(--deckgo-logo-url, url("/assets/img/deckdeckgo-logo.svg"));
   background-repeat: no-repeat;
 
   width: var(--deckgo-logo-size);

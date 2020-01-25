@@ -26,7 +26,7 @@
   fill: none;
   stroke-width: var(--pager-stroke-inner-width, 2.2);
   stroke-linecap: round;
-  transition: stroke-dasharray 500ms cubic-bezier(0.23, 1, 0.320, 1);
+  transition: stroke-dasharray 500ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .deckgo-pager-progression {

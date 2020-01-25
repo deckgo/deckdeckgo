@@ -25,11 +25,10 @@ interface Point {
 }
 
 interface Drawable {
-  draw(ctx: CanvasRenderingContext2D)
+  draw(ctx: CanvasRenderingContext2D);
 }
 
 class Circle implements Drawable {
-
   private readonly from: Point;
   private readonly to: Point;
   private readonly color: string;
@@ -56,7 +55,6 @@ class Circle implements Drawable {
 }
 
 class Pencil implements Drawable {
-
   private readonly from: Point;
   private readonly to: Point;
   private readonly color: string;
@@ -77,7 +75,6 @@ class Pencil implements Drawable {
 
     ctx.stroke();
     ctx.closePath();
-
   }
 }
 
@@ -135,11 +132,11 @@ export class DeckdeckgoRemote {
         } else if (event.type === DeckdeckgoEventType.CLEAR_SLIDE) {
           await this.clear();
         } else if (event.type === DeckdeckgoEventType.START_DRAWING) {
-          await this.startDrawing((event as DeckdeckgoEventDraw));
+          await this.startDrawing(event as DeckdeckgoEventDraw);
         } else if (event.type === DeckdeckgoEventType.END_DRAWING) {
-          await this.endDrawing((event as DeckdeckgoEventDraw));
+          await this.endDrawing(event as DeckdeckgoEventDraw);
         } else if (event.type === DeckdeckgoEventType.DRAW) {
-          await this.draw((event as DeckdeckgoEventDraw));
+          await this.draw(event as DeckdeckgoEventDraw);
         } else {
           // Else it's a command to apply on the deck, we propagate
           this.event.emit(event);
@@ -228,7 +225,7 @@ export class DeckdeckgoRemote {
         return;
       }
 
-      this.ctx = canvas.getContext("2d");
+      this.ctx = canvas.getContext('2d');
 
       resolve();
     });
@@ -254,12 +251,17 @@ export class DeckdeckgoRemote {
       this.startX = this.interpolateX(event) - this.leftOffset;
       this.startY = this.interpolateY(event);
 
-
       if (event.action === DeckdeckgoDrawAction.CIRCLE) {
-        this.drawables.push(new Circle({x: this.startX, y: this.startY}, {
-          x: this.startX,
-          y: this.startY
-        }, event.color));
+        this.drawables.push(
+          new Circle(
+            {x: this.startX, y: this.startY},
+            {
+              x: this.startX,
+              y: this.startY
+            },
+            event.color
+          )
+        );
       }
 
       await this.setCanvasIndex(1);
@@ -282,10 +284,14 @@ export class DeckdeckgoRemote {
       }
 
       if (event.action === DeckdeckgoDrawAction.CIRCLE) {
-        this.drawables[this.drawables.length - 1] = new Circle({x: this.startX, y: this.startY}, {
-          x: toX,
-          y: toY
-        }, event.color);
+        this.drawables[this.drawables.length - 1] = new Circle(
+          {x: this.startX, y: this.startY},
+          {
+            x: toX,
+            y: toY
+          },
+          event.color
+        );
       }
       this.drawElements();
 
@@ -302,15 +308,18 @@ export class DeckdeckgoRemote {
 
   private endDrawing(event: DeckdeckgoEventDraw): Promise<void> {
     return new Promise<void>(async (resolve) => {
-
       const toX: number = this.interpolateX(event) - this.leftOffset;
       const toY: number = this.interpolateY(event);
 
       if (event.action === DeckdeckgoDrawAction.CIRCLE) {
-        this.drawables[this.drawables.length - 1] = new Circle({x: this.startX, y: this.startY}, {
-          x: toX,
-          y: toY
-        }, event.color);
+        this.drawables[this.drawables.length - 1] = new Circle(
+          {x: this.startX, y: this.startY},
+          {
+            x: toX,
+            y: toY
+          },
+          event.color
+        );
       }
 
       this.startX = null;

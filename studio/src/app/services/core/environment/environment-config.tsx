@@ -1,65 +1,65 @@
 export interface EnvironmentFirebaseConfig {
-    apiKey: string;
-    authDomain: string;
-    databaseURL: string;
-    storageBucket: string;
-    projectId: string;
-    messagingSenderId: string;
-    storageUrl: string;
-    appId: string;
+  apiKey: string;
+  authDomain: string;
+  databaseURL: string;
+  storageBucket: string;
+  projectId: string;
+  messagingSenderId: string;
+  storageUrl: string;
+  appId: string;
 }
 
 export interface EnvironmentTenorConfig {
-    url: string;
-    key: string;
+  url: string;
+  key: string;
 }
 
 export interface EnvironmentUnsplashConfig {
-    url: string;
+  url: string;
 }
 
 export interface EnvironmentGoogleConfig {
-    fontsUrl: string
+  fontsUrl: string;
 }
 
 export interface EnvironmentDeckDeckGoConfig {
-    prod: boolean;
-    appUrl: string;
-    globalAssetsUrl: string;
-    pollUrl: string;
-    apiUrl: string;
-    presentationUrl: string;
-    socketUrl: string;
+  prod: boolean;
+  appUrl: string;
+  globalAssetsUrl: string;
+  pollUrl: string;
+  apiUrl: string;
+  presentationUrl: string;
+  socketUrl: string;
 }
 
 export interface EnvironmentConfig {
-    deckdeckgo: EnvironmentDeckDeckGoConfig;
-    firebase: EnvironmentFirebaseConfig;
-    tenor: EnvironmentTenorConfig;
-    unsplash: EnvironmentUnsplashConfig;
-    google: EnvironmentGoogleConfig;
-    prismComponentsUrl: string;
-    gifExampleSrc: string;
+  deckdeckgo: EnvironmentDeckDeckGoConfig;
+  firebase: EnvironmentFirebaseConfig;
+  tenor: EnvironmentTenorConfig;
+  unsplash: EnvironmentUnsplashConfig;
+  google: EnvironmentGoogleConfig;
+  prismComponentsUrl: string;
+  gifExampleSrc: string;
 }
 
 export function setupConfig(config: EnvironmentConfig) {
-    if (!window) {
-        return;
-    }
+  if (!window) {
+    return;
+  }
 
-    const win = window as any;
-    const DeckGo = win.DeckGo;
+  const win = window as any;
+  const DeckGo = win.DeckGo;
 
-    if (DeckGo && DeckGo.config && DeckGo.config.constructor.name !== 'Object') {
-        console.error('DeckDeckGo config was already initialized');
-        return;
-    }
+  if (DeckGo && DeckGo.config && DeckGo.config.constructor.name !== 'Object') {
+    console.error('DeckDeckGo config was already initialized');
+    return;
+  }
 
-    win.DeckGo = win.DeckGo || {};
-    win.DeckGo.config = {
-        ...win.DeckGo.config,
-        ...config
-    };
+  win.DeckGo = win.DeckGo || {};
+  win.DeckGo.config = {
+    ...win.DeckGo.config,
+    ...config
+  };
 
-    return win.DeckGo.config;
+  return win.DeckGo.config;
 }

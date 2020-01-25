@@ -1,4 +1,4 @@
 export interface ApiPresentation {
-    id: string,
-    url: string;
+  id: string;
+  url: string;
 }

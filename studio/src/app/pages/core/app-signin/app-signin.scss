@@ -15,7 +15,8 @@ app-signin {
   }
 
   form button {
-    &.firebaseui-idp-password, &.firebaseui-idp-password:hover {
+    &.firebaseui-idp-password,
+    &.firebaseui-idp-password:hover {
       background-color: var(--ion-color-primary);
     }
   }
@@ -31,7 +32,8 @@ app-signin {
   .mdl-button--primary.mdl-button--primary {
     color: var(--ion-color-primary);
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       background: transparent;
     }
   }
@@ -39,7 +41,8 @@ app-signin {
   .mdl-button--raised.mdl-button--colored {
     background: var(--ion-color-primary);
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       background: var(--ion-color-primary);
     }
   }
@@ -47,7 +50,10 @@ app-signin {
   p.firebaseui-tos {
     color: var(--ion-color-medium);
 
-    a, a:hover, a:active, a:focus {
+    a,
+    a:hover,
+    a:active,
+    a:focus {
       text-decoration: none;
     }
   }

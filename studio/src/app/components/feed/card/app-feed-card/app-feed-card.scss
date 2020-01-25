@@ -1,10 +1,8 @@
 app-feed-card {
-
   ion-card[class*="sc-ion-card"] {
     --background: white;
 
     ion-card-content {
-
       &.compact {
         p.content {
           display: none;
@@ -45,5 +43,4 @@ app-feed-card {
       height: 100%;
     }
   }
-
 }

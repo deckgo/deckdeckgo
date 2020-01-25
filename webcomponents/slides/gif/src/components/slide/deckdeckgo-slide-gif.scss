@@ -22,7 +22,8 @@ div.deckgo-gif-container {
   align-items: center;
   justify-content: center;
 
-  ::slotted([slot="header"]), ::slotted([slot="footer"]) {
+  ::slotted([slot="header"]),
+  ::slotted([slot="footer"]) {
     position: absolute;
 
     left: 50%;
@@ -47,7 +48,8 @@ div.deckgo-gif-container {
 }
 
 :host(.deckgo-slide-gif-hidden) {
-  ::slotted([slot="header"]), ::slotted([slot="footer"]) {
+  ::slotted([slot="header"]),
+  ::slotted([slot="footer"]) {
     display: none;
   }
 }

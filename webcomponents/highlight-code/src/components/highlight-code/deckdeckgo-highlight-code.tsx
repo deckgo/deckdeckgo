@@ -10,7 +10,6 @@ import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highligh
   shadow: true
 })
 export class DeckdeckgoHighlightCode {
-
   @Element() el: HTMLElement;
 
   @Event() private prismLanguageLoaded: EventEmitter<string>;
@@ -85,7 +84,7 @@ export class DeckdeckgoHighlightCode {
         return;
       }
 
-      const scripts = document.querySelector('[deckdeckgo-prism-loaded=\'' + this.language + '\']');
+      const scripts = document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']");
       if (scripts) {
         resolve(true);
       } else {
@@ -102,7 +101,7 @@ export class DeckdeckgoHighlightCode {
         return;
       }
 
-      const scripts = document.querySelector('[deckdeckgo-prism=\'' + this.language + '\']');
+      const scripts = document.querySelector("[deckdeckgo-prism='" + this.language + "']");
       if (scripts) {
         resolve();
         return;
@@ -154,7 +153,7 @@ export class DeckdeckgoHighlightCode {
         return;
       }
 
-      if (document.querySelector('[deckdeckgo-prism-loaded=\'' + this.language + '\']')) {
+      if (document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']")) {
         await this.fetchOrParse();
       } else {
         await this.loadLanguage();
@@ -165,8 +164,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   private parseSlottedCode(): Promise<void> {
-
-    const code: HTMLElement = this.el.querySelector('[slot=\'code\']');
+    const code: HTMLElement = this.el.querySelector("[slot='code']");
 
     if (code) {
       return this.parseCode(code.innerText ? code.innerText.trim() : code.innerText);
@@ -289,15 +287,20 @@ export class DeckdeckgoHighlightCode {
   }
 
   private hasLineAnchor(line: string): boolean {
-    return line && this.anchor &&
+    return (
+      line &&
+      this.anchor &&
       line.indexOf('@Prop') === -1 &&
-      line.split(' ').join('').indexOf(this.anchor.split(' ').join('')) > -1;
+      line
+        .split(' ')
+        .join('')
+        .indexOf(this.anchor.split(' ').join('')) > -1
+    );
   }
 
   private addHighlight(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.highlightLines && this.highlightLines.length > 0) {
-
         const rows: number[] = await this.findRowsToHighlight();
 
         if (rows && rows.length > 0) {
@@ -311,7 +314,6 @@ export class DeckdeckgoHighlightCode {
             let offsetHeight: number = -1;
 
             elements.forEach((element: HTMLElement) => {
-
               let editElement: HTMLElement;
 
               // We need to convert text entries to an element in order to be able to style it
@@ -332,20 +334,19 @@ export class DeckdeckgoHighlightCode {
               }
 
               // We try to find the row index with the offset of the element
-              rowIndex = editElement.offsetTop > lastOffsetTop ? (rowIndex + 1) : rowIndex;
+              rowIndex = editElement.offsetTop > lastOffsetTop ? rowIndex + 1 : rowIndex;
               lastOffsetTop = editElement.offsetTop;
 
               // For some reason, some converted text element are displayed on two lines, that's why we should consider the 2nd one as index
               offsetHeight = offsetHeight === -1 || offsetHeight > editElement.offsetHeight ? editElement.offsetHeight : offsetHeight;
 
-              const rowsIndexToCompare: number = editElement.offsetHeight > offsetHeight ? (rowIndex + 1) : rowIndex;
+              const rowsIndexToCompare: number = editElement.offsetHeight > offsetHeight ? rowIndex + 1 : rowIndex;
 
               if (rows.indexOf(rowsIndexToCompare) > -1) {
                 editElement.classList.add('deckgo-highlight-code-line');
               }
-            })
+            });
           }
-
         }
       }
 
@@ -433,23 +434,27 @@ export class DeckdeckgoHighlightCode {
   }
 
   private hasLineZoom(line: string): boolean {
-    return line && this.anchorZoom &&
+    return (
+      line &&
+      this.anchorZoom &&
       line.indexOf('@Prop') === -1 &&
-      line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1;
+      line
+        .split(' ')
+        .join('')
+        .indexOf(this.anchorZoom.split(' ').join('')) > -1
+    );
   }
 
   private edit(): Promise<void> {
     return new Promise<void>((resolve) => {
-
       if (!this.editable) {
-
         resolve();
         return;
       }
 
       this.editing = true;
 
-      const slottedCode: HTMLElement = this.el.querySelector('[slot=\'code\']');
+      const slottedCode: HTMLElement = this.el.querySelector("[slot='code']");
 
       if (slottedCode) {
         setTimeout(() => {
@@ -506,7 +511,7 @@ export class DeckdeckgoHighlightCode {
     return new Promise<void>((resolve) => {
       this.editing = false;
 
-      const slottedCode: HTMLElement = this.el.querySelector('[slot=\'code\']');
+      const slottedCode: HTMLElement = this.el.querySelector("[slot='code']");
 
       if (slottedCode) {
         slottedCode.removeAttribute('contentEditable');
@@ -524,14 +529,13 @@ export class DeckdeckgoHighlightCode {
 
   render() {
     return (
-      <Host class={{
-        'deckgo-highlight-code-edit': this.editing,
-        'deckgo-highlight-code-carbon': this.carbon === 'true'
-      }}>
+      <Host
+        class={{
+          'deckgo-highlight-code-edit': this.editing,
+          'deckgo-highlight-code-carbon': this.carbon === 'true'
+        }}>
         {this.renderCarbon()}
-        <div class="deckgo-highlight-code-container"
-             onMouseDown={() => this.edit()}
-             onTouchStart={() => this.edit()}>
+        <div class="deckgo-highlight-code-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
           <code></code>
           <slot name="code"></slot>
         </div>
@@ -544,11 +548,13 @@ export class DeckdeckgoHighlightCode {
       return undefined;
     }
 
-    return <div class="carbon">
-      {this.renderCarbonCircle('red')}
-      {this.renderCarbonCircle('yellow')}
-      {this.renderCarbonCircle('green')}
-    </div>
+    return (
+      <div class="carbon">
+        {this.renderCarbonCircle('red')}
+        {this.renderCarbonCircle('yellow')}
+        {this.renderCarbonCircle('green')}
+      </div>
+    );
   }
 
   private renderCarbonCircle(color: 'red' | 'yellow' | 'green') {

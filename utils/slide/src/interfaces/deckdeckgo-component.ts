@@ -1,3 +1,3 @@
 export interface DeckdeckgoComponent {
-    lazyLoadContent(): Promise<void>;
+  lazyLoadContent(): Promise<void>;
 }

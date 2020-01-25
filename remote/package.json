@@ -54,6 +54,9 @@
     "@types/w3c-generic-sensor": "^1.0.2",
     "@types/webrtc": "0.0.25",
     "autoprefixer": "^9.7.4",
+    "husky": "^4.2.1",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1",
     "rollup-plugin-node-builtins": "^2.1.2",
     "workbox-build": "4.3.1"
   },
@@ -72,5 +75,10 @@
     "slides",
     "slideshow",
     "talk"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
 }

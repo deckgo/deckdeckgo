@@ -1,9 +1,7 @@
 // From Ionicons
 // https://github.com/ionic-team/ionicons/blob/master/src/components/icon/validate.ts
 
-export const validateContent = (
-  svgContent: string | null
-) => {
+export const validateContent = (svgContent: string | null) => {
   if (svgContent) {
     const div = document.createElement('div');
     div.innerHTML = svgContent;
@@ -54,4 +52,3 @@ export const isValid = (elm: HTMLElement) => {
 };
 
 export const isStr = (val: any): val is string => typeof val === 'string';
-

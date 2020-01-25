@@ -34,7 +34,6 @@ enum DeckdeckgoLineChartAxisDomain {
   shadow: true
 })
 export class DeckdeckgoLineChart implements DeckdeckgoChart {
-
   @Element() el: HTMLElement;
 
   @Prop({mutable: true}) width: number;
@@ -100,7 +99,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
       this.serieIndex = 0;
 
-      this.svg = DeckdeckgoChartUtils.initSvg(this.el, (this.width + this.marginLeft + this.marginRight), (this.height + this.marginTop + this.marginBottom));
+      this.svg = DeckdeckgoChartUtils.initSvg(this.el, this.width + this.marginLeft + this.marginRight, this.height + this.marginTop + this.marginBottom);
       this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
 
       this.series = await this.fetchData();
@@ -193,7 +192,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
       const isXAxisNumber: boolean = firstSerieData && firstSerieData.length > 0 && typeof firstSerieData[0].when === 'number';
 
-      this.x = isXAxisNumber ? scaleLinear().range([0, this.width - this.marginLeft - this.marginRight]) : scaleTime().range([0, this.width - this.marginLeft - this.marginRight]);
+      this.x = isXAxisNumber
+        ? scaleLinear().range([0, this.width - this.marginLeft - this.marginRight])
+        : scaleTime().range([0, this.width - this.marginLeft - this.marginRight]);
       this.y = scaleLinear().range([this.height - this.marginTop - this.marginBottom, 0]);
 
       this.x.domain(extent(firstSerieData, (d: DeckdeckgoLineChartData) => d.when));
@@ -226,16 +227,16 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         promises.push(this.findMinMax(i));
       }
 
-      const results: { min: number, max: number }[] = await Promise.all(promises);
+      const results: {min: number; max: number}[] = await Promise.all(promises);
 
-      const minMax: { min: number, max: number } = await this.concatMinMax(results);
+      const minMax: {min: number; max: number} = await this.concatMinMax(results);
 
       resolve([minMax.min, minMax.max]);
-    })
+    });
   }
 
-  private concatMinMax(allMinMax: { min: number, max: number }[]): Promise<{ min: number, max: number }> {
-    return new Promise<{ min: number, max: number }>((resolve) => {
+  private concatMinMax(allMinMax: {min: number; max: number}[]): Promise<{min: number; max: number}> {
+    return new Promise<{min: number; max: number}>((resolve) => {
       if (!allMinMax || allMinMax.length <= 0) {
         resolve({
           min: 0,
@@ -265,8 +266,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     });
   }
 
-  private findMinMax(index: number): Promise<{ min: number, max: number }> {
-    return new Promise<{ min: number, max: number }>((resolve) => {
+  private findMinMax(index: number): Promise<{min: number; max: number}> {
+    return new Promise<{min: number; max: number}>((resolve) => {
       // https://stackoverflow.com/a/30834687/5404186
       let min: number = this.series[index].data[0].value;
       let max: number = this.series[index].data[0].value;
@@ -301,7 +302,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         leftAxis.tickSize(-(this.width - this.marginLeft - this.marginRight)).tickFormat(null);
       }
 
-      this.svg.append('g')
+      this.svg
+        .append('g')
         .attr('class', styleClassAxisX)
         .attr('transform', 'translate(0,' + (this.height - this.marginTop - this.marginBottom) + ')')
         .call(bottomAxis)
@@ -309,21 +311,21 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         .attr('transform', 'translate(-10,0)rotate(-45)')
         .style('text-anchor', 'end');
 
-      this.svg.append('g')
+      this.svg
+        .append('g')
         .attr('class', styleClassAxisY)
         .call(leftAxis);
 
       resolve();
-    })
+    });
   }
 
   private drawLine(index: number): Promise<void> {
     return new Promise<void>((resolve) => {
-      let line: Area<DeckdeckgoLineChartData> = area<DeckdeckgoLineChartData>()
-        .x((d: DeckdeckgoLineChartData) => this.x(d.when));
+      let line: Area<DeckdeckgoLineChartData> = area<DeckdeckgoLineChartData>().x((d: DeckdeckgoLineChartData) => this.x(d.when));
 
       if (this.area) {
-        line.y0((this.height - this.marginTop - this.marginBottom)).y1((d: DeckdeckgoLineChartData) => this.y(d.value));
+        line.y0(this.height - this.marginTop - this.marginBottom).y1((d: DeckdeckgoLineChartData) => this.y(d.value));
       } else {
         line.y((d: DeckdeckgoLineChartData) => this.y(d.value));
       }
@@ -342,7 +344,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       }
 
       resolve();
-    })
+    });
   }
 
   private drawInstantLine(data: DeckdeckgoLineChartData[], index: number, line: Area<DeckdeckgoLineChartData>, randomFillColor: string) {
@@ -351,7 +353,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
     const styleIndex: number = index + 1;
 
-    this.svg.append('path')
+    this.svg
+      .append('path')
       .datum(data)
       .attr('class', 'area')
       .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
@@ -364,22 +367,24 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   private drawAnimatedLine(data: DeckdeckgoLineChartData[], index: number, line: Area<DeckdeckgoLineChartData>, randomFillColor: string) {
     const t = transition();
 
-    const section: any = this.svg.selectAll('.area')
-      .data([data], (d: DeckdeckgoLineChartData) => {
-        return this.y(d.value)
-      });
+    const section: any = this.svg.selectAll('.area').data([data], (d: DeckdeckgoLineChartData) => {
+      return this.y(d.value);
+    });
 
     // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
     const styleIndex: number = index + 1;
 
     section
       .enter()
-      .append('path').merge(section)
+      .append('path')
+      .merge(section)
       .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
       .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
       .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
       .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
-      .transition(t).duration(this.animationDuration).ease(easeLinear)
+      .transition(t)
+      .duration(this.animationDuration)
+      .ease(easeLinear)
       .attr('class', 'area')
       .attr('d', line);
   }
@@ -437,7 +442,6 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         const values: string[] = line.split(this.separator);
 
         if (values && values.length > 1) {
-
           const when: any = this.validDate(values[0]) ? parse(values[0], this.datePattern, new Date()) : parseInt(values[0]);
 
           if (when) {
@@ -448,10 +452,13 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
                 // Random hex color source: https://css-tricks.com/snippets/javascript/random-hex-color/
                 const randomFillColor: string = Math.floor(Math.random() * 16777215).toString(16);
 
-                let data: DeckdeckgoLineChartSerie = series && series.length >= i ? series[i - 1] : {
-                  data: [],
-                  randomFillColor: randomFillColor
-                };
+                let data: DeckdeckgoLineChartSerie =
+                  series && series.length >= i
+                    ? series[i - 1]
+                    : {
+                        data: [],
+                        randomFillColor: randomFillColor
+                      };
 
                 if (!data.data || data.data.length <= 0) {
                   data.data = [];
@@ -482,9 +489,10 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   }
 
   render() {
-    return <Host style={{'width': `${this.width}px`, 'height': `${this.height}px`}}>
-      <svg></svg>
-    </Host>;
+    return (
+      <Host style={{width: `${this.width}px`, height: `${this.height}px`}}>
+        <svg></svg>
+      </Host>
+    );
   }
-
 }

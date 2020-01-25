@@ -25,7 +25,7 @@ const configuration: RTCConfiguration = {
 
 const dataChannelOptions = {
   ordered: false, //no guaranteed delivery, unreliable but faster
-  maxPacketLifeTime: 1000, //milliseconds
+  maxPacketLifeTime: 1000 //milliseconds
 };
 
 const DEFAULT_SOCKET_URL: string = 'https://api.deckdeckgo.com';
@@ -42,10 +42,10 @@ export enum ConnectionState {
 const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
 
 // @ts-ignore
+// prettier-ignore
 const SessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription || window.webkitRTCSessionDescription || window.msRTCSessionDescription;
 
 export class CommunicationService {
-
   private static instance: CommunicationService;
 
   private socket: SocketIOClient.Socket;
@@ -72,7 +72,6 @@ export class CommunicationService {
 
   connect(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-
       if (!this.room) {
         resolve();
         return;
@@ -83,9 +82,9 @@ export class CommunicationService {
       this.state.next(ConnectionState.CONNECTING);
 
       this.socket = io.connect(url, {
-        'reconnectionAttempts': 5,
-        'transports': ['websocket', 'xhr-polling'],
-        'query': 'type=app'
+        reconnectionAttempts: 5,
+        transports: ['websocket', 'xhr-polling'],
+        query: 'type=app'
       });
 
       this.socket.on('connect', async () => {
@@ -109,11 +108,14 @@ export class CommunicationService {
         if (data.type === 'app_here') {
           if (!this.rtcPeerConn.currentLocalDescription) {
             // let the 'negotiationneeded' event trigger offer generation
-            await this.rtcPeerConn.createOffer().then((desc) => {
-              this.sendLocalDesc(desc);
-            }, (_err) => {
-              this.state.next(ConnectionState.NOT_CONNECTED);
-            });
+            await this.rtcPeerConn.createOffer().then(
+              (desc) => {
+                this.sendLocalDesc(desc);
+              },
+              (_err) => {
+                this.state.next(ConnectionState.NOT_CONNECTED);
+              }
+            );
           }
 
           return;
@@ -121,15 +123,17 @@ export class CommunicationService {
 
         const message = JSON.parse(data.message);
         if (message.sdp) {
-          this.rtcPeerConn.setRemoteDescription(new SessionDescription(message.sdp)).then(() => {
-            // App create answer
-          }, (_err) => {
-            this.state.next(ConnectionState.NOT_CONNECTED);
-          });
+          this.rtcPeerConn.setRemoteDescription(new SessionDescription(message.sdp)).then(
+            () => {
+              // App create answer
+            },
+            (_err) => {
+              this.state.next(ConnectionState.NOT_CONNECTED);
+            }
+          );
         } else {
           await this.rtcPeerConn.addIceCandidate(new RTCIceCandidate(message.candidate));
         }
-
       });
 
       this.socket.on('connect_error', () => {
@@ -202,7 +206,7 @@ export class CommunicationService {
       if (evt.candidate) {
         this.socket.emit('signal', {
           type: 'ice_candidate',
-          message: JSON.stringify({'candidate': evt.candidate}),
+          message: JSON.stringify({candidate: evt.candidate}),
           room: this.room
         });
       }
@@ -210,16 +214,19 @@ export class CommunicationService {
   }
 
   private sendLocalDesc(desc) {
-    this.rtcPeerConn.setLocalDescription(desc).then(() => {
-      this.socket.emit('signal', {
-        type: 'sending_local_description',
-        message: JSON.stringify({'sdp': this.rtcPeerConn.localDescription}),
-        room: this.room
-      });
-    }, (_err) => {
-      this.state.next(ConnectionState.NOT_CONNECTED);
-    });
-  };
+    this.rtcPeerConn.setLocalDescription(desc).then(
+      () => {
+        this.socket.emit('signal', {
+          type: 'sending_local_description',
+          message: JSON.stringify({sdp: this.rtcPeerConn.localDescription}),
+          room: this.room
+        });
+      },
+      (_err) => {
+        this.state.next(ConnectionState.NOT_CONNECTED);
+      }
+    );
+  }
 
   private dataChannelStateChanged = () => {
     if (this.dataChannelOut.readyState === 'open') {
@@ -237,10 +244,18 @@ export class CommunicationService {
     this.event.next(data);
   };
 
-  emit(data: DeckdeckgoEvent | DeckdeckgoEventDeck | DeckdeckgoEventSlide | DeckdeckgoEventSlideTo | DeckdeckgoEventSlideAction | DeckdeckgoEventNextPrevSlide | DeckdeckgoEventDeckReveal) {
+  emit(
+    data:
+      | DeckdeckgoEvent
+      | DeckdeckgoEventDeck
+      | DeckdeckgoEventSlide
+      | DeckdeckgoEventSlideTo
+      | DeckdeckgoEventSlideAction
+      | DeckdeckgoEventNextPrevSlide
+      | DeckdeckgoEventDeckReveal
+  ) {
     if (this.dataChannelOut) {
       this.dataChannelOut.send(JSON.stringify(data));
     }
   }
-
 }

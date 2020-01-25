@@ -6,6 +6,7 @@ div.deckgo-slide {
   justify-content: center;
 }
 
-::slotted([slot="title"]), ::slotted([slot="content"]) {
+::slotted([slot="title"]),
+::slotted([slot="content"]) {
   text-align: center;
 }

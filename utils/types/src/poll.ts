@@ -1,15 +1,15 @@
 export interface DeckdeckgoPollAnswer {
-    key: number | string;
-    label: string;
+  key: number | string;
+  label: string;
 }
 
 export interface DeckdeckgoPollQuestion {
-    label: string;
-    values: DeckdeckgoPollAnswer[];
-    answered: boolean;
+  label: string;
+  values: DeckdeckgoPollAnswer[];
+  answered: boolean;
 }
 
 export interface DeckdeckgoPoll {
-    key: string;
-    poll: DeckdeckgoPollQuestion;
+  key: string;
+  poll: DeckdeckgoPollQuestion;
 }

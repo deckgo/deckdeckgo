@@ -6,10 +6,11 @@ import {Component, h} from '@stencil/core';
   shadow: true
 })
 export class AppLogo {
-
   render() {
-    return <div>
-      <ion-icon src="/assets/img/deckdeckgo-logo-round.svg"></ion-icon>
-    </div>;
+    return (
+      <div>
+        <ion-icon src="/assets/img/deckdeckgo-logo-round.svg"></ion-icon>
+      </div>
+    );
   }
 }

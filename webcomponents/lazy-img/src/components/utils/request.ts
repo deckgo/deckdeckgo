@@ -11,13 +11,14 @@ export const getSvgContent = (url: string) => {
 
   if (!req) {
     // we don't already have a request
-    req = fetch(url).then(rsp => {
-      if (rsp.status <= 299) {
-        return rsp.text();
-      }
-      return Promise.resolve(null);
-
-    }).then(svgContent => validateContent(svgContent));
+    req = fetch(url)
+      .then((rsp) => {
+        if (rsp.status <= 299) {
+          return rsp.text();
+        }
+        return Promise.resolve(null);
+      })
+      .then((svgContent) => validateContent(svgContent));
 
     // cache for the same requests
     requests.set(url, req);

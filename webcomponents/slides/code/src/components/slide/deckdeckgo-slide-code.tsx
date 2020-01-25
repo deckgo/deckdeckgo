@@ -14,7 +14,6 @@ enum DeckdeckgoSlideCodeAction {
   shadow: true
 })
 export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
-
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
@@ -53,7 +52,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   private moveSlots(): Promise<void> {
     return new Promise<void>((resolve) => {
-      const code: HTMLElement = this.el.querySelector('[slot=\'code\']');
+      const code: HTMLElement = this.el.querySelector("[slot='code']");
 
       const codeComponent = this.el.shadowRoot.querySelector('deckgo-highlight-code');
 
@@ -69,7 +68,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return new Promise<void>((resolve) => {
       // Only on mobile devices
       if (isMobile()) {
-        const info: HTMLElement = this.el.querySelector('[slot=\'info\']');
+        const info: HTMLElement = this.el.querySelector("[slot='info']");
 
         if (info) {
           info.classList.add('deckgo-show-info');
@@ -84,7 +83,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
     return new Promise<boolean>((resolve) => {
       // Only on mobile devices
       if (isMobile()) {
-        const info: HTMLElement = this.el.querySelector('[slot=\'info\']');
+        const info: HTMLElement = this.el.querySelector("[slot='info']");
 
         if (info && info.classList.contains('deckgo-show-info')) {
           info.classList.remove('deckgo-show-info');
@@ -164,7 +163,7 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
         await (element as any).zoomCode(zoom);
       }
 
-      const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
+      const title: HTMLElement = this.el.querySelector("[slot='title']");
       if (title) {
         title.style.setProperty('opacity', zoom ? '0' : '1');
       }
@@ -219,26 +218,30 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   // DeckDeckGo
   render() {
-
     let containerStyle: string = 'deckgo-slide-code-container';
     if (this.mobile) {
       containerStyle += ' deckgo-slide-code-container-mobile';
     }
 
-    return <Host class={{'deckgo-slide-container': true}}>
-        <div class="deckgo-slide"
-                  onClick={() => this.switchAction()}>
-        <slot name="title"></slot>
-        <div class={containerStyle}>
-          <deckgo-highlight-code src={this.src} anchor={this.anchor} anchorZoom={this.anchorZoom} hideAnchor={this.hideAnchor} language={this.language}></deckgo-highlight-code>
+    return (
+      <Host class={{'deckgo-slide-container': true}}>
+        <div class="deckgo-slide" onClick={() => this.switchAction()}>
+          <slot name="title"></slot>
+          <div class={containerStyle}>
+            <deckgo-highlight-code
+              src={this.src}
+              anchor={this.anchor}
+              anchorZoom={this.anchorZoom}
+              hideAnchor={this.hideAnchor}
+              language={this.language}></deckgo-highlight-code>
+          </div>
+          <slot name="code"></slot>
+          <slot name="info"></slot>
+          <slot name="notes"></slot>
+          <slot name="actions"></slot>
+          <slot name="background"></slot>
         </div>
-        <slot name="code"></slot>
-        <slot name="info"></slot>
-        <slot name="notes"></slot>
-        <slot name="actions"></slot>
-        <slot name="background"></slot>
-      </div>
-    </Host>;
+      </Host>
+    );
   }
-
 }

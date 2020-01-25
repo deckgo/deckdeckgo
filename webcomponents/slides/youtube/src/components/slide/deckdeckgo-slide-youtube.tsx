@@ -9,7 +9,6 @@ import {DeckdeckgoSlidePlay, hideLazyLoadImages, lazyLoadContent} from '@deckdec
   shadow: true
 })
 export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
-
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
@@ -45,7 +44,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   @Method()
   beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      resolve(true)
+      resolve(true);
     });
   }
 
@@ -112,13 +111,13 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
 
       this.isPlaying = play;
 
-        resolve();
-    })
+      resolve();
+    });
   }
 
   private initFrameTitle(): Promise<string> {
     return new Promise<string>((resolve) => {
-      const title: HTMLElement = this.el.querySelector('[slot=\'title\']');
+      const title: HTMLElement = this.el.querySelector("[slot='title']");
 
       if (title) {
         this.frameTitle = title.innerHTML;
@@ -177,22 +176,28 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   }
 
   render() {
-    return <Host class={{'deckgo-slide-container': true}}>
-      <div class="deckgo-slide">
-        <slot name="title"></slot>
-        <slot name="content"></slot>
-        <div class="deckgo-youtube-container">
-          {this.renderVideo()}
+    return (
+      <Host class={{'deckgo-slide-container': true}}>
+        <div class="deckgo-slide">
+          <slot name="title"></slot>
+          <slot name="content"></slot>
+          <div class="deckgo-youtube-container">{this.renderVideo()}</div>
+          <slot name="notes"></slot>
+          <slot name="actions"></slot>
+          <slot name="background"></slot>
         </div>
-        <slot name="notes"></slot>
-        <slot name="actions"></slot>
-        <slot name="background"></slot>
-      </div>
-    </Host>
+      </Host>
+    );
   }
 
   private renderVideo() {
-    return <deckgo-youtube src={this.src} width={this.videoWidth} height={this.videoHeight} frame-title={this.frameTitle} allowFullscreen={this.allowFullscreen}></deckgo-youtube>
+    return (
+      <deckgo-youtube
+        src={this.src}
+        width={this.videoWidth}
+        height={this.videoHeight}
+        frame-title={this.frameTitle}
+        allowFullscreen={this.allowFullscreen}></deckgo-youtube>
+    );
   }
-
 }

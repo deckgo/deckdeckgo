@@ -8,55 +8,62 @@ import {Deck} from '../../../models/data/deck';
 import {DeckEditorService} from '../deck/deck-editor.service';
 
 export class RemoteService {
+  private remoteSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-    private remoteSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private static instance: RemoteService;
 
-    private static instance: RemoteService;
+  private deckEditorService: DeckEditorService;
 
-    private deckEditorService: DeckEditorService;
+  private constructor() {
+    // Private constructor, singleton
+    this.deckEditorService = DeckEditorService.getInstance();
+  }
 
-    private constructor() {
-        // Private constructor, singleton
-        this.deckEditorService = DeckEditorService.getInstance();
+  static getInstance() {
+    if (!RemoteService.instance) {
+      RemoteService.instance = new RemoteService();
     }
+    return RemoteService.instance;
+  }
 
-    static getInstance() {
-        if (!RemoteService.instance) {
-            RemoteService.instance = new RemoteService();
-        }
-        return RemoteService.instance;
-    }
+  init(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const remote: boolean = await get<boolean>('deckdeckgo_remote');
 
-    init(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const remote: boolean = await get<boolean>('deckdeckgo_remote');
-
-            this.watch().pipe(take(1)).subscribe((current: boolean) => {
-               if (current !== remote) {
-                   this.remoteSubject.next(remote);
-               }
-            });
-
-            resolve();
+      this.watch()
+        .pipe(take(1))
+        .subscribe((current: boolean) => {
+          if (current !== remote) {
+            this.remoteSubject.next(remote);
+          }
         });
-    }
 
-    async switch(enable: boolean) {
-        await set('deckdeckgo_remote', enable);
-        this.remoteSubject.next(enable);
-    }
+      resolve();
+    });
+  }
 
-    watch(): Observable<boolean> {
-        return this.remoteSubject.asObservable();
-    }
+  async switch(enable: boolean) {
+    await set('deckdeckgo_remote', enable);
+    this.remoteSubject.next(enable);
+  }
 
-    getRoom(): Promise<string> {
-        return new Promise<string>((resolve) => {
-            this.deckEditorService.watch().pipe(filter((deck: Deck) => deck && deck.data && (deck.data.name && deck.data.name !== undefined && deck.data.name !== '')), take(1)).subscribe(async (deck: Deck) => {
-                const roomName: string = deck.data.name.replace(/\.|#/g,'_');
+  watch(): Observable<boolean> {
+    return this.remoteSubject.asObservable();
+  }
 
-                resolve(roomName);
-            });
+  getRoom(): Promise<string> {
+    return new Promise<string>((resolve) => {
+      this.deckEditorService
+        .watch()
+        .pipe(
+          filter((deck: Deck) => deck && deck.data && deck.data.name && deck.data.name !== undefined && deck.data.name !== ''),
+          take(1)
+        )
+        .subscribe(async (deck: Deck) => {
+          const roomName: string = deck.data.name.replace(/\.|#/g, '_');
+
+          resolve(roomName);
         });
-    }
+    });
+  }
 }

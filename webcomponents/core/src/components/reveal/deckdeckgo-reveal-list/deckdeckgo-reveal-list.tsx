@@ -2,7 +2,7 @@ import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent, L
 
 import {DeckdeckgoRevealUtils} from '../deckdeckgo-reveal-utils';
 
-const RevealListNthChild: FunctionalComponent<{ index: number }> = ({index}) => {
+const RevealListNthChild: FunctionalComponent<{index: number}> = ({index}) => {
   if (index === 0) {
     return undefined;
   }
@@ -27,7 +27,6 @@ const RevealListNthChild: FunctionalComponent<{ index: number }> = ({index}) => 
   shadow: true
 })
 export class DeckdeckgoRevealList {
-
   @Element() el: HTMLElement;
 
   @Prop()
@@ -76,7 +75,7 @@ export class DeckdeckgoRevealList {
     return new Promise<void>(async (resolve) => {
       const elements: Node[] = await DeckdeckgoRevealUtils.findChildren(this.el);
 
-      this.visibleIndex =  elements ? elements.length : 0;
+      this.visibleIndex = elements ? elements.length : 0;
 
       this.allElementsRevealed = true;
       this.allElementsHidden = false;
@@ -110,20 +109,24 @@ export class DeckdeckgoRevealList {
   }
 
   render() {
-    return <Host class={{
-        'deckgo-reveal-all': this.focused
-      }}>
-      {<RevealListNthChild index={this.visibleIndex}/>}
-      {this.renderList()}
-    </Host>
+    return (
+      <Host
+        class={{
+          'deckgo-reveal-all': this.focused
+        }}>
+        {<RevealListNthChild index={this.visibleIndex} />}
+        {this.renderList()}
+      </Host>
+    );
   }
 
   private renderList() {
     const Element: string = this.listTag;
 
-    return <Element>
-      <slot/>
-    </Element>
+    return (
+      <Element>
+        <slot />
+      </Element>
+    );
   }
-
 }

@@ -1,30 +1,29 @@
 export interface UserSocial {
-    twitter?: string;
-    linkedin?: string;
-    dev?: string;
-    medium?: string;
-    github?: string;
-    custom?: string;
+  twitter?: string;
+  linkedin?: string;
+  dev?: string;
+  medium?: string;
+  github?: string;
+  custom?: string;
 }
 
 export interface UserData {
-    anonymous: boolean;
+  anonymous: boolean;
 
-    name?: string;
-    email?: string;
-    newsletter?: boolean;
-    photo_url?: string;
+  name?: string;
+  email?: string;
+  newsletter?: boolean;
+  photo_url?: string;
 
-    social?: UserSocial;
+  social?: UserSocial;
 
-    bio?: string;
+  bio?: string;
 
-    created_at: firebase.firestore.Timestamp;
-    updated_at: firebase.firestore.Timestamp;
+  created_at: firebase.firestore.Timestamp;
+  updated_at: firebase.firestore.Timestamp;
 }
 
 export interface User {
-    id: string;
-    data: UserData;
+  id: string;
+  data: UserData;
 }
-

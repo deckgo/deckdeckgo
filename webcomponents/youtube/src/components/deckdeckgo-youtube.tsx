@@ -7,7 +7,6 @@ import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
   shadow: true
 })
 export class DeckdeckgoYoutube implements DeckdeckgoComponent {
-
   @Element() el: HTMLElement;
 
   @Prop() src: string;
@@ -71,7 +70,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
         return;
       }
 
-      const links: NodeListOf<HTMLElement> = document.head.querySelectorAll('link[rel=\'preconnect\'][youtube]');
+      const links: NodeListOf<HTMLElement> = document.head.querySelectorAll("link[rel='preconnect'][youtube]");
 
       if (links && links.length > 0) {
         resolve();
@@ -136,7 +135,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
 
         const split: string[] = src.split('?');
 
-        src += `${(split && split.length > 0) ? '&' : '?'}playsinline=1`;
+        src += `${split && split.length > 0 ? '&' : '?'}playsinline=1`;
       }
 
       element.src = src;
@@ -224,18 +223,20 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
         return;
       }
 
-      iframe.contentWindow.postMessage(JSON.stringify({
-        event: 'command',
-        func: play ? 'playVideo' : 'pauseVideo',
-        args: ''
-      }), '*');
+      iframe.contentWindow.postMessage(
+        JSON.stringify({
+          event: 'command',
+          func: play ? 'playVideo' : 'pauseVideo',
+          args: ''
+        }),
+        '*'
+      );
 
       resolve();
     });
   }
 
   render() {
-    return <div></div>
+    return <div></div>;
   }
-
 }

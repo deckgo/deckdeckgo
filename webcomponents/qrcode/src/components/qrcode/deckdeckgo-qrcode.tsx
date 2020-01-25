@@ -13,7 +13,6 @@ enum DeckdeckgoQRCodeType {
   shadow: true
 })
 export class DeckdeckgoQRCode {
-
   @Element() el: HTMLElement;
 
   @Prop() content: string;
@@ -59,7 +58,9 @@ export class DeckdeckgoQRCode {
       qrGenerator.addData(this.content, 'Byte');
       qrGenerator.make();
 
-      const qrCode: string = this.isQRCodeTypeImg() ?  qrGenerator.createImgTag(this.qrCellSize, this.qrMargin, this.qrAlt, this.qrFillColor, this.qrBackgroundColor) : qrGenerator.createSvgTag(this.qrCellSize, this.qrMargin);
+      const qrCode: string = this.isQRCodeTypeImg()
+        ? qrGenerator.createImgTag(this.qrCellSize, this.qrMargin, this.qrAlt, this.qrFillColor, this.qrBackgroundColor)
+        : qrGenerator.createSvgTag(this.qrCellSize, this.qrMargin);
 
       resolve(qrCode);
     });
@@ -108,8 +109,10 @@ export class DeckdeckgoQRCode {
   }
 
   render() {
-    return <div class="deckgo-qrcode-container">
-      <slot name="logo"></slot>
-    </div>;
+    return (
+      <div class="deckgo-qrcode-container">
+        <slot name="logo"></slot>
+      </div>
+    );
   }
 }

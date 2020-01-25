@@ -12,7 +12,8 @@ app-remote {
       grid-template-rows: 50% 50%;
       grid-template-columns: 50% 50%;
 
-      div.deck, div.deck-navigation-buttons {
+      div.deck,
+      div.deck-navigation-buttons {
         grid-column-start: 1;
         grid-column-end: 2;
       }
@@ -42,7 +43,8 @@ app-remote {
 
       position: relative;
 
-      div.deck-navigation-button-next, div.deck-navigation-button-prev {
+      div.deck-navigation-button-next,
+      div.deck-navigation-button-prev {
         padding: 0 16px 16px;
 
         ion-button {
@@ -99,16 +101,21 @@ app-remote {
     --slide-author-padding-start: 32px;
 
     @media screen and (min-width: 992px) {
-      ion-label, ion-label[text-wrap].sc-ion-label-md-h, p {
+      ion-label,
+      ion-label[text-wrap].sc-ion-label-md-h,
+      p {
         font-size: 1.2em;
       }
     }
 
-    a, deckgo-social {
+    a,
+    deckgo-social {
       pointer-events: none;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       text-transform: inherit;
     }
 
@@ -130,5 +137,4 @@ app-remote {
     color: inherit;
     cursor: pointer;
   }
-
 }

@@ -19,10 +19,12 @@ app-gif {
       flex-basis: 50%;
       max-width: 50%;
 
-      div.gifs-category, div.gif {
+      div.gifs-category,
+      div.gif {
         position: relative;
 
-        div.gifs-category-container, div.gif-container {
+        div.gifs-category-container,
+        div.gif-container {
           border-radius: 4px;
           overflow: hidden;
           position: relative;

@@ -21,7 +21,10 @@ export function initQRCodeSize(el: HTMLElement): Promise<void> {
       const paddingBottom: number = await getSlideContainerPaddingBottom(el);
 
       if (qrCode && width > 0 && height > 0) {
-        qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? `calc(${height}px - ${slotHowToHeight}px - ${paddingBottom}px)` : `calc(${width}px - ${slotHowToHeight}px - ${paddingBottom}px)`);
+        qrCode.style.setProperty(
+          '--deckgo-qrcode-size',
+          width > height ? `calc(${height}px - ${slotHowToHeight}px - ${paddingBottom}px)` : `calc(${width}px - ${slotHowToHeight}px - ${paddingBottom}px)`
+        );
       }
     }
 
@@ -31,7 +34,7 @@ export function initQRCodeSize(el: HTMLElement): Promise<void> {
 
 function getSlotHowToHeight(el: HTMLElement): Promise<number> {
   return new Promise<number>((resolve) => {
-    const howToElement: HTMLElement = el.querySelector(':scope > [slot=\'how-to\']');
+    const howToElement: HTMLElement = el.querySelector(":scope > [slot='how-to']");
 
     if (!howToElement || !window) {
       resolve(0);

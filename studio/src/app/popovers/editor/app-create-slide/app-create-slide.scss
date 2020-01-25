@@ -61,7 +61,9 @@ app-create-slide {
 
     --slide-width: 100%;
 
-    deckgo-slide-title, deckgo-slide-content, deckgo-slide-split {
+    deckgo-slide-title,
+    deckgo-slide-content,
+    deckgo-slide-split {
       --slide-padding-start: 4px;
       --slide-padding-bottom: 4px;
     }
@@ -79,7 +81,9 @@ app-create-slide {
       }
     }
 
-    deckgo-slide-content, deckgo-slide-qrcode, deckgo-slide-chart {
+    deckgo-slide-content,
+    deckgo-slide-qrcode,
+    deckgo-slide-chart {
       --slide-padding-top: 4px;
       --slide-padding-start: 2px;
       --slide-padding-end: 6px;
@@ -102,7 +106,9 @@ app-create-slide {
       --slide-padding-start: 0;
     }
 
-    deckgo-slide-gif, deckgo-slide-author, deckgo-slide-poll {
+    deckgo-slide-gif,
+    deckgo-slide-author,
+    deckgo-slide-poll {
       --slide-width: 216px;
     }
 
@@ -110,7 +116,8 @@ app-create-slide {
       --slide-gif-height: 110px;
     }
 
-    deckgo-slide-author, deckgo-slide-poll {
+    deckgo-slide-author,
+    deckgo-slide-poll {
       --slide-height: 110px;
     }
 
@@ -135,9 +142,9 @@ app-create-slide {
       --deckgo-chart-fill-color-1: var(--ion-color-primary);
       --deckgo-chart-fill-color-2: var(--ion-color-secondary);
       --deckgo-chart-fill-color-3: var(--ion-color-tertiary);
-      --deckgo-chart-fill-color-4: #783F8E;
-      --deckgo-chart-fill-color-5: #4F1271;
-      --deckgo-chart-fill-color-6: #8F68A4;
+      --deckgo-chart-fill-color-4: #783f8e;
+      --deckgo-chart-fill-color-5: #4f1271;
+      --deckgo-chart-fill-color-6: #8f68a4;
       --deckgo-chart-fill-opacity-1: 0.7;
       --deckgo-chart-fill-opacity-5: 0.9;
 
@@ -188,7 +195,8 @@ app-create-slide {
       border: 1px dashed var(--ion-color-tertiary);
     }
 
-    p[slot="content"], p[slot="author"] {
+    p[slot="content"],
+    p[slot="author"] {
       font-size: var(--font-size-very-small);
     }
 
@@ -216,14 +224,14 @@ app-create-slide {
         margin: 0;
         min-height: 102px;
         overflow: hidden;
-    }
-    
-    &[vertical] {
+      }
+
+      &[vertical] {
         p {
           min-height: 47px;
         }
       }
-  }
+    }
 
     deckgo-slide-gif {
       p {
@@ -236,7 +244,7 @@ app-create-slide {
       --slide-author-social-padding-top: 8px;
 
       @media screen and (max-width: 768px) {
-        p:nth-child(n+6) {
+        p:nth-child(n + 6) {
           display: none;
         }
       }
@@ -263,5 +271,4 @@ app-create-slide {
       font-size: var(--font-size-small);
     }
   }
-
 }

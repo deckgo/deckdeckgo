@@ -10,7 +10,6 @@ import {DeckDeckGoCustomLoad} from '../interfaces/custom-load';
   shadow: true
 })
 export class DeckdeckgoLazyImg {
-
   @Element() el: HTMLElement;
 
   @Event() lazyImgDidLoad: EventEmitter;
@@ -217,17 +216,18 @@ export class DeckdeckgoLazyImg {
     const hostClass: string = this.imgLoaded || this.svgContent ? 'loaded' : '';
 
     if (this.svgContent) {
-      return <Host class={hostClass}>
-        <div innerHTML={this.svgContent}></div>
-      </Host>
+      return (
+        <Host class={hostClass}>
+          <div innerHTML={this.svgContent}></div>
+        </Host>
+      );
     } else {
-      return <Host class={hostClass}>
-        {this.renderImage()}
-      </Host>;
+      return <Host class={hostClass}>{this.renderImage()}</Host>;
     }
   }
 
   private renderImage() {
+    // prettier-ignore
     // @ts-ignore
     return <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} loading="lazy" sizes={this.imgSizes ? this.imgSizes : undefined} intrinsicsize={this.intrinsicsize}
                 width={this.imgWidth} height={this.imgHeight}

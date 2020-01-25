@@ -1,6 +1,6 @@
 export function initHowTo(el: HTMLElement, pollKey: string): Promise<void> {
   return new Promise<void>(async (resolve) => {
-    const howToSlotElement: HTMLElement = el.querySelector(':scope > [slot=\'how-to\']');
+    const howToSlotElement: HTMLElement = el.querySelector(":scope > [slot='how-to']");
 
     if (!howToSlotElement) {
       resolve();

@@ -1,5 +1,4 @@
 export class DeckdeckgoInlineEditorUtils {
-
   static isBold(element: HTMLElement): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       let result: boolean = await this.isTag(element, 'b');
@@ -103,8 +102,13 @@ export class DeckdeckgoInlineEditorUtils {
         return;
       }
 
-      if (element.nodeName && element.nodeName.toLowerCase() === 'li'
-        && element.parentElement && element.parentElement.nodeName && element.parentElement.nodeName.toLowerCase() === parentTag) {
+      if (
+        element.nodeName &&
+        element.nodeName.toLowerCase() === 'li' &&
+        element.parentElement &&
+        element.parentElement.nodeName &&
+        element.parentElement.nodeName.toLowerCase() === parentTag
+      ) {
         resolve(true);
         return;
       }
@@ -133,5 +137,4 @@ export class DeckdeckgoInlineEditorUtils {
       }
     });
   }
-
 }

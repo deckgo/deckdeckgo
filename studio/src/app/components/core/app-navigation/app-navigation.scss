@@ -1,5 +1,4 @@
 app-navigation {
-
   ion-header {
     ion-toolbar {
       --background: inherit;
@@ -43,7 +42,8 @@ app-navigation {
     ion-router-link {
       color: black;
 
-      &:hover, &:active {
+      &:hover,
+      &:active {
         color: black;
         border-bottom-color: transparent;
       }
@@ -88,7 +88,8 @@ body.dark {
       ion-router-link {
         color: white;
 
-        &:hover, &:active {
+        &:hover,
+        &:active {
           color: white;
         }
       }
@@ -99,7 +100,8 @@ body.dark {
 @media screen and (max-width: 720px) {
   ion-nav {
     div.title {
-      ion-label.deck-name, ion-router-link.home ion-label {
+      ion-label.deck-name,
+      ion-router-link.home ion-label {
         display: none;
       }
     }

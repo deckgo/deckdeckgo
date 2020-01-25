@@ -16,7 +16,9 @@ app-editor-actions {
   }
 
   @media screen and (max-width: 540px) {
-    ion-tab-button, app-share-action, app-editor-busy-action {
+    ion-tab-button,
+    app-share-action,
+    app-editor-busy-action {
       &.wider-devices {
         display: none;
       }
@@ -24,7 +26,9 @@ app-editor-actions {
   }
 
   @media screen and (min-width: 540px) {
-    ion-tab-button, app-share-action, app-editor-busy-action {
+    ion-tab-button,
+    app-share-action,
+    app-editor-busy-action {
       &.small-devices {
         display: none;
       }

@@ -12,8 +12,8 @@ ion-menu {
 
   ion-content {
     ion-list {
-
-      ion-item-divider, ion-item {
+      ion-item-divider,
+      ion-item {
         --color: var(--ion-color-light);
 
         --background: transparent;
@@ -53,13 +53,12 @@ ion-menu {
             font-size: var(--font-size-normal);
           }
 
-          --deckgo-logo-url: url('/assets/img/deckdeckgo-logo-invert.svg');
+          --deckgo-logo-url: url("/assets/img/deckdeckgo-logo-invert.svg");
           --deckgo-logo-vertical-align: bottom;
           --deckgo-logo-margin: 0 6px 0 4px;
-          --deckgo-logo-size: 20px
+          --deckgo-logo-size: 20px;
         }
       }
     }
   }
 }
-

@@ -1,11 +1,11 @@
 interface ResizeObserverConstructor {
-    new (callback: any);
+  new (callback: any);
 
-    observe: (target: HTMLElement) => void;
+  observe: (target: HTMLElement) => void;
 
-    unobserve: (target: HTMLElement) => void;
+  unobserve: (target: HTMLElement) => void;
 
-    disconnect: () => void;
+  disconnect: () => void;
 }
 
 declare var ResizeObserver: ResizeObserverConstructor;

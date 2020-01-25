@@ -32,7 +32,6 @@ div.deckgo-slide-poll {
     deckgo-qrcode {
       background: var(--slide-poll-background);
     }
-
   }
 
   div.deckgo-slide-poll-chart {
@@ -46,7 +45,6 @@ div.deckgo-slide-poll {
     --deckgo-chart-text-font-size: 1rem;
     --deckgo-chart-overflow: visible;
   }
-
 }
 
 .how-to {
@@ -66,7 +64,7 @@ div.deckgo-slide-poll {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: var(--slide-poll-awaiting-votes-background, rgba(255,255,255,0.9));
+  background: var(--slide-poll-awaiting-votes-background, rgba(255, 255, 255, 0.9));
   border-radius: var(--slide-poll-awaiting-votes-border-radius, 8px);
   padding: var(--slide-poll-awaiting-votes-padding, 8px);
   pointer-events: none;
