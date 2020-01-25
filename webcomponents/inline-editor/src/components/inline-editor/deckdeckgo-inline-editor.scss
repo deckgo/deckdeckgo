@@ -24,7 +24,8 @@ div.deckgo-tools {
 
   transform: var(--deckgo-inline-editor-transform);
 
-  &.deckgo-tools-sticky, &.deckgo-tools-mobile.deckgo-tools-sticky {
+  &.deckgo-tools-sticky,
+  &.deckgo-tools-mobile.deckgo-tools-sticky {
     position: absolute;
 
     bottom: var(--deckgo-inline-editor-sticky-bottom, 0);
@@ -45,7 +46,7 @@ div.deckgo-tools {
     min-width: 1px;
     margin: 0 6px;
     height: 24px;
-    background: var(--deckgo-inline-editor-separator-background, rgba(56, 128, 255, .2));
+    background: var(--deckgo-inline-editor-separator-background, rgba(56, 128, 255, 0.2));
   }
 
   button {
@@ -65,7 +66,7 @@ div.deckgo-tools {
     border: 0;
     color: var(--deckgo-inline-editor-button-color, #3880ff);
 
-    transition: .1s background-color, .1s border-color, .1s fill;
+    transition: 0.1s background-color, 0.1s border-color, 0.1s fill;
 
     background: transparent;
 
@@ -146,7 +147,11 @@ div.deckgo-tools {
 
   &.deckgo-tools-mobile {
     box-shadow: var(--deckgo-inline-editor-mobile-box-shadow, 0 0px 1px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.15));
-    background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-mobile-background-top, #fff), var(--deckgo-inline-editor-mobile-background-bottom, #fff));
+    background-image: linear-gradient(
+      to bottom,
+      var(--deckgo-inline-editor-mobile-background-top, #fff),
+      var(--deckgo-inline-editor-mobile-background-bottom, #fff)
+    );
 
     border: var(--deckgo-inline-editor-mobile-border, 0);
 
@@ -225,7 +230,13 @@ div.deckgo-tools {
       }
     }
 
-    &.ordered-list, &.unordered-list, &.link, &.image, &.image-align, &.image-delete, &.pick-color {
+    &.ordered-list,
+    &.unordered-list,
+    &.link,
+    &.image,
+    &.image-align,
+    &.image-delete,
+    &.pick-color {
       > div {
         -webkit-mask-repeat: no-repeat;
         mask-repeat: no-repeat;
@@ -234,7 +245,10 @@ div.deckgo-tools {
       }
     }
 
-    &.ordered-list, &.unordered-list, &.link, &.pick-color {
+    &.ordered-list,
+    &.unordered-list,
+    &.link,
+    &.pick-color {
       margin: 0;
     }
 

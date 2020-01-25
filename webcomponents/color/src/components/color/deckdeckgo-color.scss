@@ -11,7 +11,8 @@ div.color-container {
 
   overflow: visible;
 
-  button, div.more {
+  button,
+  div.more {
     width: var(--deckgo-button-width, 28px);
     min-width: var(--deckgo-button-width, 28px);
     height: var(--deckgo-button-height, 28px);
@@ -25,7 +26,6 @@ div.color-container {
   }
 
   button {
-
     cursor: pointer;
 
     border-radius: var(--deckgo-button-border-radius, 50%);
@@ -48,7 +48,8 @@ div.color-container {
     outline: none;
     border: none;
 
-    button, input {
+    button,
+    input {
       position: absolute;
     }
 
@@ -80,5 +81,4 @@ div.color-container {
       transform: translate(100%, 100%);
     }
   }
-
 }

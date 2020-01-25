@@ -28,7 +28,7 @@ svg {
   overflow: var(--deckgo-chart-svg-overflow);
 
   position: var(--deckgo-chart-svg-position, absolute);
-  top:  var(--deckgo-chart-svg-top, 50%);
+  top: var(--deckgo-chart-svg-top, 50%);
   left: var(--deckgo-chart-svg-left, 50%);
   transform: var(--deckgo-chart-svg-translate, translate(-50%, -50%));
 }

@@ -16,14 +16,23 @@ div.deckgo-slide-vertical {
 div.deckgo-slide-split {
   flex: 1;
 
-  height: calc(var(--slide-height) - (var(--slide-split-padding-bottom, var(--slide-padding-bottom-default))) - (var(--slide-split-padding-top, var(--slide-padding-top-default))));
-  width: calc((var(--slide-width) - (2 * var(--slide-split-padding-end, var(--slide-padding-end-default))) - (2 * var(--slide-split-padding-start, var(--slide-padding-start-default)))) / 2);
+  height: calc(
+    var(--slide-height) - (var(--slide-split-padding-bottom, var(--slide-padding-bottom-default))) -
+      (var(--slide-split-padding-top, var(--slide-padding-top-default)))
+  );
+  width: calc(
+    (
+        var(--slide-width) - (2 * var(--slide-split-padding-end, var(--slide-padding-end-default))) -
+          (2 * var(--slide-split-padding-start, var(--slide-padding-start-default)))
+      ) / 2
+  );
 
   display: flex;
   align-items: var(--slide-split-align, inherit);
   text-align: var(--slide-split-text-align, inherit);
 
-  padding: var(--slide-split-padding-top, 0) var(--slide-split-padding-end, var(--slide-padding-end-default)) var(--slide-split-padding-bottom, 0) var(--slide-split-padding-start, var(--slide-padding-start-default));
+  padding: var(--slide-split-padding-top, 0) var(--slide-split-padding-end, var(--slide-padding-end-default)) var(--slide-split-padding-bottom, 0)
+    var(--slide-split-padding-start, var(--slide-padding-start-default));
 
   &.deckgo-slide-split-start {
     background: var(--slide-split-background-start);
@@ -38,8 +47,14 @@ div.deckgo-slide-split {
 
 div.deckgo-slide-split-vertical {
   @extend div, .deckgo-slide-split;
-  height: calc((var(--slide-height) / 2) - (var(--slide-split-padding-bottom, var(--slide-padding-bottom-default))) - (var(--slide-split-padding-top, var(--slide-padding-top-default))));
-  width: calc(var(--slide-width) - (var(--slide-split-padding-end, var(--slide-padding-end-default))) - (var(--slide-split-padding-start, var(--slide-padding-start-default))));
+  height: calc(
+    (var(--slide-height) / 2) - (var(--slide-split-padding-bottom, var(--slide-padding-bottom-default))) -
+      (var(--slide-split-padding-top, var(--slide-padding-top-default)))
+  );
+  width: calc(
+    var(--slide-width) - (var(--slide-split-padding-end, var(--slide-padding-end-default))) -
+      (var(--slide-split-padding-start, var(--slide-padding-start-default)))
+  );
 }
 
 ::slotted([slot="title"]) {
@@ -48,6 +63,6 @@ div.deckgo-slide-split-vertical {
   display: var(--slide-split-title-display, none);
   max-height: fit-content;
 
-  padding: var(--slide-split-title-padding-top, var(--slide-padding-top-default)) var(--slide-split-title-padding-end, var(--slide-padding-end-default)) var(--slide-split-title-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-split-title-padding-start, var(--slide-padding-start-default));
+  padding: var(--slide-split-title-padding-top, var(--slide-padding-top-default)) var(--slide-split-title-padding-end, var(--slide-padding-end-default))
+    var(--slide-split-title-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-split-title-padding-start, var(--slide-padding-start-default));
 }
-

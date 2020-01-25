@@ -6,7 +6,8 @@ div.deckgo-slide {
   justify-content: center;
 }
 
-::slotted([slot="title"]), ::slotted([slot="content"]) {
+::slotted([slot="title"]),
+::slotted([slot="content"]) {
   text-align: center;
 }
 
@@ -34,7 +35,7 @@ div.deckgo-countdown-container {
         height: var(--slide-countdown-digits-height, 4em);
         background: var(--slide-countdown-digits-background, #fff);
         border-radius: var(--slide-countdown-digits-border-radius, 0.5em);
-        box-shadow: var(--slide-countdown-digits-box-shadow, 0 3px 4px 0 rgba(0, 0, 0, .2), inset 2px 4px 0 0 rgba(255, 255, 255, .08));
+        box-shadow: var(--slide-countdown-digits-box-shadow, 0 3px 4px 0 rgba(0, 0, 0, 0.2), inset 2px 4px 0 0 rgba(255, 255, 255, 0.08));
 
         display: flex;
         justify-content: center;
