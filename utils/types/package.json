@@ -24,5 +24,10 @@
   "files": [
     "lib",
     "README.md"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
 }
