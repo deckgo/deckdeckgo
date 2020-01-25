@@ -1,6 +1,6 @@
 interface MergeInformation {
-    deckId: string;
-    userId: string;
-    userToken: string;
-    anonymous: boolean;
+  deckId: string;
+  userId: string;
+  userToken: string;
+  anonymous: boolean;
 }

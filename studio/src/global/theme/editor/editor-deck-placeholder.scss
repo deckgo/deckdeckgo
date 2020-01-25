@@ -1,6 +1,7 @@
 deckgo-deck {
-
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     &:empty:not(:focus):after {
       content: "Click to add title";
     }
@@ -12,18 +13,21 @@ deckgo-deck {
     }
   }
 
-  ol li, ul li {
+  ol li,
+  ul li {
     &:empty:not(:focus):after {
       content: "Click to add content";
     }
   }
 
-  > * > deckgo-lazy-img, > * > deckgo-reveal[img] {
+  > * > deckgo-lazy-img,
+  > * > deckgo-reveal[img] {
     border-radius: 2px;
     border: 1px solid var(--ion-color-light);
   }
 
-  > * > deckgo-lazy-img, > * > deckgo-reveal deckgo-lazy-img {
+  > * > deckgo-lazy-img,
+  > * > deckgo-reveal deckgo-lazy-img {
     &:not([img-src]) {
       position: relative;
       --deckgo-lazy-img-width: auto;
@@ -45,7 +49,9 @@ deckgo-deck {
   }
 
   deckgo-slide-split {
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       &:empty:not(:focus):after {
         content: "Click to add content";
       }
@@ -53,7 +59,10 @@ deckgo-deck {
   }
 
   deckgo-slide-gif {
-    h1, h2, h3, section {
+    h1,
+    h2,
+    h3,
+    section {
       &:empty:not(:focus):after {
         content: "Click to add a caption";
       }
@@ -61,7 +70,10 @@ deckgo-deck {
   }
 
   deckgo-slide-author {
-    h1, h2, h3, section {
+    h1,
+    h2,
+    h3,
+    section {
       &:empty:not(:focus):after {
         content: "Click to tell something about yourself";
       }
@@ -71,5 +83,4 @@ deckgo-deck {
   [highlighted] {
     box-shadow: 1px 2px 8px 2px rgba(var(--ion-color-primary-rgb), 0.2);
   }
-
 }

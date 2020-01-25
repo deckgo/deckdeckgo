@@ -8,155 +8,158 @@ import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/
 import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
-    tag: 'app-dashboard-deck-actions',
-    styleUrl: 'app-dashboard-deck-actions.scss',
-    shadow: true
+  tag: 'app-dashboard-deck-actions',
+  styleUrl: 'app-dashboard-deck-actions.scss',
+  shadow: true
 })
 export class AppDashboardDeckActions {
+  @Prop() deck: Deck;
 
-    @Prop() deck: Deck;
+  private deckService: DeckService;
+  private deckDashboardService: DeckDashboardService;
 
-    private deckService: DeckService;
-    private deckDashboardService: DeckDashboardService;
+  private errorService: ErrorService;
 
-    private errorService: ErrorService;
+  @Event() deckDeleted: EventEmitter<string>;
+  @Event() deckCloned: EventEmitter<DeckDashboardCloneResult>;
 
-    @Event() deckDeleted: EventEmitter<string>;
-    @Event() deckCloned: EventEmitter<DeckDashboardCloneResult>;
+  @State()
+  private actionInProgress: boolean = false;
 
-    @State()
-    private actionInProgress: boolean = false;
+  constructor() {
+    this.deckService = DeckService.getInstance();
+    this.deckDashboardService = DeckDashboardService.getInstance();
 
-    constructor() {
-        this.deckService = DeckService.getInstance();
-        this.deckDashboardService = DeckDashboardService.getInstance();
+    this.errorService = ErrorService.getInstance();
+  }
 
-        this.errorService = ErrorService.getInstance();
+  private async presentConfirmDelete($event: UIEvent) {
+    $event.stopPropagation();
+
+    if (this.actionInProgress) {
+      return;
     }
 
-    private async presentConfirmDelete($event: UIEvent) {
-        $event.stopPropagation();
+    const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
 
-        if (this.actionInProgress) {
-            return;
-        }
-
-        const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
-
-        if (disabled) {
-            return;
-        }
-
-        if (!this.deck || !this.deck.data) {
-            return;
-        }
-
-        const modal: HTMLIonModalElement = await modalController.create({
-            component: 'app-deck-delete',
-            componentProps: {
-                deckName: this.deck.data.name,
-                published: this.deck.data.meta && this.deck.data.meta.published
-            }
-        });
-
-        modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-            if (detail && detail.data) {
-                await this.deleteDeck();
-            }
-        });
-
-        await modal.present();
+    if (disabled) {
+      return;
     }
 
-    private deleteDeck(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!this.deck || !this.deck.id || this.deck.id === undefined || this.deck.id === '') {
-                resolve();
-                return;
-            }
-
-            this.actionInProgress = true;
-
-            const loading: HTMLIonLoadingElement = await loadingController.create({});
-
-            await loading.present();
-
-            try {
-                await this.deckService.delete(this.deck.id);
-
-                this.deckDeleted.emit(this.deck.id);
-            } catch (err) {
-                this.errorService.error(err);
-            }
-
-            await loading.dismiss();
-
-            this.actionInProgress = false;
-
-            resolve();
-        });
+    if (!this.deck || !this.deck.data) {
+      return;
     }
 
-    private async cloneDeck($event: UIEvent): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            $event.stopPropagation();
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-deck-delete',
+      componentProps: {
+        deckName: this.deck.data.name,
+        published: this.deck.data.meta && this.deck.data.meta.published
+      }
+    });
 
-            if (this.actionInProgress) {
-                resolve();
-                return;
-            }
+    modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+      if (detail && detail.data) {
+        await this.deleteDeck();
+      }
+    });
 
-            const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
+    await modal.present();
+  }
 
-            if (disabled) {
-                resolve();
-                return;
-            }
+  private deleteDeck(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!this.deck || !this.deck.id || this.deck.id === undefined || this.deck.id === '') {
+        resolve();
+        return;
+      }
 
-            if (!this.deck || !this.deck.id || this.deck.id === undefined || this.deck.id === '') {
-                resolve();
-                return;
-            }
+      this.actionInProgress = true;
 
-            if (!this.deck.data) {
-                resolve();
-                return;
-            }
+      const loading: HTMLIonLoadingElement = await loadingController.create({});
 
-            this.actionInProgress = true;
+      await loading.present();
 
-            const loading: HTMLIonLoadingElement = await loadingController.create({});
+      try {
+        await this.deckService.delete(this.deck.id);
 
-            await loading.present();
+        this.deckDeleted.emit(this.deck.id);
+      } catch (err) {
+        this.errorService.error(err);
+      }
 
-            try {
-                const clone: DeckDashboardCloneResult = await this.deckDashboardService.clone(this.deck);
+      await loading.dismiss();
 
-                this.deckCloned.emit(clone);
-            } catch (err) {
-                this.errorService.error(err);
-            }
+      this.actionInProgress = false;
 
-            await loading.dismiss();
+      resolve();
+    });
+  }
 
-            this.actionInProgress = false;
+  private async cloneDeck($event: UIEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      $event.stopPropagation();
 
-            resolve();
-        });
-    }
+      if (this.actionInProgress) {
+        resolve();
+        return;
+      }
 
-    render() {
-        const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
+      const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
 
-        return <Host>
-            <a onClick={($event: UIEvent) => this.cloneDeck($event)} title="Clone presentation" class={this.actionInProgress || disabled ? 'disabled' : undefined}>
-                <ion-icon name="copy"></ion-icon>
-            </a>
+      if (disabled) {
+        resolve();
+        return;
+      }
 
-            <a onClick={($event: UIEvent) => this.presentConfirmDelete($event)} title="Delete presentation" class={this.actionInProgress || disabled ? 'disabled' : undefined}>
-                <ion-icon name="trash"></ion-icon>
-            </a>
-        </Host>
-    }
+      if (!this.deck || !this.deck.id || this.deck.id === undefined || this.deck.id === '') {
+        resolve();
+        return;
+      }
 
+      if (!this.deck.data) {
+        resolve();
+        return;
+      }
+
+      this.actionInProgress = true;
+
+      const loading: HTMLIonLoadingElement = await loadingController.create({});
+
+      await loading.present();
+
+      try {
+        const clone: DeckDashboardCloneResult = await this.deckDashboardService.clone(this.deck);
+
+        this.deckCloned.emit(clone);
+      } catch (err) {
+        this.errorService.error(err);
+      }
+
+      await loading.dismiss();
+
+      this.actionInProgress = false;
+
+      resolve();
+    });
+  }
+
+  render() {
+    const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
+
+    return (
+      <Host>
+        <a onClick={($event: UIEvent) => this.cloneDeck($event)} title="Clone presentation" class={this.actionInProgress || disabled ? 'disabled' : undefined}>
+          <ion-icon name="copy"></ion-icon>
+        </a>
+
+        <a
+          onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
+          title="Delete presentation"
+          class={this.actionInProgress || disabled ? 'disabled' : undefined}>
+          <ion-icon name="trash"></ion-icon>
+        </a>
+      </Host>
+    );
+  }
 }

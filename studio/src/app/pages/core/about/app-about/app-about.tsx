@@ -1,33 +1,35 @@
 import {Component, h} from '@stencil/core';
 
 @Component({
-    tag: 'app-about',
-    styleUrl: 'app-about.scss'
+  tag: 'app-about',
+  styleUrl: 'app-about.scss'
 })
 export class AppAbout {
+  render() {
+    return [
+      <app-navigation presentation={true}></app-navigation>,
+      <ion-content class="ion-padding">
+        <main class="ion-padding">
+          <h1>About DeckDeckGo</h1>
 
-    render() {
-        return [
-            <app-navigation presentation={true}></app-navigation>,
-            <ion-content class="ion-padding">
+          <h3 class="ion-padding-top">Edit anywhere, display everywhere</h3>
 
-                <main class="ion-padding">
-                    <h1>About DeckDeckGo</h1>
+          <p class="ion-padding-top">
+            DeckDeckGo aims to be the open source web editor for presentations. It enables anyone with any type of devices (desktop, mobile or tablets) to
+            easily create, present and share presentations for free.
+          </p>
 
-                    <h3 class="ion-padding-top">Edit anywhere, display everywhere</h3>
+          <p>
+            What makes it different 🤔? Every presentations published with DeckDeckGo are standalone <strong>Progressive Web Apps</strong> 🚀
+          </p>
 
-                    <p class="ion-padding-top">DeckDeckGo aims to be the open source web editor for presentations. It enables anyone with any type of devices (desktop, mobile or tablets) to easily create, present and share presentations for free.</p>
+          <p>
+            Moreover, it would be incredible if it would become an online community for sharing presentations, slides and talks about your interests and ideas.
+          </p>
 
-                    <p>What makes it different 🤔? Every presentations published with DeckDeckGo are standalone <strong>Progressive Web Apps</strong> 🚀</p>
-
-                    <p>Moreover, it would be incredible if it would become an online community for sharing presentations, slides and talks about your interests and ideas.</p>
-
-                    <p>DeckDeckGo was created with passion in 2019 in Zürich🇨🇭</p>
-
-                </main>
-
-            </ion-content>
-        ];
-    }
-
+          <p>DeckDeckGo was created with passion in 2019 in Zürich🇨🇭</p>
+        </main>
+      </ion-content>
+    ];
+  }
 }

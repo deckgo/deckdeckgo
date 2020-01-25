@@ -6,95 +6,93 @@ import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-co
 import {ApiUserService} from './api.user.service';
 
 export class ApiUserProdService extends ApiUserService {
+  // @Override
+  query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser> {
+    return new Promise<ApiUser>(async (resolve, reject) => {
+      try {
+        const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-    // @Override
-    query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser> {
-        return new Promise<ApiUser>(async (resolve, reject) => {
-            try {
-                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-                const rawResponse: Response = await fetch(config.apiUrl + context, {
-                    method: method,
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(apiUserInfo)
-                });
-
-                if (!rawResponse || (!rawResponse.ok && rawResponse.status !== 409)) {
-                    reject('Something went wrong while creating a user');
-                    return;
-                }
-
-                const persistedUser: ApiUser = await rawResponse.json();
-
-                this.apiUserSubject.next(persistedUser);
-
-                resolve(persistedUser);
-            } catch (err) {
-                reject(err);
-            }
+        const rawResponse: Response = await fetch(config.apiUrl + context, {
+          method: method,
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(apiUserInfo)
         });
-    }
 
-    // @Override
-    delete(userId: string, token: string): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+        if (!rawResponse || (!rawResponse.ok && rawResponse.status !== 409)) {
+          reject('Something went wrong while creating a user');
+          return;
+        }
 
-                const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+        const persistedUser: ApiUser = await rawResponse.json();
 
-                if (!rawResponse || !rawResponse.ok) {
-                    reject('Something went wrong while creating a user');
-                    return;
-                }
+        this.apiUserSubject.next(persistedUser);
 
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
+        resolve(persistedUser);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  // @Override
+  delete(userId: string, token: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+        const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
+          method: 'DELETE',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
         });
-    }
 
-    // @Override
-    get(userId: string): Promise<ApiUser> {
-        return new Promise<ApiUser>(async (resolve, reject) => {
-            try {
-                const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+        if (!rawResponse || !rawResponse.ok) {
+          reject('Something went wrong while creating a user');
+          return;
+        }
 
-                const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-                if (!rawResponse || !rawResponse.ok) {
-                    // 404 if not found
-                    resolve(null);
-                    return;
-                }
+  // @Override
+  get(userId: string): Promise<ApiUser> {
+    return new Promise<ApiUser>(async (resolve, reject) => {
+      try {
+        const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-                const persistedUser: ApiUser = await rawResponse.json();
-
-                this.apiUserSubject.next(persistedUser);
-
-                resolve(persistedUser);
-            } catch (err) {
-                reject(err);
-            }
+        const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          }
         });
-    }
 
+        if (!rawResponse || !rawResponse.ok) {
+          // 404 if not found
+          resolve(null);
+          return;
+        }
+
+        const persistedUser: ApiUser = await rawResponse.json();
+
+        this.apiUserSubject.next(persistedUser);
+
+        resolve(persistedUser);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }

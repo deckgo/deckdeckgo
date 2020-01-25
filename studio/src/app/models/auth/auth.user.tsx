@@ -1,11 +1,11 @@
 export interface AuthUser {
-    uid: string;
-    token: string;
+  uid: string;
+  token: string;
 
-    anonymous: boolean;
+  anonymous: boolean;
 
-    name?: string;
-    email?: string;
-    email_verified?: boolean;
-    photo_url?: string;
+  name?: string;
+  email?: string;
+  email_verified?: boolean;
+  photo_url?: string;
 }

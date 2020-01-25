@@ -4,208 +4,212 @@ import {RangeChangeEventDetail} from '@ionic/core';
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
-    TEXT,
-    BACKGROUND
+  TEXT,
+  BACKGROUND
 }
 
 @Component({
-    tag: 'app-color-sides'
+  tag: 'app-color-sides'
 })
 export class AppColorSides {
+  @Element() el: HTMLElement;
 
-    @Element() el: HTMLElement;
+  @Prop()
+  selectedElement: HTMLElement;
 
-    @Prop()
-    selectedElement: HTMLElement;
+  @Prop()
+  moreColors: boolean = true;
 
-    @Prop()
-    moreColors: boolean = true;
+  @Prop()
+  template: 'split' | 'author';
 
-    @Prop()
-    template: 'split' | 'author';
+  @State()
+  private color: string;
 
-    @State()
-    private color: string;
+  @State()
+  private colorOpacity: number = 100;
 
-    @State()
-    private colorOpacity: number = 100;
+  @State()
+  private applyColorType: ApplyColorType = ApplyColorType.TEXT;
 
-    @State()
-    private applyColorType: ApplyColorType = ApplyColorType.TEXT;
+  @Event() colorChange: EventEmitter<boolean>;
 
-    @Event() colorChange: EventEmitter<boolean>;
+  @State()
+  private endSide: boolean = false;
 
-    @State()
-    private endSide: boolean = false;
+  async componentWillLoad() {
+    await this.initCurrentColors();
+  }
 
-    async componentWillLoad() {
-        await this.initCurrentColors();
+  @Method()
+  async initCurrentColors() {
+    if (!this.selectedElement) {
+      return;
     }
 
-    @Method()
-    async initCurrentColors() {
-        if (!this.selectedElement) {
-            return;
-        }
+    const element: HTMLElement = this.selectedElement;
 
-        const element: HTMLElement = this.selectedElement;
-
-        if (!element) {
-            return;
-        }
-
-        let styleColor: InitStyleColor;
-
-        if (this.applyColorType === ApplyColorType.BACKGROUND) {
-            styleColor = await ColorUtils.splitColor(element.style.getPropertyValue(`--slide-${this.template}-background-${this.endSide ? 'end' : 'start'}`));
-        } else {
-            styleColor = await ColorUtils.splitColor(element.style.getPropertyValue(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`));
-        }
-
-        this.color = styleColor.rgb;
-        this.colorOpacity = styleColor.opacity;
+    if (!element) {
+      return;
     }
 
-    private async selectApplyType($event: CustomEvent) {
-        if ($event && $event.detail) {
-            this.applyColorType = $event.detail.value;
+    let styleColor: InitStyleColor;
 
-            await this.initCurrentColors();
-        }
+    if (this.applyColorType === ApplyColorType.BACKGROUND) {
+      styleColor = await ColorUtils.splitColor(element.style.getPropertyValue(`--slide-${this.template}-background-${this.endSide ? 'end' : 'start'}`));
+    } else {
+      styleColor = await ColorUtils.splitColor(element.style.getPropertyValue(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`));
     }
 
-    private async selectColor($event: CustomEvent) {
-        if (!this.selectedElement || !$event || !$event.detail) {
-            return;
-        }
+    this.color = styleColor.rgb;
+    this.colorOpacity = styleColor.opacity;
+  }
 
-        this.color = $event.detail.rgb;
+  private async selectApplyType($event: CustomEvent) {
+    if ($event && $event.detail) {
+      this.applyColorType = $event.detail.value;
 
-        await this.applyColor();
+      await this.initCurrentColors();
+    }
+  }
+
+  private async selectColor($event: CustomEvent) {
+    if (!this.selectedElement || !$event || !$event.detail) {
+      return;
     }
 
-    private resetColor(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!this.selectedElement) {
-                resolve();
-                return;
-            }
+    this.color = $event.detail.rgb;
 
-            if (this.applyColorType === ApplyColorType.BACKGROUND) {
-                this.selectedElement.style.removeProperty(`--slide-${this.template}-background-${this.endSide ? 'end' : 'start'}`);
-            } else {
-                this.selectedElement.style.removeProperty(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`);
-            }
+    await this.applyColor();
+  }
 
-            this.color = null;
-            this.colorOpacity = 100;
+  private resetColor(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.selectedElement) {
+        resolve();
+        return;
+      }
 
-            this.colorChange.emit(false);
+      if (this.applyColorType === ApplyColorType.BACKGROUND) {
+        this.selectedElement.style.removeProperty(`--slide-${this.template}-background-${this.endSide ? 'end' : 'start'}`);
+      } else {
+        this.selectedElement.style.removeProperty(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`);
+      }
 
-            resolve();
-        });
+      this.color = null;
+      this.colorOpacity = 100;
+
+      this.colorChange.emit(false);
+
+      resolve();
+    });
+  }
+
+  private applyColor(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.selectedElement || !this.color) {
+        resolve();
+        return;
+      }
+
+      const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
+
+      if (this.applyColorType === ApplyColorType.BACKGROUND) {
+        this.selectedElement.style.setProperty(`--slide-${this.template}-background-${this.endSide ? 'end' : 'start'}`, selectedColor);
+      } else {
+        this.selectedElement.style.setProperty(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`, selectedColor);
+      }
+
+      this.colorChange.emit(false);
+
+      resolve();
+    });
+  }
+
+  private updateOpacity($event: CustomEvent<RangeChangeEventDetail>): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
+        resolve();
+        return;
+      }
+
+      $event.stopPropagation();
+
+      const opacity: number = $event.detail.value as number;
+
+      this.colorOpacity = opacity;
+
+      await this.applyColor();
+
+      resolve();
+    });
+  }
+
+  async toggleSide() {
+    this.endSide = !this.endSide;
+
+    await this.initCurrentColors();
+  }
+
+  render() {
+    return [
+      <ion-list>
+        <ion-item-divider class="ion-padding-top">
+          <ion-label>Selected side</ion-label>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label>{this.endSide ? 'End' : 'Start'}</ion-label>
+          <ion-toggle slot="end" checked={this.endSide} mode="md" color="primary" onIonChange={() => this.toggleSide()}></ion-toggle>
+        </ion-item>
+        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} class="ion-padding-top">
+          <ion-item-divider class="ion-padding-top">
+            <ion-label>Apply color to</ion-label>
+          </ion-item-divider>
+
+          <ion-item>
+            <ion-label>Text</ion-label>
+            <ion-radio slot="start" value={ApplyColorType.TEXT} checked mode="md"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Background</ion-label>
+            <ion-radio slot="start" value={ApplyColorType.BACKGROUND} mode="md"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+        <ion-item-divider class="ion-padding-top">
+          <ion-label>Opacity</ion-label>
+        </ion-item-divider>
+        <ion-item class="item-opacity">
+          <ion-range
+            color="primary"
+            min={0}
+            max={100}
+            disabled={!this.color || this.color === undefined}
+            value={this.colorOpacity}
+            mode="md"
+            onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
+        </ion-item>
+      </ion-list>,
+      <deckgo-color
+        class="ion-padding-start ion-padding-end ion-padding-bottom"
+        more={this.moreColors}
+        onColorChange={($event: CustomEvent) => this.selectColor($event)}
+        color-rgb={this.color}>
+        <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
+      </deckgo-color>,
+      <ion-item class="action-button ion-margin-bottom">
+        <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete">
+          <ion-label class="ion-text-uppercase">{this.resetLabelContent()}</ion-label>
+        </ion-button>
+      </ion-item>
+    ];
+  }
+
+  private resetLabelContent() {
+    if (this.applyColorType === ApplyColorType.TEXT) {
+      return 'Reset text color';
+    } else {
+      return 'Reset background';
     }
-
-    private applyColor(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!this.selectedElement || !this.color) {
-                resolve();
-                return;
-            }
-
-            const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
-
-            if (this.applyColorType === ApplyColorType.BACKGROUND) {
-                this.selectedElement.style.setProperty(`--slide-${this.template}-background-${this.endSide ? 'end' : 'start'}`, selectedColor);
-            } else {
-                this.selectedElement.style.setProperty(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`, selectedColor);
-            }
-
-            this.colorChange.emit(false);
-
-            resolve();
-        });
-    }
-
-    private updateOpacity($event: CustomEvent<RangeChangeEventDetail>): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-
-            if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
-                resolve();
-                return;
-            }
-
-            $event.stopPropagation();
-
-            const opacity: number = $event.detail.value as number;
-
-            this.colorOpacity = opacity;
-
-            await this.applyColor();
-
-            resolve();
-        });
-    }
-
-    async toggleSide() {
-        this.endSide = !this.endSide;
-
-        await this.initCurrentColors();
-    }
-
-    render() {
-        return [
-            <ion-list>
-                <ion-item-divider class="ion-padding-top">
-                    <ion-label>Selected side</ion-label>
-                </ion-item-divider>
-                <ion-item>
-                    <ion-label>{this.endSide ? 'End' : 'Start'}</ion-label>
-                    <ion-toggle slot="end" checked={this.endSide} mode="md" color="primary" onIonChange={() => this.toggleSide()}></ion-toggle>
-                </ion-item>
-                <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} class="ion-padding-top">
-                    <ion-item-divider class="ion-padding-top">
-                        <ion-label>Apply color to</ion-label>
-                    </ion-item-divider>
-
-                    <ion-item>
-                        <ion-label>Text</ion-label>
-                        <ion-radio slot="start" value={ApplyColorType.TEXT} checked mode="md"></ion-radio>
-                    </ion-item>
-
-                    <ion-item>
-                        <ion-label>Background</ion-label>
-                        <ion-radio slot="start" value={ApplyColorType.BACKGROUND} mode="md"></ion-radio>
-                    </ion-item>
-                </ion-radio-group>
-                <ion-item-divider class="ion-padding-top">
-                    <ion-label>Opacity</ion-label>
-                </ion-item-divider>
-                <ion-item class="item-opacity">
-                    <ion-range color="primary" min={0} max={100} disabled={!this.color || this.color === undefined}
-                               value={this.colorOpacity} mode="md"
-                               onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
-                </ion-item>
-            </ion-list>,
-            <deckgo-color class="ion-padding-start ion-padding-end ion-padding-bottom" more={this.moreColors}
-                          onColorChange={($event: CustomEvent) => this.selectColor($event)} color-rgb={this.color}>
-                <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
-            </deckgo-color>,
-            <ion-item class="action-button ion-margin-bottom">
-                <ion-button shape="round" onClick={() => this.resetColor()}
-                            fill="outline" class="delete">
-                    <ion-label class="ion-text-uppercase">{this.resetLabelContent()}</ion-label>
-                </ion-button>
-            </ion-item>
-        ]
-    }
-
-    private resetLabelContent() {
-        if (this.applyColorType === ApplyColorType.TEXT) {
-            return "Reset text color";
-        } else {
-            return "Reset background";
-        }
-    }
-
+  }
 }

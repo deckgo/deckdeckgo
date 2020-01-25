@@ -5,48 +5,48 @@ import {Subscription} from 'rxjs';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
 
 @Component({
-    tag: 'app-editor-busy-action',
-    styleUrl: 'app-editor-busy-action.scss',
-    shadow: false
+  tag: 'app-editor-busy-action',
+  styleUrl: 'app-editor-busy-action.scss',
+  shadow: false
 })
 export class AppEditorBusyAction {
+  @Event() private actionReady: EventEmitter<UIEvent>;
 
-    @Event() private actionReady: EventEmitter<UIEvent>;
+  private subscription: Subscription;
+  private busyService: BusyService;
 
-    private subscription: Subscription;
-    private busyService: BusyService;
+  @State()
+  private deckBusy: boolean = false;
 
-    @State()
-    private deckBusy: boolean = false;
+  @Prop()
+  iconName: string;
 
-    @Prop()
-    iconName: string;
+  constructor() {
+    this.busyService = BusyService.getInstance();
+  }
 
-    constructor() {
-        this.busyService = BusyService.getInstance();
+  private action($event: UIEvent) {
+    this.actionReady.emit($event);
+  }
+
+  async componentWillLoad() {
+    this.subscription = this.busyService.watchDeckBusy().subscribe((busy: boolean) => {
+      this.deckBusy = busy;
+    });
+  }
+
+  async componentDidUnload() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
+  }
 
-    private action($event: UIEvent) {
-        this.actionReady.emit($event);
-    }
-
-    async componentWillLoad() {
-        this.subscription = this.busyService.watchDeckBusy().subscribe((busy: boolean) => {
-            this.deckBusy = busy;
-        });
-    }
-
-    async componentDidUnload() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    }
-
-    render() {
-        return <ion-tab-button onClick={(e: UIEvent) => this.action(e)} color="primary" disabled={this.deckBusy} mode="md">
-            <ion-icon name={this.iconName}></ion-icon>
-            <slot></slot>
-        </ion-tab-button>;
-    }
-
+  render() {
+    return (
+      <ion-tab-button onClick={(e: UIEvent) => this.action(e)} color="primary" disabled={this.deckBusy} mode="md">
+        <ion-icon name={this.iconName}></ion-icon>
+        <slot></slot>
+      </ion-tab-button>
+    );
+  }
 }

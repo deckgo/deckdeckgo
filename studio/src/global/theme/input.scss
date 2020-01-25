@@ -2,12 +2,13 @@ ion-item.item-input {
   --border-color: transparent;
   --highlight-color-focused: transparent;
 
-    &:not(.with-padding) {
+  &:not(.with-padding) {
     --padding-start: 0;
     --inner-padding-end: 0;
   }
 
-  ion-input[class*="sc-ion-input"], ion-textarea[class*="sc-ion-textarea"] {
+  ion-input[class*="sc-ion-input"],
+  ion-textarea[class*="sc-ion-textarea"] {
     --padding-start: 8px;
     --background: var(--ion-color-light);
     background: var(--ion-color-light);
@@ -18,7 +19,7 @@ ion-item.item-input {
   }
 }
 
-ion-list[class*="list"].inputs-list  {
+ion-list[class*="list"].inputs-list {
   background: transparent;
 
   ion-item {

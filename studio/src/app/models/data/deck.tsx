@@ -1,58 +1,57 @@
 export interface DeckMetaAuthor {
-    name: string;
-    photo_url?: string;
+  name: string;
+  photo_url?: string;
 }
 
 export interface DeckMeta {
-    title: string;
+  title: string;
 
-    description?: string | firebase.firestore.FieldValue;
-    tags?: string[] | firebase.firestore.FieldValue;
+  description?: string | firebase.firestore.FieldValue;
+  tags?: string[] | firebase.firestore.FieldValue;
 
-    pathname: string;
+  pathname: string;
 
-    author?: DeckMetaAuthor | firebase.firestore.FieldValue;
+  author?: DeckMetaAuthor | firebase.firestore.FieldValue;
 
-    published: boolean;
-    published_at: firebase.firestore.Timestamp;
+  published: boolean;
+  published_at: firebase.firestore.Timestamp;
 
-    feed: boolean;
+  feed: boolean;
 
-    updated_at: firebase.firestore.Timestamp;
+  updated_at: firebase.firestore.Timestamp;
 }
 
 export interface DeckAttributes {
-    style?: string;
-    transition?: 'slide' | 'fade' | 'none';
+  style?: string;
+  transition?: 'slide' | 'fade' | 'none';
 }
 
 export interface DeckClone {
-    deck_id_from?: string;
-    deck_id_to?: string;
+  deck_id_from?: string;
+  deck_id_to?: string;
 }
 
 export interface DeckData {
-    name: string;
+  name: string;
 
-    attributes?: DeckAttributes;
-    background?: string;
+  attributes?: DeckAttributes;
+  background?: string;
 
-    owner_id: string;
+  owner_id: string;
 
-    slides?: string[];
+  slides?: string[];
 
-    api_id?: string;
+  api_id?: string;
 
-    meta?: DeckMeta;
+  meta?: DeckMeta;
 
-    clone?: DeckClone;
+  clone?: DeckClone;
 
-    created_at?: firebase.firestore.Timestamp;
-    updated_at?: firebase.firestore.Timestamp;
+  created_at?: firebase.firestore.Timestamp;
+  updated_at?: firebase.firestore.Timestamp;
 }
 
 export interface Deck {
-    id: string;
-    data: DeckData;
+  id: string;
+  data: DeckData;
 }
-

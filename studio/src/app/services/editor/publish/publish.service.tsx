@@ -26,420 +26,429 @@ import {EnvironmentConfigService} from '../../core/environment/environment-confi
 import {EnvironmentGoogleConfig} from '../../core/environment/environment-config';
 
 export class PublishService {
+  private static instance: PublishService;
 
-    private static instance: PublishService;
+  private deckEditorService: DeckEditorService;
 
-    private deckEditorService: DeckEditorService;
+  private apiPresentationService: ApiPresentationService;
 
-    private apiPresentationService: ApiPresentationService;
+  private deckService: DeckService;
+  private slideService: SlideService;
 
-    private deckService: DeckService;
-    private slideService: SlideService;
+  private userService: UserService;
 
-    private userService: UserService;
+  private progressSubject: Subject<number> = new Subject<number>();
 
-    private progressSubject: Subject<number> = new Subject<number>();
+  private constructor() {
+    // Private constructor, singleton
+    this.deckEditorService = DeckEditorService.getInstance();
 
-    private constructor() {
-        // Private constructor, singleton
-        this.deckEditorService = DeckEditorService.getInstance();
+    this.apiPresentationService = ApiPresentationFactoryService.getInstance();
 
-        this.apiPresentationService = ApiPresentationFactoryService.getInstance();
+    this.deckService = DeckService.getInstance();
+    this.slideService = SlideService.getInstance();
 
-        this.deckService = DeckService.getInstance();
-        this.slideService = SlideService.getInstance();
+    this.userService = UserService.getInstance();
+  }
 
-        this.userService = UserService.getInstance();
+  static getInstance() {
+    if (!PublishService.instance) {
+      PublishService.instance = new PublishService();
     }
+    return PublishService.instance;
+  }
 
-    static getInstance() {
-        if (!PublishService.instance) {
-            PublishService.instance = new PublishService();
+  watchProgress(): Observable<number> {
+    return this.progressSubject.asObservable();
+  }
+
+  private progress(progress: number) {
+    this.progressSubject.next(progress);
+  }
+
+  private progressComplete() {
+    this.progressSubject.next(1);
+  }
+
+  // TODO: Move in a cloud functions?
+  publish(description: string, tags: string[]): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      this.progress(0);
+
+      this.deckEditorService
+        .watch()
+        .pipe(take(1))
+        .subscribe(async (deck: Deck) => {
+          try {
+            if (!deck || !deck.id || !deck.data) {
+              this.progressComplete();
+              reject('No deck found');
+              return;
+            }
+
+            const apiDeck: ApiDeck = await this.convertDeck(deck, description);
+
+            this.progress(0.25);
+
+            const apiDeckPublish: ApiPresentation = await this.publishDeck(deck, apiDeck);
+
+            this.progress(0.5);
+
+            if (!apiDeckPublish || !apiDeckPublish.id || !apiDeckPublish.url) {
+              this.progressComplete();
+              reject('Publish failed');
+              return;
+            }
+
+            this.progress(0.75);
+
+            const newApiId: boolean = deck.data.api_id !== apiDeckPublish.id;
+            if (newApiId) {
+              deck.data.api_id = apiDeckPublish.id;
+
+              deck = await this.deckService.update(deck);
+            }
+
+            this.progress(0.8);
+
+            const publishedUrl: string = apiDeckPublish.url;
+
+            await this.delayUpdateMeta(deck, publishedUrl, description, tags, newApiId);
+
+            resolve(publishedUrl);
+          } catch (err) {
+            this.progressComplete();
+            reject(err);
+          }
+        });
+    });
+  }
+
+  private publishDeck(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
+    return new Promise<ApiPresentation>(async (resolve, reject) => {
+      try {
+        const apiDeckPublish: ApiPresentation = await this.createOrUpdatePublish(deck, apiDeck);
+
+        resolve(apiDeckPublish);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private createOrUpdatePublish(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
+    if (deck.data.api_id) {
+      return this.apiPresentationService.put(deck.data.api_id, apiDeck);
+    } else {
+      return this.apiPresentationService.post(apiDeck);
+    }
+  }
+
+  private convertDeck(deck: Deck, description: string): Promise<ApiDeck> {
+    return new Promise<ApiDeck>(async (resolve, reject) => {
+      try {
+        const apiSlides: ApiSlide[] = await this.convertSlides(deck);
+
+        const apiDeck: ApiDeck = {
+          name: deck.data.name ? deck.data.name.trim() : deck.data.name,
+          description: description !== undefined && description !== '' ? description : deck.data.name,
+          owner_id: deck.data.owner_id,
+          attributes: deck.data.attributes,
+          background: deck.data.background,
+          slides: apiSlides
+        };
+
+        const googleFontScript: string | undefined = await this.getGoogleFontScript(deck);
+        if (googleFontScript !== undefined) {
+          apiDeck.head_extra = googleFontScript;
         }
-        return PublishService.instance;
-    }
 
-    watchProgress(): Observable<number> {
-        return this.progressSubject.asObservable();
-    }
+        resolve(apiDeck);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-    private progress(progress: number) {
-        this.progressSubject.next(progress);
-    }
+  private getGoogleFontScript(deck: Deck): Promise<string | undefined> {
+    return new Promise<string | undefined>(async (resolve) => {
+      if (!document) {
+        resolve(undefined);
+        return;
+      }
+      if (!deck || !deck.data || !deck.data.attributes) {
+        resolve(undefined);
+        return;
+      }
 
-    private progressComplete() {
-        this.progressSubject.next(1);
-    }
+      if (!deck.data.attributes.style || deck.data.attributes.style === undefined || deck.data.attributes.style === '') {
+        resolve(undefined);
+        return;
+      }
 
-    // TODO: Move in a cloud functions?
-    publish(description: string, tags: string[]): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
-            this.progress(0);
+      const div: HTMLDivElement = document.createElement('div');
+      div.setAttribute('style', deck.data.attributes.style);
 
-            this.deckEditorService.watch().pipe(take(1)).subscribe(async (deck: Deck) => {
-                try {
-                    if (!deck || !deck.id || !deck.data) {
-                        this.progressComplete();
-                        reject('No deck found');
-                        return;
-                    }
+      const fontFamily: string | undefined = div.style.getPropertyValue('font-family');
 
-                    const apiDeck: ApiDeck = await this.convertDeck(deck, description);
+      if (!fontFamily || fontFamily === undefined || fontFamily === '') {
+        resolve(undefined);
+        return;
+      }
 
-                    this.progress(0.25);
+      const font: GoogleFont | undefined = await FontsUtils.extractGoogleFont(fontFamily);
 
-                    const apiDeckPublish: ApiPresentation = await this.publishDeck(deck, apiDeck);
+      if (!font || font === undefined) {
+        resolve(undefined);
+        return;
+      }
 
-                    this.progress(0.50);
+      const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
+      const url: string = FontsUtils.getGoogleFontUrl(google.fontsUrl, font);
 
-                    if (!apiDeckPublish || !apiDeckPublish.id || !apiDeckPublish.url) {
-                        this.progressComplete();
-                        reject('Publish failed');
-                        return;
-                    }
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'stylesheet');
+      link.setAttribute('href', url);
 
-                    this.progress(0.75);
+      resolve(link.outerHTML);
+    });
+  }
 
-                    const newApiId: boolean = deck.data.api_id !== apiDeckPublish.id;
-                    if (newApiId) {
-                        deck.data.api_id = apiDeckPublish.id;
+  private convertSlides(deck: Deck): Promise<ApiSlide[]> {
+    return new Promise<ApiSlide[]>(async (resolve, reject) => {
+      if (!deck.data.slides || deck.data.slides.length <= 0) {
+        resolve([]);
+        return;
+      }
 
-                        deck = await this.deckService.update(deck);
-                    }
+      try {
+        const promises: Promise<ApiSlide>[] = [];
 
-                    this.progress(0.80);
+        for (let i: number = 0; i < deck.data.slides.length; i++) {
+          const slideId: string = deck.data.slides[i];
 
-                    const publishedUrl: string = apiDeckPublish.url;
-
-                    await this.delayUpdateMeta(deck, publishedUrl, description, tags, newApiId);
-
-                    resolve(publishedUrl);
-                } catch (err) {
-                    this.progressComplete();
-                    reject(err);
-                }
-            });
-        });
-    }
-
-    private publishDeck(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
-        return new Promise<ApiPresentation>(async (resolve, reject) => {
-            try {
-                const apiDeckPublish: ApiPresentation = await this.createOrUpdatePublish(deck, apiDeck);
-
-                resolve(apiDeckPublish);
-            } catch (err) {
-                reject (err);
-            }
-        })
-    }
-
-    private createOrUpdatePublish(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
-        if (deck.data.api_id) {
-            return this.apiPresentationService.put(deck.data.api_id, apiDeck);
-        } else {
-            return this.apiPresentationService.post(apiDeck);
+          promises.push(this.convertSlide(deck, slideId));
         }
-    }
 
-    private convertDeck(deck: Deck, description: string): Promise<ApiDeck> {
-        return new Promise<ApiDeck>(async (resolve, reject) => {
-            try {
-                const apiSlides: ApiSlide[] = await this.convertSlides(deck);
+        if (!promises || promises.length <= 0) {
+          resolve([]);
+          return;
+        }
 
-                const apiDeck: ApiDeck = {
-                    name: deck.data.name ? deck.data.name.trim() : deck.data.name,
-                    description: description !== undefined && description !== '' ? description : deck.data.name,
-                    owner_id: deck.data.owner_id,
-                    attributes: deck.data.attributes,
-                    background: deck.data.background,
-                    slides: apiSlides
-                };
+        const slides: ApiSlide[] = await Promise.all(promises);
 
-                const googleFontScript: string | undefined = await this.getGoogleFontScript(deck);
-                if (googleFontScript !== undefined) {
-                    apiDeck.head_extra = googleFontScript;
-                }
+        resolve(slides);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-                resolve(apiDeck);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
+  private convertSlide(deck: Deck, slideId: string): Promise<ApiSlide> {
+    return new Promise<ApiSlide>(async (resolve, reject) => {
+      const slide: Slide = await this.slideService.get(deck.id, slideId);
 
-    private getGoogleFontScript(deck: Deck): Promise<string | undefined> {
-        return new Promise<string|undefined>(async (resolve) => {
-            if (!document) {
-                resolve(undefined);
-                return;
-            }
-            if (!deck || !deck.data || !deck.data.attributes) {
-                resolve(undefined);
-                return;
-            }
+      if (!slide || !slide.data) {
+        reject('Missing slide for publishing');
+        return;
+      }
 
-            if (!deck.data.attributes.style || deck.data.attributes.style === undefined || deck.data.attributes.style === '') {
-                resolve(undefined);
-                return;
-            }
+      const attributes: SlideAttributes = await this.convertAttributesToString(slide.data.attributes);
 
-            const div: HTMLDivElement =  document.createElement('div');
-            div.setAttribute('style', deck.data.attributes.style);
+      const apiSlide: ApiSlide = {
+        template: slide.data.template,
+        content: slide.data.content,
+        attributes: attributes
+      };
 
-            const fontFamily: string | undefined = div.style.getPropertyValue('font-family');
+      const cleanApiSlide: ApiSlide = await this.convertSlideQRCode(apiSlide);
+      cleanApiSlide.content = await this.cleanNotes(apiSlide.content);
 
-            if (!fontFamily || fontFamily === undefined || fontFamily === '') {
-                resolve(undefined);
-                return;
-            }
+      resolve(cleanApiSlide);
+    });
+  }
 
-            const font: GoogleFont | undefined = await FontsUtils.extractGoogleFont(fontFamily);
+  private convertAttributesToString(attributes: SlideAttributes): Promise<SlideAttributes> {
+    return new Promise<SlideAttributes>((resolve) => {
+      if (!attributes) {
+        resolve(undefined);
+        return;
+      }
 
-            if (!font || font === undefined) {
-                resolve(undefined);
-                return;
-            }
+      // We loose the type but doing so we ensure that all attributes are converted to string in order to parse them to HTML in the API
+      const result: SlideAttributes = {};
+      Object.keys(attributes).forEach((key: string) => {
+        result[key] = `${attributes[key]}`;
+      });
 
-            const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
-            const url: string = FontsUtils.getGoogleFontUrl(google.fontsUrl, font);
+      if (!result) {
+        resolve(undefined);
+        return;
+      }
 
-            const link = document.createElement('link');
-            link.setAttribute('rel', 'stylesheet');
-            link.setAttribute('href', url);
+      resolve(result);
+    });
+  }
 
-            resolve(link.outerHTML);
-        });
-    }
+  private cleanNotes(content: string): Promise<string> {
+    return new Promise<string>((resolve) => {
+      if (!content || content === undefined || content === '') {
+        resolve(content);
+        return;
+      }
 
-    private convertSlides(deck: Deck): Promise<ApiSlide[]> {
-        return new Promise<ApiSlide[]>(async (resolve, reject) => {
-            if (!deck.data.slides || deck.data.slides.length <= 0) {
-                resolve([]);
-                return;
-            }
+      const result: string = content.replace(/<div slot="notes".*?>.*?<\/div>/gis, '');
 
-            try {
-                const promises: Promise<ApiSlide>[] = [];
+      resolve(result);
+    });
+  }
 
-                for (let i: number = 0; i < deck.data.slides.length; i++) {
-                    const slideId: string = deck.data.slides[i];
+  private convertSlideQRCode(apiSlide: ApiSlide): Promise<ApiSlide> {
+    return new Promise<ApiSlide>(async (resolve) => {
+      if (!apiSlide) {
+        resolve(apiSlide);
+        return;
+      }
 
-                    promises.push(this.convertSlide(deck, slideId));
-                }
+      if (apiSlide.template !== SlideTemplate.QRCODE) {
+        resolve(apiSlide);
+        return;
+      }
 
-                if (!promises || promises.length <= 0) {
-                    resolve([]);
-                    return;
-                }
+      const presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
 
-                const slides: ApiSlide[] = await Promise.all(promises);
+      // If no attributes at all, we create an attribute "content" of the QR code with it's upcoming published url
+      if (!apiSlide.attributes) {
+        apiSlide.attributes = {
+          content: `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`
+        };
+      }
 
-                resolve(slides);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
+      // If not custom content, we replace the attribute "content" of the QR code with it's upcoming published url
+      if (!apiSlide.attributes.hasOwnProperty('customQRCode') || !apiSlide.attributes.customQRCode) {
+        apiSlide.attributes.content = `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`;
+      }
 
-    private convertSlide(deck: Deck, slideId: string): Promise<ApiSlide> {
-        return new Promise<ApiSlide>(async (resolve, reject) => {
-            const slide: Slide = await this.slideService.get(deck.id, slideId);
+      // In any case, we don't need customQRCode attribute in our presentations, this is an attribute used by the editor
+      if (apiSlide.attributes.hasOwnProperty('customQRCode')) {
+        delete apiSlide.attributes['customQRCode'];
+      }
 
-            if (!slide || !slide.data) {
-                reject('Missing slide for publishing');
-                return;
-            }
+      resolve(apiSlide);
+    });
+  }
 
-            const attributes: SlideAttributes = await this.convertAttributesToString(slide.data.attributes);
+  // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
+  // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
+  private delayUpdateMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], delay: boolean): Promise<void> {
+    return new Promise<void>((resolve) => {
+      setTimeout(
+        () => {
+          this.progress(0.9);
 
-            const apiSlide: ApiSlide = {
-                template: slide.data.template,
-                content: slide.data.content,
-                attributes: attributes
-            };
+          setTimeout(
+            async () => {
+              await this.updateDeckMeta(deck, publishedUrl, description, tags);
 
-            const cleanApiSlide: ApiSlide = await this.convertSlideQRCode(apiSlide);
-            cleanApiSlide.content = await this.cleanNotes(apiSlide.content);
+              this.progress(0.95);
 
-            resolve(cleanApiSlide);
-        });
-    }
+              await this.refreshDeck(deck.id);
 
-    private convertAttributesToString(attributes: SlideAttributes): Promise<SlideAttributes> {
-        return new Promise<SlideAttributes>((resolve) => {
-            if (!attributes) {
-                resolve(undefined);
-                return;
-            }
+              this.progressComplete();
 
-            // We loose the type but doing so we ensure that all attributes are converted to string in order to parse them to HTML in the API
-            const result: SlideAttributes = {};
-            Object.keys(attributes).forEach((key: string) => {
-                result[key] = `${attributes[key]}`;
-            });
-
-            if (!result) {
-                resolve(undefined);
-                return;
-            }
-
-            resolve(result);
-        });
-    }
-
-    private cleanNotes(content: string): Promise<string> {
-        return new Promise<string>((resolve) => {
-            if (!content || content === undefined || content === '') {
-                resolve(content);
-                return;
-            }
-
-            const result: string = content.replace(/<div slot="notes".*?>.*?<\/div>/gis, '');
-
-            resolve(result);
-        });
-    }
-
-    private convertSlideQRCode(apiSlide: ApiSlide): Promise<ApiSlide> {
-        return new Promise<ApiSlide>(async (resolve) => {
-            if (!apiSlide) {
-                resolve(apiSlide);
-                return;
-            }
-
-            if (apiSlide.template !== SlideTemplate.QRCODE) {
-                resolve(apiSlide);
-                return;
-            }
-
-            const presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
-
-            // If no attributes at all, we create an attribute "content" of the QR code with it's upcoming published url
-            if (!apiSlide.attributes) {
-                apiSlide.attributes = {
-                    content: `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`
-                };
-            }
-
-            // If not custom content, we replace the attribute "content" of the QR code with it's upcoming published url
-            if (!apiSlide.attributes.hasOwnProperty('customQRCode') || !apiSlide.attributes.customQRCode) {
-                apiSlide.attributes.content = `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`;
-            }
-
-            // In any case, we don't need customQRCode attribute in our presentations, this is an attribute used by the editor
-            if (apiSlide.attributes.hasOwnProperty('customQRCode')) {
-                delete apiSlide.attributes['customQRCode'];
-            }
-
-            resolve(apiSlide);
-        });
-    }
-
-    // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
-    // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
-    private delayUpdateMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], delay: boolean): Promise<void> {
-        return new Promise<void>((resolve) => {
-            setTimeout(() => {
-                this.progress(0.9);
-
-                setTimeout(async () => {
-                    await this.updateDeckMeta(deck, publishedUrl, description, tags);
-
-                    this.progress(0.95);
-
-                    await this.refreshDeck(deck.id);
-
-                    this.progressComplete();
-
-                    setTimeout(() => {
-                        resolve();
-                    }, 500);
-
-                }, delay ? 3500 : 0);
-
-            }, delay ? 3500 : 0);
-        });
-    }
-
-    // Otherwise we gonna kept in memory references like firebase.firestore.FieldValue.delete instead of null values
-    private refreshDeck(deckId: string): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                const freshDeck: Deck = await this.deckService.get(deckId);
-                this.deckEditorService.next(freshDeck);
-
+              setTimeout(() => {
                 resolve();
-            } catch (err) {
-                reject(err);
+              }, 500);
+            },
+            delay ? 3500 : 0
+          );
+        },
+        delay ? 3500 : 0
+      );
+    });
+  }
+
+  // Otherwise we gonna kept in memory references like firebase.firestore.FieldValue.delete instead of null values
+  private refreshDeck(deckId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const freshDeck: Deck = await this.deckService.get(deckId);
+        this.deckEditorService.next(freshDeck);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private updateDeckMeta(deck: Deck, publishedUrl: string, description: string, tags: string[]): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (!publishedUrl || publishedUrl === undefined || publishedUrl === '') {
+          resolve();
+          return;
+        }
+
+        this.userService
+          .watch()
+          .pipe(take(1))
+          .subscribe(async (user: User) => {
+            const url: URL = new URL(publishedUrl);
+            const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+
+            if (!deck.data.meta) {
+              deck.data.meta = {
+                title: deck.data.name,
+                pathname: url.pathname,
+                published: true,
+                published_at: now,
+                feed: true,
+                updated_at: now
+              };
+            } else {
+              deck.data.meta.title = deck.data.name;
+              deck.data.meta.pathname = url.pathname;
+              deck.data.meta.updated_at = now;
             }
-        });
-    }
 
-    private updateDeckMeta(deck: Deck, publishedUrl: string, description: string, tags: string[]): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                if (!publishedUrl || publishedUrl === undefined || publishedUrl === '') {
-                    resolve();
-                    return;
-                }
-
-                this.userService.watch().pipe(take(1)).subscribe(async (user: User) => {
-                    const url: URL = new URL(publishedUrl);
-                    const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-
-                    if (!deck.data.meta) {
-                        deck.data.meta = {
-                            title: deck.data.name,
-                            pathname: url.pathname,
-                            published: true,
-                            published_at: now,
-                            feed: true,
-                            updated_at: now
-                        };
-                    } else {
-                        deck.data.meta.title = deck.data.name;
-                        deck.data.meta.pathname = url.pathname;
-                        deck.data.meta.updated_at = now;
-                    }
-
-                    if (description && description !== undefined && description !== '') {
-                        deck.data.meta.description = description;
-                    } else {
-                        deck.data.meta.description = firebase.firestore.FieldValue.delete();
-                    }
-
-                    if (!tags || tags.length <= 0) {
-                        deck.data.meta.tags = firebase.firestore.FieldValue.delete();
-                    } else {
-                        deck.data.meta.tags = tags;
-                    }
-
-                    if (user && user.data && user.data.name) {
-                        if (!deck.data.meta.author) {
-                            deck.data.meta.author = {
-                                name: user.data.name
-                            };
-                        } else {
-                            (deck.data.meta.author as DeckMetaAuthor).name = user.data.name
-                        }
-
-                        if (user.data.photo_url) {
-                            (deck.data.meta.author as DeckMetaAuthor).photo_url = user.data.photo_url;
-                        }
-                    } else {
-                        if (deck.data.meta.author) {
-                            deck.data.meta.author = firebase.firestore.FieldValue.delete();
-                        }
-                    }
-
-                    await this.deckService.update(deck);
-
-                    resolve();
-                });
-            } catch (err) {
-                reject(err);
+            if (description && description !== undefined && description !== '') {
+              deck.data.meta.description = description;
+            } else {
+              deck.data.meta.description = firebase.firestore.FieldValue.delete();
             }
-        });
-    }
+
+            if (!tags || tags.length <= 0) {
+              deck.data.meta.tags = firebase.firestore.FieldValue.delete();
+            } else {
+              deck.data.meta.tags = tags;
+            }
+
+            if (user && user.data && user.data.name) {
+              if (!deck.data.meta.author) {
+                deck.data.meta.author = {
+                  name: user.data.name
+                };
+              } else {
+                (deck.data.meta.author as DeckMetaAuthor).name = user.data.name;
+              }
+
+              if (user.data.photo_url) {
+                (deck.data.meta.author as DeckMetaAuthor).photo_url = user.data.photo_url;
+              }
+            } else {
+              if (deck.data.meta.author) {
+                deck.data.meta.author = firebase.firestore.FieldValue.delete();
+              }
+            }
+
+            await this.deckService.update(deck);
+
+            resolve();
+          });
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }

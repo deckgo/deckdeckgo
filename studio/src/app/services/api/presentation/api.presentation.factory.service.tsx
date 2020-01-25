@@ -6,15 +6,13 @@ import {ApiPresentationMockService} from './api.presentation.mock.service';
 import {ApiPresentationProdService} from './api.presentation.prod.service';
 
 export class ApiPresentationFactoryService {
+  private static instance: ApiPresentationService;
 
-    private static instance: ApiPresentationService;
-
-    static getInstance() {
-        if (!ApiPresentationFactoryService.instance) {
-            const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-            ApiPresentationFactoryService.instance = !deckDeckGoConfig.prod ? new ApiPresentationMockService() : new ApiPresentationProdService();
-        }
-        return ApiPresentationFactoryService.instance;
+  static getInstance() {
+    if (!ApiPresentationFactoryService.instance) {
+      const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+      ApiPresentationFactoryService.instance = !deckDeckGoConfig.prod ? new ApiPresentationMockService() : new ApiPresentationProdService();
     }
-
+    return ApiPresentationFactoryService.instance;
+  }
 }

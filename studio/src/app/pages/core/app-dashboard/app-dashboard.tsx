@@ -19,485 +19,491 @@ import {SlideService} from '../../../services/data/slide/slide.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
 
 interface DeckAndFirstSlide {
-    deck: Deck;
-    slide: JSX.IntrinsicElements | undefined;
-    style: any;
-    background: any;
+  deck: Deck;
+  slide: JSX.IntrinsicElements | undefined;
+  style: any;
+  background: any;
 }
 
 @Component({
-    tag: 'app-dashboard',
-    styleUrl: 'app-dashboard.scss'
+  tag: 'app-dashboard',
+  styleUrl: 'app-dashboard.scss'
 })
 export class AppDashboard {
-
-    @State()
-    private authUser: AuthUser;
-
-    @State()
-    private filteredDecks: DeckAndFirstSlide[] = null;
-
-    private decks: DeckAndFirstSlide[] = null;
-
-    private authService: AuthService;
-
-    private navService: NavService;
-
-    private deckService: DeckService;
-    private slideService: SlideService;
-
-    private deckDashboardService: DeckDashboardService;
-
-    constructor() {
-        this.authService = AuthService.getInstance();
-        this.navService = NavService.getInstance();
-        this.deckService = DeckService.getInstance();
-        this.slideService = SlideService.getInstance();
-        this.deckDashboardService = DeckDashboardService.getInstance();
-    }
-
-    componentWillLoad() {
-        this.authService.watch().pipe(
-            filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && !authUser.anonymous),
-            take(1)).subscribe(async (authUser: AuthUser) => {
-            this.authUser = authUser;
-
-            const userDecks: Deck[] = await this.deckService.getUserDecks(authUser.uid);
-            this.decks = await this.fetchFirstSlides(userDecks);
-            await this.filterDecks(null);
-
-            // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
-            await this.initWatchForClonedDecks();
-        });
-    }
-
-    private fetchFirstSlides(decks: Deck[]): Promise<DeckAndFirstSlide[]> {
-        return new Promise<DeckAndFirstSlide[]>(async (resolve) => {
-            if (!decks || decks.length <= 0) {
-                resolve([]);
-                return;
-            }
-
-            const promises = [];
-            decks.forEach((deck: Deck) => {
-                if (deck && deck.data) {
-                    if (deck.data.clone && deck.data.clone.deck_id_from) {
-                        promises.push(this.initDeckCloneInProgress(deck));
-                    } else if (deck.data.slides && deck.data.slides.length >= 1) {
-                        promises.push(this.initDeckAndFirstSlide(deck, deck.data.slides[0]));
-                    }
-                }
-            });
-
-            const results: DeckAndFirstSlide[] = await Promise.all(promises);
-
-            resolve(results);
-        });
-    }
-
-    private initWatchForClonedDecks(): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!this.decks || this.decks.length <= 0) {
-                resolve();
-                return;
-            }
-
-            const promises: Promise<void>[] = [];
-
-            this.decks.forEach((deck: DeckAndFirstSlide) => {
-                if (deck && deck.deck && deck.deck.data && deck.deck.data.clone !== undefined) {
-                    promises.push(this.deckDashboardService.snapshot(deck.deck, this.watchClonedDeck));
-                }
-            });
-
-            if (promises.length <= 0) {
-                resolve();
-                return;
-            }
-
-            await Promise.all(promises);
-
-            resolve();
-        });
-    }
-
-    private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
-        return new Promise<DeckAndFirstSlide>(async (resolve) => {
-            try {
-                const slide: Slide = await this.slideService.get(deck.id, slideId);
-                const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
-
-                const style: any = await this.convertStyle(deck);
-
-                const background: any = await ParseBackgroundUtils.convertBackground(deck.data.background, false);
-
-                resolve({
-                    deck: deck,
-                    slide: element,
-                    style: style,
-                    background: background
-                });
-            } catch (err) {
-                resolve(undefined);
-            }
-        });
-    }
-
-    private initDeckCloneInProgress(deck: Deck): Promise<DeckAndFirstSlide> {
-        return new Promise<DeckAndFirstSlide>(async (resolve) => {
-            try {
-                const element: JSX.IntrinsicElements = <div class="spinner">
-                    <ion-spinner color="primary"></ion-spinner>
-                    <ion-label>Copy in progress...</ion-label>
-                </div>;
-
-                const style: any = await this.convertStyle(deck);
-
-                const background: any = await ParseBackgroundUtils.convertBackground(deck.data.background, false);
-
-                resolve({
-                    deck: deck,
-                    slide: element,
-                    style: style,
-                    background: background
-                });
-            } catch (err) {
-                resolve(undefined);
-            }
-        });
-    }
-
-    private async convertStyle(deck: Deck): Promise<any> {
-        let style: any;
-        if (deck.data && deck.data.attributes && deck.data.attributes.style) {
-            style = await convertStyle(deck.data.attributes.style);
-        } else {
-            style = undefined;
-        }
-
-        return style;
-    }
-
-    private filterDecks(value: string): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!value || value === undefined || value === '') {
-                this.filteredDecks = this.decks ? [...this.decks] : [];
-
-                resolve();
-                return;
-            }
-
-            if (!this.decks || this.decks.length <= 0) {
-                this.filteredDecks = this.decks ? [...this.decks] : [];
-
-                resolve();
-                return;
-            }
-
-            const matchingDecks: DeckAndFirstSlide[] = this.decks.filter((matchDeck: DeckAndFirstSlide) => {
-                return matchDeck.deck && matchDeck.deck.data && matchDeck.deck.data.name && matchDeck.deck.data.name.toLowerCase().indexOf(value.toLowerCase()) > -1
-            });
-
-            this.filteredDecks = [...matchingDecks];
-
-            resolve();
-        });
-    }
-
-    private async signIn() {
-        this.navService.navigate({
-            url: '/signin' + (window && window.location ? window.location.pathname : ''),
-            direction: NavDirection.FORWARD
-        });
-    }
-
-    private async filterDecksOnChange(e: CustomEvent) {
-        if (e && e.detail) {
-            await this.filterDecks(e.detail.value);
-        } else {
-            await this.filterDecks(null);
-        }
-    }
-
-    private blockSlide($event: CustomEvent): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if ($event && $event.target) {
-                await ($event.target as any).blockSlide(true);
-            }
-
-            resolve();
-        })
-    }
-
-    private navigateDeck(deck: DeckAndFirstSlide) {
-        if (!deck || !deck.deck || !deck.deck.id || deck.deck.id === undefined || deck.deck.id === '') {
-            return;
-        }
-
-        if (deck && deck.deck && deck.deck.data && deck.deck.data.clone) {
-            return;
-        }
-
-        const url: string = `/editor/${deck.deck.id}`;
-
-        this.navService.navigate({
-            url: url,
-            direction: NavDirection.ROOT
-        });
-    }
-
-    private async navigateEditor() {
-        this.navService.navigate({
-            url: '/editor',
-            direction: NavDirection.ROOT
-        });
-    }
-
-    private removeDeletedDeck($event: CustomEvent): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!$event || !$event.detail || $event.detail === undefined || $event.detail === '') {
-                resolve();
-                return;
-            }
-
-            const deckId: string = $event.detail;
-
-            const index: number = await this.findDeckIndex(deckId);
-
-            if (index < 0) {
-                resolve();
-                return;
-            }
-
-            this.decks.splice(index, 1);
-
-            await this.filterDecks(null);
-
-            resolve();
-        });
-    }
-
-    private onClonedDeck($event: CustomEvent): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!$event || !$event.detail || $event.detail === undefined) {
-                resolve();
-                return;
-            }
-
-            const clone: DeckDashboardCloneResult = $event.detail;
-
-            const index: number = await this.findDeckIndex(clone && clone.from ? clone.from.id : undefined);
-
-            if (index < 0) {
-                resolve();
-                return;
-            }
-
-            await this.updateClonedDeck(clone.from, index);
-
-            await this.addClonedDeck(clone.to, index);
-
-            await this.filterDecks(null);
-
-            await this.deckDashboardService.snapshot(clone.from, this.watchClonedDeck);
-            await this.deckDashboardService.snapshot(clone.to, this.watchClonedDeck);
-
-            resolve();
-        });
-    }
-
-    private findDeckIndex(id: string): Promise<number> {
-        return new Promise<number>(async (resolve) => {
-            if (!this.decks || this.decks.length < 0) {
-                resolve(-1);
-                return;
-            }
-
-            if (!id || id === undefined || id === '') {
-                resolve(-1);
-                return;
-            }
-
-            const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
-                return matchDeck.deck && matchDeck.deck.id === id
-            });
-
-            resolve(index);
-        });
-    }
-
-    private updateClonedDeck(deck: Deck, index: number): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (!deck.data || !deck.data.slides || deck.data.slides.length <= 0) {
-                resolve();
-                return;
-            }
-
-            this.decks[index] = await this.initDeckAndFirstSlide(deck, deck.data.slides[0]);
-
-            resolve();
-        });
-    }
-
-    private addClonedDeck(deck: Deck, index: number): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            const deckAndFirstSlide: DeckAndFirstSlide = await this.initDeckCloneInProgress(deck);
-
-            if (!this.decks || this.decks.length <= 0) {
-                // Well, should not happens
-                this.decks = [deckAndFirstSlide];
-
-                resolve();
-                return;
-            }
-
-            this.decks = [...this.decks.slice(0, index), deckAndFirstSlide, ...this.decks.slice(index)];
-
-            resolve();
-        });
-    }
-
-    private watchClonedDeck = async (deck: Deck, unsubscribe) => {
-        if (!deck || !deck.data) {
-            return;
-        }
-
-        if (!deck.data.slides || deck.data.slides.length <= 0) {
-            return;
-        }
-
-        // if element still contains cloned data we don't update it
-        if (deck.data.clone !== undefined) {
-            return;
-        }
-
-        const index: number = await this.findDeckIndex(deck.id);
-
-        if (index < 0) {
-            return;
-        }
-
-        this.decks[index] = await this.initDeckAndFirstSlide(deck, deck.data.slides[0]);
-
+  @State()
+  private authUser: AuthUser;
+
+  @State()
+  private filteredDecks: DeckAndFirstSlide[] = null;
+
+  private decks: DeckAndFirstSlide[] = null;
+
+  private authService: AuthService;
+
+  private navService: NavService;
+
+  private deckService: DeckService;
+  private slideService: SlideService;
+
+  private deckDashboardService: DeckDashboardService;
+
+  constructor() {
+    this.authService = AuthService.getInstance();
+    this.navService = NavService.getInstance();
+    this.deckService = DeckService.getInstance();
+    this.slideService = SlideService.getInstance();
+    this.deckDashboardService = DeckDashboardService.getInstance();
+  }
+
+  componentWillLoad() {
+    this.authService
+      .watch()
+      .pipe(
+        filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && !authUser.anonymous),
+        take(1)
+      )
+      .subscribe(async (authUser: AuthUser) => {
+        this.authUser = authUser;
+
+        const userDecks: Deck[] = await this.deckService.getUserDecks(authUser.uid);
+        this.decks = await this.fetchFirstSlides(userDecks);
         await this.filterDecks(null);
 
-        unsubscribe();
-    };
+        // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
+        await this.initWatchForClonedDecks();
+      });
+  }
 
-    render() {
-        return [
-            <app-navigation presentation={true}></app-navigation>,
-            <ion-content class="ion-padding">
+  private fetchFirstSlides(decks: Deck[]): Promise<DeckAndFirstSlide[]> {
+    return new Promise<DeckAndFirstSlide[]>(async (resolve) => {
+      if (!decks || decks.length <= 0) {
+        resolve([]);
+        return;
+      }
 
-                {this.renderGuardedContent()}
-
-            </ion-content>
-        ];
-    }
-
-    private renderGuardedContent() {
-        if (!this.authUser) {
-            return this.renderNotLoggedInContent();
-        } else {
-            return this.renderContent();
+      const promises = [];
+      decks.forEach((deck: Deck) => {
+        if (deck && deck.data) {
+          if (deck.data.clone && deck.data.clone.deck_id_from) {
+            promises.push(this.initDeckCloneInProgress(deck));
+          } else if (deck.data.slides && deck.data.slides.length >= 1) {
+            promises.push(this.initDeckAndFirstSlide(deck, deck.data.slides[0]));
+          }
         }
-    }
+      });
 
-    private renderNotLoggedInContent() {
-        return <main class="ion-padding">
-            <h1>Oh, hi! Good to have you.</h1>
-            <p class="ion-padding-top">
-                <ion-router-link onClick={() => this.signIn()}>Sign in</ion-router-link>
-                to access to your presentations.
-            </p>
-        </main>
-    }
+      const results: DeckAndFirstSlide[] = await Promise.all(promises);
 
-    private renderContent() {
-        if (!this.filteredDecks) {
-            return undefined;
+      resolve(results);
+    });
+  }
+
+  private initWatchForClonedDecks(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!this.decks || this.decks.length <= 0) {
+        resolve();
+        return;
+      }
+
+      const promises: Promise<void>[] = [];
+
+      this.decks.forEach((deck: DeckAndFirstSlide) => {
+        if (deck && deck.deck && deck.deck.data && deck.deck.data.clone !== undefined) {
+          promises.push(this.deckDashboardService.snapshot(deck.deck, this.watchClonedDeck));
         }
+      });
 
-        return <main class="ion-padding">
-            {this.renderTitle()}
-            {this.renderDecksFilter()}
-            {this.renderCreateButton()}
-            {this.renderDecks()}
-        </main>
-    }
+      if (promises.length <= 0) {
+        resolve();
+        return;
+      }
 
-    private renderTitle() {
-        if (this.filteredDecks.length > 0) {
-            return <h1>Your presentations</h1>;
-        } else {
-            return <h1>You don't have any presentation yet</h1>;
-        }
-    }
+      await Promise.all(promises);
 
-    private renderDecksFilter() {
-        if (this.filteredDecks.length > 0) {
-            return <ion-searchbar debounce={500} animated={false} placeholder="Filter your presentations"
-                                  onClick={($event) => $event.stopImmediatePropagation()}
-                                  onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
-                                  class="ion-no-padding ion-margin-top ion-margin-bottom"/>
-        } else {
-            return undefined;
-        }
-    }
+      resolve();
+    });
+  }
 
-    private renderCreateButton() {
-        if (this.filteredDecks.length === 0) {
-            return <ion-grid>
-                <ion-row class="ion-justify-content-center">
-                    <ion-column>
-                        <ion-button slot="end" shape="round" fill="outline"
-                                    onClick={() => this.navigateEditor()}
-                                    class="ion-margin-top">
-                            <ion-label>Start one now 🚀</ion-label>
-                        </ion-button>
-                    </ion-column>
-                </ion-row>
-            </ion-grid>;
-        } else {
-            return undefined;
-        }
-    }
+  private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
+    return new Promise<DeckAndFirstSlide>(async (resolve) => {
+      try {
+        const slide: Slide = await this.slideService.get(deck.id, slideId);
+        const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
-    private renderDecks() {
-        if (this.filteredDecks && this.filteredDecks.length > 0) {
-            return <div class="container">
-                {this.renderDecksCards()}
-            </div>
-        } else {
-            return undefined;
-        }
-    }
+        const style: any = await this.convertStyle(deck);
 
-    private renderDecksCards() {
-        return (
-            this.filteredDecks.map((deck: DeckAndFirstSlide) => {
-                return <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(deck)} key={deck.deck.id}>
-                    {this.renderDeck(deck)}
+        const background: any = await ParseBackgroundUtils.convertBackground(deck.data.background, false);
 
-                    <app-dashboard-deck-actions deck={deck.deck}
-                                                onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
-                                                onDeckCloned={($event: CustomEvent) => this.onClonedDeck($event)}>
-                    </app-dashboard-deck-actions>
-                </ion-card>;
-            })
+        resolve({
+          deck: deck,
+          slide: element,
+          style: style,
+          background: background
+        });
+      } catch (err) {
+        resolve(undefined);
+      }
+    });
+  }
+
+  private initDeckCloneInProgress(deck: Deck): Promise<DeckAndFirstSlide> {
+    return new Promise<DeckAndFirstSlide>(async (resolve) => {
+      try {
+        const element: JSX.IntrinsicElements = (
+          <div class="spinner">
+            <ion-spinner color="primary"></ion-spinner>
+            <ion-label>Copy in progress...</ion-label>
+          </div>
         );
+
+        const style: any = await this.convertStyle(deck);
+
+        const background: any = await ParseBackgroundUtils.convertBackground(deck.data.background, false);
+
+        resolve({
+          deck: deck,
+          slide: element,
+          style: style,
+          background: background
+        });
+      } catch (err) {
+        resolve(undefined);
+      }
+    });
+  }
+
+  private async convertStyle(deck: Deck): Promise<any> {
+    let style: any;
+    if (deck.data && deck.data.attributes && deck.data.attributes.style) {
+      style = await convertStyle(deck.data.attributes.style);
+    } else {
+      style = undefined;
     }
 
-    private renderDeck(deck: DeckAndFirstSlide) {
-        if (!deck) {
-            return undefined;
-        } else {
-            return <deckgo-deck embedded={true} keyboard={false} style={deck.style}
-                                onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
-                {deck.slide}
-                {deck.background}
-            </deckgo-deck>
-        }
+    return style;
+  }
+
+  private filterDecks(value: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!value || value === undefined || value === '') {
+        this.filteredDecks = this.decks ? [...this.decks] : [];
+
+        resolve();
+        return;
+      }
+
+      if (!this.decks || this.decks.length <= 0) {
+        this.filteredDecks = this.decks ? [...this.decks] : [];
+
+        resolve();
+        return;
+      }
+
+      const matchingDecks: DeckAndFirstSlide[] = this.decks.filter((matchDeck: DeckAndFirstSlide) => {
+        return matchDeck.deck && matchDeck.deck.data && matchDeck.deck.data.name && matchDeck.deck.data.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+      });
+
+      this.filteredDecks = [...matchingDecks];
+
+      resolve();
+    });
+  }
+
+  private async signIn() {
+    this.navService.navigate({
+      url: '/signin' + (window && window.location ? window.location.pathname : ''),
+      direction: NavDirection.FORWARD
+    });
+  }
+
+  private async filterDecksOnChange(e: CustomEvent) {
+    if (e && e.detail) {
+      await this.filterDecks(e.detail.value);
+    } else {
+      await this.filterDecks(null);
+    }
+  }
+
+  private blockSlide($event: CustomEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if ($event && $event.target) {
+        await ($event.target as any).blockSlide(true);
+      }
+
+      resolve();
+    });
+  }
+
+  private navigateDeck(deck: DeckAndFirstSlide) {
+    if (!deck || !deck.deck || !deck.deck.id || deck.deck.id === undefined || deck.deck.id === '') {
+      return;
     }
 
+    if (deck && deck.deck && deck.deck.data && deck.deck.data.clone) {
+      return;
+    }
+
+    const url: string = `/editor/${deck.deck.id}`;
+
+    this.navService.navigate({
+      url: url,
+      direction: NavDirection.ROOT
+    });
+  }
+
+  private async navigateEditor() {
+    this.navService.navigate({
+      url: '/editor',
+      direction: NavDirection.ROOT
+    });
+  }
+
+  private removeDeletedDeck($event: CustomEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!$event || !$event.detail || $event.detail === undefined || $event.detail === '') {
+        resolve();
+        return;
+      }
+
+      const deckId: string = $event.detail;
+
+      const index: number = await this.findDeckIndex(deckId);
+
+      if (index < 0) {
+        resolve();
+        return;
+      }
+
+      this.decks.splice(index, 1);
+
+      await this.filterDecks(null);
+
+      resolve();
+    });
+  }
+
+  private onClonedDeck($event: CustomEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!$event || !$event.detail || $event.detail === undefined) {
+        resolve();
+        return;
+      }
+
+      const clone: DeckDashboardCloneResult = $event.detail;
+
+      const index: number = await this.findDeckIndex(clone && clone.from ? clone.from.id : undefined);
+
+      if (index < 0) {
+        resolve();
+        return;
+      }
+
+      await this.updateClonedDeck(clone.from, index);
+
+      await this.addClonedDeck(clone.to, index);
+
+      await this.filterDecks(null);
+
+      await this.deckDashboardService.snapshot(clone.from, this.watchClonedDeck);
+      await this.deckDashboardService.snapshot(clone.to, this.watchClonedDeck);
+
+      resolve();
+    });
+  }
+
+  private findDeckIndex(id: string): Promise<number> {
+    return new Promise<number>(async (resolve) => {
+      if (!this.decks || this.decks.length < 0) {
+        resolve(-1);
+        return;
+      }
+
+      if (!id || id === undefined || id === '') {
+        resolve(-1);
+        return;
+      }
+
+      const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
+        return matchDeck.deck && matchDeck.deck.id === id;
+      });
+
+      resolve(index);
+    });
+  }
+
+  private updateClonedDeck(deck: Deck, index: number): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!deck.data || !deck.data.slides || deck.data.slides.length <= 0) {
+        resolve();
+        return;
+      }
+
+      this.decks[index] = await this.initDeckAndFirstSlide(deck, deck.data.slides[0]);
+
+      resolve();
+    });
+  }
+
+  private addClonedDeck(deck: Deck, index: number): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const deckAndFirstSlide: DeckAndFirstSlide = await this.initDeckCloneInProgress(deck);
+
+      if (!this.decks || this.decks.length <= 0) {
+        // Well, should not happens
+        this.decks = [deckAndFirstSlide];
+
+        resolve();
+        return;
+      }
+
+      this.decks = [...this.decks.slice(0, index), deckAndFirstSlide, ...this.decks.slice(index)];
+
+      resolve();
+    });
+  }
+
+  private watchClonedDeck = async (deck: Deck, unsubscribe) => {
+    if (!deck || !deck.data) {
+      return;
+    }
+
+    if (!deck.data.slides || deck.data.slides.length <= 0) {
+      return;
+    }
+
+    // if element still contains cloned data we don't update it
+    if (deck.data.clone !== undefined) {
+      return;
+    }
+
+    const index: number = await this.findDeckIndex(deck.id);
+
+    if (index < 0) {
+      return;
+    }
+
+    this.decks[index] = await this.initDeckAndFirstSlide(deck, deck.data.slides[0]);
+
+    await this.filterDecks(null);
+
+    unsubscribe();
+  };
+
+  render() {
+    return [<app-navigation presentation={true}></app-navigation>, <ion-content class="ion-padding">{this.renderGuardedContent()}</ion-content>];
+  }
+
+  private renderGuardedContent() {
+    if (!this.authUser) {
+      return this.renderNotLoggedInContent();
+    } else {
+      return this.renderContent();
+    }
+  }
+
+  private renderNotLoggedInContent() {
+    return (
+      <main class="ion-padding">
+        <h1>Oh, hi! Good to have you.</h1>
+        <p class="ion-padding-top">
+          <ion-router-link onClick={() => this.signIn()}>Sign in</ion-router-link>
+          to access to your presentations.
+        </p>
+      </main>
+    );
+  }
+
+  private renderContent() {
+    if (!this.filteredDecks) {
+      return undefined;
+    }
+
+    return (
+      <main class="ion-padding">
+        {this.renderTitle()}
+        {this.renderDecksFilter()}
+        {this.renderCreateButton()}
+        {this.renderDecks()}
+      </main>
+    );
+  }
+
+  private renderTitle() {
+    if (this.filteredDecks.length > 0) {
+      return <h1>Your presentations</h1>;
+    } else {
+      return <h1>You don't have any presentation yet</h1>;
+    }
+  }
+
+  private renderDecksFilter() {
+    if (this.filteredDecks.length > 0) {
+      return (
+        <ion-searchbar
+          debounce={500}
+          animated={false}
+          placeholder="Filter your presentations"
+          onClick={($event) => $event.stopImmediatePropagation()}
+          onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
+          class="ion-no-padding ion-margin-top ion-margin-bottom"
+        />
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderCreateButton() {
+    if (this.filteredDecks.length === 0) {
+      return (
+        <ion-grid>
+          <ion-row class="ion-justify-content-center">
+            <ion-column>
+              <ion-button slot="end" shape="round" fill="outline" onClick={() => this.navigateEditor()} class="ion-margin-top">
+                <ion-label>Start one now 🚀</ion-label>
+              </ion-button>
+            </ion-column>
+          </ion-row>
+        </ion-grid>
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderDecks() {
+    if (this.filteredDecks && this.filteredDecks.length > 0) {
+      return <div class="container">{this.renderDecksCards()}</div>;
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderDecksCards() {
+    return this.filteredDecks.map((deck: DeckAndFirstSlide) => {
+      return (
+        <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(deck)} key={deck.deck.id}>
+          {this.renderDeck(deck)}
+
+          <app-dashboard-deck-actions
+            deck={deck.deck}
+            onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
+            onDeckCloned={($event: CustomEvent) => this.onClonedDeck($event)}></app-dashboard-deck-actions>
+        </ion-card>
+      );
+    });
+  }
+
+  private renderDeck(deck: DeckAndFirstSlide) {
+    if (!deck) {
+      return undefined;
+    } else {
+      return (
+        <deckgo-deck embedded={true} keyboard={false} style={deck.style} onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
+          {deck.slide}
+          {deck.background}
+        </deckgo-deck>
+      );
+    }
+  }
 }

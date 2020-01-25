@@ -6,7 +6,7 @@ app-dashboard {
     a:link,
     a:visited,
     a:hover,
-    a:active{
+    a:active {
       text-decoration: none;
 
       touch-action: manipulation;
@@ -85,7 +85,6 @@ app-dashboard {
       @media screen and (min-width: 540px) {
         grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
       }
-
     }
   }
 }

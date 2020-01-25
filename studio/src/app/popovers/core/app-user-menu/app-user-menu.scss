@@ -1,5 +1,4 @@
 app-user-menu {
-
   ion-grid {
     margin-top: 12px;
   }
@@ -24,12 +23,14 @@ app-user-menu {
       color: inherit;
       font-weight: inherit;
 
-      &:hover, &.active {
+      &:hover,
+      &.active {
         border-bottom: 1px solid transparent;
       }
     }
 
-    &:hover, &.active {
+    &:hover,
+    &.active {
       color: var(--ion-color-primary);
     }
   }

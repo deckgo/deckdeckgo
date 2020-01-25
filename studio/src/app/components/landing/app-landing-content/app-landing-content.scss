@@ -1,9 +1,12 @@
 app-landing-content {
-  div.introducing, div.remote {
+  div.introducing,
+  div.remote {
     background: white;
   }
 
-  div.introducing, div.audience, div.remote {
+  div.introducing,
+  div.audience,
+  div.remote {
     section {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -14,7 +17,7 @@ app-landing-content {
       padding-top: 64px;
 
       div.video {
-        box-shadow: 8px 8px 16px rgba(0, 0, 0, .12);
+        box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.12);
         border-radius: 8px;
         overflow: hidden;
       }
@@ -25,7 +28,8 @@ app-landing-content {
     }
   }
 
-  div.introducing, div.remote {
+  div.introducing,
+  div.remote {
     section {
       @media (max-width: 768px) {
         flex-direction: column-reverse;
@@ -48,7 +52,6 @@ app-landing-content {
   }
 
   div.audience {
-
     div.deck {
       position: relative;
       display: block;
@@ -59,7 +62,7 @@ app-landing-content {
       --slide-width: 100%;
       --slide-height: 240px;
 
-      box-shadow: 8px 8px 16px rgba(0, 0, 0, .12);
+      box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.12);
       border-radius: 8px;
 
       background: white;
@@ -81,6 +84,5 @@ app-landing-content {
         }
       }
     }
-
   }
 }

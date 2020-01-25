@@ -6,7 +6,8 @@
   ion-router-link {
     color: var(--ion-color-medium);
 
-    &:hover, &.active {
+    &:hover,
+    &.active {
       color: var(--ion-color-medium);
     }
   }
@@ -42,7 +43,8 @@ app-footer {
 
       color: var(--ion-color-medium);
 
-      &:hover, &.active {
+      &:hover,
+      &.active {
         color: var(--ion-color-medium);
 
         border-bottom-color: transparent;
@@ -82,7 +84,8 @@ app-footer {
       justify-content: flex-start;
       align-items: flex-start;
 
-      > ion-label, > ion-router-link {
+      > ion-label,
+      > ion-router-link {
         display: inline-block;
       }
     }
@@ -110,7 +113,8 @@ body.dark {
         ion-router-link {
           color: var(--ion-color-dark-contrast);
 
-          &:hover, &.active {
+          &:hover,
+          &.active {
             color: var(--ion-color-dark-contrast);
           }
         }

@@ -6,15 +6,13 @@ import {ApiPhotoMockService} from './api.photo.mock.service';
 import {ApiPhotoProdService} from './api.photo.prod.service';
 
 export class ApiPhotoFactoryService {
+  private static instance: ApiPhotoService;
 
-    private static instance: ApiPhotoService;
-
-    static getInstance() {
-        if (!ApiPhotoFactoryService.instance) {
-            const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-            ApiPhotoFactoryService.instance = !deckDeckGoConfig.prod ? new ApiPhotoMockService() : new ApiPhotoProdService();
-        }
-        return ApiPhotoFactoryService.instance;
+  static getInstance() {
+    if (!ApiPhotoFactoryService.instance) {
+      const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+      ApiPhotoFactoryService.instance = !deckDeckGoConfig.prod ? new ApiPhotoMockService() : new ApiPhotoProdService();
     }
-
+    return ApiPhotoFactoryService.instance;
+  }
 }

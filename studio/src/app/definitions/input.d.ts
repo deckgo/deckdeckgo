@@ -1,7 +1,7 @@
 interface InputTargetEvent extends EventTarget {
-    value: string;
+  value: string;
 }
 
 interface InputUIEvent extends UIEvent {
-    target: HTMLElement;
+  target: HTMLElement;
 }

@@ -9,10 +9,9 @@ import {EnvironmentDeckDeckGoConfig} from '../core/environment/environment-confi
 import {EnvironmentConfigService} from '../core/environment/environment-config.service';
 
 export class PollService {
-
   private socket: SocketIOClient.Socket;
 
-  private poll: BehaviorSubject<DeckdeckgoPoll | undefined> = new BehaviorSubject<DeckdeckgoPoll|undefined>(undefined);
+  private poll: BehaviorSubject<DeckdeckgoPoll | undefined> = new BehaviorSubject<DeckdeckgoPoll | undefined>(undefined);
 
   private static instance: PollService;
 
@@ -30,7 +29,7 @@ export class PollService {
 
   connect(pollKey: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!pollKey || pollKey === undefined || pollKey  === '') {
+      if (!pollKey || pollKey === undefined || pollKey === '') {
         resolve();
         return;
       }
@@ -38,10 +37,10 @@ export class PollService {
       const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
       this.socket = io.connect(config.socketUrl, {
-        'reconnectionAttempts': 5,
-        'transports': ['websocket', 'xhr-polling'],
-        'query': 'type=app',
-        'path': '/poll'
+        reconnectionAttempts: 5,
+        transports: ['websocket', 'xhr-polling'],
+        query: 'type=app',
+        path: '/poll'
       });
 
       this.socket.on('connect', async () => {
@@ -58,7 +57,7 @@ export class PollService {
 
   vote(key: string, answer: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      if (!this.socket || (!this.socket.connected || this.socket.disconnected)) {
+      if (!this.socket || !this.socket.connected || this.socket.disconnected) {
         reject('Vote could not be registered, poll server is not reachable.');
         return;
       }
@@ -79,23 +78,24 @@ export class PollService {
         return;
       }
 
-      this.watch().pipe(take(1)).subscribe((poll: DeckdeckgoPoll) => {
-        if (poll) {
-          this.socket.emit('leave', {
-            key: poll.key
-          });
-        }
+      this.watch()
+        .pipe(take(1))
+        .subscribe((poll: DeckdeckgoPoll) => {
+          if (poll) {
+            this.socket.emit('leave', {
+              key: poll.key
+            });
+          }
 
-        this.socket.removeAllListeners();
-        this.socket.disconnect();
+          this.socket.removeAllListeners();
+          this.socket.disconnect();
 
-        resolve();
-      });
+          resolve();
+        });
     });
   }
 
   watch(): Observable<DeckdeckgoPoll | undefined> {
     return this.poll.asObservable();
   }
-
 }

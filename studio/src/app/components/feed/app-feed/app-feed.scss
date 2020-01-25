@@ -1,9 +1,9 @@
 app-feed {
-
   ion-refresher {
     z-index: 1;
 
-    ion-icon, ion-spinner {
+    ion-icon,
+    ion-spinner {
       color: var(--ion-color-primary);
     }
   }
@@ -53,7 +53,7 @@ app-feed {
   a:link,
   a:visited,
   a:hover,
-  a:active{
+  a:active {
     text-decoration: none;
 
     touch-action: manipulation;

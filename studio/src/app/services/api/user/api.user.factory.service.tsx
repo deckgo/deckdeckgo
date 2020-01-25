@@ -6,15 +6,13 @@ import {ApiUserMockService} from './api.user.mock.service';
 import {ApiUserProdService} from './api.user.prod.service';
 
 export class ApiUserFactoryService {
+  private static instance: ApiUserService;
 
-    private static instance: ApiUserService;
-
-    static getInstance() {
-        if (!ApiUserFactoryService.instance) {
-            const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-            ApiUserFactoryService.instance = !deckDeckGoConfig.prod ? new ApiUserMockService() : new ApiUserProdService();
-        }
-        return ApiUserFactoryService.instance;
+  static getInstance() {
+    if (!ApiUserFactoryService.instance) {
+      const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+      ApiUserFactoryService.instance = !deckDeckGoConfig.prod ? new ApiUserMockService() : new ApiUserProdService();
     }
-
+    return ApiUserFactoryService.instance;
+  }
 }

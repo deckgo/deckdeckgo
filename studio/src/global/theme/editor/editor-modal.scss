@@ -8,24 +8,24 @@ input {
 }
 
 ion-toolbar {
-   > div {
-     display: flex;
-     justify-content: center;
-     align-items: center;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-     &.uploading {
-       ion-spinner {
-         height: 16px;
-         width: 16px;
-       }
+    &.uploading {
+      ion-spinner {
+        height: 16px;
+        width: 16px;
+      }
 
-       ion-label {
-         padding-left: 8px;
-         font-size: var(--font-size-small);
-       }
-     }
-   }
- }
+      ion-label {
+        padding-left: 8px;
+        font-size: var(--font-size-small);
+      }
+    }
+  }
+}
 
 div.placeholder {
   position: absolute;
@@ -45,7 +45,8 @@ div.placeholder {
       font-size: 10rem;
     }
 
-    ion-label, ion-icon {
+    ion-label,
+    ion-icon {
       color: var(--ion-color-medium);
     }
   }

@@ -2,7 +2,7 @@ app-poll-options {
   ion-content {
     --background: var(--ion-color-light);
 
-    ion-item.item-input ion-input[class*=sc-ion-input] {
+    ion-item.item-input ion-input[class*="sc-ion-input"] {
       --background: white;
       background: white;
     }

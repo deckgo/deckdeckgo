@@ -3,104 +3,106 @@ import {Component, Element, Event, EventEmitter, Prop, h, State} from '@stencil/
 import {interval, Subscription} from 'rxjs';
 
 @Component({
-    tag: 'app-deck-transition',
-    styleUrl: 'app-deck-transition.scss'
+  tag: 'app-deck-transition',
+  styleUrl: 'app-deck-transition.scss'
 })
 export class AppDeckTransition {
+  @Element() el: HTMLElement;
 
-    @Element() el: HTMLElement;
+  @Prop()
+  deckElement: HTMLElement;
 
-    @Prop()
-    deckElement: HTMLElement;
+  @Event() private transitionChange: EventEmitter<void>;
 
-    @Event() private transitionChange: EventEmitter<void>;
+  @State()
+  private selectedTransition: 'slide' | 'fade' | 'none';
 
-    @State()
-    private selectedTransition: 'slide' | 'fade' | 'none';
+  private timerSubscription: Subscription;
 
-    private timerSubscription: Subscription;
+  async componentWillLoad() {
+    await this.initSelectedTransition();
+  }
 
-    async componentWillLoad() {
-        await this.initSelectedTransition();
+  async componentDidLoad() {
+    await this.animateDecks();
+  }
+
+  componentDidUnload() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
     }
+  }
 
-    async componentDidLoad() {
-        await this.animateDecks();
-    }
+  private initSelectedTransition(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.deckElement || !this.deckElement.hasAttribute('transition')) {
+        this.selectedTransition = 'slide';
+        resolve();
+        return;
+      }
 
-    componentDidUnload() {
-        if (this.timerSubscription) {
-            this.timerSubscription.unsubscribe();
+      this.selectedTransition = this.deckElement.getAttribute('transition') as 'slide' | 'fade' | 'none';
+
+      resolve();
+    });
+  }
+
+  private async animateDecks() {
+    this.timerSubscription = interval(2000).subscribe(async (val: number) => {
+      const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-deck');
+
+      if (elements) {
+        for (const element of Array.from(elements)) {
+          if (val % 2 === 0) {
+            await (element as any).slideNext();
+          } else {
+            await (element as any).slidePrev();
+          }
         }
-    }
+      }
+    });
+  }
 
-    private initSelectedTransition(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!this.deckElement || !this.deckElement.hasAttribute('transition')) {
-                this.selectedTransition = 'slide';
-                resolve();
-                return;
-            }
+  private applyTransition(transition: 'slide' | 'fade' | 'none'): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.deckElement || !transition) {
+        resolve();
+        return;
+      }
 
-            this.selectedTransition = this.deckElement.getAttribute('transition') as 'slide' | 'fade' | 'none';
+      this.deckElement.setAttribute('transition', transition);
 
-            resolve();
-        });
-    }
+      this.transitionChange.emit();
 
-    private async animateDecks() {
-        this.timerSubscription = interval(2000).subscribe(async (val: number) => {
-            const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-deck');
+      resolve();
+    });
+  }
 
-            if (elements) {
-                for (const element of Array.from(elements)) {
-                    if (val % 2 === 0) {
-                        await (element as any).slideNext();
-                    } else {
-                        await (element as any).slidePrev();
-                    }
-                }
-            }
-        });
-    }
+  render() {
+    return (
+      <div class="container ion-margin-top ion-margin-bottom">
+        {this.renderDeckItem('slide', 'var(--ion-color-primary)', 'Slide animation', this.selectedTransition === 'slide')}
 
-    private applyTransition(transition: 'slide' | 'fade' | 'none'): Promise<void> {
-        return new Promise<void>((resolve) => {
-            if (!this.deckElement || !transition) {
-                resolve();
-                return;
-            }
+        {this.renderDeckItem('fade', 'var(--ion-color-secondary)', 'Fade effect', this.selectedTransition === 'fade')}
 
-            this.deckElement.setAttribute('transition', transition);
+        {this.renderDeckItem('none', 'var(--ion-color-tertiary)', 'Instant transition', this.selectedTransition === 'none')}
+      </div>
+    );
+  }
 
-            this.transitionChange.emit();
+  private renderDeckItem(transition: 'slide' | 'fade' | 'none', nextSlideBackground: string, text: string, selected: boolean) {
+    return (
+      <div class={`item ${transition} ${selected ? 'selected' : ''}`} custom-tappable onClick={() => this.applyTransition(transition)}>
+        <deckgo-deck embedded={true} keyboard={false} transition={transition}>
+          <deckgo-slide-title>
+            <p slot="title">{text}</p>
+          </deckgo-slide-title>
 
-            resolve();
-        });
-    }
-
-    render() {
-        return <div class="container ion-margin-top ion-margin-bottom">
-            {this.renderDeckItem('slide', 'var(--ion-color-primary)', 'Slide animation', this.selectedTransition === 'slide')}
-
-            {this.renderDeckItem('fade', 'var(--ion-color-secondary)', 'Fade effect', this.selectedTransition === 'fade')}
-
-            {this.renderDeckItem('none', 'var(--ion-color-tertiary)', 'Instant transition', this.selectedTransition === 'none')}
-        </div>
-    }
-
-    private renderDeckItem(transition: 'slide' | 'fade' | 'none', nextSlideBackground: string, text: string, selected: boolean) {
-        return <div class={`item ${transition} ${selected ? 'selected' : ''}`} custom-tappable onClick={() => this.applyTransition(transition)}>
-            <deckgo-deck embedded={true} keyboard={false} transition={transition}>
-                <deckgo-slide-title>
-                    <p slot="title">{text}</p>
-                </deckgo-slide-title>
-
-                <deckgo-slide-title style={{'--background': `${nextSlideBackground}`, '--color': 'white'}}>
-                    <p slot="title">{text}</p>
-                </deckgo-slide-title>
-            </deckgo-deck>
-        </div>;
-    }
-
+          <deckgo-slide-title style={{'--background': `${nextSlideBackground}`, '--color': 'white'}}>
+            <p slot="title">{text}</p>
+          </deckgo-slide-title>
+        </deckgo-deck>
+      </div>
+    );
+  }
 }
