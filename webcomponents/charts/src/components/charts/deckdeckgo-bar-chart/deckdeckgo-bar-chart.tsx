@@ -292,7 +292,19 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
                 .append('rect')
                 .merge(section)
                 .attr('style', (d, i) => {
-                    return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+                    return (
+                        'fill: var(--deckgo-chart-fill-color-' +
+                        d.key +
+                        ', ' +
+                        (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') +
+                        '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
+                        d.key +
+                        '); stroke: var(--deckgo-chart-stroke-' +
+                        d.key +
+                        '); stroke-width: var(--deckgo-chart-stroke-width-' +
+                        d.key +
+                        ')'
+                    );
                 })
                 .transition(t)
                 .duration(animationDuration)
@@ -341,7 +353,19 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
                     return height >= 0 ? height : 0;
                 })
                 .attr('style', (d, i) => {
-                    return 'fill: var(--deckgo-chart-fill-color-' + d.key + ', ' + (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') + '); fill-opacity: var(--deckgo-chart-fill-opacity-' + d.key + '); stroke: var(--deckgo-chart-stroke-' + d.key + '); stroke-width: var(--deckgo-chart-stroke-width-' + d.key + ')';
+                    return (
+                        'fill: var(--deckgo-chart-fill-color-' +
+                        d.key +
+                        ', ' +
+                        (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') +
+                        '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
+                        d.key +
+                        '); stroke: var(--deckgo-chart-stroke-' +
+                        d.key +
+                        '); stroke-width: var(--deckgo-chart-stroke-width-' +
+                        d.key +
+                        ')'
+                    );
                 });
 
             resolve();
