@@ -1,7 +1,8 @@
 {
-  "printWidth": 2048,
+  "printWidth": 240,
   "tabWidth": 4,
   "singleQuote": true,
   "arrowParens": "always",
-  "bracketSpacing": false
+  "bracketSpacing": false,
+  "jsxBracketSameLine": true
 }
