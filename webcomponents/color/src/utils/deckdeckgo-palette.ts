@@ -1,89 +1,89 @@
 export interface DeckdeckgoPaletteColor {
-    hex: string;
-    rgb?: string;
+  hex: string;
+  rgb?: string;
 }
 
 export interface DeckdeckgoPalette {
-    color: DeckdeckgoPaletteColor;
-    alt?: string;
+  color: DeckdeckgoPaletteColor;
+  alt?: string;
 }
 
 export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [
-    {
-        color: {
-            hex: '#FF6900',
-            rgb: '255,105,0'
-        },
-        alt: 'Orange'
+  {
+    color: {
+      hex: '#FF6900',
+      rgb: '255,105,0'
     },
-    {
-        color: {
-            hex: '#FCB900',
-            rgb: '252,185,0'
-        },
-        alt: 'Yellow'
+    alt: 'Orange'
+  },
+  {
+    color: {
+      hex: '#FCB900',
+      rgb: '252,185,0'
     },
-    {
-        color: {
-            hex: '#7BDCB5',
-            rgb: '123,220,181'
-        },
-        alt: 'Light green'
+    alt: 'Yellow'
+  },
+  {
+    color: {
+      hex: '#7BDCB5',
+      rgb: '123,220,181'
     },
-    {
-        color: {
-            hex: '#00D084',
-            rgb: '0,208,132'
-        },
-        alt: 'Green'
+    alt: 'Light green'
+  },
+  {
+    color: {
+      hex: '#00D084',
+      rgb: '0,208,132'
     },
-    {
-        color: {
-            hex: '#8ED1FC',
-            rgb: '142,209,252'
-        },
-        alt: 'Light blue'
+    alt: 'Green'
+  },
+  {
+    color: {
+      hex: '#8ED1FC',
+      rgb: '142,209,252'
     },
-    {
-        color: {
-            hex: '#0693E3',
-            rgb: '6,147,227'
-        },
-        alt: 'Blue'
+    alt: 'Light blue'
+  },
+  {
+    color: {
+      hex: '#0693E3',
+      rgb: '6,147,227'
     },
-    {
-        color: {
-            hex: '#ABB8C3',
-            rgb: '171,184,195'
-        },
-        alt: 'Grey'
+    alt: 'Blue'
+  },
+  {
+    color: {
+      hex: '#ABB8C3',
+      rgb: '171,184,195'
     },
-    {
-        color: {
-            hex: '#EB144C',
-            rgb: '235,20,76'
-        },
-        alt: 'Red'
+    alt: 'Grey'
+  },
+  {
+    color: {
+      hex: '#EB144C',
+      rgb: '235,20,76'
     },
-    {
-        color: {
-            hex: '#F78DA7',
-            rgb: '247,141,167'
-        },
-        alt: 'Pink'
+    alt: 'Red'
+  },
+  {
+    color: {
+      hex: '#F78DA7',
+      rgb: '247,141,167'
     },
-    {
-        color: {
-            hex: '#9900EF',
-            rgb: '153,0,239'
-        },
-        alt: 'Violet'
+    alt: 'Pink'
+  },
+  {
+    color: {
+      hex: '#9900EF',
+      rgb: '153,0,239'
     },
-    {
-        color: {
-            hex: '#000000',
-            rgb: '0,0,0'
-        },
-        alt: 'Black'
-    }
+    alt: 'Violet'
+  },
+  {
+    color: {
+      hex: '#000000',
+      rgb: '0,0,0'
+    },
+    alt: 'Black'
+  }
 ];

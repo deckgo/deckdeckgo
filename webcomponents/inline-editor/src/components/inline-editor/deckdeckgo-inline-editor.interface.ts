@@ -1,15 +1,15 @@
 export interface AnchorLink {
-    range: Range;
-    text: string;
-    element: Element;
+  range: Range;
+  text: string;
+  element: Element;
 }
 
 export interface InputTargetEvent extends EventTarget {
-    value: string;
+  value: string;
 }
 
 export interface InlineAction {
-    action: string;
-    selection: Selection;
-    anchorLink: AnchorLink;
+  action: string;
+  selection: Selection;
+  anchorLink: AnchorLink;
 }

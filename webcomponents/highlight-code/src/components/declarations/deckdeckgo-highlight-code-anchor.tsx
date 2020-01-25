@@ -1,4 +1,4 @@
 export interface DeckdeckgoHighlightCodeAnchor {
-    offsetTop: number;
-    hasLineZoom: boolean;
+  offsetTop: number;
+  hasLineZoom: boolean;
 }

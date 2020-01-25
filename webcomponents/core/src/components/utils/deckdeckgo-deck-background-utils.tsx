@@ -1,7 +1,6 @@
 import {lazyLoadSelectedImages, lazyLoadSelectedLazyImagesComponent} from '@deckdeckgo/utils';
 
 export class DeckdeckgoDeckBackgroundUtils {
-
   // Lazy load images from slot=background
   static lazyBackgroundImages(el: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -18,8 +17,8 @@ export class DeckdeckgoDeckBackgroundUtils {
 
   private static lazyBackgroundImgTags(el: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const allSlottedImages: NodeListOf<HTMLElement> = el.querySelectorAll('img[slot=\'background\']');
-      const allShadowImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot=\'background\'] img');
+      const allSlottedImages: NodeListOf<HTMLElement> = el.querySelectorAll("img[slot='background']");
+      const allShadowImages: NodeListOf<HTMLElement> = el.querySelectorAll("[slot='background'] img");
 
       const images: HTMLElement[] = Array.from(allSlottedImages).concat(Array.from(allShadowImages));
 
@@ -31,7 +30,7 @@ export class DeckdeckgoDeckBackgroundUtils {
 
   private static lazyBackgroundImgComponents(el: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const allShadowImagesComponents: NodeListOf<HTMLElement> = el.querySelectorAll(':scope > [slot=\'background\'] deckgo-lazy-img');
+      const allShadowImagesComponents: NodeListOf<HTMLElement> = el.querySelectorAll(":scope > [slot='background'] deckgo-lazy-img");
 
       const images: HTMLElement[] = Array.from(allShadowImagesComponents);
 
@@ -43,8 +42,7 @@ export class DeckdeckgoDeckBackgroundUtils {
 
   static cloneAndLoadBackground(el: HTMLElement, slides: HTMLElement[], cloneBackground: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
-
-      const background: HTMLElement = el.querySelector(':scope > [slot=\'background\']');
+      const background: HTMLElement = el.querySelector(":scope > [slot='background']");
 
       if (!background) {
         resolve();
@@ -87,15 +85,14 @@ export class DeckdeckgoDeckBackgroundUtils {
         return;
       }
 
-      const slotElement: HTMLElement = el.querySelector(':scope > [slot=\'' + slotName + '\']');
+      const slotElement: HTMLElement = el.querySelector(":scope > [slot='" + slotName + "']");
 
       if (slotElement) {
         slides.forEach((slide: Element) => {
-
           const custom: boolean = slide.hasAttribute('custom-' + slotName);
 
           if (!custom) {
-            const currentSlotElement: HTMLElement = slide.querySelector(':scope > [slot=\'' + slotName + '\']');
+            const currentSlotElement: HTMLElement = slide.querySelector(":scope > [slot='" + slotName + "']");
 
             if (currentSlotElement) {
               slide.removeChild(currentSlotElement);
@@ -121,7 +118,7 @@ export class DeckdeckgoDeckBackgroundUtils {
         const custom: boolean = slide.hasAttribute('custom-' + slotName);
 
         if (!custom) {
-          const currentSlotElement: HTMLElement = slide.querySelector(':scope > [slot=\'' + slotName + '\']');
+          const currentSlotElement: HTMLElement = slide.querySelector(":scope > [slot='" + slotName + "']");
 
           if (currentSlotElement) {
             slide.removeChild(currentSlotElement);
@@ -132,5 +129,4 @@ export class DeckdeckgoDeckBackgroundUtils {
       resolve();
     });
   }
-
 }

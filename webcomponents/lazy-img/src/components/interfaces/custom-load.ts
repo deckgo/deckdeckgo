@@ -1,5 +1,5 @@
 export interface DeckDeckGoCustomLoad {
-    imgElement: HTMLImageElement;
-    imgSrc?: string;
-    imgSrcSet?: string;
+  imgElement: HTMLImageElement;
+  imgSrc?: string;
+  imgSrcSet?: string;
 }

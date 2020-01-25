@@ -8,369 +8,371 @@ import {transition} from 'd3-transition';
 import {ascending} from 'd3-array';
 
 interface DeckdeckgoPieChartDataValue {
-    label: string;
-    value: number;
-    randomFillColor: string;
-    key: number;
+  label: string;
+  value: number;
+  randomFillColor: string;
+  key: number;
 }
 
 interface DeckdeckgoPieChartData {
-    values: DeckdeckgoPieChartDataValue[];
+  values: DeckdeckgoPieChartDataValue[];
 }
 
 @Component({
-    tag: 'deckgo-pie-chart',
-    styleUrl: 'deckdeckgo-pie-chart.scss',
-    shadow: true
+  tag: 'deckgo-pie-chart',
+  styleUrl: 'deckdeckgo-pie-chart.scss',
+  shadow: true
 })
 export class DeckdeckgoPieChart implements DeckdeckgoChart {
-    @Element() el: HTMLElement;
+  @Element() el: HTMLElement;
 
-    @Prop({mutable: true}) width: number;
-    @Prop({mutable: true}) height: number;
+  @Prop({mutable: true}) width: number;
+  @Prop({mutable: true}) height: number;
 
-    @Prop() marginTop: number = 8;
-    @Prop() marginBottom: number = 64;
-    @Prop() marginLeft: number = 32;
-    @Prop() marginRight: number = 32;
+  @Prop() marginTop: number = 8;
+  @Prop() marginBottom: number = 64;
+  @Prop() marginLeft: number = 32;
+  @Prop() marginRight: number = 32;
 
-    // Specify a number for a donut chart
-    @Prop() innerRadius: number = 0;
+  // Specify a number for a donut chart
+  @Prop() innerRadius: number = 0;
 
-    @Prop() src: string;
-    @Prop() separator: string = ';';
+  @Prop() src: string;
+  @Prop() separator: string = ';';
 
-    @Prop() customLoader: boolean = false;
+  @Prop() customLoader: boolean = false;
 
-    @Prop() animation: boolean = false;
-    @Prop() animationDuration: number = 1000;
+  @Prop() animation: boolean = false;
+  @Prop() animationDuration: number = 1000;
 
-    @Event()
-    private chartCustomLoad: EventEmitter<string>;
+  @Event()
+  private chartCustomLoad: EventEmitter<string>;
 
-    private svg: Selection<BaseType, any, HTMLElement, any>;
-    private myPath: Arc<any, DefaultArcObject>;
+  private svg: Selection<BaseType, any, HTMLElement, any>;
+  private myPath: Arc<any, DefaultArcObject>;
 
-    private data: DeckdeckgoPieChartData[];
+  private data: DeckdeckgoPieChartData[];
 
-    private pieDataIndex: number = 0;
+  private pieDataIndex: number = 0;
 
-    async componentDidLoad() {
-        await this.draw();
+  async componentDidLoad() {
+    await this.draw();
+  }
+
+  @Watch('src')
+  async redraw() {
+    await this.draw();
+  }
+
+  @Method()
+  draw(width?: number, height?: number): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (width > 0) {
+        this.width = width;
+      }
+
+      if (height > 0) {
+        this.height = height;
+      }
+
+      if (!this.width || !this.height || !this.src) {
+        resolve();
+        return;
+      }
+
+      this.pieDataIndex = 0;
+
+      const maxWidth: number = this.width > this.marginLeft + this.marginRight ? this.width - this.marginLeft - this.marginRight : this.width;
+      const maxHeight: number = this.height > this.marginTop + this.marginBottom ? this.height - this.marginTop - this.marginBottom : this.height;
+
+      this.svg = DeckdeckgoChartUtils.initSvg(this.el, maxWidth, maxHeight);
+      this.svg = this.svg.append('g').attr('transform', 'translate(' + maxWidth / 2 + ',' + maxHeight / 2 + ')');
+
+      const radius: number = Math.min(maxWidth, maxHeight) / 2;
+
+      this.myPath = arc()
+        .innerRadius(this.innerRadius)
+        .outerRadius(radius);
+
+      this.data = await this.fetchData();
+
+      if (!this.data || this.data.length <= 0) {
+        resolve();
+        return;
+      }
+
+      await this.drawPie(0, 0);
+
+      resolve();
+    });
+  }
+
+  @Method()
+  async next() {
+    await this.prevNext(true);
+  }
+
+  @Method()
+  async prev() {
+    await this.prevNext(false);
+  }
+
+  private async prevNext(next: boolean) {
+    if (!this.animation) {
+      return;
     }
 
-    @Watch('src')
-    async redraw() {
-        await this.draw();
+    if (!this.data || this.data.length <= 0) {
+      return;
     }
 
-    @Method()
-    draw(width?: number, height?: number): Promise<void> {
-        return new Promise<void>(async (resolve) => {
-            if (width > 0) {
-                this.width = width;
-            }
+    if (next && this.pieDataIndex + 1 < this.data.length) {
+      this.pieDataIndex++;
+      await this.drawPie(this.pieDataIndex, this.animationDuration);
+    } else if (!next && this.pieDataIndex > 0) {
+      this.pieDataIndex--;
+      await this.drawPie(this.pieDataIndex, this.animationDuration);
+    }
+  }
 
-            if (height > 0) {
-                this.height = height;
-            }
+  @Method()
+  isBeginning(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!this.animation) {
+        resolve(true);
+        return;
+      }
 
-            if (!this.width || !this.height || !this.src) {
-                resolve();
-                return;
-            }
+      resolve(this.pieDataIndex === 0);
+    });
+  }
 
-            this.pieDataIndex = 0;
+  @Method()
+  isEnd(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!this.animation) {
+        resolve(true);
+        return;
+      }
 
-            const maxWidth: number = this.width > this.marginLeft + this.marginRight ? this.width - this.marginLeft - this.marginRight : this.width;
-            const maxHeight: number = this.height > this.marginTop + this.marginBottom ? this.height - this.marginTop - this.marginBottom : this.height;
+      resolve(this.pieDataIndex === this.data.length - 1);
+    });
+  }
 
-            this.svg = DeckdeckgoChartUtils.initSvg(this.el, maxWidth, maxHeight);
-            this.svg = this.svg.append('g').attr('transform', 'translate(' + maxWidth / 2 + ',' + maxHeight / 2 + ')');
+  private async drawPie(index: number, animationDuration: number) {
+    const pie: any[] = await this.createPieData(this.data[index]);
 
-            const radius: number = Math.min(maxWidth, maxHeight) / 2;
+    await this.drawPieForData(pie, animationDuration);
 
-            this.myPath = arc()
-                .innerRadius(this.innerRadius)
-                .outerRadius(radius);
+    setTimeout(async () => {
+      await this.appendLabel(pie);
+    }, animationDuration);
+  }
 
-            this.data = await this.fetchData();
+  private drawPieForData(myPieData: any[], animationDuration: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const t = transition();
 
-            if (!this.data || this.data.length <= 0) {
-                resolve();
-                return;
-            }
+      const section: any = this.svg.selectAll('path').data(myPieData);
 
-            await this.drawPie(0, 0);
+      section
+        .enter()
+        .append('path')
+        .merge(section)
+        .attr('style', (d) => {
+          return (
+            'fill: var(--deckgo-chart-fill-color-' +
+            d.data.key +
+            ', ' +
+            (d.data.randomFillColor ? `#${d.data.randomFillColor}` : '') +
+            '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
+            d.data.key +
+            '); stroke: var(--deckgo-chart-stroke-' +
+            d.data.key +
+            '); stroke-width: var(--deckgo-chart-stroke-width-' +
+            d.data.key +
+            ')'
+          );
+        })
+        .transition(t)
+        .duration(animationDuration)
+        .attr('d', this.myPath);
 
-            resolve();
+      section.exit().remove();
+
+      resolve();
+    });
+  }
+
+  private async createPieData(data: any): Promise<any[]> {
+    return new Promise<any[]>(async (resolve) => {
+      // Generate a pie chart
+      const myPie: Pie<any, number | {valueOf(): number}> = pie()
+        .value((d: any) => {
+          return d.value;
+        })
+        .sort((a: any, b: any) => {
+          return ascending(a.label, b.label);
         });
+
+      const result: any[] = myPie(data.values);
+
+      resolve(result);
+    });
+  }
+
+  private appendLabel(myPieData: any[]): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.svg.selectAll('.text-arc').remove();
+
+      // Create a special arcs for the labels in order to always display them above the pie's slices
+      const labelArcs: Selection<SVGElement, any, BaseType, any> = this.svg
+        .selectAll('.text-arc')
+        .data(myPieData)
+        .enter()
+        .append('g')
+        .attr('class', 'text-arc');
+
+      const text = labelArcs
+        .append('text')
+        .attr('transform', (d: DefaultArcObject) => {
+          return 'translate(' + this.myPath.centroid(d) + ')';
+        })
+        .attr('dy', '.35em')
+        .style('text-anchor', 'middle');
+
+      text
+        .append('tspan')
+        .attr('x', 0)
+        .attr('y', '-0.7em')
+        .style('font-weight', 'bold')
+        .text((d: any) => {
+          return d.data.label ? d.data.label : '';
+        });
+
+      text
+        .filter((d: any) => d.endAngle - d.startAngle > 0.25)
+        .append('tspan')
+        .attr('x', 0)
+        .attr('y', '0.7em')
+        .text((d: any) => {
+          return d.data.value + '%';
+        });
+
+      resolve();
+    });
+  }
+
+  fetchData(): Promise<DeckdeckgoPieChartData[]> {
+    return new Promise<DeckdeckgoPieChartData[]>(async (resolve) => {
+      if (!this.src) {
+        resolve([]);
+        return;
+      }
+
+      if (this.customLoader) {
+        this.chartCustomLoad.emit(this.src);
+        resolve([]);
+        return;
+      }
+
+      const response: Response = await fetch(this.src);
+      const content: string = await response.text();
+
+      let results: DeckdeckgoPieChartData[] = await this.loadContent(content);
+
+      resolve(results);
+    });
+  }
+
+  @Method()
+  async postCustomLoad(content: string | undefined) {
+    this.data = await this.loadContent(content);
+
+    if (!this.data || this.data.length <= 0) {
+      return;
     }
 
-    @Method()
-    async next() {
-        await this.prevNext(true);
-    }
+    await this.drawPie(0, 0);
+  }
 
-    @Method()
-    async prev() {
-        await this.prevNext(false);
-    }
+  private loadContent(content: string | undefined): Promise<DeckdeckgoPieChartData[]> {
+    return new Promise<DeckdeckgoPieChartData[]>(async (resolve) => {
+      if (!content || content === undefined) {
+        resolve([]);
+        return;
+      }
 
-    private async prevNext(next: boolean) {
-        if (!this.animation) {
-            return;
-        }
+      const lines: string[] = content.split('\n');
 
-        if (!this.data || this.data.length <= 0) {
-            return;
-        }
+      if (!lines || lines.length <= 0) {
+        resolve([]);
+        return;
+      }
 
-        if (next && this.pieDataIndex + 1 < this.data.length) {
-            this.pieDataIndex++;
-            await this.drawPie(this.pieDataIndex, this.animationDuration);
-        } else if (!next && this.pieDataIndex > 0) {
-            this.pieDataIndex--;
-            await this.drawPie(this.pieDataIndex, this.animationDuration);
-        }
-    }
+      let results: DeckdeckgoPieChartData[] = [];
+      let randomColors: string[];
 
-    @Method()
-    isBeginning(): Promise<boolean> {
-        return new Promise<boolean>((resolve) => {
-            if (!this.animation) {
-                resolve(true);
-                return;
+      lines.forEach((line: string, lineIndex: number) => {
+        const values: string[] = line.split(this.separator);
+
+        if (values && values.length >= 2) {
+          if (!randomColors) {
+            randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+          }
+
+          const label: string = values[0];
+
+          const pieData: DeckdeckgoPieChartDataValue = {
+            label: label,
+            value: parseInt(values[1]),
+            randomFillColor: randomColors.length >= 1 ? randomColors[lineIndex] : undefined,
+            key: lineIndex + 1
+          };
+
+          if (!isNaN(pieData.value)) {
+            if (results.length <= 0) {
+              results.push({
+                values: []
+              });
             }
 
-            resolve(this.pieDataIndex === 0);
-        });
-    }
+            results[0].values.push(pieData);
+          }
 
-    @Method()
-    isEnd(): Promise<boolean> {
-        return new Promise<boolean>((resolve) => {
-            if (!this.animation) {
-                resolve(true);
-                return;
-            }
-
-            resolve(this.pieDataIndex === this.data.length - 1);
-        });
-    }
-
-    private async drawPie(index: number, animationDuration: number) {
-        const pie: any[] = await this.createPieData(this.data[index]);
-
-        await this.drawPieForData(pie, animationDuration);
-
-        setTimeout(async () => {
-            await this.appendLabel(pie);
-        }, animationDuration);
-    }
-
-    private drawPieForData(myPieData: any[], animationDuration: number): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const t = transition();
-
-            const section: any = this.svg.selectAll('path').data(myPieData);
-
-            section
-                .enter()
-                .append('path')
-                .merge(section)
-                .attr('style', (d) => {
-                    return (
-                        'fill: var(--deckgo-chart-fill-color-' +
-                        d.data.key +
-                        ', ' +
-                        (d.data.randomFillColor ? `#${d.data.randomFillColor}` : '') +
-                        '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
-                        d.data.key +
-                        '); stroke: var(--deckgo-chart-stroke-' +
-                        d.data.key +
-                        '); stroke-width: var(--deckgo-chart-stroke-width-' +
-                        d.data.key +
-                        ')'
-                    );
-                })
-                .transition(t)
-                .duration(animationDuration)
-                .attr('d', this.myPath);
-
-            section.exit().remove();
-
-            resolve();
-        });
-    }
-
-    private async createPieData(data: any): Promise<any[]> {
-        return new Promise<any[]>(async (resolve) => {
-            // Generate a pie chart
-            const myPie: Pie<any, number | {valueOf(): number}> = pie()
-                .value((d: any) => {
-                    return d.value;
-                })
-                .sort((a: any, b: any) => {
-                    return ascending(a.label, b.label);
-                });
-
-            const result: any[] = myPie(data.values);
-
-            resolve(result);
-        });
-    }
-
-    private appendLabel(myPieData: any[]): Promise<void> {
-        return new Promise<void>((resolve) => {
-            this.svg.selectAll('.text-arc').remove();
-
-            // Create a special arcs for the labels in order to always display them above the pie's slices
-            const labelArcs: Selection<SVGElement, any, BaseType, any> = this.svg
-                .selectAll('.text-arc')
-                .data(myPieData)
-                .enter()
-                .append('g')
-                .attr('class', 'text-arc');
-
-            const text = labelArcs
-                .append('text')
-                .attr('transform', (d: DefaultArcObject) => {
-                    return 'translate(' + this.myPath.centroid(d) + ')';
-                })
-                .attr('dy', '.35em')
-                .style('text-anchor', 'middle');
-
-            text.append('tspan')
-                .attr('x', 0)
-                .attr('y', '-0.7em')
-                .style('font-weight', 'bold')
-                .text((d: any) => {
-                    return d.data.label ? d.data.label : '';
-                });
-
-            text.filter((d: any) => d.endAngle - d.startAngle > 0.25)
-                .append('tspan')
-                .attr('x', 0)
-                .attr('y', '0.7em')
-                .text((d: any) => {
-                    return d.data.value + '%';
-                });
-
-            resolve();
-        });
-    }
-
-    fetchData(): Promise<DeckdeckgoPieChartData[]> {
-        return new Promise<DeckdeckgoPieChartData[]>(async (resolve) => {
-            if (!this.src) {
-                resolve([]);
-                return;
-            }
-
-            if (this.customLoader) {
-                this.chartCustomLoad.emit(this.src);
-                resolve([]);
-                return;
-            }
-
-            const response: Response = await fetch(this.src);
-            const content: string = await response.text();
-
-            let results: DeckdeckgoPieChartData[] = await this.loadContent(content);
-
-            resolve(results);
-        });
-    }
-
-    @Method()
-    async postCustomLoad(content: string | undefined) {
-        this.data = await this.loadContent(content);
-
-        if (!this.data || this.data.length <= 0) {
-            return;
-        }
-
-        await this.drawPie(0, 0);
-    }
-
-    private loadContent(content: string | undefined): Promise<DeckdeckgoPieChartData[]> {
-        return new Promise<DeckdeckgoPieChartData[]>(async (resolve) => {
-            if (!content || content === undefined) {
-                resolve([]);
-                return;
-            }
-
-            const lines: string[] = content.split('\n');
-
-            if (!lines || lines.length <= 0) {
-                resolve([]);
-                return;
-            }
-
-            let results: DeckdeckgoPieChartData[] = [];
-            let randomColors: string[];
-
-            lines.forEach((line: string, lineIndex: number) => {
-                const values: string[] = line.split(this.separator);
-
-                if (values && values.length >= 2) {
-                    if (!randomColors) {
-                        randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
-                    }
-
-                    const label: string = values[0];
-
-                    const pieData: DeckdeckgoPieChartDataValue = {
-                        label: label,
-                        value: parseInt(values[1]),
-                        randomFillColor: randomColors.length >= 1 ? randomColors[lineIndex] : undefined,
-                        key: lineIndex + 1
-                    };
-
-                    if (!isNaN(pieData.value)) {
-                        if (results.length <= 0) {
-                            results.push({
-                                values: []
-                            });
-                        }
-
-                        results[0].values.push(pieData);
-                    }
-
-                    if (values.length > 2) {
-                        for (let i = 2; i < values.length; i++) {
-                            const tmp: number = parseInt(values[i]);
-                            if (!isNaN(tmp)) {
-                                if (results.length < i) {
-                                    results.push({
-                                        values: []
-                                    });
-                                }
-
-                                const pieData: DeckdeckgoPieChartDataValue = {
-                                    label: label,
-                                    value: parseInt(values[i]),
-                                    randomFillColor: randomColors.length >= i ? randomColors[lineIndex] : undefined,
-                                    key: lineIndex + 1
-                                };
-
-                                results[i - 1].values.push(pieData);
-                            }
-                        }
-                    }
+          if (values.length > 2) {
+            for (let i = 2; i < values.length; i++) {
+              const tmp: number = parseInt(values[i]);
+              if (!isNaN(tmp)) {
+                if (results.length < i) {
+                  results.push({
+                    values: []
+                  });
                 }
-            });
 
-            resolve(results);
-        });
-    }
+                const pieData: DeckdeckgoPieChartDataValue = {
+                  label: label,
+                  value: parseInt(values[i]),
+                  randomFillColor: randomColors.length >= i ? randomColors[lineIndex] : undefined,
+                  key: lineIndex + 1
+                };
 
-    render() {
-        return (
-            <Host style={{width: `${this.width}px`, height: `${this.height}px`}}>
-                <svg></svg>
-            </Host>
-        );
-    }
+                results[i - 1].values.push(pieData);
+              }
+            }
+          }
+        }
+      });
+
+      resolve(results);
+    });
+  }
+
+  render() {
+    return (
+      <Host style={{width: `${this.width}px`, height: `${this.height}px`}}>
+        <svg></svg>
+      </Host>
+    );
+  }
 }
