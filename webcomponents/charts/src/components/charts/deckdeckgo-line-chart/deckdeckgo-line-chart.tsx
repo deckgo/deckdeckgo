@@ -100,7 +100,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
             this.serieIndex = 0;
 
             this.svg = DeckdeckgoChartUtils.initSvg(this.el, this.width + this.marginLeft + this.marginRight, this.height + this.marginTop + this.marginBottom);
-            this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
+            this.svg = this.svg
+                .append('g')
+                .attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
 
             this.series = await this.fetchData();
 
@@ -192,7 +194,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
             const isXAxisNumber: boolean = firstSerieData && firstSerieData.length > 0 && typeof firstSerieData[0].when === 'number';
 
-            this.x = isXAxisNumber ? scaleLinear().range([0, this.width - this.marginLeft - this.marginRight]) : scaleTime().range([0, this.width - this.marginLeft - this.marginRight]);
+            this.x = isXAxisNumber
+                ? scaleLinear().range([0, this.width - this.marginLeft - this.marginRight])
+                : scaleTime().range([0, this.width - this.marginLeft - this.marginRight]);
             this.y = scaleLinear().range([this.height - this.marginTop - this.marginBottom, 0]);
 
             this.x.domain(extent(firstSerieData, (d: DeckdeckgoLineChartData) => d.when));

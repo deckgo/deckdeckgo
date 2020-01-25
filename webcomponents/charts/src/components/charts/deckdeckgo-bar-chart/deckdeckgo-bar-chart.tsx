@@ -101,7 +101,9 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
             }
 
             this.svg = DeckdeckgoChartUtils.initSvg(this.el, this.width + this.marginLeft + this.marginRight, this.height + this.marginTop + this.marginBottom);
-            this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
+            this.svg = this.svg
+                .append('g')
+                .attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
 
             this.barDataIndex = 0;
             this.chartData = this.data;

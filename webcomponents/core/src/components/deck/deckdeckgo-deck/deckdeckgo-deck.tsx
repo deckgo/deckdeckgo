@@ -995,8 +995,10 @@ export class DeckdeckgoDeck {
             // If a pager background or color is explicitely set on the deck, then we don't define automatically a color
             if (
                 slide.parentElement &&
-                ((slide.parentElement.style.getPropertyValue('--pager-background') !== undefined && slide.parentElement.style.getPropertyValue('--pager-background') !== '') ||
-                    (slide.parentElement.style.getPropertyValue('--pager-color') !== undefined && slide.parentElement.style.getPropertyValue('--pager-color') !== ''))
+                ((slide.parentElement.style.getPropertyValue('--pager-background') !== undefined &&
+                    slide.parentElement.style.getPropertyValue('--pager-background') !== '') ||
+                    (slide.parentElement.style.getPropertyValue('--pager-color') !== undefined &&
+                        slide.parentElement.style.getPropertyValue('--pager-color') !== ''))
             ) {
                 this.pagerColor = undefined;
 
@@ -1009,7 +1011,11 @@ export class DeckdeckgoDeck {
                     background: '#fff',
                     color: slide.style.getPropertyValue('--background')
                 };
-            } else if (slide.parentElement && slide.parentElement.style.getPropertyValue('--background') !== undefined && slide.parentElement.style.getPropertyValue('--background') !== '') {
+            } else if (
+                slide.parentElement &&
+                slide.parentElement.style.getPropertyValue('--background') !== undefined &&
+                slide.parentElement.style.getPropertyValue('--background') !== ''
+            ) {
                 this.pagerColor = {
                     background: '#fff',
                     color: slide.parentElement.style.getPropertyValue('--background')
