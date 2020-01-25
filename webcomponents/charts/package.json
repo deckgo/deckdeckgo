@@ -45,7 +45,10 @@
     "@types/d3-selection": "^1.4.1",
     "@types/d3-shape": "^1.3.2",
     "@types/d3-transition": "^1.1.5",
-    "autoprefixer": "^9.7.4"
+    "autoprefixer": "^9.7.4",
+    "husky": "^4.2.1",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1"
   },
   "repository": {
     "type": "git",
@@ -68,5 +71,10 @@
     "slideshow",
     "talk",
     "d3js"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
 }
