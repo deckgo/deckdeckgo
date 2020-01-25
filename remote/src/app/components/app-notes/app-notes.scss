@@ -8,7 +8,8 @@ app-notes {
     }
   }
 
-  p, div {
+  p,
+  div {
     font-size: var(--font-size-small);
     color: var(--ion-text-color);
   }
@@ -45,4 +46,3 @@ app-notes {
     }
   }
 }
-

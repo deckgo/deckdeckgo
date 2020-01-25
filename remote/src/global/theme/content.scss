@@ -4,7 +4,9 @@
   --deckgo-font-weight: 300;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: var(--deckgo-font-weight);
   text-transform: uppercase;
 }
@@ -29,7 +31,8 @@ ion-content {
       text-transform: uppercase;
     }
 
-    ion-item, ion-label[text-wrap][class*="sc-ion-label"] {
+    ion-item,
+    ion-label[text-wrap][class*="sc-ion-label"] {
       font-size: inherit;
       font-weight: var(--deckgo-font-weight);
       --border-color: inherit;
