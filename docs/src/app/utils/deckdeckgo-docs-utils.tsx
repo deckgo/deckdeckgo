@@ -1,5 +1,4 @@
 export class DeckdeckgoDocsUtils {
-
   static reloadCode(el: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
       let elements: HTMLElement[] = this.getAllDeckgoHighlightCode(el);
@@ -8,7 +7,6 @@ export class DeckdeckgoDocsUtils {
         resolve();
       } else {
         elements.forEach(async (element: HTMLElement) => {
-
           if (element && 'load' in element) {
             await await (element as any).load();
           }
@@ -38,7 +36,6 @@ export class DeckdeckgoDocsUtils {
         resolve();
       } else {
         elements.forEach(async (element: HTMLElement) => {
-
           if (element.hasOwnProperty('lazyLoadContent')) {
             await await (element as any).lazyLoadContent();
           }

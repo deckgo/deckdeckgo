@@ -4,11 +4,12 @@ ion-menu {
   --background: var(--ion-color-primary);
   --ion-background-color: var(--ion-color-primary);
 
-  --deckgo-logo-url: url('/assets/img/deckdeckgo-logo-invert.svg');
+  --deckgo-logo-url: url("/assets/img/deckdeckgo-logo-invert.svg");
 
   ion-content {
     ion-list {
-      ion-item-divider, ion-item {
+      ion-item-divider,
+      ion-item {
         --color: var(--ion-color-light);
 
         --background-hover: var(--ion-color-secondary);
@@ -52,9 +53,8 @@ ion-menu {
       ion-title {
         --deckgo-logo-vertical-align: bottom;
         --deckgo-logo-margin-end: 6px;
-        --deckgo-logo-size: 20px
+        --deckgo-logo-size: 20px;
       }
     }
   }
 }
-

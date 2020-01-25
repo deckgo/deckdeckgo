@@ -5,7 +5,6 @@ import {Component, h} from '@stencil/core';
   styleUrl: 'app-home.scss'
 })
 export class AppHome {
-
   render() {
     return [
       <app-navigation></app-navigation>,
@@ -14,21 +13,38 @@ export class AppHome {
         <main class="ion-padding">
           <section class="hero">
             <app-logo></app-logo>
-            <h1>The <strong>Progressive Web App</strong> alternative for simple presentations</h1>
+            <h1>
+              The <strong>Progressive Web App</strong> alternative for simple presentations
+            </h1>
           </section>
 
           <section class="overview" padding-top margin-top>
             <p no-margin>
-              <p no-margin>Create a PWA presentation using Web Components, <a href="https://ionicframework.com">Ionic</a> components and HTML or Markdown 🚀 Cherry on the cake 🍒🎂 DeckDeckGo comes with a <a href="https://deckdeckgo.app">Progressive Web App</a> to remote control your slides 📱</p>
+              <p no-margin>
+                Create a PWA presentation using Web Components, <a href="https://ionicframework.com">Ionic</a> components and HTML or Markdown 🚀 Cherry on the
+                cake 🍒🎂 DeckDeckGo comes with a <a href="https://deckdeckgo.app">Progressive Web App</a> to remote control your slides 📱
+              </p>
             </p>
 
             <ul>
-              <li><ion-icon name="checkmark" padding-end></ion-icon>Progressive Web App</li>
-              <li><ion-icon name="checkmark" padding-end></ion-icon>Predefined templates</li>
-              <li><ion-icon name="checkmark" padding-end></ion-icon>Web Components</li>
-              <li><ion-icon name="checkmark" padding-end></ion-icon>Lazy loaded content</li>
-              <li><ion-icon name="checkmark" padding-end></ion-icon>HTML or Markdown</li>
-              <li><ion-icon name="checkmark" padding-end></ion-icon>Free and open source</li>
+              <li>
+                <ion-icon name="checkmark" padding-end></ion-icon>Progressive Web App
+              </li>
+              <li>
+                <ion-icon name="checkmark" padding-end></ion-icon>Predefined templates
+              </li>
+              <li>
+                <ion-icon name="checkmark" padding-end></ion-icon>Web Components
+              </li>
+              <li>
+                <ion-icon name="checkmark" padding-end></ion-icon>Lazy loaded content
+              </li>
+              <li>
+                <ion-icon name="checkmark" padding-end></ion-icon>HTML or Markdown
+              </li>
+              <li>
+                <ion-icon name="checkmark" padding-end></ion-icon>Free and open source
+              </li>
             </ul>
           </section>
 
@@ -54,7 +70,9 @@ export class AppHome {
               <li>
                 <ion-icon name="flash" padding-end></ion-icon>
                 <h3>Slick and smooth</h3>
-                <p>Build for performance and to be SEO friendly, have a look to the Lighthouse score of the DeckDeckGo <a href="https://deckdeckgo.com">demo</a>.</p>
+                <p>
+                  Build for performance and to be SEO friendly, have a look to the Lighthouse score of the DeckDeckGo <a href="https://deckdeckgo.com">demo</a>.
+                </p>
               </li>
               <li>
                 <ion-icon name="code" padding-end></ion-icon>
@@ -64,7 +82,9 @@ export class AppHome {
               <li>
                 <ion-icon name="phone-portrait" padding-end></ion-icon>
                 <h3>Interact</h3>
-                <p>Control you slides or track your talk's time using the DeckDeckGo <a href="https://deckdeckgo.app">remote control PWA</a>.</p>
+                <p>
+                  Control you slides or track your talk's time using the DeckDeckGo <a href="https://deckdeckgo.app">remote control PWA</a>.
+                </p>
               </li>
             </ul>
           </section>

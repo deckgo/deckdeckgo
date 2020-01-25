@@ -7,7 +7,6 @@ import {set, get} from 'idb-keyval';
   styleUrl: 'app-theme-switcher.scss'
 })
 export class AppThemeSwitcher {
-
   @State()
   private darkModePreference: boolean = false;
 
@@ -32,9 +31,7 @@ export class AppThemeSwitcher {
   }
 
   private updateDarkModePreferences() {
-    !this.darkModePreference ?
-      this.domBodyClassList.add('dark') :
-      this.domBodyClassList.remove('dark');
+    !this.darkModePreference ? this.domBodyClassList.add('dark') : this.domBodyClassList.remove('dark');
     this.darkModePreference = !this.darkModePreference;
   }
 
