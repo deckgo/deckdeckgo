@@ -1,57 +1,65 @@
 {
-  "name": "@deckdeckgo/core",
-  "version": "1.0.0-rc.3-5",
-  "description": "Add a presentation to your web application using HTML and Web Components",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "es2015": "dist/esm/index.mjs",
-  "es2017": "dist/esm/index.mjs",
-  "types": "dist/types/index.d.ts",
-  "collection": "dist/collection/collection-manifest.json",
-  "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo/deckdeckgo.js",
-  "files": [
-    "dist/",
-    "README.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "build": "stencil build",
-    "start": "stencil build --dev --watch --serve",
-    "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
-  },
-  "dependencies": {
-    "@deckdeckgo/deck-utils": "^1.0.0-rc.2-2",
-    "@deckdeckgo/utils": "^1.0.0-rc.2"
-  },
-  "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0-rc.4-1",
-    "@stencil/core": "^1.8.5",
-    "@stencil/postcss": "^1.0.1",
-    "@stencil/sass": "^1.1.1",
-    "@stencil/utils": "0.0.5",
-    "autoprefixer": "^9.7.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/deckgo/deckdeckgo.git"
-  },
-  "author": "David Dal Busco",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/deckgo/deckdeckgo"
-  },
-  "homepage": "https://deckdeckgo.com",
-  "keywords": [
-    "stencil",
-    "stenciljs",
-    "web components",
-    "pwa",
-    "progressive web app",
-    "presentation",
-    "slides",
-    "slideshow",
-    "talk"
-  ]
+    "name": "@deckdeckgo/core",
+    "version": "1.0.0-rc.3-5",
+    "description": "Add a presentation to your web application using HTML and Web Components",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "es2015": "dist/esm/index.mjs",
+    "es2017": "dist/esm/index.mjs",
+    "types": "dist/types/index.d.ts",
+    "collection": "dist/collection/collection-manifest.json",
+    "collection:main": "dist/collection/index.js",
+    "unpkg": "dist/deckdeckgo/deckdeckgo.js",
+    "files": [
+        "dist/",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "stencil build",
+        "start": "stencil build --dev --watch --serve",
+        "test": "stencil test --spec --e2e",
+        "test.watch": "stencil test --spec --e2e --watchAll"
+    },
+    "dependencies": {
+        "@deckdeckgo/deck-utils": "^1.0.0-rc.2-2",
+        "@deckdeckgo/utils": "^1.0.0-rc.2"
+    },
+    "devDependencies": {
+        "@deckdeckgo/types": "^1.0.0-rc.4-1",
+        "@stencil/core": "^1.8.5",
+        "@stencil/postcss": "^1.0.1",
+        "@stencil/sass": "^1.1.1",
+        "@stencil/utils": "0.0.5",
+        "autoprefixer": "^9.7.4",
+        "husky": "^4.2.1",
+        "prettier": "1.19.1",
+        "pretty-quick": "^2.0.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/deckgo/deckdeckgo.git"
+    },
+    "author": "David Dal Busco",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/deckgo/deckdeckgo"
+    },
+    "homepage": "https://deckdeckgo.com",
+    "keywords": [
+        "stencil",
+        "stenciljs",
+        "web components",
+        "pwa",
+        "progressive web app",
+        "presentation",
+        "slides",
+        "slideshow",
+        "talk"
+    ],
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
+    }
 }
