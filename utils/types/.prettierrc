@@ -3,5 +3,13 @@
   "singleQuote": true,
   "arrowParens": "always",
   "bracketSpacing": false,
-  "jsxBracketSameLine": true
+  "jsxBracketSameLine": true,
+  "overrides": [
+    {
+      "files": ["*.scss", "*.css"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
 }
