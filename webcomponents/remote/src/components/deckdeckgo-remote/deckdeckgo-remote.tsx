@@ -4,14 +4,14 @@ import {Subscription} from 'rxjs';
 
 // Types
 import {
-  DeckdeckgoDrawAction,
-  DeckdeckgoEvent,
-  DeckdeckgoEventDraw,
-  DeckdeckgoEventEmitter,
-  DeckdeckgoEventType,
-  DeckdeckgoSlideAction,
-  DeckdeckgoDeckDefinition,
-  DeckdeckgoSlideDefinition
+    DeckdeckgoDrawAction,
+    DeckdeckgoEvent,
+    DeckdeckgoEventDraw,
+    DeckdeckgoEventEmitter,
+    DeckdeckgoEventType,
+    DeckdeckgoSlideAction,
+    DeckdeckgoDeckDefinition,
+    DeckdeckgoSlideDefinition
 } from '@deckdeckgo/types';
 
 import {isMobile} from '@deckdeckgo/utils';
@@ -20,462 +20,471 @@ import {isMobile} from '@deckdeckgo/utils';
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
 
 interface Point {
-  x: number;
-  y: number;
+    x: number;
+    y: number;
 }
 
 interface Drawable {
-  draw(ctx: CanvasRenderingContext2D)
+    draw(ctx: CanvasRenderingContext2D);
 }
 
 class Circle implements Drawable {
+    private readonly from: Point;
+    private readonly to: Point;
+    private readonly color: string;
 
-  private readonly from: Point;
-  private readonly to: Point;
-  private readonly color: string;
+    constructor(from: Point, to: Point, color: string) {
+        this.from = from;
+        this.to = to;
+        this.color = color;
+    }
 
-  constructor(from: Point, to: Point, color: string) {
-    this.from = from;
-    this.to = to;
-    this.color = color;
-  }
+    draw(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
 
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.beginPath();
+        ctx.moveTo(this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
+        ctx.bezierCurveTo(this.from.x, this.from.y, this.to.x, this.from.y, this.to.x, this.from.y + (this.to.y - this.from.y) / 2);
+        ctx.bezierCurveTo(this.to.x, this.to.y, this.from.x, this.to.y, this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
 
-    ctx.moveTo(this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
-    ctx.bezierCurveTo(this.from.x, this.from.y, this.to.x, this.from.y, this.to.x, this.from.y + (this.to.y - this.from.y) / 2);
-    ctx.bezierCurveTo(this.to.x, this.to.y, this.from.x, this.to.y, this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 3;
 
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = 3;
-
-    ctx.stroke();
-    ctx.closePath();
-  }
+        ctx.stroke();
+        ctx.closePath();
+    }
 }
 
 class Pencil implements Drawable {
+    private readonly from: Point;
+    private readonly to: Point;
+    private readonly color: string;
 
-  private readonly from: Point;
-  private readonly to: Point;
-  private readonly color: string;
+    constructor(from: Point, to: Point, color: string) {
+        this.from = from;
+        this.to = to;
+        this.color = color;
+    }
 
-  constructor(from: Point, to: Point, color: string) {
-    this.from = from;
-    this.to = to;
-    this.color = color;
-  }
+    draw(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
 
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.beginPath();
+        ctx.moveTo(this.from.x, this.from.y);
+        ctx.lineTo(this.to.x, this.to.y);
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 3;
 
-    ctx.moveTo(this.from.x, this.from.y);
-    ctx.lineTo(this.to.x, this.to.y);
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = 3;
-
-    ctx.stroke();
-    ctx.closePath();
-
-  }
+        ctx.stroke();
+        ctx.closePath();
+    }
 }
 
 @Component({
-  tag: 'deckgo-remote',
-  styleUrl: 'deckdeckgo-remote.scss',
-  shadow: true
+    tag: 'deckgo-remote',
+    styleUrl: 'deckdeckgo-remote.scss',
+    shadow: true
 })
 export class DeckdeckgoRemote {
-  @Element() el: HTMLElement;
+    @Element() el: HTMLElement;
 
-  @Prop() room: string;
-  @Prop() socketUrl: string;
+    @Prop() room: string;
+    @Prop() socketUrl: string;
 
-  @Prop() width: number;
-  @Prop() height: number;
-  @Prop() length: number;
+    @Prop() width: number;
+    @Prop() height: number;
+    @Prop() length: number;
 
-  @Prop({mutable: true}) deck: DeckdeckgoDeckDefinition;
+    @Prop({mutable: true}) deck: DeckdeckgoDeckDefinition;
 
-  @Prop() autoConnect: boolean = true;
+    @Prop() autoConnect: boolean = true;
 
-  @State() canvasWidth: number;
+    @State() canvasWidth: number;
 
-  @Event() state: EventEmitter<ConnectionState>;
-  @Event() event: EventEmitter<DeckdeckgoEvent>;
+    @Event() state: EventEmitter<ConnectionState>;
+    @Event() event: EventEmitter<DeckdeckgoEvent>;
 
-  private subscriptionState: Subscription;
-  private subscriptionEvent: Subscription;
+    private subscriptionState: Subscription;
+    private subscriptionEvent: Subscription;
 
-  private ctx: CanvasRenderingContext2D;
-  private drawables: Drawable[] = [];
+    private ctx: CanvasRenderingContext2D;
+    private drawables: Drawable[] = [];
 
-  private startX: number;
-  private startY: number;
+    private startX: number;
+    private startY: number;
 
-  private leftOffset: number = 0;
+    private leftOffset: number = 0;
 
-  private communicationService: CommunicationService;
+    private communicationService: CommunicationService;
 
-  constructor() {
-    this.communicationService = CommunicationService.getInstance();
-  }
+    constructor() {
+        this.communicationService = CommunicationService.getInstance();
+    }
 
-  async componentDidLoad() {
-    this.subscriptionState = this.communicationService.watchState().subscribe((state: ConnectionState) => {
-      this.state.emit(state);
-    });
+    async componentDidLoad() {
+        this.subscriptionState = this.communicationService.watchState().subscribe((state: ConnectionState) => {
+            this.state.emit(state);
+        });
 
-    this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async (event: DeckdeckgoEvent) => {
-      if (event.emitter === DeckdeckgoEventEmitter.APP) {
-        if (event.type === DeckdeckgoEventType.SLIDES_REQUEST) {
-          // If app is asking for the deck length, how many slides, we answer directly
-          await this.sendSlidesToApp(DeckdeckgoEventType.SLIDES_ANSWER);
-        } else if (event.type === DeckdeckgoEventType.CLEAR_SLIDE) {
-          await this.clear();
-        } else if (event.type === DeckdeckgoEventType.START_DRAWING) {
-          await this.startDrawing((event as DeckdeckgoEventDraw));
-        } else if (event.type === DeckdeckgoEventType.END_DRAWING) {
-          await this.endDrawing((event as DeckdeckgoEventDraw));
-        } else if (event.type === DeckdeckgoEventType.DRAW) {
-          await this.draw((event as DeckdeckgoEventDraw));
-        } else {
-          // Else it's a command to apply on the deck, we propagate
-          this.event.emit(event);
+        this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async (event: DeckdeckgoEvent) => {
+            if (event.emitter === DeckdeckgoEventEmitter.APP) {
+                if (event.type === DeckdeckgoEventType.SLIDES_REQUEST) {
+                    // If app is asking for the deck length, how many slides, we answer directly
+                    await this.sendSlidesToApp(DeckdeckgoEventType.SLIDES_ANSWER);
+                } else if (event.type === DeckdeckgoEventType.CLEAR_SLIDE) {
+                    await this.clear();
+                } else if (event.type === DeckdeckgoEventType.START_DRAWING) {
+                    await this.startDrawing(event as DeckdeckgoEventDraw);
+                } else if (event.type === DeckdeckgoEventType.END_DRAWING) {
+                    await this.endDrawing(event as DeckdeckgoEventDraw);
+                } else if (event.type === DeckdeckgoEventType.DRAW) {
+                    await this.draw(event as DeckdeckgoEventDraw);
+                } else {
+                    // Else it's a command to apply on the deck, we propagate
+                    this.event.emit(event);
+                }
+            }
+        });
+
+        await this.initConnect();
+
+        this.initCanvasWidth();
+
+        await this.initContext();
+    }
+
+    @Watch('width')
+    @Watch('length')
+    private initCanvasWidth() {
+        if (this.width && this.length) {
+            this.canvasWidth = this.width * this.length;
         }
-      }
-    });
-
-    await this.initConnect();
-
-    this.initCanvasWidth();
-
-    await this.initContext();
-  }
-
-  @Watch('width')
-  @Watch('length')
-  private initCanvasWidth() {
-    if (this.width && this.length) {
-      this.canvasWidth = this.width * this.length;
-    }
-  }
-
-  async componentDidUnload() {
-    await this.communicationService.disconnect();
-
-    if (this.subscriptionState) {
-      this.subscriptionState.unsubscribe();
     }
 
-    if (this.subscriptionEvent) {
-      this.subscriptionEvent.unsubscribe();
-    }
-  }
+    async componentDidUnload() {
+        await this.communicationService.disconnect();
 
-  @Watch('room')
-  async onRoomChange() {
-    await this.initConnect();
-  }
+        if (this.subscriptionState) {
+            this.subscriptionState.unsubscribe();
+        }
 
-  @Watch('socketUrl')
-  async onSocketUrlChange() {
-    await this.initConnect();
-  }
-
-  private async initConnect() {
-    if (!this.autoConnect) {
-      return;
+        if (this.subscriptionEvent) {
+            this.subscriptionEvent.unsubscribe();
+        }
     }
 
-    await this.connect();
-  }
-
-  @Method()
-  connect(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.room) {
-        resolve();
-        return;
-      }
-
-      this.communicationService.room = this.room;
-      this.communicationService.socketUrl = this.socketUrl;
-
-      await this.communicationService.disconnect();
-      await this.communicationService.connect();
-
-      resolve();
-    });
-  }
-
-  @Method()
-  disconnect(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      await this.communicationService.disconnect();
-
-      resolve();
-    });
-  }
-
-  private initContext(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');
-
-      if (!canvas) {
-        resolve();
-        return;
-      }
-
-      this.ctx = canvas.getContext("2d");
-
-      resolve();
-    });
-  }
-
-  private setCanvasIndex(zIndex: number): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');
-
-      if (!canvas) {
-        resolve();
-        return;
-      }
-
-      canvas.style.zIndex = '' + zIndex;
-
-      resolve();
-    });
-  }
-
-  private startDrawing(event: DeckdeckgoEventDraw): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.startX = this.interpolateX(event) - this.leftOffset;
-      this.startY = this.interpolateY(event);
-
-
-      if (event.action === DeckdeckgoDrawAction.CIRCLE) {
-        this.drawables.push(new Circle({x: this.startX, y: this.startY}, {
-          x: this.startX,
-          y: this.startY
-        }, event.color));
-      }
-
-      await this.setCanvasIndex(1);
-
-      resolve();
-    });
-  }
-
-  private draw(event: DeckdeckgoEventDraw): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.ctx.beginPath();
-
-      const toX: number = this.interpolateX(event) - this.leftOffset;
-      const toY: number = this.interpolateY(event);
-
-      if (event.action === DeckdeckgoDrawAction.PENCIL) {
-        this.drawables.push(new Pencil({x: this.startX, y: this.startY}, {x: toX, y: toY}, event.color));
-        this.startX = toX;
-        this.startY = toY;
-      }
-
-      if (event.action === DeckdeckgoDrawAction.CIRCLE) {
-        this.drawables[this.drawables.length - 1] = new Circle({x: this.startX, y: this.startY}, {
-          x: toX,
-          y: toY
-        }, event.color);
-      }
-      this.drawElements();
-
-      resolve();
-    });
-  }
-
-  private drawElements() {
-    this.ctx.clearRect(-1 * this.leftOffset, 0, this.width, this.height);
-    for (const drawable of this.drawables) {
-      drawable.draw(this.ctx);
+    @Watch('room')
+    async onRoomChange() {
+        await this.initConnect();
     }
-  }
 
-  private endDrawing(event: DeckdeckgoEventDraw): Promise<void> {
-    return new Promise<void>(async (resolve) => {
+    @Watch('socketUrl')
+    async onSocketUrlChange() {
+        await this.initConnect();
+    }
 
-      const toX: number = this.interpolateX(event) - this.leftOffset;
-      const toY: number = this.interpolateY(event);
+    private async initConnect() {
+        if (!this.autoConnect) {
+            return;
+        }
 
-      if (event.action === DeckdeckgoDrawAction.CIRCLE) {
-        this.drawables[this.drawables.length - 1] = new Circle({x: this.startX, y: this.startY}, {
-          x: toX,
-          y: toY
-        }, event.color);
-      }
+        await this.connect();
+    }
 
-      this.startX = null;
-      this.startY = null;
-      await this.setCanvasIndex(0);
+    @Method()
+    connect(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.room) {
+                resolve();
+                return;
+            }
 
-      resolve();
-    });
-  }
+            this.communicationService.room = this.room;
+            this.communicationService.socketUrl = this.socketUrl;
 
-  private interpolateX(event: DeckdeckgoEventDraw): number {
-    const ratio: number = this.width / event.windowWidth;
-    return event.clientX * ratio;
-  }
+            await this.communicationService.disconnect();
+            await this.communicationService.connect();
 
-  private interpolateY(event: DeckdeckgoEventDraw): number {
-    const ratio: number = this.height / event.windowHeight;
-    return event.clientY * ratio;
-  }
+            resolve();
+        });
+    }
 
-  private sendSlidesToApp(type: DeckdeckgoEventType): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.communicationService.emit({
-        type: type,
-        emitter: DeckdeckgoEventEmitter.DECK,
-        length: this.length,
-        deck: this.deck,
-        mobile: isMobile()
-      });
+    @Method()
+    disconnect(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            await this.communicationService.disconnect();
 
-      resolve();
-    });
-  }
+            resolve();
+        });
+    }
 
-  @Method()
-  async updateSlides() {
-    await this.sendSlidesToApp(DeckdeckgoEventType.DECK_UPDATE);
-  }
+    private initContext(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');
 
-  @Method()
-  async updateSlide(index: number, slide: DeckdeckgoSlideDefinition) {
-    return new Promise<void>((resolve) => {
-      if (!this.deck || !this.deck.slides || this.deck.slides.length <= index || index < 0) {
-        resolve();
-        return;
-      }
+            if (!canvas) {
+                resolve();
+                return;
+            }
 
-      this.deck.slides[index] = slide;
+            this.ctx = canvas.getContext('2d');
 
-      if (!slide) {
-        resolve();
-        return;
-      }
+            resolve();
+        });
+    }
 
-      this.communicationService.emit({
-        type: DeckdeckgoEventType.SLIDE_UPDATE,
-        emitter: DeckdeckgoEventEmitter.DECK,
-        index: index,
-        slide: slide
-      });
+    private setCanvasIndex(zIndex: number): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');
 
-      resolve();
-    });
-  }
+            if (!canvas) {
+                resolve();
+                return;
+            }
 
-  @Method()
-  deleteSlide(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.communicationService.emit({
-        type: DeckdeckgoEventType.DELETE_SLIDE,
-        emitter: DeckdeckgoEventEmitter.DECK
-      });
+            canvas.style.zIndex = '' + zIndex;
 
-      resolve();
-    });
-  }
+            resolve();
+        });
+    }
 
-  @Method()
-  updateReveal(reveal: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.communicationService.emit({
-        type: DeckdeckgoEventType.DECK_REVEAL_UPDATE,
-        emitter: DeckdeckgoEventEmitter.DECK,
-        reveal: reveal
-      });
+    private startDrawing(event: DeckdeckgoEventDraw): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            this.startX = this.interpolateX(event) - this.leftOffset;
+            this.startY = this.interpolateY(event);
 
-      resolve();
-    });
-  }
+            if (event.action === DeckdeckgoDrawAction.CIRCLE) {
+                this.drawables.push(
+                    new Circle(
+                        {x: this.startX, y: this.startY},
+                        {
+                            x: this.startX,
+                            y: this.startY
+                        },
+                        event.color
+                    )
+                );
+            }
 
-  @Method()
-  moveDraw(leftOffset: number, transitionDuration: string): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');
+            await this.setCanvasIndex(1);
 
-      if (!canvas) {
-        resolve();
-        return;
-      }
+            resolve();
+        });
+    }
 
-      this.leftOffset = leftOffset;
+    private draw(event: DeckdeckgoEventDraw): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.ctx.beginPath();
 
-      canvas.style.setProperty('--left-offset', '' + this.leftOffset + 'px');
-      canvas.style.setProperty('--left-offset-transition', transitionDuration);
+            const toX: number = this.interpolateX(event) - this.leftOffset;
+            const toY: number = this.interpolateY(event);
 
-      resolve();
-    });
-  }
+            if (event.action === DeckdeckgoDrawAction.PENCIL) {
+                this.drawables.push(new Pencil({x: this.startX, y: this.startY}, {x: toX, y: toY}, event.color));
+                this.startX = toX;
+                this.startY = toY;
+            }
 
-  @Method()
-  async nextSlide(slideAnimation: boolean = false) {
-    this.emitSlidePrevNext(DeckdeckgoEventType.NEXT_SLIDE, slideAnimation);
-  }
+            if (event.action === DeckdeckgoDrawAction.CIRCLE) {
+                this.drawables[this.drawables.length - 1] = new Circle(
+                    {x: this.startX, y: this.startY},
+                    {
+                        x: toX,
+                        y: toY
+                    },
+                    event.color
+                );
+            }
+            this.drawElements();
 
-  @Method()
-  async prevSlide(slideAnimation: boolean = false) {
-    this.emitSlidePrevNext(DeckdeckgoEventType.PREV_SLIDE, slideAnimation);
-  }
+            resolve();
+        });
+    }
 
-  @Method()
-  async slideTo(index: number, speed?: number | undefined) {
-    this.communicationService.emit({
-      type: DeckdeckgoEventType.SLIDE_TO,
-      emitter: DeckdeckgoEventEmitter.DECK,
-      index: index,
-      speed: speed
-    });
-  }
+    private drawElements() {
+        this.ctx.clearRect(-1 * this.leftOffset, 0, this.width, this.height);
+        for (const drawable of this.drawables) {
+            drawable.draw(this.ctx);
+        }
+    }
 
-  @Method()
-  async play() {
-    this.communicationService.emit({
-      type: DeckdeckgoEventType.SLIDE_ACTION,
-      emitter: DeckdeckgoEventEmitter.DECK,
-      action: DeckdeckgoSlideAction.PLAY
-    });
-  }
+    private endDrawing(event: DeckdeckgoEventDraw): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const toX: number = this.interpolateX(event) - this.leftOffset;
+            const toY: number = this.interpolateY(event);
 
-  @Method()
-  async pause() {
-    this.communicationService.emit({
-      type: DeckdeckgoEventType.SLIDE_ACTION,
-      emitter: DeckdeckgoEventEmitter.DECK,
-      action: DeckdeckgoSlideAction.PAUSE
-    });
-  }
+            if (event.action === DeckdeckgoDrawAction.CIRCLE) {
+                this.drawables[this.drawables.length - 1] = new Circle(
+                    {x: this.startX, y: this.startY},
+                    {
+                        x: toX,
+                        y: toY
+                    },
+                    event.color
+                );
+            }
 
-  private clear(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.ctx.beginPath();
-      this.ctx.clearRect(-1 * this.leftOffset, 0, this.width, this.height);
-      this.ctx.stroke();
-      this.ctx.closePath();
+            this.startX = null;
+            this.startY = null;
+            await this.setCanvasIndex(0);
 
-      this.drawables = [];
+            resolve();
+        });
+    }
 
-      resolve();
-    });
-  }
+    private interpolateX(event: DeckdeckgoEventDraw): number {
+        const ratio: number = this.width / event.windowWidth;
+        return event.clientX * ratio;
+    }
 
-  private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
-    this.communicationService.emit({type: type, emitter: DeckdeckgoEventEmitter.DECK, slideAnimation: slideAnimation});
-  }
+    private interpolateY(event: DeckdeckgoEventDraw): number {
+        const ratio: number = this.height / event.windowHeight;
+        return event.clientY * ratio;
+    }
 
-  render() {
-    return <canvas width={this.canvasWidth} height={this.height}></canvas>;
-  }
+    private sendSlidesToApp(type: DeckdeckgoEventType): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.communicationService.emit({
+                type: type,
+                emitter: DeckdeckgoEventEmitter.DECK,
+                length: this.length,
+                deck: this.deck,
+                mobile: isMobile()
+            });
+
+            resolve();
+        });
+    }
+
+    @Method()
+    async updateSlides() {
+        await this.sendSlidesToApp(DeckdeckgoEventType.DECK_UPDATE);
+    }
+
+    @Method()
+    async updateSlide(index: number, slide: DeckdeckgoSlideDefinition) {
+        return new Promise<void>((resolve) => {
+            if (!this.deck || !this.deck.slides || this.deck.slides.length <= index || index < 0) {
+                resolve();
+                return;
+            }
+
+            this.deck.slides[index] = slide;
+
+            if (!slide) {
+                resolve();
+                return;
+            }
+
+            this.communicationService.emit({
+                type: DeckdeckgoEventType.SLIDE_UPDATE,
+                emitter: DeckdeckgoEventEmitter.DECK,
+                index: index,
+                slide: slide
+            });
+
+            resolve();
+        });
+    }
+
+    @Method()
+    deleteSlide(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.communicationService.emit({
+                type: DeckdeckgoEventType.DELETE_SLIDE,
+                emitter: DeckdeckgoEventEmitter.DECK
+            });
+
+            resolve();
+        });
+    }
+
+    @Method()
+    updateReveal(reveal: boolean): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.communicationService.emit({
+                type: DeckdeckgoEventType.DECK_REVEAL_UPDATE,
+                emitter: DeckdeckgoEventEmitter.DECK,
+                reveal: reveal
+            });
+
+            resolve();
+        });
+    }
+
+    @Method()
+    moveDraw(leftOffset: number, transitionDuration: string): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');
+
+            if (!canvas) {
+                resolve();
+                return;
+            }
+
+            this.leftOffset = leftOffset;
+
+            canvas.style.setProperty('--left-offset', '' + this.leftOffset + 'px');
+            canvas.style.setProperty('--left-offset-transition', transitionDuration);
+
+            resolve();
+        });
+    }
+
+    @Method()
+    async nextSlide(slideAnimation: boolean = false) {
+        this.emitSlidePrevNext(DeckdeckgoEventType.NEXT_SLIDE, slideAnimation);
+    }
+
+    @Method()
+    async prevSlide(slideAnimation: boolean = false) {
+        this.emitSlidePrevNext(DeckdeckgoEventType.PREV_SLIDE, slideAnimation);
+    }
+
+    @Method()
+    async slideTo(index: number, speed?: number | undefined) {
+        this.communicationService.emit({
+            type: DeckdeckgoEventType.SLIDE_TO,
+            emitter: DeckdeckgoEventEmitter.DECK,
+            index: index,
+            speed: speed
+        });
+    }
+
+    @Method()
+    async play() {
+        this.communicationService.emit({
+            type: DeckdeckgoEventType.SLIDE_ACTION,
+            emitter: DeckdeckgoEventEmitter.DECK,
+            action: DeckdeckgoSlideAction.PLAY
+        });
+    }
+
+    @Method()
+    async pause() {
+        this.communicationService.emit({
+            type: DeckdeckgoEventType.SLIDE_ACTION,
+            emitter: DeckdeckgoEventEmitter.DECK,
+            action: DeckdeckgoSlideAction.PAUSE
+        });
+    }
+
+    private clear(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.ctx.beginPath();
+            this.ctx.clearRect(-1 * this.leftOffset, 0, this.width, this.height);
+            this.ctx.stroke();
+            this.ctx.closePath();
+
+            this.drawables = [];
+
+            resolve();
+        });
+    }
+
+    private emitSlidePrevNext(type: DeckdeckgoEventType, slideAnimation: boolean) {
+        this.communicationService.emit({type: type, emitter: DeckdeckgoEventEmitter.DECK, slideAnimation: slideAnimation});
+    }
+
+    render() {
+        return <canvas width={this.canvasWidth} height={this.height}></canvas>;
+    }
 }

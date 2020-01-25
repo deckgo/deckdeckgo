@@ -1,11 +1,11 @@
 import {E2EElement, E2EPage, newE2EPage} from '@stencil/core/testing';
 
 describe('deckgo-social', () => {
-  let page: E2EPage;
+    let page: E2EPage;
 
-  beforeEach(async () => {
-    page = await newE2EPage();
-    await page.setContent(`<div>
+    beforeEach(async () => {
+        page = await newE2EPage();
+        await page.setContent(`<div>
     <deckgo-social twitter="daviddalbusco">
       <span slot="icon">icon</span>
       twitter
@@ -16,42 +16,41 @@ describe('deckgo-social', () => {
   <div><deckgo-social dev="daviddalbusco"></deckgo-social></div>
   <div><deckgo-social github="peterpeterparker">+daviddalbusco</deckgo-social></div>
   <div><deckgo-social full-url="https://daviddalbusco.com">https://daviddalbusco.com</deckgo-social></div>`);
-  });
-
-  it('renders', async () => {
-    const elements: E2EElement[] = await page.findAll('deckgo-social');
-    expect(elements).not.toBeNull();
-    expect(elements).toHaveLength(6);
-
-    const hydratedElements: E2EElement[] = elements.filter((element: E2EElement) => {
-      return element.classList && element.classList.contains('hydrated');
     });
 
-    expect(hydratedElements).not.toBeNull();
-    expect(hydratedElements).toHaveLength(6);
-  });
+    it('renders', async () => {
+        const elements: E2EElement[] = await page.findAll('deckgo-social');
+        expect(elements).not.toBeNull();
+        expect(elements).toHaveLength(6);
 
-  it('rendersIcon', async () => {
-    const element: E2EElement = await page.find('div:nth-of-type(1) deckgo-social');
-    expect(element).not.toBeNull();
+        const hydratedElements: E2EElement[] = elements.filter((element: E2EElement) => {
+            return element.classList && element.classList.contains('hydrated');
+        });
 
-    let icon: E2EElement = await page.find('div:nth-of-type(1) deckgo-social >>> slot[name="icon"]');
-    expect(icon).not.toBeNull();
-  });
+        expect(hydratedElements).not.toBeNull();
+        expect(hydratedElements).toHaveLength(6);
+    });
 
-  it('rendersAutomaticHandle', async () => {
-    const element: E2EElement = await page.find('div:nth-of-type(3) deckgo-social');
-    expect(element).not.toBeNull();
+    it('rendersIcon', async () => {
+        const element: E2EElement = await page.find('div:nth-of-type(1) deckgo-social');
+        expect(element).not.toBeNull();
 
-    let span: E2EElement = await page.find('div:nth-of-type(3) deckgo-social >>> span');
-    expect(span).not.toBeNull();
-    expect(span.innerHTML).toEqual('david.dalbusco');
-  });
+        let icon: E2EElement = await page.find('div:nth-of-type(1) deckgo-social >>> slot[name="icon"]');
+        expect(icon).not.toBeNull();
+    });
 
-  it('rendersCustomHandle', async () => {
-    const element: E2EElement = await page.find('div:nth-of-type(5) deckgo-social');
-    expect(element).not.toBeNull();
-    expect(element.textContent).toEqual('+daviddalbusco');
-  });
+    it('rendersAutomaticHandle', async () => {
+        const element: E2EElement = await page.find('div:nth-of-type(3) deckgo-social');
+        expect(element).not.toBeNull();
 
+        let span: E2EElement = await page.find('div:nth-of-type(3) deckgo-social >>> span');
+        expect(span).not.toBeNull();
+        expect(span.innerHTML).toEqual('david.dalbusco');
+    });
+
+    it('rendersCustomHandle', async () => {
+        const element: E2EElement = await page.find('div:nth-of-type(5) deckgo-social');
+        expect(element).not.toBeNull();
+        expect(element.textContent).toEqual('+daviddalbusco');
+    });
 });

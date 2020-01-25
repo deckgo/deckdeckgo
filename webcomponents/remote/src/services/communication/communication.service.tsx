@@ -4,243 +4,258 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 // Types
 import {
-  DeckdeckgoEvent,
-  DeckdeckgoEventSlideAction,
-  DeckdeckgoEventDeck,
-  DeckdeckgoEventSlide,
-  DeckdeckgoEventSlideTo,
-  DeckdeckgoEventNextPrevSlide,
-  DeckdeckgoEventDeckReveal
+    DeckdeckgoEvent,
+    DeckdeckgoEventSlideAction,
+    DeckdeckgoEventDeck,
+    DeckdeckgoEventSlide,
+    DeckdeckgoEventSlideTo,
+    DeckdeckgoEventNextPrevSlide,
+    DeckdeckgoEventDeckReveal
 } from '@deckdeckgo/types';
 
 const configuration: RTCConfiguration = {
-  iceServers: [
-    {
-      urls: 'turn:api.deckdeckgo.com:3478',
-      username: 'user',
-      credential: 'deckdeckgo'
-    }
-  ]
+    iceServers: [
+        {
+            urls: 'turn:api.deckdeckgo.com:3478',
+            username: 'user',
+            credential: 'deckdeckgo'
+        }
+    ]
 };
 
 const dataChannelOptions = {
-  ordered: false, //no guaranteed delivery, unreliable but faster
-  maxPacketLifeTime: 1000, //milliseconds
+    ordered: false, //no guaranteed delivery, unreliable but faster
+    maxPacketLifeTime: 1000 //milliseconds
 };
 
 const DEFAULT_SOCKET_URL: string = 'https://api.deckdeckgo.com';
 
 export enum ConnectionState {
-  DISCONNECTED,
-  CONNECTING,
-  CONNECTED_WITH_SIGNALING_SERVER,
-  CONNECTED,
-  NOT_CONNECTED
+    DISCONNECTED,
+    CONNECTING,
+    CONNECTED_WITH_SIGNALING_SERVER,
+    CONNECTED,
+    NOT_CONNECTED
 }
 
 // @ts-ignore
 const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
 
 // @ts-ignore
+// prettier-ignore
 const SessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription || window.webkitRTCSessionDescription || window.msRTCSessionDescription;
 
 export class CommunicationService {
+    private static instance: CommunicationService;
 
-  private static instance: CommunicationService;
+    private socket: SocketIOClient.Socket;
 
-  private socket: SocketIOClient.Socket;
+    private rtcPeerConn: RTCPeerConnection;
+    private dataChannelOut: RTCDataChannel;
 
-  private rtcPeerConn: RTCPeerConnection;
-  private dataChannelOut: RTCDataChannel;
+    room: string;
+    socketUrl: string;
 
-  room: string;
-  socketUrl: string;
+    private state: BehaviorSubject<ConnectionState> = new BehaviorSubject<ConnectionState>(ConnectionState.DISCONNECTED);
+    private event: Subject<DeckdeckgoEvent> = new Subject<DeckdeckgoEvent>();
 
-  private state: BehaviorSubject<ConnectionState> = new BehaviorSubject<ConnectionState>(ConnectionState.DISCONNECTED);
-  private event: Subject<DeckdeckgoEvent> = new Subject<DeckdeckgoEvent>();
-
-  private constructor() {
-    // Private constructor, singleton
-  }
-
-  static getInstance() {
-    if (!CommunicationService.instance) {
-      CommunicationService.instance = new CommunicationService();
+    private constructor() {
+        // Private constructor, singleton
     }
-    return CommunicationService.instance;
-  }
 
-  connect(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-
-      if (!this.room) {
-        resolve();
-        return;
-      }
-
-      const url: string = this.socketUrl ? this.socketUrl : DEFAULT_SOCKET_URL;
-
-      this.state.next(ConnectionState.CONNECTING);
-
-      this.socket = io.connect(url, {
-        'reconnectionAttempts': 5,
-        'transports': ['websocket', 'xhr-polling'],
-        'query': 'type=app'
-      });
-
-      this.socket.on('connect', async () => {
-        this.socket.emit('join', {
-          room: this.room,
-          deck: true
-        });
-      });
-
-      this.socket.on('joined', async () => {
-        // Do nothing on the deck side
-        this.state.next(ConnectionState.CONNECTED_WITH_SIGNALING_SERVER);
-      });
-
-      this.socket.on('signaling_message', async (data) => {
-        //Setup the RTC Peer Connection object
-        if (!this.rtcPeerConn) {
-          this.startSignaling();
+    static getInstance() {
+        if (!CommunicationService.instance) {
+            CommunicationService.instance = new CommunicationService();
         }
+        return CommunicationService.instance;
+    }
 
-        if (data.type === 'app_here') {
-          if (!this.rtcPeerConn.currentLocalDescription) {
-            // let the 'negotiationneeded' event trigger offer generation
-            await this.rtcPeerConn.createOffer().then((desc) => {
-              this.sendLocalDesc(desc);
-            }, (_err) => {
-              this.state.next(ConnectionState.NOT_CONNECTED);
+    connect(): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            if (!this.room) {
+                resolve();
+                return;
+            }
+
+            const url: string = this.socketUrl ? this.socketUrl : DEFAULT_SOCKET_URL;
+
+            this.state.next(ConnectionState.CONNECTING);
+
+            this.socket = io.connect(url, {
+                reconnectionAttempts: 5,
+                transports: ['websocket', 'xhr-polling'],
+                query: 'type=app'
             });
-          }
 
-          return;
-        }
+            this.socket.on('connect', async () => {
+                this.socket.emit('join', {
+                    room: this.room,
+                    deck: true
+                });
+            });
 
-        const message = JSON.parse(data.message);
-        if (message.sdp) {
-          this.rtcPeerConn.setRemoteDescription(new SessionDescription(message.sdp)).then(() => {
-            // App create answer
-          }, (_err) => {
-            this.state.next(ConnectionState.NOT_CONNECTED);
-          });
-        } else {
-          await this.rtcPeerConn.addIceCandidate(new RTCIceCandidate(message.candidate));
-        }
+            this.socket.on('joined', async () => {
+                // Do nothing on the deck side
+                this.state.next(ConnectionState.CONNECTED_WITH_SIGNALING_SERVER);
+            });
 
-      });
+            this.socket.on('signaling_message', async (data) => {
+                //Setup the RTC Peer Connection object
+                if (!this.rtcPeerConn) {
+                    this.startSignaling();
+                }
 
-      this.socket.on('connect_error', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
-      });
+                if (data.type === 'app_here') {
+                    if (!this.rtcPeerConn.currentLocalDescription) {
+                        // let the 'negotiationneeded' event trigger offer generation
+                        await this.rtcPeerConn.createOffer().then(
+                            (desc) => {
+                                this.sendLocalDesc(desc);
+                            },
+                            (_err) => {
+                                this.state.next(ConnectionState.NOT_CONNECTED);
+                            }
+                        );
+                    }
 
-      this.socket.on('connect_timeout', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
-      });
+                    return;
+                }
 
-      this.socket.on('error', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
-      });
+                const message = JSON.parse(data.message);
+                if (message.sdp) {
+                    this.rtcPeerConn.setRemoteDescription(new SessionDescription(message.sdp)).then(
+                        () => {
+                            // App create answer
+                        },
+                        (_err) => {
+                            this.state.next(ConnectionState.NOT_CONNECTED);
+                        }
+                    );
+                } else {
+                    await this.rtcPeerConn.addIceCandidate(new RTCIceCandidate(message.candidate));
+                }
+            });
 
-      this.socket.on('reconnect_failed', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
-      });
+            this.socket.on('connect_error', () => {
+                this.state.next(ConnectionState.NOT_CONNECTED);
+            });
 
-      this.socket.on('reconnect_error', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
-      });
+            this.socket.on('connect_timeout', () => {
+                this.state.next(ConnectionState.NOT_CONNECTED);
+            });
 
-      resolve();
-    });
-  }
+            this.socket.on('error', () => {
+                this.state.next(ConnectionState.NOT_CONNECTED);
+            });
 
-  disconnect(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (this.dataChannelOut) {
-        this.dataChannelOut.close();
-      }
+            this.socket.on('reconnect_failed', () => {
+                this.state.next(ConnectionState.NOT_CONNECTED);
+            });
 
-      if (this.rtcPeerConn) {
-        this.rtcPeerConn.close();
-      }
+            this.socket.on('reconnect_error', () => {
+                this.state.next(ConnectionState.NOT_CONNECTED);
+            });
 
-      this.dataChannelOut = null;
-      this.rtcPeerConn = null;
-
-      if (this.socket) {
-        this.socket.emit('leave', {
-          room: this.room
+            resolve();
         });
-        this.socket.removeAllListeners();
-        this.socket.disconnect();
-      }
+    }
 
-      this.state.next(ConnectionState.DISCONNECTED);
+    disconnect(): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (this.dataChannelOut) {
+                this.dataChannelOut.close();
+            }
 
-      resolve();
-    });
-  }
+            if (this.rtcPeerConn) {
+                this.rtcPeerConn.close();
+            }
 
-  watchState(): Observable<ConnectionState> {
-    return this.state.asObservable();
-  }
+            this.dataChannelOut = null;
+            this.rtcPeerConn = null;
 
-  watchEvent(): Observable<DeckdeckgoEvent> {
-    return this.event.asObservable();
-  }
+            if (this.socket) {
+                this.socket.emit('leave', {
+                    room: this.room
+                });
+                this.socket.removeAllListeners();
+                this.socket.disconnect();
+            }
 
-  private startSignaling() {
-    this.rtcPeerConn = new PeerConnection(configuration);
+            this.state.next(ConnectionState.DISCONNECTED);
 
-    this.dataChannelOut = this.rtcPeerConn.createDataChannel('deckgo_' + this.room, dataChannelOptions);
-    this.dataChannelOut.onopen = this.dataChannelStateChanged;
-
-    // send any ice candidates to the other peer
-    this.rtcPeerConn.onicecandidate = (evt) => {
-      if (evt.candidate) {
-        this.socket.emit('signal', {
-          type: 'ice_candidate',
-          message: JSON.stringify({'candidate': evt.candidate}),
-          room: this.room
+            resolve();
         });
-      }
+    }
+
+    watchState(): Observable<ConnectionState> {
+        return this.state.asObservable();
+    }
+
+    watchEvent(): Observable<DeckdeckgoEvent> {
+        return this.event.asObservable();
+    }
+
+    private startSignaling() {
+        this.rtcPeerConn = new PeerConnection(configuration);
+
+        this.dataChannelOut = this.rtcPeerConn.createDataChannel('deckgo_' + this.room, dataChannelOptions);
+        this.dataChannelOut.onopen = this.dataChannelStateChanged;
+
+        // send any ice candidates to the other peer
+        this.rtcPeerConn.onicecandidate = (evt) => {
+            if (evt.candidate) {
+                this.socket.emit('signal', {
+                    type: 'ice_candidate',
+                    message: JSON.stringify({candidate: evt.candidate}),
+                    room: this.room
+                });
+            }
+        };
+    }
+
+    private sendLocalDesc(desc) {
+        this.rtcPeerConn.setLocalDescription(desc).then(
+            () => {
+                this.socket.emit('signal', {
+                    type: 'sending_local_description',
+                    message: JSON.stringify({sdp: this.rtcPeerConn.localDescription}),
+                    room: this.room
+                });
+            },
+            (_err) => {
+                this.state.next(ConnectionState.NOT_CONNECTED);
+            }
+        );
+    }
+
+    private dataChannelStateChanged = () => {
+        if (this.dataChannelOut.readyState === 'open') {
+            this.dataChannelOut.onmessage = this.receiveDataChannelMessage;
+            this.state.next(ConnectionState.CONNECTED);
+        }
     };
-  }
 
-  private sendLocalDesc(desc) {
-    this.rtcPeerConn.setLocalDescription(desc).then(() => {
-      this.socket.emit('signal', {
-        type: 'sending_local_description',
-        message: JSON.stringify({'sdp': this.rtcPeerConn.localDescription}),
-        room: this.room
-      });
-    }, (_err) => {
-      this.state.next(ConnectionState.NOT_CONNECTED);
-    });
-  };
+    private receiveDataChannelMessage = (event) => {
+        if (!event) {
+            return;
+        }
 
-  private dataChannelStateChanged = () => {
-    if (this.dataChannelOut.readyState === 'open') {
-      this.dataChannelOut.onmessage = this.receiveDataChannelMessage;
-      this.state.next(ConnectionState.CONNECTED);
+        const data: DeckdeckgoEvent = JSON.parse(event.data);
+        this.event.next(data);
+    };
+
+    emit(
+        data:
+            | DeckdeckgoEvent
+            | DeckdeckgoEventDeck
+            | DeckdeckgoEventSlide
+            | DeckdeckgoEventSlideTo
+            | DeckdeckgoEventSlideAction
+            | DeckdeckgoEventNextPrevSlide
+            | DeckdeckgoEventDeckReveal
+    ) {
+        if (this.dataChannelOut) {
+            this.dataChannelOut.send(JSON.stringify(data));
+        }
     }
-  };
-
-  private receiveDataChannelMessage = (event) => {
-    if (!event) {
-      return;
-    }
-
-    const data: DeckdeckgoEvent = JSON.parse(event.data);
-    this.event.next(data);
-  };
-
-  emit(data: DeckdeckgoEvent | DeckdeckgoEventDeck | DeckdeckgoEventSlide | DeckdeckgoEventSlideTo | DeckdeckgoEventSlideAction | DeckdeckgoEventNextPrevSlide | DeckdeckgoEventDeckReveal) {
-    if (this.dataChannelOut) {
-      this.dataChannelOut.send(JSON.stringify(data));
-    }
-  }
-
 }
