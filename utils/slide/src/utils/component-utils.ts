@@ -5,7 +5,6 @@ export function lazyLoadComponentContent(el: HTMLElement, tag: string): Promise<
     const elements: HTMLElement[] = getAllElements(el, tag);
 
     if (elements && elements.length > 0) {
-
       elements.forEach((element: HTMLElement) => {
         promises.push((element as any).lazyLoadContent());
       });
