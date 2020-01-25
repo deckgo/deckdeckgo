@@ -17,6 +17,9 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0-rc.4",
+    "husky": "^4.2.1",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
