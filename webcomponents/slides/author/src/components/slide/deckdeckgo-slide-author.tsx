@@ -10,7 +10,6 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
   shadow: true
 })
 export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
-
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
@@ -56,7 +55,7 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Method()
   beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      resolve(true)
+      resolve(true);
     });
   }
 
@@ -87,31 +86,37 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   }
 
   render() {
-    const classAuthorStart: string = `deckgo-slide-author deckgo-slide-author-start deckgo-slide-author-${this.imgMode} ${this.mobile ? 'deckgo-slide-author-mobile' : ''}`;
-    const classAuthorEnd: string = `deckgo-slide-author deckgo-slide-author-end deckgo-slide-author-${this.imgMode} ${this.mobile ? 'deckgo-slide-author-mobile' : ''}`;
+    const classAuthorStart: string = `deckgo-slide-author deckgo-slide-author-start deckgo-slide-author-${this.imgMode} ${
+      this.mobile ? 'deckgo-slide-author-mobile' : ''
+    }`;
+    const classAuthorEnd: string = `deckgo-slide-author deckgo-slide-author-end deckgo-slide-author-${this.imgMode} ${
+      this.mobile ? 'deckgo-slide-author-mobile' : ''
+    }`;
 
-    return <Host class={{'deckgo-slide-container': true}}>
-      <div class="deckgo-slide">
-        <slot name="title"></slot>
-        <div class={classAuthorStart} style={{'--slide-author-color-start-img-url': this.isLazyLoaded ? `url(${this.imgSrc})` : undefined}}>
-          {this.renderImage()}
-        </div>
-        <div class={classAuthorEnd}>
-          <slot name="author"></slot>
-          <div class="deckgo-slide-author-social">
-            <slot name="social-link"></slot>
-            <slot name="social-link"></slot>
-            <slot name="social-link"></slot>
-            <slot name="social-link"></slot>
-            <slot name="social-link"></slot>
-            <slot name="social-link"></slot>
+    return (
+      <Host class={{'deckgo-slide-container': true}}>
+        <div class="deckgo-slide">
+          <slot name="title"></slot>
+          <div class={classAuthorStart} style={{'--slide-author-color-start-img-url': this.isLazyLoaded ? `url(${this.imgSrc})` : undefined}}>
+            {this.renderImage()}
           </div>
+          <div class={classAuthorEnd}>
+            <slot name="author"></slot>
+            <div class="deckgo-slide-author-social">
+              <slot name="social-link"></slot>
+              <slot name="social-link"></slot>
+              <slot name="social-link"></slot>
+              <slot name="social-link"></slot>
+              <slot name="social-link"></slot>
+              <slot name="social-link"></slot>
+            </div>
+          </div>
+          <slot name="notes"></slot>
+          <slot name="actions"></slot>
+          <slot name="background"></slot>
         </div>
-        <slot name="notes"></slot>
-        <slot name="actions"></slot>
-        <slot name="background"></slot>
-      </div>
-    </Host>;
+      </Host>
+    );
   }
 
   private renderImage() {
@@ -119,7 +124,6 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
       return undefined;
     }
 
-    return <img data-src={this.imgSrc} alt={this.imgAlt}/>;
+    return <img data-src={this.imgSrc} alt={this.imgAlt} />;
   }
-
 }

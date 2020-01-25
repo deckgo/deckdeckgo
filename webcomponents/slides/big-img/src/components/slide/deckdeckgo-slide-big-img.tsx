@@ -1,15 +1,8 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
 
-import {
-  DeckdeckgoSlide,
-  hideLazyLoadImages,
-  afterSwipe,
-  lazyLoadContent,
-  hideAllRevealElements,
-  showAllRevealElements
-} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent, hideAllRevealElements, showAllRevealElements} from '@deckdeckgo/slide-utils';
 
-const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 @Component({
   tag: 'deckgo-slide-big-img',
@@ -17,7 +10,6 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
   shadow: true
 })
 export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
-
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
@@ -36,7 +28,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   private currentStep: number = -1;
 
   private get divisions(): number[] {
-    return this.imgDivisions.split(';').map(str => {
+    return this.imgDivisions.split(';').map((str) => {
       const num = parseInt(str);
       if (isNaN(num)) {
         return 0;
@@ -129,7 +121,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
 
   @Method()
   beforeSwipe(enter: boolean): Promise<boolean> {
-    return new Promise<boolean>(async resolve => {
+    return new Promise<boolean>(async (resolve) => {
       const couldSwipe: boolean = !this.divisions[0] || (enter ? this.isEnd() : this.isBeginning());
 
       if (couldSwipe) {
@@ -173,7 +165,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
         <div class="deckgo-slide">
           <slot name="title"></slot>
           <div class="deckgo-big-img-container">
-            <img data-src={this.imgSrc} alt={this.imgAlt}/>
+            <img data-src={this.imgSrc} alt={this.imgAlt} />
             <slot name="notes"></slot>
             <slot name="actions"></slot>
             <slot name="background"></slot>

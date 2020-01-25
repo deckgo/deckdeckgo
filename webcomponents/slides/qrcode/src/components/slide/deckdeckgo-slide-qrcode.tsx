@@ -9,7 +9,6 @@ import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} 
   shadow: true
 })
 export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
-
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
@@ -65,7 +64,7 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
         const qrCode: HTMLElement = container.querySelector('deckgo-qrcode');
 
         if (qrCode && width > 0 && height > 0) {
-          qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? (height + 'px') : ('calc('  + width + 'px - 32px)'));
+          qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? height + 'px' : 'calc(' + width + 'px - 32px)');
         }
       }
 
@@ -76,7 +75,7 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
   @Method()
   beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      resolve(true)
+      resolve(true);
     });
   }
 
@@ -118,28 +117,27 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
   }
 
   render() {
-    return <Host class={{'deckgo-slide-container': true}}>
-      <div class="deckgo-slide">
-        <slot name="title"></slot>
-        <div class="deckgo-slide-qrcode">
-          <slot name="content"></slot>
-          <deckgo-qrcode content={this.content}>
-            {this.renderLogo()}
-          </deckgo-qrcode>
+    return (
+      <Host class={{'deckgo-slide-container': true}}>
+        <div class="deckgo-slide">
+          <slot name="title"></slot>
+          <div class="deckgo-slide-qrcode">
+            <slot name="content"></slot>
+            <deckgo-qrcode content={this.content}>{this.renderLogo()}</deckgo-qrcode>
+          </div>
+          <slot name="notes"></slot>
+          <slot name="actions"></slot>
+          <slot name="background"></slot>
         </div>
-        <slot name="notes"></slot>
-        <slot name="actions"></slot>
-        <slot name="background"></slot>
-      </div>
-    </Host>;
+      </Host>
+    );
   }
 
   private renderLogo() {
-  if (this.imgSrc) {
-      return <img slot="logo" data-src={this.imgSrc} alt={this.imgAlt}/>;
+    if (this.imgSrc) {
+      return <img slot="logo" data-src={this.imgSrc} alt={this.imgAlt} />;
     } else {
       return undefined;
     }
   }
-
 }

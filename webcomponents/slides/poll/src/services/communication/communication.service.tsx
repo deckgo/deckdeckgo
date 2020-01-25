@@ -3,7 +3,6 @@ import * as io from 'socket.io-client';
 import {DeckdeckgoPollQuestion, DeckdeckgoPoll} from '@deckdeckgo/types';
 
 export class CommunicationService {
-
   private socket: SocketIOClient.Socket;
 
   connect(url: string, path: string, poll: DeckdeckgoPollQuestion, updatePollKey: Function, updateVote: Function): Promise<void> {
@@ -19,10 +18,10 @@ export class CommunicationService {
       }
 
       this.socket = io.connect(url, {
-        'reconnectionAttempts': 5,
-        'transports': ['websocket', 'xhr-polling'],
-        'query': 'type=app',
-        'path': path
+        reconnectionAttempts: 5,
+        transports: ['websocket', 'xhr-polling'],
+        query: 'type=app',
+        path: path
       });
 
       this.socket.on('connect', async () => {
@@ -54,10 +53,10 @@ export class CommunicationService {
       }
 
       this.socket = io.connect(url, {
-        'reconnectionAttempts': 5,
-        'transports': ['websocket', 'xhr-polling'],
-        'query': 'type=app',
-        'path': path
+        reconnectionAttempts: 5,
+        transports: ['websocket', 'xhr-polling'],
+        query: 'type=app',
+        path: path
       });
 
       this.socket.on('connect', async () => {
@@ -113,5 +112,4 @@ export class CommunicationService {
       }
     });
   }
-
 }

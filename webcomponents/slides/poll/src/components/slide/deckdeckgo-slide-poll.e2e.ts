@@ -64,5 +64,4 @@ describe('deckgo-slide-poll', () => {
     const qrCode: E2EElement = await page.find('deckgo-slide-poll >>> deckgo-qrcode');
     expect(qrCode).not.toBeNull();
   });
-
 });

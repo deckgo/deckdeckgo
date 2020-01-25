@@ -8,7 +8,6 @@ import {DeckdeckgoSlide} from '@deckdeckgo/slide-utils';
   shadow: true
 })
 export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
-
   @Event()
   slideDidLoad: EventEmitter<void>;
 
@@ -121,7 +120,6 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
         const now: Date = new Date();
 
         if (startAt && startAt.getTime() > now.getTime()) {
-
           let diff: number = (startAt.getTime() - now.getTime()) / (60 * 60 * 1000);
 
           if (diff >= 24) {
@@ -142,7 +140,7 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
 
           this.mSeconds = Math.floor(diff);
 
-          this.mTotalSeconds = ((this.mDays * 24 * 60 * 60) + (this.mHours * 60 * 60) + (this.mMinutes * 60) + this.mSeconds);
+          this.mTotalSeconds = this.mDays * 24 * 60 * 60 + this.mHours * 60 * 60 + this.mMinutes * 60 + this.mSeconds;
 
           resolve();
           return;
@@ -154,10 +152,10 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
       this.mMinutes = this.minutes;
       this.mSeconds = this.seconds;
 
-      this.mTotalSeconds = ((this.mDays * 24 * 60 * 60) + (this.mHours * 60 * 60) + (this.mMinutes * 60) + this.mSeconds);
+      this.mTotalSeconds = this.mDays * 24 * 60 * 60 + this.mHours * 60 * 60 + this.mMinutes * 60 + this.mSeconds;
 
       resolve();
-    })
+    });
   }
 
   /**
@@ -167,32 +165,23 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
     return new Promise<void>((resolve) => {
       this.mCountdownInterval = setInterval(async () => {
         if (this.mTotalSeconds > 0) {
-
           --this.mSeconds;
 
           if (this.mMinutes >= 0 && this.mSeconds < 0) {
-
             this.mSeconds = 59;
             --this.mMinutes;
-
           }
 
           if (this.mHours >= 0 && this.mMinutes < 0) {
-
             this.mMinutes = 59;
             --this.mHours;
-
           }
 
           --this.mTotalSeconds;
-
         } else {
-
           clearInterval(this.mCountdownInterval);
           this.mCountdownInterval = -1;
-
         }
-
       }, 1000);
 
       resolve();
@@ -200,50 +189,54 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
   }
 
   render() {
-    return <Host class={{'deckgo-slide-container': true}}>
-      <div class="deckgo-slide">
-        <slot name="title"></slot>
-        {this.renderCountdown()}
-        <slot name="notes"></slot>
-        <slot name="actions"></slot>
-        <slot name="background"></slot>
-      </div>
-    </Host>
+    return (
+      <Host class={{'deckgo-slide-container': true}}>
+        <div class="deckgo-slide">
+          <slot name="title"></slot>
+          {this.renderCountdown()}
+          <slot name="notes"></slot>
+          <slot name="actions"></slot>
+          <slot name="background"></slot>
+        </div>
+      </Host>
+    );
   }
 
   private renderCountdown() {
     if (this.mDays >= 1) {
-      return <div class="deckgo-countdown-container">
-        {this.renderCountdownTime('days', this.mDays)}
-        {this.renderCountdownTime('hours', this.mHours)}
-        {this.renderCountdownTime('minutes', this.mMinutes)}
-      </div>
+      return (
+        <div class="deckgo-countdown-container">
+          {this.renderCountdownTime('days', this.mDays)}
+          {this.renderCountdownTime('hours', this.mHours)}
+          {this.renderCountdownTime('minutes', this.mMinutes)}
+        </div>
+      );
     } else {
-      return <div class="deckgo-countdown-container">
-        {this.renderCountdownTime('hours', this.mHours)}
-        {this.renderCountdownTime('minutes', this.mMinutes)}
-        {this.renderCountdownTime('seconds', this.mSeconds)}
-      </div>
+      return (
+        <div class="deckgo-countdown-container">
+          {this.renderCountdownTime('hours', this.mHours)}
+          {this.renderCountdownTime('minutes', this.mMinutes)}
+          {this.renderCountdownTime('seconds', this.mSeconds)}
+        </div>
+      );
     }
   }
 
   private renderCountdownTime(slotName: string, value: number) {
-    return <div class="time-container">
-      <slot name={slotName}></slot>
+    return (
+      <div class="time-container">
+        <slot name={slotName}></slot>
 
-      <div class="figure-container">
+        <div class="figure-container">
+          <div class="figure tens">
+            <span>{`${value >= 10 ? Math.floor(value / 10) % 10 : 0}`}</span>
+          </div>
 
-        <div class="figure tens">
-          <span>{`${value >= 10 ? Math.floor(value / 10) % 10 : 0}`}</span>
+          <div class="figure unit">
+            <span>{`${value % 10}`}</span>
+          </div>
         </div>
-
-        <div class="figure unit">
-          <span>{`${value % 10}`}</span>
-        </div>
-
       </div>
-
-    </div>
+    );
   }
-
 }
