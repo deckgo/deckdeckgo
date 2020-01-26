@@ -1,89 +1,127 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>DeckDeckGo</title>
 
-<head>
-  <meta charset="utf-8">
-  <title>DeckDeckGo</title>
-
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self';
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self';
     img-src 'self' data: https://deckdeckgo.com https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/ https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-beta.appspot.com/ https://www.gstatic.com https://lh5.googleusercontent.com https://pbs.twimg.com https://media.giphy.com https://media.tenor.com/ https://images.unsplash.com/ https://*.githubusercontent.com/ https://*.googleusercontent.com/ https://*.ytimg.com/;
     style-src 'self' 'unsafe-inline' https://cdn.firebase.com https://fonts.googleapis.com;
     font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
     script-src 'self' blob: <@PRELOADMODULE_LINKS@> <@SW_LOADER@> 'sha256-vay/aAFxtYsaISRoBsVDHCbAzow9u6P2gHHTewRPaJY=' https://cdn.firebase.com https://apis.google.com https://unpkg.com/prismjs@latest/;
     connect-src 'self' <@API_URLS@> https://deckdeckgo.com/ wss://api.deckdeckgo.com/ https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/ https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-beta.appspot.com/ https://www.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com ws://localhost:3333/ https://raw.githubusercontent.com/PrismJS/ https://raw.githubusercontent.com/deckgo/ https://api.tenor.com/;
-    frame-src https://deckdeckgo.com https://*.deckdeckgo.com https://deckdeckgo-studio-beta.firebaseapp.com http://localhost:3333/~dev-server https://www.youtube.com/ https://apis.google.com/ https://deckdeckgo-studio-prod.firebaseapp.com/">
+    frame-src https://deckdeckgo.com https://*.deckdeckgo.com https://deckdeckgo-studio-beta.firebaseapp.com http://localhost:3333/~dev-server https://www.youtube.com/ https://apis.google.com/ https://deckdeckgo-studio-prod.firebaseapp.com/"
+    />
 
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="The open source web editor for presentations">
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <meta property="og:site_name" content="DeckDeckGo">
-  <meta property="og:title" content="DeckDeckGo">
+    <meta
+      name="description"
+      content="Make more than presentations. Create, present and share apps. Interact with your audience. With DeckDeckGo, edit your slides anywhere, display them everywhere."
+    />
 
-  <meta name="author" content="DeckDeckGo">
+    <meta
+      property="og:description"
+      content="Make more than presentations. Create, present and share apps. Interact with your audience. With DeckDeckGo, edit your slides anywhere, display them everywhere."
+    />
+    <meta property="og:site_name" content="DeckDeckGo" />
+    <meta property="og:title" content="The web open source editor for presentations" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://deckdeckgo.com" />
+    <meta property="og:image" content="https://deckdeckgo.com/assets/meta/deckdeckgo-meta.png" />
+    <meta property="og:image:type" content="image/png" />
 
-  <meta name="description" content="The open source web editor for presentations">
-  <meta property="og:description" content="The open source web editor for presentations">
+    <meta name="twitter:site" content="@deckdeckgo" />
+    <meta name="twitter:title" content="The web open source editor for presentations" />
+    <meta
+      name="twitter:description"
+      content="Make more than presentations. Create, present and share apps. Interact with your audience. With DeckDeckGo, edit your slides anywhere, display them everywhere."
+    />
+    <meta name="twitter:image:src" content="https://deckdeckgo.com/assets/meta/deckdeckgo-meta.png" />
+    <meta name="twitter:card" content="summary" />
 
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://deckdeckgo.com">
+    <meta name="author" content="DeckDeckGo" />
 
-  <meta property="og:image" content="https://deckdeckgo.com/assets/favicon/android-chrome-512x512.png">
-  <meta property="og:image:type" content="image/png">
+    <link rel="canonical" href="https://deckdeckgo.com" />
 
-  <link rel="canonical" href="https://deckdeckgo.com"/>
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico" />
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml" />
 
-  <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
-  <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
-  <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
 
-  <meta name="format-detection" content="telephone=no">
-  <meta name="msapplication-tap-highlight" content="no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="DeckDeckGo" />
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="DeckDeckGo">
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="white" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
-  <meta name="theme-color" content="#ffffff">
-  <meta name="apple-mobile-web-app-status-bar-style" content="white">
-  <meta name="msapplication-TileColor" content="#ffffff">
+    <meta http-equiv="x-ua-compatible" content="IE=Edge" />
 
-  <meta http-equiv="x-ua-compatible" content="IE=Edge">
+    <!-- Splash screens-->
+    <link
+      rel="apple-touch-startup-image"
+      href="assets/splash/launch-640x1136.png"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="assets/splash/launch-750x1294.png"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="assets/splash/launch-1242x2148.png"
+      media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="assets/splash/launch-1125x2436.png"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="assets/splash/launch-1536x2048.png"
+      media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="assets/splash/launch-1668x2224.png"
+      media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="assets/splash/launch-2048x2732.png"
+      media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
 
-  <!-- Splash screens-->
-  <link rel="apple-touch-startup-image" href="assets/splash/launch-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-  <link rel="apple-touch-startup-image" href="assets/splash/launch-750x1294.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-  <link rel="apple-touch-startup-image" href="assets/splash/launch-1242x2148.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-  <link rel="apple-touch-startup-image" href="assets/splash/launch-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-  <link rel="apple-touch-startup-image" href="assets/splash/launch-1536x2048.png" media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
-  <link rel="apple-touch-startup-image" href="assets/splash/launch-1668x2224.png" media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
-  <link rel="apple-touch-startup-image" href="assets/splash/launch-2048x2732.png" media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link href="/build/app.css" rel="stylesheet" />
 
-  <link href="/build/app.css" rel="stylesheet">
+    <script type="module" src="/build/app.esm.js"></script>
+    <script nomodule src="/build/app.js"></script>
 
-  <script type="module" src="/build/app.esm.js"></script>
-  <script nomodule src="/build/app.js"></script>
+    <link rel="manifest" href="/manifest.json" />
 
-  <link rel="manifest" href="/manifest.json">
+    <style>
+      :root {
+        background: #f4f5f8;
+        --ion-background-color: #ffffff;
+      }
+    </style>
+  </head>
 
-  <style>
-    :root {
-      background: #f4f5f8;
-      --ion-background-color: #ffffff;
-    }
-  </style>
+  <body>
+    <app-root></app-root>
 
-</head>
-
-<body>
-
-  <app-root></app-root>
-
-  <noscript>
-    Please enable JavaScript to use this editor.
-  </noscript>
-
-</body>
-
+    <noscript>
+      Please enable JavaScript to use this editor.
+    </noscript>
+  </body>
 </html>
