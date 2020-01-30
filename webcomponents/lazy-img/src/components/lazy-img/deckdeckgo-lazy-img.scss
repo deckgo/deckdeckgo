@@ -37,4 +37,6 @@ svg {
   opacity: var(--deckgo-lazy-img-opacity-not-loaded, 0);
 
   transition: var(--deckgo-lazy-img-transition, opacity 0.15s linear);
+
+  box-shadow: var(--deckgo-lazy-img-box-shadow);
 }

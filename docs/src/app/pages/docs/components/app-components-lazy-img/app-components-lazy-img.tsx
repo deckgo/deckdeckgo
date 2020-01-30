@@ -325,6 +325,11 @@ export class AppComponentsLazyImg {
                 <td>opacity 0.15s linear</td>
                 <td>The animation of the image, notably use to display smoothly the image when loaded</td>
               </tr>
+              <tr>
+                <td>--deckgo-lazy-img-box-shadow</td>
+                <td></td>
+                <td>Image box-shadow</td>
+              </tr>
             </tbody>
           </table>
           <h3 id="app-components-lazy-img-methods">Methods</h3>
