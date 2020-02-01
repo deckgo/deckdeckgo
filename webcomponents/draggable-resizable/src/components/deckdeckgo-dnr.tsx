@@ -67,6 +67,18 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
   // Valeur
 
+  async componentDidLoad() {
+    await this.displaySlot();
+  }
+
+  private async displaySlot() {
+    const element: HTMLElement = this.el.querySelector(`:scope > [slot]`);
+
+    if (element && element.style.display === 'none') {
+      element.style.display = '';
+    }
+  }
+
   @Method()
   lazyLoadContent(): Promise<void> {
     // TODO
