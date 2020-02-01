@@ -266,16 +266,32 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     }
 
     return [
-      <div class="anchor top end" onClick={($event) => $event.stopPropagation()} onMouseDown={() => (this.dragTopEnd = true)}>
+      <div
+        class="anchor top end"
+        onClick={($event) => $event.stopPropagation()}
+        onMouseDown={() => (this.dragTopEnd = true)}
+        onTouchStart={() => (this.dragTopEnd = true)}>
         <div></div>
       </div>,
-      <div class="anchor bottom end" onClick={($event) => $event.stopPropagation()} onMouseDown={() => (this.dragBottomEnd = true)}>
+      <div
+        class="anchor bottom end"
+        onClick={($event) => $event.stopPropagation()}
+        onMouseDown={() => (this.dragBottomEnd = true)}
+        onTouchStart={() => (this.dragBottomEnd = true)}>
         <div></div>
       </div>,
-      <div class="anchor bottom start" onClick={($event) => $event.stopPropagation()} onMouseDown={() => (this.dragBottomStart = true)}>
+      <div
+        class="anchor bottom start"
+        onClick={($event) => $event.stopPropagation()}
+        onMouseDown={() => (this.dragBottomStart = true)}
+        onTouchStart={() => (this.dragBottomStart = true)}>
         <div></div>
       </div>,
-      <div class="anchor top start" onClick={($event) => $event.stopPropagation()} onMouseDown={() => (this.dragTopStart = true)}>
+      <div
+        class="anchor top start"
+        onClick={($event) => $event.stopPropagation()}
+        onMouseDown={() => (this.dragTopStart = true)}
+        onTouchStart={() => (this.dragTopStart = true)}>
         <div></div>
       </div>
     ];
