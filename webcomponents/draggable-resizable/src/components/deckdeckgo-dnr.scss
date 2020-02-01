@@ -9,7 +9,7 @@
   top: var(--top);
   left: var(--left);
 
-  cursor: pointer;
+  cursor: move;
 }
 
 ::slotted(*) {
@@ -19,17 +19,47 @@
 
 div.anchor {
   position: absolute;
-  bottom: 0;
-  right: 0;
 
-  transform: translate(50%, 50%);
+  width: var(--deckgo-dnr-anchor-width, 16px);
+  height: var(--deckgo-dnr-anchor-height, 16px);
 
-  width: 16px;
-  height: 16px;
+  border-radius: var(--deckgo-dnr-anchor-border-width, 50%);
 
-  border-radius: 50%;
+  background: var(--deckgo-dnr-anchor-background, #3880ff);
 
-  background: blue;
+  &.top {
+    top: 0;
 
-  cursor: pointer;
+    &.end {
+      cursor: ne-resize;
+      transform: translate(50%, -50%);
+    }
+
+    &.start {
+      cursor: nw-resize;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &.end {
+    right: 0;
+  }
+
+  &.bottom {
+    bottom: 0;
+
+    &.end {
+      cursor: se-resize;
+      transform: translate(50%, 50%);
+    }
+
+    &.start {
+      cursor: sw-resize;
+      transform: translate(-50%, 50%);
+    }
+  }
+
+  &.start {
+    left: 0;
+  }
 }

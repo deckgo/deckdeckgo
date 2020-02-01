@@ -12,6 +12,8 @@ export namespace Components {
     height: number;
     lazyLoadContent: () => Promise<void>;
     left: number;
+    minHeight: number;
+    minWidth: number;
     top: number;
     width: number;
   }
@@ -32,6 +34,8 @@ declare namespace LocalJSX {
   interface DeckgoDnr {
     height?: number;
     left?: number;
+    minHeight?: number;
+    minWidth?: number;
     top?: number;
     width?: number;
   }

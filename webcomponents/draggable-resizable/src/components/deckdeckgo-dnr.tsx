@@ -4,6 +4,11 @@ import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 import {unifyEvent} from '@deckdeckgo/utils';
 
+enum ApplyOperation {
+  ADD,
+  SUBSTRACT
+}
+
 @Component({
   tag: 'deckgo-dnr',
   styleUrl: 'deckdeckgo-dnr.scss',
@@ -19,6 +24,12 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
   @Prop({reflect: true})
   height: number;
+
+  @Prop()
+  minWidth: number = 32;
+
+  @Prop()
+  minHeight: number = 32;
 
   // Position
 
@@ -38,13 +49,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   private startTop: number = null;
   private startLeft: number = null;
 
-  private dragging: boolean = false;
+  private dragTopEnd: boolean = false;
+  private dragBottomEnd: boolean = false;
+  private dragBottomStart: boolean = false;
+  private dragTopStart: boolean = false;
+
   private moving: boolean = false;
 
   // TODO
 
   // Tous les coins
-  // Border
+  // En pixel ou pourcentage
   // Afficher la taille et option turn it down
   // Keep aspect ratio
   // Disable enable, per default disable
@@ -104,8 +119,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     this.selected = true;
 
-    this.startMove($event);
-    this.startResize($event);
+    this.startMove();
+    this.initStartPositions($event);
   }
 
   private moveOrResize($event: MouseEvent | TouchEvent) {
@@ -118,21 +133,51 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       return;
     }
 
-    const delta: {x: number; y: number} = this.getDelta($event);
-
-    this.left = this.startLeft + delta.x > 0 ? this.startLeft + delta.x : 0;
-    this.top = this.startTop + delta.y > 0 ? this.startTop + delta.y : 0;
+    this.delta($event, {top: ApplyOperation.ADD, left: ApplyOperation.ADD});
   }
 
   private resize($event: MouseEvent | TouchEvent) {
-    if (!this.selected || !this.startX || !this.startY || !this.startWidth || !this.startHeight || !this.dragging) {
+    if (!this.selected || !this.startX || !this.startY || !this.startWidth || !this.startHeight) {
       return;
     }
 
+    if (!this.dragBottomEnd && !this.dragTopEnd && !this.dragBottomStart && !this.dragTopStart) {
+      return;
+    }
+
+    if (this.dragBottomEnd) {
+      this.delta($event, {width: ApplyOperation.ADD, height: ApplyOperation.ADD});
+    } else if (this.dragTopEnd) {
+      this.delta($event, {width: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT, top: ApplyOperation.ADD});
+    } else if (this.dragBottomStart) {
+      this.delta($event, {width: ApplyOperation.SUBSTRACT, height: ApplyOperation.ADD, left: ApplyOperation.ADD});
+    } else if (this.dragTopStart) {
+      this.delta($event, {width: ApplyOperation.SUBSTRACT, top: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT, left: ApplyOperation.ADD});
+    }
+  }
+
+  private delta($event: MouseEvent | TouchEvent, attr: {width?: ApplyOperation; height?: ApplyOperation; top?: ApplyOperation; left?: ApplyOperation}) {
     const delta: {x: number; y: number} = this.getDelta($event);
 
-    this.width = this.startWidth + delta.x > 0 ? this.startWidth + delta.x : 0;
-    this.height = this.startHeight + delta.y > 0 ? this.startHeight + delta.y : 0;
+    if (attr.width === ApplyOperation.ADD) {
+      this.width = this.startWidth + delta.x > this.minWidth ? this.startWidth + delta.x : this.minWidth;
+    } else if (attr.width === ApplyOperation.SUBSTRACT) {
+      this.width = this.startWidth - delta.x > this.minWidth ? this.startWidth - delta.x : this.minWidth;
+    }
+
+    if (attr.height === ApplyOperation.ADD) {
+      this.height = this.startHeight + delta.y > this.minHeight ? this.startHeight + delta.y : this.minHeight;
+    } else if (attr.height === ApplyOperation.SUBSTRACT) {
+      this.height = this.startHeight - delta.y > this.minHeight ? this.startHeight - delta.y : this.minHeight;
+    }
+
+    if (attr.top === ApplyOperation.ADD) {
+      this.top = this.startTop + delta.y > 0 ? this.startTop + delta.y : 0;
+    }
+
+    if (attr.left === ApplyOperation.ADD) {
+      this.left = this.startLeft + delta.x > 0 ? this.startLeft + delta.x : 0;
+    }
   }
 
   private getDelta($event: MouseEvent | TouchEvent): {x: number; y: number} {
@@ -148,24 +193,23 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     };
   }
 
-  private startResize($event: MouseEvent | TouchEvent) {
+  private initStartPositions($event: MouseEvent | TouchEvent) {
     this.startX = unifyEvent($event).clientX;
     this.startY = unifyEvent($event).clientY;
+
     this.startWidth = this.width;
     this.startHeight = this.height;
+
+    this.startTop = this.top;
+    this.startLeft = this.left;
   }
 
-  private startMove($event: MouseEvent | TouchEvent) {
-    if (this.dragging) {
+  private startMove() {
+    if (this.dragBottomEnd || this.dragTopEnd || this.dragBottomStart || this.dragTopStart) {
       return;
     }
 
     this.moving = true;
-
-    this.startX = unifyEvent($event).clientX;
-    this.startY = unifyEvent($event).clientY;
-    this.startTop = this.top;
-    this.startLeft = this.left;
   }
 
   private stop() {
@@ -184,7 +228,10 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   }
 
   private stopResize() {
-    this.dragging = false;
+    this.dragBottomEnd = false;
+    this.dragTopEnd = false;
+    this.dragBottomStart = false;
+    this.dragTopStart = false;
 
     this.startWidth = null;
     this.startHeight = null;
@@ -206,6 +253,11 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       return undefined;
     }
 
-    return [<div class="anchor" onClick={($event) => $event.stopPropagation()} onMouseDown={() => (this.dragging = true)}></div>];
+    return [
+      <div class="anchor top end" onClick={($event) => $event.stopPropagation()} onMouseDown={() => (this.dragTopEnd = true)}></div>,
+      <div class="anchor bottom end" onClick={($event) => $event.stopPropagation()} onMouseDown={() => (this.dragBottomEnd = true)}></div>,
+      <div class="anchor bottom start" onClick={($event) => $event.stopPropagation()} onMouseDown={() => (this.dragBottomStart = true)}></div>,
+      <div class="anchor top start" onClick={($event) => $event.stopPropagation()} onMouseDown={() => (this.dragTopStart = true)}></div>
+    ];
   }
 }
