@@ -1,0 +1,65 @@
+{
+  "name": "@deckdeckgo/draggable-resizable",
+  "version": "1.0.0-alpha.1",
+  "description": "A Web Component to drag and resize any element",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-draggable-resizable/deckdeckgo-draggable-resizable.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate"
+  },
+  "devDependencies": {
+    "@deckdeckgo/slide-utils": "^1.0.0-rc.4",
+    "@stencil/core": "^1.8.1",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.1.1",
+    "@stencil/utils": "0.0.5",
+    "@types/prismjs": "^1.16.0",
+    "autoprefixer": "^9.7.3",
+    "husky": "^4.2.1",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "David Dal Busco",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk",
+    "draggable",
+    "resizable"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
