@@ -28,11 +28,16 @@
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",
     "@stencil/utils": "0.0.5",
+    "@types/jest": "24.0.25",
     "@types/prismjs": "^1.16.0",
+    "@types/puppeteer": "1.20.3",
     "autoprefixer": "^9.7.3",
     "husky": "^4.2.1",
+    "jest": "24.9.0",
+    "jest-cli": "24.9.0",
     "prettier": "1.19.1",
-    "pretty-quick": "^2.0.1"
+    "pretty-quick": "^2.0.1",
+    "puppeteer": "1.20.0"
   },
   "license": "MIT",
   "repository": {
