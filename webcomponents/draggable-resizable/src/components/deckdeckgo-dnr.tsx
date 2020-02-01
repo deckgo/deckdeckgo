@@ -2,6 +2,8 @@ import {Component, h, Host, Listen, Prop, State, Element, Method} from '@stencil
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
+import {unifyEvent} from '@deckdeckgo/utils';
+
 @Component({
   tag: 'deckgo-dnr',
   styleUrl: 'deckdeckgo-dnr.scss',
@@ -18,8 +20,16 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Prop({reflect: true})
   height: number;
 
+  // Position
+
+  @Prop({reflect: true})
+  top: number;
+
+  @Prop({reflect: true})
+  left: number;
+
   @State()
-  private doTheJob: boolean = false;
+  private selected: boolean = false;
 
   private startX: number = null;
   private startY: number = null;
@@ -29,15 +39,6 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   private startLeft: number = null;
 
   private dragging: boolean = false;
-
-  // Position
-
-  @Prop({reflect: true})
-  top: number;
-
-  @Prop({reflect: true})
-  left: number;
-
   private moving: boolean = false;
 
   // TODO
@@ -46,7 +47,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   // Border
   // Afficher la taille et option turn it down
   // Keep aspect ratio
-  // Disable enable
+  // Disable enable, per default disable
   // z-Index on click ?
 
   // Valeur
@@ -59,108 +60,141 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
   @Listen('mousedown', {passive: true, target: 'document'})
   onMousedown($event: MouseEvent) {
-    const selected = ($event.target as HTMLElement).closest('deckgo-dnr');
+    this.start($event);
+  }
 
-    if (!selected || !(selected as any).isEqualNode(this.el)) {
-      this.stopResize();
-      this.stopMove();
-      this.doTheJob = false;
+  @Listen('touchstart', {passive: true, target: 'document'})
+  onTouchstart($event: TouchEvent) {
+    this.start($event);
+  }
+
+  @Listen('mousemove', {passive: true, target: 'document'})
+  onMousemove($event: MouseEvent) {
+    this.moveOrResize($event);
+  }
+
+  @Listen('touchmove', {passive: true, target: 'document'})
+  onTouchmove($event: TouchEvent) {
+    this.moveOrResize($event);
+  }
+
+  @Listen('mouseup', {passive: true, target: 'document'})
+  onMouseup(_$event: MouseEvent) {
+    this.stop();
+  }
+
+  @Listen('touchend', {passive: true, target: 'document'})
+  onTouchend(_$event: TouchEvent) {
+    this.stop();
+  }
+
+  private start($event: MouseEvent | TouchEvent) {
+    if (!$event || !$event.target) {
       return;
     }
 
-    this.doTheJob = true;
+    const selected: HTMLElement = ($event.target as HTMLElement).closest('deckgo-dnr');
+
+    // If we click elsewhere or select another component, then this component should loose focus and values need to be reset for next usage
+    if (!selected || !selected.isEqualNode(this.el)) {
+      this.stop();
+      this.selected = false;
+      return;
+    }
+
+    this.selected = true;
 
     this.startMove($event);
     this.startResize($event);
   }
 
-  @Listen('mouseup', {passive: true, target: 'document'})
-  onMouseup(_$event: MouseEvent) {
-    this.stopMove();
-
-    this.stopResize();
-  }
-
-  @Listen('mousemove', {passive: true, target: 'document'})
-  onMousemove($event: MouseEvent) {
+  private moveOrResize($event: MouseEvent | TouchEvent) {
     this.move($event);
-
     this.resize($event);
   }
 
-  private move($event: MouseEvent) {
+  private move($event: MouseEvent | TouchEvent) {
     if (!this.moving) {
       return;
     }
 
-    const currentX: number = $event.clientX;
-    const currentY: number = $event.clientY;
+    const delta: {x: number; y: number} = this.getDelta($event);
 
-    const deltaX: number = currentX - this.startX;
-    const deltaY: number = currentY - this.startY;
-
-    this.left = this.startLeft + deltaX > 0 ? this.startLeft + deltaX : 0;
-    this.top = this.startTop + deltaY > 0 ? this.startTop + deltaY : 0;
+    this.left = this.startLeft + delta.x > 0 ? this.startLeft + delta.x : 0;
+    this.top = this.startTop + delta.y > 0 ? this.startTop + delta.y : 0;
   }
 
-  private resize($event: MouseEvent) {
-    if (!this.doTheJob || !this.startX || !this.startY || !this.startWidth || !this.startHeight || !this.dragging) {
+  private resize($event: MouseEvent | TouchEvent) {
+    if (!this.selected || !this.startX || !this.startY || !this.startWidth || !this.startHeight || !this.dragging) {
       return;
     }
 
-    const currentX: number = $event.clientX;
-    const currentY: number = $event.clientY;
+    const delta: {x: number; y: number} = this.getDelta($event);
+
+    this.width = this.startWidth + delta.x > 0 ? this.startWidth + delta.x : 0;
+    this.height = this.startHeight + delta.y > 0 ? this.startHeight + delta.y : 0;
+  }
+
+  private getDelta($event: MouseEvent | TouchEvent): {x: number; y: number} {
+    const currentX: number = unifyEvent($event).clientX;
+    const currentY: number = unifyEvent($event).clientY;
 
     const deltaX: number = currentX - this.startX;
     const deltaY: number = currentY - this.startY;
 
-    this.width = this.startWidth + deltaX > 0 ? this.startWidth + deltaX : 0;
-    this.height = this.startHeight + deltaY > 0 ? this.startHeight + deltaY : 0;
+    return {
+      x: deltaX,
+      y: deltaY
+    };
   }
 
-  private stopResize() {
-    this.dragging = false;
-
-    this.startX = null;
-    this.startY = null;
-    this.startWidth = null;
-    this.startHeight = null;
-  }
-
-  private stopMove() {
-    this.moving = false;
-
-    this.startX = null;
-    this.startY = null;
-    this.startTop = null;
-    this.startLeft = null;
-  }
-
-  private startResize(e: MouseEvent) {
-    this.startX = e.clientX;
-    this.startY = e.clientY;
+  private startResize($event: MouseEvent | TouchEvent) {
+    this.startX = unifyEvent($event).clientX;
+    this.startY = unifyEvent($event).clientY;
     this.startWidth = this.width;
     this.startHeight = this.height;
   }
 
-  private startMove(e: MouseEvent) {
+  private startMove($event: MouseEvent | TouchEvent) {
     if (this.dragging) {
       return;
     }
 
     this.moving = true;
 
-    this.startX = e.clientX;
-    this.startY = e.clientY;
+    this.startX = unifyEvent($event).clientX;
+    this.startY = unifyEvent($event).clientY;
     this.startTop = this.top;
     this.startLeft = this.left;
+  }
+
+  private stop() {
+    this.startX = null;
+    this.startY = null;
+
+    this.stopMove();
+    this.stopResize();
+  }
+
+  private stopMove() {
+    this.moving = false;
+
+    this.startTop = null;
+    this.startLeft = null;
+  }
+
+  private stopResize() {
+    this.dragging = false;
+
+    this.startWidth = null;
+    this.startHeight = null;
   }
 
   render() {
     return (
       <Host
         style={{'--width': `${this.width}px`, '--height': `${this.height}px`, '--top': `${this.top}px`, '--left': `${this.left}px`}}
-        class={this.doTheJob ? 'selected' : undefined}>
+        class={this.selected ? 'selected' : undefined}>
         {this.renderAnchors()}
         <slot />
       </Host>
@@ -168,7 +202,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   }
 
   private renderAnchors() {
-    if (!this.doTheJob) {
+    if (!this.selected) {
       return undefined;
     }
 

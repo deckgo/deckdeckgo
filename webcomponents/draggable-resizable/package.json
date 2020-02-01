@@ -66,5 +66,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "dependencies": {
+    "@deckdeckgo/utils": "^1.0.0-rc.2"
   }
 }
