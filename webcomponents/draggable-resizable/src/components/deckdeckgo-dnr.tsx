@@ -1,4 +1,4 @@
-import {Component, h, Host, Listen, Prop, State, Element, Method} from '@stencil/core';
+import {Component, h, Host, Prop, State, Element, Method} from '@stencil/core';
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
@@ -19,6 +19,9 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
   // Size
 
+  @Prop()
+  resize: boolean = true;
+
   @Prop({reflect: true})
   width: number;
 
@@ -33,6 +36,9 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
   // Position
 
+  @Prop()
+  drag: 'x-axis' | 'y-axis' | 'all' | 'none' = 'all';
+
   @Prop({reflect: true})
   top: number;
 
@@ -41,6 +47,9 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
   @State()
   private selected: boolean = false;
+
+  @State()
+  private moving: boolean = false;
 
   private startX: number = null;
   private startY: number = null;
@@ -54,8 +63,6 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   private dragBottomStart: boolean = false;
   private dragTopStart: boolean = false;
 
-  private moving: boolean = false;
-
   // TODO
 
   // Tous les coins
@@ -67,8 +74,30 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
   // Valeur
 
+  componentWillLoad() {
+    if (document && (this.drag || this.resize)) {
+      document.addEventListener('mousedown', this.start.bind(this), {passive: true});
+      document.addEventListener('touchstart', this.start.bind(this), {passive: true});
+      document.addEventListener('mousemove', this.moveOrResize.bind(this), {passive: true});
+      document.addEventListener('touchmove', this.moveOrResize.bind(this), {passive: true});
+      document.addEventListener('mouseup', this.stop.bind(this), {passive: true});
+      document.addEventListener('touchend', this.stop.bind(this), {passive: true});
+    }
+  }
+
   async componentDidLoad() {
     await this.displaySlot();
+  }
+
+  componentWillUnload() {
+    if (document && (this.drag || this.resize)) {
+      document.removeEventListener('mousedown', this.start, true);
+      document.removeEventListener('touchstart', this.start, true);
+      document.removeEventListener('mousemove', this.moveOrResize, true);
+      document.removeEventListener('touchmove', this.moveOrResize, true);
+      document.removeEventListener('mouseup', this.stop, true);
+      document.removeEventListener('touchend', this.stop, true);
+    }
   }
 
   private async displaySlot() {
@@ -85,37 +114,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     return Promise.resolve();
   }
 
-  @Listen('mousedown', {passive: true, target: 'document'})
-  onMousedown($event: MouseEvent) {
-    this.start($event);
-  }
-
-  @Listen('touchstart', {passive: true, target: 'document'})
-  onTouchstart($event: TouchEvent) {
-    this.start($event);
-  }
-
-  @Listen('mousemove', {passive: true, target: 'document'})
-  onMousemove($event: MouseEvent) {
-    this.moveOrResize($event);
-  }
-
-  @Listen('touchmove', {passive: true, target: 'document'})
-  onTouchmove($event: TouchEvent) {
-    this.moveOrResize($event);
-  }
-
-  @Listen('mouseup', {passive: true, target: 'document'})
-  onMouseup(_$event: MouseEvent) {
-    this.stop();
-  }
-
-  @Listen('touchend', {passive: true, target: 'document'})
-  onTouchend(_$event: TouchEvent) {
-    this.stop();
-  }
-
-  private start($event: MouseEvent | TouchEvent) {
+  private start = ($event: MouseEvent | TouchEvent) => {
     if (!$event || !$event.target) {
       return;
     }
@@ -133,22 +132,32 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     this.startMove();
     this.initStartPositions($event);
-  }
+  };
 
   private moveOrResize($event: MouseEvent | TouchEvent) {
     this.move($event);
-    this.resize($event);
+    this.size($event);
   }
 
-  private move($event: MouseEvent | TouchEvent) {
-    if (!this.moving) {
+  private move = ($event: MouseEvent | TouchEvent) => {
+    if (!this.moving || this.drag === 'none') {
       return;
     }
 
-    this.delta($event, {top: ApplyOperation.ADD, left: ApplyOperation.ADD});
-  }
+    if (this.drag === 'x-axis') {
+      this.delta($event, {left: ApplyOperation.ADD});
+    } else if (this.drag === 'y-axis') {
+      this.delta($event, {top: ApplyOperation.ADD});
+    } else {
+      this.delta($event, {top: ApplyOperation.ADD, left: ApplyOperation.ADD});
+    }
+  };
 
-  private resize($event: MouseEvent | TouchEvent) {
+  private size($event: MouseEvent | TouchEvent) {
+    if (!this.resize) {
+      return;
+    }
+
     if (!this.selected || !this.startX || !this.startY || !this.startWidth || !this.startHeight) {
       return;
     }
@@ -224,13 +233,13 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     this.moving = true;
   }
 
-  private stop() {
+  private stop = () => {
     this.startX = null;
     this.startY = null;
 
     this.stopMove();
     this.stopResize();
-  }
+  };
 
   private stopMove() {
     this.moving = false;
@@ -253,7 +262,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     return (
       <Host
         style={{'--width': `${this.width}px`, '--height': `${this.height}px`, '--top': `${this.top}px`, '--left': `${this.left}px`}}
-        class={this.selected ? 'selected' : undefined}>
+        class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
         {this.renderAnchors()}
         <slot />
       </Host>
@@ -261,7 +270,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   }
 
   private renderAnchors() {
-    if (!this.selected) {
+    if (!this.selected || !this.resize) {
       return undefined;
     }
 

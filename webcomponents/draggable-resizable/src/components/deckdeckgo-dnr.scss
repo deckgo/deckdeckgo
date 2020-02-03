@@ -8,7 +8,9 @@
 
   top: var(--top);
   left: var(--left);
+}
 
+:host(.selected.draggable:not(.drag)) {
   cursor: move;
 }
 
