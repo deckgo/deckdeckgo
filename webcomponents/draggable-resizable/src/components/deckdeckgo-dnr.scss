@@ -4,6 +4,8 @@
   width: var(--width);
   height: var(--height);
 
+  transform: rotate(var(--rotate));
+
   position: absolute;
 
   top: var(--top);
@@ -23,6 +25,10 @@
   pointer-events: none;
 }
 
+:host(.selected) {
+  outline: var(--deckgo-dnr-border, 1px solid #3880ff);
+}
+
 div.anchor {
   position: absolute;
 
@@ -32,8 +38,9 @@ div.anchor {
   > div {
     width: 100%;
     height: 100%;
-    border-radius: var(--deckgo-dnr-anchor-border-width, 50%);
+    border-radius: var(--deckgo-dnr-anchor-border-radius, 50%);
     background: var(--deckgo-dnr-anchor-background, #3880ff);
+    border: var(--deckgo-dnr-anchor-border);
   }
 
   padding: var(--deckgo-dnr-anchor-padding, 16px);
@@ -124,5 +131,40 @@ div.border {
     transform: translate(-50%, -50%);
 
     cursor: w-resize;
+  }
+}
+
+div.rotate {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%);
+
+  height: var(--deckgo-dnr-rotate-anchor-width, 32px);
+  width: var(--deckgo-dnr-rotate-anchor-height, 32px);
+
+  div.action {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    cursor: crosshair;
+
+    width: var(--deckgo-dnr-rotate-anchor-action-width, 16px);
+    height: var(--deckgo-dnr-rotate-anchor-action-height, 16px);
+    border-radius: var(--deckgo-dnr-rotate-anchor-action-border-radius, 50%);
+    background: var(--deckgo-dnr-rotate-anchor-action-background);
+    border: var(--deckgo-dnr-rotate-anchor-action-border, 1px solid #3880ff);
+  }
+
+  div.presentation {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    height: var(--deckgo-dnr-rotate-anchor-presentation-height, calc(100% - 16px - 1px));
+    border-right: var(--deckgo-dnr-rotate-anchor-presentation-border-right, 1px solid #3880ff);
   }
 }

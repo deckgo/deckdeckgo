@@ -16,6 +16,8 @@ export namespace Components {
     minHeight: number;
     minWidth: number;
     resize: boolean;
+    rotate: number;
+    rotation: boolean;
     top: number;
     width: number;
   }
@@ -40,6 +42,8 @@ declare namespace LocalJSX {
     minHeight?: number;
     minWidth?: number;
     resize?: boolean;
+    rotate?: number;
+    rotation?: boolean;
     top?: number;
     width?: number;
   }

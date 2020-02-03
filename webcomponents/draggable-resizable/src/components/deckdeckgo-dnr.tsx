@@ -45,6 +45,14 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Prop({reflect: true})
   left: number;
 
+  // Rotate
+
+  @Prop()
+  rotation: boolean = true;
+
+  @Prop({reflect: true})
+  rotate: number;
+
   @State()
   private selected: boolean = false;
 
@@ -71,6 +79,11 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   private parentWidth: number = null;
   private parentHeight: number = null;
 
+  private rotating: boolean = false;
+
+  private centerX: number = null;
+  private centerY: number = null;
+
   // TODO
 
   // Afficher la taille et option turn it down
@@ -84,8 +97,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     if (document && (this.drag || this.resize)) {
       document.addEventListener('mousedown', this.start.bind(this), {passive: true});
       document.addEventListener('touchstart', this.start.bind(this), {passive: true});
-      document.addEventListener('mousemove', this.moveOrResize.bind(this), {passive: true});
-      document.addEventListener('touchmove', this.moveOrResize.bind(this), {passive: true});
+      document.addEventListener('mousemove', this.transform.bind(this), {passive: true});
+      document.addEventListener('touchmove', this.transform.bind(this), {passive: true});
       document.addEventListener('mouseup', this.stop.bind(this), {passive: true});
       document.addEventListener('touchend', this.stop.bind(this), {passive: true});
     }
@@ -99,8 +112,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     if (document && (this.drag || this.resize)) {
       document.removeEventListener('mousedown', this.start, true);
       document.removeEventListener('touchstart', this.start, true);
-      document.removeEventListener('mousemove', this.moveOrResize, true);
-      document.removeEventListener('touchmove', this.moveOrResize, true);
+      document.removeEventListener('mousemove', this.transform, true);
+      document.removeEventListener('touchmove', this.transform, true);
       document.removeEventListener('mouseup', this.stop, true);
       document.removeEventListener('touchend', this.stop, true);
     }
@@ -140,12 +153,13 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     this.initStartPositions($event);
   };
 
-  private moveOrResize($event: MouseEvent | TouchEvent) {
+  private transform = ($event: MouseEvent | TouchEvent) => {
     this.move($event);
     this.size($event);
-  }
+    this.rotateForm($event);
+  };
 
-  private move = ($event: MouseEvent | TouchEvent) => {
+  private move($event: MouseEvent | TouchEvent) {
     if (!this.moving || this.drag === 'none') {
       return;
     }
@@ -157,7 +171,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     } else {
       this.deltaMove($event, {top: ApplyOperation.ADD, left: ApplyOperation.ADD});
     }
-  };
+  }
 
   private size($event: MouseEvent | TouchEvent) {
     if (!this.resize) {
@@ -233,6 +247,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     }
   }
 
+  private rotateForm($event: MouseEvent | TouchEvent) {
+    if (!this.rotating) {
+      return;
+    }
+
+    const currentX: number = unifyEvent($event).clientX;
+    const currentY: number = unifyEvent($event).clientY;
+
+    this.rotate = Math.atan2(currentX - this.centerX, currentY - this.centerY) * (180 / Math.PI) * -1 + 180;
+  }
+
   private getDelta($event: MouseEvent | TouchEvent): {x: number; y: number} {
     const currentX: number = unifyEvent($event).clientX;
     const currentY: number = unifyEvent($event).clientY;
@@ -258,6 +283,9 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     this.parentWidth = this.el.parentElement.offsetWidth;
     this.parentHeight = this.el.parentElement.offsetHeight;
+
+    this.centerX = this.el.offsetLeft + this.width / 2;
+    this.centerY = this.el.offsetTop + this.height / 2;
   }
 
   private startMove() {
@@ -266,6 +294,10 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     }
 
     if (this.dragTop || this.dragEnd || this.dragBottom || this.dragStart) {
+      return;
+    }
+
+    if (this.rotating) {
       return;
     }
 
@@ -278,6 +310,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     this.stopMove();
     this.stopResize();
+    this.stopRotate();
   };
 
   private stopMove() {
@@ -285,6 +318,13 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     this.startTop = null;
     this.startLeft = null;
+  }
+
+  private stopRotate() {
+    this.rotating = false;
+
+    this.centerX = null;
+    this.centerY = null;
   }
 
   private stopResize() {
@@ -305,10 +345,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   render() {
     return (
       <Host
-        style={{'--width': `${this.width}px`, '--height': `${this.height}px`, '--top': `${this.top}px`, '--left': `${this.left}px`}}
+        style={{
+          '--width': `${this.width}px`,
+          '--height': `${this.height}px`,
+          '--top': `${this.top}px`,
+          '--left': `${this.left}px`,
+          '--rotate': this.rotate ? `${this.rotate}deg` : undefined
+        }}
         class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
         {this.renderEdgesAnchors()}
         {this.renderBorderAnchors()}
+        {this.renderRotateAnchor()}
         <slot />
       </Host>
     );
@@ -386,5 +433,24 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
         <div></div>
       </div>
     ];
+  }
+
+  private renderRotateAnchor() {
+    if (!this.selected || !this.rotation) {
+      return undefined;
+    }
+
+    return (
+      <div class="rotate">
+        <div
+          class="action"
+          onClick={($event) => $event.stopPropagation()}
+          onMouseDown={() => (this.rotating = true)}
+          onTouchStart={() => (this.rotating = true)}>
+          <div></div>
+        </div>
+        <div class="presentation"></div>
+      </div>
+    );
   }
 }
