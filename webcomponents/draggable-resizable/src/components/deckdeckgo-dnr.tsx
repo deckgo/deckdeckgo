@@ -68,6 +68,9 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   private dragBottom: boolean = false;
   private dragStart: boolean = false;
 
+  private parentWidth: number = null;
+  private parentHeight: number = null;
+
   // TODO
 
   // Afficher la taille et option turn it down
@@ -184,27 +187,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     }
   }
 
-  private deltaMove($event: MouseEvent | TouchEvent, attr: {width?: ApplyOperation; height?: ApplyOperation; top?: ApplyOperation; left?: ApplyOperation}) {
+  private deltaMove($event: MouseEvent | TouchEvent, attr: {top?: ApplyOperation; left?: ApplyOperation}) {
     const delta: {x: number; y: number} = this.getDelta($event);
 
-    if (attr.width === ApplyOperation.ADD) {
-      this.width = this.startWidth + delta.x > this.minWidth ? this.startWidth + delta.x : this.minWidth;
-    } else if (attr.width === ApplyOperation.SUBSTRACT) {
-      this.width = this.startWidth - delta.x > this.minWidth ? this.startWidth - delta.x : this.minWidth;
-    }
-
-    if (attr.height === ApplyOperation.ADD) {
-      this.height = this.startHeight + delta.y > this.minHeight ? this.startHeight + delta.y : this.minHeight;
-    } else if (attr.height === ApplyOperation.SUBSTRACT) {
-      this.height = this.startHeight - delta.y > this.minHeight ? this.startHeight - delta.y : this.minHeight;
-    }
-
     if (attr.top === ApplyOperation.ADD) {
-      this.top = this.startTop + delta.y > 0 ? this.startTop + delta.y : 0;
+      const maxTop: number = this.parentHeight - this.startHeight;
+      this.top = this.startTop + delta.y > 0 ? (this.startTop + delta.y < maxTop ? this.startTop + delta.y : maxTop) : 0;
     }
 
     if (attr.left === ApplyOperation.ADD) {
-      this.left = this.startLeft + delta.x > 0 ? this.startLeft + delta.x : 0;
+      const maxLeft: number = this.parentWidth - this.startWidth;
+      this.left = this.startLeft + delta.x > 0 ? (this.startLeft + delta.x < maxLeft ? this.startLeft + delta.x : maxLeft) : 0;
     }
   }
 
@@ -212,14 +205,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     const delta: {x: number; y: number} = this.getDelta($event);
 
     if (attr.width === ApplyOperation.ADD) {
-      this.width = this.startWidth + delta.x > this.minWidth ? this.startWidth + delta.x : this.minWidth;
+      const maxWidth: number = this.parentWidth - this.startLeft;
+      this.width = this.startWidth + delta.x > this.minWidth ? (this.startWidth + delta.x < maxWidth ? this.startWidth + delta.x : maxWidth) : this.minWidth;
     } else if (attr.width === ApplyOperation.SUBSTRACT) {
       const maxWidth: number = this.startLeft + this.startWidth;
       this.width = this.startWidth - delta.x > this.minWidth ? (this.startWidth - delta.x < maxWidth ? this.startWidth - delta.x : maxWidth) : this.minWidth;
     }
 
     if (attr.height === ApplyOperation.ADD) {
-      this.height = this.startHeight + delta.y > this.minHeight ? this.startHeight + delta.y : this.minHeight;
+      const maxHeight: number = this.parentHeight - this.startTop;
+      this.height =
+        this.startHeight + delta.y > this.minHeight ? (this.startHeight + delta.y < maxHeight ? this.startHeight + delta.y : maxHeight) : this.minHeight;
     } else if (attr.height === ApplyOperation.SUBSTRACT) {
       const maxHeight: number = this.startTop + this.startHeight;
       this.height =
@@ -259,6 +255,9 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     this.startTop = this.top;
     this.startLeft = this.left;
+
+    this.parentWidth = this.el.parentElement.offsetWidth;
+    this.parentHeight = this.el.parentElement.offsetHeight;
   }
 
   private startMove() {
