@@ -101,7 +101,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   }
 
   private async displaySlot() {
-    const element: HTMLElement = this.el.querySelector(`:scope > [slot]`);
+    const element: HTMLElement = this.el.querySelector(`:scope > *`);
 
     if (element && element.style.display === 'none') {
       element.style.display = '';
