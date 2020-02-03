@@ -74,3 +74,55 @@ div.anchor {
     left: 0;
   }
 }
+
+div.border {
+  position: absolute;
+
+  &.top,
+  &.bottom {
+    > div {
+      width: calc(var(--width) - 32px);
+      height: 16px;
+    }
+  }
+
+  &.end,
+  &.start {
+    top: 50%;
+
+    > div {
+      width: 16px;
+      height: calc(var(--height) - 32px);
+    }
+  }
+
+  &.top {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    cursor: n-resize;
+  }
+
+  &.end {
+    right: 0;
+    transform: translate(50%, -50%);
+
+    cursor: e-resize;
+  }
+
+  &.bottom {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+
+    cursor: s-resize;
+  }
+
+  &.start {
+    left: 0;
+    transform: translate(-50%, -50%);
+
+    cursor: w-resize;
+  }
+}

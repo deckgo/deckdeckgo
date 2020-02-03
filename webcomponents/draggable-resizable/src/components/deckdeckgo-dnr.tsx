@@ -63,14 +63,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   private dragBottomStart: boolean = false;
   private dragTopStart: boolean = false;
 
+  private dragTop: boolean = false;
+  private dragEnd: boolean = false;
+  private dragBottom: boolean = false;
+  private dragStart: boolean = false;
+
   // TODO
 
-  // Tous les coins
-  // En pixel ou pourcentage
   // Afficher la taille et option turn it down
-  // Keep aspect ratio
   // Disable enable, per default disable
   // z-Index on click ?
+  // Debounce event emitter
 
   // Valeur
 
@@ -145,11 +148,11 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     }
 
     if (this.drag === 'x-axis') {
-      this.delta($event, {left: ApplyOperation.ADD});
+      this.deltaMove($event, {left: ApplyOperation.ADD});
     } else if (this.drag === 'y-axis') {
-      this.delta($event, {top: ApplyOperation.ADD});
+      this.deltaMove($event, {top: ApplyOperation.ADD});
     } else {
-      this.delta($event, {top: ApplyOperation.ADD, left: ApplyOperation.ADD});
+      this.deltaMove($event, {top: ApplyOperation.ADD, left: ApplyOperation.ADD});
     }
   };
 
@@ -162,22 +165,26 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       return;
     }
 
-    if (!this.dragBottomEnd && !this.dragTopEnd && !this.dragBottomStart && !this.dragTopStart) {
-      return;
-    }
-
     if (this.dragBottomEnd) {
-      this.delta($event, {width: ApplyOperation.ADD, height: ApplyOperation.ADD});
+      this.deltaResize($event, {width: ApplyOperation.ADD, height: ApplyOperation.ADD});
     } else if (this.dragTopEnd) {
-      this.delta($event, {width: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT, top: ApplyOperation.ADD});
+      this.deltaResize($event, {width: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT, top: ApplyOperation.ADD});
     } else if (this.dragBottomStart) {
-      this.delta($event, {width: ApplyOperation.SUBSTRACT, height: ApplyOperation.ADD, left: ApplyOperation.ADD});
+      this.deltaResize($event, {width: ApplyOperation.SUBSTRACT, height: ApplyOperation.ADD, left: ApplyOperation.ADD});
     } else if (this.dragTopStart) {
-      this.delta($event, {width: ApplyOperation.SUBSTRACT, top: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT, left: ApplyOperation.ADD});
+      this.deltaResize($event, {width: ApplyOperation.SUBSTRACT, top: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT, left: ApplyOperation.ADD});
+    } else if (this.dragTop) {
+      this.deltaResize($event, {top: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT});
+    } else if (this.dragEnd) {
+      this.deltaResize($event, {width: ApplyOperation.ADD});
+    } else if (this.dragBottom) {
+      this.deltaResize($event, {height: ApplyOperation.ADD});
+    } else if (this.dragStart) {
+      this.deltaResize($event, {left: ApplyOperation.ADD, width: ApplyOperation.SUBSTRACT});
     }
   }
 
-  private delta($event: MouseEvent | TouchEvent, attr: {width?: ApplyOperation; height?: ApplyOperation; top?: ApplyOperation; left?: ApplyOperation}) {
+  private deltaMove($event: MouseEvent | TouchEvent, attr: {width?: ApplyOperation; height?: ApplyOperation; top?: ApplyOperation; left?: ApplyOperation}) {
     const delta: {x: number; y: number} = this.getDelta($event);
 
     if (attr.width === ApplyOperation.ADD) {
@@ -198,6 +205,35 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     if (attr.left === ApplyOperation.ADD) {
       this.left = this.startLeft + delta.x > 0 ? this.startLeft + delta.x : 0;
+    }
+  }
+
+  private deltaResize($event: MouseEvent | TouchEvent, attr: {width?: ApplyOperation; height?: ApplyOperation; top?: ApplyOperation; left?: ApplyOperation}) {
+    const delta: {x: number; y: number} = this.getDelta($event);
+
+    if (attr.width === ApplyOperation.ADD) {
+      this.width = this.startWidth + delta.x > this.minWidth ? this.startWidth + delta.x : this.minWidth;
+    } else if (attr.width === ApplyOperation.SUBSTRACT) {
+      const maxWidth: number = this.startLeft + this.startWidth;
+      this.width = this.startWidth - delta.x > this.minWidth ? (this.startWidth - delta.x < maxWidth ? this.startWidth - delta.x : maxWidth) : this.minWidth;
+    }
+
+    if (attr.height === ApplyOperation.ADD) {
+      this.height = this.startHeight + delta.y > this.minHeight ? this.startHeight + delta.y : this.minHeight;
+    } else if (attr.height === ApplyOperation.SUBSTRACT) {
+      const maxHeight: number = this.startTop + this.startHeight;
+      this.height =
+        this.startHeight - delta.y > this.minHeight ? (this.startHeight - delta.y < maxHeight ? this.startHeight - delta.y : maxHeight) : this.minHeight;
+    }
+
+    if (attr.top === ApplyOperation.ADD) {
+      const maxTop: number = this.startTop + this.startHeight - this.minHeight;
+      this.top = this.startTop + delta.y > 0 ? (this.startTop + delta.y < maxTop ? this.startTop + delta.y : maxTop) : 0;
+    }
+
+    if (attr.left === ApplyOperation.ADD) {
+      const maxLeft: number = this.startLeft + this.startWidth - this.minWidth;
+      this.left = this.startLeft + delta.x > 0 ? (this.startLeft + delta.x < maxLeft ? this.startLeft + delta.x : maxLeft) : 0;
     }
   }
 
@@ -230,6 +266,10 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       return;
     }
 
+    if (this.dragTop || this.dragEnd || this.dragBottom || this.dragStart) {
+      return;
+    }
+
     this.moving = true;
   }
 
@@ -254,6 +294,11 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     this.dragBottomStart = false;
     this.dragTopStart = false;
 
+    this.dragTop = false;
+    this.dragEnd = false;
+    this.dragBottom = false;
+    this.dragStart = false;
+
     this.startWidth = null;
     this.startHeight = null;
   }
@@ -263,13 +308,14 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       <Host
         style={{'--width': `${this.width}px`, '--height': `${this.height}px`, '--top': `${this.top}px`, '--left': `${this.left}px`}}
         class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
-        {this.renderAnchors()}
+        {this.renderEdgesAnchors()}
+        {this.renderBorderAnchors()}
         <slot />
       </Host>
     );
   }
 
-  private renderAnchors() {
+  private renderEdgesAnchors() {
     if (!this.selected || !this.resize) {
       return undefined;
     }
@@ -301,6 +347,43 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
         onClick={($event) => $event.stopPropagation()}
         onMouseDown={() => (this.dragTopStart = true)}
         onTouchStart={() => (this.dragTopStart = true)}>
+        <div></div>
+      </div>
+    ];
+  }
+
+  private renderBorderAnchors() {
+    if (!this.selected || !this.resize) {
+      return undefined;
+    }
+
+    return [
+      <div
+        class="border top"
+        onClick={($event) => $event.stopPropagation()}
+        onMouseDown={() => (this.dragTop = true)}
+        onTouchStart={() => (this.dragTop = true)}>
+        <div></div>
+      </div>,
+      <div
+        class="border end"
+        onClick={($event) => $event.stopPropagation()}
+        onMouseDown={() => (this.dragEnd = true)}
+        onTouchStart={() => (this.dragEnd = true)}>
+        <div></div>
+      </div>,
+      <div
+        class="border bottom"
+        onClick={($event) => $event.stopPropagation()}
+        onMouseDown={() => (this.dragBottom = true)}
+        onTouchStart={() => (this.dragBottom = true)}>
+        <div></div>
+      </div>,
+      <div
+        class="border start"
+        onClick={($event) => $event.stopPropagation()}
+        onMouseDown={() => (this.dragStart = true)}
+        onTouchStart={() => (this.dragStart = true)}>
         <div></div>
       </div>
     ];
