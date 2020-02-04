@@ -12,6 +12,8 @@
 | `minHeight` | `min-height` |             | `number`                                  | `32`        |
 | `minWidth`  | `min-width`  |             | `number`                                  | `32`        |
 | `resize`    | `resize`     |             | `boolean`                                 | `true`      |
+| `rotate`    | `rotate`     |             | `number`                                  | `undefined` |
+| `rotation`  | `rotation`   |             | `boolean`                                 | `true`      |
 | `top`       | `top`        |             | `number`                                  | `undefined` |
 | `width`     | `width`      |             | `number`                                  | `undefined` |
 

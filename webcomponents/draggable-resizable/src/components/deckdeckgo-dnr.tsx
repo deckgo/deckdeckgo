@@ -22,10 +22,10 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Prop()
   resize: boolean = true;
 
-  @Prop({reflect: true})
+  @Prop({reflect: true, mutable: true})
   width: number;
 
-  @Prop({reflect: true})
+  @Prop({reflect: true, mutable: true})
   height: number;
 
   @Prop()
@@ -39,10 +39,10 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Prop()
   drag: 'x-axis' | 'y-axis' | 'all' | 'none' = 'all';
 
-  @Prop({reflect: true})
+  @Prop({reflect: true, mutable: true})
   top: number;
 
-  @Prop({reflect: true})
+  @Prop({reflect: true, mutable: true})
   left: number;
 
   // Rotate
@@ -50,7 +50,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Prop()
   rotation: boolean = true;
 
-  @Prop({reflect: true})
+  @Prop({reflect: true, mutable: true})
   rotate: number;
 
   @State()
