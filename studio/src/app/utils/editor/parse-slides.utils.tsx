@@ -45,7 +45,10 @@ export class ParseSlidesUtils {
 
       // Create a div to parse back to JSX its children
       const div = document.createElement('div');
-      div.innerHTML = slide.data.content;
+
+      if (slide.data.content && slide.data.content !== undefined) {
+        div.innerHTML = slide.data.content;
+      }
 
       const content = await ParseElementsUtils.parseElements(div, true, contentEditable);
 

@@ -217,7 +217,7 @@ export class AppEditorToolbar {
         return;
       }
 
-      if (element.getAttribute('slot') && element.getAttribute('slot') !== 'code') {
+      if (element.hasAttribute('slot') && element.getAttribute('slot') !== 'code') {
         resolve(element);
         return;
       }

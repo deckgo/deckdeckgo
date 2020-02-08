@@ -1,4 +1,4 @@
-import {Component, h, Host, Prop, State, Element, Method} from '@stencil/core';
+import {Component, h, Host, Prop, State, Element, Method, Event, EventEmitter} from '@stencil/core';
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
@@ -56,8 +56,16 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @State()
   private selected: boolean = false;
 
+  private updated: boolean = false;
+
   @State()
   private moving: boolean = false;
+
+  @Event()
+  private dnrSelect: EventEmitter<HTMLElement | undefined>;
+
+  @Event()
+  private dnrDidChange: EventEmitter<HTMLElement | undefined>;
 
   private startX: number = null;
   private startY: number = null;
@@ -89,7 +97,6 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   // Afficher la taille et option turn it down
   // Disable enable, per default disable
   // z-Index on click ?
-  // Debounce event emitter
 
   // Valeur
 
@@ -142,10 +149,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     // If we click elsewhere or select another component, then this component should loose focus and values need to be reset for next usage
     if (!selected || !selected.isEqualNode(this.el)) {
-      this.stop();
+      this.stopAndReset(false);
+
+      if (this.selected) {
+        this.dnrSelect.emit(undefined);
+      }
+
       this.selected = false;
       return;
     }
+
+    this.dnrSelect.emit(selected);
 
     this.selected = true;
 
@@ -154,14 +168,16 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   };
 
   private transform = ($event: MouseEvent | TouchEvent) => {
-    this.move($event);
-    this.size($event);
-    this.rotateForm($event);
+    const moved: boolean = this.move($event);
+    const resized: boolean = this.size($event);
+    const rotated: boolean = this.rotateForm($event);
+
+    this.updated = moved || resized || rotated;
   };
 
-  private move($event: MouseEvent | TouchEvent) {
+  private move($event: MouseEvent | TouchEvent): boolean {
     if (!this.moving || this.drag === 'none') {
-      return;
+      return false;
     }
 
     if (this.drag === 'x-axis') {
@@ -171,15 +187,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     } else {
       this.deltaMove($event, {top: ApplyOperation.ADD, left: ApplyOperation.ADD});
     }
+
+    return true;
   }
 
-  private size($event: MouseEvent | TouchEvent) {
+  private size($event: MouseEvent | TouchEvent): boolean {
     if (!this.resize) {
-      return;
+      return false;
     }
 
     if (!this.selected || !this.startX || !this.startY || !this.startWidth || !this.startHeight) {
-      return;
+      return false;
     }
 
     if (this.dragBottomEnd) {
@@ -199,6 +217,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     } else if (this.dragStart) {
       this.deltaResize($event, {left: ApplyOperation.ADD, width: ApplyOperation.SUBSTRACT});
     }
+
+    return true;
   }
 
   private deltaMove($event: MouseEvent | TouchEvent, attr: {top?: ApplyOperation; left?: ApplyOperation}) {
@@ -247,15 +267,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     }
   }
 
-  private rotateForm($event: MouseEvent | TouchEvent) {
+  private rotateForm($event: MouseEvent | TouchEvent): boolean {
     if (!this.rotating) {
-      return;
+      return false;
     }
 
     const currentX: number = unifyEvent($event).clientX;
     const currentY: number = unifyEvent($event).clientY;
 
     this.rotate = Math.atan2(currentX - this.centerX, currentY - this.centerY) * (180 / Math.PI) * -1 + 180;
+
+    return true;
   }
 
   private getDelta($event: MouseEvent | TouchEvent): {x: number; y: number} {
@@ -305,13 +327,23 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   }
 
   private stop = () => {
+    this.stopAndReset(this.selected);
+  };
+
+  private stopAndReset(emitUpdate: boolean) {
     this.startX = null;
     this.startY = null;
 
     this.stopMove();
     this.stopResize();
     this.stopRotate();
-  };
+
+    if (emitUpdate && this.updated) {
+      this.dnrDidChange.emit(this.el.shadowRoot.host as HTMLElement);
+    }
+
+    this.updated = false;
+  }
 
   private stopMove() {
     this.moving = false;

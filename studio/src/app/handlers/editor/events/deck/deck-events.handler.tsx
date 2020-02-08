@@ -67,6 +67,7 @@ export class DeckEventsHandler {
       this.el.addEventListener('codeDidChange', this.onCustomEventChange, false);
       this.el.addEventListener('imgDidChange', this.onCustomEventChange, false);
       this.el.addEventListener('linkCreated', this.onCustomEventChange, false);
+      this.el.addEventListener('dnrDidChange', this.onCustomEventChange, false);
       this.el.addEventListener('notesDidChange', this.onSlideChange, false);
 
       if (document) {
@@ -96,6 +97,7 @@ export class DeckEventsHandler {
     this.el.removeEventListener('codeDidChange', this.onCustomEventChange, true);
     this.el.removeEventListener('imgDidChange', this.onCustomEventChange, true);
     this.el.removeEventListener('linkCreated', this.onCustomEventChange, true);
+    this.el.removeEventListener('dnrDidChange', this.onCustomEventChange, true);
     this.el.removeEventListener('notesDidChange', this.onSlideChange, true);
 
     if (document) {

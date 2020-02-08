@@ -41,6 +41,8 @@ declare namespace LocalJSX {
     left?: number;
     minHeight?: number;
     minWidth?: number;
+    onDnrDidChange?: (event: CustomEvent<HTMLElement | undefined>) => void;
+    onDnrSelect?: (event: CustomEvent<HTMLElement | undefined>) => void;
     resize?: boolean;
     rotate?: number;
     rotation?: boolean;

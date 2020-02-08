@@ -39,7 +39,7 @@ export class CreateSlidesUtils {
         resolve(await this.createSlideQRCode(deck));
       } else if (template === SlideTemplate.POLL) {
         resolve(await this.createSlidePoll());
-      } else if (template === SlideTemplate.ASPECT_RATIO) {
+      } else if (template === SlideTemplate['ASPECT-RATIO']) {
         resolve(await this.createSlideAspectRatio());
       } else {
         resolve(null);
@@ -336,7 +336,7 @@ export class CreateSlidesUtils {
       }
 
       const content = (
-        <deckgo-dnr width="200" height="100" top="50" left="50">
+        <deckgo-dnr width="200" height="100" top="50" left="50" slot={''}>
           <div style={{background: 'red'}}></div>
         </deckgo-dnr>
       );

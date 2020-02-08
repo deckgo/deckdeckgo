@@ -17,6 +17,13 @@
 | `top`       | `top`        |             | `number`                                  | `undefined` |
 | `width`     | `width`      |             | `number`                                  | `undefined` |
 
+## Events
+
+| Event          | Description | Type                       |
+| -------------- | ----------- | -------------------------- |
+| `dnrDidChange` |             | `CustomEvent<HTMLElement>` |
+| `dnrSelect`    |             | `CustomEvent<HTMLElement>` |
+
 ## Methods
 
 ### `lazyLoadContent() => Promise<void>`

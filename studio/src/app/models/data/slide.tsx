@@ -8,7 +8,7 @@ export enum SlideTemplate {
   QRCODE = 'qrcode',
   CHART = 'chart',
   POLL = 'poll',
-  ASPECT_RATIO = 'aspect-ratio'
+  'ASPECT-RATIO' = 'aspect-ratio'
 }
 
 export enum SlideChartType {
