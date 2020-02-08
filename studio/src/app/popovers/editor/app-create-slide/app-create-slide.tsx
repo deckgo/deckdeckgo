@@ -320,6 +320,11 @@ export class AppCreateSlide {
             <p slot="awaiting-votes">Live votes with mobile devices</p>
           </deckgo-slide-poll>
         </div>
+        <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.ASPECT_RATIO)}>
+          <deckgo-slide-aspect-ratio class="showcase">
+            <p>Aspect Ratio</p>
+          </deckgo-slide-aspect-ratio>
+        </div>
       </div>
     ];
   }

@@ -16,6 +16,7 @@ import '@deckdeckgo/color';
 import '@deckdeckgo/charts';
 import '@deckdeckgo/social';
 import '@deckdeckgo/youtube';
+import '@deckdeckgo/draggable-resizable';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-content';
@@ -26,6 +27,7 @@ import '@deckdeckgo/slide-author';
 import '@deckdeckgo/slide-qrcode';
 import '@deckdeckgo/slide-chart';
 import '@deckdeckgo/slide-poll';
+import '@deckdeckgo/slide-aspect-ratio';
 
 import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment/environment-config';
 

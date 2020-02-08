@@ -39,6 +39,8 @@ export class CreateSlidesUtils {
         resolve(await this.createSlideQRCode(deck));
       } else if (template === SlideTemplate.POLL) {
         resolve(await this.createSlidePoll());
+      } else if (template === SlideTemplate.ASPECT_RATIO) {
+        resolve(await this.createSlideAspectRatio());
       } else {
         resolve(null);
       }
@@ -321,6 +323,25 @@ export class CreateSlidesUtils {
           <div slot="awaiting-votes">Awaiting votes</div>
         </deckgo-slide-poll>
       );
+
+      resolve(slide);
+    });
+  }
+
+  private static createSlideAspectRatio(): Promise<JSX.IntrinsicElements> {
+    return new Promise<JSX.IntrinsicElements>((resolve) => {
+      if (!document) {
+        resolve();
+        return;
+      }
+
+      const content = (
+        <deckgo-dnr width="200" height="100" top="50" left="50">
+          <div style={{background: 'red'}}></div>
+        </deckgo-dnr>
+      );
+
+      const slide: JSX.IntrinsicElements = <deckgo-slide-aspect-ratio key={uuid()}>{content}</deckgo-slide-aspect-ratio>;
 
       resolve(slide);
     });
