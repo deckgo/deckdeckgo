@@ -265,6 +265,26 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       const maxLeft: number = this.startLeft + this.startWidth - this.minWidth;
       this.left = this.startLeft + delta.x > 0 ? (this.startLeft + delta.x < maxLeft ? this.startLeft + delta.x : maxLeft) : 0;
     }
+
+    // TODO: Resize stick corner
+    // const currentX: number = unifyEvent($event).clientX;
+    // const currentY: number = unifyEvent($event).clientY;
+    //
+    // const phi: number = this.rotate !== undefined ? (this.rotate * Math.PI) / 180 : 0;
+    //
+    // const a = currentX;
+    // const b = -2 * (Math.cos(phi) * Math.sin(phi) * currentY);
+    // const c = -1 * Math.cos(phi) * this.width;
+    // const d = -1 * Math.sin(phi) * this.height;
+    //
+    // this.left = a + b + c + d;
+    //
+    // const e = 2 * (Math.cos(phi) * Math.sin(phi) * currentX);
+    // const f = currentY;
+    // const g = -1  * Math.cos(phi) * this.height;
+    // const h = -1 * Math.sin(phi) * this.width;
+    //
+    // this.top = -1 * (e + f + g + h);
   }
 
   private rotateForm($event: MouseEvent | TouchEvent): boolean {
