@@ -382,14 +382,14 @@ export class AppEditor {
 
   private hideToolbar(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+      const actions: HTMLAppEditorActionsElement = this.el.querySelector('app-editor-actions');
 
-      if (!toolbar) {
+      if (!actions) {
         resolve();
         return;
       }
 
-      await toolbar.hideToolbar();
+      await actions.hideToolbar();
 
       resolve();
     });
@@ -397,9 +397,9 @@ export class AppEditor {
 
   private onSlideChangeHideToolbar(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+      const actions: HTMLAppEditorActionsElement = this.el.querySelector('app-editor-actions');
 
-      if (!toolbar) {
+      if (!actions) {
         resolve();
         return;
       }
@@ -418,7 +418,7 @@ export class AppEditor {
         return;
       }
 
-      await toolbar.hideToolbar();
+      await actions.hideToolbar();
       this.slideIndex = deckIndex;
 
       resolve();
@@ -515,14 +515,14 @@ export class AppEditor {
 
   private touchToolbar(element: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+      const actions: HTMLAppEditorActionsElement = this.el.querySelector('app-editor-actions');
 
-      if (!toolbar) {
+      if (!actions) {
         resolve();
         return;
       }
 
-      await toolbar.touch(element);
+      await actions.touch(element);
 
       resolve();
     });
@@ -542,10 +542,6 @@ export class AppEditor {
 
       resolve();
     });
-  }
-
-  private async onSelectDeck() {
-    await this.editorEventsHandler.selectDeck();
   }
 
   private initWindowResize() {
@@ -672,9 +668,6 @@ export class AppEditor {
           </deckgo-deck>
           <deckgo-remote autoConnect={false}></deckgo-remote>
         </main>
-        <app-editor-toolbar
-          onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
-          onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}></app-editor-toolbar>
       </ion-content>,
       <ion-footer class={this.presenting ? 'idle' : undefined}>
         <app-editor-actions
@@ -686,7 +679,8 @@ export class AppEditor {
           onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
           onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
           onToggleFullScreen={() => this.toggleFullScreen()}
-          onSelectDeck={() => this.onSelectDeck()}></app-editor-actions>
+          onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
+          onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}></app-editor-actions>
       </ion-footer>,
       <deckgo-inline-editor
         containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"

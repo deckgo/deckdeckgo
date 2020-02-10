@@ -1,4 +1,17 @@
 app-editor-actions {
+  .hidden {
+    ion-buttons {
+      visibility: hidden;
+    }
+  }
+
+  app-deck-actions,
+  app-element-actions {
+    &.hidden {
+      display: none;
+    }
+  }
+
   ion-tab-button {
     ion-icon {
       color: var(--ion-color-primary);
@@ -6,12 +19,6 @@ app-editor-actions {
 
     ion-label {
       user-select: none;
-    }
-  }
-
-  ion-buttons {
-    &.hidden {
-      visibility: hidden;
     }
   }
 

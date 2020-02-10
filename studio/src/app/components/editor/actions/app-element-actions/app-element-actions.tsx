@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Listen, Method, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Listen, Method, State, Prop} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {Subject, Subscription} from 'rxjs';
@@ -6,27 +6,29 @@ import {debounceTime} from 'rxjs/operators';
 
 import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
-import {ImageHelper} from '../../../helpers/editor/image.helper';
+import {ImageHelper} from '../../../../helpers/editor/image.helper';
 
-import {ToggleSlotUtils} from '../../../utils/editor/toggle-slot.utils';
-import {RevealSlotUtils} from '../../../utils/editor/reveal-slot.utils';
-import {SlotType} from '../../../utils/editor/slot-type';
-import {SlotUtils} from '../../../utils/editor/slot.utils';
+import {ToggleSlotUtils} from '../../../../utils/editor/toggle-slot.utils';
+import {RevealSlotUtils} from '../../../../utils/editor/reveal-slot.utils';
+import {SlotType} from '../../../../utils/editor/slot-type';
+import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
-import {EditAction} from '../../../utils/editor/edit-action';
+import {EditAction} from '../../../../utils/editor/edit-action';
 
-import {BusyService} from '../../../services/editor/busy/busy.service';
+import {BusyService} from '../../../../services/editor/busy/busy.service';
 
 @Component({
-  tag: 'app-editor-toolbar',
-  styleUrl: 'app-editor-toolbar.scss',
+  tag: 'app-element-actions',
   shadow: false
 })
-export class AppEditorToolbar {
+export class AppElementActions {
   @Element() el: HTMLElement;
 
-  @State()
-  private displayed: boolean = false;
+  @Prop()
+  slideCopy: EventEmitter;
+
+  @Prop()
+  elementFocus: EventEmitter;
 
   private selectedElement: HTMLElement;
 
@@ -66,10 +68,6 @@ export class AppEditorToolbar {
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
   @Event() private notesDidChange: EventEmitter<HTMLElement>;
 
-  @Event() private slideCopy: EventEmitter<HTMLElement>;
-
-  @Event() private elementFocus: EventEmitter<HTMLElement>;
-
   private subscription: Subscription;
   private busyService: BusyService;
 
@@ -95,7 +93,6 @@ export class AppEditorToolbar {
     });
 
     this.moveToolbarSubscription = this.moveToolbarSubject.pipe(debounceTime(250)).subscribe(async () => {
-      await this.moveToolbar();
       await this.resizeSlideContent();
     });
 
@@ -131,12 +128,10 @@ export class AppEditorToolbar {
   }
 
   @Listen('mouseInactivity', {target: 'document'})
-  async inactivity($event: CustomEvent) {
+  async inactivity(_$event: CustomEvent) {
     if (!isFullscreen()) {
       return;
     }
-
-    this.displayed = $event.detail;
 
     await this.blurSelectedElement();
   }
@@ -147,7 +142,7 @@ export class AppEditorToolbar {
       await this.unSelect();
       await this.select(element);
 
-      resolve(null);
+      resolve();
     });
   }
 
@@ -178,8 +173,6 @@ export class AppEditorToolbar {
       if (this.isImgNotDefined(element)) {
         await this.openImage();
       }
-
-      await this.displayToolbar(selected);
 
       this.blockSlide.emit(!this.slide);
 
@@ -354,82 +347,6 @@ export class AppEditorToolbar {
     });
   }
 
-  private displayToolbar(element: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!element) {
-        resolve();
-        return;
-      }
-
-      await this.moveToolbar();
-
-      this.displayed = true;
-
-      resolve();
-    });
-  }
-
-  private moveToolbar(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
-
-      const toolbar: HTMLElement = this.el.querySelector('div.editor-toolbar');
-
-      if (!toolbar) {
-        resolve();
-        return;
-      }
-
-      await this.setToolbarPosition(this.selectedElement, toolbar, 0);
-
-      resolve();
-    });
-  }
-
-  private setToolbarPosition(src: HTMLElement, applyTo: HTMLElement, offsetWidth: number): Promise<void> {
-    return new Promise<void>((resolve) => {
-      // Selected element
-      const width: number = src.clientWidth > 200 ? src.clientWidth : 200;
-
-      const rect: ClientRect = src.getBoundingClientRect();
-      const left: number = rect && rect.left > 0 ? rect.left : 0;
-      const top: number = rect && rect.top > 0 ? rect.top : 0;
-
-      // The <main/> element in order to find the offset
-      const mainPaneRect: ClientRect =
-        applyTo.parentElement && applyTo.parentElement.parentElement ? applyTo.parentElement.parentElement.getBoundingClientRect() : null;
-      const extraLeft: number = mainPaneRect && mainPaneRect.left > 0 ? mainPaneRect.left : 0;
-      const extraTop: number = mainPaneRect ? mainPaneRect.top : 0;
-
-      // Set top position
-      const topPosition: string = `${top - extraTop > 0 ? top - extraTop : 0}px`;
-      applyTo.style.top = this.slide ? `calc(${topPosition} + var(--editor-toolbar-padding, 0px))` : `${topPosition}`;
-
-      const windowWidth: number = window.innerWidth | screen.width;
-
-      const leftStandardPosition: number = left + offsetWidth - extraLeft;
-
-      // Set left position
-      const leftPosition: string = `${leftStandardPosition + width > windowWidth ? windowWidth - width : leftStandardPosition}px`;
-      applyTo.style.left = this.slide ? `calc(${leftPosition} + var(--editor-toolbar-padding, 0px))` : `${leftPosition}`;
-
-      // If not slide or deck selected, move a bit the toolbar
-      if (!this.slide) {
-        applyTo.style.transform = 'translate(0, -2.4rem)';
-      } else {
-        applyTo.style.transform = 'translate(0,0)';
-      }
-
-      // Set a width in order to align right the delete button
-      applyTo.style.width = this.slide ? `calc(${width}px - var(--editor-toolbar-padding, 0px) - var(--editor-toolbar-padding, 0px))` : `${width}px`;
-
-      resolve();
-    });
-  }
-
   @Listen('pagerClick', {target: 'document'})
   async onPagerClick() {
     await this.hideToolbar();
@@ -438,7 +355,6 @@ export class AppEditorToolbar {
   @Method()
   hideToolbar(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      this.displayed = false;
       await this.initSelectedElement(null);
 
       resolve();
@@ -812,8 +728,6 @@ export class AppEditorToolbar {
         await this.detachMoveToolbarOnElement();
 
         this.elementResizeObserver = new ResizeObserver(async (entries) => {
-          await this.moveToolbar();
-
           if (
             entries &&
             entries.length > 0 &&
@@ -974,29 +888,37 @@ export class AppEditorToolbar {
   }
 
   render() {
-    return [
-      <div class={this.displayed ? 'editor-toolbar displayed' : 'editor-toolbar'}>
-        {this.renderEdit()}
-        {this.renderReveal()}
-        {this.renderColor()}
-        {this.renderList()}
-        {this.renderImages()}
-        {this.renderCodeOptions()}
+    return (
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          {this.renderEdit()}
+          {this.renderReveal()}
+          {this.renderColor()}
+          {this.renderList()}
+          {this.renderImages()}
+          {this.renderCodeOptions()}
+        </ion-buttons>
 
-        <div class="editor-toolbar-edit">
+        <ion-buttons slot="end">
           {this.renderNotes()}
           {this.renderCopy()}
           {this.renderDelete()}
-        </div>
-      </div>
-    ];
+        </ion-buttons>
+      </ion-toolbar>
+    );
   }
 
   private renderDelete() {
     return (
-      <a onClick={($event: UIEvent) => this.confirmDeleteElement($event)} title="Delete" class={this.deckBusy && this.slide ? 'disabled' : ''}>
+      <ion-tab-button
+        onClick={($event: UIEvent) => this.confirmDeleteElement($event)}
+        aria-label="Delete"
+        color="primary"
+        mode="md"
+        disabled={this.deckBusy && this.slide}>
         <ion-icon name="trash"></ion-icon>
-      </a>
+        <ion-label>Delete</ion-label>
+      </ion-tab-button>
     );
   }
 
@@ -1005,9 +927,10 @@ export class AppEditorToolbar {
       return undefined;
     } else {
       return (
-        <a onClick={() => this.openNotes()} title="Notes" class={this.deckBusy ? 'disabled' : ''}>
+        <ion-tab-button onClick={() => this.openNotes()} aria-label="Notes" color="primary" mode="md" disabled={this.deckBusy}>
           <ion-icon src="/assets/icons/notes.svg"></ion-icon>
-        </a>
+          <ion-label>Notes</ion-label>
+        </ion-tab-button>
       );
     }
   }
@@ -1017,18 +940,20 @@ export class AppEditorToolbar {
       return undefined;
     } else {
       return (
-        <a onClick={() => this.cloneSlide()} title="Copy" class={this.deckBusy ? 'disabled' : ''}>
+        <ion-tab-button onClick={() => this.cloneSlide()} aria-label="Copy" color="primary" mode="md" disabled={this.deckBusy}>
           <ion-icon name="copy"></ion-icon>
-        </a>
+          <ion-label>Copy</ion-label>
+        </ion-tab-button>
       );
     }
   }
 
   private renderColor() {
     return (
-      <a onClick={() => this.openColor()} title="Color">
+      <ion-tab-button onClick={() => this.openColor()} aria-label="Color" color="primary" mode="md">
         <ion-icon name="color-fill"></ion-icon>
-      </a>
+        <ion-label>Color</ion-label>
+      </ion-tab-button>
     );
   }
 
@@ -1039,17 +964,21 @@ export class AppEditorToolbar {
       }
 
       return (
-        <a
+        <ion-tab-button
           onClick={() => (this.poll ? this.openEditPollSlide() : this.youtube ? this.openEditYoutubeSlide() : this.openEditSlide())}
-          title="Edit slide options">
+          color="primary"
+          aria-label="Edit slide options"
+          mode="md">
           <ion-icon src="/assets/icons/ionicons/md-create.svg"></ion-icon>
-        </a>
+          <ion-label>Options</ion-label>
+        </ion-tab-button>
       );
     } else {
       return (
-        <a onClick={() => this.openSlotType()} title="Toggle element type">
+        <ion-tab-button onClick={() => this.openSlotType()} aria-label="Toggle element type" color="primary" mode="md">
           <ion-icon src="/assets/icons/ionicons/md-add.svg"></ion-icon>
-        </a>
+          <ion-label>Toggle</ion-label>
+        </ion-tab-button>
       );
     }
   }
@@ -1059,9 +988,10 @@ export class AppEditorToolbar {
       return undefined;
     } else {
       return (
-        <a onClick={() => this.openCode()} title="Code attributes">
+        <ion-tab-button onClick={() => this.openCode()} aria-label="Code attributes" color="primary" mode="md">
           <ion-icon name="code"></ion-icon>
-        </a>
+          <ion-label>Attributes</ion-label>
+        </ion-tab-button>
       );
     }
   }
@@ -1071,9 +1001,10 @@ export class AppEditorToolbar {
       return undefined;
     } else {
       return (
-        <a onClick={() => this.openImage()} title={this.slide ? 'Background' : 'Image'}>
+        <ion-tab-button onClick={() => this.openImage()} aria-label={this.slide ? 'Background' : 'Image'} color="primary" mode="md">
           <ion-icon name="images"></ion-icon>
-        </a>
+          <ion-label>{this.slide ? 'Background' : 'Image'}</ion-label>
+        </ion-tab-button>
       );
     }
   }
@@ -1083,9 +1014,10 @@ export class AppEditorToolbar {
       return undefined;
     } else {
       return (
-        <a onClick={() => this.openReveal()} title="Edit element animation">
+        <ion-tab-button onClick={() => this.openReveal()} aria-label="Edit element animation" color="primary" mode="md">
           <ion-icon src="/assets/icons/album.svg"></ion-icon>
-        </a>
+          <ion-label>Animation</ion-label>
+        </ion-tab-button>
       );
     }
   }
@@ -1095,15 +1027,17 @@ export class AppEditorToolbar {
       return undefined;
     } else if (this.list === SlotType.OL) {
       return (
-        <a onClick={() => this.toggleList()} title="Toggle to an unordered list">
+        <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an unordered list" color="primary" mode="md">
           <ion-icon src="/assets/icons/ionicons/ios-list.svg"></ion-icon>
-        </a>
+          <ion-label>Unordered list</ion-label>
+        </ion-tab-button>
       );
     } else {
       return (
-        <a onClick={() => this.toggleList()} title="Toggle to an ordered list">
+        <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an ordered list" color="primary" mode="md">
           <ion-icon src="/assets/icons/list-ol.svg"></ion-icon>
-        </a>
+          <ion-label>Ordered list</ion-label>
+        </ion-tab-button>
       );
     }
   }
