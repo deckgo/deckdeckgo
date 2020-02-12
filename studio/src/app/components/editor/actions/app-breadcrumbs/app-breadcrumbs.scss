@@ -6,6 +6,11 @@ app-breadcrumbs {
   font-size: var(--font-size-small);
   color: rgba(var(--ion-color-medium-rgb), 0.6);
 
+  button[disabled],
+  ion-label.separator.busy {
+    color: rgba(var(--ion-color-medium-rgb), 0.2);
+  }
+
   button {
     padding: 0;
     border: none;
@@ -22,11 +27,10 @@ app-breadcrumbs {
     position: relative;
 
     &[disabled] {
-      color: rgba(var(--ion-color-tertiary-rgb), 0.2);
       cursor: inherit;
     }
 
-    &.selected {
+    &.selected:not([disabled]) {
       color: var(--ion-color-primary);
       font-weight: 600;
 

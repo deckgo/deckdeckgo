@@ -42,10 +42,7 @@ export class AppEditorActions {
   @Event() private elementFocus: EventEmitter<HTMLElement>;
 
   @State()
-  private deck: boolean = true;
-
-  @State()
-  private slide: boolean = true;
+  private step: BreadcrumbsStep = BreadcrumbsStep.DECK;
 
   @Method()
   async touch(element: HTMLElement) {
@@ -57,8 +54,7 @@ export class AppEditorActions {
 
     await toolbar.touch(element);
 
-    this.deck = false;
-    this.slide = element && element.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1;
+    this.step = element && element.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1 ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT;
   }
 
   @Method()
@@ -72,8 +68,7 @@ export class AppEditorActions {
 
     this.blockSlide.emit(false);
 
-    this.deck = true;
-    this.slide = false;
+    this.step = BreadcrumbsStep.DECK;
   }
 
   @Method()
@@ -84,8 +79,7 @@ export class AppEditorActions {
       await toolbar.hideToolbar();
     }
 
-    this.deck = true;
-    this.slide = false;
+    this.step = BreadcrumbsStep.DECK;
   }
 
   private async selectStep($event: CustomEvent<HTMLElement>) {
@@ -116,9 +110,7 @@ export class AppEditorActions {
   private renderSelectedIndicator() {
     return (
       <div class="indicator">
-        <app-breadcrumbs
-          step={this.deck ? BreadcrumbsStep.DECK : this.slide ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT}
-          onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
+        <app-breadcrumbs step={this.step} onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
       </div>
     );
   }
@@ -126,7 +118,7 @@ export class AppEditorActions {
   private renderDeckActions() {
     return (
       <app-deck-actions
-        class={!this.deck ? 'hidden' : undefined}
+        class={this.step != BreadcrumbsStep.DECK ? 'hidden' : undefined}
         fullscreen={this.fullscreen}
         slides={this.slides}
         blockSlide={this.blockSlide}
@@ -143,6 +135,11 @@ export class AppEditorActions {
   }
 
   private renderEditActions() {
-    return <app-element-actions class={this.deck ? 'hidden' : undefined} slideCopy={this.slideCopy} elementFocus={this.elementFocus}></app-element-actions>;
+    return (
+      <app-element-actions
+        class={this.step === BreadcrumbsStep.DECK ? 'hidden' : undefined}
+        slideCopy={this.slideCopy}
+        elementFocus={this.elementFocus}></app-element-actions>
+    );
   }
 }
