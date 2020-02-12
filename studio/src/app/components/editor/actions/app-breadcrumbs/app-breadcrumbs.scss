@@ -26,23 +26,30 @@ app-breadcrumbs {
 
     position: relative;
 
+    transition: color 0.25s ease-in;
+
     &[disabled] {
       cursor: inherit;
     }
 
     &.selected:not([disabled]) {
       color: var(--ion-color-primary);
-      font-weight: 600;
 
       &::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
         background: var(--ion-color-primary);
-        height: 1px;
       }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--ion-color-light);
+      height: 1px;
+
+      transition: background 0.25s ease-in;
     }
   }
 
