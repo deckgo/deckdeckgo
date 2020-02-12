@@ -1,0 +1,48 @@
+app-breadcrumbs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: var(--font-size-small);
+  color: rgba(var(--ion-color-medium-rgb), 0.6);
+
+  button {
+    padding: 0;
+    border: none;
+    outline: none;
+    font: inherit;
+    color: inherit;
+    background: none;
+    display: inline-flex;
+
+    text-transform: capitalize;
+
+    cursor: pointer;
+
+    position: relative;
+
+    &[disabled] {
+      color: rgba(var(--ion-color-tertiary-rgb), 0.2);
+      cursor: inherit;
+    }
+
+    &.selected {
+      color: var(--ion-color-primary);
+      font-weight: 600;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--ion-color-primary);
+        height: 1px;
+      }
+    }
+  }
+
+  ion-label.separator {
+    padding: 4px;
+  }
+}

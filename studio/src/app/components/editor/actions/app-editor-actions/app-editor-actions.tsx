@@ -1,4 +1,6 @@
-import {Component, Element, Event, EventEmitter, h, JSX, Prop, Host, Method, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Host, JSX, Method, Prop, State} from '@stencil/core';
+
+import {BreadcrumbsStep} from '../../../../utils/editor/breadcrumbs-type';
 
 @Component({
   tag: 'app-editor-actions',
@@ -42,6 +44,9 @@ export class AppEditorActions {
   @State()
   private deck: boolean = true;
 
+  @State()
+  private slide: boolean = true;
+
   @Method()
   async touch(element: HTMLElement) {
     const toolbar: HTMLAppElementActionsElement = this.el.querySelector('app-element-actions');
@@ -53,6 +58,7 @@ export class AppEditorActions {
     await toolbar.touch(element);
 
     this.deck = false;
+    this.slide = element && element.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1;
   }
 
   @Method()
@@ -67,6 +73,7 @@ export class AppEditorActions {
     this.blockSlide.emit(false);
 
     this.deck = true;
+    this.slide = false;
   }
 
   @Method()
@@ -78,15 +85,41 @@ export class AppEditorActions {
     }
 
     this.deck = true;
+    this.slide = false;
+  }
+
+  private async selectStep($event: CustomEvent<HTMLElement>) {
+    if (!$event) {
+      return;
+    }
+
+    if (!$event.detail || $event.detail === undefined) {
+      await this.selectDeck();
+    } else {
+      await this.touch($event.detail);
+      $event.detail.focus();
+    }
   }
 
   render() {
     return (
       <Host class={this.hideFooterActions ? 'hidden' : undefined}>
+        {this.renderSelectedIndicator()}
+
         {this.renderDeckActions()}
 
         {this.renderEditActions()}
       </Host>
+    );
+  }
+
+  private renderSelectedIndicator() {
+    return (
+      <div class="indicator">
+        <app-breadcrumbs
+          step={this.deck ? BreadcrumbsStep.DECK : this.slide ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT}
+          onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
+      </div>
     );
   }
 

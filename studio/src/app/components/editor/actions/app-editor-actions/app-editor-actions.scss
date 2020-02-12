@@ -1,4 +1,7 @@
 app-editor-actions {
+  background: var(--ion-color-light);
+  display: block;
+
   .hidden {
     ion-buttons {
       visibility: hidden;
@@ -10,6 +13,22 @@ app-editor-actions {
     &.hidden {
       display: none;
     }
+  }
+
+  &.hidden {
+    div.indicator {
+      visibility: hidden;
+    }
+  }
+
+  div.indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 8px;
+
+    outline: 1px solid var(--ion-color-light);
   }
 
   ion-tab-button {

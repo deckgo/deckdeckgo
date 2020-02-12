@@ -6,6 +6,7 @@
  */
 
 import {HTMLStencilElement, JSXBase} from '@stencil/core/internal';
+import {BreadcrumbsStep} from './app/utils/editor/breadcrumbs-type';
 import {EventEmitter, JSX} from '@stencil/core';
 import {PrismLanguage} from './app/services/editor/prism/prism.service';
 import {InitStyleColor} from './app/utils/editor/color.utils';
@@ -22,6 +23,9 @@ export namespace Components {
   interface AppAvatar {
     ariaLabel: string;
     src: string;
+  }
+  interface AppBreadcrumbs {
+    step: BreadcrumbsStep;
   }
   interface AppCode {
     codeDidChange: EventEmitter<HTMLElement>;
@@ -280,6 +284,12 @@ declare global {
   var HTMLAppAvatarElement: {
     prototype: HTMLAppAvatarElement;
     new (): HTMLAppAvatarElement;
+  };
+
+  interface HTMLAppBreadcrumbsElement extends Components.AppBreadcrumbs, HTMLStencilElement {}
+  var HTMLAppBreadcrumbsElement: {
+    prototype: HTMLAppBreadcrumbsElement;
+    new (): HTMLAppBreadcrumbsElement;
   };
 
   interface HTMLAppCodeElement extends Components.AppCode, HTMLStencilElement {}
@@ -800,6 +810,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'app-about': HTMLAppAboutElement;
     'app-avatar': HTMLAppAvatarElement;
+    'app-breadcrumbs': HTMLAppBreadcrumbsElement;
     'app-code': HTMLAppCodeElement;
     'app-code-languages': HTMLAppCodeLanguagesElement;
     'app-color': HTMLAppColorElement;
@@ -894,6 +905,10 @@ declare namespace LocalJSX {
   interface AppAvatar {
     ariaLabel?: string;
     src?: string;
+  }
+  interface AppBreadcrumbs {
+    onStepTo?: (event: CustomEvent<HTMLElement | undefined>) => void;
+    step?: BreadcrumbsStep;
   }
   interface AppCode {
     codeDidChange?: EventEmitter<HTMLElement>;
@@ -1182,6 +1197,7 @@ declare namespace LocalJSX {
   interface IntrinsicElements {
     'app-about': AppAbout;
     'app-avatar': AppAvatar;
+    'app-breadcrumbs': AppBreadcrumbs;
     'app-code': AppCode;
     'app-code-languages': AppCodeLanguages;
     'app-color': AppColor;
@@ -1278,6 +1294,7 @@ declare module '@stencil/core' {
     interface IntrinsicElements {
       'app-about': LocalJSX.AppAbout & JSXBase.HTMLAttributes<HTMLAppAboutElement>;
       'app-avatar': LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
+      'app-breadcrumbs': LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
       'app-code': LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
       'app-code-languages': LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
       'app-color': LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
