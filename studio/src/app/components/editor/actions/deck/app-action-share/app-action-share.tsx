@@ -3,16 +3,16 @@ import {OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {take} from 'rxjs/operators';
 
-import {Deck} from '../../../../models/data/deck';
+import {Deck} from '../../../../../models/data/deck';
 
-import {MoreAction} from '../../../../utils/editor/more-action';
+import {MoreAction} from '../../../../../utils/editor/more-action';
 
-import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
+import {DeckEditorService} from '../../../../../services/editor/deck/deck-editor.service';
 
 @Component({
-  tag: 'app-share-action'
+  tag: 'app-action-share'
 })
-export class AppShareAction {
+export class AppActionShare {
   @Element() el: HTMLElement;
 
   private deckEditorService: DeckEditorService;

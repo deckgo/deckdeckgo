@@ -1,0 +1,85 @@
+app-actions-editor {
+  background: var(--ion-color-light);
+  display: block;
+
+  &.hidden {
+    div.indicator,
+    app-actions-deck,
+    app-actions-element {
+      visibility: hidden;
+    }
+  }
+
+  app-actions-deck,
+  app-actions-element {
+    &.hidden {
+      ion-toolbar {
+        height: 0;
+      }
+
+      ion-toolbar ion-tab-button {
+        transform: scaleY(0);
+        opacity: 0;
+      }
+    }
+
+    ion-toolbar {
+      height: 100%;
+
+      ion-tab-button {
+        display: block;
+
+        transform: scaleY(1);
+        opacity: 1;
+
+        animation: opacity 0.5s ease-in-out;
+      }
+    }
+  }
+
+  &.fullscreen {
+    div.indicator {
+      padding-top: 8px;
+    }
+  }
+
+  div.indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 8px;
+
+    outline: 1px solid var(--ion-color-light);
+  }
+
+  ion-tab-button {
+    ion-icon {
+      color: var(--ion-color-primary);
+    }
+
+    ion-label {
+      user-select: none;
+    }
+  }
+
+  @media screen and (max-width: 540px) {
+    ion-tab-button,
+    app-action-share,
+    app-action-busy {
+      &.wider-devices {
+        display: none;
+      }
+    }
+  }
+
+  @media screen and (min-width: 540px) {
+    ion-tab-button,
+    app-action-share,
+    app-action-busy {
+      &.small-devices {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,27 +1,23 @@
-import {Component, Element, Event, EventEmitter, h, JSX, Listen, Prop, State} from '@stencil/core';
+import {Component, Element, EventEmitter, h, JSX, Listen, Prop, State, Event} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {isIPad} from '@deckdeckgo/utils';
 
 import {get, set} from 'idb-keyval';
 
-import {SlideAttributes, SlideTemplate} from '../../../../models/data/slide';
+import {SlideAttributes, SlideTemplate} from '../../../../../models/data/slide';
 
-import {MoreAction} from '../../../../utils/editor/more-action';
+import {MoreAction} from '../../../../../utils/editor/more-action';
 
-import {AnonymousService} from '../../../../services/editor/anonymous/anonymous.service';
-import {CreateSlidesUtils} from '../../../../utils/editor/create-slides.utils';
+import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
+import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
 
 @Component({
-  tag: 'app-editor-actions',
-  styleUrl: 'app-editor-actions.scss',
+  tag: 'app-actions-deck',
   shadow: false
 })
-export class AppEditorActions {
+export class AppActionsDeck {
   @Element() el: HTMLElement;
-
-  @Prop()
-  hideFooterActions: boolean = true;
 
   @Prop()
   fullscreen: boolean = false;
@@ -29,30 +25,40 @@ export class AppEditorActions {
   @Prop()
   slides: JSX.IntrinsicElements[] = [];
 
-  @Event() private blockSlide: EventEmitter<boolean>;
+  @Prop()
+  blockSlide: EventEmitter;
 
-  private anonymousService: AnonymousService;
+  @Prop()
+  signIn: EventEmitter;
 
-  @Event() private signIn: EventEmitter<void>;
+  @Prop()
+  addSlide: EventEmitter;
 
-  @Event() private addSlide: EventEmitter<JSX.IntrinsicElements>;
+  @Prop()
+  animatePrevNextSlide: EventEmitter;
 
-  @Event() private animatePrevNextSlide: EventEmitter<boolean>;
+  @Prop()
+  slideTo: EventEmitter;
 
-  @Event() private slideTo: EventEmitter<number>;
+  @Prop()
+  toggleFullScreen: EventEmitter;
 
-  @Event() private toggleFullScreen: EventEmitter<void>;
+  @Prop()
+  actionPublish: EventEmitter;
 
-  @Event() private actionPublish: EventEmitter<void>;
+  @Prop()
+  openShare: EventEmitter;
 
-  @Event() private openShare: EventEmitter<void>;
+  @Prop()
+  deckDidChange: EventEmitter;
 
-  @Event() private selectDeck: EventEmitter<void>;
-
-  @Event() private deckDidChange: EventEmitter<HTMLElement>;
+  @Event()
+  private selectDeck: EventEmitter<void>;
 
   @State()
   private fullscreenEnable: boolean = true;
+
+  private anonymousService: AnonymousService;
 
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
@@ -351,10 +357,10 @@ export class AppEditorActions {
   render() {
     return (
       <ion-toolbar>
-        <ion-buttons slot="start" class={this.hideFooterActions ? 'hidden' : undefined}>
-          <app-editor-busy-action iconName="add" onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+        <ion-buttons slot="start">
+          <app-action-busy iconName="add" onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
             <ion-label>Add slide</ion-label>
-          </app-editor-busy-action>
+          </app-action-busy>
 
           <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(false)} color="primary" mode="md">
             <ion-icon name="arrow-back"></ion-icon>
@@ -371,9 +377,9 @@ export class AppEditorActions {
             <ion-label>Slides</ion-label>
           </ion-tab-button>
 
-          <app-editor-busy-action iconName="brush" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
+          <app-action-busy iconName="brush" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
             <ion-label>Style</ion-label>
-          </app-editor-busy-action>
+          </app-action-busy>
 
           {this.renderFullscreenButton()}
 
@@ -382,7 +388,7 @@ export class AppEditorActions {
             <ion-label>Remote</ion-label>
           </ion-tab-button>
 
-          <app-share-action class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-share-action>
+          <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices" mode="md">
             <ion-icon src="/assets/icons/ionicons/md-more.svg"></ion-icon>
@@ -390,8 +396,8 @@ export class AppEditorActions {
           </ion-tab-button>
         </ion-buttons>
 
-        <ion-buttons slot="end" class={this.hideFooterActions ? 'hidden' : undefined}>
-          <app-help-action></app-help-action>
+        <ion-buttons slot="end">
+          <app-action-help></app-action-help>
         </ion-buttons>
       </ion-toolbar>
     );

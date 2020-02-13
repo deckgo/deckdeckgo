@@ -22,6 +22,11 @@ app-editor {
 
   ion-content {
     --overflow: hidden;
+
+    --padding-top: 16px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-bottom: 12px;
   }
 
   main {

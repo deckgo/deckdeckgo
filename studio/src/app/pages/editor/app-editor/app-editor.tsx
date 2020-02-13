@@ -86,7 +86,7 @@ export class AppEditor {
   private slidesFetched: boolean = false;
 
   @State()
-  private hideFooterActions: boolean = true;
+  private hideFooter: boolean = false;
 
   @State()
   private hideNavigation: boolean = false;
@@ -151,15 +151,12 @@ export class AppEditor {
       });
 
     this.busySubscription = this.busyService.watchSlideEditable().subscribe(async (slide: HTMLElement) => {
-      // Hide actions footer till deck is editable
-      this.hideFooterActions = false;
-
       this.slidesEditable = true;
 
       await this.contentEditable(slide);
     });
 
-    this.fullscreen = isFullscreen();
+    this.fullscreen = isFullscreen() && !isIOS();
   }
 
   async destroy() {
@@ -382,14 +379,14 @@ export class AppEditor {
 
   private hideToolbar(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
-      if (!toolbar) {
+      if (!actions) {
         resolve();
         return;
       }
 
-      await toolbar.hideToolbar();
+      await actions.hide();
 
       resolve();
     });
@@ -397,9 +394,9 @@ export class AppEditor {
 
   private onSlideChangeHideToolbar(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
-      if (!toolbar) {
+      if (!actions) {
         resolve();
         return;
       }
@@ -418,7 +415,7 @@ export class AppEditor {
         return;
       }
 
-      await toolbar.hideToolbar();
+      await actions.hide();
       this.slideIndex = deckIndex;
 
       resolve();
@@ -515,14 +512,14 @@ export class AppEditor {
 
   private touchToolbar(element: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
-      if (!toolbar) {
+      if (!actions) {
         resolve();
         return;
       }
 
-      await toolbar.touch(element);
+      await actions.touch(element);
 
       resolve();
     });
@@ -544,10 +541,6 @@ export class AppEditor {
     });
   }
 
-  private async onSelectDeck() {
-    await this.editorEventsHandler.selectDeck();
-  }
-
   private initWindowResize() {
     if (window) {
       window.addEventListener('resize', debounce(this.onWindowResize));
@@ -561,7 +554,7 @@ export class AppEditor {
   }
 
   private onWindowResize = async () => {
-    this.fullscreen = isFullscreen();
+    this.fullscreen = isFullscreen() && !isIOS();
 
     // Per default, when we switch to the fullscreen mode, we want to present the presentation not edit it
     await this.updatePresenting(this.fullscreen);
@@ -600,7 +593,7 @@ export class AppEditor {
   }
 
   private stickyToolbarActivated($event: CustomEvent) {
-    this.hideFooterActions = $event ? $event.detail : false;
+    this.hideFooter = $event ? isMobile() && !isIOS() && $event.detail : false;
     this.hideNavigation = $event ? isIOS() && $event.detail : false;
   }
 
@@ -652,7 +645,7 @@ export class AppEditor {
   render() {
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
-      <ion-content class="ion-padding">
+      <ion-content>
         <main class={this.slidesEditable ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
           {this.renderLoading()}
 
@@ -665,20 +658,16 @@ export class AppEditor {
             onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
             onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}
             onSlidePrevDidChange={() => this.onSlideChangeHideToolbar()}
-            onSlideToChange={() => this.onSlideChangeHideToolbar()}
-            onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}>
+            onSlideToChange={() => this.onSlideChangeHideToolbar()}>
             {this.slides}
             {this.background}
           </deckgo-deck>
           <deckgo-remote autoConnect={false}></deckgo-remote>
         </main>
-        <app-editor-toolbar
-          onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
-          onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}></app-editor-toolbar>
       </ion-content>,
       <ion-footer class={this.presenting ? 'idle' : undefined}>
-        <app-editor-actions
-          hideFooterActions={this.hideFooterActions}
+        <app-actions-editor
+          hideFooter={this.hideFooter}
           fullscreen={this.fullscreen}
           slides={this.slides}
           onSignIn={() => this.signIn()}
@@ -686,14 +675,16 @@ export class AppEditor {
           onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
           onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
           onToggleFullScreen={() => this.toggleFullScreen()}
-          onSelectDeck={() => this.onSelectDeck()}></app-editor-actions>
+          onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
+          onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}></app-actions-editor>
       </ion-footer>,
       <deckgo-inline-editor
         containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"
         sticky-mobile="true"
         onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
         img-anchor="deckgo-lazy-img"
-        list={false}></deckgo-inline-editor>
+        list={false}></deckgo-inline-editor>,
+      <app-inactivity fullscreen={this.fullscreen} onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}></app-inactivity>
     ];
   }
 

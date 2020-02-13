@@ -6,5 +6,7 @@ ion-footer {
 
   &[class*="footer"]::before {
     background-image: none;
+    background: var(--ion-color-light);
+    border: 1px solid var(--ion-color-light);
   }
 }
