@@ -182,6 +182,9 @@ export namespace Components {
     selectedElement: HTMLElement;
     slide: boolean;
   }
+  interface AppInactivity {
+    fullscreen: boolean;
+  }
   interface AppLanding {}
   interface AppLandingContent {}
   interface AppLandingDeck {}
@@ -562,6 +565,12 @@ declare global {
     new (): HTMLAppImageSlideElement;
   };
 
+  interface HTMLAppInactivityElement extends Components.AppInactivity, HTMLStencilElement {}
+  var HTMLAppInactivityElement: {
+    prototype: HTMLAppInactivityElement;
+    new (): HTMLAppInactivityElement;
+  };
+
   interface HTMLAppLandingElement extends Components.AppLanding, HTMLStencilElement {}
   var HTMLAppLandingElement: {
     prototype: HTMLAppLandingElement;
@@ -856,6 +865,7 @@ declare global {
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
     'app-image-slide': HTMLAppImageSlideElement;
+    'app-inactivity': HTMLAppInactivityElement;
     'app-landing': HTMLAppLandingElement;
     'app-landing-content': HTMLAppLandingContentElement;
     'app-landing-deck': HTMLAppLandingDeckElement;
@@ -1098,6 +1108,10 @@ declare namespace LocalJSX {
     selectedElement?: HTMLElement;
     slide?: boolean;
   }
+  interface AppInactivity {
+    fullscreen?: boolean;
+    onMouseInactivity?: (event: CustomEvent<boolean>) => void;
+  }
   interface AppLanding {}
   interface AppLandingContent {}
   interface AppLandingDeck {}
@@ -1244,6 +1258,7 @@ declare namespace LocalJSX {
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
     'app-image-slide': AppImageSlide;
+    'app-inactivity': AppInactivity;
     'app-landing': AppLanding;
     'app-landing-content': AppLandingContent;
     'app-landing-deck': AppLandingDeck;
@@ -1341,6 +1356,7 @@ declare module '@stencil/core' {
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
       'app-image-slide': LocalJSX.AppImageSlide & JSXBase.HTMLAttributes<HTMLAppImageSlideElement>;
+      'app-inactivity': LocalJSX.AppInactivity & JSXBase.HTMLAttributes<HTMLAppInactivityElement>;
       'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
       'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
       'app-landing-deck': LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;

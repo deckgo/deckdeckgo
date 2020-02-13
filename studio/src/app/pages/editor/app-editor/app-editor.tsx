@@ -661,8 +661,7 @@ export class AppEditor {
             onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
             onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}
             onSlidePrevDidChange={() => this.onSlideChangeHideToolbar()}
-            onSlideToChange={() => this.onSlideChangeHideToolbar()}
-            onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}>
+            onSlideToChange={() => this.onSlideChangeHideToolbar()}>
             {this.slides}
             {this.background}
           </deckgo-deck>
@@ -687,7 +686,8 @@ export class AppEditor {
         sticky-mobile="true"
         onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
         img-anchor="deckgo-lazy-img"
-        list={false}></deckgo-inline-editor>
+        list={false}></deckgo-inline-editor>,
+      <app-inactivity fullscreen={this.fullscreen} onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}></app-inactivity>
     ];
   }
 
