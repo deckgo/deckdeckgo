@@ -30,18 +30,9 @@ export class AppComponentsLazyImg {
           <h2 id="app-components-lazy-img-table-of-contents">Table of contents</h2>
           <ul>
             <li>
-              <a href="#app-components-lazy-img-installation">Installation</a>
-              <ul>
-                <li>
-                  <a href="#app-components-lazy-img-from-a-cdn">Using from a CDN</a>
-                </li>
-                <li>
-                  <a href="#app-components-lazy-img-from-npm">Install from NPM</a>
-                </li>
-                <li>
-                  <a href="#app-components-lazy-img-framework-integration">Framework integration</a>
-                </li>
-              </ul>
+              <a href="#app-components-lazy-img-installation">Installation</a> - <a href="#app-components-lazy-img-from-a-cdn">Using from a CDN</a> -{' '}
+              <a href="#app-components-lazy-img-from-npm">Install from NPM</a> -{' '}
+              <a href="#app-components-lazy-img-framework-integration">Framework integration</a>
             </li>
             <li>
               <a href="#app-components-lazy-img-usage">Usage</a>
@@ -372,7 +363,7 @@ export class AppComponentsLazyImg {
           <h3 id="app-components-lazy-img-fallbacks">Fallbacks</h3>
           <p>
             In case the browser would not support the native native lazy-loading or the Intersection Observer API, images are going to be loaded without any
-            delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded.{' '}
+            delay when the component load respectively if the browser does not implement the Intersection Observer API images are displayed and not lazy loaded.
           </p>
           <h3 id="app-components-lazy-img-trying-it-out">Trying it out</h3>
           <p>

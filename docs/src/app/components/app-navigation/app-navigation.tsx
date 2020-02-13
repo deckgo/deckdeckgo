@@ -71,10 +71,10 @@ export class AppNavigation {
             <ion-icon name="more"></ion-icon>
           </ion-button>
           <div class="links">
-            <a href="https://deckdeckgo.com" padding-start padding-end>
+            <a href="https://deckdeckgo.com" class="ion-padding-start ion-padding-end">
               Demo
             </a>
-            <a href="https://github.com/deckgo" padding-start padding-end>
+            <a href="https://github.com/deckgo" class="ion-padding-start ion-padding-end">
               Github
             </a>
             <app-theme-switcher></app-theme-switcher>
