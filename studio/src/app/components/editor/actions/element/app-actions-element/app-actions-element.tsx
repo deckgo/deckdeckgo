@@ -1014,7 +1014,7 @@ export class AppActionsElement {
 
     return [
       <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an unordered list" color="primary" mode="md" class={classListUL}>
-        <ion-icon src="/assets/icons/ionicons/list.svg"></ion-icon>
+        <ion-icon name="list-outline"></ion-icon>
         <ion-label>Unordered list</ion-label>
       </ion-tab-button>,
       <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an ordered list" color="primary" mode="md" class={classListOL}>
