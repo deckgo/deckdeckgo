@@ -44,7 +44,7 @@ export class AppNavigation {
       return (
         <ion-buttons slot="start">
           <ion-menu-toggle>
-            <ion-button>
+            <ion-button color="switcher">
               <ion-icon slot="icon-only" name="menu"></ion-icon>
             </ion-button>
           </ion-menu-toggle>
@@ -68,7 +68,7 @@ export class AppNavigation {
       return (
         <div slot="end">
           <ion-button onClick={() => this.openNavigationMenuModal()}>
-            <ion-icon name="more"></ion-icon>
+            <ion-icon ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
           </ion-button>
           <div class="links">
             <a href="https://deckdeckgo.com" class="ion-padding-start ion-padding-end">
