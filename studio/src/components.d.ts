@@ -40,8 +40,8 @@ export namespace Components {
   }
   interface AppActionsEditor {
     fullscreen: boolean;
+    hide: () => Promise<void>;
     hideFooterActions: boolean;
-    hideToolbar: () => Promise<void>;
     selectDeck: () => Promise<void>;
     slides: JSX.IntrinsicElements[];
     touch: (element: HTMLElement) => Promise<void>;
@@ -49,7 +49,7 @@ export namespace Components {
   interface AppActionsElement {
     blurSelectedElement: () => Promise<void>;
     elementFocus: EventEmitter;
-    hideToolbar: () => Promise<void>;
+    reset: () => Promise<void>;
     slideCopy: EventEmitter;
     touch: (element: HTMLElement) => Promise<void>;
     unSelect: () => Promise<void>;
@@ -948,6 +948,7 @@ declare namespace LocalJSX {
     onCodeDidChange?: (event: CustomEvent<HTMLElement>) => void;
     onImgDidChange?: (event: CustomEvent<HTMLElement>) => void;
     onNotesDidChange?: (event: CustomEvent<HTMLElement>) => void;
+    onResetted?: (event: CustomEvent<void>) => void;
     onSignIn?: (event: CustomEvent<void>) => void;
     onSlideDelete?: (event: CustomEvent<HTMLElement>) => void;
     onSlideDidChange?: (event: CustomEvent<HTMLElement>) => void;

@@ -46,39 +46,41 @@ export class AppActionsEditor {
 
   @Method()
   async touch(element: HTMLElement) {
-    const toolbar: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
+    const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
 
-    if (!toolbar) {
+    if (!actionsElement) {
       return;
     }
 
-    await toolbar.touch(element);
+    await actionsElement.touch(element);
 
     this.step = element && element.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1 ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT;
   }
 
   @Method()
   async selectDeck() {
-    const toolbar: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
+    const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
 
-    if (toolbar) {
-      await toolbar.blurSelectedElement();
-      await toolbar.unSelect();
+    if (actionsElement) {
+      await actionsElement.blurSelectedElement();
+      await actionsElement.unSelect();
     }
 
     this.blockSlide.emit(false);
 
-    this.step = BreadcrumbsStep.DECK;
+    this.selectStepDeck();
   }
 
   @Method()
-  async hideToolbar() {
-    const toolbar: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
+  async hide() {
+    const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
 
-    if (toolbar) {
-      await toolbar.hideToolbar();
+    if (actionsElement) {
+      await actionsElement.reset();
     }
+  }
 
+  private selectStepDeck() {
     this.step = BreadcrumbsStep.DECK;
   }
 
@@ -139,7 +141,8 @@ export class AppActionsEditor {
       <app-actions-element
         class={this.step === BreadcrumbsStep.DECK ? 'hidden' : undefined}
         slideCopy={this.slideCopy}
-        elementFocus={this.elementFocus}></app-actions-element>
+        elementFocus={this.elementFocus}
+        onResetted={() => this.selectStepDeck()}></app-actions-element>
     );
   }
 }

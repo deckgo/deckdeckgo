@@ -389,7 +389,7 @@ export class AppEditor {
         return;
       }
 
-      await actions.hideToolbar();
+      await actions.hide();
 
       resolve();
     });
@@ -418,7 +418,7 @@ export class AppEditor {
         return;
       }
 
-      await actions.hideToolbar();
+      await actions.hide();
       this.slideIndex = deckIndex;
 
       resolve();

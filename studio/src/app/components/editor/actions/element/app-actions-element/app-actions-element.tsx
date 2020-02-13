@@ -84,6 +84,8 @@ export class AppActionsElement {
 
   private imageHelper: ImageHelper;
 
+  @Event() private resetted: EventEmitter<void>;
+
   constructor() {
     this.busyService = BusyService.getInstance();
   }
@@ -192,7 +194,7 @@ export class AppActionsElement {
         this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
         await this.detachMoveToolbarOnElement();
 
-        await this.hideToolbar();
+        await this.reset();
       }
 
       resolve();
@@ -350,16 +352,14 @@ export class AppActionsElement {
 
   @Listen('pagerClick', {target: 'document'})
   async onPagerClick() {
-    await this.hideToolbar();
+    await this.reset();
   }
 
   @Method()
-  hideToolbar(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      await this.initSelectedElement(null);
+  async reset() {
+    await this.initSelectedElement(null);
 
-      resolve();
-    });
+    this.resetted.emit();
   }
 
   private async confirmDeleteElement($event: UIEvent) {
@@ -402,7 +402,7 @@ export class AppActionsElement {
         await this.resizeSlideContent(parent);
       }
 
-      await this.hideToolbar();
+      await this.reset();
 
       resolve();
     });
@@ -424,7 +424,7 @@ export class AppActionsElement {
 
       this.slideCopy.emit(this.selectedElement);
 
-      await this.hideToolbar();
+      await this.reset();
 
       resolve();
     });
@@ -640,7 +640,7 @@ export class AppActionsElement {
 
       await this.resizeSlideContent();
 
-      await this.hideToolbar();
+      await this.reset();
 
       resolve();
     });
@@ -860,7 +860,7 @@ export class AppActionsElement {
 
       await this.emitChange();
 
-      await this.hideToolbar();
+      await this.reset();
 
       resolve();
     });
