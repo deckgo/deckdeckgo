@@ -174,14 +174,14 @@ export class AppColorTextBackground {
   render() {
     return [
       <ion-list>
-        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)}>
+        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} value={ApplyColorType.TEXT}>
           <ion-item-divider class="ion-padding-top">
             <ion-label>Apply color to</ion-label>
           </ion-item-divider>
 
           <ion-item>
             <ion-label>Text</ion-label>
-            <ion-radio slot="start" value={ApplyColorType.TEXT} checked mode="md"></ion-radio>
+            <ion-radio slot="start" value={ApplyColorType.TEXT} mode="md"></ion-radio>
           </ion-item>
 
           <ion-item>
