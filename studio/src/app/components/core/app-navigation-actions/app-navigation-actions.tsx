@@ -12,6 +12,7 @@ import {Utils} from '../../../utils/core/utils';
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {UserService} from '../../../services/data/user/user.service';
+import {ThemeService} from '../../../services/theme/theme.service';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -31,6 +32,9 @@ export class AppNavigationActions {
   private userService: UserService;
   private userSubscription: Subscription;
 
+  private themeService: ThemeService;
+  private themeSubscription: Subscription;
+
   @State()
   private authUser: AuthUser;
 
@@ -40,12 +44,16 @@ export class AppNavigationActions {
   @State()
   private photoUrlLoaded: boolean = false;
 
+  @State()
+  private darkMode: boolean;
+
   @Event() private actionPublish: EventEmitter<void>;
 
   constructor() {
     this.authService = AuthService.getInstance();
     this.navService = NavService.getInstance();
     this.userService = UserService.getInstance();
+    this.themeService = ThemeService.getInstance();
   }
 
   componentWillLoad() {
@@ -57,6 +65,10 @@ export class AppNavigationActions {
       this.photoUrl = user && user.data ? user.data.photo_url : undefined;
       this.photoUrlLoaded = true;
     });
+
+    this.themeSubscription = this.themeService.watch().subscribe((dark: boolean) => {
+      this.darkMode = dark;
+    });
   }
 
   componentDidUnload() {
@@ -66,6 +78,10 @@ export class AppNavigationActions {
 
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
     }
   }
 
@@ -115,7 +131,7 @@ export class AppNavigationActions {
       return undefined;
     } else if (this.presentation || this.publish) {
       return (
-        <a class="wide-device ion-padding-start ion-padding-end" onClick={() => this.navigateSignIn()}>
+        <a class="wide-device ion-padding-start ion-padding-end signin" onClick={() => this.navigateSignIn()}>
           <ion-label>Sign in</ion-label>
         </a>
       );
@@ -137,7 +153,7 @@ export class AppNavigationActions {
   private renderPresentationButton() {
     if (this.presentation) {
       return (
-        <ion-button class="presentation ion-margin-end" shape="round" href="/editor" routerDirection="root" mode="md" color="primary">
+        <ion-button class="presentation ion-margin-end" shape="round" href="/editor" routerDirection="root" mode="md" color={this.darkMode ? 'light' : 'dark'}>
           <ion-label class="ion-text-uppercase">Write a presentation</ion-label>
         </ion-button>
       );
@@ -149,7 +165,12 @@ export class AppNavigationActions {
   private renderPublishButton() {
     if (this.publish) {
       return (
-        <ion-button class="publish ion-margin-end" shape="round" onClick={() => this.actionPublish.emit()} mode="md" color="primary">
+        <ion-button
+          class="publish ion-margin-end"
+          shape="round"
+          onClick={() => this.actionPublish.emit()}
+          mode="md"
+          color={this.darkMode ? 'light' : 'primary'}>
           <ion-label class="ion-text-uppercase">Ready to share?</ion-label>
         </ion-button>
       );

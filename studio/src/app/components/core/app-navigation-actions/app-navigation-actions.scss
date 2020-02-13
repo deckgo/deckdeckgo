@@ -18,6 +18,10 @@ app-navigation-actions {
     }
   }
 
+  a.signin {
+    margin-right: 8px;
+  }
+
   @media screen and (max-width: 540px) {
     a.wide-device,
     ion-router-link.wide-device {
