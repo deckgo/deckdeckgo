@@ -11,6 +11,10 @@ ion-header {
   }
 
   ion-toolbar {
+    ion-buttons {
+      min-height: 46px;
+    }
+
     --ion-toolbar-color: var(--ion-color-dark);
   }
 }
