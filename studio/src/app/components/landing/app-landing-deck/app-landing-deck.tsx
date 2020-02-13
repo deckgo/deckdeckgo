@@ -176,7 +176,7 @@ function Example() {
       <div slot="background">
         {!this.deckIsEnd ? (
           <button type="button" class="action next" onClick={() => this.prevNextSlide(true)}>
-            <ion-icon src="/assets/icons/ionicons/ios-arrow-forward.svg" aria-label="Next DeckDeckGo feature"></ion-icon>
+            <ion-icon name="chevron-forward-outline" aria-label="Next DeckDeckGo feature"></ion-icon>
           </button>
         ) : (
           undefined
@@ -184,7 +184,7 @@ function Example() {
 
         {!this.deckIsBeginning ? (
           <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)}>
-            <ion-icon src="/assets/icons/ionicons/ios-arrow-back.svg" aria-label="Next DeckDeckGo feature"></ion-icon>
+            <ion-icon name="chevron-back-outline" aria-label="Next DeckDeckGo feature"></ion-icon>
           </button>
         ) : (
           undefined
