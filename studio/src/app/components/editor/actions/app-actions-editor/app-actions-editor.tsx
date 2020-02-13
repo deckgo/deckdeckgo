@@ -99,7 +99,7 @@ export class AppActionsEditor {
 
   render() {
     return (
-      <Host class={this.hideFooterActions ? 'hidden' : undefined}>
+      <Host class={this.hideFooterActions ? `hidden${this.fullscreen ? ' fullscreen' : ''}` : this.fullscreen ? 'fullscreen' : undefined}>
         {this.renderSelectedIndicator()}
 
         {this.renderDeckActions()}

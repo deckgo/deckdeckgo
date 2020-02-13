@@ -29,6 +29,12 @@ app-actions-editor {
     }
   }
 
+  &.fullscreen {
+    div.indicator {
+      padding-top: 8px;
+    }
+  }
+
   div.indicator {
     display: flex;
     justify-content: center;

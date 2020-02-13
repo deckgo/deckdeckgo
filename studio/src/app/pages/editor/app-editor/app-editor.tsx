@@ -648,7 +648,7 @@ export class AppEditor {
   render() {
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
-      <ion-content class="ion-padding">
+      <ion-content>
         <main class={this.slidesEditable ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
           {this.renderLoading()}
 
