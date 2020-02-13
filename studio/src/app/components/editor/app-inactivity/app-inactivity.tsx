@@ -14,11 +14,19 @@ export class AppInactivity {
   @Event() private mouseInactivity: EventEmitter<boolean>;
 
   @Watch('fullscreen')
-  async onFullscreenToggle(_newValue: boolean, oldValue: boolean) {
+  async onFullscreenToggle(newValue: boolean, oldValue: boolean) {
+    console.log('old', oldValue, 'new', newValue);
+
     if (oldValue) {
       await this.removeEventListener();
     } else {
       await this.addEventListener();
+    }
+
+    if (!oldValue && newValue) {
+      setTimeout(() => {
+        this.hideEditing(false);
+      }, 400);
     }
   }
 
@@ -53,13 +61,16 @@ export class AppInactivity {
 
     await this.showHideMouseCursor(true);
 
-    this.hideMouseCursorWithDelay();
+    this.hideEditing(true);
   };
 
-  private hideMouseCursorWithDelay() {
-    this.idleMouseTimer = setTimeout(async () => {
-      await this.showHideMouseCursor(false);
-    }, 2000);
+  private hideEditing(withDelay: boolean) {
+    this.idleMouseTimer = setTimeout(
+      async () => {
+        await this.showHideMouseCursor(false);
+      },
+      withDelay ? 2000 : 0
+    );
   }
 
   private showHideMouseCursor(show: boolean): Promise<void> {

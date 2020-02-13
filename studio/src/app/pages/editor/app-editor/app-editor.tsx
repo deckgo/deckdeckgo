@@ -159,7 +159,7 @@ export class AppEditor {
       await this.contentEditable(slide);
     });
 
-    this.fullscreen = isFullscreen();
+    this.fullscreen = isFullscreen() && !isIOS();
   }
 
   async destroy() {
@@ -557,7 +557,7 @@ export class AppEditor {
   }
 
   private onWindowResize = async () => {
-    this.fullscreen = isFullscreen();
+    this.fullscreen = isFullscreen() && !isIOS();
 
     // Per default, when we switch to the fullscreen mode, we want to present the presentation not edit it
     await this.updatePresenting(this.fullscreen);
