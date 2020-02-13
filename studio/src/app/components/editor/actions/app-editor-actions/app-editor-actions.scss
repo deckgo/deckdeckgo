@@ -2,16 +2,30 @@ app-editor-actions {
   background: var(--ion-color-light);
   display: block;
 
-  .hidden {
-    ion-buttons {
-      visibility: hidden;
-    }
-  }
-
   app-deck-actions,
   app-element-actions {
     &.hidden {
-      display: none;
+      ion-toolbar {
+        height: 0;
+      }
+
+      ion-toolbar ion-tab-button {
+        transform: scaleY(0);
+        opacity: 0;
+      }
+    }
+
+    ion-toolbar {
+      height: 100%;
+
+      ion-tab-button {
+        display: block;
+
+        transform: scaleY(1);
+        opacity: 1;
+
+        animation: opacity 0.5s ease-in-out;
+      }
     }
   }
 

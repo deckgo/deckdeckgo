@@ -19,6 +19,7 @@ import {BusyService} from '../../../../services/editor/busy/busy.service';
 
 @Component({
   tag: 'app-element-actions',
+  styleUrl: 'app-element-actions.scss',
   shadow: false
 })
 export class AppElementActions {
@@ -923,29 +924,25 @@ export class AppElementActions {
   }
 
   private renderNotes() {
-    if (!this.slide) {
-      return undefined;
-    } else {
-      return (
-        <ion-tab-button onClick={() => this.openNotes()} aria-label="Notes" color="primary" mode="md" disabled={this.deckBusy}>
-          <ion-icon src="/assets/icons/notes.svg"></ion-icon>
-          <ion-label>Notes</ion-label>
-        </ion-tab-button>
-      );
-    }
+    const classElement: string | undefined = this.slide ? undefined : 'hidden';
+
+    return (
+      <ion-tab-button onClick={() => this.openNotes()} aria-label="Notes" color="primary" mode="md" disabled={this.deckBusy} class={classElement}>
+        <ion-icon src="/assets/icons/notes.svg"></ion-icon>
+        <ion-label>Notes</ion-label>
+      </ion-tab-button>
+    );
   }
 
   private renderCopy() {
-    if (!this.slide) {
-      return undefined;
-    } else {
-      return (
-        <ion-tab-button onClick={() => this.cloneSlide()} aria-label="Copy" color="primary" mode="md" disabled={this.deckBusy}>
-          <ion-icon name="copy"></ion-icon>
-          <ion-label>Copy</ion-label>
-        </ion-tab-button>
-      );
-    }
+    const classSlide: string | undefined = this.slide ? undefined : 'hidden';
+
+    return (
+      <ion-tab-button onClick={() => this.cloneSlide()} aria-label="Copy" color="primary" mode="md" disabled={this.deckBusy} class={classSlide}>
+        <ion-icon name="copy"></ion-icon>
+        <ion-label>Copy</ion-label>
+      </ion-tab-button>
+    );
   }
 
   private renderColor() {
@@ -958,87 +955,72 @@ export class AppElementActions {
   }
 
   private renderEdit() {
-    if (this.slide) {
-      if (!this.qrCode && !this.chart && !this.poll && !this.youtube && !this.author) {
-        return undefined;
-      }
+    const classSlide: string | undefined = this.slide && (this.qrCode || this.chart || this.poll || this.youtube || this.author) ? undefined : 'hidden';
+    const classToggle: string | undefined = !this.slide ? undefined : ' hidden';
 
-      return (
-        <ion-tab-button
-          onClick={() => (this.poll ? this.openEditPollSlide() : this.youtube ? this.openEditYoutubeSlide() : this.openEditSlide())}
-          color="primary"
-          aria-label="Edit slide options"
-          mode="md">
-          <ion-icon src="/assets/icons/ionicons/md-create.svg"></ion-icon>
-          <ion-label>Options</ion-label>
-        </ion-tab-button>
-      );
-    } else {
-      return (
-        <ion-tab-button onClick={() => this.openSlotType()} aria-label="Toggle element type" color="primary" mode="md">
-          <ion-icon src="/assets/icons/ionicons/md-add.svg"></ion-icon>
-          <ion-label>Toggle</ion-label>
-        </ion-tab-button>
-      );
-    }
+    return [
+      <ion-tab-button
+        onClick={() => (this.poll ? this.openEditPollSlide() : this.youtube ? this.openEditYoutubeSlide() : this.openEditSlide())}
+        color="primary"
+        aria-label="Edit slide options"
+        mode="md"
+        class={classSlide}>
+        <ion-icon src="/assets/icons/ionicons/md-create.svg"></ion-icon>
+        <ion-label>Options</ion-label>
+      </ion-tab-button>,
+      <ion-tab-button onClick={() => this.openSlotType()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
+        <ion-icon src="/assets/icons/ionicons/md-add.svg"></ion-icon>
+        <ion-label>Toggle</ion-label>
+      </ion-tab-button>
+    ];
   }
 
   private renderCodeOptions() {
-    if (!this.code) {
-      return undefined;
-    } else {
-      return (
-        <ion-tab-button onClick={() => this.openCode()} aria-label="Code attributes" color="primary" mode="md">
-          <ion-icon name="code"></ion-icon>
-          <ion-label>Attributes</ion-label>
-        </ion-tab-button>
-      );
-    }
+    const classSlideCode: string | undefined = this.code ? undefined : 'hidden';
+
+    return (
+      <ion-tab-button onClick={() => this.openCode()} aria-label="Code attributes" color="primary" mode="md" class={classSlideCode}>
+        <ion-icon name="code"></ion-icon>
+        <ion-label>Attributes</ion-label>
+      </ion-tab-button>
+    );
   }
 
   private renderImages() {
-    if (!this.image && !this.slide) {
-      return undefined;
-    } else {
-      return (
-        <ion-tab-button onClick={() => this.openImage()} aria-label={this.slide ? 'Background' : 'Image'} color="primary" mode="md">
-          <ion-icon name="images"></ion-icon>
-          <ion-label>{this.slide ? 'Background' : 'Image'}</ion-label>
-        </ion-tab-button>
-      );
-    }
+    const classImage: string | undefined = this.image || this.slide ? undefined : 'hidden';
+
+    return (
+      <ion-tab-button onClick={() => this.openImage()} aria-label={this.slide ? 'Background' : 'Image'} color="primary" mode="md" class={classImage}>
+        <ion-icon name="images"></ion-icon>
+        <ion-label>{this.slide ? 'Background' : 'Image'}</ion-label>
+      </ion-tab-button>
+    );
   }
 
   private renderReveal() {
-    if (this.slide || this.code || this.youtube) {
-      return undefined;
-    } else {
-      return (
-        <ion-tab-button onClick={() => this.openReveal()} aria-label="Edit element animation" color="primary" mode="md">
-          <ion-icon src="/assets/icons/album.svg"></ion-icon>
-          <ion-label>Animation</ion-label>
-        </ion-tab-button>
-      );
-    }
+    const classReveal: string | undefined = this.slide || this.code || this.youtube ? 'hidden' : undefined;
+
+    return (
+      <ion-tab-button onClick={() => this.openReveal()} aria-label="Edit element animation" color="primary" mode="md" class={classReveal}>
+        <ion-icon src="/assets/icons/album.svg"></ion-icon>
+        <ion-label>Animation</ion-label>
+      </ion-tab-button>
+    );
   }
 
   private renderList() {
-    if (this.slide || !this.list) {
-      return undefined;
-    } else if (this.list === SlotType.OL) {
-      return (
-        <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an unordered list" color="primary" mode="md">
-          <ion-icon src="/assets/icons/ionicons/ios-list.svg"></ion-icon>
-          <ion-label>Unordered list</ion-label>
-        </ion-tab-button>
-      );
-    } else {
-      return (
-        <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an ordered list" color="primary" mode="md">
-          <ion-icon src="/assets/icons/list-ol.svg"></ion-icon>
-          <ion-label>Ordered list</ion-label>
-        </ion-tab-button>
-      );
-    }
+    const classListOL: string | undefined = this.list === SlotType.OL ? undefined : 'hidden';
+    const classListUL: string | undefined = this.list === SlotType.UL ? undefined : 'hidden';
+
+    return [
+      <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an unordered list" color="primary" mode="md" class={classListUL}>
+        <ion-icon src="/assets/icons/ionicons/ios-list.svg"></ion-icon>
+        <ion-label>Unordered list</ion-label>
+      </ion-tab-button>,
+      <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an ordered list" color="primary" mode="md" class={classListOL}>
+        <ion-icon src="/assets/icons/list-ol.svg"></ion-icon>
+        <ion-label>Ordered list</ion-label>
+      </ion-tab-button>
+    ];
   }
 }
