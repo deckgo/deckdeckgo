@@ -1,9 +1,9 @@
-app-editor-actions {
+app-actions-editor {
   background: var(--ion-color-light);
   display: block;
 
-  app-deck-actions,
-  app-element-actions {
+  app-actions-deck,
+  app-actions-element {
     &.hidden {
       ion-toolbar {
         height: 0;
@@ -51,8 +51,8 @@ app-editor-actions {
 
   @media screen and (max-width: 540px) {
     ion-tab-button,
-    app-share-action,
-    app-editor-busy-action {
+    app-action-share,
+    app-action-busy {
       &.wider-devices {
         display: none;
       }
@@ -61,8 +61,8 @@ app-editor-actions {
 
   @media screen and (min-width: 540px) {
     ion-tab-button,
-    app-share-action,
-    app-editor-busy-action {
+    app-action-share,
+    app-action-busy {
       &.small-devices {
         display: none;
       }

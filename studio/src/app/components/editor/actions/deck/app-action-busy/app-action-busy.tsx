@@ -2,14 +2,14 @@ import {Component, Event, EventEmitter, State, h, Prop} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {BusyService} from '../../../../services/editor/busy/busy.service';
+import {BusyService} from '../../../../../services/editor/busy/busy.service';
 
 @Component({
-  tag: 'app-editor-busy-action',
-  styleUrl: 'app-editor-busy-action.scss',
+  tag: 'app-action-busy',
+  styleUrl: 'app-action-busy.scss',
   shadow: false
 })
-export class AppEditorBusyAction {
+export class AppActionBusy {
   @Event() private actionReady: EventEmitter<UIEvent>;
 
   private subscription: Subscription;

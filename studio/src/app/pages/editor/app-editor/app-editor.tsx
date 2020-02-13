@@ -382,7 +382,7 @@ export class AppEditor {
 
   private hideToolbar(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppEditorActionsElement = this.el.querySelector('app-editor-actions');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
       if (!actions) {
         resolve();
@@ -397,7 +397,7 @@ export class AppEditor {
 
   private onSlideChangeHideToolbar(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppEditorActionsElement = this.el.querySelector('app-editor-actions');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
       if (!actions) {
         resolve();
@@ -515,7 +515,7 @@ export class AppEditor {
 
   private touchToolbar(element: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppEditorActionsElement = this.el.querySelector('app-editor-actions');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
       if (!actions) {
         resolve();
@@ -670,7 +670,7 @@ export class AppEditor {
         </main>
       </ion-content>,
       <ion-footer class={this.presenting ? 'idle' : undefined}>
-        <app-editor-actions
+        <app-actions-editor
           hideFooterActions={this.hideFooterActions}
           fullscreen={this.fullscreen}
           slides={this.slides}
@@ -680,7 +680,7 @@ export class AppEditor {
           onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
           onToggleFullScreen={() => this.toggleFullScreen()}
           onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
-          onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}></app-editor-actions>
+          onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}></app-actions-editor>
       </ion-footer>,
       <deckgo-inline-editor
         containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"

@@ -43,7 +43,7 @@ export class EditorEventsHandler {
 
   private touchToolbar(element: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppEditorActionsElement = this.el.querySelector('app-editor-actions');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
       if (!actions) {
         resolve();
@@ -58,7 +58,7 @@ export class EditorEventsHandler {
 
   selectDeck(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppEditorActionsElement = this.el.querySelector('app-editor-actions');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
       if (actions) {
         await actions.selectDeck();

@@ -3,11 +3,11 @@ import {Component, Element, Event, EventEmitter, h, Host, JSX, Method, Prop, Sta
 import {BreadcrumbsStep} from '../../../../utils/editor/breadcrumbs-type';
 
 @Component({
-  tag: 'app-editor-actions',
-  styleUrl: 'app-editor-actions.scss',
+  tag: 'app-actions-editor',
+  styleUrl: 'app-actions-editor.scss',
   shadow: false
 })
-export class AppEditorActions {
+export class AppActionsEditor {
   @Element() el: HTMLElement;
 
   @Prop()
@@ -46,7 +46,7 @@ export class AppEditorActions {
 
   @Method()
   async touch(element: HTMLElement) {
-    const toolbar: HTMLAppElementActionsElement = this.el.querySelector('app-element-actions');
+    const toolbar: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
 
     if (!toolbar) {
       return;
@@ -59,7 +59,7 @@ export class AppEditorActions {
 
   @Method()
   async selectDeck() {
-    const toolbar: HTMLAppElementActionsElement = this.el.querySelector('app-element-actions');
+    const toolbar: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
 
     if (toolbar) {
       await toolbar.blurSelectedElement();
@@ -73,7 +73,7 @@ export class AppEditorActions {
 
   @Method()
   async hideToolbar() {
-    const toolbar: HTMLAppElementActionsElement = this.el.querySelector('app-element-actions');
+    const toolbar: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
 
     if (toolbar) {
       await toolbar.hideToolbar();
@@ -117,7 +117,7 @@ export class AppEditorActions {
 
   private renderDeckActions() {
     return (
-      <app-deck-actions
+      <app-actions-deck
         class={this.step != BreadcrumbsStep.DECK ? 'hidden' : undefined}
         fullscreen={this.fullscreen}
         slides={this.slides}
@@ -130,16 +130,16 @@ export class AppEditorActions {
         actionPublish={this.actionPublish}
         openShare={this.openShare}
         deckDidChange={this.deckDidChange}
-        onSelectDeck={() => this.selectDeck()}></app-deck-actions>
+        onSelectDeck={() => this.selectDeck()}></app-actions-deck>
     );
   }
 
   private renderEditActions() {
     return (
-      <app-element-actions
+      <app-actions-element
         class={this.step === BreadcrumbsStep.DECK ? 'hidden' : undefined}
         slideCopy={this.slideCopy}
-        elementFocus={this.elementFocus}></app-element-actions>
+        elementFocus={this.elementFocus}></app-actions-element>
     );
   }
 }

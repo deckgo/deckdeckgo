@@ -5,18 +5,18 @@ import {isIPad} from '@deckdeckgo/utils';
 
 import {get, set} from 'idb-keyval';
 
-import {SlideAttributes, SlideTemplate} from '../../../../models/data/slide';
+import {SlideAttributes, SlideTemplate} from '../../../../../models/data/slide';
 
-import {MoreAction} from '../../../../utils/editor/more-action';
+import {MoreAction} from '../../../../../utils/editor/more-action';
 
-import {AnonymousService} from '../../../../services/editor/anonymous/anonymous.service';
-import {CreateSlidesUtils} from '../../../../utils/editor/create-slides.utils';
+import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
+import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
 
 @Component({
-  tag: 'app-deck-actions',
+  tag: 'app-actions-deck',
   shadow: false
 })
-export class AppDeckActions {
+export class AppActionsDeck {
   @Element() el: HTMLElement;
 
   @Prop()
@@ -358,9 +358,9 @@ export class AppDeckActions {
     return (
       <ion-toolbar>
         <ion-buttons slot="start">
-          <app-editor-busy-action iconName="add" onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+          <app-action-busy iconName="add" onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
             <ion-label>Add slide</ion-label>
-          </app-editor-busy-action>
+          </app-action-busy>
 
           <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(false)} color="primary" mode="md">
             <ion-icon name="arrow-back"></ion-icon>
@@ -377,9 +377,9 @@ export class AppDeckActions {
             <ion-label>Slides</ion-label>
           </ion-tab-button>
 
-          <app-editor-busy-action iconName="brush" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
+          <app-action-busy iconName="brush" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
             <ion-label>Style</ion-label>
-          </app-editor-busy-action>
+          </app-action-busy>
 
           {this.renderFullscreenButton()}
 
@@ -388,7 +388,7 @@ export class AppDeckActions {
             <ion-label>Remote</ion-label>
           </ion-tab-button>
 
-          <app-share-action class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-share-action>
+          <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices" mode="md">
             <ion-icon src="/assets/icons/ionicons/md-more.svg"></ion-icon>
@@ -397,7 +397,7 @@ export class AppDeckActions {
         </ion-buttons>
 
         <ion-buttons slot="end">
-          <app-help-action></app-help-action>
+          <app-action-help></app-action-help>
         </ion-buttons>
       </ion-toolbar>
     );

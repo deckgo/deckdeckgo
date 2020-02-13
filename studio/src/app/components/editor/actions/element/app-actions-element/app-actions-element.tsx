@@ -6,23 +6,23 @@ import {debounceTime} from 'rxjs/operators';
 
 import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
-import {ImageHelper} from '../../../../helpers/editor/image.helper';
+import {ImageHelper} from '../../../../../helpers/editor/image.helper';
 
-import {ToggleSlotUtils} from '../../../../utils/editor/toggle-slot.utils';
-import {RevealSlotUtils} from '../../../../utils/editor/reveal-slot.utils';
-import {SlotType} from '../../../../utils/editor/slot-type';
-import {SlotUtils} from '../../../../utils/editor/slot.utils';
+import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
+import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
+import {SlotType} from '../../../../../utils/editor/slot-type';
+import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 
-import {EditAction} from '../../../../utils/editor/edit-action';
+import {EditAction} from '../../../../../utils/editor/edit-action';
 
-import {BusyService} from '../../../../services/editor/busy/busy.service';
+import {BusyService} from '../../../../../services/editor/busy/busy.service';
 
 @Component({
-  tag: 'app-element-actions',
-  styleUrl: 'app-element-actions.scss',
+  tag: 'app-actions-element',
+  styleUrl: 'app-actions-element.scss',
   shadow: false
 })
-export class AppElementActions {
+export class AppActionsElement {
   @Element() el: HTMLElement;
 
   @Prop()

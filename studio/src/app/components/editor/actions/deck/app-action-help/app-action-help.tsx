@@ -3,9 +3,9 @@ import {Component, h, Element} from '@stencil/core';
 import {popoverController} from '@ionic/core';
 
 @Component({
-  tag: 'app-help-action'
+  tag: 'app-action-help'
 })
-export class AppHelpAction {
+export class AppActionHelp {
   @Element() el: HTMLElement;
 
   private async openGetHelp() {
