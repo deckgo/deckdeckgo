@@ -86,7 +86,7 @@ export class AppEditor {
   private slidesFetched: boolean = false;
 
   @State()
-  private hideFooterActions: boolean = true;
+  private hideFooter: boolean = false;
 
   @State()
   private hideNavigation: boolean = false;
@@ -151,9 +151,6 @@ export class AppEditor {
       });
 
     this.busySubscription = this.busyService.watchSlideEditable().subscribe(async (slide: HTMLElement) => {
-      // Hide actions footer till deck is editable
-      this.hideFooterActions = false;
-
       this.slidesEditable = true;
 
       await this.contentEditable(slide);
@@ -596,7 +593,7 @@ export class AppEditor {
   }
 
   private stickyToolbarActivated($event: CustomEvent) {
-    this.hideFooterActions = $event ? $event.detail : false;
+    this.hideFooter = $event ? isMobile() && !isIOS() && $event.detail : false;
     this.hideNavigation = $event ? isIOS() && $event.detail : false;
   }
 
@@ -670,7 +667,7 @@ export class AppEditor {
       </ion-content>,
       <ion-footer class={this.presenting ? 'idle' : undefined}>
         <app-actions-editor
-          hideFooterActions={this.hideFooterActions}
+          hideFooter={this.hideFooter}
           fullscreen={this.fullscreen}
           slides={this.slides}
           onSignIn={() => this.signIn()}

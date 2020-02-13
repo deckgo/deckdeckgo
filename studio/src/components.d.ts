@@ -41,7 +41,7 @@ export namespace Components {
   interface AppActionsEditor {
     fullscreen: boolean;
     hide: () => Promise<void>;
-    hideFooterActions: boolean;
+    hideFooter: boolean;
     selectDeck: () => Promise<void>;
     slides: JSX.IntrinsicElements[];
     touch: (element: HTMLElement) => Promise<void>;
@@ -938,7 +938,7 @@ declare namespace LocalJSX {
   }
   interface AppActionsEditor {
     fullscreen?: boolean;
-    hideFooterActions?: boolean;
+    hideFooter?: boolean;
     onActionPublish?: (event: CustomEvent<void>) => void;
     onAddSlide?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
     onAnimatePrevNextSlide?: (event: CustomEvent<boolean>) => void;

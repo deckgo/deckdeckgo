@@ -11,7 +11,7 @@ export class AppActionsEditor {
   @Element() el: HTMLElement;
 
   @Prop()
-  hideFooterActions: boolean = true;
+  hideFooter: boolean = false;
 
   @Prop()
   fullscreen: boolean = false;
@@ -99,7 +99,11 @@ export class AppActionsEditor {
 
   render() {
     return (
-      <Host class={this.hideFooterActions ? `hidden${this.fullscreen ? ' fullscreen' : ''}` : this.fullscreen ? 'fullscreen' : undefined}>
+      <Host
+        class={{
+          fullscreen: this.fullscreen,
+          hidden: this.hideFooter
+        }}>
         {this.renderSelectedIndicator()}
 
         {this.renderDeckActions()}

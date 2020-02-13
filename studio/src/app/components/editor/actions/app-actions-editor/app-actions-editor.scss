@@ -2,6 +2,14 @@ app-actions-editor {
   background: var(--ion-color-light);
   display: block;
 
+  &.hidden {
+    div.indicator,
+    app-actions-deck,
+    app-actions-element {
+      visibility: hidden;
+    }
+  }
+
   app-actions-deck,
   app-actions-element {
     &.hidden {
