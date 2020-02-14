@@ -41,7 +41,7 @@ export class AppNewsletter {
                 <input type="text" name="b_9b5f83c6cb1006ea8f7225ccb_264e8d156c" tabindex="-1" value="" />
               </div>
               <div>
-                <ion-button type="submit" color="primary" shape="round" id="mc-embedded-subscribe">
+                <ion-button type="submit" color="primary" shape="round" id="mc-embedded-subscribe" class="ion-margin-top">
                   Subscribe
                 </ion-button>
               </div>
