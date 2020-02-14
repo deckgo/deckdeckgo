@@ -165,12 +165,7 @@ export class AppNavigationActions {
   private renderPublishButton() {
     if (this.publish) {
       return (
-        <ion-button
-          class="publish ion-margin-end"
-          shape="round"
-          onClick={() => this.actionPublish.emit()}
-          mode="md"
-          color={this.darkMode ? 'light' : 'primary'}>
+        <ion-button class="publish ion-margin-end" shape="round" onClick={() => this.actionPublish.emit()} mode="md" color={this.darkMode ? 'light' : 'dark'}>
           <ion-label class="ion-text-uppercase">Ready to share?</ion-label>
         </ion-button>
       );
