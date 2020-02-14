@@ -281,7 +281,7 @@ export class AppLandingContent {
           onSlideDidLoad={async () => await this.loadPollWithoutIntersectionObserver()}
           class="showcase"
           style={{
-            '--deckgo-qrcode-color-fill': 'var(--ion-color-dark)',
+            '--deckgo-qrcode-color-fill': '#222428',
             '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
             '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'
           }}>

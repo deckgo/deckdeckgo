@@ -17,8 +17,8 @@ app-navigation {
     }
 
     ion-button {
-      --color: black;
-      --color-activated: black;
+      --color: var(--ion-color-switcher);
+      --color-activated: var(--ion-color-switcher);
       --background-activated: transparent;
       --background: transparent;
       --box-shadow: none;

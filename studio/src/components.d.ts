@@ -12,6 +12,9 @@ import {
   JSX,
 } from '@stencil/core';
 import {
+  BreadcrumbsStep,
+} from './app/utils/editor/breadcrumbs-type';
+import {
   PrismLanguage,
 } from './app/services/editor/prism/prism.service';
 import {
@@ -41,9 +44,47 @@ import {
 
 export namespace Components {
   interface AppAbout {}
+  interface AppActionBusy {
+    'iconName': string;
+    'iconSrc': string;
+  }
+  interface AppActionHelp {}
+  interface AppActionShare {}
+  interface AppActionsDeck {
+    'actionPublish': EventEmitter;
+    'addSlide': EventEmitter;
+    'animatePrevNextSlide': EventEmitter;
+    'blockSlide': EventEmitter;
+    'deckDidChange': EventEmitter;
+    'fullscreen': boolean;
+    'openShare': EventEmitter;
+    'signIn': EventEmitter;
+    'slideTo': EventEmitter;
+    'slides': JSX.IntrinsicElements[];
+    'toggleFullScreen': EventEmitter;
+  }
+  interface AppActionsEditor {
+    'fullscreen': boolean;
+    'hide': () => Promise<void>;
+    'hideFooter': boolean;
+    'selectDeck': () => Promise<void>;
+    'slides': JSX.IntrinsicElements[];
+    'touch': (element: HTMLElement) => Promise<void>;
+  }
+  interface AppActionsElement {
+    'blurSelectedElement': () => Promise<void>;
+    'elementFocus': EventEmitter;
+    'reset': () => Promise<void>;
+    'slideCopy': EventEmitter;
+    'touch': (element: HTMLElement) => Promise<void>;
+    'unSelect': () => Promise<void>;
+  }
   interface AppAvatar {
     'ariaLabel': string;
     'src': string;
+  }
+  interface AppBreadcrumbs {
+    'step': BreadcrumbsStep;
   }
   interface AppCode {
     'codeDidChange': EventEmitter<HTMLElement>;
@@ -132,20 +173,6 @@ export namespace Components {
   interface AppEditor {
     'deckId': string;
   }
-  interface AppEditorActions {
-    'fullscreen': boolean;
-    'hideFooterActions': boolean;
-    'slides': JSX.IntrinsicElements[];
-  }
-  interface AppEditorBusyAction {
-    'iconName': string;
-  }
-  interface AppEditorToolbar {
-    'blurSelectedElement': () => Promise<void>;
-    'hideToolbar': () => Promise<void>;
-    'touch': (element: HTMLElement) => Promise<void>;
-    'unSelect': () => Promise<void>;
-  }
   interface AppElementDelete {}
   interface AppEmbed {}
   interface AppFaq {}
@@ -165,7 +192,6 @@ export namespace Components {
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
-  interface AppHelpAction {}
   interface AppHome {}
   interface AppImage {
     'deck': boolean;
@@ -180,6 +206,9 @@ export namespace Components {
     'imgDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
     'slide': boolean;
+  }
+  interface AppInactivity {
+    'fullscreen': boolean;
   }
   interface AppLanding {}
   interface AppLandingContent {}
@@ -246,7 +275,6 @@ export namespace Components {
   }
   interface AppServices {}
   interface AppSettings {}
-  interface AppShareAction {}
   interface AppShareDeck {
     'openShare': () => Promise<void>;
   }
@@ -282,10 +310,52 @@ declare global {
     new (): HTMLAppAboutElement;
   };
 
+  interface HTMLAppActionBusyElement extends Components.AppActionBusy, HTMLStencilElement {}
+  var HTMLAppActionBusyElement: {
+    prototype: HTMLAppActionBusyElement;
+    new (): HTMLAppActionBusyElement;
+  };
+
+  interface HTMLAppActionHelpElement extends Components.AppActionHelp, HTMLStencilElement {}
+  var HTMLAppActionHelpElement: {
+    prototype: HTMLAppActionHelpElement;
+    new (): HTMLAppActionHelpElement;
+  };
+
+  interface HTMLAppActionShareElement extends Components.AppActionShare, HTMLStencilElement {}
+  var HTMLAppActionShareElement: {
+    prototype: HTMLAppActionShareElement;
+    new (): HTMLAppActionShareElement;
+  };
+
+  interface HTMLAppActionsDeckElement extends Components.AppActionsDeck, HTMLStencilElement {}
+  var HTMLAppActionsDeckElement: {
+    prototype: HTMLAppActionsDeckElement;
+    new (): HTMLAppActionsDeckElement;
+  };
+
+  interface HTMLAppActionsEditorElement extends Components.AppActionsEditor, HTMLStencilElement {}
+  var HTMLAppActionsEditorElement: {
+    prototype: HTMLAppActionsEditorElement;
+    new (): HTMLAppActionsEditorElement;
+  };
+
+  interface HTMLAppActionsElementElement extends Components.AppActionsElement, HTMLStencilElement {}
+  var HTMLAppActionsElementElement: {
+    prototype: HTMLAppActionsElementElement;
+    new (): HTMLAppActionsElementElement;
+  };
+
   interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {}
   var HTMLAppAvatarElement: {
     prototype: HTMLAppAvatarElement;
     new (): HTMLAppAvatarElement;
+  };
+
+  interface HTMLAppBreadcrumbsElement extends Components.AppBreadcrumbs, HTMLStencilElement {}
+  var HTMLAppBreadcrumbsElement: {
+    prototype: HTMLAppBreadcrumbsElement;
+    new (): HTMLAppBreadcrumbsElement;
   };
 
   interface HTMLAppCodeElement extends Components.AppCode, HTMLStencilElement {}
@@ -438,24 +508,6 @@ declare global {
     new (): HTMLAppEditorElement;
   };
 
-  interface HTMLAppEditorActionsElement extends Components.AppEditorActions, HTMLStencilElement {}
-  var HTMLAppEditorActionsElement: {
-    prototype: HTMLAppEditorActionsElement;
-    new (): HTMLAppEditorActionsElement;
-  };
-
-  interface HTMLAppEditorBusyActionElement extends Components.AppEditorBusyAction, HTMLStencilElement {}
-  var HTMLAppEditorBusyActionElement: {
-    prototype: HTMLAppEditorBusyActionElement;
-    new (): HTMLAppEditorBusyActionElement;
-  };
-
-  interface HTMLAppEditorToolbarElement extends Components.AppEditorToolbar, HTMLStencilElement {}
-  var HTMLAppEditorToolbarElement: {
-    prototype: HTMLAppEditorToolbarElement;
-    new (): HTMLAppEditorToolbarElement;
-  };
-
   interface HTMLAppElementDeleteElement extends Components.AppElementDelete, HTMLStencilElement {}
   var HTMLAppElementDeleteElement: {
     prototype: HTMLAppElementDeleteElement;
@@ -516,12 +568,6 @@ declare global {
     new (): HTMLAppGifElement;
   };
 
-  interface HTMLAppHelpActionElement extends Components.AppHelpAction, HTMLStencilElement {}
-  var HTMLAppHelpActionElement: {
-    prototype: HTMLAppHelpActionElement;
-    new (): HTMLAppHelpActionElement;
-  };
-
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
   var HTMLAppHomeElement: {
     prototype: HTMLAppHomeElement;
@@ -544,6 +590,12 @@ declare global {
   var HTMLAppImageSlideElement: {
     prototype: HTMLAppImageSlideElement;
     new (): HTMLAppImageSlideElement;
+  };
+
+  interface HTMLAppInactivityElement extends Components.AppInactivity, HTMLStencilElement {}
+  var HTMLAppInactivityElement: {
+    prototype: HTMLAppInactivityElement;
+    new (): HTMLAppInactivityElement;
   };
 
   interface HTMLAppLandingElement extends Components.AppLanding, HTMLStencilElement {}
@@ -726,12 +778,6 @@ declare global {
     new (): HTMLAppSettingsElement;
   };
 
-  interface HTMLAppShareActionElement extends Components.AppShareAction, HTMLStencilElement {}
-  var HTMLAppShareActionElement: {
-    prototype: HTMLAppShareActionElement;
-    new (): HTMLAppShareActionElement;
-  };
-
   interface HTMLAppShareDeckElement extends Components.AppShareDeck, HTMLStencilElement {}
   var HTMLAppShareDeckElement: {
     prototype: HTMLAppShareDeckElement;
@@ -799,7 +845,14 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'app-about': HTMLAppAboutElement;
+    'app-action-busy': HTMLAppActionBusyElement;
+    'app-action-help': HTMLAppActionHelpElement;
+    'app-action-share': HTMLAppActionShareElement;
+    'app-actions-deck': HTMLAppActionsDeckElement;
+    'app-actions-editor': HTMLAppActionsEditorElement;
+    'app-actions-element': HTMLAppActionsElementElement;
     'app-avatar': HTMLAppAvatarElement;
+    'app-breadcrumbs': HTMLAppBreadcrumbsElement;
     'app-code': HTMLAppCodeElement;
     'app-code-languages': HTMLAppCodeLanguagesElement;
     'app-color': HTMLAppColorElement;
@@ -825,9 +878,6 @@ declare global {
     'app-edit-slide-chart': HTMLAppEditSlideChartElement;
     'app-edit-slide-qrcode': HTMLAppEditSlideQrcodeElement;
     'app-editor': HTMLAppEditorElement;
-    'app-editor-actions': HTMLAppEditorActionsElement;
-    'app-editor-busy-action': HTMLAppEditorBusyActionElement;
-    'app-editor-toolbar': HTMLAppEditorToolbarElement;
     'app-element-delete': HTMLAppElementDeleteElement;
     'app-embed': HTMLAppEmbedElement;
     'app-faq': HTMLAppFaqElement;
@@ -838,11 +888,11 @@ declare global {
     'app-fullscreen-info': HTMLAppFullscreenInfoElement;
     'app-get-help': HTMLAppGetHelpElement;
     'app-gif': HTMLAppGifElement;
-    'app-help-action': HTMLAppHelpActionElement;
     'app-home': HTMLAppHomeElement;
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
     'app-image-slide': HTMLAppImageSlideElement;
+    'app-inactivity': HTMLAppInactivityElement;
     'app-landing': HTMLAppLandingElement;
     'app-landing-content': HTMLAppLandingContentElement;
     'app-landing-deck': HTMLAppLandingDeckElement;
@@ -873,7 +923,6 @@ declare global {
     'app-select-target-element': HTMLAppSelectTargetElementElement;
     'app-services': HTMLAppServicesElement;
     'app-settings': HTMLAppSettingsElement;
-    'app-share-action': HTMLAppShareActionElement;
     'app-share-deck': HTMLAppShareDeckElement;
     'app-share-options': HTMLAppShareOptionsElement;
     'app-signin': HTMLAppSigninElement;
@@ -890,9 +939,66 @@ declare global {
 
 declare namespace LocalJSX {
   interface AppAbout {}
+  interface AppActionBusy {
+    'iconName'?: string;
+    'iconSrc'?: string;
+    'onActionReady'?: (event: CustomEvent<UIEvent>) => void;
+  }
+  interface AppActionHelp {}
+  interface AppActionShare {
+    'onActionPublish'?: (event: CustomEvent<void>) => void;
+    'onOpenEmbed'?: (event: CustomEvent<void>) => void;
+    'onOpenShare'?: (event: CustomEvent<void>) => void;
+  }
+  interface AppActionsDeck {
+    'actionPublish'?: EventEmitter;
+    'addSlide'?: EventEmitter;
+    'animatePrevNextSlide'?: EventEmitter;
+    'blockSlide'?: EventEmitter;
+    'deckDidChange'?: EventEmitter;
+    'fullscreen'?: boolean;
+    'onSelectDeck'?: (event: CustomEvent<void>) => void;
+    'openShare'?: EventEmitter;
+    'signIn'?: EventEmitter;
+    'slideTo'?: EventEmitter;
+    'slides'?: JSX.IntrinsicElements[];
+    'toggleFullScreen'?: EventEmitter;
+  }
+  interface AppActionsEditor {
+    'fullscreen'?: boolean;
+    'hideFooter'?: boolean;
+    'onActionPublish'?: (event: CustomEvent<void>) => void;
+    'onAddSlide'?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
+    'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
+    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onElementFocus'?: (event: CustomEvent<HTMLElement>) => void;
+    'onOpenShare'?: (event: CustomEvent<void>) => void;
+    'onSignIn'?: (event: CustomEvent<void>) => void;
+    'onSlideCopy'?: (event: CustomEvent<HTMLElement>) => void;
+    'onSlideTo'?: (event: CustomEvent<number>) => void;
+    'onToggleFullScreen'?: (event: CustomEvent<void>) => void;
+    'slides'?: JSX.IntrinsicElements[];
+  }
+  interface AppActionsElement {
+    'elementFocus'?: EventEmitter;
+    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
+    'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onNotesDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onResetted'?: (event: CustomEvent<void>) => void;
+    'onSignIn'?: (event: CustomEvent<void>) => void;
+    'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
+    'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'slideCopy'?: EventEmitter;
+  }
   interface AppAvatar {
     'ariaLabel'?: string;
     'src'?: string;
+  }
+  interface AppBreadcrumbs {
+    'onStepTo'?: (event: CustomEvent<HTMLElement | undefined>) => void;
+    'step'?: BreadcrumbsStep;
   }
   interface AppCode {
     'codeDidChange'?: EventEmitter<HTMLElement>;
@@ -992,36 +1098,6 @@ declare namespace LocalJSX {
   interface AppEditor {
     'deckId'?: string;
   }
-  interface AppEditorActions {
-    'fullscreen'?: boolean;
-    'hideFooterActions'?: boolean;
-    'onActionPublish'?: (event: CustomEvent<void>) => void;
-    'onAddSlide'?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
-    'onAnimatePrevNextSlide'?: (event: CustomEvent<boolean>) => void;
-    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
-    'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-    'onOpenShare'?: (event: CustomEvent<void>) => void;
-    'onSelectDeck'?: (event: CustomEvent<void>) => void;
-    'onSignIn'?: (event: CustomEvent<void>) => void;
-    'onSlideTo'?: (event: CustomEvent<number>) => void;
-    'onToggleFullScreen'?: (event: CustomEvent<void>) => void;
-    'slides'?: JSX.IntrinsicElements[];
-  }
-  interface AppEditorBusyAction {
-    'iconName'?: string;
-    'onActionReady'?: (event: CustomEvent<UIEvent>) => void;
-  }
-  interface AppEditorToolbar {
-    'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
-    'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-    'onElementFocus'?: (event: CustomEvent<HTMLElement>) => void;
-    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-    'onNotesDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-    'onSignIn'?: (event: CustomEvent<void>) => void;
-    'onSlideCopy'?: (event: CustomEvent<HTMLElement>) => void;
-    'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
-    'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
-  }
   interface AppElementDelete {}
   interface AppEmbed {}
   interface AppFaq {}
@@ -1042,7 +1118,6 @@ declare namespace LocalJSX {
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
-  interface AppHelpAction {}
   interface AppHome {}
   interface AppImage {
     'deck'?: boolean;
@@ -1060,6 +1135,10 @@ declare namespace LocalJSX {
     'imgDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
+  }
+  interface AppInactivity {
+    'fullscreen'?: boolean;
+    'onMouseInactivity'?: (event: CustomEvent<boolean>) => void;
   }
   interface AppLanding {}
   interface AppLandingContent {}
@@ -1131,11 +1210,6 @@ declare namespace LocalJSX {
   }
   interface AppServices {}
   interface AppSettings {}
-  interface AppShareAction {
-    'onActionPublish'?: (event: CustomEvent<void>) => void;
-    'onOpenEmbed'?: (event: CustomEvent<void>) => void;
-    'onOpenShare'?: (event: CustomEvent<void>) => void;
-  }
   interface AppShareDeck {}
   interface AppShareOptions {
     'onSelectedOption'?: (event: CustomEvent<MoreAction>) => void;
@@ -1165,7 +1239,14 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'app-about': AppAbout;
+    'app-action-busy': AppActionBusy;
+    'app-action-help': AppActionHelp;
+    'app-action-share': AppActionShare;
+    'app-actions-deck': AppActionsDeck;
+    'app-actions-editor': AppActionsEditor;
+    'app-actions-element': AppActionsElement;
     'app-avatar': AppAvatar;
+    'app-breadcrumbs': AppBreadcrumbs;
     'app-code': AppCode;
     'app-code-languages': AppCodeLanguages;
     'app-color': AppColor;
@@ -1191,9 +1272,6 @@ declare namespace LocalJSX {
     'app-edit-slide-chart': AppEditSlideChart;
     'app-edit-slide-qrcode': AppEditSlideQrcode;
     'app-editor': AppEditor;
-    'app-editor-actions': AppEditorActions;
-    'app-editor-busy-action': AppEditorBusyAction;
-    'app-editor-toolbar': AppEditorToolbar;
     'app-element-delete': AppElementDelete;
     'app-embed': AppEmbed;
     'app-faq': AppFaq;
@@ -1204,11 +1282,11 @@ declare namespace LocalJSX {
     'app-fullscreen-info': AppFullscreenInfo;
     'app-get-help': AppGetHelp;
     'app-gif': AppGif;
-    'app-help-action': AppHelpAction;
     'app-home': AppHome;
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
     'app-image-slide': AppImageSlide;
+    'app-inactivity': AppInactivity;
     'app-landing': AppLanding;
     'app-landing-content': AppLandingContent;
     'app-landing-deck': AppLandingDeck;
@@ -1239,7 +1317,6 @@ declare namespace LocalJSX {
     'app-select-target-element': AppSelectTargetElement;
     'app-services': AppServices;
     'app-settings': AppSettings;
-    'app-share-action': AppShareAction;
     'app-share-deck': AppShareDeck;
     'app-share-options': AppShareOptions;
     'app-signin': AppSignin;
@@ -1261,7 +1338,14 @@ declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'app-about': LocalJSX.AppAbout & JSXBase.HTMLAttributes<HTMLAppAboutElement>;
+      'app-action-busy': LocalJSX.AppActionBusy & JSXBase.HTMLAttributes<HTMLAppActionBusyElement>;
+      'app-action-help': LocalJSX.AppActionHelp & JSXBase.HTMLAttributes<HTMLAppActionHelpElement>;
+      'app-action-share': LocalJSX.AppActionShare & JSXBase.HTMLAttributes<HTMLAppActionShareElement>;
+      'app-actions-deck': LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
+      'app-actions-editor': LocalJSX.AppActionsEditor & JSXBase.HTMLAttributes<HTMLAppActionsEditorElement>;
+      'app-actions-element': LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
       'app-avatar': LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
+      'app-breadcrumbs': LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
       'app-code': LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
       'app-code-languages': LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
       'app-color': LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
@@ -1287,9 +1371,6 @@ declare module "@stencil/core" {
       'app-edit-slide-chart': LocalJSX.AppEditSlideChart & JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement>;
       'app-edit-slide-qrcode': LocalJSX.AppEditSlideQrcode & JSXBase.HTMLAttributes<HTMLAppEditSlideQrcodeElement>;
       'app-editor': LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;
-      'app-editor-actions': LocalJSX.AppEditorActions & JSXBase.HTMLAttributes<HTMLAppEditorActionsElement>;
-      'app-editor-busy-action': LocalJSX.AppEditorBusyAction & JSXBase.HTMLAttributes<HTMLAppEditorBusyActionElement>;
-      'app-editor-toolbar': LocalJSX.AppEditorToolbar & JSXBase.HTMLAttributes<HTMLAppEditorToolbarElement>;
       'app-element-delete': LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
       'app-embed': LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
       'app-faq': LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
@@ -1300,11 +1381,11 @@ declare module "@stencil/core" {
       'app-fullscreen-info': LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
       'app-get-help': LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;
       'app-gif': LocalJSX.AppGif & JSXBase.HTMLAttributes<HTMLAppGifElement>;
-      'app-help-action': LocalJSX.AppHelpAction & JSXBase.HTMLAttributes<HTMLAppHelpActionElement>;
       'app-home': LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
       'app-image-slide': LocalJSX.AppImageSlide & JSXBase.HTMLAttributes<HTMLAppImageSlideElement>;
+      'app-inactivity': LocalJSX.AppInactivity & JSXBase.HTMLAttributes<HTMLAppInactivityElement>;
       'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
       'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
       'app-landing-deck': LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;
@@ -1335,7 +1416,6 @@ declare module "@stencil/core" {
       'app-select-target-element': LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;
       'app-services': LocalJSX.AppServices & JSXBase.HTMLAttributes<HTMLAppServicesElement>;
       'app-settings': LocalJSX.AppSettings & JSXBase.HTMLAttributes<HTMLAppSettingsElement>;
-      'app-share-action': LocalJSX.AppShareAction & JSXBase.HTMLAttributes<HTMLAppShareActionElement>;
       'app-share-deck': LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
       'app-share-options': LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
       'app-signin': LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;

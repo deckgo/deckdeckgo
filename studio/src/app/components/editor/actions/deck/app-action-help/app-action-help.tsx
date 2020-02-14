@@ -3,9 +3,9 @@ import {Component, h, Element} from '@stencil/core';
 import {popoverController} from '@ionic/core';
 
 @Component({
-  tag: 'app-help-action'
+  tag: 'app-action-help'
 })
-export class AppHelpAction {
+export class AppActionHelp {
   @Element() el: HTMLElement;
 
   private async openGetHelp() {
@@ -21,7 +21,7 @@ export class AppHelpAction {
   render() {
     return (
       <ion-tab-button onClick={() => this.openGetHelp()} color="primary" mode="md" class="get-help-action">
-        <ion-icon src="/assets/icons/ionicons/md-help.svg"></ion-icon>
+        <ion-icon name="help"></ion-icon>
         <ion-label>Help</ion-label>
       </ion-tab-button>
     );

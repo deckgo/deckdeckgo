@@ -161,14 +161,14 @@ export class AppColorSides {
           <ion-label>{this.endSide ? 'End' : 'Start'}</ion-label>
           <ion-toggle slot="end" checked={this.endSide} mode="md" color="primary" onIonChange={() => this.toggleSide()}></ion-toggle>
         </ion-item>
-        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} class="ion-padding-top">
+        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} class="ion-padding-top" value={ApplyColorType.TEXT}>
           <ion-item-divider class="ion-padding-top">
             <ion-label>Apply color to</ion-label>
           </ion-item-divider>
 
           <ion-item>
             <ion-label>Text</ion-label>
-            <ion-radio slot="start" value={ApplyColorType.TEXT} checked mode="md"></ion-radio>
+            <ion-radio slot="start" value={ApplyColorType.TEXT} mode="md"></ion-radio>
           </ion-item>
 
           <ion-item>
@@ -195,7 +195,7 @@ export class AppColorSides {
         more={this.moreColors}
         onColorChange={($event: CustomEvent) => this.selectColor($event)}
         color-rgb={this.color}>
-        <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
       </deckgo-color>,
       <ion-item class="action-button ion-margin-bottom">
         <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete">

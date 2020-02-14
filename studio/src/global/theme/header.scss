@@ -9,4 +9,20 @@ ion-header {
     --deckgo-logo-margin-end: 6px;
     --deckgo-logo-size: 2rem;
   }
+
+  ion-toolbar {
+    ion-buttons {
+      min-height: 46px;
+    }
+
+    --ion-toolbar-color: var(--ion-color-dark);
+  }
+}
+
+body.dark {
+  ion-header {
+    ion-toolbar {
+      --ion-toolbar-color: var(--ion-color-light);
+    }
+  }
 }

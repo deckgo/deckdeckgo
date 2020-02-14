@@ -142,14 +142,14 @@ export class AppColorQRCode {
   render() {
     return [
       <ion-list>
-        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)}>
+        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} value={ApplyColorType.QR_CODE}>
           <ion-item-divider class="ion-padding-top">
             <ion-label>Apply color to</ion-label>
           </ion-item-divider>
 
           <ion-item>
             <ion-label>Fill</ion-label>
-            <ion-radio slot="start" value={ApplyColorType.QR_CODE} checked mode="md"></ion-radio>
+            <ion-radio slot="start" value={ApplyColorType.QR_CODE} mode="md"></ion-radio>
           </ion-item>
 
           <ion-item>
@@ -176,7 +176,7 @@ export class AppColorQRCode {
         more={this.moreColors}
         onColorChange={($event: CustomEvent) => this.selectColor($event)}
         color-rgb={this.color}>
-        <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
       </deckgo-color>,
       <ion-item class="action-button ion-margin-bottom">
         <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete">

@@ -47,14 +47,14 @@ export class EditorEventsHandler {
 
   private touchToolbar(element: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
-      if (!toolbar) {
+      if (!actions) {
         resolve();
         return;
       }
 
-      await toolbar.touch(element);
+      await actions.touch(element);
 
       resolve();
     });
@@ -62,14 +62,11 @@ export class EditorEventsHandler {
 
   selectDeck(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const toolbar: HTMLAppEditorToolbarElement = this.el.querySelector('app-editor-toolbar');
+      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
 
-      if (toolbar) {
-        await toolbar.blurSelectedElement();
-        await toolbar.unSelect();
+      if (actions) {
+        await actions.selectDeck();
       }
-
-      await this.blockSlide(false);
 
       resolve();
     });

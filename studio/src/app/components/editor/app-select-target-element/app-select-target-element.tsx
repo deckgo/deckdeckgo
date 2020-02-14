@@ -51,8 +51,8 @@ export class AppSelectTargetElement {
       }
 
       return (
-        <ion-segment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
-          <ion-segment-button value={TargetElement.CODE} checked={true} mode="md">
+        <ion-segment mode="md" class="ion-padding-bottom" value={TargetElement.CODE} onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
+          <ion-segment-button value={TargetElement.CODE} mode="md">
             <ion-label>Code</ion-label>
           </ion-segment-button>
           <ion-segment-button value={TargetElement.SECTION} mode="md">
@@ -61,8 +61,18 @@ export class AppSelectTargetElement {
         </ion-segment>
       );
     } else {
+      const selectedValue: TargetElement = this.colorTarget
+        ? TargetElement.COLOR
+        : this.sides
+        ? TargetElement.SIDES
+        : this.qrCode
+        ? TargetElement.QR_CODE
+        : this.chart
+        ? TargetElement.CHART
+        : TargetElement.SLIDE;
+
       return (
-        <ion-segment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
+        <ion-segment mode="md" class="ion-padding-bottom" value={selectedValue} onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
           {this.renderQRCode()}
           {this.renderChart()}
           {this.renderSides()}
@@ -79,7 +89,7 @@ export class AppSelectTargetElement {
   private renderQRCode() {
     if (this.qrCode) {
       return (
-        <ion-segment-button value={TargetElement.QR_CODE} checked={this.qrCode} mode="md">
+        <ion-segment-button value={TargetElement.QR_CODE} mode="md">
           <ion-label>QR code</ion-label>
         </ion-segment-button>
       );
@@ -91,7 +101,7 @@ export class AppSelectTargetElement {
   private renderChart() {
     if (this.chart) {
       return (
-        <ion-segment-button value={TargetElement.CHART} checked={this.chart} mode="md">
+        <ion-segment-button value={TargetElement.CHART} mode="md">
           <ion-label>Chart</ion-label>
         </ion-segment-button>
       );
@@ -103,7 +113,7 @@ export class AppSelectTargetElement {
   private renderSlide() {
     if (this.slide) {
       return (
-        <ion-segment-button value={TargetElement.SLIDE} checked={!this.qrCode && !this.chart} mode="md">
+        <ion-segment-button value={TargetElement.SLIDE} mode="md">
           <ion-label>Slide</ion-label>
         </ion-segment-button>
       );
@@ -115,7 +125,7 @@ export class AppSelectTargetElement {
   private renderColor() {
     if (this.colorTarget) {
       return (
-        <ion-segment-button value={TargetElement.COLOR} mode="md" checked={true}>
+        <ion-segment-button value={TargetElement.COLOR} mode="md">
           <ion-label>Colors</ion-label>
         </ion-segment-button>
       );
@@ -151,7 +161,7 @@ export class AppSelectTargetElement {
   private renderSides() {
     if (this.sides) {
       return (
-        <ion-segment-button value={TargetElement.SIDES} checked={this.sides} mode="md">
+        <ion-segment-button value={TargetElement.SIDES} mode="md">
           <ion-label>Sides</ion-label>
         </ion-segment-button>
       );

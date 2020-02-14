@@ -77,7 +77,12 @@ export class AppRoot {
   private async toastError(error: string) {
     const popover: HTMLIonToastElement = await toastController.create({
       message: error,
-      showCloseButton: true,
+      buttons: [
+        {
+          text: 'Close',
+          role: 'cancel'
+        }
+      ],
       position: 'top',
       color: 'danger',
       duration: 6000

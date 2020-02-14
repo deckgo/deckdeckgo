@@ -34,10 +34,10 @@ export class AppNavigationModal {
 
       <ion-content class="ion-padding">
         <div>
-          <a href="https://deckdeckgo.com" padding-top>
+          <a href="https://deckdeckgo.com" class="ion-padding-top">
             Demo
           </a>
-          <a href="https://github.com/deckgo" padding-top>
+          <a href="https://github.com/deckgo" class="ion-padding-top">
             Github
           </a>
           <div class="ion-margin-top toggle-theme">

@@ -12,6 +12,7 @@ ion-menu {
       ion-item {
         --color: var(--ion-color-light);
 
+        --background: inherit;
         --background-hover: var(--ion-color-secondary);
         --background-activated: var(--ion-color-secondary);
       }

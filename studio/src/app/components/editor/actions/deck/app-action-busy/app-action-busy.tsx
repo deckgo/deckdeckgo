@@ -2,14 +2,14 @@ import {Component, Event, EventEmitter, State, h, Prop} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {BusyService} from '../../../../services/editor/busy/busy.service';
+import {BusyService} from '../../../../../services/editor/busy/busy.service';
 
 @Component({
-  tag: 'app-editor-busy-action',
-  styleUrl: 'app-editor-busy-action.scss',
+  tag: 'app-action-busy',
+  styleUrl: 'app-action-busy.scss',
   shadow: false
 })
-export class AppEditorBusyAction {
+export class AppActionBusy {
   @Event() private actionReady: EventEmitter<UIEvent>;
 
   private subscription: Subscription;
@@ -20,6 +20,9 @@ export class AppEditorBusyAction {
 
   @Prop()
   iconName: string;
+
+  @Prop()
+  iconSrc: string;
 
   constructor() {
     this.busyService = BusyService.getInstance();
@@ -44,7 +47,7 @@ export class AppEditorBusyAction {
   render() {
     return (
       <ion-tab-button onClick={(e: UIEvent) => this.action(e)} color="primary" disabled={this.deckBusy} mode="md">
-        <ion-icon name={this.iconName}></ion-icon>
+        {this.iconSrc !== undefined ? <ion-icon src={this.iconSrc}></ion-icon> : <ion-icon name={this.iconName}></ion-icon>}
         <slot></slot>
       </ion-tab-button>
     );
