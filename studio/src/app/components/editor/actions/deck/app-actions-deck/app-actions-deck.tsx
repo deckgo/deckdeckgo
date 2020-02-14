@@ -358,7 +358,7 @@ export class AppActionsDeck {
     return (
       <ion-toolbar>
         <ion-buttons slot="start">
-          <app-action-busy iconName="add" onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+          <app-action-busy iconSrc="/assets/icons/ionicons/add.svg" onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
             <ion-label>Add slide</ion-label>
           </app-action-busy>
 
@@ -377,21 +377,21 @@ export class AppActionsDeck {
             <ion-label>Slides</ion-label>
           </ion-tab-button>
 
-          <app-action-busy iconName="brush" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
+          <app-action-busy iconName="brush-outline" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
             <ion-label>Style</ion-label>
           </app-action-busy>
 
           {this.renderFullscreenButton()}
 
           <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices" mode="md">
-            <ion-icon name="phone-portrait"></ion-icon>
+            <ion-icon name="phone-portrait-outline"></ion-icon>
             <ion-label>Remote</ion-label>
           </ion-tab-button>
 
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices" mode="md">
-            <ion-icon src="/assets/icons/ionicons/md-more.svg"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
             <ion-label>More</ion-label>
           </ion-tab-button>
         </ion-buttons>

@@ -147,7 +147,7 @@ export class AppCodeLanguages {
       </ion-header>,
       <ion-content class="ion-padding">
         <ion-list>
-          <ion-radio-group>{this.renderLanguages()}</ion-radio-group>
+          <ion-radio-group value={this.currentLanguage ? this.currentLanguage.language : undefined}>{this.renderLanguages()}</ion-radio-group>
         </ion-list>
       </ion-content>,
       <ion-footer>
@@ -172,7 +172,7 @@ export class AppCodeLanguages {
         return (
           <ion-item key={language.language} onClick={() => this.selectCodeLanguage(language)} class="ion-margin-end">
             <ion-label>{language.title}</ion-label>
-            <ion-radio value={language.language} checked={this.currentLanguage && language.language === this.currentLanguage.language} mode="ios" />
+            <ion-radio value={language.language} mode="ios" />
           </ion-item>
         );
       });

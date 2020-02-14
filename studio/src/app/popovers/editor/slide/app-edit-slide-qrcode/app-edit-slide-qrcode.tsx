@@ -146,7 +146,7 @@ export class AppEditSlideQRCode {
 
   render() {
     return [
-      <ion-radio-group onIonChange={($event) => this.onRadioCustomLink($event)}>
+      <ion-radio-group onIonChange={($event) => this.onRadioCustomLink($event)} value={this.customQRCode}>
         <ion-item-divider class="ion-padding-top">
           <ion-label>Target</ion-label>
           <button slot="end" class="info" onClick={() => this.presentQRCodeInfo()}>
@@ -156,11 +156,11 @@ export class AppEditSlideQRCode {
 
         <ion-item>
           <ion-label>Your presentation</ion-label>
-          <ion-radio slot="start" value={false} mode="md" checked={!this.customQRCode}></ion-radio>
+          <ion-radio slot="start" value={false} mode="md"></ion-radio>
         </ion-item>
         <ion-item>
           <ion-label>A custom url</ion-label>
-          <ion-radio slot="start" value={true} mode="md" checked={this.customQRCode}></ion-radio>
+          <ion-radio slot="start" value={true} mode="md"></ion-radio>
         </ion-item>
       </ion-radio-group>,
 

@@ -22,6 +22,7 @@ export namespace Components {
   interface AppAbout {}
   interface AppActionBusy {
     iconName: string;
+    iconSrc: string;
   }
   interface AppActionHelp {}
   interface AppActionShare {}
@@ -914,6 +915,7 @@ declare namespace LocalJSX {
   interface AppAbout {}
   interface AppActionBusy {
     iconName?: string;
+    iconSrc?: string;
     onActionReady?: (event: CustomEvent<UIEvent>) => void;
   }
   interface AppActionHelp {}

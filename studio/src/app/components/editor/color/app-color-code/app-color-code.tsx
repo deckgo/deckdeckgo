@@ -343,7 +343,7 @@ export class AppColorCode {
             onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)}
             color-rgb={this.codeColor}
             more={this.moreColors}>
-            <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
           </deckgo-color>
         </div>
 
@@ -390,7 +390,7 @@ export class AppColorCode {
             onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)}
             color-rgb={this.highlightColor}
             more={this.moreColors}>
-            <ion-icon src="/assets/icons/ionicons/md-more.svg" slot="more" aria-label="More" class="more"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
           </deckgo-color>
         </div>
       </ion-list>
