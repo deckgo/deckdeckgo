@@ -5,20 +5,24 @@
  * It contains typing information for all components that exist in this project.
  */
 
-import {HTMLStencilElement, JSXBase} from '@stencil/core/internal';
+
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
+
 
 export namespace Components {
   interface DeckgoSlideAspectRatio {
-    afterSwipe: () => Promise<void>;
-    beforeSwipe: (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-    hideContent: () => Promise<void>;
-    lazyLoadContent: () => Promise<void>;
-    ratio: number;
-    revealContent: () => Promise<void>;
+    'afterSwipe': () => Promise<void>;
+    'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+    'hideContent': () => Promise<void>;
+    'lazyLoadContent': () => Promise<void>;
+    'ratio': number;
+    'revealContent': () => Promise<void>;
   }
 }
 
 declare global {
+
+
   interface HTMLDeckgoSlideAspectRatioElement extends Components.DeckgoSlideAspectRatio, HTMLStencilElement {}
   var HTMLDeckgoSlideAspectRatioElement: {
     prototype: HTMLDeckgoSlideAspectRatioElement;
@@ -31,8 +35,8 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlideAspectRatio {
-    onSlideDidLoad?: (event: CustomEvent<void>) => void;
-    ratio?: number;
+    'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
+    'ratio'?: number;
   }
 
   interface IntrinsicElements {
@@ -40,12 +44,15 @@ declare namespace LocalJSX {
   }
 }
 
-export {LocalJSX as JSX};
+export { LocalJSX as JSX };
 
-declare module '@stencil/core' {
+
+declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'deckgo-slide-aspect-ratio': LocalJSX.DeckgoSlideAspectRatio & JSXBase.HTMLAttributes<HTMLDeckgoSlideAspectRatioElement>;
     }
   }
 }
+
+

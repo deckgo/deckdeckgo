@@ -5,25 +5,29 @@
  * It contains typing information for all components that exist in this project.
  */
 
-import {HTMLStencilElement, JSXBase} from '@stencil/core/internal';
+
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
+
 
 export namespace Components {
   interface DeckgoDnr {
-    drag: 'x-axis' | 'y-axis' | 'all' | 'none';
-    height: number;
-    lazyLoadContent: () => Promise<void>;
-    left: number;
-    minHeight: number;
-    minWidth: number;
-    resize: boolean;
-    rotate: number;
-    rotation: boolean;
-    top: number;
-    width: number;
+    'drag': 'x-axis' | 'y-axis' | 'all' | 'none';
+    'height': number;
+    'lazyLoadContent': () => Promise<void>;
+    'left': number;
+    'minHeight': number;
+    'minWidth': number;
+    'resize': boolean;
+    'rotate': number;
+    'rotation': boolean;
+    'top': number;
+    'width': number;
   }
 }
 
 declare global {
+
+
   interface HTMLDeckgoDnrElement extends Components.DeckgoDnr, HTMLStencilElement {}
   var HTMLDeckgoDnrElement: {
     prototype: HTMLDeckgoDnrElement;
@@ -36,18 +40,18 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoDnr {
-    drag?: 'x-axis' | 'y-axis' | 'all' | 'none';
-    height?: number;
-    left?: number;
-    minHeight?: number;
-    minWidth?: number;
-    onDnrDidChange?: (event: CustomEvent<HTMLElement | undefined>) => void;
-    onDnrSelect?: (event: CustomEvent<HTMLElement | undefined>) => void;
-    resize?: boolean;
-    rotate?: number;
-    rotation?: boolean;
-    top?: number;
-    width?: number;
+    'drag'?: 'x-axis' | 'y-axis' | 'all' | 'none';
+    'height'?: number;
+    'left'?: number;
+    'minHeight'?: number;
+    'minWidth'?: number;
+    'onDnrDidChange'?: (event: CustomEvent<HTMLElement | undefined>) => void;
+    'onDnrSelect'?: (event: CustomEvent<HTMLElement | undefined>) => void;
+    'resize'?: boolean;
+    'rotate'?: number;
+    'rotation'?: boolean;
+    'top'?: number;
+    'width'?: number;
   }
 
   interface IntrinsicElements {
@@ -55,12 +59,15 @@ declare namespace LocalJSX {
   }
 }
 
-export {LocalJSX as JSX};
+export { LocalJSX as JSX };
 
-declare module '@stencil/core' {
+
+declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'deckgo-dnr': LocalJSX.DeckgoDnr & JSXBase.HTMLAttributes<HTMLDeckgoDnrElement>;
     }
   }
 }
+
+
