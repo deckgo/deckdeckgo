@@ -70,9 +70,8 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
       <Host
         class={{
           'deckgo-slide-container': true
-        }}
-        style={{'--content-scale': `${this.contentScale}`}}>
-        <div class="deckgo-slide">
+        }}>
+        <div class="deckgo-slide" style={{'--deckgo-dnr-content-scale': `${this.contentScale}`}}>
           <slot name="title"></slot>
           <div class="deckgo-aspect-ratio-container">
             <div class="deckgo-aspect-ratio-content">

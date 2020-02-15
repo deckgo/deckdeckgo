@@ -58,7 +58,3 @@ div.deckgo-aspect-ratio-container {
 ::slotted([slot="title"]) {
   display: none;
 }
-
-::slotted(*:not([slot])) {
-  transform: scale(var(--content-scale));
-}

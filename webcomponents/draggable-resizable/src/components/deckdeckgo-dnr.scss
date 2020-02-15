@@ -4,7 +4,7 @@
   width: var(--width);
   height: var(--height);
 
-  transform: rotate(var(--rotate));
+  transform: rotate(var(--rotate, 0deg)) scale(var(--deckgo-dnr-content-scale, 1));
 
   position: absolute;
 
