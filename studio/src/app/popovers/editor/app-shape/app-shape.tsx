@@ -44,19 +44,30 @@ export class AppShape {
           </ion-item-divider>
 
           <div class="ion-padding shapes">
+            {this.renderImage(`/assets/img/shapes/angle-left-solid.svg`, 'Angle leeft')}
             {this.renderImage(`/assets/img/shapes/angle-right-solid.svg`, 'Angle right')}
+            {this.renderImage(`/assets/img/shapes/angle-double-left-solid.svg`, 'Angle left double')}
             {this.renderImage(`/assets/img/shapes/angle-double-right-solid.svg`, 'Angle right double')}
+            {this.renderImage(`/assets/img/shapes/arrow-left-solid.svg`, 'Arrow left')}
             {this.renderImage(`/assets/img/shapes/arrow-right-solid.svg`, 'Arrow right')}
+            {this.renderImage(`/assets/img/shapes/arrow-alt-circle-left-solid.svg`, 'Arrow circe left solid')}
             {this.renderImage(`/assets/img/shapes/arrow-alt-circle-right-solid.svg`, 'Arrow circe right solid')}
+            {this.renderImage(`/assets/img/shapes/arrow-alt-circle-left-regular.svg`, 'Arrow circle left regular')}
             {this.renderImage(`/assets/img/shapes/arrow-alt-circle-right-regular.svg`, 'Arrow circle right regular')}
+            {this.renderImage(`/assets/img/shapes/chevron-left-solid.svg`, 'Chevron left')}
             {this.renderImage(`/assets/img/shapes/chevron-right-solid.svg`, 'Chevron right')}
-            {this.renderImage(`/assets/img/shapes/exchange-alt-solid.svg`, 'Exchange')}
+            {this.renderImage(`/assets/img/shapes/long-arrow-alt-left-solid.svg`, 'Long arrow left')}
+            {this.renderImage(`/assets/img/shapes/long-arrow-alt-right-solid.svg`, 'Long arrow right')}
+            {this.renderImage(`/assets/img/shapes/arrows-alt-h-solid.svg`, 'Arrow h')}
+            {this.renderImage(`/assets/img/shapes/arrows-alt-v-solid.svg`, 'Arrow v')}
             {this.renderImage(`/assets/img/shapes/expand-alt-solid.svg`, 'Expand')}
+            {this.renderImage(`/assets/img/shapes/compress-alt-solid.svg`, 'Compress')}
             {this.renderImage(`/assets/img/shapes/expand-arrows-alt-solid.svg`, 'Expand arrows')}
-            {this.renderImage(`/assets/img/shapes/long-arrow-alt-right-solid.svg`, 'Long arrow')}
+            {this.renderImage(`/assets/img/shapes/compress-arrows-alt-solid.svg`, 'Compress arrows')}
+            {this.renderImage(`/assets/img/shapes/exchange-alt-solid.svg`, 'Exchange')}
             {this.renderImage(`/assets/img/shapes/random-solid.svg`, 'Random')}
             {this.renderImage(`/assets/img/shapes/redo-solid.svg`, 'Redo')}
-            {this.renderImage(`/assets/img/shapes/retweet-solid.svg`, 'Retweet')}
+            {this.renderImage(`/assets/img/shapes/undo-solid.svg`, 'Undo')}
             {this.renderImage(`/assets/img/shapes/sync-solid.svg`, 'Sync')}
           </div>
 
@@ -123,7 +134,6 @@ export class AppShape {
             {this.renderImage(`/assets/img/shapes/file-regular.svg`, 'File regular')}
             {this.renderImage(`/assets/img/shapes/folder-solid.svg`, 'Folder solid')}
             {this.renderImage(`/assets/img/shapes/folder-regular.svg`, 'Folder regular')}
-            {this.renderImage(`/assets/img/shapes/undo-solid.svg`, 'Undo')}
           </div>
 
           <ion-item-divider>
