@@ -143,7 +143,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     return Promise.resolve();
   }
 
-  private start = ($event: MouseEvent | TouchEvent) => {
+  private start = async ($event: MouseEvent | TouchEvent) => {
     if (!$event || !$event.target) {
       return;
     }
@@ -167,7 +167,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     this.selected = true;
 
     this.startMove();
-    this.initStartPositions($event);
+    await this.initStartPositions($event);
   };
 
   private transform = ($event: MouseEvent | TouchEvent) => {
@@ -326,7 +326,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     return this.unit === 'px' ? value : (value * 100) / windowWith;
   }
 
-  private initStartPositions($event: MouseEvent | TouchEvent) {
+  private async initStartPositions($event: MouseEvent | TouchEvent) {
     this.startX = unifyEvent($event).clientX;
     this.startY = unifyEvent($event).clientY;
 
@@ -336,11 +336,23 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     this.startTop = this.top;
     this.startLeft = this.left;
 
-    this.parentWidth = this.convertToUnit(this.el.parentElement.offsetWidth);
-    this.parentHeight = this.convertToUnit(this.el.parentElement.offsetHeight);
+    await this.initParentSize();
 
     this.centerX = this.convertToUnit(this.el.offsetLeft) + this.width / 2;
     this.centerY = this.convertToUnit(this.el.offsetTop) + this.height / 2;
+  }
+
+  private async initParentSize() {
+    // The deckgo-slide-aspect-ratio template exposes a getContainer function which return a reference to the effective container.
+    if (this.el.parentElement && typeof (this.el.parentElement as any).getContainer === 'function') {
+      const parent: HTMLElement = await (this.el.parentElement as any).getContainer();
+
+      this.parentWidth = this.convertToUnit(parent.offsetWidth);
+      this.parentHeight = this.convertToUnit(parent.offsetHeight);
+    } else {
+      this.parentWidth = this.convertToUnit(this.el.parentElement.offsetWidth);
+      this.parentHeight = this.convertToUnit(this.el.parentElement.offsetHeight);
+    }
   }
 
   private startMove() {

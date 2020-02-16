@@ -13,6 +13,7 @@ export namespace Components {
   interface DeckgoSlideAspectRatio {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+    'getContainer': () => Promise<HTMLDivElement>;
     'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
     'ratio': number;

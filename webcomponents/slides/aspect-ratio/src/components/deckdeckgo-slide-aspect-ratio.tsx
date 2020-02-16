@@ -15,6 +15,8 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
   @Prop()
   ratio: number = 16 / 9;
 
+  refContainer!: HTMLDivElement;
+
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
@@ -48,6 +50,11 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
     return Promise.resolve();
   }
 
+  @Method()
+  async getContainer(): Promise<HTMLDivElement> {
+    return this.refContainer;
+  }
+
   render() {
     return (
       <Host
@@ -57,7 +64,7 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
         <div class="deckgo-slide">
           <slot name="title"></slot>
           <div class="deckgo-aspect-ratio-container">
-            <div class="deckgo-aspect-ratio-content">
+            <div class="deckgo-aspect-ratio-content" ref={(el) => (this.refContainer = el as HTMLDivElement)}>
               <slot />
             </div>
             <slot name="header"></slot>

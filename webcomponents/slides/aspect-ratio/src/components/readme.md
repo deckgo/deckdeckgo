@@ -28,6 +28,12 @@ Type: `Promise<void>`
 
 Type: `Promise<boolean>`
 
+### `getContainer() => Promise<HTMLDivElement>`
+
+#### Returns
+
+Type: `Promise<HTMLDivElement>`
+
 ### `hideContent() => Promise<void>`
 
 #### Returns
