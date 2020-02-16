@@ -27,7 +27,7 @@ div.deckgo-aspect-ratio-container {
         16
     );
 
-    overflow: hidden;
+    overflow: visible;
   }
 
   ::slotted([slot="header"]),

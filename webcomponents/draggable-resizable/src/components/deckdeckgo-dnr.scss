@@ -4,7 +4,7 @@
   width: var(--width);
   height: var(--height);
 
-  transform: rotate(var(--rotate, 0deg)) scale(var(--deckgo-dnr-content-scale, 1));
+  transform: rotate(var(--rotate, 0deg));
 
   position: absolute;
 
@@ -88,7 +88,7 @@ div.border {
   &.top,
   &.bottom {
     > div {
-      width: calc(var(--width) - 32px);
+      width: calc(var(--width) - 24px);
       height: 16px;
     }
   }
@@ -99,7 +99,7 @@ div.border {
 
     > div {
       width: 16px;
-      height: calc(var(--height) - 32px);
+      height: calc(var(--height) - 24px);
     }
   }
 
@@ -140,7 +140,7 @@ div.rotate {
   left: 50%;
   transform: translate(-50%, -100%);
 
-  height: var(--deckgo-dnr-rotate-anchor-width, 32px);
+  height: var(--deckgo-dnr-rotate-anchor-width, 24px);
   width: var(--deckgo-dnr-rotate-anchor-height, 32px);
 
   div.action {
