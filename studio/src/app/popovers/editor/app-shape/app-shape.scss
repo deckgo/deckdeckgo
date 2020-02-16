@@ -15,7 +15,9 @@ app-shape {
       touch-action: manipulation;
       cursor: pointer;
 
-      padding: 4px;
+      padding: 8px;
+
+      align-self: center;
 
       div.image-container {
         border-radius: 4px;
@@ -24,7 +26,7 @@ app-shape {
 
         deckgo-lazy-img {
           --deckgo-lazy-img-width: 100%;
-          --deckgo-lazy-img-max-height: 4rem;
+          --deckgo-lazy-img-max-height: 3rem;
           --deckgo-lazy-img-vertical-align: top;
         }
       }
