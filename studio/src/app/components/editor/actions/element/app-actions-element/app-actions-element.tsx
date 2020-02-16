@@ -37,22 +37,10 @@ export class AppActionsElement {
   private slide: boolean = false;
 
   @State()
+  private slideNodeName: string | undefined;
+
+  @State()
   private code: boolean = false;
-
-  @State()
-  private qrCode: boolean = false;
-
-  @State()
-  private chart: boolean = false;
-
-  @State()
-  private youtube: boolean = false;
-
-  @State()
-  private poll: boolean = false;
-
-  @State()
-  private author: boolean = false;
 
   @State()
   private image: boolean = false;
@@ -230,26 +218,6 @@ export class AppActionsElement {
 
   private isElementCode(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-highlight-code';
-  }
-
-  private isElementYoutubeSlide(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-youtube';
-  }
-
-  private isElementQRCodeSlide(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-qrcode';
-  }
-
-  private isElementAuthorSlide(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-author';
-  }
-
-  private isElementChartSlide(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-chart';
-  }
-
-  private isElementPollSlide(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-slide-poll';
   }
 
   private isElementList(element: HTMLElement): SlotType {
@@ -454,7 +422,10 @@ export class AppActionsElement {
   }
 
   private async openEditSlide() {
-    if (!this.slide || (!this.qrCode && !this.chart && !this.author)) {
+    if (
+      !this.slide ||
+      (this.slideNodeName !== 'deckgo-slide-qrcode' && this.slideNodeName !== 'deckgo-slide-chart' && this.slideNodeName !== 'deckgo-slide-author')
+    ) {
       return;
     }
 
@@ -462,9 +433,9 @@ export class AppActionsElement {
       component: 'app-edit-slide',
       componentProps: {
         selectedElement: this.selectedElement,
-        qrCode: this.qrCode,
-        chart: this.chart,
-        author: this.author,
+        qrCode: this.slideNodeName === 'deckgo-slide-qrcode',
+        chart: this.slideNodeName === 'deckgo-slide-chart',
+        author: this.slideNodeName === 'deckgo-slide-author',
         slideDidChange: this.slideDidChange
       },
       mode: 'md',
@@ -487,7 +458,7 @@ export class AppActionsElement {
   }
 
   private async openEditPollSlide() {
-    if (!this.slide || !this.poll) {
+    if (!this.slide || this.slideNodeName !== 'deckgo-slide-poll') {
       return;
     }
 
@@ -550,7 +521,7 @@ export class AppActionsElement {
   }
 
   private async openEditYoutubeSlide() {
-    if (!this.youtube) {
+    if (this.slideNodeName !== 'deckgo-slide-youtube') {
       return;
     }
 
@@ -562,7 +533,7 @@ export class AppActionsElement {
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail && detail.data && this.selectedElement && this.youtube) {
+      if (detail && detail.data && this.selectedElement) {
         await this.updateYoutube(detail.data);
       }
 
@@ -675,11 +646,7 @@ export class AppActionsElement {
       this.selectedElement = element;
       this.slide = this.isElementSlide(element);
 
-      this.youtube = this.isElementYoutubeSlide(element);
-      this.qrCode = this.isElementQRCodeSlide(element);
-      this.chart = this.isElementChartSlide(element);
-      this.poll = this.isElementPollSlide(element);
-      this.author = this.isElementAuthorSlide(element);
+      this.slideNodeName = this.slide ? element.nodeName.toLowerCase() : undefined;
 
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
@@ -772,7 +739,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement
       },
       mode: 'md',
-      cssClass: `popover-menu ${this.poll ? 'popover-menu-wide' : ''}`
+      cssClass: `popover-menu ${this.slideNodeName === 'deckgo-slide-poll' ? 'popover-menu-wide' : ''}`
     });
 
     await popover.present();
@@ -805,18 +772,12 @@ export class AppActionsElement {
 
   private updateYoutube(youtubeUrl: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.youtube) {
+      if (!this.selectedElement || this.slideNodeName !== 'deckgo-slide-youtube') {
         resolve();
         return;
       }
 
       if (!youtubeUrl || youtubeUrl === undefined || youtubeUrl === '') {
-        resolve();
-        return;
-      }
-
-      // Just in case
-      if (!this.isElementYoutubeSlide(this.selectedElement)) {
         resolve();
         return;
       }
@@ -888,6 +849,16 @@ export class AppActionsElement {
     });
   }
 
+  private isSlideEditable() {
+    return (
+      this.slideNodeName === 'deckgo-slide-qrcode' ||
+      this.slideNodeName === 'deckgo-slide-chart' ||
+      this.slideNodeName === 'deckgo-slide-poll' ||
+      this.slideNodeName === 'deckgo-slide-youtube' ||
+      this.slideNodeName === 'deckgo-slide-author'
+    );
+  }
+
   render() {
     return (
       <ion-toolbar>
@@ -955,12 +926,18 @@ export class AppActionsElement {
   }
 
   private renderEdit() {
-    const classSlide: string | undefined = this.slide && (this.qrCode || this.chart || this.poll || this.youtube || this.author) ? undefined : 'hidden';
+    const classSlide: string | undefined = this.slide && this.isSlideEditable() ? undefined : 'hidden';
     const classToggle: string | undefined = !this.slide ? undefined : ' hidden';
 
     return [
       <ion-tab-button
-        onClick={() => (this.poll ? this.openEditPollSlide() : this.youtube ? this.openEditYoutubeSlide() : this.openEditSlide())}
+        onClick={() =>
+          this.slideNodeName === 'deckgo-slide-poll'
+            ? this.openEditPollSlide()
+            : this.slideNodeName === 'deckgo-slide-youtube'
+            ? this.openEditYoutubeSlide()
+            : this.openEditSlide()
+        }
         color="primary"
         aria-label="Edit slide options"
         mode="md"
@@ -998,7 +975,7 @@ export class AppActionsElement {
   }
 
   private renderReveal() {
-    const classReveal: string | undefined = this.slide || this.code || this.youtube ? 'hidden' : undefined;
+    const classReveal: string | undefined = this.slide || this.code || this.slideNodeName === 'deckgo-slide-youtube' ? 'hidden' : undefined;
 
     return (
       <ion-tab-button onClick={() => this.openReveal()} aria-label="Edit element animation" color="primary" mode="md" class={classReveal}>
