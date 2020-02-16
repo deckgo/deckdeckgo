@@ -31,12 +31,34 @@ export class AppShape {
       <div class="container ion-margin-bottom">
         <ion-list>
           <ion-item-divider>
-            <ion-label>Alert</ion-label>
+            <ion-label>Shapes</ion-label>
           </ion-item-divider>
 
           <div class="ion-padding shapes">
+            {this.renderImage(`/assets/img/shapes/circle-solid.svg`, 'Circle solid')}
+            {this.renderImage(`/assets/img/shapes/circle-regular.svg`, 'Circle solid')}
+            {this.renderImage(`/assets/img/shapes/square-solid.svg`, 'Square solid')}
+            {this.renderImage(`/assets/img/shapes/square-regular.svg`, 'Square regular')}
+            {this.renderImage(`/assets/img/shapes/heart-solid.svg`, 'Heart solid')}
+            {this.renderImage(`/assets/img/shapes/heart-regular.svg`, 'Heart regular')}
+            {this.renderImage(`/assets/img/shapes/star-solid.svg`, 'Star solid')}
+            {this.renderImage(`/assets/img/shapes/star-regular.svg`, 'Star regular')}
+            {this.renderImage(`/assets/img/shapes/bookmark-solid.svg`, 'Bookmark solid')}
+            {this.renderImage(`/assets/img/shapes/bookmark-regular.svg`, 'Bookmark regular')}
+            {this.renderImage(`/assets/img/shapes/certificate-solid.svg`, 'Certificate')}
+            {this.renderImage(`/assets/img/shapes/cloud-solid.svg`, 'Cloud')}
+            {this.renderImage(`/assets/img/shapes/cog-solid.svg`, 'Cog')}
+            {this.renderImage(`/assets/img/shapes/shopping-cart-solid.svg`, 'Shopping cart')}
+            {this.renderImage(`/assets/img/shapes/tag-solid.svg`, 'Tag')}
+            {this.renderImage(`/assets/img/shapes/trophy-solid.svg`, 'Trophy')}
             {this.renderImage(`/assets/img/shapes/bell-solid.svg`, 'Bell solid')}
             {this.renderImage(`/assets/img/shapes/bell-regular.svg`, 'Bell regular')}
+            {this.renderImage(`/assets/img/shapes/building-solid.svg`, 'Building solid')}
+            {this.renderImage(`/assets/img/shapes/building-regular.svg`, 'Building regular')}
+            {this.renderImage(`/assets/img/shapes/square-full-solid.svg`, 'Square full')}
+            {this.renderImage(`/assets/img/shapes/map-marker-solid.svg`, 'Map marker')}
+            {this.renderImage(`/assets/img/shapes/play-solid.svg`, 'Play')}
+            {this.renderImage(`/assets/img/shapes/camera-solid.svg`, 'Camera')}
           </div>
 
           <ion-item-divider>
@@ -72,24 +94,24 @@ export class AppShape {
           </div>
 
           <ion-item-divider>
-            <ion-label>Buildings</ion-label>
+            <ion-label>Status</ion-label>
           </ion-item-divider>
 
           <div class="ion-padding shapes">
-            {this.renderImage(`/assets/img/shapes/building-solid.svg`, 'Building solid')}
-            {this.renderImage(`/assets/img/shapes/building-regular.svg`, 'Building regular')}
-          </div>
-
-          <ion-item-divider>
-            <ion-label>Brands</ion-label>
-          </ion-item-divider>
-
-          <div class="ion-padding shapes">
-            {this.renderImage(`/assets/img/shapes/cc-amazon-pay-brands.svg`, 'Amazon Pay')}
-            {this.renderImage(`/assets/img/shapes/cc-apple-pay-brands.svg`, 'Apple Pay')}
-            {this.renderImage(`/assets/img/shapes/cc-paypal-brands.svg`, 'Paypal')}
-            {this.renderImage(`/assets/img/shapes/cc-stripe-brands.svg`, 'Stripe')}
-            {this.renderImage(`/assets/img/shapes/bitcoin-brands.svg`, 'Bitcoin')}
+            {this.renderImage(`/assets/img/shapes/check-circle-solid.svg`, 'Check circle solid')}
+            {this.renderImage(`/assets/img/shapes/check-circle-regular.svg`, 'Check circle regular')}
+            {this.renderImage(`/assets/img/shapes/check-solid.svg`, 'Check')}
+            {this.renderImage(`/assets/img/shapes/check-square-solid.svg`, 'Check square')}
+            {this.renderImage(`/assets/img/shapes/info-solid.svg`, 'Info')}
+            {this.renderImage(`/assets/img/shapes/info-circle-solid.svg`, 'Info circle')}
+            {this.renderImage(`/assets/img/shapes/minus-circle-solid.svg`, 'Minus circle')}
+            {this.renderImage(`/assets/img/shapes/plus-circle-solid.svg`, 'Plus circle')}
+            {this.renderImage(`/assets/img/shapes/unlock-solid.svg`, 'Unlock')}
+            {this.renderImage(`/assets/img/shapes/lock-solid.svg`, 'Lock')}
+            {this.renderImage(`/assets/img/shapes/ban-solid.svg`, 'Ban')}
+            {this.renderImage(`/assets/img/shapes/plus-solid.svg`, 'Plus')}
+            {this.renderImage(`/assets/img/shapes/plus-square-solid.svg`, 'Plus square solid')}
+            {this.renderImage(`/assets/img/shapes/plus-square-regular.svg`, 'Plus square regular')}
           </div>
 
           <ion-item-divider>
@@ -97,17 +119,17 @@ export class AppShape {
           </ion-item-divider>
 
           <div class="ion-padding shapes">
-            {this.renderImage(`/assets/img/shapes/database-solid.svg`, 'Database')}
             {this.renderImage(`/assets/img/shapes/desktop-solid.svg`, 'Desktop')}
-            {this.renderImage(`/assets/img/shapes/download-solid.svg`, 'Download')}
             {this.renderImage(`/assets/img/shapes/laptop-solid.svg`, 'Laptop')}
-            {this.renderImage(`/assets/img/shapes/mobile-solid.svg`, 'Mobile')}
-            {this.renderImage(`/assets/img/shapes/power-off-solid.svg`, 'Power off')}
-            {this.renderImage(`/assets/img/shapes/robot-solid.svg`, 'Robot')}
-            {this.renderImage(`/assets/img/shapes/rocket-solid.svg`, 'Rocket')}
-            {this.renderImage(`/assets/img/shapes/server-solid.svg`, 'Server')}
             {this.renderImage(`/assets/img/shapes/tablet-solid.svg`, 'Tablet')}
-            {this.renderImage(`/assets/img/shapes/tv-solid.svg`, 'TV')}
+            {this.renderImage(`/assets/img/shapes/mobile-solid.svg`, 'Mobile')}
+            {this.renderImage(`/assets/img/shapes/server-solid.svg`, 'Server')}
+            {this.renderImage(`/assets/img/shapes/database-solid.svg`, 'Database')}
+            {this.renderImage(`/assets/img/shapes/download-solid.svg`, 'Download')}
+            {this.renderImage(`/assets/img/shapes/envelope-solid.svg`, 'Envelope')}
+            {this.renderImage(`/assets/img/shapes/power-off-solid.svg`, 'Power off')}
+            {this.renderImage(`/assets/img/shapes/rocket-solid.svg`, 'Rocket')}
+            {this.renderImage(`/assets/img/shapes/robot-solid.svg`, 'Robot')}
           </div>
 
           <ion-item-divider>
@@ -117,9 +139,8 @@ export class AppShape {
           <div class="ion-padding shapes">
             {this.renderImage(`/assets/img/shapes/calendar-solid.svg`, 'Calendar solid')}
             {this.renderImage(`/assets/img/shapes/calendar-regular.svg`, 'Calendar regular')}
-            {this.renderImage(`/assets/img/shapes/calendar-day-solid.svg`, 'Calendar day')}
             {this.renderImage(`/assets/img/shapes/clock-solid.svg`, 'Clock solid')}
-            {this.renderImage(`/assets/img/shapes/clock-solid.svg`, 'Clock regular')}
+            {this.renderImage(`/assets/img/shapes/clock-regular.svg`, 'Clock regular')}
           </div>
 
           <ion-item-divider>
@@ -129,11 +150,13 @@ export class AppShape {
           <div class="ion-padding shapes">
             {this.renderImage(`/assets/img/shapes/copy-solid.svg`, 'Copy solid')}
             {this.renderImage(`/assets/img/shapes/copy-regular.svg`, 'Copy regular')}
-            {this.renderImage(`/assets/img/shapes/cut-solid.svg`, 'Cut')}
+            {this.renderImage(`/assets/img/shapes/clipboard-solid.svg`, 'Clipboard solid')}
+            {this.renderImage(`/assets/img/shapes/clipboard-regular.svg`, 'Clipboard regular')}
             {this.renderImage(`/assets/img/shapes/file-solid.svg`, 'File solid')}
             {this.renderImage(`/assets/img/shapes/file-regular.svg`, 'File regular')}
             {this.renderImage(`/assets/img/shapes/folder-solid.svg`, 'Folder solid')}
             {this.renderImage(`/assets/img/shapes/folder-regular.svg`, 'Folder regular')}
+            {this.renderImage(`/assets/img/shapes/cut-solid.svg`, 'Cut')}
           </div>
 
           <ion-item-divider>
@@ -145,71 +168,11 @@ export class AppShape {
             {this.renderImage(`/assets/img/shapes/chart-pie-solid.svg`, 'Chart pie')}
             {this.renderImage(`/assets/img/shapes/credit-card-solid.svg`, 'Credit card solid')}
             {this.renderImage(`/assets/img/shapes/credit-card-regular.svg`, 'Credit card regular')}
-          </div>
-
-          <ion-item-divider>
-            <ion-label>Interfaces</ion-label>
-          </ion-item-divider>
-
-          <div class="ion-padding shapes">
-            {this.renderImage(`/assets/img/shapes/clipboard-solid.svg`, 'Clipboard solid')}
-            {this.renderImage(`/assets/img/shapes/clipboard-regular.svg`, 'Clipboard regular')}
-            {this.renderImage(`/assets/img/shapes/check-circle-solid.svg`, 'Check circle solid')}
-            {this.renderImage(`/assets/img/shapes/check-circle-regular.svg`, 'Check circle regular')}
-            {this.renderImage(`/assets/img/shapes/check-solid.svg`, 'Check')}
-            {this.renderImage(`/assets/img/shapes/check-square-solid.svg`, 'Check square')}
-          </div>
-
-          <ion-item-divider>
-            <ion-label>Shapes</ion-label>
-          </ion-item-divider>
-
-          <div class="ion-padding shapes">
-            {this.renderImage(`/assets/img/shapes/bookmark-solid.svg`, 'Bookmark solid')}
-            {this.renderImage(`/assets/img/shapes/bookmark-regular.svg`, 'Bookmark regular')}
-            {this.renderImage(`/assets/img/shapes/certificate-solid.svg`, 'Certificate')}
-            {this.renderImage(`/assets/img/shapes/circle-solid.svg`, 'Circle solid')}
-            {this.renderImage(`/assets/img/shapes/circle-regular.svg`, 'Circle solid')}
-            {this.renderImage(`/assets/img/shapes/cloud-solid.svg`, 'Cloud')}
-            {this.renderImage(`/assets/img/shapes/cog-solid.svg`, 'Cog')}
-            {this.renderImage(`/assets/img/shapes/shopping-cart-solid.svg`, 'Shopping cart')}
-            {this.renderImage(`/assets/img/shapes/square-solid.svg`, 'Square solid')}
-            {this.renderImage(`/assets/img/shapes/square-regular.svg`, 'Square regular')}
-            {this.renderImage(`/assets/img/shapes/square-full-solid.svg`, 'Square full')}
-            {this.renderImage(`/assets/img/shapes/tag-solid.svg`, 'Tag')}
-            {this.renderImage(`/assets/img/shapes/trophy-solid.svg`, 'Trophy')}
-          </div>
-
-          <ion-item-divider>
-            <ion-label>Social</ion-label>
-          </ion-item-divider>
-
-          <div class="ion-padding shapes">
-            {this.renderImage(`/assets/img/shapes/camera-solid.svg`, 'Camera')}
-            {this.renderImage(`/assets/img/shapes/envelope-solid.svg`, 'Envelope')}
-            {this.renderImage(`/assets/img/shapes/heart-solid.svg`, 'Heart solid')}
-            {this.renderImage(`/assets/img/shapes/heart-regular.svg`, 'Heart regular')}
-            {this.renderImage(`/assets/img/shapes/map-marker-solid.svg`, 'Map marker')}
-            {this.renderImage(`/assets/img/shapes/play-solid.svg`, 'Play')}
-            {this.renderImage(`/assets/img/shapes/star-solid.svg`, 'Star solid')}
-            {this.renderImage(`/assets/img/shapes/star-regular.svg`, 'Star regular')}
-          </div>
-
-          <ion-item-divider>
-            <ion-label>Status</ion-label>
-          </ion-item-divider>
-
-          <div class="ion-padding shapes">
-            {this.renderImage(`/assets/img/shapes/ban-solid.svg`, 'Ban')}
-            {this.renderImage(`/assets/img/shapes/info-solid.svg`, 'Info')}
-            {this.renderImage(`/assets/img/shapes/info-circle-solid.svg`, 'Info circle')}
-            {this.renderImage(`/assets/img/shapes/lock-solid.svg`, 'Lock')}
-            {this.renderImage(`/assets/img/shapes/unlock-solid.svg`, 'Unlock')}
-            {this.renderImage(`/assets/img/shapes/minus-circle-solid.svg`, 'Minus circle')}
-            {this.renderImage(`/assets/img/shapes/plus-circle-solid.svg`, 'Plus circle')}
-            {this.renderImage(`/assets/img/shapes/plus-solid.svg`, 'Plus')}
-            {this.renderImage(`/assets/img/shapes/plus-square-solid.svg`, 'Plus square solid')}
-            {this.renderImage(`/assets/img/shapes/plus-square-regular.svg`, 'Plus square regular')}
+            {this.renderImage(`/assets/img/shapes/cc-amazon-pay-brands.svg`, 'Amazon Pay')}
+            {this.renderImage(`/assets/img/shapes/cc-apple-pay-brands.svg`, 'Apple Pay')}
+            {this.renderImage(`/assets/img/shapes/cc-paypal-brands.svg`, 'Paypal')}
+            {this.renderImage(`/assets/img/shapes/cc-stripe-brands.svg`, 'Stripe')}
+            {this.renderImage(`/assets/img/shapes/bitcoin-brands.svg`, 'Bitcoin')}
           </div>
         </ion-list>
       </div>
