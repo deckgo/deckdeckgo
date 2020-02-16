@@ -275,6 +275,10 @@ export namespace Components {
   }
   interface AppServices {}
   interface AppSettings {}
+  interface AppShape {
+    'codeDidChange': EventEmitter<HTMLElement>;
+    'selectedElement': HTMLElement;
+  }
   interface AppShareDeck {
     'openShare': () => Promise<void>;
   }
@@ -778,6 +782,12 @@ declare global {
     new (): HTMLAppSettingsElement;
   };
 
+  interface HTMLAppShapeElement extends Components.AppShape, HTMLStencilElement {}
+  var HTMLAppShapeElement: {
+    prototype: HTMLAppShapeElement;
+    new (): HTMLAppShapeElement;
+  };
+
   interface HTMLAppShareDeckElement extends Components.AppShareDeck, HTMLStencilElement {}
   var HTMLAppShareDeckElement: {
     prototype: HTMLAppShareDeckElement;
@@ -923,6 +933,7 @@ declare global {
     'app-select-target-element': HTMLAppSelectTargetElementElement;
     'app-services': HTMLAppServicesElement;
     'app-settings': HTMLAppSettingsElement;
+    'app-shape': HTMLAppShapeElement;
     'app-share-deck': HTMLAppShareDeckElement;
     'app-share-options': HTMLAppShareOptionsElement;
     'app-signin': HTMLAppSigninElement;
@@ -1210,6 +1221,10 @@ declare namespace LocalJSX {
   }
   interface AppServices {}
   interface AppSettings {}
+  interface AppShape {
+    'codeDidChange'?: EventEmitter<HTMLElement>;
+    'selectedElement'?: HTMLElement;
+  }
   interface AppShareDeck {}
   interface AppShareOptions {
     'onSelectedOption'?: (event: CustomEvent<MoreAction>) => void;
@@ -1317,6 +1332,7 @@ declare namespace LocalJSX {
     'app-select-target-element': AppSelectTargetElement;
     'app-services': AppServices;
     'app-settings': AppSettings;
+    'app-shape': AppShape;
     'app-share-deck': AppShareDeck;
     'app-share-options': AppShareOptions;
     'app-signin': AppSignin;
@@ -1416,6 +1432,7 @@ declare module "@stencil/core" {
       'app-select-target-element': LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;
       'app-services': LocalJSX.AppServices & JSXBase.HTMLAttributes<HTMLAppServicesElement>;
       'app-settings': LocalJSX.AppSettings & JSXBase.HTMLAttributes<HTMLAppSettingsElement>;
+      'app-shape': LocalJSX.AppShape & JSXBase.HTMLAttributes<HTMLAppShapeElement>;
       'app-share-deck': LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
       'app-share-options': LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
       'app-signin': LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;

@@ -457,6 +457,24 @@ export class AppActionsElement {
     await popover.present();
   }
 
+  private async openShape() {
+    if (!this.slide || this.slideNodeName !== 'deckgo-slide-aspect-ratio') {
+      return;
+    }
+
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-shape',
+      componentProps: {
+        selectedElement: this.selectedElement,
+        slideDidChange: this.slideDidChange
+      },
+      mode: 'md',
+      cssClass: 'popover-menu'
+    });
+
+    await popover.present();
+  }
+
   private async openEditPollSlide() {
     if (!this.slide || this.slideNodeName !== 'deckgo-slide-poll') {
       return;
@@ -864,6 +882,7 @@ export class AppActionsElement {
       <ion-toolbar>
         <ion-buttons slot="start">
           {this.renderEdit()}
+          {this.renderShapes()}
           {this.renderReveal()}
           {this.renderColor()}
           {this.renderList()}
@@ -948,6 +967,17 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.openSlotType()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
         <ion-icon src="/assets/icons/ionicons/add.svg"></ion-icon>
         <ion-label>Toggle</ion-label>
+      </ion-tab-button>
+    ];
+  }
+
+  private renderShapes() {
+    const classSlide: string | undefined = this.slideNodeName === 'deckgo-slide-aspect-ratio' ? undefined : 'hidden';
+
+    return [
+      <ion-tab-button onClick={() => this.openShape()} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
+        <ion-icon name="shapes-outline"></ion-icon>
+        <ion-label>Add shape</ion-label>
       </ion-tab-button>
     ];
   }
