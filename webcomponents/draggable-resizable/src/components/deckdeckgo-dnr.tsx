@@ -17,6 +17,9 @@ enum ApplyOperation {
 export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
+  @Prop()
+  unit: 'vw' | 'px' = 'vw';
+
   // Size
 
   @Prop()
@@ -29,10 +32,10 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   height: number;
 
   @Prop()
-  minWidth: number = 32;
+  minWidth: number = 5;
 
   @Prop()
-  minHeight: number = 32;
+  minHeight: number = 5;
 
   // Position
 
@@ -170,7 +173,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   private transform = ($event: MouseEvent | TouchEvent) => {
     const moved: boolean = this.move($event);
     const resized: boolean = this.size($event);
-    const rotated: boolean = this.rotateForm($event);
+    const rotated: boolean = this.rotateShape($event);
 
     this.updated = moved || resized || rotated;
   };
@@ -207,7 +210,12 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     } else if (this.dragBottomStart) {
       this.deltaResize($event, {width: ApplyOperation.SUBSTRACT, height: ApplyOperation.ADD, left: ApplyOperation.ADD});
     } else if (this.dragTopStart) {
-      this.deltaResize($event, {width: ApplyOperation.SUBSTRACT, top: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT, left: ApplyOperation.ADD});
+      this.deltaResize($event, {
+        width: ApplyOperation.SUBSTRACT,
+        top: ApplyOperation.ADD,
+        height: ApplyOperation.SUBSTRACT,
+        left: ApplyOperation.ADD
+      });
     } else if (this.dragTop) {
       this.deltaResize($event, {top: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT});
     } else if (this.dragEnd) {
@@ -287,13 +295,13 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     // this.top = -1 * (e + f + g + h);
   }
 
-  private rotateForm($event: MouseEvent | TouchEvent): boolean {
+  private rotateShape($event: MouseEvent | TouchEvent): boolean {
     if (!this.rotating) {
       return false;
     }
 
-    const currentX: number = unifyEvent($event).clientX;
-    const currentY: number = unifyEvent($event).clientY;
+    const currentX: number = this.convertToUnit(unifyEvent($event).clientX);
+    const currentY: number = this.convertToUnit(unifyEvent($event).clientY);
 
     this.rotate = Math.atan2(currentX - this.centerX, currentY - this.centerY) * (180 / Math.PI) * -1 + 180;
 
@@ -304,13 +312,18 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     const currentX: number = unifyEvent($event).clientX;
     const currentY: number = unifyEvent($event).clientY;
 
-    const deltaX: number = currentX - this.startX;
-    const deltaY: number = currentY - this.startY;
+    const deltaX: number = this.convertToUnit(currentX - this.startX);
+    const deltaY: number = this.convertToUnit(currentY - this.startY);
 
     return {
       x: deltaX,
       y: deltaY
     };
+  }
+
+  private convertToUnit(value: number): number {
+    const windowWith: number = window.innerWidth || screen.width;
+    return this.unit === 'px' ? value : (value * 100) / windowWith;
   }
 
   private initStartPositions($event: MouseEvent | TouchEvent) {
@@ -323,11 +336,11 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     this.startTop = this.top;
     this.startLeft = this.left;
 
-    this.parentWidth = this.el.parentElement.offsetWidth;
-    this.parentHeight = this.el.parentElement.offsetHeight;
+    this.parentWidth = this.convertToUnit(this.el.parentElement.offsetWidth);
+    this.parentHeight = this.convertToUnit(this.el.parentElement.offsetHeight);
 
-    this.centerX = this.el.offsetLeft + this.width / 2;
-    this.centerY = this.el.offsetTop + this.height / 2;
+    this.centerX = this.convertToUnit(this.el.offsetLeft) + this.width / 2;
+    this.centerY = this.convertToUnit(this.el.offsetTop) + this.height / 2;
   }
 
   private startMove() {
@@ -398,11 +411,11 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     return (
       <Host
         style={{
-          '--width': `${this.width}px`,
-          '--height': `${this.height}px`,
-          '--top': `${this.top}px`,
-          '--left': `${this.left}px`,
-          '--rotate': this.rotate ? `${this.rotate}deg` : undefined
+          '--width': `${this.width}${this.unit}`,
+          '--height': `${this.height}${this.unit}`,
+          '--top': `${this.top}${this.unit}`,
+          '--left': `${this.left}${this.unit}`,
+          '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`
         }}
         class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
         {this.renderEdgesAnchors()}

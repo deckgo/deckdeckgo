@@ -336,7 +336,7 @@ export class CreateSlidesUtils {
       }
 
       const content = (
-        <deckgo-dnr width="200" height="100" top="50" left="50" slot={''}>
+        <deckgo-dnr width="20" height="10" top="5" left="5" slot={''}>
           <div style={{background: 'red'}}></div>
         </deckgo-dnr>
       );

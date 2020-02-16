@@ -1,8 +1,6 @@
-import {Component, Element, Event, EventEmitter, Method, h, Host, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, h, Host, Prop} from '@stencil/core';
 
 import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
-
-import {debounce} from '@deckdeckgo/utils';
 
 @Component({
   tag: 'deckgo-slide-aspect-ratio',
@@ -17,26 +15,11 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
   @Prop()
   ratio: number = 16 / 9;
 
-  @State()
-  private contentScale: number = 1;
-
   async componentDidLoad() {
-    this.initWindowResize();
-
     await hideLazyLoadImages(this.el);
 
     this.slideDidLoad.emit();
   }
-
-  private initWindowResize() {
-    if (window) {
-      window.addEventListener('resize', debounce(this.onResizeContent));
-    }
-  }
-
-  private onResizeContent = async () => {
-    this.contentScale = window.innerWidth / screen.width;
-  };
 
   @Method()
   beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
@@ -71,7 +54,7 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
         class={{
           'deckgo-slide-container': true
         }}>
-        <div class="deckgo-slide" style={{'--deckgo-dnr-content-scale': `${this.contentScale}`}}>
+        <div class="deckgo-slide">
           <slot name="title"></slot>
           <div class="deckgo-aspect-ratio-container">
             <div class="deckgo-aspect-ratio-content">
