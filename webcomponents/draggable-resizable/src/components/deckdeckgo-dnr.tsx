@@ -18,7 +18,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
   @Prop()
-  unit: 'vw' | 'px' = 'vw';
+  unit: 'viewport' | 'px' = 'viewport';
 
   // Size
 
@@ -300,8 +300,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       return false;
     }
 
-    const currentX: number = this.convertToUnit(unifyEvent($event).clientX);
-    const currentY: number = this.convertToUnit(unifyEvent($event).clientY);
+    const currentX: number = this.convertToUnit(unifyEvent($event).clientX, 'width');
+    const currentY: number = this.convertToUnit(unifyEvent($event).clientY, 'height');
 
     this.rotate = Math.atan2(currentX - this.centerX, currentY - this.centerY) * (180 / Math.PI) * -1 + 180;
 
@@ -312,8 +312,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     const currentX: number = unifyEvent($event).clientX;
     const currentY: number = unifyEvent($event).clientY;
 
-    const deltaX: number = this.convertToUnit(currentX - this.startX);
-    const deltaY: number = this.convertToUnit(currentY - this.startY);
+    const deltaX: number = this.convertToUnit(currentX - this.startX, 'width');
+    const deltaY: number = this.convertToUnit(currentY - this.startY, 'height');
 
     return {
       x: deltaX,
@@ -321,9 +321,9 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     };
   }
 
-  private convertToUnit(value: number): number {
-    const windowWith: number = window.innerWidth || screen.width;
-    return this.unit === 'px' ? value : (value * 100) / windowWith;
+  private convertToUnit(value: number, ratio: 'width' | 'height'): number {
+    const windowSize: number = ratio === 'width' ? window.innerWidth || screen.width : window.innerHeight || screen.height;
+    return this.unit === 'px' ? value : (value * 100) / windowSize;
   }
 
   private async initStartPositions($event: MouseEvent | TouchEvent) {
@@ -338,8 +338,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     await this.initParentSize();
 
-    this.centerX = this.convertToUnit(this.el.offsetLeft) + this.width / 2;
-    this.centerY = this.convertToUnit(this.el.offsetTop) + this.height / 2;
+    this.centerX = this.convertToUnit(this.el.offsetLeft, 'width') + this.width / 2;
+    this.centerY = this.convertToUnit(this.el.offsetTop, 'height') + this.height / 2;
   }
 
   private async initParentSize() {
@@ -347,11 +347,11 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     if (this.el.parentElement && typeof (this.el.parentElement as any).getContainer === 'function') {
       const parent: HTMLElement = await (this.el.parentElement as any).getContainer();
 
-      this.parentWidth = this.convertToUnit(parent.offsetWidth);
-      this.parentHeight = this.convertToUnit(parent.offsetHeight);
+      this.parentWidth = this.convertToUnit(parent.offsetWidth, 'width');
+      this.parentHeight = this.convertToUnit(parent.offsetHeight, 'height');
     } else {
-      this.parentWidth = this.convertToUnit(this.el.parentElement.offsetWidth);
-      this.parentHeight = this.convertToUnit(this.el.parentElement.offsetHeight);
+      this.parentWidth = this.convertToUnit(this.el.parentElement.offsetWidth, 'width');
+      this.parentHeight = this.convertToUnit(this.el.parentElement.offsetHeight, 'height');
     }
   }
 
@@ -423,10 +423,10 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     return (
       <Host
         style={{
-          '--width': `${this.width}${this.unit}`,
-          '--height': `${this.height}${this.unit}`,
-          '--top': `${this.top}${this.unit}`,
-          '--left': `${this.left}${this.unit}`,
+          '--width': `${this.width}${this.unit === 'viewport' ? 'vw' : this.unit}`,
+          '--height': `${this.height}${this.unit === 'viewport' ? 'vh' : this.unit}`,
+          '--top': `${this.top}${this.unit === 'viewport' ? 'vh' : this.unit}`,
+          '--left': `${this.left}${this.unit === 'viewport' ? 'vw' : this.unit}`,
           '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`
         }}
         class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
