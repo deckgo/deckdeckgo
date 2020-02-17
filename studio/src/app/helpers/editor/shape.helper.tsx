@@ -25,7 +25,7 @@ export class ShapeHelper {
       const size: number = 8; // percent
 
       deckGoDnr.setAttribute('width', `${size}`);
-      deckGoDnr.setAttribute('height', `${size}`);
+      deckGoDnr.setAttribute('height', `${(slideElement.offsetWidth * size) / slideElement.offsetHeight}`);
       deckGoDnr.setAttribute('left', `${50 - size / 2}`); // vw center
       deckGoDnr.setAttribute('top', `${50 - size / 2}`); // vh center
 
