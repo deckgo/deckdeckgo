@@ -233,12 +233,12 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     const delta: {x: number; y: number} = this.getDelta($event);
 
     if (attr.top === ApplyOperation.ADD) {
-      const maxTop: number = this.parentHeight - this.startHeight;
+      const maxTop: number = this.convertParentUnit(this.parentHeight) - this.startHeight;
       this.top = this.startTop + delta.y > 0 ? (this.startTop + delta.y < maxTop ? this.startTop + delta.y : maxTop) : 0;
     }
 
     if (attr.left === ApplyOperation.ADD) {
-      const maxLeft: number = this.parentWidth - this.startWidth;
+      const maxLeft: number = this.convertParentUnit(this.parentWidth) - this.startWidth;
       this.left = this.startLeft + delta.x > 0 ? (this.startLeft + delta.x < maxLeft ? this.startLeft + delta.x : maxLeft) : 0;
     }
   }
@@ -247,7 +247,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     const delta: {x: number; y: number} = this.getDelta($event);
 
     if (attr.width === ApplyOperation.ADD) {
-      const maxWidth: number = this.parentWidth - this.startLeft;
+      const maxWidth: number = this.convertParentUnit(this.parentWidth) - this.startLeft;
       this.width = this.startWidth + delta.x > this.minWidth ? (this.startWidth + delta.x < maxWidth ? this.startWidth + delta.x : maxWidth) : this.minWidth;
     } else if (attr.width === ApplyOperation.SUBSTRACT) {
       const maxWidth: number = this.startLeft + this.startWidth;
@@ -255,7 +255,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     }
 
     if (attr.height === ApplyOperation.ADD) {
-      const maxHeight: number = this.parentHeight - this.startTop;
+      const maxHeight: number = this.convertParentUnit(this.parentHeight) - this.startTop;
       this.height =
         this.startHeight + delta.y > this.minHeight ? (this.startHeight + delta.y < maxHeight ? this.startHeight + delta.y : maxHeight) : this.minHeight;
     } else if (attr.height === ApplyOperation.SUBSTRACT) {
@@ -333,6 +333,10 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     const parentSize: number = ratio === 'width' ? this.parentWidth : this.parentHeight;
     return (value * 100) / parentSize;
+  }
+
+  private convertParentUnit(value: number): number {
+    return this.unit === 'percentage' ? 100 : value;
   }
 
   private async initStartPositions($event: MouseEvent | TouchEvent) {
