@@ -218,7 +218,7 @@ export class DeckdeckgoLazyImg {
     if (this.svgContent) {
       return (
         <Host class={hostClass}>
-          <div innerHTML={this.svgContent}></div>
+          <div innerHTML={this.svgContent} class="svg-container"></div>
         </Host>
       );
     } else {

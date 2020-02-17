@@ -1,5 +1,6 @@
 :host {
   fill: currentColor;
+  contain: strict;
 }
 
 :host(.loaded) {
@@ -7,6 +8,11 @@
   svg {
     opacity: var(--deckgo-lazy-img-opacity-loaded, 1);
   }
+}
+
+div.svg-container {
+  height: var(--deckgo-lazy-img-height);
+  width: var(--deckgo-lazy-img-width);
 }
 
 img,
