@@ -1,4 +1,4 @@
-import {Component, Element, EventEmitter, h, Prop} from '@stencil/core';
+import {Component, Element, h, Prop} from '@stencil/core';
 
 @Component({
   tag: 'app-shape',
@@ -10,14 +10,18 @@ export class AppShape {
   @Prop()
   selectedElement: HTMLElement;
 
-  @Prop()
-  codeDidChange: EventEmitter<HTMLElement>;
-
   // TODO replace with config.globalAssetsUrl
   // private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
   private async closePopoverWithoutResults() {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
+  }
+
+  private async selectAction(src: string, label: string) {
+    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
+      src,
+      label
+    });
   }
 
   render() {
@@ -188,7 +192,7 @@ export class AppShape {
 
   private renderImage(src: string, ariaLabel: string) {
     return (
-      <div>
+      <div custom-tappable onClick={() => this.selectAction(src, ariaLabel)}>
         <div class="image-container">
           <deckgo-lazy-img slot="icon" svg-src={src} aria-label={ariaLabel}></deckgo-lazy-img>
         </div>

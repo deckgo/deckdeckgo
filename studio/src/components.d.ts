@@ -276,7 +276,6 @@ export namespace Components {
   interface AppServices {}
   interface AppSettings {}
   interface AppShape {
-    'codeDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
   }
   interface AppShareDeck {
@@ -1222,7 +1221,6 @@ declare namespace LocalJSX {
   interface AppServices {}
   interface AppSettings {}
   interface AppShape {
-    'codeDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
   }
   interface AppShareDeck {}

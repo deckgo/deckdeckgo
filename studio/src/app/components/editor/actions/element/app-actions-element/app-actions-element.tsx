@@ -7,6 +7,7 @@ import {debounceTime} from 'rxjs/operators';
 import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
 import {ImageHelper} from '../../../../../helpers/editor/image.helper';
+import {ShapeHelper} from '../../../../../helpers/editor/shape.helper';
 
 import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
@@ -71,6 +72,7 @@ export class AppActionsElement {
   @Event() signIn: EventEmitter<void>;
 
   private imageHelper: ImageHelper;
+  private shapeHelper: ShapeHelper;
 
   @Event() private resetted: EventEmitter<void>;
 
@@ -88,6 +90,7 @@ export class AppActionsElement {
     });
 
     this.imageHelper = new ImageHelper(this.slideDidChange, this.blockSlide, this.signIn);
+    this.shapeHelper = new ShapeHelper(this.slideDidChange);
   }
 
   async componentDidLoad() {
@@ -465,11 +468,16 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-shape',
       componentProps: {
-        selectedElement: this.selectedElement,
-        slideDidChange: this.slideDidChange
+        selectedElement: this.selectedElement
       },
       mode: 'md',
       cssClass: 'popover-menu'
+    });
+
+    popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
+      if (detail.data) {
+        await this.shapeHelper.appendShape(this.selectedElement, detail.data);
+      }
     });
 
     await popover.present();
