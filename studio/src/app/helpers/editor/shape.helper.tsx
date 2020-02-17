@@ -29,6 +29,8 @@ export class ShapeHelper {
       deckGoDnr.setAttribute('left', `${50 - size / 2}`); // vw center
       deckGoDnr.setAttribute('top', `${50 - size / 2}`); // vh center
 
+      deckGoDnr.setAttribute('slot', '');
+
       const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
       (deckgoImg as any).svgSrc = shapeAction.src;
