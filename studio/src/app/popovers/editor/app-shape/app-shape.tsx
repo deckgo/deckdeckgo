@@ -100,18 +100,25 @@ export class AppShape {
           <div class="ion-padding shapes">
             {this.renderImage(`/assets/img/shapes/check-circle-solid.svg`, 'Check circle solid')}
             {this.renderImage(`/assets/img/shapes/check-circle-regular.svg`, 'Check circle regular')}
-            {this.renderImage(`/assets/img/shapes/check-solid.svg`, 'Check')}
-            {this.renderImage(`/assets/img/shapes/check-square-solid.svg`, 'Check square')}
-            {this.renderImage(`/assets/img/shapes/info-solid.svg`, 'Info')}
-            {this.renderImage(`/assets/img/shapes/info-circle-solid.svg`, 'Info circle')}
-            {this.renderImage(`/assets/img/shapes/minus-circle-solid.svg`, 'Minus circle')}
+            {this.renderImage(`/assets/img/shapes/check-square-solid.svg`, 'Check square solid')}
+            {this.renderImage(`/assets/img/shapes/check-square-regular.svg`, 'Check square regular')}
+            {this.renderImage(`/assets/img/shapes/times-circle-solid.svg`, 'Times square solid')}
+            {this.renderImage(`/assets/img/shapes/times-circle-regular.svg`, 'Times square regular')}
             {this.renderImage(`/assets/img/shapes/plus-circle-solid.svg`, 'Plus circle')}
-            {this.renderImage(`/assets/img/shapes/unlock-solid.svg`, 'Unlock')}
-            {this.renderImage(`/assets/img/shapes/lock-solid.svg`, 'Lock')}
-            {this.renderImage(`/assets/img/shapes/ban-solid.svg`, 'Ban')}
-            {this.renderImage(`/assets/img/shapes/plus-solid.svg`, 'Plus')}
+            {this.renderImage(`/assets/img/shapes/minus-circle-solid.svg`, 'Minus circle')}
             {this.renderImage(`/assets/img/shapes/plus-square-solid.svg`, 'Plus square solid')}
             {this.renderImage(`/assets/img/shapes/plus-square-regular.svg`, 'Plus square regular')}
+            {this.renderImage(`/assets/img/shapes/minus-square-solid.svg`, 'Minus square solid')}
+            {this.renderImage(`/assets/img/shapes/minus-square-regular.svg`, 'Minus square regular')}
+            {this.renderImage(`/assets/img/shapes/unlock-solid.svg`, 'Unlock')}
+            {this.renderImage(`/assets/img/shapes/lock-solid.svg`, 'Lock')}
+            {this.renderImage(`/assets/img/shapes/info-solid.svg`, 'Info')}
+            {this.renderImage(`/assets/img/shapes/info-circle-solid.svg`, 'Info circle')}
+            {this.renderImage(`/assets/img/shapes/check-solid.svg`, 'Check')}
+            {this.renderImage(`/assets/img/shapes/times-solid.svg`, 'Times')}
+            {this.renderImage(`/assets/img/shapes/plus-solid.svg`, 'Plus')}
+            {this.renderImage(`/assets/img/shapes/minus-solid.svg`, 'Minus')}
+            {this.renderImage(`/assets/img/shapes/ban-solid.svg`, 'Ban')}
           </div>
 
           <ion-item-divider>
