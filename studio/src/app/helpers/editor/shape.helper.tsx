@@ -19,13 +19,21 @@ export class ShapeHelper {
   }
 
   private appendContentShape(slideElement: HTMLElement, shapeAction: ShapeAction): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       const deckGoDnr: HTMLElement = document.createElement(SlotType.DRAGGABLE_RESIZABLE);
 
-      const size: number = 8; // percent
+      const size: number = 10; // percent
+
+      if (typeof (slideElement as any).getContainer === 'function') {
+        const container: HTMLElement = await (slideElement as any).getContainer();
+        const height: number = (container.offsetWidth * size * shapeAction.ratio) / container.offsetHeight;
+
+        deckGoDnr.setAttribute('height', `${height}`);
+      } else {
+        deckGoDnr.setAttribute('height', `${size}`);
+      }
 
       deckGoDnr.setAttribute('width', `${size}`);
-      deckGoDnr.setAttribute('height', `${(slideElement.offsetWidth * size) / slideElement.offsetHeight}`);
       deckGoDnr.setAttribute('left', `${50 - size / 2}`); // vw center
       deckGoDnr.setAttribute('top', `${50 - size / 2}`); // vh center
 

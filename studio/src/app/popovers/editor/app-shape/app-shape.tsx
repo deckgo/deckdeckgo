@@ -18,9 +18,16 @@ export class AppShape {
   }
 
   private async selectAction(src: string, label: string) {
+    const lazyImgElement: HTMLElement = this.el.querySelector(`deckgo-lazy-img[svg-src='${src}']`);
+    const ratio: number =
+      lazyImgElement && lazyImgElement.parentElement
+        ? lazyImgElement.parentElement.getBoundingClientRect().height / lazyImgElement.parentElement.getBoundingClientRect().width
+        : 1;
+
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
       src,
-      label
+      label,
+      ratio
     });
   }
 
