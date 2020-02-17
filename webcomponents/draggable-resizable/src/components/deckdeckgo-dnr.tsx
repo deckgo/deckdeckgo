@@ -18,7 +18,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
   @Prop()
-  unit: 'viewport' | 'px' = 'viewport';
+  unit: 'percentage' | 'viewport' | 'px' = 'percentage';
 
   // Size
 
@@ -322,8 +322,17 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   }
 
   private convertToUnit(value: number, ratio: 'width' | 'height'): number {
-    const windowSize: number = ratio === 'width' ? window.innerWidth || screen.width : window.innerHeight || screen.height;
-    return this.unit === 'px' ? value : (value * 100) / windowSize;
+    if (this.unit === 'px') {
+      return value;
+    }
+
+    if (this.unit === 'viewport') {
+      const windowSize: number = ratio === 'width' ? window.innerWidth || screen.width : window.innerHeight || screen.height;
+      return (value * 100) / windowSize;
+    }
+
+    const parentSize: number = ratio === 'width' ? this.parentWidth : this.parentHeight;
+    return (value * 100) / parentSize;
   }
 
   private async initStartPositions($event: MouseEvent | TouchEvent) {
@@ -347,11 +356,11 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     if (this.el.parentElement && typeof (this.el.parentElement as any).getContainer === 'function') {
       const parent: HTMLElement = await (this.el.parentElement as any).getContainer();
 
-      this.parentWidth = this.convertToUnit(parent.offsetWidth, 'width');
-      this.parentHeight = this.convertToUnit(parent.offsetHeight, 'height');
+      this.parentWidth = this.unit === 'percentage' ? parent.offsetWidth : this.convertToUnit(parent.offsetWidth, 'width');
+      this.parentHeight = this.unit === 'percentage' ? parent.offsetHeight : this.convertToUnit(parent.offsetHeight, 'height');
     } else {
-      this.parentWidth = this.convertToUnit(this.el.parentElement.offsetWidth, 'width');
-      this.parentHeight = this.convertToUnit(this.el.parentElement.offsetHeight, 'height');
+      this.parentWidth = this.unit === 'percentage' ? this.el.parentElement.offsetWidth : this.convertToUnit(this.el.parentElement.offsetWidth, 'width');
+      this.parentHeight = this.unit === 'percentage' ? this.el.parentElement.offsetHeight : this.convertToUnit(this.el.parentElement.offsetHeight, 'height');
     }
   }
 
@@ -420,13 +429,16 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   }
 
   render() {
+    const widthUnit: string = this.unit === 'percentage' ? '%' : this.unit === 'viewport' ? 'vw' : this.unit;
+    const heightUnit: string = this.unit === 'percentage' ? '%' : this.unit === 'viewport' ? 'vh' : this.unit;
+
     return (
       <Host
         style={{
-          '--width': `${this.width}${this.unit === 'viewport' ? 'vw' : this.unit}`,
-          '--height': `${this.height}${this.unit === 'viewport' ? 'vh' : this.unit}`,
-          '--top': `${this.top}${this.unit === 'viewport' ? 'vh' : this.unit}`,
-          '--left': `${this.left}${this.unit === 'viewport' ? 'vw' : this.unit}`,
+          '--width': `${this.width}${widthUnit}`,
+          '--height': `${this.height}${heightUnit}`,
+          '--top': `${this.top}${heightUnit}`,
+          '--left': `${this.left}${widthUnit}`,
           '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`
         }}
         class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>

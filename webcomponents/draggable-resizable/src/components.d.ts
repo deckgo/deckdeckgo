@@ -21,7 +21,7 @@ export namespace Components {
     'rotate': number;
     'rotation': boolean;
     'top': number;
-    'unit': 'viewport' | 'px';
+    'unit': 'percentage' | 'viewport' | 'px';
     'width': number;
   }
 }
@@ -52,7 +52,7 @@ declare namespace LocalJSX {
     'rotate'?: number;
     'rotation'?: boolean;
     'top'?: number;
-    'unit'?: 'viewport' | 'px';
+    'unit'?: 'percentage' | 'viewport' | 'px';
     'width'?: number;
   }
 
