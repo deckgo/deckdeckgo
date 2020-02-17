@@ -31,6 +31,8 @@ export class ShapeHelper {
 
       deckGoDnr.setAttribute('slot', '');
 
+      deckGoDnr.setAttribute('contentEditable', 'false');
+
       const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
       (deckgoImg as any).svgSrc = shapeAction.src;
