@@ -39,6 +39,9 @@ export class AppColor {
   private code: boolean = false;
 
   @State()
+  private shape: boolean = false;
+
+  @State()
   private author: boolean = false;
 
   @State()
@@ -54,6 +57,7 @@ export class AppColor {
     }
 
     this.code = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.CODE;
+    this.shape = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.DRAGGABLE_RESIZABLE;
 
     // prettier-ignore
     this.applyToTargetElement = this.code ? TargetElement.CODE : (this.qrCode || this.poll ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : (this.author || this.split ? TargetElement.SIDES : TargetElement.SLIDE)));
@@ -159,6 +163,7 @@ export class AppColor {
           selectedElement={this.selectedElement}
           moreColors={this.moreColors}
           slide={this.slide}
+          shape={this.shape}
           onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}></app-color-text-background>
       );
     }

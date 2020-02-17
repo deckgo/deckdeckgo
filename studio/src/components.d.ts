@@ -124,6 +124,7 @@ export namespace Components {
     'initCurrentColors': () => Promise<void>;
     'moreColors': boolean;
     'selectedElement': HTMLElement;
+    'shape': boolean;
     'slide': boolean;
   }
   interface AppContact {}
@@ -1050,6 +1051,7 @@ declare namespace LocalJSX {
     'moreColors'?: boolean;
     'onColorChange'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
+    'shape'?: boolean;
     'slide'?: boolean;
   }
   interface AppContact {}

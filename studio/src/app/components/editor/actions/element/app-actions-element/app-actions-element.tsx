@@ -47,6 +47,9 @@ export class AppActionsElement {
   private image: boolean = false;
 
   @State()
+  private shape: boolean = false;
+
+  @State()
   private list: SlotType;
 
   @Event() private blockSlide: EventEmitter<boolean>;
@@ -220,7 +223,11 @@ export class AppActionsElement {
   }
 
   private isElementCode(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-highlight-code';
+    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.CODE;
+  }
+
+  private isElementShape(element: HTMLElement): boolean {
+    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.DRAGGABLE_RESIZABLE;
   }
 
   private isElementList(element: HTMLElement): SlotType {
@@ -676,6 +683,7 @@ export class AppActionsElement {
 
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
+      this.shape = this.isElementShape(element);
 
       this.list = this.isElementList(element);
 
@@ -954,7 +962,7 @@ export class AppActionsElement {
 
   private renderEdit() {
     const classSlide: string | undefined = this.slide && this.isSlideEditable() ? undefined : 'hidden';
-    const classToggle: string | undefined = !this.slide ? undefined : ' hidden';
+    const classToggle: string | undefined = !this.slide && !this.shape ? undefined : 'hidden';
 
     return [
       <ion-tab-button
@@ -1013,7 +1021,7 @@ export class AppActionsElement {
   }
 
   private renderReveal() {
-    const classReveal: string | undefined = this.slide || this.code || this.slideNodeName === 'deckgo-slide-youtube' ? 'hidden' : undefined;
+    const classReveal: string | undefined = this.slide || this.code || this.shape || this.slideNodeName === 'deckgo-slide-youtube' ? 'hidden' : undefined;
 
     return (
       <ion-tab-button onClick={() => this.openReveal()} aria-label="Edit element animation" color="primary" mode="md" class={classReveal}>
