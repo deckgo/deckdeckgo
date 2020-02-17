@@ -88,20 +88,16 @@ div.border {
 
   &.top,
   &.bottom {
-    > div {
-      width: calc(var(--width) - 24px);
-      height: 16px;
-    }
+    width: calc(100% - var(--deckgo-dnr-anchor-width, 16px));
+    height: 16px;
   }
 
   &.end,
   &.start {
     top: 50%;
 
-    > div {
-      width: 16px;
-      height: calc(var(--height) - 24px);
-    }
+    height: calc(100% - var(--deckgo-dnr-anchor-height, 16px));
+    width: 16px;
   }
 
   &.top {

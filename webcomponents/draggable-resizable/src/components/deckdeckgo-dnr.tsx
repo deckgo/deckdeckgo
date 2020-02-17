@@ -501,30 +501,22 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
         class="border top"
         onClick={($event) => $event.stopPropagation()}
         onMouseDown={() => (this.dragTop = true)}
-        onTouchStart={() => (this.dragTop = true)}>
-        <div></div>
-      </div>,
+        onTouchStart={() => (this.dragTop = true)}></div>,
       <div
         class="border end"
         onClick={($event) => $event.stopPropagation()}
         onMouseDown={() => (this.dragEnd = true)}
-        onTouchStart={() => (this.dragEnd = true)}>
-        <div></div>
-      </div>,
+        onTouchStart={() => (this.dragEnd = true)}></div>,
       <div
         class="border bottom"
         onClick={($event) => $event.stopPropagation()}
         onMouseDown={() => (this.dragBottom = true)}
-        onTouchStart={() => (this.dragBottom = true)}>
-        <div></div>
-      </div>,
+        onTouchStart={() => (this.dragBottom = true)}></div>,
       <div
         class="border start"
         onClick={($event) => $event.stopPropagation()}
         onMouseDown={() => (this.dragStart = true)}
-        onTouchStart={() => (this.dragStart = true)}>
-        <div></div>
-      </div>
+        onTouchStart={() => (this.dragStart = true)}></div>
     ];
   }
 
