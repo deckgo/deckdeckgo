@@ -1,6 +1,9 @@
 :host {
-  display: block;
   contain: size;
+}
+
+div.container {
+  display: block;
 
   width: var(--width);
   height: var(--height);
@@ -13,8 +16,12 @@
   left: var(--left);
 }
 
-:host(.selected.draggable:not(.drag)) {
+div.container.selected.draggable:not(.drag) {
   cursor: move;
+}
+
+div.container.selected {
+  outline: var(--deckgo-dnr-border, 1px solid #3880ff);
 }
 
 ::slotted(*) {
@@ -24,10 +31,6 @@
   user-select: none;
   touch-action: none;
   pointer-events: none;
-}
-
-:host(.selected) {
-  outline: var(--deckgo-dnr-border, 1px solid #3880ff);
 }
 
 div.anchor {

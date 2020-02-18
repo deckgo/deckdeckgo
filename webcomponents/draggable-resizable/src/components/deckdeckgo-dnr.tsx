@@ -1,4 +1,4 @@
-import {Component, h, Host, Prop, State, Element, Method, Event, EventEmitter} from '@stencil/core';
+import {Component, h, Prop, State, Element, Method, Event, EventEmitter} from '@stencil/core';
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
@@ -437,7 +437,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     const heightUnit: string = this.unit === 'percentage' ? '%' : this.unit === 'viewport' ? 'vh' : this.unit;
 
     return (
-      <Host
+      <div
         style={{
           '--width': `${this.width}${widthUnit}`,
           '--height': `${this.height}${heightUnit}`,
@@ -445,12 +445,12 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
           '--left': `${this.left}${widthUnit}`,
           '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`
         }}
-        class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
+        class={`container ${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
         {this.renderEdgesAnchors()}
         {this.renderBorderAnchors()}
         {this.renderRotateAnchor()}
         <slot />
-      </Host>
+      </div>
     );
   }
 
