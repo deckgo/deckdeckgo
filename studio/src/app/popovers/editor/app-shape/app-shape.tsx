@@ -58,14 +58,16 @@ export class AppShape {
             {this.renderImage(`/assets/img/shapes/bookmark-regular.svg`, 'Bookmark regular')}
             {this.renderImage(`/assets/img/shapes/certificate-solid.svg`, 'Certificate')}
             {this.renderImage(`/assets/img/shapes/cloud-solid.svg`, 'Cloud')}
+            {this.renderImage(`/assets/img/shapes/user-solid.svg`, 'User solid')}
+            {this.renderImage(`/assets/img/shapes/user-regular.svg`, 'User regular')}
+            {this.renderImage(`/assets/img/shapes/building-solid.svg`, 'Building solid')}
+            {this.renderImage(`/assets/img/shapes/building-regular.svg`, 'Building regular')}
+            {this.renderImage(`/assets/img/shapes/bell-solid.svg`, 'Bell solid')}
+            {this.renderImage(`/assets/img/shapes/bell-regular.svg`, 'Bell regular')}
             {this.renderImage(`/assets/img/shapes/cog-solid.svg`, 'Cog')}
             {this.renderImage(`/assets/img/shapes/shopping-cart-solid.svg`, 'Shopping cart')}
             {this.renderImage(`/assets/img/shapes/tag-solid.svg`, 'Tag')}
             {this.renderImage(`/assets/img/shapes/trophy-solid.svg`, 'Trophy')}
-            {this.renderImage(`/assets/img/shapes/bell-solid.svg`, 'Bell solid')}
-            {this.renderImage(`/assets/img/shapes/bell-regular.svg`, 'Bell regular')}
-            {this.renderImage(`/assets/img/shapes/building-solid.svg`, 'Building solid')}
-            {this.renderImage(`/assets/img/shapes/building-regular.svg`, 'Building regular')}
             {this.renderImage(`/assets/img/shapes/square-full-solid.svg`, 'Square full')}
             {this.renderImage(`/assets/img/shapes/map-marker-solid.svg`, 'Map marker')}
             {this.renderImage(`/assets/img/shapes/play-solid.svg`, 'Play')}
