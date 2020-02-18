@@ -201,7 +201,7 @@ export class AppShape {
     return (
       <div custom-tappable onClick={() => this.selectAction(src, ariaLabel)}>
         <div class="image-container">
-          <deckgo-lazy-img slot="icon" svg-src={src} aria-label={ariaLabel}></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src={src} aria-label={ariaLabel}></deckgo-lazy-img>
         </div>
       </div>
     );
