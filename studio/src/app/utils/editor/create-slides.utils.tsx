@@ -335,17 +335,7 @@ export class CreateSlidesUtils {
         return;
       }
 
-      const content = (
-        <deckgo-dnr width="20" height="10" top="5" left="5" slot={''}>
-          <div style={{background: 'red'}}></div>
-        </deckgo-dnr>
-      );
-
-      const slide: JSX.IntrinsicElements = (
-        <deckgo-slide-aspect-ratio key={uuid()} grid={true}>
-          {content}
-        </deckgo-slide-aspect-ratio>
-      );
+      const slide: JSX.IntrinsicElements = <deckgo-slide-aspect-ratio key={uuid()} grid={true}></deckgo-slide-aspect-ratio>;
 
       resolve(slide);
     });

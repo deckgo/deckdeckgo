@@ -171,6 +171,10 @@ export class AppActionsElement {
         await this.openImage();
       }
 
+      if (this.isSlideAspectRatioEmpty(selected)) {
+        await this.openShape();
+      }
+
       this.blockSlide.emit(!this.slide);
 
       resolve();
@@ -179,6 +183,10 @@ export class AppActionsElement {
 
   private isImgNotDefined(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG && !element.hasAttribute('img-src');
+  }
+
+  private isSlideAspectRatioEmpty(element: HTMLElement): boolean {
+    return element && element.nodeName && this.slideNodeName === 'deckgo-slide-aspect-ratio' && !element.hasChildNodes();
   }
 
   @Method()
