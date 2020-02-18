@@ -34,14 +34,14 @@ export class ShapeHelper {
         const container: HTMLElement = await (slideElement as any).getContainer();
         const height: number = (container.offsetWidth * size * shapeAction.ratio) / container.offsetHeight;
 
-        deckGoDnr.setAttribute('height', `${height}`);
+        deckGoDnr.style.setProperty('--height', `${height}`);
       } else {
-        deckGoDnr.setAttribute('height', `${size}`);
+        deckGoDnr.style.setProperty('--height', `${size}`);
       }
 
-      deckGoDnr.setAttribute('width', `${size}`);
-      deckGoDnr.setAttribute('left', `${50 - size / 2}`); // vw center
-      deckGoDnr.setAttribute('top', `${50 - size / 2}`); // vh center
+      deckGoDnr.style.setProperty('--width', `${size}`);
+      deckGoDnr.style.setProperty('--left', `${50 - size / 2}`); // vw center
+      deckGoDnr.style.setProperty('--top', `${50 - size / 2}`); // vh center
 
       this.addShape(deckGoDnr, slideElement, shapeAction.src, shapeAction.label);
 
@@ -52,11 +52,6 @@ export class ShapeHelper {
   private cloneShapeElement(shapeElement: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const deckGoDnr: HTMLElement = document.createElement(SlotType.DRAGGABLE_RESIZABLE);
-
-      deckGoDnr.setAttribute('height', `${(shapeElement as any).height}`);
-      deckGoDnr.setAttribute('width', `${(shapeElement as any).width}`);
-      deckGoDnr.setAttribute('left', `${50 - (shapeElement as any).width / 2}`); // vw center
-      deckGoDnr.setAttribute('top', `${50 - (shapeElement as any).height / 2}`); // vh center
 
       deckGoDnr.setAttribute('style', shapeElement.getAttribute('style'));
 
