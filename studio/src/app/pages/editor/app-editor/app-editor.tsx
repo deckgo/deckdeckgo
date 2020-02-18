@@ -578,7 +578,7 @@ export class AppEditor {
       const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
       elements.forEach((e: HTMLElement) => {
         if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
-          if (e.nodeName.toLowerCase() === SlotType.CODE || e.nodeName.toLowerCase() === SlotType.DRAGGABLE_RESIZABLE) {
+          if (e.nodeName.toLowerCase() === SlotType.CODE) {
             e.setAttribute('editable', '');
           } else if (ParseElementsUtils.isElementContentEditable(e)) {
             e.setAttribute('contentEditable', '');
