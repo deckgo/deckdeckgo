@@ -17,6 +17,8 @@ enum ApplyOperation {
 export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
+  refContainer!: HTMLDivElement;
+
   @Prop()
   unit: 'percentage' | 'viewport' | 'px' = 'percentage';
 
@@ -300,8 +302,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       return false;
     }
 
-    const currentX: number = this.convertToUnit(unifyEvent($event).clientX, 'width');
-    const currentY: number = this.convertToUnit(unifyEvent($event).clientY, 'height');
+    const currentX: number = unifyEvent($event).clientX;
+    const currentY: number = unifyEvent($event).clientY;
 
     this.rotate = Math.atan2(currentX - this.centerX, currentY - this.centerY) * (180 / Math.PI) * -1 + 180;
 
@@ -351,8 +353,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     await this.initParentSize();
 
-    this.centerX = this.convertToUnit(this.el.offsetLeft, 'width') + this.width / 2;
-    this.centerY = this.convertToUnit(this.el.offsetTop, 'height') + this.height / 2;
+    this.centerX = this.refContainer.offsetLeft + this.refContainer.offsetWidth / 2;
+    this.centerY = this.refContainer.offsetTop + this.refContainer.offsetHeight / 2;
   }
 
   private async initParentSize() {
@@ -438,6 +440,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     return (
       <div
+        ref={(el) => (this.refContainer = el as HTMLDivElement)}
         style={{
           '--width': `${this.width}${widthUnit}`,
           '--height': `${this.height}${heightUnit}`,
