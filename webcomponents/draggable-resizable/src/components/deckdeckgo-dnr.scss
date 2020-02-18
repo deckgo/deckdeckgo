@@ -35,6 +35,7 @@ div.anchor {
 
   width: var(--deckgo-dnr-anchor-width, 16px);
   height: var(--deckgo-dnr-anchor-height, 16px);
+  padding: var(--deckgo-dnr-anchor-padding-desktop, 16px);
 
   > div {
     width: 100%;
@@ -43,8 +44,6 @@ div.anchor {
     background: var(--deckgo-dnr-anchor-background, #3880ff);
     border: var(--deckgo-dnr-anchor-border);
   }
-
-  padding: var(--deckgo-dnr-anchor-padding, 16px);
 
   &.top {
     top: 0;
@@ -163,5 +162,23 @@ div.rotate {
 
     height: var(--deckgo-dnr-rotate-anchor-presentation-height, calc(100% - 16px - 1px));
     border-right: var(--deckgo-dnr-rotate-anchor-presentation-border-right, 1px solid #3880ff);
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  div.anchor {
+    padding: var(--deckgo-dnr-anchor-padding-mobile);
+  }
+
+  div.border {
+    &.top,
+    &.bottom {
+      height: 4px;
+    }
+
+    &.end,
+    &.start {
+      width: 4px;
+    }
   }
 }
