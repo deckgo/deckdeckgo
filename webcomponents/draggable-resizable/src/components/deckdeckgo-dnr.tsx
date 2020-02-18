@@ -309,8 +309,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       return false;
     }
 
-    const currentX: number = this.convertToUnit(unifyEvent($event).clientX, 'width');
-    const currentY: number = this.convertToUnit(unifyEvent($event).clientY, 'height');
+    const currentX: number = unifyEvent($event).clientX;
+    const currentY: number = unifyEvent($event).clientY;
 
     this.rotate = Math.atan2(currentX - this.centerX, currentY - this.centerY) * (180 / Math.PI) * -1 + 180;
 
@@ -360,8 +360,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     await this.initParentSize();
 
-    this.centerX = this.convertToUnit(this.el.offsetLeft, 'width') + this.width / 2;
-    this.centerY = this.convertToUnit(this.el.offsetTop, 'height') + this.height / 2;
+    this.centerX = this.el.getBoundingClientRect().left + this.el.offsetWidth / 2;
+    this.centerY = this.el.getBoundingClientRect().top + this.el.offsetHeight / 2;
   }
 
   private async initParentSize() {

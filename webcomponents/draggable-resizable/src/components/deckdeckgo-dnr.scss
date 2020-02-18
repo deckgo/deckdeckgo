@@ -11,6 +11,8 @@
 
   top: var(--top);
   left: var(--left);
+
+  user-select: var(--deckgo-dnr-user-select, none);
 }
 
 :host(.selected.draggable:not(.drag)) {
