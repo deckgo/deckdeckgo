@@ -14,6 +14,7 @@ export namespace Components {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
     'getContainer': () => Promise<HTMLDivElement>;
+    'grid': boolean;
     'hideContent': () => Promise<void>;
     'lazyLoadContent': () => Promise<void>;
     'ratio': number;
@@ -36,6 +37,7 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlideAspectRatio {
+    'grid'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;
     'ratio'?: number;
   }

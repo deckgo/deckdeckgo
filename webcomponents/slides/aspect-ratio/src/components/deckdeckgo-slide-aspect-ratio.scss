@@ -28,6 +28,15 @@ div.deckgo-aspect-ratio-container {
     );
 
     overflow: visible;
+
+    &.deckgo-aspect-ratio-content-grid {
+      background: var(
+        --slide-grid-background,
+        linear-gradient(to bottom, rgba(0, 0, 0, 0) 98%, rgba(110, 109, 111, 0.4) 98%),
+        linear-gradient(to right, rgba(0, 0, 0, 0) 98%, rgba(110, 109, 111, 0.4) 98%)
+      );
+      background-size: var(--slide-grid-background-size, 2em 2em);
+    }
   }
 
   ::slotted([slot="header"]),

@@ -4,9 +4,10 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default  |
-| -------- | --------- | ----------- | -------- | -------- |
-| `ratio`  | `ratio`   |             | `number` | `16 / 9` |
+| Property | Attribute | Description | Type      | Default  |
+| -------- | --------- | ----------- | --------- | -------- |
+| `grid`   | `grid`    |             | `boolean` | `false`  |
+| `ratio`  | `ratio`   |             | `number`  | `16 / 9` |
 
 ## Events
 

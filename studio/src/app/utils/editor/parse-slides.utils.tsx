@@ -92,6 +92,10 @@ export class ParseSlidesUtils {
         attributes['img-mode'] = slide.data.attributes && slide.data.attributes.imgMode ? slide.data.attributes.imgMode : undefined;
       }
 
+      if (slide.data.template === SlideTemplate['ASPECT-RATIO']) {
+        attributes['grid'] = true;
+      }
+
       const SlideElement: string = slideTag;
 
       const result: JSX.IntrinsicElements = (
