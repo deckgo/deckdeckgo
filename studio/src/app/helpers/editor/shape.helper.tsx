@@ -18,6 +18,12 @@ export class ShapeHelper {
     await this.appendContentShape(slideElement, shapeAction);
   }
 
+  async cloneShape(shapeElement: HTMLElement) {
+    this.busyService.deckBusy(true);
+
+    await this.cloneShapeElement(shapeElement);
+  }
+
   private appendContentShape(slideElement: HTMLElement, shapeAction: ShapeAction): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const deckGoDnr: HTMLElement = document.createElement(SlotType.DRAGGABLE_RESIZABLE);
@@ -37,22 +43,50 @@ export class ShapeHelper {
       deckGoDnr.setAttribute('left', `${50 - size / 2}`); // vw center
       deckGoDnr.setAttribute('top', `${50 - size / 2}`); // vh center
 
-      deckGoDnr.setAttribute('slot', '');
-
-      deckGoDnr.setAttribute('contentEditable', 'false');
-
-      const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
-
-      (deckgoImg as any).svgSrc = shapeAction.src;
-      (deckgoImg as any).svgAlt = shapeAction.label;
-
-      deckGoDnr.appendChild(deckgoImg);
-
-      slideElement.appendChild(deckGoDnr);
-
-      this.didChange.emit(slideElement);
+      this.addShape(deckGoDnr, slideElement, shapeAction.src, shapeAction.label);
 
       resolve();
     });
+  }
+
+  private cloneShapeElement(shapeElement: HTMLElement): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const deckGoDnr: HTMLElement = document.createElement(SlotType.DRAGGABLE_RESIZABLE);
+
+      deckGoDnr.setAttribute('height', `${(shapeElement as any).height}`);
+      deckGoDnr.setAttribute('width', `${(shapeElement as any).width}`);
+      deckGoDnr.setAttribute('left', `${50 - (shapeElement as any).width / 2}`); // vw center
+      deckGoDnr.setAttribute('top', `${50 - (shapeElement as any).height / 2}`); // vh center
+
+      deckGoDnr.setAttribute('style', shapeElement.getAttribute('style'));
+
+      const img: HTMLElement = shapeElement.querySelector(SlotType.IMG);
+
+      if (!img) {
+        resolve();
+        return;
+      }
+
+      this.addShape(deckGoDnr, shapeElement.parentElement, (img as any).svgSrc, (img as any).svgAlt);
+
+      resolve();
+    });
+  }
+
+  private addShape(deckGoDnr: HTMLElement, slideElement: HTMLElement, src: string, label: string) {
+    deckGoDnr.setAttribute('slot', '');
+
+    deckGoDnr.setAttribute('contentEditable', 'false');
+
+    const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
+
+    (deckgoImg as any).svgSrc = src;
+    (deckgoImg as any).svgAlt = label;
+
+    deckGoDnr.appendChild(deckgoImg);
+
+    slideElement.appendChild(deckGoDnr);
+
+    this.didChange.emit(slideElement);
   }
 }

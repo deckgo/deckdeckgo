@@ -394,6 +394,32 @@ export class AppActionsElement {
     });
   }
 
+  private async clone() {
+    if (this.shape) {
+      await this.cloneShape();
+    } else {
+      await this.cloneSlide();
+    }
+  }
+
+  private cloneShape(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!this.selectedElement) {
+        resolve();
+        return;
+      }
+
+      if (this.deckBusy || !this.shape) {
+        resolve();
+        return;
+      }
+
+      await this.shapeHelper.cloneShape(this.selectedElement);
+
+      resolve();
+    });
+  }
+
   private cloneSlide(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selectedElement) {
@@ -949,10 +975,10 @@ export class AppActionsElement {
   }
 
   private renderCopy() {
-    const classSlide: string | undefined = this.slide ? undefined : 'hidden';
+    const classSlide: string | undefined = this.slide || this.shape ? undefined : 'hidden';
 
     return (
-      <ion-tab-button onClick={() => this.cloneSlide()} aria-label="Copy" color="primary" mode="md" disabled={this.deckBusy} class={classSlide}>
+      <ion-tab-button onClick={() => this.clone()} aria-label="Copy" color="primary" mode="md" disabled={this.deckBusy} class={classSlide}>
         <ion-icon name="copy-outline"></ion-icon>
         <ion-label>Copy</ion-label>
       </ion-tab-button>
