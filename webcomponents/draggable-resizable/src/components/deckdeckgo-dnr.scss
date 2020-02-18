@@ -1,9 +1,6 @@
 :host {
-  contain: size;
-}
-
-div.container {
   display: block;
+  contain: size;
 
   width: var(--width);
   height: var(--height);
@@ -16,11 +13,11 @@ div.container {
   left: var(--left);
 }
 
-div.container.selected.draggable:not(.drag) {
+:host(.selected.draggable:not(.drag)) {
   cursor: move;
 }
 
-div.container.selected {
+:host(.selected) {
   outline: var(--deckgo-dnr-border, 1px solid #3880ff);
 }
 

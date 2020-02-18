@@ -12,17 +12,10 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface DeckgoDnr {
     'drag': 'x-axis' | 'y-axis' | 'all' | 'none';
-    'height': number;
     'lazyLoadContent': () => Promise<void>;
-    'left': number;
-    'minHeight': number;
-    'minWidth': number;
     'resize': boolean;
-    'rotate': number;
     'rotation': boolean;
-    'top': number;
     'unit': 'percentage' | 'viewport' | 'px';
-    'width': number;
   }
 }
 
@@ -42,18 +35,11 @@ declare global {
 declare namespace LocalJSX {
   interface DeckgoDnr {
     'drag'?: 'x-axis' | 'y-axis' | 'all' | 'none';
-    'height'?: number;
-    'left'?: number;
-    'minHeight'?: number;
-    'minWidth'?: number;
     'onDnrDidChange'?: (event: CustomEvent<HTMLElement | undefined>) => void;
     'onDnrSelect'?: (event: CustomEvent<HTMLElement | undefined>) => void;
     'resize'?: boolean;
-    'rotate'?: number;
     'rotation'?: boolean;
-    'top'?: number;
     'unit'?: 'percentage' | 'viewport' | 'px';
-    'width'?: number;
   }
 
   interface IntrinsicElements {

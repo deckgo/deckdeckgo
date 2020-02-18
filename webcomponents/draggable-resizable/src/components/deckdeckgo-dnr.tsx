@@ -1,4 +1,4 @@
-import {Component, h, Prop, State, Element, Method, Event, EventEmitter} from '@stencil/core';
+import {Component, h, Host, Prop, State, Element, Method, Event, EventEmitter} from '@stencil/core';
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
@@ -17,8 +17,6 @@ enum ApplyOperation {
 export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
-  refContainer!: HTMLDivElement;
-
   @Prop()
   unit: 'percentage' | 'viewport' | 'px' = 'percentage';
 
@@ -27,36 +25,36 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   @Prop()
   resize: boolean = true;
 
-  @Prop({reflect: true, mutable: true})
-  width: number;
+  @State()
+  private width: number;
 
-  @Prop({reflect: true, mutable: true})
-  height: number;
+  @State()
+  private height: number;
 
-  @Prop()
-  minWidth: number = 5;
+  @State()
+  private minWidth: number = 5;
 
-  @Prop()
-  minHeight: number = 5;
+  @State()
+  private minHeight: number = 5;
 
   // Position
 
   @Prop()
   drag: 'x-axis' | 'y-axis' | 'all' | 'none' = 'all';
 
-  @Prop({reflect: true, mutable: true})
-  top: number;
+  @State()
+  private top: number;
 
-  @Prop({reflect: true, mutable: true})
-  left: number;
+  @State()
+  private left: number;
 
   // Rotate
 
   @Prop()
   rotation: boolean = true;
 
-  @Prop({reflect: true, mutable: true})
-  rotate: number;
+  @State()
+  private rotate: number;
 
   @State()
   private selected: boolean = false;
@@ -97,15 +95,9 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
   private centerX: number = null;
   private centerY: number = null;
 
-  // TODO
+  async componentWillLoad() {
+    await this.init();
 
-  // Afficher la taille et option turn it down
-  // Disable enable, per default disable
-  // z-Index on click ?
-
-  // Valeur
-
-  componentWillLoad() {
     if (document && (this.drag || this.resize)) {
       document.addEventListener('mousedown', this.start.bind(this), {passive: true});
       document.addEventListener('touchstart', this.start.bind(this), {passive: true});
@@ -129,6 +121,21 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       document.removeEventListener('mouseup', this.stop, true);
       document.removeEventListener('touchend', this.stop, true);
     }
+  }
+
+  private init(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.width = this.el.style.getPropertyValue('--width') ? parseFloat(this.el.style.getPropertyValue('--width')) : 0;
+      this.height = this.el.style.getPropertyValue('--height') ? parseFloat(this.el.style.getPropertyValue('--height')) : 0;
+      this.top = this.el.style.getPropertyValue('--top') ? parseFloat(this.el.style.getPropertyValue('--top')) : 0;
+      this.left = this.el.style.getPropertyValue('--left') ? parseFloat(this.el.style.getPropertyValue('--left')) : 0;
+      this.rotate = this.el.style.getPropertyValue('--rotate') ? parseFloat(this.el.style.getPropertyValue('--rotate')) : 0;
+
+      this.minWidth = this.el.style.getPropertyValue('--min-width') ? parseFloat(this.el.style.getPropertyValue('--min-width')) : 5;
+      this.minHeight = this.el.style.getPropertyValue('--min-height') ? parseFloat(this.el.style.getPropertyValue('--min-height')) : 5;
+
+      resolve();
+    });
   }
 
   private async displaySlot() {
@@ -302,8 +309,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
       return false;
     }
 
-    const currentX: number = unifyEvent($event).clientX;
-    const currentY: number = unifyEvent($event).clientY;
+    const currentX: number = this.convertToUnit(unifyEvent($event).clientX, 'width');
+    const currentY: number = this.convertToUnit(unifyEvent($event).clientY, 'height');
 
     this.rotate = Math.atan2(currentX - this.centerX, currentY - this.centerY) * (180 / Math.PI) * -1 + 180;
 
@@ -353,8 +360,8 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
 
     await this.initParentSize();
 
-    this.centerX = this.refContainer.offsetLeft + this.refContainer.offsetWidth / 2;
-    this.centerY = this.refContainer.offsetTop + this.refContainer.offsetHeight / 2;
+    this.centerX = this.convertToUnit(this.el.offsetLeft, 'width') + this.width / 2;
+    this.centerY = this.convertToUnit(this.el.offsetTop, 'height') + this.height / 2;
   }
 
   private async initParentSize() {
@@ -439,8 +446,7 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     const heightUnit: string = this.unit === 'percentage' ? '%' : this.unit === 'viewport' ? 'vh' : this.unit;
 
     return (
-      <div
-        ref={(el) => (this.refContainer = el as HTMLDivElement)}
+      <Host
         style={{
           '--width': `${this.width}${widthUnit}`,
           '--height': `${this.height}${heightUnit}`,
@@ -448,12 +454,12 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
           '--left': `${this.left}${widthUnit}`,
           '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`
         }}
-        class={`container ${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
+        class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
         {this.renderEdgesAnchors()}
         {this.renderBorderAnchors()}
         {this.renderRotateAnchor()}
         <slot />
-      </div>
+      </Host>
     );
   }
 
