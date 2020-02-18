@@ -12,7 +12,6 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface DeckgoDnr {
     'drag': 'x-axis' | 'y-axis' | 'all' | 'none';
-    'lazyLoadContent': () => Promise<void>;
     'resize': boolean;
     'rotation': boolean;
     'unit': 'percentage' | 'viewport' | 'px';

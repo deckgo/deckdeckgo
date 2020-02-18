@@ -1,6 +1,4 @@
-import {Component, h, Host, Prop, State, Element, Method, Event, EventEmitter} from '@stencil/core';
-
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import {Component, h, Host, Prop, State, Element, Event, EventEmitter} from '@stencil/core';
 
 import {unifyEvent} from '@deckdeckgo/utils';
 
@@ -14,7 +12,7 @@ enum ApplyOperation {
   styleUrl: 'deckdeckgo-dnr.scss',
   shadow: true
 })
-export class DeckdeckgoDnr implements DeckdeckgoComponent {
+export class DeckdeckgoDnr {
   @Element() el: HTMLElement;
 
   @Prop()
@@ -144,12 +142,6 @@ export class DeckdeckgoDnr implements DeckdeckgoComponent {
     if (element && element.style.display === 'none') {
       element.style.display = '';
     }
-  }
-
-  @Method()
-  lazyLoadContent(): Promise<void> {
-    // TODO
-    return Promise.resolve();
   }
 
   private start = async ($event: MouseEvent | TouchEvent) => {
