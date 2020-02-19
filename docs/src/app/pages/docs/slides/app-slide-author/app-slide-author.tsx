@@ -119,7 +119,7 @@ export class AppSlideAuthor {
           </deckgo-highlight-code>
           <h3 id="app-slide-author-from-npm">From NPM</h3>
           <p>
-            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:
+            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/slide-author">npm</a> run the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;slide-author</code>
@@ -221,6 +221,19 @@ export class AppSlideAuthor {
                 <td>An optional accessibility alt for the image.</td>
               </tr>
               <tr>
+                <td>mode</td>
+                <td>
+                  <code>&quot;circle&quot; | &quot;cover&quot; | &quot;none&quot;</code>
+                </td>
+                <td>
+                  <code>&#39;cover&#39;</code>
+                </td>
+                <td>
+                  The design to be applied to the image. <code>cover</code> fits the image to the start pane, <code>circle</code> displays it in a circle and{' '}
+                  <code>none</code> in case you would not like to display an image
+                </td>
+              </tr>
+              <tr>
                 <td>custom-background</td>
                 <td>boolean</td>
                 <td>false</td>
@@ -234,19 +247,6 @@ export class AppSlideAuthor {
                 <td>false</td>
                 <td>
                   If you will provide actions for the all deck and a specific one for this slide, set this option to <code>true</code>
-                </td>
-              </tr>
-              <tr>
-                <td>mode</td>
-                <td>
-                  <code>&quot;circle&quot; | &quot;cover&quot; | &quot;none&quot;</code>
-                </td>
-                <td>
-                  <code>&#39;cover&#39;</code>
-                </td>
-                <td>
-                  The design to be applied to the image. <code>cover</code> fits the image to the start pane, <code>circle</code> displays it in a circle and{' '}
-                  <code>none</code> in case you would not like to display an image
                 </td>
               </tr>
             </tbody>

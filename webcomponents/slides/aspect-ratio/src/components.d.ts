@@ -13,6 +13,8 @@ export namespace Components {
   interface DeckgoSlideAspectRatio {
     'afterSwipe': () => Promise<void>;
     'beforeSwipe': (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+    'customActions': boolean;
+    'customBackground': boolean;
     'editable': boolean;
     'getContainer': () => Promise<HTMLDivElement>;
     'grid': boolean;
@@ -38,6 +40,8 @@ declare global {
 
 declare namespace LocalJSX {
   interface DeckgoSlideAspectRatio {
+    'customActions'?: boolean;
+    'customBackground'?: boolean;
     'editable'?: boolean;
     'grid'?: boolean;
     'onSlideDidLoad'?: (event: CustomEvent<void>) => void;

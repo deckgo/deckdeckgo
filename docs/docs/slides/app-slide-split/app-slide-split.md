@@ -38,7 +38,6 @@ This template could split the content in two different ways.
 
 ### Vertical
 
-
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-split vertical={true}>
@@ -57,7 +56,7 @@ This template could split the content in two different ways.
 This template could be added to your presentation using the following methods.
 
 > If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
- 
+
 ### From a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
@@ -69,7 +68,7 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/slide-split) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-split
@@ -118,7 +117,7 @@ Both slots `title`, `start` and `end` are optional. Without providing one of the
 
 The `start` slot is the content of the left pane respectively the slot `end` is the content of the right pane.
 
-Note: The slot `title` is per default hidden even if you provide it. See attributes below if you wish to display it. 
+Note: The slot `title` is per default hidden even if you provide it. See attributes below if you wish to display it.
 
 ### Notes
 
@@ -130,36 +129,36 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 This component offers the following options which could be set using attributes:
 
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |-----------------|-----------------|-----------------|
-| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
-| vertical| boolean | false | Per default this template is horizontally split (two columns). Turn this property to `true` too display two rows respectively split vertically |
+| Attribute         | Type    | Default | Description                                                                                                                                    |
+| ----------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| vertical          | boolean | false   | Per default this template is horizontally split (two columns). Turn this property to `true` too display two rows respectively split vertically |
+| custom-background | boolean | false   | If you would provide a background for the all deck and a specific one for this slide, set this option to `true`                                |
+| custom-actions    | boolean | false   | If you would provide actions for the all deck and a specific one for this slide, set this option to `true`                                     |
 
 ## Theming
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --background |  |  |
-| --color |  |  |
-| --slide-split-background-start | | Left split pane background |
-| --slide-split-color-start | | Left split pane color |
-| --slide-split-background-end | | Right split pane background |
-| --slide-split-color-end | | Right split pane color |
-| --slide-split-padding-top | 0 | Padding top of a slide split pane |
-| --slide-split-padding-end | 64px | Padding right of a slide split pane |
-| --slide-split-padding-bottom | 0 | Padding bottom of a slide split pane |
-| --slide-split-padding-start | 64px | Padding left of a slide split pane |
-| --slide-split-title-padding-top | 16px | Padding top of the title of the |
-| --slide-split-title-padding-end | 32px | Padding right of the title of the |
-| --slide-split-title-padding-bottom | 16px | Padding bottom of the title of the |
-| --slide-split-title-padding-start | 32px | Padding left of the title of the |
-| --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
-| --slide-split-align | inherit | Modify for example to center if you want to align the content in the middle |
-| --slide-split-text-align | inherit | Modify for example to center if you want to align the text in the middle |
-| --slide-split-title-display | none | The `slot` title is per default hidden even if you provide it. If you wish to displays it, modify this attribute |
-| --zIndex | 1 | The z-index of the slide |
+| CSS4 variable                      | Default | Note                                                                                                             |
+| ---------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
+| --background                       |         |                                                                                                                  |
+| --color                            |         |                                                                                                                  |
+| --slide-split-background-start     |         | Left split pane background                                                                                       |
+| --slide-split-color-start          |         | Left split pane color                                                                                            |
+| --slide-split-background-end       |         | Right split pane background                                                                                      |
+| --slide-split-color-end            |         | Right split pane color                                                                                           |
+| --slide-split-padding-top          | 0       | Padding top of a slide split pane                                                                                |
+| --slide-split-padding-end          | 64px    | Padding right of a slide split pane                                                                              |
+| --slide-split-padding-bottom       | 0       | Padding bottom of a slide split pane                                                                             |
+| --slide-split-padding-start        | 64px    | Padding left of a slide split pane                                                                               |
+| --slide-split-title-padding-top    | 16px    | Padding top of the title of the                                                                                  |
+| --slide-split-title-padding-end    | 32px    | Padding right of the title of the                                                                                |
+| --slide-split-title-padding-bottom | 16px    | Padding bottom of the title of the                                                                               |
+| --slide-split-title-padding-start  | 32px    | Padding left of the title of the                                                                                 |
+| --slide-padding-start              | 32px    | Modify slotted ul and ol padding-inline-start                                                                    |
+| --slide-split-align                | inherit | Modify for example to center if you want to align the content in the middle                                      |
+| --slide-split-text-align           | inherit | Modify for example to center if you want to align the text in the middle                                         |
+| --slide-split-title-display        | none    | The `slot` title is per default hidden even if you provide it. If you wish to displays it, modify this attribute |
+| --zIndex                           | 1       | The z-index of the slide                                                                                         |
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

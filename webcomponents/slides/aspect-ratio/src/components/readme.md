@@ -4,11 +4,13 @@
 
 ## Properties
 
-| Property   | Attribute  | Description | Type      | Default  |
-| ---------- | ---------- | ----------- | --------- | -------- |
-| `editable` | `editable` |             | `boolean` | `false`  |
-| `grid`     | `grid`     |             | `boolean` | `false`  |
-| `ratio`    | `ratio`    |             | `number`  | `16 / 9` |
+| Property           | Attribute           | Description | Type      | Default  |
+| ------------------ | ------------------- | ----------- | --------- | -------- |
+| `customActions`    | `custom-actions`    |             | `boolean` | `false`  |
+| `customBackground` | `custom-background` |             | `boolean` | `false`  |
+| `editable`         | `editable`          |             | `boolean` | `false`  |
+| `grid`             | `grid`              |             | `boolean` | `false`  |
+| `ratio`            | `ratio`             |             | `number`  | `16 / 9` |
 
 ## Events
 

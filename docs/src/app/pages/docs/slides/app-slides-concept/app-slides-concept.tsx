@@ -305,6 +305,19 @@ export class AppSlidesConcept {
               </deckgo-slide-poll>
             </deckgo-deck>
           </div>
+
+          <ul>
+            <li>
+              Slide: <a href="/slides/aspectratio">Aspect Ratio</a>
+            </li>
+          </ul>
+          <div class="container ion-margin">
+            <deckgo-deck embedded={true}>
+              <deckgo-slide-aspect-ratio grid={true}>
+                <h1 style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', margin: '0'}}>Any elements</h1>
+              </deckgo-slide-aspect-ratio>
+            </deckgo-deck>
+          </div>
         </main>
 
         <app-footer></app-footer>

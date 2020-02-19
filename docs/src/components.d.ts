@@ -57,6 +57,7 @@ export namespace Components {
   interface AppRemoteControl {}
   interface AppRoot {}
   interface AppRunning {}
+  interface AppSlideAspectRatio {}
   interface AppSlideAuthor {}
   interface AppSlideBigImg {}
   interface AppSlideChart {}
@@ -323,6 +324,12 @@ declare global {
     new (): HTMLAppRunningElement;
   };
 
+  interface HTMLAppSlideAspectRatioElement extends Components.AppSlideAspectRatio, HTMLStencilElement {}
+  var HTMLAppSlideAspectRatioElement: {
+    prototype: HTMLAppSlideAspectRatioElement;
+    new (): HTMLAppSlideAspectRatioElement;
+  };
+
   interface HTMLAppSlideAuthorElement extends Components.AppSlideAuthor, HTMLStencilElement {}
   var HTMLAppSlideAuthorElement: {
     prototype: HTMLAppSlideAuthorElement;
@@ -454,6 +461,7 @@ declare global {
     'app-remote-control': HTMLAppRemoteControlElement;
     'app-root': HTMLAppRootElement;
     'app-running': HTMLAppRunningElement;
+    'app-slide-aspect-ratio': HTMLAppSlideAspectRatioElement;
     'app-slide-author': HTMLAppSlideAuthorElement;
     'app-slide-big-img': HTMLAppSlideBigImgElement;
     'app-slide-chart': HTMLAppSlideChartElement;
@@ -520,6 +528,7 @@ declare namespace LocalJSX {
   interface AppRemoteControl {}
   interface AppRoot {}
   interface AppRunning {}
+  interface AppSlideAspectRatio {}
   interface AppSlideAuthor {}
   interface AppSlideBigImg {}
   interface AppSlideChart {}
@@ -578,6 +587,7 @@ declare namespace LocalJSX {
     'app-remote-control': AppRemoteControl;
     'app-root': AppRoot;
     'app-running': AppRunning;
+    'app-slide-aspect-ratio': AppSlideAspectRatio;
     'app-slide-author': AppSlideAuthor;
     'app-slide-big-img': AppSlideBigImg;
     'app-slide-chart': AppSlideChart;
@@ -643,6 +653,7 @@ declare module "@stencil/core" {
       'app-remote-control': LocalJSX.AppRemoteControl & JSXBase.HTMLAttributes<HTMLAppRemoteControlElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'app-running': LocalJSX.AppRunning & JSXBase.HTMLAttributes<HTMLAppRunningElement>;
+      'app-slide-aspect-ratio': LocalJSX.AppSlideAspectRatio & JSXBase.HTMLAttributes<HTMLAppSlideAspectRatioElement>;
       'app-slide-author': LocalJSX.AppSlideAuthor & JSXBase.HTMLAttributes<HTMLAppSlideAuthorElement>;
       'app-slide-big-img': LocalJSX.AppSlideBigImg & JSXBase.HTMLAttributes<HTMLAppSlideBigImgElement>;
       'app-slide-chart': LocalJSX.AppSlideChart & JSXBase.HTMLAttributes<HTMLAppSlideChartElement>;

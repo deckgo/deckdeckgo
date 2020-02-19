@@ -22,6 +22,9 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
   @Prop()
   editable: boolean = false;
 
+  @Prop({reflectToAttr: true}) customActions: boolean = false;
+  @Prop({reflectToAttr: true}) customBackground: boolean = false;
+
   @State()
   private displayGrid: boolean = false;
 

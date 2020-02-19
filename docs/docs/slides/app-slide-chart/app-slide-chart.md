@@ -51,7 +51,7 @@ Have a look at this video where we demonstrate how to use it!
 This template could be added to your presentation using the following methods.
 
 > If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
- 
+
 ### From a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
@@ -63,7 +63,7 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/slide-chart) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-chart
@@ -110,7 +110,7 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 ## Chart components
 
-The slide "Chart" relies on the charts components `<deckgo-pie-chart/>`, `<deckgo-line-chart/>` and  `<deckgo-bar-chart/>` which are described in the components [documentation](/components/charts).
+The slide "Chart" relies on the charts components `<deckgo-pie-chart/>`, `<deckgo-line-chart/>` and `<deckgo-bar-chart/>` which are described in the components [documentation](/components/charts).
 
 ## Installation
 
@@ -120,11 +120,11 @@ The [DeckDeckGo] charts components are provided in separate extra library. If yo
 
 This component offers the following options which could be set using attributes:
 
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |-----------------|-----------------|-----------------|
-| type | string | pie | The type of the chart, `pie`, `line` or `bar` |
-| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| Attribute         | Type    | Default | Description                                                                                                     |
+| ----------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------- |
+| type              | string  | pie     | The type of the chart, `pie`, `line` or `bar`                                                                   |
+| custom-background | boolean | false   | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions    | boolean | false   | If you would provide actions for the all deck and a specific one for this slide, set this option to `true`      |
 
 Furthermore, this slide component offers the same attributes as the [DeckDeckGo] charts Web Component, see its [documentation](/components/charts) for the details.
 
@@ -132,15 +132,15 @@ Furthermore, this slide component offers the same attributes as the [DeckDeckGo]
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --background |  |  |
-| --color |  |  |
-| --slide-padding-top | 16px | Padding top of the all slide |
-| --slide-padding-end | 32px | Padding right of the all slide |
-| --slide-padding-bottom | 16px | Padding bottom of the all slide |
-| --slide-padding-start | 32px | Padding left of the all slide |
-| --zIndex | 1 | The z-index of the slide |
+| CSS4 variable          | Default | Note                            |
+| ---------------------- | ------- | ------------------------------- |
+| --background           |         |                                 |
+| --color                |         |                                 |
+| --slide-padding-top    | 16px    | Padding top of the all slide    |
+| --slide-padding-end    | 32px    | Padding right of the all slide  |
+| --slide-padding-bottom | 16px    | Padding bottom of the all slide |
+| --slide-padding-start  | 32px    | Padding left of the all slide   |
+| --zIndex               | 1       | The z-index of the slide        |
 
 Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] charts Web Component, see its [documentation](/components/charts) for the details.
 
@@ -157,4 +157,4 @@ const slide = deck.getElementsByTagName('deckgo-slide-chart');
 await slide.draw();
 ```
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

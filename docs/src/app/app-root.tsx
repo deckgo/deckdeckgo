@@ -44,6 +44,7 @@ export class AppRoot {
           <ion-route url="/slides/qrcode" component="app-slide-qrcode" />
           <ion-route url="/slides/countdown" component="app-slide-countdown" />
           <ion-route url="/slides/poll" component="app-slide-poll" />
+          <ion-route url="/slides/aspectratio" component="app-slide-aspect-ratio" />
 
           <ion-route url="/components" component="app-concept" />
           <ion-route url="/components/charts" component="app-components-charts" />
@@ -168,6 +169,9 @@ export class AppRoot {
                   </ion-item>
                   <ion-item detail={false} href="/slides/poll" routerDirection="forward">
                     <ion-label>Poll</ion-label>
+                  </ion-item>
+                  <ion-item detail={false} href="/slides/aspectratio" routerDirection="forward">
+                    <ion-label>Aspect Ratio</ion-label>
                   </ion-item>
 
                   <ion-item-divider>
