@@ -14,6 +14,8 @@ export class EditorEventsHandler {
       document.addEventListener('blockSlide', this.onBlockSlide, false);
       document.addEventListener('keydown', this.onKeyDown, false);
 
+      document.addEventListener('drrSelect', this.onDraggableResizableSelect, false);
+
       resolve();
     });
   }
@@ -27,6 +29,8 @@ export class EditorEventsHandler {
 
     document.removeEventListener('blockSlide', this.onBlockSlide, true);
     document.removeEventListener('keydown', this.onKeyDown, true);
+
+    document.removeEventListener('drrSelect', this.onDraggableResizableSelect, true);
   }
 
   private onKeyUp = async ($event: KeyboardEvent) => {
@@ -87,4 +91,8 @@ export class EditorEventsHandler {
       resolve();
     });
   }
+
+  private onDraggableResizableSelect = async ($event: CustomEvent) => {
+    await this.blockSlide($event && $event.detail !== undefined);
+  };
 }

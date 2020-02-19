@@ -42,6 +42,13 @@ export class AppAbout {
             is owned by Google, and <a href="https://unsplash.com/">Unsplash</a>.
           </p>
 
+          <h2>Font Awesome</h2>
+
+          <p>
+            The shapes, which could be integrated in your presentation, are free icons provided by <a href="https://fontawesome.com">Font Awesome</a>. We do not
+            use any APIs to fetch these respectively we are hosting them.
+          </p>
+
           <p>
             All these services are covered in our{' '}
             <ion-router-link href="/privacy" routerDirection="forward">

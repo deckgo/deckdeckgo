@@ -37,7 +37,7 @@ It could be handy, for example when you organize a meetup, to display a countdow
 This template could be added to your presentation using the following methods.
 
 > If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
- 
+
 ### From a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
@@ -49,7 +49,7 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/slide-countdown) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-countdown
@@ -89,7 +89,7 @@ The "Countdown" slide's Web Component could be integrated using the tag `<deckgo
         <p slot="minutes">Minutes</p>
         <p slot="seconds">Seconds</p>
     </deckgo-slide-countdown>
-</deckgo-deck>  
+</deckgo-deck>
 ```
 
 ### Slots
@@ -104,11 +104,11 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 ## Attributes
 
-The time until your presentation should be provided to render the countdown. This value could be either passed through attributes `days`, `hours`, `minutes` and `seconds` or as a particular date using `until`. 
+The time until your presentation should be provided to render the countdown. This value could be either passed through attributes `days`, `hours`, `minutes` and `seconds` or as a particular date using `until`.
 
 This components exposes the following attributes:
-                                                                                                                                                                                                                                                        
-| Attribute                      | Type   | Default   | Description   |
+  
+| Attribute | Type | Default | Description |
 | -------------------------- |-----------------|-----------------|-----------------|
 | days | number | 0 | The amount of days before your presentations (max. 99 will be displayed) |
 | hours | number | 0 | The amount of hours before your presentations (max. 23) |
@@ -126,32 +126,32 @@ If you would provide a date using `until`, note that the format should be provid
 <deckgo-deck>
   <deckgo-slide-countdown hours="0" minutes="10" seconds="45">
   </deckgo-slide-countdown>
-</deckgo-deck>  
+</deckgo-deck>
 ```
 
 ## Theming
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --background |  |  |
-| --color |  |  |
-| --slide-padding-top | 16px | Padding top of the all slide |
-| --slide-padding-end | 32px | Padding right of the all slide |
-| --slide-padding-bottom | 16px | Padding bottom of the all slide |
-| --slide-padding-start | 32px | Padding left of the all slide |
-| --slide-countdown-container-padding-bottom | 64px | The bottom padding of the displayed time container |
-| --slide-countdown-digits-max-width  | 36em | The max width of the container containing all digits |
-| --slide-countdown-digits-minmax-width  | 12em | The grid minmax value of one of the three columns of digits |
-| --slide-countdown-digits-width  | 4em | The width of one of the (two) digits |
-| --slide-countdown-digits-height | 4m | The height of the (two) digits |
-| --slide-countdown-digits-background |  | The background color of the (two) digits |
-| --slide-countdown-digits-border-radius |  | The border-radius of the (two) digits |
-| --slide-countdown-digits-box-shadow | 0 3px 4px 0 rgba(0, 0, 0, .2), inset 2px 4px 0 0 rgba(255, 255, 255, .08) | The box-shadow of the (two) digits |
-| --slide-countdown-digit-margin-right | 0.625em | The space between two digits |
-| --slide-countdown-digits-font-size | 3em | The border-radius of the (two) digits |
-| --slide-countdown-digits-font-weight |  | The font-weight of the (two) digits |
-| --slide-countdown-digits-color |  | The color of the (two) digits |
+| CSS4 variable                              | Default                                                                   | Note                                                        |
+| ------------------------------------------ | ------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| --background                               |                                                                           |                                                             |
+| --color                                    |                                                                           |                                                             |
+| --slide-padding-top                        | 16px                                                                      | Padding top of the all slide                                |
+| --slide-padding-end                        | 32px                                                                      | Padding right of the all slide                              |
+| --slide-padding-bottom                     | 16px                                                                      | Padding bottom of the all slide                             |
+| --slide-padding-start                      | 32px                                                                      | Padding left of the all slide                               |
+| --slide-countdown-container-padding-bottom | 64px                                                                      | The bottom padding of the displayed time container          |
+| --slide-countdown-digits-max-width         | 36em                                                                      | The max width of the container containing all digits        |
+| --slide-countdown-digits-minmax-width      | 12em                                                                      | The grid minmax value of one of the three columns of digits |
+| --slide-countdown-digits-width             | 4em                                                                       | The width of one of the (two) digits                        |
+| --slide-countdown-digits-height            | 4m                                                                        | The height of the (two) digits                              |
+| --slide-countdown-digits-background        |                                                                           | The background color of the (two) digits                    |
+| --slide-countdown-digits-border-radius     |                                                                           | The border-radius of the (two) digits                       |
+| --slide-countdown-digits-box-shadow        | 0 3px 4px 0 rgba(0, 0, 0, .2), inset 2px 4px 0 0 rgba(255, 255, 255, .08) | The box-shadow of the (two) digits                          |
+| --slide-countdown-digit-margin-right       | 0.625em                                                                   | The space between two digits                                |
+| --slide-countdown-digits-font-size         | 3em                                                                       | The border-radius of the (two) digits                       |
+| --slide-countdown-digits-font-weight       |                                                                           | The font-weight of the (two) digits                         |
+| --slide-countdown-digits-color             |                                                                           | The color of the (two) digits                               |
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

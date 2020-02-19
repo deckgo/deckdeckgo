@@ -29,7 +29,7 @@ export class AppSlideBigImg {
           <h1 id="app-slide-big-img-slide-big-image">Slide: Big Image</h1>
           <p>
             If you would like to display a fullscreen image in your presentation and select specific part of it, in order to to zoom in/highlight them, the
-            &quot;Big Image&quot; slide is the one you are looking for.{' '}
+            &quot;Big Image&quot; slide is the one you are looking for.
           </p>
           <h2 id="app-slide-big-img-table-of-contents">Table of contents</h2>
           <ul>
@@ -101,7 +101,7 @@ export class AppSlideBigImg {
           </deckgo-highlight-code>
           <h3 id="app-slide-big-img-from-npm">From NPM</h3>
           <p>
-            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:
+            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/slide-big-img">npm</a> run the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;slide-big-img</code>

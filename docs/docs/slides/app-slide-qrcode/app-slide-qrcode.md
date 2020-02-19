@@ -47,7 +47,7 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/slide-qrcode) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-qrcode
@@ -108,13 +108,13 @@ The [DeckDeckGo] - QR Code component is provided in separate extra library. If y
 ## Attributes
 
 The attribute `content` should be provided in order to render a QR code in this template. It offers the same attributes as the [DeckDeckGo] QR code Web Component, see its [documentation](https://docs.deckdeckgo.com/components/qrcode) for the details, and the following other attributes:
-  
-| Attribute | Type | Default | Description |
-| -------------------------- |-----------------|-----------------|-----------------|
-| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
-| img-src | string | | In case you would like to display a logo over the QR code, provide the source of the image. Note: this image is lazy loaded too. |
-| img-alt | string | | In case you would display a logo over the QR code, you could provide an accessibility attribute using this option. |
+
+| Attribute         | Type    | Default | Description                                                                                                                      |
+| ----------------- | ------- | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| img-src           | string  |         | In case you would like to display a logo over the QR code, provide the source of the image. Note: this image is lazy loaded too. |
+| img-alt           | string  |         | In case you would display a logo over the QR code, you could provide an accessibility attribute using this option.               |
+| custom-background | boolean | false   | If you would provide a background for the all deck and a specific one for this slide, set this option to `true`                  |
+| custom-actions    | boolean | false   | If you would provide actions for the all deck and a specific one for this slide, set this option to `true`                       |
 
 ### Example without any slots
 

@@ -41,7 +41,7 @@ Have a look at this video where we demonstrate how to use it!
 This template could be added to your presentation using the following methods.
 
 > If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
- 
+
 ### From a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
@@ -53,7 +53,7 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/slide-gif) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-gif
@@ -112,26 +112,26 @@ The slide "Gif" relies on the component `<deckgo-gif/>` which is described in th
 
 This component offers the following options which could be set using attributes:
 
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |-----------------|-----------------|-----------------|
-| src | string |  | The source url, the src, of the Gif. Could be an embeddable external url or a local one. |
-| alt | string |  | And alt information could be provided for accessibility reason. |
-| fullscreen | number | true | If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen. |
-| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| Attribute         | Type    | Default | Description                                                                                                             |
+| ----------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| src               | string  |         | The source url, the src, of the Gif. Could be an embeddable external url or a local one.                                |
+| alt               | string  |         | And alt information could be provided for accessibility reason.                                                         |
+| fullscreen        | number  | true    | If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen. |
+| custom-background | boolean | false   | If you would provide a background for the all deck and a specific one for this slide, set this option to `true`         |
+| custom-actions    | boolean | false   | If you would provide actions for the all deck and a specific one for this slide, set this option to `true`              |
 
 ## Theming
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --background |  |  |
-| --color |  |  |
-| --slide-padding-top | 16px | Padding top of the all slide |
-| --slide-padding-end | 32px | Padding right of the all slide |
-| --slide-padding-bottom | 16px | Padding bottom of the all slide |
-| --slide-padding-start | 32px | Padding left of the all slide |
-| --zIndex | 1 | The z-index of the slide |
+| CSS4 variable          | Default | Note                            |
+| ---------------------- | ------- | ------------------------------- |
+| --background           |         |                                 |
+| --color                |         |                                 |
+| --slide-padding-top    | 16px    | Padding top of the all slide    |
+| --slide-padding-end    | 32px    | Padding right of the all slide  |
+| --slide-padding-bottom | 16px    | Padding bottom of the all slide |
+| --slide-padding-start  | 32px    | Padding left of the all slide   |
+| --zIndex               | 1       | The z-index of the slide        |
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

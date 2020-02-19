@@ -20,6 +20,8 @@ app-breadcrumbs {
     background: none;
     display: inline-flex;
 
+    user-select: none;
+
     text-transform: capitalize;
 
     cursor: pointer;
@@ -55,5 +57,6 @@ app-breadcrumbs {
 
   ion-label.separator {
     padding: 4px;
+    user-select: none;
   }
 }

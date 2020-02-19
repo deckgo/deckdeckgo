@@ -7,7 +7,8 @@ export enum SlideTemplate {
   YOUTUBE = 'youtube',
   QRCODE = 'qrcode',
   CHART = 'chart',
-  POLL = 'poll'
+  POLL = 'poll',
+  'ASPECT-RATIO' = 'aspect-ratio'
 }
 
 export enum SlideChartType {

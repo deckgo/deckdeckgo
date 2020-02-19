@@ -36,7 +36,7 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
 This template could be added to your presentation using the following methods.
 
 > If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
- 
+
 ### From a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
@@ -48,7 +48,7 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/slide-youtube) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-youtube
@@ -105,30 +105,30 @@ The slide "Youtube" relies on the component `<deckgo-youtube/>` which is describ
 
 This component offers the following options which could be set using attributes:
 
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |-----------------|-----------------|-----------------|
-| src | string |  | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
-| width | number | Per default the video width will be calculated according the content size available. | Using this option you would be able to define your own width. |
-| height | number | Per default the video height will be calculated according the content size available. | Using this option you would be able to define your own height. |
-| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| Attribute         | Type    | Default                                                                               | Description                                                                                                                               |
+| ----------------- | ------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| src               | string  |                                                                                       | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
+| width             | number  | Per default the video width will be calculated according the content size available.  | Using this option you would be able to define your own width.                                                                             |
+| height            | number  | Per default the video height will be calculated according the content size available. | Using this option you would be able to define your own height.                                                                            |
+| custom-background | boolean | false                                                                                 | If you would provide a background for the all deck and a specific one for this slide, set this option to `true`                           |
+| custom-actions    | boolean | false                                                                                 | If you would provide actions for the all deck and a specific one for this slide, set this option to `true`                                |
 
 ## Theming
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --background |  |  |
-| --color |  |  |
-| --slide-padding-top | 16px | Padding top of the all slide |
-| --slide-padding-end | 32px | Padding right of the all slide |
-| --slide-padding-bottom | 16px | Padding bottom of the all slide |
-| --slide-padding-start | 32px | Padding left of the all slide |
-| --zIndex | 1 | The z-index of the slide |
-| --slide-youtube-margin | 0 0 32px | The margin of the video's container |
-| --slide-youtube-height | calc(100% - 32px) | The height of the video's container |
-| --slide-youtube-overflow | auto | The overflow of the video's container |
+| CSS4 variable            | Default           | Note                                  |
+| ------------------------ | ----------------- | ------------------------------------- |
+| --background             |                   |                                       |
+| --color                  |                   |                                       |
+| --slide-padding-top      | 16px              | Padding top of the all slide          |
+| --slide-padding-end      | 32px              | Padding right of the all slide        |
+| --slide-padding-bottom   | 16px              | Padding bottom of the all slide       |
+| --slide-padding-start    | 32px              | Padding left of the all slide         |
+| --zIndex                 | 1                 | The z-index of the slide              |
+| --slide-youtube-margin   | 0 0 32px          | The margin of the video's container   |
+| --slide-youtube-height   | calc(100% - 32px) | The height of the video's container   |
+| --slide-youtube-overflow | auto              | The overflow of the video's container |
 
 ## Methods
 
@@ -157,4 +157,4 @@ const slide = deck.getElementsByTagName('deckgo-slide-youtube');
 await slide.toggle();
 ```
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

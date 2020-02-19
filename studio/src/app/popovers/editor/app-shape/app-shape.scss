@@ -1,0 +1,34 @@
+app-shape {
+  @import "../../../../global/theme/editor/editor-popover";
+
+  div.shapes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    > div {
+      display: block;
+      flex-grow: 1;
+      flex-basis: calc(100% / 4);
+      max-width: calc(100% / 4);
+
+      touch-action: manipulation;
+      cursor: pointer;
+
+      padding: 8px;
+
+      align-self: center;
+
+      div.image-container {
+        overflow: hidden;
+        position: relative;
+
+        deckgo-lazy-img {
+          --deckgo-lazy-img-width: 100%;
+          --deckgo-lazy-img-max-height: 3rem;
+          --deckgo-lazy-img-vertical-align: top;
+        }
+      }
+    }
+  }
+}

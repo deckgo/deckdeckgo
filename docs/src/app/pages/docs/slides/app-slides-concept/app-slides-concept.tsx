@@ -63,9 +63,8 @@ export class AppSlidesConcept {
           </p>
           <h1 id="app-slides-concept-installation">Installation</h1>
           <p>
-            The core component of <a href="https://deckdeckgo.com">DeckDeckGo</a> (<code>&lt;deckgo-deck/&gt;</code>) does not contain any slides, these have to
-            be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best
-            performances.
+            The core component of <a href="%60%3Cdeckgo-deck/%3E%60">DeckDeckGo</a> does not contain any slides, these have to be explicitly installed and
+            imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.
           </p>
           <blockquote>
             <p>If you are using the Starter Kit, per default, all our templates, these listed here behind, are pre-installed and pre-imported.</p>
@@ -303,6 +302,19 @@ export class AppSlidesConcept {
                 <p slot="awaiting-votes">Awaiting first votes</p>
                 <p slot="answer-5">Ain't nothin' but a heartache</p>
               </deckgo-slide-poll>
+            </deckgo-deck>
+          </div>
+
+          <ul>
+            <li>
+              Slide: <a href="/slides/aspectratio">Aspect Ratio</a>
+            </li>
+          </ul>
+          <div class="container ion-margin">
+            <deckgo-deck embedded={true}>
+              <deckgo-slide-aspect-ratio grid={true}>
+                <h1 style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', margin: '0'}}>Any elements</h1>
+              </deckgo-slide-aspect-ratio>
             </deckgo-deck>
           </div>
         </main>

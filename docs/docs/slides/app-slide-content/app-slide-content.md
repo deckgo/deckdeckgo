@@ -36,7 +36,7 @@ This slide could be for example use for the every slides of your presentation wh
 This template could be added to your presentation using the following methods.
 
 > If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
- 
+
 ### From a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
@@ -48,7 +48,7 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/slide-content) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-content
@@ -102,10 +102,10 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 
 This component offers the following options which could be set using attributes:
 
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |-----------------|-----------------|-----------------|
-| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| Attribute         | Type    | Default | Description                                                                                                     |
+| ----------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------- |
+| custom-background | boolean | false   | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions    | boolean | false   | If you would provide actions for the all deck and a specific one for this slide, set this option to `true`      |
 
 ### Example
 
@@ -125,14 +125,14 @@ This component offers the following options which could be set using attributes:
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --background |  |  |
-| --color |  |  |
-| --slide-padding-top | 16px | Padding top of the all slide |
-| --slide-padding-end | 32px | Padding right of the all slide |
-| --slide-padding-bottom | 16px | Padding bottom of the all slide |
-| --slide-padding-start | 32px | Padding left of the all slide |
-| --zIndex | 1 | The z-index of the slide |
+| CSS4 variable          | Default | Note                            |
+| ---------------------- | ------- | ------------------------------- |
+| --background           |         |                                 |
+| --color                |         |                                 |
+| --slide-padding-top    | 16px    | Padding top of the all slide    |
+| --slide-padding-end    | 32px    | Padding right of the all slide  |
+| --slide-padding-bottom | 16px    | Padding bottom of the all slide |
+| --slide-padding-start  | 32px    | Padding left of the all slide   |
+| --zIndex               | 1       | The z-index of the slide        |
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

@@ -12,7 +12,7 @@ The parent deck should be declared using the tag `<deckgo-deck/>` and each slide
       Hello World 🚀
     </p>
   </deckgo-slide-title>
-  
+
   <deckgo-slide-content>
       <h1 slot="title">The second slide</h1>
   </deckgo-slide-content>
@@ -23,7 +23,7 @@ In the previous example, the presentation contains two slides. The first slide u
 
 # Installation
 
-The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slides, these have to be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.
+The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides, these have to be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.
 
 > If you are using the Starter Kit, per default, all our templates, these listed here behind, are pre-installed and pre-imported.
 
@@ -31,7 +31,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
 
 [DeckDeckGo] provide the following templates:
 
-* Slide: [Title](/slides/title)
+- Slide: [Title](/slides/title)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -44,7 +44,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Content](/slides/content)
+- Slide: [Content](/slides/content)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -57,7 +57,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Split](/slides/split)
+- Slide: [Split](/slides/split)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -73,7 +73,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Gif](/slides/gif)
+- Slide: [Gif](/slides/gif)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -85,7 +85,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Big Image](/slides/bigimg)
+- Slide: [Big Image](/slides/bigimg)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -98,7 +98,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Chart](/slides/chart)
+- Slide: [Chart](/slides/chart)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -118,7 +118,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Youtube](/slides/youtube)
+- Slide: [Youtube](/slides/youtube)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -128,7 +128,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Video](/slides/video)
+- Slide: [Video](/slides/video)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -139,7 +139,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Code](/slides/code)
+- Slide: [Code](/slides/code)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -149,7 +149,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Author](/slides/author)
+- Slide: [Author](/slides/author)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -162,7 +162,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [QR Code](/slides/qrcode)
+- Slide: [QR Code](/slides/qrcode)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -173,7 +173,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Countdown](/slides/countdown)
+- Slide: [Countdown](/slides/countdown)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -186,7 +186,7 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-* Slide: [Poll](/slides/poll)
+- Slide: [Poll](/slides/poll)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -203,4 +203,14 @@ The core component of [DeckDeckGo] (`<deckgo-deck/>`) does not contain any slide
   </deckgo-deck>
 </div>
 
-[DeckDeckGo]: https://deckdeckgo.com 
+- Slide: [Aspect Ratio](/slides/aspectratio)
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-aspect-ratio grid={true}>
+        <h1 style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', margin: '0'}}>Any elements</h1>
+      </deckgo-slide-aspect-ratio>
+  </deckgo-deck>
+</div>
+
+[deckdeckgo]: https://deckdeckgo.com

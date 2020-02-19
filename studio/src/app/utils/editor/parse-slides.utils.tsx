@@ -43,11 +43,15 @@ export class ParseSlidesUtils {
         return;
       }
 
+      let content = undefined;
+
       // Create a div to parse back to JSX its children
       const div = document.createElement('div');
-      div.innerHTML = slide.data.content;
 
-      const content = await ParseElementsUtils.parseElements(div, true, contentEditable);
+      if (slide.data.content && slide.data.content !== undefined) {
+        div.innerHTML = slide.data.content;
+        content = await ParseElementsUtils.parseElements(div, true, contentEditable);
+      }
 
       const attributes = {
         style: slide.data.attributes ? await convertStyle(slide.data.attributes.style) : undefined,
@@ -87,6 +91,11 @@ export class ParseSlidesUtils {
 
       if (slide.data.template === SlideTemplate.AUTHOR) {
         attributes['img-mode'] = slide.data.attributes && slide.data.attributes.imgMode ? slide.data.attributes.imgMode : undefined;
+      }
+
+      if (slide.data.template === SlideTemplate['ASPECT-RATIO']) {
+        attributes['grid'] = true;
+        attributes['editable'] = true;
       }
 
       const SlideElement: string = slideTag;

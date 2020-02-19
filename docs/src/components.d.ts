@@ -12,6 +12,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface AppComponentsCharts {}
   interface AppComponentsColor {}
+  interface AppComponentsDrr {}
   interface AppComponentsGif {}
   interface AppComponentsHighlightCode {}
   interface AppComponentsInlineEditor {}
@@ -57,6 +58,7 @@ export namespace Components {
   interface AppRemoteControl {}
   interface AppRoot {}
   interface AppRunning {}
+  interface AppSlideAspectRatio {}
   interface AppSlideAuthor {}
   interface AppSlideBigImg {}
   interface AppSlideChart {}
@@ -87,6 +89,12 @@ declare global {
   var HTMLAppComponentsColorElement: {
     prototype: HTMLAppComponentsColorElement;
     new (): HTMLAppComponentsColorElement;
+  };
+
+  interface HTMLAppComponentsDrrElement extends Components.AppComponentsDrr, HTMLStencilElement {}
+  var HTMLAppComponentsDrrElement: {
+    prototype: HTMLAppComponentsDrrElement;
+    new (): HTMLAppComponentsDrrElement;
   };
 
   interface HTMLAppComponentsGifElement extends Components.AppComponentsGif, HTMLStencilElement {}
@@ -323,6 +331,12 @@ declare global {
     new (): HTMLAppRunningElement;
   };
 
+  interface HTMLAppSlideAspectRatioElement extends Components.AppSlideAspectRatio, HTMLStencilElement {}
+  var HTMLAppSlideAspectRatioElement: {
+    prototype: HTMLAppSlideAspectRatioElement;
+    new (): HTMLAppSlideAspectRatioElement;
+  };
+
   interface HTMLAppSlideAuthorElement extends Components.AppSlideAuthor, HTMLStencilElement {}
   var HTMLAppSlideAuthorElement: {
     prototype: HTMLAppSlideAuthorElement;
@@ -415,6 +429,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'app-components-charts': HTMLAppComponentsChartsElement;
     'app-components-color': HTMLAppComponentsColorElement;
+    'app-components-drr': HTMLAppComponentsDrrElement;
     'app-components-gif': HTMLAppComponentsGifElement;
     'app-components-highlight-code': HTMLAppComponentsHighlightCodeElement;
     'app-components-inline-editor': HTMLAppComponentsInlineEditorElement;
@@ -454,6 +469,7 @@ declare global {
     'app-remote-control': HTMLAppRemoteControlElement;
     'app-root': HTMLAppRootElement;
     'app-running': HTMLAppRunningElement;
+    'app-slide-aspect-ratio': HTMLAppSlideAspectRatioElement;
     'app-slide-author': HTMLAppSlideAuthorElement;
     'app-slide-big-img': HTMLAppSlideBigImgElement;
     'app-slide-chart': HTMLAppSlideChartElement;
@@ -475,6 +491,7 @@ declare global {
 declare namespace LocalJSX {
   interface AppComponentsCharts {}
   interface AppComponentsColor {}
+  interface AppComponentsDrr {}
   interface AppComponentsGif {}
   interface AppComponentsHighlightCode {}
   interface AppComponentsInlineEditor {}
@@ -520,6 +537,7 @@ declare namespace LocalJSX {
   interface AppRemoteControl {}
   interface AppRoot {}
   interface AppRunning {}
+  interface AppSlideAspectRatio {}
   interface AppSlideAuthor {}
   interface AppSlideBigImg {}
   interface AppSlideChart {}
@@ -539,6 +557,7 @@ declare namespace LocalJSX {
   interface IntrinsicElements {
     'app-components-charts': AppComponentsCharts;
     'app-components-color': AppComponentsColor;
+    'app-components-drr': AppComponentsDrr;
     'app-components-gif': AppComponentsGif;
     'app-components-highlight-code': AppComponentsHighlightCode;
     'app-components-inline-editor': AppComponentsInlineEditor;
@@ -578,6 +597,7 @@ declare namespace LocalJSX {
     'app-remote-control': AppRemoteControl;
     'app-root': AppRoot;
     'app-running': AppRunning;
+    'app-slide-aspect-ratio': AppSlideAspectRatio;
     'app-slide-author': AppSlideAuthor;
     'app-slide-big-img': AppSlideBigImg;
     'app-slide-chart': AppSlideChart;
@@ -604,6 +624,7 @@ declare module "@stencil/core" {
     interface IntrinsicElements {
       'app-components-charts': LocalJSX.AppComponentsCharts & JSXBase.HTMLAttributes<HTMLAppComponentsChartsElement>;
       'app-components-color': LocalJSX.AppComponentsColor & JSXBase.HTMLAttributes<HTMLAppComponentsColorElement>;
+      'app-components-drr': LocalJSX.AppComponentsDrr & JSXBase.HTMLAttributes<HTMLAppComponentsDrrElement>;
       'app-components-gif': LocalJSX.AppComponentsGif & JSXBase.HTMLAttributes<HTMLAppComponentsGifElement>;
       'app-components-highlight-code': LocalJSX.AppComponentsHighlightCode & JSXBase.HTMLAttributes<HTMLAppComponentsHighlightCodeElement>;
       'app-components-inline-editor': LocalJSX.AppComponentsInlineEditor & JSXBase.HTMLAttributes<HTMLAppComponentsInlineEditorElement>;
@@ -643,6 +664,7 @@ declare module "@stencil/core" {
       'app-remote-control': LocalJSX.AppRemoteControl & JSXBase.HTMLAttributes<HTMLAppRemoteControlElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'app-running': LocalJSX.AppRunning & JSXBase.HTMLAttributes<HTMLAppRunningElement>;
+      'app-slide-aspect-ratio': LocalJSX.AppSlideAspectRatio & JSXBase.HTMLAttributes<HTMLAppSlideAspectRatioElement>;
       'app-slide-author': LocalJSX.AppSlideAuthor & JSXBase.HTMLAttributes<HTMLAppSlideAuthorElement>;
       'app-slide-big-img': LocalJSX.AppSlideBigImg & JSXBase.HTMLAttributes<HTMLAppSlideBigImgElement>;
       'app-slide-chart': LocalJSX.AppSlideChart & JSXBase.HTMLAttributes<HTMLAppSlideChartElement>;

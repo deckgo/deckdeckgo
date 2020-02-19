@@ -1,4 +1,12 @@
-<a name="1.0.0-rc.3"></a>
+<a name="1.0.0-rc.3-2"></a>
+
+# 1.0.0-rc.3-2 (2020-02-19)
+
+### Features
+
+- `svg` container size inherit content
+
+<a name="1.0.0-rc.3-1"></a>
 
 # 1.0.0-rc.3-1 (2020-01-30)
 

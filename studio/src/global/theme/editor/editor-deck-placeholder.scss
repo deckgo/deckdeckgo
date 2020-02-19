@@ -80,6 +80,20 @@ deckgo-deck {
     }
   }
 
+  deckgo-slide-aspect-ratio {
+    &:empty:not(:focus):after {
+      content: "Click to add a shape";
+      font-size: 2em;
+      min-height: 1.7em;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      text-align: center;
+    }
+  }
+
   [highlighted] {
     box-shadow: 1px 2px 8px 2px rgba(var(--ion-color-primary-rgb), 0.2);
   }

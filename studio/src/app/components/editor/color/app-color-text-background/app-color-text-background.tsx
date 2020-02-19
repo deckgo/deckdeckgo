@@ -26,6 +26,9 @@ export class AppColorTextBackground {
   @Prop()
   deck: boolean = false;
 
+  @Prop()
+  shape: boolean = false;
+
   @State()
   private color: string;
 
@@ -180,7 +183,7 @@ export class AppColorTextBackground {
           </ion-item-divider>
 
           <ion-item>
-            <ion-label>Text</ion-label>
+            <ion-label>{this.shape ? 'Shape' : 'Text'}</ion-label>
             <ion-radio slot="start" value={ApplyColorType.TEXT} mode="md"></ion-radio>
           </ion-item>
 

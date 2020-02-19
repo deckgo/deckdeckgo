@@ -114,7 +114,7 @@ export class AppSlideGif {
           </deckgo-highlight-code>
           <h3 id="app-slide-gif-from-npm">From NPM</h3>
           <p>
-            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:
+            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/slide-gif">npm</a> run the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;slide-gif</code>

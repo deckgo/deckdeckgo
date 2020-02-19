@@ -9,5 +9,6 @@ export enum SlotType {
   CODE = 'deckgo-highlight-code',
   SOCIAL = 'deckgo-social',
   REVEAL = 'deckgo-reveal',
-  REVEAL_LIST = 'deckgo-reveal-list'
+  REVEAL_LIST = 'deckgo-reveal-list',
+  DRAG_RESIZE_ROTATE = 'deckgo-drr'
 }

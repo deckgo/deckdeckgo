@@ -116,7 +116,7 @@ export class AppSlideQRCode {
           </deckgo-highlight-code>
           <h3 id="app-slide-qrcode-from-npm">From NPM</h3>
           <p>
-            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:
+            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/slide-qrcode">npm</a> run the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;slide-qrcode</code>
@@ -195,6 +195,18 @@ export class AppSlideQRCode {
             </thead>
             <tbody>
               <tr>
+                <td>img-src</td>
+                <td>string</td>
+                <td></td>
+                <td>In case you would like to display a logo over the QR code, provide the source of the image. Note: this image is lazy loaded too.</td>
+              </tr>
+              <tr>
+                <td>img-alt</td>
+                <td>string</td>
+                <td></td>
+                <td>In case you would display a logo over the QR code, you could provide an accessibility attribute using this option.</td>
+              </tr>
+              <tr>
                 <td>custom-background</td>
                 <td>boolean</td>
                 <td>false</td>
@@ -209,18 +221,6 @@ export class AppSlideQRCode {
                 <td>
                   If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code>
                 </td>
-              </tr>
-              <tr>
-                <td>img-src</td>
-                <td>string</td>
-                <td></td>
-                <td>In case you would like to display a logo over the QR code, provide the source of the image. Note: this image is lazy loaded too.</td>
-              </tr>
-              <tr>
-                <td>img-alt</td>
-                <td>string</td>
-                <td></td>
-                <td>In case you would display a logo over the QR code, you could provide an accessibility attribute using this option.</td>
               </tr>
             </tbody>
           </table>

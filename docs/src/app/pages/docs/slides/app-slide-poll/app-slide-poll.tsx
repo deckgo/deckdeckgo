@@ -28,7 +28,7 @@ export class AppSlidePoll {
         <main>
           <h1 id="app-slide-poll-slide-poll">Slide: Poll</h1>
           <p>Engage your audience or class in real time. Involve them to contribute to your presentations with their smartphones and show the results live.</p>
-          <p>Add a slide &quot;Poll&quot; to your presentation. </p>
+          <p>Add a slide &quot;Poll&quot; to your presentation.</p>
           <h2 id="app-slide-poll-table-of-contents">Table of contents</h2>
           <ul>
             <li>
@@ -139,7 +139,7 @@ export class AppSlidePoll {
           </deckgo-highlight-code>
           <h3 id="app-slide-poll-from-npm">From NPM</h3>
           <p>
-            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:
+            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/slide-poll">npm</a> run the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;slide-poll</code>

@@ -1,3 +1,12 @@
+<a name="1.0.0-rc.10"></a>
+
+# 1.0.0-rc.10 (2020-02-19)
+
+### Features
+
+- new component `@deckdeckgo/drag-resize-rotate`
+- new template `@deckdeckgo/slide-aspect-ratio`
+
 <a name="1.0.0-rc.9-6"></a>
 
 # 1.0.0-rc.9-6 (2020-01-30)

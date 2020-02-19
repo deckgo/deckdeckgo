@@ -36,7 +36,7 @@ The "Code" slide is a the slide to use if you would like to showcase code during
 This template could be added to your presentation using the following methods.
 
 > If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
- 
+
 ### From a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
@@ -48,7 +48,7 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/slide-code) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-code
@@ -86,7 +86,7 @@ You could provide a file URI to the code you want to display or provide it with 
   <deckgo-slide-code src="https://domain.com/path-to-my-code.extension">
     <h1 slot="title">My code</h1>
   </deckgo-slide-code>
-</deckgo-deck>  
+</deckgo-deck>
 ```
 
 ### Usage with slotted element
@@ -100,7 +100,7 @@ You could provide a file URI to the code you want to display or provide it with 
     boolean helloWorld();
   }
   </deckgo-slide-code>
-</deckgo-deck>  
+</deckgo-deck>
 ```
 
 ### Slots
@@ -127,10 +127,10 @@ The [DeckDeckGo] - Hightlight code component is provided in separate extra libra
 
 At least `src` or the `slot` code should be provided in order to render code in this template. It offers the same attributes as the [DeckDeckGo] code Web Component, see its [documentation](https://docs.deckdeckgo.com/components/code) for the details and the following other attributes:
 
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |-----------------|-----------------|-----------------|
-| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+| Attribute         | Type    | Default | Description                                                                                                     |
+| ----------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------- |
+| custom-background | boolean | false   | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions    | boolean | false   | If you would provide actions for the all deck and a specific one for this slide, set this option to `true`      |
 
 ### Example with file URI
 
@@ -151,34 +151,34 @@ At least `src` or the `slot` code should be provided in order to render code in 
       <code slot="code">interface NumericTest {
     boolean computeTest(int n);
   }
-  
+
   public static void main(String args[]) {
     NumericTest isEven = (n) -> (n % 2) == 0;
     NumericTest isNegative = (n) -> (n < 0);
-  
+
     // Output: false
     System.out.println(isEven.computeTest(5));
-  
+
     // Output: true
     System.out.println(isNegative.computeTest(-5));
   }</code>
   </deckgo-slide-code>
-</deckgo-deck>  
+</deckgo-deck>
 ```
 
 ## Theming
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --background |  |  |
-| --color |  |  |
-| --slide-padding-top | 16px | Padding top of the all slide |
-| --slide-padding-end | 32px | Padding right of the all slide |
-| --slide-padding-bottom | 16px | Padding bottom of the all slide |
-| --slide-padding-start | 32px | Padding left of the all slide |
+| CSS4 variable          | Default | Note                            |
+| ---------------------- | ------- | ------------------------------- |
+| --background           |         |                                 |
+| --color                |         |                                 |
+| --slide-padding-top    | 16px    | Padding top of the all slide    |
+| --slide-padding-end    | 32px    | Padding right of the all slide  |
+| --slide-padding-bottom | 16px    | Padding bottom of the all slide |
+| --slide-padding-start  | 32px    | Padding left of the all slide   |
 
 Furthermore, this slide component offers the exact same CSS4 variables as the [DeckDeckGo] - Highlight code Web Component, see its [documentation](https://docs.deckdeckgo.com/components/code) for the details.
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

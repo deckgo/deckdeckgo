@@ -33,10 +33,10 @@ The "Author" slide lets you introduce the author of the presentation.
 
 ## Installation
 
-This template could be added to your presentation using the following methods. 
+This template could be added to your presentation using the following methods.
 
 > If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
- 
+
 ### From a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
@@ -48,7 +48,7 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ### From NPM
 
-To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/core) run the following command:
+To install this template in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/slide-author) run the following command:
 
 ```bash
 npm install @deckdeckgo/slide-author
@@ -91,18 +91,18 @@ The "Author" slide's Web Component could be integrated using the tag `<deckgo-sl
     </div>
     <div slot="social-link"><deckgo-social twitter="daviddalbusco"></deckgo-social></div>
   </deckgo-slide-author>
-</deckgo-deck>  
+</deckgo-deck>
 ```
 
 ### Slots
 
-Slots for `title`, `author` and `social-link` are optional. It is recommended that the slot `author` be filled as to improve the appearance of the slide. 
+Slots for `title`, `author` and `social-link` are optional. It is recommended that the slot `author` be filled as to improve the appearance of the slide.
 
-Notes: 
+Notes:
 
-* The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be used for the navigation model.
+- The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be used for the navigation model.
 
-* You could provide up to six `social-link` slots. Each of these could be your custom code or you could use the component `<deckgo-social/>` to easily provide a link to an external URI.
+- You could provide up to six `social-link` slots. Each of these could be your custom code or you could use the component `<deckgo-social/>` to easily provide a link to an external URI.
 
 ### Notes
 
@@ -118,13 +118,13 @@ The details of the component `<deckgo-social/>` is described in the components [
 
 This component offers the following options which could be set using attributes:
 
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |-----------------|-----------------|-----------------|
-| img-src | string |  | An image URI, for example a picture of the author. Note: this image will be displayed as a circle. |
-| img-alt | string |  | An optional accessibility alt for the image. |
-| custom-background | boolean | false | If you will provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you will provide actions for the all deck and a specific one for this slide, set this option to `true` |
-| mode | `"circle" \| "cover" \| "none"` | `'cover'` | The design to be applied to the image. `cover` fits the image to the start pane, `circle` displays it in a circle and `none` in case you would not like to display an image | 
+| Attribute         | Type                            | Default   | Description                                                                                                                                                                 |
+| ----------------- | ------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| img-src           | string                          |           | An image URI, for example a picture of the author. Note: this image will be displayed as a circle.                                                                          |
+| img-alt           | string                          |           | An optional accessibility alt for the image.                                                                                                                                |
+| mode              | `"circle" \| "cover" \| "none"` | `'cover'` | The design to be applied to the image. `cover` fits the image to the start pane, `circle` displays it in a circle and `none` in case you would not like to display an image |
+| custom-background | boolean                         | false     | If you will provide a background for the all deck and a specific one for this slide, set this option to `true`                                                              |
+| custom-actions    | boolean                         | false     | If you will provide actions for the all deck and a specific one for this slide, set this option to `true`                                                                   |
 
 ### Example
 
@@ -146,25 +146,25 @@ This component offers the following options which could be set using attributes:
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --background |  |  |
-| --color |  |  |
-| --slide-author-background-start | | Left pane background |
-| --slide-author-color-start | | Left pane color |
-| --slide-author-background-end | | Right pane background |
-| --slide-author-color-end | | Right pane color |
-| --slide-author-padding-top | 16px | Padding top of a slide |
-| --slide-author-padding-end | 32px | Padding right of a slide |
-| --slide-author-padding-bottom | 16px | Padding bottom of a slide |
-| --slide-author-padding-start | 32px | Padding left of a slide |
-| --slide-padding-start | 32px | Modify slotted ul and ol padding-inline-start |
-| --slide-author-align | inherit | Modify for example to center if you want to align the content in the middle |
-| --slide-author-text-align | inherit | Modify for example to center if you want to align the text in the middle |
-| --slide-author-img-size | 80% | The size of the image of the left pane |
-| --slide-author-img-border | | The border of the image of the left pane (only apply if `circle` mode is specified) |
-| --slide-author-social-padding-top | 32px | The spacing between the author description and the social links |
-| --zIndex | 1 | The z-index of the slide |
-| --slide-author-social-link-padding | 8px | Padding for the social links |
+| CSS4 variable                      | Default | Note                                                                                |
+| ---------------------------------- | ------- | ----------------------------------------------------------------------------------- |
+| --background                       |         |                                                                                     |
+| --color                            |         |                                                                                     |
+| --slide-author-background-start    |         | Left pane background                                                                |
+| --slide-author-color-start         |         | Left pane color                                                                     |
+| --slide-author-background-end      |         | Right pane background                                                               |
+| --slide-author-color-end           |         | Right pane color                                                                    |
+| --slide-author-padding-top         | 16px    | Padding top of a slide                                                              |
+| --slide-author-padding-end         | 32px    | Padding right of a slide                                                            |
+| --slide-author-padding-bottom      | 16px    | Padding bottom of a slide                                                           |
+| --slide-author-padding-start       | 32px    | Padding left of a slide                                                             |
+| --slide-padding-start              | 32px    | Modify slotted ul and ol padding-inline-start                                       |
+| --slide-author-align               | inherit | Modify for example to center if you want to align the content in the middle         |
+| --slide-author-text-align          | inherit | Modify for example to center if you want to align the text in the middle            |
+| --slide-author-img-size            | 80%     | The size of the image of the left pane                                              |
+| --slide-author-img-border          |         | The border of the image of the left pane (only apply if `circle` mode is specified) |
+| --slide-author-social-padding-top  | 32px    | The spacing between the author description and the social links                     |
+| --zIndex                           | 1       | The z-index of the slide                                                            |
+| --slide-author-social-link-padding | 8px     | Padding for the social links                                                        |
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

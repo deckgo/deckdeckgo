@@ -320,6 +320,7 @@ export class AppCreateSlide {
             <p slot="awaiting-votes">Live votes with mobile devices</p>
           </deckgo-slide-poll>
         </div>
+        {this.renderShapes()}
       </div>
     ];
   }
@@ -514,6 +515,25 @@ export class AppCreateSlide {
             </deckgo-slide-chart>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  // TODO: Assets path
+
+  private renderShapes() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate['ASPECT-RATIO'])}>
+        <deckgo-slide-aspect-ratio class="showcase" grid={true}>
+          <deckgo-lazy-img svg-src="/assets/img/shapes/robot-solid.svg" aria-label="Robot" class="robot"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src="/assets/img/shapes/desktop-solid.svg" aria-label="Desktop" class="desktop"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src="/assets/img/shapes/arrow-right-solid.svg" aria-label="Arrow" class="arrow-start"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src="/assets/img/shapes/cloud-solid.svg" aria-label="Cloud" class="cloud"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src="/assets/img/shapes/arrow-right-solid.svg" aria-label="Arrow" class="arrow-end-top"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src="/assets/img/shapes/arrow-right-solid.svg" aria-label="Arrow" class="arrow-end-bottom"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src="/assets/img/shapes/database-solid.svg" aria-label="Database" class="database"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src="/assets/img/shapes/envelope-solid.svg" aria-label="Envelope" class="envelope"></deckgo-lazy-img>
+        </deckgo-slide-aspect-ratio>
       </div>
     );
   }

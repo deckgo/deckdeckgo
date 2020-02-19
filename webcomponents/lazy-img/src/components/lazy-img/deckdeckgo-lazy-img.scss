@@ -9,6 +9,11 @@
   }
 }
 
+div.svg-container {
+  height: var(--deckgo-lazy-img-height);
+  width: var(--deckgo-lazy-img-width);
+}
+
 img,
 svg {
   pointer-events: var(--deckgo-lazy-img-pointer-events, none);

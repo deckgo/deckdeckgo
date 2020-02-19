@@ -118,7 +118,7 @@ export class AppSlideContent {
           </deckgo-highlight-code>
           <h3 id="app-slide-split-from-npm">From NPM</h3>
           <p>
-            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/core">npm</a> run the following command:
+            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/slide-split">npm</a> run the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;slide-split</code>
@@ -163,7 +163,7 @@ export class AppSlideContent {
             The <code>start</code> slot is the content of the left pane respectively the slot <code>end</code> is the content of the right pane.
           </p>
           <p>
-            Note: The slot <code>title</code> is per default hidden even if you provide it. See attributes below if you wish to display it.{' '}
+            Note: The slot <code>title</code> is per default hidden even if you provide it. See attributes below if you wish to display it.
           </p>
           <h3 id="app-slide-split-notes">Notes</h3>
           <p>
@@ -187,6 +187,15 @@ export class AppSlideContent {
             </thead>
             <tbody>
               <tr>
+                <td>vertical</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>
+                  Per default this template is horizontally split (two columns). Turn this property to <code>true</code> too display two rows respectively split
+                  vertically
+                </td>
+              </tr>
+              <tr>
                 <td>custom-background</td>
                 <td>boolean</td>
                 <td>false</td>
@@ -200,15 +209,6 @@ export class AppSlideContent {
                 <td>false</td>
                 <td>
                   If you would provide actions for the all deck and a specific one for this slide, set this option to <code>true</code>
-                </td>
-              </tr>
-              <tr>
-                <td>vertical</td>
-                <td>boolean</td>
-                <td>false</td>
-                <td>
-                  Per default this template is horizontally split (two columns). Turn this property to <code>true</code> too display two rows respectively split
-                  vertically
                 </td>
               </tr>
             </tbody>

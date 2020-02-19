@@ -15,6 +15,7 @@ import '@deckdeckgo/slide-youtube';
 import '@deckdeckgo/slide-video';
 import '@deckdeckgo/slide-big-img';
 import '@deckdeckgo/slide-poll';
+import '@deckdeckgo/slide-aspect-ratio';
 
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/charts';
@@ -23,3 +24,4 @@ import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/color';
 import '@deckdeckgo/social';
 import '@deckdeckgo/youtube';
+import '@deckdeckgo/drag-resize-rotate';

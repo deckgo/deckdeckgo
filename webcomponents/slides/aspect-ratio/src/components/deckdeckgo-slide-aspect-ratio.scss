@@ -1,0 +1,73 @@
+@import "./deckdeckgo-slide";
+
+div.deckgo-slide {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+:host(.deckgo-read-only) {
+  pointer-events: none;
+}
+
+div.deckgo-aspect-ratio-container {
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  div.deckgo-aspect-ratio-content {
+    position: relative;
+
+    width: calc(
+      var(--slide-width) - var(--slide-padding-start, var(--slide-padding-start-default)) - var(--slide-padding-end, var(--slide-padding-end-default))
+    );
+    height: calc(
+      (var(--slide-width) - var(--slide-padding-start, var(--slide-padding-start-default)) - var(--slide-padding-end, var(--slide-padding-end-default))) * 9 /
+        16
+    );
+
+    overflow: visible;
+
+    &.deckgo-aspect-ratio-content-grid {
+      background: var(
+        --slide-grid-background,
+        linear-gradient(to bottom, rgba(0, 0, 0, 0) 98%, rgba(110, 109, 111, 0.4) 98%),
+        linear-gradient(to right, rgba(0, 0, 0, 0) 98%, rgba(110, 109, 111, 0.4) 98%)
+      );
+      background-size: var(--slide-grid-background-size, 2em 2em);
+    }
+  }
+
+  ::slotted([slot="header"]),
+  ::slotted([slot="footer"]) {
+    position: absolute;
+
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    text-align: center;
+
+    background: var(--background);
+    color: var(--color);
+    padding: var(--padding, 8px);
+
+    z-index: var(--zIndex, 2);
+  }
+
+  ::slotted([slot="header"]) {
+    top: 0;
+  }
+
+  ::slotted([slot="footer"]) {
+    bottom: 0;
+  }
+}
+
+::slotted([slot="title"]) {
+  display: none;
+}

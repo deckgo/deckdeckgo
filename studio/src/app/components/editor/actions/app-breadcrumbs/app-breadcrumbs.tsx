@@ -67,7 +67,9 @@ export class AppBreadcrumbs {
       } else {
         const elementEditable: HTMLElement = slideElement.querySelector('[contenteditable], [editable]');
 
-        this.stepTo.emit(elementEditable);
+        if (elementEditable) {
+          this.stepTo.emit(elementEditable);
+        }
       }
     }
   }
