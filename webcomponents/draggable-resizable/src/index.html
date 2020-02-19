@@ -9,20 +9,22 @@
     <script nomodule src="/build/deckdeckgo-draggable-resizable.js"></script>
   </head>
   <body>
+    <h1>Editable container</h1>
+
     <div style="background: lightgrey; padding: 32px; height: 560px; width: 480px; position: relative;">
       <deckgo-dnr style="--width: 20%; --height: 10%; --top: 5%; --left: 10%; --rotate: 45deg;">
         <div style="background: red;"></div>
       </deckgo-dnr>
 
-      <deckgo-dnr drag="y-axis" style="--width: 10%; --height: 20%; --top: 45%; --left: 8%;">
+      <deckgo-dnr style="--width: 10%; --height: 20%; --top: 45%; --left: 8%;" drag="y-axis">
         <div style="background: yellow"></div>
       </deckgo-dnr>
 
-      <deckgo-dnr resize="false" style="--width: 10%; --height: 10%; --top: 25%; --left: 10%;">
+      <deckgo-dnr style="--width: 10%; --height: 10%; --top: 25%; --left: 10%;" resize="false">
         <div style="background: green"></div>
       </deckgo-dnr>
 
-      <deckgo-dnr drag="none" style="--width: 10%; --height: 15%; --top: 25%; --left: 15%;">
+      <deckgo-dnr style="--width: 10%; --height: 15%; --top: 25%; --left: 15%;" drag="none">
         <div style="background: greenyellow; border-radius: 50%;" slot></div>
       </deckgo-dnr>
 
@@ -32,6 +34,18 @@
 
       <deckgo-dnr style="--width: 34%; --height: 20%; --top: 40%; --left: 25%;">
         <img src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="display: none;" />
+      </deckgo-dnr>
+    </div>
+
+    <h1>Not editable container</h1>
+
+    <div style="background: green; padding: 32px; height: 560px; width: 480px; position: relative;" class="deckgo-read-only">
+      <deckgo-dnr style="--width: 20%; --height: 10%; --top: 5%; --left: 10%; --rotate: 45deg;">
+        <div style="background: red;"></div>
+      </deckgo-dnr>
+
+      <deckgo-dnr style="--width: 10%; --height: 20%; --top: 45%; --left: 8%;" drag="y-axis">
+        <div style="background: yellow"></div>
       </deckgo-dnr>
     </div>
   </body>

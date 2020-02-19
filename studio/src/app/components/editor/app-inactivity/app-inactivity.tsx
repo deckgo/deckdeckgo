@@ -15,8 +15,6 @@ export class AppInactivity {
 
   @Watch('fullscreen')
   async onFullscreenToggle(newValue: boolean, oldValue: boolean) {
-    console.log('old', oldValue, 'new', newValue);
-
     if (oldValue) {
       await this.removeEventListener();
     } else {

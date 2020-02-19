@@ -95,6 +95,7 @@ export class ParseSlidesUtils {
 
       if (slide.data.template === SlideTemplate['ASPECT-RATIO']) {
         attributes['grid'] = true;
+        attributes['editable'] = true;
       }
 
       const SlideElement: string = slideTag;

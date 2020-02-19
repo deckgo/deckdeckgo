@@ -6,6 +6,10 @@ div.deckgo-slide {
   justify-content: flex-start;
 }
 
+:host(.deckgo-read-only) {
+  pointer-events: none;
+}
+
 div.deckgo-aspect-ratio-container {
   width: 100%;
   height: 100%;

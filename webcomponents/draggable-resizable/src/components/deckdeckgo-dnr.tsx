@@ -23,6 +23,18 @@ export class DeckdeckgoDnr {
   @Prop()
   resize: boolean = true;
 
+  // Position
+
+  @Prop()
+  drag: 'x-axis' | 'y-axis' | 'all' | 'none' = 'all';
+
+  // Rotate
+
+  @Prop()
+  rotation: boolean = true;
+
+  // Size
+
   @State()
   private width: number;
 
@@ -37,9 +49,6 @@ export class DeckdeckgoDnr {
 
   // Position
 
-  @Prop()
-  drag: 'x-axis' | 'y-axis' | 'all' | 'none' = 'all';
-
   @State()
   private top: number;
 
@@ -47,9 +56,6 @@ export class DeckdeckgoDnr {
   private left: number;
 
   // Rotate
-
-  @Prop()
-  rotation: boolean = true;
 
   @State()
   private rotate: number;
@@ -96,7 +102,23 @@ export class DeckdeckgoDnr {
   async componentWillLoad() {
     await this.init();
 
-    if (document && (this.drag || this.resize)) {
+    await this.attachEventListeners();
+  }
+
+  async componentDidLoad() {
+    await this.displaySlot();
+  }
+
+  async componentWillUnload() {
+    if (this.drag !== 'none' || this.resize) {
+      await this.detachEventListeners();
+    }
+  }
+
+  private async attachEventListeners() {
+    const editable: boolean = this.el && this.el.parentElement && !this.el.parentElement.classList.contains('deckgo-read-only');
+
+    if (editable && document && (this.drag !== 'none' || this.resize)) {
       document.addEventListener('mousedown', this.start.bind(this), {passive: true});
       document.addEventListener('touchstart', this.start.bind(this), {passive: true});
       document.addEventListener('mousemove', this.transform.bind(this), {passive: true});
@@ -106,12 +128,8 @@ export class DeckdeckgoDnr {
     }
   }
 
-  async componentDidLoad() {
-    await this.displaySlot();
-  }
-
-  componentWillUnload() {
-    if (document && (this.drag || this.resize)) {
+  private async detachEventListeners() {
+    if (document) {
       document.removeEventListener('mousedown', this.start, true);
       document.removeEventListener('touchstart', this.start, true);
       document.removeEventListener('mousemove', this.transform, true);

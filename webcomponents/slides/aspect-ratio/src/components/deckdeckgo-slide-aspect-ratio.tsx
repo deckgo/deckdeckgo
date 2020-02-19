@@ -19,6 +19,9 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
   @Prop()
   grid: boolean = false;
 
+  @Prop()
+  editable: boolean = false;
+
   @State()
   private displayGrid: boolean = false;
 
@@ -88,7 +91,8 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
     return (
       <Host
         class={{
-          'deckgo-slide-container': true
+          'deckgo-slide-container': true,
+          'deckgo-read-only': !this.editable
         }}>
         <div class="deckgo-slide">
           <slot name="title"></slot>
