@@ -19,7 +19,7 @@ export class AppAvatar {
     } else {
       return (
         <ion-avatar>
-          <ion-icon src="/assets/icons/ionicons/person.svg" aria-label={this.ariaLabel}></ion-icon>
+          <ion-icon name="person-outline" aria-label={this.ariaLabel}></ion-icon>
         </ion-avatar>
       );
     }
