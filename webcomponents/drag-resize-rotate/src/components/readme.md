@@ -15,8 +15,8 @@
 
 | Event          | Description | Type                       |
 | -------------- | ----------- | -------------------------- |
-| `dnrDidChange` |             | `CustomEvent<HTMLElement>` |
-| `dnrSelect`    |             | `CustomEvent<HTMLElement>` |
+| `drrDidChange` |             | `CustomEvent<HTMLElement>` |
+| `drrSelect`    |             | `CustomEvent<HTMLElement>` |
 
 ---
 

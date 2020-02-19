@@ -8,11 +8,11 @@ enum ApplyOperation {
 }
 
 @Component({
-  tag: 'deckgo-dnr',
-  styleUrl: 'deckdeckgo-dnr.scss',
+  tag: 'deckgo-drr',
+  styleUrl: 'deckdeckgo-drr.scss',
   shadow: true
 })
-export class DeckdeckgoDnr {
+export class DeckdeckgoDragResizeRotate {
   @Element() el: HTMLElement;
 
   @Prop()
@@ -69,10 +69,10 @@ export class DeckdeckgoDnr {
   private moving: boolean = false;
 
   @Event()
-  private dnrSelect: EventEmitter<HTMLElement | undefined>;
+  private drrSelect: EventEmitter<HTMLElement | undefined>;
 
   @Event()
-  private dnrDidChange: EventEmitter<HTMLElement | undefined>;
+  private drrDidChange: EventEmitter<HTMLElement | undefined>;
 
   private startX: number = null;
   private startY: number = null;
@@ -167,21 +167,21 @@ export class DeckdeckgoDnr {
       return;
     }
 
-    const selected: HTMLElement = ($event.target as HTMLElement).closest('deckgo-dnr');
+    const selected: HTMLElement = ($event.target as HTMLElement).closest('deckgo-drr');
 
     // If we click elsewhere or select another component, then this component should loose focus and values need to be reset for next usage
     if (!selected || !selected.isEqualNode(this.el)) {
       this.stopAndReset(false);
 
       if (this.selected) {
-        this.dnrSelect.emit(undefined);
+        this.drrSelect.emit(undefined);
       }
 
       this.selected = false;
       return;
     }
 
-    this.dnrSelect.emit(selected);
+    this.drrSelect.emit(selected);
 
     this.selected = true;
 
@@ -416,7 +416,7 @@ export class DeckdeckgoDnr {
     this.stopRotate();
 
     if (emitUpdate && this.updated) {
-      this.dnrDidChange.emit(this.el.shadowRoot.host as HTMLElement);
+      this.drrDidChange.emit(this.el.shadowRoot.host as HTMLElement);
     }
 
     this.updated = false;

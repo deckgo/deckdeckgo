@@ -235,7 +235,7 @@ export class AppActionsElement {
   }
 
   private isElementShape(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.DRAGGABLE_RESIZABLE;
+    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
   }
 
   private isElementList(element: HTMLElement): SlotType {

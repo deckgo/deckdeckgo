@@ -1,6 +1,6 @@
-# DeckDeckGo - Draggable and Resizable
+# DeckDeckGo - Draggable, Resizable and Rotatable
 
-A Web Component to drag and resize any element.
+A Web Component to drag, resize and rotate any element.
 
 ## Table of contents
 
@@ -10,7 +10,7 @@ A Web Component to drag and resize any element.
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/draggable-resizable).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/dnr).
 
 ## Develop
 
@@ -18,7 +18,7 @@ To develop and run this Web Component locally, proceed as following:
 
 ```
 git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/draggable-resizable
+cd deckdeckgo/webcomponents/dnr
 npm install
 npm run start
 ```

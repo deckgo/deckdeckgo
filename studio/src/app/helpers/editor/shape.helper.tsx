@@ -26,7 +26,7 @@ export class ShapeHelper {
 
   private appendContentShape(slideElement: HTMLElement, shapeAction: ShapeAction): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deckGoDnr: HTMLElement = document.createElement(SlotType.DRAGGABLE_RESIZABLE);
+      const deckGoDrr: HTMLElement = document.createElement(SlotType.DRAG_RESIZE_ROTATE);
 
       const size: number = 10; // percent
 
@@ -34,16 +34,16 @@ export class ShapeHelper {
         const container: HTMLElement = await (slideElement as any).getContainer();
         const height: number = (container.offsetWidth * size * shapeAction.ratio) / container.offsetHeight;
 
-        deckGoDnr.style.setProperty('--height', `${height}`);
+        deckGoDrr.style.setProperty('--height', `${height}`);
       } else {
-        deckGoDnr.style.setProperty('--height', `${size}`);
+        deckGoDrr.style.setProperty('--height', `${size}`);
       }
 
-      deckGoDnr.style.setProperty('--width', `${size}`);
-      deckGoDnr.style.setProperty('--left', `${50 - size / 2}`); // vw center
-      deckGoDnr.style.setProperty('--top', `${50 - size / 2}`); // vh center
+      deckGoDrr.style.setProperty('--width', `${size}`);
+      deckGoDrr.style.setProperty('--left', `${50 - size / 2}`); // vw center
+      deckGoDrr.style.setProperty('--top', `${50 - size / 2}`); // vh center
 
-      this.addShape(deckGoDnr, slideElement, shapeAction.src, shapeAction.label);
+      this.addShape(deckGoDrr, slideElement, shapeAction.src, shapeAction.label);
 
       resolve();
     });
@@ -51,9 +51,9 @@ export class ShapeHelper {
 
   private cloneShapeElement(shapeElement: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deckGoDnr: HTMLElement = document.createElement(SlotType.DRAGGABLE_RESIZABLE);
+      const deckGoDrr: HTMLElement = document.createElement(SlotType.DRAG_RESIZE_ROTATE);
 
-      deckGoDnr.setAttribute('style', shapeElement.getAttribute('style'));
+      deckGoDrr.setAttribute('style', shapeElement.getAttribute('style'));
 
       const img: HTMLElement = shapeElement.querySelector(SlotType.IMG);
 
@@ -62,25 +62,25 @@ export class ShapeHelper {
         return;
       }
 
-      this.addShape(deckGoDnr, shapeElement.parentElement, (img as any).svgSrc, (img as any).svgAlt);
+      this.addShape(deckGoDrr, shapeElement.parentElement, (img as any).svgSrc, (img as any).svgAlt);
 
       resolve();
     });
   }
 
-  private addShape(deckGoDnr: HTMLElement, slideElement: HTMLElement, src: string, label: string) {
-    deckGoDnr.setAttribute('slot', '');
+  private addShape(deckGoDrr: HTMLElement, slideElement: HTMLElement, src: string, label: string) {
+    deckGoDrr.setAttribute('slot', '');
 
-    deckGoDnr.setAttribute('contentEditable', 'false');
+    deckGoDrr.setAttribute('contentEditable', 'false');
 
     const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
     (deckgoImg as any).svgSrc = src;
     (deckgoImg as any).svgAlt = label;
 
-    deckGoDnr.appendChild(deckgoImg);
+    deckGoDrr.appendChild(deckgoImg);
 
-    slideElement.appendChild(deckGoDnr);
+    slideElement.appendChild(deckGoDrr);
 
     this.didChange.emit(slideElement);
   }

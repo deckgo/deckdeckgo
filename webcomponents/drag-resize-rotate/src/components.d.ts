@@ -10,7 +10,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-  interface DeckgoDnr {
+  interface DeckgoDrr {
     'drag': 'x-axis' | 'y-axis' | 'all' | 'none';
     'resize': boolean;
     'rotation': boolean;
@@ -21,28 +21,28 @@ export namespace Components {
 declare global {
 
 
-  interface HTMLDeckgoDnrElement extends Components.DeckgoDnr, HTMLStencilElement {}
-  var HTMLDeckgoDnrElement: {
-    prototype: HTMLDeckgoDnrElement;
-    new (): HTMLDeckgoDnrElement;
+  interface HTMLDeckgoDrrElement extends Components.DeckgoDrr, HTMLStencilElement {}
+  var HTMLDeckgoDrrElement: {
+    prototype: HTMLDeckgoDrrElement;
+    new (): HTMLDeckgoDrrElement;
   };
   interface HTMLElementTagNameMap {
-    'deckgo-dnr': HTMLDeckgoDnrElement;
+    'deckgo-drr': HTMLDeckgoDrrElement;
   }
 }
 
 declare namespace LocalJSX {
-  interface DeckgoDnr {
+  interface DeckgoDrr {
     'drag'?: 'x-axis' | 'y-axis' | 'all' | 'none';
-    'onDnrDidChange'?: (event: CustomEvent<HTMLElement | undefined>) => void;
-    'onDnrSelect'?: (event: CustomEvent<HTMLElement | undefined>) => void;
+    'onDrrDidChange'?: (event: CustomEvent<HTMLElement | undefined>) => void;
+    'onDrrSelect'?: (event: CustomEvent<HTMLElement | undefined>) => void;
     'resize'?: boolean;
     'rotation'?: boolean;
     'unit'?: 'percentage' | 'viewport' | 'px';
   }
 
   interface IntrinsicElements {
-    'deckgo-dnr': DeckgoDnr;
+    'deckgo-drr': DeckgoDrr;
   }
 }
 
@@ -52,7 +52,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
-      'deckgo-dnr': LocalJSX.DeckgoDnr & JSXBase.HTMLAttributes<HTMLDeckgoDnrElement>;
+      'deckgo-drr': LocalJSX.DeckgoDrr & JSXBase.HTMLAttributes<HTMLDeckgoDrrElement>;
     }
   }
 }

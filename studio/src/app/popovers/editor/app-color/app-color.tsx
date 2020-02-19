@@ -57,7 +57,7 @@ export class AppColor {
     }
 
     this.code = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.CODE;
-    this.shape = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.DRAGGABLE_RESIZABLE;
+    this.shape = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
 
     // prettier-ignore
     this.applyToTargetElement = this.code ? TargetElement.CODE : (this.qrCode || this.poll ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : (this.author || this.split ? TargetElement.SIDES : TargetElement.SLIDE)));

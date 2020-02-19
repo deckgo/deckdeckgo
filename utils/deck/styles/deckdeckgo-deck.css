@@ -100,7 +100,7 @@ deckgo-deck deckgo-lazy-img {
   --deckgo-lazy-img-object-fit: contain;
 }
 
-deckgo-deck deckgo-dnr deckgo-lazy-img {
+deckgo-deck deckgo-drr deckgo-lazy-img {
   --deckgo-lazy-img-width: 100%;
 }
 

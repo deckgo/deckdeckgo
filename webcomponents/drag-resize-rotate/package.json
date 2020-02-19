@@ -1,7 +1,7 @@
 {
-  "name": "@deckdeckgo/draggable-resizable",
+  "name": "@deckdeckgo/drag-resize-rotate",
   "version": "1.0.0-alpha.1",
-  "description": "A Web Component to drag and resize any element",
+  "description": "A Web Component to drag, resize and rotate any element",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-draggable-resizable/deckdeckgo-draggable-resizable.js",
+  "unpkg": "dist/deckdeckgo-drag-resize-rotate/deckdeckgo-drag-resize-rotate.js",
   "files": [
     "dist/",
     "README.md",

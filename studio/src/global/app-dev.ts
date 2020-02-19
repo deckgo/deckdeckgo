@@ -16,7 +16,7 @@ import '@deckdeckgo/color';
 import '@deckdeckgo/charts';
 import '@deckdeckgo/social';
 import '@deckdeckgo/youtube';
-import '@deckdeckgo/draggable-resizable';
+import '@deckdeckgo/drag-resize-rotate';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-content';

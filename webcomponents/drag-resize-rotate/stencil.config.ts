@@ -5,7 +5,7 @@ import {postcss} from '@stencil/postcss';
 import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
-  namespace: 'deckdeckgo-draggable-resizable',
+  namespace: 'deckdeckgo-drag-resize-rotate',
   outputTargets: [
     {
       type: 'dist'
