@@ -2,6 +2,10 @@
 
 # [1.0.0-rc.21](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.20...v1.0.0-rc.21) (In progress...)
 
+### New: Web Components
+
+- slide-aspect-ratio: v1.0.0-beta.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/aspect-ratio/CHANGELOG.md))
+
 ### Applications
 
 - demo: v1.0.0-rc.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
