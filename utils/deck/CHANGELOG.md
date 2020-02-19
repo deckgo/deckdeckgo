@@ -1,47 +1,60 @@
+<a name="1.0.0-rc.3"></a>
+
+# 1.0.0-rc.3 (2020-02-19)
+
+- style `deckgo-lazy-img` when used in new component `deckgo-drr`
+
 <a name="1.0.0-rc.2-3"></a>
+
 # 1.0.0-rc.2-3 (2020-01-20)
 
-* add slide poll question to list of slides titles
+- add slide poll question to list of slides titles
 
 <a name="1.0.0-rc.2-2"></a>
+
 # 1.0.0-rc.2-2 (2020-01-16)
 
 ### Features
 
-* clean `custom-loader` attribute
+- clean `custom-loader` attribute
 
 <a name="1.0.0-rc.2-1"></a>
+
 # 1.0.0-rc.2-1 (2020-01-04)
 
 ### Features
 
-* align icon center for social link
+- align icon center for social link
 
 <a name="1.0.0-rc.2"></a>
+
 # 1.0.0-rc.2 (2019-11-29)
 
 ### Features
 
-* add `getSlideDefinition` and `getAttributesDefinition` functions to deck utils as these are notably used in the editor now too
-* bundle package with rollup
+- add `getSlideDefinition` and `getAttributesDefinition` functions to deck utils as these are notably used in the editor now too
+- bundle package with rollup
 
 <a name="1.0.0-rc.1-2"></a>
+
 # 1.0.0-rc.1-2 (2019-11-13)
 
 ### Fix
 
-* notes slot were displayed on template "split"
+- notes slot were displayed on template "split"
 
 <a name="1.0.0-rc.1-1"></a>
+
 # 1.0.0-rc.1-1 (2019-11-08)
 
 ### Fix
 
-* improve regex of the `cleanContent` function in order to remove only attributes not content/text 
+- improve regex of the `cleanContent` function in order to remove only attributes not content/text
 
 <a name="1.0.0-rc.1"></a>
+
 # 1.0.0-rc.1 (2019-11-05)
 
 ### Features
 
-* initial release to sync the content between decks and the remote control
+- initial release to sync the content between decks and the remote control
