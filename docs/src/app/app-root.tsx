@@ -56,7 +56,7 @@ export class AppRoot {
           <ion-route url="/components/youtube" component="app-components-youtube" />
           <ion-route url="/components/lazy-img" component="app-components-lazy-img" />
           <ion-route url="/components/color" component="app-components-color" />
-          <ion-route url="/components/dnr" component="app-components-dnr" />
+          <ion-route url="/components/drr" component="app-components-drr" />
 
           <ion-route url="/deck" component="app-deck-transition" />
           <ion-route url="/deck/transition" component="app-deck-transition" />
@@ -184,8 +184,8 @@ export class AppRoot {
                   <ion-item detail={false} href="/components/color" routerDirection="forward">
                     <ion-label>Color Picker</ion-label>
                   </ion-item>
-                  <ion-item detail={false} href="/components/dnr" routerDirection="forward">
-                    <ion-label>Draggable, Resizable and Rotatable</ion-label>
+                  <ion-item detail={false} href="/components/drr" routerDirection="forward">
+                    <ion-label>Drag, Resize and Rotate</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/components/gif" routerDirection="forward">
                     <ion-label>Gif</ion-label>

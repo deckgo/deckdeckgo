@@ -3,9 +3,9 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-components-dnr'
+  tag: 'app-components-drr'
 })
-export class AppComponentsDnr {
+export class AppComponentsDrr {
   @Element() el: HTMLElement;
 
   async componentDidLoad() {
