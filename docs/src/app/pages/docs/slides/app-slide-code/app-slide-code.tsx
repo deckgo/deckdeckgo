@@ -151,7 +151,7 @@ export class AppSlideCode {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-code src=&quot;https:&#47;&#47;domain.com&#47;path-to-my-code.extension&quot;&gt;{'\n'} &lt;h1
-              slot=&quot;title&quot;&gt;My code&lt;&#47;h1&gt;{'\n'} &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;{' '}
+              slot=&quot;title&quot;&gt;My code&lt;&#47;h1&gt;{'\n'} &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-code-usage-with-slotted-element">Usage with slotted element</h3>
@@ -159,7 +159,7 @@ export class AppSlideCode {
             <code slot="code">
               &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-code language=&quot;java&quot;&gt;{'\n'} &lt;h1 slot=&quot;title&quot;&gt;Manual code&lt;&#47;h1&gt;
               {'\n'} &lt;code slot=&quot;code&quot;&gt;{'\n'} interface DeckDeckGoDemo &#123;{'\n'} boolean helloWorld();{'\n'} &#125;{'\n'}{' '}
-              &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;{' '}
+              &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-code-slots">Slots</h3>
@@ -243,7 +243,7 @@ export class AppSlideCode {
               (n &lt; 0);{'\n'}
               {'\n'} &#47;&#47; Output: false{'\n'} System.out.println(isEven.computeTest(5));{'\n'}
               {'\n'} &#47;&#47; Output: true{'\n'} System.out.println(isNegative.computeTest(-5));{'\n'} &#125;&lt;&#47;code&gt;{'\n'}{' '}
-              &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;{' '}
+              &lt;&#47;deckgo-slide-code&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
             </code>
           </deckgo-highlight-code>
           <h2 id="app-slide-code-theming">Theming</h2>

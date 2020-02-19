@@ -144,7 +144,7 @@ export class AppSlideCountdown {
               &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-countdown until=&quot;2019-08-05T23:25:59.000+02:00&quot;&gt;{'\n'} &lt;h1 slot=&quot;title&quot;&gt;My
               presentation starts at&lt;&#47;h1&gt;{'\n'} &lt;p slot=&quot;days&quot;&gt;Days&lt;&#47;p&gt;{'\n'} &lt;p
               slot=&quot;hours&quot;&gt;Hours&lt;&#47;p&gt;{'\n'} &lt;p slot=&quot;minutes&quot;&gt;Minutes&lt;&#47;p&gt;{'\n'} &lt;p
-              slot=&quot;seconds&quot;&gt;Seconds&lt;&#47;p&gt;{'\n'} &lt;&#47;deckgo-slide-countdown&gt;{'\n'}&lt;&#47;deckgo-deck&gt;{' '}
+              slot=&quot;seconds&quot;&gt;Seconds&lt;&#47;p&gt;{'\n'} &lt;&#47;deckgo-slide-countdown&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-countdown-slots">Slots</h3>
@@ -163,7 +163,7 @@ export class AppSlideCountdown {
           <h2 id="app-slide-countdown-attributes">Attributes</h2>
           <p>
             The time until your presentation should be provided to render the countdown. This value could be either passed through attributes <code>days</code>,{' '}
-            <code>hours</code>, <code>minutes</code> and <code>seconds</code> or as a particular date using <code>until</code>.{' '}
+            <code>hours</code>, <code>minutes</code> and <code>seconds</code> or as a particular date using <code>until</code>.
           </p>
           <p>This components exposes the following attributes:</p>
           <table>
@@ -233,7 +233,7 @@ export class AppSlideCountdown {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-countdown hours=&quot;0&quot; minutes=&quot;10&quot; seconds=&quot;45&quot;&gt;{'\n'}{' '}
-              &lt;&#47;deckgo-slide-countdown&gt;{'\n'}&lt;&#47;deckgo-deck&gt;{' '}
+              &lt;&#47;deckgo-slide-countdown&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
             </code>
           </deckgo-highlight-code>
           <h2 id="app-slide-countdown-theming">Theming</h2>

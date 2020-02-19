@@ -17,6 +17,7 @@
     "@deckdeckgo/charts": "^1.0.0-rc.6",
     "@deckdeckgo/color": "^1.0.0-rc.3-3",
     "@deckdeckgo/core": "^1.0.0-rc.3-5",
+    "@deckdeckgo/drag-resize-rotate": "file:../webcomponents/drag-resize-rotate",
     "@deckdeckgo/highlight-code": "^1.0.0-rc.2-1",
     "@deckdeckgo/inline-editor": "^1.0.0-rc.3-3",
     "@deckdeckgo/lazy-img": "^1.0.0-rc.3-1",

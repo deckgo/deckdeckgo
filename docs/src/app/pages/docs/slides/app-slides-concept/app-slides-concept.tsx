@@ -63,9 +63,8 @@ export class AppSlidesConcept {
           </p>
           <h1 id="app-slides-concept-installation">Installation</h1>
           <p>
-            The core component of <a href="https://deckdeckgo.com">DeckDeckGo</a> (<code>&lt;deckgo-deck/&gt;</code>) does not contain any slides, these have to
-            be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best
-            performances.
+            The core component of <a href="%60%3Cdeckgo-deck/%3E%60">DeckDeckGo</a> does not contain any slides, these have to be explicitly installed and
+            imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.
           </p>
           <blockquote>
             <p>If you are using the Starter Kit, per default, all our templates, these listed here behind, are pre-installed and pre-imported.</p>

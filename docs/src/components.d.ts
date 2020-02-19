@@ -12,6 +12,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface AppComponentsCharts {}
   interface AppComponentsColor {}
+  interface AppComponentsDrr {}
   interface AppComponentsGif {}
   interface AppComponentsHighlightCode {}
   interface AppComponentsInlineEditor {}
@@ -88,6 +89,12 @@ declare global {
   var HTMLAppComponentsColorElement: {
     prototype: HTMLAppComponentsColorElement;
     new (): HTMLAppComponentsColorElement;
+  };
+
+  interface HTMLAppComponentsDrrElement extends Components.AppComponentsDrr, HTMLStencilElement {}
+  var HTMLAppComponentsDrrElement: {
+    prototype: HTMLAppComponentsDrrElement;
+    new (): HTMLAppComponentsDrrElement;
   };
 
   interface HTMLAppComponentsGifElement extends Components.AppComponentsGif, HTMLStencilElement {}
@@ -422,6 +429,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'app-components-charts': HTMLAppComponentsChartsElement;
     'app-components-color': HTMLAppComponentsColorElement;
+    'app-components-drr': HTMLAppComponentsDrrElement;
     'app-components-gif': HTMLAppComponentsGifElement;
     'app-components-highlight-code': HTMLAppComponentsHighlightCodeElement;
     'app-components-inline-editor': HTMLAppComponentsInlineEditorElement;
@@ -483,6 +491,7 @@ declare global {
 declare namespace LocalJSX {
   interface AppComponentsCharts {}
   interface AppComponentsColor {}
+  interface AppComponentsDrr {}
   interface AppComponentsGif {}
   interface AppComponentsHighlightCode {}
   interface AppComponentsInlineEditor {}
@@ -548,6 +557,7 @@ declare namespace LocalJSX {
   interface IntrinsicElements {
     'app-components-charts': AppComponentsCharts;
     'app-components-color': AppComponentsColor;
+    'app-components-drr': AppComponentsDrr;
     'app-components-gif': AppComponentsGif;
     'app-components-highlight-code': AppComponentsHighlightCode;
     'app-components-inline-editor': AppComponentsInlineEditor;
@@ -614,6 +624,7 @@ declare module "@stencil/core" {
     interface IntrinsicElements {
       'app-components-charts': LocalJSX.AppComponentsCharts & JSXBase.HTMLAttributes<HTMLAppComponentsChartsElement>;
       'app-components-color': LocalJSX.AppComponentsColor & JSXBase.HTMLAttributes<HTMLAppComponentsColorElement>;
+      'app-components-drr': LocalJSX.AppComponentsDrr & JSXBase.HTMLAttributes<HTMLAppComponentsDrrElement>;
       'app-components-gif': LocalJSX.AppComponentsGif & JSXBase.HTMLAttributes<HTMLAppComponentsGifElement>;
       'app-components-highlight-code': LocalJSX.AppComponentsHighlightCode & JSXBase.HTMLAttributes<HTMLAppComponentsHighlightCodeElement>;
       'app-components-inline-editor': LocalJSX.AppComponentsInlineEditor & JSXBase.HTMLAttributes<HTMLAppComponentsInlineEditorElement>;

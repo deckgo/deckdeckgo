@@ -24,3 +24,4 @@ import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/color';
 import '@deckdeckgo/social';
 import '@deckdeckgo/youtube';
+import '@deckdeckgo/drag-resize-rotate';

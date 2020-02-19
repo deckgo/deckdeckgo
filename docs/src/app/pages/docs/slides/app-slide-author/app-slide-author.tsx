@@ -97,7 +97,7 @@ export class AppSlideAuthor {
           </div>
 
           <h2 id="app-slide-author-installation">Installation</h2>
-          <p>This template could be added to your presentation using the following methods. </p>
+          <p>This template could be added to your presentation using the following methods.</p>
           <blockquote>
             <p>
               If you are using our Starter Kit this template is included. You don&#39;t need to install it so therefore you should skip the
@@ -159,15 +159,15 @@ export class AppSlideAuthor {
               slot=&quot;title&quot;&gt;Author&lt;&#47;h1&gt;{'\n'} &lt;div slot=&quot;author&quot;&gt;{'\n'} &lt;h2&gt;David&lt;&#47;h2&gt;{'\n'}{' '}
               &lt;p&gt;Something about me&lt;&#47;p&gt;{'\n'} &lt;&#47;div&gt;{'\n'} &lt;div slot=&quot;social-link&quot;&gt;&lt;deckgo-social
               twitter=&quot;daviddalbusco&quot;&gt;&lt;&#47;deckgo-social&gt;&lt;&#47;div&gt;{'\n'} &lt;&#47;deckgo-slide-author&gt;{'\n'}
-              &lt;&#47;deckgo-deck&gt;{' '}
+              &lt;&#47;deckgo-deck&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-author-slots">Slots</h3>
           <p>
             Slots for <code>title</code>, <code>author</code> and <code>social-link</code> are optional. It is recommended that the slot <code>author</code> be
-            filled as to improve the appearance of the slide.{' '}
+            filled as to improve the appearance of the slide.
           </p>
-          <p>Notes: </p>
+          <p>Notes:</p>
           <ul>
             <li>
               <p>

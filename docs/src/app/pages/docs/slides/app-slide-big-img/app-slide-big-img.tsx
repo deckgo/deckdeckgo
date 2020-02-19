@@ -29,7 +29,7 @@ export class AppSlideBigImg {
           <h1 id="app-slide-big-img-slide-big-image">Slide: Big Image</h1>
           <p>
             If you would like to display a fullscreen image in your presentation and select specific part of it, in order to to zoom in/highlight them, the
-            &quot;Big Image&quot; slide is the one you are looking for.{' '}
+            &quot;Big Image&quot; slide is the one you are looking for.
           </p>
           <h2 id="app-slide-big-img-table-of-contents">Table of contents</h2>
           <ul>

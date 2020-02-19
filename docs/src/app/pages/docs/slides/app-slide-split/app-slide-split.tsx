@@ -163,7 +163,7 @@ export class AppSlideContent {
             The <code>start</code> slot is the content of the left pane respectively the slot <code>end</code> is the content of the right pane.
           </p>
           <p>
-            Note: The slot <code>title</code> is per default hidden even if you provide it. See attributes below if you wish to display it.{' '}
+            Note: The slot <code>title</code> is per default hidden even if you provide it. See attributes below if you wish to display it.
           </p>
           <h3 id="app-slide-split-notes">Notes</h3>
           <p>
