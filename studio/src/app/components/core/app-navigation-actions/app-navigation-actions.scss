@@ -5,6 +5,10 @@ app-navigation-actions {
     align-items: center;
   }
 
+  ion-button {
+    text-transform: none;
+  }
+
   a,
   ion-router-link {
     color: black;
