@@ -7,6 +7,7 @@ import '@deckdeckgo/qrcode';
 import '@deckdeckgo/charts';
 import '@deckdeckgo/social';
 import '@deckdeckgo/youtube';
+import '@deckdeckgo/drag-resize-rotate';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-author';
@@ -21,6 +22,7 @@ import '@deckdeckgo/slide-youtube';
 import '@deckdeckgo/slide-big-img';
 import '@deckdeckgo/slide-video';
 import '@deckdeckgo/slide-poll';
+import '@deckdeckgo/slide-aspect-ratio';
 
 import {setupConfig} from '../app/services/environment/environment-config';
 
