@@ -10,7 +10,7 @@
 ### Applications
 
 - demo: v1.0.0-rc.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
-- docs: v1.0.0-rc.9-6 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- docs: v1.0.0-rc.10 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 
 ### Web Components
 
