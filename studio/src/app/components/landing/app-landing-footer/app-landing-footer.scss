@@ -5,6 +5,10 @@ app-landing-footer {
     justify-content: center;
     align-items: center;
 
+    ion-button {
+      text-transform: none;
+    }
+
     section.links {
       margin-top: 48px;
       max-width: 768px;
