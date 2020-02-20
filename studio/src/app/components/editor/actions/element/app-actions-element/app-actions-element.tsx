@@ -542,7 +542,7 @@ export class AppActionsElement {
 
   private async getImagePopover(): Promise<HTMLIonPopoverElement> {
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-image-slide',
+      component: 'app-image-element',
       componentProps: {
         selectedElement: this.selectedElement,
         slide: this.slide,

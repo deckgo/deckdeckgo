@@ -203,7 +203,7 @@ export namespace Components {
     'imagesEven': (UnsplashPhoto | TenorGif | StorageFile)[];
     'imagesOdd': (UnsplashPhoto | TenorGif | StorageFile)[];
   }
-  interface AppImageSlide {
+  interface AppImageElement {
     'imgDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
     'slide': boolean;
@@ -590,10 +590,10 @@ declare global {
     new (): HTMLAppImageColumnsElement;
   };
 
-  interface HTMLAppImageSlideElement extends Components.AppImageSlide, HTMLStencilElement {}
-  var HTMLAppImageSlideElement: {
-    prototype: HTMLAppImageSlideElement;
-    new (): HTMLAppImageSlideElement;
+  interface HTMLAppImageElementElement extends Components.AppImageElement, HTMLStencilElement {}
+  var HTMLAppImageElementElement: {
+    prototype: HTMLAppImageElementElement;
+    new (): HTMLAppImageElementElement;
   };
 
   interface HTMLAppInactivityElement extends Components.AppInactivity, HTMLStencilElement {}
@@ -901,7 +901,7 @@ declare global {
     'app-home': HTMLAppHomeElement;
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
-    'app-image-slide': HTMLAppImageSlideElement;
+    'app-image-element': HTMLAppImageElementElement;
     'app-inactivity': HTMLAppInactivityElement;
     'app-landing': HTMLAppLandingElement;
     'app-landing-content': HTMLAppLandingContentElement;
@@ -1143,7 +1143,7 @@ declare namespace LocalJSX {
     'imagesOdd'?: (UnsplashPhoto | TenorGif | StorageFile)[];
     'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
   }
-  interface AppImageSlide {
+  interface AppImageElement {
     'imgDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
@@ -1300,7 +1300,7 @@ declare namespace LocalJSX {
     'app-home': AppHome;
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
-    'app-image-slide': AppImageSlide;
+    'app-image-element': AppImageElement;
     'app-inactivity': AppInactivity;
     'app-landing': AppLanding;
     'app-landing-content': AppLandingContent;
@@ -1400,7 +1400,7 @@ declare module "@stencil/core" {
       'app-home': LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
-      'app-image-slide': LocalJSX.AppImageSlide & JSXBase.HTMLAttributes<HTMLAppImageSlideElement>;
+      'app-image-element': LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
       'app-inactivity': LocalJSX.AppInactivity & JSXBase.HTMLAttributes<HTMLAppInactivityElement>;
       'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
       'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
