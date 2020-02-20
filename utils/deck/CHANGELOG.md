@@ -1,3 +1,9 @@
+<a name="1.0.0-rc.3-1"></a>
+
+# 1.0.0-rc.3-1 (2020-02-20)
+
+- style `deckgo-lazy-img` attribute `object-fit` in new component `deckgo-drr`
+
 <a name="1.0.0-rc.3"></a>
 
 # 1.0.0-rc.3 (2020-02-19)
