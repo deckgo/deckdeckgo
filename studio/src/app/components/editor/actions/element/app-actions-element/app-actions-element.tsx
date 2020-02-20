@@ -524,6 +524,37 @@ export class AppActionsElement {
     await popover.present();
   }
 
+  private async openShapeImage() {
+    if (!this.slide || this.slideNodeName !== 'deckgo-slide-aspect-ratio') {
+      return;
+    }
+
+    const popover: HTMLIonPopoverElement = await this.getImagePopover();
+
+    popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
+      if (detail.data) {
+        await this.shapeHelper.appendShapeImage(this.selectedElement, detail.data);
+      }
+    });
+
+    await popover.present();
+  }
+
+  private async getImagePopover(): Promise<HTMLIonPopoverElement> {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-image-slide',
+      componentProps: {
+        selectedElement: this.selectedElement,
+        slide: this.slide,
+        imgDidChange: this.imgDidChange
+      },
+      mode: 'md',
+      cssClass: 'popover-menu'
+    });
+
+    return popover;
+  }
+
   private async openEditPollSlide() {
     if (!this.slide || this.slideNodeName !== 'deckgo-slide-poll') {
       return;
@@ -814,16 +845,7 @@ export class AppActionsElement {
   }
 
   private async openImage() {
-    const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-image-slide',
-      componentProps: {
-        selectedElement: this.selectedElement,
-        slide: this.slide,
-        imgDidChange: this.imgDidChange
-      },
-      mode: 'md',
-      cssClass: 'popover-menu'
-    });
+    const popover: HTMLIonPopoverElement = await this.getImagePopover();
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data) {
@@ -1028,6 +1050,10 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.openShape()} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
         <ion-icon name="shapes-outline"></ion-icon>
         <ion-label>Add shape</ion-label>
+      </ion-tab-button>,
+      <ion-tab-button onClick={() => this.openShapeImage()} color="primary" aria-label="Add an image" mode="md" class={classSlide}>
+        <ion-icon name="image-outline"></ion-icon>
+        <ion-label>Add image</ion-label>
       </ion-tab-button>
     ];
   }
@@ -1048,7 +1074,7 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openImage()} aria-label={this.slide ? 'Background' : 'Image'} color="primary" mode="md" class={classImage}>
-        <ion-icon name="image-outline"></ion-icon>
+        <ion-icon name="images-outline"></ion-icon>
         <ion-label>{this.slide ? 'Background' : 'Image'}</ion-label>
       </ion-tab-button>
     );

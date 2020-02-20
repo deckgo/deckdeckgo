@@ -27,7 +27,8 @@ export class AppShape {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
       src,
       label,
-      ratio
+      ratio,
+      type: 'svg'
     });
   }
 
