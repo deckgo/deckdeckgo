@@ -134,10 +134,10 @@ export class AppActionsElement {
   }
 
   @Method()
-  touch(element: HTMLElement): Promise<void> {
+  touch(element: HTMLElement, autoOpen: boolean = true): Promise<void> {
     return new Promise<void>(async (resolve) => {
       await this.unSelect();
-      await this.select(element);
+      await this.select(element, autoOpen);
 
       resolve();
     });
@@ -154,7 +154,7 @@ export class AppActionsElement {
     });
   }
 
-  private select(element: HTMLElement): Promise<void> {
+  private select(element: HTMLElement, autoOpen: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const selected: HTMLElement = await this.findSelectedElement(element);
 
@@ -167,11 +167,11 @@ export class AppActionsElement {
       await this.initSelectedElement(selected);
 
       // In case of slot deckgo-lazy-img, if user doesn't have yet defined a src for the image, we display the image picker/popover first instead of the toolbar
-      if (this.isImgNotDefined(selected)) {
+      if (autoOpen && this.isImgNotDefined(selected)) {
         await this.openImage();
       }
 
-      if (this.isSlideAspectRatioEmpty(selected)) {
+      if (autoOpen && this.isSlideAspectRatioEmpty(selected)) {
         await this.openShape();
       }
 
@@ -524,6 +524,21 @@ export class AppActionsElement {
     await popover.present();
   }
 
+  private async getImagePopover(): Promise<HTMLIonPopoverElement> {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-image-element',
+      componentProps: {
+        selectedElement: this.selectedElement,
+        slide: this.slide,
+        imgDidChange: this.imgDidChange
+      },
+      mode: 'md',
+      cssClass: 'popover-menu'
+    });
+
+    return popover;
+  }
+
   private async openEditPollSlide() {
     if (!this.slide || this.slideNodeName !== 'deckgo-slide-poll') {
       return;
@@ -814,16 +829,7 @@ export class AppActionsElement {
   }
 
   private async openImage() {
-    const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-image-slide',
-      componentProps: {
-        selectedElement: this.selectedElement,
-        slide: this.slide,
-        imgDidChange: this.imgDidChange
-      },
-      mode: 'md',
-      cssClass: 'popover-menu'
-    });
+    const popover: HTMLIonPopoverElement = await this.getImagePopover();
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data) {
@@ -1048,7 +1054,7 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openImage()} aria-label={this.slide ? 'Background' : 'Image'} color="primary" mode="md" class={classImage}>
-        <ion-icon name="image-outline"></ion-icon>
+        <ion-icon name="images-outline"></ion-icon>
         <ion-label>{this.slide ? 'Background' : 'Image'}</ion-label>
       </ion-tab-button>
     );

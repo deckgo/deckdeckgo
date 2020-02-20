@@ -3,10 +3,10 @@ import {Component, Element, Prop, h, EventEmitter} from '@stencil/core';
 import {ImageAction} from '../../../utils/editor/image-action';
 
 @Component({
-  tag: 'app-image-slide',
-  styleUrl: 'app-image-slide.scss'
+  tag: 'app-image-element',
+  styleUrl: 'app-image-element.scss'
 })
-export class AppImageSlide {
+export class AppImageElement {
   @Element() el: HTMLElement;
 
   @Prop()

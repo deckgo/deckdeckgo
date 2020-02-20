@@ -102,6 +102,7 @@ deckgo-deck deckgo-lazy-img {
 
 deckgo-deck deckgo-drr deckgo-lazy-img {
   --deckgo-lazy-img-width: 100%;
+  --deckgo-lazy-img-object-fit: fill;
 }
 
 /* Background */

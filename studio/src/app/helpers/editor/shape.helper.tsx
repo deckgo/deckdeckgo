@@ -1,7 +1,12 @@
 import {EventEmitter} from '@stencil/core';
 
-import {ShapeAction} from '../../utils/editor/shape-action';
+import {modalController, OverlayEventDetail} from '@ionic/core';
+
+import {ShapeAction, ShapeActionSVG} from '../../utils/editor/shape-action';
+import {ImageAction} from '../../utils/editor/image-action';
 import {SlotType} from '../../utils/editor/slot-type';
+import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
+import {EditAction} from '../../utils/editor/edit-action';
 
 import {BusyService} from '../../services/editor/busy/busy.service';
 
@@ -13,9 +18,25 @@ export class ShapeHelper {
   }
 
   async appendShape(slideElement: HTMLElement, shapeAction: ShapeAction) {
+    if (shapeAction.svg) {
+      await this.appendShapeSVG(slideElement, shapeAction.svg);
+    } else if (shapeAction.img) {
+      await this.appendShapeImage(slideElement, shapeAction.img);
+    }
+  }
+
+  private async appendShapeSVG(slideElement: HTMLElement, shapeAction: ShapeActionSVG) {
     this.busyService.deckBusy(true);
 
-    await this.appendContentShape(slideElement, shapeAction);
+    await this.appendContentShape(slideElement, shapeAction.ratio, shapeAction.src, shapeAction.label, 'svg');
+  }
+
+  private async appendShapeImage(slideElement: HTMLElement, imageAction: ImageAction) {
+    if (imageAction.action === EditAction.OPEN_PHOTOS) {
+      await this.openModal(slideElement);
+    } else if (imageAction.action === EditAction.ADD_IMAGE) {
+      await this.appendContentShapeImage(slideElement, imageAction.image);
+    }
   }
 
   async cloneShape(shapeElement: HTMLElement) {
@@ -24,7 +45,29 @@ export class ShapeHelper {
     await this.cloneShapeElement(shapeElement);
   }
 
-  private appendContentShape(slideElement: HTMLElement, shapeAction: ShapeAction): Promise<void> {
+  private async appendContentShapeImage(slideElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile) {
+    const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
+
+    if (deckgImg !== undefined) {
+      this.busyService.deckBusy(true);
+
+      await this.appendContentShape(slideElement, 1, deckgImg.src, deckgImg.label, 'img');
+    }
+  }
+
+  private async openModal(slideElement: HTMLElement) {
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-photo'
+    });
+
+    modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+      await this.appendContentShapeImage(slideElement, detail.data);
+    });
+
+    await modal.present();
+  }
+
+  private appendContentShape(slideElement: HTMLElement, ratio: number, src: string, label: string, type: 'svg' | 'img'): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const deckGoDrr: HTMLElement = document.createElement(SlotType.DRAG_RESIZE_ROTATE);
 
@@ -32,7 +75,7 @@ export class ShapeHelper {
 
       if (typeof (slideElement as any).getContainer === 'function') {
         const container: HTMLElement = await (slideElement as any).getContainer();
-        const height: number = (container.offsetWidth * size * shapeAction.ratio) / container.offsetHeight;
+        const height: number = (container.offsetWidth * size * ratio) / container.offsetHeight;
 
         deckGoDrr.style.setProperty('--height', `${height}`);
       } else {
@@ -43,7 +86,7 @@ export class ShapeHelper {
       deckGoDrr.style.setProperty('--left', `${50 - size / 2}`); // vw center
       deckGoDrr.style.setProperty('--top', `${50 - size / 2}`); // vh center
 
-      this.addShape(deckGoDrr, slideElement, shapeAction.src, shapeAction.label);
+      this.addShape(deckGoDrr, slideElement, src, label, type);
 
       resolve();
     });
@@ -62,21 +105,30 @@ export class ShapeHelper {
         return;
       }
 
-      this.addShape(deckGoDrr, shapeElement.parentElement, (img as any).svgSrc, (img as any).svgAlt);
+      const type: 'svg' | 'img' = (img as any).imgSrc !== undefined && (img as any).imgSrc !== '' ? 'img' : 'svg';
+      const src: string = type === 'img' ? (img as any).imgSrc : (img as any).svgSrc;
+      const label: string = type === 'img' ? (img as any).svgAlt : (img as any).svgAlt;
+
+      this.addShape(deckGoDrr, shapeElement.parentElement, src, label, type);
 
       resolve();
     });
   }
 
-  private addShape(deckGoDrr: HTMLElement, slideElement: HTMLElement, src: string, label: string) {
+  private addShape(deckGoDrr: HTMLElement, slideElement: HTMLElement, src: string, label: string, type: 'svg' | 'img') {
     deckGoDrr.setAttribute('slot', '');
 
     deckGoDrr.setAttribute('contentEditable', 'false');
 
     const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
-    (deckgoImg as any).svgSrc = src;
-    (deckgoImg as any).svgAlt = label;
+    if (type === 'img') {
+      (deckgoImg as any).imgSrc = src;
+      (deckgoImg as any).imgAlt = label;
+    } else {
+      (deckgoImg as any).svgSrc = src;
+      (deckgoImg as any).svgAlt = label;
+    }
 
     deckGoDrr.appendChild(deckgoImg);
 

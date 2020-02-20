@@ -38,6 +38,9 @@ export class AppImage {
   slide: boolean = false;
 
   @Prop()
+  deleteBackground: boolean = true;
+
+  @Prop()
   deck: boolean = false;
 
   private imageHistoryService: ImageHistoryService;
@@ -262,7 +265,7 @@ export class AppImage {
   }
 
   private renderDeleteAction() {
-    if (!this.deck && !this.slide) {
+    if ((!this.deck && !this.slide) || !this.deleteBackground) {
       return undefined;
     } else {
       return (

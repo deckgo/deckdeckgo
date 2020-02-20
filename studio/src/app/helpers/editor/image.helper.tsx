@@ -5,6 +5,7 @@ import {ImageAction} from '../../utils/editor/image-action';
 import {EditAction} from '../../utils/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../utils/editor/slot-type';
+import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
 
 import {AnonymousService} from '../../services/editor/anonymous/anonymous.service';
 import {BusyService} from '../../services/editor/busy/busy.service';
@@ -128,26 +129,11 @@ export class ImageHelper {
   }
 
   private updateDeckgoLazyImgAttributes(img: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): HTMLElement {
-    if (image.hasOwnProperty('urls')) {
-      // Unsplash
-      const photo: UnsplashPhoto = image as UnsplashPhoto;
+    const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
 
-      (img as any).imgSrc = photo.urls.regular;
-      (img as any).imgAlt = photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.regular;
-    } else if (image.hasOwnProperty('media')) {
-      // Tenor
-      const gif: TenorGif = image as TenorGif;
-
-      if (gif.media && gif.media.length > 0 && gif.media[0].gif) {
-        (img as any).imgSrc = gif.media[0].gif.url;
-        (img as any).imgAlt = gif.title;
-      }
-    } else if (image.hasOwnProperty('downloadUrl')) {
-      // Storage image aka image uploaded by the user
-      const storageFile: StorageFile = image as StorageFile;
-
-      (img as any).imgSrc = storageFile.downloadUrl;
-      (img as any).imgAlt = storageFile.downloadUrl;
+    if (deckgImg !== undefined) {
+      (img as any).imgSrc = deckgImg.src;
+      (img as any).imgAlt = deckgImg.label;
     }
 
     img.setAttribute('contentEditable', 'false');

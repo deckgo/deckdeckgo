@@ -8,5 +8,7 @@ export enum TargetElement {
   BACKGROUND = 'background',
   TRANSITION = 'transition',
   SIDES = 'sides',
-  FONTS = 'fonts'
+  FONTS = 'fonts',
+  SHAPES = 'shapes',
+  IMAGES = 'shape'
 }
