@@ -16,9 +16,6 @@ export class AppImageElement {
   slide: boolean = false;
 
   @Prop()
-  slideNodeName: string | undefined;
-
-  @Prop()
   imgDidChange: EventEmitter<HTMLElement>;
 
   private async closePopoverWithoutResults() {
@@ -40,7 +37,7 @@ export class AppImageElement {
   render() {
     return [
       <ion-toolbar>
-        <h2>{this.slide && this.slideNodeName !== 'deckgo-slide-aspect-ratio' ? 'Slide background' : 'Image'}</h2>
+        <h2>{this.slide ? 'Slide background' : 'Image'}</h2>
         <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
           <ion-icon name="close"></ion-icon>
         </ion-router-link>
@@ -48,7 +45,6 @@ export class AppImageElement {
       <app-image
         selectedElement={this.selectedElement}
         slide={this.slide}
-        slideNodeName={this.slideNodeName}
         onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}
         onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>
     ];

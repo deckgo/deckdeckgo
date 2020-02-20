@@ -1,6 +1,12 @@
-export interface ShapeAction {
+import {ImageAction} from './image-action';
+
+export interface ShapeActionSVG {
   src: string;
   label: string;
   ratio: number;
-  type: 'svg' | 'img';
+}
+
+export interface ShapeAction {
+  svg?: ShapeActionSVG;
+  img?: ImageAction;
 }

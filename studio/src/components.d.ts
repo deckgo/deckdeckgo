@@ -196,9 +196,9 @@ export namespace Components {
   interface AppHome {}
   interface AppImage {
     'deck': boolean;
+    'deleteBackground': boolean;
     'selectedElement': HTMLElement;
     'slide': boolean;
-    'slideNodeName': string | undefined;
   }
   interface AppImageColumns {
     'imagesEven': (UnsplashPhoto | TenorGif | StorageFile)[];
@@ -208,7 +208,6 @@ export namespace Components {
     'imgDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
     'slide': boolean;
-    'slideNodeName': string | undefined;
   }
   interface AppInactivity {
     'fullscreen': boolean;
@@ -271,7 +270,9 @@ export namespace Components {
     'code': boolean;
     'colorTarget': boolean;
     'fonts': boolean;
+    'images': boolean;
     'qrCode': boolean;
+    'shapes': boolean;
     'sides': boolean;
     'slide': boolean;
     'transition': boolean;
@@ -1135,11 +1136,11 @@ declare namespace LocalJSX {
   interface AppHome {}
   interface AppImage {
     'deck'?: boolean;
+    'deleteBackground'?: boolean;
     'onAction'?: (event: CustomEvent<ImageAction>) => void;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
-    'slideNodeName'?: string | undefined;
   }
   interface AppImageColumns {
     'imagesEven'?: (UnsplashPhoto | TenorGif | StorageFile)[];
@@ -1150,7 +1151,6 @@ declare namespace LocalJSX {
     'imgDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
-    'slideNodeName'?: string | undefined;
   }
   interface AppInactivity {
     'fullscreen'?: boolean;
@@ -1218,8 +1218,10 @@ declare namespace LocalJSX {
     'code'?: boolean;
     'colorTarget'?: boolean;
     'fonts'?: boolean;
+    'images'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
+    'shapes'?: boolean;
     'sides'?: boolean;
     'slide'?: boolean;
     'transition'?: boolean;

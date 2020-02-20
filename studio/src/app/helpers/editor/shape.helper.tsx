@@ -2,7 +2,7 @@ import {EventEmitter} from '@stencil/core';
 
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
-import {ShapeAction} from '../../utils/editor/shape-action';
+import {ShapeAction, ShapeActionSVG} from '../../utils/editor/shape-action';
 import {ImageAction} from '../../utils/editor/image-action';
 import {SlotType} from '../../utils/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
@@ -18,12 +18,20 @@ export class ShapeHelper {
   }
 
   async appendShape(slideElement: HTMLElement, shapeAction: ShapeAction) {
-    this.busyService.deckBusy(true);
-
-    await this.appendContentShape(slideElement, shapeAction);
+    if (shapeAction.svg) {
+      await this.appendShapeSVG(slideElement, shapeAction.svg);
+    } else if (shapeAction.img) {
+      await this.appendShapeImage(slideElement, shapeAction.img);
+    }
   }
 
-  async appendShapeImage(slideElement: HTMLElement, imageAction: ImageAction) {
+  private async appendShapeSVG(slideElement: HTMLElement, shapeAction: ShapeActionSVG) {
+    this.busyService.deckBusy(true);
+
+    await this.appendContentShape(slideElement, shapeAction.ratio, shapeAction.src, shapeAction.label, 'svg');
+  }
+
+  private async appendShapeImage(slideElement: HTMLElement, imageAction: ImageAction) {
     if (imageAction.action === EditAction.OPEN_PHOTOS) {
       await this.openModal(slideElement);
     } else if (imageAction.action === EditAction.ADD_IMAGE) {
@@ -43,12 +51,7 @@ export class ShapeHelper {
     if (deckgImg !== undefined) {
       this.busyService.deckBusy(true);
 
-      await this.appendContentShape(slideElement, {
-        src: deckgImg.src,
-        label: deckgImg.label,
-        ratio: 1,
-        type: 'img'
-      });
+      await this.appendContentShape(slideElement, 1, deckgImg.src, deckgImg.label, 'img');
     }
   }
 
@@ -64,7 +67,7 @@ export class ShapeHelper {
     await modal.present();
   }
 
-  private appendContentShape(slideElement: HTMLElement, shapeAction: ShapeAction): Promise<void> {
+  private appendContentShape(slideElement: HTMLElement, ratio: number, src: string, label: string, type: 'svg' | 'img'): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const deckGoDrr: HTMLElement = document.createElement(SlotType.DRAG_RESIZE_ROTATE);
 
@@ -72,7 +75,7 @@ export class ShapeHelper {
 
       if (typeof (slideElement as any).getContainer === 'function') {
         const container: HTMLElement = await (slideElement as any).getContainer();
-        const height: number = (container.offsetWidth * size * shapeAction.ratio) / container.offsetHeight;
+        const height: number = (container.offsetWidth * size * ratio) / container.offsetHeight;
 
         deckGoDrr.style.setProperty('--height', `${height}`);
       } else {
@@ -83,7 +86,7 @@ export class ShapeHelper {
       deckGoDrr.style.setProperty('--left', `${50 - size / 2}`); // vw center
       deckGoDrr.style.setProperty('--top', `${50 - size / 2}`); // vh center
 
-      this.addShape(deckGoDrr, slideElement, shapeAction.src, shapeAction.label, shapeAction.type);
+      this.addShape(deckGoDrr, slideElement, src, label, type);
 
       resolve();
     });

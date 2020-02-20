@@ -38,7 +38,7 @@ export class AppImage {
   slide: boolean = false;
 
   @Prop()
-  slideNodeName: string | undefined;
+  deleteBackground: boolean = true;
 
   @Prop()
   deck: boolean = false;
@@ -265,7 +265,7 @@ export class AppImage {
   }
 
   private renderDeleteAction() {
-    if ((!this.deck && !this.slide) || this.slideNodeName === 'deckgo-slide-aspect-ratio') {
+    if ((!this.deck && !this.slide) || !this.deleteBackground) {
       return undefined;
     } else {
       return (
