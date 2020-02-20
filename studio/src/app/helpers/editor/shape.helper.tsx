@@ -9,12 +9,15 @@ import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action
 import {EditAction} from '../../utils/editor/edit-action';
 
 import {BusyService} from '../../services/editor/busy/busy.service';
+import {AnonymousService} from '../../services/editor/anonymous/anonymous.service';
 
 export class ShapeHelper {
   private busyService: BusyService;
+  private anonymousService: AnonymousService;
 
-  constructor(private didChange: EventEmitter<HTMLElement>) {
+  constructor(private didChange: EventEmitter<HTMLElement>, private signIn: EventEmitter<void>) {
     this.busyService = BusyService.getInstance();
+    this.anonymousService = AnonymousService.getInstance();
   }
 
   async appendShape(slideElement: HTMLElement, shapeAction: ShapeAction) {
@@ -33,7 +36,11 @@ export class ShapeHelper {
 
   private async appendShapeImage(slideElement: HTMLElement, imageAction: ImageAction) {
     if (imageAction.action === EditAction.OPEN_PHOTOS) {
-      await this.openModal(slideElement);
+      await this.openModal(slideElement, 'app-photo');
+    } else if (imageAction.action === EditAction.OPEN_GIFS) {
+      await this.openModal(slideElement, 'app-gif');
+    } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
+      await this.openModalRestricted(slideElement);
     } else if (imageAction.action === EditAction.ADD_IMAGE) {
       await this.appendContentShapeImage(slideElement, imageAction.image);
     }
@@ -55,9 +62,20 @@ export class ShapeHelper {
     }
   }
 
-  private async openModal(slideElement: HTMLElement) {
+  private async openModalRestricted(slideElement: HTMLElement) {
+    const isAnonymous: boolean = await this.anonymousService.isAnonymous();
+
+    if (isAnonymous) {
+      this.signIn.emit();
+      return;
+    }
+
+    await this.openModal(slideElement, 'app-custom-images');
+  }
+
+  private async openModal(slideElement: HTMLElement, componentTag: string) {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-photo'
+      component: componentTag
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {

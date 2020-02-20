@@ -93,7 +93,7 @@ export class AppActionsElement {
     });
 
     this.imageHelper = new ImageHelper(this.slideDidChange, this.blockSlide, this.signIn);
-    this.shapeHelper = new ShapeHelper(this.slideDidChange);
+    this.shapeHelper = new ShapeHelper(this.slideDidChange, this.signIn);
   }
 
   async componentDidLoad() {
