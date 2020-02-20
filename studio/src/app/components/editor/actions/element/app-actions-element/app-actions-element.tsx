@@ -134,10 +134,10 @@ export class AppActionsElement {
   }
 
   @Method()
-  touch(element: HTMLElement): Promise<void> {
+  touch(element: HTMLElement, autoOpen: boolean = true): Promise<void> {
     return new Promise<void>(async (resolve) => {
       await this.unSelect();
-      await this.select(element);
+      await this.select(element, autoOpen);
 
       resolve();
     });
@@ -154,7 +154,7 @@ export class AppActionsElement {
     });
   }
 
-  private select(element: HTMLElement): Promise<void> {
+  private select(element: HTMLElement, autoOpen: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const selected: HTMLElement = await this.findSelectedElement(element);
 
@@ -167,11 +167,11 @@ export class AppActionsElement {
       await this.initSelectedElement(selected);
 
       // In case of slot deckgo-lazy-img, if user doesn't have yet defined a src for the image, we display the image picker/popover first instead of the toolbar
-      if (this.isImgNotDefined(selected)) {
+      if (autoOpen && this.isImgNotDefined(selected)) {
         await this.openImage();
       }
 
-      if (this.isSlideAspectRatioEmpty(selected)) {
+      if (autoOpen && this.isSlideAspectRatioEmpty(selected)) {
         await this.openShape();
       }
 

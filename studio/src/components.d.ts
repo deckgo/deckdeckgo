@@ -69,14 +69,14 @@ export namespace Components {
     'hideFooter': boolean;
     'selectDeck': () => Promise<void>;
     'slides': JSX.IntrinsicElements[];
-    'touch': (element: HTMLElement) => Promise<void>;
+    'touch': (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
   }
   interface AppActionsElement {
     'blurSelectedElement': () => Promise<void>;
     'elementFocus': EventEmitter;
     'reset': () => Promise<void>;
     'slideCopy': EventEmitter;
-    'touch': (element: HTMLElement) => Promise<void>;
+    'touch': (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
     'unSelect': () => Promise<void>;
   }
   interface AppAvatar {

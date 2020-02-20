@@ -45,14 +45,14 @@ export class AppActionsEditor {
   private step: BreadcrumbsStep = BreadcrumbsStep.DECK;
 
   @Method()
-  async touch(element: HTMLElement) {
+  async touch(element: HTMLElement, autoOpen: boolean = true) {
     const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
 
     if (!actionsElement) {
       return;
     }
 
-    await actionsElement.touch(element);
+    await actionsElement.touch(element, autoOpen);
 
     this.step = element && element.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1 ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT;
   }
@@ -92,7 +92,7 @@ export class AppActionsEditor {
     if (!$event.detail || $event.detail === undefined) {
       await this.selectDeck();
     } else {
-      await this.touch($event.detail);
+      await this.touch($event.detail, false);
       $event.detail.focus();
     }
   }
