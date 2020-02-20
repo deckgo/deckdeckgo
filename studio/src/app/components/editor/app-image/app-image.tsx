@@ -38,6 +38,9 @@ export class AppImage {
   slide: boolean = false;
 
   @Prop()
+  slideNodeName: string | undefined;
+
+  @Prop()
   deck: boolean = false;
 
   private imageHistoryService: ImageHistoryService;
@@ -262,7 +265,7 @@ export class AppImage {
   }
 
   private renderDeleteAction() {
-    if (!this.deck && !this.slide) {
+    if ((!this.deck && !this.slide) || this.slideNodeName === 'deckgo-slide-aspect-ratio') {
       return undefined;
     } else {
       return (

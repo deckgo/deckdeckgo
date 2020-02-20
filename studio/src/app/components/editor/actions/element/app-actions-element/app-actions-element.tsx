@@ -546,6 +546,7 @@ export class AppActionsElement {
       componentProps: {
         selectedElement: this.selectedElement,
         slide: this.slide,
+        slideNodeName: this.slideNodeName,
         imgDidChange: this.imgDidChange
       },
       mode: 'md',

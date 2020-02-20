@@ -198,6 +198,7 @@ export namespace Components {
     'deck': boolean;
     'selectedElement': HTMLElement;
     'slide': boolean;
+    'slideNodeName': string | undefined;
   }
   interface AppImageColumns {
     'imagesEven': (UnsplashPhoto | TenorGif | StorageFile)[];
@@ -207,6 +208,7 @@ export namespace Components {
     'imgDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
     'slide': boolean;
+    'slideNodeName': string | undefined;
   }
   interface AppInactivity {
     'fullscreen': boolean;
@@ -1137,6 +1139,7 @@ declare namespace LocalJSX {
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
+    'slideNodeName'?: string | undefined;
   }
   interface AppImageColumns {
     'imagesEven'?: (UnsplashPhoto | TenorGif | StorageFile)[];
@@ -1147,6 +1150,7 @@ declare namespace LocalJSX {
     'imgDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
+    'slideNodeName'?: string | undefined;
   }
   interface AppInactivity {
     'fullscreen'?: boolean;
