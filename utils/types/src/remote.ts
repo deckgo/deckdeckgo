@@ -1,6 +1,7 @@
 export enum DeckdeckgoDrawAction {
   PENCIL,
-  CIRCLE
+  CIRCLE,
+  ARROW
 }
 
 export enum DeckdeckgoSlideAction {
