@@ -9,7 +9,7 @@ app-navigation-actions {
     text-transform: none;
   }
 
-  a,
+  button,
   ion-router-link {
     color: black;
     cursor: pointer;
@@ -24,12 +24,22 @@ app-navigation-actions {
     }
   }
 
-  a.signin {
-    margin-right: 8px;
+  button {
+    border: none;
+    font: inherit;
+    background: none;
+    padding: 0;
+
+    cursor: pointer;
+    pointer-events: all;
+  }
+
+  button.signin {
+    margin-right: 12px;
   }
 
   @media screen and (max-width: 540px) {
-    a.wide-device,
+    button.wide-device,
     ion-router-link.wide-device {
       display: none;
     }
@@ -38,7 +48,7 @@ app-navigation-actions {
 
 body.dark {
   app-navigation-actions {
-    a,
+    button,
     ion-router-link {
       color: white;
     }
