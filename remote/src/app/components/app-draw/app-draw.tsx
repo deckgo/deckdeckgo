@@ -153,7 +153,8 @@ export class AppDraw {
   private drawEvents: boolean = false;
   private drawAction: boolean = false;
 
-  @State() action: DeckdeckgoDrawAction = DeckdeckgoDrawAction.PENCIL;
+  @State()
+  private action: DeckdeckgoDrawAction = DeckdeckgoDrawAction.PENCIL;
 
   @Event() drawing: EventEmitter<boolean>;
 
@@ -415,7 +416,7 @@ export class AppDraw {
         <ion-fab-button onClick={() => this.startStopDrawing()} color="dark">
           <ion-icon name="brush"></ion-icon>
         </ion-fab-button>
-        <ion-fab-list side="start">{this.renderPencilRubber()}</ion-fab-list>
+        <ion-fab-list side="start">{this.renderActions()}</ion-fab-list>
         <ion-fab-list side="top">
           <ion-fab-button color="light" onClick={(e: UIEvent) => this.switchColor(e)}>
             <ion-icon name="color-palette" style={styleColorPicker}></ion-icon>
@@ -428,19 +429,23 @@ export class AppDraw {
     ];
   }
 
-  private renderPencilRubber() {
-    if (this.action !== DeckdeckgoDrawAction.PENCIL) {
-      return (
-        <ion-fab-button color="light" onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.PENCIL)}>
-          <ion-icon name="create"></ion-icon>
-        </ion-fab-button>
-      );
-    } else {
-      return (
-        <ion-fab-button color="light" onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.CIRCLE)}>
-          <ion-icon name="radio-button-off"></ion-icon>
-        </ion-fab-button>
-      );
-    }
+  private renderActions() {
+    return [
+      <ion-fab-button
+        color={this.action === DeckdeckgoDrawAction.ARROW ? 'primary' : 'light'}
+        onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.ARROW)}>
+        <ion-icon ios="arrow-forward" md="arrow-forward"></ion-icon>
+      </ion-fab-button>,
+      <ion-fab-button
+        color={this.action === DeckdeckgoDrawAction.CIRCLE ? 'primary' : 'light'}
+        onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.CIRCLE)}>
+        <ion-icon name="radio-button-off"></ion-icon>
+      </ion-fab-button>,
+      <ion-fab-button
+        color={this.action === DeckdeckgoDrawAction.PENCIL ? 'primary' : 'light'}
+        onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.PENCIL)}>
+        <ion-icon name="pencil"></ion-icon>
+      </ion-fab-button>
+    ];
   }
 }
