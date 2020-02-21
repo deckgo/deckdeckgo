@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
+import {Component, Element, Prop, State, h, JSX} from '@stencil/core';
 import {alertController, modalController, OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
@@ -55,8 +55,6 @@ export class AppRemote {
 
   @State() private deckReveal: boolean = true;
   @State() private deckRevealOnMobile: boolean = false;
-
-  @State() drawing: boolean = false;
 
   @State() action: DeckdeckgoSlideAction;
 
@@ -558,11 +556,6 @@ export class AppRemote {
     });
 
     await alert.present();
-  }
-
-  @Listen('drawing')
-  isDrawing(event: CustomEvent) {
-    this.drawing = event.detail;
   }
 
   private async initDeck() {
