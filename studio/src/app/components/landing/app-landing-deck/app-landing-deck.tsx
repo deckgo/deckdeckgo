@@ -175,7 +175,7 @@ function Example() {
     return (
       <div slot="background">
         {!this.deckIsEnd ? (
-          <button type="button" class="action next" onClick={() => this.prevNextSlide(true)}>
+          <button type="button" class="action next" onClick={() => this.prevNextSlide(true)} tabindex={-1}>
             <ion-icon name="chevron-forward-outline" aria-label="Next DeckDeckGo feature"></ion-icon>
           </button>
         ) : (
@@ -183,7 +183,7 @@ function Example() {
         )}
 
         {!this.deckIsBeginning ? (
-          <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)}>
+          <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)} tabindex={-1}>
             <ion-icon name="chevron-back-outline" aria-label="Next DeckDeckGo feature"></ion-icon>
           </button>
         ) : (
