@@ -131,7 +131,7 @@ export class AppNavigationActions {
       return undefined;
     } else if (this.presentation || this.publish) {
       return (
-        <a class="wide-device ion-padding-start ion-padding-end signin" onClick={() => this.navigateSignIn()}>
+        <a class="wide-device ion-padding-start ion-padding-end signin" onClick={() => this.navigateSignIn()} tabindex={0}>
           <ion-label>Sign in</ion-label>
         </a>
       );
@@ -141,7 +141,7 @@ export class AppNavigationActions {
   private renderLoggedIn() {
     if (Utils.isLoggedIn(this.authUser) && this.photoUrlLoaded) {
       return (
-        <a class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)} aria-label="Open menu">
+        <a class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)} aria-label="Open menu" tabindex={0}>
           <app-avatar src={this.photoUrl}></app-avatar>
         </a>
       );
