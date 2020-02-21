@@ -7,4 +7,16 @@ app-draw {
 
     pointer-events: none;
   }
+
+  ion-fab {
+    opacity: 1;
+
+    transition: opacity 0.25s ease-in-out;
+
+    &.hidden {
+      opacity: 0;
+
+      pointer-events: none;
+    }
+  }
 }

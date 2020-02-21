@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, h, Method, Prop, State, Watch} from '@stencil/core';
 
 import {unifyEvent} from '@deckdeckgo/utils';
 // Types
@@ -150,15 +150,16 @@ export class AppDraw {
 
   private deckLeftOffset: number = 0;
 
+  @State()
   private drawEvents: boolean = false;
+
   private drawAction: boolean = false;
 
   @State()
   private action: DeckdeckgoDrawAction = DeckdeckgoDrawAction.PENCIL;
 
-  @Event() drawing: EventEmitter<boolean>;
-
-  @State() private color: string = 'red';
+  @State()
+  private color: string = 'red';
 
   private communicationService: CommunicationService;
 
@@ -368,8 +369,6 @@ export class AppDraw {
     }
 
     this.drawAction = !this.drawAction;
-
-    this.drawing.emit(this.drawAction);
   }
 
   private emit(type: DeckdeckgoEventType, e: any) {
@@ -412,7 +411,7 @@ export class AppDraw {
 
     return [
       <canvas width={this.canvasWidth} height={this.height}></canvas>,
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed" class={this.drawEvents ? 'hidden' : ''}>
         <ion-fab-button onClick={() => this.startStopDrawing()} color="dark">
           <ion-icon name="brush"></ion-icon>
         </ion-fab-button>

@@ -155,7 +155,6 @@ declare namespace LocalJSX {
   interface AppDraw {
     'height'?: number;
     'heightOffset'?: number;
-    'onDrawing'?: (event: CustomEvent<boolean>) => void;
     'slides'?: number;
     'width'?: number;
     'widthOffset'?: number;
