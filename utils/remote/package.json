@@ -1,0 +1,39 @@
+{
+  "name": "@deckdeckgo/remote-utils",
+  "version": "1.0.0-rc.21",
+  "author": "David Dal Busco",
+  "description": "A collection of utils developed for the DeckDeckGo remote control",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo.git"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "devDependencies": {
+    "husky": "^4.2.3",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^1.31.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^1.11.0",
+    "typescript": "^3.8.2"
+  },
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "rimraf lib && rollup -c && tsc"
+  },
+  "files": [
+    "lib",
+    "README.md"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
