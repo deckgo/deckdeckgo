@@ -16,67 +16,10 @@ import {
 
 import {isMobile} from '@deckdeckgo/utils';
 
+import {Arrow, Circle, Drawable, Pencil} from '@deckdeckgo/remote-utils';
+
 // Services
 import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
-
-interface Point {
-  x: number;
-  y: number;
-}
-
-interface Drawable {
-  draw(ctx: CanvasRenderingContext2D);
-}
-
-class Circle implements Drawable {
-  private readonly from: Point;
-  private readonly to: Point;
-  private readonly color: string;
-
-  constructor(from: Point, to: Point, color: string) {
-    this.from = from;
-    this.to = to;
-    this.color = color;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.beginPath();
-
-    ctx.moveTo(this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
-    ctx.bezierCurveTo(this.from.x, this.from.y, this.to.x, this.from.y, this.to.x, this.from.y + (this.to.y - this.from.y) / 2);
-    ctx.bezierCurveTo(this.to.x, this.to.y, this.from.x, this.to.y, this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
-
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = 3;
-
-    ctx.stroke();
-    ctx.closePath();
-  }
-}
-
-class Pencil implements Drawable {
-  private readonly from: Point;
-  private readonly to: Point;
-  private readonly color: string;
-
-  constructor(from: Point, to: Point, color: string) {
-    this.from = from;
-    this.to = to;
-    this.color = color;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.beginPath();
-
-    ctx.moveTo(this.from.x, this.from.y);
-    ctx.lineTo(this.to.x, this.to.y);
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = 3;
-
-    ctx.stroke();
-    ctx.closePath();
-  }
-}
 
 @Component({
   tag: 'deckgo-remote',
@@ -251,6 +194,10 @@ export class DeckdeckgoRemote {
       this.startX = this.interpolateX(event) - this.leftOffset;
       this.startY = this.interpolateY(event);
 
+      if (event.action === DeckdeckgoDrawAction.ARROW) {
+        this.drawables.push(new Arrow({x: this.startX, y: this.startY}, {x: this.startX, y: this.startY}, event.color));
+      }
+
       if (event.action === DeckdeckgoDrawAction.CIRCLE) {
         this.drawables.push(
           new Circle(
@@ -283,6 +230,10 @@ export class DeckdeckgoRemote {
         this.startY = toY;
       }
 
+      if (event.action === DeckdeckgoDrawAction.ARROW) {
+        this.drawables[this.drawables.length - 1] = new Arrow({x: this.startX, y: this.startY}, {x: toX, y: toY}, event.color);
+      }
+
       if (event.action === DeckdeckgoDrawAction.CIRCLE) {
         this.drawables[this.drawables.length - 1] = new Circle(
           {x: this.startX, y: this.startY},
@@ -310,6 +261,10 @@ export class DeckdeckgoRemote {
     return new Promise<void>(async (resolve) => {
       const toX: number = this.interpolateX(event) - this.leftOffset;
       const toY: number = this.interpolateY(event);
+
+      if (event.action === DeckdeckgoDrawAction.ARROW) {
+        this.drawables[this.drawables.length - 1] = new Arrow({x: this.startX, y: this.startY}, {x: toX, y: toY}, event.color);
+      }
 
       if (event.action === DeckdeckgoDrawAction.CIRCLE) {
         this.drawables[this.drawables.length - 1] = new Circle(
