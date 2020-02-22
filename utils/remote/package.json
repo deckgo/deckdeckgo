@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/remote-utils",
-  "version": "1.0.0-rc.21",
+  "version": "1.0.0-rc.1",
   "author": "David Dal Busco",
   "description": "A collection of utils developed for the DeckDeckGo remote control",
   "license": "MIT",
