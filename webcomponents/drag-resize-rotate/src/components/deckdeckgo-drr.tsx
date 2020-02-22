@@ -264,14 +264,10 @@ export class DeckdeckgoDragResizeRotate {
   }
 
   private deltaResize($event: MouseEvent | TouchEvent) {
-    let clientX_d: number = unifyEvent($event).clientX;
-    let clientY_d: number = unifyEvent($event).clientY;
+    const delta: {x: number; y: number} = this.getDelta($event);
 
-    clientX_d = clientX_d - this.startX;
-    clientY_d = clientY_d - this.startY;
-
-    const qp_x: number = this.qp0_x + clientX_d;
-    const qp_y: number = this.qp0_y + clientY_d;
+    const qp_x: number = this.qp0_x + delta.x;
+    const qp_y: number = this.qp0_y + delta.y;
 
     const cp_x: number = (qp_x + this.pp_x) / 2.0;
     const cp_y: number = (qp_y + this.pp_y) / 2.0;
