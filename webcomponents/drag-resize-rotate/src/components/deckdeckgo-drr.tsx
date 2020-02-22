@@ -99,6 +99,12 @@ export class DeckdeckgoDragResizeRotate {
   private centerX: number = null;
   private centerY: number = null;
 
+  private qp0_x: number;
+  private qp0_y: number;
+
+  private pp_x: number;
+  private pp_y: number;
+
   async componentWillLoad() {
     await this.init();
 
@@ -223,26 +229,21 @@ export class DeckdeckgoDragResizeRotate {
     }
 
     if (this.dragBottomEnd) {
-      this.deltaResize($event, {width: ApplyOperation.ADD, height: ApplyOperation.ADD});
+      this.deltaResize($event);
     } else if (this.dragTopEnd) {
-      this.deltaResize($event, {width: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT, top: ApplyOperation.ADD});
+      // TODO
     } else if (this.dragBottomStart) {
-      this.deltaResize($event, {width: ApplyOperation.SUBSTRACT, height: ApplyOperation.ADD, left: ApplyOperation.ADD});
+      // TODO
     } else if (this.dragTopStart) {
-      this.deltaResize($event, {
-        width: ApplyOperation.SUBSTRACT,
-        top: ApplyOperation.ADD,
-        height: ApplyOperation.SUBSTRACT,
-        left: ApplyOperation.ADD
-      });
+      // TODO
     } else if (this.dragTop) {
-      this.deltaResize($event, {top: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT});
+      // TODO
     } else if (this.dragEnd) {
-      this.deltaResize($event, {width: ApplyOperation.ADD});
+      // TODO
     } else if (this.dragBottom) {
-      this.deltaResize($event, {height: ApplyOperation.ADD});
+      // TODO
     } else if (this.dragStart) {
-      this.deltaResize($event, {left: ApplyOperation.ADD, width: ApplyOperation.SUBSTRACT});
+      // TODO
     }
 
     return true;
@@ -262,56 +263,35 @@ export class DeckdeckgoDragResizeRotate {
     }
   }
 
-  private deltaResize($event: MouseEvent | TouchEvent, attr: {width?: ApplyOperation; height?: ApplyOperation; top?: ApplyOperation; left?: ApplyOperation}) {
-    const delta: {x: number; y: number} = this.getDelta($event);
+  private deltaResize($event: MouseEvent | TouchEvent) {
+    let clientX_d: number = unifyEvent($event).clientX;
+    let clientY_d: number = unifyEvent($event).clientY;
 
-    if (attr.width === ApplyOperation.ADD) {
-      const maxWidth: number = this.convertParentUnit(this.parentWidth) - this.startLeft;
-      this.width = this.startWidth + delta.x > this.minWidth ? (this.startWidth + delta.x < maxWidth ? this.startWidth + delta.x : maxWidth) : this.minWidth;
-    } else if (attr.width === ApplyOperation.SUBSTRACT) {
-      const maxWidth: number = this.startLeft + this.startWidth;
-      this.width = this.startWidth - delta.x > this.minWidth ? (this.startWidth - delta.x < maxWidth ? this.startWidth - delta.x : maxWidth) : this.minWidth;
+    clientX_d = clientX_d - this.startX;
+    clientY_d = clientY_d - this.startY;
+
+    const qp_x: number = this.qp0_x + clientX_d;
+    const qp_y: number = this.qp0_y + clientY_d;
+
+    const cp_x: number = (qp_x + this.pp_x) / 2.0;
+    const cp_y: number = (qp_y + this.pp_y) / 2.0;
+
+    const mtheta: number = (-1 * Math.PI * 2 * this.rotate) / 360;
+    const cos_mt: number = Math.cos(mtheta);
+    const sin_mt: number = Math.sin(mtheta);
+
+    const q_x: number = qp_x * cos_mt - qp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
+    const q_y: number = qp_x * sin_mt + qp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
+
+    if (q_x - this.left > this.minWidth) {
+      this.left = this.pp_x * cos_mt - this.pp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
+      this.width = q_x - this.left;
     }
 
-    if (attr.height === ApplyOperation.ADD) {
-      const maxHeight: number = this.convertParentUnit(this.parentHeight) - this.startTop;
-      this.height =
-        this.startHeight + delta.y > this.minHeight ? (this.startHeight + delta.y < maxHeight ? this.startHeight + delta.y : maxHeight) : this.minHeight;
-    } else if (attr.height === ApplyOperation.SUBSTRACT) {
-      const maxHeight: number = this.startTop + this.startHeight;
-      this.height =
-        this.startHeight - delta.y > this.minHeight ? (this.startHeight - delta.y < maxHeight ? this.startHeight - delta.y : maxHeight) : this.minHeight;
+    if (q_y - this.top > this.minHeight) {
+      this.top = this.pp_x * sin_mt + this.pp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
+      this.height = q_y - this.top;
     }
-
-    if (attr.top === ApplyOperation.ADD) {
-      const maxTop: number = this.startTop + this.startHeight - this.minHeight;
-      this.top = this.startTop + delta.y > 0 ? (this.startTop + delta.y < maxTop ? this.startTop + delta.y : maxTop) : 0;
-    }
-
-    if (attr.left === ApplyOperation.ADD) {
-      const maxLeft: number = this.startLeft + this.startWidth - this.minWidth;
-      this.left = this.startLeft + delta.x > 0 ? (this.startLeft + delta.x < maxLeft ? this.startLeft + delta.x : maxLeft) : 0;
-    }
-
-    // TODO: Resize stick corner
-    // const currentX: number = unifyEvent($event).clientX;
-    // const currentY: number = unifyEvent($event).clientY;
-    //
-    // const phi: number = this.rotate !== undefined ? (this.rotate * Math.PI) / 180 : 0;
-    //
-    // const a = currentX;
-    // const b = -2 * (Math.cos(phi) * Math.sin(phi) * currentY);
-    // const c = -1 * Math.cos(phi) * this.width;
-    // const d = -1 * Math.sin(phi) * this.height;
-    //
-    // this.left = a + b + c + d;
-    //
-    // const e = 2 * (Math.cos(phi) * Math.sin(phi) * currentX);
-    // const f = currentY;
-    // const g = -1  * Math.cos(phi) * this.height;
-    // const h = -1 * Math.sin(phi) * this.width;
-    //
-    // this.top = -1 * (e + f + g + h);
   }
 
   private rotateShape($event: MouseEvent | TouchEvent): boolean {
@@ -372,6 +352,16 @@ export class DeckdeckgoDragResizeRotate {
 
     this.centerX = this.el.getBoundingClientRect().left + this.el.offsetWidth / 2;
     this.centerY = this.el.getBoundingClientRect().top + this.el.offsetHeight / 2;
+
+    const theta: number = (Math.PI * 2 * this.rotate) / 360;
+    const cos_t: number = Math.cos(theta);
+    const sin_t: number = Math.sin(theta);
+
+    this.pp_x = (-this.width * cos_t + this.height * sin_t + 2 * this.left + this.width) / 2.0;
+    this.pp_y = (-this.width * sin_t - this.height * cos_t + 2 * this.top + this.height) / 2.0;
+
+    this.qp0_x = (this.width * cos_t - this.height * sin_t + this.width + 2.0 * this.left) / 2.0;
+    this.qp0_y = (this.width * sin_t + this.height * cos_t + this.height + 2.0 * this.top) / 2.0;
   }
 
   private async initParentSize() {
