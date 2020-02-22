@@ -1,127 +1,14 @@
 import {Component, Element, h, Method, Prop, State, Watch} from '@stencil/core';
 
 import {unifyEvent} from '@deckdeckgo/utils';
+
+import {Arrow, Circle, Drawable, Pencil} from '@deckdeckgo/remote-utils';
+
 // Types
 import {DeckdeckgoDrawAction, DeckdeckgoEventEmitter, DeckdeckgoEventType} from '@deckdeckgo/types';
+
 // Services
 import {CommunicationService} from '../../services/communication/communication.service';
-
-interface Point {
-  x: number;
-  y: number;
-}
-
-interface Drawable {
-  draw(ctx: CanvasRenderingContext2D);
-}
-
-class Circle implements Drawable {
-  private readonly from: Point;
-  private readonly to: Point;
-  private readonly color: string;
-
-  constructor(from: Point, to: Point, color: string) {
-    this.from = from;
-    this.to = to;
-    this.color = color;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.beginPath();
-
-    ctx.moveTo(this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
-    ctx.bezierCurveTo(this.from.x, this.from.y, this.to.x, this.from.y, this.to.x, this.from.y + (this.to.y - this.from.y) / 2);
-    ctx.bezierCurveTo(this.to.x, this.to.y, this.from.x, this.to.y, this.from.x, this.from.y + (this.to.y - this.from.y) / 2);
-
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = 3;
-
-    ctx.stroke();
-    ctx.closePath();
-  }
-}
-
-class Pencil implements Drawable {
-  private readonly from: Point;
-  private readonly to: Point;
-  private readonly color: string;
-
-  constructor(from: Point, to: Point, color: string) {
-    this.from = from;
-    this.to = to;
-    this.color = color;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.beginPath();
-
-    ctx.moveTo(this.from.x, this.from.y);
-    ctx.lineTo(this.to.x, this.to.y);
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = 3;
-
-    ctx.stroke();
-    ctx.closePath();
-  }
-}
-
-class Arrow implements Drawable {
-  private readonly from: Point;
-  private readonly to: Point;
-  private readonly color: string;
-
-  constructor(from: Point, to: Point, color: string) {
-    this.from = from;
-    this.to = to;
-    this.color = color;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.beginPath();
-
-    ctx.moveTo(this.from.x, this.from.y);
-    ctx.lineTo(this.to.x, this.to.y);
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = 3;
-
-    ctx.stroke();
-    ctx.closePath();
-
-    this.drawTriangle(ctx);
-  }
-
-  private drawTriangle(ctx: CanvasRenderingContext2D) {
-    ctx.beginPath();
-
-    const length: number = Math.sqrt(Math.pow(this.to.y - this.from.y, 2) + Math.pow(this.to.x - this.from.x, 2));
-    const size: number = Math.min(length, 20);
-
-    // https://stackoverflow.com/a/36805543/5404186
-
-    let angle: number = Math.atan2(this.to.y - this.from.y, this.to.x - this.from.x);
-    let x: number = size * Math.cos(angle) + this.to.x;
-    let y: number = size * Math.sin(angle) + this.to.y;
-
-    ctx.moveTo(x, y);
-
-    angle += (1 / 3) * (2 * Math.PI);
-    x = size * Math.cos(angle) + this.to.x;
-    y = size * Math.sin(angle) + this.to.y;
-
-    ctx.lineTo(x, y);
-
-    angle += (1 / 3) * (2 * Math.PI);
-    x = size * Math.cos(angle) + this.to.x;
-    y = size * Math.sin(angle) + this.to.y;
-
-    ctx.lineTo(x, y);
-
-    ctx.fillStyle = this.color;
-    ctx.fill();
-
-    ctx.closePath();
-  }
-}
 
 @Component({
   tag: 'app-draw',
