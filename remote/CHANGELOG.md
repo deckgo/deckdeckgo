@@ -1,3 +1,11 @@
+# 1.0.0-rc.3 (2020-02-22)
+
+### Features
+
+- draw arrows ([#625](https://github.com/deckgo/deckdeckgo/issues/625))
+
+Note: new feature temporary uncommented until next release which will include the release of the starter kit
+
 <a name="1.0.0-rc.2-7"></a>
 
 # 1.0.0-rc.2-7 (2020-02-19)
