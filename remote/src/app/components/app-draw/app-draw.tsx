@@ -315,19 +315,17 @@ export class AppDraw {
     ];
   }
 
-  // TODO: Unleash arrows
-  // <ion-fab-button
-  // color={this.action === DeckdeckgoDrawAction.ARROW ? 'primary' : 'light'}
-  // onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.ARROW)}>
-  // <ion-icon ios="arrow-forward" md="arrow-forward"></ion-icon>
-  // </ion-fab-button>,
-
   private renderActions() {
     return [
       <ion-fab-button
         color={this.action === DeckdeckgoDrawAction.CIRCLE ? 'primary' : 'light'}
         onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.CIRCLE)}>
         <ion-icon name="radio-button-off"></ion-icon>
+      </ion-fab-button>,
+      <ion-fab-button
+        color={this.action === DeckdeckgoDrawAction.ARROW ? 'primary' : 'light'}
+        onClick={(e: UIEvent) => this.switchTool(e, DeckdeckgoDrawAction.ARROW)}>
+        <ion-icon ios="arrow-forward" md="arrow-forward"></ion-icon>
       </ion-fab-button>,
       <ion-fab-button
         color={this.action === DeckdeckgoDrawAction.PENCIL ? 'primary' : 'light'}
