@@ -18,7 +18,7 @@
     "@deckdeckgo/color": "^1.0.0-rc.3-3",
     "@deckdeckgo/core": "^1.0.0-rc.3-5",
     "@deckdeckgo/drag-resize-rotate": "^1.0.0-beta.1",
-    "@deckdeckgo/highlight-code": "^1.0.0-rc.3-1",
+    "@deckdeckgo/highlight-code": "^1.0.0-rc.3-2",
     "@deckdeckgo/inline-editor": "^1.0.0-rc.3-3",
     "@deckdeckgo/lazy-img": "^1.0.0-rc.3-2",
     "@deckdeckgo/qrcode": "^1.0.0-rc.1-1",
