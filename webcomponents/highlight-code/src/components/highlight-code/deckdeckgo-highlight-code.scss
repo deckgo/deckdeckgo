@@ -39,7 +39,7 @@
 }
 
 :host(.deckgo-highlight-code-carbon) ::slotted([slot="code"]) {
-  color: var(deckgo-highlight-code-carbon-color, white);
+  color: var(--deckgo-highlight-code-carbon-color, white);
 }
 
 :host(.deckgo-highlight-code-ubuntu) {
@@ -64,7 +64,7 @@
 }
 
 :host(.deckgo-highlight-code-ubuntu) ::slotted([slot="code"]) {
-  color: var(deckgo-highlight-code-ubuntu-color, white);
+  color: var(--deckgo-highlight-code-ubuntu-color, #ddd);
 }
 
 div.deckgo-highlight-code-container {
