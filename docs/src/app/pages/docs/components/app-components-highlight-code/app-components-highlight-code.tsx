@@ -54,6 +54,9 @@ export class AppComponentsHighlightCode {
                   <a href="#app-components-highlight-code-properties">Properties</a>
                 </li>
                 <li>
+                  <a href="#app-components-highlight-code-fonts">Fonts</a>
+                </li>
+                <li>
                   <a href="#app-components-highlight-code-styling">Styling</a>
                 </li>
                 <li>
@@ -80,11 +83,29 @@ export class AppComponentsHighlightCode {
             </li>
           </ul>
           <h2 id="app-components-highlight-code-showcase">Showcase</h2>
+          <p>Carbon terminal card:</p>
           <deckgo-highlight-code language="java">
             <code slot="code">
               public static void main(String args[]) &#123; {'\n'} System.out.println(&quot;Hello World&quot;);{'\n'}&#125;
             </code>
           </deckgo-highlight-code>
+          <div class="ion-padding-top">Ubuntu terminal card:</div>
+
+          <div>
+            <deckgo-highlight-code terminal="ubuntu">
+              <code slot="code">console.log('Hello World');</code>
+              <span slot="user">david@ubuntu:~</span>
+            </deckgo-highlight-code>
+          </div>
+
+          <div class="ion-padding-top">No terminal:</div>
+
+          <div>
+            <deckgo-highlight-code terminal="none" style={{'--deckgo-highlight-code-padding': '0'}}>
+              <code slot="code">console.log('Hello World');</code>
+            </deckgo-highlight-code>
+          </div>
+
           <h2 id="app-components-highlight-code-installation">Installation</h2>
           <p>This component could be added to your web application using the following methods.</p>
           <blockquote>
@@ -136,8 +157,13 @@ export class AppComponentsHighlightCode {
           </deckgo-highlight-code>
           <h2 id="app-components-highlight-code-usage">Usage</h2>
           <p>
-            The <code>&lt;deckgo-highlight-code/&gt;</code> Web Component will highlight your code using <a href="https://prismjs.com">Prism.js</a>. You could
-            inject a <code>&lt;code/&gt;</code> tag using slot or provide an URI to the file containing your code.
+            The <code>&lt;deckgo-highlight-code/&gt;</code> Web Component will highlight your code using <a href="https://prismjs.com">Prism.js</a>.
+          </p>
+          <p>
+            You could inject a <code>&lt;code/&gt;</code> tag using slot or provide an URI to the file containing your code.
+          </p>
+          <p>
+            If you are displaying your code in an Ubuntu terminal, you could also displays a text in the toolbar (header) using the slot <code>user</code>.
           </p>
           <h3 id="app-components-highlight-code-properties">Properties</h3>
           <p>
@@ -284,21 +310,30 @@ export class AppComponentsHighlightCode {
               </tr>
               <tr>
                 <td>
-                  <code>carbon</code>
+                  <code>terminal</code>
                 </td>
                 <td>
-                  <code>carbon</code>
+                  <code>terminal</code>
                 </td>
                 <td>Present the code in a stylish &quot;windowed&quot; card.</td>
                 <td>
-                  <code>boolean</code>
+                  <code>carbon</code>, <code>ubuntu</code> or <code>none</code>
                 </td>
                 <td>
-                  <code>true</code>
+                  <code>carbon</code>
                 </td>
               </tr>
             </tbody>
           </table>
+          <h3 id="app-components-highlight-code-fonts">Fonts</h3>
+          <p>
+            Per default, the font <code>monospace</code> is used to display the code for the terminal <code>carbon</code> or <code>none</code>. You can
+            overwrite this option using the following CSS variables.
+          </p>
+          <p>
+            If you display your code in an <code>ubuntu</code> terminal, the related <code>Ubuntu</code> fonts are going to be fetched and injected in your
+            page.
+          </p>
           <h3 id="app-components-highlight-code-styling">Styling</h3>
           <p>
             The <code>&lt;deckgo-highlight-code/&gt;</code> could be styled using the following CSS4 variables:
@@ -471,9 +506,10 @@ export class AppComponentsHighlightCode {
               </tr>
             </tbody>
           </table>
+          <h4 id="app-components-highlight-code-carbon">Carbon</h4>
           <p>
-            Furthermore the following styles apply if the code is displayed as a &quot;windowed&quot; card (<code>carbon</code> property equals to{' '}
-            <code>true</code>):
+            Furthermore the following styles apply if the code is displayed as a &quot;carbon&quot; terminal card (<code>terminal</code> property equals to{' '}
+            <code>carbon</code>).
           </p>
           <table>
             <thead>
@@ -535,7 +571,7 @@ export class AppComponentsHighlightCode {
                 <td>The width of a button of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-heeght</td>
+                <td>--deckgo-highlight-code-carbon-header-button-height</td>
                 <td>12px</td>
                 <td>The height of a button of the card header.</td>
               </tr>
@@ -581,6 +617,172 @@ export class AppComponentsHighlightCode {
               </tr>
             </tbody>
           </table>
+          <h4 id="app-components-highlight-code-ubuntu">Ubuntu</h4>
+          <p>
+            If the code is displayed as an &quot;ubuntu&quot; terminal card (<code>terminal</code> property equals to <code>ubuntu</code>) the following styles
+            could be applied.
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>CSS4 variable</th>
+                <th>Default</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-display</td>
+                <td>block</td>
+                <td>The display property of the host container.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-overflow</td>
+                <td>auto</td>
+                <td>The overflow property of the host container.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-border</td>
+                <td></td>
+                <td>The border property of the host container.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-border-radius</td>
+                <td>6px 6px 0 0</td>
+                <td>The border-radius property of the host container.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-background</td>
+                <td>rgba(56, 4, 40, 0.9)</td>
+                <td>The background property of the host container.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-color</td>
+                <td>#ddd</td>
+                <td>The color property of the host container.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-box-shadow</td>
+                <td>2px 4px 10px rgba(0, 0, 0, 0.5)</td>
+                <td>The box-shadow property of the host container.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-margin</td>
+                <td>16px 0</td>
+                <td>The margin property of the host container.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-header-padding</td>
+                <td>0 8px</td>
+                <td>The padding property of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-header-height</td>
+                <td>25px</td>
+                <td>The height property of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-header-background</td>
+                <td>linear-gradient(#504b45 0%, #3c3b37 100%)</td>
+                <td>The background property of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-header-font-family</td>
+                <td>Ubuntu</td>
+                <td>The font-family property of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-header-button-width</td>
+                <td>12px</td>
+                <td>The width of a button of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-header-button-height</td>
+                <td>12px</td>
+                <td>The height of a button of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-header-button-border-radius</td>
+                <td>50%</td>
+                <td>The border-radius of a button of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-ubuntu-header-button-margin</td>
+                <td>0 6px 0 0</td>
+                <td>The margin of a button of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-font-size</td>
+                <td>7px</td>
+                <td>The font-size of a button of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-color</td>
+                <td>black</td>
+                <td>The color of a button of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-text-shadow</td>
+                <td>0px 1px 0px rgba(255, 255, 255, 0.2)</td>
+                <td>The text-shadow of a button of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-box-shadow</td>
+                <td>0px 0px 1px 0px #41403a, 0px 1px 1px 0px #474642</td>
+                <td>The box-shadow of a button of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-close-background</td>
+                <td>linear-gradient(#f37458 0%, #de4c12 100%)</td>
+                <td>The close button background of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-close-border</td>
+                <td></td>
+                <td>The close button border of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-minimize-background</td>
+                <td>linear-gradient(#7d7871 0%, #595953 100%)</td>
+                <td>The minimize button background of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-minimize-border</td>
+                <td></td>
+                <td>The minimize button border of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-maximize-background</td>
+                <td>linear-gradient(#7d7871 0%, #595953 100%)</td>
+                <td>The maximize button background of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-button-maximize-border</td>
+                <td></td>
+                <td>The maximize button border of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-user-color</td>
+                <td>#d5d0ce</td>
+                <td>The user&#39;s color of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-user-font-size</td>
+                <td>12px</td>
+                <td>The user&#39;s font-size of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-user-line-height</td>
+                <td>14px</td>
+                <td>The user&#39;s line-height of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-user-margin</td>
+                <td>0 0 1px 4px</td>
+                <td>The user&#39;s margin of the card header.</td>
+              </tr>
+            </tbody>
+          </table>
           <h3 id="app-components-highlight-code-methods">Methods</h3>
           <p>
             The <code>&lt;deckgo-highlight-code/&gt;</code> exposes the following methods:
@@ -619,6 +821,12 @@ export class AppComponentsHighlightCode {
               {'\n'}&lt;deckgo-highlight-code language=&quot;java&quot; highlight-lines=&quot;2,2&quot;&gt;{'\n'} &lt;code slot=&quot;code&quot;&gt;public
               static void main(String args[]) &#123;{'\n'}
               {'\n'} System.out.println(&quot;Hello World&quot;);{'\n'}&#125;&lt;&#47;code&gt;{'\n'}&lt;&#47;deckgo-highlight-code&gt;
+            </code>
+          </deckgo-highlight-code>
+          <deckgo-highlight-code language="javascript">
+            <code slot="code">
+              &lt;deckgo-highlight-code terminal=&quot;ubuntu&quot;&gt;{'\n'} &lt;code slot=&quot;code&quot;&gt;console.log(&#039;Hello
+              World&#039;);&lt;&#47;code&gt;{'\n'} &lt;span slot=&quot;user&quot;&gt;david@ubuntu:~&lt;&#47;span&gt;{'\n'}&lt;&#47;deckgo-highlight-code&gt;
             </code>
           </deckgo-highlight-code>
         </main>

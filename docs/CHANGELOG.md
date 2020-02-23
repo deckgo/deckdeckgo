@@ -1,3 +1,9 @@
+<a name="1.0.0-rc.10-1"></a>
+
+# 1.0.0-rc.10-1 (2020-02-23)
+
+- new `terminal` option `Ubuntu` in `@deckdeckgo/highlight-code`
+
 <a name="1.0.0-rc.10"></a>
 
 # 1.0.0-rc.10 (2020-02-19)

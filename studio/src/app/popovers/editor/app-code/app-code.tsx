@@ -12,6 +12,12 @@ enum CodeFontSize {
   VERY_BIG
 }
 
+enum CodeTerminal {
+  CARBON = 'carbon',
+  UBUNTU = 'ubuntu',
+  NONE = 'none'
+}
+
 @Component({
   tag: 'app-code',
   styleUrl: 'app-code.scss'
@@ -35,7 +41,7 @@ export class AppCode {
   private lineNumbers: boolean = false;
 
   @State()
-  private carbon: boolean = false;
+  private terminal: CodeTerminal = CodeTerminal.CARBON;
 
   private prismService: PrismService;
 
@@ -57,7 +63,10 @@ export class AppCode {
 
       this.currentFontSize = await this.initFontSize();
       this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
-      this.carbon = this.selectedElement && this.selectedElement.getAttribute('carbon') === 'true';
+      this.terminal =
+        this.selectedElement && this.selectedElement.hasAttribute('terminal')
+          ? (this.selectedElement.getAttribute('terminal') as CodeTerminal)
+          : CodeTerminal.CARBON;
 
       resolve();
     });
@@ -128,7 +137,29 @@ export class AppCode {
     });
   }
 
-  private togglePropertyAttribute($event: CustomEvent, prop: string): Promise<void> {
+  private toggleTerminal($event: CustomEvent): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!$event || !$event.detail) {
+        resolve();
+        return;
+      }
+
+      if (!this.selectedElement) {
+        resolve();
+        return;
+      }
+
+      this.terminal = $event.detail.value;
+
+      this.selectedElement.setAttribute('terminal', $event.detail.value);
+
+      this.emitCodeDidChange();
+
+      resolve();
+    });
+  }
+
+  private toggleLineNumbers($event: CustomEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selectedElement) {
         resolve();
@@ -140,7 +171,7 @@ export class AppCode {
         return;
       }
 
-      this.selectedElement.setAttribute(prop, $event.detail.checked);
+      this.selectedElement.setAttribute('line-numbers', $event.detail.checked);
 
       this.emitCodeDidChange();
 
@@ -200,7 +231,7 @@ export class AppCode {
           <ion-select
             value={this.currentFontSize}
             placeholder="Select a font size"
-            onIonChange={(e: CustomEvent) => this.toggleFontSize(e)}
+            onIonChange={($event: CustomEvent) => this.toggleFontSize($event)}
             class="ion-padding-start ion-padding-end">
             <ion-select-option value={CodeFontSize.VERY_SMALL}>Very small</ion-select-option>
             <ion-select-option value={CodeFontSize.SMALL}>Small</ion-select-option>
@@ -210,17 +241,27 @@ export class AppCode {
           </ion-select>
         </ion-item>
 
-        <ion-item class="ion-margin-top">
-          <ion-label>Display line numbers</ion-label>
-          <ion-checkbox
-            slot="end"
-            checked={this.lineNumbers}
-            onIonChange={($event: CustomEvent) => this.togglePropertyAttribute($event, 'line-numbers')}></ion-checkbox>
+        <ion-item-divider class="ion-padding-top">
+          <ion-label>Wrap code in a card</ion-label>
+        </ion-item-divider>
+
+        <ion-item class="select">
+          <ion-label>Wrap code in a card</ion-label>
+
+          <ion-select
+            value={this.terminal}
+            placeholder="Select a terminal"
+            onIonChange={($event: CustomEvent) => this.toggleTerminal($event)}
+            class="ion-padding-start ion-padding-end">
+            <ion-select-option value={CodeTerminal.CARBON}>Carbon</ion-select-option>
+            <ion-select-option value={CodeTerminal.UBUNTU}>Ubuntu</ion-select-option>
+            <ion-select-option value={CodeTerminal.NONE}>None</ion-select-option>
+          </ion-select>
         </ion-item>
 
         <ion-item>
-          <ion-label>Wrap code in a card</ion-label>
-          <ion-checkbox slot="end" checked={this.carbon} onIonChange={($event: CustomEvent) => this.togglePropertyAttribute($event, 'carbon')}></ion-checkbox>
+          <ion-label>Display line numbers</ion-label>
+          <ion-checkbox slot="end" checked={this.lineNumbers} onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
         </ion-item>
       </ion-list>
     ];

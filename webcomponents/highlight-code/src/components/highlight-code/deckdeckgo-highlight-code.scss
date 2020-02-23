@@ -39,7 +39,32 @@
 }
 
 :host(.deckgo-highlight-code-carbon) ::slotted([slot="code"]) {
-  color: var(deckgo-highlight-code-carbon-color, white);
+  color: var(--deckgo-highlight-code-carbon-color, white);
+}
+
+:host(.deckgo-highlight-code-ubuntu) {
+  display: var(--deckgo-highlight-code-ubuntu-display, block);
+  overflow: var(--deckgo-highlight-code-ubuntu-overflow, auto);
+  border: var(--deckgo-highlight-code-ubuntu-border);
+  border-radius: var(--deckgo-highlight-code-ubuntu-border-radius, 6px 6px 0 0);
+  background: var(--deckgo-highlight-code-ubuntu-background, rgba(56, 4, 40, 0.9));
+  color: var(--deckgo-highlight-code-ubuntu-color, #ddd);
+  box-shadow: var(--deckgo-highlight-code-ubuntu-box-shadow, 2px 4px 10px rgba(0, 0, 0, 0.5));
+  margin: var(--deckgo-highlight-code-ubuntu-margin, 16px 0);
+
+  div.deckgo-highlight-code-container {
+    margin: var(--deckgo-highlight-code-margin, 0 0 16px);
+    padding: var(--deckgo-highlight-code-padding, 2px 0 0);
+    background: transparent;
+
+    code {
+      font-family: var(--deckgo-highlight-code-font-family, "Ubuntu mono");
+    }
+  }
+}
+
+:host(.deckgo-highlight-code-ubuntu) ::slotted([slot="code"]) {
+  color: var(--deckgo-highlight-code-ubuntu-color, #ddd);
 }
 
 div.deckgo-highlight-code-container {
@@ -178,7 +203,7 @@ div.carbon {
 
   > div {
     width: var(--deckgo-highlight-code-carbon-header-button-width, 12px);
-    height: var(--deckgo-highlight-code-carbon-header-button-heeght, 12px);
+    height: var(--deckgo-highlight-code-carbon-header-button-height, 12px);
     border-radius: var(--deckgo-highlight-code-carbon-header-button-border-radius, 50%);
     margin: var(--deckgo-highlight-code-carbon-header-button-margin, 0 6px 0 0);
 
@@ -196,5 +221,57 @@ div.carbon {
       background: var(--deckgo-highlight-code-carbon-header-button-green-background, #27c93f);
       border: var(--deckgo-highlight-code-carbon-header-button-green-border, 0.5px solid #1aab29);
     }
+  }
+}
+
+div.ubuntu {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: var(--deckgo-highlight-code-ubuntu-header-padding, 0 8px);
+  height: var(--deckgo-highlight-code-ubuntu-header-height, 25px);
+
+  background: var(--deckgo-highlight-code-ubuntu-header-background, linear-gradient(#504b45 0%, #3c3b37 100%));
+
+  font-family: var(--deckgo-highlight-code-ubuntu-header-font-family, "Ubuntu");
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: var(--deckgo-highlight-code-carbon-header-button-width, 12px);
+    height: var(--deckgo-highlight-code-carbon-header-button-height, 12px);
+    border-radius: var(--deckgo-highlight-code-carbon-header-button-border-radius, 50%);
+    margin: var(--deckgo-highlight-code-carbon-header-button-margin, 0 4px 0 0);
+
+    font-size: var(--deckgo-highlight-code-carbon-header-button-font-size, 7px);
+
+    color: var(--deckgo-highlight-code-carbon-header-button-color, black);
+
+    text-shadow: var(--deckgo-highlight-code-carbon-header-button-text-shadow, 0px 1px 0px rgba(255, 255, 255, 0.2));
+    box-shadow: var(--deckgo-highlight-code-carbon-header-button-box-shadow, 0px 0px 1px 0px #41403a, 0px 1px 1px 0px #474642);
+
+    &.close {
+      background: var(--deckgo-highlight-code-carbon-header-button-close-background, linear-gradient(#f37458 0%, #de4c12 100%));
+      border: var(--deckgo-highlight-code-carbon-header-button-close-border);
+    }
+
+    &.minimize {
+      background: var(--deckgo-highlight-code-carbon-header-button-minimize-background, linear-gradient(#7d7871 0%, #595953 100%));
+      border: var(--deckgo-highlight-code-carbon-header-button-minimize-border);
+    }
+
+    &.maximize {
+      background: var(--deckgo-highlight-code-carbon-header-button-maximize-background, linear-gradient(#7d7871 0%, #595953 100%));
+      border: var(--deckgo-highlight-code-carbon-header-button-maximize-border);
+    }
+  }
+
+  > p {
+    color: var(--deckgo-highlight-code-carbon-header-user-color, #d5d0ce);
+    font-size: var(--deckgo-highlight-code-carbon-header-user-font-size, 12px);
+    line-height: var(--deckgo-highlight-code-carbon-header-user-line-height, 14px);
+    margin: var(--deckgo-highlight-code-carbon-header-user-margin, 0 0 1px 4px);
   }
 }
