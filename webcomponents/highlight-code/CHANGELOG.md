@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.3-1"></a>
+
+# 1.0.0-rc.3-1 (2020-02-23)
+
+- CSS variable misspelled
+- require @deckdeckgo/utils rc.3
+
 <a name="1.0.0-rc.3"></a>
 
 # 1.0.0-rc.3 (2020-02-23)
