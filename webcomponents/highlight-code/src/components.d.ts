@@ -15,7 +15,6 @@ export namespace Components {
   interface DeckgoHighlightCode {
     'anchor': string;
     'anchorZoom': string;
-    'carbon': string;
     'editable': boolean;
     'findNextAnchor': (enter: boolean) => Promise<DeckdeckgoHighlightCodeAnchor>;
     'hideAnchor': boolean;
@@ -24,6 +23,7 @@ export namespace Components {
     'lineNumbers': boolean;
     'load': () => Promise<void>;
     'src': string;
+    'terminal': 'carbon' | 'ubuntu' | 'none';
     'zoomCode': (zoom: boolean) => Promise<void>;
   }
 }
@@ -45,7 +45,6 @@ declare namespace LocalJSX {
   interface DeckgoHighlightCode {
     'anchor'?: string;
     'anchorZoom'?: string;
-    'carbon'?: string;
     'editable'?: boolean;
     'hideAnchor'?: boolean;
     'highlightLines'?: string;
@@ -54,6 +53,7 @@ declare namespace LocalJSX {
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onPrismLanguageLoaded'?: (event: CustomEvent<string>) => void;
     'src'?: string;
+    'terminal'?: 'carbon' | 'ubuntu' | 'none';
   }
 
   interface IntrinsicElements {
