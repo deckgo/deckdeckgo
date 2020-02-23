@@ -2,6 +2,8 @@ import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, St
 
 import Prism from 'prismjs';
 
+import {injectCSS} from '@deckdeckgo/utils';
+
 import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
 
 @Component({
@@ -35,6 +37,10 @@ export class DeckdeckgoHighlightCode {
   private anchorOffsetTop: number = 0;
 
   private fetchOrParseAfterUpdate: boolean = false;
+
+  async componentWillLoad() {
+    await this.loadGoogleFonts();
+  }
 
   async componentDidLoad() {
     const languageWasLoaded: boolean = await this.languageDidLoad();
@@ -137,6 +143,14 @@ export class DeckdeckgoHighlightCode {
   @Watch('terminal')
   async onCarbonChange() {
     this.fetchOrParseAfterUpdate = true;
+
+    await this.loadGoogleFonts();
+  }
+
+  private async loadGoogleFonts() {
+    if (this.terminal === 'ubuntu') {
+      await injectCSS('google-fonts-ubuntu', 'https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Mono&display=swap');
+    }
   }
 
   @Method()

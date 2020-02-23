@@ -48,13 +48,18 @@
   border: var(--deckgo-highlight-code-ubuntu-border);
   border-radius: var(--deckgo-highlight-code-ubuntu-border-radius, 6px 6px 0 0);
   background: var(--deckgo-highlight-code-ubuntu-background, rgba(56, 4, 40, 0.9));
-  color: var(--deckgo-highlight-code-ubuntu-color, white);
+  color: var(--deckgo-highlight-code-ubuntu-color, #ddd);
   box-shadow: var(--deckgo-highlight-code-ubuntu-box-shadow, 2px 4px 10px rgba(0, 0, 0, 0.5));
   margin: var(--deckgo-highlight-code-ubuntu-margin, 16px 0);
 
   div.deckgo-highlight-code-container {
     margin: var(--deckgo-highlight-code-margin, 0 0 16px);
     padding: var(--deckgo-highlight-code-padding, 2px 0 0);
+    background: transparent;
+
+    code {
+      font-family: var(--deckgo-highlight-code-font-family, "Ubuntu mono");
+    }
   }
 }
 
@@ -227,6 +232,8 @@ div.ubuntu {
   height: var(--deckgo-highlight-code-ubuntu-header-height, 25px);
 
   background: linear-gradient(#504b45 0%, #3c3b37 100%);
+
+  font-family: var(--deckgo-highlight-code-font-family, "Ubuntu");
 
   > div {
     display: flex;
