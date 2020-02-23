@@ -14,6 +14,15 @@ deckgo-deck ul,
 deckgo-deck deckgo-reveal-list,
 deckgo-deck deckgo-highlight-code {
   width: 100%;
+}
+
+deckgo-deck h1,
+deckgo-deck h2,
+deckgo-deck h3,
+deckgo-deck section,
+deckgo-deck ol,
+deckgo-deck ul,
+deckgo-deck deckgo-reveal-list {
   padding: 8px;
 }
 
