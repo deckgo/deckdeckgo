@@ -1,3 +1,9 @@
+# 1.0.0-rc.3-1 (2020-02-23)
+
+### Features
+
+- use `@deckdeckgo/highlight-code` with terminal Ubuntu
+
 # 1.0.0-rc.3 (2020-02-22)
 
 ### Features
