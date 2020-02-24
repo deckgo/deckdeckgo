@@ -453,6 +453,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement
       },
       mode: 'md',
+      showBackdrop: false,
       cssClass: 'popover-menu'
     });
 
@@ -483,6 +484,7 @@ export class AppActionsElement {
         slideDidChange: this.slideDidChange
       },
       mode: 'md',
+      showBackdrop: false,
       cssClass: 'popover-menu'
     });
 
@@ -512,6 +514,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement
       },
       mode: 'md',
+      showBackdrop: false,
       cssClass: 'popover-menu'
     });
 
@@ -533,6 +536,7 @@ export class AppActionsElement {
         imgDidChange: this.imgDidChange
       },
       mode: 'md',
+      showBackdrop: false,
       cssClass: 'popover-menu'
     });
 
@@ -572,6 +576,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement
       },
       mode: 'md',
+      showBackdrop: false,
       cssClass: 'popover-menu'
     });
 
@@ -596,6 +601,7 @@ export class AppActionsElement {
         codeDidChange: this.codeDidChange
       },
       mode: 'md',
+      showBackdrop: false,
       cssClass: 'popover-menu'
     });
 
@@ -822,6 +828,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement
       },
       mode: 'md',
+      showBackdrop: false,
       cssClass: `popover-menu ${this.slideNodeName === 'deckgo-slide-poll' ? 'popover-menu-wide' : ''}`
     });
 
