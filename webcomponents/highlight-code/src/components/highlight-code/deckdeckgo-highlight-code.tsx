@@ -2,6 +2,8 @@ import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, St
 
 import Prism from 'prismjs';
 
+import {injectCSS} from '@deckdeckgo/utils';
+
 import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
 
 @Component({
@@ -26,7 +28,7 @@ export class DeckdeckgoHighlightCode {
   @Prop({reflectToAttr: true}) highlightLines: string;
   @Prop({reflectToAttr: true}) lineNumbers: boolean = false;
 
-  @Prop({reflectToAttr: true}) carbon: string = 'true';
+  @Prop({reflectToAttr: true}) terminal: 'carbon' | 'ubuntu' | 'none' = 'carbon';
 
   @Prop() editable: boolean = false;
 
@@ -35,6 +37,10 @@ export class DeckdeckgoHighlightCode {
   private anchorOffsetTop: number = 0;
 
   private fetchOrParseAfterUpdate: boolean = false;
+
+  async componentWillLoad() {
+    await this.loadGoogleFonts();
+  }
 
   async componentDidLoad() {
     const languageWasLoaded: boolean = await this.languageDidLoad();
@@ -134,9 +140,17 @@ export class DeckdeckgoHighlightCode {
     await this.fetchOrParse();
   }
 
-  @Watch('carbon')
+  @Watch('terminal')
   async onCarbonChange() {
     this.fetchOrParseAfterUpdate = true;
+
+    await this.loadGoogleFonts();
+  }
+
+  private async loadGoogleFonts() {
+    if (this.terminal === 'ubuntu') {
+      await injectCSS('google-fonts-ubuntu', 'https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Mono&display=swap');
+    }
   }
 
   @Method()
@@ -532,9 +546,11 @@ export class DeckdeckgoHighlightCode {
       <Host
         class={{
           'deckgo-highlight-code-edit': this.editing,
-          'deckgo-highlight-code-carbon': this.carbon === 'true'
+          'deckgo-highlight-code-carbon': this.terminal === 'carbon',
+          'deckgo-highlight-code-ubuntu': this.terminal === 'ubuntu'
         }}>
         {this.renderCarbon()}
+        {this.renderUbuntu()}
         <div class="deckgo-highlight-code-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
           <code></code>
           <slot name="code"></slot>
@@ -544,7 +560,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   private renderCarbon() {
-    if (this.carbon !== 'true') {
+    if (this.terminal !== 'carbon') {
       return undefined;
     }
 
@@ -559,5 +575,28 @@ export class DeckdeckgoHighlightCode {
 
   private renderCarbonCircle(color: 'red' | 'yellow' | 'green') {
     return <div class={color}></div>;
+  }
+
+  private renderUbuntu() {
+    if (this.terminal !== 'ubuntu') {
+      return undefined;
+    }
+
+    return (
+      <div class="ubuntu">
+        {this.renderUbuntuCircle('close')}
+        {this.renderUbuntuCircle('minimize')}
+        {this.renderUbuntuCircle('maximize')}
+        <p>
+          <slot name="user"></slot>
+        </p>
+      </div>
+    );
+  }
+
+  private renderUbuntuCircle(mode: 'close' | 'minimize' | 'maximize') {
+    const symbol: string = mode === 'close' ? '&#10005;' : mode === 'minimize' ? '&#9472;' : '&#9723;';
+
+    return <div class={mode} innerHTML={symbol}></div>;
   }
 }
