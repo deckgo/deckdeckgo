@@ -202,7 +202,7 @@ app-create-slide {
 
     p {
       font-size: var(--font-size-small);
-      border: 1px dashed var(--ion-color-tertiary);
+      border: 1px solid var(--ion-color-secondary);
     }
 
     p[slot="content"],
