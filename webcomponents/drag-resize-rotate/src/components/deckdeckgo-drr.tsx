@@ -188,6 +188,71 @@ export class DeckdeckgoDragResizeRotate {
     await this.initStartPositions($event);
   };
 
+  private async initStartPositions($event: MouseEvent | TouchEvent) {
+    this.startX = unifyEvent($event).clientX;
+    this.startY = unifyEvent($event).clientY;
+
+    await this.initParentSize();
+
+    this.initStartPositionsMove();
+    this.initStartPositionsRotation();
+    this.initStartPositionsResize();
+  }
+
+  private initStartPositionsMove() {
+    this.startWidth = this.width;
+    this.startHeight = this.height;
+
+    this.startTop = this.top;
+    this.startLeft = this.left;
+  }
+
+  private initStartPositionsRotation() {
+    this.centerX = this.el.getBoundingClientRect().left + this.el.offsetWidth / 2;
+    this.centerY = this.el.getBoundingClientRect().top + this.el.offsetHeight / 2;
+  }
+
+  private initStartPositionsResize() {
+    const theta: number = (Math.PI * 2 * this.rotate) / 360;
+    const cos_t: number = Math.cos(theta);
+    const sin_t: number = Math.sin(theta);
+
+    const l: number = this.el.offsetLeft;
+    const t: number = this.el.offsetTop;
+    const w: number = this.el.offsetWidth;
+    const h: number = this.el.offsetHeight;
+
+    const matrix: ResizeMatrix = this.resizeMatrix();
+
+    const c0_x = l + w / 2.0;
+    const c0_y = t + h / 2.0;
+
+    const q0_x: number = l + matrix.a * w;
+    const q0_y: number = t + matrix.b * h;
+
+    const p0_x: number = l + matrix.c * w;
+    const p0_y: number = t + matrix.d * h;
+
+    this.qp0_x = q0_x * cos_t - q0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
+    this.qp0_y = q0_x * sin_t + q0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
+
+    this.pp_x = p0_x * cos_t - p0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
+    this.pp_y = p0_x * sin_t + p0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
+  }
+
+  private async initParentSize() {
+    // The deckgo-slide-aspect-ratio template exposes a getContainer function which return a reference to the effective container.
+    if (this.el.parentElement && typeof (this.el.parentElement as any).getContainer === 'function') {
+      const parent: HTMLElement = await (this.el.parentElement as any).getContainer();
+
+      this.parentWidth = this.unit === 'percentage' ? parent.offsetWidth : this.convertToUnit(parent.offsetWidth, 'width');
+      this.parentHeight = this.unit === 'percentage' ? parent.offsetHeight : this.convertToUnit(parent.offsetHeight, 'height');
+    } else {
+      this.parentWidth = this.unit === 'percentage' ? this.el.parentElement.offsetWidth : this.convertToUnit(this.el.parentElement.offsetWidth, 'width');
+      this.parentHeight = this.unit === 'percentage' ? this.el.parentElement.offsetHeight : this.convertToUnit(this.el.parentElement.offsetHeight, 'height');
+    }
+  }
+
   private transform = ($event: MouseEvent | TouchEvent) => {
     const moved: boolean = this.move($event);
     const resized: boolean = this.size($event);
@@ -331,71 +396,6 @@ export class DeckdeckgoDragResizeRotate {
     return this.unit === 'percentage' ? 100 : value;
   }
 
-  private async initStartPositions($event: MouseEvent | TouchEvent) {
-    this.startX = unifyEvent($event).clientX;
-    this.startY = unifyEvent($event).clientY;
-
-    await this.initParentSize();
-
-    this.initStartPositionsMove();
-    this.initStartPositionsRotation();
-    this.initStartPositionsResize();
-  }
-
-  private initStartPositionsMove() {
-    this.startWidth = this.width;
-    this.startHeight = this.height;
-
-    this.startTop = this.top;
-    this.startLeft = this.left;
-  }
-
-  private initStartPositionsRotation() {
-    this.centerX = this.el.getBoundingClientRect().left + this.el.offsetWidth / 2;
-    this.centerY = this.el.getBoundingClientRect().top + this.el.offsetHeight / 2;
-  }
-
-  private initStartPositionsResize() {
-    const theta: number = (Math.PI * 2 * this.rotate) / 360;
-    const cos_t: number = Math.cos(theta);
-    const sin_t: number = Math.sin(theta);
-
-    const l: number = this.el.offsetLeft;
-    const t: number = this.el.offsetTop;
-    const w: number = this.el.offsetWidth;
-    const h: number = this.el.offsetHeight;
-
-    const matrix: ResizeMatrix = this.resizeMatrix();
-
-    const c0_x = l + w / 2.0;
-    const c0_y = t + h / 2.0;
-
-    const q0_x: number = l + matrix.a * w;
-    const q0_y: number = t + matrix.b * h;
-
-    const p0_x: number = l + matrix.c * w;
-    const p0_y: number = t + matrix.d * h;
-
-    this.qp0_x = q0_x * cos_t - q0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
-    this.qp0_y = q0_x * sin_t + q0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
-
-    this.pp_x = p0_x * cos_t - p0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
-    this.pp_y = p0_x * sin_t + p0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
-  }
-
-  private async initParentSize() {
-    // The deckgo-slide-aspect-ratio template exposes a getContainer function which return a reference to the effective container.
-    if (this.el.parentElement && typeof (this.el.parentElement as any).getContainer === 'function') {
-      const parent: HTMLElement = await (this.el.parentElement as any).getContainer();
-
-      this.parentWidth = this.unit === 'percentage' ? parent.offsetWidth : this.convertToUnit(parent.offsetWidth, 'width');
-      this.parentHeight = this.unit === 'percentage' ? parent.offsetHeight : this.convertToUnit(parent.offsetHeight, 'height');
-    } else {
-      this.parentWidth = this.unit === 'percentage' ? this.el.parentElement.offsetWidth : this.convertToUnit(this.el.parentElement.offsetWidth, 'width');
-      this.parentHeight = this.unit === 'percentage' ? this.el.parentElement.offsetHeight : this.convertToUnit(this.el.parentElement.offsetHeight, 'height');
-    }
-  }
-
   private startMove() {
     if (this.dragBottomEnd || this.dragTopEnd || this.dragBottomStart || this.dragTopStart) {
       return;
@@ -461,8 +461,8 @@ export class DeckdeckgoDragResizeRotate {
   }
 
   private resizeMatrix(): ResizeMatrix {
-    const a: 0 | 1 = this.dragBottomEnd || this.dragTopEnd ? 1 : 0;
-    const b: 0 | 1 = this.dragBottomEnd || this.dragBottomStart ? 1 : 0;
+    const a: 0 | 1 = this.dragBottomEnd || this.dragTopEnd || this.dragEnd ? 1 : 0;
+    const b: 0 | 1 = this.dragBottomEnd || this.dragBottomStart || this.dragStart || this.dragBottom ? 1 : 0;
     const c: 0 | 1 = a === 1 ? 0 : 1;
     const d: 0 | 1 = b === 1 ? 0 : 1;
 
