@@ -373,8 +373,8 @@ export class DeckdeckgoDragResizeRotate {
     const currentY: number = unifyEvent($event).clientY;
 
     return {
-      x: currentX - this.startX,
-      y: currentY - this.startY
+      x: this.dragBottom || this.dragTop ? 0 : currentX - this.startX,
+      y: this.dragStart || this.dragEnd ? 0 : currentY - this.startY
     };
   }
 
