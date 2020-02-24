@@ -84,6 +84,7 @@ export class AppActionsDeck {
       component: 'app-create-slide',
       event: $event.detail,
       mode: 'md',
+      showBackdrop: false,
       cssClass: 'popover-menu popover-menu-wide'
     });
 

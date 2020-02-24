@@ -1,7 +1,7 @@
 ion-item-divider {
   button.info {
-    background: transparent;
-    border: 1px solid var(--ion-color-primary);
+    background: var(--ion-color-light);
+    border: 1px solid #dedede;
     border-radius: 50%;
     height: 1.5rem;
     width: 1.5rem;
@@ -10,7 +10,7 @@ ion-item-divider {
     outline: 0;
 
     ion-icon {
-      color: var(--ion-color-primary);
+      color: var(--ion-color-light-contrast);
     }
   }
 }
