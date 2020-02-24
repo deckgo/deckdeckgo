@@ -4,17 +4,18 @@ app-create-slide {
   }
 
   div.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-row-gap: 16px;
+    grid-column-gap: 16px;
+
+    width: calc(100% - 16px);
 
     div.item {
       border-radius: 8px;
       border: 1px solid var(--ion-color-primary);
-      margin: 8px 0;
-      width: calc(100% - 32px);
       height: 7rem;
+      overflow: hidden;
     }
 
     div.expand-charts {
@@ -110,7 +111,7 @@ app-create-slide {
     deckgo-slide-author,
     deckgo-slide-poll,
     deckgo-slide-aspect-ratio {
-      --slide-width: 216px;
+      --slide-width: 184px;
     }
 
     deckgo-slide-gif {

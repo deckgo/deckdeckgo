@@ -84,7 +84,7 @@ export class AppActionsDeck {
       component: 'app-create-slide',
       event: $event.detail,
       mode: 'md',
-      cssClass: 'popover-menu'
+      cssClass: 'popover-menu popover-menu-wide'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
