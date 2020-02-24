@@ -269,6 +269,23 @@ export class AppCreateSlide {
           </deckgo-slide-content>
         </div>
 
+        {this.renderShapes()}
+
+        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
+          <deckgo-slide-poll
+            class="showcase"
+            poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
+            poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
+            count-answers={3}
+            connectPollSocket={false}>
+            <p slot="question">Poll: engage your audience</p>
+            <p slot="answer-1">Yes</p>
+            <p slot="answer-2">No</p>
+            <p slot="answer-3">Don't know</p>
+            <p slot="awaiting-votes">Live votes with mobile devices</p>
+          </deckgo-slide-poll>
+        </div>
+
         <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
           <deckgo-slide-chart
             class="showcase"
@@ -305,22 +322,6 @@ export class AppCreateSlide {
             <p slot="social-link">Dev</p>
           </deckgo-slide-author>
         </div>
-
-        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
-          <deckgo-slide-poll
-            class="showcase"
-            poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
-            poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
-            count-answers={3}
-            connectPollSocket={false}>
-            <p slot="question">Poll: engage your audience</p>
-            <p slot="answer-1">Yes</p>
-            <p slot="answer-2">No</p>
-            <p slot="answer-3">Don't know</p>
-            <p slot="awaiting-votes">Live votes with mobile devices</p>
-          </deckgo-slide-poll>
-        </div>
-        {this.renderShapes()}
       </div>
     ];
   }
