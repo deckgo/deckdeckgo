@@ -2,9 +2,11 @@ import {Component, h, Host, Prop, State, Element, Event, EventEmitter} from '@st
 
 import {unifyEvent} from '@deckdeckgo/utils';
 
-enum ApplyOperation {
-  ADD,
-  SUBSTRACT
+interface ResizeMatrix {
+  a: 0 | 1;
+  b: 0 | 1;
+  c: 0 | 1;
+  d: 0 | 1;
 }
 
 @Component({
@@ -200,11 +202,11 @@ export class DeckdeckgoDragResizeRotate {
     }
 
     if (this.drag === 'x-axis') {
-      this.deltaMove($event, {left: ApplyOperation.ADD});
+      this.deltaMove($event, false, true);
     } else if (this.drag === 'y-axis') {
-      this.deltaMove($event, {top: ApplyOperation.ADD});
+      this.deltaMove($event, true, false);
     } else {
-      this.deltaMove($event, {top: ApplyOperation.ADD, left: ApplyOperation.ADD});
+      this.deltaMove($event, true, true);
     }
 
     return true;
@@ -237,18 +239,18 @@ export class DeckdeckgoDragResizeRotate {
     return true;
   }
 
-  private deltaMove($event: MouseEvent | TouchEvent, attr: {top?: ApplyOperation; left?: ApplyOperation}) {
+  private deltaMove($event: MouseEvent | TouchEvent, top: boolean, left: boolean) {
     const delta: {x: number; y: number} = this.getDelta($event);
 
     const deltaX: number = this.convertToUnit(delta.x, 'width');
     const deltaY: number = this.convertToUnit(delta.y, 'height');
 
-    if (attr.top === ApplyOperation.ADD) {
+    if (top) {
       const maxTop: number = this.convertParentUnit(this.parentHeight) - this.startHeight;
       this.top = this.startTop + deltaY > 0 ? (this.startTop + deltaY < maxTop ? this.startTop + deltaY : maxTop) : 0;
     }
 
-    if (attr.left === ApplyOperation.ADD) {
+    if (left) {
       const maxLeft: number = this.convertParentUnit(this.parentWidth) - this.startWidth;
       this.left = this.startLeft + deltaX > 0 ? (this.startLeft + deltaX < maxLeft ? this.startLeft + deltaX : maxLeft) : 0;
     }
@@ -273,16 +275,13 @@ export class DeckdeckgoDragResizeRotate {
     const p_x: number = this.pp_x * cos_mt - this.pp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
     const p_y: number = this.pp_x * sin_mt + this.pp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
 
-    const a: number = this.dragBottomEnd || this.dragTopEnd ? 1 : 0;
-    const b: number = this.dragBottomEnd || this.dragBottomStart ? 1 : 0;
-    const c: number = a === 1 ? 0 : 1;
-    const d: number = b === 1 ? 0 : 1;
+    const matrix: ResizeMatrix = this.resizeMatrix();
 
-    const l: number = c * q_x + a * p_x;
-    const t: number = d * q_y + b * p_y;
+    const l: number = matrix.c * q_x + matrix.a * p_x;
+    const t: number = matrix.d * q_y + matrix.b * p_y;
 
-    const w: number = a * (q_x - p_x) + c * (p_x - q_x);
-    const h: number = b * (q_y - p_y) + d * (p_y - q_y);
+    const w: number = matrix.a * (q_x - p_x) + matrix.c * (p_x - q_x);
+    const h: number = matrix.b * (q_y - p_y) + matrix.d * (p_y - q_y);
 
     this.left = this.convertToUnit(l, 'width');
     this.width = this.convertToUnit(w, 'width');
@@ -366,22 +365,19 @@ export class DeckdeckgoDragResizeRotate {
     const w: number = this.el.offsetWidth;
     const h: number = this.el.offsetHeight;
 
-    const a: number = this.dragBottomEnd || this.dragTopEnd ? 1 : 0;
-    const b: number = this.dragBottomEnd || this.dragBottomStart ? 1 : 0;
-    const c: number = a === 1 ? 0 : 1;
-    const d: number = b === 1 ? 0 : 1;
+    const matrix: ResizeMatrix = this.resizeMatrix();
 
     const c0_x = l + w / 2.0;
     const c0_y = t + h / 2.0;
 
-    const q0_x: number = l + a * w;
-    const q0_y: number = t + b * h;
+    const q0_x: number = l + matrix.a * w;
+    const q0_y: number = t + matrix.b * h;
+
+    const p0_x: number = l + matrix.c * w;
+    const p0_y: number = t + matrix.d * h;
 
     this.qp0_x = q0_x * cos_t - q0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
     this.qp0_y = q0_x * sin_t + q0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
-
-    const p0_x: number = l + c * w;
-    const p0_y: number = t + d * h;
 
     this.pp_x = p0_x * cos_t - p0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
     this.pp_y = p0_x * sin_t + p0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
@@ -462,6 +458,20 @@ export class DeckdeckgoDragResizeRotate {
 
     this.startWidth = null;
     this.startHeight = null;
+  }
+
+  private resizeMatrix(): ResizeMatrix {
+    const a: 0 | 1 = this.dragBottomEnd || this.dragTopEnd ? 1 : 0;
+    const b: 0 | 1 = this.dragBottomEnd || this.dragBottomStart ? 1 : 0;
+    const c: 0 | 1 = a === 1 ? 0 : 1;
+    const d: 0 | 1 = b === 1 ? 0 : 1;
+
+    return {
+      a,
+      b,
+      c,
+      d
+    };
   }
 
   render() {
