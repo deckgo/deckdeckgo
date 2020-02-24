@@ -85,7 +85,7 @@ export class AppActionsDeck {
       event: $event.detail,
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu'
+      cssClass: 'popover-menu popover-menu-wide'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -349,7 +349,6 @@ export class AppActionsDeck {
         deckDidChange: this.deckDidChange
       },
       mode: 'md',
-      showBackdrop: false,
       cssClass: 'popover-menu popover-menu-wide'
     });
 

@@ -213,7 +213,7 @@ export class AppCreateSlide {
           <ion-icon name="close"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <div class="container ion-margin-bottom">
+      <div class="container ion-margin-bottom ion-padding">
         <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
           <deckgo-slide-title class="showcase">
             <p slot="title">Title</p>
@@ -269,6 +269,23 @@ export class AppCreateSlide {
           </deckgo-slide-content>
         </div>
 
+        {this.renderShapes()}
+
+        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
+          <deckgo-slide-poll
+            class="showcase"
+            poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
+            poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
+            count-answers={3}
+            connectPollSocket={false}>
+            <p slot="question">Poll: engage your audience</p>
+            <p slot="answer-1">Yes</p>
+            <p slot="answer-2">No</p>
+            <p slot="answer-3">Don't know</p>
+            <p slot="awaiting-votes">Live votes with mobile devices</p>
+          </deckgo-slide-poll>
+        </div>
+
         <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
           <deckgo-slide-chart
             class="showcase"
@@ -284,9 +301,9 @@ export class AppCreateSlide {
             src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
             <p slot="title">Chart</p>
           </deckgo-slide-chart>
-        </div>
 
-        {this.renderCharts()}
+          {this.renderCharts()}
+        </div>
 
         <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
           <deckgo-slide-qrcode
@@ -305,22 +322,6 @@ export class AppCreateSlide {
             <p slot="social-link">Dev</p>
           </deckgo-slide-author>
         </div>
-
-        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
-          <deckgo-slide-poll
-            class="showcase"
-            poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
-            poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
-            count-answers={3}
-            connectPollSocket={false}>
-            <p slot="question">Poll: engage your audience</p>
-            <p slot="answer-1">Yes</p>
-            <p slot="answer-2">No</p>
-            <p slot="answer-3">Don't know</p>
-            <p slot="awaiting-votes">Live votes with mobile devices</p>
-          </deckgo-slide-poll>
-        </div>
-        {this.renderShapes()}
       </div>
     ];
   }

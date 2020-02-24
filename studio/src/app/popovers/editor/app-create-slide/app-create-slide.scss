@@ -1,27 +1,30 @@
 app-create-slide {
   ion-toolbar {
-    padding: 16px;
+    padding: 16px 16px 0;
   }
 
   div.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-row-gap: 16px;
+    grid-column-gap: 16px;
+
+    width: calc(100% - 16px);
 
     div.item {
       border-radius: 8px;
-      border: 1px solid var(--ion-color-primary);
-      margin: 8px 0;
-      width: calc(100% - 32px);
-      height: 7rem;
+      border: 1px solid var(--ion-color-light);
+      min-height: 7rem;
+      height: fit-content;
+      overflow: hidden;
+      box-shadow: 4px 4px 8px -4px rgba(var(--ion-color-medium-rgb), 0.2);
     }
 
     div.expand-charts {
       transition: max-height 0.7s ease-in-out;
       overflow: hidden;
       height: auto;
-      max-height: calc((5 * 126px) + 64px);
+      max-height: calc((5 * 132px) + 64px);
       width: 100%;
 
       display: flex;
@@ -51,7 +54,8 @@ app-create-slide {
         flex-wrap: wrap;
 
         div.item {
-          width: calc((100% - 32px) / 2);
+          width: calc((100% - 16px) / 2);
+          height: 8rem;
           margin: 4px 4px;
           background: white;
           font-size: 0.2rem;
@@ -89,6 +93,11 @@ app-create-slide {
       --slide-padding-end: 6px;
     }
 
+    deckgo-slide-qrcode,
+    deckgo-slide-chart {
+      --slide-padding-bottom: 4px;
+    }
+
     deckgo-slide-split {
       --slide-split-padding-top: 4px;
       --slide-split-padding-start: 4px;
@@ -110,11 +119,11 @@ app-create-slide {
     deckgo-slide-author,
     deckgo-slide-poll,
     deckgo-slide-aspect-ratio {
-      --slide-width: 216px;
+      --slide-width: 184px;
     }
 
     deckgo-slide-gif {
-      --slide-gif-height: 110px;
+      --slide-gif-height: 7rem;
     }
 
     deckgo-slide-author,
@@ -194,7 +203,7 @@ app-create-slide {
 
     p {
       font-size: var(--font-size-small);
-      border: 1px dashed var(--ion-color-tertiary);
+      border: 1px solid #dedede;
     }
 
     p[slot="content"],
@@ -244,6 +253,7 @@ app-create-slide {
 
     deckgo-slide-author {
       --slide-author-social-padding-top: 8px;
+      --slide-height: 7rem;
 
       @media screen and (max-width: 768px) {
         p:nth-child(n + 6) {
