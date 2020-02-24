@@ -219,23 +219,20 @@ export class DeckdeckgoDragResizeRotate {
       return false;
     }
 
-    if (this.dragBottomEnd) {
-      this.deltaResize($event);
-    } else if (this.dragTopEnd) {
-      // TODO
-    } else if (this.dragBottomStart) {
-      // TODO
-    } else if (this.dragTopStart) {
-      // TODO
-    } else if (this.dragTop) {
-      // TODO
-    } else if (this.dragEnd) {
-      // TODO
-    } else if (this.dragBottom) {
-      // TODO
-    } else if (this.dragStart) {
-      // TODO
+    if (
+      !this.dragBottomEnd &&
+      !this.dragTopEnd &&
+      !this.dragBottomStart &&
+      !this.dragTopStart &&
+      !this.dragTop &&
+      !this.dragEnd &&
+      !this.dragBottom &&
+      !this.dragStart
+    ) {
+      return false;
     }
+
+    this.deltaResize($event);
 
     return true;
   }
@@ -276,11 +273,22 @@ export class DeckdeckgoDragResizeRotate {
     const p_x: number = this.pp_x * cos_mt - this.pp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
     const p_y: number = this.pp_x * sin_mt + this.pp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
 
-    this.left = this.convertToUnit(p_x, 'width');
-    this.width = this.convertToUnit(q_x, 'width') - this.left;
+    const a: number = this.dragBottomEnd || this.dragTopEnd ? 1 : 0;
+    const b: number = this.dragBottomEnd || this.dragBottomStart ? 1 : 0;
+    const c: number = a === 1 ? 0 : 1;
+    const d: number = b === 1 ? 0 : 1;
 
-    this.top = this.convertToUnit(p_y, 'height');
-    this.height = this.convertToUnit(q_y, 'height') - this.top;
+    const l: number = c * q_x + a * p_x;
+    const t: number = d * q_y + b * p_y;
+
+    const w: number = a * (q_x - p_x) + c * (p_x - q_x);
+    const h: number = b * (q_y - p_y) + d * (p_y - q_y);
+
+    this.left = this.convertToUnit(l, 'width');
+    this.width = this.convertToUnit(w, 'width');
+
+    this.top = this.convertToUnit(t, 'height');
+    this.height = this.convertToUnit(h, 'height');
   }
 
   private rotateShape($event: MouseEvent | TouchEvent): boolean {
@@ -358,11 +366,25 @@ export class DeckdeckgoDragResizeRotate {
     const w: number = this.el.offsetWidth;
     const h: number = this.el.offsetHeight;
 
-    this.pp_x = (-w * cos_t + h * sin_t + 2 * l + w) / 2.0;
-    this.pp_y = (-w * sin_t - h * cos_t + 2 * t + h) / 2.0;
+    const a: number = this.dragBottomEnd || this.dragTopEnd ? 1 : 0;
+    const b: number = this.dragBottomEnd || this.dragBottomStart ? 1 : 0;
+    const c: number = a === 1 ? 0 : 1;
+    const d: number = b === 1 ? 0 : 1;
 
-    this.qp0_x = (w * cos_t - h * sin_t + w + 2.0 * l) / 2.0;
-    this.qp0_y = (w * sin_t + h * cos_t + h + 2.0 * t) / 2.0;
+    const c0_x = l + w / 2.0;
+    const c0_y = t + h / 2.0;
+
+    const q0_x: number = l + a * w;
+    const q0_y: number = t + b * h;
+
+    this.qp0_x = q0_x * cos_t - q0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
+    this.qp0_y = q0_x * sin_t + q0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
+
+    const p0_x: number = l + c * w;
+    const p0_y: number = t + d * h;
+
+    this.pp_x = p0_x * cos_t - p0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
+    this.pp_y = p0_x * sin_t + p0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
   }
 
   private async initParentSize() {
