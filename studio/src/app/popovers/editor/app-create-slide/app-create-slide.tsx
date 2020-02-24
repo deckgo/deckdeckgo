@@ -284,9 +284,9 @@ export class AppCreateSlide {
             src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
             <p slot="title">Chart</p>
           </deckgo-slide-chart>
-        </div>
 
-        {this.renderCharts()}
+          {this.renderCharts()}
+        </div>
 
         <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
           <deckgo-slide-qrcode

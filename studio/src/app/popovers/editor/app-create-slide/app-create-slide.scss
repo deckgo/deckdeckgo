@@ -14,7 +14,8 @@ app-create-slide {
     div.item {
       border-radius: 8px;
       border: 1px solid var(--ion-color-primary);
-      height: 7rem;
+      min-height: 7rem;
+      height: fit-content;
       overflow: hidden;
     }
 
@@ -22,7 +23,7 @@ app-create-slide {
       transition: max-height 0.7s ease-in-out;
       overflow: hidden;
       height: auto;
-      max-height: calc((5 * 126px) + 64px);
+      max-height: calc((5 * 132px) + 64px);
       width: 100%;
 
       display: flex;
@@ -52,7 +53,8 @@ app-create-slide {
         flex-wrap: wrap;
 
         div.item {
-          width: calc((100% - 32px) / 2);
+          width: calc((100% - 16px) / 2);
+          height: 8rem;
           margin: 4px 4px;
           background: white;
           font-size: 0.2rem;
