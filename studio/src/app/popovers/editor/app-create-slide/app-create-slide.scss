@@ -92,6 +92,11 @@ app-create-slide {
       --slide-padding-end: 6px;
     }
 
+    deckgo-slide-qrcode,
+    deckgo-slide-chart {
+      --slide-padding-bottom: 4px;
+    }
+
     deckgo-slide-split {
       --slide-split-padding-top: 4px;
       --slide-split-padding-start: 4px;
