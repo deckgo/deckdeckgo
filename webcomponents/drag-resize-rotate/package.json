@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/drag-resize-rotate",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "A Web Component to drag, resize and rotate any element",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

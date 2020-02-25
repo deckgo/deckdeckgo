@@ -1,3 +1,12 @@
+<a name="1.0.0-beta.3"></a>
+
+# 1.0.0-beta.3 (2020-02-25)
+
+### Fix
+
+- content sizing fit in Firefox
+- resize component in Safari ("no jump")
+
 <a name="1.0.0-beta.2"></a>
 
 # 1.0.0-beta.2 (2020-02-25)
