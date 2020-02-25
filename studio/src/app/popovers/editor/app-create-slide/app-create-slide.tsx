@@ -213,7 +213,7 @@ export class AppCreateSlide {
           <ion-icon name="close"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <div class="container ion-margin-bottom ion-padding">
+      <div class="container ion-margin-bottom ion-padding-start ion-padding-end">
         <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
           <deckgo-slide-title class="showcase">
             <p slot="title">Title</p>
