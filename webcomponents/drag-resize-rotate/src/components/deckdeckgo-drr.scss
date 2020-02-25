@@ -1,5 +1,8 @@
 :host {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   contain: size;
 
   width: var(--width);
