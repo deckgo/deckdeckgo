@@ -223,10 +223,12 @@ export class DeckdeckgoDragResizeRotate {
     const cos_t: number = Math.cos(theta);
     const sin_t: number = Math.sin(theta);
 
-    const l: number = this.el.offsetLeft;
-    const t: number = this.el.offsetTop;
-    const w: number = this.el.offsetWidth;
-    const h: number = this.el.offsetHeight;
+    const css: CSSStyleDeclaration = window.getComputedStyle(this.el);
+
+    const l: number = parseFloat(css.left);
+    const t: number = parseFloat(css.top);
+    const w: number = parseFloat(css.width);
+    const h: number = parseFloat(css.height);
 
     const matrix: ResizeMatrix = this.resizeMatrix();
 
