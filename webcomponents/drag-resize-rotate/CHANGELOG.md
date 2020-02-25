@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.2"></a>
+
+# 1.0.0-beta.2 (2020-02-25)
+
+### Features
+
+- sticky opposite corner on resizing (credits to @nmattia maths)
+
 <a name="1.0.0-beta.1"></a>
 
 # 1.0.0-beta.1 (2020-02-19)
