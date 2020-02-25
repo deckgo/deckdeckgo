@@ -2,9 +2,11 @@ import {Component, h, Host, Prop, State, Element, Event, EventEmitter} from '@st
 
 import {unifyEvent} from '@deckdeckgo/utils';
 
-enum ApplyOperation {
-  ADD,
-  SUBSTRACT
+interface ResizeMatrix {
+  a: 0 | 1;
+  b: 0 | 1;
+  c: 0 | 1;
+  d: 0 | 1;
 }
 
 @Component({
@@ -42,10 +44,10 @@ export class DeckdeckgoDragResizeRotate {
   private height: number;
 
   @State()
-  private minWidth: number = 5;
+  private minWidth: number = 10;
 
   @State()
-  private minHeight: number = 5;
+  private minHeight: number = 10;
 
   // Position
 
@@ -99,6 +101,12 @@ export class DeckdeckgoDragResizeRotate {
   private centerX: number = null;
   private centerY: number = null;
 
+  private qp0_x: number;
+  private qp0_y: number;
+
+  private pp_x: number;
+  private pp_y: number;
+
   async componentWillLoad() {
     await this.init();
 
@@ -147,9 +155,6 @@ export class DeckdeckgoDragResizeRotate {
       this.left = this.el.style.getPropertyValue('--left') ? parseFloat(this.el.style.getPropertyValue('--left')) : 0;
       this.rotate = this.el.style.getPropertyValue('--rotate') ? parseFloat(this.el.style.getPropertyValue('--rotate')) : 0;
 
-      this.minWidth = this.el.style.getPropertyValue('--min-width') ? parseFloat(this.el.style.getPropertyValue('--min-width')) : 5;
-      this.minHeight = this.el.style.getPropertyValue('--min-height') ? parseFloat(this.el.style.getPropertyValue('--min-height')) : 5;
-
       resolve();
     });
   }
@@ -189,6 +194,71 @@ export class DeckdeckgoDragResizeRotate {
     await this.initStartPositions($event);
   };
 
+  private async initStartPositions($event: MouseEvent | TouchEvent) {
+    this.startX = unifyEvent($event).clientX;
+    this.startY = unifyEvent($event).clientY;
+
+    await this.initParentSize();
+
+    this.initStartPositionsMove();
+    this.initStartPositionsRotation();
+    this.initStartPositionsResize();
+  }
+
+  private initStartPositionsMove() {
+    this.startWidth = this.width;
+    this.startHeight = this.height;
+
+    this.startTop = this.top;
+    this.startLeft = this.left;
+  }
+
+  private initStartPositionsRotation() {
+    this.centerX = this.el.getBoundingClientRect().left + this.el.offsetWidth / 2;
+    this.centerY = this.el.getBoundingClientRect().top + this.el.offsetHeight / 2;
+  }
+
+  private initStartPositionsResize() {
+    const theta: number = (Math.PI * 2 * this.rotate) / 360;
+    const cos_t: number = Math.cos(theta);
+    const sin_t: number = Math.sin(theta);
+
+    const l: number = this.el.offsetLeft;
+    const t: number = this.el.offsetTop;
+    const w: number = this.el.offsetWidth;
+    const h: number = this.el.offsetHeight;
+
+    const matrix: ResizeMatrix = this.resizeMatrix();
+
+    const c0_x = l + w / 2.0;
+    const c0_y = t + h / 2.0;
+
+    const q0_x: number = l + matrix.a * w;
+    const q0_y: number = t + matrix.b * h;
+
+    const p0_x: number = l + matrix.c * w;
+    const p0_y: number = t + matrix.d * h;
+
+    this.qp0_x = q0_x * cos_t - q0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
+    this.qp0_y = q0_x * sin_t + q0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
+
+    this.pp_x = p0_x * cos_t - p0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
+    this.pp_y = p0_x * sin_t + p0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
+  }
+
+  private async initParentSize() {
+    // The deckgo-slide-aspect-ratio template exposes a getContainer function which return a reference to the effective container.
+    if (this.el.parentElement && typeof (this.el.parentElement as any).getContainer === 'function') {
+      const parent: HTMLElement = await (this.el.parentElement as any).getContainer();
+
+      this.parentWidth = this.unit === 'percentage' ? parent.offsetWidth : this.convertToUnit(parent.offsetWidth, 'width');
+      this.parentHeight = this.unit === 'percentage' ? parent.offsetHeight : this.convertToUnit(parent.offsetHeight, 'height');
+    } else {
+      this.parentWidth = this.unit === 'percentage' ? this.el.parentElement.offsetWidth : this.convertToUnit(this.el.parentElement.offsetWidth, 'width');
+      this.parentHeight = this.unit === 'percentage' ? this.el.parentElement.offsetHeight : this.convertToUnit(this.el.parentElement.offsetHeight, 'height');
+    }
+  }
+
   private transform = ($event: MouseEvent | TouchEvent) => {
     const moved: boolean = this.move($event);
     const resized: boolean = this.size($event);
@@ -203,11 +273,11 @@ export class DeckdeckgoDragResizeRotate {
     }
 
     if (this.drag === 'x-axis') {
-      this.deltaMove($event, {left: ApplyOperation.ADD});
+      this.deltaMove($event, false, true);
     } else if (this.drag === 'y-axis') {
-      this.deltaMove($event, {top: ApplyOperation.ADD});
+      this.deltaMove($event, true, false);
     } else {
-      this.deltaMove($event, {top: ApplyOperation.ADD, left: ApplyOperation.ADD});
+      this.deltaMove($event, true, true);
     }
 
     return true;
@@ -218,100 +288,110 @@ export class DeckdeckgoDragResizeRotate {
       return false;
     }
 
-    if (!this.selected || !this.startX || !this.startY || !this.startWidth || !this.startHeight) {
+    if (!this.selected || !this.startX || !this.startY) {
       return false;
     }
 
-    if (this.dragBottomEnd) {
-      this.deltaResize($event, {width: ApplyOperation.ADD, height: ApplyOperation.ADD});
-    } else if (this.dragTopEnd) {
-      this.deltaResize($event, {width: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT, top: ApplyOperation.ADD});
-    } else if (this.dragBottomStart) {
-      this.deltaResize($event, {width: ApplyOperation.SUBSTRACT, height: ApplyOperation.ADD, left: ApplyOperation.ADD});
-    } else if (this.dragTopStart) {
-      this.deltaResize($event, {
-        width: ApplyOperation.SUBSTRACT,
-        top: ApplyOperation.ADD,
-        height: ApplyOperation.SUBSTRACT,
-        left: ApplyOperation.ADD
-      });
-    } else if (this.dragTop) {
-      this.deltaResize($event, {top: ApplyOperation.ADD, height: ApplyOperation.SUBSTRACT});
-    } else if (this.dragEnd) {
-      this.deltaResize($event, {width: ApplyOperation.ADD});
-    } else if (this.dragBottom) {
-      this.deltaResize($event, {height: ApplyOperation.ADD});
-    } else if (this.dragStart) {
-      this.deltaResize($event, {left: ApplyOperation.ADD, width: ApplyOperation.SUBSTRACT});
+    if (
+      !this.dragBottomEnd &&
+      !this.dragTopEnd &&
+      !this.dragBottomStart &&
+      !this.dragTopStart &&
+      !this.dragTop &&
+      !this.dragEnd &&
+      !this.dragBottom &&
+      !this.dragStart
+    ) {
+      return false;
     }
+
+    this.deltaResize($event);
 
     return true;
   }
 
-  private deltaMove($event: MouseEvent | TouchEvent, attr: {top?: ApplyOperation; left?: ApplyOperation}) {
+  private deltaMove($event: MouseEvent | TouchEvent, top: boolean, left: boolean) {
     const delta: {x: number; y: number} = this.getDelta($event);
 
-    if (attr.top === ApplyOperation.ADD) {
+    const deltaX: number = this.convertToUnit(delta.x, 'width');
+    const deltaY: number = this.convertToUnit(delta.y, 'height');
+
+    if (top) {
       const maxTop: number = this.convertParentUnit(this.parentHeight) - this.startHeight;
-      this.top = this.startTop + delta.y > 0 ? (this.startTop + delta.y < maxTop ? this.startTop + delta.y : maxTop) : 0;
+      this.top = this.startTop + deltaY > 0 ? (this.startTop + deltaY < maxTop ? this.startTop + deltaY : maxTop) : 0;
     }
 
-    if (attr.left === ApplyOperation.ADD) {
+    if (left) {
       const maxLeft: number = this.convertParentUnit(this.parentWidth) - this.startWidth;
-      this.left = this.startLeft + delta.x > 0 ? (this.startLeft + delta.x < maxLeft ? this.startLeft + delta.x : maxLeft) : 0;
+      this.left = this.startLeft + deltaX > 0 ? (this.startLeft + deltaX < maxLeft ? this.startLeft + deltaX : maxLeft) : 0;
     }
   }
 
-  private deltaResize($event: MouseEvent | TouchEvent, attr: {width?: ApplyOperation; height?: ApplyOperation; top?: ApplyOperation; left?: ApplyOperation}) {
+  private deltaResize($event: MouseEvent | TouchEvent) {
     const delta: {x: number; y: number} = this.getDelta($event);
 
-    if (attr.width === ApplyOperation.ADD) {
-      const maxWidth: number = this.convertParentUnit(this.parentWidth) - this.startLeft;
-      this.width = this.startWidth + delta.x > this.minWidth ? (this.startWidth + delta.x < maxWidth ? this.startWidth + delta.x : maxWidth) : this.minWidth;
-    } else if (attr.width === ApplyOperation.SUBSTRACT) {
-      const maxWidth: number = this.startLeft + this.startWidth;
-      this.width = this.startWidth - delta.x > this.minWidth ? (this.startWidth - delta.x < maxWidth ? this.startWidth - delta.x : maxWidth) : this.minWidth;
+    const qp_x: number = this.qp0_x + delta.x;
+    const qp_y: number = this.qp0_y + delta.y;
+
+    const cp_x: number = (qp_x + this.pp_x) / 2.0;
+    const cp_y: number = (qp_y + this.pp_y) / 2.0;
+
+    const mtheta: number = (-1 * Math.PI * 2 * this.rotate) / 360;
+    const cos_mt: number = Math.cos(mtheta);
+    const sin_mt: number = Math.sin(mtheta);
+
+    let q_x: number = qp_x * cos_mt - qp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
+    let q_y: number = qp_x * sin_mt + qp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
+
+    let p_x: number = this.pp_x * cos_mt - this.pp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
+    let p_y: number = this.pp_x * sin_mt + this.pp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
+
+    const matrix: ResizeMatrix = this.resizeMatrix();
+
+    const wtmp: number = matrix.a * (q_x - p_x) + matrix.c * (p_x - q_x);
+    const htmp: number = matrix.b * (q_y - p_y) + matrix.d * (p_y - q_y);
+
+    let w: number;
+    let h: number;
+
+    if (wtmp < this.minWidth || htmp < this.minHeight) {
+      w = Math.max(this.minWidth, wtmp);
+      h = Math.max(this.minHeight, htmp);
+
+      const theta: number = -1 * mtheta;
+      const cos_t: number = Math.cos(theta);
+      const sin_t: number = Math.sin(theta);
+
+      const dh_x: number = -sin_t * h;
+      const dh_y: number = cos_t * h;
+
+      const dw_x: number = cos_t * w;
+      const dw_y: number = sin_t * w;
+
+      const qp_x_min: number = this.pp_x + (matrix.a - matrix.c) * dw_x + (matrix.b - matrix.d) * dh_x;
+      const qp_y_min: number = this.pp_y + (matrix.a - matrix.c) * dw_y + (matrix.b - matrix.d) * dh_y;
+
+      const cp_x_min: number = (qp_x_min + this.pp_x) / 2.0;
+      const cp_y_min: number = (qp_y_min + this.pp_y) / 2.0;
+
+      q_x = qp_x_min * cos_mt - qp_y_min * sin_mt - cos_mt * cp_x_min + sin_mt * cp_y_min + cp_x_min;
+      q_y = qp_x_min * sin_mt + qp_y_min * cos_mt - sin_mt * cp_x_min - cos_mt * cp_y_min + cp_y_min;
+
+      p_x = this.pp_x * cos_mt - this.pp_y * sin_mt - cos_mt * cp_x_min + sin_mt * cp_y_min + cp_x_min;
+      p_y = this.pp_x * sin_mt + this.pp_y * cos_mt - sin_mt * cp_x_min - cos_mt * cp_y_min + cp_y_min;
+    } else {
+      w = wtmp;
+      h = htmp;
     }
 
-    if (attr.height === ApplyOperation.ADD) {
-      const maxHeight: number = this.convertParentUnit(this.parentHeight) - this.startTop;
-      this.height =
-        this.startHeight + delta.y > this.minHeight ? (this.startHeight + delta.y < maxHeight ? this.startHeight + delta.y : maxHeight) : this.minHeight;
-    } else if (attr.height === ApplyOperation.SUBSTRACT) {
-      const maxHeight: number = this.startTop + this.startHeight;
-      this.height =
-        this.startHeight - delta.y > this.minHeight ? (this.startHeight - delta.y < maxHeight ? this.startHeight - delta.y : maxHeight) : this.minHeight;
-    }
+    const l: number = matrix.c * q_x + matrix.a * p_x;
+    const t: number = matrix.d * q_y + matrix.b * p_y;
 
-    if (attr.top === ApplyOperation.ADD) {
-      const maxTop: number = this.startTop + this.startHeight - this.minHeight;
-      this.top = this.startTop + delta.y > 0 ? (this.startTop + delta.y < maxTop ? this.startTop + delta.y : maxTop) : 0;
-    }
+    this.left = this.convertToUnit(l, 'width');
+    this.width = this.convertToUnit(w, 'width');
 
-    if (attr.left === ApplyOperation.ADD) {
-      const maxLeft: number = this.startLeft + this.startWidth - this.minWidth;
-      this.left = this.startLeft + delta.x > 0 ? (this.startLeft + delta.x < maxLeft ? this.startLeft + delta.x : maxLeft) : 0;
-    }
-
-    // TODO: Resize stick corner
-    // const currentX: number = unifyEvent($event).clientX;
-    // const currentY: number = unifyEvent($event).clientY;
-    //
-    // const phi: number = this.rotate !== undefined ? (this.rotate * Math.PI) / 180 : 0;
-    //
-    // const a = currentX;
-    // const b = -2 * (Math.cos(phi) * Math.sin(phi) * currentY);
-    // const c = -1 * Math.cos(phi) * this.width;
-    // const d = -1 * Math.sin(phi) * this.height;
-    //
-    // this.left = a + b + c + d;
-    //
-    // const e = 2 * (Math.cos(phi) * Math.sin(phi) * currentX);
-    // const f = currentY;
-    // const g = -1  * Math.cos(phi) * this.height;
-    // const h = -1 * Math.sin(phi) * this.width;
-    //
-    // this.top = -1 * (e + f + g + h);
+    this.top = this.convertToUnit(t, 'height');
+    this.height = this.convertToUnit(h, 'height');
   }
 
   private rotateShape($event: MouseEvent | TouchEvent): boolean {
@@ -331,12 +411,9 @@ export class DeckdeckgoDragResizeRotate {
     const currentX: number = unifyEvent($event).clientX;
     const currentY: number = unifyEvent($event).clientY;
 
-    const deltaX: number = this.convertToUnit(currentX - this.startX, 'width');
-    const deltaY: number = this.convertToUnit(currentY - this.startY, 'height');
-
     return {
-      x: deltaX,
-      y: deltaY
+      x: this.dragBottom || this.dragTop ? 0 : currentX - this.startX,
+      y: this.dragStart || this.dragEnd ? 0 : currentY - this.startY
     };
   }
 
@@ -356,35 +433,6 @@ export class DeckdeckgoDragResizeRotate {
 
   private convertParentUnit(value: number): number {
     return this.unit === 'percentage' ? 100 : value;
-  }
-
-  private async initStartPositions($event: MouseEvent | TouchEvent) {
-    this.startX = unifyEvent($event).clientX;
-    this.startY = unifyEvent($event).clientY;
-
-    this.startWidth = this.width;
-    this.startHeight = this.height;
-
-    this.startTop = this.top;
-    this.startLeft = this.left;
-
-    await this.initParentSize();
-
-    this.centerX = this.el.getBoundingClientRect().left + this.el.offsetWidth / 2;
-    this.centerY = this.el.getBoundingClientRect().top + this.el.offsetHeight / 2;
-  }
-
-  private async initParentSize() {
-    // The deckgo-slide-aspect-ratio template exposes a getContainer function which return a reference to the effective container.
-    if (this.el.parentElement && typeof (this.el.parentElement as any).getContainer === 'function') {
-      const parent: HTMLElement = await (this.el.parentElement as any).getContainer();
-
-      this.parentWidth = this.unit === 'percentage' ? parent.offsetWidth : this.convertToUnit(parent.offsetWidth, 'width');
-      this.parentHeight = this.unit === 'percentage' ? parent.offsetHeight : this.convertToUnit(parent.offsetHeight, 'height');
-    } else {
-      this.parentWidth = this.unit === 'percentage' ? this.el.parentElement.offsetWidth : this.convertToUnit(this.el.parentElement.offsetWidth, 'width');
-      this.parentHeight = this.unit === 'percentage' ? this.el.parentElement.offsetHeight : this.convertToUnit(this.el.parentElement.offsetHeight, 'height');
-    }
   }
 
   private startMove() {
@@ -449,6 +497,20 @@ export class DeckdeckgoDragResizeRotate {
 
     this.startWidth = null;
     this.startHeight = null;
+  }
+
+  private resizeMatrix(): ResizeMatrix {
+    const a: 0 | 1 = this.dragBottomEnd || this.dragTopEnd || this.dragEnd ? 1 : 0;
+    const b: 0 | 1 = this.dragBottomEnd || this.dragBottomStart || this.dragStart || this.dragBottom ? 1 : 0;
+    const c: 0 | 1 = a === 1 ? 0 : 1;
+    const d: 0 | 1 = b === 1 ? 0 : 1;
+
+    return {
+      a,
+      b,
+      c,
+      d
+    };
   }
 
   render() {
