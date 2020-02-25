@@ -278,11 +278,11 @@ export class AppCreateSlide {
             poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
             count-answers={3}
             connectPollSocket={false}>
-            <p slot="question">Poll: engage your audience</p>
+            <p slot="question">Poll: Engage Your Audience</p>
             <p slot="answer-1">Yes</p>
             <p slot="answer-2">No</p>
             <p slot="answer-3">Don't know</p>
-            <p slot="awaiting-votes">Live votes with mobile devices</p>
+            <p slot="awaiting-votes">Live Votes With Mobile Devices</p>
           </deckgo-slide-poll>
         </div>
 
@@ -316,7 +316,7 @@ export class AppCreateSlide {
         <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
           <deckgo-slide-author class="showcase" img-src={this.photoUrl} img-alt="Author">
             <p slot="title">Author</p>
-            <p slot="author">About yourself</p>
+            <p slot="author">About Yourself</p>
             <p slot="social-link">Twitter</p>
             <p slot="social-link">LinkedIn</p>
             <p slot="social-link">Dev</p>
