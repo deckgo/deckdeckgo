@@ -43,6 +43,12 @@ export class DeckdeckgoDragResizeRotate {
   @State()
   private height: number;
 
+  @State()
+  private minWidth: number = 10;
+
+  @State()
+  private minHeight: number = 10;
+
   // Position
 
   @State()
@@ -334,19 +340,52 @@ export class DeckdeckgoDragResizeRotate {
     const cos_mt: number = Math.cos(mtheta);
     const sin_mt: number = Math.sin(mtheta);
 
-    const q_x: number = qp_x * cos_mt - qp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
-    const q_y: number = qp_x * sin_mt + qp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
+    let q_x: number = qp_x * cos_mt - qp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
+    let q_y: number = qp_x * sin_mt + qp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
 
-    const p_x: number = this.pp_x * cos_mt - this.pp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
-    const p_y: number = this.pp_x * sin_mt + this.pp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
+    let p_x: number = this.pp_x * cos_mt - this.pp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
+    let p_y: number = this.pp_x * sin_mt + this.pp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
 
     const matrix: ResizeMatrix = this.resizeMatrix();
 
+    const wtmp: number = matrix.a * (q_x - p_x) + matrix.c * (p_x - q_x);
+    const htmp: number = matrix.b * (q_y - p_y) + matrix.d * (p_y - q_y);
+
+    let w: number;
+    let h: number;
+
+    if (wtmp < this.minWidth || htmp < this.minHeight) {
+      w = Math.max(this.minWidth, wtmp);
+      h = Math.max(this.minHeight, htmp);
+
+      const theta: number = -1 * mtheta;
+      const cos_t: number = Math.cos(theta);
+      const sin_t: number = Math.sin(theta);
+
+      const dh_x: number = -sin_t * h;
+      const dh_y: number = cos_t * h;
+
+      const dw_x: number = cos_t * w;
+      const dw_y: number = sin_t * w;
+
+      const qp_x_min: number = this.pp_x + (matrix.a - matrix.c) * dw_x + (matrix.b - matrix.d) * dh_x;
+      const qp_y_min: number = this.pp_y + (matrix.a - matrix.c) * dw_y + (matrix.b - matrix.d) * dh_y;
+
+      const cp_x_min: number = (qp_x_min + this.pp_x) / 2.0;
+      const cp_y_min: number = (qp_y_min + this.pp_y) / 2.0;
+
+      q_x = qp_x_min * cos_mt - qp_y_min * sin_mt - cos_mt * cp_x_min + sin_mt * cp_y_min + cp_x_min;
+      q_y = qp_x_min * sin_mt + qp_y_min * cos_mt - sin_mt * cp_x_min - cos_mt * cp_y_min + cp_y_min;
+
+      p_x = this.pp_x * cos_mt - this.pp_y * sin_mt - cos_mt * cp_x_min + sin_mt * cp_y_min + cp_x_min;
+      p_y = this.pp_x * sin_mt + this.pp_y * cos_mt - sin_mt * cp_x_min - cos_mt * cp_y_min + cp_y_min;
+    } else {
+      w = wtmp;
+      h = htmp;
+    }
+
     const l: number = matrix.c * q_x + matrix.a * p_x;
     const t: number = matrix.d * q_y + matrix.b * p_y;
-
-    const w: number = matrix.a * (q_x - p_x) + matrix.c * (p_x - q_x);
-    const h: number = matrix.b * (q_y - p_y) + matrix.d * (p_y - q_y);
 
     this.left = this.convertToUnit(l, 'width');
     this.width = this.convertToUnit(w, 'width');
