@@ -86,7 +86,7 @@ export class AppComponentsHighlightCode {
           <p>Carbon terminal card:</p>
           <deckgo-highlight-code language="java">
             <code slot="code">
-              public static void main(String args[]) &#123; {'\n'} System.out.println(&quot;Hello World&quot;);{'\n'}&#125;
+              public static void main(String args[]) &#123;{'\n'} System.out.println(&quot;Hello World&quot;);{'\n'}&#125;
             </code>
           </deckgo-highlight-code>
           <div class="ion-padding-top">Ubuntu terminal card:</div>
