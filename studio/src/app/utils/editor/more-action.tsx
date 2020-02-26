@@ -5,5 +5,8 @@ export enum MoreAction {
   SHARE,
   PUBLISH,
   STYLE,
-  EMBED
+  EMBED,
+  COPY,
+  NOTES,
+  DELETE
 }

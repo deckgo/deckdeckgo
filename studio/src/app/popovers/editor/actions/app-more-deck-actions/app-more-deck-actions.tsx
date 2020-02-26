@@ -5,10 +5,10 @@ import {isMobile} from '@deckdeckgo/utils';
 import {MoreAction} from '../../../../utils/editor/more-action';
 
 @Component({
-  tag: 'app-more-actions',
-  styleUrl: 'app-more-actions.scss'
+  tag: 'app-more-deck-actions',
+  styleUrl: 'app-more-deck-actions.scss'
 })
-export class AppMoreActions {
+export class AppMoreDeckActions {
   @Element() el: HTMLElement;
 
   @State()
@@ -31,14 +31,14 @@ export class AppMoreActions {
   render() {
     return (
       <div class="ion-padding">
-        <a onClick={() => this.closePopover(MoreAction.JUMP_TO)}>
+        <a onClick={() => this.closePopover(MoreAction.JUMP_TO)} aria-label="Jump to slide">
           <p>Slides</p>
         </a>
-        <a onClick={() => this.closePopover(MoreAction.STYLE)}>
+        <a onClick={() => this.closePopover(MoreAction.STYLE)} aria-label="Style">
           <p>Style</p>
         </a>
         {this.renderFullscreenOption()}
-        <a onClick={() => this.closePopover(MoreAction.REMOTE)}>
+        <a onClick={() => this.closePopover(MoreAction.REMOTE)} aria-label="Remote control">
           <p>Remote control</p>
         </a>
         <app-share-options onSelectedOption={($event: CustomEvent<MoreAction>) => this.closeSharePopover($event)}></app-share-options>

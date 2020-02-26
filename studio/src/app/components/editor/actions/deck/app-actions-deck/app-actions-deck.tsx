@@ -274,13 +274,13 @@ export class AppActionsDeck {
     await modal.present();
   }
 
-  async openMoreActions($event: UIEvent) {
+  private async openMoreActions($event: UIEvent) {
     if (!$event || !$event.detail) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-more-actions',
+      component: 'app-more-deck-actions',
       event: $event,
       mode: 'ios'
     });
