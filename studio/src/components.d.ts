@@ -218,7 +218,11 @@ export namespace Components {
   interface AppLandingFooter {}
   interface AppLogo {}
   interface AppMenu {}
-  interface AppMoreActions {}
+  interface AppMoreDeckActions {}
+  interface AppMoreElementActions {
+    'copy': boolean;
+    'notes': boolean;
+  }
   interface AppMoreShareOptions {}
   interface AppNavigation {
     'menuToggle': boolean;
@@ -641,10 +645,16 @@ declare global {
     new (): HTMLAppMenuElement;
   };
 
-  interface HTMLAppMoreActionsElement extends Components.AppMoreActions, HTMLStencilElement {}
-  var HTMLAppMoreActionsElement: {
-    prototype: HTMLAppMoreActionsElement;
-    new (): HTMLAppMoreActionsElement;
+  interface HTMLAppMoreDeckActionsElement extends Components.AppMoreDeckActions, HTMLStencilElement {}
+  var HTMLAppMoreDeckActionsElement: {
+    prototype: HTMLAppMoreDeckActionsElement;
+    new (): HTMLAppMoreDeckActionsElement;
+  };
+
+  interface HTMLAppMoreElementActionsElement extends Components.AppMoreElementActions, HTMLStencilElement {}
+  var HTMLAppMoreElementActionsElement: {
+    prototype: HTMLAppMoreElementActionsElement;
+    new (): HTMLAppMoreElementActionsElement;
   };
 
   interface HTMLAppMoreShareOptionsElement extends Components.AppMoreShareOptions, HTMLStencilElement {}
@@ -912,7 +922,8 @@ declare global {
     'app-landing-footer': HTMLAppLandingFooterElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
-    'app-more-actions': HTMLAppMoreActionsElement;
+    'app-more-deck-actions': HTMLAppMoreDeckActionsElement;
+    'app-more-element-actions': HTMLAppMoreElementActionsElement;
     'app-more-share-options': HTMLAppMoreShareOptionsElement;
     'app-navigation': HTMLAppNavigationElement;
     'app-navigation-actions': HTMLAppNavigationActionsElement;
@@ -1162,7 +1173,11 @@ declare namespace LocalJSX {
   interface AppLandingFooter {}
   interface AppLogo {}
   interface AppMenu {}
-  interface AppMoreActions {}
+  interface AppMoreDeckActions {}
+  interface AppMoreElementActions {
+    'copy'?: boolean;
+    'notes'?: boolean;
+  }
   interface AppMoreShareOptions {}
   interface AppNavigation {
     'menuToggle'?: boolean;
@@ -1314,7 +1329,8 @@ declare namespace LocalJSX {
     'app-landing-footer': AppLandingFooter;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
-    'app-more-actions': AppMoreActions;
+    'app-more-deck-actions': AppMoreDeckActions;
+    'app-more-element-actions': AppMoreElementActions;
     'app-more-share-options': AppMoreShareOptions;
     'app-navigation': AppNavigation;
     'app-navigation-actions': AppNavigationActions;
@@ -1414,7 +1430,8 @@ declare module "@stencil/core" {
       'app-landing-footer': LocalJSX.AppLandingFooter & JSXBase.HTMLAttributes<HTMLAppLandingFooterElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-menu': LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
-      'app-more-actions': LocalJSX.AppMoreActions & JSXBase.HTMLAttributes<HTMLAppMoreActionsElement>;
+      'app-more-deck-actions': LocalJSX.AppMoreDeckActions & JSXBase.HTMLAttributes<HTMLAppMoreDeckActionsElement>;
+      'app-more-element-actions': LocalJSX.AppMoreElementActions & JSXBase.HTMLAttributes<HTMLAppMoreElementActionsElement>;
       'app-more-share-options': LocalJSX.AppMoreShareOptions & JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement>;
       'app-navigation': LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
       'app-navigation-actions': LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;

@@ -15,6 +15,7 @@ import {SlotType} from '../../../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 
 import {EditAction} from '../../../../../utils/editor/edit-action';
+import {MoreAction} from '../../../../../utils/editor/more-action';
 
 import {BusyService} from '../../../../../services/editor/busy/busy.service';
 
@@ -940,6 +941,36 @@ export class AppActionsElement {
     );
   }
 
+  private async openMoreActions($event: UIEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
+
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-more-element-actions',
+      componentProps: {
+        notes: this.slide,
+        copy: this.slide || this.shape
+      },
+      event: $event,
+      mode: 'ios'
+    });
+
+    popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+      if (detail && detail.data) {
+        if (detail.data.action === MoreAction.NOTES) {
+          await this.openNotes();
+        } else if (detail.data.action === MoreAction.COPY) {
+          await this.clone();
+        } else if (detail.data.action === MoreAction.DELETE) {
+          await this.confirmDeleteElement($event);
+        }
+      }
+    });
+
+    await popover.present();
+  }
+
   render() {
     return (
       <ion-toolbar>
@@ -957,6 +988,7 @@ export class AppActionsElement {
           {this.renderNotes()}
           {this.renderCopy()}
           {this.renderDelete()}
+          {this.renderMore()}
         </ion-buttons>
       </ion-toolbar>
     );
@@ -969,7 +1001,8 @@ export class AppActionsElement {
         aria-label="Delete"
         color="primary"
         mode="md"
-        disabled={this.deckBusy && this.slide}>
+        disabled={this.deckBusy && this.slide}
+        class="wider-devices">
         <ion-icon name="trash-outline"></ion-icon>
         <ion-label>Delete</ion-label>
       </ion-tab-button>
@@ -977,7 +1010,7 @@ export class AppActionsElement {
   }
 
   private renderNotes() {
-    const classElement: string | undefined = this.slide ? undefined : 'hidden';
+    const classElement: string | undefined = `wider-devices ${this.slide ? '' : 'hidden'}`;
 
     return (
       <ion-tab-button onClick={() => this.openNotes()} aria-label="Notes" color="primary" mode="md" disabled={this.deckBusy} class={classElement}>
@@ -988,7 +1021,7 @@ export class AppActionsElement {
   }
 
   private renderCopy() {
-    const classSlide: string | undefined = this.slide || this.shape ? undefined : 'hidden';
+    const classSlide: string | undefined = `wider-devices ${this.slide || this.shape ? '' : 'hidden'}`;
 
     return (
       <ion-tab-button onClick={() => this.clone()} aria-label="Copy" color="primary" mode="md" disabled={this.deckBusy} class={classSlide}>
@@ -1092,5 +1125,14 @@ export class AppActionsElement {
         <ion-label>Ordered list</ion-label>
       </ion-tab-button>
     ];
+  }
+
+  private renderMore() {
+    return (
+      <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} disabled={this.deckBusy} color="primary" class="small-devices" mode="md">
+        <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
+        <ion-label>More</ion-label>
+      </ion-tab-button>
+    );
   }
 }
