@@ -107,21 +107,21 @@ body.dark {
     app-footer {
       div.footer-container {
         section > ion-label {
-          color: var(--ion-color-dark-contrast);
+          color: var(--ion-color-dark-menu-contrast);
         }
 
         ion-router-link {
-          color: var(--ion-color-dark-contrast);
+          color: var(--ion-color-dark-menu-contrast);
 
           &:hover,
           &.active {
-            color: var(--ion-color-dark-contrast);
+            color: var(--ion-color-dark-menu-contrast);
           }
         }
 
         div.social {
           ion-icon {
-            color: var(--ion-color-dark-contrast);
+            color: var(--ion-color-dark-menu-contrast);
           }
         }
       }
