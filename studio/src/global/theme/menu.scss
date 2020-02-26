@@ -85,11 +85,11 @@ ion-menu {
 
 body.dark {
   ion-menu {
-    --background: var(--ion-color-dark);
-    --ion-background-color: var(--ion-color-dark);
+    --background: var(--ion-color-dark-menu);
+    --ion-background-color: var(--ion-color-dark-menu);
 
     ion-item-divider {
-      color: var(--ion-color-dark-contrast);
+      color: var(--ion-color-dark-menu-contrast);
     }
 
     ion-content {
@@ -97,25 +97,25 @@ body.dark {
 
       ion-list {
         ion-item-divider {
-          background: var(--ion-color-dark);
-          --color: var(--ion-color-dark-contrast);
+          background: var(--ion-color-dark-menu);
+          --color: var(--ion-color-dark-menu-contrast);
         }
 
         ion-item {
-          --color: var(--ion-color-dark-contrast);
+          --color: var(--ion-color-dark-menu-contrast);
 
-          --background-activated: var(--ion-color-dark);
-          --background-hover: var(--ion-color-dark);
+          --background-activated: var(--ion-color-dark-menu);
+          --background-hover: var(--ion-color-dark-menu);
 
           ion-icon {
-            color: var(--ion-color-dark-contrast);
+            color: var(--ion-color-dark-menu-contrast);
           }
 
           &.ion-activatable:not(.deck) {
-            --color: var(--ion-color-dark-contrast);
+            --color: var(--ion-color-dark-menu-contrast);
 
             ion-icon {
-              color: var(--ion-color-dark-contrast);
+              color: var(--ion-color-dark-menu-contrast);
             }
           }
         }
