@@ -217,7 +217,7 @@ app-create-slide {
         ion-skeleton-text {
           background: var(--ion-color-medium);
 
-          height: 10px;
+          height: 12px;
           margin: 2px 0;
         }
 
@@ -262,7 +262,7 @@ app-create-slide {
           color: var(--ion-color-medium-contrast);
           padding: 2px 8px;
 
-          width: 90%;
+          width: 86%;
 
           font-weight: 500;
         }
@@ -329,11 +329,16 @@ app-create-slide {
         }
       }
 
+      deckgo-slide-aspect-ratio,
+      deckgo-slide-chart {
+        --slide-width: 100%;
+      }
+
       deckgo-slide-aspect-ratio {
-        --slide-padding-top: 32px;
-        --slide-padding-bottom: 32px;
-        --slide-padding-end: 16px;
-        --slide-padding-start: 16px;
+        --slide-padding-top: 4px;
+        --slide-padding-bottom: 4px;
+        --slide-padding-end: 4px;
+        --slide-padding-start: 4px;
 
         --slide-grid-background-size: 16px 16px;
 
@@ -345,13 +350,13 @@ app-create-slide {
 
           &.robot,
           &.desktop {
-            --deckgo-lazy-img-width: 30px;
+            --deckgo-lazy-img-width: 18px;
             left: 4%;
           }
 
           &.database,
           &.envelope {
-            --deckgo-lazy-img-width: 20px;
+            --deckgo-lazy-img-width: 14px;
             right: 4%;
           }
 
@@ -360,9 +365,12 @@ app-create-slide {
             top: 4%;
           }
 
-          &.desktop,
-          &.envelope {
+          &.desktop {
             bottom: 4%;
+          }
+
+          &.envelope {
+            bottom: 0;
           }
 
           &.arrow-start,
@@ -389,11 +397,11 @@ app-create-slide {
           }
 
           &.arrow-end-bottom {
-            transform: translate(0, 25%) rotate(45deg);
+            transform: translate(0, 25%) rotate(25deg);
           }
 
           &.cloud {
-            --deckgo-lazy-img-width: 44px;
+            --deckgo-lazy-img-width: 36px;
 
             top: 50%;
             left: 50%;
