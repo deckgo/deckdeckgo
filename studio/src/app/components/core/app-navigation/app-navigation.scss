@@ -62,14 +62,6 @@ app-navigation {
         ion-label {
           display: flex;
           align-items: baseline;
-
-          mark {
-            background-color: transparent;
-            font-style: italic;
-            color: inherit;
-            font-size: calc(var(--font-size-small) * 0.9);
-            margin-left: 2px;
-          }
         }
       }
     }
