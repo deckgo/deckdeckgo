@@ -1,6 +1,6 @@
 <a name="1.0.0-rc.21"></a>
 
-# [1.0.0-rc.21](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.20...v1.0.0-rc.21) (In progress...)
+# [1.0.0-rc.21](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.20...v1.0.0-rc.21) (2020-02-27)
 
 ### New: Web Components
 
