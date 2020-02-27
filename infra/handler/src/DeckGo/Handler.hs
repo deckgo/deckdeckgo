@@ -38,7 +38,7 @@ import Data.Aeson ((.=), (.:), (.!=), (.:?))
 import Data.Bifunctor
 import Data.Char
 import Data.Int
-import Data.List (find, isPrefixOf, isSuffixOf)
+import Data.List (find)
 import Data.List (foldl')
 import Data.Maybe
 import Data.Proxy
@@ -1251,20 +1251,12 @@ withPresentationFiles uname psname presentationInfo act = do
       -- service-worker.js.
 
       oldIndexMd5 <- fileETag $ dir </> "index.html"
-      precacheFile <- findPrecache dir >>= \case
-        Nothing -> error "No precache manifest!"
-        Just n -> pure n
-      oldPrecacheMd5 <- fileETag $ dir </> precacheFile
+      let serviceWorkerFile = dir </> "service-worker.js"
       mapFile processIndex $ dir </> "index.html"
       newIndexMd5 <- fileETag $ dir </> "index.html"
       putStrLn $ "Changing index.html MD5 from " <>
         show oldIndexMd5 <> " to " <> show newIndexMd5
-      mapFile (T.replace oldIndexMd5 newIndexMd5) $ dir </> precacheFile
-      newPrecacheMd5 <- fileETag $ dir </> precacheFile
-      let newPrecacheFile = ("precache-manifest." <> T.unpack newPrecacheMd5 <> ".js")
-      putStrLn $ "replacing " <> precacheFile <> " with " <> newPrecacheFile
-      Dir.renameFile (dir </> precacheFile) $ dir </> newPrecacheFile
-      mapFile (T.replace oldPrecacheMd5 newPrecacheMd5) $ dir </> "service-worker.js"
+      mapFile (T.replace oldIndexMd5 newIndexMd5) $ dir </> serviceWorkerFile
 
       mapFile interpol $ dir </> "manifest.json"
       putStrLn "Listing files..."
@@ -1298,10 +1290,6 @@ withPresentationFiles uname psname presentationInfo act = do
         ("/" <> unPresentationPrefix (presentationPrefix uname psname)) .
       T.replace "{{DECKDECKGO_HEAD_EXTRA}}"
         (fromMaybe "" (presentationHeadExtra presentationInfo))
-    findPrecache dir = find isPrecache <$> Dir.listDirectory dir
-    isPrecache n =
-      "precache-manifest." `isPrefixOf` n &&
-      ".js" `isSuffixOf` n
 
 sha256digest :: T.Text -> T.Text
 sha256digest =
