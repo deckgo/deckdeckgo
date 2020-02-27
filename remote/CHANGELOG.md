@@ -1,3 +1,9 @@
+# 1.0.0-rc.3-2 (2020-02-27)
+
+### Features
+
+- unleash draw arrows in prod
+
 # 1.0.0-rc.3-1 (2020-02-23)
 
 ### Features
