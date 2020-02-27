@@ -23,7 +23,7 @@
     "@deckdeckgo/lazy-img": "^1.0.0-rc.3-2",
     "@deckdeckgo/qrcode": "^1.0.0-rc.1-1",
     "@deckdeckgo/remote-utils": "^1.0.0-rc.1",
-    "@deckdeckgo/slide-aspect-ratio": "^1.0.0-beta.1-1",
+    "@deckdeckgo/slide-aspect-ratio": "^1.0.0-beta.1-2",
     "@deckdeckgo/slide-author": "^1.0.0-rc.3-2",
     "@deckdeckgo/slide-big-img": "^1.0.0-rc.1",
     "@deckdeckgo/slide-chart": "^1.0.0-rc.3",
