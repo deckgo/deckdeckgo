@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.1-2"></a>
+
+# 1.0.0-beta.1-2 (2020-02-27)
+
+### Features
+
+- rollback max-height in order to preserve ratio
+
 <a name="1.0.0-beta.1-1"></a>
 
 # 1.0.0-beta.1-1 (2020-02-27)
