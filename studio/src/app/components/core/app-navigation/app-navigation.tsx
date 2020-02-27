@@ -60,9 +60,7 @@ export class AppNavigation {
         <ion-router-link onClick={() => this.closeMenu()} href="/" routerDirection="forward" class="home">
           <div>
             <app-logo></app-logo>
-            <ion-label class="ion-text-uppercase">
-              DeckDeckGo <mark>BETA</mark>
-            </ion-label>
+            <ion-label class="ion-text-uppercase">DeckDeckGo</ion-label>
           </div>
         </ion-router-link>
 
