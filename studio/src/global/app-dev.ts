@@ -35,7 +35,7 @@ setupDeckGoConfig({
   deckdeckgo: {
     prod: false,
     appUrl: 'http://localhost:3333',
-    globalAssetsUrl: 'https://deckdeckgo.com/assets',
+    globalAssetsUrl: 'https://deckdeckgo-studio-beta.web.app/assets',
     pollUrl: 'https://localhost:3333/poll',
     apiUrl: '<@API_URL@>',
     presentationUrl: '<@PRESENTATION_URL@>',
