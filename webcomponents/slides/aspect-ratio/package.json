@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-aspect-ratio",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.1-1",
   "description": "This template lets you display the content of a slide with the same aspect ratio regardless of the devices.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
