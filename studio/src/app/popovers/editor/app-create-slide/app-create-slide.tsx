@@ -14,6 +14,7 @@ import {EnvironmentConfigService} from '../../../services/core/environment/envir
 import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 
 @Component({
   tag: 'app-create-slide',
@@ -37,6 +38,8 @@ export class AppCreateSlide {
   @Event() signIn: EventEmitter<void>;
 
   private timerSubscription: Subscription;
+
+  private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
   constructor() {
     this.userService = UserService.getInstance();
@@ -461,20 +464,24 @@ export class AppCreateSlide {
     );
   }
 
-  // TODO: Assets path
-
   private renderShapes() {
     return (
       <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate['ASPECT-RATIO'])}>
         <deckgo-slide-aspect-ratio class="showcase" grid={true}>
-          <deckgo-lazy-img svg-src="/assets/img/shapes/robot-solid.svg" aria-label="Robot" class="robot"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src="/assets/img/shapes/desktop-solid.svg" aria-label="Desktop" class="desktop"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src="/assets/img/shapes/arrow-right-solid.svg" aria-label="Arrow" class="arrow-start"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src="/assets/img/shapes/cloud-solid.svg" aria-label="Cloud" class="cloud"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src="/assets/img/shapes/arrow-right-solid.svg" aria-label="Arrow" class="arrow-end-top"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src="/assets/img/shapes/arrow-right-solid.svg" aria-label="Arrow" class="arrow-end-bottom"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src="/assets/img/shapes/database-solid.svg" aria-label="Database" class="database"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src="/assets/img/shapes/envelope-solid.svg" aria-label="Envelope" class="envelope"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/robot-solid.svg`} aria-label="Robot" class="robot"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/desktop-solid.svg`} aria-label="Desktop" class="desktop"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`} aria-label="Arrow" class="arrow-start"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/cloud-solid.svg`} aria-label="Cloud" class="cloud"></deckgo-lazy-img>
+          <deckgo-lazy-img
+            svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`}
+            aria-label="Arrow"
+            class="arrow-end-top"></deckgo-lazy-img>
+          <deckgo-lazy-img
+            svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`}
+            aria-label="Arrow"
+            class="arrow-end-bottom"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/database-solid.svg`} aria-label="Database" class="database"></deckgo-lazy-img>
+          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/envelope-solid.svg`} aria-label="Envelope" class="envelope"></deckgo-lazy-img>
         </deckgo-slide-aspect-ratio>
       </div>
     );
