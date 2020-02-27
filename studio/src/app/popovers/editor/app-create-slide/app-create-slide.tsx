@@ -214,61 +214,12 @@ export class AppCreateSlide {
         </ion-router-link>
       </ion-toolbar>,
       <div class="container ion-margin-bottom ion-padding-start ion-padding-end">
-        <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
-          <deckgo-slide-title class="showcase">
-            <p slot="title">Title</p>
-            <p slot="content">Content</p>
-          </deckgo-slide-title>
-        </div>
-        <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.CONTENT)}>
-          <deckgo-slide-content class="showcase">
-            <p slot="title">Title</p>
-            <p slot="content">Content</p>
-          </deckgo-slide-content>
-        </div>
-        <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT)}>
-          <deckgo-slide-split class="showcase">
-            <p slot="start">Content</p>
-            <p slot="end">Content</p>
-          </deckgo-slide-split>
-        </div>
-        <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true})}>
-          <deckgo-slide-split vertical={true} class="showcase">
-            <p slot="start">Content</p>
-            <p slot="end">Content</p>
-          </deckgo-slide-split>
-        </div>
-        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
-          <deckgo-slide-gif class="showcase" src={EnvironmentConfigService.getInstance().get('gifExampleSrc')} alt="Slide Gif">
-            <p
-              slot="header"
-              style={{
-                'font-size': 'var(--font-size-very-small)',
-                padding: '2px',
-                'border-radius': '4px'
-              }}>
-              Gif with header
-            </p>
-            <p
-              slot="footer"
-              style={{
-                'font-size': 'var(--font-size-very-small)',
-                padding: '2px',
-                'border-radius': '4px'
-              }}>
-              and footer
-            </p>
-          </deckgo-slide-gif>
-        </div>
-        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
-          <deckgo-slide-content class="showcase gif">
-            <p slot="title">Youtube</p>
-            <p slot="content">
-              <ion-icon name="logo-youtube"></ion-icon>
-            </p>
-          </deckgo-slide-content>
-        </div>
-
+        {this.renderTitle()}
+        {this.renderContent()}
+        {this.renderSplit()}
+        {this.renderVertical()}
+        {this.renderGif()}
+        {this.renderYoutube()}
         {this.renderShapes()}
 
         <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
@@ -286,44 +237,34 @@ export class AppCreateSlide {
           </deckgo-slide-poll>
         </div>
 
-        <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
-          <deckgo-slide-chart
-            class="showcase"
-            type="line"
-            y-axis-domain="extent"
-            date-pattern="dd.MM.yyyy"
-            marginTop={0}
-            marginBottom={0}
-            marginLeft={0}
-            marginRight={0}
-            width={204}
-            height={68}
-            src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
-            <p slot="title">Chart</p>
-          </deckgo-slide-chart>
-
-          {this.renderCharts()}
-        </div>
-
-        <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
-          <deckgo-slide-qrcode
-            class="showcase"
-            content={EnvironmentConfigService.getInstance().get('deckdeckgo').appUrl}
-            img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
-            <p slot="title">QR code</p>
-          </deckgo-slide-qrcode>
-        </div>
-        <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
-          <deckgo-slide-author class="showcase" img-src={this.photoUrl} img-alt="Author">
-            <p slot="title">Author</p>
-            <p slot="author">About Yourself</p>
-            <p slot="social-link">Twitter</p>
-            <p slot="social-link">LinkedIn</p>
-            <p slot="social-link">Dev</p>
-          </deckgo-slide-author>
-        </div>
+        {this.renderChart()}
+        {this.renderQRCode()}
+        {this.renderAuthor()}
       </div>
     ];
+  }
+
+  private renderChart() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
+        <deckgo-slide-chart
+          class="showcase"
+          type="line"
+          y-axis-domain="extent"
+          date-pattern="dd.MM.yyyy"
+          marginTop={0}
+          marginBottom={0}
+          marginLeft={0}
+          marginRight={0}
+          width={204}
+          height={68}
+          src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+          <p slot="title">Charts</p>
+        </deckgo-slide-chart>
+
+        {this.renderCharts()}
+      </div>
+    );
   }
 
   private renderCharts() {
@@ -535,6 +476,134 @@ export class AppCreateSlide {
           <deckgo-lazy-img svg-src="/assets/img/shapes/database-solid.svg" aria-label="Database" class="database"></deckgo-lazy-img>
           <deckgo-lazy-img svg-src="/assets/img/shapes/envelope-solid.svg" aria-label="Envelope" class="envelope"></deckgo-lazy-img>
         </deckgo-slide-aspect-ratio>
+      </div>
+    );
+  }
+
+  private renderTitle() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
+        <deckgo-slide-title class="showcase">
+          <p slot="title">
+            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+          </p>
+          <p slot="content">
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+          </p>
+        </deckgo-slide-title>
+      </div>
+    );
+  }
+
+  private renderContent() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.CONTENT)}>
+        <deckgo-slide-content class="showcase">
+          <p slot="title">
+            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+          </p>
+          <p slot="content">
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '82%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '64%'}}></ion-skeleton-text>
+          </p>
+        </deckgo-slide-content>
+      </div>
+    );
+  }
+
+  private renderSplit() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT)}>
+        <deckgo-slide-split class="showcase">
+          <p slot="start">
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+          </p>
+          <p slot="end">
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+          </p>
+        </deckgo-slide-split>
+      </div>
+    );
+  }
+
+  private renderVertical() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true})}>
+        <deckgo-slide-split vertical={true} class="showcase">
+          <p slot="start">
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+          </p>
+          <p slot="end">
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+          </p>
+        </deckgo-slide-split>
+      </div>
+    );
+  }
+
+  private renderGif() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
+        <deckgo-slide-gif class="showcase" src={EnvironmentConfigService.getInstance().get('gifExampleSrc')} alt="Slide Gif">
+          <p slot="header">
+            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+          </p>
+          <p slot="footer">
+            <ion-skeleton-text style={{width: '40%'}}></ion-skeleton-text>
+          </p>
+        </deckgo-slide-gif>
+      </div>
+    );
+  }
+
+  private renderYoutube() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
+        <deckgo-slide-content class="showcase gif">
+          <p slot="title">YouTube</p>
+          <p slot="content">
+            <ion-icon name="logo-youtube"></ion-icon>
+          </p>
+        </deckgo-slide-content>
+      </div>
+    );
+  }
+
+  private renderAuthor() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
+        <deckgo-slide-author class="showcase" img-src={this.photoUrl} img-alt="Author">
+          <p slot="title">Author</p>
+          <p slot="author">
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+          </p>
+          <p slot="social-link">Twitter</p>
+          <p slot="social-link">LinkedIn</p>
+          <p slot="social-link">Dev</p>
+        </deckgo-slide-author>
+      </div>
+    );
+  }
+
+  private renderQRCode() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.addSlideQRCode()}>
+        <deckgo-slide-qrcode
+          class="showcase"
+          content={EnvironmentConfigService.getInstance().get('deckdeckgo').appUrl}
+          img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
+          <p slot="title">QR code</p>
+        </deckgo-slide-qrcode>
       </div>
     );
   }
