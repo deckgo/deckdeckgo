@@ -5,7 +5,7 @@
 ### New: Web Components
 
 - drag-resize-rotate: v1.0.0-beta.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/drag-resize-rotate/CHANGELOG.md))
-- slide-aspect-ratio: v1.0.0-beta.1-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/aspect-ratio/CHANGELOG.md))
+- slide-aspect-ratio: v1.0.0-beta.1-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/aspect-ratio/CHANGELOG.md))
 
 ### New: Others
 
