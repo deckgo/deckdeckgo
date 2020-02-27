@@ -64,7 +64,7 @@ export class AppNavigation {
           </div>
         </ion-router-link>
 
-        <ion-label class="ion-text-uppercase deck-name">{this.deckName}</ion-label>
+        <ion-label class="deck-name">{this.deckName}</ion-label>
       </div>
     );
   }
