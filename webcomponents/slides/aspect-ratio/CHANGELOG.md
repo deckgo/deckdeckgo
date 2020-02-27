@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.1-1"></a>
+
+# 1.0.0-beta.1-1 (2020-02-27)
+
+### Features
+
+- max height 100% for the aspect ratio content
+
 <a name="1.0.0-beta.1"></a>
 
 # 1.0.0-beta.1 (2020-02-19)
