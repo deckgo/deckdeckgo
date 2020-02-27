@@ -143,6 +143,8 @@ app-create-slide {
       deckgo-slide-chart {
         --deckgo-chart-margin: 4px 10px 4px 16px;
 
+        --slide-padding-top: 6px;
+
         --slide-chart-margin-end: 0;
         --slide-chart-margin-start: 4px;
         --slide-chart-margin-top: 6px;
@@ -215,7 +217,7 @@ app-create-slide {
         font-size: var(--font-size-very-small);
 
         ion-skeleton-text {
-          background: var(--ion-color-medium);
+          background: rgba(var(--ion-color-medium-rgb), 0.8);
 
           height: 12px;
           margin: 2px 0;
@@ -258,7 +260,7 @@ app-create-slide {
       deckgo-slide-chart {
         p[slot="title"],
         p[slot="question"] {
-          background: var(--ion-color-medium);
+          background: rgba(var(--ion-color-medium-rgb), 0.8);
           color: var(--ion-color-medium-contrast);
           padding: 2px 8px;
 
@@ -275,7 +277,7 @@ app-create-slide {
             justify-content: center;
             align-items: center;
 
-            margin-top: 4px;
+            margin-top: 10px;
 
             ion-icon {
               font-size: 3.4rem;
