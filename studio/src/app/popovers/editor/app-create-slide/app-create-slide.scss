@@ -212,17 +212,13 @@ app-create-slide {
 
         border-radius: 8px;
 
-        font-size: var(--font-size-small);
+        font-size: var(--font-size-very-small);
 
         ion-skeleton-text {
           background: var(--ion-color-medium);
 
           height: 10px;
           margin: 2px 0;
-        }
-
-        &[slot="title"] {
-          font-weight: 500;
         }
 
         &[slot="content"],
@@ -253,6 +249,22 @@ app-create-slide {
       deckgo-slide-author {
         p {
           align-items: flex-start;
+        }
+      }
+
+      deckgo-slide-content.gif,
+      deckgo-slide-qrcode,
+      deckgo-slide-poll,
+      deckgo-slide-chart {
+        p[slot="title"],
+        p[slot="question"] {
+          background: var(--ion-color-medium);
+          color: var(--ion-color-medium-contrast);
+          padding: 2px 8px;
+
+          width: 90%;
+
+          font-weight: 500;
         }
       }
 

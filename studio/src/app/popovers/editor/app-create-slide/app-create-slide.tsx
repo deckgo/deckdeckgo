@@ -229,7 +229,7 @@ export class AppCreateSlide {
             poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
             count-answers={3}
             connectPollSocket={false}>
-            <p slot="question">Poll: Engage Your Audience</p>
+            <p slot="question">Engage Your Audience / Poll</p>
             <p slot="answer-1">Yes</p>
             <p slot="answer-2">No</p>
             <p slot="answer-3">Don't know</p>
