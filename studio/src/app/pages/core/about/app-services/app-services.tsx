@@ -49,6 +49,14 @@ export class AppAbout {
             use any APIs to fetch these respectively we are hosting them.
           </p>
 
+          <h2>Mailchimp</h2>
+
+          <p>
+            In order to send time to time newsletters, mostly when we are releasing new features, we are using <a href="https://mailchimp.com">Mailchimp</a>.
+            Upon creating an account users are opted into it but they can opt out through their account’s “Settings” page and at the link of the footer in any
+            of these non-administrative emails.
+          </p>
+
           <p>
             All these services are covered in our{' '}
             <ion-router-link href="/privacy" routerDirection="forward">
