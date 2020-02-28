@@ -55,9 +55,12 @@ export class AppComponentsDrr {
                   <a href="#app-components-drag-resize-rotate-theming">Theming</a>
                 </li>
                 <li>
-                  <a href="#app-components-drag-resize-rotate-examples">Examples</a>
+                  <a href="#app-components-drag-resize-rotate-events">Events</a>
                 </li>
               </ul>
+            </li>
+            <li>
+              <a href="#app-components-drag-resize-rotate-examples">Examples</a>
             </li>
           </ul>
           <h2 id="app-components-drr-showcase">Showcase</h2>
@@ -300,7 +303,21 @@ export class AppComponentsDrr {
               </tr>
             </tbody>
           </table>
-          <h3 id="app-components-drr-examples">Examples</h3>
+          <h3 id="app-components-drr-events">Events</h3>
+          <p>
+            The <code>&lt;deckgo-drr/&gt;</code> component bubbles the following events:
+          </p>
+          <h4 id="app-components-drr-select">Select</h4>
+          <p>Emitted when the component is selected or unselected. It propagates the host component itself.</p>
+          <deckgo-highlight-code language="javascript">
+            <code slot="code">drrSelect(HTMLElement || undefined);</code>
+          </deckgo-highlight-code>
+          <h4 id="app-components-drr-change">Change</h4>
+          <p>Emitted when the component is modified respectively when the user stop interacting. It propagates the host component itself.</p>
+          <deckgo-highlight-code language="javascript">
+            <code slot="code">drrDidChange(HTMLElement);</code>
+          </deckgo-highlight-code>
+          <h2 id="app-components-drr-examples">Examples</h2>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               &lt;deckgo-drr style=&quot;--width: 20%; --height: 10%; --top: 5%; --left: 10%; --rotate: 45deg;&quot;&gt;{'\n'} &lt;div style=&quot;background:

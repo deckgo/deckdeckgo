@@ -14,7 +14,8 @@ The "Drag, Resize and Rotate" is a Web Component to drag, resize and rotate any 
   - [Attributes](#app-components-drag-resize-rotate-attributes)
   - [Event Listeners](#app-components-drag-resize-rotate-event-listeners)
   - [Theming](#app-components-drag-resize-rotate-theming)
-  - [Examples](#app-components-drag-resize-rotate-examples)
+  - [Events](#app-components-drag-resize-rotate-events)
+- [Examples](#app-components-drag-resize-rotate-examples)
 
 ## Showcase
 
@@ -133,7 +134,27 @@ The following theming options will affect this component if set on its host or p
 | --deckgo-drr-rotate-anchor-presentation-height       | calc(100% - 16px - 1px) | The rotate block anchor presentation block height                        |
 | --deckgo-drr-rotate-anchor-presentation-border-right | 1px solid #3880ff       | The rotate block anchor presentation block border right                  |
 
-### Examples
+### Events
+
+The `<deckgo-drr/>` component bubbles the following events:
+
+#### Select
+
+Emitted when the component is selected or unselected. It propagates the host component itself.
+
+```
+drrSelect(HTMLElement || undefined);
+```
+
+#### Change
+
+Emitted when the component is modified respectively when the user stop interacting. It propagates the host component itself.
+
+```
+drrDidChange(HTMLElement);
+```
+
+## Examples
 
 ```
 <deckgo-drr style="--width: 20%; --height: 10%; --top: 5%; --left: 10%; --rotate: 45deg;">
