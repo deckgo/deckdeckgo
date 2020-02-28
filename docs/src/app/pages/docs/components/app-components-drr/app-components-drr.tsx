@@ -77,9 +77,9 @@ export class AppComponentsDrr {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               &lt;script type=&quot;module&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;drag-resize-rotate@latest&#47;dist&#47;deckdeckgo-drag-resize&#47;deckdeckgo-drag-resize.esm.js&quot;&gt;&lt;&#47;script&gt;
+              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;drag-resize-rotate@latest&#47;dist&#47;deckdeckgo-drag-resize-rotate&#47;deckdeckgo-drag-resize-rotate.esm.js&quot;&gt;&lt;&#47;script&gt;
               {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;drag-resize-rotate@latest&#47;dist&#47;deckdeckgo-drag-resize&#47;deckdeckgo-drag-resize.js&quot;&gt;&lt;&#47;script&gt;
+              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;drag-resize-rotate@latest&#47;dist&#47;deckdeckgo-drag-resize-rotate&#47;deckdeckgo-drag-resize-rotate.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-components-drr-install-from-npm">Install from NPM</h3>
