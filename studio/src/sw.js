@@ -3,12 +3,12 @@
  * https://stenciljs.com/docs/service-workers
  */
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
 self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
-    }
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 /**
@@ -18,27 +18,54 @@ self.addEventListener('message', (event) => {
 
 // Cache the Google Fonts stylesheets with a stale-while-revalidate strategy.
 workbox.routing.registerRoute(
-    /^https:\/\/fonts\.googleapis\.com/,
-    new workbox.strategies.StaleWhileRevalidate({
-        cacheName: 'google-fonts-stylesheets',
-    })
+  /^https:\/\/fonts\.googleapis\.com/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'google-fonts-stylesheets'
+  })
 );
 
 // Cache the underlying font files with a cache-first strategy for 1 year.
 workbox.routing.registerRoute(
-    /^https:\/\/fonts\.gstatic\.com/,
-    new workbox.strategies.CacheFirst({
-        cacheName: 'google-fonts-webfonts',
-        plugins: [
-            new workbox.cacheableResponse.Plugin({
-                statuses: [0, 200],
-            }),
-            new workbox.expiration.Plugin({
-                maxAgeSeconds: 60 * 60 * 24 * 365,
-                maxEntries: 30,
-            }),
-        ],
-    })
+  /^https:\/\/fonts\.gstatic\.com/,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'google-fonts-webfonts',
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 60 * 60 * 24 * 365,
+        maxEntries: 30
+      })
+    ]
+  })
+);
+
+// Cache the images with a cache-first strategy for 30 days.
+workbox.routing.registerRoute(
+  /^(?!.*unsplash)(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'images',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
+);
+
+workbox.routing.registerRoute(
+  /^(?=.*unsplash)(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'unsplash-images',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
 );
 
 // the precache manifest will be injected into the following line

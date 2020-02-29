@@ -5,6 +5,8 @@ import {take} from 'rxjs/operators';
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
+import {SlotType} from '../../../utils/editor/slot-type';
+
 import {DeckEditorService} from '../deck/deck-editor.service';
 import {SlideService} from '../../data/slide/slide.service';
 
@@ -33,11 +35,52 @@ export class OfflineService {
 
         await Promise.all(promises);
 
-        // TODO: call SW cache images
+        await this.addToSWCache();
 
         await set('deckdeckgo_offline', true);
 
         resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private addToSWCache(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        this.deckEditorService
+          .watch()
+          .pipe(take(1))
+          .subscribe(async (deck: Deck) => {
+            try {
+              if (!deck || !deck.id || !deck.data) {
+                reject('No deck found');
+                return;
+              }
+
+              // TODO clean code
+              // TODO add other caches / SlotType
+
+              const imgs = document.querySelectorAll(SlotType.IMG);
+
+              if (!imgs) {
+                resolve();
+                return;
+              }
+
+              const list = Array.from(imgs).map((img) => {
+                return img.imgSrc;
+              });
+
+              const myCache = await window.caches.open('unsplash-images');
+              await myCache.addAll(list);
+
+              resolve();
+            } catch (err) {
+              reject(err);
+            }
+          });
       } catch (err) {
         reject(err);
       }
