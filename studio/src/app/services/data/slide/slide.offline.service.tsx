@@ -56,7 +56,6 @@ export class SlideOfflineService {
     keys.forEach((key: string) => {
       const attr = slide.data.attributes[key];
 
-      // TODO when going online delete null fields
       // Replace Firestore "to delete fields" with null values
       if (attr && attr._methodName && attr._methodName === 'FieldValue.delete') {
         slide.data.attributes[key] = null;

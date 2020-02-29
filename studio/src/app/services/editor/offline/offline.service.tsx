@@ -1,4 +1,4 @@
-import {set} from 'idb-keyval';
+import {del, get, set} from 'idb-keyval';
 
 import {take} from 'rxjs/operators';
 
@@ -8,17 +8,18 @@ import {Slide} from '../../../models/data/slide';
 import {SlotType} from '../../../utils/editor/slot-type';
 
 import {DeckEditorService} from '../deck/deck-editor.service';
-import {SlideService} from '../../data/slide/slide.service';
+import {SlideOnlineService} from '../../data/slide/slide.online.service';
+import {firebase} from '@firebase/app';
 
 export class OfflineService {
   private static instance: OfflineService;
 
   private deckEditorService: DeckEditorService;
-  private slideService: SlideService;
+  private slideOnlineService: SlideOnlineService;
 
   private constructor() {
     this.deckEditorService = DeckEditorService.getInstance();
-    this.slideService = SlideService.getInstance();
+    this.slideOnlineService = SlideOnlineService.getInstance();
   }
 
   static getInstance() {
@@ -38,6 +39,20 @@ export class OfflineService {
         await this.addToSWCache();
 
         await set('deckdeckgo_offline', true);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  upload(): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        await this.uploadDeck();
+
+        await del('deckdeckgo_offline');
 
         resolve();
       } catch (err) {
@@ -167,7 +182,7 @@ export class OfflineService {
 
   private saveSlide(deck: Deck, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
-      const slide: Slide = await this.slideService.get(deck.id, slideId);
+      const slide: Slide = await this.slideOnlineService.get(deck.id, slideId);
 
       if (!slide || !slide.data) {
         reject('Missing slide for publishing');
@@ -178,5 +193,108 @@ export class OfflineService {
 
       resolve(slide);
     });
+  }
+
+  private uploadDeck(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        this.deckEditorService
+          .watch()
+          .pipe(take(1))
+          .subscribe(async (deck: Deck) => {
+            try {
+              if (!deck || !deck.id || !deck.data) {
+                reject('No deck found');
+                return;
+              }
+
+              await this.uploadSlides(deck);
+
+              // TODO upload deck
+
+              resolve();
+            } catch (err) {
+              reject(err);
+            }
+          });
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadSlides(deck: Deck): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      if (!deck.data.slides || deck.data.slides.length <= 0) {
+        resolve();
+        return;
+      }
+
+      try {
+        const promises: Promise<Slide>[] = [];
+
+        for (let i: number = 0; i < deck.data.slides.length; i++) {
+          const slideId: string = deck.data.slides[i];
+
+          promises.push(this.uploadSlide(deck, slideId));
+        }
+
+        if (!promises || promises.length <= 0) {
+          resolve();
+          return;
+        }
+
+        await Promise.all(promises);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadSlide(deck: Deck, slideId: string): Promise<Slide> {
+    return new Promise<Slide>(async (resolve, reject) => {
+      const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+
+      if (!slide || !slide.data) {
+        reject('Missing slide for publishing');
+        return;
+      }
+
+      const slideToPersist: Slide = await this.cleanSlide(slide);
+
+      await this.slideOnlineService.update(deck.id, slideToPersist);
+
+      await del(`/decks/${deck.id}/slides/${slideId}`);
+
+      resolve(slide);
+    });
+  }
+
+  private async cleanSlide(slide: Slide): Promise<Slide> {
+    if (!slide || !slide.data || !slide.data.attributes) {
+      return slide;
+    }
+
+    const keys: string[] = Object.keys(slide.data.attributes);
+
+    if (!keys || keys.length <= 0) {
+      return slide;
+    }
+
+    keys.forEach((key: string) => {
+      const attr = slide.data.attributes[key];
+
+      // Replace null values with Firestore "to delete fields"
+      if (attr === null) {
+        // @ts-ignore
+        slide.data.attributes[key] = firebase.firestore.FieldValue.delete();
+      }
+    });
+
+    console.log(slide);
+
+    return slide;
   }
 }

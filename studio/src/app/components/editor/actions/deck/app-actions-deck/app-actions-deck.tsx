@@ -60,6 +60,9 @@ export class AppActionsDeck {
   @State()
   private fullscreenEnable: boolean = true;
 
+  @State()
+  private offline: boolean = false;
+
   private anonymousService: AnonymousService;
   private offlineService: OfflineService;
 
@@ -68,8 +71,10 @@ export class AppActionsDeck {
     this.offlineService = OfflineService.getInstance();
   }
 
-  componentWillLoad() {
+  async componentWillLoad() {
     this.fullscreenEnable = !isIPad();
+
+    this.offline = await get('deckdeckgo_offline');
   }
 
   async onActionOpenSlideAdd($event: CustomEvent) {
@@ -359,9 +364,16 @@ export class AppActionsDeck {
     await popover.present();
   }
 
-  private async goOffline() {
+  private async goOnlineOffline() {
     // TODO not here
-    await this.offlineService.save();
+
+    if (this.offline) {
+      await this.offlineService.upload();
+    } else {
+      await this.offlineService.save();
+    }
+
+    this.offline = !this.offline;
   }
 
   render() {
@@ -400,9 +412,9 @@ export class AppActionsDeck {
 
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
-          <ion-tab-button onClick={() => this.goOffline()} color="primary" class="wider-devices" mode="md">
+          <ion-tab-button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices" mode="md">
             <ion-icon name="cloud-offline-outline"></ion-icon>
-            <ion-label>Go offline</ion-label>
+            {this.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
           </ion-tab-button>
 
           <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices" mode="md">
