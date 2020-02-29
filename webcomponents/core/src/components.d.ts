@@ -29,6 +29,7 @@ export namespace Components {
     'isEnd': () => Promise<boolean>;
     'isMobile': () => Promise<boolean>;
     'keyboard': boolean;
+    'lazyLoadAllContent': () => Promise<void[]>;
     'loadBackground': () => Promise<void>;
     'reveal': boolean;
     'revealOnMobile': boolean;

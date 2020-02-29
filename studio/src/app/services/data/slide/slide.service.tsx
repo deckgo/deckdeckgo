@@ -1,7 +1,12 @@
 import {firebase} from '@firebase/app';
 import '@firebase/firestore';
 
+import {get} from 'idb-keyval';
+
 import {Slide, SlideData} from '../../../models/data/slide';
+
+import {SlideOfflineService} from './slide.offline.service';
+import {SlideOnlineService} from './slide.online.service';
 
 export class SlideService {
   private static instance: SlideService;
@@ -79,30 +84,13 @@ export class SlideService {
     });
   }
 
-  get(deckId: string, slideId: string): Promise<Slide> {
-    return new Promise<Slide>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+  async get(deckId: string, slideId: string): Promise<Slide> {
+    const offline: boolean = await get('deckdeckgo_offline');
 
-      try {
-        const snapshot: firebase.firestore.DocumentSnapshot = await firestore
-          .collection(`/decks/${deckId}/slides`)
-          .doc(slideId)
-          .get();
-
-        if (!snapshot.exists) {
-          reject('Slide not found');
-          return;
-        }
-
-        const slide: SlideData = snapshot.data() as SlideData;
-
-        resolve({
-          id: snapshot.id,
-          data: slide
-        });
-      } catch (err) {
-        reject(err);
-      }
-    });
+    if (offline) {
+      return SlideOfflineService.getInstance().get(deckId, slideId);
+    } else {
+      return SlideOnlineService.getInstance().get(deckId, slideId);
+    }
   }
 }

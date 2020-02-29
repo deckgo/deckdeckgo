@@ -9,8 +9,10 @@ import {SlideAttributes, SlideTemplate} from '../../../../../models/data/slide';
 
 import {MoreAction} from '../../../../../utils/editor/more-action';
 
-import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
 import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
+
+import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
+import {OfflineService} from '../../../../../services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-actions-deck',
@@ -59,9 +61,11 @@ export class AppActionsDeck {
   private fullscreenEnable: boolean = true;
 
   private anonymousService: AnonymousService;
+  private offlineService: OfflineService;
 
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
+    this.offlineService = OfflineService.getInstance();
   }
 
   componentWillLoad() {
@@ -355,6 +359,11 @@ export class AppActionsDeck {
     await popover.present();
   }
 
+  private async goOffline() {
+    // TODO not here
+    await this.offlineService.save();
+  }
+
   render() {
     return (
       <ion-toolbar>
@@ -390,6 +399,11 @@ export class AppActionsDeck {
           </ion-tab-button>
 
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
+
+          <ion-tab-button onClick={() => this.goOffline()} color="primary" class="wider-devices" mode="md">
+            <ion-icon name="cloud-offline-outline"></ion-icon>
+            <ion-label>Go offline</ion-label>
+          </ion-tab-button>
 
           <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices" mode="md">
             <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
