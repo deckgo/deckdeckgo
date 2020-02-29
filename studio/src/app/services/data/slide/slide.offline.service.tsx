@@ -1,4 +1,4 @@
-import {get} from 'idb-keyval';
+import {get, set} from 'idb-keyval';
 
 import {Slide} from '../../../models/data/slide';
 
@@ -26,5 +26,43 @@ export class SlideOfflineService {
         reject(err);
       }
     });
+  }
+
+  update(deckId: string, slide: Slide): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const slideToPersist: Slide = await this.cleanSlide(slide);
+
+        await set(`/decks/${deckId}/slides/${slide.id}`, slideToPersist);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private async cleanSlide(slide: Slide): Promise<Slide> {
+    if (!slide || !slide.data || !slide.data.attributes) {
+      return slide;
+    }
+
+    const keys: string[] = Object.keys(slide.data.attributes);
+
+    if (!keys || keys.length <= 0) {
+      return slide;
+    }
+
+    keys.forEach((key: string) => {
+      const attr = slide.data.attributes[key];
+
+      // TODO when going online delete null fields
+      // Replace Firestore "to delete fields" with null values
+      if (attr && attr._methodName && attr._methodName === 'FieldValue.delete') {
+        slide.data.attributes[key] = null;
+      }
+    });
+
+    return slide;
   }
 }

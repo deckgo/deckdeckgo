@@ -43,4 +43,24 @@ export class SlideOnlineService {
       }
     });
   }
+
+  update(deckId: string, slide: Slide): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+      slide.data.updated_at = now;
+
+      try {
+        await firestore
+          .collection(`/decks/${deckId}/slides`)
+          .doc(slide.id)
+          .set(slide.data, {merge: true});
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }

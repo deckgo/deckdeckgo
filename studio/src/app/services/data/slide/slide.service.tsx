@@ -47,24 +47,14 @@ export class SlideService {
     });
   }
 
-  update(deckId: string, slide: Slide): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+  async update(deckId: string, slide: Slide): Promise<void> {
+    const offline: boolean = await get('deckdeckgo_offline');
 
-      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      slide.data.updated_at = now;
-
-      try {
-        await firestore
-          .collection(`/decks/${deckId}/slides`)
-          .doc(slide.id)
-          .set(slide.data, {merge: true});
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
+    if (offline) {
+      return SlideOfflineService.getInstance().update(deckId, slide);
+    } else {
+      return SlideOnlineService.getInstance().update(deckId, slide);
+    }
   }
 
   delete(deckId: string, slideId: string): Promise<void> {
