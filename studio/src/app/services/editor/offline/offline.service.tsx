@@ -1,3 +1,5 @@
+import {firebase} from '@firebase/app';
+
 import {del, get, set} from 'idb-keyval';
 
 import {take} from 'rxjs/operators';
@@ -9,7 +11,6 @@ import {SlotType} from '../../../utils/editor/slot-type';
 
 import {DeckEditorService} from '../deck/deck-editor.service';
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
-import {firebase} from '@firebase/app';
 
 export class OfflineService {
   private static instance: OfflineService;
