@@ -219,7 +219,8 @@ export class DeckEventsHandler {
 
             const persistedSlide: Slide = await this.postSlide(deck, slide);
 
-            // TODO: Ultimately, when using reactive data, move this to a Cloud Function
+            // Because of the offline mode, is kind of handy to handle the list on the client side too.
+            // But maybe in the future it is something which could be moved to the cloud.
             await this.updateDeckSlideList(deck, persistedSlide);
 
             this.busyService.deckBusy(false);
