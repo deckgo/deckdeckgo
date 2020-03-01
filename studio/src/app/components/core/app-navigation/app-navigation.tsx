@@ -178,7 +178,7 @@ export class AppNavigation {
 
     return (
       <ion-router-link href={`/editor/${this.offline.id}`} routerDirection="root" slot="end" class="offline-info ion-padding-end">
-        <ion-label>Offline</ion-label>
+        <ion-label>You are editing offline.</ion-label>
       </ion-router-link>
     );
   }
