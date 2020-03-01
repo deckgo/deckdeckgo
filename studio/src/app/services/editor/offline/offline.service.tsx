@@ -330,11 +330,17 @@ export class OfflineService {
         const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
 
         if (!slide || !slide.data) {
-          reject('Missing slide for upload');
+          // If upload process end up in error in a previous try, some slides might have already been uploaded correctly and remove from the local db
+          resolve();
           return;
         }
 
         slide.data.attributes = await OfflineUtils.prepareAttributes(slide.data.attributes);
+
+        if (slide.data.content === null) {
+          // @ts-ignore
+          slide.data.content = firebase.firestore.FieldValue.delete();
+        }
 
         await this.slideOnlineService.update(deck.id, slide);
 

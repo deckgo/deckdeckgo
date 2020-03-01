@@ -21,29 +21,14 @@ export class SlideService {
     return SlideService.instance;
   }
 
-  create(deckId: string, slide: SlideData): Promise<Slide> {
-    return new Promise<Slide>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+  async create(deckId: string, slide: SlideData): Promise<Slide> {
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
 
-      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      slide.created_at = now;
-      slide.updated_at = now;
-
-      firestore
-        .collection(`/decks/${deckId}/slides`)
-        .add(slide)
-        .then(
-          async (doc: firebase.firestore.DocumentReference) => {
-            resolve({
-              id: doc.id,
-              data: slide
-            });
-          },
-          (err) => {
-            reject(err);
-          }
-        );
-    });
+    if (offline !== undefined) {
+      return SlideOfflineService.getInstance().create(deckId, slide);
+    } else {
+      return SlideOnlineService.getInstance().create(deckId, slide);
+    }
   }
 
   async update(deckId: string, slide: Slide): Promise<void> {

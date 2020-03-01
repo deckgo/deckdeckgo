@@ -6,15 +6,15 @@ import {DeckAttributes} from '../../models/data/deck';
 export class OfflineUtils {
   static cleanAttributes(attributes: SlideAttributes | DeckAttributes): Promise<SlideAttributes | DeckAttributes> {
     return new Promise<SlideAttributes | DeckAttributes>((resolve) => {
-      if (!attributes) {
-        resolve(attributes);
+      if (!attributes || attributes === undefined) {
+        resolve(null);
         return;
       }
 
       const keys: string[] = Object.keys(attributes);
 
       if (!keys || keys.length <= 0) {
-        resolve(attributes);
+        resolve(null);
         return;
       }
 
@@ -38,14 +38,16 @@ export class OfflineUtils {
   static prepareAttributes(attributes: SlideAttributes | DeckAttributes): Promise<SlideAttributes | DeckAttributes> {
     return new Promise<SlideAttributes | DeckAttributes>((resolve) => {
       if (!attributes) {
-        resolve(attributes);
+        // @ts-ignore
+        resolve(firebase.firestore.FieldValue.delete());
         return;
       }
 
       const keys: string[] = Object.keys(attributes);
 
       if (!keys || keys.length <= 0) {
-        resolve(attributes);
+        // @ts-ignore
+        resolve(firebase.firestore.FieldValue.delete());
         return;
       }
 
