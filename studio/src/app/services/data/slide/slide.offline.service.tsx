@@ -1,6 +1,10 @@
+import {firebase} from '@firebase/app';
+
 import {get, set} from 'idb-keyval';
 
 import {Slide} from '../../../models/data/slide';
+
+import {OfflineUtils} from '../../../utils/editor/offline.utils';
 
 export class SlideOfflineService {
   private static instance: SlideOfflineService;
@@ -31,37 +35,22 @@ export class SlideOfflineService {
   update(deckId: string, slide: Slide): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const slideToPersist: Slide = await this.cleanSlide(slide);
+        if (!slide || !slide.data) {
+          reject('Invalid slide data');
+          return;
+        }
 
-        await set(`/decks/${deckId}/slides/${slide.id}`, slideToPersist);
+        slide.data.attributes = await OfflineUtils.cleanAttributes(slide.data.attributes);
+
+        const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+        slide.data.updated_at = now;
+
+        await set(`/decks/${deckId}/slides/${slide.id}`, slide);
 
         resolve();
       } catch (err) {
         reject(err);
       }
     });
-  }
-
-  private async cleanSlide(slide: Slide): Promise<Slide> {
-    if (!slide || !slide.data || !slide.data.attributes) {
-      return slide;
-    }
-
-    const keys: string[] = Object.keys(slide.data.attributes);
-
-    if (!keys || keys.length <= 0) {
-      return slide;
-    }
-
-    keys.forEach((key: string) => {
-      const attr = slide.data.attributes[key];
-
-      // Replace Firestore "to delete fields" with null values
-      if (attr && attr._methodName && attr._methodName === 'FieldValue.delete') {
-        slide.data.attributes[key] = null;
-      }
-    });
-
-    return slide;
   }
 }

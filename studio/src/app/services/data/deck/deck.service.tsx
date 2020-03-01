@@ -56,24 +56,14 @@ export class DeckService {
     }
   }
 
-  update(deck: Deck): Promise<Deck> {
-    return new Promise<Deck>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+  async update(deck: Deck): Promise<Deck> {
+    const offline: OfflineDeck = await OfflineService.getInstance().isOffline();
 
-      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      deck.data.updated_at = now;
-
-      try {
-        await firestore
-          .collection('decks')
-          .doc(deck.id)
-          .set(deck.data, {merge: true});
-
-        resolve(deck);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    if (offline !== undefined) {
+      return DeckOfflineService.getInstance().update(deck);
+    } else {
+      return DeckOnlineService.getInstance().update(deck);
+    }
   }
 
   getUserDecks(userId: string): Promise<Deck[]> {

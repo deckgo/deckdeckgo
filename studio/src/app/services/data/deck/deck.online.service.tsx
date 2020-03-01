@@ -43,4 +43,24 @@ export class DeckOnlineService {
       }
     });
   }
+
+  update(deck: Deck): Promise<Deck> {
+    return new Promise<Deck>(async (resolve, reject) => {
+      const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+      deck.data.updated_at = now;
+
+      try {
+        await firestore
+          .collection('decks')
+          .doc(deck.id)
+          .set(deck.data, {merge: true});
+
+        resolve(deck);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }
