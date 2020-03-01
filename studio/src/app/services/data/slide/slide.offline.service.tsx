@@ -1,5 +1,3 @@
-import {firebase} from '@firebase/app';
-
 import uuid from 'uuid/v4';
 
 import {del, get, set} from 'idb-keyval';
@@ -32,8 +30,11 @@ export class SlideOfflineService {
           data: slideData
         };
 
-        const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+        const now: Date = new Date();
+
+        // @ts-ignore
         slide.data.created_at = now;
+        // @ts-ignore
         slide.data.updated_at = now;
 
         await set(`/decks/${deckId}/slides/${slide.id}`, slide);
@@ -71,8 +72,8 @@ export class SlideOfflineService {
           slide.data.content = null;
         }
 
-        const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-        slide.data.updated_at = now;
+        // @ts-ignore
+        slide.data.updated_at = new Date();
 
         await set(`/decks/${deckId}/slides/${slide.id}`, slide);
 

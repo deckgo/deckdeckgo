@@ -1,5 +1,3 @@
-import {firebase} from '@firebase/app';
-
 import {get, set} from 'idb-keyval';
 
 import {Deck} from '../../../models/data/deck';
@@ -40,8 +38,8 @@ export class DeckOfflineService {
           return;
         }
 
-        const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-        deck.data.updated_at = now;
+        // @ts-ignore
+        deck.data.updated_at = new Date();
 
         if (deck.data.background && OfflineUtils.shouldAttributeBeCleaned(deck.data.background)) {
           deck.data.background = null;
