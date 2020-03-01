@@ -3,6 +3,10 @@ app-navigation {
     ion-toolbar {
       --background: inherit;
     }
+
+    &.offline {
+      background: var(--ion-color-tertiary);
+    }
   }
 
   div.title {
@@ -26,8 +30,6 @@ app-navigation {
       width: 100%;
 
       user-select: none;
-
-      letter-spacing: 0.06em;
     }
 
     &.deck-name-visible {
@@ -36,21 +38,13 @@ app-navigation {
         opacity: 1;
       }
 
-      ion-router-link.home ion-label {
+      ion-router-link.home div.logo ion-label {
         display: none;
       }
     }
 
     ion-router-link {
-      color: black;
-
-      &:hover,
-      &:active {
-        color: black;
-        border-bottom-color: transparent;
-      }
-
-      > div {
+      div.logo {
         display: flex;
         align-items: center;
 
@@ -64,15 +58,39 @@ app-navigation {
         ion-label {
           display: flex;
           align-items: baseline;
-
-          letter-spacing: 0.06em;
         }
       }
+    }
+
+    &.offline {
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  ion-router-link {
+    color: black;
+
+    &:hover,
+    &:active {
+      color: black;
+      border-bottom-color: transparent;
+    }
+
+    ion-label {
+      font-weight: 400;
     }
   }
 
   div[slot="end"] {
     z-index: 2;
+  }
+
+  ion-label {
+    letter-spacing: 0.06em;
   }
 }
 
@@ -80,14 +98,14 @@ body.dark {
   app-navigation {
     div.title {
       color: white;
+    }
 
-      ion-router-link {
+    ion-router-link {
+      color: white;
+
+      &:hover,
+      &:active {
         color: white;
-
-        &:hover,
-        &:active {
-          color: white;
-        }
       }
     }
   }
@@ -95,7 +113,7 @@ body.dark {
 
 @media screen and (max-width: 720px) {
   ion-nav {
-    div.title {
+    div.title:not(.offline) {
       ion-label.deck-name,
       ion-router-link.home ion-label {
         display: none;
@@ -106,7 +124,11 @@ body.dark {
 
 @media screen and (max-width: 540px) {
   ion-nav {
-    div.title {
+    div.title:not(.offline) {
+      display: none;
+    }
+
+    ion-router-link.offline-info {
       display: none;
     }
   }

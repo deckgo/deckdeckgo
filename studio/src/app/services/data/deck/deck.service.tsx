@@ -1,12 +1,11 @@
 import {firebase} from '@firebase/app';
 import '@firebase/firestore';
 
-import {get} from 'idb-keyval';
-
 import {Deck, DeckData} from '../../../models/data/deck';
 
 import {DeckOfflineService} from './deck.offline.service';
 import {DeckOnlineService} from './deck.online.service';
+import {OfflineService} from '../../editor/offline/offline.service';
 
 export class DeckService {
   private static instance: DeckService;
@@ -48,9 +47,9 @@ export class DeckService {
   }
 
   async get(deckId: string): Promise<Deck> {
-    const offline: boolean = await get('deckdeckgo_offline');
+    const offline: OfflineDeck = await OfflineService.getInstance().isOffline();
 
-    if (offline) {
+    if (offline !== undefined) {
       return DeckOfflineService.getInstance().get(deckId);
     } else {
       return DeckOnlineService.getInstance().get(deckId);

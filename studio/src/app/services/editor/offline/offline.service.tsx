@@ -11,6 +11,7 @@ import {SlotType} from '../../../utils/editor/slot-type';
 
 import {DeckEditorService} from '../deck/deck-editor.service';
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 export class OfflineService {
   private static instance: OfflineService;
@@ -18,16 +19,43 @@ export class OfflineService {
   private deckEditorService: DeckEditorService;
   private slideOnlineService: SlideOnlineService;
 
+  private offlineSubject: BehaviorSubject<OfflineDeck | undefined> = new BehaviorSubject(undefined);
+
   private constructor() {
     this.deckEditorService = DeckEditorService.getInstance();
     this.slideOnlineService = SlideOnlineService.getInstance();
   }
 
-  static getInstance() {
+  static getInstance(): OfflineService {
     if (!OfflineService.instance) {
       OfflineService.instance = new OfflineService();
     }
     return OfflineService.instance;
+  }
+
+  async isOffline(): Promise<OfflineDeck> {
+    return new Promise<OfflineDeck>((resolve) => {
+      this.offlineSubject.pipe(take(1)).subscribe(async (offline: OfflineDeck | undefined) => {
+        if (offline === undefined) {
+          const saved: OfflineDeck = await get('deckdeckgo_offline');
+
+          this.offlineSubject.next(saved);
+
+          resolve(saved);
+          return;
+        }
+
+        resolve(offline);
+      });
+    });
+  }
+
+  async init() {
+    await this.isOffline();
+  }
+
+  watchOffline(): Observable<OfflineDeck | undefined> {
+    return this.offlineSubject.asObservable();
   }
 
   save(): Promise<void> {
@@ -39,9 +67,42 @@ export class OfflineService {
 
         await this.addToSWCache();
 
-        await set('deckdeckgo_offline', true);
+        await this.toggleOffline();
 
         resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private toggleOffline(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        this.deckEditorService
+          .watch()
+          .pipe(take(1))
+          .subscribe(async (deck: Deck) => {
+            try {
+              if (!deck || !deck.id || !deck.data) {
+                reject('No deck found');
+                return;
+              }
+
+              const offline: OfflineDeck = {
+                id: deck.id,
+                name: deck.data.name
+              };
+
+              await set('deckdeckgo_offline', offline);
+
+              this.offlineSubject.next(offline);
+
+              resolve();
+            } catch (err) {
+              reject(err);
+            }
+          });
       } catch (err) {
         reject(err);
       }
@@ -54,6 +115,8 @@ export class OfflineService {
         await this.uploadDeck();
 
         await del('deckdeckgo_offline');
+
+        this.offlineSubject.next(undefined);
 
         resolve();
       } catch (err) {

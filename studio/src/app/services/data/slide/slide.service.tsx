@@ -1,12 +1,11 @@
 import {firebase} from '@firebase/app';
 import '@firebase/firestore';
 
-import {get} from 'idb-keyval';
-
 import {Slide, SlideData} from '../../../models/data/slide';
 
 import {SlideOfflineService} from './slide.offline.service';
 import {SlideOnlineService} from './slide.online.service';
+import {OfflineService} from '../../editor/offline/offline.service';
 
 export class SlideService {
   private static instance: SlideService;
@@ -48,9 +47,9 @@ export class SlideService {
   }
 
   async update(deckId: string, slide: Slide): Promise<void> {
-    const offline: boolean = await get('deckdeckgo_offline');
+    const offline: OfflineDeck = await OfflineService.getInstance().isOffline();
 
-    if (offline) {
+    if (offline !== undefined) {
       return SlideOfflineService.getInstance().update(deckId, slide);
     } else {
       return SlideOnlineService.getInstance().update(deckId, slide);
@@ -75,9 +74,9 @@ export class SlideService {
   }
 
   async get(deckId: string, slideId: string): Promise<Slide> {
-    const offline: boolean = await get('deckdeckgo_offline');
+    const offline: OfflineDeck = await OfflineService.getInstance().isOffline();
 
-    if (offline) {
+    if (offline !== undefined) {
       return SlideOfflineService.getInstance().get(deckId, slideId);
     } else {
       return SlideOnlineService.getInstance().get(deckId, slideId);
