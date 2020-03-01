@@ -38,6 +38,7 @@ import {BusyService} from '../../../services/editor/busy/busy.service';
 
 import {EnvironmentGoogleConfig} from '../../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {OfflineService} from '../../../services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-editor',
@@ -82,6 +83,8 @@ export class AppEditor {
   private busySubscription: Subscription;
   private busyService: BusyService;
 
+  private offlineService: OfflineService;
+
   @State()
   private slidesFetched: boolean = false;
 
@@ -103,6 +106,7 @@ export class AppEditor {
     this.navService = NavService.getInstance();
     this.deckEditorService = DeckEditorService.getInstance();
     this.busyService = BusyService.getInstance();
+    this.offlineService = OfflineService.getInstance();
   }
 
   @Listen('ionRouteDidChange', {target: 'window'})
@@ -122,6 +126,8 @@ export class AppEditor {
   async init() {
     await this.deckEventsHandler.init(this.el);
     await this.editorEventsHandler.init(this.el);
+
+    await this.initOffline();
 
     // If no user create an anonymous one
     this.authService
@@ -157,6 +163,14 @@ export class AppEditor {
     });
 
     this.fullscreen = isFullscreen() && !isIOS();
+  }
+
+  async initOffline() {
+    // if we are offline we can't create a new deck or edit another one that the one we have marked as currently being edited offline
+    const offline: OfflineDeck = await this.offlineService.isOffline();
+    if (offline !== undefined) {
+      this.deckId = offline.id;
+    }
   }
 
   async destroy() {
