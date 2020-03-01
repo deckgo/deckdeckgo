@@ -279,6 +279,8 @@ export class OfflineService {
 
               await this.uploadSlides(deck);
 
+              await this.deleteSlides(deck);
+
               const persistedDeck: Deck = await this.uploadDeck(deck);
 
               this.deckEditorService.next(persistedDeck);
@@ -373,6 +375,53 @@ export class OfflineService {
         await del(`/decks/${deck.id}`);
 
         resolve(persistedDeck);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private deleteSlides(deck: Deck): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      if (!deck) {
+        resolve();
+        return;
+      }
+
+      try {
+        const slidesToDelete: string[] = await get('deckdeckgo_slides_delete');
+
+        if (!slidesToDelete || slidesToDelete.length <= 0) {
+          resolve();
+          return;
+        }
+
+        const promises: Promise<void>[] = slidesToDelete.map((slideId: string) => {
+          return this.deleteSlide(deck, slideId);
+        });
+
+        if (!promises || promises.length <= 0) {
+          resolve();
+          return;
+        }
+
+        await Promise.all(promises);
+
+        await del('deckdeckgo_slides_delete');
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private deleteSlide(deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        await this.slideOnlineService.delete(deck.id, slideId);
+
+        resolve();
       } catch (err) {
         reject(err);
       }

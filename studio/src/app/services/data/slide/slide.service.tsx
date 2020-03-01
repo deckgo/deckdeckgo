@@ -1,6 +1,3 @@
-import {firebase} from '@firebase/app';
-import '@firebase/firestore';
-
 import {Slide, SlideData} from '../../../models/data/slide';
 
 import {SlideOfflineService} from './slide.offline.service';
@@ -41,21 +38,14 @@ export class SlideService {
     }
   }
 
-  delete(deckId: string, slideId: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const firestore: firebase.firestore.Firestore = firebase.firestore();
+  async delete(deckId: string, slideId: string): Promise<void> {
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
 
-        await firestore
-          .collection(`/decks/${deckId}/slides`)
-          .doc(slideId)
-          .delete();
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
+    if (offline !== undefined) {
+      return SlideOfflineService.getInstance().delete(deckId, slideId);
+    } else {
+      return SlideOnlineService.getInstance().delete(deckId, slideId);
+    }
   }
 
   async get(deckId: string, slideId: string): Promise<Slide> {

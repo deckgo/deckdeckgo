@@ -88,4 +88,21 @@ export class SlideOnlineService {
       }
     });
   }
+
+  delete(deckId: string, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+        await firestore
+          .collection(`/decks/${deckId}/slides`)
+          .doc(slideId)
+          .delete();
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }

@@ -2,7 +2,7 @@ import {firebase} from '@firebase/app';
 
 import uuid from 'uuid/v4';
 
-import {get, set} from 'idb-keyval';
+import {del, get, set} from 'idb-keyval';
 
 import {Slide, SlideData} from '../../../models/data/slide';
 
@@ -81,5 +81,31 @@ export class SlideOfflineService {
         reject(err);
       }
     });
+  }
+
+  delete(deckId: string, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        await del(`/decks/${deckId}/slides/${slideId}`);
+
+        await this.saveSlidesToDelete(slideId);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private async saveSlidesToDelete(slideId: string) {
+    let slidesToDelete: string[] = await get('deckdeckgo_slides_delete');
+
+    if (!slidesToDelete) {
+      slidesToDelete = [];
+    }
+
+    slidesToDelete.push(slideId);
+
+    await set('deckdeckgo_slides_delete', slidesToDelete);
   }
 }
