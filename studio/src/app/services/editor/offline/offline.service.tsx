@@ -2,6 +2,7 @@ import {firebase} from '@firebase/app';
 
 import {del, get, set} from 'idb-keyval';
 
+import {BehaviorSubject, Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {Deck} from '../../../models/data/deck';
@@ -9,20 +10,24 @@ import {Slide} from '../../../models/data/slide';
 
 import {SlotType} from '../../../utils/editor/slot-type';
 
+import {OfflineUtils} from '../../../utils/editor/offline.utils';
+
 import {DeckEditorService} from '../deck/deck-editor.service';
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {DeckOnlineService} from '../../data/deck/deck.online.service';
 
 export class OfflineService {
   private static instance: OfflineService;
 
   private deckEditorService: DeckEditorService;
   private slideOnlineService: SlideOnlineService;
+  private deckOnlineService: DeckOnlineService;
 
   private offlineSubject: BehaviorSubject<OfflineDeck | undefined> = new BehaviorSubject(undefined);
 
   private constructor() {
     this.deckEditorService = DeckEditorService.getInstance();
+    this.deckOnlineService = DeckOnlineService.getInstance();
     this.slideOnlineService = SlideOnlineService.getInstance();
   }
 
@@ -112,7 +117,7 @@ export class OfflineService {
   upload(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await this.uploadDeck();
+        await this.uploadData();
 
         await del('deckdeckgo_offline');
 
@@ -259,7 +264,7 @@ export class OfflineService {
     });
   }
 
-  private uploadDeck(): Promise<void> {
+  private uploadData(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       try {
         this.deckEditorService
@@ -274,7 +279,9 @@ export class OfflineService {
 
               await this.uploadSlides(deck);
 
-              // TODO upload deck
+              const persistedDeck: Deck = await this.uploadDeck(deck);
+
+              this.deckEditorService.next(persistedDeck);
 
               resolve();
             } catch (err) {
@@ -295,7 +302,7 @@ export class OfflineService {
       }
 
       try {
-        const promises: Promise<Slide>[] = [];
+        const promises: Promise<void>[] = [];
 
         for (let i: number = 0; i < deck.data.slides.length; i++) {
           const slideId: string = deck.data.slides[i];
@@ -317,48 +324,52 @@ export class OfflineService {
     });
   }
 
-  private uploadSlide(deck: Deck, slideId: string): Promise<Slide> {
-    return new Promise<Slide>(async (resolve, reject) => {
-      const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+  private uploadSlide(deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
 
-      if (!slide || !slide.data) {
-        reject('Missing slide for publishing');
-        return;
+        if (!slide || !slide.data) {
+          reject('Missing slide for upload');
+          return;
+        }
+
+        slide.data.attributes = await OfflineUtils.prepareAttributes(slide.data.attributes);
+
+        await this.slideOnlineService.update(deck.id, slide);
+
+        await del(`/decks/${deck.id}/slides/${slideId}`);
+
+        resolve();
+      } catch (err) {
+        reject(err);
       }
-
-      const slideToPersist: Slide = await this.cleanSlide(slide);
-
-      await this.slideOnlineService.update(deck.id, slideToPersist);
-
-      await del(`/decks/${deck.id}/slides/${slideId}`);
-
-      resolve(slide);
     });
   }
 
-  private async cleanSlide(slide: Slide): Promise<Slide> {
-    if (!slide || !slide.data || !slide.data.attributes) {
-      return slide;
-    }
+  private uploadDeck(deck: Deck): Promise<Deck> {
+    return new Promise<Deck>(async (resolve, reject) => {
+      try {
+        if (!deck || !deck.data) {
+          reject('Missing deck for upload');
+          return;
+        }
 
-    const keys: string[] = Object.keys(slide.data.attributes);
+        deck.data.attributes = await OfflineUtils.prepareAttributes(deck.data.attributes);
 
-    if (!keys || keys.length <= 0) {
-      return slide;
-    }
+        if (deck.data.background === null) {
+          // @ts-ignore
+          deck.data.background = firebase.firestore.FieldValue.delete();
+        }
 
-    keys.forEach((key: string) => {
-      const attr = slide.data.attributes[key];
+        const persistedDeck: Deck = await this.deckOnlineService.update(deck);
 
-      // Replace null values with Firestore "to delete fields"
-      if (attr === null) {
-        // @ts-ignore
-        slide.data.attributes[key] = firebase.firestore.FieldValue.delete();
+        await del(`/decks/${deck.id}`);
+
+        resolve(persistedDeck);
+      } catch (err) {
+        reject(err);
       }
     });
-
-    console.log(slide);
-
-    return slide;
   }
 }
