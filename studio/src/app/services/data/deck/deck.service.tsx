@@ -47,7 +47,7 @@ export class DeckService {
   }
 
   async get(deckId: string): Promise<Deck> {
-    const offline: OfflineDeck = await OfflineService.getInstance().isOffline();
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
 
     if (offline !== undefined) {
       return DeckOfflineService.getInstance().get(deckId);
@@ -57,7 +57,7 @@ export class DeckService {
   }
 
   async update(deck: Deck): Promise<Deck> {
-    const offline: OfflineDeck = await OfflineService.getInstance().isOffline();
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
 
     if (offline !== undefined) {
       return DeckOfflineService.getInstance().update(deck);

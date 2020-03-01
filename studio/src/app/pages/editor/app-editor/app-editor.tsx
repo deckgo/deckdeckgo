@@ -167,7 +167,7 @@ export class AppEditor {
 
   async initOffline() {
     // if we are offline we can't create a new deck or edit another one that the one we have marked as currently being edited offline
-    const offline: OfflineDeck = await this.offlineService.isOffline();
+    const offline: OfflineDeck = await this.offlineService.status();
     if (offline !== undefined) {
       this.deckId = offline.id;
     }

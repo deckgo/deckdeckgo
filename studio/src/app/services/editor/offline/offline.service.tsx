@@ -38,7 +38,7 @@ export class OfflineService {
     return OfflineService.instance;
   }
 
-  async isOffline(): Promise<OfflineDeck> {
+  async status(): Promise<OfflineDeck> {
     return new Promise<OfflineDeck>((resolve) => {
       this.offlineSubject.pipe(take(1)).subscribe(async (offline: OfflineDeck | undefined) => {
         if (offline === undefined) {
@@ -56,7 +56,7 @@ export class OfflineService {
   }
 
   async init() {
-    await this.isOffline();
+    await this.status();
   }
 
   watchOffline(): Observable<OfflineDeck | undefined> {

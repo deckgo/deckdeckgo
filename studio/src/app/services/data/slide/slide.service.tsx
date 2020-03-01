@@ -47,7 +47,7 @@ export class SlideService {
   }
 
   async update(deckId: string, slide: Slide): Promise<void> {
-    const offline: OfflineDeck = await OfflineService.getInstance().isOffline();
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
 
     if (offline !== undefined) {
       return SlideOfflineService.getInstance().update(deckId, slide);
@@ -74,7 +74,7 @@ export class SlideService {
   }
 
   async get(deckId: string, slideId: string): Promise<Slide> {
-    const offline: OfflineDeck = await OfflineService.getInstance().isOffline();
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
 
     if (offline !== undefined) {
       return SlideOfflineService.getInstance().get(deckId, slideId);
