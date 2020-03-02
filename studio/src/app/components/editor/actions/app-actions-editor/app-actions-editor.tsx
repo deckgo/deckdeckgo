@@ -41,6 +41,8 @@ export class AppActionsEditor {
 
   @Event() private elementFocus: EventEmitter<HTMLElement>;
 
+  @Event() private goOffline: EventEmitter<boolean>;
+
   @State()
   private step: BreadcrumbsStep = BreadcrumbsStep.DECK;
 
@@ -136,6 +138,7 @@ export class AppActionsEditor {
         actionPublish={this.actionPublish}
         openShare={this.openShare}
         deckDidChange={this.deckDidChange}
+        goOffline={this.goOffline}
         onSelectDeck={() => this.selectDeck()}></app-actions-deck>
     );
   }

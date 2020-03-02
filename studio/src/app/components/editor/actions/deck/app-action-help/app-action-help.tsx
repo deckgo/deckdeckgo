@@ -1,4 +1,4 @@
-import {Component, h, Element} from '@stencil/core';
+import {Component, h, Element, Prop, Event, EventEmitter} from '@stencil/core';
 
 import {popoverController} from '@ionic/core';
 
@@ -8,7 +8,15 @@ import {popoverController} from '@ionic/core';
 export class AppActionHelp {
   @Element() el: HTMLElement;
 
+  @Prop()
+  link: boolean = false;
+
+  @Event()
+  private helpSelected: EventEmitter<void>;
+
   private async openGetHelp() {
+    this.helpSelected.emit();
+
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-get-help',
       mode: 'ios',
@@ -19,11 +27,19 @@ export class AppActionHelp {
   }
 
   render() {
-    return (
-      <ion-tab-button onClick={() => this.openGetHelp()} color="primary" mode="md" class="get-help-action">
-        <ion-icon name="help"></ion-icon>
-        <ion-label>Help</ion-label>
-      </ion-tab-button>
-    );
+    if (this.link) {
+      return (
+        <a onClick={() => this.openGetHelp()} aria-label="Help">
+          <p>Help</p>
+        </a>
+      );
+    } else {
+      return (
+        <ion-tab-button onClick={() => this.openGetHelp()} color="primary" mode="md" class="get-help-action">
+          <ion-icon name="help"></ion-icon>
+          <ion-label>Help</ion-label>
+        </ion-tab-button>
+      );
+    }
   }
 }

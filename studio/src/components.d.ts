@@ -48,7 +48,9 @@ export namespace Components {
     'iconName': string;
     'iconSrc': string;
   }
-  interface AppActionHelp {}
+  interface AppActionHelp {
+    'link': boolean;
+  }
   interface AppActionShare {}
   interface AppActionsDeck {
     'actionPublish': EventEmitter;
@@ -57,6 +59,7 @@ export namespace Components {
     'blockSlide': EventEmitter;
     'deckDidChange': EventEmitter;
     'fullscreen': boolean;
+    'goOffline': EventEmitter<boolean>;
     'openShare': EventEmitter;
     'signIn': EventEmitter;
     'slideTo': EventEmitter;
@@ -218,7 +221,9 @@ export namespace Components {
   interface AppLandingFooter {}
   interface AppLogo {}
   interface AppMenu {}
-  interface AppMoreDeckActions {}
+  interface AppMoreDeckActions {
+    'offline': boolean;
+  }
   interface AppMoreElementActions {
     'copy': boolean;
     'notes': boolean;
@@ -969,7 +974,10 @@ declare namespace LocalJSX {
     'iconSrc'?: string;
     'onActionReady'?: (event: CustomEvent<UIEvent>) => void;
   }
-  interface AppActionHelp {}
+  interface AppActionHelp {
+    'link'?: boolean;
+    'onHelpSelected'?: (event: CustomEvent<void>) => void;
+  }
   interface AppActionShare {
     'onActionPublish'?: (event: CustomEvent<void>) => void;
     'onOpenEmbed'?: (event: CustomEvent<void>) => void;
@@ -982,6 +990,7 @@ declare namespace LocalJSX {
     'blockSlide'?: EventEmitter;
     'deckDidChange'?: EventEmitter;
     'fullscreen'?: boolean;
+    'goOffline'?: EventEmitter<boolean>;
     'onSelectDeck'?: (event: CustomEvent<void>) => void;
     'openShare'?: EventEmitter;
     'signIn'?: EventEmitter;
@@ -998,6 +1007,7 @@ declare namespace LocalJSX {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onElementFocus'?: (event: CustomEvent<HTMLElement>) => void;
+    'onGoOffline'?: (event: CustomEvent<boolean>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideCopy'?: (event: CustomEvent<HTMLElement>) => void;
@@ -1173,7 +1183,9 @@ declare namespace LocalJSX {
   interface AppLandingFooter {}
   interface AppLogo {}
   interface AppMenu {}
-  interface AppMoreDeckActions {}
+  interface AppMoreDeckActions {
+    'offline'?: boolean;
+  }
   interface AppMoreElementActions {
     'copy'?: boolean;
     'notes'?: boolean;

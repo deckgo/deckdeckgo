@@ -12,7 +12,6 @@ import {MoreAction} from '../../../../../utils/editor/more-action';
 import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
-import {OfflineService} from '../../../../../services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-actions-deck',
@@ -54,6 +53,9 @@ export class AppActionsDeck {
   @Prop()
   deckDidChange: EventEmitter;
 
+  @Prop()
+  goOffline: EventEmitter<boolean>;
+
   @Event()
   private selectDeck: EventEmitter<void>;
 
@@ -64,16 +66,15 @@ export class AppActionsDeck {
   private offline: boolean = false;
 
   private anonymousService: AnonymousService;
-  private offlineService: OfflineService;
 
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
-    this.offlineService = OfflineService.getInstance();
   }
 
   async componentWillLoad() {
     this.fullscreenEnable = !isIPad();
 
+    // TODO
     this.offline = await get('deckdeckgo_offline');
   }
 
@@ -290,6 +291,9 @@ export class AppActionsDeck {
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-deck-actions',
+      componentProps: {
+        offline: this.offline
+      },
       event: $event,
       mode: 'ios'
     });
@@ -310,6 +314,8 @@ export class AppActionsDeck {
           await this.openDeckStyle();
         } else if (detail.data.action === MoreAction.EMBED) {
           await this.openEmbed();
+        } else if (detail.data.action === MoreAction.OFFLINE) {
+          await this.goOnlineOffline();
         }
       }
     });
@@ -365,13 +371,9 @@ export class AppActionsDeck {
   }
 
   private async goOnlineOffline() {
-    // TODO not here
+    // TODO Not allowed for anonymous
 
-    if (this.offline) {
-      await this.offlineService.upload();
-    } else {
-      await this.offlineService.save();
-    }
+    this.goOffline.emit(this.offline);
 
     this.offline = !this.offline;
   }
@@ -409,7 +411,9 @@ export class AppActionsDeck {
             <ion-icon name="phone-portrait-outline"></ion-icon>
             <ion-label>Remote</ion-label>
           </ion-tab-button>
+        </ion-buttons>
 
+        <ion-buttons slot="end">
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <ion-tab-button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices" mode="md">
@@ -417,14 +421,12 @@ export class AppActionsDeck {
             {this.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
           </ion-tab-button>
 
+          <app-action-help class="wider-devices"></app-action-help>
+
           <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices" mode="md">
             <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
             <ion-label>More</ion-label>
           </ion-tab-button>
-        </ion-buttons>
-
-        <ion-buttons slot="end">
-          <app-action-help></app-action-help>
         </ion-buttons>
       </ion-toolbar>
     );

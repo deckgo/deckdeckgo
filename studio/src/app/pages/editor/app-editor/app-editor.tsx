@@ -656,6 +656,18 @@ export class AppEditor {
     await this.remoteEventsHandler.updateRemoteReveal(this.fullscreen && this.presenting);
   }
 
+  private async goOffline($event: CustomEvent<boolean>) {
+    if (!$event) {
+      return;
+    }
+
+    if ($event.detail) {
+      await this.offlineService.upload();
+    } else {
+      await this.offlineService.save();
+    }
+  }
+
   render() {
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
@@ -690,7 +702,8 @@ export class AppEditor {
           onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
           onToggleFullScreen={() => this.toggleFullScreen()}
           onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
-          onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}></app-actions-editor>
+          onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
+          onGoOffline={($event: CustomEvent<boolean>) => this.goOffline($event)}></app-actions-editor>
       </ion-footer>,
       <deckgo-inline-editor
         containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"
