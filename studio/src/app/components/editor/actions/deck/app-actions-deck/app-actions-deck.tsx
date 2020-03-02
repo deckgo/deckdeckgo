@@ -56,9 +56,6 @@ export class AppActionsDeck {
   @Prop()
   deckDidChange: EventEmitter;
 
-  @Prop()
-  goOffline: EventEmitter<boolean>;
-
   @Event()
   private selectDeck: EventEmitter<void>;
 
@@ -385,9 +382,14 @@ export class AppActionsDeck {
   }
 
   private async goOnlineOffline() {
-    // TODO Not allowed for anonymous
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-offline',
+      componentProps: {
+        offline: this.offline
+      }
+    });
 
-    this.goOffline.emit(this.offline);
+    await modal.present();
   }
 
   render() {

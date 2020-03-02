@@ -1,0 +1,21 @@
+app-offline {
+  div.go {
+    min-height: 5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div.in-progress {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      ion-label {
+        margin-top: 8px;
+        font-size: var(--font-size-small);
+      }
+    }
+  }
+}

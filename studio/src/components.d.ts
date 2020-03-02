@@ -59,7 +59,6 @@ export namespace Components {
     'blockSlide': EventEmitter;
     'deckDidChange': EventEmitter;
     'fullscreen': boolean;
-    'goOffline': EventEmitter<boolean>;
     'openShare': EventEmitter;
     'signIn': EventEmitter;
     'slideTo': EventEmitter;
@@ -196,6 +195,8 @@ export namespace Components {
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
+  interface AppGoOffline {}
+  interface AppGoOnline {}
   interface AppHome {}
   interface AppImage {
     'deck': boolean;
@@ -243,6 +244,9 @@ export namespace Components {
   interface AppNewsletter {}
   interface AppNotes {
     'selectedElement': HTMLElement;
+  }
+  interface AppOffline {
+    'offline': boolean;
   }
   interface AppOpensource {}
   interface AppPhoto {}
@@ -584,6 +588,18 @@ declare global {
     new (): HTMLAppGifElement;
   };
 
+  interface HTMLAppGoOfflineElement extends Components.AppGoOffline, HTMLStencilElement {}
+  var HTMLAppGoOfflineElement: {
+    prototype: HTMLAppGoOfflineElement;
+    new (): HTMLAppGoOfflineElement;
+  };
+
+  interface HTMLAppGoOnlineElement extends Components.AppGoOnline, HTMLStencilElement {}
+  var HTMLAppGoOnlineElement: {
+    prototype: HTMLAppGoOnlineElement;
+    new (): HTMLAppGoOnlineElement;
+  };
+
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
   var HTMLAppHomeElement: {
     prototype: HTMLAppHomeElement;
@@ -690,6 +706,12 @@ declare global {
   var HTMLAppNotesElement: {
     prototype: HTMLAppNotesElement;
     new (): HTMLAppNotesElement;
+  };
+
+  interface HTMLAppOfflineElement extends Components.AppOffline, HTMLStencilElement {}
+  var HTMLAppOfflineElement: {
+    prototype: HTMLAppOfflineElement;
+    new (): HTMLAppOfflineElement;
   };
 
   interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {}
@@ -916,6 +938,8 @@ declare global {
     'app-fullscreen-info': HTMLAppFullscreenInfoElement;
     'app-get-help': HTMLAppGetHelpElement;
     'app-gif': HTMLAppGifElement;
+    'app-go-offline': HTMLAppGoOfflineElement;
+    'app-go-online': HTMLAppGoOnlineElement;
     'app-home': HTMLAppHomeElement;
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
@@ -934,6 +958,7 @@ declare global {
     'app-navigation-actions': HTMLAppNavigationActionsElement;
     'app-newsletter': HTMLAppNewsletterElement;
     'app-notes': HTMLAppNotesElement;
+    'app-offline': HTMLAppOfflineElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-photo': HTMLAppPhotoElement;
     'app-poll': HTMLAppPollElement;
@@ -990,7 +1015,6 @@ declare namespace LocalJSX {
     'blockSlide'?: EventEmitter;
     'deckDidChange'?: EventEmitter;
     'fullscreen'?: boolean;
-    'goOffline'?: EventEmitter<boolean>;
     'onSelectDeck'?: (event: CustomEvent<void>) => void;
     'openShare'?: EventEmitter;
     'signIn'?: EventEmitter;
@@ -1007,7 +1031,6 @@ declare namespace LocalJSX {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onDeckDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onElementFocus'?: (event: CustomEvent<HTMLElement>) => void;
-    'onGoOffline'?: (event: CustomEvent<boolean>) => void;
     'onOpenShare'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
     'onSlideCopy'?: (event: CustomEvent<HTMLElement>) => void;
@@ -1154,6 +1177,12 @@ declare namespace LocalJSX {
   interface AppFullscreenInfo {}
   interface AppGetHelp {}
   interface AppGif {}
+  interface AppGoOffline {
+    'onDoneOffline'?: (event: CustomEvent<void>) => void;
+  }
+  interface AppGoOnline {
+    'onDoneOnline'?: (event: CustomEvent<void>) => void;
+  }
   interface AppHome {}
   interface AppImage {
     'deck'?: boolean;
@@ -1206,6 +1235,9 @@ declare namespace LocalJSX {
   interface AppNewsletter {}
   interface AppNotes {
     'selectedElement'?: HTMLElement;
+  }
+  interface AppOffline {
+    'offline'?: boolean;
   }
   interface AppOpensource {}
   interface AppPhoto {}
@@ -1330,6 +1362,8 @@ declare namespace LocalJSX {
     'app-fullscreen-info': AppFullscreenInfo;
     'app-get-help': AppGetHelp;
     'app-gif': AppGif;
+    'app-go-offline': AppGoOffline;
+    'app-go-online': AppGoOnline;
     'app-home': AppHome;
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
@@ -1348,6 +1382,7 @@ declare namespace LocalJSX {
     'app-navigation-actions': AppNavigationActions;
     'app-newsletter': AppNewsletter;
     'app-notes': AppNotes;
+    'app-offline': AppOffline;
     'app-opensource': AppOpensource;
     'app-photo': AppPhoto;
     'app-poll': AppPoll;
@@ -1431,6 +1466,8 @@ declare module "@stencil/core" {
       'app-fullscreen-info': LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
       'app-get-help': LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;
       'app-gif': LocalJSX.AppGif & JSXBase.HTMLAttributes<HTMLAppGifElement>;
+      'app-go-offline': LocalJSX.AppGoOffline & JSXBase.HTMLAttributes<HTMLAppGoOfflineElement>;
+      'app-go-online': LocalJSX.AppGoOnline & JSXBase.HTMLAttributes<HTMLAppGoOnlineElement>;
       'app-home': LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
@@ -1449,6 +1486,7 @@ declare module "@stencil/core" {
       'app-navigation-actions': LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
       'app-newsletter': LocalJSX.AppNewsletter & JSXBase.HTMLAttributes<HTMLAppNewsletterElement>;
       'app-notes': LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
+      'app-offline': LocalJSX.AppOffline & JSXBase.HTMLAttributes<HTMLAppOfflineElement>;
       'app-opensource': LocalJSX.AppOpensource & JSXBase.HTMLAttributes<HTMLAppOpensourceElement>;
       'app-photo': LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;
       'app-poll': LocalJSX.AppPoll & JSXBase.HTMLAttributes<HTMLAppPollElement>;
