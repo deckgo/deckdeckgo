@@ -429,7 +429,7 @@ export class AppActionsDeck {
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <ion-tab-button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices" mode="md">
-            <ion-icon name="cloud-offline-outline"></ion-icon>
+            <ion-icon name={this.offline ? 'cloud-done-outline' : 'cloud-offline-outline'}></ion-icon>
             {this.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
           </ion-tab-button>
 
