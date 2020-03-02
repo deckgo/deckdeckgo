@@ -5,6 +5,8 @@ import {isIPad} from '@deckdeckgo/utils';
 
 import {get, set} from 'idb-keyval';
 
+import {Subscription} from 'rxjs';
+
 import {SlideAttributes, SlideTemplate} from '../../../../../models/data/slide';
 
 import {MoreAction} from '../../../../../utils/editor/more-action';
@@ -12,6 +14,7 @@ import {MoreAction} from '../../../../../utils/editor/more-action';
 import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
+import {OfflineService} from '../../../../../services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-actions-deck',
@@ -67,15 +70,26 @@ export class AppActionsDeck {
 
   private anonymousService: AnonymousService;
 
+  private offlineService: OfflineService;
+  private offlineSubscription: Subscription;
+
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
+    this.offlineService = OfflineService.getInstance();
   }
 
   async componentWillLoad() {
     this.fullscreenEnable = !isIPad();
 
-    // TODO
-    this.offline = await get('deckdeckgo_offline');
+    this.offlineSubscription = this.offlineService.watchOffline().subscribe((status: OfflineDeck | undefined) => {
+      this.offline = status !== undefined;
+    });
+  }
+
+  async componentDidUnload() {
+    if (this.offlineSubscription) {
+      this.offlineSubscription.unsubscribe();
+    }
   }
 
   async onActionOpenSlideAdd($event: CustomEvent) {
@@ -374,8 +388,6 @@ export class AppActionsDeck {
     // TODO Not allowed for anonymous
 
     this.goOffline.emit(this.offline);
-
-    this.offline = !this.offline;
   }
 
   render() {
