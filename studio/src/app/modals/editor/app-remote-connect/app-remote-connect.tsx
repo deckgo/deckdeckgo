@@ -119,26 +119,29 @@ export class AppRemoteConnect {
           <ion-title class="ion-text-uppercase">Remote control</ion-title>
         </ion-toolbar>
       </ion-header>,
-      <ion-content class="ion-padding">
-        <ion-list>
-          <ion-item>
-            {this.renderLabel()}
-            <ion-toggle slot="end" checked={this.remoteEnabled} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
-          </ion-item>
-        </ion-list>
+      <ion-content class="ion-padding" color="light">
+        <main class="ion-padding">
+          <ion-list>
+            <ion-item>
+              {this.renderLabel()}
+              <ion-toggle slot="end" checked={this.remoteEnabled} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
+            </ion-item>
+          </ion-list>
 
-        <div class="qrcode-container">
-          <deckgo-qrcode content={this.qrCodeURI}>
-            <ion-icon slot="logo" src="/assets/img/deckdeckgo-logo.svg"></ion-icon>
-          </deckgo-qrcode>
-        </div>
+          <div class="qrcode-container">
+            <deckgo-qrcode content={this.qrCodeURI}>
+              <ion-icon slot="logo" src="/assets/img/deckdeckgo-logo.svg"></ion-icon>
+            </deckgo-qrcode>
+          </div>
 
-        <p class="ion-padding-start ion-padding-end">
-          Remote control your presentation with your phone or any devices. Scan the above QR Code to open directly your deck or get the Progressive Web Apps at{' '}
-          <a href="https://deckdeckgo.app" target="_blank">
-            https://deckdeckgo.app <ion-icon name="open"></ion-icon>
-          </a>
-        </p>
+          <p class="ion-padding-start ion-padding-end">
+            Remote control your presentation with your phone or any devices. Scan the above QR Code to open directly your deck or get the Progressive Web Apps
+            at{' '}
+            <a href="https://deckdeckgo.app" target="_blank">
+              https://deckdeckgo.app <ion-icon name="open"></ion-icon>
+            </a>
+          </p>
+        </main>
       </ion-content>
     ];
   }

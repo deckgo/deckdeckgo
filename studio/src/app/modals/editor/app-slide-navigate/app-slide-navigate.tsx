@@ -59,14 +59,16 @@ export class AppSlideNavigate {
           <ion-title class="ion-text-uppercase">Slides</ion-title>
         </ion-toolbar>
       </ion-header>,
-      <ion-content class="ion-padding">
-        <p class="ion-padding-start ion-padding-end">Jump to a specific slide or change the order of your slides.</p>
+      <ion-content class="ion-padding" color="light">
+        <main class="ion-padding">
+          <p class="ion-padding-start ion-padding-end">Jump to a specific slide or change the order of your slides.</p>
 
-        <ion-reorder-group
-          onIonItemReorder={($event: CustomEvent<ItemReorderEventDetail>) => this.onReorder($event)}
-          disabled={!this.slides || this.slides.length <= 1}>
-          {this.renderSlides()}
-        </ion-reorder-group>
+          <ion-reorder-group
+            onIonItemReorder={($event: CustomEvent<ItemReorderEventDetail>) => this.onReorder($event)}
+            disabled={!this.slides || this.slides.length <= 1}>
+            {this.renderSlides()}
+          </ion-reorder-group>
+        </main>
       </ion-content>
     ];
   }

@@ -35,7 +35,9 @@ export class AppNotes {
           <ion-title class="ion-text-uppercase">{this.offline ? 'Go Online' : 'Go Offline'}</ion-title>
         </ion-toolbar>
       </ion-header>,
-      <ion-content class="ion-padding">{this.renderContent()}</ion-content>
+      <ion-content class="ion-padding" color="light">
+        <main class="ion-padding">{this.renderContent()}</main>
+      </ion-content>
     ];
   }
 
