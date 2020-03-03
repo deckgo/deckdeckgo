@@ -35,7 +35,7 @@ export class AppGoOnline {
     return [
       <p>Cool, you are online again.</p>,
       <p>
-        Please do note that the upload of this deck will <bold>replace</bold> any of its previous online content.
+        Please do note that the upload of this deck will <strong>replace</strong> any of its previous online content.
       </p>,
       <p>Long story short, your local presentation is going to be uploaded and saved in the database as the good one.</p>,
       <div class="ion-padding ion-text-center go">{this.renderGoOnline()}</div>
