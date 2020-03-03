@@ -9,6 +9,9 @@ export class AppGoOnline {
   @State()
   private goingOnline: boolean = false;
 
+  @State()
+  private navigatorOnline: boolean = navigator.onLine;
+
   @Event()
   private doneOnline: EventEmitter<void>;
 
@@ -32,20 +35,35 @@ export class AppGoOnline {
   }
 
   render() {
+    return [this.renderTextOffline(), this.renderTextOnline(), <div class="ion-padding ion-text-center go">{this.renderGoOnline()}</div>];
+  }
+
+  private renderTextOffline() {
+    if (this.navigatorOnline) {
+      return undefined;
+    }
+
+    return [<p>Oopsie, you are not online yet.</p>, <p>Check your online connection, refresh your browser and try again!</p>];
+  }
+
+  private renderTextOnline() {
+    if (!this.navigatorOnline) {
+      return undefined;
+    }
+
     return [
       <p>Cool, you are online again.</p>,
       <p>
-        Please do note that the upload of this deck will <strong>replace</strong> any of its previous online content.
+        Please note that the upload of this deck will <strong>replace</strong> its previous online version.
       </p>,
-      <p>Long story short, your local presentation is going to be uploaded and saved in the database as the good one.</p>,
-      <div class="ion-padding ion-text-center go">{this.renderGoOnline()}</div>
+      <p>Long story short, your local presentation is going to be uploaded and saved in the database as the good one.</p>
     ];
   }
 
   private renderGoOnline() {
     if (!this.goingOnline) {
       return (
-        <ion-button type="submit" color="tertiary" shape="round" onClick={() => this.goOnline()}>
+        <ion-button type="submit" color="tertiary" shape="round" onClick={() => this.goOnline()} disabled={!this.navigatorOnline}>
           <ion-label>Go online now</ion-label>
         </ion-button>
       );

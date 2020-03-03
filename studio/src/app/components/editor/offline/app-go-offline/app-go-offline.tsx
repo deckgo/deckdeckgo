@@ -33,7 +33,7 @@ export class AppGoOffline {
 
   render() {
     return [
-      <p>Your bandwidth is low or inconsistent? Do you have to take a plane? Or even have to present or work without any internet connections?</p>,
+      <p>Low bandwidth? Have to take a plane? Or want to present without internet connections?</p>,
       <p>
         Turn DeckDeckGo <strong>offline</strong> to store your presentation locally while being still able to edit your slides further.
       </p>,
