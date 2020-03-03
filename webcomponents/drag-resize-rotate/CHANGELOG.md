@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.3-1"></a>
+
+# 1.0.0-beta.3-1 (2020-03-03)
+
+### Fix
+
+- rotation miscalculated on first click
+
 <a name="1.0.0-beta.3"></a>
 
 # 1.0.0-beta.3 (2020-02-25)
