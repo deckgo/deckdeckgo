@@ -9,9 +9,6 @@ export class AppGoOnline {
   @State()
   private goingOnline: boolean = false;
 
-  @State()
-  private progress: number = 0;
-
   @Event()
   private doneOnline: EventEmitter<void>;
 
@@ -55,7 +52,7 @@ export class AppGoOnline {
     } else {
       return (
         <div class="in-progress">
-          <ion-progress-bar value={this.progress} color="tertiary"></ion-progress-bar>
+          <ion-spinner color="tertiary"></ion-spinner>
           <ion-label>Hang on still, we are uploading the content.</ion-label>
         </div>
       );

@@ -9,9 +9,6 @@ export class AppGoOffline {
   @State()
   private goingOffline: boolean = false;
 
-  @State()
-  private progress: number = 0;
-
   @Event()
   private doneOffline: EventEmitter<void>;
 
@@ -52,7 +49,7 @@ export class AppGoOffline {
     } else {
       return (
         <div class="in-progress">
-          <ion-progress-bar value={this.progress} color="tertiary"></ion-progress-bar>
+          <ion-spinner color="tertiary"></ion-spinner>
           <ion-label>Hang on, we are gathering the content.</ion-label>
         </div>
       );
