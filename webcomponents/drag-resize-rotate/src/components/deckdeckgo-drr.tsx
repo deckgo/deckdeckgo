@@ -214,8 +214,9 @@ export class DeckdeckgoDragResizeRotate {
   }
 
   private initStartPositionsRotation() {
-    this.centerX = this.el.getBoundingClientRect().left + this.el.offsetWidth / 2;
-    this.centerY = this.el.getBoundingClientRect().top + this.el.offsetHeight / 2;
+    let rect = this.el.getBoundingClientRect();
+    this.centerX = rect.left + rect.width / 2;
+    this.centerY = rect.top + rect.height / 2;
   }
 
   private initStartPositionsResize() {
