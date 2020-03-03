@@ -1,3 +1,11 @@
+<a name="1.0.0-rc.22"></a>
+
+# [1.0.0-rc.22](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.21...v1.0.0-rc.22) (in progress)
+
+### Web Components
+
+- drag-resize-rotate: v1.0.0-beta.3-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/drag-resize-rotate/CHANGELOG.md))
+
 <a name="1.0.0-rc.21"></a>
 
 # [1.0.0-rc.21](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.20...v1.0.0-rc.21) (2020-02-27)
