@@ -10,10 +10,12 @@ import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+import {AssetsService} from '../../../services/core/assets/assets.service';
+
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 
 @Component({
@@ -28,6 +30,9 @@ export class AppCreateSlide {
 
   @State()
   private chartsCollapsed: boolean = true;
+
+  @State()
+  private assets: Assets | undefined = undefined;
 
   private user: User;
 
@@ -56,6 +61,8 @@ export class AppCreateSlide {
         this.photoUrl =
           user && user.data && user.data.photo_url ? user.data.photo_url : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg';
       });
+
+    this.assets = await AssetsService.getInstance().assets();
   }
 
   async componentDidLoad() {
@@ -559,9 +566,13 @@ export class AppCreateSlide {
   }
 
   private renderGif() {
+    if (this.assets === undefined || !this.assets.gif || !this.assets.gif.exampleSrc) {
+      return undefined;
+    }
+
     return (
       <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
-        <deckgo-slide-gif class="showcase" src={EnvironmentConfigService.getInstance().get('gifExampleSrc')} alt="Slide Gif">
+        <deckgo-slide-gif class="showcase" src={this.assets.gif.exampleSrc} alt="Slide Gif">
           <p slot="header">
             <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
           </p>

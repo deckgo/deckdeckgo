@@ -13,6 +13,11 @@ interface ShapeAssets {
   finance: ShapeAsset[];
 }
 
+interface GifAsset {
+  exampleSrc: string;
+}
+
 interface Assets {
   shapes: ShapeAssets;
+  gif: GifAsset;
 }

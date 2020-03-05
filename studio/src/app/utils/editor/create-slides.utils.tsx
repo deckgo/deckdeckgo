@@ -27,7 +27,7 @@ export class CreateSlidesUtils {
       } else if (template === SlideTemplate.SPLIT) {
         resolve(await this.createSlideSplit());
       } else if (template === SlideTemplate.GIF) {
-        resolve(await this.createSlideGif(EnvironmentConfigService.getInstance().get('gifExampleSrc')));
+        resolve(await this.createSlideGif(undefined));
       } else if (template === SlideTemplate.AUTHOR) {
         resolve(await this.createSlideAuthor(user));
       } else if (template === SlideTemplate.YOUTUBE) {

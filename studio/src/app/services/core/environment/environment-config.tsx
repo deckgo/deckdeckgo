@@ -39,7 +39,6 @@ export interface EnvironmentConfig {
   unsplash: EnvironmentUnsplashConfig;
   google: EnvironmentGoogleConfig;
   prismComponentsUrl: string;
-  gifExampleSrc: string;
 }
 
 export function setupConfig(config: EnvironmentConfig) {
