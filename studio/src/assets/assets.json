@@ -125,5 +125,13 @@
   },
   "prism": {
     "definitionSrc": "https://raw.githubusercontent.com/PrismJS/prism/master/components.json"
+  },
+  "chart": {
+    "lineSrc": "https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv",
+    "lineCompareSrc": "https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv",
+    "lineNoDatesSrc": "https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv",
+    "lineMultipleSrc": "https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv",
+    "pieSrc": "https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv",
+    "barCompareSrc": "https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
   }
 }

@@ -21,8 +21,18 @@ interface PrismAsset {
   definitionSrc: string;
 }
 
+interface ChartAssets {
+  lineSrc: string;
+  lineCompareSrc: string;
+  lineNoDatesSrc: string;
+  lineMultipleSrc: string;
+  pieSrc: string;
+  barCompareSrc: string;
+}
+
 interface Assets {
   shapes: ShapeAssets;
   gif: GifAsset;
   prism: PrismAsset;
+  chart: ChartAssets;
 }

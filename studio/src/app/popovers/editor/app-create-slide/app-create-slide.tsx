@@ -255,6 +255,10 @@ export class AppCreateSlide {
   }
 
   private renderChart() {
+    if (this.assets === undefined || !this.assets.chart) {
+      return undefined;
+    }
+
     return (
       <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
         <deckgo-slide-chart
@@ -268,7 +272,7 @@ export class AppCreateSlide {
           marginRight={0}
           width={204}
           height={68}
-          src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+          src={this.assets.chart.lineCompareSrc}>
           <p slot="title">Charts</p>
         </deckgo-slide-chart>
 
@@ -296,7 +300,7 @@ export class AppCreateSlide {
               marginRight={0}
               width={68}
               height={68}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+              src={this.assets.chart.pieSrc}>
               <p slot="title">Pie</p>
             </deckgo-slide-chart>
           </div>
@@ -313,7 +317,7 @@ export class AppCreateSlide {
               width={68}
               height={68}
               inner-radius={16}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+              src={this.assets.chart.pieSrc}>
               <p slot="title">Donut</p>
             </deckgo-slide-chart>
           </div>
@@ -330,7 +334,7 @@ export class AppCreateSlide {
               marginRight={0}
               width={68}
               height={68}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv">
+              src={this.assets.chart.barCompareSrc}>
               <p slot="title">Pie comparison</p>
             </deckgo-slide-chart>
           </div>
@@ -348,7 +352,7 @@ export class AppCreateSlide {
               height={68}
               y-axis-domain="extent"
               date-pattern="dd.MM.yyyy"
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+              src={this.assets.chart.lineCompareSrc}>
               <p slot="title">Area</p>
             </deckgo-slide-chart>
           </div>
@@ -367,7 +371,7 @@ export class AppCreateSlide {
               y-axis-domain="extent"
               date-pattern="dd.MM.yyyy"
               smooth={'false'}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv">
+              src={this.assets.chart.lineSrc}>
               <p slot="title">Sharp area</p>
             </deckgo-slide-chart>
           </div>
@@ -384,7 +388,7 @@ export class AppCreateSlide {
               width={88}
               height={68}
               area={'false'}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv">
+              src={this.assets.chart.lineNoDatesSrc}>
               <p slot="title">Lines</p>
             </deckgo-slide-chart>
           </div>
@@ -403,7 +407,7 @@ export class AppCreateSlide {
               y-axis-domain="extent"
               date-pattern="dd.MM.yyyy"
               animation={true}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv">
+              src={this.assets.chart.lineMultipleSrc}>
               <p slot="title">Line graph comparison</p>
             </deckgo-slide-chart>
           </div>
@@ -419,7 +423,7 @@ export class AppCreateSlide {
               marginRight={0}
               width={88}
               height={68}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+              src={this.assets.chart.pieSrc}>
               <p slot="title">Bar</p>
             </deckgo-slide-chart>
           </div>
@@ -435,7 +439,7 @@ export class AppCreateSlide {
               marginRight={0}
               width={88}
               height={68}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+              src={this.assets.chart.barCompareSrc}
               style={{
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
@@ -457,7 +461,7 @@ export class AppCreateSlide {
               width={88}
               height={68}
               animation={true}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+              src={this.assets.chart.barCompareSrc}
               style={{
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
