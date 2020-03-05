@@ -81,5 +81,18 @@ workbox.routing.registerRoute(
   })
 );
 
+workbox.routing.registerRoute(
+  /^(?=.*unpkg\.com).*/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'unpkg',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
+);
+
 // the precache manifest will be injected into the following line
 self.workbox.precaching.precacheAndRoute([]);
