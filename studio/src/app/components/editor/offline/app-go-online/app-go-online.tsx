@@ -1,6 +1,7 @@
 import {Component, h, State, Event, EventEmitter} from '@stencil/core';
 
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
+import {ErrorService} from '../../../../services/core/error/error.service';
 
 @Component({
   tag: 'app-go-online'
@@ -16,9 +17,11 @@ export class AppGoOnline {
   private doneOnline: EventEmitter<void>;
 
   private offlineService: OfflineService;
+  private errorService: ErrorService;
 
   constructor() {
     this.offlineService = OfflineService.getInstance();
+    this.errorService = ErrorService.getInstance();
   }
 
   private async goOnline() {
@@ -30,7 +33,7 @@ export class AppGoOnline {
       this.doneOnline.emit();
     } catch (err) {
       this.goingOnline = false;
-      // TODO ERROR
+      this.errorService.error('Something went wrong. Double check your internet connection and try again. If it still does not work, contact us!');
     }
   }
 

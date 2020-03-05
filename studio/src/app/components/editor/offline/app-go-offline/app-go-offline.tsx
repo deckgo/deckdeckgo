@@ -1,6 +1,7 @@
 import {Component, h, State, Event, EventEmitter} from '@stencil/core';
 
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
+import {ErrorService} from '../../../../services/core/error/error.service';
 
 @Component({
   tag: 'app-go-offline'
@@ -13,9 +14,11 @@ export class AppGoOffline {
   private doneOffline: EventEmitter<void>;
 
   private offlineService: OfflineService;
+  private errorService: ErrorService;
 
   constructor() {
     this.offlineService = OfflineService.getInstance();
+    this.errorService = ErrorService.getInstance();
   }
 
   private async goOffline() {
@@ -27,7 +30,7 @@ export class AppGoOffline {
       this.doneOffline.emit();
     } catch (err) {
       this.goingOffline = false;
-      // TODO ERROR
+      this.errorService.error('Apologies, something went wrong and app was unable to go offline.');
     }
   }
 
