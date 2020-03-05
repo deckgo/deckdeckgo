@@ -60,6 +60,12 @@ app-create-slide {
             margin: 4px 4px;
             background: white;
             font-size: 0.2rem;
+
+            deckgo-slide-chart {
+              p[slot="title"] {
+                width: 100%;
+              }
+            }
           }
         }
       }
