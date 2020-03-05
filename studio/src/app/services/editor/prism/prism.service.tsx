@@ -1,4 +1,4 @@
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {AssetsService} from '../../core/assets/assets.service';
 
 export interface PrismLanguage {
   language: string;
@@ -10,8 +10,10 @@ export class PrismService {
 
   private static instance: PrismService;
 
+  private assetsService: AssetsService;
+
   private constructor() {
-    // Private constructor, singleton
+    this.assetsService = AssetsService.getInstance();
   }
 
   static getInstance() {
@@ -46,15 +48,14 @@ export class PrismService {
       }
 
       try {
-        const definitionUrl: string = EnvironmentConfigService.getInstance().get('prismComponentsUrl');
+        const assets: Assets | undefined = await this.assetsService.assets();
 
-        if (!definitionUrl) {
+        if (assets === undefined || !assets.prism || !assets.prism.definitionSrc) {
           this.initDefaultLanguages();
           resolve(this.languages);
-          return;
         }
 
-        const response: Response = await fetch(definitionUrl);
+        const response: Response = await fetch(assets.prism.definitionSrc);
 
         const definition: any = await response.json();
 

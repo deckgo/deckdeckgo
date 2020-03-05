@@ -58,7 +58,6 @@ setupDeckGoConfig({
   unsplash: {
     url: '<@UNSPLASH_URL@>'
   },
-  prismComponentsUrl: 'https://raw.githubusercontent.com/PrismJS/prism/886698d5b759ef46162a5723a2493f97c689dc94/components.json',
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
   }

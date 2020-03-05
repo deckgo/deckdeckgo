@@ -122,5 +122,8 @@
   },
   "gif": {
     "exampleSrc": "https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/200w_d.gif"
+  },
+  "prism": {
+    "definitionSrc": "https://raw.githubusercontent.com/PrismJS/prism/master/components.json"
   }
 }

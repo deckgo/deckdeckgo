@@ -38,7 +38,6 @@ export interface EnvironmentConfig {
   tenor: EnvironmentTenorConfig;
   unsplash: EnvironmentUnsplashConfig;
   google: EnvironmentGoogleConfig;
-  prismComponentsUrl: string;
 }
 
 export function setupConfig(config: EnvironmentConfig) {

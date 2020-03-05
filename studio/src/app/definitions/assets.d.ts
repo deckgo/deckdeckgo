@@ -17,7 +17,12 @@ interface GifAsset {
   exampleSrc: string;
 }
 
+interface PrismAsset {
+  definitionSrc: string;
+}
+
 interface Assets {
   shapes: ShapeAssets;
   gif: GifAsset;
+  prism: PrismAsset;
 }

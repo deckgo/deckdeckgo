@@ -68,5 +68,18 @@ workbox.routing.registerRoute(
   })
 );
 
+workbox.routing.registerRoute(
+  /^(?=.*githubusercontent)(?=.*(?:csv|json)).*/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'github-content',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
+);
+
 // the precache manifest will be injected into the following line
 self.workbox.precaching.precacheAndRoute([]);
