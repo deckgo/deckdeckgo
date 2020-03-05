@@ -187,6 +187,15 @@ export class OfflineService {
       return;
     }
 
+    const promises: Promise<void>[] = [this.assetsShapes(assets), this.assetGif(assets), this.assetCharts(assets)];
+
+    // We don't cache PrismJS definition file.
+    // If we would do so, then the list of languages would be displayed but because we load on the fly, it would be in any case not possible offline to fetch the proper definition
+
+    await Promise.all(promises);
+  }
+
+  private async assetsShapes(assets: Assets) {
     const deckGoUrls: string[] = [
       ...this.assetsShapesList(assets, 'shapes'),
       ...this.assetsShapesList(assets, 'arrows'),
@@ -199,19 +208,6 @@ export class OfflineService {
 
     const imagesCache = await window.caches.open('images');
     await imagesCache.addAll(deckGoUrls);
-
-    const corsImgUrls: string[] = [...this.assetGif(assets)];
-
-    const corsImagesCache = await window.caches.open('cors-images');
-    await corsImagesCache.addAll(corsImgUrls);
-
-    // We don't cache PrismJS definition file.
-    // If we would do so, then the list of languages would be displayed but because we load on the fly, it would be in any case not possible offline to fetch the proper definition
-
-    const corsGitHubUrls: string[] = [...this.assetCharts(assets)];
-
-    const corsGitHubCache = await window.caches.open('github-content');
-    await corsGitHubCache.addAll(corsGitHubUrls);
   }
 
   private assetsShapesList(assets: Assets, group: string): string[] {
@@ -226,21 +222,23 @@ export class OfflineService {
     }
   }
 
-  private assetGif(assets: Assets): string[] {
+  private async assetGif(assets: Assets) {
     if (assets.gif && assets.gif.exampleSrc) {
-      return [assets.gif.exampleSrc];
-    } else {
-      return [];
+      const corsImgUrls: string[] = [assets.gif.exampleSrc];
+
+      const corsImagesCache = await window.caches.open('cors-images');
+      await corsImagesCache.addAll(corsImgUrls);
     }
   }
 
-  private assetCharts(assets: Assets): string[] {
+  private async assetCharts(assets: Assets) {
     if (assets.chart) {
-      return Object.keys(assets.chart).map((key: string) => {
+      const corsGitHubUrls: string[] = Object.keys(assets.chart).map((key: string) => {
         return assets.chart[key];
       });
-    } else {
-      return [];
+
+      const corsGitHubCache = await window.caches.open('github-content');
+      await corsGitHubCache.addAll(corsGitHubUrls);
     }
   }
 
