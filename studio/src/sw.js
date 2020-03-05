@@ -43,7 +43,7 @@ workbox.routing.registerRoute(
 
 // Cache the images with a cache-first strategy for 30 days.
 workbox.routing.registerRoute(
-  /^(?!.*unsplash)(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  /^(?!.*(unsplash|giphy))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
   new workbox.strategies.CacheFirst({
     cacheName: 'images',
     plugins: [
@@ -56,9 +56,9 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /^(?=.*unsplash)(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  /^(?=.*(unsplash|giphy))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
   new workbox.strategies.StaleWhileRevalidate({
-    cacheName: 'unsplash-images',
+    cacheName: 'cors-images',
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,

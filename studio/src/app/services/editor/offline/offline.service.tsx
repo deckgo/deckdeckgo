@@ -195,10 +195,11 @@ export class OfflineService {
         ...this.assetsShapesList(assets, 'computers'),
         ...this.assetsShapesList(assets, 'dateTime'),
         ...this.assetsShapesList(assets, 'files'),
-        ...this.assetsShapesList(assets, 'finance')
+        ...this.assetsShapesList(assets, 'finance'),
+        ...this.assetGif(assets)
       ];
 
-      const myCache = await window.caches.open('images');
+      const myCache = await window.caches.open('cors-images');
       await myCache.addAll(urls);
     }
   }
@@ -210,6 +211,14 @@ export class OfflineService {
       return assets.shapes[group].map((asset: ShapeAsset) => {
         return `${config.globalAssetsUrl}${asset.src}`;
       });
+    } else {
+      return [];
+    }
+  }
+
+  private assetGif(assets: Assets): string[] {
+    if (assets.gif && assets.gif.exampleSrc) {
+      return [assets.gif.exampleSrc];
     } else {
       return [];
     }
