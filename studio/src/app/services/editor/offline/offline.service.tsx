@@ -207,6 +207,11 @@ export class OfflineService {
 
     // We don't cache PrismJS definition file.
     // If we would do so, then the list of languages would be displayed but because we load on the fly, it would be in any case not possible offline to fetch the proper definition
+
+    const corsGitHubUrls: string[] = [...this.assetCharts(assets)];
+
+    const corsGitHubCache = await window.caches.open('github-content');
+    await corsGitHubCache.addAll(corsGitHubUrls);
   }
 
   private assetsShapesList(assets: Assets, group: string): string[] {
@@ -224,6 +229,16 @@ export class OfflineService {
   private assetGif(assets: Assets): string[] {
     if (assets.gif && assets.gif.exampleSrc) {
       return [assets.gif.exampleSrc];
+    } else {
+      return [];
+    }
+  }
+
+  private assetCharts(assets: Assets): string[] {
+    if (assets.chart) {
+      return Object.keys(assets.chart).map((key: string) => {
+        return assets.chart[key];
+      });
     } else {
       return [];
     }
