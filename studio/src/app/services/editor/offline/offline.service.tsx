@@ -164,7 +164,7 @@ export class OfflineService {
                 return img.imgSrc;
               });
 
-              const myCache = await window.caches.open('unsplash-images');
+              const myCache = await window.caches.open('cors-images');
               await myCache.addAll(list);
 
               await this.cacheAssets();
@@ -187,21 +187,26 @@ export class OfflineService {
       return;
     }
 
-    if (assets.shapes) {
-      const urls: string[] = [
-        ...this.assetsShapesList(assets, 'shapes'),
-        ...this.assetsShapesList(assets, 'arrows'),
-        ...this.assetsShapesList(assets, 'status'),
-        ...this.assetsShapesList(assets, 'computers'),
-        ...this.assetsShapesList(assets, 'dateTime'),
-        ...this.assetsShapesList(assets, 'files'),
-        ...this.assetsShapesList(assets, 'finance'),
-        ...this.assetGif(assets)
-      ];
+    const deckGoUrls: string[] = [
+      ...this.assetsShapesList(assets, 'shapes'),
+      ...this.assetsShapesList(assets, 'arrows'),
+      ...this.assetsShapesList(assets, 'status'),
+      ...this.assetsShapesList(assets, 'computers'),
+      ...this.assetsShapesList(assets, 'dateTime'),
+      ...this.assetsShapesList(assets, 'files'),
+      ...this.assetsShapesList(assets, 'finance')
+    ];
 
-      const myCache = await window.caches.open('cors-images');
-      await myCache.addAll(urls);
-    }
+    const imagesCache = await window.caches.open('images');
+    await imagesCache.addAll(deckGoUrls);
+
+    const corsImgUrls: string[] = [...this.assetGif(assets)];
+
+    const corsImagesCache = await window.caches.open('cors-images');
+    await corsImagesCache.addAll(corsImgUrls);
+
+    // We don't cache PrismJS definition file.
+    // If we would do so, then the list of languages would be displayed but because we load on the fly, it would be in any case not possible offline to fetch the proper definition
   }
 
   private assetsShapesList(assets: Assets, group: string): string[] {
