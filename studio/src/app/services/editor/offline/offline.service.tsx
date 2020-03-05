@@ -15,6 +15,10 @@ import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {DeckEditorService} from '../deck/deck-editor.service';
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
+import {AssetsService} from '../../core/assets/assets.service';
+
+import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 export class OfflineService {
   private static instance: OfflineService;
@@ -23,12 +27,15 @@ export class OfflineService {
   private slideOnlineService: SlideOnlineService;
   private deckOnlineService: DeckOnlineService;
 
+  private assetsService: AssetsService;
+
   private offlineSubject: BehaviorSubject<OfflineDeck | undefined> = new BehaviorSubject(undefined);
 
   private constructor() {
     this.deckEditorService = DeckEditorService.getInstance();
     this.deckOnlineService = DeckOnlineService.getInstance();
     this.slideOnlineService = SlideOnlineService.getInstance();
+    this.assetsService = AssetsService.getInstance();
   }
 
   static getInstance(): OfflineService {
@@ -160,6 +167,8 @@ export class OfflineService {
               const myCache = await window.caches.open('unsplash-images');
               await myCache.addAll(list);
 
+              await this.cacheAssets();
+
               resolve();
             } catch (err) {
               reject(err);
@@ -169,6 +178,41 @@ export class OfflineService {
         reject(err);
       }
     });
+  }
+
+  private async cacheAssets() {
+    const assets: Assets | undefined = await this.assetsService.assets();
+
+    if (assets === undefined) {
+      return;
+    }
+
+    if (assets.shapes) {
+      const urls: string[] = [
+        ...this.assetsShapesList(assets, 'shapes'),
+        ...this.assetsShapesList(assets, 'arrows'),
+        ...this.assetsShapesList(assets, 'status'),
+        ...this.assetsShapesList(assets, 'computers'),
+        ...this.assetsShapesList(assets, 'dateTime'),
+        ...this.assetsShapesList(assets, 'files'),
+        ...this.assetsShapesList(assets, 'finance')
+      ];
+
+      const myCache = await window.caches.open('images');
+      await myCache.addAll(urls);
+    }
+  }
+
+  private assetsShapesList(assets: Assets, group: string): string[] {
+    if (assets.shapes && assets.shapes[group] && assets.shapes[group].length > 0) {
+      const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+      return assets.shapes[group].map((asset: ShapeAsset) => {
+        return `${config.globalAssetsUrl}${asset.src}`;
+      });
+    } else {
+      return [];
+    }
   }
 
   private lazyLoadAllContent(): Promise<void> {
