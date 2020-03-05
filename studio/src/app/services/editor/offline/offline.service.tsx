@@ -138,46 +138,82 @@ export class OfflineService {
   }
 
   private addToSWCache(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       try {
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            try {
-              if (!deck || !deck.id || !deck.data) {
-                reject('No deck found');
-                return;
-              }
+        const deckElement: HTMLElement = document.querySelector('app-editor > ion-content > main > deckgo-deck');
 
-              // TODO clean code
-              // TODO add other caches / SlotType
+        if (!deckElement) {
+          reject('No deck found');
+          return;
+        }
 
-              const imgs = document.querySelectorAll(SlotType.IMG);
+        await this.cacheImages(deckElement);
 
-              if (!imgs) {
-                resolve();
-                return;
-              }
+        await this.cacheAssets();
 
-              const list = Array.from(imgs).map((img) => {
-                return img.imgSrc;
-              });
-
-              const myCache = await window.caches.open('cors-images');
-              await myCache.addAll(list);
-
-              await this.cacheAssets();
-
-              resolve();
-            } catch (err) {
-              reject(err);
-            }
-          });
+        resolve();
       } catch (err) {
         reject(err);
       }
     });
+  }
+
+  private async cacheImages(deckElement: HTMLElement) {
+    const promises: Promise<void>[] = [this.cacheCorsImages(deckElement), this.cacheDeckGoImages(deckElement)];
+
+    await Promise.all(promises);
+  }
+
+  private async cacheCorsImages(deckElement: HTMLElement): Promise<void> {
+    const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = deckElement.querySelectorAll(SlotType.IMG);
+
+    if (!imgs) {
+      return;
+    }
+
+    const list = Array.from(imgs)
+      .filter((img: HTMLDeckgoLazyImgElement) => {
+        return (
+          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo') === -1) ||
+          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo') === -1)
+        );
+      })
+      .map((img) => {
+        return img.imgSrc || img.svgSrc;
+      });
+
+    if (!list || list.length <= 0) {
+      return;
+    }
+
+    const myCache = await window.caches.open('cors-images');
+    await myCache.addAll(list);
+  }
+
+  private async cacheDeckGoImages(deckElement: HTMLElement): Promise<void> {
+    const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = deckElement.querySelectorAll(SlotType.IMG);
+
+    if (!imgs) {
+      return;
+    }
+
+    const list = Array.from(imgs)
+      .filter((img: HTMLDeckgoLazyImgElement) => {
+        return (
+          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo') > -1) ||
+          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo') > -1)
+        );
+      })
+      .map((img) => {
+        return img.imgSrc || img.svgSrc;
+      });
+
+    if (!list || list.length <= 0) {
+      return;
+    }
+
+    const myCache = await window.caches.open('images');
+    await myCache.addAll(list);
   }
 
   private async cacheAssets() {
@@ -195,7 +231,7 @@ export class OfflineService {
     await Promise.all(promises);
   }
 
-  private async assetsShapes(assets: Assets) {
+  private async assetsShapes(assets: Assets): Promise<void> {
     const deckGoUrls: string[] = [
       ...this.assetsShapesList(assets, 'shapes'),
       ...this.assetsShapesList(assets, 'arrows'),
@@ -222,7 +258,7 @@ export class OfflineService {
     }
   }
 
-  private async assetGif(assets: Assets) {
+  private async assetGif(assets: Assets): Promise<void> {
     if (assets.gif && assets.gif.exampleSrc) {
       const corsImgUrls: string[] = [assets.gif.exampleSrc];
 
@@ -231,7 +267,7 @@ export class OfflineService {
     }
   }
 
-  private async assetCharts(assets: Assets) {
+  private async assetCharts(assets: Assets): Promise<void> {
     if (assets.chart) {
       const corsGitHubUrls: string[] = Object.keys(assets.chart).map((key: string) => {
         return assets.chart[key];
