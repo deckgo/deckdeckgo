@@ -177,11 +177,13 @@ export class OfflineService {
       return;
     }
 
+    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
     const list = Array.from(imgs)
       .filter((img: HTMLDeckgoLazyImgElement) => {
         return (
-          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo.com') === -1) ||
-          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo.com') === -1)
+          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf(config.globalAssetsUrl) === -1) ||
+          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf(config.globalAssetsUrl) === -1)
         );
       })
       .map((img) => {
@@ -203,11 +205,13 @@ export class OfflineService {
       return;
     }
 
+    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
     const list = Array.from(imgs)
       .filter((img: HTMLDeckgoLazyImgElement) => {
         return (
-          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo.com') > -1) ||
-          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo.com') > -1)
+          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf(config.globalAssetsUrl) > -1) ||
+          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf(config.globalAssetsUrl) > -1)
         );
       })
       .map((img) => {
