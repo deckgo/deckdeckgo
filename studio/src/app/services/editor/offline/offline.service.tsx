@@ -440,11 +440,11 @@ export class OfflineService {
   }
 
   private async uploadSlide(deck: Deck, slideId: string): Promise<void> {
-    await this.uploadSlideLocalAssets(deck, slideId);
+    await this.uploadSlideLocalUserAssets(deck, slideId);
     await this.uploadSlideData(deck, slideId);
   }
 
-  private uploadSlideLocalAssets(deck: Deck, slideId: string): Promise<void> {
+  private uploadSlideLocalUserAssets(deck: Deck, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content > main > deckgo-deck > *[slide_id="${slideId}"]`);
 
@@ -457,39 +457,92 @@ export class OfflineService {
         // TODO
       }
 
-      const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = slideElement.querySelectorAll(SlotType.IMG);
+      try {
+        await this.uploadSlideLocalImages(slideElement, deck, slideId);
 
-      if (imgs) {
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadSlideLocalImages(slideElement: HTMLElement, deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = slideElement.querySelectorAll(SlotType.IMG);
+
+        if (!imgs || imgs.length <= 0) {
+          resolve();
+          return;
+        }
+
         const list: HTMLDeckgoLazyImgElement[] = Array.from(imgs).filter((img: HTMLDeckgoLazyImgElement) => {
           return img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('http') === -1;
         });
 
-        if (list || list.length > 0) {
-          for (const img of list) {
-            // TODO clean code
-            // TODO handle null and error
-            // TODO Promise.all
-
-            const data: File = await get(img.imgSrc);
-
-            const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'images', 10485760);
-
-            const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
-
-            slide.data.content = slide.data.content.replace(`img-src="${img.imgSrc}"`, `img-src="${storageFile.downloadUrl}"`);
-            slide.data.content = slide.data.content.replace(`img-alt="${img.imgSrc}"`, `img-alt="${storageFile.downloadUrl}"`);
-
-            await set(`/decks/${deck.id}/slides/${slideId}`, slide);
-
-            img.imgSrc = storageFile.downloadUrl;
-            img.imgAlt = storageFile.downloadUrl;
-
-            await del(img.imgSrc);
-          }
+        if (!list || list.length <= 0) {
+          resolve();
+          return;
         }
-      }
 
-      resolve();
+        const promises: Promise<void>[] = list.map((img: HTMLDeckgoLazyImgElement) => {
+          return this.uploadSlideLocalImage(img, deck, slideId);
+        });
+
+        await Promise.all(promises);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadSlideLocalImage(img: HTMLDeckgoLazyImgElement, deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const data: File = await get(img.imgSrc);
+
+        if (!data) {
+          // We didn't the corresponding image. Instead of crashing an error we go through, user will notice that nothing is displayed.
+          // Better than blocking the all process and reaching an intermediate state.
+          resolve();
+          return;
+        }
+
+        // 1. We upload the file to the storage cloud
+        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'images', 10485760);
+
+        if (!storageFile) {
+          reject(`Image ${img.imgSrc} upload has failed.`);
+          return;
+        }
+
+        // 2. We update the indexedDB stored slide with the new downloadUrl. This stored slide will be later uploaded back to the database.
+        const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+
+        if (!slide) {
+          reject('Slide not found and that is really weird here.');
+          return;
+        }
+
+        slide.data.content = slide.data.content.replace(`img-src="${img.imgSrc}"`, `img-src="${storageFile.downloadUrl}"`);
+        slide.data.content = slide.data.content.replace(`img-alt="${img.imgSrc}"`, `img-alt="${storageFile.downloadUrl}"`);
+
+        await set(`/decks/${deck.id}/slides/${slideId}`, slide);
+
+        // 3. We update the DOM
+        img.imgSrc = storageFile.downloadUrl;
+        img.imgAlt = storageFile.downloadUrl;
+
+        // 4. All good, we don't need the image in the indexedDB anymore
+        await del(img.imgSrc);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
