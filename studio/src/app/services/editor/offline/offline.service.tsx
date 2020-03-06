@@ -287,8 +287,7 @@ export class OfflineService {
   private lazyLoadAllContent(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        // TODO don't find deck here
-        const deck = document.querySelector('main > deckgo-deck');
+        const deck = document.querySelector('app-editor > ion-content > main > deckgo-deck');
 
         if (!deck) {
           reject('Deck not found');
