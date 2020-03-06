@@ -1,3 +1,6 @@
+import {EnvironmentDeckDeckGoConfig} from '../environment/environment-config';
+import {EnvironmentConfigService} from '../environment/environment-config.service';
+
 export class AssetsService {
   private static instance: AssetsService;
 
@@ -22,13 +25,9 @@ export class AssetsService {
 
   private async init(): Promise<Assets> {
     try {
-      // TODO
-      // Replace with prod link
+      const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-      // const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      // `${config.globalAssetsUrl}/assets.json`
-
-      const res: Response = await fetch(`http://localhost:3333/assets/assets.json`);
+      const res: Response = await fetch(`${config.globalAssetsUrl}/assets.json`);
 
       if (!res) {
         return undefined;
