@@ -453,12 +453,66 @@ export class OfflineService {
         return;
       }
 
-      if (slideElement.tagName && slideElement.tagName.toUpperCase() === 'deckgo-slide-chart'.toUpperCase()) {
-        // TODO
-      }
-
       try {
+        await this.uploadSlideLocalCharts(slideElement, deck, slideId);
         await this.uploadSlideLocalImages(slideElement, deck, slideId);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadSlideLocalCharts(slideElement: HTMLElement, deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (slideElement.tagName && slideElement.tagName.toUpperCase() !== 'deckgo-slide-chart'.toUpperCase()) {
+          resolve();
+          return;
+        }
+
+        const src: string = (slideElement as any).src;
+
+        if (!src || src === undefined || src === '') {
+          resolve();
+          return;
+        }
+
+        const data: File = await get(src);
+
+        if (!data) {
+          // We didn't the corresponding image. Instead of crashing an error we go through, user will notice that nothing is displayed.
+          // Better than blocking the all process and reaching an intermediate state.
+          resolve();
+          return;
+        }
+
+        // 1. We upload the file to the storage cloud
+        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'data', 10485760);
+
+        if (!storageFile) {
+          reject(`Chart ${src} upload has failed.`);
+          return;
+        }
+
+        // 2. We update the indexedDB stored slide with the new downloadUrl. This stored slide will be later uploaded back to the database.
+        const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+
+        if (!slide) {
+          reject('Slide not found and that is really weird here.');
+          return;
+        }
+
+        slide.data.attributes.src = storageFile.downloadUrl;
+
+        await set(`/decks/${deck.id}/slides/${slideId}`, slide);
+
+        // 3. We update the DOM
+        (slideElement as any).src = storageFile.downloadUrl;
+
+        // 4. All good, we don't need the image in the indexedDB anymore
+        await del(src);
 
         resolve();
       } catch (err) {
