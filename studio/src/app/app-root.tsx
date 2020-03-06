@@ -45,10 +45,9 @@ export class AppRoot {
   async componentWillLoad() {
     if (Build.isBrowser) {
       await this.authService.init();
+      await this.themeService.initDarkModePreference();
+      await this.offlineService.init();
     }
-
-    await this.themeService.initDarkModePreference();
-    await this.offlineService.init();
   }
 
   async componentDidLoad() {
