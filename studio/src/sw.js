@@ -41,7 +41,21 @@ workbox.routing.registerRoute(
   })
 );
 
-// Cache the images with a cache-first strategy for 30 days.
+// Catch assets list
+workbox.routing.registerRoute(
+  /^(?=.*assets\.json).*/,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'assets',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
+);
+
+// Cache the images
 workbox.routing.registerRoute(
   /^(?!.*(?:unsplash|giphy|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
   new workbox.strategies.CacheFirst({
@@ -68,6 +82,7 @@ workbox.routing.registerRoute(
   })
 );
 
+// Cache the data
 workbox.routing.registerRoute(
   /^(?=.*(?:githubusercontent|firebasestorage))(?=.*(?:csv|json)).*/,
   new workbox.strategies.StaleWhileRevalidate({
@@ -81,6 +96,7 @@ workbox.routing.registerRoute(
   })
 );
 
+// Cache unpkg notably for language definitions
 workbox.routing.registerRoute(
   /^(?=.*unpkg\.com).*/,
   new workbox.strategies.StaleWhileRevalidate({
