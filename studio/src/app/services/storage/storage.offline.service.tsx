@@ -18,7 +18,7 @@ export class StorageOfflineService {
     return StorageOfflineService.instance;
   }
 
-  uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile> {
+  uploadFile(data: File, _folder: string, maxSize: number): Promise<StorageFile> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
         if (!data || !data.name) {
@@ -33,7 +33,7 @@ export class StorageOfflineService {
           return;
         }
 
-        const key: string = `/${folder}/${data.name}`;
+        const key: string = `${data.name}`;
 
         await set(key, data);
 

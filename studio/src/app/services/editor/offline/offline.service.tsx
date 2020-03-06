@@ -19,13 +19,16 @@ import {AssetsService} from '../../core/assets/assets.service';
 
 import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {StorageOnlineService} from '../../storage/storage.online.service';
 
 export class OfflineService {
   private static instance: OfflineService;
 
   private deckEditorService: DeckEditorService;
+
   private slideOnlineService: SlideOnlineService;
   private deckOnlineService: DeckOnlineService;
+  private storageOnlineService: StorageOnlineService;
 
   private assetsService: AssetsService;
 
@@ -33,8 +36,11 @@ export class OfflineService {
 
   private constructor() {
     this.deckEditorService = DeckEditorService.getInstance();
+
     this.deckOnlineService = DeckOnlineService.getInstance();
     this.slideOnlineService = SlideOnlineService.getInstance();
+    this.storageOnlineService = StorageOnlineService.getInstance();
+
     this.assetsService = AssetsService.getInstance();
   }
 
@@ -433,7 +439,61 @@ export class OfflineService {
     });
   }
 
-  private uploadSlide(deck: Deck, slideId: string): Promise<void> {
+  private async uploadSlide(deck: Deck, slideId: string): Promise<void> {
+    await this.uploadSlideLocalAssets(deck, slideId);
+    await this.uploadSlideData(deck, slideId);
+  }
+
+  private uploadSlideLocalAssets(deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content > main > deckgo-deck > *[slide_id="${slideId}"]`);
+
+      if (!slideElement) {
+        reject('No slide found');
+        return;
+      }
+
+      if (slideElement.tagName && slideElement.tagName.toUpperCase() === 'deckgo-slide-chart'.toUpperCase()) {
+        // TODO
+      }
+
+      const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = slideElement.querySelectorAll(SlotType.IMG);
+
+      if (imgs) {
+        const list: HTMLDeckgoLazyImgElement[] = Array.from(imgs).filter((img: HTMLDeckgoLazyImgElement) => {
+          return img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('http') === -1;
+        });
+
+        if (list || list.length > 0) {
+          for (const img of list) {
+            // TODO clean code
+            // TODO handle null and error
+            // TODO Promise.all
+
+            const data: File = await get(img.imgSrc);
+
+            const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'images', 10485760);
+
+            const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+
+            slide.data.content = slide.data.content.replace(`img-src="${img.imgSrc}"`, `img-src="${storageFile.downloadUrl}"`);
+            slide.data.content = slide.data.content.replace(`img-alt="${img.imgSrc}"`, `img-alt="${storageFile.downloadUrl}"`);
+
+            await set(`/decks/${deck.id}/slides/${slideId}`, slide);
+
+            img.imgSrc = storageFile.downloadUrl;
+            img.imgAlt = storageFile.downloadUrl;
+
+            await del(img.imgSrc);
+          }
+        }
+      }
+
+      resolve();
+    });
+  }
+
+  private uploadSlideData(deck: Deck, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
