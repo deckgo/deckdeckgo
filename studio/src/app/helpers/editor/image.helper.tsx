@@ -128,12 +128,21 @@ export class ImageHelper {
     });
   }
 
-  private updateDeckgoLazyImgAttributes(img: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): HTMLElement {
+  private updateDeckgoLazyImgAttributes(img: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile, background: boolean = false): HTMLElement {
     const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
 
     if (deckgImg !== undefined) {
       (img as any).imgSrc = deckgImg.src;
       (img as any).imgAlt = deckgImg.label;
+    }
+
+    if (image && image !== undefined && image.hasOwnProperty('downloadUrl')) {
+      (img as any).customLoader = true;
+
+      // We have to add the information as attributes because slots are going to be cloned to the slides background
+      if (background) {
+        img.setAttribute('custom-loader', 'true');
+      }
     }
 
     img.setAttribute('contentEditable', 'false');
@@ -180,7 +189,7 @@ export class ImageHelper {
 
       const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
-      const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
+      const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image, true);
       div.appendChild(img);
 
       selectedElement.appendChild(div);
