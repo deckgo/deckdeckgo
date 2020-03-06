@@ -180,8 +180,8 @@ export class OfflineService {
     const list = Array.from(imgs)
       .filter((img: HTMLDeckgoLazyImgElement) => {
         return (
-          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo') === -1) ||
-          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo') === -1)
+          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo.com') === -1) ||
+          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo.com') === -1)
         );
       })
       .map((img) => {
@@ -206,8 +206,8 @@ export class OfflineService {
     const list = Array.from(imgs)
       .filter((img: HTMLDeckgoLazyImgElement) => {
         return (
-          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo') > -1) ||
-          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo') > -1)
+          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo.com') > -1) ||
+          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo.com') > -1)
         );
       })
       .map((img) => {
@@ -279,7 +279,7 @@ export class OfflineService {
         return assets.chart[key];
       });
 
-      const corsGitHubCache = await window.caches.open('github-content');
+      const corsGitHubCache = await window.caches.open('data-content');
       await corsGitHubCache.addAll(corsGitHubUrls);
     }
   }

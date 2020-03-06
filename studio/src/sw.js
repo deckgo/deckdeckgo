@@ -43,7 +43,7 @@ workbox.routing.registerRoute(
 
 // Cache the images with a cache-first strategy for 30 days.
 workbox.routing.registerRoute(
-  /^(?!.*(?:unsplash|giphy))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  /^(?!.*(?:unsplash|giphy|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
   new workbox.strategies.CacheFirst({
     cacheName: 'images',
     plugins: [
@@ -56,7 +56,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /^(?=.*(?:unsplash|giphy))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  /^(?=.*(?:unsplash|giphy|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'cors-images',
     plugins: [
@@ -69,9 +69,9 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /^(?=.*githubusercontent)(?=.*(?:csv|json)).*/,
+  /^(?=.*(?:githubusercontent|firebasestorage))(?=.*(?:csv|json)).*/,
   new workbox.strategies.StaleWhileRevalidate({
-    cacheName: 'github-content',
+    cacheName: 'data-content',
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
