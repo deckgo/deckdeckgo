@@ -34,9 +34,9 @@ import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment
 setupDeckGoConfig({
   deckdeckgo: {
     prod: false,
-    appUrl: 'http://localhost:3333',
-    globalAssetsUrl: 'http://localhost:3333/assets',
-    pollUrl: 'http://localhost:3333/poll',
+    appUrl: 'https://deckdeckgo-studio-beta.web.app',
+    globalAssetsUrl: 'https://deckdeckgo-studio-beta.web.app/assets',
+    pollUrl: 'https://deckdeckgo-studio-beta.web.app/poll',
     apiUrl: '<@API_URL@>',
     presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>'
@@ -58,8 +58,6 @@ setupDeckGoConfig({
   unsplash: {
     url: '<@UNSPLASH_URL@>'
   },
-  prismComponentsUrl: 'https://raw.githubusercontent.com/PrismJS/prism/886698d5b759ef46162a5723a2493f97c689dc94/components.json',
-  gifExampleSrc: 'https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/200w_d.gif',
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
   }
