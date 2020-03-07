@@ -294,10 +294,10 @@ export class AppCreateSlide {
             <deckgo-slide-chart
               class="showcase"
               type="pie"
-              marginTop={0}
-              marginBottom={0}
-              marginLeft={0}
-              marginRight={0}
+              marginTop={8}
+              marginBottom={8}
+              marginLeft={8}
+              marginRight={8}
               width={68}
               height={68}
               src={this.assets.chart.pieSrc}>
@@ -310,10 +310,10 @@ export class AppCreateSlide {
             <deckgo-slide-chart
               class="showcase"
               type="pie"
-              marginTop={0}
-              marginBottom={0}
-              marginLeft={0}
-              marginRight={0}
+              marginTop={8}
+              marginBottom={8}
+              marginLeft={8}
+              marginRight={8}
               width={68}
               height={68}
               inner-radius={16}
@@ -328,10 +328,10 @@ export class AppCreateSlide {
               class="showcase"
               type="pie"
               animation={true}
-              marginTop={0}
-              marginBottom={0}
-              marginLeft={0}
-              marginRight={0}
+              marginTop={8}
+              marginBottom={8}
+              marginLeft={8}
+              marginRight={8}
               width={68}
               height={68}
               src={this.assets.chart.barCompareSrc}>
