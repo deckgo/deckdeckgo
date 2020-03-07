@@ -11,6 +11,7 @@ import {Slide} from '../../../models/data/slide';
 import {SlotType} from '../../../utils/editor/slot-type';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
+import {ServiceWorkerUtils} from '../../../utils/core/service-worker-utils';
 
 import {DeckEditorService} from '../deck/deck-editor.service';
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
@@ -83,7 +84,7 @@ export class OfflineService {
 
         await Promise.all(promises);
 
-        await this.addToSWCache();
+        await this.cacheServiceWorker();
 
         await this.toggleOffline();
 
@@ -143,7 +144,7 @@ export class OfflineService {
     });
   }
 
-  private addToSWCache(): Promise<void> {
+  private cacheServiceWorker(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const deckElement: HTMLElement = document.querySelector('app-editor > ion-content > main > deckgo-deck');
@@ -179,7 +180,7 @@ export class OfflineService {
 
     const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-    const list = Array.from(imgs)
+    const list: string[] = Array.from(imgs)
       .filter((img: HTMLDeckgoLazyImgElement) => {
         return (
           (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf(config.globalAssetsUrl) === -1) ||
@@ -194,8 +195,7 @@ export class OfflineService {
       return;
     }
 
-    const myCache = await window.caches.open('cors-images');
-    await myCache.addAll(list);
+    await ServiceWorkerUtils.cacheUrls('cors-images', list);
   }
 
   private async cacheDeckGoImages(deckElement: HTMLElement): Promise<void> {
@@ -222,8 +222,7 @@ export class OfflineService {
       return;
     }
 
-    const myCache = await window.caches.open('images');
-    await myCache.addAll(list);
+    await ServiceWorkerUtils.cacheUrls('images', list);
   }
 
   private async cacheAssets() {
@@ -246,8 +245,7 @@ export class OfflineService {
 
     const assetsFileUrl: string[] = [`${config.globalAssetsUrl}/assets.json`];
 
-    const assetsFileCache = await window.caches.open('assets');
-    await assetsFileCache.addAll(assetsFileUrl);
+    await ServiceWorkerUtils.cacheUrls('assets', assetsFileUrl);
   }
 
   private async assetsShapes(assets: Assets): Promise<void> {
@@ -261,8 +259,7 @@ export class OfflineService {
       ...this.assetsShapesList(assets, 'finance')
     ];
 
-    const imagesCache = await window.caches.open('images');
-    await imagesCache.addAll(deckGoUrls);
+    await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);
   }
 
   private assetsShapesList(assets: Assets, group: string): string[] {
@@ -281,8 +278,7 @@ export class OfflineService {
     if (assets.gif && assets.gif.exampleSrc) {
       const corsImgUrls: string[] = [assets.gif.exampleSrc];
 
-      const corsImagesCache = await window.caches.open('cors-images');
-      await corsImagesCache.addAll(corsImgUrls);
+      await ServiceWorkerUtils.cacheUrls('cors-images', corsImgUrls);
     }
   }
 
@@ -292,8 +288,7 @@ export class OfflineService {
         return assets.chart[key];
       });
 
-      const corsGitHubCache = await window.caches.open('data-content');
-      await corsGitHubCache.addAll(corsGitHubUrls);
+      await ServiceWorkerUtils.cacheUrls('data-content', corsGitHubUrls);
     }
   }
 
