@@ -9,6 +9,7 @@ The [DeckDeckGo] deck exposes a couple of extra features which could be added to
 - [Mobile](#app-deck-extra-features-mobile)
 - [initSlideSize](#app-deck-extra-features-init-slide-size)
 - [loadBackground](#app-deck-extra-features-load-background)
+- [lazyLoadAllContent](#app-deck-extra-features-lazy-load-all-content)
 
 ## Toggle on/off the full screen mode
 
@@ -40,10 +41,18 @@ await deck.initSlideSize();
 
 ## Load background
 
-If you would dynamically change the deck background element you could forward that changes to also slides using the following method:  
+If you would dynamically change the deck background element you could forward that changes to also slides using the following method:
 
 ```
 await deck.loadBackground();
 ```
 
-[DeckDeckGo]: https://deckdeckgo.com
+## Lazy load all content
+
+To load the content of each and every slides of the deck which would normally be lazy loaded when you would swipe through your slides.
+
+```
+await deck.lazyLoadAllContent();
+```
+
+[deckdeckgo]: https://deckdeckgo.com

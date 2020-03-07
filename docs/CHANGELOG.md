@@ -1,3 +1,9 @@
+<a name="1.0.0-rc.10-2"></a>
+
+# 1.0.0-rc.10-2 (2020-03-07)
+
+- new core method `lazyLoadAllContent()`
+
 <a name="1.0.0-rc.10-1"></a>
 
 # 1.0.0-rc.10-1 (2020-02-23)
