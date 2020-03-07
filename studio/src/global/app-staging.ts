@@ -34,9 +34,9 @@ import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment
 setupDeckGoConfig({
   deckdeckgo: {
     prod: false,
-    appUrl: 'http://localhost:3333',
-    globalAssetsUrl: 'http://localhost:3333/assets',
-    pollUrl: 'http://localhost:3333/poll',
+    appUrl: 'https://deckdeckgo-studio-beta.web.app',
+    globalAssetsUrl: 'https://deckdeckgo-studio-beta.web.app/assets',
+    pollUrl: 'https://deckdeckgo-studio-beta.web.app/poll',
     apiUrl: '<@API_URL@>',
     presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>'
