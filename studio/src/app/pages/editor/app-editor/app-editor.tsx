@@ -22,6 +22,8 @@ import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-event
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
 import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
 import {PollEventsHandler} from '../../../handlers/editor/events/poll/poll-events.handler';
+import {ImageEventsHandler} from '../../../handlers/editor/events/image/image-events.handler';
+import {ChartEventsHandler} from '../../../handlers/editor/events/chart/chart-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
@@ -71,6 +73,8 @@ export class AppEditor {
   private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
   private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
   private pollEventsHandler: PollEventsHandler = new PollEventsHandler();
+  private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
+  private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
 
   private editorHelper: EditorHelper = new EditorHelper();
 
@@ -177,6 +181,8 @@ export class AppEditor {
     this.deckEventsHandler.destroy();
     this.editorEventsHandler.destroy();
     this.pollEventsHandler.destroy();
+    this.imageEventsHandler.destroy();
+    this.chartEventsHandler.destroy();
 
     await this.remoteEventsHandler.destroy();
 
@@ -192,6 +198,8 @@ export class AppEditor {
 
     await this.remoteEventsHandler.init(this.el);
     await this.pollEventsHandler.init(this.el);
+    await this.imageEventsHandler.init();
+    await this.chartEventsHandler.init();
 
     this.initWindowResize();
   }

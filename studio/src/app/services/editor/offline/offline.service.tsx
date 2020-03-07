@@ -11,6 +11,7 @@ import {Slide} from '../../../models/data/slide';
 import {SlotType} from '../../../utils/editor/slot-type';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
+import {ServiceWorkerUtils} from '../../../utils/core/service-worker-utils';
 
 import {DeckEditorService} from '../deck/deck-editor.service';
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
@@ -19,13 +20,16 @@ import {AssetsService} from '../../core/assets/assets.service';
 
 import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {StorageOnlineService} from '../../storage/storage.online.service';
 
 export class OfflineService {
   private static instance: OfflineService;
 
   private deckEditorService: DeckEditorService;
+
   private slideOnlineService: SlideOnlineService;
   private deckOnlineService: DeckOnlineService;
+  private storageOnlineService: StorageOnlineService;
 
   private assetsService: AssetsService;
 
@@ -33,8 +37,11 @@ export class OfflineService {
 
   private constructor() {
     this.deckEditorService = DeckEditorService.getInstance();
+
     this.deckOnlineService = DeckOnlineService.getInstance();
     this.slideOnlineService = SlideOnlineService.getInstance();
+    this.storageOnlineService = StorageOnlineService.getInstance();
+
     this.assetsService = AssetsService.getInstance();
   }
 
@@ -77,7 +84,7 @@ export class OfflineService {
 
         await Promise.all(promises);
 
-        await this.addToSWCache();
+        await this.cacheServiceWorker();
 
         await this.toggleOffline();
 
@@ -137,7 +144,7 @@ export class OfflineService {
     });
   }
 
-  private addToSWCache(): Promise<void> {
+  private cacheServiceWorker(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const deckElement: HTMLElement = document.querySelector('app-editor > ion-content > main > deckgo-deck');
@@ -171,11 +178,13 @@ export class OfflineService {
       return;
     }
 
-    const list = Array.from(imgs)
+    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+    const list: string[] = Array.from(imgs)
       .filter((img: HTMLDeckgoLazyImgElement) => {
         return (
-          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo') === -1) ||
-          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo') === -1)
+          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf(config.globalAssetsUrl) === -1) ||
+          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf(config.globalAssetsUrl) === -1)
         );
       })
       .map((img) => {
@@ -186,8 +195,7 @@ export class OfflineService {
       return;
     }
 
-    const myCache = await window.caches.open('cors-images');
-    await myCache.addAll(list);
+    await ServiceWorkerUtils.cacheUrls('cors-images', list);
   }
 
   private async cacheDeckGoImages(deckElement: HTMLElement): Promise<void> {
@@ -197,11 +205,13 @@ export class OfflineService {
       return;
     }
 
+    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
     const list = Array.from(imgs)
       .filter((img: HTMLDeckgoLazyImgElement) => {
         return (
-          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('deckdeckgo') > -1) ||
-          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf('deckdeckgo') > -1)
+          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf(config.globalAssetsUrl) > -1) ||
+          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf(config.globalAssetsUrl) > -1)
         );
       })
       .map((img) => {
@@ -212,8 +222,7 @@ export class OfflineService {
       return;
     }
 
-    const myCache = await window.caches.open('images');
-    await myCache.addAll(list);
+    await ServiceWorkerUtils.cacheUrls('images', list);
   }
 
   private async cacheAssets() {
@@ -223,12 +232,20 @@ export class OfflineService {
       return;
     }
 
-    const promises: Promise<void>[] = [this.assetsShapes(assets), this.assetGif(assets), this.assetCharts(assets)];
+    const promises: Promise<void>[] = [this.assetsDefinition(), this.assetsShapes(assets), this.assetGif(assets), this.assetCharts(assets)];
 
     // We don't cache PrismJS definition file.
     // If we would do so, then the list of languages would be displayed but because we load on the fly, it would be in any case not possible offline to fetch the proper definition
 
     await Promise.all(promises);
+  }
+
+  private async assetsDefinition(): Promise<void> {
+    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+    const assetsFileUrl: string[] = [`${config.globalAssetsUrl}/assets.json`];
+
+    await ServiceWorkerUtils.cacheUrls('assets', assetsFileUrl);
   }
 
   private async assetsShapes(assets: Assets): Promise<void> {
@@ -242,8 +259,7 @@ export class OfflineService {
       ...this.assetsShapesList(assets, 'finance')
     ];
 
-    const imagesCache = await window.caches.open('images');
-    await imagesCache.addAll(deckGoUrls);
+    await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);
   }
 
   private assetsShapesList(assets: Assets, group: string): string[] {
@@ -262,8 +278,7 @@ export class OfflineService {
     if (assets.gif && assets.gif.exampleSrc) {
       const corsImgUrls: string[] = [assets.gif.exampleSrc];
 
-      const corsImagesCache = await window.caches.open('cors-images');
-      await corsImagesCache.addAll(corsImgUrls);
+      await ServiceWorkerUtils.cacheUrls('cors-images', corsImgUrls);
     }
   }
 
@@ -273,16 +288,14 @@ export class OfflineService {
         return assets.chart[key];
       });
 
-      const corsGitHubCache = await window.caches.open('github-content');
-      await corsGitHubCache.addAll(corsGitHubUrls);
+      await ServiceWorkerUtils.cacheUrls('data-content', corsGitHubUrls);
     }
   }
 
   private lazyLoadAllContent(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        // TODO don't find deck here
-        const deck = document.querySelector('main > deckgo-deck');
+        const deck = document.querySelector('app-editor > ion-content > main > deckgo-deck');
 
         if (!deck) {
           reject('Deck not found');
@@ -433,7 +446,168 @@ export class OfflineService {
     });
   }
 
-  private uploadSlide(deck: Deck, slideId: string): Promise<void> {
+  private async uploadSlide(deck: Deck, slideId: string): Promise<void> {
+    await this.uploadSlideLocalUserAssets(deck, slideId);
+    await this.uploadSlideData(deck, slideId);
+  }
+
+  private uploadSlideLocalUserAssets(deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content > main > deckgo-deck > *[slide_id="${slideId}"]`);
+
+      if (!slideElement) {
+        reject('No slide found');
+        return;
+      }
+
+      try {
+        await this.uploadSlideLocalCharts(slideElement, deck, slideId);
+        await this.uploadSlideLocalImages(slideElement, deck, slideId);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadSlideLocalCharts(slideElement: HTMLElement, deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (slideElement.tagName && slideElement.tagName.toUpperCase() !== 'deckgo-slide-chart'.toUpperCase()) {
+          resolve();
+          return;
+        }
+
+        const src: string = (slideElement as any).src;
+
+        if (!src || src === undefined || src === '') {
+          resolve();
+          return;
+        }
+
+        const data: File = await get(src);
+
+        if (!data) {
+          // We didn't the corresponding image. Instead of crashing an error we go through, user will notice that nothing is displayed.
+          // Better than blocking the all process and reaching an intermediate state.
+          resolve();
+          return;
+        }
+
+        // 1. We upload the file to the storage cloud
+        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'data', 10485760);
+
+        if (!storageFile) {
+          reject(`Chart ${src} upload has failed.`);
+          return;
+        }
+
+        // 2. We update the indexedDB stored slide with the new downloadUrl. This stored slide will be later uploaded back to the database.
+        const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+
+        if (!slide) {
+          reject('Slide not found and that is really weird here.');
+          return;
+        }
+
+        slide.data.attributes.src = storageFile.downloadUrl;
+
+        await set(`/decks/${deck.id}/slides/${slideId}`, slide);
+
+        // 3. We update the DOM
+        (slideElement as any).src = storageFile.downloadUrl;
+
+        // 4. All good, we don't need the image in the indexedDB anymore
+        await del(src);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadSlideLocalImages(slideElement: HTMLElement, deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = slideElement.querySelectorAll(SlotType.IMG);
+
+        if (!imgs || imgs.length <= 0) {
+          resolve();
+          return;
+        }
+
+        const list: HTMLDeckgoLazyImgElement[] = Array.from(imgs).filter((img: HTMLDeckgoLazyImgElement) => {
+          return img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('http') === -1;
+        });
+
+        if (!list || list.length <= 0) {
+          resolve();
+          return;
+        }
+
+        const promises: Promise<void>[] = list.map((img: HTMLDeckgoLazyImgElement) => {
+          return this.uploadSlideLocalImage(img, deck, slideId);
+        });
+
+        await Promise.all(promises);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadSlideLocalImage(img: HTMLDeckgoLazyImgElement, deck: Deck, slideId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const data: File = await get(img.imgSrc);
+
+        if (!data) {
+          // We didn't the corresponding image. Instead of crashing an error we go through, user will notice that nothing is displayed.
+          // Better than blocking the all process and reaching an intermediate state.
+          resolve();
+          return;
+        }
+
+        // 1. We upload the file to the storage cloud
+        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'images', 10485760);
+
+        if (!storageFile) {
+          reject(`Image ${img.imgSrc} upload has failed.`);
+          return;
+        }
+
+        // 2. We update the indexedDB stored slide with the new downloadUrl. This stored slide will be later uploaded back to the database.
+        const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+
+        if (!slide) {
+          reject('Slide not found and that is really weird here.');
+          return;
+        }
+
+        slide.data.content = slide.data.content.replace(`img-src="${img.imgSrc}"`, `img-src="${storageFile.downloadUrl}"`);
+        slide.data.content = slide.data.content.replace(`img-alt="${img.imgSrc}"`, `img-alt="${storageFile.downloadUrl}"`);
+
+        await set(`/decks/${deck.id}/slides/${slideId}`, slide);
+
+        // 3. We update the DOM
+        img.imgSrc = storageFile.downloadUrl;
+        img.imgAlt = storageFile.downloadUrl;
+
+        // 4. All good, we don't need the image in the indexedDB anymore
+        await del(img.imgSrc);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadSlideData(deck: Deck, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
