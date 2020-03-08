@@ -1559,6 +1559,18 @@ export class AppComponentsCharts {
                   <code>false</code>
                 </td>
               </tr>
+              <tr>
+                <td>
+                  <code>yAxisMin</code>
+                </td>
+                <td>
+                  <code>y-axis-min</code>
+                </td>
+                <td></td>
+                <td>Set a minimal value for the y Axis. Useful in case the series of data could contains only zeros.</td>
+                <td></td>
+                <td></td>
+              </tr>
             </tbody>
           </table>
           <p>

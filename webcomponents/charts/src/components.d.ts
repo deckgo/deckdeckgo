@@ -34,6 +34,7 @@ export namespace Components {
     'updateCurrentBar': (values: DeckdeckgoBarChartDataValue[]) => Promise<void>;
     'width': number;
     'yAxis': boolean;
+    'yAxisMin': number;
   }
   interface DeckgoLineChart {
     'animation': boolean;
@@ -125,6 +126,7 @@ declare namespace LocalJSX {
     'src'?: string;
     'width'?: number;
     'yAxis'?: boolean;
+    'yAxisMin'?: number;
   }
   interface DeckgoLineChart {
     'animation'?: boolean;

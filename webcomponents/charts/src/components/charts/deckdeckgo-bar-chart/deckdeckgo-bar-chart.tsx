@@ -48,6 +48,8 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   @Prop() yAxis: boolean = true;
 
+  @Prop() yAxisMin: number = 0;
+
   @Event()
   private chartCustomLoad: EventEmitter<string>;
 
@@ -160,14 +162,13 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   private initAxisYDomain(): Promise<void> {
     return new Promise<void>((resolve) => {
-      this.y.domain([
-        0,
-        max(this.chartData, (category) => {
-          return max(category.values, (d) => {
-            return d.value;
-          });
-        })
-      ]);
+      const maxValue: number = max(this.chartData, (category) => {
+        return max(category.values, (d) => {
+          return d.value;
+        });
+      });
+
+      this.y.domain([0, Math.max(this.yAxisMin, maxValue)]);
 
       resolve();
     });
