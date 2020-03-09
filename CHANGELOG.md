@@ -6,6 +6,10 @@
 
 - docs: v1.0.0-rc.10-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 
+### Web Components
+
+- core: v1.0.0-rc.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+
 <a name="1.0.0-rc.21-1"></a>
 
 # [1.0.0-rc.21-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.21...v1.0.0-rc.21-1) (2020-03-09)
