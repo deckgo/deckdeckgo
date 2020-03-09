@@ -4,6 +4,7 @@
 
 ### Web Components
 
+- charts: v1.0.0-rc.6-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
 - drag-resize-rotate: v1.0.0-beta.3-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/drag-resize-rotate/CHANGELOG.md))
 
 ### Others
