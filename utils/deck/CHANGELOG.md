@@ -1,3 +1,9 @@
+<a name="1.0.0-rc.3-3"></a>
+
+# 1.0.0-rc.3-3 (2020-03-09)
+
+- padding around social logo on Windows Chrome
+
 <a name="1.0.0-rc.3-2"></a>
 
 # 1.0.0-rc.3-2 (2020-02-23)
