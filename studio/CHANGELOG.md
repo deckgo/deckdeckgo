@@ -1,6 +1,15 @@
+<a name="1.0.0-beta.12-1"></a>
+
+# 1.0.0-beta.12-1 (2020-03-09)
+
+### Fix
+
+- rotation miscalculated on first click (drag, drop and resize)
+- spacing around social logo on the "author" template
+
 <a name="1.0.0-beta.12"></a>
 
-# 1.0.0-beta.12 (2020-01-27)
+# 1.0.0-beta.12 (2020-02-27)
 
 ### Features
 

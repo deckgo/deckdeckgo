@@ -1,16 +1,27 @@
-<a name="1.0.0-rc.22"></a>
+<a name="1.0.0-rc.23"></a>
 
-# [1.0.0-rc.22](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.21...v1.0.0-rc.22) (in progress)
+# [1.0.0-rc.23](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.22-1...v1.0.0-rc.23) (in progress)
 
 ### Applications
 
 - docs: v1.0.0-rc.10-2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 
+<a name="1.0.0-rc.21-1"></a>
+
+# [1.0.0-rc.21-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.21...v1.0.0-rc.21-1) (2020-03-09)
+
+### Applications
+
+- studio: v1.0.0-beta.12-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
 ### Web Components
 
 - charts: v1.0.0-rc.6-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
-- core: v1.0.0-rc.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 - drag-resize-rotate: v1.0.0-beta.3-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/drag-resize-rotate/CHANGELOG.md))
+
+### Others
+
+- deck-utils: v1.0.0-rc.3-3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
 
 <a name="1.0.0-rc.21"></a>
 

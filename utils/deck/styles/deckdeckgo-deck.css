@@ -91,7 +91,7 @@ deckgo-deck deckgo-social deckgo-lazy-img {
   --deckgo-lazy-img-width: 2rem;
   --deckgo-lazy-img-height: auto;
   --deckgo-lazy-img-vertical-align: middle;
-  --deckgo-lazy-img-padding: 0 8px 0 0;
+  padding: 0 8px 0 0;
 }
 
 deckgo-deck deckgo-reveal[img] {
