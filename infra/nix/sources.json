@@ -5,10 +5,10 @@
         "homepage": "https://deckdeckgo.com",
         "owner": "deckgo",
         "repo": "deckdeckgo-starter",
-        "rev": "5698b9d2bd8e05ccb8715bdab7d6113ff5e76e76",
-        "sha256": "1w88yjjwj87fk3bawn9b437wz7523qq2b1gp45dw055wclfpyxa7",
+        "rev": "a137b8d5a68bff71aff81d0813a03faef66d6b56",
+        "sha256": "0ha9wpxfvcba38fgfw3wg0nvwnwc0wdgk28w53j1cspkrx4mkp29",
         "type": "tarball",
-        "url": "https://github.com/deckgo/deckdeckgo-starter/archive/5698b9d2bd8e05ccb8715bdab7d6113ff5e76e76.tar.gz",
+        "url": "https://github.com/deckgo/deckdeckgo-starter/archive/a137b8d5a68bff71aff81d0813a03faef66d6b56.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "elasticmq": {
