@@ -2,6 +2,10 @@
 
 # [1.0.0-rc.21-1](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.21...v1.0.0-rc.21-1) (2020-03-09)
 
+### Applications
+
+- studio: v1.0.0-beta.12-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
 ### Web Components
 
 - charts: v1.0.0-rc.6-1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
