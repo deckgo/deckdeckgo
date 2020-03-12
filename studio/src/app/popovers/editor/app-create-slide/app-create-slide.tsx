@@ -34,6 +34,9 @@ export class AppCreateSlide {
   @State()
   private assets: Assets | undefined = undefined;
 
+  @State()
+  private navigatorOnline: boolean = navigator.onLine;
+
   private user: User;
 
   private userService: UserService;
@@ -574,6 +577,11 @@ export class AppCreateSlide {
       return undefined;
     }
 
+    if (!this.navigatorOnline) {
+      // For the Gif template, we need to select a Gif in Tenor, which is not accessible offline
+      return undefined;
+    }
+
     return (
       <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
         <deckgo-slide-gif class="showcase" src={this.assets.gif.exampleSrc} alt="Slide Gif">
@@ -602,6 +610,11 @@ export class AppCreateSlide {
   }
 
   private renderAuthor() {
+    if (!this.navigatorOnline) {
+      // The author slide need the user data to be added which we don't have offline
+      return undefined;
+    }
+
     return (
       <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
         <deckgo-slide-author class="showcase" img-src={this.photoUrl} img-alt="Author">

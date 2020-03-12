@@ -232,7 +232,7 @@ export class OfflineService {
       return;
     }
 
-    const promises: Promise<void>[] = [this.assetsDefinition(), this.assetsShapes(assets), this.assetGif(assets), this.assetCharts(assets)];
+    const promises: Promise<void>[] = [this.assetsDefinition(), this.assetsShapes(assets), this.assetCharts(assets)];
 
     // We don't cache PrismJS definition file.
     // If we would do so, then the list of languages would be displayed but because we load on the fly, it would be in any case not possible offline to fetch the proper definition
@@ -271,14 +271,6 @@ export class OfflineService {
       });
     } else {
       return [];
-    }
-  }
-
-  private async assetGif(assets: Assets): Promise<void> {
-    if (assets.gif && assets.gif.exampleSrc) {
-      const corsImgUrls: string[] = [assets.gif.exampleSrc];
-
-      await ServiceWorkerUtils.cacheUrls('cors-images', corsImgUrls);
     }
   }
 
