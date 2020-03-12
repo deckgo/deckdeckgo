@@ -57,6 +57,9 @@ export class AppImage {
   @State()
   private currentImageAlignment: ImageAlignment;
 
+  @State()
+  private navigatorOnline: boolean = navigator.onLine;
+
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
@@ -232,23 +235,10 @@ export class AppImage {
         {this.renderImageSize()}
         {this.renderImageAlignment()}
 
-        <ion-item class="action-button action-button-margin">
-          <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_PHOTOS)} color="primary">
-            <ion-label class="ion-text-uppercase">Stock photo</ion-label>
-          </ion-button>
-        </ion-item>
+        {this.renderStockPhotos()}
+        {this.renderGif()}
 
-        <ion-item class="action-button">
-          <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_GIFS)} color="secondary">
-            <ion-label class="ion-text-uppercase">Gif</ion-label>
-          </ion-button>
-        </ion-item>
-
-        <ion-item class="action-button">
-          <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_CUSTOM)} color="tertiary">
-            <ion-label class="ion-text-uppercase">Your images</ion-label>
-          </ion-button>
-        </ion-item>
+        {this.renderCustom()}
 
         {this.renderDeleteAction()}
 
@@ -261,6 +251,46 @@ export class AppImage {
 
         {this.renderImagesHistory()}
       </ion-list>
+    );
+  }
+
+  private renderStockPhotos() {
+    if (!this.navigatorOnline) {
+      // Unsplash not available offline
+      return undefined;
+    }
+
+    return (
+      <ion-item class="action-button action-button-margin">
+        <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_PHOTOS)} color="primary">
+          <ion-label class="ion-text-uppercase">Stock photo</ion-label>
+        </ion-button>
+      </ion-item>
+    );
+  }
+
+  private renderGif() {
+    if (!this.navigatorOnline) {
+      // Tenor not available offline
+      return undefined;
+    }
+
+    return (
+      <ion-item class="action-button">
+        <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_GIFS)} color="secondary">
+          <ion-label class="ion-text-uppercase">Gif</ion-label>
+        </ion-button>
+      </ion-item>
+    );
+  }
+
+  private renderCustom() {
+    return (
+      <ion-item class={`action-button ${!this.navigatorOnline ? 'action-button-margin' : ''}`}>
+        <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_CUSTOM)} color="tertiary">
+          <ion-label class="ion-text-uppercase">Your images</ion-label>
+        </ion-button>
+      </ion-item>
     );
   }
 
