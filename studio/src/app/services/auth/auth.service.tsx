@@ -45,6 +45,7 @@ export class AuthService {
   init(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       // We also save the user in the local storage to avoid a flickering in the GUI till Firebase as correctly fetched the user
+      // And we also need it in case the user go offline, so we could also check offline if user is anonymous or not
       const localUser: AuthUser = await this.getLocalAuthUser();
       this.authUserSubject.next(localUser);
 
