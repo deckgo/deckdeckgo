@@ -30,9 +30,15 @@ interface ChartAssets {
   barCompareSrc: string;
 }
 
+interface TeamAssets {
+  david: string;
+  nicolas: string;
+}
+
 interface Assets {
   shapes: ShapeAssets;
   gif: GifAsset;
   prism: PrismAsset;
   chart: ChartAssets;
+  team: TeamAssets;
 }

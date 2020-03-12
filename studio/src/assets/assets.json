@@ -133,5 +133,9 @@
     "lineMultipleSrc": "https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv",
     "pieSrc": "https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv",
     "barCompareSrc": "https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+  },
+  "team": {
+    "david": "https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg",
+    "nicolas": "https://pbs.twimg.com/profile_images/588789970690658305/Ru9JiWks_400x400.png"
   }
 }

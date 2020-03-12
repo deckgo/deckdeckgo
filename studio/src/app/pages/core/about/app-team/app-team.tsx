@@ -1,10 +1,19 @@
-import {Component, h} from '@stencil/core';
+import {Component, h, State} from '@stencil/core';
+
+import {AssetsService} from '../../../../services/core/assets/assets.service';
 
 @Component({
   tag: 'app-team',
   styleUrl: 'app-team.scss'
 })
 export class AppTeam {
+  @State()
+  private assets: Assets | undefined = undefined;
+
+  async componentWillLoad() {
+    this.assets = await AssetsService.getInstance().assets();
+  }
+
   render() {
     return [
       <app-navigation presentation={true}></app-navigation>,
@@ -14,7 +23,11 @@ export class AppTeam {
 
           <div class="team">
             <div>
-              <app-avatar src="https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg" aria-label="David Dal Busco"></app-avatar>
+              {this.assets !== undefined && this.assets.team ? (
+                <app-avatar src={this.assets.team.david} role="presentation" aria-label="David Dal Busco"></app-avatar>
+              ) : (
+                undefined
+              )}
 
               <h2>David Dal Busco</h2>
 
@@ -47,7 +60,11 @@ export class AppTeam {
             </div>
 
             <div>
-              <app-avatar src="https://pbs.twimg.com/profile_images/588789970690658305/Ru9JiWks_400x400.png" arial-label="Nicolas Mattia"></app-avatar>
+              {this.assets !== undefined && this.assets.team ? (
+                <app-avatar src={this.assets.team.nicolas} role="presentation" aria-label="Nicolas Mattia"></app-avatar>
+              ) : (
+                undefined
+              )}
 
               <h2>Nicolas Mattia</h2>
 
