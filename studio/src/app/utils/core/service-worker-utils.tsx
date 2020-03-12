@@ -22,7 +22,7 @@ export class ServiceWorkerUtils {
 
       for (const url of list) {
         const match: Response = await cache.match(url);
-        if (match && match.type !== 'opaque') {
+        if (!match || match.type !== 'opaque') {
           filterListOpaque.push(url);
         }
       }
