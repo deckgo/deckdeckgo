@@ -1,4 +1,4 @@
-import {set} from 'idb-keyval';
+import {keys, set} from 'idb-keyval';
 
 import {ErrorService} from '../core/error/error.service';
 
@@ -18,7 +18,7 @@ export class StorageOfflineService {
     return StorageOfflineService.instance;
   }
 
-  uploadFile(data: File, _folder: string, maxSize: number): Promise<StorageFile> {
+  uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
         if (!data || !data.name) {
@@ -33,7 +33,7 @@ export class StorageOfflineService {
           return;
         }
 
-        const key: string = `${data.name}`;
+        const key: string = `/assets/${folder}/${data.name}`;
 
         await set(key, data);
 
@@ -46,6 +46,39 @@ export class StorageOfflineService {
         this.errorService.error('File could not be saved.');
         resolve();
       }
+    });
+  }
+
+  getFiles(_next: string | null, _folder: string): Promise<StorageFilesList | null> {
+    return new Promise<StorageFilesList | null>(async (resolve) => {
+      const storageKeys: IDBValidKey[] = await keys();
+
+      if (!storageKeys || storageKeys.length <= 0) {
+        resolve(null);
+        return;
+      }
+
+      const filteredKeys: IDBValidKey[] = storageKeys.filter((key: IDBValidKey) => {
+        return (key as string).indexOf('/assets/images/') > -1 || (key as string).indexOf('/assets/data/') > -1;
+      });
+
+      if (!filteredKeys || filteredKeys.length <= 0) {
+        resolve(null);
+        return;
+      }
+
+      const items: StorageFile[] = filteredKeys.map((key: IDBValidKey) => {
+        return {
+          downloadUrl: key,
+          fullPath: key,
+          name: key
+        } as StorageFile;
+      });
+
+      resolve({
+        items,
+        nextPageToken: undefined
+      });
     });
   }
 }

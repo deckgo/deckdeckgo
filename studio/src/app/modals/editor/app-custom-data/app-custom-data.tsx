@@ -1,5 +1,7 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
+import {Resources} from '../../../utils/core/resources';
+
 import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
@@ -96,7 +98,7 @@ export class AppCustomData {
 
       this.paginationNext = list.nextPageToken;
 
-      this.disableInfiniteScroll = list.items.length < this.storageService.maxQueryResults;
+      this.disableInfiniteScroll = list.items.length < Resources.Constants.STORAGE.MAX_QUERY_RESULTS || this.paginationNext === undefined;
 
       this.loading = false;
 

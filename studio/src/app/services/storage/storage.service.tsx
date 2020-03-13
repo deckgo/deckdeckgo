@@ -1,29 +1,13 @@
-import {firebase} from '@firebase/app';
-import '@firebase/storage';
-import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
-
-import {take} from 'rxjs/operators';
-
-import {AuthUser} from '../../models/auth/auth.user';
-
-import {ErrorService} from '../core/error/error.service';
-import {AuthService} from '../auth/auth.service';
 import {OfflineService} from '../editor/offline/offline.service';
+
 import {StorageOnlineService} from './storage.online.service';
 import {StorageOfflineService} from './storage.offline.service';
 
 export class StorageService {
   private static instance: StorageService;
 
-  private authService: AuthService;
-  private errorService: ErrorService;
-
-  maxQueryResults: number = 20;
-
   private constructor() {
     // Private constructor, singleton
-    this.errorService = ErrorService.getInstance();
-    this.authService = AuthService.getInstance();
   }
 
   static getInstance() {
@@ -43,66 +27,13 @@ export class StorageService {
     }
   }
 
-  getFiles(next: string | null, folder: string): Promise<StorageFilesList | null> {
-    return new Promise<StorageFilesList | null>((resolve) => {
-      try {
-        this.authService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (authUser: AuthUser) => {
-            if (!authUser || !authUser.uid || authUser.uid === '' || authUser.uid === undefined) {
-              this.errorService.error('Not logged in.');
-              resolve(null);
-              return;
-            }
+  async getFiles(next: string | null, folder: string): Promise<StorageFilesList | null> {
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
 
-            const ref = firebase.storage().ref(`${authUser.uid}/assets/${folder}/`);
-
-            let options: ListOptions = {
-              maxResults: this.maxQueryResults
-            };
-
-            if (next) {
-              options.pageToken = next;
-            }
-
-            const results: ListResult = await ref.list(options);
-
-            resolve(this.toStorageFileList(results));
-          });
-      } catch (err) {
-        resolve(null);
-      }
-    });
-  }
-
-  private toStorageFileList(results: ListResult): Promise<StorageFilesList> {
-    return new Promise<StorageFilesList>(async (resolve) => {
-      if (!results || !results.items || results.items.length <= 0) {
-        resolve({
-          items: [],
-          nextPageToken: null
-        });
-        return;
-      }
-
-      const storageFiles: Promise<StorageFile>[] = results.items.map(this.toStorageFile);
-      const items: StorageFile[] = await Promise.all(storageFiles);
-
-      resolve({
-        items: items,
-        nextPageToken: results.nextPageToken
-      });
-    });
-  }
-
-  private toStorageFile(ref: Reference): Promise<StorageFile> {
-    return new Promise<StorageFile>(async (resolve) => {
-      resolve({
-        downloadUrl: await ref.getDownloadURL(),
-        fullPath: ref.fullPath,
-        name: ref.name
-      });
-    });
+    if (offline !== undefined) {
+      return StorageOfflineService.getInstance().getFiles(next, folder);
+    } else {
+      return StorageOnlineService.getInstance().getFiles(next, folder);
+    }
   }
 }

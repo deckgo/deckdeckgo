@@ -50,7 +50,7 @@ export class AppImageColumns {
       return (
         <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(gif)}>
           <div class="image-container">
-            <deckgo-lazy-img imgSrc={gif.media[0].tinygif.url} imgAlt={gif.title ? gif.title : gif.media[0].tinygif.url}></deckgo-lazy-img>
+            <deckgo-lazy-img imgSrc={gif.media[0].tinygif.url} imgAlt={gif.title ? gif.title : gif.media[0].tinygif.url} custom-loader={true}></deckgo-lazy-img>
           </div>
         </div>
       );
@@ -66,7 +66,8 @@ export class AppImageColumns {
           <div class="image-container">
             <deckgo-lazy-img
               imgSrc={photo.urls.thumb}
-              imgAlt={photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.thumb}></deckgo-lazy-img>
+              imgAlt={photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.thumb}
+              custom-loader={true}></deckgo-lazy-img>
             {this.renderPhotoCredits(photo)}
           </div>
         </div>
@@ -98,7 +99,7 @@ export class AppImageColumns {
       return (
         <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(storageFile)}>
           <div class="image-container">
-            <deckgo-lazy-img imgSrc={storageFile.downloadUrl} imgAlt={storageFile.downloadUrl}></deckgo-lazy-img>
+            <deckgo-lazy-img imgSrc={storageFile.downloadUrl} imgAlt={storageFile.downloadUrl} custom-loader={true}></deckgo-lazy-img>
           </div>
         </div>
       );
