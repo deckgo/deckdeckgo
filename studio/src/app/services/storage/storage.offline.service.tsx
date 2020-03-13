@@ -49,7 +49,7 @@ export class StorageOfflineService {
     });
   }
 
-  getFiles(_next: string | null, _folder: string): Promise<StorageFilesList | null> {
+  getFiles(_next: string | null, folder: string): Promise<StorageFilesList | null> {
     return new Promise<StorageFilesList | null>(async (resolve) => {
       const storageKeys: IDBValidKey[] = await keys();
 
@@ -59,7 +59,7 @@ export class StorageOfflineService {
       }
 
       const filteredKeys: IDBValidKey[] = storageKeys.filter((key: IDBValidKey) => {
-        return (key as string).indexOf('/assets/images/') > -1 || (key as string).indexOf('/assets/data/') > -1;
+        return (key as string).indexOf(`/assets/${folder}/`) > -1;
       });
 
       if (!filteredKeys || filteredKeys.length <= 0) {
