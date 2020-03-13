@@ -1,5 +1,7 @@
 import {Component, h, State, Event, EventEmitter} from '@stencil/core';
 
+import {Subscription} from 'rxjs';
+
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
 import {ErrorService} from '../../../../services/core/error/error.service';
 
@@ -19,12 +21,29 @@ export class AppGoOnline {
   @Event()
   private inProgress: EventEmitter<boolean>;
 
+  @State()
+  private progress: number = 0;
+
   private offlineService: OfflineService;
   private errorService: ErrorService;
+
+  private progressSubscription: Subscription;
 
   constructor() {
     this.offlineService = OfflineService.getInstance();
     this.errorService = ErrorService.getInstance();
+  }
+
+  componentWillLoad() {
+    this.progressSubscription = this.offlineService.watchProgress().subscribe((progress: number) => {
+      this.progress = progress;
+    });
+  }
+
+  componentDidUnload() {
+    if (this.progressSubscription) {
+      this.progressSubscription.unsubscribe();
+    }
   }
 
   private async goOnline() {
@@ -34,7 +53,10 @@ export class AppGoOnline {
     try {
       await this.offlineService.upload();
 
-      this.doneOnline.emit();
+      // We are all good, just a small delay to display the progress bar to 100%
+      setTimeout(() => {
+        this.doneOnline.emit();
+      }, 300);
     } catch (err) {
       this.goingOnline = false;
       this.inProgress.emit(false);
@@ -43,7 +65,14 @@ export class AppGoOnline {
   }
 
   render() {
-    return [this.renderTextOffline(), this.renderTextOnline(), <div class="ion-padding ion-text-center go">{this.renderGoOnline()}</div>];
+    return (
+      <article>
+        <h1>Go online</h1>
+        {this.renderTextOffline()}
+        {this.renderTextOnline()}
+        <div class="ion-padding ion-text-center go">{this.renderGoOnline()}</div>
+      </article>
+    );
   }
 
   private renderTextOffline() {
@@ -60,7 +89,9 @@ export class AppGoOnline {
     }
 
     return [
-      <p>Cool, you are online again.</p>,
+      <p>
+        Cool, you are back <strong>online</strong>.
+      </p>,
       <p>
         Please note that the upload of this deck will <strong>replace</strong> its previous online version.
       </p>,
@@ -78,7 +109,7 @@ export class AppGoOnline {
     } else {
       return (
         <div class="in-progress">
-          <ion-spinner color="tertiary"></ion-spinner>
+          <ion-progress-bar value={this.progress} color="tertiary"></ion-progress-bar>
           <ion-label>Hang on still, we are uploading the content.</ion-label>
         </div>
       );

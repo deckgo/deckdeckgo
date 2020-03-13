@@ -35,6 +35,8 @@ export class OfflineService {
 
   private offlineSubject: BehaviorSubject<OfflineDeck | undefined> = new BehaviorSubject(undefined);
 
+  private progressSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+
   private constructor() {
     this.deckEditorService = DeckEditorService.getInstance();
 
@@ -77,9 +79,32 @@ export class OfflineService {
     return this.offlineSubject.asObservable();
   }
 
+  watchProgress(): Observable<number> {
+    return this.progressSubject.asObservable();
+  }
+
+  private progress(progress: number) {
+    this.progressSubject
+      .asObservable()
+      .pipe(take(1))
+      .subscribe((current: number) => {
+        this.progressSubject.next(current + progress);
+      });
+  }
+
+  private progressStart() {
+    this.progressSubject.next(0);
+  }
+
+  private progressComplete() {
+    this.progressSubject.next(1);
+  }
+
   save(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
+        this.progressStart();
+
         const promises: Promise<void>[] = [this.saveDeck(), this.lazyLoadAllContent()];
 
         await Promise.all(promises);
@@ -87,6 +112,26 @@ export class OfflineService {
         await this.cacheServiceWorker();
 
         await this.toggleOffline();
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  upload(): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        this.progressStart();
+
+        await this.uploadData();
+
+        await del('deckdeckgo_offline');
+
+        this.progressComplete();
+
+        this.offlineSubject.next(undefined);
 
         resolve();
       } catch (err) {
@@ -117,27 +162,13 @@ export class OfflineService {
 
               this.offlineSubject.next(offline);
 
+              this.progressComplete();
+
               resolve();
             } catch (err) {
               reject(err);
             }
           });
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  upload(): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        await this.uploadData();
-
-        await del('deckdeckgo_offline');
-
-        this.offlineSubject.next(undefined);
-
-        resolve();
       } catch (err) {
         reject(err);
       }
@@ -157,6 +188,8 @@ export class OfflineService {
         await this.cacheImages(deckElement);
 
         await this.cacheAssets();
+
+        this.progress(0.4);
 
         resolve();
       } catch (err) {
@@ -296,6 +329,8 @@ export class OfflineService {
 
         await (deck as any).lazyLoadAllContent();
 
+        this.progress(0.1);
+
         resolve();
       } catch (err) {
         reject(err);
@@ -319,6 +354,8 @@ export class OfflineService {
               await this.saveSlides(deck);
 
               await set(`/decks/${deck.id}`, deck);
+
+              this.progress(0.5);
 
               resolve();
             } catch (err) {
@@ -371,6 +408,8 @@ export class OfflineService {
       }
 
       await set(`/decks/${deck.id}/slides/${slideId}`, slide);
+
+      this.progress(deck.data && deck.data.slides && deck.data.slides.length > 0 ? 0.4 / deck.data.slides.length : 0);
 
       resolve(slide);
     });
@@ -441,6 +480,8 @@ export class OfflineService {
   private async uploadSlide(deck: Deck, slideId: string): Promise<void> {
     await this.uploadSlideLocalUserAssets(deck, slideId);
     await this.uploadSlideData(deck, slideId);
+
+    this.progress(deck.data && deck.data.slides && deck.data.slides.length > 0 ? 0.7 / deck.data.slides.length : 0);
   }
 
   private uploadSlideLocalUserAssets(deck: Deck, slideId: string): Promise<void> {
@@ -647,6 +688,8 @@ export class OfflineService {
 
         await del(`/decks/${deck.id}`);
 
+        this.progress(0.1);
+
         resolve(persistedDeck);
       } catch (err) {
         reject(err);
@@ -670,7 +713,7 @@ export class OfflineService {
         }
 
         const promises: Promise<void>[] = slidesToDelete.map((slideId: string) => {
-          return this.deleteSlide(deck, slideId);
+          return this.deleteSlide(deck, slideId, slidesToDelete.length);
         });
 
         if (!promises || promises.length <= 0) {
@@ -689,10 +732,12 @@ export class OfflineService {
     });
   }
 
-  private deleteSlide(deck: Deck, slideId: string): Promise<void> {
+  private deleteSlide(deck: Deck, slideId: string, slidesToDeleteLength: number): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         await this.slideOnlineService.delete(deck.id, slideId);
+
+        this.progress(0.3 / slidesToDeleteLength);
 
         resolve();
       } catch (err) {
