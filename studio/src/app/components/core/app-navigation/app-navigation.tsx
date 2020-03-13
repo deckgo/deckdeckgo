@@ -42,7 +42,7 @@ export class AppNavigation {
       this.deckName = deck && deck.data && deck.data.name && deck.data.name !== '' ? deck.data.name : null;
     });
 
-    this.subscription = this.offlineService.watchOffline().subscribe((offline: OfflineDeck | undefined) => {
+    this.offlineSubscription = this.offlineService.watchOffline().subscribe((offline: OfflineDeck | undefined) => {
       this.offline = offline;
     });
   }
