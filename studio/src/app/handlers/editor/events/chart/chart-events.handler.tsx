@@ -1,18 +1,6 @@
-import {take} from 'rxjs/operators';
-
 import {get} from 'idb-keyval';
 
-import {AuthUser} from '../../../../models/auth/auth.user';
-
-import {AuthService} from '../../../../services/auth/auth.service';
-
 export class ChartEventsHandler {
-  private authService: AuthService;
-
-  constructor() {
-    this.authService = AuthService.getInstance();
-  }
-
   init(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (document) {
@@ -47,48 +35,32 @@ export class ChartEventsHandler {
       if (src.indexOf('http') === -1) {
         await this.loadLocalData($event.target as HTMLElement, src);
       } else {
-        await this.loadStorageData($event.target as HTMLElement, src);
+        await this.loadData($event.target as HTMLElement, src);
       }
 
       resolve();
     });
   }
 
-  private loadStorageData(target: HTMLElement, src: string): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.authService
-        .watch()
-        .pipe(take(1))
-        .subscribe(async (authUser: AuthUser) => {
-          if (authUser) {
-            const bearer: string = await this.authService.getBearer();
+  private loadData(target: HTMLElement, src: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      try {
+        const rawResponse: Response = await fetch(src);
 
-            try {
-              const rawResponse: Response = await fetch(src, {
-                method: 'GET',
-                headers: {
-                  Authorization: bearer
-                }
-              });
+        if (!rawResponse || !rawResponse.ok) {
+          console.error(`Chart data ${src} can not be fetched.`);
+          resolve();
+          return;
+        }
 
-              if (!rawResponse || !rawResponse.ok) {
-                console.error(`Chart data ${src} can not be fetched.`);
-                resolve();
-                return;
-              }
+        const content = await rawResponse.text();
+        await (target as any).postCustomLoad(content);
 
-              const content = await rawResponse.text();
-              await (target as any).postCustomLoad(content);
-
-              resolve();
-            } catch (err) {
-              console.error(err);
-              resolve();
-            }
-          }
-        });
-
-      resolve();
+        resolve();
+      } catch (err) {
+        console.error(err);
+        resolve();
+      }
     });
   }
 
@@ -100,16 +72,7 @@ export class ChartEventsHandler {
         const URL = window.URL || window.webkitURL;
         const chartUrl: string = URL.createObjectURL(savedData);
 
-        const rawResponse: Response = await fetch(chartUrl);
-
-        if (!rawResponse || !rawResponse.ok) {
-          console.error(`Chart data ${src} can not be fetched.`);
-          resolve();
-          return;
-        }
-
-        const content = await rawResponse.text();
-        await (target as any).postCustomLoad(content);
+        await this.loadData(target, chartUrl);
 
         resolve();
       } catch (err) {

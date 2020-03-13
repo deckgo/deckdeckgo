@@ -287,7 +287,7 @@ export class CreateSlidesUtils {
 
       // prettier-ignore
       // @ts-ignore
-      const slide: JSX.IntrinsicElements = (<deckgo-slide-chart key={uuid()} {...attributes}>
+      const slide: JSX.IntrinsicElements = (<deckgo-slide-chart key={uuid()} {...attributes} custom-loader={true}>
           {title}
         </deckgo-slide-chart>
       );

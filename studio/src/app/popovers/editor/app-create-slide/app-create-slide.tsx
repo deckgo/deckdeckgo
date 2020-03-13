@@ -275,7 +275,8 @@ export class AppCreateSlide {
           marginRight={0}
           width={204}
           height={68}
-          src={this.assets.chart.lineCompareSrc}>
+          src={this.assets.chart.lineCompareSrc}
+          custom-loader={true}>
           <p slot="title">Charts</p>
         </deckgo-slide-chart>
 
@@ -303,7 +304,8 @@ export class AppCreateSlide {
               marginRight={8}
               width={68}
               height={68}
-              src={this.assets.chart.pieSrc}>
+              src={this.assets.chart.pieSrc}
+              custom-loader={true}>
               <p slot="title">Pie</p>
             </deckgo-slide-chart>
           </div>
@@ -320,7 +322,8 @@ export class AppCreateSlide {
               width={68}
               height={68}
               inner-radius={16}
-              src={this.assets.chart.pieSrc}>
+              src={this.assets.chart.pieSrc}
+              custom-loader={true}>
               <p slot="title">Donut</p>
             </deckgo-slide-chart>
           </div>
@@ -337,7 +340,8 @@ export class AppCreateSlide {
               marginRight={8}
               width={68}
               height={68}
-              src={this.assets.chart.barCompareSrc}>
+              src={this.assets.chart.barCompareSrc}
+              custom-loader={true}>
               <p slot="title">Pie comparison</p>
             </deckgo-slide-chart>
           </div>
@@ -355,7 +359,8 @@ export class AppCreateSlide {
               height={68}
               y-axis-domain="extent"
               date-pattern="dd.MM.yyyy"
-              src={this.assets.chart.lineCompareSrc}>
+              src={this.assets.chart.lineCompareSrc}
+              custom-loader={true}>
               <p slot="title">Area</p>
             </deckgo-slide-chart>
           </div>
@@ -374,7 +379,8 @@ export class AppCreateSlide {
               y-axis-domain="extent"
               date-pattern="dd.MM.yyyy"
               smooth={'false'}
-              src={this.assets.chart.lineSrc}>
+              src={this.assets.chart.lineSrc}
+              custom-loader={true}>
               <p slot="title">Sharp area</p>
             </deckgo-slide-chart>
           </div>
@@ -391,7 +397,8 @@ export class AppCreateSlide {
               width={88}
               height={68}
               area={'false'}
-              src={this.assets.chart.lineNoDatesSrc}>
+              src={this.assets.chart.lineNoDatesSrc}
+              custom-loader={true}>
               <p slot="title">Lines</p>
             </deckgo-slide-chart>
           </div>
@@ -410,7 +417,8 @@ export class AppCreateSlide {
               y-axis-domain="extent"
               date-pattern="dd.MM.yyyy"
               animation={true}
-              src={this.assets.chart.lineMultipleSrc}>
+              src={this.assets.chart.lineMultipleSrc}
+              custom-loader={true}>
               <p slot="title">Line graph comparison</p>
             </deckgo-slide-chart>
           </div>
@@ -426,7 +434,8 @@ export class AppCreateSlide {
               marginRight={0}
               width={88}
               height={68}
-              src={this.assets.chart.pieSrc}>
+              src={this.assets.chart.pieSrc}
+              custom-loader={true}>
               <p slot="title">Bar</p>
             </deckgo-slide-chart>
           </div>
@@ -447,7 +456,8 @@ export class AppCreateSlide {
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
                 '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
-              }}>
+              }}
+              custom-loader={true}>
               <p slot="title">Grouped bars</p>
             </deckgo-slide-chart>
           </div>
@@ -469,7 +479,8 @@ export class AppCreateSlide {
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
                 '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
-              }}>
+              }}
+              custom-loader={true}>
               <p slot="title">Bar comparison</p>
             </deckgo-slide-chart>
           </div>
