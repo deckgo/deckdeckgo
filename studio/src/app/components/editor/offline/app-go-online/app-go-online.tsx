@@ -16,6 +16,9 @@ export class AppGoOnline {
   @Event()
   private doneOnline: EventEmitter<void>;
 
+  @Event()
+  private inProgress: EventEmitter<boolean>;
+
   private offlineService: OfflineService;
   private errorService: ErrorService;
 
@@ -26,6 +29,7 @@ export class AppGoOnline {
 
   private async goOnline() {
     this.goingOnline = true;
+    this.inProgress.emit(true);
 
     try {
       await this.offlineService.upload();
@@ -33,6 +37,7 @@ export class AppGoOnline {
       this.doneOnline.emit();
     } catch (err) {
       this.goingOnline = false;
+      this.inProgress.emit(false);
       this.errorService.error('Something went wrong. Double check your internet connection and try again. If it still does not work, contact us!');
     }
   }

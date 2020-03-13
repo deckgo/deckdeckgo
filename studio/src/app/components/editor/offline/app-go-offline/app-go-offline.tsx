@@ -13,6 +13,9 @@ export class AppGoOffline {
   @Event()
   private doneOffline: EventEmitter<void>;
 
+  @Event()
+  private inProgress: EventEmitter<boolean>;
+
   private offlineService: OfflineService;
   private errorService: ErrorService;
 
@@ -23,6 +26,7 @@ export class AppGoOffline {
 
   private async goOffline() {
     this.goingOffline = true;
+    this.inProgress.emit(true);
 
     try {
       await this.offlineService.save();
@@ -30,13 +34,14 @@ export class AppGoOffline {
       this.doneOffline.emit();
     } catch (err) {
       this.goingOffline = false;
+      this.inProgress.emit(false);
       this.errorService.error('Apologies, something went wrong and app was unable to go offline.');
     }
   }
 
   render() {
     return [
-      <p>Low bandwidth? Have to take a plane? Or want to present without internet connections?</p>,
+      <p>Low bandwidth? Have to jump in a plane? Or want to present without internet connections?</p>,
       <p>
         Turn DeckDeckGo <strong>offline</strong> to store your presentation locally while being still able to edit your slides further.
       </p>,

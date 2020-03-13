@@ -388,7 +388,8 @@ export class AppActionsDeck {
       component: 'app-offline',
       componentProps: {
         offline: this.offline
-      }
+      },
+      cssClass: 'fullscreen'
     });
 
     await modal.present();

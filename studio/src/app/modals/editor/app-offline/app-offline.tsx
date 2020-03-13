@@ -1,4 +1,4 @@
-import {Component, Element, h, Listen, Prop} from '@stencil/core';
+import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
 @Component({
   tag: 'app-offline',
@@ -10,12 +10,19 @@ export class AppNotes {
   @Prop()
   offline: boolean = false;
 
+  @State()
+  private jobInProgress: boolean = false;
+
   async componentDidLoad() {
     history.pushState({modal: true}, null);
   }
 
   @Listen('popstate', {target: 'window'})
   async handleHardwareBackButton(_e: PopStateEvent) {
+    if (this.jobInProgress) {
+      return;
+    }
+
     await this.closeModal();
   }
 
@@ -23,12 +30,20 @@ export class AppNotes {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(false);
   }
 
+  private onInProgress($event: CustomEvent) {
+    if (!$event) {
+      return;
+    }
+
+    this.jobInProgress = $event.detail;
+  }
+
   render() {
     return [
       <ion-header>
         <ion-toolbar color="tertiary">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
+            <ion-button onClick={() => this.closeModal()} disabled={this.jobInProgress}>
               <ion-icon name="close"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -43,9 +58,9 @@ export class AppNotes {
 
   private renderContent() {
     if (!this.offline) {
-      return <app-go-offline onDoneOffline={() => this.closeModal()}></app-go-offline>;
+      return <app-go-offline onDoneOffline={() => this.closeModal()} onInProgress={($event: CustomEvent) => this.onInProgress($event)}></app-go-offline>;
     } else {
-      return <app-go-online onDoneOnline={() => this.closeModal()}></app-go-online>;
+      return <app-go-online onDoneOnline={() => this.closeModal()} onInProgress={($event: CustomEvent) => this.onInProgress($event)}></app-go-online>;
     }
   }
 }

@@ -1179,9 +1179,11 @@ declare namespace LocalJSX {
   interface AppGif {}
   interface AppGoOffline {
     'onDoneOffline'?: (event: CustomEvent<void>) => void;
+    'onInProgress'?: (event: CustomEvent<boolean>) => void;
   }
   interface AppGoOnline {
     'onDoneOnline'?: (event: CustomEvent<void>) => void;
+    'onInProgress'?: (event: CustomEvent<boolean>) => void;
   }
   interface AppHome {}
   interface AppImage {
