@@ -101,7 +101,7 @@ export class AppNotes {
         <p>
           Your notes are displayed in the{' '}
           <a href="https://deckdeckgo.app" target="_blank">
-            remote control <ion-icon name="open"></ion-icon>
+            remote control
           </a>
           . Markdown is supported 😉
         </p>
