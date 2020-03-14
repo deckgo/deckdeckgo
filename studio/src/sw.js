@@ -11,6 +11,8 @@ self.addEventListener('message', (event) => {
   }
 });
 
+workbox.setConfig({debug: false});
+
 /**
  * Cache font as displayed in the Workbox common recipe
  * https://developers.google.com/web/tools/workbox/guides/common-recipes
