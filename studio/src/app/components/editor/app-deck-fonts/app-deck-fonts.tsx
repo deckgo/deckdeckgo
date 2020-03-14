@@ -1,9 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {FontsUtils, GoogleFont} from '../../../utils/editor/fonts.utils';
-
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
-import {EnvironmentGoogleConfig} from '../../../services/core/environment/environment-config';
+import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
 @Component({
   tag: 'app-deck-fonts',
@@ -18,11 +15,19 @@ export class AppDeckFonts {
   @State()
   private selectedFont: string | undefined;
 
+  @State()
+  private fonts: GoogleFont[];
+
+  private fontsService: FontsService;
+
+  constructor() {
+    this.fontsService = FontsService.getInstance();
+  }
+
   async componentWillLoad() {
     await this.initSelectedFont();
 
-    const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
-    await FontsUtils.loadAllGoogleFonts(google.fontsUrl);
+    this.fonts = await this.fontsService.loadAllGoogleFonts();
   }
 
   private initSelectedFont(): Promise<void> {
@@ -65,11 +70,19 @@ export class AppDeckFonts {
     return (
       <div class="container ion-margin-bottom">
         {this.renderDefaultFont(this.selectedFont === undefined)}
-        {FontsUtils.fonts.map((font: GoogleFont) => {
-          return this.renderFont(font, this.selectedFont === font.family.replace(/\'/g, ''));
-        })}
+        {this.renderFonts()}
       </div>
     );
+  }
+
+  private renderFonts() {
+    if (this.fonts === undefined) {
+      return undefined;
+    }
+
+    return this.fonts.map((font: GoogleFont) => {
+      return this.renderFont(font, this.selectedFont === font.family.replace(/\'/g, ''));
+    });
   }
 
   private renderDefaultFont(selected: boolean) {

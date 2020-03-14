@@ -20,10 +20,9 @@ import {DeckEditorService} from '../deck/deck-editor.service';
 import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
 import {ApiPresentationFactoryService} from '../../api/presentation/api.presentation.factory.service';
 
-import {FontsUtils, GoogleFont} from '../../../utils/editor/fonts.utils';
-
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 import {EnvironmentGoogleConfig} from '../../core/environment/environment-config';
+import {FontsService} from '../fonts/fonts.service';
 
 export class PublishService {
   private static instance: PublishService;
@@ -37,6 +36,8 @@ export class PublishService {
 
   private userService: UserService;
 
+  private fontsService: FontsService;
+
   private progressSubject: Subject<number> = new Subject<number>();
 
   private constructor() {
@@ -49,6 +50,8 @@ export class PublishService {
     this.slideService = SlideService.getInstance();
 
     this.userService = UserService.getInstance();
+
+    this.fontsService = FontsService.getInstance();
   }
 
   static getInstance() {
@@ -196,7 +199,7 @@ export class PublishService {
         return;
       }
 
-      const font: GoogleFont | undefined = await FontsUtils.extractGoogleFont(fontFamily);
+      const font: GoogleFont | undefined = await this.fontsService.extractGoogleFont(fontFamily);
 
       if (!font || font === undefined) {
         resolve(undefined);
@@ -204,7 +207,7 @@ export class PublishService {
       }
 
       const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
-      const url: string = FontsUtils.getGoogleFontUrl(google.fontsUrl, font);
+      const url: string = this.fontsService.getGoogleFontUrl(google.fontsUrl, font);
 
       const link = document.createElement('link');
       link.setAttribute('rel', 'stylesheet');

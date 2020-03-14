@@ -35,10 +35,17 @@ interface TeamAssets {
   nicolas: string;
 }
 
+interface GoogleFont {
+  id: string;
+  name: string;
+  family: string;
+}
+
 interface Assets {
   shapes: ShapeAssets;
   gif: GifAsset;
   prism: PrismAsset;
   chart: ChartAssets;
   team: TeamAssets;
+  fonts: GoogleFont[];
 }

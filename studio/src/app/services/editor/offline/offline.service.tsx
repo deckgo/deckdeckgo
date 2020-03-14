@@ -21,6 +21,7 @@ import {AssetsService} from '../../core/assets/assets.service';
 import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 import {StorageOnlineService} from '../../storage/storage.online.service';
+import {FontsService} from '../fonts/fonts.service';
 
 export class OfflineService {
   private static instance: OfflineService;
@@ -32,6 +33,7 @@ export class OfflineService {
   private storageOnlineService: StorageOnlineService;
 
   private assetsService: AssetsService;
+  private fontsService: FontsService;
 
   private offlineSubject: BehaviorSubject<OfflineDeck | undefined> = new BehaviorSubject(undefined);
 
@@ -45,6 +47,7 @@ export class OfflineService {
     this.storageOnlineService = StorageOnlineService.getInstance();
 
     this.assetsService = AssetsService.getInstance();
+    this.fontsService = FontsService.getInstance();
   }
 
   static getInstance(): OfflineService {
@@ -187,9 +190,15 @@ export class OfflineService {
 
         await this.cacheImages(deckElement);
 
+        this.progress(0.2);
+
         await this.cacheAssets();
 
-        this.progress(0.4);
+        this.progress(0.1);
+
+        await this.fontsService.loadAllGoogleFonts();
+
+        this.progress(0.1);
 
         resolve();
       } catch (err) {
