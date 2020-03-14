@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "stencil build --prerender",
-    "staging": "stencil build --prerender --staging",
+    "staging": "npm run build -- --staging",
     "postbuild": "./scripts/config.index.js",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
