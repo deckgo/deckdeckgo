@@ -184,5 +184,8 @@
       "name": "Libre Baskerville",
       "family": "'Libre Baskerville', serif"
     }
-  ]
+  ],
+  "deckdeckgo": {
+    "logo": "/img/deckdeckgo-logo.svg"
+  }
 }

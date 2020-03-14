@@ -41,6 +41,10 @@ interface GoogleFont {
   family: string;
 }
 
+interface DeckDeckGoAssets {
+  logo: string;
+}
+
 interface Assets {
   shapes: ShapeAssets;
   gif: GifAsset;
@@ -48,4 +52,5 @@ interface Assets {
   chart: ChartAssets;
   team: TeamAssets;
   fonts: GoogleFont[];
+  deckdeckgo: DeckDeckGoAssets;
 }
