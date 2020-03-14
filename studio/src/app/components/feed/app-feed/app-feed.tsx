@@ -181,7 +181,7 @@ export class AppFeed {
     return (
       <section>
         <ion-label class="ion-text-center">
-          You are currently editing <strong>{this.offline.name}</strong> offline.
+          You are editing <strong>{this.offline.name}</strong> offline.
         </ion-label>
 
         <ion-button shape="round" href={`/editor/${this.offline.id}`} routerDirection="root" color="tertiary" class="ion-margin-top">
