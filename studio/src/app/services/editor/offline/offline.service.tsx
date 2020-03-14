@@ -536,7 +536,7 @@ export class OfflineService {
           return;
         }
 
-        // 2. We update the indexedDB stored slide with the new downloadUrl. This stored slide will be later uploaded back to the database.
+        // 2. We update the indexedDB stored slide with the new downloadUrl. This stored slide will be later updated back to the database.
         const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
 
         if (!slide) {
@@ -571,8 +571,14 @@ export class OfflineService {
           return;
         }
 
+        // Filter online images (http...) and deck background (which are cloned from the deck to the slides)
         const list: HTMLDeckgoLazyImgElement[] = Array.from(imgs).filter((img: HTMLDeckgoLazyImgElement) => {
-          return img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf('http') === -1;
+          return (
+            img.imgSrc !== undefined &&
+            img.imgSrc !== '' &&
+            img.imgSrc.indexOf('http') === -1 &&
+            !(img.parentElement && img.parentElement.getAttribute('slot') === 'background' && !slideElement.hasAttribute('custom-background'))
+          );
         });
 
         if (!list || list.length <= 0) {
@@ -669,7 +675,17 @@ export class OfflineService {
     });
   }
 
-  private uploadDeck(deck: Deck): Promise<Deck> {
+  private async uploadDeck(deck: Deck): Promise<Deck> {
+    await this.uploadDeckBackgroundAssets(deck);
+
+    const persistedDeck: Deck = await this.uploadDeckData(deck);
+
+    this.progress(0.1);
+
+    return persistedDeck;
+  }
+
+  private uploadDeckData(deck: Deck): Promise<Deck> {
     return new Promise<Deck>(async (resolve, reject) => {
       try {
         if (!deck || !deck.data) {
@@ -687,8 +703,6 @@ export class OfflineService {
         const persistedDeck: Deck = await this.deckOnlineService.update(deck);
 
         await del(`/decks/${deck.id}`);
-
-        this.progress(0.1);
 
         resolve(persistedDeck);
       } catch (err) {
@@ -738,6 +752,79 @@ export class OfflineService {
         await this.slideOnlineService.delete(deck.id, slideId);
 
         this.progress(0.3 / slidesToDeleteLength);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadDeckBackgroundAssets(deck: Deck): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      const backgroundElement: HTMLElement = document.querySelector(`app-editor > ion-content > main > deckgo-deck > *[slot="background"]`);
+
+      if (!backgroundElement) {
+        resolve();
+        return;
+      }
+
+      try {
+        const img: HTMLDeckgoLazyImgElement = backgroundElement.querySelector(SlotType.IMG);
+
+        if (!img) {
+          resolve();
+          return;
+        }
+
+        await this.uploadDeckLocalImage(img, deck.id);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private uploadDeckLocalImage(img: HTMLDeckgoLazyImgElement, deckId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const data: File = await get(img.imgSrc);
+
+        if (!data) {
+          // We didn't the corresponding image. Instead of crashing an error we go through, user will notice that nothing is displayed.
+          // Better than blocking the all process and reaching an intermediate state.
+          resolve();
+          return;
+        }
+
+        // 1. We upload the file to the storage cloud
+        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'images', 10485760);
+
+        if (!storageFile) {
+          reject(`Image ${img.imgSrc} upload has failed.`);
+          return;
+        }
+
+        // 2. We update the indexedDB stored deck with the new downloadUrl. This stored deck will be later updated back to the database.
+        const deck: Deck = await get(`/decks/${deckId}`);
+
+        if (!deck) {
+          reject('Deck not found and that is really weird here.');
+          return;
+        }
+
+        deck.data.background = deck.data.background.replace(`img-src="${img.imgSrc}"`, `img-src="${storageFile.downloadUrl}"`);
+        deck.data.background = deck.data.background.replace(`img-alt="${img.imgSrc}"`, `img-alt="${storageFile.downloadUrl}"`);
+
+        await set(`/decks/${deck.id}`, deck);
+
+        // 3. We update the DOM
+        img.imgSrc = storageFile.downloadUrl;
+        img.imgAlt = storageFile.downloadUrl;
+
+        // 4. All good, we don't need the image in the indexedDB anymore
+        await del(img.imgSrc);
 
         resolve();
       } catch (err) {
