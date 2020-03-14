@@ -610,6 +610,11 @@ export class AppCreateSlide {
   }
 
   private renderYoutube() {
+    if (!this.navigatorOnline) {
+      // The youtube slide can't be use offline as we cannot browse youtube
+      return undefined;
+    }
+
     return (
       <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
         <deckgo-slide-content class="showcase gif">
