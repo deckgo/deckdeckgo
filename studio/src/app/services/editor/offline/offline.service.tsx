@@ -274,7 +274,13 @@ export class OfflineService {
       return;
     }
 
-    const promises: Promise<void>[] = [this.assetsDefinition(), this.assetsShapes(assets), this.assetsDeckDeckGo(assets), this.assetCharts(assets)];
+    const promises: Promise<void>[] = [
+      this.assetsDefinition(),
+      this.assetsShapes(assets),
+      this.assetsDeckDeckGo(assets),
+      this.assetsNavigation(assets),
+      this.assetCharts(assets)
+    ];
 
     // We don't cache PrismJS definition file.
     // If we would do so, then the list of languages would be displayed but because we load on the fly, it would be in any case not possible offline to fetch the proper definition
@@ -313,11 +319,23 @@ export class OfflineService {
     }
   }
 
+  private async assetsNavigation(assets: Assets) {
+    if (assets.navigation && assets.navigation.length > 0) {
+      const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+      const deckGoUrls: string[] = assets.navigation.map((asset: ImgAsset) => {
+        return `${config.globalAssetsUrl}${asset.src}`;
+      });
+
+      await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);
+    }
+  }
+
   private assetsShapesList(assets: Assets, group: string): string[] {
     if (assets.shapes && assets.shapes[group] && assets.shapes[group].length > 0) {
       const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-      return assets.shapes[group].map((asset: ShapeAsset) => {
+      return assets.shapes[group].map((asset: ImgAsset) => {
         return `${config.globalAssetsUrl}${asset.src}`;
       });
     } else {

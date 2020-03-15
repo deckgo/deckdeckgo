@@ -1,16 +1,16 @@
-interface ShapeAsset {
+interface ImgAsset {
   src: string;
   ariaLabel: string;
 }
 
 interface ShapeAssets {
-  shapes: ShapeAsset[];
-  arrows: ShapeAsset[];
-  status: ShapeAsset[];
-  computers: ShapeAsset[];
-  dateTime: ShapeAsset[];
-  files: ShapeAsset[];
-  finance: ShapeAsset[];
+  shapes: ImgAsset[];
+  arrows: ImgAsset[];
+  status: ImgAsset[];
+  computers: ImgAsset[];
+  dateTime: ImgAsset[];
+  files: ImgAsset[];
+  finance: ImgAsset[];
 }
 
 interface GifAsset {
@@ -53,4 +53,5 @@ interface Assets {
   team: TeamAssets;
   fonts: GoogleFont[];
   deckdeckgo: DeckDeckGoAssets;
+  navigation: ImgAsset[];
 }
