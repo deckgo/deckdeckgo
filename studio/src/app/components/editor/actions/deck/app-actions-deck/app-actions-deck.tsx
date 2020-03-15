@@ -404,12 +404,12 @@ export class AppActionsDeck {
           </app-action-busy>
 
           <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(false)} color="primary" mode="md">
-            <ion-icon name="arrow-back"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
             <ion-label>Previous</ion-label>
           </ion-tab-button>
 
           <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(true)} color="primary" mode="md">
-            <ion-icon name="arrow-forward"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
             <ion-label>Next</ion-label>
           </ion-tab-button>
 
@@ -418,14 +418,14 @@ export class AppActionsDeck {
             <ion-label>Slides</ion-label>
           </ion-tab-button>
 
-          <app-action-busy iconName="brush-outline" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
+          <app-action-busy iconSrc="/assets/icons/ionicons/brush.svg" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
             <ion-label>Style</ion-label>
           </app-action-busy>
 
           {this.renderFullscreenButton()}
 
           <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices" mode="md">
-            <ion-icon name="phone-portrait-outline"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
             <ion-label>Remote</ion-label>
           </ion-tab-button>
         </ion-buttons>
@@ -434,7 +434,7 @@ export class AppActionsDeck {
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <ion-tab-button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices" mode="md">
-            <ion-icon name={this.offline ? 'cloud-done-outline' : 'cloud-offline-outline'}></ion-icon>
+            <ion-icon src={`/assets/icons/ionicons/${this.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
             {this.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
           </ion-tab-button>
 
@@ -463,9 +463,9 @@ export class AppActionsDeck {
 
   private renderFullscreen() {
     if (this.fullscreen) {
-      return [<ion-icon name="contract"></ion-icon>, <ion-label>Exit fullscreen</ion-label>];
+      return [<ion-icon src="/assets/icons/ionicons/contract.svg"></ion-icon>, <ion-label>Exit fullscreen</ion-label>];
     } else {
-      return [<ion-icon name="expand"></ion-icon>, <ion-label>Fullscreen</ion-label>];
+      return [<ion-icon src="/assets/icons/ionicons/expand.svg"></ion-icon>, <ion-label>Fullscreen</ion-label>];
     }
   }
 }

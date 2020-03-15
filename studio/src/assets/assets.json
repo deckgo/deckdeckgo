@@ -190,6 +190,18 @@
   },
   "navigation": [
     {"src": "/icons/ionicons/open.svg", "ariaLabel": "Open"},
-    {"src": "/icons/ionicons/close.svg", "ariaLabel": "Close"}
+    {"src": "/icons/ionicons/close.svg", "ariaLabel": "Close"},
+    {"src": "/icons/ionicons/arrow-forward.svg", "ariaLabel": "Forward"},
+    {"src": "/icons/ionicons/arrow-back.svg", "ariaLabel": "Back"},
+    {"src": "/icons/ionicons/md-list.svg", "ariaLabel": "List"},
+    {"src": "/icons/ionicons/brush.svg", "ariaLabel": "Brush"},
+    {"src": "/icons/ionicons/phone-portrait.svg", "ariaLabel": "Phone"},
+    {"src": "/icons/ionicons/share.svg", "ariaLabel": "Share"},
+    {"src": "/icons/ionicons/cloud-done.svg", "ariaLabel": "Go Online"},
+    {"src": "/icons/ionicons/cloud-offline.svg", "ariaLabel": "Go Offline"},
+    {"src": "/icons/ionicons/help.svg", "ariaLabel": "Help"},
+    {"src": "/icons/ionicons/ellipsis-vertical.svg", "ariaLabel": "Menu"},
+    {"src": "/icons/ionicons/contract.svg", "ariaLabel": "Exit Fullscreen"},
+    {"src": "/icons/ionicons/expand.svg", "ariaLabel": "Enter Fullscreen"}
   ]
 }

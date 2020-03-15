@@ -19,9 +19,6 @@ export class AppActionBusy {
   private deckBusy: boolean = false;
 
   @Prop()
-  iconName: string;
-
-  @Prop()
   iconSrc: string;
 
   constructor() {
@@ -47,7 +44,7 @@ export class AppActionBusy {
   render() {
     return (
       <ion-tab-button onClick={(e: UIEvent) => this.action(e)} color="primary" disabled={this.deckBusy} mode="md">
-        {this.iconSrc !== undefined ? <ion-icon src={this.iconSrc}></ion-icon> : <ion-icon name={this.iconName}></ion-icon>}
+        <ion-icon src={this.iconSrc}></ion-icon>
         <slot></slot>
       </ion-tab-button>
     );

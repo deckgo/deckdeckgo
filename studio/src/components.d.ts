@@ -45,7 +45,6 @@ import {
 export namespace Components {
   interface AppAbout {}
   interface AppActionBusy {
-    'iconName': string;
     'iconSrc': string;
   }
   interface AppActionHelp {
@@ -995,7 +994,6 @@ declare global {
 declare namespace LocalJSX {
   interface AppAbout {}
   interface AppActionBusy {
-    'iconName'?: string;
     'iconSrc'?: string;
     'onActionReady'?: (event: CustomEvent<UIEvent>) => void;
   }
