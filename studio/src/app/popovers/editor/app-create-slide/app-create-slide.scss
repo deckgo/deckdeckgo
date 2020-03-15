@@ -100,7 +100,10 @@ app-create-slide {
         --slide-padding-end: 6px;
       }
 
-      deckgo-slide-qrcode,
+      deckgo-slide-qrcode {
+        --slide-padding-bottom: 8px;
+      }
+
       deckgo-slide-chart {
         --slide-padding-bottom: 4px;
       }
@@ -135,7 +138,8 @@ app-create-slide {
       deckgo-slide-author,
       deckgo-slide-poll,
       deckgo-slide-chart,
-      deckgo-slide-aspect-ratio {
+      deckgo-slide-aspect-ratio,
+      deckgo-slide-qrcode {
         --slide-height: 110px;
       }
 
