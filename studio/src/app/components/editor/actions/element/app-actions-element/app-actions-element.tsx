@@ -1003,7 +1003,7 @@ export class AppActionsElement {
         mode="md"
         disabled={this.deckBusy && this.slide}
         class="wider-devices">
-        <ion-icon name="trash-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/trash-bin.svg"></ion-icon>
         <ion-label>Delete</ion-label>
       </ion-tab-button>
     );
@@ -1014,7 +1014,7 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openNotes()} aria-label="Notes" color="primary" mode="md" disabled={this.deckBusy} class={classElement}>
-        <ion-icon name="create-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/create.svg"></ion-icon>
         <ion-label>Notes</ion-label>
       </ion-tab-button>
     );
@@ -1025,7 +1025,7 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.clone()} aria-label="Copy" color="primary" mode="md" disabled={this.deckBusy} class={classSlide}>
-        <ion-icon name="copy-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/copy.svg"></ion-icon>
         <ion-label>Copy</ion-label>
       </ion-tab-button>
     );
@@ -1034,7 +1034,7 @@ export class AppActionsElement {
   private renderColor() {
     return (
       <ion-tab-button onClick={() => this.openColor()} aria-label="Color" color="primary" mode="md">
-        <ion-icon name="color-palette-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/color-palette.svg"></ion-icon>
         <ion-label>Color</ion-label>
       </ion-tab-button>
     );
@@ -1057,7 +1057,7 @@ export class AppActionsElement {
         aria-label="Edit slide options"
         mode="md"
         class={classSlide}>
-        <ion-icon name="pencil-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/pencil.svg"></ion-icon>
         <ion-label>Options</ion-label>
       </ion-tab-button>,
       <ion-tab-button onClick={() => this.openSlotType()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
@@ -1072,7 +1072,7 @@ export class AppActionsElement {
 
     return [
       <ion-tab-button onClick={() => this.openShape()} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
-        <ion-icon name="shapes-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/shapes.svg"></ion-icon>
         <ion-label>Add shape</ion-label>
       </ion-tab-button>
     ];
@@ -1083,7 +1083,7 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openCode()} aria-label="Code attributes" color="primary" mode="md" class={classSlideCode}>
-        <ion-icon name="code-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/code.svg"></ion-icon>
         <ion-label>Attributes</ion-label>
       </ion-tab-button>
     );
@@ -1094,7 +1094,7 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openImage()} aria-label={this.slide ? 'Background' : 'Image'} color="primary" mode="md" class={classImage}>
-        <ion-icon name="images-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
         <ion-label>{this.slide ? 'Background' : 'Image'}</ion-label>
       </ion-tab-button>
     );
@@ -1117,7 +1117,7 @@ export class AppActionsElement {
 
     return [
       <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an unordered list" color="primary" mode="md" class={classListUL}>
-        <ion-icon name="list-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/list.svg"></ion-icon>
         <ion-label>Unordered list</ion-label>
       </ion-tab-button>,
       <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an ordered list" color="primary" mode="md" class={classListOL}>
