@@ -1,8 +1,5 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
-
 @Component({
   tag: 'app-notes',
   styleUrl: 'app-notes.scss'
@@ -15,8 +12,6 @@ export class AppNotes {
 
   @State()
   private notes: string;
-
-  private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
   componentWillLoad() {
     if (this.selectedElement) {
@@ -106,7 +101,7 @@ export class AppNotes {
         <p>
           Your notes are displayed in the{' '}
           <a href="https://deckdeckgo.app" target="_blank">
-            remote control <ion-icon src={`${this.config.globalAssetsUrl}/icons/ionicons/open.svg`} role="presentation"></ion-icon>
+            remote control <ion-icon src="/assets/icons/ionicons/open.svg" role="presentation"></ion-icon>
           </a>
           . Markdown is supported 😉
         </p>
