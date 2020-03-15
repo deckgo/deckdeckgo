@@ -188,5 +188,8 @@
   "deckdeckgo": {
     "logo": "/img/deckdeckgo-logo.svg"
   },
-  "navigation": [{"src": "/icons/ionicons/open.svg", "ariaLabel": "Open"}]
+  "navigation": [
+    {"src": "/icons/ionicons/open.svg", "ariaLabel": "Open"},
+    {"src": "/icons/ionicons/close.svg", "ariaLabel": "Close"}
+  ]
 }

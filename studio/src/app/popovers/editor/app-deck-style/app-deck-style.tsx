@@ -88,7 +88,7 @@ export class AppDeck {
       <ion-toolbar>
         <h2>Deck style</h2>
         <ion-router-link slot="end" onClick={() => this.closePopover()}>
-          <ion-icon name="close"></ion-icon>
+          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
       <app-select-target-element

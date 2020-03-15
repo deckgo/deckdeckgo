@@ -203,7 +203,7 @@ export class AppCode {
       <ion-toolbar>
         <h2>Code attributes</h2>
         <ion-router-link slot="end" onClick={() => this.closePopover()}>
-          <ion-icon name="close"></ion-icon>
+          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
       <ion-list>

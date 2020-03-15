@@ -39,7 +39,7 @@ export class AppImageElement {
       <ion-toolbar>
         <h2>{this.slide ? 'Slide background' : 'Image'}</h2>
         <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
-          <ion-icon name="close"></ion-icon>
+          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
       <app-image

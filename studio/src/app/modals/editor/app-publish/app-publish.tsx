@@ -61,7 +61,7 @@ export class AppPublish {
         <ion-toolbar color="tertiary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()}>
-              <ion-icon name="close"></ion-icon>
+              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           {this.renderTitle()}

@@ -225,7 +225,7 @@ export class AppCreateSlide {
       <ion-toolbar>
         <h2>Add a slide</h2>
         <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
-          <ion-icon name="close"></ion-icon>
+          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
       <div class="container ion-margin-bottom ion-padding-start ion-padding-end">

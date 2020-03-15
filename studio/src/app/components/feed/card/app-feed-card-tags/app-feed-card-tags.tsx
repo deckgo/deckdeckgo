@@ -49,7 +49,7 @@ export class AppFeedCardTags {
     if (this.editable) {
       return (
         <button onClick={($event: UIEvent) => this.remove($event, tag)} disabled={this.disableRemove}>
-          <ion-icon name="close"></ion-icon>
+          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </button>
       );
     } else {

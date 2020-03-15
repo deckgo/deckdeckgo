@@ -224,7 +224,7 @@ export class AppPhoto {
     if (!this.searchTerm || this.searchTerm.length <= 0 || this.searching) {
       return (
         <ion-button onClick={() => this.closeModal()}>
-          <ion-icon name="close"></ion-icon>
+          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-button>
       );
     } else {
