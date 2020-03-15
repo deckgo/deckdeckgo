@@ -1,5 +1,7 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
+import {Resources} from '../../../utils/core/resources';
+
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {StorageService} from '../../../services/storage/storage.service';
 
@@ -112,7 +114,7 @@ export class AppCustomImages {
 
       this.paginationNext = list.nextPageToken;
 
-      this.disableInfiniteScroll = list.items.length < this.storageService.maxQueryResults;
+      this.disableInfiniteScroll = list.items.length < Resources.Constants.STORAGE.MAX_QUERY_RESULTS || this.paginationNext === undefined;
 
       this.loading = false;
 
@@ -179,7 +181,7 @@ export class AppCustomImages {
         <ion-toolbar color="tertiary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()}>
-              <ion-icon name="close"></ion-icon>
+              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">Your images</ion-title>

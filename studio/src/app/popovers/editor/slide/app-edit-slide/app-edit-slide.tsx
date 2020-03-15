@@ -45,7 +45,7 @@ export class AppEditSlide {
       <ion-toolbar>
         {this.renderTitle()}
         <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
-          <ion-icon name="close"></ion-icon>
+          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
       <ion-list>{this.renderOptions()}</ion-list>

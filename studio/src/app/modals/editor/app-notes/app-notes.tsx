@@ -91,7 +91,7 @@ export class AppNotes {
         <ion-toolbar color="quaternary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()}>
-              <ion-icon name="close"></ion-icon>
+              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">Notes</ion-title>
@@ -101,7 +101,7 @@ export class AppNotes {
         <p>
           Your notes are displayed in the{' '}
           <a href="https://deckdeckgo.app" target="_blank">
-            remote control <ion-icon name="open"></ion-icon>
+            remote control <ion-icon src="/assets/icons/ionicons/open.svg" role="presentation"></ion-icon>
           </a>
           . Markdown is supported 😉
         </p>

@@ -219,7 +219,8 @@ export class DeckEventsHandler {
 
             const persistedSlide: Slide = await this.postSlide(deck, slide);
 
-            // TODO: Ultimately, when using reactive data, move this to a Cloud Function
+            // Because of the offline mode, is kind of handy to handle the list on the client side too.
+            // But maybe in the future it is something which could be moved to the cloud.
             await this.updateDeckSlideList(deck, persistedSlide);
 
             this.busyService.deckBusy(false);
@@ -505,9 +506,10 @@ export class DeckEventsHandler {
               const slide: Slide = await this.slideService.get(deck.id, slideId);
 
               if (slide && slide.data) {
-                // TODO: no rush but ultimately maybe should we move step 1. and 2. below in a cloud function?
+                // Because there is an offline mode, it is handy currently to proceed the following on the client side.
+                // But at some point, it might be interesting to move the logic to a cloud function.
 
-                // 1. Delete the slide in Firestore
+                // 1. Delete the slide in Firestore or locally
                 await this.slideService.delete(deck.id, slideId);
 
                 // 2. Update list of slide in the deck (in Firestore)

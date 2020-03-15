@@ -75,7 +75,7 @@ export class AppActionShare {
   render() {
     return (
       <ion-tab-button onClick={($event: UIEvent) => this.share($event)} color="primary" mode="md">
-        <ion-icon name="share-outline"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/share.svg"></ion-icon>
         <ion-label>Share</ion-label>
       </ion-tab-button>
     );

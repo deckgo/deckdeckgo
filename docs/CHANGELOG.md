@@ -1,3 +1,10 @@
+<a name="1.0.0-rc.10-2"></a>
+
+# 1.0.0-rc.10-2 (2020-03-8)
+
+- new core method `lazyLoadAllContent()`
+- option `y-min-axis` added to bar chart documentation
+
 <a name="1.0.0-rc.10-1"></a>
 
 # 1.0.0-rc.10-1 (2020-02-23)

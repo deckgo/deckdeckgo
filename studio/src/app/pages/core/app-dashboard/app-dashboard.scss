@@ -2,6 +2,10 @@ app-dashboard {
   main {
     background: white;
 
+    ion-router-link {
+      padding-right: 4px;
+    }
+
     a,
     a:link,
     a:visited,

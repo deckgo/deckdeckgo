@@ -56,10 +56,16 @@ app-create-slide {
 
           div.item {
             width: calc((100% - 16px) / 2);
-            height: 8rem;
             margin: 4px 4px;
             background: white;
             font-size: 0.2rem;
+
+            deckgo-slide-chart {
+              p[slot="title"] {
+                width: 100%;
+                border-radius: 12px;
+              }
+            }
           }
         }
       }
@@ -94,7 +100,12 @@ app-create-slide {
         --slide-padding-end: 6px;
       }
 
-      deckgo-slide-qrcode,
+      deckgo-slide-qrcode {
+        --slide-padding-bottom: 8px;
+
+        --deckgo-qrcode-size: 78px;
+      }
+
       deckgo-slide-chart {
         --slide-padding-bottom: 4px;
       }
@@ -128,7 +139,9 @@ app-create-slide {
 
       deckgo-slide-author,
       deckgo-slide-poll,
-      deckgo-slide-aspect-ratio {
+      deckgo-slide-chart,
+      deckgo-slide-aspect-ratio,
+      deckgo-slide-qrcode {
         --slide-height: 110px;
       }
 

@@ -3,6 +3,10 @@ import '@firebase/firestore';
 
 import {Deck, DeckData} from '../../../models/data/deck';
 
+import {DeckOfflineService} from './deck.offline.service';
+import {DeckOnlineService} from './deck.online.service';
+import {OfflineService} from '../../editor/offline/offline.service';
+
 export class DeckService {
   private static instance: DeckService;
 
@@ -42,51 +46,24 @@ export class DeckService {
     });
   }
 
-  get(deckId: string): Promise<Deck> {
-    return new Promise<Deck>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+  async get(deckId: string): Promise<Deck> {
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
 
-      try {
-        const snapshot: firebase.firestore.DocumentSnapshot = await firestore
-          .collection('decks')
-          .doc(deckId)
-          .get();
-
-        if (!snapshot.exists) {
-          reject('Deck not found');
-          return;
-        }
-
-        const deck: DeckData = snapshot.data() as DeckData;
-
-        resolve({
-          id: snapshot.id,
-          data: deck
-        });
-      } catch (err) {
-        reject(err);
-      }
-    });
+    if (offline !== undefined) {
+      return DeckOfflineService.getInstance().get(deckId);
+    } else {
+      return DeckOnlineService.getInstance().get(deckId);
+    }
   }
 
-  update(deck: Deck): Promise<Deck> {
-    return new Promise<Deck>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+  async update(deck: Deck): Promise<Deck> {
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
 
-      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      deck.data.updated_at = now;
-
-      try {
-        await firestore
-          .collection('decks')
-          .doc(deck.id)
-          .set(deck.data, {merge: true});
-
-        resolve(deck);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    if (offline !== undefined) {
+      return DeckOfflineService.getInstance().update(deck);
+    } else {
+      return DeckOnlineService.getInstance().update(deck);
+    }
   }
 
   getUserDecks(userId: string): Promise<Deck[]> {

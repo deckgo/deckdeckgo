@@ -10,10 +10,12 @@ import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
+import {AssetsService} from '../../../services/core/assets/assets.service';
+
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 
 @Component({
@@ -28,6 +30,12 @@ export class AppCreateSlide {
 
   @State()
   private chartsCollapsed: boolean = true;
+
+  @State()
+  private assets: Assets | undefined = undefined;
+
+  @State()
+  private navigatorOnline: boolean = navigator.onLine;
 
   private user: User;
 
@@ -56,6 +64,8 @@ export class AppCreateSlide {
         this.photoUrl =
           user && user.data && user.data.photo_url ? user.data.photo_url : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg';
       });
+
+    this.assets = await AssetsService.getInstance().assets();
   }
 
   async componentDidLoad() {
@@ -82,7 +92,9 @@ export class AppCreateSlide {
       const slidesChart: HTMLElement[] = Array.from(this.el.querySelectorAll('deckgo-slide-chart.showcase'));
       const slidesPoll: HTMLElement = this.el.querySelector('deckgo-slide-poll.showcase');
 
-      const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, ...slidesChart, slidesPoll];
+      const slides: HTMLElement[] = this.navigatorOnline
+        ? [slideGif, slideAuthor, slideQRCode, ...slidesChart, slidesPoll]
+        : [slideQRCode, ...slidesChart, slidesPoll];
 
       if (!slides || slides.length <= 0) {
         resolve();
@@ -213,7 +225,7 @@ export class AppCreateSlide {
       <ion-toolbar>
         <h2>Add a slide</h2>
         <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
-          <ion-icon name="close"></ion-icon>
+          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
       <div class="container ion-margin-bottom ion-padding-start ion-padding-end">
@@ -248,6 +260,10 @@ export class AppCreateSlide {
   }
 
   private renderChart() {
+    if (this.assets === undefined || !this.assets.chart) {
+      return undefined;
+    }
+
     return (
       <div class="item" custom-tappable onClick={() => this.selectUnselectCharts()}>
         <deckgo-slide-chart
@@ -261,7 +277,8 @@ export class AppCreateSlide {
           marginRight={0}
           width={204}
           height={68}
-          src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+          src={this.assets.chart.lineCompareSrc}
+          custom-loader={true}>
           <p slot="title">Charts</p>
         </deckgo-slide-chart>
 
@@ -283,13 +300,14 @@ export class AppCreateSlide {
             <deckgo-slide-chart
               class="showcase"
               type="pie"
-              marginTop={0}
-              marginBottom={0}
-              marginLeft={0}
-              marginRight={0}
+              marginTop={8}
+              marginBottom={8}
+              marginLeft={8}
+              marginRight={8}
               width={68}
               height={68}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+              src={this.assets.chart.pieSrc}
+              custom-loader={true}>
               <p slot="title">Pie</p>
             </deckgo-slide-chart>
           </div>
@@ -299,14 +317,15 @@ export class AppCreateSlide {
             <deckgo-slide-chart
               class="showcase"
               type="pie"
-              marginTop={0}
-              marginBottom={0}
-              marginLeft={0}
-              marginRight={0}
+              marginTop={8}
+              marginBottom={8}
+              marginLeft={8}
+              marginRight={8}
               width={68}
               height={68}
               inner-radius={16}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+              src={this.assets.chart.pieSrc}
+              custom-loader={true}>
               <p slot="title">Donut</p>
             </deckgo-slide-chart>
           </div>
@@ -317,13 +336,14 @@ export class AppCreateSlide {
               class="showcase"
               type="pie"
               animation={true}
-              marginTop={0}
-              marginBottom={0}
-              marginLeft={0}
-              marginRight={0}
+              marginTop={8}
+              marginBottom={8}
+              marginLeft={8}
+              marginRight={8}
               width={68}
               height={68}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv">
+              src={this.assets.chart.barCompareSrc}
+              custom-loader={true}>
               <p slot="title">Pie comparison</p>
             </deckgo-slide-chart>
           </div>
@@ -341,7 +361,8 @@ export class AppCreateSlide {
               height={68}
               y-axis-domain="extent"
               date-pattern="dd.MM.yyyy"
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-to-compare.csv">
+              src={this.assets.chart.lineCompareSrc}
+              custom-loader={true}>
               <p slot="title">Area</p>
             </deckgo-slide-chart>
           </div>
@@ -360,7 +381,8 @@ export class AppCreateSlide {
               y-axis-domain="extent"
               date-pattern="dd.MM.yyyy"
               smooth={'false'}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart.csv">
+              src={this.assets.chart.lineSrc}
+              custom-loader={true}>
               <p slot="title">Sharp area</p>
             </deckgo-slide-chart>
           </div>
@@ -377,7 +399,8 @@ export class AppCreateSlide {
               width={88}
               height={68}
               area={'false'}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-chart-no-dates.csv">
+              src={this.assets.chart.lineNoDatesSrc}
+              custom-loader={true}>
               <p slot="title">Lines</p>
             </deckgo-slide-chart>
           </div>
@@ -396,7 +419,8 @@ export class AppCreateSlide {
               y-axis-domain="extent"
               date-pattern="dd.MM.yyyy"
               animation={true}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv">
+              src={this.assets.chart.lineMultipleSrc}
+              custom-loader={true}>
               <p slot="title">Line graph comparison</p>
             </deckgo-slide-chart>
           </div>
@@ -412,7 +436,8 @@ export class AppCreateSlide {
               marginRight={0}
               width={88}
               height={68}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv">
+              src={this.assets.chart.pieSrc}
+              custom-loader={true}>
               <p slot="title">Bar</p>
             </deckgo-slide-chart>
           </div>
@@ -428,12 +453,13 @@ export class AppCreateSlide {
               marginRight={0}
               width={88}
               height={68}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+              src={this.assets.chart.barCompareSrc}
               style={{
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
                 '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
-              }}>
+              }}
+              custom-loader={true}>
               <p slot="title">Grouped bars</p>
             </deckgo-slide-chart>
           </div>
@@ -450,12 +476,13 @@ export class AppCreateSlide {
               width={88}
               height={68}
               animation={true}
-              src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-bar-chart-to-compare.csv"
+              src={this.assets.chart.barCompareSrc}
               style={{
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
                 '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
-              }}>
+              }}
+              custom-loader={true}>
               <p slot="title">Bar comparison</p>
             </deckgo-slide-chart>
           </div>
@@ -559,9 +586,18 @@ export class AppCreateSlide {
   }
 
   private renderGif() {
+    if (this.assets === undefined || !this.assets.gif || !this.assets.gif.exampleSrc) {
+      return undefined;
+    }
+
+    if (!this.navigatorOnline) {
+      // For the Gif template, we need to select a Gif in Tenor, which is not accessible offline
+      return undefined;
+    }
+
     return (
       <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
-        <deckgo-slide-gif class="showcase" src={EnvironmentConfigService.getInstance().get('gifExampleSrc')} alt="Slide Gif">
+        <deckgo-slide-gif class="showcase" src={this.assets.gif.exampleSrc} alt="Slide Gif">
           <p slot="header">
             <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
           </p>
@@ -574,6 +610,11 @@ export class AppCreateSlide {
   }
 
   private renderYoutube() {
+    if (!this.navigatorOnline) {
+      // The youtube slide can't be use offline as we cannot browse youtube
+      return undefined;
+    }
+
     return (
       <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
         <deckgo-slide-content class="showcase gif">
@@ -587,6 +628,11 @@ export class AppCreateSlide {
   }
 
   private renderAuthor() {
+    if (!this.navigatorOnline) {
+      // The author slide need the user data to be added which we don't have offline
+      return undefined;
+    }
+
     return (
       <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
         <deckgo-slide-author class="showcase" img-src={this.photoUrl} img-alt="Author">

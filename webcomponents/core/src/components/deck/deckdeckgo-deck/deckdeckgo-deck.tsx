@@ -890,7 +890,8 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private lazyLoadAllContent(): Promise<void[]> {
+  @Method()
+  lazyLoadAllContent(): Promise<void[]> {
     const promises = [];
 
     for (let i = 0; i < this.length; i++) {

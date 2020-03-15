@@ -289,7 +289,7 @@ export class AppSignIn {
       return (
         <ion-buttons class="back">
           <ion-button onClick={() => this.navigateBack()} color="primary">
-            <ion-icon name="close"></ion-icon>
+            <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
           </ion-button>
         </ion-buttons>
       );

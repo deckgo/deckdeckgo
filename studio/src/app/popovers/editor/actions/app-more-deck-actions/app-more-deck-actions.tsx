@@ -1,4 +1,4 @@
-import {Component, Element, State, h} from '@stencil/core';
+import {Component, Element, State, h, Prop} from '@stencil/core';
 
 import {isMobile} from '@deckdeckgo/utils';
 
@@ -10,6 +10,9 @@ import {MoreAction} from '../../../../utils/editor/more-action';
 })
 export class AppMoreDeckActions {
   @Element() el: HTMLElement;
+
+  @Prop()
+  offline: boolean = false;
 
   @State()
   private mobile: boolean = false;
@@ -38,10 +41,14 @@ export class AppMoreDeckActions {
           <p>Style</p>
         </a>
         {this.renderFullscreenOption()}
-        <a onClick={() => this.closePopover(MoreAction.REMOTE)} aria-label="Remote control">
-          <p>Remote control</p>
+        <a onClick={() => this.closePopover(MoreAction.REMOTE)} aria-label="Remote Control">
+          <p>Remote Control</p>
         </a>
         <app-share-options onSelectedOption={($event: CustomEvent<MoreAction>) => this.closeSharePopover($event)}></app-share-options>
+        <a onClick={() => this.closePopover(MoreAction.OFFLINE)} aria-label="Offline">
+          <p>{this.offline ? 'Go Online' : 'Go Offline'}</p>
+        </a>
+        <app-action-help link={true} onHelpSelected={() => this.closePopover(MoreAction.HELP)}></app-action-help>
       </div>
     );
   }

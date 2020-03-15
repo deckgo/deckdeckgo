@@ -5,12 +5,16 @@ import {isIPad} from '@deckdeckgo/utils';
 
 import {get, set} from 'idb-keyval';
 
+import {Subscription} from 'rxjs';
+
 import {SlideAttributes, SlideTemplate} from '../../../../../models/data/slide';
 
 import {MoreAction} from '../../../../../utils/editor/more-action';
 
-import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
 import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
+
+import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
+import {OfflineService} from '../../../../../services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-actions-deck',
@@ -58,14 +62,31 @@ export class AppActionsDeck {
   @State()
   private fullscreenEnable: boolean = true;
 
+  @State()
+  private offline: boolean = false;
+
   private anonymousService: AnonymousService;
+
+  private offlineService: OfflineService;
+  private offlineSubscription: Subscription;
 
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
+    this.offlineService = OfflineService.getInstance();
   }
 
-  componentWillLoad() {
+  async componentWillLoad() {
     this.fullscreenEnable = !isIPad();
+
+    this.offlineSubscription = this.offlineService.watchOffline().subscribe((status: OfflineDeck | undefined) => {
+      this.offline = status !== undefined;
+    });
+  }
+
+  async componentDidUnload() {
+    if (this.offlineSubscription) {
+      this.offlineSubscription.unsubscribe();
+    }
   }
 
   async onActionOpenSlideAdd($event: CustomEvent) {
@@ -231,6 +252,8 @@ export class AppActionsDeck {
         attributes.src = url;
       }
 
+      attributes.customLoader = true;
+
       const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideChart(attributes);
 
       this.addSlide.emit(slide);
@@ -281,6 +304,9 @@ export class AppActionsDeck {
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-deck-actions',
+      componentProps: {
+        offline: this.offline
+      },
       event: $event,
       mode: 'ios'
     });
@@ -301,6 +327,8 @@ export class AppActionsDeck {
           await this.openDeckStyle();
         } else if (detail.data.action === MoreAction.EMBED) {
           await this.openEmbed();
+        } else if (detail.data.action === MoreAction.OFFLINE) {
+          await this.goOnlineOffline();
         }
       }
     });
@@ -355,6 +383,18 @@ export class AppActionsDeck {
     await popover.present();
   }
 
+  private async goOnlineOffline() {
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-offline',
+      componentProps: {
+        offline: this.offline
+      },
+      cssClass: 'fullscreen'
+    });
+
+    await modal.present();
+  }
+
   render() {
     return (
       <ion-toolbar>
@@ -364,12 +404,12 @@ export class AppActionsDeck {
           </app-action-busy>
 
           <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(false)} color="primary" mode="md">
-            <ion-icon name="arrow-back"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
             <ion-label>Previous</ion-label>
           </ion-tab-button>
 
           <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(true)} color="primary" mode="md">
-            <ion-icon name="arrow-forward"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
             <ion-label>Next</ion-label>
           </ion-tab-button>
 
@@ -378,27 +418,32 @@ export class AppActionsDeck {
             <ion-label>Slides</ion-label>
           </ion-tab-button>
 
-          <app-action-busy iconName="brush-outline" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
+          <app-action-busy iconSrc="/assets/icons/ionicons/brush.svg" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
             <ion-label>Style</ion-label>
           </app-action-busy>
 
           {this.renderFullscreenButton()}
 
           <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices" mode="md">
-            <ion-icon name="phone-portrait-outline"></ion-icon>
+            <ion-icon src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
             <ion-label>Remote</ion-label>
           </ion-tab-button>
+        </ion-buttons>
 
+        <ion-buttons slot="end">
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
+
+          <ion-tab-button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices" mode="md">
+            <ion-icon src={`/assets/icons/ionicons/${this.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
+            {this.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
+          </ion-tab-button>
+
+          <app-action-help class="wider-devices"></app-action-help>
 
           <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices" mode="md">
             <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
             <ion-label>More</ion-label>
           </ion-tab-button>
-        </ion-buttons>
-
-        <ion-buttons slot="end">
-          <app-action-help></app-action-help>
         </ion-buttons>
       </ion-toolbar>
     );
@@ -418,9 +463,9 @@ export class AppActionsDeck {
 
   private renderFullscreen() {
     if (this.fullscreen) {
-      return [<ion-icon name="contract"></ion-icon>, <ion-label>Exit fullscreen</ion-label>];
+      return [<ion-icon src="/assets/icons/ionicons/contract.svg"></ion-icon>, <ion-label>Exit fullscreen</ion-label>];
     } else {
-      return [<ion-icon name="expand"></ion-icon>, <ion-label>Fullscreen</ion-label>];
+      return [<ion-icon src="/assets/icons/ionicons/expand.svg"></ion-icon>, <ion-label>Fullscreen</ion-label>];
     }
   }
 }

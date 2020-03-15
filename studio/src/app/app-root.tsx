@@ -10,6 +10,7 @@ import {AuthService} from './services/auth/auth.service';
 import {NavDirection, NavParams, NavService} from './services/core/nav/nav.service';
 
 import {ThemeService} from './services/theme/theme.service';
+import {OfflineService} from './services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-root',
@@ -29,6 +30,8 @@ export class AppRoot {
   private themeSubscription: Subscription;
   private themeService: ThemeService;
 
+  private offlineService: OfflineService;
+
   private domBodyClassList: DOMTokenList = document.body.classList;
 
   constructor() {
@@ -36,14 +39,15 @@ export class AppRoot {
     this.authService = AuthService.getInstance();
     this.navService = NavService.getInstance();
     this.themeService = ThemeService.getInstance();
+    this.offlineService = OfflineService.getInstance();
   }
 
   async componentWillLoad() {
     if (Build.isBrowser) {
       await this.authService.init();
+      await this.themeService.initDarkModePreference();
+      await this.offlineService.init();
     }
-
-    await this.themeService.initDarkModePreference();
   }
 
   async componentDidLoad() {

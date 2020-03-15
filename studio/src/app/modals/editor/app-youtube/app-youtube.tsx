@@ -46,7 +46,7 @@ export class AppYoutube {
         <ion-toolbar color="youtube">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()}>
-              <ion-icon name="close"></ion-icon>
+              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">YouTube</ion-title>

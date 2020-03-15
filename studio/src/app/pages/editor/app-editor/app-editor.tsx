@@ -22,13 +22,14 @@ import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-event
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
 import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
 import {PollEventsHandler} from '../../../handlers/editor/events/poll/poll-events.handler';
+import {ImageEventsHandler} from '../../../handlers/editor/events/image/image-events.handler';
+import {ChartEventsHandler} from '../../../handlers/editor/events/chart/chart-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
 import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
-import {FontsUtils} from '../../../utils/editor/fonts.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -38,6 +39,8 @@ import {BusyService} from '../../../services/editor/busy/busy.service';
 
 import {EnvironmentGoogleConfig} from '../../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {OfflineService} from '../../../services/editor/offline/offline.service';
+import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
 @Component({
   tag: 'app-editor',
@@ -70,6 +73,8 @@ export class AppEditor {
   private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
   private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
   private pollEventsHandler: PollEventsHandler = new PollEventsHandler();
+  private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
+  private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
 
   private editorHelper: EditorHelper = new EditorHelper();
 
@@ -81,6 +86,10 @@ export class AppEditor {
 
   private busySubscription: Subscription;
   private busyService: BusyService;
+
+  private offlineService: OfflineService;
+
+  private fontsService: FontsService;
 
   @State()
   private slidesFetched: boolean = false;
@@ -103,6 +112,8 @@ export class AppEditor {
     this.navService = NavService.getInstance();
     this.deckEditorService = DeckEditorService.getInstance();
     this.busyService = BusyService.getInstance();
+    this.offlineService = OfflineService.getInstance();
+    this.fontsService = FontsService.getInstance();
   }
 
   @Listen('ionRouteDidChange', {target: 'window'})
@@ -122,6 +133,8 @@ export class AppEditor {
   async init() {
     await this.deckEventsHandler.init(this.el);
     await this.editorEventsHandler.init(this.el);
+
+    await this.initOffline();
 
     // If no user create an anonymous one
     this.authService
@@ -159,10 +172,20 @@ export class AppEditor {
     this.fullscreen = isFullscreen() && !isIOS();
   }
 
+  async initOffline() {
+    // if we are offline we can't create a new deck or edit another one that the one we have marked as currently being edited offline
+    const offline: OfflineDeck = await this.offlineService.status();
+    if (offline !== undefined) {
+      this.deckId = offline.id;
+    }
+  }
+
   async destroy() {
     this.deckEventsHandler.destroy();
     this.editorEventsHandler.destroy();
     this.pollEventsHandler.destroy();
+    this.imageEventsHandler.destroy();
+    this.chartEventsHandler.destroy();
 
     await this.remoteEventsHandler.destroy();
 
@@ -178,6 +201,8 @@ export class AppEditor {
 
     await this.remoteEventsHandler.init(this.el);
     await this.pollEventsHandler.init(this.el);
+    await this.imageEventsHandler.init();
+    await this.chartEventsHandler.init();
 
     this.initWindowResize();
   }
@@ -267,7 +292,7 @@ export class AppEditor {
           this.background = await ParseBackgroundUtils.convertBackground(deck.data.background, true);
 
           const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
-          await FontsUtils.loadGoogleFont(google.fontsUrl, this.style);
+          await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
 
           resolve();
         });

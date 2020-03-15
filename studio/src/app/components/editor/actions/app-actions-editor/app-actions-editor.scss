@@ -63,20 +63,22 @@ app-actions-editor {
     }
   }
 
-  @media screen and (max-width: 540px) {
+  @media screen and (max-width: 720px) {
     ion-tab-button,
     app-action-share,
-    app-action-busy {
+    app-action-busy,
+    app-action-help {
       &.wider-devices {
         display: none;
       }
     }
   }
 
-  @media screen and (min-width: 540px) {
+  @media screen and (min-width: 720px) {
     ion-tab-button,
     app-action-share,
-    app-action-busy {
+    app-action-busy,
+    app-action-help {
       &.small-devices {
         display: none;
       }

@@ -3,13 +3,15 @@
  * https://stenciljs.com/docs/service-workers
  */
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
 self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
-    }
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
+
+workbox.setConfig({debug: false});
 
 /**
  * Cache font as displayed in the Workbox common recipe
@@ -18,28 +20,100 @@ self.addEventListener('message', (event) => {
 
 // Cache the Google Fonts stylesheets with a stale-while-revalidate strategy.
 workbox.routing.registerRoute(
-    /^https:\/\/fonts\.googleapis\.com/,
-    new workbox.strategies.StaleWhileRevalidate({
-        cacheName: 'google-fonts-stylesheets',
-    })
+  /^https:\/\/fonts\.googleapis\.com/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'google-fonts-stylesheets'
+  })
 );
 
 // Cache the underlying font files with a cache-first strategy for 1 year.
 workbox.routing.registerRoute(
-    /^https:\/\/fonts\.gstatic\.com/,
-    new workbox.strategies.CacheFirst({
-        cacheName: 'google-fonts-webfonts',
-        plugins: [
-            new workbox.cacheableResponse.Plugin({
-                statuses: [0, 200],
-            }),
-            new workbox.expiration.Plugin({
-                maxAgeSeconds: 60 * 60 * 24 * 365,
-                maxEntries: 30,
-            }),
-        ],
-    })
+  /^https:\/\/fonts\.gstatic\.com/,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'google-fonts-webfonts',
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 60 * 60 * 24 * 365,
+        maxEntries: 30
+      })
+    ]
+  })
+);
+
+// Catch assets list
+workbox.routing.registerRoute(
+  /^(?=.*assets\.json).*/,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'assets',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
+);
+
+// Cache the images
+workbox.routing.registerRoute(
+  /^(?!.*(?:unsplash|giphy|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'images',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
+);
+
+workbox.routing.registerRoute(
+  /^(?=.*(?:unsplash|giphy|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'cors-images',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
+);
+
+// Cache the data
+workbox.routing.registerRoute(
+  /^(?=.*(?:githubusercontent|firebasestorage))(?=.*(?:csv|json)).*/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'data-content',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
+);
+
+// Cache unpkg notably for language definitions
+workbox.routing.registerRoute(
+  /^(?=.*unpkg\.com).*/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'unpkg',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60
+      })
+    ]
+  })
 );
 
 // the precache manifest will be injected into the following line
-self.workbox.precaching.precacheAndRoute([]);
+self.workbox.precaching.precacheAndRoute([], {
+  // Ignore all URL parameters otherwise /editor/:id won't be cached and therefore not accessible directly offline
+  ignoreURLParametersMatching: [/.*/]
+});
