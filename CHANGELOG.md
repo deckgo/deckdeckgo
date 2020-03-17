@@ -1,6 +1,6 @@
-<a name="1.0.0-rc.23"></a>
+<a name="1.0.0"></a>
 
-# [1.0.0-rc.23](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.22-1...v1.0.0-rc.23) (in progress)
+# [1.0.0](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.22-1...v1.0.0) (in progress)
 
 ### Applications
 
@@ -8,7 +8,7 @@
 
 ### Web Components
 
-- core: v1.0.0-rc.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+- core: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 
 <a name="1.0.0-rc.21-1"></a>
 
