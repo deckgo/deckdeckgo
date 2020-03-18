@@ -10,10 +10,10 @@
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
-    "husky": "^4.2.1",
+    "husky": "^4.2.3",
     "prettier": "1.19.1",
     "pretty-quick": "^2.0.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.8.3"
   },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
