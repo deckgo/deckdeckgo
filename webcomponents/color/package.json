@@ -56,7 +56,7 @@
     "color-picker"
   ],
   "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0-rc.1-4"
+    "@deckdeckgo/utils": "^1.0.0"
   },
   "husky": {
     "hooks": {
