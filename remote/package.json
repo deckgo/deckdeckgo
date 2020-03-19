@@ -46,7 +46,7 @@
     "remarkable": "^2.0.0",
     "rxjs": "^6.5.4",
     "socket.io-client": "^2.3.0",
-    "uuid": "^3.4.0"
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0",
