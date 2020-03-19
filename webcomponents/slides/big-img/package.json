@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-big-img",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "Display in your presentation an image fullscreen and highlight specific part of it using the Big Image slide",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-countdown",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "The Countdown template display the remaining time until your presentation",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

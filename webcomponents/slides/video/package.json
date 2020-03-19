@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-video",
-  "version": "1.0.0-rc.1-1",
+  "version": "1.0.0",
   "description": "The Video template displays a video and play/stop it on swipe",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
