@@ -1,3 +1,9 @@
+<a name="1.0.0-rc.4"></a>
+
+# 1.0.0-rc.4 (2020-03-19)
+
+- update dependencies
+
 # 1.0.0-rc.3-2 (2020-02-27)
 
 ### Features
