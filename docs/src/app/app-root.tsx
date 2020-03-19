@@ -68,8 +68,7 @@ export class AppRoot {
           <ion-route url="/deck/background" component="app-deck-background" />
           <ion-route url="/deck/actions" component="app-deck-actions" />
 
-          <ion-route url="/misc" component="app-deck-collections" />
-          <ion-route url="/misc/collections" component="app-misc-collections" />
+          <ion-route url="/misc" component="app-misc-open-source" />
           <ion-route url="/misc/opensource" component="app-misc-open-source" />
           <ion-route url="/misc/logo" component="app-misc-logo" />
           <ion-route url="/misc/backstory" component="app-misc-backstory" />
