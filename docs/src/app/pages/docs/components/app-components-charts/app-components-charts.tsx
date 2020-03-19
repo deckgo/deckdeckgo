@@ -40,142 +40,34 @@ export class AppComponentsCharts {
           <h2 id="app-components-charts-table-of-contents">Table of contents</h2>
           <ul>
             <li>
-              <a href="#app-components-charts-showcase">Showcase</a>
-              <ul>
-                <li>
-                  <a href="#app-components-charts-pie">Pie</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-donut">Donut</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-animated-pie">Animated pie</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-compare-two-graphs">Compare two graphs</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-line-and-area">Line and area</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-compare-two-lines-and-smoothing-effect">Compare two lines and smoothing effect</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-compare-two-lines-and-display-a-grid">Compare two lines and display a grid</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-animated-lines">Animated lines</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-bar">Bar</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-compare-multiple-bars">Compare multiple bars</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-animated-bars">Animated bars</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-video">Video</a>
-                </li>
-              </ul>
+              <a href="#app-components-charts-showcase">Showcase</a> - <a href="#app-components-charts-pie">Pie</a> -{' '}
+              <a href="#app-components-charts-donut">Donut</a> - <a href="#app-components-charts-animated-pie">Animated pie</a> -{' '}
+              <a href="#app-components-charts-compare-two-graphs">Compare two graphs</a> - <a href="#app-components-charts-line-and-area">Line and area</a> -{' '}
+              <a href="#app-components-charts-compare-two-lines-and-smoothing-effect">Compare two lines and smoothing effect</a> -{' '}
+              <a href="#app-components-charts-compare-two-lines-and-display-a-grid">Compare two lines and display a grid</a> -{' '}
+              <a href="#app-components-charts-animated-lines">Animated lines</a> - <a href="#app-components-charts-bar">Bar</a> -{' '}
+              <a href="#app-components-charts-compare-multiple-bars">Compare multiple bars</a> -{' '}
+              <a href="#app-components-charts-animated-bars">Animated bars</a> - <a href="#app-components-charts-video">Video</a>
             </li>
             <li>
-              <a href="#app-components-charts-installation">Installation</a>
-              <ul>
-                <li>
-                  <a href="#app-components-charts-using-deckdeckgo-charts-from-a-cdn">Using DeckDeckGo charts from a CDN</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-install-deckdeckgo-charts-from-npm">Install DeckDeckGo charts from NPM</a>
-                </li>
-                <li>
-                  <a href="#app-components-charts-framework-integration">Framework integration</a>
-                </li>
-              </ul>
+              <a href="#app-components-charts-installation">Installation</a> -{' '}
+              <a href="#app-components-charts-using-deckdeckgo-charts-from-a-cdn">Using DeckDeckGo charts from a CDN</a> -{' '}
+              <a href="#app-components-charts-install-deckdeckgo-charts-from-npm">Install DeckDeckGo charts from NPM</a> -{' '}
+              <a href="#app-components-charts-framework-integration">Framework integration</a>
             </li>
             <li>
-              <a href="#app-components-charts-usage">Usage</a>
-              <ul>
-                <li>
-                  <a href="#app-components-charts-pie-usage">Pie usage</a>
-                  <ul>
-                    <li>
-                      <a href="#app-components-charts-csv">CSV</a>
-                      <ul>
-                        <li>
-                          <a href="#app-components-charts-example">Example</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-properties">Properties</a>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-styling">Styling</a>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-methods">Methods</a>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-examples">Examples</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#app-components-charts-line-usage">Line usage</a>
-                  <ul>
-                    <li>
-                      <a href="#app-components-charts-csv-1">CSV</a>
-                      <ul>
-                        <li>
-                          <a href="#app-components-charts-two-columns-1">Two columns</a>
-                        </li>
-                        <li>
-                          <a href="#app-components-charts-three-columns-or-more">Three columns or more</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-properties-1">Properties</a>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-styling-1">Styling</a>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-methods-1">Methods</a>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-examples-1">Examples</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#app-components-charts-bar-usage">Bar usage</a>
-                  <ul>
-                    <li>
-                      <a href="#app-components-charts-csv-2">CSV</a>
-                      <ul>
-                        <li>
-                          <a href="#app-components-charts-multiple-columns">Multiple columns</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-properties-2">Properties</a>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-styling-2">Styling</a>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-methods-2">Methods</a>
-                    </li>
-                    <li>
-                      <a href="#app-components-charts-examples-2">Examples</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+              <a href="#app-components-charts-usage">Usage</a> - <a href="#app-components-charts-pie-usage">Pie usage</a> -{' '}
+              <a href="#app-components-charts-csv">CSV</a> - <a href="#app-components-charts-example">Example</a> -{' '}
+              <a href="#app-components-charts-properties">Properties</a> - <a href="#app-components-charts-styling">Styling</a> -{' '}
+              <a href="#app-components-charts-methods">Methods</a> - <a href="#app-components-charts-examples">Examples</a> -{' '}
+              <a href="#app-components-charts-line-usage">Line usage</a> - <a href="#app-components-charts-csv-1">CSV</a> -{' '}
+              <a href="#app-components-charts-two-columns-1">Two columns</a> - <a href="#app-components-charts-three-columns-or-more">Three columns or more</a>{' '}
+              - <a href="#app-components-charts-properties-1">Properties</a> - <a href="#app-components-charts-styling-1">Styling</a> -{' '}
+              <a href="#app-components-charts-methods-1">Methods</a> - <a href="#app-components-charts-examples-1">Examples</a> -{' '}
+              <a href="#app-components-charts-bar-usage">Bar usage</a> - <a href="#app-components-charts-csv-2">CSV</a> -{' '}
+              <a href="#app-components-charts-multiple-columns">Multiple columns</a> - <a href="#app-components-charts-properties-2">Properties</a> -{' '}
+              <a href="#app-components-charts-styling-2">Styling</a> - <a href="#app-components-charts-methods-2">Methods</a> -{' '}
+              <a href="#app-components-charts-examples-2">Examples</a>
             </li>
           </ul>
           <h2 id="app-components-charts-showcase">Showcase</h2>
@@ -835,7 +727,7 @@ export class AppComponentsCharts {
           <h5 id="app-components-charts-three-columns-or-more">Three columns or more</h5>
           <p>
             The third columns or any others is optional, it could be use in case you would like to plot multiple charts on the same graph or animate a
-            transition between these.{' '}
+            transition between these.
           </p>
           <p>
             With dates as <code>x</code> axis:
@@ -1745,7 +1637,7 @@ export class AppComponentsCharts {
           </p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
-              &lt;deckgo-bar-chart width=&#123;500&#125; {'\n'} height=&#123;400&#125;{'\n'}{' '}
+              &lt;deckgo-bar-chart width=&#123;500&#125;{'\n'} height=&#123;400&#125;{'\n'}{' '}
               src=&quot;https:&#47;&#47;raw.githubusercontent.com&#47;deckgo&#47;deckdeckgo&#47;master&#47;webcomponents&#47;charts&#47;showcase&#47;data-pie-chart.csv&quot;
               {'\n'} style=&quot;--deckgo-chart-fill-color-1: #3880ff;&quot;&gt;{'\n'}&lt;&#47;deckgo-bar-chart&gt;
             </code>
