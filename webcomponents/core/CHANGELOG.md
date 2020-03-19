@@ -1,3 +1,21 @@
+<a name="1.0.1"></a>
+
+# 1.0.1 (2020-03-18)
+
+### Features
+
+- update dependencies
+
+<a name="1.0.0"></a>
+
+# 1.0.0 (2020-03-17)
+
+To infinity and beyond 🚀
+
+### Features
+
+- update Stencil v1.10
+
 <a name="1.0.0-rc.4"></a>
 
 # 1.0.0-rc.4 (2020-03-07)

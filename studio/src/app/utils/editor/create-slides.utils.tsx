@@ -1,6 +1,6 @@
 import {h, JSX} from '@stencil/core';
 
-import uuid from 'uuid/v4';
+import {v4 as uuid} from 'uuid';
 
 import {SlideAttributes, SlideTemplate} from '../../models/data/slide';
 

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/drag-resize-rotate",
-  "version": "1.0.0-beta.3-1",
+  "version": "1.0.0",
   "description": "A Web Component to drag, resize and rotate any element",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -23,20 +23,20 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@stencil/core": "^1.8.1",
+    "@stencil/core": "^1.10.1",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",
     "@stencil/utils": "0.0.5",
-    "@types/jest": "24.0.25",
+    "@types/jest": "25.1.4",
     "@types/prismjs": "^1.16.0",
-    "@types/puppeteer": "1.20.3",
-    "autoprefixer": "^9.7.3",
-    "husky": "^4.2.1",
-    "jest": "24.9.0",
-    "jest-cli": "24.9.0",
+    "@types/puppeteer": "2.0.1",
+    "autoprefixer": "^9.7.4",
+    "husky": "^4.2.3",
+    "jest": "25.1.0",
+    "jest-cli": "25.1.0",
     "prettier": "1.19.1",
     "pretty-quick": "^2.0.1",
-    "puppeteer": "1.20.0"
+    "puppeteer": "2.1.1"
   },
   "license": "MIT",
   "repository": {
@@ -67,6 +67,6 @@
     }
   },
   "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0-rc.2"
+    "@deckdeckgo/utils": "^1.0.0"
   }
 }

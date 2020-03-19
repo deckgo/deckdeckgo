@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-webpack-plugins",
-  "version": "1.0.0-rc.2-1",
+  "version": "1.0.0",
   "author": "David Dal Busco",
   "description": "A collection of Webpack plugins to create a DeckDeckGo presentation",
   "license": "MIT",
@@ -10,8 +10,8 @@
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
-    "@types/node": "^12.7.3",
-    "typescript": "^3.5.3"
+    "@types/node": "^13.9.1",
+    "typescript": "^3.8.3"
   },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "colorette": "^1.1.0",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.2.1",
     "remarkable": "^2.0.0"
   },
   "keywords": [

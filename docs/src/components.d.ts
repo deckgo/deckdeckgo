@@ -44,7 +44,6 @@ export namespace Components {
   interface AppLogo {}
   interface AppMenuFooter {}
   interface AppMiscBackstory {}
-  interface AppMiscCollections {}
   interface AppMiscContact {}
   interface AppMiscLogo {}
   interface AppMiscOpenSource {}
@@ -271,12 +270,6 @@ declare global {
     new (): HTMLAppMiscBackstoryElement;
   };
 
-  interface HTMLAppMiscCollectionsElement extends Components.AppMiscCollections, HTMLStencilElement {}
-  var HTMLAppMiscCollectionsElement: {
-    prototype: HTMLAppMiscCollectionsElement;
-    new (): HTMLAppMiscCollectionsElement;
-  };
-
   interface HTMLAppMiscContactElement extends Components.AppMiscContact, HTMLStencilElement {}
   var HTMLAppMiscContactElement: {
     prototype: HTMLAppMiscContactElement;
@@ -459,7 +452,6 @@ declare global {
     'app-logo': HTMLAppLogoElement;
     'app-menu-footer': HTMLAppMenuFooterElement;
     'app-misc-backstory': HTMLAppMiscBackstoryElement;
-    'app-misc-collections': HTMLAppMiscCollectionsElement;
     'app-misc-contact': HTMLAppMiscContactElement;
     'app-misc-logo': HTMLAppMiscLogoElement;
     'app-misc-open-source': HTMLAppMiscOpenSourceElement;
@@ -523,7 +515,6 @@ declare namespace LocalJSX {
   interface AppLogo {}
   interface AppMenuFooter {}
   interface AppMiscBackstory {}
-  interface AppMiscCollections {}
   interface AppMiscContact {}
   interface AppMiscLogo {}
   interface AppMiscOpenSource {}
@@ -587,7 +578,6 @@ declare namespace LocalJSX {
     'app-logo': AppLogo;
     'app-menu-footer': AppMenuFooter;
     'app-misc-backstory': AppMiscBackstory;
-    'app-misc-collections': AppMiscCollections;
     'app-misc-contact': AppMiscContact;
     'app-misc-logo': AppMiscLogo;
     'app-misc-open-source': AppMiscOpenSource;
@@ -654,7 +644,6 @@ declare module "@stencil/core" {
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-menu-footer': LocalJSX.AppMenuFooter & JSXBase.HTMLAttributes<HTMLAppMenuFooterElement>;
       'app-misc-backstory': LocalJSX.AppMiscBackstory & JSXBase.HTMLAttributes<HTMLAppMiscBackstoryElement>;
-      'app-misc-collections': LocalJSX.AppMiscCollections & JSXBase.HTMLAttributes<HTMLAppMiscCollectionsElement>;
       'app-misc-contact': LocalJSX.AppMiscContact & JSXBase.HTMLAttributes<HTMLAppMiscContactElement>;
       'app-misc-logo': LocalJSX.AppMiscLogo & JSXBase.HTMLAttributes<HTMLAppMiscLogoElement>;
       'app-misc-open-source': LocalJSX.AppMiscOpenSource & JSXBase.HTMLAttributes<HTMLAppMiscOpenSourceElement>;

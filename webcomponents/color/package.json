@@ -1,66 +1,66 @@
 {
-    "name": "@deckdeckgo/color",
-    "version": "1.0.0-rc.3-3",
-    "description": "A color picker developed with Web Components",
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "es2015": "dist/esm/index.mjs",
-    "es2017": "dist/esm/index.mjs",
-    "types": "dist/types/interface.d.ts",
-    "collection": "dist/collection/collection-manifest.json",
-    "collection:main": "dist/collection/index.js",
-    "unpkg": "dist/deckdeckgo-color/deckdeckgo-color.js",
-    "files": [
-        "dist/",
-        "README.md",
-        "LICENSE"
-    ],
-    "scripts": {
-        "build": "stencil build --docs",
-        "start": "stencil build --dev --watch --serve",
-        "test": "stencil test --spec --e2e",
-        "test.watch": "stencil test --spec --e2e --watchAll",
-        "generate": "stencil generate"
-    },
-    "devDependencies": {
-        "@stencil/core": "^1.8.1",
-        "@stencil/postcss": "^1.0.1",
-        "@stencil/sass": "^1.1.1",
-        "autoprefixer": "^9.7.2",
-        "husky": "^4.2.1",
-        "prettier": "1.19.1",
-        "pretty-quick": "^2.0.1"
-    },
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/deckgo/deckdeckgo.git"
-    },
-    "author": "David Dal Busco",
-    "bugs": {
-        "url": "https://github.com/deckgo/deckdeckgo"
-    },
-    "homepage": "https://deckdeckgo.com",
-    "keywords": [
-        "stencil",
-        "stenciljs",
-        "web components",
-        "pwa",
-        "progressive web app",
-        "presentation",
-        "slides",
-        "slideshow",
-        "talk",
-        "prismjs",
-        "color",
-        "color-picker"
-    ],
-    "dependencies": {
-        "@deckdeckgo/utils": "^1.0.0-rc.1-4"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "pretty-quick --staged"
-        }
+  "name": "@deckdeckgo/color",
+  "version": "1.0.1",
+  "description": "A color picker developed with Web Components",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/interface.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-color/deckdeckgo-color.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate"
+  },
+  "devDependencies": {
+    "@stencil/core": "^1.10.1",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.1.1",
+    "autoprefixer": "^9.7.4",
+    "husky": "^4.2.3",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "David Dal Busco",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk",
+    "prismjs",
+    "color",
+    "color-picker"
+  ],
+  "dependencies": {
+    "@deckdeckgo/utils": "^1.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
     }
+  }
 }

@@ -66,8 +66,12 @@ export class DeckdeckgoColor {
 
   @Watch('colorHex')
   async onColorHexChange() {
-    this.selectedColorHex = this.colorHex;
-    this.selectedColorRgb = undefined;
+    this.applyColorHexChange(this.colorHex, undefined);
+  }
+
+  private applyColorHexChange(colorHex: string, colorRgb: string | undefined) {
+    this.selectedColorHex = colorHex;
+    this.selectedColorRgb = colorRgb;
 
     this.debounceInitSelectedColorPalette();
 
@@ -143,14 +147,14 @@ export class DeckdeckgoColor {
   private selectColor = async ($event) => {
     const selectedColor: string = $event.target.value;
 
+    const rgb: string = await this.hexToRgb(selectedColor);
+
     const color: DeckdeckgoPaletteColor = {
       hex: selectedColor,
-      rgb: await this.hexToRgb(selectedColor)
+      rgb: rgb
     };
 
-    this.colorHex = selectedColor;
-
-    this.selectedCustomColorRgb = await this.hexToRgb(this.colorHex);
+    this.applyColorHexChange(selectedColor, rgb);
 
     this.colorChange.emit(color);
   };

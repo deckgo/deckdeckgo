@@ -1,28 +1,42 @@
+<a name="1.0.0"></a>
+
+# 1.0.0 (2020-03-19)
+
+To infinity and beyond 🚀
+
+### Features
+
+- update dependencies
+
 <a name="1.0.0-rc.3"></a>
+
 # 1.0.0-rc.3 (2020-01-16)
 
-* add option to custom load (fetch) the data
+- add option to custom load (fetch) the data
 
 <a name="1.0.0-rc.2-1"></a>
+
 # 1.0.0-rc.2-1 (2019-11-30)
 
-* use margin for the chart pie too
+- use margin for the chart pie too
 
 <a name="1.0.0-rc.2"></a>
+
 # 1.0.0-rc.2 (2019-10-19)
 
 ### Breaking changes
 
-*  properties `smooth`, `area` and `grid` types have been modified from `boolean` to `string` in order to be able to modify them on the fly in our editor
-* default margin size has been modified to fit studio
+- properties `smooth`, `area` and `grid` types have been modified from `boolean` to `string` in order to be able to modify them on the fly in our editor
+- default margin size has been modified to fit studio
 
 ### Features
 
-* update recent libs
+- update recent libs
 
 <a name="1.0.0-rc.1-1"></a>
+
 # 1.0.0-rc.1-1 (2019-10-08)
 
 ### Fix
 
-* correct namespace `deckdeckgo-slide-chart`
+- correct namespace `deckdeckgo-slide-chart`

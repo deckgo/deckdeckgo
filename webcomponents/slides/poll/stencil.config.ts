@@ -1,4 +1,4 @@
-import { Config } from '@stencil/core';
+import {Config} from '@stencil/core';
 
 import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
@@ -6,7 +6,7 @@ import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
   namespace: 'deckdeckgo-slide-poll',
-  outputTargets:[
+  outputTargets: [
     {
       type: 'dist'
     },
@@ -27,4 +27,7 @@ export const config: Config = {
     openBrowser: false,
     port: 3335
   },
+  nodeResolve: {
+    browser: true
+  }
 };

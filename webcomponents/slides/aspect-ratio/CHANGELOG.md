@@ -1,3 +1,13 @@
+<a name="1.0.0"></a>
+
+# 1.0.0 (2020-03-19)
+
+To infinity and beyond 🚀
+
+### Features
+
+- update dependencies
+
 <a name="1.0.0-beta.1-2"></a>
 
 # 1.0.0-beta.1-2 (2020-02-27)

@@ -1,6 +1,6 @@
 {
   "name": "create-deckdeckgo",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "Quickly create a new DeckDeckGo presentation: npm init deckdeckgo",
   "main": "dist/index.js",
   "scripts": {
@@ -25,14 +25,14 @@
     "@types/cli-spinner": "^0.2.0",
     "@types/inquirer": "6.5.0",
     "@types/yauzl": "^2.9.1",
-    "rollup": "^1.20.3",
+    "rollup": "^2.1.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "terser": "^4.2.1",
-    "tslint": "^5.19.0",
+    "terser": "^4.6.7",
+    "tslint": "^6.1.0",
     "tslint-ionic-rules": "0.0.21",
-    "typescript": "^3.5.3"
+    "typescript": "^3.8.3"
   },
   "author": "David Dal Busco",
   "license": "MIT",
@@ -52,8 +52,8 @@
   "dependencies": {
     "cli-spinner": "^0.2.10",
     "colorette": "^1.1.0",
-    "inquirer": "^7.0.0",
-    "replace": "^1.1.1",
+    "inquirer": "^7.1.0",
+    "replace": "^1.1.5",
     "yauzl": "^2.10.0"
   }
 }

@@ -63,7 +63,7 @@ export class AppDeckExtraFeatures {
             <code slot="code">await deck.initSlideSize();</code>
           </deckgo-highlight-code>
           <h2 id="app-deck-extra-features-load-background">Load background</h2>
-          <p>If you would dynamically change the deck background element you could forward that changes to also slides using the following method: </p>
+          <p>If you would dynamically change the deck background element you could forward that changes to also slides using the following method:</p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">await deck.loadBackground();</code>
           </deckgo-highlight-code>

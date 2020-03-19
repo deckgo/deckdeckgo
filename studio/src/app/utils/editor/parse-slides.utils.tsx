@@ -1,6 +1,6 @@
 import {h, JSX} from '@stencil/core';
 
-import uuid from 'uuid/v4';
+import {v4 as uuid} from 'uuid';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
