@@ -19,7 +19,7 @@
     "@deckdeckgo/core": "^1.0.1",
     "@deckdeckgo/deck-utils": "^1.0.0",
     "@deckdeckgo/drag-resize-rotate": "^1.0.0",
-    "@deckdeckgo/highlight-code": "^1.0.0",
+    "@deckdeckgo/highlight-code": "^1.0.0-rc.3-2",
     "@deckdeckgo/lazy-img": "^1.0.0",
     "@deckdeckgo/qrcode": "^1.0.0",
     "@deckdeckgo/remote-utils": "^1.0.0",
