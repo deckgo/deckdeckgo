@@ -14,7 +14,7 @@
 | `language`       | `language`        |             | `string`                         | `'javascript'`        |
 | `lineNumbers`    | `line-numbers`    |             | `boolean`                        | `false`               |
 | `src`            | `src`             |             | `string`                         | `undefined`           |
-| `terminal`       | `terminal`        |             | `"carbon" or "none" or "ubuntu"` | `'carbon'`            |
+| `terminal`       | `terminal`        |             | `"carbon" \| "none" \| "ubuntu"` | `'carbon'`            |
 
 ## Events
 

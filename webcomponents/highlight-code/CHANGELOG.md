@@ -2,6 +2,10 @@
 
 # 1.0.1 (2020-03-21)
 
+### Features
+
+- update dependencies
+
 ### Fix
 
 - republish component bundle to fix loading of '~prismjs/themes/prism.css'
