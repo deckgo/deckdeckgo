@@ -20,14 +20,14 @@ export class AppAbout {
           </p>
 
           <p>
-            What makes it different 🤔? Every presentations published with DeckDeckGo are standalone <strong>Progressive Web Apps</strong> 🚀
+            What makes it different 🤔? Every presentations published with DeckDeckGo are standalone <strong>Progressive Web Apps</strong> 🚀.
           </p>
 
           <p>
             Moreover, it would be incredible if it would become an online community for sharing presentations, slides and talks about your interests and ideas.
           </p>
 
-          <p>DeckDeckGo was created with passion in 2019 in Zürich🇨🇭</p>
+          <p>DeckDeckGo is created with passion since 2019 in Zürich🇨🇭.</p>
         </main>
       </ion-content>
     ];
