@@ -1,3 +1,11 @@
+<a name="1.0.1"></a>
+
+# 1.0.1 (2020-03-21)
+
+### Fix
+
+- republish component bundle to fix loading of '~prismjs/themes/prism.css'
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-18)
