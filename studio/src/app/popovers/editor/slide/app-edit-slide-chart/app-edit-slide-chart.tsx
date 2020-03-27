@@ -182,7 +182,7 @@ export class AppEditSlideChart {
             <ion-item class="action-button ion-margin-top">
                 <ion-button shape="round" onClick={() => this.action.emit(EditAction.OPEN_DATA)}
                             color="tertiary">
-                    <ion-label class="ion-text-uppercase">Modify data source</ion-label>
+                    <ion-label>Modify data source</ion-label>
                 </ion-button>
             </ion-item>
         </Host>;

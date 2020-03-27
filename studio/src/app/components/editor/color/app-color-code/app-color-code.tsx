@@ -338,7 +338,7 @@ export class AppColorCode {
                 <ion-item class="action-button ion-margin-bottom">
                     <ion-button shape="round" onClick={() => this.resetCodeColor()}
                                 fill="outline" class="delete">
-                        <ion-label class="ion-text-uppercase">Reset color</ion-label>
+                        <ion-label>Reset color</ion-label>
                     </ion-button>
                 </ion-item>
 
