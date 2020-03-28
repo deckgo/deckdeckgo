@@ -263,7 +263,7 @@ export class AppImage {
     return (
       <ion-item class="action-button action-button-margin">
         <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_PHOTOS)} color="primary">
-          <ion-label class="ion-text-uppercase">Stock photo</ion-label>
+          <ion-label>Stock photo</ion-label>
         </ion-button>
       </ion-item>
     );
@@ -278,7 +278,7 @@ export class AppImage {
     return (
       <ion-item class="action-button">
         <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_GIFS)} color="secondary">
-          <ion-label class="ion-text-uppercase">Gif</ion-label>
+          <ion-label>Gif</ion-label>
         </ion-button>
       </ion-item>
     );
@@ -288,7 +288,7 @@ export class AppImage {
     return (
       <ion-item class={`action-button ${!this.navigatorOnline ? 'action-button-margin' : ''}`}>
         <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_CUSTOM)} color="tertiary">
-          <ion-label class="ion-text-uppercase">Your images</ion-label>
+          <ion-label>Your images</ion-label>
         </ion-button>
       </ion-item>
     );
@@ -301,7 +301,7 @@ export class AppImage {
       return (
         <ion-item class="action-button ion-margin-bottom">
           <ion-button shape="round" onClick={() => this.selectAction(EditAction.DELETE_BACKGROUND)} fill="outline" class="delete">
-            <ion-label class="ion-text-uppercase">Delete background</ion-label>
+            <ion-label>Delete background</ion-label>
           </ion-button>
         </ion-item>
       );
