@@ -406,7 +406,9 @@ export class AppDashboard {
       <main class="ion-padding">
         <h1>Oh, hi! Good to have you.</h1>
         <p class="ion-padding-top">
-          <ion-router-link onClick={() => this.signIn()}>Sign in</ion-router-link>
+          <button type="button" class="app-button" onClick={() => this.signIn()}>
+            Sign in
+          </button>
           to access to your presentations.
         </p>
       </main>
