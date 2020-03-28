@@ -183,6 +183,26 @@
       "id": "google-fonts-libre-baskerville",
       "name": "Libre Baskerville",
       "family": "'Libre Baskerville', serif"
+    },
+    {
+      "id": "google-fonts-oswald",
+      "name": "Oswald",
+      "family": "'Oswald', sans-serif"
+    },
+    {
+      "id": "google-fonts-jura",
+      "name": "Jura",
+      "family": "'Jura', sans-serif"
+    },
+    {
+      "id": "google-fonts-fjord-one",
+      "name": "Fjord One",
+      "family": "'Fjord One', serif"
+    },
+    {
+      "id": "google-fonts-josefin-slab",
+      "name": "Josefin Slab",
+      "family": "'Josefin Slab', serif"
     }
   ],
   "deckdeckgo": {
