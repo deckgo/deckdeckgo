@@ -185,7 +185,7 @@ export class AppFeed {
         </ion-label>
 
         <ion-button shape="round" href={`/editor/${this.offline.id}`} routerDirection="root" color="tertiary" class="ion-margin-top">
-          <ion-label class="ion-text-uppercase">Continue your presentation</ion-label>
+          <ion-label>Continue your presentation</ion-label>
         </ion-button>
       </section>
     );

@@ -180,7 +180,7 @@ export class AppColorQRCode {
       </deckgo-color>,
       <ion-item class="action-button ion-margin-bottom">
         <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete">
-          <ion-label class="ion-text-uppercase">{this.resetLabelContent()}</ion-label>
+          <ion-label>{this.resetLabelContent()}</ion-label>
         </ion-button>
       </ion-item>
     ];

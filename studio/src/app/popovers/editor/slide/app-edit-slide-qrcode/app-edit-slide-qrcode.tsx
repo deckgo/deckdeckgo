@@ -176,13 +176,13 @@ export class AppEditSlideQRCode {
 
       <ion-item class="action-button ion-margin-top">
         <ion-button shape="round" onClick={() => this.action.emit(EditAction.OPEN_CUSTOM_LOGO)} color="tertiary">
-          <ion-label class="ion-text-uppercase">Your logo</ion-label>
+          <ion-label>Your logo</ion-label>
         </ion-button>
       </ion-item>,
 
       <ion-item class="action-button ion-margin-bottom">
         <ion-button shape="round" onClick={() => this.action.emit(EditAction.DELETE_LOGO)} fill="outline" class="delete">
-          <ion-label class="ion-text-uppercase">Delete logo</ion-label>
+          <ion-label>Delete logo</ion-label>
         </ion-button>
       </ion-item>
     ];
