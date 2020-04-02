@@ -47,7 +47,8 @@ p a,
 ul a,
 ol a,
 td a,
-ion-router-link {
+ion-router-link,
+.app-button {
   text-decoration: none;
   transition: border 0.3s;
   border-bottom: 1px solid transparent;
@@ -58,7 +59,8 @@ p a:hover,
 ul a:hover,
 ol a:hover,
 td a:hover,
-ion-router-link:hover {
+ion-router-link:hover,
+.app-button:hover {
   border-bottom-color: var(--ion-color-primary);
 }
 

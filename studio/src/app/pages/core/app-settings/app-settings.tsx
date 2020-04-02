@@ -422,7 +422,10 @@ export class AppHome {
   private renderNotLoggedInContent() {
     return [
       <p>
-        <ion-router-link onClick={() => this.signIn()}>Sign in</ion-router-link> to access your profile and settings.
+        <button type="button" class="app-button" onClick={() => this.signIn()}>
+          Sign in
+        </button>
+        to access your profile and settings.
       </p>
     ];
   }
