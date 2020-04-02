@@ -1,3 +1,11 @@
+<a name="1.0.2"></a>
+
+# 1.0.2 (2020-04-02)
+
+### Fix
+
+- PrismJS CSS import into bundle
+
 <a name="1.0.1"></a>
 
 # 1.0.1 (2020-03-21)
