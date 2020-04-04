@@ -67,7 +67,7 @@ import '@deckdeckgo/slide-aspect-ratio';
 
 ```
 import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-aspect-ratio/dist/loader';
-deckDeckGoSlideElement(window);
+deckDeckGoSlideElement();
 ```
 
 ## Usage

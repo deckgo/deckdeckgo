@@ -91,7 +91,7 @@ export class AppInstallation {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               import &#123; defineCustomElements as deckDeckGoElements &#125; from &#039;@deckdeckgo&#47;core&#47;dist&#47;loader&#039;;{'\n'}
-              deckDeckGoElements(window);
+              deckDeckGoElements();
             </code>
           </deckgo-highlight-code>
         </main>

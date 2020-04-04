@@ -29,18 +29,9 @@ export class AppComponentsYoutube {
               <a href="#app-components-youtube-showcase">Showcase</a>
             </li>
             <li>
-              <a href="#app-components-youtube-installation">Installation</a>
-              <ul>
-                <li>
-                  <a href="#app-components-youtube-from-a-cdn">Using from a CDN</a>
-                </li>
-                <li>
-                  <a href="#app-components-youtube-from-npm">Install from NPM</a>
-                </li>
-                <li>
-                  <a href="#app-components-youtube-framework-integration">Framework integration</a>
-                </li>
-              </ul>
+              <a href="#app-components-youtube-installation">Installation</a> - <a href="#app-components-youtube-from-a-cdn">Using from a CDN</a> -{' '}
+              <a href="#app-components-youtube-from-npm">Install from NPM</a> -{' '}
+              <a href="#app-components-youtube-framework-integration">Framework integration</a>
             </li>
             <li>
               <a href="#app-components-youtube-usage">Usage</a>
@@ -115,7 +106,7 @@ export class AppComponentsYoutube {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               import &#123; defineCustomElements as deckDeckGoElement &#125; from &#039;@deckdeckgo&#47;youtube&#47;dist&#47;loader&#039;;{'\n'}
-              deckDeckGoElement(window);
+              deckDeckGoElement();
             </code>
           </deckgo-highlight-code>
           <h2 id="app-components-youtube-usage">Usage</h2>
@@ -178,7 +169,7 @@ export class AppComponentsYoutube {
           <p>
             Per default the video, respectively its <code>iframe</code>, won&#39;t be loaded (expect if you specify <code>instant</code> to <code>true</code>).
             Therefore it&#39;s up to you to call the method <code>lazyLoadContent</code> to create the video. The reason behind this decision is allowing you to
-            lazy load your content.{' '}
+            lazy load your content.
           </p>
           <h3 id="app-components-youtube-methods">Methods</h3>
           <p>

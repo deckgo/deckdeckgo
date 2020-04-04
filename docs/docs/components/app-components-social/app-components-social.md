@@ -5,10 +5,7 @@ The "Social" component helps you generate a social link to your Twitter, Dev, Me
 ## Table of contents
 
 - [Showcase](#app-components-social-showcase)
-- [Installation](#app-components-social-installation)
-	- [Using from a CDN](#app-components-social-from-a-cdn)
-	- [Install from NPM](#app-components-social-from-npm)
-	- [Framework integration](#app-components-social-framework-integration)
+- [Installation](#app-components-social-installation) - [Using from a CDN](#app-components-social-from-a-cdn) - [Install from NPM](#app-components-social-from-npm) - [Framework integration](#app-components-social-framework-integration)
 - [Usage](#app-components-social-usage)
   - [Slots](#app-components-social-slots)
   - [Attributes](#app-components-social-attributes)
@@ -36,6 +33,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy
 <script type="module" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.esm.js"></script>
 <script nomodule="" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.js"></script>
 ```
+
 ### Install from NPM
 
 Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
@@ -60,7 +58,7 @@ import '@deckdeckgo/social';
 
 ```
 import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/social/dist/loader';
-deckDeckGoElement(window);
+deckDeckGoElement();
 ```
 
 ## Usage
@@ -121,14 +119,14 @@ Without icon:
 
 This component offers the following options which could be set using attributes:
 
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |-----------------|-----------------|-----------------|
-| twitter | string |  | Your Twitter username. It will be concatenated automatically with `https://twitter.com/` |
-| linkedin | string |  | Your Linkedin username. It will be concatenated automatically with `https://www.linkedin.com/in/` |
-| medium | string |  | Your Medium username. It will be concatenated automatically with `https://medium.com/@` |
-| dev | string |  | Your Dev username. It will be concatenated automatically with `https://dev.to/` |
-| github | string |  | Your Github username. It will be concatenated automatically with `https://github.com/` |
-| fullUrl | string |  | In case you would like to provide the URI of your choice |
+| Attribute | Type   | Default | Description                                                                                       |
+| --------- | ------ | ------- | ------------------------------------------------------------------------------------------------- |
+| twitter   | string |         | Your Twitter username. It will be concatenated automatically with `https://twitter.com/`          |
+| linkedin  | string |         | Your Linkedin username. It will be concatenated automatically with `https://www.linkedin.com/in/` |
+| medium    | string |         | Your Medium username. It will be concatenated automatically with `https://medium.com/@`           |
+| dev       | string |         | Your Dev username. It will be concatenated automatically with `https://dev.to/`                   |
+| github    | string |         | Your Github username. It will be concatenated automatically with `https://github.com/`            |
+| fullUrl   | string |         | In case you would like to provide the URI of your choice                                          |
 
 ### Examples
 
@@ -155,4 +153,4 @@ With for example `ion-icon`:
 </deckgo-social>
 ```
 
-[DeckDeckGo]: https://deckdeckgo.com 
+[deckdeckgo]: https://deckdeckgo.com

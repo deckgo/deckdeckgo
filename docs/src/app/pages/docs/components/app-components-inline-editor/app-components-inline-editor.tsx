@@ -34,43 +34,15 @@ export class AppComponentsInlineEditor {
               </ul>
             </li>
             <li>
-              <a href="#app-components-inline-editor-installation">Installation</a>
-              <ul>
-                <li>
-                  <a href="#app-components-inline-editor-from-a-cdn">Using from a CDN</a>
-                </li>
-                <li>
-                  <a href="#app-components-inline-editor-from-npm">Install from NPM</a>
-                </li>
-                <li>
-                  <a href="#app-components-inline-editor-framework-integration">Framework integration</a>
-                </li>
-              </ul>
+              <a href="#app-components-inline-editor-installation">Installation</a> - <a href="#app-components-inline-editor-from-a-cdn">Using from a CDN</a> -{' '}
+              <a href="#app-components-inline-editor-from-npm">Install from NPM</a> -{' '}
+              <a href="#app-components-inline-editor-framework-integration">Framework integration</a>
             </li>
             <li>
-              <a href="#app-components-inline-editor-usage">Usage</a>
-              <ul>
-                <li>
-                  <a href="#app-components-inline-editor-properties">Properties</a>
-                  <ul>
-                    <li>
-                      <a href="#app-components-inline-editor-custom-actions-slots">Custom actions slots</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#app-components-inline-editor-styling">Styling</a>
-                </li>
-                <li>
-                  <a href="#app-components-inline-editor-events">Events</a>
-                </li>
-                <li>
-                  <a href="#app-components-inline-editor-methods">Methods</a>
-                </li>
-                <li>
-                  <a href="#app-components-inline-editor-examples">Examples</a>
-                </li>
-              </ul>
+              <a href="#app-components-inline-editor-usage">Usage</a> - <a href="#app-components-inline-editor-properties">Properties</a> -{' '}
+              <a href="#app-components-inline-editor-custom-actions-slots">Custom actions slots</a> -{' '}
+              <a href="#app-components-inline-editor-styling">Styling</a> - <a href="#app-components-inline-editor-events">Events</a> -{' '}
+              <a href="#app-components-inline-editor-methods">Methods</a> - <a href="#app-components-inline-editor-examples">Examples</a>
             </li>
           </ul>
           <h2 id="app-components-inline-editor-showcase">Showcase</h2>
@@ -144,7 +116,7 @@ export class AppComponentsInlineEditor {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               import &#123; defineCustomElements as deckDeckGoElement &#125; from &#039;@deckdeckgo&#47;inline-editor&#47;dist&#47;loader&#039;;{'\n'}
-              deckDeckGoElement(window);
+              deckDeckGoElement();
             </code>
           </deckgo-highlight-code>
           <h2 id="app-components-inline-editor-usage">Usage</h2>
@@ -535,7 +507,7 @@ export class AppComponentsInlineEditor {
           <p>
             The event <code>input</code> will be automatically triggered when the content will be modified using the <code>&lt;deckgo-inline-editor/&gt;</code>.
             However, when manipulating image, this event won&#39;t be triggered. Therefore a custom event will be instead triggered. Moreover, if you provide
-            custom actions, an event is triggered each time one of these are selected.{' '}
+            custom actions, an event is triggered each time one of these are selected.
           </p>
           <table>
             <thead>

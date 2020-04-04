@@ -33,43 +33,21 @@ export class AppComponentsQRCode {
               <a href="#app-components-qrcode-showcase">Showcase</a>
             </li>
             <li>
-              <a href="#app-components-qrcode-installation">Installation</a>
-              <ul>
-                <li>
-                  <a href="#app-components-qrcode-using-deckdeckgo-qr-code-from-a-cdn">Using DeckDeckGo QR Code from a CDN</a>
-                </li>
-                <li>
-                  <a href="#app-components-qrcode-install-deckdeckgo-qr-code-from-npm">Install DeckDeckGo QR Code from NPM</a>
-                </li>
-                <li>
-                  <a href="#app-components-qrcode-framework-integration">Framework integration</a>
-                </li>
-              </ul>
+              <a href="#app-components-qrcode-installation">Installation</a> -{' '}
+              <a href="#app-components-qrcode-using-deckdeckgo-qr-code-from-a-cdn">Using DeckDeckGo QR Code from a CDN</a> -{' '}
+              <a href="#app-components-qrcode-install-deckdeckgo-qr-code-from-npm">Install DeckDeckGo QR Code from NPM</a> -{' '}
+              <a href="#app-components-qrcode-framework-integration">Framework integration</a>
             </li>
             <li>
-              <a href="#app-components-qrcode-usage">Usage</a>
+              <a href="#app-components-qrcode-usage">Usage</a> - <a href="#app-components-qrcode-slot">Slot</a> -{' '}
+              <a href="#app-components-qrcode-properties">Properties</a> - <a href="#app-components-qrcode-styling">Styling</a> -{' '}
+              <a href="#app-components-qrcode-styling-type-img">Styling type img</a>
               <ul>
                 <li>
-                  <a href="#app-components-qrcode-slot">Slot</a>
+                  <a href="#app-components-qrcode-methods">Methods</a>
                 </li>
                 <li>
-                  <a href="#app-components-qrcode-properties">Properties</a>
-                </li>
-                <li>
-                  <a href="#app-components-qrcode-styling">Styling</a>
-                  <ul>
-                    <li>
-                      <a href="#app-components-qrcode-styling-type-img">Styling type img</a>
-                      <ul>
-                        <li>
-                          <a href="#app-components-qrcode-methods">Methods</a>
-                        </li>
-                        <li>
-                          <a href="#app-components-qrcode-examples">Examples</a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                  <a href="#app-components-qrcode-examples">Examples</a>
                 </li>
               </ul>
             </li>
@@ -140,7 +118,7 @@ export class AppComponentsQRCode {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               import &#123; defineCustomElements as deckDeckGoElement &#125; from &#039;@deckdeckgo&#47;qrcode&#47;dist&#47;loader&#039;;{'\n'}
-              deckDeckGoElement(window);
+              deckDeckGoElement();
             </code>
           </deckgo-highlight-code>
           <h2 id="app-components-qrcode-usage">Usage</h2>
@@ -153,7 +131,7 @@ export class AppComponentsQRCode {
           </p>
           <h3 id="app-components-qrcode-slot">Slot</h3>
           <p>
-            To display a logo over your QR code, this Web Component provide a <code>slot</code> called <code>logo</code>.{' '}
+            To display a logo over your QR code, this Web Component provide a <code>slot</code> called <code>logo</code>.
           </p>
           <h3 id="app-components-qrcode-properties">Properties</h3>
           <p>

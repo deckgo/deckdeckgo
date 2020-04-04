@@ -70,7 +70,7 @@ import '@deckdeckgo/slide-youtube';
 
 ```
 import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-youtube/dist/loader';
-deckDeckGoSlideElement(window);
+deckDeckGoSlideElement();
 ```
 
 ### Youtube component

@@ -5,10 +5,7 @@ The "Youtube" component allows you to easily add a [Youtube](https://youtube.com
 ## Table of contents
 
 - [Showcase](#app-components-youtube-showcase)
-- [Installation](#app-components-youtube-installation)
-	- [Using from a CDN](#app-components-youtube-from-a-cdn)
-	- [Install from NPM](#app-components-youtube-from-npm)
-	- [Framework integration](#app-components-youtube-framework-integration)
+- [Installation](#app-components-youtube-installation) - [Using from a CDN](#app-components-youtube-from-a-cdn) - [Install from NPM](#app-components-youtube-from-npm) - [Framework integration](#app-components-youtube-framework-integration)
 - [Usage](#app-components-youtube-usage)
   - [Slots](#app-components-youtube-slots)
   - [Attributes](#app-components-youtube-attributes)
@@ -37,6 +34,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy
 <script type="module" src="https://unpkg.com/@deckdeckgo/youtube@latest/dist/deckdeckgo-youtube/deckdeckgo-youtube.esm.js"></script>
 <script nomodule="" src="https://unpkg.com/@deckdeckgo/youtube@latest/dist/deckdeckgo-youtube/deckdeckgo-youtube.js"></script>
 ```
+
 ### Install from NPM
 
 Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
@@ -61,7 +59,7 @@ import '@deckdeckgo/youtube';
 
 ```
 import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/youtube/dist/loader';
-deckDeckGoElement(window);
+deckDeckGoElement();
 ```
 
 ## Usage
@@ -81,15 +79,15 @@ No slots are available for this component.
 
 This component offers the following options which could be set using attributes:
 
-| Attribute                      | Type   | Default   | Description   |
-| -------------------------- |-----------------|-----------------|-----------------|
-| src | string |  | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
-| width | number |  | The width of the video player. |
-| height | number |  | The height of the video player. |
-| frame-title | string |  | A title for the frame, could be use for accessibility reason. |
-| instant | boolean | false | In case you would like to load the video as soon as the component is loaded. |
+| Attribute   | Type    | Default | Description                                                                                                                               |
+| ----------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| src         | string  |         | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
+| width       | number  |         | The width of the video player.                                                                                                            |
+| height      | number  |         | The height of the video player.                                                                                                           |
+| frame-title | string  |         | A title for the frame, could be use for accessibility reason.                                                                             |
+| instant     | boolean | false   | In case you would like to load the video as soon as the component is loaded.                                                              |
 
-Per default the video, respectively its `iframe`, won't be loaded (expect if you specify `instant` to `true`). Therefore it's up to you to call the method `lazyLoadContent` to create the video. The reason behind this decision is allowing you to lazy load your content. 
+Per default the video, respectively its `iframe`, won't be loaded (expect if you specify `instant` to `true`). Therefore it's up to you to call the method `lazyLoadContent` to create the video. The reason behind this decision is allowing you to lazy load your content.
 
 ### Methods
 
@@ -133,4 +131,4 @@ Renders the following video:
     <deckgo-youtube width={200} height={100} instant={true} src="https://www.youtube.com/embed/Y97mEj9ZYmE" frameTitle="DeckDeckGo editor demo"></deckgo-youtube>
 </div>
 
-[DeckDeckGo]: https://deckdeckgo.com 
+[deckdeckgo]: https://deckdeckgo.com

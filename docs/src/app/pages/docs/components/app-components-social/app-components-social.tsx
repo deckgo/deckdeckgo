@@ -26,18 +26,8 @@ export class AppComponentsSocial {
               <a href="#app-components-social-showcase">Showcase</a>
             </li>
             <li>
-              <a href="#app-components-social-installation">Installation</a>
-              <ul>
-                <li>
-                  <a href="#app-components-social-from-a-cdn">Using from a CDN</a>
-                </li>
-                <li>
-                  <a href="#app-components-social-from-npm">Install from NPM</a>
-                </li>
-                <li>
-                  <a href="#app-components-social-framework-integration">Framework integration</a>
-                </li>
-              </ul>
+              <a href="#app-components-social-installation">Installation</a> - <a href="#app-components-social-from-a-cdn">Using from a CDN</a> -{' '}
+              <a href="#app-components-social-from-npm">Install from NPM</a> - <a href="#app-components-social-framework-integration">Framework integration</a>
             </li>
             <li>
               <a href="#app-components-social-usage">Usage</a>
@@ -106,7 +96,7 @@ export class AppComponentsSocial {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               import &#123; defineCustomElements as deckDeckGoElement &#125; from &#039;@deckdeckgo&#47;social&#47;dist&#47;loader&#039;;{'\n'}
-              deckDeckGoElement(window);
+              deckDeckGoElement();
             </code>
           </deckgo-highlight-code>
           <h2 id="app-components-social-usage">Usage</h2>

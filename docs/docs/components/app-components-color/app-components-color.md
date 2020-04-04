@@ -7,10 +7,7 @@ It is fully configurable in terms of colors, you could define the set of colors 
 ## Table of contents
 
 - [Showcase](#app-components-color-showcase)
-- [Installation](#app-components-color-installation)
-	- [Using from a CDN](#app-components-color-from-a-cdn)
-	- [Install from NPM](#app-components-color-from-npm)
-	- [Framework integration](#app-components-color-framework-integration)
+- [Installation](#app-components-color-installation) - [Using from a CDN](#app-components-color-from-a-cdn) - [Install from NPM](#app-components-color-from-npm) - [Framework integration](#app-components-color-framework-integration)
 - [Usage](#app-components-color-usage)
   - [Slots](#app-components-color-slots)
   - [Attributes](#app-components-color-attributes)
@@ -38,6 +35,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy
 <script type="module" src="https://unpkg.com/@deckdeckgo/color@latest/dist/deckdeckgo-color/deckdeckgo-color.esm.js"></script>
 <script nomodule="" src="https://unpkg.com/@deckdeckgo/color@latest/dist/deckdeckgo-color/deckdeckgo-color.js"></script>
 ```
+
 ### Install from NPM
 
 Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
@@ -62,7 +60,7 @@ import '@deckdeckgo/color';
 
 ```
 import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/color/dist/loader';
-deckDeckGoElement(window);
+deckDeckGoElement();
 ```
 
 ## Usage
@@ -77,19 +75,19 @@ The "Color Picker" Web Component could be integrated using the tag `<deckgo-colo
 
 ### Slots
 
-The slot `more` is optional, moreover, the "more" action itself could be turned off. 
+The slot `more` is optional, moreover, the "more" action itself could be turned off.
 
 ### Attributes
 
 This component offers the following options which could be set using attributes:
 
-| Property   | Attribute   | Description | Type                  | Default           |
-| ---------- | ----------- | ----------- | --------------------- | ----------------- |
+| Property   | Attribute   | Description                                               | Type                  | Default           |
+| ---------- | ----------- | --------------------------------------------------------- | --------------------- | ----------------- |
 | `colorHex` | `color-hex` | The current selected color provided as hexadecimal value. | `string`              | `undefined`       |
-| `colorRgb` | `color-rgb` | The current selected color provided as a rgb value. | `string`              | `undefined`       |
-| `more`     | `more`      | In case you would not like to offer the "more" options. | `boolean`             | `true`            |
-| `moreAlt`  | `more-alt`  | An accessibility label for the "more action.           | `string`              | `'More'`          |
-| `palette`  |           | The palette of color (see here under).            | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
+| `colorRgb` | `color-rgb` | The current selected color provided as a rgb value.       | `string`              | `undefined`       |
+| `more`     | `more`      | In case you would not like to offer the "more" options.   | `boolean`             | `true`            |
+| `moreAlt`  | `more-alt`  | An accessibility label for the "more action.              | `string`              | `'More'`          |
+| `palette`  |             | The palette of color (see here under).                    | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
 
 #### Palette
 
@@ -199,30 +197,30 @@ export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --deckgo-button-width | 28px | The width of a button to select a color and the more button |
-| --deckgo-button-height | 28px | The height of a button to select a color and the more button |
-| --deckgo-button-margin | 4px | The margin of a button to select a color and the more button |
-| --deckgo-button-outline | none | The outline of a button to select a color and the more button |
-| --deckgo-button-border | none | The border of a button to select a color and the more button |
-| --deckgo-button-border-radius | 50% | The border radius of a button to select a color |
-| --deckgo-button-more-border-radius | 50% | The border radius of the more button |
-| --deckgo-button-more-border | none | The border of the more button |
-| --deckgo-button-more-outline | none | The outline of the more button |
-| --deckgo-flex-wrap | wrap | Wrap properties of the buttons' container |
-| --deckgo-button-more-background | transparent | The background of the more button |
+| CSS4 variable                      | Default     | Note                                                          |
+| ---------------------------------- | ----------- | ------------------------------------------------------------- |
+| --deckgo-button-width              | 28px        | The width of a button to select a color and the more button   |
+| --deckgo-button-height             | 28px        | The height of a button to select a color and the more button  |
+| --deckgo-button-margin             | 4px         | The margin of a button to select a color and the more button  |
+| --deckgo-button-outline            | none        | The outline of a button to select a color and the more button |
+| --deckgo-button-border             | none        | The border of a button to select a color and the more button  |
+| --deckgo-button-border-radius      | 50%         | The border radius of a button to select a color               |
+| --deckgo-button-more-border-radius | 50%         | The border radius of the more button                          |
+| --deckgo-button-more-border        | none        | The border of the more button                                 |
+| --deckgo-button-more-outline       | none        | The outline of the more button                                |
+| --deckgo-flex-wrap                 | wrap        | Wrap properties of the buttons' container                     |
+| --deckgo-button-more-background    | transparent | The background of the more button                             |
 
 ### Events
 
 To listen to the selected color you have to subscribe to the following event:
 
-| Event         | Description | Type                                  |
-| ------------- | ----------- | ------------------------------------- |
+| Event         | Description              | Type                                  |
+| ------------- | ------------------------ | ------------------------------------- |
 | `colorChange` | Emit the selected color. | `CustomEvent<DeckdeckgoPaletteColor>` |
 
 In case the platform color picker would be use by the user, the change will be triggered multiple times, as long as the user change its value in the platform picker.
 
 For the definition of the type of the event, see above description of `DeckdeckgoPaletteColor`.
 
-[DeckDeckGo]: https://deckdeckgo.com 
+[deckdeckgo]: https://deckdeckgo.com
