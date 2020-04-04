@@ -30,18 +30,8 @@ export class AppComponentsColor {
               <a href="#app-components-color-showcase">Showcase</a>
             </li>
             <li>
-              <a href="#app-components-color-installation">Installation</a>
-              <ul>
-                <li>
-                  <a href="#app-components-color-from-a-cdn">Using from a CDN</a>
-                </li>
-                <li>
-                  <a href="#app-components-color-from-npm">Install from NPM</a>
-                </li>
-                <li>
-                  <a href="#app-components-color-framework-integration">Framework integration</a>
-                </li>
-              </ul>
+              <a href="#app-components-color-installation">Installation</a> - <a href="#app-components-color-from-a-cdn">Using from a CDN</a> -{' '}
+              <a href="#app-components-color-from-npm">Install from NPM</a> - <a href="#app-components-color-framework-integration">Framework integration</a>
             </li>
             <li>
               <a href="#app-components-color-usage">Usage</a>
@@ -124,7 +114,7 @@ export class AppComponentsColor {
           </deckgo-highlight-code>
           <h3 id="app-components-color-slots">Slots</h3>
           <p>
-            The slot <code>more</code> is optional, moreover, the &quot;more&quot; action itself could be turned off.{' '}
+            The slot <code>more</code> is optional, moreover, the &quot;more&quot; action itself could be turned off.
           </p>
           <h3 id="app-components-color-attributes">Attributes</h3>
           <p>This component offers the following options which could be set using attributes:</p>
