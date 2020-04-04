@@ -159,6 +159,11 @@ export class DeckdeckgoRemote {
     });
   }
 
+  @Method()
+  async start(appSocketId: string) {
+    await this.communicationService.start(appSocketId);
+  }
+
   private initContext(): Promise<void> {
     return new Promise<void>((resolve) => {
       const canvas: HTMLCanvasElement = this.el.shadowRoot.querySelector('canvas');

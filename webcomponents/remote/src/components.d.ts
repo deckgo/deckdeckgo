@@ -24,6 +24,7 @@ export namespace Components {
         "room": string;
         "slideTo": (index: number, speed?: number) => Promise<void>;
         "socketUrl": string;
+        "start": (appSocketId: string) => Promise<void>;
         "updateReveal": (reveal: boolean) => Promise<void>;
         "updateSlide": (index: number, slide: DeckdeckgoSlideDefinition) => Promise<void>;
         "updateSlides": () => Promise<void>;

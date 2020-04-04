@@ -32,6 +32,7 @@ export interface DeckdeckgoDeckDefinition {
 export enum DeckdeckgoEventType {
   SLIDES_REQUEST = 'slides_request',
   SLIDES_ANSWER = 'slides_answer',
+  DECK_REQUEST = 'deck_request',
   DECK_UPDATE = 'deck_update',
   SLIDE_UPDATE = 'slide_update',
   NEXT_SLIDE = 'next_slide',
@@ -94,4 +95,9 @@ export interface DeckdeckgoEventSlide extends DeckdeckgoEvent {
 
 export interface DeckdeckgoEventSlideAction extends DeckdeckgoEvent {
   action: DeckdeckgoSlideAction;
+}
+
+export interface DeckdeckgoEventDeckRequest extends DeckdeckgoEvent {
+  message: string;
+  fromSocketId: string;
 }

@@ -60,6 +60,9 @@ export class AppRemote {
 
   @State() extraPlayAction: boolean = false;
 
+  @State()
+  private clientId: string;
+
   private acceleratorSubscription: Subscription;
   private acceleratorInitSubscription: Subscription;
 
@@ -71,6 +74,10 @@ export class AppRemote {
     this.communicationService = CommunicationService.getInstance();
     this.accelerometerService = AccelerometerService.getInstance();
     this.notesService = NotesService.getInstance();
+  }
+
+  componentWillLoad() {
+    this.clientId = this.communicationService.clientId;
   }
 
   async componentDidLoad() {
@@ -638,16 +645,19 @@ export class AppRemote {
       let text: string = 'Not connected';
 
       if (this.connectionState === ConnectionState.CONNECTING) {
-        text = 'Connecting...';
+        text = 'Connecting.';
       } else if (this.connectionState === ConnectionState.CONNECTED_WITH_SIGNALING_SERVER) {
-        text = 'Connected with the signaling server, waiting for the presentation...';
+        text = 'Connected with the signaling server, waiting for the presentation.';
       } else if (this.connectionState === ConnectionState.NOT_CONNECTED) {
-        text = "Can' connect, shit happens 😉 Try to reload your presentation...";
+        text = "Can' connect, shit happens 😉 Try to reload your presentation.";
       }
 
       return (
         <main>
           <h1 class="ion-padding">{text}</h1>
+          <h1 class="ion-padding-start ion-padding-end">
+            Your remote ID is <strong>{this.clientId}</strong>.
+          </h1>
           <ion-spinner name="dots" color="primary"></ion-spinner>
         </main>
       );

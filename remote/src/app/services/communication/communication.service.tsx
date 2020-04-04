@@ -47,6 +47,9 @@ export class CommunicationService {
   private dataChannelIn: RTCDataChannel;
 
   room: string;
+  clientId: string = Math.floor(100000 + Math.random() * 900000)
+    .toString()
+    .replace(/\B(?=(\d{2})+(?!\d))/g, ' ');
 
   private state: BehaviorSubject<ConnectionState> = new BehaviorSubject<ConnectionState>(ConnectionState.DISCONNECTED);
   private event: Subject<DeckdeckgoEvent> = new Subject<DeckdeckgoEvent>();
@@ -231,7 +234,8 @@ export class CommunicationService {
   private sendApp() {
     this.socket.emit('signal', {
       type: 'app_here',
-      room: this.room
+      room: this.room,
+      message: this.clientId
     });
   }
 
