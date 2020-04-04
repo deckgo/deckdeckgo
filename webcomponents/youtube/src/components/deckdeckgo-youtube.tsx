@@ -1,9 +1,10 @@
-import {Component, Element, Method, Prop, h, Watch, State} from '@stencil/core';
+import {Component, Element, Method, Host, Prop, h, Watch, State} from '@stencil/core';
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-youtube',
+  styleUrl: 'deckdeckgo-youtube.scss',
   shadow: true
 })
 export class DeckdeckgoYoutube implements DeckdeckgoComponent {
@@ -22,6 +23,9 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
 
   @State()
   private loading: boolean = false;
+
+  @State()
+  private loaded: boolean = false;
 
   async componentWillLoad() {
     await this.addPreconnectLink();
@@ -108,6 +112,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
       }
 
       this.loading = true;
+      this.loaded = false;
 
       if (iframe) {
         iframe.parentElement.removeChild(iframe);
@@ -154,7 +159,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
       div.appendChild(element);
 
       this.loading = false;
-
+      this.loaded = true;
       resolve();
     });
   }
@@ -237,6 +242,11 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
   }
 
   render() {
-    return <div></div>;
+    const hostClass: string = this.loaded ? 'loaded' : '';
+    return (
+      <Host class={hostClass}>
+        <div class="youtube-container"></div>
+      </Host>
+    );
   }
 }
