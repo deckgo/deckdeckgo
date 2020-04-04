@@ -1,3 +1,11 @@
+<a name="1.1.0"></a>
+
+# 1.1.0 (2020-04-04)
+
+### Features
+
+- smoother display transition ([#570](https://github.com/deckgo/deckdeckgo/issues/570))
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-18)

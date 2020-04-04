@@ -1,0 +1,10 @@
+:host(.loaded) {
+  div.youtube-container {
+    opacity: var(--deckgo-youtube-opacity-loaded, 1);
+  }
+}
+
+div.youtube-container {
+  opacity: var(--deckgo-youtube-opacity-not-loaded, 0);
+  transition: var(--deckgo-youtube-transition, opacity 0.15s linear);
+}
