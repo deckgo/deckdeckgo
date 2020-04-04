@@ -49,7 +49,7 @@ import '@deckdeckgo/core';
 
 ```
 import { defineCustomElements as deckDeckGoElements } from '@deckdeckgo/core/dist/loader';
-deckDeckGoElements(window);
+deckDeckGoElements();
 ```
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

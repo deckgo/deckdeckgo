@@ -106,7 +106,7 @@ export class AppComponentsSocial {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               import &#123; defineCustomElements as deckDeckGoElement &#125; from &#039;@deckdeckgo&#47;social&#47;dist&#47;loader&#039;;{'\n'}
-              deckDeckGoElement(window);
+              deckDeckGoElement();
             </code>
           </deckgo-highlight-code>
           <h2 id="app-components-social-usage">Usage</h2>

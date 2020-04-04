@@ -71,7 +71,7 @@ import '@deckdeckgo/slide-countdown';
 
 ```
 import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-countdown/dist/loader';
-deckDeckGoSlideElement(window);
+deckDeckGoSlideElement();
 ```
 
 ## Usage
@@ -107,16 +107,16 @@ If you are using the [DeckDeckGo] starter kit and wish to make your notes access
 The time until your presentation should be provided to render the countdown. This value could be either passed through attributes `days`, `hours`, `minutes` and `seconds` or as a particular date using `until`.
 
 This components exposes the following attributes:
-  
-| Attribute | Type | Default | Description |
-| -------------------------- |-----------------|-----------------|-----------------|
-| days | number | 0 | The amount of days before your presentations (max. 99 will be displayed) |
-| hours | number | 0 | The amount of hours before your presentations (max. 23) |
-| minutes | number | 0 | The amount of minutes before your presentations (max. 59) |
-| seconds | number | 0 | The amount of seconds before your presentations (max. 59) |
-| until | string | | A specific date and time until when your presentation will start |
-| custom-background | boolean | false | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
-| custom-actions | boolean | false | If you would provide actions for the all deck and a specific one for this slide, set this option to `true` |
+
+| Attribute         | Type    | Default | Description                                                                                                     |
+| ----------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------- |
+| days              | number  | 0       | The amount of days before your presentations (max. 99 will be displayed)                                        |
+| hours             | number  | 0       | The amount of hours before your presentations (max. 23)                                                         |
+| minutes           | number  | 0       | The amount of minutes before your presentations (max. 59)                                                       |
+| seconds           | number  | 0       | The amount of seconds before your presentations (max. 59)                                                       |
+| until             | string  |         | A specific date and time until when your presentation will start                                                |
+| custom-background | boolean | false   | If you would provide a background for the all deck and a specific one for this slide, set this option to `true` |
+| custom-actions    | boolean | false   | If you would provide actions for the all deck and a specific one for this slide, set this option to `true`      |
 
 If you would provide a date using `until`, note that the format should be provided as a valid and parsable date. See [Date.parse()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/parse) for more information about the format.
 

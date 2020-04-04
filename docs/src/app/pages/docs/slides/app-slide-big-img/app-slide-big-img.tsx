@@ -123,7 +123,7 @@ export class AppSlideBigImg {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               import &#123; defineCustomElements as deckDeckGoSlideElement &#125; from &#039;@deckdeckgo&#47;slide-big-img&#47;dist&#47;loader&#039;;{'\n'}
-              deckDeckGoSlideElement(window);
+              deckDeckGoSlideElement();
             </code>
           </deckgo-highlight-code>
           <h2 id="app-slide-big-img-usage">Usage</h2>

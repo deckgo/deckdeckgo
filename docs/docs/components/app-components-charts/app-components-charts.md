@@ -144,7 +144,7 @@ import '@deckdeckgo/charts';
 
 ```
 import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/charts/dist/loader';
-deckDeckGoElement(window);
+deckDeckGoElement();
 ```
 
 ## Usage
