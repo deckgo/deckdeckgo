@@ -29,6 +29,7 @@ export enum ConnectionState {
 export interface ActiveRoom {
   room: string;
   clients: number;
+  connected: boolean;
 }
 
 // @ts-ignore

@@ -93,10 +93,8 @@ export class AppRemoteConnect {
 
   private renderRooms() {
     return this.rooms.map((activeRoom: ActiveRoom) => {
-      // TODO disabled disabled={activeRoom.clients > 1}
-
       return (
-        <ion-item onClick={() => this.updateAndCloseModal(activeRoom.room)}>
+        <ion-item onClick={() => this.updateAndCloseModal(activeRoom.room)} disabled={activeRoom.connected}>
           <ion-label>{activeRoom.room}</ion-label>
           <ion-radio slot="end" value={activeRoom.room}></ion-radio>
         </ion-item>

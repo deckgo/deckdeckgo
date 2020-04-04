@@ -247,6 +247,12 @@ export class CommunicationService {
     if (this.dataChannelOut.readyState === 'open') {
       this.dataChannelOut.onmessage = this.receiveDataChannelMessage;
       this.state.next(ConnectionState.CONNECTED);
+
+      if (this.socket) {
+        this.socket.emit('connected', {
+          room: this.room
+        });
+      }
     }
   };
 
