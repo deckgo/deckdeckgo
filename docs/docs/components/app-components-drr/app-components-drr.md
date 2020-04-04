@@ -62,7 +62,7 @@ import '@deckdeckgo/drag-resize-rotate';
 
 ```
 import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/drag-resize-rotate/dist/loader';
-deckDeckGoElement(window);
+deckDeckGoElement();
 ```
 
 ## Usage

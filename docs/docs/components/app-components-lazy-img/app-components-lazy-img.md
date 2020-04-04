@@ -57,7 +57,7 @@ import '@deckdeckgo/lazy-img';
 
 ```
 import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/lazy-img/dist/loader';
-deckDeckGoElement(window);
+deckDeckGoElement();
 ```
 
 ## Usage

@@ -75,7 +75,7 @@ import '@deckdeckgo/slide-gif';
 
 ```
 import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-gif/dist/loader';
-deckDeckGoSlideElement(window);
+deckDeckGoSlideElement();
 ```
 
 ## For images too

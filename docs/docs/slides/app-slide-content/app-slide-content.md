@@ -70,7 +70,7 @@ import '@deckdeckgo/slide-content';
 
 ```
 import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-content/dist/loader';
-deckDeckGoSlideElement(window);
+deckDeckGoSlideElement();
 ```
 
 ## Usage

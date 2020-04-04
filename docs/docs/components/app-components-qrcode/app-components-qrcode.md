@@ -7,15 +7,8 @@ To generate the QR code, the project [qrcode-generator](https://github.com/kazuh
 ## Table of contents
 
 - [Showcase](#app-components-qrcode-showcase)
-- [Installation](#app-components-qrcode-installation)
-	- [Using DeckDeckGo QR Code from a CDN](#app-components-qrcode-using-deckdeckgo-qr-code-from-a-cdn)
-	- [Install DeckDeckGo QR Code from NPM](#app-components-qrcode-install-deckdeckgo-qr-code-from-npm)
-	- [Framework integration](#app-components-qrcode-framework-integration)
-- [Usage](#app-components-qrcode-usage)
-	- [Slot](#app-components-qrcode-slot)
-	- [Properties](#app-components-qrcode-properties)
-	- [Styling](#app-components-qrcode-styling)
-		- [Styling type img](#app-components-qrcode-styling-type-img)
+- [Installation](#app-components-qrcode-installation) - [Using DeckDeckGo QR Code from a CDN](#app-components-qrcode-using-deckdeckgo-qr-code-from-a-cdn) - [Install DeckDeckGo QR Code from NPM](#app-components-qrcode-install-deckdeckgo-qr-code-from-npm) - [Framework integration](#app-components-qrcode-framework-integration)
+- [Usage](#app-components-qrcode-usage) - [Slot](#app-components-qrcode-slot) - [Properties](#app-components-qrcode-properties) - [Styling](#app-components-qrcode-styling) - [Styling type img](#app-components-qrcode-styling-type-img)
   - [Methods](#app-components-qrcode-methods)
   - [Examples](#app-components-qrcode-examples)
 - [QR Code with logo](#app-components-qrcode-qr-code-with-logo)
@@ -51,6 +44,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] Code
 <script type="module" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.esm.js"></script>
 <script nomodule="" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.js"></script>
 ```
+
 ### Install DeckDeckGo QR Code from NPM
 
 Install [DeckDeckGo] - QR Code in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
@@ -75,7 +69,7 @@ import '@deckdeckgo/qrcode';
 
 ```
 import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/qrcode/dist/loader';
-deckDeckGoElement(window);
+deckDeckGoElement();
 ```
 
 ## Usage
@@ -86,38 +80,38 @@ Optionally, it's also possible to generate the QR code as an `<img/>` and/or to 
 
 ### Slot
 
-To display a logo over your QR code, this Web Component provide a `slot` called `logo`. 
+To display a logo over your QR code, this Web Component provide a `slot` called `logo`.
 
 ### Properties
 
 The `<deckgo-qrcode/>` expose the following properties:
 
-| Property     | Attribute     | Description | Type      | Default               | Only applies for type `<img/>` |
-| ------------ | ------------- | ----------- | --------- | --------------------- |-----------------|
-| `content` | `content` | The content, a text or an url, of the QR code to generate | `string` |  ||
-| `type`     | `type`      | The type of QR code to generate, `<svg/>` or `<img/>` | `string` | `svg` ||
-| `qrCellSize` | `qr-cell-size` | The size of the cell, useful to generate a bigger QR code, specially in case of `<img/>`. Use it wisely, I suggest a value between 0 and 20 for example. | `number` |                 ||
-| `qrMargin`             | `qr-margin`               | The size of the code margin, in case you would like more spacing            | `number` |                 ||
-| `qrAlt`             | `qr-img-alt`              | An alternate text for the image of the QR code            | `string` |                 | X |
-| `qrBackgroundColor` | `qr-img-background-color` | The background color of the QR code. The value should be provided in a RGB-hex format. For example: `FF0000`. | `string` |                 | X |
-| `qrFillColor`       | `qr-img-fill-color`       | The color use to fill the QR code. The value should be provided in a RGB-hex format. For example: `FF0000`.            | `string` |                 | X |
+| Property            | Attribute                 | Description                                                                                                                                              | Type     | Default | Only applies for type `<img/>` |
+| ------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- | ------------------------------ |
+| `content`           | `content`                 | The content, a text or an url, of the QR code to generate                                                                                                | `string` |         |                                |
+| `type`              | `type`                    | The type of QR code to generate, `<svg/>` or `<img/>`                                                                                                    | `string` | `svg`   |                                |
+| `qrCellSize`        | `qr-cell-size`            | The size of the cell, useful to generate a bigger QR code, specially in case of `<img/>`. Use it wisely, I suggest a value between 0 and 20 for example. | `number` |         |                                |
+| `qrMargin`          | `qr-margin`               | The size of the code margin, in case you would like more spacing                                                                                         | `number` |         |                                |
+| `qrAlt`             | `qr-img-alt`              | An alternate text for the image of the QR code                                                                                                           | `string` |         | X                              |
+| `qrBackgroundColor` | `qr-img-background-color` | The background color of the QR code. The value should be provided in a RGB-hex format. For example: `FF0000`.                                            | `string` |         | X                              |
+| `qrFillColor`       | `qr-img-fill-color`       | The color use to fill the QR code. The value should be provided in a RGB-hex format. For example: `FF0000`.                                              | `string` |         | X                              |
 
 ### Styling
 
 The `<deckgo-qrcode/>` could be styled using the following CSS4 variables which would only applies on the type `<svg/>`:
 
-| CSS4 variable                      | Default | Note | Only applies for type `<svg/>` |
-| -------------------------- |-----------------|-----------------|-----------------|
-| --deckgo-qrcode-container-display | inline-block | The display property of the shadow host and the code container ||
-| --deckgo-qrcode-size | | The size, width and height, of the QR code | X |
-| --deckgo-qrcode-logo-ratio-size | 3 | If you are injecting a logo, its size, width and height, will be calculated with `--deckgo-qrcode-size` (or `100%` if not provided) divided by this value | X |
-| --deckgo-qrcode-border-stroke | | The border color of the QR code | X |
-| --deckgo-qrcode-background-fill | transparent | The QR code's background | X |
-| --deckgo-qrcode-color-fill | | The QR code's color (the color of the QR code's squares it contains)  | X |
+| CSS4 variable                     | Default      | Note                                                                                                                                                      | Only applies for type `<svg/>` |
+| --------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| --deckgo-qrcode-container-display | inline-block | The display property of the shadow host and the code container                                                                                            |                                |
+| --deckgo-qrcode-size              |              | The size, width and height, of the QR code                                                                                                                | X                              |
+| --deckgo-qrcode-logo-ratio-size   | 3            | If you are injecting a logo, its size, width and height, will be calculated with `--deckgo-qrcode-size` (or `100%` if not provided) divided by this value | X                              |
+| --deckgo-qrcode-border-stroke     |              | The border color of the QR code                                                                                                                           | X                              |
+| --deckgo-qrcode-background-fill   | transparent  | The QR code's background                                                                                                                                  | X                              |
+| --deckgo-qrcode-color-fill        |              | The QR code's color (the color of the QR code's squares it contains)                                                                                      | X                              |
 
 #### Styling type img
 
-In oder to style QR code if its type is set to  `<img/>`, you will need to use properties instead of CSS4 variables.
+In oder to style QR code if its type is set to `<img/>`, you will need to use properties instead of CSS4 variables.
 
 ### Methods
 
@@ -150,4 +144,4 @@ It's possible to display a logo over your QR Code as the code generated with thi
 
 However, test it carefully and play with the colours, cell-size and size of your code to ensure its readability.
 
-[DeckDeckGo]: https://deckdeckgo.com 
+[deckdeckgo]: https://deckdeckgo.com

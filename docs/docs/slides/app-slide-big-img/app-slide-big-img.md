@@ -67,7 +67,7 @@ import '@deckdeckgo/slide-big-img';
 
 ```
 import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-big-img/dist/loader';
-deckDeckGoSlideElement(window);
+deckDeckGoSlideElement();
 ```
 
 ## Usage

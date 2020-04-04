@@ -90,7 +90,7 @@ import '@deckdeckgo/highlight-code';
 
 ```
 import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/highlight-code/dist/loader';
-deckDeckGoElement(window);
+deckDeckGoElement();
 ```
 
 ## Usage

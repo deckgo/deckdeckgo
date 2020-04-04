@@ -141,7 +141,7 @@ export class AppSlideAuthor {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               import &#123; defineCustomElements as deckDeckGoSlideElement &#125; from &#039;@deckdeckgo&#47;slide-author&#47;dist&#47;loader&#039;;{'\n'}
-              deckDeckGoSlideElement(window);
+              deckDeckGoSlideElement();
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-author-social-component">Social component</h3>

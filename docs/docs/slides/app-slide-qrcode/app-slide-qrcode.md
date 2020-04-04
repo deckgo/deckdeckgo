@@ -69,7 +69,7 @@ import '@deckdeckgo/slide-qrcode';
 
 ```
 import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slide-qrcode/dist/loader';
-deckDeckGoSlideElement(window);
+deckDeckGoSlideElement();
 ```
 
 ## Usage
