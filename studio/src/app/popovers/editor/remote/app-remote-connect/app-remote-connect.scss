@@ -1,14 +1,13 @@
 app-remote-connect {
-  main {
-    height: 100%;
-    background: white;
-  }
-
   ion-list {
     ion-item {
       --border-color: transparent;
+      --padding-start: 0;
+      --inner-padding-end: 0;
 
       ion-label[class*="sc-ion-label"] {
+        font-size: var(--font-size-normal);
+
         &.disabled {
           opacity: 0.2;
         }
@@ -16,8 +15,8 @@ app-remote-connect {
     }
   }
 
-  p {
-    font-size: var(--font-size-small);
+  p.no-padding-bottom {
+    margin-bottom: 0;
   }
 
   div.qrcode-container {
@@ -25,8 +24,7 @@ app-remote-connect {
     justify-content: center;
 
     deckgo-qrcode {
-      --deckgo-qrcode-size: 280px;
-      --deckgo-qrcode-color-fill: var(--ion-color-primary);
+      --deckgo-qrcode-size: 316px;
     }
 
     ion-icon {

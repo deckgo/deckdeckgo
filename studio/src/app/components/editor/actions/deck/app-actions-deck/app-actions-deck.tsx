@@ -281,12 +281,15 @@ export class AppActionsDeck {
     await modal.present();
   }
 
-  private async openRemoteControl() {
-    const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-remote-connect'
+  private async openRemoteControl($event: UIEvent) {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-remote-connect',
+      event: $event,
+      mode: 'ios',
+      cssClass: 'info'
     });
 
-    await modal.present();
+    await popover.present();
   }
 
   private async openEmbed() {
@@ -318,7 +321,7 @@ export class AppActionsDeck {
         } else if (detail.data.action === MoreAction.JUMP_TO) {
           await this.openSlideNavigate();
         } else if (detail.data.action === MoreAction.REMOTE) {
-          await this.openRemoteControl();
+          await this.openRemoteControl($event);
         } else if (detail.data.action === MoreAction.SHARE) {
           this.openShare.emit();
         } else if (detail.data.action === MoreAction.PUBLISH) {
@@ -424,7 +427,7 @@ export class AppActionsDeck {
 
           {this.renderFullscreenButton()}
 
-          <ion-tab-button onClick={() => this.openRemoteControl()} color="primary" class="wider-devices" mode="md">
+          <ion-tab-button onClick={($event: UIEvent) => this.openRemoteControl($event)} color="primary" class="wider-devices" mode="md">
             <ion-icon src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
             <ion-label>Remote</ion-label>
           </ion-tab-button>

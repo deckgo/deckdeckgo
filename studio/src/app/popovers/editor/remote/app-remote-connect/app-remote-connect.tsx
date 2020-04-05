@@ -1,8 +1,8 @@
-import {Component, Element, Listen, State, h} from '@stencil/core';
+import {Component, Element, State, h} from '@stencil/core';
 
 import {take} from 'rxjs/operators';
 
-import {RemoteService} from '../../../services/editor/remote/remote.service';
+import {RemoteService} from '../../../../services/editor/remote/remote.service';
 
 @Component({
   tag: 'app-remote-connect',
@@ -77,17 +77,12 @@ export class AppRemoteConnect {
   private onWatchState = async ($event) => {
     // See ConnectionState.CONNECTED which is 3
     if ($event && $event.detail === 3) {
-      await this.closeModal();
+      await this.closePopover();
     }
   };
 
-  @Listen('popstate', {target: 'window'})
-  async handleHardwareBackButton(_e: PopStateEvent) {
-    await this.closeModal();
-  }
-
-  async closeModal() {
-    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
+  async closePopover() {
+    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
   private async toggleRemoteEnabled() {
@@ -108,51 +103,47 @@ export class AppRemoteConnect {
   }
 
   render() {
-    return [
-      <ion-header>
-        <ion-toolbar color="primary">
-          <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-          <ion-title class="ion-text-uppercase">Remote control</ion-title>
-        </ion-toolbar>
-      </ion-header>,
-      <ion-content class="ion-padding" color="light">
-        <main class="ion-padding">
-          <ion-list>
-            <ion-item>
-              {this.renderLabel()}
-              <ion-toggle slot="end" checked={this.remoteEnabled} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
-            </ion-item>
-          </ion-list>
+    return (
+      <div class="ion-padding">
+        <p>Remote control your presentation with your phone or any devices.</p>
+        <p class="no-padding-bottom">
+          Scan the QR-Code or get the Progressive Web Apps at{' '}
+          <a href="https://deckdeckgo.app" target="_blank">
+            https://deckdeckgo.app <ion-icon name="open"></ion-icon>
+          </a>
+        </p>
 
-          <div class="qrcode-container">
-            <deckgo-qrcode content={this.qrCodeURI}>
-              <ion-icon slot="logo" src="/assets/img/deckdeckgo-logo.svg"></ion-icon>
-            </deckgo-qrcode>
-          </div>
+        <div class="qrcode-container">
+          <deckgo-qrcode content={this.qrCodeURI}>
+            <ion-icon slot="logo" src="/assets/img/deckdeckgo-logo.svg"></ion-icon>
+          </deckgo-qrcode>
+        </div>
 
-          <p class="ion-padding-start ion-padding-end">
-            Remote control your presentation with your phone or any devices. Scan the above QR Code to open directly your deck or get the Progressive Web Apps
-            at{' '}
-            <a href="https://deckdeckgo.app" target="_blank">
-              https://deckdeckgo.app <ion-icon name="open"></ion-icon>
-            </a>
-          </p>
-        </main>
-      </ion-content>
-    ];
+        <ion-list>
+          <ion-item>
+            {this.renderLabel()}
+            <ion-toggle slot="end" mode="md" checked={this.remoteEnabled} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
+          </ion-item>
+        </ion-list>
+
+        <p>
+          <small>If you can't connect or loose the connection, toggle off and on the remote to restart.</small>
+        </p>
+      </div>
+    );
   }
 
   private renderLabel() {
     if (this.remoteEnabled) {
-      return <ion-label class="ion-text-wrap">Toggle if you wish to disable the remote control</ion-label>;
+      return (
+        <ion-label>
+          Remote is <strong>enabled</strong>
+        </ion-label>
+      );
     } else {
       return (
-        <ion-label class="ion-text-wrap">
-          Toggle to <strong>enable</strong> the remote control
+        <ion-label>
+          Remote is <strong>disabled</strong>
         </ion-label>
       );
     }
