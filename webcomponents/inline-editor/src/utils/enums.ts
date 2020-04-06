@@ -2,7 +2,8 @@ export enum ToolbarActions {
   SELECTION,
   LINK,
   IMAGE,
-  COLOR
+  COLOR,
+  ALIGNMENT
 }
 
 export enum ImageSize {
@@ -15,4 +16,10 @@ export enum ImageSize {
 export enum ImageAlign {
   STANDARD,
   START
+}
+
+export enum ContentAlign {
+  LEFT = 'justifyLeft',
+  CENTER = 'justifyCenter',
+  RIGHT = 'justifyRight'
 }

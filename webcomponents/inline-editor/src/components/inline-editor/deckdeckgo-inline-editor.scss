@@ -236,7 +236,7 @@ div.deckgo-tools {
     &.image,
     &.image-align,
     &.image-delete,
-    &.pick-color {
+    &.pick-color &.left-align &.center-align &.right-align {
       > div {
         -webkit-mask-repeat: no-repeat;
         mask-repeat: no-repeat;
@@ -250,6 +250,27 @@ div.deckgo-tools {
     &.link,
     &.pick-color {
       margin: 0;
+    }
+
+    &.left-align {
+      > div {
+        -webkit-mask-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='iso-8859-1'?%3e%3c!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3e%3csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 455 455' style='enable-background:new 0 0 455 455;' xml:space='preserve'%3e%3cg%3e%3cg%3e%3crect y='132.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='52.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='372.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='292.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='212.5' width='455' height='30'/%3e%3c/g%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3c/svg%3e ");
+        mask-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='iso-8859-1'?%3e%3c!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3e%3csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 455 455' style='enable-background:new 0 0 455 455;' xml:space='preserve'%3e%3cg%3e%3cg%3e%3crect y='132.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='52.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='372.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='292.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='212.5' width='455' height='30'/%3e%3c/g%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3c/svg%3e ");
+      }
+    }
+
+    &.center-align {
+      > div {
+        -webkit-mask-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='iso-8859-1'?%3e%3c!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3e%3csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 455 455' style='enable-background:new 0 0 455 455;' xml:space='preserve'%3e%3cg%3e%3cg%3e%3crect x='76.5' y='132.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='52.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='372.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect x='76.5' y='292.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='212.5' width='455' height='30'/%3e%3c/g%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3c/svg%3e ");
+        mask-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='iso-8859-1'?%3e%3c!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3e%3csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 455 455' style='enable-background:new 0 0 455 455;' xml:space='preserve'%3e%3cg%3e%3cg%3e%3crect x='76.5' y='132.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='52.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='372.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect x='76.5' y='292.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='212.5' width='455' height='30'/%3e%3c/g%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3c/svg%3e ");
+      }
+    }
+
+    &.right-align {
+      > div {
+        -webkit-mask-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='iso-8859-1'?%3e%3c!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3e%3csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 455 455' style='enable-background:new 0 0 455 455;' xml:space='preserve'%3e%3cg%3e%3cg%3e%3crect x='153' y='132.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='52.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='372.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect x='153' y='292.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='212.5' width='455' height='30'/%3e%3c/g%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3c/svg%3e ");
+        mask-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='iso-8859-1'?%3e%3c!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3e%3csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 455 455' style='enable-background:new 0 0 455 455;' xml:space='preserve'%3e%3cg%3e%3cg%3e%3crect x='153' y='132.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='52.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='372.5' width='455' height='30'/%3e%3c/g%3e%3cg%3e%3crect x='153' y='292.5' width='302' height='30'/%3e%3c/g%3e%3cg%3e%3crect y='212.5' width='455' height='30'/%3e%3c/g%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3cg%3e%3c/g%3e%3c/svg%3e ");
+      }
     }
 
     &.pick-color {

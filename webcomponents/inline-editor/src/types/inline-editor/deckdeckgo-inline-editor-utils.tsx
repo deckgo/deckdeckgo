@@ -1,3 +1,5 @@
+import {ContentAlign} from '../../utils/enums';
+
 export class DeckdeckgoInlineEditorUtils {
   static isBold(element: HTMLElement): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
@@ -114,6 +116,22 @@ export class DeckdeckgoInlineEditorUtils {
       }
 
       resolve(false);
+    });
+  }
+
+  static getContentAlignment(element: HTMLElement): Promise<ContentAlign> {
+    return new Promise<ContentAlign>(async (resolve) => {
+      var result = element.style.textAlign === 'center';
+      if (result) {
+        resolve(ContentAlign.CENTER);
+        return;
+      }
+      result = element.style.textAlign === 'right';
+      if (result) {
+        resolve(ContentAlign.RIGHT);
+        return;
+      }
+      resolve(ContentAlign.LEFT);
     });
   }
 

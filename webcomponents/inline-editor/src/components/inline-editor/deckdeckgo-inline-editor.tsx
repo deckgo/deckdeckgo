@@ -6,7 +6,7 @@ import '@deckdeckgo/color';
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
 import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
-import {ImageSize, ImageAlign, ToolbarActions} from '../../utils/enums';
+import {ImageSize, ImageAlign, ToolbarActions, ContentAlign} from '../../utils/enums';
 import {AnchorLink, InlineAction, InputTargetEvent} from './deckdeckgo-inline-editor.interface';
 
 @Component({
@@ -27,6 +27,9 @@ export class DeckdeckgoInlineEditor {
 
   @State()
   private underline: boolean = false;
+
+  @State()
+  private contentAlign: ContentAlign = ContentAlign.LEFT;
 
   @State()
   private orderedList: boolean = false;
@@ -459,6 +462,7 @@ export class DeckdeckgoInlineEditor {
         this.orderedList = false;
         this.unorderedList = false;
         this.color = null;
+        this.contentAlign = ContentAlign.LEFT;
 
         await this.findStyle(content);
       } else if (content.parentElement) {
@@ -468,6 +472,7 @@ export class DeckdeckgoInlineEditor {
         this.orderedList = false;
         this.unorderedList = false;
         this.color = null;
+        this.contentAlign = ContentAlign.LEFT;
 
         await this.findStyle(content.parentElement);
       }
@@ -508,7 +513,7 @@ export class DeckdeckgoInlineEditor {
         this.bold = await DeckdeckgoInlineEditorUtils.isBold(node as HTMLElement);
         this.italic = await DeckdeckgoInlineEditorUtils.isItalic(node as HTMLElement);
         this.underline = await DeckdeckgoInlineEditorUtils.isUnderline(node as HTMLElement);
-
+        this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
         if (!this.orderedList) {
           this.orderedList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement, 'ol');
         }
@@ -665,6 +670,18 @@ export class DeckdeckgoInlineEditor {
 
       await this.initStyle(this.selection);
 
+      resolve();
+    });
+  }
+
+  private justifyContent(e: UIEvent, align: ContentAlign): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      e.stopPropagation();
+
+      await this.execCommand(align.toString());
+
+      //this.contentAlign = align;
+      await this.initStyle(this.selection);
       resolve();
     });
   }
@@ -904,6 +921,33 @@ export class DeckdeckgoInlineEditor {
       resolve();
     });
   }
+  private openAlignmentActions(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      this.toolbarActions = ToolbarActions.ALIGNMENT;
+
+      resolve();
+    });
+  }
+
+  renderAlignmentActions() {
+    return [
+      <button
+        onClick={(e: UIEvent) => this.justifyContent(e, ContentAlign.LEFT)}
+        class={this.contentAlign === ContentAlign.LEFT ? 'left-align active' : 'left-align'}>
+        <div></div>
+      </button>,
+      <button
+        onClick={(e: UIEvent) => this.justifyContent(e, ContentAlign.CENTER)}
+        class={this.contentAlign === ContentAlign.CENTER ? 'center-align active' : 'center-align'}>
+        <div></div>
+      </button>,
+      <button
+        onClick={(e: UIEvent) => this.justifyContent(e, ContentAlign.RIGHT)}
+        class={this.contentAlign === ContentAlign.RIGHT ? 'right-align active' : 'right-align'}>
+        <div></div>
+      </button>
+    ];
+  }
 
   private styleImage(e: UIEvent, applyFunction: Function, param: ImageSize | ImageAlign): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -1046,6 +1090,8 @@ export class DeckdeckgoInlineEditor {
       );
     } else if (this.toolbarActions === ToolbarActions.IMAGE) {
       return this.renderImageActions();
+    } else if (this.toolbarActions === ToolbarActions.ALIGNMENT) {
+      return this.renderAlignmentActions();
     } else {
       return this.renderSelectionActions();
     }
@@ -1066,6 +1112,19 @@ export class DeckdeckgoInlineEditor {
       </button>,
 
       this.renderSeparator(),
+      <button
+        onClick={() => this.openAlignmentActions()}
+        class={
+          this.contentAlign === ContentAlign.LEFT
+            ? 'left-align active'
+            : this.contentAlign === ContentAlign.CENTER
+            ? 'center-align active'
+            : this.contentAlign === ContentAlign.RIGHT
+            ? 'right-align active'
+            : 'left-align active'
+        }>
+        <div></div>
+      </button>,
 
       <button onClick={() => this.openColorPicker()} class="pick-color">
         <div style={styleColor}></div>
