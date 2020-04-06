@@ -49,7 +49,7 @@
     "uuid": "^7.0.2"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0",
+    "@deckdeckgo/types": "file:../utils/types",
     "@stencil/core": "^1.8.11",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",

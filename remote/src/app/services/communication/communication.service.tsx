@@ -3,7 +3,14 @@ import * as io from 'socket.io-client';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 // Types
-import {DeckdeckgoEventDraw, DeckdeckgoEvent, DeckdeckgoEventNextPrevSlide, DeckdeckgoEventSlideAction, DeckdeckgoEventSlideTo} from '@deckdeckgo/types';
+import {
+  DeckdeckgoEventDraw,
+  DeckdeckgoEvent,
+  DeckdeckgoEventNextPrevSlide,
+  DeckdeckgoEventSlideAction,
+  DeckdeckgoEventSlideTo,
+  ConnectionState
+} from '@deckdeckgo/types';
 
 // Services
 import {EnvironmentConfigService} from '../environment/environment-config.service';
@@ -17,14 +24,6 @@ const configuration: RTCConfiguration = {
     }
   ]
 };
-
-export enum ConnectionState {
-  DISCONNECTED,
-  CONNECTING,
-  CONNECTED_WITH_SIGNALING_SERVER,
-  CONNECTED,
-  NOT_CONNECTED
-}
 
 export interface ActiveRoom {
   room: string;

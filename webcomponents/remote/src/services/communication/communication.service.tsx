@@ -11,9 +11,11 @@ import {
   DeckdeckgoEventSlideTo,
   DeckdeckgoEventNextPrevSlide,
   DeckdeckgoEventDeckReveal,
-  DeckdeckgoEventEmitter
+  DeckdeckgoEventEmitter,
+  DeckdeckgoEventDeckRequest,
+  DeckdeckgoEventType,
+  ConnectionState
 } from '@deckdeckgo/types';
-import {DeckdeckgoEventDeckRequest, DeckdeckgoEventType} from '../../../../../utils/types/src';
 
 const configuration: RTCConfiguration = {
   iceServers: [
@@ -31,14 +33,6 @@ const dataChannelOptions = {
 };
 
 const DEFAULT_SOCKET_URL: string = 'https://api.deckdeckgo.com';
-
-export enum ConnectionState {
-  DISCONNECTED,
-  CONNECTING,
-  CONNECTED_WITH_SIGNALING_SERVER,
-  CONNECTED,
-  NOT_CONNECTED
-}
 
 // @ts-ignore
 const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;

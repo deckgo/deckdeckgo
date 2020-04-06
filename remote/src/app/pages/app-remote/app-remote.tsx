@@ -16,14 +16,15 @@ import {
   DeckdeckgoEventSlideAction,
   DeckdeckgoEventSlide,
   DeckdeckgoEventNextPrevSlide,
-  DeckdeckgoEventDeckReveal
+  DeckdeckgoEventDeckReveal,
+  ConnectionState
 } from '@deckdeckgo/types';
 
 // Utils
 import {ParseSlidesUtils} from '../../utils/parse-slides.utils';
 
 // Services
-import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
+import {CommunicationService} from '../../services/communication/communication.service';
 import {AccelerometerService} from '../../services/accelerometer/accelerometer.service';
 import {NotesService} from '../../services/notes/notes.service';
 import {ParseAttributesUtils} from '../../utils/parse-attributes.utils';
