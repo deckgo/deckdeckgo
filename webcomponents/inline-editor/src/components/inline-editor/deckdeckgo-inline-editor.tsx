@@ -172,6 +172,10 @@ export class DeckdeckgoInlineEditor {
   }
 
   private startSelection = async ($event: MouseEvent | TouchEvent) => {
+    if (this.displayToolsActivated) {
+      return;
+    }
+
     if (this.toolbarActions !== ToolbarActions.IMAGE) {
       this.anchorEvent = $event;
     }
