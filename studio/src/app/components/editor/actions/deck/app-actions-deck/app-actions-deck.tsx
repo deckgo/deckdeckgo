@@ -442,13 +442,24 @@ export class AppActionsDeck {
         const connected: boolean = state !== ConnectionState.DISCONNECTED && state !== ConnectionState.NOT_CONNECTED;
 
         if (connected && requests && requests.length > 0) {
-          // TODO
-          // await closeRemote();
+          await this.closeRemote();
           await this.openRemoteControl($event, 'app-remote-request');
         } else {
           await this.openRemoteControl($event, 'app-remote-connect');
         }
       });
+  }
+
+  private async closeRemote() {
+    if (!document) {
+      return;
+    }
+
+    const popover = document.querySelector('ion-popover');
+
+    if (popover) {
+      await popover.dismiss();
+    }
   }
 
   render() {
