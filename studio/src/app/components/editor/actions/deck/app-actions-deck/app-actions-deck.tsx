@@ -1,11 +1,13 @@
-import {Component, Element, EventEmitter, h, JSX, Listen, Prop, State, Event} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, JSX, Listen, Prop, State} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {isIPad} from '@deckdeckgo/utils';
+import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 
 import {get, set} from 'idb-keyval';
 
-import {Subscription} from 'rxjs';
+import {forkJoin, Subscription} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 import {SlideAttributes, SlideTemplate} from '../../../../../models/data/slide';
 
@@ -15,6 +17,7 @@ import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
 import {OfflineService} from '../../../../../services/editor/offline/offline.service';
+import {RemoteService} from '../../../../../services/editor/remote/remote.service';
 
 @Component({
   tag: 'app-actions-deck',
@@ -70,9 +73,13 @@ export class AppActionsDeck {
   private offlineService: OfflineService;
   private offlineSubscription: Subscription;
 
+  private remoteService: RemoteService;
+  private remoteSubscription: Subscription;
+
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
     this.offlineService = OfflineService.getInstance();
+    this.remoteService = RemoteService.getInstance();
   }
 
   async componentWillLoad() {
@@ -81,11 +88,19 @@ export class AppActionsDeck {
     this.offlineSubscription = this.offlineService.watchOffline().subscribe((status: OfflineDeck | undefined) => {
       this.offline = status !== undefined;
     });
+
+    this.remoteSubscription = this.remoteService.watchRequests().subscribe(async (_requests: DeckdeckgoEventDeckRequest[] | undefined) => {
+      await this.clickToOpenRemote();
+    });
   }
 
   async componentDidUnload() {
     if (this.offlineSubscription) {
       this.offlineSubscription.unsubscribe();
+    }
+
+    if (this.remoteSubscription) {
+      this.remoteSubscription.unsubscribe();
     }
   }
 
@@ -281,7 +296,7 @@ export class AppActionsDeck {
     await modal.present();
   }
 
-  private async openRemoteControl($event: UIEvent) {
+  private async openRemoteControlInfo($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-remote-connect',
       event: $event,
@@ -321,7 +336,7 @@ export class AppActionsDeck {
         } else if (detail.data.action === MoreAction.JUMP_TO) {
           await this.openSlideNavigate();
         } else if (detail.data.action === MoreAction.REMOTE) {
-          await this.openRemoteControl($event);
+          await this.openRemote($event);
         } else if (detail.data.action === MoreAction.SHARE) {
           this.openShare.emit();
         } else if (detail.data.action === MoreAction.PUBLISH) {
@@ -398,6 +413,34 @@ export class AppActionsDeck {
     await modal.present();
   }
 
+  private async clickToOpenRemote() {
+    const button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
+
+    if (!button) {
+      return;
+    }
+
+    // We click to button as we want to pass $event to the popover to stick it next to the button
+    button.click();
+  }
+
+  private async openRemote($event: UIEvent) {
+    forkJoin([this.remoteService.watchRequests().pipe(take(1)), this.remoteService.watchState().pipe(take(1))])
+      .pipe(take(1))
+      .subscribe(async ([requests, state]: [DeckdeckgoEventDeckRequest[] | undefined, ConnectionState]) => {
+        const connected: boolean = state !== ConnectionState.DISCONNECTED && state !== ConnectionState.NOT_CONNECTED;
+
+        if (connected && requests && requests.length > 0) {
+          // TODO
+          // await closeRemote();
+          // await askAccess($event);
+          console.log('GRANT REQUESTS', requests);
+        } else {
+          await this.openRemoteControlInfo($event);
+        }
+      });
+  }
+
   render() {
     return (
       <ion-toolbar>
@@ -427,7 +470,7 @@ export class AppActionsDeck {
 
           {this.renderFullscreenButton()}
 
-          <ion-tab-button onClick={($event: UIEvent) => this.openRemoteControl($event)} color="primary" class="wider-devices" mode="md">
+          <ion-tab-button onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="wider-devices open-remote" mode="md">
             <ion-icon src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
             <ion-label>Remote</ion-label>
           </ion-tab-button>

@@ -3,12 +3,18 @@ import {filter, take} from 'rxjs/operators';
 
 import {get, set} from 'idb-keyval';
 
+import {DeckdeckgoEventDeckRequest, ConnectionState} from '@deckdeckgo/types';
+
 import {Deck} from '../../../models/data/deck';
 
 import {DeckEditorService} from '../deck/deck-editor.service';
 
 export class RemoteService {
   private remoteSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  private remotePendingRequestsSubject: BehaviorSubject<DeckdeckgoEventDeckRequest[] | undefined> = new BehaviorSubject(undefined);
+
+  private remoteStateSubject: BehaviorSubject<ConnectionState> = new BehaviorSubject(ConnectionState.DISCONNECTED);
 
   private static instance: RemoteService;
 
@@ -65,5 +71,29 @@ export class RemoteService {
           resolve(roomName);
         });
     });
+  }
+
+  async addPendingRequests(request: DeckdeckgoEventDeckRequest) {
+    this.remotePendingRequestsSubject.pipe(take(1)).subscribe((requests: DeckdeckgoEventDeckRequest[] | undefined) => {
+      if (!requests) {
+        requests = [];
+      }
+
+      requests.push(request);
+
+      this.remotePendingRequestsSubject.next(requests);
+    });
+  }
+
+  watchRequests(): Observable<DeckdeckgoEventDeckRequest[] | undefined> {
+    return this.remotePendingRequestsSubject.asObservable();
+  }
+
+  watchState(): Observable<ConnectionState> {
+    return this.remoteStateSubject.asObservable();
+  }
+
+  nextState(state: ConnectionState) {
+    this.remoteStateSubject.next(state);
   }
 }
