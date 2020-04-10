@@ -414,27 +414,32 @@ export class AppActionsDeck {
   }
 
   private async clickToOpenRemote() {
-    let button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
+    this.remoteService
+      .watchState()
+      .pipe(take(1))
+      .subscribe((state: ConnectionState) => {
+        if (state !== ConnectionState.CONNECTED) {
+          let button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
 
-    if (!button) {
-      return;
-    }
+          if (!button) {
+            return;
+          }
 
-    const style: CSSStyleDeclaration = window.getComputedStyle(button);
+          const style: CSSStyleDeclaration = window.getComputedStyle(button);
 
-    // Actions are grouped in a popover on small devices?
-    if (style.display === 'none') {
-      button = this.el.querySelector('ion-tab-button.open-remote-small-devices');
+          // Actions are grouped in a popover on small devices?
+          if (style.display === 'none') {
+            button = this.el.querySelector('ion-tab-button.open-remote-small-devices');
 
-      console.log('Woot?', button);
+            if (!button) {
+              return;
+            }
+          }
 
-      if (!button) {
-        return;
-      }
-    }
-
-    // We click to button as we want to pass $event to the popover to stick it next to the button
-    button.click();
+          // We click to button as we want to pass $event to the popover to stick it next to the button
+          button.click();
+        }
+      });
   }
 
   private async openRemote($event: UIEvent) {
@@ -457,7 +462,7 @@ export class AppActionsDeck {
       return;
     }
 
-    const popover = document.querySelector('ion-popover');
+    const popover: HTMLIonPopoverElement = document.querySelector('ion-popover');
 
     if (popover) {
       await popover.dismiss();
