@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
 import {get, set} from 'idb-keyval';
@@ -15,6 +15,8 @@ export class RemoteService {
   private remotePendingRequestsSubject: BehaviorSubject<DeckdeckgoEventDeckRequest[] | undefined> = new BehaviorSubject(undefined);
 
   private remoteStateSubject: BehaviorSubject<ConnectionState> = new BehaviorSubject(ConnectionState.DISCONNECTED);
+
+  private remoteAcceptedRequestSubject: Subject<DeckdeckgoEventDeckRequest> = new Subject<DeckdeckgoEventDeckRequest>();
 
   private static instance: RemoteService;
 
@@ -85,12 +87,34 @@ export class RemoteService {
     });
   }
 
+  shiftPendingRequests(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.remotePendingRequestsSubject.pipe(take(1)).subscribe((requests: DeckdeckgoEventDeckRequest[] | undefined) => {
+        if (requests && requests.length > 0) {
+          requests.shift();
+
+          this.remotePendingRequestsSubject.next(requests);
+        }
+
+        resolve();
+      });
+    });
+  }
+
+  acceptRequest(request: DeckdeckgoEventDeckRequest) {
+    this.remoteAcceptedRequestSubject.next(request);
+  }
+
   watchRequests(): Observable<DeckdeckgoEventDeckRequest[] | undefined> {
     return this.remotePendingRequestsSubject.asObservable();
   }
 
   watchState(): Observable<ConnectionState> {
     return this.remoteStateSubject.asObservable();
+  }
+
+  watchAcceptedRequest(): Observable<DeckdeckgoEventDeckRequest> {
+    return this.remoteAcceptedRequestSubject.asObservable();
   }
 
   nextState(state: ConnectionState) {

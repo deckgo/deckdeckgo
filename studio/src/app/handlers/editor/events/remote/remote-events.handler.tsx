@@ -3,7 +3,7 @@ import {take} from 'rxjs/operators';
 
 import {debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition} from '@deckdeckgo/deck-utils';
-import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
+import {DeckdeckgoEventDeckRequest, DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
@@ -15,7 +15,8 @@ export class RemoteEventsHandler {
 
   private remoteService: RemoteService;
 
-  private subscription: Subscription;
+  private connectSubscription: Subscription;
+  private acceptRequestSubscription: Subscription;
 
   constructor() {
     this.remoteService = RemoteService.getInstance();
@@ -27,12 +28,16 @@ export class RemoteEventsHandler {
 
       await this.initRemote();
 
-      this.subscription = this.remoteService.watch().subscribe(async (enable: boolean) => {
+      this.connectSubscription = this.remoteService.watch().subscribe(async (enable: boolean) => {
         if (enable) {
           await this.connect();
         } else {
           await this.disconnect();
         }
+      });
+
+      this.acceptRequestSubscription = this.remoteService.watchAcceptedRequest().subscribe(async (request: DeckdeckgoEventDeckRequest) => {
+        await this.startAcceptedRemoteRequest(request);
       });
 
       resolve();
@@ -42,8 +47,12 @@ export class RemoteEventsHandler {
   async destroy() {
     await this.disconnect();
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.connectSubscription) {
+      this.connectSubscription.unsubscribe();
+    }
+
+    if (this.acceptRequestSubscription) {
+      this.acceptRequestSubscription.unsubscribe();
     }
 
     const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');
@@ -647,5 +656,19 @@ export class RemoteEventsHandler {
 
       resolve();
     });
+  }
+
+  private async startAcceptedRemoteRequest(request: DeckdeckgoEventDeckRequest) {
+    if (!request || !request.fromSocketId) {
+      return;
+    }
+
+    const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+
+    if (!deckgoRemoteElement) {
+      return;
+    }
+
+    await deckgoRemoteElement.start(request.fromSocketId);
   }
 }

@@ -31,6 +31,18 @@ export class AppRemoteRequest {
       });
   }
 
+  private async shiftRequestsAndClose() {
+    await this.remoteService.shiftPendingRequests();
+
+    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
+  }
+
+  private async accept() {
+    this.remoteService.acceptRequest(this.request);
+
+    await this.shiftRequestsAndClose();
+  }
+
   render() {
     return <div class="ion-padding">{this.renderRequest()}</div>;
   }
@@ -46,12 +58,12 @@ export class AppRemoteRequest {
       </p>,
 
       <div class="actions">
-        <button class="navigation ion-activatable transparent dismiss">
+        <button class="navigation ion-activatable transparent dismiss" onClick={() => this.shiftRequestsAndClose()}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-label="Deny" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </button>
 
-        <button class="navigation ion-activatable primary connect">
+        <button class="navigation ion-activatable primary connect" onClick={() => this.accept()}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-label="Accept" src="/assets/icons/ionicons/checkmark.svg"></ion-icon>
         </button>

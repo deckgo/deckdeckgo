@@ -89,8 +89,10 @@ export class AppActionsDeck {
       this.offline = status !== undefined;
     });
 
-    this.remoteSubscription = this.remoteService.watchRequests().subscribe(async (_requests: DeckdeckgoEventDeckRequest[] | undefined) => {
-      await this.clickToOpenRemote();
+    this.remoteSubscription = this.remoteService.watchRequests().subscribe(async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
+      if (requests && requests.length > 0) {
+        await this.clickToOpenRemote();
+      }
     });
   }
 
