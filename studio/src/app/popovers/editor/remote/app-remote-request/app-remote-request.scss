@@ -1,0 +1,38 @@
+app-remote-request {
+  div.actions {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+    button {
+      border-radius: 50%;
+
+      padding: 0;
+
+      border: none;
+      outline: none;
+      font: inherit;
+      color: inherit;
+      background: none;
+
+      margin: 8px;
+
+      width: 60px;
+      height: 60px;
+
+      ion-icon {
+        font-size: 36px;
+      }
+
+      &.transparent {
+        border: 1px solid var(--ion-color-dark);
+      }
+
+      &.primary {
+        border: 1px solid var(--ion-color-primary);
+        background: var(--ion-color-primary);
+        color: var(--ion-color-tertiary-contrast);
+      }
+    }
+  }
+}

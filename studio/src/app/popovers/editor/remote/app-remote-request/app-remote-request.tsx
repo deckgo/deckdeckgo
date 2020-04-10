@@ -32,10 +32,30 @@ export class AppRemoteRequest {
   }
 
   render() {
-    return (
-      <div class="ion-padding">
-        <p>No pending requests.</p>
+    return <div class="ion-padding">{this.renderRequest()}</div>;
+  }
+
+  private renderRequest() {
+    if (this.request === undefined) {
+      return <p>No pending requests.</p>;
+    }
+
+    return [
+      <p>
+        Grant access to remote <strong>{this.request.message}</strong>?
+      </p>,
+
+      <div class="actions">
+        <button class="navigation ion-activatable transparent dismiss">
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-icon aria-label="Deny" src="/assets/icons/ionicons/close.svg"></ion-icon>
+        </button>
+
+        <button class="navigation ion-activatable primary connect">
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-icon aria-label="Accept" src="/assets/icons/ionicons/checkmark.svg"></ion-icon>
+        </button>
       </div>
-    );
+    ];
   }
 }
