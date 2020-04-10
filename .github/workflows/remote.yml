@@ -1,11 +1,8 @@
 name: CI - Remote
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'remote/**'
+  release:
+    types: [published]
 
 jobs:
   build:

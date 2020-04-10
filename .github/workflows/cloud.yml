@@ -1,11 +1,8 @@
 name: CI - Cloud
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'cloud/**'
+  release:
+    types: [published]
 
 jobs:
   deploy:
