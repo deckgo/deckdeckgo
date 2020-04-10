@@ -272,6 +272,7 @@ export namespace Components {
   }
   interface AppRemote {}
   interface AppRemoteConnect {}
+  interface AppRemoteRequest {}
   interface AppReveal {
     'selectedElement': HTMLElement;
   }
@@ -791,6 +792,12 @@ declare global {
     new (): HTMLAppRemoteConnectElement;
   };
 
+  interface HTMLAppRemoteRequestElement extends Components.AppRemoteRequest, HTMLStencilElement {}
+  var HTMLAppRemoteRequestElement: {
+    prototype: HTMLAppRemoteRequestElement;
+    new (): HTMLAppRemoteRequestElement;
+  };
+
   interface HTMLAppRevealElement extends Components.AppReveal, HTMLStencilElement {}
   var HTMLAppRevealElement: {
     prototype: HTMLAppRevealElement;
@@ -971,6 +978,7 @@ declare global {
     'app-random-gif': HTMLAppRandomGifElement;
     'app-remote': HTMLAppRemoteElement;
     'app-remote-connect': HTMLAppRemoteConnectElement;
+    'app-remote-request': HTMLAppRemoteRequestElement;
     'app-reveal': HTMLAppRevealElement;
     'app-root': HTMLAppRootElement;
     'app-select-target-element': HTMLAppSelectTargetElementElement;
@@ -1267,6 +1275,7 @@ declare namespace LocalJSX {
   }
   interface AppRemote {}
   interface AppRemoteConnect {}
+  interface AppRemoteRequest {}
   interface AppReveal {
     'selectedElement'?: HTMLElement;
   }
@@ -1396,6 +1405,7 @@ declare namespace LocalJSX {
     'app-random-gif': AppRandomGif;
     'app-remote': AppRemote;
     'app-remote-connect': AppRemoteConnect;
+    'app-remote-request': AppRemoteRequest;
     'app-reveal': AppReveal;
     'app-root': AppRoot;
     'app-select-target-element': AppSelectTargetElement;
@@ -1500,6 +1510,7 @@ declare module "@stencil/core" {
       'app-random-gif': LocalJSX.AppRandomGif & JSXBase.HTMLAttributes<HTMLAppRandomGifElement>;
       'app-remote': LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
       'app-remote-connect': LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
+      'app-remote-request': LocalJSX.AppRemoteRequest & JSXBase.HTMLAttributes<HTMLAppRemoteRequestElement>;
       'app-reveal': LocalJSX.AppReveal & JSXBase.HTMLAttributes<HTMLAppRevealElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'app-select-target-element': LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;

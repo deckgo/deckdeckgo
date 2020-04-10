@@ -296,9 +296,9 @@ export class AppActionsDeck {
     await modal.present();
   }
 
-  private async openRemoteControlInfo($event: UIEvent) {
+  private async openRemoteControl($event: UIEvent, component: string) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-remote-connect',
+      component: component,
       event: $event,
       mode: 'ios',
       cssClass: 'info'
@@ -335,8 +335,6 @@ export class AppActionsDeck {
           await this.toggleFullScreenMode();
         } else if (detail.data.action === MoreAction.JUMP_TO) {
           await this.openSlideNavigate();
-        } else if (detail.data.action === MoreAction.REMOTE) {
-          await this.openRemote($event);
         } else if (detail.data.action === MoreAction.SHARE) {
           this.openShare.emit();
         } else if (detail.data.action === MoreAction.PUBLISH) {
@@ -414,10 +412,23 @@ export class AppActionsDeck {
   }
 
   private async clickToOpenRemote() {
-    const button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
+    let button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
 
     if (!button) {
       return;
+    }
+
+    const style: CSSStyleDeclaration = window.getComputedStyle(button);
+
+    // Actions are grouped in a popover on small devices?
+    if (style.display === 'none') {
+      button = this.el.querySelector('ion-tab-button.open-remote-small-devices');
+
+      console.log('Woot?', button);
+
+      if (!button) {
+        return;
+      }
     }
 
     // We click to button as we want to pass $event to the popover to stick it next to the button
@@ -433,10 +444,9 @@ export class AppActionsDeck {
         if (connected && requests && requests.length > 0) {
           // TODO
           // await closeRemote();
-          // await askAccess($event);
-          console.log('GRANT REQUESTS', requests);
+          await this.openRemoteControl($event, 'app-remote-request');
         } else {
-          await this.openRemoteControlInfo($event);
+          await this.openRemoteControl($event, 'app-remote-connect');
         }
       });
   }
@@ -485,6 +495,11 @@ export class AppActionsDeck {
           </ion-tab-button>
 
           <app-action-help class="wider-devices"></app-action-help>
+
+          <ion-tab-button onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="small-devices open-remote-small-devices" mode="md">
+            <ion-icon src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
+            <ion-label>Remote</ion-label>
+          </ion-tab-button>
 
           <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices" mode="md">
             <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
