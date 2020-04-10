@@ -41,9 +41,6 @@ export class AppMoreDeckActions {
           <p>Style</p>
         </a>
         {this.renderFullscreenOption()}
-        <a onClick={() => this.closePopover(MoreAction.REMOTE)} aria-label="Remote Control">
-          <p>Remote Control</p>
-        </a>
         <app-share-options onSelectedOption={($event: CustomEvent<MoreAction>) => this.closeSharePopover($event)}></app-share-options>
         <a onClick={() => this.closePopover(MoreAction.OFFLINE)} aria-label="Offline">
           <p>{this.offline ? 'Go Online' : 'Go Offline'}</p>

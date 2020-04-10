@@ -234,6 +234,7 @@
     {"src": "/icons/ionicons/shapes.svg", "ariaLabel": "Shapes"},
     {"src": "/icons/ionicons/code.svg", "ariaLabel": "Code"},
     {"src": "/icons/ionicons/images.svg", "ariaLabel": "Images"},
-    {"src": "/icons/album.svg", "ariaLabel": "Animation"}
+    {"src": "/icons/album.svg", "ariaLabel": "Animation"},
+    {"src": "/icons/ionicons/checkmark.svg", "ariaLabel": "Check"}
   ]
 }

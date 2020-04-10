@@ -5,8 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoDeckDefinition, DeckdeckgoEvent, DeckdeckgoSlideDefinition, } from "@deckdeckgo/types";
-import { ConnectionState, } from "./services/communication/communication.service";
+import { ConnectionState, DeckdeckgoDeckDefinition, DeckdeckgoEvent, DeckdeckgoSlideDefinition, } from "@deckdeckgo/types";
 export namespace Components {
     interface DeckgoRemote {
         "autoConnect": boolean;
@@ -24,6 +23,7 @@ export namespace Components {
         "room": string;
         "slideTo": (index: number, speed?: number) => Promise<void>;
         "socketUrl": string;
+        "start": (appSocketId: string) => Promise<void>;
         "updateReveal": (reveal: boolean) => Promise<void>;
         "updateSlide": (index: number, slide: DeckdeckgoSlideDefinition) => Promise<void>;
         "updateSlides": () => Promise<void>;

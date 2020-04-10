@@ -3,7 +3,14 @@ import * as io from 'socket.io-client';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 // Types
-import {DeckdeckgoEventDraw, DeckdeckgoEvent, DeckdeckgoEventNextPrevSlide, DeckdeckgoEventSlideAction, DeckdeckgoEventSlideTo} from '@deckdeckgo/types';
+import {
+  DeckdeckgoEventDraw,
+  DeckdeckgoEvent,
+  DeckdeckgoEventNextPrevSlide,
+  DeckdeckgoEventSlideAction,
+  DeckdeckgoEventSlideTo,
+  ConnectionState
+} from '@deckdeckgo/types';
 
 // Services
 import {EnvironmentConfigService} from '../environment/environment-config.service';
@@ -18,17 +25,10 @@ const configuration: RTCConfiguration = {
   ]
 };
 
-export enum ConnectionState {
-  DISCONNECTED,
-  CONNECTING,
-  CONNECTED_WITH_SIGNALING_SERVER,
-  CONNECTED,
-  NOT_CONNECTED
-}
-
 export interface ActiveRoom {
   room: string;
   clients: number;
+  connected: boolean;
 }
 
 // @ts-ignore
@@ -47,6 +47,9 @@ export class CommunicationService {
   private dataChannelIn: RTCDataChannel;
 
   room: string;
+  clientId: string = Math.floor(100000 + Math.random() * 900000)
+    .toString()
+    .replace(/\B(?=(\d{2})+(?!\d))/g, ' ');
 
   private state: BehaviorSubject<ConnectionState> = new BehaviorSubject<ConnectionState>(ConnectionState.DISCONNECTED);
   private event: Subject<DeckdeckgoEvent> = new Subject<DeckdeckgoEvent>();
@@ -231,7 +234,8 @@ export class CommunicationService {
   private sendApp() {
     this.socket.emit('signal', {
       type: 'app_here',
-      room: this.room
+      room: this.room,
+      message: this.clientId
     });
   }
 

@@ -1,3 +1,11 @@
+# 1.0.0 (2020-04-10)
+
+To infinity and beyond 🚀
+
+### Features
+
+- access to presentations have to be granted first by the presenter
+
 <a name="1.0.0-rc.4"></a>
 
 # 1.0.0-rc.4 (2020-03-19)

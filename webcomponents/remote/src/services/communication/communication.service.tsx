@@ -10,7 +10,11 @@ import {
   DeckdeckgoEventSlide,
   DeckdeckgoEventSlideTo,
   DeckdeckgoEventNextPrevSlide,
-  DeckdeckgoEventDeckReveal
+  DeckdeckgoEventDeckReveal,
+  DeckdeckgoEventEmitter,
+  DeckdeckgoEventDeckRequest,
+  DeckdeckgoEventType,
+  ConnectionState
 } from '@deckdeckgo/types';
 
 const configuration: RTCConfiguration = {
@@ -29,14 +33,6 @@ const dataChannelOptions = {
 };
 
 const DEFAULT_SOCKET_URL: string = 'https://api.deckdeckgo.com';
-
-export enum ConnectionState {
-  DISCONNECTED,
-  CONNECTING,
-  CONNECTED_WITH_SIGNALING_SERVER,
-  CONNECTED,
-  NOT_CONNECTED
-}
 
 // @ts-ignore
 const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
@@ -106,17 +102,12 @@ export class CommunicationService {
         }
 
         if (data.type === 'app_here') {
-          if (!this.rtcPeerConn.currentLocalDescription) {
-            // let the 'negotiationneeded' event trigger offer generation
-            await this.rtcPeerConn.createOffer().then(
-              (desc) => {
-                this.sendLocalDesc(desc);
-              },
-              (_err) => {
-                this.state.next(ConnectionState.NOT_CONNECTED);
-              }
-            );
-          }
+          this.event.next({
+            type: DeckdeckgoEventType.DECK_REQUEST,
+            emitter: DeckdeckgoEventEmitter.APP,
+            message: data.message,
+            fromSocketId: data.fromSocketId
+          } as DeckdeckgoEventDeckRequest);
 
           return;
         }
@@ -187,6 +178,23 @@ export class CommunicationService {
     });
   }
 
+  // Deck has selected an App to start the remote controlling
+  async start(appSocketId: string) {
+    if (!this.rtcPeerConn.currentLocalDescription) {
+      // let the 'negotiationneeded' event trigger offer generation
+      await this.rtcPeerConn.createOffer().then(
+        (desc) => {
+          this.sendLocalDesc(desc, appSocketId);
+        },
+        (_err) => {
+          this.state.next(ConnectionState.NOT_CONNECTED);
+        }
+      );
+    }
+
+    return;
+  }
+
   watchState(): Observable<ConnectionState> {
     return this.state.asObservable();
   }
@@ -213,13 +221,14 @@ export class CommunicationService {
     };
   }
 
-  private sendLocalDesc(desc) {
+  private sendLocalDesc(desc, appSocketId: string) {
     this.rtcPeerConn.setLocalDescription(desc).then(
       () => {
-        this.socket.emit('signal', {
+        this.socket.emit('start', {
           type: 'sending_local_description',
           message: JSON.stringify({sdp: this.rtcPeerConn.localDescription}),
-          room: this.room
+          room: this.room,
+          toSocketId: appSocketId
         });
       },
       (_err) => {
@@ -232,15 +241,21 @@ export class CommunicationService {
     if (this.dataChannelOut.readyState === 'open') {
       this.dataChannelOut.onmessage = this.receiveDataChannelMessage;
       this.state.next(ConnectionState.CONNECTED);
+
+      if (this.socket) {
+        this.socket.emit('connected', {
+          room: this.room
+        });
+      }
     }
   };
 
-  private receiveDataChannelMessage = (event) => {
-    if (!event) {
+  private receiveDataChannelMessage = ($event) => {
+    if (!$event) {
       return;
     }
 
-    const data: DeckdeckgoEvent = JSON.parse(event.data);
+    const data: DeckdeckgoEvent = JSON.parse($event.data);
     this.event.next(data);
   };
 

@@ -11,7 +11,8 @@ import {
   DeckdeckgoEventType,
   DeckdeckgoSlideAction,
   DeckdeckgoDeckDefinition,
-  DeckdeckgoSlideDefinition
+  DeckdeckgoSlideDefinition,
+  ConnectionState
 } from '@deckdeckgo/types';
 
 import {isMobile} from '@deckdeckgo/utils';
@@ -19,7 +20,7 @@ import {isMobile} from '@deckdeckgo/utils';
 import {Arrow, Circle, Drawable, Pencil} from '@deckdeckgo/remote-utils';
 
 // Services
-import {CommunicationService, ConnectionState} from '../../services/communication/communication.service';
+import {CommunicationService} from '../../services/communication/communication.service';
 
 @Component({
   tag: 'deckgo-remote',
@@ -157,6 +158,11 @@ export class DeckdeckgoRemote {
 
       resolve();
     });
+  }
+
+  @Method()
+  async start(appSocketId: string) {
+    await this.communicationService.start(appSocketId);
   }
 
   private initContext(): Promise<void> {

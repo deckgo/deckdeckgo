@@ -3,7 +3,7 @@ import {take} from 'rxjs/operators';
 
 import {debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition} from '@deckdeckgo/deck-utils';
-import {DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
+import {DeckdeckgoEventDeckRequest, DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
@@ -15,7 +15,8 @@ export class RemoteEventsHandler {
 
   private remoteService: RemoteService;
 
-  private subscription: Subscription;
+  private connectSubscription: Subscription;
+  private acceptRequestSubscription: Subscription;
 
   constructor() {
     this.remoteService = RemoteService.getInstance();
@@ -27,12 +28,16 @@ export class RemoteEventsHandler {
 
       await this.initRemote();
 
-      this.subscription = this.remoteService.watch().subscribe(async (enable: boolean) => {
+      this.connectSubscription = this.remoteService.watch().subscribe(async (enable: boolean) => {
         if (enable) {
           await this.connect();
         } else {
           await this.disconnect();
         }
+      });
+
+      this.acceptRequestSubscription = this.remoteService.watchAcceptedRequest().subscribe(async (request: DeckdeckgoEventDeckRequest) => {
+        await this.startAcceptedRemoteRequest(request);
       });
 
       resolve();
@@ -42,8 +47,12 @@ export class RemoteEventsHandler {
   async destroy() {
     await this.disconnect();
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.connectSubscription) {
+      this.connectSubscription.unsubscribe();
+    }
+
+    if (this.acceptRequestSubscription) {
+      this.acceptRequestSubscription.unsubscribe();
     }
 
     const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');
@@ -51,6 +60,10 @@ export class RemoteEventsHandler {
     if (deckgoRemoteElement) {
       deckgoRemoteElement.removeEventListener('event', async ($event) => {
         await this.remoteEvent($event);
+      });
+
+      deckgoRemoteElement.removeEventListener('state', async ($event) => {
+        await this.remoteState($event);
       });
     }
 
@@ -83,16 +96,16 @@ export class RemoteEventsHandler {
         await this.slidePrevNext(false, true);
       });
 
-      deck.removeEventListener('slideWillChange', async (event) => {
-        await this.moveRemote(event);
+      deck.removeEventListener('slideWillChange', async ($event) => {
+        await this.moveRemote($event);
       });
 
-      deck.removeEventListener('slideDrag', async (event) => {
-        await this.scrollRemote(event);
+      deck.removeEventListener('slideDrag', async ($event) => {
+        await this.scrollRemote($event);
       });
 
-      deck.removeEventListener('slideToChange', async (event) => {
-        await this.slideToChange(event);
+      deck.removeEventListener('slideToChange', async ($event) => {
+        await this.slideToChange($event);
       });
     }
 
@@ -118,6 +131,10 @@ export class RemoteEventsHandler {
         await this.remoteEvent($event);
       });
 
+      deckgoRemoteElement.addEventListener('state', async ($event) => {
+        await this.remoteState($event);
+      });
+
       window.addEventListener(
         'resize',
         debounce(async () => {
@@ -140,7 +157,15 @@ export class RemoteEventsHandler {
     });
   }
 
-  remoteEvent = async ($event) => {
+  private remoteState = async ($event) => {
+    if (!$event || !$event.detail) {
+      return;
+    }
+
+    this.remoteService.nextState($event.detail);
+  };
+
+  private remoteEvent = async ($event) => {
     return new Promise(async (resolve) => {
       if (!$event || !$event.detail) {
         resolve();
@@ -169,6 +194,8 @@ export class RemoteEventsHandler {
         if (index >= 0) {
           await deck.slideTo(index, 0);
         }
+      } else if (type === 'deck_request') {
+        await this.remoteService.addPendingRequests($event.detail);
       }
 
       resolve();
@@ -291,16 +318,16 @@ export class RemoteEventsHandler {
         await this.slidePrevNext(false, true);
       });
 
-      deck.addEventListener('slideWillChange', async (event) => {
-        await this.moveRemote(event);
+      deck.addEventListener('slideWillChange', async ($event) => {
+        await this.moveRemote($event);
       });
 
-      deck.addEventListener('slideDrag', async (event) => {
-        await this.scrollRemote(event);
+      deck.addEventListener('slideDrag', async ($event) => {
+        await this.scrollRemote($event);
       });
 
-      deck.addEventListener('slideToChange', async (event) => {
-        await this.slideToChange(event);
+      deck.addEventListener('slideToChange', async ($event) => {
+        await this.slideToChange($event);
       });
 
       resolve();
@@ -629,5 +656,19 @@ export class RemoteEventsHandler {
 
       resolve();
     });
+  }
+
+  private async startAcceptedRemoteRequest(request: DeckdeckgoEventDeckRequest) {
+    if (!request || !request.fromSocketId) {
+      return;
+    }
+
+    const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+
+    if (!deckgoRemoteElement) {
+      return;
+    }
+
+    await deckgoRemoteElement.start(request.fromSocketId);
   }
 }

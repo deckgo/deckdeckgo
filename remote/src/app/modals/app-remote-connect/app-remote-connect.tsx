@@ -12,7 +12,11 @@ import {ActiveRoom, CommunicationService} from '../../services/communication/com
 export class AppRemoteConnect {
   @Element() el: HTMLElement;
 
-  @State() rooms: ActiveRoom[] = [];
+  @State()
+  private rooms: ActiveRoom[] = [];
+
+  @State()
+  private readonly clientId: string;
 
   private readonly subscription: Subscription;
 
@@ -24,6 +28,8 @@ export class AppRemoteConnect {
     this.subscription = this.communicationService.watchRooms().subscribe(async (activeRooms: ActiveRoom[]) => {
       this.rooms = activeRooms;
     });
+
+    this.clientId = this.communicationService.clientId;
   }
 
   async componentDidLoad() {
@@ -72,7 +78,9 @@ export class AppRemoteConnect {
       return (
         <ion-list>
           <ion-list-header class="ion-padding-bottom ion-padding-top">
-            <ion-label>Pick a presentation currently not in use</ion-label>
+            <ion-label>
+              Pick a presentation. Your remote ID is <strong>{this.clientId}</strong>.
+            </ion-label>
           </ion-list-header>
 
           <ion-radio-group>{this.renderRooms()}</ion-radio-group>
@@ -86,7 +94,7 @@ export class AppRemoteConnect {
   private renderRooms() {
     return this.rooms.map((activeRoom: ActiveRoom) => {
       return (
-        <ion-item onClick={() => this.updateAndCloseModal(activeRoom.room)} disabled={activeRoom.clients > 1}>
+        <ion-item onClick={() => this.updateAndCloseModal(activeRoom.room)} disabled={activeRoom.connected}>
           <ion-label>{activeRoom.room}</ion-label>
           <ion-radio slot="end" value={activeRoom.room}></ion-radio>
         </ion-item>

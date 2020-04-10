@@ -1,3 +1,11 @@
+<a name="1.1.0"></a>
+
+# 1.1.0 (2020-04-10)
+
+### Features
+
+- remote connection state enum
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-18)

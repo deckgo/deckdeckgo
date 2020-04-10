@@ -25,7 +25,7 @@
     "@deckdeckgo/inline-editor": "^1.0.0",
     "@deckdeckgo/lazy-img": "^1.0.0",
     "@deckdeckgo/qrcode": "^1.0.0",
-    "@deckdeckgo/remote": "^1.0.0",
+    "@deckdeckgo/remote": "^1.1.0",
     "@deckdeckgo/slide-aspect-ratio": "^1.0.0",
     "@deckdeckgo/slide-author": "^1.0.0",
     "@deckdeckgo/slide-chart": "^1.0.0",
@@ -48,7 +48,7 @@
     "web-social-share": "^6.3.0"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0",
+    "@deckdeckgo/types": "^1.1.0",
     "@rollup/plugin-replace": "^2.3.1",
     "@stencil/core": "^1.8.11",
     "@stencil/postcss": "^1.0.1",

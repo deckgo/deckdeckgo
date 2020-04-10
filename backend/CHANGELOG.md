@@ -1,3 +1,11 @@
+<a name="2.0.0"></a>
+
+# 2.0.0 (2020-04-10)
+
+### Breaking Changes
+
+- access to remote control happens only if presenter accept the connection first
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-19)
