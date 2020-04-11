@@ -1,0 +1,9 @@
+div.separator {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1px;
+  min-width: 1px;
+  margin: 0 6px;
+  height: 24px;
+  background: var(--deckgo-inline-editor-separator-background, rgba(56, 128, 255, 0.2));
+}
