@@ -39,14 +39,6 @@ div.deckgo-tools {
     height: var(--deckgo-inline-editor-sticky-height, 56px);
   }
 
-  div.color {
-    max-width: var(--deckgo-inline-editor-width, 216px);
-
-    deckgo-color {
-      pointer-events: all;
-    }
-  }
-
   &.deckgo-tools-activated {
     visibility: visible;
     opacity: 1;
@@ -85,28 +77,6 @@ div.deckgo-tools {
       &[disabled] {
         color: var(--deckgo-inline-editor-button-mobile-color-disabled, #f4f5f8);
       }
-    }
-
-    div.separator {
-      background: var(--deckgo-ie-separator-mobile-background, #f4f5f8);
-    }
-
-    div.link {
-      width: 100%;
-
-      input {
-        color: var(--deckgo-inline-editor-link-mobile-color, inherit);
-
-        &::placeholder {
-          color: var(--deckgo-inline-editor-link-mobile-placeholder-color, inherit);
-        }
-      }
-    }
-
-    div.color {
-      max-width: 100%;
-      overflow: scroll;
-      --deckgo-flex-wrap: nowrap;
     }
   }
 }

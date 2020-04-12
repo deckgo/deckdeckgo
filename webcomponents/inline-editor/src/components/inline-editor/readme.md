@@ -43,7 +43,7 @@ Type: `Promise<void>`
 - [deckgo-ie-action-button](../action-button)
 - [deckgo-ie-action-image](../action-image)
 - [deckgo-ie-link-actions](../link-actions)
-- deckgo-color
+- [deckgo-ie-color-actions](../color-actions)
 - [deckgo-ie-image-actions](../image-actions)
 - [deckgo-ie-separator](../separator)
 
@@ -54,9 +54,10 @@ graph TD;
   deckgo-inline-editor --> deckgo-ie-action-button
   deckgo-inline-editor --> deckgo-ie-action-image
   deckgo-inline-editor --> deckgo-ie-link-actions
-  deckgo-inline-editor --> deckgo-color
+  deckgo-inline-editor --> deckgo-ie-color-actions
   deckgo-inline-editor --> deckgo-ie-image-actions
   deckgo-inline-editor --> deckgo-ie-separator
+  deckgo-ie-color-actions --> deckgo-color
   deckgo-ie-image-actions --> deckgo-ie-action-button
   deckgo-ie-image-actions --> deckgo-ie-action-image
   deckgo-ie-image-actions --> deckgo-ie-separator

@@ -7,3 +7,9 @@ div.separator {
   height: 24px;
   background: var(--deckgo-inline-editor-separator-background, rgba(56, 128, 255, 0.2));
 }
+
+:host(.deckgo-tools-mobile) {
+  div.separator {
+    background: var(--deckgo-ie-separator-mobile-background, #f4f5f8);
+  }
+}

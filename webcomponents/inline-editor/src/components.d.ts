@@ -5,10 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { DeckdeckgoPalette, } from "@deckdeckgo/color";
 import { EventEmitter, } from "@stencil/core";
 import { ToolbarActions, } from "./types/enums";
 import { AnchorLink, InlineAction, } from "./interfaces/interfaces";
-import { DeckdeckgoPalette, } from "@deckdeckgo/color";
 export namespace Components {
     interface DeckgoIeActionButton {
         "cssClass": string;
@@ -17,6 +17,12 @@ export namespace Components {
     }
     interface DeckgoIeActionImage {
         "cssClass": string;
+    }
+    interface DeckgoIeColorActions {
+        "color": string;
+        "mobile": boolean;
+        "palette": DeckdeckgoPalette[];
+        "selection": Selection;
     }
     interface DeckgoIeImageActions {
         "anchorEvent": MouseEvent | TouchEvent;
@@ -30,10 +36,12 @@ export namespace Components {
     interface DeckgoIeLinkActions {
         "anchorLink": AnchorLink;
         "linkCreated": EventEmitter<HTMLElement>;
+        "mobile": boolean;
         "selection": Selection;
         "toolbarActions": ToolbarActions;
     }
     interface DeckgoIeSeparator {
+        "mobile": boolean;
     }
     interface DeckgoInlineEditor {
         "attachTo": HTMLElement;
@@ -64,6 +72,12 @@ declare global {
         prototype: HTMLDeckgoIeActionImageElement;
         new (): HTMLDeckgoIeActionImageElement;
     };
+    interface HTMLDeckgoIeColorActionsElement extends Components.DeckgoIeColorActions, HTMLStencilElement {
+    }
+    var HTMLDeckgoIeColorActionsElement: {
+        prototype: HTMLDeckgoIeColorActionsElement;
+        new (): HTMLDeckgoIeColorActionsElement;
+    };
     interface HTMLDeckgoIeImageActionsElement extends Components.DeckgoIeImageActions, HTMLStencilElement {
     }
     var HTMLDeckgoIeImageActionsElement: {
@@ -91,6 +105,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "deckgo-ie-action-button": HTMLDeckgoIeActionButtonElement;
         "deckgo-ie-action-image": HTMLDeckgoIeActionImageElement;
+        "deckgo-ie-color-actions": HTMLDeckgoIeColorActionsElement;
         "deckgo-ie-image-actions": HTMLDeckgoIeImageActionsElement;
         "deckgo-ie-link-actions": HTMLDeckgoIeLinkActionsElement;
         "deckgo-ie-separator": HTMLDeckgoIeSeparatorElement;
@@ -107,6 +122,13 @@ declare namespace LocalJSX {
     interface DeckgoIeActionImage {
         "cssClass"?: string;
     }
+    interface DeckgoIeColorActions {
+        "color"?: string;
+        "mobile"?: boolean;
+        "onColorModified"?: (event: CustomEvent<void>) => void;
+        "palette"?: DeckdeckgoPalette[];
+        "selection"?: Selection;
+    }
     interface DeckgoIeImageActions {
         "anchorEvent"?: MouseEvent | TouchEvent;
         "containers"?: string;
@@ -120,11 +142,13 @@ declare namespace LocalJSX {
     interface DeckgoIeLinkActions {
         "anchorLink"?: AnchorLink;
         "linkCreated"?: EventEmitter<HTMLElement>;
+        "mobile"?: boolean;
         "onLinkModified"?: (event: CustomEvent<boolean>) => void;
         "selection"?: Selection;
         "toolbarActions"?: ToolbarActions;
     }
     interface DeckgoIeSeparator {
+        "mobile"?: boolean;
     }
     interface DeckgoInlineEditor {
         "attachTo"?: HTMLElement;
@@ -147,6 +171,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "deckgo-ie-action-button": DeckgoIeActionButton;
         "deckgo-ie-action-image": DeckgoIeActionImage;
+        "deckgo-ie-color-actions": DeckgoIeColorActions;
         "deckgo-ie-image-actions": DeckgoIeImageActions;
         "deckgo-ie-link-actions": DeckgoIeLinkActions;
         "deckgo-ie-separator": DeckgoIeSeparator;
@@ -159,6 +184,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "deckgo-ie-action-button": LocalJSX.DeckgoIeActionButton & JSXBase.HTMLAttributes<HTMLDeckgoIeActionButtonElement>;
             "deckgo-ie-action-image": LocalJSX.DeckgoIeActionImage & JSXBase.HTMLAttributes<HTMLDeckgoIeActionImageElement>;
+            "deckgo-ie-color-actions": LocalJSX.DeckgoIeColorActions & JSXBase.HTMLAttributes<HTMLDeckgoIeColorActionsElement>;
             "deckgo-ie-image-actions": LocalJSX.DeckgoIeImageActions & JSXBase.HTMLAttributes<HTMLDeckgoIeImageActionsElement>;
             "deckgo-ie-link-actions": LocalJSX.DeckgoIeLinkActions & JSXBase.HTMLAttributes<HTMLDeckgoIeLinkActionsElement>;
             "deckgo-ie-separator": LocalJSX.DeckgoIeSeparator & JSXBase.HTMLAttributes<HTMLDeckgoIeSeparatorElement>;

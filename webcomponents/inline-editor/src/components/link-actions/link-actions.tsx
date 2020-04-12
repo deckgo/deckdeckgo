@@ -24,6 +24,9 @@ export class LinkActions {
   @Prop()
   linkCreated: EventEmitter<HTMLElement>;
 
+  @Prop()
+  mobile: boolean;
+
   @Event()
   linkModified: EventEmitter<boolean>;
 
@@ -127,8 +130,10 @@ export class LinkActions {
   }
 
   render() {
+    const cssClass = this.mobile ? 'deckgo-tools-mobile' : undefined;
+
     return (
-      <Host>
+      <Host class={cssClass}>
         <input
           autofocus
           placeholder="Add a link..."

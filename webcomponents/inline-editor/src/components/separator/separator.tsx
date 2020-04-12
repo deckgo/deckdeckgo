@@ -1,4 +1,4 @@
-import {Component, h} from '@stencil/core';
+import {Component, h, Host, Prop} from '@stencil/core';
 
 @Component({
   tag: 'deckgo-ie-separator',
@@ -6,7 +6,16 @@ import {Component, h} from '@stencil/core';
   shadow: true
 })
 export class Separator {
+  @Prop()
+  mobile: boolean;
+
   render() {
-    return <div class="separator"></div>;
+    const cssClass = this.mobile ? 'deckgo-tools-mobile' : undefined;
+
+    return (
+      <Host class={cssClass}>
+        <div class="separator"></div>
+      </Host>
+    );
   }
 }

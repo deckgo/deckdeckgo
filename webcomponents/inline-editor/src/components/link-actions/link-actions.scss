@@ -22,3 +22,15 @@
     }
   }
 }
+
+:host(.deckgo-tools-mobile) {
+  width: 100%;
+
+  input {
+    color: var(--deckgo-inline-editor-link-mobile-color, inherit);
+
+    &::placeholder {
+      color: var(--deckgo-inline-editor-link-mobile-placeholder-color, inherit);
+    }
+  }
+}

@@ -757,41 +757,12 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private async selectColor($event: CustomEvent) {
-    if (!this.selection || !$event || !$event.detail) {
-      return;
-    }
-
-    this.color = $event.detail.hex;
-
-    if (!this.selection || this.selection.rangeCount <= 0 || !document) {
-      return;
-    }
-
-    const text: string = this.selection.toString();
-
-    if (!text || text.length <= 0) {
-      return;
-    }
-
-    document.execCommand('foreColor', false, this.color);
-
-    await this.reset(true);
+  private async openColorPicker(): Promise<void> {
+    this.toolbarActions = ToolbarActions.COLOR;
   }
 
-  private openColorPicker(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.toolbarActions = ToolbarActions.COLOR;
-
-      resolve();
-    });
-  }
-  private openAlignmentActions(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.toolbarActions = ToolbarActions.ALIGNMENT;
-
-      resolve();
-    });
+  private async openAlignmentActions(): Promise<void> {
+    this.toolbarActions = ToolbarActions.ALIGNMENT;
   }
 
   renderAlignmentActions() {
@@ -857,15 +828,17 @@ export class DeckdeckgoInlineEditor {
           anchorLink={this.anchorLink}
           selection={this.selection}
           linkCreated={this.linkCreated}
+          mobile={this.mobile}
           onLinkModified={($event: CustomEvent<boolean>) => this.reset($event.detail)}></deckgo-ie-link-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.COLOR) {
       return (
-        <div class="color">
-          <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} more={false} palette={this.palette}>
-            <div slot="more"></div>
-          </deckgo-color>
-        </div>
+        <deckgo-ie-color-actions
+          selection={this.selection}
+          color={this.color}
+          palette={this.palette}
+          mobile={this.mobile}
+          onColorModified={() => this.reset(true)}></deckgo-ie-color-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.IMAGE) {
       return (
@@ -941,7 +914,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private renderSeparator() {
-    return <deckgo-ie-separator></deckgo-ie-separator>;
+    return <deckgo-ie-separator mobile={this.mobile}></deckgo-ie-separator>;
   }
 
   private renderCustomActions() {

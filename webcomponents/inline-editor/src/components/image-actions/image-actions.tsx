@@ -185,7 +185,7 @@ export class ImageActions {
         <deckgo-ie-action-image cssClass={'image small'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
 
-      <deckgo-ie-separator></deckgo-ie-separator>,
+      <deckgo-ie-separator mobile={this.mobile}></deckgo-ie-separator>,
 
       <deckgo-ie-action-button
         mobile={this.mobile}
@@ -201,7 +201,7 @@ export class ImageActions {
         <div></div>
       </deckgo-ie-action-button>,
 
-      <deckgo-ie-separator></deckgo-ie-separator>,
+      <deckgo-ie-separator mobile={this.mobile}></deckgo-ie-separator>,
 
       <deckgo-ie-action-button mobile={this.mobile} onAction={($event: CustomEvent<UIEvent>) => this.deleteImage($event.detail)}>
         <deckgo-ie-action-image cssClass={'image-delete'}></deckgo-ie-action-image>

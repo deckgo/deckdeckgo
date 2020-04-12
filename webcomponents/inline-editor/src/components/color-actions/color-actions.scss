@@ -1,0 +1,13 @@
+:host {
+  max-width: var(--deckgo-inline-editor-width, 216px);
+
+  deckgo-color {
+    pointer-events: all;
+  }
+}
+
+:host(.deckgo-tools-mobile) {
+  max-width: 100%;
+  --deckgo-overflow: scroll;
+  --deckgo-flex-wrap: nowrap;
+}
