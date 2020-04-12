@@ -5,6 +5,11 @@ div {
   background-color: var(--deckgo-inline-editor-button-color, #3880ff);
 }
 
+:host {
+  pointer-events: none;
+  display: block;
+}
+
 :host(.ordered-list),
 :host(.unordered-list),
 :host(.link),

@@ -61,13 +61,13 @@ export class StyleActions {
           onAction={($event: CustomEvent<UIEvent>) => this.styleBold($event.detail)}
           disableAction={this.disabledTitle}
           cssClass={this.bold ? 'bold active' : 'bold'}>
-          B
+          <span>B</span>
         </deckgo-ie-action-button>
         <deckgo-ie-action-button
           mobile={this.mobile}
           onAction={($event: CustomEvent<UIEvent>) => this.styleItalic($event.detail)}
           cssClass={this.italic ? 'italic active' : 'italic'}>
-          I
+          <span>I</span>
         </deckgo-ie-action-button>
         <deckgo-ie-action-button
           mobile={this.mobile}

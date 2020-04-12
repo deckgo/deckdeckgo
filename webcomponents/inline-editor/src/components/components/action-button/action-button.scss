@@ -110,3 +110,7 @@ button {
     }
   }
 }
+
+::slotted(*) {
+  pointer-events: none;
+}
