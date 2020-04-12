@@ -7,7 +7,7 @@
 }
 
 :host(.deckgo-tools-mobile) {
-  max-width: 100%;
+  max-width: calc(100% - 54px);
   --deckgo-overflow: scroll;
   --deckgo-flex-wrap: nowrap;
 }
