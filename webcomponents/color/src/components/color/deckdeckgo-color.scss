@@ -9,7 +9,7 @@ div.color-container {
   align-items: center;
   flex-wrap: var(--deckgo-flex-wrap, wrap);
 
-  overflow: visible;
+  overflow: var(--deckgo-overflow, visible);
 
   button,
   div.more {
