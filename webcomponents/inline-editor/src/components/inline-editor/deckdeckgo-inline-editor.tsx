@@ -6,7 +6,7 @@ import '@deckdeckgo/color';
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
 import {ToolbarActions, ContentAlign} from '../../types/enums';
-import {AnchorLink, InlineAction, InputTargetEvent} from '../../interfaces/deckdeckgo-inline-editor.interface';
+import {AnchorLink, InlineAction} from '../../interfaces/interfaces';
 
 import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
 
@@ -73,8 +73,6 @@ export class DeckdeckgoInlineEditor {
   private toolbarActions: ToolbarActions = ToolbarActions.SELECTION;
 
   @Event() stickyToolbarActivated: EventEmitter<boolean>;
-
-  private linkUrl: string;
 
   @Prop()
   attachTo: HTMLElement;
@@ -735,105 +733,6 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private createLink(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!document) {
-        resolve();
-        return;
-      }
-
-      if (!this.anchorLink) {
-        resolve();
-        return;
-      }
-
-      if (!this.linkUrl || this.linkUrl.length <= 0) {
-        resolve();
-        return;
-      }
-
-      let container: Node = this.anchorLink.range.commonAncestorContainer ? this.anchorLink.range.commonAncestorContainer : this.selection.anchorNode;
-
-      if (!container) {
-        resolve();
-        return;
-      }
-
-      // If node text
-      if (container.nodeType === 3) {
-        container = container.parentElement;
-      }
-
-      const target: Node = Array.from(container.childNodes).find((node: Node) => {
-        return node.textContent && node.textContent.trim().indexOf(this.anchorLink.text) > -1;
-      });
-
-      if (!target) {
-        resolve();
-        return;
-      }
-
-      if (target.nodeType === 3) {
-        const index: number = target.textContent.indexOf(this.anchorLink.text);
-
-        const textBefore: string = index > -1 ? target.textContent.substr(0, index) : null;
-        const textAfter: string = index + this.anchorLink.text.length > -1 ? target.textContent.substr(index + this.anchorLink.text.length) : null;
-
-        if (textBefore) {
-          target.parentElement.insertBefore(document.createTextNode(textBefore), target);
-        }
-
-        const a: HTMLAnchorElement = await this.createLinkElement();
-        target.parentElement.insertBefore(a, target);
-
-        if (textAfter) {
-          target.parentElement.insertBefore(document.createTextNode(textAfter), target);
-        }
-
-        target.parentElement.removeChild(target);
-      } else {
-        const a: HTMLAnchorElement = await this.createLinkElement();
-
-        target.parentElement.replaceChild(a, target);
-      }
-
-      this.linkCreated.emit(container as HTMLElement);
-
-      this.toolbarActions = ToolbarActions.SELECTION;
-
-      resolve();
-    });
-  }
-
-  private createLinkElement(): Promise<HTMLAnchorElement> {
-    return new Promise<HTMLAnchorElement>((resolve) => {
-      const a: HTMLAnchorElement = document.createElement('a');
-      const linkText: Text = document.createTextNode(this.anchorLink.text);
-      a.appendChild(linkText);
-      a.title = this.anchorLink.text;
-      a.href = this.linkUrl;
-
-      resolve(a);
-    });
-  }
-
-  private handleLinkInput($event: UIEvent) {
-    this.linkUrl = ($event.target as InputTargetEvent).value;
-  }
-
-  private async handleLinkEnter($event: KeyboardEvent) {
-    if (!$event) {
-      return;
-    }
-
-    if (this.toolbarActions === ToolbarActions.SELECTION && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
-      await this.reset(false);
-    } else if (this.toolbarActions === ToolbarActions.LINK && $event.key.toLowerCase() === 'enter') {
-      await this.createLink();
-      await this.reset(true);
-    }
-  }
-
   private isSticky(): boolean {
     const mobile: boolean = isMobile();
 
@@ -953,13 +852,12 @@ export class DeckdeckgoInlineEditor {
   private renderActions() {
     if (this.toolbarActions === ToolbarActions.LINK) {
       return (
-        <div class="link">
-          <input
-            autofocus
-            placeholder="Add a link..."
-            onInput={($event: UIEvent) => this.handleLinkInput($event)}
-            onKeyUp={($event: KeyboardEvent) => this.handleLinkEnter($event)}></input>
-        </div>
+        <deckgo-ie-link-actions
+          toolbarActions={this.toolbarActions}
+          anchorLink={this.anchorLink}
+          selection={this.selection}
+          linkCreated={this.linkCreated}
+          onLinkModified={($event: CustomEvent<boolean>) => this.reset($event.detail)}></deckgo-ie-link-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.COLOR) {
       return (

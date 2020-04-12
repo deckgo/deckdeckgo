@@ -6,8 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, } from "@stencil/core";
+import { ToolbarActions, } from "./types/enums";
+import { AnchorLink, InlineAction, } from "./interfaces/interfaces";
 import { DeckdeckgoPalette, } from "@deckdeckgo/color";
-import { InlineAction, } from "./interfaces/deckdeckgo-inline-editor.interface";
 export namespace Components {
     interface DeckgoIeActionButton {
         "cssClass": string;
@@ -25,6 +26,12 @@ export namespace Components {
         "imgPropertyCssFloat": string;
         "imgPropertyWidth": string;
         "mobile": boolean;
+    }
+    interface DeckgoIeLinkActions {
+        "anchorLink": AnchorLink;
+        "linkCreated": EventEmitter<HTMLElement>;
+        "selection": Selection;
+        "toolbarActions": ToolbarActions;
     }
     interface DeckgoIeSeparator {
     }
@@ -63,6 +70,12 @@ declare global {
         prototype: HTMLDeckgoIeImageActionsElement;
         new (): HTMLDeckgoIeImageActionsElement;
     };
+    interface HTMLDeckgoIeLinkActionsElement extends Components.DeckgoIeLinkActions, HTMLStencilElement {
+    }
+    var HTMLDeckgoIeLinkActionsElement: {
+        prototype: HTMLDeckgoIeLinkActionsElement;
+        new (): HTMLDeckgoIeLinkActionsElement;
+    };
     interface HTMLDeckgoIeSeparatorElement extends Components.DeckgoIeSeparator, HTMLStencilElement {
     }
     var HTMLDeckgoIeSeparatorElement: {
@@ -79,6 +92,7 @@ declare global {
         "deckgo-ie-action-button": HTMLDeckgoIeActionButtonElement;
         "deckgo-ie-action-image": HTMLDeckgoIeActionImageElement;
         "deckgo-ie-image-actions": HTMLDeckgoIeImageActionsElement;
+        "deckgo-ie-link-actions": HTMLDeckgoIeLinkActionsElement;
         "deckgo-ie-separator": HTMLDeckgoIeSeparatorElement;
         "deckgo-inline-editor": HTMLDeckgoInlineEditorElement;
     }
@@ -102,6 +116,13 @@ declare namespace LocalJSX {
         "imgPropertyWidth"?: string;
         "mobile"?: boolean;
         "onImgModified"?: (event: CustomEvent<void>) => void;
+    }
+    interface DeckgoIeLinkActions {
+        "anchorLink"?: AnchorLink;
+        "linkCreated"?: EventEmitter<HTMLElement>;
+        "onLinkModified"?: (event: CustomEvent<boolean>) => void;
+        "selection"?: Selection;
+        "toolbarActions"?: ToolbarActions;
     }
     interface DeckgoIeSeparator {
     }
@@ -127,6 +148,7 @@ declare namespace LocalJSX {
         "deckgo-ie-action-button": DeckgoIeActionButton;
         "deckgo-ie-action-image": DeckgoIeActionImage;
         "deckgo-ie-image-actions": DeckgoIeImageActions;
+        "deckgo-ie-link-actions": DeckgoIeLinkActions;
         "deckgo-ie-separator": DeckgoIeSeparator;
         "deckgo-inline-editor": DeckgoInlineEditor;
     }
@@ -138,6 +160,7 @@ declare module "@stencil/core" {
             "deckgo-ie-action-button": LocalJSX.DeckgoIeActionButton & JSXBase.HTMLAttributes<HTMLDeckgoIeActionButtonElement>;
             "deckgo-ie-action-image": LocalJSX.DeckgoIeActionImage & JSXBase.HTMLAttributes<HTMLDeckgoIeActionImageElement>;
             "deckgo-ie-image-actions": LocalJSX.DeckgoIeImageActions & JSXBase.HTMLAttributes<HTMLDeckgoIeImageActionsElement>;
+            "deckgo-ie-link-actions": LocalJSX.DeckgoIeLinkActions & JSXBase.HTMLAttributes<HTMLDeckgoIeLinkActionsElement>;
             "deckgo-ie-separator": LocalJSX.DeckgoIeSeparator & JSXBase.HTMLAttributes<HTMLDeckgoIeSeparatorElement>;
             "deckgo-inline-editor": LocalJSX.DeckgoInlineEditor & JSXBase.HTMLAttributes<HTMLDeckgoInlineEditorElement>;
         }
