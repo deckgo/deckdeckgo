@@ -209,6 +209,7 @@ The following theming options will affect this component if set on its host or p
 | --deckgo-button-more-border        | none        | The border of the more button                                 |
 | --deckgo-button-more-outline       | none        | The outline of the more button                                |
 | --deckgo-flex-wrap                 | wrap        | Wrap properties of the buttons' container                     |
+| --deckgo-overflow                  | visible     | Overflow property of the buttons's container                  |
 | --deckgo-button-more-background    | transparent | The background of the more button                             |
 
 ### Events
