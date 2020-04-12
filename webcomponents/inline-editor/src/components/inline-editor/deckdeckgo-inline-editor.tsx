@@ -1,18 +1,19 @@
-import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method, h} from '@stencil/core';
+import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method, h, Host} from '@stencil/core';
 
 import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
 
 import '@deckdeckgo/color';
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
-import {DeckdeckgoInlineEditorUtils} from '../../types/inline-editor/deckdeckgo-inline-editor-utils';
-import {ImageSize, ImageAlign, ToolbarActions, ContentAlign} from '../../utils/enums';
-import {AnchorLink, InlineAction, InputTargetEvent} from './deckdeckgo-inline-editor.interface';
+import {ToolbarActions, ContentAlign} from '../../types/enums';
+import {AnchorLink, InlineAction} from '../../interfaces/interfaces';
+
+import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
 
 @Component({
   tag: 'deckgo-inline-editor',
   styleUrl: 'deckdeckgo-inline-editor.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoInlineEditor {
   @Element() el: HTMLElement;
@@ -36,12 +37,6 @@ export class DeckdeckgoInlineEditor {
 
   @State()
   private unorderedList: boolean = false;
-
-  @State()
-  private imageSize: ImageSize;
-
-  @State()
-  private imageAlign: ImageAlign;
 
   @State()
   private color: string;
@@ -79,8 +74,6 @@ export class DeckdeckgoInlineEditor {
 
   @Event() stickyToolbarActivated: EventEmitter<boolean>;
 
-  private linkUrl: string;
-
   @Prop()
   attachTo: HTMLElement;
 
@@ -98,7 +91,7 @@ export class DeckdeckgoInlineEditor {
   imgPropertyWidth: string = 'width';
 
   @Prop()
-  imgPropertyCssFloat: string = 'cssFloat';
+  imgPropertyCssFloat: string = 'float';
 
   private iOSTimerScroll: number;
 
@@ -240,24 +233,6 @@ export class DeckdeckgoInlineEditor {
 
   private activateToolbarImage(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const target: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-
-      if (target.style.getPropertyValue(this.imgPropertyWidth) === '25%') {
-        this.imageSize = ImageSize.SMALL;
-      } else if (target.style.getPropertyValue(this.imgPropertyWidth) === '50%') {
-        this.imageSize = ImageSize.MEDIUM;
-      } else if (target.style.getPropertyValue(this.imgPropertyWidth) === '75%') {
-        this.imageSize = ImageSize.LARGE;
-      } else {
-        this.imageSize = ImageSize.ORIGINAL;
-      }
-
-      if (target.style.getPropertyValue(this.imgPropertyCssFloat) === 'left') {
-        this.imageAlign = ImageAlign.START;
-      } else {
-        this.imageAlign = ImageAlign.STANDARD;
-      }
-
       this.toolbarActions = ToolbarActions.IMAGE;
       this.color = undefined;
       await this.setToolsActivated(true);
@@ -267,21 +242,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private isAnchorImage(): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      if (!this.anchorEvent) {
-        resolve(false);
-        return;
-      }
-
-      if (!this.anchorEvent.target || !(this.anchorEvent.target instanceof HTMLElement)) {
-        resolve(false);
-        return;
-      }
-
-      const target: HTMLElement = this.anchorEvent.target;
-
-      resolve(target.nodeName && target.nodeName.toLowerCase() === this.imgAnchor);
-    });
+    return DeckdeckgoInlineEditorUtils.isAnchorImage(this.anchorEvent, this.imgAnchor);
   }
 
   @Listen('selectionchange', {target: 'document', passive: true})
@@ -335,7 +296,7 @@ export class DeckdeckgoInlineEditor {
           this.anchorLink = {
             range: range,
             text: selection.toString(),
-            element: document.activeElement
+            element: document.activeElement,
           };
 
           await this.setToolbarAnchorPosition();
@@ -486,8 +447,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private isContainer(element: Node): boolean {
-    const containerTypes: string[] = this.containers.toLowerCase().split(',');
-    return element && element.nodeName && containerTypes.indexOf(element.nodeName.toLowerCase()) > -1;
+    return DeckdeckgoInlineEditorUtils.isContainer(this.containers, element);
   }
 
   // TODO: Find a clever way to detect to root container
@@ -642,47 +602,11 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private styleBold(e: UIEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      await this.execCommand('bold');
-
-      await this.initStyle(this.selection);
-
-      resolve();
-    });
-  }
-
-  private styleItalic(e: UIEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      await this.execCommand('italic');
-
-      await this.initStyle(this.selection);
-
-      resolve();
-    });
-  }
-
-  private styleUnderline(e: UIEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      await this.execCommand('underline');
-
-      await this.initStyle(this.selection);
-
-      resolve();
-    });
-  }
-
   private justifyContent(e: UIEvent, align: ContentAlign): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.execCommand(align.toString());
+      await DeckdeckgoInlineEditorUtils.execCommand(this.selection, align.toString());
 
       //this.contentAlign = align;
       await this.initStyle(this.selection);
@@ -694,29 +618,9 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.execCommand(cmd);
+      await DeckdeckgoInlineEditorUtils.execCommand(this.selection, cmd);
 
       await this.reset(true);
-
-      resolve();
-    });
-  }
-
-  private execCommand(command: string): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selection || this.selection.rangeCount <= 0 || !document) {
-        resolve();
-        return;
-      }
-
-      const text: string = this.selection.toString();
-
-      if (!text || text.length <= 0) {
-        resolve();
-        return;
-      }
-
-      document.execCommand(command);
 
       resolve();
     });
@@ -773,105 +677,6 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private createLink(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!document) {
-        resolve();
-        return;
-      }
-
-      if (!this.anchorLink) {
-        resolve();
-        return;
-      }
-
-      if (!this.linkUrl || this.linkUrl.length <= 0) {
-        resolve();
-        return;
-      }
-
-      let container: Node = this.anchorLink.range.commonAncestorContainer ? this.anchorLink.range.commonAncestorContainer : this.selection.anchorNode;
-
-      if (!container) {
-        resolve();
-        return;
-      }
-
-      // If node text
-      if (container.nodeType === 3) {
-        container = container.parentElement;
-      }
-
-      const target: Node = Array.from(container.childNodes).find((node: Node) => {
-        return node.textContent && node.textContent.trim().indexOf(this.anchorLink.text) > -1;
-      });
-
-      if (!target) {
-        resolve();
-        return;
-      }
-
-      if (target.nodeType === 3) {
-        const index: number = target.textContent.indexOf(this.anchorLink.text);
-
-        const textBefore: string = index > -1 ? target.textContent.substr(0, index) : null;
-        const textAfter: string = index + this.anchorLink.text.length > -1 ? target.textContent.substr(index + this.anchorLink.text.length) : null;
-
-        if (textBefore) {
-          target.parentElement.insertBefore(document.createTextNode(textBefore), target);
-        }
-
-        const a: HTMLAnchorElement = await this.createLinkElement();
-        target.parentElement.insertBefore(a, target);
-
-        if (textAfter) {
-          target.parentElement.insertBefore(document.createTextNode(textAfter), target);
-        }
-
-        target.parentElement.removeChild(target);
-      } else {
-        const a: HTMLAnchorElement = await this.createLinkElement();
-
-        target.parentElement.replaceChild(a, target);
-      }
-
-      this.linkCreated.emit(container as HTMLElement);
-
-      this.toolbarActions = ToolbarActions.SELECTION;
-
-      resolve();
-    });
-  }
-
-  private createLinkElement(): Promise<HTMLAnchorElement> {
-    return new Promise<HTMLAnchorElement>((resolve) => {
-      const a: HTMLAnchorElement = document.createElement('a');
-      const linkText: Text = document.createTextNode(this.anchorLink.text);
-      a.appendChild(linkText);
-      a.title = this.anchorLink.text;
-      a.href = this.linkUrl;
-
-      resolve(a);
-    });
-  }
-
-  private handleLinkInput($event: UIEvent) {
-    this.linkUrl = ($event.target as InputTargetEvent).value;
-  }
-
-  private async handleLinkEnter($event: KeyboardEvent) {
-    if (!$event) {
-      return;
-    }
-
-    if (this.toolbarActions === ToolbarActions.SELECTION && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
-      await this.reset(false);
-    } else if (this.toolbarActions === ToolbarActions.LINK && $event.key.toLowerCase() === 'enter') {
-      await this.createLink();
-      await this.reset(true);
-    }
-  }
-
   private isSticky(): boolean {
     const mobile: boolean = isMobile();
 
@@ -896,155 +701,35 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private async selectColor($event: CustomEvent) {
-    if (!this.selection || !$event || !$event.detail) {
-      return;
-    }
-
-    this.color = $event.detail.hex;
-
-    if (!this.selection || this.selection.rangeCount <= 0 || !document) {
-      return;
-    }
-
-    const text: string = this.selection.toString();
-
-    if (!text || text.length <= 0) {
-      return;
-    }
-
-    document.execCommand('foreColor', false, this.color);
-
-    await this.reset(true);
+  private async openColorPicker(): Promise<void> {
+    this.toolbarActions = ToolbarActions.COLOR;
   }
 
-  private openColorPicker(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.toolbarActions = ToolbarActions.COLOR;
-
-      resolve();
-    });
-  }
-  private openAlignmentActions(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.toolbarActions = ToolbarActions.ALIGNMENT;
-
-      resolve();
-    });
+  private async openAlignmentActions(): Promise<void> {
+    this.toolbarActions = ToolbarActions.ALIGNMENT;
   }
 
   renderAlignmentActions() {
     return [
-      <button
-        onClick={(e: UIEvent) => this.justifyContent(e, ContentAlign.LEFT)}
-        class={this.contentAlign === ContentAlign.LEFT ? 'left-align active' : 'left-align'}>
-        <div></div>
-      </button>,
-      <button
-        onClick={(e: UIEvent) => this.justifyContent(e, ContentAlign.CENTER)}
-        class={this.contentAlign === ContentAlign.CENTER ? 'center-align active' : 'center-align'}>
-        <div></div>
-      </button>,
-      <button
-        onClick={(e: UIEvent) => this.justifyContent(e, ContentAlign.RIGHT)}
-        class={this.contentAlign === ContentAlign.RIGHT ? 'right-align active' : 'right-align'}>
-        <div></div>
-      </button>
+      <deckgo-ie-action-button
+        mobile={this.mobile}
+        onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.LEFT)}
+        cssClass={this.contentAlign === ContentAlign.LEFT ? 'active' : undefined}>
+        <deckgo-ie-action-image cssClass={'left-align'}></deckgo-ie-action-image>
+      </deckgo-ie-action-button>,
+      <deckgo-ie-action-button
+        mobile={this.mobile}
+        onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.CENTER)}
+        cssClass={this.contentAlign === ContentAlign.CENTER ? 'active' : undefined}>
+        <deckgo-ie-action-image cssClass={'center-align'}></deckgo-ie-action-image>
+      </deckgo-ie-action-button>,
+      <deckgo-ie-action-button
+        mobile={this.mobile}
+        onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.RIGHT)}
+        cssClass={this.contentAlign === ContentAlign.RIGHT ? 'active' : undefined}>
+        <deckgo-ie-action-image cssClass={'right-align'}></deckgo-ie-action-image>
+      </deckgo-ie-action-button>,
     ];
-  }
-
-  private styleImage(e: UIEvent, applyFunction: Function, param: ImageSize | ImageAlign): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const isAnchorImg: boolean = await this.isAnchorImage();
-      if (!isAnchorImg) {
-        resolve();
-        return;
-      }
-
-      e.stopPropagation();
-
-      applyFunction(param);
-
-      const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-      const container: HTMLElement = await this.findContainer(anchorImg);
-      this.imgDidChange.emit(container);
-
-      await this.reset(true);
-
-      resolve();
-    });
-  }
-
-  private setImageWith = async (size: ImageSize) => {
-    const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-    anchorImg.style.setProperty(this.imgPropertyWidth, size.toString());
-  };
-
-  private setImageAlignment = (align: ImageAlign) => {
-    const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-
-    if (align === ImageAlign.START) {
-      anchorImg.style.setProperty(this.imgPropertyCssFloat, 'left');
-    } else {
-      anchorImg.style.removeProperty(this.imgPropertyCssFloat);
-    }
-  };
-
-  private findContainer(element: HTMLElement): Promise<HTMLElement> {
-    return new Promise<HTMLElement>(async (resolve) => {
-      if (!element) {
-        resolve();
-        return;
-      }
-
-      // Just in case
-      if (element.nodeName.toUpperCase() === 'HTML' || element.nodeName.toUpperCase() === 'BODY' || !element.parentElement) {
-        resolve(element);
-        return;
-      }
-
-      if (this.isContainer(element)) {
-        resolve(element);
-      } else {
-        const container: HTMLElement = await this.findContainer(element.parentElement);
-
-        resolve(container);
-      }
-    });
-  }
-
-  private deleteImage(e: UIEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const isAnchorImg: boolean = await this.isAnchorImage();
-      if (!isAnchorImg) {
-        resolve();
-        return;
-      }
-
-      e.stopPropagation();
-
-      const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-
-      if (!anchorImg || !anchorImg.parentElement) {
-        resolve();
-        return;
-      }
-
-      const container: HTMLElement = await this.findContainer(anchorImg);
-
-      if (!container) {
-        resolve();
-        return;
-      }
-
-      anchorImg.parentElement.removeChild(anchorImg);
-
-      this.imgDidChange.emit(container);
-
-      await this.reset(true);
-
-      resolve();
-    });
   }
 
   private async onCustomAction($event: UIEvent, action: string): Promise<void> {
@@ -1053,7 +738,7 @@ export class DeckdeckgoInlineEditor {
     this.customAction.emit({
       action: action,
       selection: this.selection,
-      anchorLink: this.anchorLink
+      anchorLink: this.anchorLink,
     });
   }
 
@@ -1070,30 +755,47 @@ export class DeckdeckgoInlineEditor {
       classNames += ' deckgo-tools-sticky';
     }
 
-    return <div class={classNames}>{this.renderActions()}</div>;
+    const hostClass = isIOS() ? 'deckgo-tools-ios' : undefined;
+
+    return (
+      <Host class={hostClass}>
+        <div class={classNames}>{this.renderActions()}</div>
+      </Host>
+    );
   }
 
   private renderActions() {
     if (this.toolbarActions === ToolbarActions.LINK) {
       return (
-        <div class="link">
-          <input
-            autofocus
-            placeholder="Add a link..."
-            onInput={($event: UIEvent) => this.handleLinkInput($event)}
-            onKeyUp={($event: KeyboardEvent) => this.handleLinkEnter($event)}></input>
-        </div>
+        <deckgo-ie-link-actions
+          toolbarActions={this.toolbarActions}
+          anchorLink={this.anchorLink}
+          selection={this.selection}
+          linkCreated={this.linkCreated}
+          mobile={this.mobile}
+          onLinkModified={($event: CustomEvent<boolean>) => this.reset($event.detail)}></deckgo-ie-link-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.COLOR) {
       return (
-        <div class="color">
-          <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} more={false} palette={this.palette}>
-            <div slot="more"></div>
-          </deckgo-color>
-        </div>
+        <deckgo-ie-color-actions
+          selection={this.selection}
+          color={this.color}
+          palette={this.palette}
+          mobile={this.mobile}
+          onColorModified={() => this.reset(true)}></deckgo-ie-color-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.IMAGE) {
-      return this.renderImageActions();
+      return (
+        <deckgo-ie-image-actions
+          anchorEvent={this.anchorEvent}
+          imgPropertyWidth={this.imgPropertyWidth}
+          imgPropertyCssFloat={this.imgPropertyCssFloat}
+          imgDidChange={this.imgDidChange}
+          containers={this.containers}
+          imgAnchor={this.imgAnchor}
+          mobile={this.mobile}
+          onImgModified={() => this.reset(true)}></deckgo-ie-image-actions>
+      );
     } else if (this.toolbarActions === ToolbarActions.ALIGNMENT) {
       return this.renderAlignmentActions();
     } else {
@@ -1105,48 +807,49 @@ export class DeckdeckgoInlineEditor {
     const styleColor = this.color ? {'background-color': this.color} : {};
 
     return [
-      <button onClick={(e: UIEvent) => this.styleBold(e)} disabled={this.disabledTitle} class={this.bold ? 'bold active' : 'bold'}>
-        B
-      </button>,
-      <button onClick={(e: UIEvent) => this.styleItalic(e)} class={this.italic ? 'italic active' : 'italic'}>
-        I
-      </button>,
-      <button onClick={(e: UIEvent) => this.styleUnderline(e)} class={this.underline ? 'underline active' : 'underline'}>
-        <span>U</span>
-      </button>,
+      <deckgo-ie-style-actions
+        mobile={this.mobile}
+        disabledTitle={this.disabledTitle}
+        selection={this.selection}
+        bold={this.bold}
+        italic={this.italic}
+        underline={this.underline}
+        onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-style-actions>,
 
       this.renderSeparator(),
-      <button
-        onClick={() => this.openAlignmentActions()}
-        class={
-          this.contentAlign === ContentAlign.LEFT
-            ? 'left-align active'
-            : this.contentAlign === ContentAlign.CENTER
-            ? 'center-align active'
-            : this.contentAlign === ContentAlign.RIGHT
-            ? 'right-align active'
-            : 'left-align active'
-        }>
-        <div></div>
-      </button>,
 
-      <button onClick={() => this.openColorPicker()} class="pick-color">
-        <div style={styleColor}></div>
-      </button>,
+      <deckgo-ie-action-button
+        mobile={this.mobile}
+        onAction={() => this.openAlignmentActions()}
+        cssClass={
+          this.contentAlign === ContentAlign.LEFT || this.contentAlign === ContentAlign.CENTER || this.contentAlign === ContentAlign.RIGHT
+            ? 'active'
+            : undefined
+        }>
+        <deckgo-ie-action-image
+          cssClass={
+            this.contentAlign === ContentAlign.LEFT ? 'left-align' : this.contentAlign === ContentAlign.CENTER ? 'center-align' : 'right-align'
+          }></deckgo-ie-action-image>
+      </deckgo-ie-action-button>,
+
+      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker()}>
+        <deckgo-ie-action-image cssClass={'pick-color'} style={styleColor}></deckgo-ie-action-image>
+      </deckgo-ie-action-button>,
 
       this.renderList(),
+
       this.renderSeparator(),
 
-      <button onClick={() => this.toggleLink()} class={this.link ? 'link active' : 'link'}>
-        <div></div>
-      </button>,
+      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.toggleLink()} cssClass={this.link ? 'active' : undefined}>
+        <deckgo-ie-action-image cssClass={'link'}></deckgo-ie-action-image>
+      </deckgo-ie-action-button>,
 
-      this.renderCustomActions()
+      this.renderCustomActions(),
     ];
   }
 
   private renderSeparator() {
-    return <div class="separator"></div>;
+    return <deckgo-ie-separator mobile={this.mobile}></deckgo-ie-separator>;
   }
 
   private renderCustomActions() {
@@ -1156,83 +859,33 @@ export class DeckdeckgoInlineEditor {
   private renderCustomAction(customAction: string) {
     return [
       this.renderSeparator(),
-      <button onClick={($event: UIEvent) => this.onCustomAction($event, customAction)}>
+      <deckgo-ie-action-button mobile={this.mobile} onClick={($event: UIEvent) => this.onCustomAction($event, customAction)}>
         <slot name={customAction}></slot>
-      </button>
+      </deckgo-ie-action-button>,
     ];
   }
 
   private renderList() {
     if (this.list) {
       return [
-        <button
-          disabled={this.disabledTitle}
-          onClick={(e: UIEvent) => this.toggleList(e, 'insertOrderedList')}
-          class={this.orderedList ? 'ordered-list active' : 'ordered-list'}>
-          <div></div>
-        </button>,
+        <deckgo-ie-action-button
+          mobile={this.mobile}
+          disableAction={this.disabledTitle}
+          onAction={($event: CustomEvent<UIEvent>) => this.toggleList($event.detail, 'insertOrderedList')}
+          cssClass={this.orderedList ? 'active' : undefined}>
+          <deckgo-ie-action-image cssClass={'ordered-list'}></deckgo-ie-action-image>
+        </deckgo-ie-action-button>,
 
-        <button
-          disabled={this.disabledTitle}
-          onClick={(e: UIEvent) => this.toggleList(e, 'insertUnorderedList')}
-          class={this.unorderedList ? 'unordered-list active' : 'unordered-list'}>
-          <div></div>
-        </button>
+        <deckgo-ie-action-button
+          mobile={this.mobile}
+          disableAction={this.disabledTitle}
+          onAction={($event: CustomEvent<UIEvent>) => this.toggleList($event.detail, 'insertUnorderedList')}
+          cssClass={this.unorderedList ? 'active' : undefined}>
+          <deckgo-ie-action-image cssClass={'unordered-list'}></deckgo-ie-action-image>
+        </deckgo-ie-action-button>,
       ];
     } else {
       return undefined;
     }
-  }
-
-  private renderImageActions() {
-    return [
-      <button
-        onClick={(e: UIEvent) => this.styleImage(e, this.setImageWith, ImageSize.ORIGINAL)}
-        class={this.imageSize === ImageSize.ORIGINAL ? 'image original active' : 'image original'}>
-        <div></div>
-      </button>,
-      <button
-        onClick={(e: UIEvent) => this.styleImage(e, this.setImageWith, ImageSize.LARGE)}
-        class={this.imageSize === ImageSize.LARGE ? 'image large active' : 'image large'}>
-        <div></div>
-      </button>,
-      <button
-        onClick={(e: UIEvent) => this.styleImage(e, this.setImageWith, ImageSize.MEDIUM)}
-        class={this.imageSize === ImageSize.MEDIUM ? 'image medium active' : 'image medium'}>
-        <div></div>
-      </button>,
-      <button
-        onClick={(e: UIEvent) => this.styleImage(e, this.setImageWith, ImageSize.SMALL)}
-        class={this.imageSize === ImageSize.SMALL ? 'image small active' : 'image small'}>
-        <div></div>
-      </button>,
-
-      this.renderSeparator(),
-
-      <button
-        onClick={(e: UIEvent) => this.styleImage(e, this.setImageAlignment, ImageAlign.STANDARD)}
-        class={this.imageAlign === ImageAlign.STANDARD ? 'image-align standard active' : 'image-align standard'}>
-        <div></div>
-      </button>,
-      <button
-        onClick={(e: UIEvent) => this.styleImage(e, this.setImageAlignment, ImageAlign.START)}
-        class={this.imageAlign === ImageAlign.START ? 'image-align start active' : 'image-align start'}>
-        <div></div>
-      </button>,
-
-      this.renderSeparator(),
-
-      <button onClick={(e: UIEvent) => this.deleteImage(e)} class="image-delete">
-        <div></div>
-      </button>
-    ];
-  }
-
-  hostData() {
-    return {
-      class: {
-        'deckgo-tools-ios': isIOS()
-      }
-    };
   }
 }

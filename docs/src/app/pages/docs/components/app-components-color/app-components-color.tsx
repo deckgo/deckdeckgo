@@ -300,6 +300,11 @@ export class AppComponentsColor {
                 <td>Wrap properties of the buttons&#39; container</td>
               </tr>
               <tr>
+                <td>--deckgo-overflow</td>
+                <td>visible</td>
+                <td>Overflow property of the buttons&#39;s container</td>
+              </tr>
+              <tr>
                 <td>--deckgo-button-more-background</td>
                 <td>transparent</td>
                 <td>The background of the more button</td>

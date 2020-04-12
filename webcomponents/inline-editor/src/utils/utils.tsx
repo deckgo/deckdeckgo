@@ -1,4 +1,4 @@
-import {ContentAlign} from '../../utils/enums';
+import {ContentAlign} from '../types/enums';
 
 export class DeckdeckgoInlineEditorUtils {
   static isBold(element: HTMLElement): Promise<boolean> {
@@ -153,6 +153,49 @@ export class DeckdeckgoInlineEditorUtils {
       } else {
         resolve(false);
       }
+    });
+  }
+
+  static isContainer(containers: string, element: Node): boolean {
+    const containerTypes: string[] = containers.toLowerCase().split(',');
+    return element && element.nodeName && containerTypes.indexOf(element.nodeName.toLowerCase()) > -1;
+  }
+
+  static isAnchorImage(anchorEvent: MouseEvent | TouchEvent, imgAnchor: string): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (!anchorEvent) {
+        resolve(false);
+        return;
+      }
+
+      if (!anchorEvent.target || !(anchorEvent.target instanceof HTMLElement)) {
+        resolve(false);
+        return;
+      }
+
+      const target: HTMLElement = anchorEvent.target;
+
+      resolve(target.nodeName && target.nodeName.toLowerCase() === imgAnchor);
+    });
+  }
+
+  static execCommand(selection: Selection, command: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!selection || selection.rangeCount <= 0 || !document) {
+        resolve();
+        return;
+      }
+
+      const text: string = selection.toString();
+
+      if (!text || text.length <= 0) {
+        resolve();
+        return;
+      }
+
+      document.execCommand(command);
+
+      resolve();
     });
   }
 }
