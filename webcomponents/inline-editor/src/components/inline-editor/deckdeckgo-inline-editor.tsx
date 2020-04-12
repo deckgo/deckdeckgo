@@ -13,7 +13,7 @@ import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
 @Component({
   tag: 'deckgo-inline-editor',
   styleUrl: 'deckdeckgo-inline-editor.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoInlineEditor {
   @Element() el: HTMLElement;
@@ -296,7 +296,7 @@ export class DeckdeckgoInlineEditor {
           this.anchorLink = {
             range: range,
             text: selection.toString(),
-            element: document.activeElement
+            element: document.activeElement,
           };
 
           await this.setToolbarAnchorPosition();
@@ -602,47 +602,11 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private styleBold(e: UIEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      await this.execCommand('bold');
-
-      await this.initStyle(this.selection);
-
-      resolve();
-    });
-  }
-
-  private styleItalic(e: UIEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      await this.execCommand('italic');
-
-      await this.initStyle(this.selection);
-
-      resolve();
-    });
-  }
-
-  private styleUnderline(e: UIEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      await this.execCommand('underline');
-
-      await this.initStyle(this.selection);
-
-      resolve();
-    });
-  }
-
   private justifyContent(e: UIEvent, align: ContentAlign): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.execCommand(align.toString());
+      await DeckdeckgoInlineEditorUtils.execCommand(this.selection, align.toString());
 
       //this.contentAlign = align;
       await this.initStyle(this.selection);
@@ -654,29 +618,9 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await this.execCommand(cmd);
+      await DeckdeckgoInlineEditorUtils.execCommand(this.selection, cmd);
 
       await this.reset(true);
-
-      resolve();
-    });
-  }
-
-  private execCommand(command: string): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selection || this.selection.rangeCount <= 0 || !document) {
-        resolve();
-        return;
-      }
-
-      const text: string = this.selection.toString();
-
-      if (!text || text.length <= 0) {
-        resolve();
-        return;
-      }
-
-      document.execCommand(command);
 
       resolve();
     });
@@ -784,7 +728,7 @@ export class DeckdeckgoInlineEditor {
         onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.RIGHT)}
         cssClass={this.contentAlign === ContentAlign.RIGHT ? 'active' : undefined}>
         <deckgo-ie-action-image cssClass={'right-align'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>
+      </deckgo-ie-action-button>,
     ];
   }
 
@@ -794,7 +738,7 @@ export class DeckdeckgoInlineEditor {
     this.customAction.emit({
       action: action,
       selection: this.selection,
-      anchorLink: this.anchorLink
+      anchorLink: this.anchorLink,
     });
   }
 
@@ -863,27 +807,17 @@ export class DeckdeckgoInlineEditor {
     const styleColor = this.color ? {'background-color': this.color} : {};
 
     return [
-      <deckgo-ie-action-button
+      <deckgo-ie-style-actions
         mobile={this.mobile}
-        onAction={($event: CustomEvent<UIEvent>) => this.styleBold($event.detail)}
-        disableAction={this.disabledTitle}
-        cssClass={this.bold ? 'bold active' : 'bold'}>
-        B
-      </deckgo-ie-action-button>,
-      <deckgo-ie-action-button
-        mobile={this.mobile}
-        onAction={($event: CustomEvent<UIEvent>) => this.styleItalic($event.detail)}
-        cssClass={this.italic ? 'italic active' : 'italic'}>
-        I
-      </deckgo-ie-action-button>,
-      <deckgo-ie-action-button
-        mobile={this.mobile}
-        onAction={($event: CustomEvent<UIEvent>) => this.styleUnderline($event.detail)}
-        cssClass={this.underline ? 'underline active' : 'underline'}>
-        <span>U</span>
-      </deckgo-ie-action-button>,
+        disabledTitle={this.disabledTitle}
+        selection={this.selection}
+        bold={this.bold}
+        italic={this.italic}
+        underline={this.underline}
+        onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-style-actions>,
 
       this.renderSeparator(),
+
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={() => this.openAlignmentActions()}
@@ -903,13 +837,14 @@ export class DeckdeckgoInlineEditor {
       </deckgo-ie-action-button>,
 
       this.renderList(),
+
       this.renderSeparator(),
 
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.toggleLink()} cssClass={this.link ? 'active' : undefined}>
         <deckgo-ie-action-image cssClass={'link'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
 
-      this.renderCustomActions()
+      this.renderCustomActions(),
     ];
   }
 
@@ -926,7 +861,7 @@ export class DeckdeckgoInlineEditor {
       this.renderSeparator(),
       <deckgo-ie-action-button mobile={this.mobile} onClick={($event: UIEvent) => this.onCustomAction($event, customAction)}>
         <slot name={customAction}></slot>
-      </deckgo-ie-action-button>
+      </deckgo-ie-action-button>,
     ];
   }
 
@@ -947,7 +882,7 @@ export class DeckdeckgoInlineEditor {
           onAction={($event: CustomEvent<UIEvent>) => this.toggleList($event.detail, 'insertUnorderedList')}
           cssClass={this.unorderedList ? 'active' : undefined}>
           <deckgo-ie-action-image cssClass={'unordered-list'}></deckgo-ie-action-image>
-        </deckgo-ie-action-button>
+        </deckgo-ie-action-button>,
       ];
     } else {
       return undefined;

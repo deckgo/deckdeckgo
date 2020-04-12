@@ -43,6 +43,14 @@ export namespace Components {
     interface DeckgoIeSeparator {
         "mobile": boolean;
     }
+    interface DeckgoIeStyleActions {
+        "bold": boolean;
+        "disabledTitle": boolean;
+        "italic": boolean;
+        "mobile": boolean;
+        "selection": Selection;
+        "underline": boolean;
+    }
     interface DeckgoInlineEditor {
         "attachTo": HTMLElement;
         "containers": string;
@@ -96,6 +104,12 @@ declare global {
         prototype: HTMLDeckgoIeSeparatorElement;
         new (): HTMLDeckgoIeSeparatorElement;
     };
+    interface HTMLDeckgoIeStyleActionsElement extends Components.DeckgoIeStyleActions, HTMLStencilElement {
+    }
+    var HTMLDeckgoIeStyleActionsElement: {
+        prototype: HTMLDeckgoIeStyleActionsElement;
+        new (): HTMLDeckgoIeStyleActionsElement;
+    };
     interface HTMLDeckgoInlineEditorElement extends Components.DeckgoInlineEditor, HTMLStencilElement {
     }
     var HTMLDeckgoInlineEditorElement: {
@@ -109,6 +123,7 @@ declare global {
         "deckgo-ie-image-actions": HTMLDeckgoIeImageActionsElement;
         "deckgo-ie-link-actions": HTMLDeckgoIeLinkActionsElement;
         "deckgo-ie-separator": HTMLDeckgoIeSeparatorElement;
+        "deckgo-ie-style-actions": HTMLDeckgoIeStyleActionsElement;
         "deckgo-inline-editor": HTMLDeckgoInlineEditorElement;
     }
 }
@@ -150,6 +165,15 @@ declare namespace LocalJSX {
     interface DeckgoIeSeparator {
         "mobile"?: boolean;
     }
+    interface DeckgoIeStyleActions {
+        "bold"?: boolean;
+        "disabledTitle"?: boolean;
+        "italic"?: boolean;
+        "mobile"?: boolean;
+        "onInitStyle"?: (event: CustomEvent<any>) => void;
+        "selection"?: Selection;
+        "underline"?: boolean;
+    }
     interface DeckgoInlineEditor {
         "attachTo"?: HTMLElement;
         "containers"?: string;
@@ -175,6 +199,7 @@ declare namespace LocalJSX {
         "deckgo-ie-image-actions": DeckgoIeImageActions;
         "deckgo-ie-link-actions": DeckgoIeLinkActions;
         "deckgo-ie-separator": DeckgoIeSeparator;
+        "deckgo-ie-style-actions": DeckgoIeStyleActions;
         "deckgo-inline-editor": DeckgoInlineEditor;
     }
 }
@@ -188,6 +213,7 @@ declare module "@stencil/core" {
             "deckgo-ie-image-actions": LocalJSX.DeckgoIeImageActions & JSXBase.HTMLAttributes<HTMLDeckgoIeImageActionsElement>;
             "deckgo-ie-link-actions": LocalJSX.DeckgoIeLinkActions & JSXBase.HTMLAttributes<HTMLDeckgoIeLinkActionsElement>;
             "deckgo-ie-separator": LocalJSX.DeckgoIeSeparator & JSXBase.HTMLAttributes<HTMLDeckgoIeSeparatorElement>;
+            "deckgo-ie-style-actions": LocalJSX.DeckgoIeStyleActions & JSXBase.HTMLAttributes<HTMLDeckgoIeStyleActionsElement>;
             "deckgo-inline-editor": LocalJSX.DeckgoInlineEditor & JSXBase.HTMLAttributes<HTMLDeckgoInlineEditorElement>;
         }
     }

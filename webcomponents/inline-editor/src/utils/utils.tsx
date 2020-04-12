@@ -178,4 +178,24 @@ export class DeckdeckgoInlineEditorUtils {
       resolve(target.nodeName && target.nodeName.toLowerCase() === imgAnchor);
     });
   }
+
+  static execCommand(selection: Selection, command: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!selection || selection.rangeCount <= 0 || !document) {
+        resolve();
+        return;
+      }
+
+      const text: string = selection.toString();
+
+      if (!text || text.length <= 0) {
+        resolve();
+        return;
+      }
+
+      document.execCommand(command);
+
+      resolve();
+    });
+  }
 }

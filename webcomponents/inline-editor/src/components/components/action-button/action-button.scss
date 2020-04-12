@@ -70,6 +70,29 @@ button {
 
 :host(.deckgo-tools-mobile) {
   button {
+    color: var(--deckgo-inline-editor-button-mobile-color, black);
+    padding: 0 4px;
+
+    &.active {
+      color: var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
+    }
+
+    &.underline {
+      &.active {
+        span {
+          border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
+        }
+      }
+
+      span {
+        border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color, black);
+      }
+    }
+
+    &[disabled] {
+      color: var(--deckgo-inline-editor-button-mobile-color-disabled, #f4f5f8);
+    }
+
     > div {
       background-color: var(--deckgo-inline-editor-button-mobile-color, black);
     }

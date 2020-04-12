@@ -21,6 +21,7 @@
 ### Used by
 
 - [deckgo-ie-image-actions](../../actions/image-actions)
+- [deckgo-ie-style-actions](../../actions/style-actions)
 - [deckgo-inline-editor](../../inline-editor)
 
 ### Graph
@@ -28,6 +29,7 @@
 ```mermaid
 graph TD;
   deckgo-ie-image-actions --> deckgo-ie-action-button
+  deckgo-ie-style-actions --> deckgo-ie-action-button
   deckgo-inline-editor --> deckgo-ie-action-button
   style deckgo-ie-action-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
