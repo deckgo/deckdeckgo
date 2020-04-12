@@ -5,7 +5,7 @@ import {DeckdeckgoPalette} from '@deckdeckgo/color';
 @Component({
   tag: 'deckgo-ie-color-actions',
   styleUrl: 'color-actions.scss',
-  shadow: true
+  shadow: true,
 })
 export class ColorActions {
   @Prop()

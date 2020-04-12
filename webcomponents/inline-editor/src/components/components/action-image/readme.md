@@ -12,8 +12,8 @@
 
 ### Used by
 
-- [deckgo-ie-image-actions](../image-actions)
-- [deckgo-inline-editor](../inline-editor)
+- [deckgo-ie-image-actions](../../actions/image-actions)
+- [deckgo-inline-editor](../../inline-editor)
 
 ### Graph
 

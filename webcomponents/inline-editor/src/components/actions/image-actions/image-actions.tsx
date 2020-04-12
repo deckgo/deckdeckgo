@@ -1,13 +1,13 @@
 import {Component, EventEmitter, h, Prop, State, Event} from '@stencil/core';
 
-import {ImageAlign, ImageSize} from '../../types/enums';
+import {ImageAlign, ImageSize} from '../../../types/enums';
 
-import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
+import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
 
 @Component({
   tag: 'deckgo-ie-image-actions',
   styleUrl: 'image-actions.scss',
-  shadow: true
+  shadow: true,
 })
 export class ImageActions {
   @Prop()
@@ -205,7 +205,7 @@ export class ImageActions {
 
       <deckgo-ie-action-button mobile={this.mobile} onAction={($event: CustomEvent<UIEvent>) => this.deleteImage($event.detail)}>
         <deckgo-ie-action-image cssClass={'image-delete'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>
+      </deckgo-ie-action-button>,
     ];
   }
 }

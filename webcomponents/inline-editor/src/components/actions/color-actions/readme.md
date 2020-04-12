@@ -21,7 +21,7 @@
 
 ### Used by
 
-- [deckgo-inline-editor](../inline-editor)
+- [deckgo-inline-editor](../../inline-editor)
 
 ### Depends on
 

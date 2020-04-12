@@ -1,13 +1,13 @@
 import {Component, Event, EventEmitter, h, Prop, Host} from '@stencil/core';
 
-import {AnchorLink, InputTargetEvent} from '../../interfaces/interfaces';
+import {AnchorLink, InputTargetEvent} from '../../../interfaces/interfaces';
 
-import {ToolbarActions} from '../../types/enums';
+import {ToolbarActions} from '../../../types/enums';
 
 @Component({
   tag: 'deckgo-ie-link-actions',
   styleUrl: 'link-actions.scss',
-  shadow: true
+  shadow: true,
 })
 export class LinkActions {
   private linkUrl: string;

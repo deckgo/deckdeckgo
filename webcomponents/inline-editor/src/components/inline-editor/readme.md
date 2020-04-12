@@ -40,12 +40,12 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- [deckgo-ie-action-button](../action-button)
-- [deckgo-ie-action-image](../action-image)
-- [deckgo-ie-link-actions](../link-actions)
-- [deckgo-ie-color-actions](../color-actions)
-- [deckgo-ie-image-actions](../image-actions)
-- [deckgo-ie-separator](../separator)
+- [deckgo-ie-action-button](../components/action-button)
+- [deckgo-ie-action-image](../components/action-image)
+- [deckgo-ie-link-actions](../actions/link-actions)
+- [deckgo-ie-color-actions](../actions/color-actions)
+- [deckgo-ie-image-actions](../actions/image-actions)
+- [deckgo-ie-separator](../components/separator)
 
 ### Graph
 

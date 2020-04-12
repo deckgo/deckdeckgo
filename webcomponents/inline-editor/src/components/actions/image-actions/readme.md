@@ -24,13 +24,13 @@
 
 ### Used by
 
-- [deckgo-inline-editor](../inline-editor)
+- [deckgo-inline-editor](../../inline-editor)
 
 ### Depends on
 
-- [deckgo-ie-action-button](../action-button)
-- [deckgo-ie-action-image](../action-image)
-- [deckgo-ie-separator](../separator)
+- [deckgo-ie-action-button](../../components/action-button)
+- [deckgo-ie-action-image](../../components/action-image)
+- [deckgo-ie-separator](../../components/separator)
 
 ### Graph
 
