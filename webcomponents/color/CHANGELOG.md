@@ -1,3 +1,11 @@
+<a name="1.1.0"></a>
+
+# 1.1.0 (2020-04-12)
+
+### Features
+
+- add a new style variable `--deckgo-overflow`
+
 <a name="1.0.1"></a>
 
 # 1.0.1 (2020-03-18)
