@@ -22,7 +22,7 @@ workbox.setConfig({debug: false});
 workbox.routing.registerRoute(
   /^https:\/\/fonts\.googleapis\.com/,
   new workbox.strategies.StaleWhileRevalidate({
-    cacheName: 'google-fonts-stylesheets'
+    cacheName: 'google-fonts-stylesheets',
   })
 );
 
@@ -33,13 +33,13 @@ workbox.routing.registerRoute(
     cacheName: 'google-fonts-webfonts',
     plugins: [
       new workbox.cacheableResponse.Plugin({
-        statuses: [0, 200]
+        statuses: [0, 200],
       }),
       new workbox.expiration.Plugin({
         maxAgeSeconds: 60 * 60 * 24 * 365,
-        maxEntries: 30
-      })
-    ]
+        maxEntries: 30,
+      }),
+    ],
   })
 );
 
@@ -51,36 +51,39 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60
-      })
-    ]
+        maxEntries: 60,
+      }),
+    ],
   })
 );
 
 // Cache the images
 workbox.routing.registerRoute(
-  /^(?!.*(?:unsplash|giphy|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  /^(?!.*(?:unsplash|giphy|tenor|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
   new workbox.strategies.CacheFirst({
     cacheName: 'images',
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60
-      })
-    ]
+        maxEntries: 60,
+      }),
+    ],
   })
 );
 
 workbox.routing.registerRoute(
-  /^(?=.*(?:unsplash|giphy|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  /^(?=.*(?:unsplash|giphy|tenor|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'cors-images',
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60
-      })
-    ]
+        maxEntries: 60,
+      }),
+      new workbox.cacheableResponse.CacheableResponse({
+        statuses: [0, 200],
+      }),
+    ],
   })
 );
 
@@ -92,9 +95,9 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60
-      })
-    ]
+        maxEntries: 60,
+      }),
+    ],
   })
 );
 
@@ -106,14 +109,14 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60
-      })
-    ]
+        maxEntries: 60,
+      }),
+    ],
   })
 );
 
 // the precache manifest will be injected into the following line
 self.workbox.precaching.precacheAndRoute([], {
   // Ignore all URL parameters otherwise /editor/:id won't be cached and therefore not accessible directly offline
-  ignoreURLParametersMatching: [/.*/]
+  ignoreURLParametersMatching: [/.*/],
 });
