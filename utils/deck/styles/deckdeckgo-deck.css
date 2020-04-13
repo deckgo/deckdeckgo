@@ -52,6 +52,10 @@ deckgo-slide-split > *[slot="end"] {
   text-align: center;
 }
 
+deckgo-slide-split:not([vertical]) > *[slot="start"],
+deckgo-slide-split:not([vertical]) > *[slot="end"] {
+  align-items: flex-start;
+}
 deckgo-slide-split > deckgo-highlight-code {
   --deckgo-highlight-code-container-width: 100%;
   --deckgo-highlight-code-container-height: 100%;
