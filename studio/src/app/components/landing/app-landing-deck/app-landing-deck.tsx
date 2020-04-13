@@ -148,21 +148,36 @@ function Example() {
           {this.renderSlideBackground('start')}
         </deckgo-slide-title>
 
-        <deckgo-slide-title style={{'--background': 'var(--ion-color-medium)', '--color': 'var(--ion-color-medium-contrast)'}}>
+        <deckgo-slide-title>
           <h2 slot="title">Interact with your presentation with a remote control.</h2>
+          <ion-icon slot="content" lazy={true} class="ion-padding" style={{'font-size': '6.6rem'}} src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
 
           {this.renderSlideBackground('end')}
         </deckgo-slide-title>
 
-        <deckgo-slide-title style={{'--background': 'var(--ion-color-light)', '--color': 'var(--ion-color-light-contrast)'}}>
-          <h2 slot="title">Interact with your audience with live polls.</h2>
+        <deckgo-slide-title style={{'--color': 'white'}}>
+          <h2
+            slot="title"
+            style={{
+              background: 'rgba(var(--ion-color-light-rgb), 0.9)',
+              color: 'var(--ion-color-light-contrast)',
+              padding: '16px',
+              'border-radius': '8px',
+              'box-shadow': '8px 8px 16px rgba(0, 0, 0, 0.12)',
+            }}>
+            Interact with your audience with live polls.
+          </h2>
 
-          {this.renderSlideBackground('start')}
+          {this.renderSlideBackground(
+            'start',
+            'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjcyMTQyfQ',
+            'Photo by Nicholas Green on Unsplash'
+          )}
         </deckgo-slide-title>
 
-        <deckgo-slide-title style={{'--background': 'var(--ion-color-dark)', '--color': 'var(--ion-color-dark-contrast)'}}>
+        <deckgo-slide-title>
           <h2 slot="title">Present and work offline.</h2>
-          <h3 slot="content">Showcase and edit your presentation anytime.</h3>
+          <ion-icon slot="content" lazy={true} class="ion-padding" style={{'font-size': '6.6rem'}} src="/assets/icons/ionicons/cloud-offline.svg"></ion-icon>
 
           {this.renderSlideBackground('end')}
         </deckgo-slide-title>
