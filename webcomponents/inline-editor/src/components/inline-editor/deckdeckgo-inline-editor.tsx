@@ -320,15 +320,17 @@ export class DeckdeckgoInlineEditor {
 
       if (tools) {
         let top: number = unifyEvent(this.anchorEvent).clientY;
-        let left: number = unifyEvent(this.anchorEvent).clientX;
+        let left: number = unifyEvent(this.anchorEvent).clientX - 40;
 
         if (this.mobile) {
           top = top + 40;
         } else {
-          top = top + 10;
+          top = top + 24;
         }
 
         const innerWidth: number = isIOS() ? screen.width : window.innerWidth;
+
+        console.log(left);
 
         if (innerWidth > 0 && left > innerWidth - tools.offsetWidth) {
           left = innerWidth - tools.offsetWidth;
@@ -759,7 +761,10 @@ export class DeckdeckgoInlineEditor {
 
     return (
       <Host class={hostClass}>
-        <div class={classNames}>{this.renderActions()}</div>
+        <div class={classNames}>
+          <deckgo-ie-triangle></deckgo-ie-triangle>
+          {this.renderActions()}
+        </div>
       </Host>
     );
   }

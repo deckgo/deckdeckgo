@@ -51,6 +51,9 @@ export namespace Components {
         "selection": Selection;
         "underline": boolean;
     }
+    interface DeckgoIeTriangle {
+        "mobile": boolean;
+    }
     interface DeckgoInlineEditor {
         "attachTo": HTMLElement;
         "containers": string;
@@ -110,6 +113,12 @@ declare global {
         prototype: HTMLDeckgoIeStyleActionsElement;
         new (): HTMLDeckgoIeStyleActionsElement;
     };
+    interface HTMLDeckgoIeTriangleElement extends Components.DeckgoIeTriangle, HTMLStencilElement {
+    }
+    var HTMLDeckgoIeTriangleElement: {
+        prototype: HTMLDeckgoIeTriangleElement;
+        new (): HTMLDeckgoIeTriangleElement;
+    };
     interface HTMLDeckgoInlineEditorElement extends Components.DeckgoInlineEditor, HTMLStencilElement {
     }
     var HTMLDeckgoInlineEditorElement: {
@@ -124,6 +133,7 @@ declare global {
         "deckgo-ie-link-actions": HTMLDeckgoIeLinkActionsElement;
         "deckgo-ie-separator": HTMLDeckgoIeSeparatorElement;
         "deckgo-ie-style-actions": HTMLDeckgoIeStyleActionsElement;
+        "deckgo-ie-triangle": HTMLDeckgoIeTriangleElement;
         "deckgo-inline-editor": HTMLDeckgoInlineEditorElement;
     }
 }
@@ -174,6 +184,9 @@ declare namespace LocalJSX {
         "selection"?: Selection;
         "underline"?: boolean;
     }
+    interface DeckgoIeTriangle {
+        "mobile"?: boolean;
+    }
     interface DeckgoInlineEditor {
         "attachTo"?: HTMLElement;
         "containers"?: string;
@@ -200,6 +213,7 @@ declare namespace LocalJSX {
         "deckgo-ie-link-actions": DeckgoIeLinkActions;
         "deckgo-ie-separator": DeckgoIeSeparator;
         "deckgo-ie-style-actions": DeckgoIeStyleActions;
+        "deckgo-ie-triangle": DeckgoIeTriangle;
         "deckgo-inline-editor": DeckgoInlineEditor;
     }
 }
@@ -214,6 +228,7 @@ declare module "@stencil/core" {
             "deckgo-ie-link-actions": LocalJSX.DeckgoIeLinkActions & JSXBase.HTMLAttributes<HTMLDeckgoIeLinkActionsElement>;
             "deckgo-ie-separator": LocalJSX.DeckgoIeSeparator & JSXBase.HTMLAttributes<HTMLDeckgoIeSeparatorElement>;
             "deckgo-ie-style-actions": LocalJSX.DeckgoIeStyleActions & JSXBase.HTMLAttributes<HTMLDeckgoIeStyleActionsElement>;
+            "deckgo-ie-triangle": LocalJSX.DeckgoIeTriangle & JSXBase.HTMLAttributes<HTMLDeckgoIeTriangleElement>;
             "deckgo-inline-editor": LocalJSX.DeckgoInlineEditor & JSXBase.HTMLAttributes<HTMLDeckgoInlineEditorElement>;
         }
     }

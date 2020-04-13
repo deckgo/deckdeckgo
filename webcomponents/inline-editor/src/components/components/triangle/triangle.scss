@@ -1,0 +1,27 @@
+div.triangle {
+  z-index: 1;
+
+  position: absolute;
+  top: -51px;
+  left: 8px;
+
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+
+  transform: scale(0.7);
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: white;
+    transform: rotate(45deg);
+    top: 44px;
+    left: 14px;
+    box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
+
+    border: var(--deckgo-inline-editor-border);
+  }
+}
