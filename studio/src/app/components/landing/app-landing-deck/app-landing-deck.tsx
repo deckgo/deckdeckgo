@@ -5,7 +5,7 @@ import {isMobile} from '@deckdeckgo/utils';
 @Component({
   tag: 'app-landing-deck',
   styleUrl: 'app-landing-deck.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppLandingDeck {
   @Element() el: HTMLElement;
@@ -113,18 +113,11 @@ export class AppLandingDeck {
         </deckgo-slide-author>
 
         <deckgo-slide-title>
-          <h2 slot="title">Interact with your audience with a live poll.</h2>
-          <h3 slot="content">Interact with your presentation with a remote control.</h3>
-
-          {this.renderSlideBackground('end')}
-        </deckgo-slide-title>
-
-        <deckgo-slide-title>
           <h2 slot="title">Search Unsplash and Tenor GIFs.</h2>
           <h3 slot="content">Integrate easily Youtube video.</h3>
 
           {this.renderSlideBackground(
-            'start',
+            'end',
             'https://images.unsplash.com/photo-1516476892398-bdcab4c8dab8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjcyMTQyfQ',
             'Photo by Rodrigo Gonçalves on Unsplash'
           )}
@@ -155,6 +148,25 @@ function Example() {
           {this.renderSlideBackground('start')}
         </deckgo-slide-title>
 
+        <deckgo-slide-title style={{'--background': 'var(--ion-color-medium)', '--color': 'var(--ion-color-medium-contrast)'}}>
+          <h2 slot="title">Interact with your presentation with a remote control.</h2>
+
+          {this.renderSlideBackground('end')}
+        </deckgo-slide-title>
+
+        <deckgo-slide-title style={{'--background': 'var(--ion-color-light)', '--color': 'var(--ion-color-light-contrast)'}}>
+          <h2 slot="title">Interact with your audience with live polls.</h2>
+
+          {this.renderSlideBackground('start')}
+        </deckgo-slide-title>
+
+        <deckgo-slide-title style={{'--background': 'var(--ion-color-dark)', '--color': 'var(--ion-color-dark-contrast)'}}>
+          <h2 slot="title">Present and work offline.</h2>
+          <h3 slot="content">Showcase and edit your presentation anytime.</h3>
+
+          {this.renderSlideBackground('end')}
+        </deckgo-slide-title>
+
         <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
           <h1 slot="title">And many more features</h1>
           <div slot="content" style={{'margin-bottom': '48px'}}>
@@ -178,17 +190,13 @@ function Example() {
           <button type="button" class="action next" onClick={() => this.prevNextSlide(true)} tabindex={-1}>
             <ion-icon name="chevron-forward-outline" aria-label="Next DeckDeckGo feature"></ion-icon>
           </button>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
 
         {!this.deckIsBeginning ? (
           <button type="button" class="action prev" onClick={() => this.prevNextSlide(false)} tabindex={-1}>
             <ion-icon name="chevron-back-outline" aria-label="Next DeckDeckGo feature"></ion-icon>
           </button>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
 
         <img class="wave" src={`/assets/img/landing/wave-${wave}.svg`} role="presentation" />
 
