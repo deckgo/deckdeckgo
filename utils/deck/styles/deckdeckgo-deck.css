@@ -46,9 +46,13 @@ deckgo-slide-split > *[slot="start"],
 deckgo-slide-split > *[slot="end"] {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   word-break: break-word;
+}
+
+deckgo-slide-split[vertical] > *[slot="start"],
+deckgo-slide-split[vertical] > *[slot="end"] {
+  align-items: center;
   text-align: center;
 }
 
