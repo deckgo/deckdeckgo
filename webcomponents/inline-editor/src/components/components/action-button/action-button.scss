@@ -30,6 +30,8 @@ button {
   -o-user-select: none;
   user-select: none;
 
+  outline: 0;
+
   &.italic {
     font-style: italic;
   }
