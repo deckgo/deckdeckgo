@@ -107,6 +107,17 @@ export class DeckdeckgoInlineEditor {
   @Event()
   customAction: EventEmitter<InlineAction>;
 
+  tools!: HTMLDivElement;
+
+  @State()
+  private toolsLeft: number;
+
+  @State()
+  private toolsTop: number;
+
+  @State()
+  private anchorEventLeft: number = 0;
+
   constructor() {
     this.resetDisplayToolsActivated();
   }
@@ -316,9 +327,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      const tools: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-tools');
-
-      if (tools) {
+      if (this.tools) {
         let top: number = unifyEvent(this.anchorEvent).clientY;
         let left: number = unifyEvent(this.anchorEvent).clientX - 40;
 
@@ -330,14 +339,16 @@ export class DeckdeckgoInlineEditor {
 
         const innerWidth: number = isIOS() ? screen.width : window.innerWidth;
 
-        console.log(left);
-
-        if (innerWidth > 0 && left > innerWidth - tools.offsetWidth) {
-          left = innerWidth - tools.offsetWidth;
+        if (innerWidth > 0 && left > innerWidth - this.tools.offsetWidth) {
+          left = innerWidth - this.tools.offsetWidth;
         }
 
-        tools.style.top = '' + top + 'px';
-        tools.style.left = '' + left + 'px';
+        // To set the position of the tools
+        this.toolsTop = top;
+        this.toolsLeft = left;
+
+        // To set the position of the triangle
+        this.anchorEventLeft = unifyEvent(this.anchorEvent).clientX - 20 - left;
       }
 
       resolve();
@@ -761,8 +772,8 @@ export class DeckdeckgoInlineEditor {
 
     return (
       <Host class={hostClass}>
-        <div class={classNames}>
-          <deckgo-ie-triangle></deckgo-ie-triangle>
+        <div class={classNames} ref={(el) => (this.tools = el as HTMLDivElement)} style={{left: `${this.toolsLeft}px`, top: `${this.toolsTop}px`}}>
+          <deckgo-ie-triangle style={{'--deckgo-ie-triangle-start': `${this.anchorEventLeft}px`}}></deckgo-ie-triangle>
           {this.renderActions()}
         </div>
       </Host>
