@@ -1,3 +1,14 @@
+<a name="1.1.0"></a>
+
+# 1.1.0 (2020-04-17)
+
+### Features
+
+- add new actions to modify the alignment of the selection
+- support RTL
+- code refactored and split in separate components
+- style review and enhancement
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-18)
