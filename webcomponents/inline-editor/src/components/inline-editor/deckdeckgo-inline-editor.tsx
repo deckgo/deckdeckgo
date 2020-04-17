@@ -453,6 +453,13 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private async alignText() {
+    await this.initStyle(this.selection);
+
+    // We reset otherwise for example the text might be align on the right but the bar remains with the triangle on the left
+    await this.reset(true);
+  }
+
   private isContainer(element: Node): boolean {
     return DeckdeckgoInlineEditorUtils.isContainer(this.containers, element);
   }
@@ -782,7 +789,7 @@ export class DeckdeckgoInlineEditor {
           selection={this.selection}
           mobile={this.mobile}
           contentAlign={this.contentAlign}
-          onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-align-actions>
+          onInitStyle={() => this.alignText()}></deckgo-ie-align-actions>
       );
     } else {
       return this.renderSelectionActions();
