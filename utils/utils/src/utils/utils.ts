@@ -71,3 +71,12 @@ export function isFirefox(): boolean {
 
   return /firefox/i.test(a);
 }
+
+export function isRTL(): boolean {
+  if (!document || !document.documentElement) {
+    return false;
+  }
+
+  const htmlDir: string | null = document.documentElement.getAttribute('dir');
+  return htmlDir !== null && htmlDir === 'rtl';
+}
