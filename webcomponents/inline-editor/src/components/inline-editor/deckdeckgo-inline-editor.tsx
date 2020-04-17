@@ -263,7 +263,8 @@ export class DeckdeckgoInlineEditor {
       return;
     }
 
-    if (this.toolbarActions === ToolbarActions.IMAGE && this.isAnchorImage()) {
+    const anchorImage: boolean = await this.isAnchorImage();
+    if (this.toolbarActions === ToolbarActions.IMAGE && anchorImage) {
       await this.reset(false);
       return;
     }
