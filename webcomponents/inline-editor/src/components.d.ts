@@ -69,6 +69,7 @@ export namespace Components {
         "mobile": boolean;
     }
     interface DeckgoInlineEditor {
+        "align": boolean;
         "attachTo": HTMLElement;
         "containers": string;
         "customActions": string;
@@ -232,6 +233,7 @@ declare namespace LocalJSX {
         "mobile"?: boolean;
     }
     interface DeckgoInlineEditor {
+        "align"?: boolean;
         "attachTo"?: HTMLElement;
         "containers"?: string;
         "customActions"?: string;
