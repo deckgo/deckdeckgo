@@ -820,7 +820,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private renderSelectionActions() {
-    const styleColor = this.color ? {'background-color': this.color} : {};
+    const styleColor = this.color ? {'--deckgo-inline-editor-button-color': this.color} : {};
 
     return [
       <deckgo-ie-style-actions
@@ -831,6 +831,10 @@ export class DeckdeckgoInlineEditor {
         italic={this.italic}
         underline={this.underline}
         onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-style-actions>,
+
+      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker()}>
+        <deckgo-ie-action-image cssClass={'pick-color'} style={styleColor}></deckgo-ie-action-image>
+      </deckgo-ie-action-button>,
 
       this.renderSeparator(),
 
@@ -846,10 +850,6 @@ export class DeckdeckgoInlineEditor {
           cssClass={
             this.contentAlign === ContentAlign.LEFT ? 'left-align' : this.contentAlign === ContentAlign.CENTER ? 'center-align' : 'right-align'
           }></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
-
-      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker()}>
-        <deckgo-ie-action-image cssClass={'pick-color'} style={styleColor}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
 
       this.renderList(),

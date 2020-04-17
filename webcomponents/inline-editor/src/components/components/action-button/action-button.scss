@@ -2,7 +2,7 @@ button {
   pointer-events: initial;
   cursor: pointer;
 
-  margin: 0 4px;
+  margin: 0;
 
   height: 44px;
   line-height: 44px;
@@ -31,6 +31,12 @@ button {
   user-select: none;
 
   outline: 0;
+
+  &.italic,
+  &.bold,
+  &.underline {
+    margin: 0 2px;
+  }
 
   &.italic {
     font-style: italic;
