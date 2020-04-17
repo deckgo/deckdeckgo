@@ -28,7 +28,7 @@ div.deckgo-tools {
 
   transform: var(--deckgo-inline-editor-transform);
 
-  box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--deckgo-inline-editor-box-shadow, 0 0 8px 4px rgba(0, 0, 0, 0.1));
 
   &.deckgo-tools-sticky,
   &.deckgo-tools-mobile.deckgo-tools-sticky {
