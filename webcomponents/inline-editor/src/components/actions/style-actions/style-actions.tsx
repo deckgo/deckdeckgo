@@ -54,25 +54,30 @@ export class StyleActions {
   }
 
   render() {
+    const cssClass = this.mobile ? 'deckgo-tools-mobile' : undefined;
+
     return (
-      <Host>
+      <Host class={cssClass}>
         <deckgo-ie-action-button
           mobile={this.mobile}
           onAction={($event: CustomEvent<UIEvent>) => this.styleBold($event.detail)}
           disableAction={this.disabledTitle}
-          cssClass={this.bold ? 'bold active' : 'bold'}>
+          cssClass={this.bold ? 'active' : undefined}
+          class="bold">
           <span>B</span>
         </deckgo-ie-action-button>
         <deckgo-ie-action-button
           mobile={this.mobile}
           onAction={($event: CustomEvent<UIEvent>) => this.styleItalic($event.detail)}
-          cssClass={this.italic ? 'italic active' : 'italic'}>
+          cssClass={this.italic ? 'active' : undefined}
+          class="italic">
           <span>I</span>
         </deckgo-ie-action-button>
         <deckgo-ie-action-button
           mobile={this.mobile}
           onAction={($event: CustomEvent<UIEvent>) => this.styleUnderline($event.detail)}
-          cssClass={this.underline ? 'underline active' : 'underline'}>
+          cssClass={this.underline ? 'active' : undefined}
+          class={this.underline ? 'active underline' : 'underline'}>
           <span>U</span>
         </deckgo-ie-action-button>
       </Host>

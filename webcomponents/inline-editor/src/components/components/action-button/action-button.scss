@@ -32,28 +32,6 @@ button {
 
   outline: 0;
 
-  &.italic,
-  &.bold,
-  &.underline {
-    margin: 0 2px;
-  }
-
-  &.italic {
-    font-style: italic;
-  }
-
-  &.underline {
-    &.active {
-      span {
-        border-bottom: 2px solid var(--deckgo-inline-editor-button-color-active, black);
-      }
-    }
-
-    span {
-      border-bottom: 2px solid var(--deckgo-inline-editor-button-color, #3880ff);
-    }
-  }
-
   &.active {
     color: var(--deckgo-inline-editor-button-color-active, black);
   }
@@ -78,23 +56,11 @@ button {
 
 :host(.deckgo-tools-mobile) {
   button {
-    color: var(--deckgo-inline-editor-button-mobile-color, black);
+    color: var(--deckgo-inline-editor-button-mobile-color, #3880ff);
     padding: 0 4px;
 
     &.active {
-      color: var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
-    }
-
-    &.underline {
-      &.active {
-        span {
-          border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
-        }
-      }
-
-      span {
-        border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color, black);
-      }
+      color: var(--deckgo-inline-editor-button-mobile-color-active, black);
     }
 
     &[disabled] {
@@ -102,12 +68,12 @@ button {
     }
 
     > div {
-      background-color: var(--deckgo-inline-editor-button-mobile-color, black);
+      background-color: var(--deckgo-inline-editor-button-mobile-color, #3880ff);
     }
 
     &.active {
       > div {
-        background-color: var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
+        background-color: var(--deckgo-inline-editor-button-mobile-color-active, black);
       }
     }
 
