@@ -39,19 +39,19 @@ export class AlignActions {
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.LEFT)}
-        cssClass={this.contentAlign === ContentAlign.LEFT ? 'active' : undefined}>
+        class={this.contentAlign === ContentAlign.LEFT ? 'active' : undefined}>
         <deckgo-ie-action-image cssClass={'left-align'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.CENTER)}
-        cssClass={this.contentAlign === ContentAlign.CENTER ? 'active' : undefined}>
+        class={this.contentAlign === ContentAlign.CENTER ? 'active' : undefined}>
         <deckgo-ie-action-image cssClass={'center-align'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.RIGHT)}
-        cssClass={this.contentAlign === ContentAlign.RIGHT ? 'active' : undefined}>
+        class={this.contentAlign === ContentAlign.RIGHT ? 'active' : undefined}>
         <deckgo-ie-action-image cssClass={'right-align'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
     ];
