@@ -1,4 +1,4 @@
-import {ContentAlign} from '../types/enums';
+import {ContentAlign, ContentList} from '../types/enums';
 
 export class DeckdeckgoInlineEditorUtils {
   static isBold(element: HTMLElement): Promise<boolean> {
@@ -97,40 +97,44 @@ export class DeckdeckgoInlineEditorUtils {
     });
   }
 
-  static isList(element: HTMLElement, parentTag: string): Promise<boolean> {
-    return new Promise<boolean>(async (resolve) => {
+  static isList(element: HTMLElement): Promise<ContentList | undefined> {
+    return new Promise<ContentList | undefined>(async (resolve) => {
       if (!element) {
-        resolve(false);
+        resolve(undefined);
         return;
       }
 
-      if (
-        element.nodeName &&
-        element.nodeName.toLowerCase() === 'li' &&
-        element.parentElement &&
-        element.parentElement.nodeName &&
-        element.parentElement.nodeName.toLowerCase() === parentTag
-      ) {
-        resolve(true);
+      if (element.nodeName && element.nodeName.toLowerCase() === 'li' && element.parentElement && element.parentElement.nodeName) {
+        resolve(
+          element.parentElement.nodeName.toLowerCase() === 'ol'
+            ? ContentList.ORDERED
+            : element.parentElement.nodeName.toLowerCase() === 'ul'
+            ? ContentList.UNORDERED
+            : undefined
+        );
         return;
       }
 
-      resolve(false);
+      resolve(undefined);
     });
   }
 
   static getContentAlignment(element: HTMLElement): Promise<ContentAlign> {
     return new Promise<ContentAlign>(async (resolve) => {
-      var result = element.style.textAlign === 'center';
+      let result: boolean = element.style.textAlign === 'center';
+
       if (result) {
         resolve(ContentAlign.CENTER);
         return;
       }
+
       result = element.style.textAlign === 'right';
+
       if (result) {
         resolve(ContentAlign.RIGHT);
         return;
       }
+
       resolve(ContentAlign.LEFT);
     });
   }

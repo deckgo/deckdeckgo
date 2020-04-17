@@ -5,7 +5,7 @@ import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
 import '@deckdeckgo/color';
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
-import {ToolbarActions, ContentAlign} from '../../types/enums';
+import {ToolbarActions, ContentAlign, ContentList} from '../../types/enums';
 import {AnchorLink, InlineAction} from '../../interfaces/interfaces';
 
 import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
@@ -33,10 +33,7 @@ export class DeckdeckgoInlineEditor {
   private contentAlign: ContentAlign = ContentAlign.LEFT;
 
   @State()
-  private orderedList: boolean = false;
-
-  @State()
-  private unorderedList: boolean = false;
+  private contentList: ContentList | undefined = undefined;
 
   @State()
   private color: string;
@@ -441,8 +438,7 @@ export class DeckdeckgoInlineEditor {
         this.bold = false;
         this.italic = false;
         this.underline = false;
-        this.orderedList = false;
-        this.unorderedList = false;
+        this.contentList = undefined;
         this.color = null;
         this.contentAlign = ContentAlign.LEFT;
 
@@ -451,13 +447,6 @@ export class DeckdeckgoInlineEditor {
 
       resolve();
     });
-  }
-
-  private async alignText() {
-    await this.initStyle(this.selection);
-
-    // We reset otherwise for example the text might be align on the right but the bar remains with the triangle on the left
-    await this.reset(true);
   }
 
   private isContainer(element: Node): boolean {
@@ -497,12 +486,8 @@ export class DeckdeckgoInlineEditor {
           this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
         }
 
-        if (!this.orderedList) {
-          this.orderedList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement, 'ol');
-        }
-
-        if (!this.unorderedList) {
-          this.unorderedList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement, 'ul');
+        if (this.contentList === undefined) {
+          this.contentList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement);
         }
 
         await this.findColor(node);
@@ -621,18 +606,6 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private toggleList(e: UIEvent, cmd: string): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      await DeckdeckgoInlineEditorUtils.execCommand(this.selection, cmd);
-
-      await this.reset(true);
-
-      resolve();
-    });
-  }
-
   private toggleLink(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (this.link) {
@@ -716,6 +689,10 @@ export class DeckdeckgoInlineEditor {
     this.toolbarActions = ToolbarActions.ALIGNMENT;
   }
 
+  private async openListActions(): Promise<void> {
+    this.toolbarActions = ToolbarActions.LIST;
+  }
+
   private async onCustomAction($event: UIEvent, action: string): Promise<void> {
     $event.stopPropagation();
 
@@ -789,7 +766,16 @@ export class DeckdeckgoInlineEditor {
           selection={this.selection}
           mobile={this.mobile}
           contentAlign={this.contentAlign}
-          onInitStyle={() => this.alignText()}></deckgo-ie-align-actions>
+          onInitStyle={() => this.reset(true)}></deckgo-ie-align-actions>
+      );
+    } else if (this.toolbarActions === ToolbarActions.LIST) {
+      return (
+        <deckgo-ie-list-actions
+          selection={this.selection}
+          disabledTitle={this.disabledTitle}
+          mobile={this.mobile}
+          contentList={this.contentList}
+          onListModified={() => this.reset(true)}></deckgo-ie-list-actions>
       );
     } else {
       return this.renderSelectionActions();
@@ -815,21 +801,14 @@ export class DeckdeckgoInlineEditor {
 
       this.renderSeparator(),
 
-      <deckgo-ie-action-button
-        mobile={this.mobile}
-        onAction={() => this.openAlignmentActions()}
-        cssClass={
-          this.contentAlign === ContentAlign.LEFT || this.contentAlign === ContentAlign.CENTER || this.contentAlign === ContentAlign.RIGHT
-            ? 'active'
-            : undefined
-        }>
+      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openAlignmentActions()}>
         <deckgo-ie-action-image
           cssClass={
             this.contentAlign === ContentAlign.LEFT ? 'left-align' : this.contentAlign === ContentAlign.CENTER ? 'center-align' : 'right-align'
           }></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
 
-      this.renderList(),
+      this.renderListAction(),
 
       this.renderSeparator(),
 
@@ -858,27 +837,15 @@ export class DeckdeckgoInlineEditor {
     ];
   }
 
-  private renderList() {
-    if (this.list) {
-      return [
-        <deckgo-ie-action-button
-          mobile={this.mobile}
-          disableAction={this.disabledTitle}
-          onAction={($event: CustomEvent<UIEvent>) => this.toggleList($event.detail, 'insertOrderedList')}
-          cssClass={this.orderedList ? 'active' : undefined}>
-          <deckgo-ie-action-image cssClass={'ordered-list'}></deckgo-ie-action-image>
-        </deckgo-ie-action-button>,
-
-        <deckgo-ie-action-button
-          mobile={this.mobile}
-          disableAction={this.disabledTitle}
-          onAction={($event: CustomEvent<UIEvent>) => this.toggleList($event.detail, 'insertUnorderedList')}
-          cssClass={this.unorderedList ? 'active' : undefined}>
-          <deckgo-ie-action-image cssClass={'unordered-list'}></deckgo-ie-action-image>
-        </deckgo-ie-action-button>,
-      ];
-    } else {
+  private renderListAction() {
+    if (!this.list) {
       return undefined;
     }
+
+    return (
+      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openListActions()}>
+        <deckgo-ie-action-image cssClass={this.contentList === ContentList.UNORDERED ? 'unordered-list' : 'ordered-list'}></deckgo-ie-action-image>
+      </deckgo-ie-action-button>
+    );
   }
 }

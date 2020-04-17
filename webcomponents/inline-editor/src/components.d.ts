@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ContentAlign, ToolbarActions, } from "./types/enums";
+import { ContentAlign, ContentList, ToolbarActions, } from "./types/enums";
 import { DeckdeckgoPalette, } from "@deckdeckgo/color";
 import { EventEmitter, } from "@stencil/core";
 import { AnchorLink, InlineAction, } from "./interfaces/interfaces";
@@ -44,6 +44,12 @@ export namespace Components {
         "mobile": boolean;
         "selection": Selection;
         "toolbarActions": ToolbarActions;
+    }
+    interface DeckgoIeListActions {
+        "contentList": ContentList;
+        "disabledTitle": boolean;
+        "mobile": boolean;
+        "selection": Selection;
     }
     interface DeckgoIeSeparator {
         "mobile": boolean;
@@ -112,6 +118,12 @@ declare global {
         prototype: HTMLDeckgoIeLinkActionsElement;
         new (): HTMLDeckgoIeLinkActionsElement;
     };
+    interface HTMLDeckgoIeListActionsElement extends Components.DeckgoIeListActions, HTMLStencilElement {
+    }
+    var HTMLDeckgoIeListActionsElement: {
+        prototype: HTMLDeckgoIeListActionsElement;
+        new (): HTMLDeckgoIeListActionsElement;
+    };
     interface HTMLDeckgoIeSeparatorElement extends Components.DeckgoIeSeparator, HTMLStencilElement {
     }
     var HTMLDeckgoIeSeparatorElement: {
@@ -143,6 +155,7 @@ declare global {
         "deckgo-ie-color-actions": HTMLDeckgoIeColorActionsElement;
         "deckgo-ie-image-actions": HTMLDeckgoIeImageActionsElement;
         "deckgo-ie-link-actions": HTMLDeckgoIeLinkActionsElement;
+        "deckgo-ie-list-actions": HTMLDeckgoIeListActionsElement;
         "deckgo-ie-separator": HTMLDeckgoIeSeparatorElement;
         "deckgo-ie-style-actions": HTMLDeckgoIeStyleActionsElement;
         "deckgo-ie-triangle": HTMLDeckgoIeTriangleElement;
@@ -190,6 +203,13 @@ declare namespace LocalJSX {
         "selection"?: Selection;
         "toolbarActions"?: ToolbarActions;
     }
+    interface DeckgoIeListActions {
+        "contentList"?: ContentList;
+        "disabledTitle"?: boolean;
+        "mobile"?: boolean;
+        "onListModified"?: (event: CustomEvent<void>) => void;
+        "selection"?: Selection;
+    }
     interface DeckgoIeSeparator {
         "mobile"?: boolean;
     }
@@ -230,6 +250,7 @@ declare namespace LocalJSX {
         "deckgo-ie-color-actions": DeckgoIeColorActions;
         "deckgo-ie-image-actions": DeckgoIeImageActions;
         "deckgo-ie-link-actions": DeckgoIeLinkActions;
+        "deckgo-ie-list-actions": DeckgoIeListActions;
         "deckgo-ie-separator": DeckgoIeSeparator;
         "deckgo-ie-style-actions": DeckgoIeStyleActions;
         "deckgo-ie-triangle": DeckgoIeTriangle;
@@ -246,6 +267,7 @@ declare module "@stencil/core" {
             "deckgo-ie-color-actions": LocalJSX.DeckgoIeColorActions & JSXBase.HTMLAttributes<HTMLDeckgoIeColorActionsElement>;
             "deckgo-ie-image-actions": LocalJSX.DeckgoIeImageActions & JSXBase.HTMLAttributes<HTMLDeckgoIeImageActionsElement>;
             "deckgo-ie-link-actions": LocalJSX.DeckgoIeLinkActions & JSXBase.HTMLAttributes<HTMLDeckgoIeLinkActionsElement>;
+            "deckgo-ie-list-actions": LocalJSX.DeckgoIeListActions & JSXBase.HTMLAttributes<HTMLDeckgoIeListActionsElement>;
             "deckgo-ie-separator": LocalJSX.DeckgoIeSeparator & JSXBase.HTMLAttributes<HTMLDeckgoIeSeparatorElement>;
             "deckgo-ie-style-actions": LocalJSX.DeckgoIeStyleActions & JSXBase.HTMLAttributes<HTMLDeckgoIeStyleActionsElement>;
             "deckgo-ie-triangle": LocalJSX.DeckgoIeTriangle & JSXBase.HTMLAttributes<HTMLDeckgoIeTriangleElement>;
