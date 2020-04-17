@@ -6,16 +6,17 @@
 
 | Property       | Attribute       | Description | Type                                                             | Default     |
 | -------------- | --------------- | ----------- | ---------------------------------------------------------------- | ----------- |
+| `anchorEvent`  | --              |             | `MouseEvent \| TouchEvent`                                       | `undefined` |
+| `containers`   | `containers`    |             | `string`                                                         | `undefined` |
 | `contentAlign` | `content-align` |             | `ContentAlign.CENTER \| ContentAlign.LEFT \| ContentAlign.RIGHT` | `undefined` |
 | `mobile`       | `mobile`        |             | `boolean`                                                        | `undefined` |
-| `selection`    | --              |             | `Selection`                                                      | `undefined` |
 | `sticky`       | `sticky`        |             | `boolean`                                                        | `undefined` |
 
 ## Events
 
-| Event       | Description | Type               |
-| ----------- | ----------- | ------------------ |
-| `initStyle` |             | `CustomEvent<any>` |
+| Event           | Description | Type               |
+| --------------- | ----------- | ------------------ |
+| `alignModified` |             | `CustomEvent<any>` |
 
 ## Dependencies
 

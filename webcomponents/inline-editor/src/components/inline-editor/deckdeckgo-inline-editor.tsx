@@ -487,17 +487,13 @@ export class DeckdeckgoInlineEditor {
         this.disabledTitle = nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';
 
         await this.findColor(node);
+        this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
 
         resolve();
       } else {
-        // Alignment left/center/right generate sub-divs which contains style "text-align"
-        if (node.nodeName.toLowerCase() !== 'div' || !(node as HTMLElement).style.textAlign) {
-          this.bold = await DeckdeckgoInlineEditorUtils.isBold(node as HTMLElement);
-          this.italic = await DeckdeckgoInlineEditorUtils.isItalic(node as HTMLElement);
-          this.underline = await DeckdeckgoInlineEditorUtils.isUnderline(node as HTMLElement);
-        } else {
-          this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
-        }
+        this.bold = await DeckdeckgoInlineEditorUtils.isBold(node as HTMLElement);
+        this.italic = await DeckdeckgoInlineEditorUtils.isItalic(node as HTMLElement);
+        this.underline = await DeckdeckgoInlineEditorUtils.isUnderline(node as HTMLElement);
 
         if (this.contentList === undefined) {
           this.contentList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement);
@@ -778,11 +774,12 @@ export class DeckdeckgoInlineEditor {
     } else if (this.toolbarActions === ToolbarActions.ALIGNMENT) {
       return (
         <deckgo-ie-align-actions
-          selection={this.selection}
+          anchorEvent={this.anchorEvent}
+          containers={this.containers}
           mobile={this.mobile}
           sticky={sticky}
           contentAlign={this.contentAlign}
-          onInitStyle={() => this.reset(true)}></deckgo-ie-align-actions>
+          onAlignModified={() => this.reset(true)}></deckgo-ie-align-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.LIST) {
       return (

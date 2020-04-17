@@ -122,11 +122,13 @@ export class DeckdeckgoInlineEditorUtils {
   }
 
   static async getContentAlignment(element: HTMLElement): Promise<ContentAlign> {
-    if (element.style.textAlign === 'center') {
+    const style: CSSStyleDeclaration = window.getComputedStyle(element);
+
+    if (style.textAlign === 'center') {
       return ContentAlign.CENTER;
-    } else if (element.style.textAlign === 'right') {
+    } else if (style.textAlign === 'right') {
       return ContentAlign.RIGHT;
-    } else if (element.style.textAlign === 'left') {
+    } else if (style.textAlign === 'left') {
       return ContentAlign.LEFT;
     }
 
@@ -194,6 +196,29 @@ export class DeckdeckgoInlineEditorUtils {
       document.execCommand(command);
 
       resolve();
+    });
+  }
+
+  static findContainer(containers: string, element: HTMLElement): Promise<HTMLElement> {
+    return new Promise<HTMLElement>(async (resolve) => {
+      if (!element) {
+        resolve();
+        return;
+      }
+
+      // Just in case
+      if (element.nodeName.toUpperCase() === 'HTML' || element.nodeName.toUpperCase() === 'BODY' || !element.parentElement) {
+        resolve(element);
+        return;
+      }
+
+      if (DeckdeckgoInlineEditorUtils.isContainer(containers, element)) {
+        resolve(element);
+      } else {
+        const container: HTMLElement = await this.findContainer(containers, element.parentElement);
+
+        resolve(container);
+      }
     });
   }
 }
