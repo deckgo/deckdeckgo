@@ -12,13 +12,13 @@
     background: transparent;
     width: 97%;
     height: 100%;
-    color: var(--deckgo-inline-editor-link-color, #3880ff);
+    color: var(--deckgo-inline-editor-link-color, black);
     border: none;
     outline: 0;
     font-size: 16px;
 
     &::placeholder {
-      color: var(--deckgo-inline-editor-link-placeholder-color, #3880ff);
+      color: var(--deckgo-inline-editor-link-placeholder-color, black);
     }
   }
 }

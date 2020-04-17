@@ -10,12 +10,12 @@ deckgo-ie-action-button {
   &.underline {
     &.active {
       span {
-        border-bottom: 1px solid var(--deckgo-inline-editor-button-color-active, black);
+        border-bottom: 1px solid var(--deckgo-inline-editor-button-color-active, #3880ff);
       }
     }
 
     span {
-      border-bottom: 1px solid var(--deckgo-inline-editor-button-color, #3880ff);
+      border-bottom: 1px solid var(--deckgo-inline-editor-button-color, black);
     }
   }
 }
@@ -25,12 +25,12 @@ deckgo-ie-action-button {
     &.underline {
       &.active {
         span {
-          border-bottom: 1px solid var(--deckgo-inline-editor-button-mobile-color-active, black);
+          border-bottom: 1px solid var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
         }
       }
 
       span {
-        border-bottom: 1px solid var(--deckgo-inline-editor-button-mobile-color, #3880ff);
+        border-bottom: 1px solid var(--deckgo-inline-editor-button-mobile-color, black);
       }
     }
   }
