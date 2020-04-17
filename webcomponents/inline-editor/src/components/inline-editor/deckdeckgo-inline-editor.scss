@@ -39,6 +39,14 @@ div.deckgo-tools {
     z-index: var(--deckgo-inline-editor-sticky-zindex);
 
     height: var(--deckgo-inline-editor-sticky-height, 56px);
+
+    deckgo-ie-action-button {
+      margin: 0 2px;
+    }
+
+    deckgo-ie-triangle {
+      display: none;
+    }
   }
 
   &.deckgo-tools-activated {
@@ -47,7 +55,7 @@ div.deckgo-tools {
   }
 
   &.deckgo-tools-mobile {
-    box-shadow: var(--deckgo-inline-editor-mobile-box-shadow, 0 0px 1px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.15));
+    box-shadow: var(--deckgo-inline-editor-mobile-box-shadow, 0 0 8px 4px rgba(0, 0, 0, 0.1));
     background-image: linear-gradient(
       to bottom,
       var(--deckgo-inline-editor-mobile-background-top, #fff),

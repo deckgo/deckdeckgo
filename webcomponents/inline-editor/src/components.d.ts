@@ -22,6 +22,7 @@ export namespace Components {
         "contentAlign": ContentAlign;
         "mobile": boolean;
         "selection": Selection;
+        "sticky": boolean;
     }
     interface DeckgoIeColorActions {
         "color": string;
@@ -50,6 +51,7 @@ export namespace Components {
         "disabledTitle": boolean;
         "mobile": boolean;
         "selection": Selection;
+        "sticky": boolean;
     }
     interface DeckgoIeSeparator {
         "mobile": boolean;
@@ -177,6 +179,7 @@ declare namespace LocalJSX {
         "mobile"?: boolean;
         "onInitStyle"?: (event: CustomEvent<any>) => void;
         "selection"?: Selection;
+        "sticky"?: boolean;
     }
     interface DeckgoIeColorActions {
         "color"?: string;
@@ -209,6 +212,7 @@ declare namespace LocalJSX {
         "mobile"?: boolean;
         "onListModified"?: (event: CustomEvent<void>) => void;
         "selection"?: Selection;
+        "sticky"?: boolean;
     }
     interface DeckgoIeSeparator {
         "mobile"?: boolean;

@@ -729,6 +729,8 @@ export class DeckdeckgoInlineEditor {
   }
 
   private renderActions() {
+    const sticky: boolean = this.isSticky();
+
     if (this.toolbarActions === ToolbarActions.LINK) {
       return (
         <deckgo-ie-link-actions
@@ -765,6 +767,7 @@ export class DeckdeckgoInlineEditor {
         <deckgo-ie-align-actions
           selection={this.selection}
           mobile={this.mobile}
+          sticky={sticky}
           contentAlign={this.contentAlign}
           onInitStyle={() => this.reset(true)}></deckgo-ie-align-actions>
       );
@@ -774,6 +777,7 @@ export class DeckdeckgoInlineEditor {
           selection={this.selection}
           disabledTitle={this.disabledTitle}
           mobile={this.mobile}
+          sticky={sticky}
           contentList={this.contentList}
           onListModified={() => this.reset(true)}></deckgo-ie-list-actions>
       );

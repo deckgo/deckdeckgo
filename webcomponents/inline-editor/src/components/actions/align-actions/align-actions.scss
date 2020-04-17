@@ -1,3 +1,9 @@
+:host(.deckgo-tools-sticky) {
+  deckgo-ie-action-button {
+    margin: 0 2px;
+  }
+}
+
 deckgo-ie-action-button.active {
   --deckgo-inline-editor-button-color: var(--deckgo-inline-editor-button-color-active, black);
 }

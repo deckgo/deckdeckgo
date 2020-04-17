@@ -1,4 +1,4 @@
-import {Component, EventEmitter, h, Prop, Event} from '@stencil/core';
+import {Component, EventEmitter, h, Prop, Event, Host} from '@stencil/core';
 
 import {ContentAlign} from '../../../types/enums';
 
@@ -15,6 +15,9 @@ export class AlignActions {
 
   @Prop()
   mobile: boolean;
+
+  @Prop()
+  sticky: boolean;
 
   @Prop()
   contentAlign: ContentAlign;
@@ -35,25 +38,27 @@ export class AlignActions {
   }
 
   render() {
-    return [
-      <deckgo-ie-action-button
-        mobile={this.mobile}
-        onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.LEFT)}
-        class={this.contentAlign === ContentAlign.LEFT ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'left-align'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
-      <deckgo-ie-action-button
-        mobile={this.mobile}
-        onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.CENTER)}
-        class={this.contentAlign === ContentAlign.CENTER ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'center-align'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
-      <deckgo-ie-action-button
-        mobile={this.mobile}
-        onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.RIGHT)}
-        class={this.contentAlign === ContentAlign.RIGHT ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'right-align'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
-    ];
+    return (
+      <Host class={this.sticky ? 'deckgo-tools-sticky' : undefined}>
+        <deckgo-ie-action-button
+          mobile={this.mobile}
+          onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.LEFT)}
+          class={this.contentAlign === ContentAlign.LEFT ? 'active' : undefined}>
+          <deckgo-ie-action-image cssClass={'left-align'}></deckgo-ie-action-image>
+        </deckgo-ie-action-button>
+        <deckgo-ie-action-button
+          mobile={this.mobile}
+          onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.CENTER)}
+          class={this.contentAlign === ContentAlign.CENTER ? 'active' : undefined}>
+          <deckgo-ie-action-image cssClass={'center-align'}></deckgo-ie-action-image>
+        </deckgo-ie-action-button>
+        <deckgo-ie-action-button
+          mobile={this.mobile}
+          onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.RIGHT)}
+          class={this.contentAlign === ContentAlign.RIGHT ? 'active' : undefined}>
+          <deckgo-ie-action-image cssClass={'right-align'}></deckgo-ie-action-image>
+        </deckgo-ie-action-button>
+      </Host>
+    );
   }
 }
