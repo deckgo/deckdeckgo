@@ -1,6 +1,6 @@
 import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method, h, Host} from '@stencil/core';
 
-import {isMobile, isIOS, unifyEvent, debounce} from '@deckdeckgo/utils';
+import {isMobile, isIOS, unifyEvent, debounce, isRTL} from '@deckdeckgo/utils';
 
 import '@deckdeckgo/color';
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
@@ -30,7 +30,7 @@ export class DeckdeckgoInlineEditor {
   private underline: boolean = false;
 
   @State()
-  private contentAlign: ContentAlign = ContentAlign.LEFT;
+  private contentAlign: ContentAlign;
 
   @State()
   private contentList: ContentList | undefined = undefined;
@@ -115,6 +115,8 @@ export class DeckdeckgoInlineEditor {
   @State()
   private anchorEventLeft: number = 0;
 
+  private rtl: boolean = isRTL();
+
   constructor() {
     this.resetDisplayToolsActivated();
   }
@@ -127,6 +129,8 @@ export class DeckdeckgoInlineEditor {
 
   async componentWillLoad() {
     await this.attachListener();
+
+    await this.initDefaultContentAlign();
   }
 
   async componentDidLoad() {
@@ -444,13 +448,18 @@ export class DeckdeckgoInlineEditor {
         this.underline = false;
         this.contentList = undefined;
         this.color = null;
-        this.contentAlign = ContentAlign.LEFT;
+
+        await this.initDefaultContentAlign();
 
         await this.findStyle(this.isContainer(content) ? content : content.parentElement);
       }
 
       resolve();
     });
+  }
+
+  private async initDefaultContentAlign() {
+    this.contentAlign = this.rtl ? ContentAlign.RIGHT : ContentAlign.LEFT;
   }
 
   private isContainer(element: Node): boolean {

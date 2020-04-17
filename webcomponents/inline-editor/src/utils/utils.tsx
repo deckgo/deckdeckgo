@@ -1,3 +1,5 @@
+import {isRTL} from '@deckdeckgo/utils';
+
 import {ContentAlign, ContentList} from '../types/enums';
 
 export class DeckdeckgoInlineEditorUtils {
@@ -119,24 +121,16 @@ export class DeckdeckgoInlineEditorUtils {
     });
   }
 
-  static getContentAlignment(element: HTMLElement): Promise<ContentAlign> {
-    return new Promise<ContentAlign>(async (resolve) => {
-      let result: boolean = element.style.textAlign === 'center';
+  static async getContentAlignment(element: HTMLElement): Promise<ContentAlign> {
+    if (element.style.textAlign === 'center') {
+      return ContentAlign.CENTER;
+    } else if (element.style.textAlign === 'right') {
+      return ContentAlign.RIGHT;
+    } else if (element.style.textAlign === 'left') {
+      return ContentAlign.LEFT;
+    }
 
-      if (result) {
-        resolve(ContentAlign.CENTER);
-        return;
-      }
-
-      result = element.style.textAlign === 'right';
-
-      if (result) {
-        resolve(ContentAlign.RIGHT);
-        return;
-      }
-
-      resolve(ContentAlign.LEFT);
-    });
+    return isRTL() ? ContentAlign.RIGHT : ContentAlign.LEFT;
   }
 
   private static isTag(element: HTMLElement, tagName: string): Promise<boolean> {
