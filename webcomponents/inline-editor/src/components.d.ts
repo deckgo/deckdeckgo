@@ -19,9 +19,10 @@ export namespace Components {
         "cssClass": string;
     }
     interface DeckgoIeAlignActions {
+        "anchorEvent": MouseEvent | TouchEvent;
+        "containers": string;
         "contentAlign": ContentAlign;
         "mobile": boolean;
-        "selection": Selection;
         "sticky": boolean;
     }
     interface DeckgoIeColorActions {
@@ -175,10 +176,11 @@ declare namespace LocalJSX {
         "cssClass"?: string;
     }
     interface DeckgoIeAlignActions {
+        "anchorEvent"?: MouseEvent | TouchEvent;
+        "containers"?: string;
         "contentAlign"?: ContentAlign;
         "mobile"?: boolean;
-        "onInitStyle"?: (event: CustomEvent<any>) => void;
-        "selection"?: Selection;
+        "onAlignModified"?: (event: CustomEvent<any>) => void;
         "sticky"?: boolean;
     }
     interface DeckgoIeColorActions {

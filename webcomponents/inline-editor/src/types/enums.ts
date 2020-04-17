@@ -20,9 +20,9 @@ export enum ImageAlign {
 }
 
 export enum ContentAlign {
-  LEFT = 'justifyLeft',
-  CENTER = 'justifyCenter',
-  RIGHT = 'justifyRight',
+  LEFT = 'left',
+  CENTER = 'center',
+  RIGHT = 'right',
 }
 
 export enum ContentList {

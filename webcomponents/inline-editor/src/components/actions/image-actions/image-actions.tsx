@@ -73,7 +73,7 @@ export class ImageActions {
       applyFunction(param);
 
       const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-      const container: HTMLElement = await this.findContainer(anchorImg);
+      const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
       this.imgDidChange.emit(container);
 
       this.imgModified.emit();
@@ -114,7 +114,7 @@ export class ImageActions {
         return;
       }
 
-      const container: HTMLElement = await this.findContainer(anchorImg);
+      const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
 
       if (!container) {
         resolve();
@@ -128,29 +128,6 @@ export class ImageActions {
       this.imgModified.emit();
 
       resolve();
-    });
-  }
-
-  private findContainer(element: HTMLElement): Promise<HTMLElement> {
-    return new Promise<HTMLElement>(async (resolve) => {
-      if (!element) {
-        resolve();
-        return;
-      }
-
-      // Just in case
-      if (element.nodeName.toUpperCase() === 'HTML' || element.nodeName.toUpperCase() === 'BODY' || !element.parentElement) {
-        resolve(element);
-        return;
-      }
-
-      if (DeckdeckgoInlineEditorUtils.isContainer(this.containers, element)) {
-        resolve(element);
-      } else {
-        const container: HTMLElement = await this.findContainer(element.parentElement);
-
-        resolve(container);
-      }
     });
   }
 

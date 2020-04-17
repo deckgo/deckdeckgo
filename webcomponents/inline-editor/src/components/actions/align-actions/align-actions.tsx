@@ -11,7 +11,7 @@ import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
 })
 export class AlignActions {
   @Prop()
-  selection: Selection;
+  anchorEvent: MouseEvent | TouchEvent;
 
   @Prop()
   mobile: boolean;
@@ -22,16 +22,22 @@ export class AlignActions {
   @Prop()
   contentAlign: ContentAlign;
 
+  @Prop()
+  containers: string;
+
   @Event()
-  private initStyle: EventEmitter;
+  private alignModified: EventEmitter;
 
   private justifyContent(e: UIEvent, align: ContentAlign): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
-      await DeckdeckgoInlineEditorUtils.execCommand(this.selection, align.toString());
+      const anchorElement: HTMLElement = this.anchorEvent.target as HTMLElement;
+      const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorElement);
 
-      await this.initStyle.emit();
+      container.style.textAlign = container.style.textAlign === align ? '' : align;
+
+      await this.alignModified.emit();
 
       resolve();
     });
