@@ -1,7 +1,7 @@
 import {Component, h} from '@stencil/core';
 
 @Component({
-  tag: 'app-edit-default'
+  tag: 'app-edit-default',
 })
 export class AppEditDefault {
   render() {
@@ -28,7 +28,7 @@ export class AppEditDefault {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

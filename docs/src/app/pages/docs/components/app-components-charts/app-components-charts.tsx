@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-components-charts'
+  tag: 'app-components-charts',
 })
 export class AppComponentsCharts {
   @Element() el: HTMLElement;
@@ -147,7 +147,7 @@ export class AppComponentsCharts {
                 '--deckgo-chart-fill-color-2': 'none',
                 '--deckgo-chart-fill-opacity-2': '1',
                 '--deckgo-chart-stroke-2': 'var(--ion-color-secondary)',
-                '--deckgo-chart-stroke-width-2': '3px'
+                '--deckgo-chart-stroke-width-2': '3px',
               }}></deckgo-line-chart>
           </div>
 
@@ -166,7 +166,7 @@ export class AppComponentsCharts {
                 '--deckgo-chart-fill-color-2': 'none',
                 '--deckgo-chart-fill-opacity-2': '1',
                 '--deckgo-chart-stroke-2': 'var(--ion-color-secondary)',
-                '--deckgo-chart-stroke-width-2': '3px'
+                '--deckgo-chart-stroke-width-2': '3px',
               }}></deckgo-line-chart>
           </div>
 
@@ -200,7 +200,7 @@ export class AppComponentsCharts {
               style={{
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
-                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
+                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
               }}></deckgo-bar-chart>
           </div>
 
@@ -224,7 +224,7 @@ export class AppComponentsCharts {
               style={{
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
-                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
+                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
               }}></deckgo-bar-chart>
 
             <div>
@@ -1645,7 +1645,7 @@ export class AppComponentsCharts {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

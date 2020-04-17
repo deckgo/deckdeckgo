@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-aspect-ratio',
-  styleUrl: 'app-slide-aspect-ratio.scss'
+  styleUrl: 'app-slide-aspect-ratio.scss',
 })
 export class AppSlideAspectRatio {
   @Element() el: HTMLElement;
@@ -291,7 +291,7 @@ export class AppSlideAspectRatio {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

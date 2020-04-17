@@ -1,7 +1,7 @@
 import {Component, h} from '@stencil/core';
 
 @Component({
-  tag: 'app-edit-lazy-loading'
+  tag: 'app-edit-lazy-loading',
 })
 export class AppEditLazyLoading {
   render() {
@@ -41,7 +41,7 @@ export class AppEditLazyLoading {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

@@ -1,7 +1,7 @@
 import {Component, h} from '@stencil/core';
 
 @Component({
-  tag: 'app-misc-contact'
+  tag: 'app-misc-contact',
 })
 export class AppMiscContact {
   render() {
@@ -32,7 +32,7 @@ export class AppMiscContact {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

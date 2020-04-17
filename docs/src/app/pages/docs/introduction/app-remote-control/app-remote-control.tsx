@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-remote-control',
-  styleUrl: 'app-remote-control.scss'
+  styleUrl: 'app-remote-control.scss',
 })
 export class AppRemoteControl {
   @Element() el: HTMLElement;
@@ -103,7 +103,7 @@ export class AppRemoteControl {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

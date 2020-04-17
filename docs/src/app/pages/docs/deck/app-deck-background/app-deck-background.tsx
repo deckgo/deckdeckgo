@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-deck-background'
+  tag: 'app-deck-background',
 })
 export class AppDeckBackground {
   @Element() el: HTMLElement;
@@ -164,7 +164,7 @@ export class AppDeckBackground {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

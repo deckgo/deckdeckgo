@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-components-qrcode'
+  tag: 'app-components-qrcode',
 })
 export class AppComponentsQRCode {
   @Element() el: HTMLElement;
@@ -360,7 +360,7 @@ export class AppComponentsQRCode {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

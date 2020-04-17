@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-author',
-  styleUrl: 'app-slide-author.scss'
+  styleUrl: 'app-slide-author.scss',
 })
 export class AppSlideAuthor {
   @Element() el: HTMLElement;
@@ -370,7 +370,7 @@ export class AppSlideAuthor {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

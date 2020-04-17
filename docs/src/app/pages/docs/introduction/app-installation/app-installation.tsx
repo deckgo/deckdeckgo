@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-installation',
-  styleUrl: 'app-installation.scss'
+  styleUrl: 'app-installation.scss',
 })
 export class AppInstallation {
   @Element() el: HTMLElement;
@@ -97,7 +97,7 @@ export class AppInstallation {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

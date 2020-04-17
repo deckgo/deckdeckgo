@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-chart',
-  styleUrl: 'app-slide-chart.scss'
+  styleUrl: 'app-slide-chart.scss',
 })
 export class AppSlideChart {
   @Element() el: HTMLElement;
@@ -108,7 +108,7 @@ export class AppSlideChart {
                 style={{
                   '--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)',
                   '--deckgo-chart-fill-color-bar2': 'var(--ion-color-secondary)',
-                  '--deckgo-chart-fill-color-bar3': 'var(--ion-color-tertiary)'
+                  '--deckgo-chart-fill-color-bar3': 'var(--ion-color-tertiary)',
                 }}>
                 <h1 slot="title">slot="title"</h1>
               </deckgo-slide-chart>
@@ -306,7 +306,7 @@ export class AppSlideChart {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

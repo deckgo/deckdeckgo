@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-qrcode',
-  styleUrl: 'app-slide-qrcode.scss'
+  styleUrl: 'app-slide-qrcode.scss',
 })
 export class AppSlideQRCode {
   @Element() el: HTMLElement;
@@ -301,7 +301,7 @@ export class AppSlideQRCode {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

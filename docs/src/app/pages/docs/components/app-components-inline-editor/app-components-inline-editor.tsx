@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-components-inline-editor'
+  tag: 'app-components-inline-editor',
 })
 export class AppComponentsInlineEditor {
   @Element() el: HTMLElement;
@@ -317,6 +317,36 @@ export class AppComponentsInlineEditor {
                   <code>DEFAULT_PALETTE</code>
                 </td>
               </tr>
+              <tr>
+                <td>
+                  <code>list</code>
+                </td>
+                <td>
+                  <code>list</code>
+                </td>
+                <td>Actions to manipulate the selection as list enabled?</td>
+                <td>
+                  <code>boolean</code>
+                </td>
+                <td>
+                  <code>true</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>align</code>
+                </td>
+                <td>
+                  <code>list</code>
+                </td>
+                <td>Actions to manipulate the selection alignment enabled?</td>
+                <td>
+                  <code>boolean</code>
+                </td>
+                <td>
+                  <code>true</code>
+                </td>
+              </tr>
             </tbody>
           </table>
           <h3 id="app-components-inline-editor-custom-actions-slots">Custom actions slots</h3>
@@ -583,7 +613,7 @@ export class AppComponentsInlineEditor {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

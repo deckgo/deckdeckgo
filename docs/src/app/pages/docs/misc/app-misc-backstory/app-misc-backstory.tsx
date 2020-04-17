@@ -1,7 +1,7 @@
 import {Component, h} from '@stencil/core';
 
 @Component({
-  tag: 'app-misc-backstory'
+  tag: 'app-misc-backstory',
 })
 export class AppMiscBackstory {
   render() {
@@ -169,7 +169,7 @@ export class AppMiscBackstory {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

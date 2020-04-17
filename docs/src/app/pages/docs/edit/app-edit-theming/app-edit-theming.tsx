@@ -1,7 +1,7 @@
 import {Component, h} from '@stencil/core';
 
 @Component({
-  tag: 'app-edit-theming'
+  tag: 'app-edit-theming',
 })
 export class AppEditTheming {
   render() {
@@ -61,7 +61,7 @@ export class AppEditTheming {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

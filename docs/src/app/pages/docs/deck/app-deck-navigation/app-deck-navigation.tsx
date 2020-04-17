@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-deck-navigation'
+  tag: 'app-deck-navigation',
 })
 export class AppDeckNavigation {
   @Element() el: HTMLElement;
@@ -225,7 +225,7 @@ export class AppDeckNavigation {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

@@ -99,6 +99,9 @@ export class DeckdeckgoInlineEditor {
   list: boolean = true;
 
   @Prop()
+  align: boolean = true;
+
+  @Prop()
   customActions: string; // Comma separated list of additional action components
 
   @Event()
@@ -815,16 +818,11 @@ export class DeckdeckgoInlineEditor {
 
       this.renderSeparator(),
 
-      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openAlignmentActions()}>
-        <deckgo-ie-action-image
-          cssClass={
-            this.contentAlign === ContentAlign.LEFT ? 'left-align' : this.contentAlign === ContentAlign.CENTER ? 'center-align' : 'right-align'
-          }></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
+      this.renderAlignAction(),
 
       this.renderListAction(),
 
-      this.renderSeparator(),
+      this.renderLinkSeparator(),
 
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.toggleLink()} cssClass={this.link ? 'active' : undefined}>
         <deckgo-ie-action-image cssClass={'link'}></deckgo-ie-action-image>
@@ -836,6 +834,14 @@ export class DeckdeckgoInlineEditor {
 
   private renderSeparator() {
     return <deckgo-ie-separator mobile={this.mobile}></deckgo-ie-separator>;
+  }
+
+  private renderLinkSeparator() {
+    if (!this.list && !this.align) {
+      return undefined;
+    }
+
+    return this.renderSeparator();
   }
 
   private renderCustomActions() {
@@ -859,6 +865,21 @@ export class DeckdeckgoInlineEditor {
     return (
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openListActions()}>
         <deckgo-ie-action-image cssClass={this.contentList === ContentList.UNORDERED ? 'unordered-list' : 'ordered-list'}></deckgo-ie-action-image>
+      </deckgo-ie-action-button>
+    );
+  }
+
+  private renderAlignAction() {
+    if (!this.align) {
+      return undefined;
+    }
+
+    return (
+      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openAlignmentActions()}>
+        <deckgo-ie-action-image
+          cssClass={
+            this.contentAlign === ContentAlign.LEFT ? 'left-align' : this.contentAlign === ContentAlign.CENTER ? 'center-align' : 'right-align'
+          }></deckgo-ie-action-image>
       </deckgo-ie-action-button>
     );
   }

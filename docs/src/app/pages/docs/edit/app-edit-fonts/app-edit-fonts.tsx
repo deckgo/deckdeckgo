@@ -2,7 +2,7 @@ import {Component, h} from '@stencil/core';
 
 @Component({
   tag: 'app-edit-fonts',
-  styleUrl: 'app-edit-fonts.scss'
+  styleUrl: 'app-edit-fonts.scss',
 })
 export class AppEditFonts {
   render() {
@@ -50,7 +50,7 @@ export class AppEditFonts {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

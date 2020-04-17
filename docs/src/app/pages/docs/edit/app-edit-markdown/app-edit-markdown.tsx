@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-edit-markdown'
+  tag: 'app-edit-markdown',
 })
 export class AppEditMarkdown {
   @Element() el: HTMLElement;
@@ -154,7 +154,7 @@ export class AppEditMarkdown {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }
