@@ -9,6 +9,7 @@
 | `contentAlign` | `content-align` |             | `ContentAlign.CENTER \| ContentAlign.LEFT \| ContentAlign.RIGHT` | `undefined` |
 | `mobile`       | `mobile`        |             | `boolean`                                                        | `undefined` |
 | `selection`    | --              |             | `Selection`                                                      | `undefined` |
+| `sticky`       | `sticky`        |             | `boolean`                                                        | `undefined` |
 
 ## Events
 
