@@ -44,7 +44,7 @@ import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
 @Component({
   tag: 'app-editor',
-  styleUrl: 'app-editor.scss'
+  styleUrl: 'app-editor.scss',
 })
 export class AppEditor {
   @Element() el: HTMLElement;
@@ -392,7 +392,7 @@ export class AppEditor {
 
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-publish',
-      cssClass: 'fullscreen'
+      cssClass: 'fullscreen',
     });
 
     modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -589,7 +589,7 @@ export class AppEditor {
   async signIn() {
     this.navService.navigate({
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
+      direction: NavDirection.FORWARD,
     });
   }
 
@@ -708,8 +708,9 @@ export class AppEditor {
         sticky-mobile="true"
         onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
         img-anchor="deckgo-lazy-img"
-        list={false}></deckgo-inline-editor>,
-      <app-inactivity fullscreen={this.fullscreen} onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}></app-inactivity>
+        list={false}
+        align={false}></deckgo-inline-editor>,
+      <app-inactivity fullscreen={this.fullscreen} onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}></app-inactivity>,
     ];
   }
 
