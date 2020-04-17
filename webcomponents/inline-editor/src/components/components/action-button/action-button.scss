@@ -2,7 +2,7 @@ button {
   pointer-events: initial;
   cursor: pointer;
 
-  margin: 0 4px;
+  margin: 0;
 
   height: 44px;
   line-height: 44px;
@@ -13,7 +13,7 @@ button {
   vertical-align: middle;
 
   border: 0;
-  color: var(--deckgo-inline-editor-button-color, #3880ff);
+  color: var(--deckgo-inline-editor-button-color, black);
 
   transition: 0.1s background-color, 0.1s border-color, 0.1s fill;
 
@@ -30,24 +30,10 @@ button {
   -o-user-select: none;
   user-select: none;
 
-  &.italic {
-    font-style: italic;
-  }
-
-  &.underline {
-    &.active {
-      span {
-        border-bottom: 2px solid var(--deckgo-inline-editor-button-color-active, black);
-      }
-    }
-
-    span {
-      border-bottom: 2px solid var(--deckgo-inline-editor-button-color, #3880ff);
-    }
-  }
+  outline: 0;
 
   &.active {
-    color: var(--deckgo-inline-editor-button-color-active, black);
+    color: var(--deckgo-inline-editor-button-color-active, #3880ff);
   }
 
   &[disabled] {
@@ -57,7 +43,7 @@ button {
 
   &.active {
     > div {
-      background-color: var(--deckgo-inline-editor-button-color-active, black);
+      background-color: var(--deckgo-inline-editor-button-color-active, #3880ff);
     }
   }
 
@@ -75,18 +61,6 @@ button {
 
     &.active {
       color: var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
-    }
-
-    &.underline {
-      &.active {
-        span {
-          border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color-active, #3880ff);
-        }
-      }
-
-      span {
-        border-bottom: 2px solid var(--deckgo-inline-editor-button-mobile-color, black);
-      }
     }
 
     &[disabled] {

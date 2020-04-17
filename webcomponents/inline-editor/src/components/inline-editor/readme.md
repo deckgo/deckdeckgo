@@ -40,29 +40,39 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- [deckgo-ie-action-button](../components/action-button)
-- [deckgo-ie-action-image](../components/action-image)
+- [deckgo-ie-triangle](../components/triangle)
 - [deckgo-ie-link-actions](../actions/link-actions)
 - [deckgo-ie-color-actions](../actions/color-actions)
 - [deckgo-ie-image-actions](../actions/image-actions)
+- [deckgo-ie-align-actions](../actions/align-actions)
+- [deckgo-ie-list-actions](../actions/list-actions)
 - [deckgo-ie-style-actions](../actions/style-actions)
+- [deckgo-ie-action-button](../components/action-button)
+- [deckgo-ie-action-image](../components/action-image)
 - [deckgo-ie-separator](../components/separator)
 
 ### Graph
 
 ```mermaid
 graph TD;
-  deckgo-inline-editor --> deckgo-ie-action-button
-  deckgo-inline-editor --> deckgo-ie-action-image
+  deckgo-inline-editor --> deckgo-ie-triangle
   deckgo-inline-editor --> deckgo-ie-link-actions
   deckgo-inline-editor --> deckgo-ie-color-actions
   deckgo-inline-editor --> deckgo-ie-image-actions
+  deckgo-inline-editor --> deckgo-ie-align-actions
+  deckgo-inline-editor --> deckgo-ie-list-actions
   deckgo-inline-editor --> deckgo-ie-style-actions
+  deckgo-inline-editor --> deckgo-ie-action-button
+  deckgo-inline-editor --> deckgo-ie-action-image
   deckgo-inline-editor --> deckgo-ie-separator
   deckgo-ie-color-actions --> deckgo-color
   deckgo-ie-image-actions --> deckgo-ie-action-button
   deckgo-ie-image-actions --> deckgo-ie-action-image
   deckgo-ie-image-actions --> deckgo-ie-separator
+  deckgo-ie-align-actions --> deckgo-ie-action-button
+  deckgo-ie-align-actions --> deckgo-ie-action-image
+  deckgo-ie-list-actions --> deckgo-ie-action-button
+  deckgo-ie-list-actions --> deckgo-ie-action-image
   deckgo-ie-style-actions --> deckgo-ie-action-button
   style deckgo-inline-editor fill:#f9f,stroke:#333,stroke-width:4px
 ```

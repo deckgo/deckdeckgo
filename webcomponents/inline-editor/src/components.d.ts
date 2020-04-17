@@ -5,9 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ContentAlign, ContentList, ToolbarActions, } from "./types/enums";
 import { DeckdeckgoPalette, } from "@deckdeckgo/color";
 import { EventEmitter, } from "@stencil/core";
-import { ToolbarActions, } from "./types/enums";
 import { AnchorLink, InlineAction, } from "./interfaces/interfaces";
 export namespace Components {
     interface DeckgoIeActionButton {
@@ -17,6 +17,12 @@ export namespace Components {
     }
     interface DeckgoIeActionImage {
         "cssClass": string;
+    }
+    interface DeckgoIeAlignActions {
+        "contentAlign": ContentAlign;
+        "mobile": boolean;
+        "selection": Selection;
+        "sticky": boolean;
     }
     interface DeckgoIeColorActions {
         "color": string;
@@ -40,6 +46,13 @@ export namespace Components {
         "selection": Selection;
         "toolbarActions": ToolbarActions;
     }
+    interface DeckgoIeListActions {
+        "contentList": ContentList;
+        "disabledTitle": boolean;
+        "mobile": boolean;
+        "selection": Selection;
+        "sticky": boolean;
+    }
     interface DeckgoIeSeparator {
         "mobile": boolean;
     }
@@ -50,6 +63,9 @@ export namespace Components {
         "mobile": boolean;
         "selection": Selection;
         "underline": boolean;
+    }
+    interface DeckgoIeTriangle {
+        "mobile": boolean;
     }
     interface DeckgoInlineEditor {
         "attachTo": HTMLElement;
@@ -80,6 +96,12 @@ declare global {
         prototype: HTMLDeckgoIeActionImageElement;
         new (): HTMLDeckgoIeActionImageElement;
     };
+    interface HTMLDeckgoIeAlignActionsElement extends Components.DeckgoIeAlignActions, HTMLStencilElement {
+    }
+    var HTMLDeckgoIeAlignActionsElement: {
+        prototype: HTMLDeckgoIeAlignActionsElement;
+        new (): HTMLDeckgoIeAlignActionsElement;
+    };
     interface HTMLDeckgoIeColorActionsElement extends Components.DeckgoIeColorActions, HTMLStencilElement {
     }
     var HTMLDeckgoIeColorActionsElement: {
@@ -98,6 +120,12 @@ declare global {
         prototype: HTMLDeckgoIeLinkActionsElement;
         new (): HTMLDeckgoIeLinkActionsElement;
     };
+    interface HTMLDeckgoIeListActionsElement extends Components.DeckgoIeListActions, HTMLStencilElement {
+    }
+    var HTMLDeckgoIeListActionsElement: {
+        prototype: HTMLDeckgoIeListActionsElement;
+        new (): HTMLDeckgoIeListActionsElement;
+    };
     interface HTMLDeckgoIeSeparatorElement extends Components.DeckgoIeSeparator, HTMLStencilElement {
     }
     var HTMLDeckgoIeSeparatorElement: {
@@ -110,6 +138,12 @@ declare global {
         prototype: HTMLDeckgoIeStyleActionsElement;
         new (): HTMLDeckgoIeStyleActionsElement;
     };
+    interface HTMLDeckgoIeTriangleElement extends Components.DeckgoIeTriangle, HTMLStencilElement {
+    }
+    var HTMLDeckgoIeTriangleElement: {
+        prototype: HTMLDeckgoIeTriangleElement;
+        new (): HTMLDeckgoIeTriangleElement;
+    };
     interface HTMLDeckgoInlineEditorElement extends Components.DeckgoInlineEditor, HTMLStencilElement {
     }
     var HTMLDeckgoInlineEditorElement: {
@@ -119,11 +153,14 @@ declare global {
     interface HTMLElementTagNameMap {
         "deckgo-ie-action-button": HTMLDeckgoIeActionButtonElement;
         "deckgo-ie-action-image": HTMLDeckgoIeActionImageElement;
+        "deckgo-ie-align-actions": HTMLDeckgoIeAlignActionsElement;
         "deckgo-ie-color-actions": HTMLDeckgoIeColorActionsElement;
         "deckgo-ie-image-actions": HTMLDeckgoIeImageActionsElement;
         "deckgo-ie-link-actions": HTMLDeckgoIeLinkActionsElement;
+        "deckgo-ie-list-actions": HTMLDeckgoIeListActionsElement;
         "deckgo-ie-separator": HTMLDeckgoIeSeparatorElement;
         "deckgo-ie-style-actions": HTMLDeckgoIeStyleActionsElement;
+        "deckgo-ie-triangle": HTMLDeckgoIeTriangleElement;
         "deckgo-inline-editor": HTMLDeckgoInlineEditorElement;
     }
 }
@@ -136,6 +173,13 @@ declare namespace LocalJSX {
     }
     interface DeckgoIeActionImage {
         "cssClass"?: string;
+    }
+    interface DeckgoIeAlignActions {
+        "contentAlign"?: ContentAlign;
+        "mobile"?: boolean;
+        "onInitStyle"?: (event: CustomEvent<any>) => void;
+        "selection"?: Selection;
+        "sticky"?: boolean;
     }
     interface DeckgoIeColorActions {
         "color"?: string;
@@ -162,6 +206,14 @@ declare namespace LocalJSX {
         "selection"?: Selection;
         "toolbarActions"?: ToolbarActions;
     }
+    interface DeckgoIeListActions {
+        "contentList"?: ContentList;
+        "disabledTitle"?: boolean;
+        "mobile"?: boolean;
+        "onListModified"?: (event: CustomEvent<void>) => void;
+        "selection"?: Selection;
+        "sticky"?: boolean;
+    }
     interface DeckgoIeSeparator {
         "mobile"?: boolean;
     }
@@ -173,6 +225,9 @@ declare namespace LocalJSX {
         "onInitStyle"?: (event: CustomEvent<any>) => void;
         "selection"?: Selection;
         "underline"?: boolean;
+    }
+    interface DeckgoIeTriangle {
+        "mobile"?: boolean;
     }
     interface DeckgoInlineEditor {
         "attachTo"?: HTMLElement;
@@ -195,11 +250,14 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "deckgo-ie-action-button": DeckgoIeActionButton;
         "deckgo-ie-action-image": DeckgoIeActionImage;
+        "deckgo-ie-align-actions": DeckgoIeAlignActions;
         "deckgo-ie-color-actions": DeckgoIeColorActions;
         "deckgo-ie-image-actions": DeckgoIeImageActions;
         "deckgo-ie-link-actions": DeckgoIeLinkActions;
+        "deckgo-ie-list-actions": DeckgoIeListActions;
         "deckgo-ie-separator": DeckgoIeSeparator;
         "deckgo-ie-style-actions": DeckgoIeStyleActions;
+        "deckgo-ie-triangle": DeckgoIeTriangle;
         "deckgo-inline-editor": DeckgoInlineEditor;
     }
 }
@@ -209,11 +267,14 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "deckgo-ie-action-button": LocalJSX.DeckgoIeActionButton & JSXBase.HTMLAttributes<HTMLDeckgoIeActionButtonElement>;
             "deckgo-ie-action-image": LocalJSX.DeckgoIeActionImage & JSXBase.HTMLAttributes<HTMLDeckgoIeActionImageElement>;
+            "deckgo-ie-align-actions": LocalJSX.DeckgoIeAlignActions & JSXBase.HTMLAttributes<HTMLDeckgoIeAlignActionsElement>;
             "deckgo-ie-color-actions": LocalJSX.DeckgoIeColorActions & JSXBase.HTMLAttributes<HTMLDeckgoIeColorActionsElement>;
             "deckgo-ie-image-actions": LocalJSX.DeckgoIeImageActions & JSXBase.HTMLAttributes<HTMLDeckgoIeImageActionsElement>;
             "deckgo-ie-link-actions": LocalJSX.DeckgoIeLinkActions & JSXBase.HTMLAttributes<HTMLDeckgoIeLinkActionsElement>;
+            "deckgo-ie-list-actions": LocalJSX.DeckgoIeListActions & JSXBase.HTMLAttributes<HTMLDeckgoIeListActionsElement>;
             "deckgo-ie-separator": LocalJSX.DeckgoIeSeparator & JSXBase.HTMLAttributes<HTMLDeckgoIeSeparatorElement>;
             "deckgo-ie-style-actions": LocalJSX.DeckgoIeStyleActions & JSXBase.HTMLAttributes<HTMLDeckgoIeStyleActionsElement>;
+            "deckgo-ie-triangle": LocalJSX.DeckgoIeTriangle & JSXBase.HTMLAttributes<HTMLDeckgoIeTriangleElement>;
             "deckgo-inline-editor": LocalJSX.DeckgoInlineEditor & JSXBase.HTMLAttributes<HTMLDeckgoInlineEditorElement>;
         }
     }
