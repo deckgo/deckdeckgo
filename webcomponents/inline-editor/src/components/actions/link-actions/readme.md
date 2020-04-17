@@ -4,13 +4,13 @@
 
 ## Properties
 
-| Property         | Attribute         | Description | Type                                                                                                                          | Default     |
-| ---------------- | ----------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `anchorLink`     | --                |             | `AnchorLink`                                                                                                                  | `undefined` |
-| `linkCreated`    | --                |             | `EventEmitter<HTMLElement>`                                                                                                   | `undefined` |
-| `mobile`         | `mobile`          |             | `boolean`                                                                                                                     | `undefined` |
-| `selection`      | --                |             | `Selection`                                                                                                                   | `undefined` |
-| `toolbarActions` | `toolbar-actions` |             | `ToolbarActions.ALIGNMENT \| ToolbarActions.COLOR \| ToolbarActions.IMAGE \| ToolbarActions.LINK \| ToolbarActions.SELECTION` | `undefined` |
+| Property         | Attribute         | Description | Type                                                                                                                                                 | Default     |
+| ---------------- | ----------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `anchorLink`     | --                |             | `AnchorLink`                                                                                                                                         | `undefined` |
+| `linkCreated`    | --                |             | `EventEmitter<HTMLElement>`                                                                                                                          | `undefined` |
+| `mobile`         | `mobile`          |             | `boolean`                                                                                                                                            | `undefined` |
+| `selection`      | --                |             | `Selection`                                                                                                                                          | `undefined` |
+| `toolbarActions` | `toolbar-actions` |             | `ToolbarActions.ALIGNMENT \| ToolbarActions.COLOR \| ToolbarActions.IMAGE \| ToolbarActions.LINK \| ToolbarActions.LIST \| ToolbarActions.SELECTION` | `undefined` |
 
 ## Events
 
