@@ -437,7 +437,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      if (this.isContainer(content)) {
+      if (this.isContainer(content) || content.parentElement) {
         this.bold = false;
         this.italic = false;
         this.underline = false;
@@ -446,17 +446,7 @@ export class DeckdeckgoInlineEditor {
         this.color = null;
         this.contentAlign = ContentAlign.LEFT;
 
-        await this.findStyle(content);
-      } else if (content.parentElement) {
-        this.bold = false;
-        this.italic = false;
-        this.underline = false;
-        this.orderedList = false;
-        this.unorderedList = false;
-        this.color = null;
-        this.contentAlign = ContentAlign.LEFT;
-
-        await this.findStyle(content.parentElement);
+        await this.findStyle(this.isContainer(content) ? content : content.parentElement);
       }
 
       resolve();
@@ -491,10 +481,15 @@ export class DeckdeckgoInlineEditor {
 
         resolve();
       } else {
-        this.bold = await DeckdeckgoInlineEditorUtils.isBold(node as HTMLElement);
-        this.italic = await DeckdeckgoInlineEditorUtils.isItalic(node as HTMLElement);
-        this.underline = await DeckdeckgoInlineEditorUtils.isUnderline(node as HTMLElement);
-        this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
+        // Alignment left/center/right generate sub-divs which contains style "text-align"
+        if (node.nodeName.toLowerCase() !== 'div' || !(node as HTMLElement).style.textAlign) {
+          this.bold = await DeckdeckgoInlineEditorUtils.isBold(node as HTMLElement);
+          this.italic = await DeckdeckgoInlineEditorUtils.isItalic(node as HTMLElement);
+          this.underline = await DeckdeckgoInlineEditorUtils.isUnderline(node as HTMLElement);
+        } else {
+          this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
+        }
+
         if (!this.orderedList) {
           this.orderedList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement, 'ol');
         }
