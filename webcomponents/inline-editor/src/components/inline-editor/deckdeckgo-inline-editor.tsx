@@ -619,18 +619,6 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private justifyContent(e: UIEvent, align: ContentAlign): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
-
-      await DeckdeckgoInlineEditorUtils.execCommand(this.selection, align.toString());
-
-      //this.contentAlign = align;
-      await this.initStyle(this.selection);
-      resolve();
-    });
-  }
-
   private toggleList(e: UIEvent, cmd: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
@@ -726,29 +714,6 @@ export class DeckdeckgoInlineEditor {
     this.toolbarActions = ToolbarActions.ALIGNMENT;
   }
 
-  renderAlignmentActions() {
-    return [
-      <deckgo-ie-action-button
-        mobile={this.mobile}
-        onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.LEFT)}
-        cssClass={this.contentAlign === ContentAlign.LEFT ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'left-align'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
-      <deckgo-ie-action-button
-        mobile={this.mobile}
-        onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.CENTER)}
-        cssClass={this.contentAlign === ContentAlign.CENTER ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'center-align'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
-      <deckgo-ie-action-button
-        mobile={this.mobile}
-        onAction={($event: CustomEvent<UIEvent>) => this.justifyContent($event.detail, ContentAlign.RIGHT)}
-        cssClass={this.contentAlign === ContentAlign.RIGHT ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'right-align'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
-    ];
-  }
-
   private async onCustomAction($event: UIEvent, action: string): Promise<void> {
     $event.stopPropagation();
 
@@ -817,7 +782,13 @@ export class DeckdeckgoInlineEditor {
           onImgModified={() => this.reset(true)}></deckgo-ie-image-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.ALIGNMENT) {
-      return this.renderAlignmentActions();
+      return (
+        <deckgo-ie-align-actions
+          selection={this.selection}
+          mobile={this.mobile}
+          contentAlign={this.contentAlign}
+          onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-align-actions>
+      );
     } else {
       return this.renderSelectionActions();
     }
