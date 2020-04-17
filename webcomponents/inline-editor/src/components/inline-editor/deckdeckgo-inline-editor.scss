@@ -40,6 +40,8 @@ div.deckgo-tools {
 
     height: var(--deckgo-inline-editor-sticky-height, 56px);
 
+    padding-left: 0;
+
     deckgo-ie-action-button {
       margin: 0 2px;
     }
