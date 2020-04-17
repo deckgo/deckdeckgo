@@ -343,12 +343,16 @@ export class DeckdeckgoInlineEditor {
           left = innerWidth - this.tools.offsetWidth;
         }
 
+        if (left < 0) {
+          left = 0;
+        }
+
         // To set the position of the tools
         this.toolsTop = top;
         this.toolsLeft = left;
 
         // To set the position of the triangle
-        this.anchorEventLeft = unifyEvent(this.anchorEvent).clientX - 20 - left;
+        this.anchorEventLeft = left > 0 ? unifyEvent(this.anchorEvent).clientX - 20 - left : unifyEvent(this.anchorEvent).clientX;
       }
 
       resolve();
