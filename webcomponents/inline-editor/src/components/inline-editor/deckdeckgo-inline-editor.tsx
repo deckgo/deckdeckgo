@@ -230,10 +230,13 @@ export class DeckdeckgoInlineEditor {
 
       await this.reset(true);
 
-      setTimeout(async () => {
-        await this.activateToolbarImage();
-        await this.setToolbarAnchorPosition();
-      }, 100);
+      setTimeout(
+        async () => {
+          await this.activateToolbarImage();
+          await this.setToolbarAnchorPosition();
+        },
+        this.mobile ? 300 : 100
+      );
 
       resolve();
     });
