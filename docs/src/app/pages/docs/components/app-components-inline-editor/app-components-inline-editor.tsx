@@ -468,6 +468,16 @@ export class AppComponentsInlineEditor {
                 <td>inherit</td>
                 <td>The width of the toolbar</td>
               </tr>
+              <tr>
+                <td>--deckgo-inline-editor-box-shadow</td>
+                <td>0 0 8px 4px rgba(0, 0, 0, 0.1)</td>
+                <td>A box shadow for the toolbar</td>
+              </tr>
+              <tr>
+                <td>--deckgo-inline-editor-triangle-box-shadow</td>
+                <td>0 0 8px 4px rgba(0, 0, 0, 0.1)</td>
+                <td>A box shadow for the triangle above the toolbar</td>
+              </tr>
             </tbody>
           </table>
           <p>Furthermore, the following variables are also available but only have an effects on mobile devices:</p>
@@ -482,7 +492,7 @@ export class AppComponentsInlineEditor {
             <tbody>
               <tr>
                 <td>--deckgo-inline-editor-mobile-box-shadow</td>
-                <td>0 0px 1px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.15)</td>
+                <td>0 0 8px 4px rgba(0, 0, 0, 0.1)</td>
                 <td>A box shadow for the toolbar</td>
               </tr>
               <tr>
