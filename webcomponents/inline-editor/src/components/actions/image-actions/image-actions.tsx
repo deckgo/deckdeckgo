@@ -163,26 +163,26 @@ export class ImageActions {
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={($event: CustomEvent<UIEvent>) => this.styleImage($event.detail, this.setImageWith, ImageSize.ORIGINAL)}
-        cssClass={this.imageSize === ImageSize.ORIGINAL ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'image original'}></deckgo-ie-action-image>
+        class={this.imageSize === ImageSize.ORIGINAL ? 'active' : undefined}>
+        <deckgo-ie-action-image class={'image original'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={($event: CustomEvent<UIEvent>) => this.styleImage($event.detail, this.setImageWith, ImageSize.LARGE)}
-        cssClass={this.imageSize === ImageSize.LARGE ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'image large'}></deckgo-ie-action-image>
+        class={this.imageSize === ImageSize.LARGE ? 'active' : undefined}>
+        <deckgo-ie-action-image class={'image large'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={($event: CustomEvent<UIEvent>) => this.styleImage($event.detail, this.setImageWith, ImageSize.MEDIUM)}
-        cssClass={this.imageSize === ImageSize.MEDIUM ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'image medium'}></deckgo-ie-action-image>
+        class={this.imageSize === ImageSize.MEDIUM ? 'active' : undefined}>
+        <deckgo-ie-action-image class={'image medium'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={($event: CustomEvent<UIEvent>) => this.styleImage($event.detail, this.setImageWith, ImageSize.SMALL)}
-        cssClass={this.imageSize === ImageSize.SMALL ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'image small'}></deckgo-ie-action-image>
+        class={this.imageSize === ImageSize.SMALL ? 'active' : undefined}>
+        <deckgo-ie-action-image class={'image small'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
 
       <deckgo-ie-separator mobile={this.mobile}></deckgo-ie-separator>,
@@ -190,21 +190,21 @@ export class ImageActions {
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={($event: CustomEvent<UIEvent>) => this.styleImage($event.detail, this.setImageAlignment, ImageAlign.STANDARD)}
-        cssClass={this.imageAlign === ImageAlign.STANDARD ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'image-align standard'}></deckgo-ie-action-image>
+        class={this.imageAlign === ImageAlign.STANDARD ? 'active' : undefined}>
+        <deckgo-ie-action-image class={'image-align standard'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
       <deckgo-ie-action-button
         mobile={this.mobile}
         onAction={($event: CustomEvent<UIEvent>) => this.styleImage($event.detail, this.setImageAlignment, ImageAlign.START)}
-        cssClass={this.imageAlign === ImageAlign.START ? 'active' : undefined}>
-        <deckgo-ie-action-image cssClass={'image-align start'}></deckgo-ie-action-image>
+        class={this.imageAlign === ImageAlign.START ? 'active' : undefined}>
+        <deckgo-ie-action-image class={'image-align start'}></deckgo-ie-action-image>
         <div></div>
       </deckgo-ie-action-button>,
 
       <deckgo-ie-separator mobile={this.mobile}></deckgo-ie-separator>,
 
       <deckgo-ie-action-button mobile={this.mobile} onAction={($event: CustomEvent<UIEvent>) => this.deleteImage($event.detail)}>
-        <deckgo-ie-action-image cssClass={'image-delete'}></deckgo-ie-action-image>
+        <deckgo-ie-action-image class={'image-delete'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
     ];
   }
