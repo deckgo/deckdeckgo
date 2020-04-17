@@ -2,7 +2,7 @@ import {Component, h} from '@stencil/core';
 
 @Component({
   tag: 'app-misc-open-source',
-  styleUrl: 'app-misc-open-source.scss'
+  styleUrl: 'app-misc-open-source.scss',
 })
 export class AppMiscOpenSource {
   render() {
@@ -19,7 +19,7 @@ export class AppMiscOpenSource {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-video',
-  styleUrl: 'app-slide-video.scss'
+  styleUrl: 'app-slide-video.scss',
 })
 export class AppSlideVideo {
   @Element() el: HTMLElement;
@@ -342,7 +342,7 @@ export class AppSlideVideo {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-deck-events'
+  tag: 'app-deck-events',
 })
 export class AppDeckEvents {
   @Element() el: HTMLElement;
@@ -88,7 +88,7 @@ export class AppDeckEvents {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

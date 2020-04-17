@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-components-drr'
+  tag: 'app-components-drr',
 })
 export class AppComponentsDrr {
   @Element() el: HTMLElement;
@@ -339,7 +339,7 @@ export class AppComponentsDrr {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

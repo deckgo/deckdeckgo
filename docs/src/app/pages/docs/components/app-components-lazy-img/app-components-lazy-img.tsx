@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-components-lazy-img'
+  tag: 'app-components-lazy-img',
 })
 export class AppComponentsLazyImg {
   @Element() el: HTMLElement;
@@ -375,7 +375,7 @@ export class AppComponentsLazyImg {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

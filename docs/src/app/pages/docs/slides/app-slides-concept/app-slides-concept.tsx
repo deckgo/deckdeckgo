@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slides-concept',
-  styleUrl: 'app-slides-concept.scss'
+  styleUrl: 'app-slides-concept.scss',
 })
 export class AppSlidesConcept {
   @Element() el: HTMLElement;
@@ -180,7 +180,7 @@ export class AppSlidesConcept {
                 style={{
                   '--deckgo-chart-fill-color-bar1': 'var(--ion-color-primary)',
                   '--deckgo-chart-fill-color-bar2': 'var(--ion-color-secondary)',
-                  '--deckgo-chart-fill-color-bar3': 'var(--ion-color-tertiary)'
+                  '--deckgo-chart-fill-color-bar3': 'var(--ion-color-tertiary)',
                 }}>
                 <h1 slot="title">slot="title"</h1>
               </deckgo-slide-chart>
@@ -320,7 +320,7 @@ export class AppSlidesConcept {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-components-youtube'
+  tag: 'app-components-youtube',
 })
 export class AppComponentsYoutube {
   @Element() el: HTMLElement;
@@ -212,7 +212,7 @@ export class AppComponentsYoutube {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-deck-pager'
+  tag: 'app-deck-pager',
 })
 export class AppDeckPager {
   @Element() el: HTMLElement;
@@ -171,7 +171,7 @@ export class AppDeckPager {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

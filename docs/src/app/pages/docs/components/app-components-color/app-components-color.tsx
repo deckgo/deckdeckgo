@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-components-color'
+  tag: 'app-components-color',
 })
 export class AppComponentsColor {
   @Element() el: HTMLElement;
@@ -343,7 +343,7 @@ export class AppComponentsColor {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

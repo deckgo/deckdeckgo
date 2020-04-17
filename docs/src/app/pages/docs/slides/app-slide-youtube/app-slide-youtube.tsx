@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-youtube',
-  styleUrl: 'app-slide-youtube.scss'
+  styleUrl: 'app-slide-youtube.scss',
 })
 export class AppSlideYoutube {
   @Element() el: HTMLElement;
@@ -311,7 +311,7 @@ export class AppSlideYoutube {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

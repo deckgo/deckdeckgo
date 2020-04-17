@@ -3,7 +3,7 @@ import {Component, Element, h} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-components-gif'
+  tag: 'app-components-gif',
 })
 export class AppComponentsGif {
   @Element() el: HTMLElement;
@@ -195,7 +195,7 @@ export class AppComponentsGif {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

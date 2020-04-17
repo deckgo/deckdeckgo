@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-gif',
-  styleUrl: 'app-slide-gif.scss'
+  styleUrl: 'app-slide-gif.scss',
 })
 export class AppSlideGif {
   @Element() el: HTMLElement;
@@ -271,7 +271,7 @@ export class AppSlideGif {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

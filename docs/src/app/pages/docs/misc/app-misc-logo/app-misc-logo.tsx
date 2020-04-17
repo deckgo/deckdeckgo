@@ -1,7 +1,7 @@
 import {Component, h} from '@stencil/core';
 
 @Component({
-  tag: 'app-misc-logo'
+  tag: 'app-misc-logo',
 })
 export class AppMiscLogo {
   render() {
@@ -19,7 +19,7 @@ export class AppMiscLogo {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-countdown',
-  styleUrl: 'app-slide-countdown.scss'
+  styleUrl: 'app-slide-countdown.scss',
 })
 export class AppSlideCountdown {
   @Element() el: HTMLElement;
@@ -342,7 +342,7 @@ export class AppSlideCountdown {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

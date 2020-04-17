@@ -1,7 +1,7 @@
 import {Component, h} from '@stencil/core';
 
 @Component({
-  tag: 'app-edit-rtl'
+  tag: 'app-edit-rtl',
 })
 export class AppEditRtl {
   render() {
@@ -27,7 +27,7 @@ export class AppEditRtl {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

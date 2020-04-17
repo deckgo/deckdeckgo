@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-title',
-  styleUrl: 'app-slide-title.scss'
+  styleUrl: 'app-slide-title.scss',
 })
 export class AppSlideTitle {
   @Element() el: HTMLElement;
@@ -253,7 +253,7 @@ export class AppSlideTitle {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

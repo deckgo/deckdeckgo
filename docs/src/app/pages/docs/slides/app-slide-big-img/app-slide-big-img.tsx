@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-big-img',
-  styleUrl: 'app-slide-big-img.scss'
+  styleUrl: 'app-slide-big-img.scss',
 })
 export class AppSlideBigImg {
   @Element() el: HTMLElement;
@@ -261,7 +261,7 @@ export class AppSlideBigImg {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

@@ -4,7 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-slide-poll',
-  styleUrl: 'app-slide-poll.scss'
+  styleUrl: 'app-slide-poll.scss',
 })
 export class AppSlidePoll {
   @Element() el: HTMLElement;
@@ -374,7 +374,7 @@ export class AppSlidePoll {
         </main>
 
         <app-footer></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }
