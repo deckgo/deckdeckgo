@@ -5,7 +5,7 @@ div.separator {
   min-width: 1px;
   margin: 0 6px;
   height: 24px;
-  background: var(--deckgo-inline-editor-separator-background, rgba(56, 128, 255, 0.2));
+  background: var(--deckgo-inline-editor-separator-background, #f4f5f8);
 }
 
 :host(.deckgo-tools-mobile) {
