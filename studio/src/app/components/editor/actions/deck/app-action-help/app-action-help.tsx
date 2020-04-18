@@ -3,7 +3,7 @@ import {Component, h, Element, Prop, Event, EventEmitter} from '@stencil/core';
 import {popoverController} from '@ionic/core';
 
 @Component({
-  tag: 'app-action-help'
+  tag: 'app-action-help',
 })
 export class AppActionHelp {
   @Element() el: HTMLElement;
@@ -14,13 +14,14 @@ export class AppActionHelp {
   @Event()
   private helpSelected: EventEmitter<void>;
 
-  private async openGetHelp() {
+  private async openGetHelp($event?: UIEvent) {
     this.helpSelected.emit();
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-get-help',
       mode: 'ios',
-      cssClass: 'info'
+      event: $event,
+      cssClass: 'info',
     });
 
     await popover.present();
@@ -35,7 +36,7 @@ export class AppActionHelp {
       );
     } else {
       return (
-        <ion-tab-button onClick={() => this.openGetHelp()} color="primary" mode="md" class="get-help-action">
+        <ion-tab-button onClick={($event: UIEvent) => this.openGetHelp($event)} color="primary" mode="md" class="get-help-action">
           <ion-icon src="/assets/icons/ionicons/help.svg"></ion-icon>
           <ion-label>Help</ion-label>
         </ion-tab-button>

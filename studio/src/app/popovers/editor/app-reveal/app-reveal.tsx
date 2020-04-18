@@ -4,9 +4,9 @@ import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-reveal',
-  styleUrl: 'app-reveal.scss'
+  styleUrl: 'app-reveal.scss',
 })
-export class AppSlideAdd {
+export class AppReveal {
   @Element() el: HTMLElement;
 
   @Prop()
@@ -21,25 +21,18 @@ export class AppSlideAdd {
 
   private async closePopover(reveal: boolean) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      reveal: reveal
+      reveal: reveal,
     });
   }
 
   render() {
-    return [
-      <ion-toolbar>
-        <h2>Animation</h2>
-        <ion-router-link slot="end" onClick={() => this.closePopover(this.currentReveal)}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </ion-router-link>
-      </ion-toolbar>,
-
+    return (
       <ion-list>
         <ion-item>
           <ion-label>Animate transition</ion-label>
           <ion-checkbox slot="end" checked={this.currentReveal} onIonChange={() => this.closePopover(!this.currentReveal)}></ion-checkbox>
         </ion-item>
       </ion-list>
-    ];
+    );
   }
 }
