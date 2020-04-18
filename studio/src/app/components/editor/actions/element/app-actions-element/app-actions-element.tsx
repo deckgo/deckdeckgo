@@ -13,6 +13,7 @@ import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotType} from '../../../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
+import {AlignUtils, TextAlign} from '../../../../../utils/editor/align.utils';
 
 import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
@@ -49,6 +50,9 @@ export class AppActionsElement {
 
   @State()
   private shape: boolean = false;
+
+  @State()
+  private align: TextAlign | undefined;
 
   @State()
   private list: SlotType;
@@ -566,13 +570,13 @@ export class AppActionsElement {
     await modal.present();
   }
 
-  private async openReveal($event: UIEvent) {
+  private async openSingleAction($event: UIEvent, component: string) {
     if (this.slide) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-reveal',
+      component: component,
       componentProps: {
         selectedElement: this.selectedElement,
       },
@@ -740,6 +744,8 @@ export class AppActionsElement {
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
+
+      this.align = await AlignUtils.getAlignment(element);
 
       this.list = this.isElementList(element);
 
@@ -978,6 +984,7 @@ export class AppActionsElement {
           {this.renderEdit()}
           {this.renderShapes()}
           {this.renderReveal()}
+          {this.renderAlign()}
           {this.renderColor()}
           {this.renderList()}
           {this.renderImages()}
@@ -1104,9 +1111,30 @@ export class AppActionsElement {
     const classReveal: string | undefined = this.slide || this.code || this.shape || this.slideNodeName === 'deckgo-slide-youtube' ? 'hidden' : undefined;
 
     return (
-      <ion-tab-button onClick={($event: UIEvent) => this.openReveal($event)} aria-label="Edit element animation" color="primary" mode="md" class={classReveal}>
+      <ion-tab-button
+        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-reveal')}
+        aria-label="Edit element animation"
+        color="primary"
+        mode="md"
+        class={classReveal}>
         <ion-icon src="/assets/icons/album.svg"></ion-icon>
         <ion-label>Animation</ion-label>
+      </ion-tab-button>
+    );
+  }
+
+  private renderAlign() {
+    const classAlign: string | undefined = this.align === undefined ? 'hidden' : undefined;
+
+    return (
+      <ion-tab-button
+        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-align')}
+        aria-label="Edit element alignment"
+        color="primary"
+        mode="md"
+        class={classAlign}>
+        <ion-icon src={`/assets/icons/align-${this.align}.svg`}></ion-icon>
+        <ion-label>Alignment</ion-label>
       </ion-tab-button>
     );
   }

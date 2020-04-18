@@ -80,6 +80,9 @@ export namespace Components {
     'touch': (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
     'unSelect': () => Promise<void>;
   }
+  interface AppAlign {
+    'selectedElement': HTMLElement;
+  }
   interface AppAvatar {
     'ariaLabel': string;
     'src': string;
@@ -364,6 +367,12 @@ declare global {
   var HTMLAppActionsElementElement: {
     prototype: HTMLAppActionsElementElement;
     new (): HTMLAppActionsElementElement;
+  };
+
+  interface HTMLAppAlignElement extends Components.AppAlign, HTMLStencilElement {}
+  var HTMLAppAlignElement: {
+    prototype: HTMLAppAlignElement;
+    new (): HTMLAppAlignElement;
   };
 
   interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {}
@@ -907,6 +916,7 @@ declare global {
     'app-actions-deck': HTMLAppActionsDeckElement;
     'app-actions-editor': HTMLAppActionsEditorElement;
     'app-actions-element': HTMLAppActionsElementElement;
+    'app-align': HTMLAppAlignElement;
     'app-avatar': HTMLAppAvatarElement;
     'app-breadcrumbs': HTMLAppBreadcrumbsElement;
     'app-code': HTMLAppCodeElement;
@@ -1055,6 +1065,9 @@ declare namespace LocalJSX {
     'onSlideDelete'?: (event: CustomEvent<HTMLElement>) => void;
     'onSlideDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'slideCopy'?: EventEmitter;
+  }
+  interface AppAlign {
+    'selectedElement'?: HTMLElement;
   }
   interface AppAvatar {
     'ariaLabel'?: string;
@@ -1334,6 +1347,7 @@ declare namespace LocalJSX {
     'app-actions-deck': AppActionsDeck;
     'app-actions-editor': AppActionsEditor;
     'app-actions-element': AppActionsElement;
+    'app-align': AppAlign;
     'app-avatar': AppAvatar;
     'app-breadcrumbs': AppBreadcrumbs;
     'app-code': AppCode;
@@ -1439,6 +1453,7 @@ declare module "@stencil/core" {
       'app-actions-deck': LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
       'app-actions-editor': LocalJSX.AppActionsEditor & JSXBase.HTMLAttributes<HTMLAppActionsEditorElement>;
       'app-actions-element': LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
+      'app-align': LocalJSX.AppAlign & JSXBase.HTMLAttributes<HTMLAppAlignElement>;
       'app-avatar': LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
       'app-breadcrumbs': LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
       'app-code': LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
