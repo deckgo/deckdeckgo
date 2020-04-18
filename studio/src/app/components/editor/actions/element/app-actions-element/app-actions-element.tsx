@@ -55,7 +55,7 @@ export class AppActionsElement {
   private align: TextAlign | undefined;
 
   @State()
-  private list: SlotType;
+  private list: SlotType | undefined;
 
   @Event() private blockSlide: EventEmitter<boolean>;
 
@@ -971,6 +971,8 @@ export class AppActionsElement {
       componentProps: {
         notes: this.slide,
         copy: this.slide || this.shape,
+        reveal: !this.hideReveal(),
+        list: this.list !== undefined,
       },
       event: $event,
       mode: 'ios',
@@ -984,11 +986,19 @@ export class AppActionsElement {
           await this.clone();
         } else if (detail.data.action === MoreAction.DELETE) {
           await this.confirmDeleteElement($event);
+        } else if (detail.data.action === MoreAction.REVEAL) {
+          await this.openSingleAction($event, 'app-reveal');
+        } else if (detail.data.action === MoreAction.LIST) {
+          await this.toggleList();
         }
       }
     });
 
     await popover.present();
+  }
+
+  private hideReveal(): boolean {
+    return this.slide || this.code || this.shape || this.slideNodeName === 'deckgo-slide-youtube';
   }
 
   render() {
@@ -997,9 +1007,9 @@ export class AppActionsElement {
         <ion-buttons slot="start">
           {this.renderEdit()}
           {this.renderShapes()}
+          {this.renderColor()}
           {this.renderReveal()}
           {this.renderAlign()}
-          {this.renderColor()}
           {this.renderList()}
           {this.renderImages()}
           {this.renderCodeOptions()}
@@ -1122,7 +1132,7 @@ export class AppActionsElement {
   }
 
   private renderReveal() {
-    const classReveal: string | undefined = this.slide || this.code || this.shape || this.slideNodeName === 'deckgo-slide-youtube' ? 'hidden' : undefined;
+    const classReveal: string | undefined = this.hideReveal() ? 'hidden wider-devices' : 'wider-devices';
 
     return (
       <ion-tab-button
@@ -1154,8 +1164,8 @@ export class AppActionsElement {
   }
 
   private renderList() {
-    const classListOL: string | undefined = this.list === SlotType.OL ? undefined : 'hidden';
-    const classListUL: string | undefined = this.list === SlotType.UL ? undefined : 'hidden';
+    const classListOL: string | undefined = this.list === SlotType.OL ? 'wider-devices' : 'wider-devices hidden';
+    const classListUL: string | undefined = this.list === SlotType.UL ? 'wider-devices' : 'wider-devices hidden';
 
     return [
       <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an unordered list" color="primary" mode="md" class={classListUL}>

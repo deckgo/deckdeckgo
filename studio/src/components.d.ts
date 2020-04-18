@@ -229,7 +229,9 @@ export namespace Components {
   }
   interface AppMoreElementActions {
     'copy': boolean;
+    'list': boolean;
     'notes': boolean;
+    'reveal': boolean;
   }
   interface AppMoreShareOptions {}
   interface AppNavigation {
@@ -1238,7 +1240,9 @@ declare namespace LocalJSX {
   }
   interface AppMoreElementActions {
     'copy'?: boolean;
+    'list'?: boolean;
     'notes'?: boolean;
+    'reveal'?: boolean;
   }
   interface AppMoreShareOptions {}
   interface AppNavigation {

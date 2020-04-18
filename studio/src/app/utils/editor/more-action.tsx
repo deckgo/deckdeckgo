@@ -9,5 +9,7 @@ export enum MoreAction {
   NOTES,
   DELETE,
   HELP,
-  OFFLINE
+  OFFLINE,
+  LIST,
+  REVEAL,
 }
