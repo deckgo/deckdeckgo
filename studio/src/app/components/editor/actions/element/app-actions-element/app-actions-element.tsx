@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Listen, Method, State, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Listen, Method, Prop, State} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {Subject, Subscription} from 'rxjs';
@@ -14,6 +14,7 @@ import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotType} from '../../../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 import {AlignUtils, TextAlign} from '../../../../../utils/editor/align.utils';
+import {ListUtils} from '../../../../../utils/editor/list.utils';
 
 import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
@@ -55,7 +56,7 @@ export class AppActionsElement {
   private align: TextAlign | undefined;
 
   @State()
-  private list: SlotType;
+  private list: SlotType.OL | SlotType.UL | undefined;
 
   @Event() private blockSlide: EventEmitter<boolean>;
 
@@ -241,18 +242,6 @@ export class AppActionsElement {
 
   private isElementShape(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
-  }
-
-  private isElementList(element: HTMLElement): SlotType {
-    if (!SlotUtils.isNodeList(element)) {
-      return undefined;
-    }
-
-    if (SlotUtils.isNodeRevealList(element)) {
-      return element && element.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
-    } else {
-      return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.OL ? SlotType.OL : SlotType.UL;
-    }
   }
 
   private isElementImage(element: HTMLElement): boolean {
@@ -570,7 +559,7 @@ export class AppActionsElement {
     await modal.present();
   }
 
-  private async openSingleAction($event: UIEvent, component: 'app-reveal' | 'app-align') {
+  private async openSingleAction($event: UIEvent, component: 'app-reveal' | 'app-align' | 'app-list') {
     if (this.slide) {
       return;
     }
@@ -590,6 +579,8 @@ export class AppActionsElement {
         await this.toggleReveal(detail.data.reveal);
       } else if (detail.data && component === 'app-align') {
         await this.updateAlignAttribute(detail.data.align);
+      } else if (detail.data && component === 'app-list') {
+        await this.toggleList(detail.data.list);
       }
     });
 
@@ -749,7 +740,7 @@ export class AppActionsElement {
 
       this.align = await AlignUtils.getAlignment(element);
 
-      this.list = this.isElementList(element);
+      this.list = await ListUtils.isElementList(element);
 
       if (element) {
         element.addEventListener('paste', this.cleanOnPaste, false);
@@ -879,22 +870,18 @@ export class AppActionsElement {
     });
   }
 
-  private toggleList(): Promise<void> {
+  private toggleList(destinationListType: SlotType.OL | SlotType.UL): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selectedElement || !this.list) {
         resolve();
         return;
       }
 
-      const destinationListType: SlotType = this.list === SlotType.UL ? SlotType.OL : SlotType.UL;
-
       if (SlotUtils.isNodeRevealList(this.selectedElement)) {
         await this.updateRevealListAttribute(destinationListType);
       } else {
         await this.toggleSlotType(destinationListType);
       }
-
-      this.list = destinationListType;
 
       resolve();
     });
@@ -971,6 +958,8 @@ export class AppActionsElement {
       componentProps: {
         notes: this.slide,
         copy: this.slide || this.shape,
+        reveal: !this.hideReveal(),
+        list: this.list !== undefined,
       },
       event: $event,
       mode: 'ios',
@@ -984,11 +973,19 @@ export class AppActionsElement {
           await this.clone();
         } else if (detail.data.action === MoreAction.DELETE) {
           await this.confirmDeleteElement($event);
+        } else if (detail.data.action === MoreAction.REVEAL) {
+          await this.openSingleAction($event, 'app-reveal');
+        } else if (detail.data.action === MoreAction.LIST) {
+          await this.openSingleAction($event, 'app-list');
         }
       }
     });
 
     await popover.present();
+  }
+
+  private hideReveal(): boolean {
+    return this.slide || this.code || this.shape || this.slideNodeName === 'deckgo-slide-youtube';
   }
 
   render() {
@@ -997,9 +994,9 @@ export class AppActionsElement {
         <ion-buttons slot="start">
           {this.renderEdit()}
           {this.renderShapes()}
+          {this.renderColor()}
           {this.renderReveal()}
           {this.renderAlign()}
-          {this.renderColor()}
           {this.renderList()}
           {this.renderImages()}
           {this.renderCodeOptions()}
@@ -1122,7 +1119,7 @@ export class AppActionsElement {
   }
 
   private renderReveal() {
-    const classReveal: string | undefined = this.slide || this.code || this.shape || this.slideNodeName === 'deckgo-slide-youtube' ? 'hidden' : undefined;
+    const classReveal: string | undefined = this.hideReveal() ? 'hidden wider-devices' : 'wider-devices';
 
     return (
       <ion-tab-button
@@ -1147,26 +1144,30 @@ export class AppActionsElement {
         color="primary"
         mode="md"
         class={classAlign}>
-        <ion-icon src={`/assets/icons/align-${this.align}.svg`}></ion-icon>
+        {this.align !== undefined ? (
+          <ion-icon src={`/assets/icons/align-${this.align}.svg`}></ion-icon>
+        ) : (
+          <ion-icon src={`/assets/icons/align-left.svg`}></ion-icon>
+        )}
         <ion-label>Alignment</ion-label>
       </ion-tab-button>
     );
   }
 
   private renderList() {
-    const classListOL: string | undefined = this.list === SlotType.OL ? undefined : 'hidden';
-    const classListUL: string | undefined = this.list === SlotType.UL ? undefined : 'hidden';
+    const classList: string | undefined = this.list === undefined ? 'hidden wider-devices' : 'wider-devices';
 
-    return [
-      <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an unordered list" color="primary" mode="md" class={classListUL}>
-        <ion-icon src="/assets/icons/ionicons/list.svg"></ion-icon>
-        <ion-label>Unordered list</ion-label>
-      </ion-tab-button>,
-      <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an ordered list" color="primary" mode="md" class={classListOL}>
-        <ion-icon src="/assets/icons/list-ol.svg"></ion-icon>
-        <ion-label>Ordered list</ion-label>
-      </ion-tab-button>,
-    ];
+    return (
+      <ion-tab-button
+        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-list')}
+        aria-label="Edit ordered or unordered list"
+        color="primary"
+        mode="md"
+        class={classList}>
+        <ion-icon src={this.list === SlotType.OL ? '/assets/icons/list-ol.svg' : '/assets/icons/ionicons/list.svg'}></ion-icon>
+        <ion-label>List</ion-label>
+      </ion-tab-button>
+    );
   }
 
   private renderMore() {
