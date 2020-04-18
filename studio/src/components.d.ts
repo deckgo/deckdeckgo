@@ -222,6 +222,9 @@ export namespace Components {
   interface AppLandingContent {}
   interface AppLandingDeck {}
   interface AppLandingFooter {}
+  interface AppList {
+    'selectedElement': HTMLElement;
+  }
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreDeckActions {
@@ -665,6 +668,12 @@ declare global {
     new (): HTMLAppLandingFooterElement;
   };
 
+  interface HTMLAppListElement extends Components.AppList, HTMLStencilElement {}
+  var HTMLAppListElement: {
+    prototype: HTMLAppListElement;
+    new (): HTMLAppListElement;
+  };
+
   interface HTMLAppLogoElement extends Components.AppLogo, HTMLStencilElement {}
   var HTMLAppLogoElement: {
     prototype: HTMLAppLogoElement;
@@ -967,6 +976,7 @@ declare global {
     'app-landing-content': HTMLAppLandingContentElement;
     'app-landing-deck': HTMLAppLandingDeckElement;
     'app-landing-footer': HTMLAppLandingFooterElement;
+    'app-list': HTMLAppListElement;
     'app-logo': HTMLAppLogoElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-deck-actions': HTMLAppMoreDeckActionsElement;
@@ -1233,6 +1243,9 @@ declare namespace LocalJSX {
   interface AppLandingContent {}
   interface AppLandingDeck {}
   interface AppLandingFooter {}
+  interface AppList {
+    'selectedElement'?: HTMLElement;
+  }
   interface AppLogo {}
   interface AppMenu {}
   interface AppMoreDeckActions {
@@ -1400,6 +1413,7 @@ declare namespace LocalJSX {
     'app-landing-content': AppLandingContent;
     'app-landing-deck': AppLandingDeck;
     'app-landing-footer': AppLandingFooter;
+    'app-list': AppList;
     'app-logo': AppLogo;
     'app-menu': AppMenu;
     'app-more-deck-actions': AppMoreDeckActions;
@@ -1506,6 +1520,7 @@ declare module "@stencil/core" {
       'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
       'app-landing-deck': LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;
       'app-landing-footer': LocalJSX.AppLandingFooter & JSXBase.HTMLAttributes<HTMLAppLandingFooterElement>;
+      'app-list': LocalJSX.AppList & JSXBase.HTMLAttributes<HTMLAppListElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-menu': LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
       'app-more-deck-actions': LocalJSX.AppMoreDeckActions & JSXBase.HTMLAttributes<HTMLAppMoreDeckActionsElement>;
