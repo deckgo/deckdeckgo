@@ -1,3 +1,11 @@
+<a name="1.1.1"></a>
+
+# 1.1.1 (2020-04-18)
+
+### Fix
+
+- MIT icons which do not need attribution
+
 <a name="1.1.0"></a>
 
 # 1.1.0 (2020-04-17)
