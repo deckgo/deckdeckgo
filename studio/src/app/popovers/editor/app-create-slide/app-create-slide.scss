@@ -263,7 +263,8 @@ app-create-slide {
       deckgo-slide-chart,
       deckgo-slide-qrcode,
       deckgo-slide-poll,
-      deckgo-slide-author {
+      deckgo-slide-author,
+      deckgo-slide-split:not([vertical]) {
         p {
           align-items: flex-start;
         }
