@@ -13,6 +13,7 @@ import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotType} from '../../../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
+import {AlignUtils, TextAlign} from '../../../../../utils/editor/align.utils';
 
 import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
@@ -22,7 +23,7 @@ import {BusyService} from '../../../../../services/editor/busy/busy.service';
 @Component({
   tag: 'app-actions-element',
   styleUrl: 'app-actions-element.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppActionsElement {
   @Element() el: HTMLElement;
@@ -49,6 +50,9 @@ export class AppActionsElement {
 
   @State()
   private shape: boolean = false;
+
+  @State()
+  private align: TextAlign | undefined;
 
   @State()
   private list: SlotType;
@@ -353,7 +357,7 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-element-delete',
       event: $event,
-      mode: isMobile() && !isIOS() ? 'md' : 'ios'
+      mode: isMobile() && !isIOS() ? 'md' : 'ios',
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -451,11 +455,11 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-slot-type',
       componentProps: {
-        selectedElement: this.selectedElement
+        selectedElement: this.selectedElement,
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu'
+      cssClass: 'popover-menu',
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -482,11 +486,11 @@ export class AppActionsElement {
         qrCode: this.slideNodeName === 'deckgo-slide-qrcode',
         chart: this.slideNodeName === 'deckgo-slide-chart',
         author: this.slideNodeName === 'deckgo-slide-author',
-        slideDidChange: this.slideDidChange
+        slideDidChange: this.slideDidChange,
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu'
+      cssClass: 'popover-menu',
     });
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
@@ -512,11 +516,11 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-shape',
       componentProps: {
-        selectedElement: this.selectedElement
+        selectedElement: this.selectedElement,
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu'
+      cssClass: 'popover-menu',
     });
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
@@ -534,11 +538,11 @@ export class AppActionsElement {
       componentProps: {
         selectedElement: this.selectedElement,
         slide: this.slide,
-        imgDidChange: this.imgDidChange
+        imgDidChange: this.imgDidChange,
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu'
+      cssClass: 'popover-menu',
     });
 
     return popover;
@@ -553,8 +557,8 @@ export class AppActionsElement {
       component: 'app-poll-options',
       componentProps: {
         selectedElement: this.selectedElement,
-        slideDidChange: this.slideDidChange
-      }
+        slideDidChange: this.slideDidChange,
+      },
     });
 
     modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -566,24 +570,26 @@ export class AppActionsElement {
     await modal.present();
   }
 
-  private async openReveal() {
+  private async openSingleAction($event: UIEvent, component: 'app-reveal' | 'app-align') {
     if (this.slide) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-reveal',
+      component: component,
       componentProps: {
-        selectedElement: this.selectedElement
+        selectedElement: this.selectedElement,
       },
-      mode: 'md',
-      showBackdrop: false,
-      cssClass: 'popover-menu'
+      mode: 'ios',
+      event: $event,
+      cssClass: 'info',
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail.data) {
+      if (detail.data && component === 'app-reveal') {
         await this.toggleReveal(detail.data.reveal);
+      } else if (detail.data && component === 'app-align') {
+        await this.updateAlignAttribute(detail.data.align);
       }
     });
 
@@ -599,11 +605,11 @@ export class AppActionsElement {
       component: 'app-code',
       componentProps: {
         selectedElement: this.selectedElement,
-        codeDidChange: this.codeDidChange
+        codeDidChange: this.codeDidChange,
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu'
+      cssClass: 'popover-menu',
     });
 
     await popover.present();
@@ -617,8 +623,8 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-youtube',
       componentProps: {
-        selectedElement: this.selectedElement
-      }
+        selectedElement: this.selectedElement,
+      },
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -638,8 +644,8 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-notes',
       componentProps: {
-        selectedElement: this.selectedElement
-      }
+        selectedElement: this.selectedElement,
+      },
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -741,6 +747,8 @@ export class AppActionsElement {
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
 
+      this.align = await AlignUtils.getAlignment(element);
+
       this.list = this.isElementList(element);
 
       if (element) {
@@ -826,11 +834,11 @@ export class AppActionsElement {
       component: 'app-color',
       componentProps: {
         slide: this.slide,
-        selectedElement: this.selectedElement
+        selectedElement: this.selectedElement,
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: `popover-menu ${this.slideNodeName === 'deckgo-slide-poll' ? 'popover-menu-wide' : ''}`
+      cssClass: `popover-menu ${this.slideNodeName === 'deckgo-slide-poll' ? 'popover-menu-wide' : ''}`,
     });
 
     await popover.present();
@@ -909,6 +917,18 @@ export class AppActionsElement {
     });
   }
 
+  private async updateAlignAttribute(align: TextAlign): Promise<void> {
+    if (!this.selectedElement) {
+      return;
+    }
+
+    this.selectedElement.style.textAlign = align;
+
+    await this.emitChange();
+
+    await this.reset();
+  }
+
   private resizeSlideContent(slideElement?: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selectedElement) {
@@ -950,10 +970,10 @@ export class AppActionsElement {
       component: 'app-more-element-actions',
       componentProps: {
         notes: this.slide,
-        copy: this.slide || this.shape
+        copy: this.slide || this.shape,
       },
       event: $event,
-      mode: 'ios'
+      mode: 'ios',
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -978,6 +998,7 @@ export class AppActionsElement {
           {this.renderEdit()}
           {this.renderShapes()}
           {this.renderReveal()}
+          {this.renderAlign()}
           {this.renderColor()}
           {this.renderList()}
           {this.renderImages()}
@@ -1063,7 +1084,7 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.openSlotType()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
         <ion-icon src="/assets/icons/ionicons/add.svg"></ion-icon>
         <ion-label>Toggle</ion-label>
-      </ion-tab-button>
+      </ion-tab-button>,
     ];
   }
 
@@ -1074,7 +1095,7 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.openShape()} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
         <ion-icon src="/assets/icons/ionicons/shapes.svg"></ion-icon>
         <ion-label>Add shape</ion-label>
-      </ion-tab-button>
+      </ion-tab-button>,
     ];
   }
 
@@ -1104,9 +1125,30 @@ export class AppActionsElement {
     const classReveal: string | undefined = this.slide || this.code || this.shape || this.slideNodeName === 'deckgo-slide-youtube' ? 'hidden' : undefined;
 
     return (
-      <ion-tab-button onClick={() => this.openReveal()} aria-label="Edit element animation" color="primary" mode="md" class={classReveal}>
+      <ion-tab-button
+        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-reveal')}
+        aria-label="Edit element animation"
+        color="primary"
+        mode="md"
+        class={classReveal}>
         <ion-icon src="/assets/icons/album.svg"></ion-icon>
         <ion-label>Animation</ion-label>
+      </ion-tab-button>
+    );
+  }
+
+  private renderAlign() {
+    const classAlign: string | undefined = this.align === undefined ? 'hidden' : undefined;
+
+    return (
+      <ion-tab-button
+        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-align')}
+        aria-label="Edit element alignment"
+        color="primary"
+        mode="md"
+        class={classAlign}>
+        <ion-icon src={`/assets/icons/align-${this.align}.svg`}></ion-icon>
+        <ion-label>Alignment</ion-label>
       </ion-tab-button>
     );
   }
@@ -1123,7 +1165,7 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.toggleList()} aria-label="Toggle to an ordered list" color="primary" mode="md" class={classListOL}>
         <ion-icon src="/assets/icons/list-ol.svg"></ion-icon>
         <ion-label>Ordered list</ion-label>
-      </ion-tab-button>
+      </ion-tab-button>,
     ];
   }
 

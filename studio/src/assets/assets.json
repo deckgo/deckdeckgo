@@ -235,6 +235,9 @@
     {"src": "/icons/ionicons/code.svg", "ariaLabel": "Code"},
     {"src": "/icons/ionicons/images.svg", "ariaLabel": "Images"},
     {"src": "/icons/album.svg", "ariaLabel": "Animation"},
-    {"src": "/icons/ionicons/checkmark.svg", "ariaLabel": "Check"}
+    {"src": "/icons/ionicons/checkmark.svg", "ariaLabel": "Check"},
+    {"src": "/icons/align-center.svg", "ariaLabel": "Align center"},
+    {"src": "/icons/align-left.svg", "ariaLabel": "Align left"},
+    {"src": "/icons/align-right.svg", "ariaLabel": "Align right"}
   ]
 }
