@@ -570,7 +570,7 @@ export class AppActionsElement {
     await modal.present();
   }
 
-  private async openSingleAction($event: UIEvent, component: string) {
+  private async openSingleAction($event: UIEvent, component: 'app-reveal' | 'app-align') {
     if (this.slide) {
       return;
     }
@@ -586,8 +586,10 @@ export class AppActionsElement {
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail.data) {
+      if (detail.data && component === 'app-reveal') {
         await this.toggleReveal(detail.data.reveal);
+      } else if (detail.data && component === 'app-align') {
+        await this.updateAlignAttribute(detail.data.align);
       }
     });
 
@@ -913,6 +915,18 @@ export class AppActionsElement {
 
       resolve();
     });
+  }
+
+  private async updateAlignAttribute(align: TextAlign): Promise<void> {
+    if (!this.selectedElement) {
+      return;
+    }
+
+    this.selectedElement.style.textAlign = align;
+
+    await this.emitChange();
+
+    await this.reset();
   }
 
   private resizeSlideContent(slideElement?: HTMLElement): Promise<void> {
