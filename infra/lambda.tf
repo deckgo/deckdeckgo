@@ -24,7 +24,7 @@ resource "aws_lambda_function" "api" {
       DECKGO_PRESENTATIONS_URL = aws_route53_record.www_site_beta.fqdn
       META_BUCKET_NAME         = aws_s3_bucket.meta.bucket
       BUCKET_NAME         = aws_s3_bucket.presentations.bucket
-      DECKGO_STARTER_DIST = "dist.tar"
+      DECKGO_STARTER_DIST = "dist.zip"
     }
   }
 }

@@ -7,9 +7,9 @@ rec
         cp ${./main.js} main.js
         # Can't be called 'main' otherwise lambda tries to load it
         cp "${handler}/bin/handler" main_hs
-        cp ${deckdeckgo-starter-dist}/dist.tar dist.tar
+        cp ${deckdeckgo-starter-dist}/dist.zip dist.zip
         mkdir $out
-        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist.tar
+        ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs dist.zip
       '';
 
   # TODO: move all other builders to this
@@ -62,7 +62,7 @@ rec
   deckdeckgo-starter-dist =
     with
       { napalm = import pkgs.sources.napalm { inherit pkgs;} ; };
-    pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs ]; }
+    pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs pkgs.zip ]; }
       ''
         cp -r ${napalm.buildPackage pkgs.sources.deckdeckgo-starter {}}/* .
         chmod +w -R _napalm-install
@@ -71,7 +71,7 @@ rec
         npm run build
         mkdir -p $out
         pushd dist
-        tar -cvf $out/dist.tar *
+        zip -r $out/dist.zip *
         popd
       '';
 
@@ -147,7 +147,7 @@ rec
             AWS_DEFAULT_REGION=us-east-1 \
               AWS_ACCESS_KEY_ID=dummy \
               AWS_SECRET_ACCESS_KEY=dummy_key \
-              DECKGO_STARTER_DIST=${deckdeckgo-starter-dist}/dist.tar \
+              DECKGO_STARTER_DIST=${deckdeckgo-starter-dist}/dist.zip \
               ghci -Wall handler/app/Test.hs handler/src/**/*.hs
          }
 
@@ -228,7 +228,7 @@ rec
         AWS_DEFAULT_REGION=us-east-1 \
         AWS_ACCESS_KEY_ID=dummy \
         AWS_SECRET_ACCESS_KEY=dummy_key \
-        DECKGO_STARTER_DIST=${deckdeckgo-starter-dist}/dist.tar \
+        DECKGO_STARTER_DIST=${deckdeckgo-starter-dist}/dist.zip \
         TEST_TOKEN_PATH=${./token} ${handler}/bin/test
       echo "Tests were run"
 
