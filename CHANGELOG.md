@@ -5,7 +5,7 @@
 ### Applications
 
 - demo: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
-- docs: v1.0.0-rc.11 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- docs: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 - remote: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 
 ### Web Components
