@@ -54,7 +54,7 @@ import System.Environment
 import System.FilePath
 import UnliftIO
 import qualified Cases
-import qualified Codec.Archive.Tar as Tar
+import qualified Codec.Archive.Zip as Zip
 import qualified Crypto.Hash as Hash
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
@@ -1235,6 +1235,11 @@ listPresentationObjects
 listPresentationObjects env bucket pprefix =
     listObjects env bucket (Just $ unPresentationPrefix pprefix)
 
+zipExtract :: FilePath -> FilePath -> IO ()
+zipExtract dest archivePath = do
+    archive <- Zip.toArchive <$> BL.readFile archivePath
+    Zip.extractFilesFromArchive [ Zip.OptDestination dest ] archive
+
 withPresentationFiles
   :: Username
   -> PresShortname
@@ -1244,7 +1249,7 @@ withPresentationFiles
 withPresentationFiles uname psname presentationInfo act = do
     deckgoStarterDist <- getEnv "DECKGO_STARTER_DIST"
     Temp.withSystemTempDirectory "dist" $ \dir -> do
-      Tar.extract dir deckgoStarterDist
+      zipExtract dir deckgoStarterDist
 
       -- Here we deal with workbox' precache by updating index.html and then
       -- propagate the new etag (md5) through precache-manifest.js and
