@@ -1,6 +1,6 @@
 <a name="1.0.0"></a>
 
-# [1.0.0](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.22-1...v1.0.0) (in progress)
+# [1.0.0](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.22-1...v1.0.0) (2019-04-21)
 
 ### Applications
 
