@@ -1,3 +1,25 @@
+<a name="1.0.0"></a>
+
+# 1.0.0 (2020-04-21)
+
+To infinity and beyond 🚀
+
+### Features
+
+- offline mode ([#653](https://github.com/deckgo/deckdeckgo/issues/653))
+- four new Google Fonts available ([#660](https://github.com/deckgo/deckdeckgo/issues/660))
+- grand access to presentation through remote control ([#67](https://github.com/deckgo/deckdeckgo/issues/67))
+- add option to align left/center/right ([#702](https://github.com/deckgo/deckdeckgo/pull/702))
+- list ordered and unordered toggle to match new UX (#[703](https://github.com/deckgo/deckdeckgo/pull/703))
+- template "split" vertical text alignment ([#679](https://github.com/deckgo/deckdeckgo/issues/679))
+- `text-transform: none;` for all buttons ([#665](https://github.com/deckgo/deckdeckgo/issues/665))
+- update about page ([#674](https://github.com/deckgo/deckdeckgo/pull/674))
+
+### Fix
+
+- sign in button not accessible via keyboard only on settings page ([#673](https://github.com/deckgo/deckdeckgo/issues/673))
+- two H1 headings on settings page ([#671](https://github.com/deckgo/deckdeckgo/issues/671))
+
 <a name="1.0.0-beta.12-1"></a>
 
 # 1.0.0-beta.12-1 (2020-03-09)
