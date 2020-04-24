@@ -31,8 +31,17 @@ export class OfflineUtils {
     });
   }
 
-  static shouldAttributeBeCleaned(attr): any {
-    return attr && attr._methodName && attr._methodName === 'FieldValue.delete';
+  static shouldAttributeBeCleaned(attr): boolean {
+    // If attr is a not an object (string, number or boolean) for sure it isn't a Firestore FieldValue.delete
+    if (typeof attr !== 'object') {
+      return false;
+    }
+
+    const firestoreDelete = Object.keys(attr).find((key: string) => {
+      return attr[key] === 'FieldValue.delete';
+    });
+
+    return firestoreDelete !== null;
   }
 
   static prepareAttributes(attributes: SlideAttributes | DeckAttributes): Promise<SlideAttributes | DeckAttributes> {
