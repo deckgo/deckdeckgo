@@ -3,7 +3,7 @@
   "short_name": "DeckDeckGo",
   "display": "standalone",
   "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "background_color": "#3a81fe",
   "scope": "/",
   "start_url": "/",
   "orientation": "portrait",
