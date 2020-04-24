@@ -41,3 +41,5 @@ result-*
 
 config.staging.json
 config.prod.json
+
+**/assetlinks.prod.json

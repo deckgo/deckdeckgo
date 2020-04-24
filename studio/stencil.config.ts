@@ -16,15 +16,17 @@ const globalScript: string = dev ? 'src/global/app-dev.ts' : staging ? 'src/glob
 const configDataFile = dev ? './config.dev.json' : staging ? './config.staging.json' : './config.prod.json';
 const configValues = require(configDataFile);
 
+const assetLinks = dev || staging ? 'assetlinks.dev.json' : 'assetlinks.prod.json';
+
 export const config: Config = {
   outputTargets: [
     {
       type: 'www',
       baseUrl: 'https://deckdeckgo.com',
       serviceWorker: {
-        swSrc: 'src/sw.js'
-      }
-    }
+        swSrc: 'src/sw.js',
+      },
+    },
   ],
   globalScript: globalScript,
   globalStyle: 'src/global/app.scss',
@@ -32,19 +34,19 @@ export const config: Config = {
     replace({
       exclude: 'node_modules/**',
       delimiters: ['<@', '@>'],
-      values: configValues
+      values: configValues,
     }),
     sass({
-      includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
+      includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/'],
     }),
     postcss({
-      plugins: [autoprefixer()]
-    })
+      plugins: [autoprefixer()],
+    }),
   ],
   nodeResolve: {browser: true},
   devServer: {
     openBrowser: false,
-    reloadStrategy: 'pageReload'
+    reloadStrategy: 'pageReload',
   },
-  copy: [{src: 'robots.txt'}]
+  copy: [{src: 'robots.txt'}, {src: `${assetLinks}`, dest: `.well-known/assetlinks.json`}],
 };
