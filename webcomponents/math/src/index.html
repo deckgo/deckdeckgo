@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>DeckDeckGo - Math</title>
+
+    <script type="module" src="/build/deckdeckgo-math.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-math.js"></script>
+  </head>
+
+  <body>
+    <deckgo-math-paragraph>
+      <div slot="math">
+        <br />
+        You can write math expression inside paragraph like this: $x + 1$
+        <br />
+        <br />
+        Inline formulas can be written with \$ e.g: $c = \pm\sqrt{a^2 + b^2}$
+        <br />
+        <br />and displayed equations can be written using \$$ e.g: $$\sum_{i=1}^n 2^i$$
+      </div>
+    </deckgo-math-paragraph>
+
+    <h2>Single expression</h2>
+    <deckgo-math expression="\sum_{i=1}^n 2^i"></deckgo-math>
+  </body>
+  <script>
+    var deckgoMath = document.querySelector('deckgo-math');
+
+    deckgoMath.options = {
+      displayMode: true,
+    };
+  </script>
+</html>
