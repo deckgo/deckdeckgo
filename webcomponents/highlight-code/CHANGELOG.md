@@ -1,3 +1,11 @@
+<a name="1.0.3"></a>
+
+# 1.0.3 (2020-04-26)
+
+### Features
+
+- make code white-space a css variable ([#707](https://github.com/deckgo/deckdeckgo/issues/707))
+
 <a name="1.0.2"></a>
 
 # 1.0.2 (2020-04-02)

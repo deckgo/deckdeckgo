@@ -1,3 +1,11 @@
+<a name="1.1.0"></a>
+
+# [1.1.0](https://github.com/deckgo/deckdeckgo/compare/v1.0.0...v1.1.0) (In progress...)
+
+### Web Components
+
+- highlight-code: v1.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+
 <a name="1.0.0"></a>
 
 # [1.0.0](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.22-1...v1.0.0) (2019-04-21)
