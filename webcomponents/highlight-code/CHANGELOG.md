@@ -1,3 +1,11 @@
+<a name="1.0.4"></a>
+
+# 1.0.4 (2020-04-27)
+
+### Fix
+
+- if prism script did not load, do not keep reference in DOM
+
 <a name="1.0.3"></a>
 
 # 1.0.3 (2020-04-26)

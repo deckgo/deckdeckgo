@@ -9,7 +9,7 @@ import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highligh
 @Component({
   tag: 'deckgo-highlight-code',
   styleUrl: 'deckdeckgo-highlight-code.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoHighlightCode {
   @Element() el: HTMLElement;
@@ -121,6 +121,10 @@ export class DeckdeckgoHighlightCode {
       };
 
       script.onerror = async () => {
+        if (script.parentElement) {
+          script.parentElement.removeChild(script);
+        }
+
         // if the language definition doesn't exist or if unpkg is down, display code anyway
         this.prismLanguageLoaded.emit(this.language);
       };
@@ -301,15 +305,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   private hasLineAnchor(line: string): boolean {
-    return (
-      line &&
-      this.anchor &&
-      line.indexOf('@Prop') === -1 &&
-      line
-        .split(' ')
-        .join('')
-        .indexOf(this.anchor.split(' ').join('')) > -1
-    );
+    return line && this.anchor && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchor.split(' ').join('')) > -1;
   }
 
   private addHighlight(): Promise<void> {
@@ -410,7 +406,7 @@ export class DeckdeckgoHighlightCode {
 
           resolve({
             offsetTop: anchor.offsetTop,
-            hasLineZoom: this.hasLineZoom(anchor.textContent)
+            hasLineZoom: this.hasLineZoom(anchor.textContent),
           });
         } else if (!enter) {
           const elementCode: HTMLElement = this.el.shadowRoot.querySelector('code');
@@ -420,7 +416,7 @@ export class DeckdeckgoHighlightCode {
 
             resolve({
               offsetTop: 0,
-              hasLineZoom: false
+              hasLineZoom: false,
             });
           } else {
             resolve(null);
@@ -448,15 +444,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   private hasLineZoom(line: string): boolean {
-    return (
-      line &&
-      this.anchorZoom &&
-      line.indexOf('@Prop') === -1 &&
-      line
-        .split(' ')
-        .join('')
-        .indexOf(this.anchorZoom.split(' ').join('')) > -1
-    );
+    return line && this.anchorZoom && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1;
   }
 
   private edit(): Promise<void> {
@@ -547,7 +535,7 @@ export class DeckdeckgoHighlightCode {
         class={{
           'deckgo-highlight-code-edit': this.editing,
           'deckgo-highlight-code-carbon': this.terminal === 'carbon',
-          'deckgo-highlight-code-ubuntu': this.terminal === 'ubuntu'
+          'deckgo-highlight-code-ubuntu': this.terminal === 'ubuntu',
         }}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
