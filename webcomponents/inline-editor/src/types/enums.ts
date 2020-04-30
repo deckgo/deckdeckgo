@@ -5,6 +5,7 @@ export enum ToolbarActions {
   COLOR,
   ALIGNMENT,
   LIST,
+  FONT_SIZE,
 }
 
 export enum ImageSize {
@@ -28,4 +29,14 @@ export enum ContentAlign {
 export enum ContentList {
   ORDERED = 'insertOrderedList',
   UNORDERED = 'insertUnorderedList',
+}
+
+export enum FontSize {
+  X_SMALL = '1',
+  SMALL = '2',
+  MEDIUM = '3',
+  LARGE = '4',
+  X_LARGE = '5',
+  XX_LARGE = '6',
+  XXX_LARGE = '7',
 }

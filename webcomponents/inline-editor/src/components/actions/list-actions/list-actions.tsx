@@ -1,5 +1,7 @@
 import {Component, Event, EventEmitter, h, Host, Prop} from '@stencil/core';
+
 import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
+
 import {ContentList} from '../../../types/enums';
 
 @Component({
@@ -24,7 +26,7 @@ export class AlignActions {
   contentList: ContentList;
 
   @Event()
-  listModified: EventEmitter<void>;
+  private listModified: EventEmitter<void>;
 
   private toggleList(e: UIEvent, cmd: string): Promise<void> {
     return new Promise<void>(async (resolve) => {

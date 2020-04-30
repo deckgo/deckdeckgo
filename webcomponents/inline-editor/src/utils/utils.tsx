@@ -1,6 +1,6 @@
 import {isRTL} from '@deckdeckgo/utils';
 
-import {ContentAlign, ContentList} from '../types/enums';
+import {ContentAlign, ContentList, FontSize} from '../types/enums';
 
 export class DeckdeckgoInlineEditorUtils {
   static isBold(element: HTMLElement): Promise<boolean> {
@@ -220,5 +220,13 @@ export class DeckdeckgoInlineEditorUtils {
         resolve(container);
       }
     });
+  }
+
+  static async getFontSize(element: HTMLElement): Promise<FontSize | undefined> {
+    if (!element || !element.hasAttribute('size')) {
+      return undefined;
+    }
+
+    return element.getAttribute('size') as FontSize;
   }
 }

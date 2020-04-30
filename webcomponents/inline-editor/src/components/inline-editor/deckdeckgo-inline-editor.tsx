@@ -1,11 +1,11 @@
-import {Component, Element, EventEmitter, Listen, Prop, State, Watch, Event, Method, h, Host} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Host, Listen, Method, Prop, State, Watch} from '@stencil/core';
 
-import {isMobile, isIOS, unifyEvent, debounce, isRTL} from '@deckdeckgo/utils';
+import {debounce, isIOS, isMobile, isRTL, unifyEvent} from '@deckdeckgo/utils';
 
 import '@deckdeckgo/color';
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
-import {ToolbarActions, ContentAlign, ContentList} from '../../types/enums';
+import {ContentAlign, ContentList, FontSize, ToolbarActions} from '../../types/enums';
 import {AnchorLink, InlineAction} from '../../interfaces/interfaces';
 
 import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
@@ -37,6 +37,9 @@ export class DeckdeckgoInlineEditor {
 
   @State()
   private color: string;
+
+  @State()
+  private contentFontSize: FontSize | undefined = undefined;
 
   @State()
   private disabledTitle: boolean = false;
@@ -100,6 +103,9 @@ export class DeckdeckgoInlineEditor {
 
   @Prop()
   align: boolean = true;
+
+  @Prop()
+  fontSize: boolean = true;
 
   @Prop()
   customActions: string; // Comma separated list of additional action components
@@ -451,6 +457,7 @@ export class DeckdeckgoInlineEditor {
         this.underline = false;
         this.contentList = undefined;
         this.color = null;
+        this.contentFontSize = undefined;
 
         await this.initDefaultContentAlign();
 
@@ -505,6 +512,10 @@ export class DeckdeckgoInlineEditor {
         await this.findColor(node);
 
         await this.findStyle(node.parentNode);
+
+        if (this.contentFontSize === undefined) {
+          this.contentFontSize = await DeckdeckgoInlineEditorUtils.getFontSize(node as HTMLElement);
+        }
 
         resolve();
       }
@@ -701,6 +712,10 @@ export class DeckdeckgoInlineEditor {
     this.toolbarActions = ToolbarActions.ALIGNMENT;
   }
 
+  private async openFontSizeActions(): Promise<void> {
+    this.toolbarActions = ToolbarActions.FONT_SIZE;
+  }
+
   private async openListActions(): Promise<void> {
     this.toolbarActions = ToolbarActions.LIST;
   }
@@ -794,6 +809,14 @@ export class DeckdeckgoInlineEditor {
           contentList={this.contentList}
           onListModified={() => this.reset(true)}></deckgo-ie-list-actions>
       );
+    } else if (this.toolbarActions === ToolbarActions.FONT_SIZE) {
+      return (
+        <deckgo-ie-font-size-actions
+          mobile={this.mobile}
+          sticky={sticky}
+          fontSize={this.contentFontSize}
+          onFontSizeModified={() => this.reset(true)}></deckgo-ie-font-size-actions>
+      );
     } else {
       return this.renderSelectionActions();
     }
@@ -811,6 +834,8 @@ export class DeckdeckgoInlineEditor {
         italic={this.italic}
         underline={this.underline}
         onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-style-actions>,
+
+      this.renderFontSizeAction(),
 
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker()}>
         <deckgo-ie-action-image cssClass={'pick-color'} style={styleColor}></deckgo-ie-action-image>
@@ -880,6 +905,20 @@ export class DeckdeckgoInlineEditor {
           cssClass={
             this.contentAlign === ContentAlign.LEFT ? 'left-align' : this.contentAlign === ContentAlign.CENTER ? 'center-align' : 'right-align'
           }></deckgo-ie-action-image>
+      </deckgo-ie-action-button>
+    );
+  }
+
+  private renderFontSizeAction() {
+    if (!this.fontSize) {
+      return undefined;
+    }
+
+    return (
+      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openFontSizeActions()}>
+        <span>
+          A<small>A</small>
+        </span>
       </deckgo-ie-action-button>
     );
   }

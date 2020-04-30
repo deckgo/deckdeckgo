@@ -21,6 +21,7 @@
 ### Used by
 
 - [deckgo-ie-align-actions](../../actions/align-actions)
+- [deckgo-ie-font-size-actions](../../actions/font-size-actions)
 - [deckgo-ie-image-actions](../../actions/image-actions)
 - [deckgo-ie-list-actions](../../actions/list-actions)
 - [deckgo-ie-style-actions](../../actions/style-actions)
@@ -31,6 +32,7 @@
 ```mermaid
 graph TD;
   deckgo-ie-align-actions --> deckgo-ie-action-button
+  deckgo-ie-font-size-actions --> deckgo-ie-action-button
   deckgo-ie-image-actions --> deckgo-ie-action-button
   deckgo-ie-list-actions --> deckgo-ie-action-button
   deckgo-ie-style-actions --> deckgo-ie-action-button

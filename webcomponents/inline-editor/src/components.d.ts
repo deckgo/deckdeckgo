@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ContentAlign, ContentList, ToolbarActions, } from "./types/enums";
+import { ContentAlign, ContentList, FontSize, ToolbarActions, } from "./types/enums";
 import { DeckdeckgoPalette, } from "@deckdeckgo/color";
 import { EventEmitter, } from "@stencil/core";
 import { AnchorLink, InlineAction, } from "./interfaces/interfaces";
@@ -30,6 +30,11 @@ export namespace Components {
         "mobile": boolean;
         "palette": DeckdeckgoPalette[];
         "selection": Selection;
+    }
+    interface DeckgoIeFontSizeActions {
+        "fontSize": FontSize;
+        "mobile": boolean;
+        "sticky": boolean;
     }
     interface DeckgoIeImageActions {
         "anchorEvent": MouseEvent | TouchEvent;
@@ -73,6 +78,7 @@ export namespace Components {
         "attachTo": HTMLElement;
         "containers": string;
         "customActions": string;
+        "fontSize": boolean;
         "imgAnchor": string;
         "imgEditable": boolean;
         "imgPropertyCssFloat": string;
@@ -109,6 +115,12 @@ declare global {
     var HTMLDeckgoIeColorActionsElement: {
         prototype: HTMLDeckgoIeColorActionsElement;
         new (): HTMLDeckgoIeColorActionsElement;
+    };
+    interface HTMLDeckgoIeFontSizeActionsElement extends Components.DeckgoIeFontSizeActions, HTMLStencilElement {
+    }
+    var HTMLDeckgoIeFontSizeActionsElement: {
+        prototype: HTMLDeckgoIeFontSizeActionsElement;
+        new (): HTMLDeckgoIeFontSizeActionsElement;
     };
     interface HTMLDeckgoIeImageActionsElement extends Components.DeckgoIeImageActions, HTMLStencilElement {
     }
@@ -157,6 +169,7 @@ declare global {
         "deckgo-ie-action-image": HTMLDeckgoIeActionImageElement;
         "deckgo-ie-align-actions": HTMLDeckgoIeAlignActionsElement;
         "deckgo-ie-color-actions": HTMLDeckgoIeColorActionsElement;
+        "deckgo-ie-font-size-actions": HTMLDeckgoIeFontSizeActionsElement;
         "deckgo-ie-image-actions": HTMLDeckgoIeImageActionsElement;
         "deckgo-ie-link-actions": HTMLDeckgoIeLinkActionsElement;
         "deckgo-ie-list-actions": HTMLDeckgoIeListActionsElement;
@@ -190,6 +203,12 @@ declare namespace LocalJSX {
         "onColorModified"?: (event: CustomEvent<void>) => void;
         "palette"?: DeckdeckgoPalette[];
         "selection"?: Selection;
+    }
+    interface DeckgoIeFontSizeActions {
+        "fontSize"?: FontSize;
+        "mobile"?: boolean;
+        "onFontSizeModified"?: (event: CustomEvent<void>) => void;
+        "sticky"?: boolean;
     }
     interface DeckgoIeImageActions {
         "anchorEvent"?: MouseEvent | TouchEvent;
@@ -237,6 +256,7 @@ declare namespace LocalJSX {
         "attachTo"?: HTMLElement;
         "containers"?: string;
         "customActions"?: string;
+        "fontSize"?: boolean;
         "imgAnchor"?: string;
         "imgEditable"?: boolean;
         "imgPropertyCssFloat"?: string;
@@ -256,6 +276,7 @@ declare namespace LocalJSX {
         "deckgo-ie-action-image": DeckgoIeActionImage;
         "deckgo-ie-align-actions": DeckgoIeAlignActions;
         "deckgo-ie-color-actions": DeckgoIeColorActions;
+        "deckgo-ie-font-size-actions": DeckgoIeFontSizeActions;
         "deckgo-ie-image-actions": DeckgoIeImageActions;
         "deckgo-ie-link-actions": DeckgoIeLinkActions;
         "deckgo-ie-list-actions": DeckgoIeListActions;
@@ -273,6 +294,7 @@ declare module "@stencil/core" {
             "deckgo-ie-action-image": LocalJSX.DeckgoIeActionImage & JSXBase.HTMLAttributes<HTMLDeckgoIeActionImageElement>;
             "deckgo-ie-align-actions": LocalJSX.DeckgoIeAlignActions & JSXBase.HTMLAttributes<HTMLDeckgoIeAlignActionsElement>;
             "deckgo-ie-color-actions": LocalJSX.DeckgoIeColorActions & JSXBase.HTMLAttributes<HTMLDeckgoIeColorActionsElement>;
+            "deckgo-ie-font-size-actions": LocalJSX.DeckgoIeFontSizeActions & JSXBase.HTMLAttributes<HTMLDeckgoIeFontSizeActionsElement>;
             "deckgo-ie-image-actions": LocalJSX.DeckgoIeImageActions & JSXBase.HTMLAttributes<HTMLDeckgoIeImageActionsElement>;
             "deckgo-ie-link-actions": LocalJSX.DeckgoIeLinkActions & JSXBase.HTMLAttributes<HTMLDeckgoIeLinkActionsElement>;
             "deckgo-ie-list-actions": LocalJSX.DeckgoIeListActions & JSXBase.HTMLAttributes<HTMLDeckgoIeListActionsElement>;
