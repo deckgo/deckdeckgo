@@ -17,7 +17,11 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.0.0",
+    "autoprefixer": "^9.7.6",
+    "clean-css-cli": "^4.3.0",
     "husky": "^4.2.3",
+    "node-sass": "^4.14.0",
+    "postcss-cli": "^7.1.1",
     "prettier": "1.19.1",
     "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.2",
@@ -33,12 +37,15 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "rimraf lib && rollup -c && tsc"
+    "build": "rimraf lib && rimraf css && rollup -c && tsc && npm run build-sass && npm run build-autoprefix && npm run build-cleancss",
+    "build-sass": "node-sass --output-style expanded ./styles/index.scss ./css/deck.css",
+    "build-autoprefix": "postcss --use autoprefixer --map false --output ./css/deck.css ./css/deck.css",
+    "build-cleancss": "cleancss -o ./css/deck.min.css ./css/deck.css"
   },
   "files": [
     "lib",
     "README.md",
-    "styles"
+    "css"
   ],
   "keywords": [
     "stencil",
