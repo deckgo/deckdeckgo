@@ -94,7 +94,8 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | `customActions`       | `custom-actions`         | You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions                                                            | `string`              |                           |
 | `palette`             | `palette`                | In case you would like to define a custom list of colors for the palette of colors. See [@deckdeckgo/color](https://docs.deckdeckgo.com/components/color) for the default list of colors. | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE`         |
 | `list`                | `list`                   | Actions to manipulate the selection as list enabled?                                                                                                                                      | `boolean`             | `true`                    |
-| `align`               | `list`                   | Actions to manipulate the selection alignment enabled?                                                                                                                                    | `boolean`             | `true`                    |
+| `align`               | `align`                  | Actions to manipulate the selection alignment enabled?                                                                                                                                    | `boolean`             | `true`                    |
+| `fontSize`            | `font-size`              | Actions to modify the selection font-size enabled?                                                                                                                                        | `boolean`             | `true`                    |
 
 ### Custom actions slots
 

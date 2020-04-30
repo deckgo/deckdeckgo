@@ -383,6 +383,16 @@ export class AppComponentsHighlightCode {
                 <td>If you wish to manually zoom the code</td>
               </tr>
               <tr>
+                <td>--deckgo-highlight-code-white-space</td>
+                <td>pre-wrap</td>
+                <td>The attribute white-space of the displayed</td>
+              </tr>
+              <tr>
+                <td>code</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
                 <td>--deckgo-highlight-code-font-size</td>
                 <td></td>
                 <td>The size of the font for the code</td>
