@@ -1,4 +1,5 @@
-@import "../../../../global/theme/editor/editor-fullscreen";
+@use "../../../../global/theme/editor/editor-fullscreen";
+@use "node_modules/@deckdeckgo/deck-utils/css/fullscreen";
 
 app-editor {
   @import "../../../../global/theme/editor/editor-deck";
@@ -9,9 +10,7 @@ app-editor {
 
   @import "../../../../global/theme/editor/editor-deck-transition";
 
-  @import "./deckdeckgo-deck";
-  @import "./deckdeckgo-deck-fonts";
-  @import "./deckdeckgo-deck-rtl";
+  @import "node_modules/@deckdeckgo/deck-utils/css/deck";
 
   app-navigation,
   app-help {
