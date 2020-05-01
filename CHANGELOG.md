@@ -7,6 +7,10 @@
 - highlight-code: v1.0.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 - inline-editor: v1.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
+### Others
+
+- deck-utils: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
+
 <a name="1.0.0"></a>
 
 # [1.0.0](https://github.com/deckgo/deckdeckgo/compare/v1.0.0-rc.22-1...v1.0.0) (2019-04-21)

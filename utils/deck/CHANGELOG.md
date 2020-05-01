@@ -1,3 +1,13 @@
+<a name="2.0.0"></a>
+
+# 2.0.0 (2020-05-01)
+
+### Features
+
+- apply big `font-size` on the deck only in fullscreen
+- define `font-size` if the user's modify size inside sections
+- use Saas to compiles styles
+
 <a name="1.0.1"></a>
 
 # 1.0.1 (2020-04-18)
