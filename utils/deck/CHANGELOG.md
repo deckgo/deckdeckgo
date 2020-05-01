@@ -6,6 +6,7 @@
 
 - apply big `font-size` on the deck only in fullscreen
 - define `font-size` if the user's modify size inside sections
+- deck `h1` and `h2` bolder
 - use Saas to compiles styles
 
 <a name="1.0.1"></a>
