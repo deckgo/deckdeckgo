@@ -19,7 +19,7 @@
     "@deckdeckgo/core": "^1.0.1",
     "@deckdeckgo/drag-resize-rotate": "^1.0.0",
     "@deckdeckgo/highlight-code": "^1.0.2",
-    "@deckdeckgo/inline-editor": "^1.1.1",
+    "@deckdeckgo/inline-editor": "^1.2.0",
     "@deckdeckgo/lazy-img": "^1.0.0",
     "@deckdeckgo/qrcode": "^1.0.0",
     "@deckdeckgo/slide-aspect-ratio": "^1.0.0",

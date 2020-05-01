@@ -26,6 +26,10 @@ main {
 
       overflow: hidden;
 
+      &::before {
+        content: "&#160;";
+      }
+
       &::after {
         content: "";
         position: absolute;

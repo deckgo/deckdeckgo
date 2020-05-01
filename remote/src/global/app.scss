@@ -41,6 +41,5 @@
 @import "theme/alert";
 @import "theme/shadow";
 
-@import "./deckdeckgo-deck";
-@import "./deckdeckgo-deck-fonts";
-@import "./deckdeckgo-deck-rtl";
+@import "node_modules/@deckdeckgo/deck-utils/css/fullscreen";
+@import "node_modules/@deckdeckgo/deck-utils/css/deck";

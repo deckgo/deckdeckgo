@@ -337,9 +337,24 @@ export class AppComponentsInlineEditor {
                   <code>align</code>
                 </td>
                 <td>
-                  <code>list</code>
+                  <code>align</code>
                 </td>
                 <td>Actions to manipulate the selection alignment enabled?</td>
+                <td>
+                  <code>boolean</code>
+                </td>
+                <td>
+                  <code>true</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>fontSize</code>
+                </td>
+                <td>
+                  <code>font-size</code>
+                </td>
+                <td>Actions to modify the selection font-size enabled?</td>
                 <td>
                   <code>boolean</code>
                 </td>

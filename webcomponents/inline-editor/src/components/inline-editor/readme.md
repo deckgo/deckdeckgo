@@ -10,6 +10,7 @@
 | `attachTo`            | --                       |             | `HTMLElement`         | `undefined`               |
 | `containers`          | `containers`             |             | `string`              | `'h1,h2,h3,h4,h5,h6,div'` |
 | `customActions`       | `custom-actions`         |             | `string`              | `undefined`               |
+| `fontSize`            | `font-size`              |             | `boolean`             | `true`                    |
 | `imgAnchor`           | `img-anchor`             |             | `string`              | `'img'`                   |
 | `imgEditable`         | `img-editable`           |             | `boolean`             | `false`                   |
 | `imgPropertyCssFloat` | `img-property-css-float` |             | `string`              | `'float'`                 |
@@ -47,6 +48,7 @@ Type: `Promise<void>`
 - [deckgo-ie-image-actions](../actions/image-actions)
 - [deckgo-ie-align-actions](../actions/align-actions)
 - [deckgo-ie-list-actions](../actions/list-actions)
+- [deckgo-ie-font-size-actions](../actions/font-size-actions)
 - [deckgo-ie-style-actions](../actions/style-actions)
 - [deckgo-ie-action-button](../components/action-button)
 - [deckgo-ie-action-image](../components/action-image)
@@ -62,6 +64,7 @@ graph TD;
   deckgo-inline-editor --> deckgo-ie-image-actions
   deckgo-inline-editor --> deckgo-ie-align-actions
   deckgo-inline-editor --> deckgo-ie-list-actions
+  deckgo-inline-editor --> deckgo-ie-font-size-actions
   deckgo-inline-editor --> deckgo-ie-style-actions
   deckgo-inline-editor --> deckgo-ie-action-button
   deckgo-inline-editor --> deckgo-ie-action-image
@@ -74,6 +77,7 @@ graph TD;
   deckgo-ie-align-actions --> deckgo-ie-action-image
   deckgo-ie-list-actions --> deckgo-ie-action-button
   deckgo-ie-list-actions --> deckgo-ie-action-image
+  deckgo-ie-font-size-actions --> deckgo-ie-action-button
   deckgo-ie-style-actions --> deckgo-ie-action-button
   style deckgo-inline-editor fill:#f9f,stroke:#333,stroke-width:4px
 ```

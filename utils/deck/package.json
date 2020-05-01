@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/deck-utils",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "author": "David Dal Busco",
   "description": "Utils and styles for the DeckDeckGo applications",
   "license": "MIT",
@@ -13,15 +13,19 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0"
+    "@deckdeckgo/utils": "^1.1.0"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0",
-    "husky": "^4.2.3",
-    "prettier": "1.19.1",
+    "@deckdeckgo/types": "^1.1.0",
+    "autoprefixer": "^9.7.6",
+    "clean-css-cli": "^4.3.0",
+    "husky": "^4.2.5",
+    "node-sass": "^4.14.0",
+    "postcss-cli": "^7.1.1",
+    "prettier": "2.0.5",
     "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.1.0",
+    "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript": "^1.0.1",
@@ -33,12 +37,20 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "rimraf lib && rollup -c && tsc"
+    "build": "rimraf lib && rimraf css && rollup -c && tsc && npm run build-deck && npm run build-fullscreen",
+    "build-deck": "npm run build-deck-sass && npm run build-deck-autoprefix && npm run build-deck-cleancss",
+    "build-deck-sass": "node-sass --output-style expanded styles/deck/index.scss ./css/deck.css",
+    "build-deck-autoprefix": "postcss --use autoprefixer --map false --output ./css/deck.css ./css/deck.css",
+    "build-deck-cleancss": "cleancss -o ./css/deck.min.css ./css/deck.css",
+    "build-fullscreen": "npm run build-fullscreen-sass && npm run build-fullscreen-autoprefix && npm run build-fullscreen-cleancss",
+    "build-fullscreen-sass": "node-sass --output-style expanded styles/fullscreen/index.scss ./css/fullscreen.css",
+    "build-fullscreen-autoprefix": "postcss --use autoprefixer --map false --output ./css/fullscreen.css ./css/fullscreen.css",
+    "build-fullscreen-cleancss": "cleancss -o ./css/fullscreen.min.css ./css/fullscreen.css"
   },
   "files": [
     "lib",
     "README.md",
-    "styles"
+    "css"
   ],
   "keywords": [
     "stencil",
