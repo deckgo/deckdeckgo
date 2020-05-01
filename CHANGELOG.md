@@ -2,6 +2,10 @@
 
 # [1.1.0](https://github.com/deckgo/deckdeckgo/compare/v1.0.0...v1.1.0) (In progress...)
 
+### Applications
+
+- demo: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
+
 ### Web Components
 
 - highlight-code: v1.0.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
@@ -10,6 +14,7 @@
 ### Others
 
 - deck-utils: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
+- starter kit: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.0.0"></a>
 
