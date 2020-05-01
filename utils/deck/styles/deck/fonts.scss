@@ -1,29 +1,3 @@
-@mixin fullscreen() {
-  #{if(&, "&", "*")}:-moz-full-screen {
-    @content;
-  }
-
-  #{if(&, "&", "*")}:-webkit-full-screen {
-    @content;
-  }
-
-  #{if(&, "&", "*")}:-ms-fullscreen {
-    @content;
-  }
-
-  #{if(&, "&", "*")}:fullscreen {
-    @content;
-  }
-}
-
-// Base font bigger in fullscreen mode
-
-@include fullscreen() {
-  deckgo-deck {
-    font-size: 32px;
-  }
-}
-
 // Font weight
 
 deckgo-deck h1,
