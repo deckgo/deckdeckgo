@@ -13,19 +13,19 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0"
+    "@deckdeckgo/utils": "^1.1.0"
   },
   "devDependencies": {
-    "@deckdeckgo/types": "^1.0.0",
+    "@deckdeckgo/types": "^1.1.0",
     "autoprefixer": "^9.7.6",
     "clean-css-cli": "^4.3.0",
-    "husky": "^4.2.3",
+    "husky": "^4.2.5",
     "node-sass": "^4.14.0",
     "postcss-cli": "^7.1.1",
-    "prettier": "1.19.1",
+    "prettier": "2.0.5",
     "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.1.0",
+    "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript": "^1.0.1",
