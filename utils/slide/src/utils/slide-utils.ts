@@ -105,6 +105,7 @@ export function lazyLoadContent(el: HTMLElement): Promise<void> {
     promises.push(lazyLoadImages(el));
     promises.push(lazyLoadComponentContent(el, 'deckgo-gif'));
     promises.push(lazyLoadComponentContent(el, 'deckgo-youtube'));
+    promises.push(lazyLoadComponentContent(el, 'deckgo-demo'));
 
     await Promise.all(promises);
 

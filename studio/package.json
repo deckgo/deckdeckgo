@@ -16,10 +16,12 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
+    "@braintree/sanitize-url": "^4.0.1",
     "@deckdeckgo/charts": "^1.0.1",
     "@deckdeckgo/color": "^1.1.0",
     "@deckdeckgo/core": "^1.0.1",
     "@deckdeckgo/deck-utils": "^2.0.0",
+    "@deckdeckgo/demo": "file:../webcomponents/demo",
     "@deckdeckgo/drag-resize-rotate": "^1.0.0",
     "@deckdeckgo/highlight-code": "^1.0.2",
     "@deckdeckgo/inline-editor": "^1.2.0",
@@ -35,6 +37,7 @@
     "@deckdeckgo/slide-qrcode": "^1.0.0",
     "@deckdeckgo/slide-split": "^1.0.0",
     "@deckdeckgo/slide-title": "^1.0.0",
+    "@deckdeckgo/slide-utils": "file:../utils/slide",
     "@deckdeckgo/slide-youtube": "^1.0.0",
     "@deckdeckgo/social": "^1.0.0",
     "@deckdeckgo/utils": "^1.1.0",
@@ -53,6 +56,7 @@
     "@stencil/core": "^1.8.11",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.1.1",
+    "@types/braintree__sanitize-url": "^4.0.0",
     "@types/socket.io-client": "^1.4.32",
     "@types/uuid": "^7.0.2",
     "autoprefixer": "^9.7.6",

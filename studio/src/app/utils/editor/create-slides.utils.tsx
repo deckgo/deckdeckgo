@@ -12,6 +12,15 @@ import {Deck} from '../../models/data/deck';
 
 import {QRCodeUtils} from './qrcode.utils';
 
+export enum CreateSlideUserInputs {
+  NONE,
+  GIF,
+  YOUTUBE,
+  CHART,
+  POLL,
+  DEMO,
+}
+
 export class CreateSlidesUtils {
   static createSlide(template: SlideTemplate, deck?: Deck, user?: User): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
@@ -91,7 +100,7 @@ export class CreateSlidesUtils {
     });
   }
 
-  public static createSlideSplit(attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
+  static createSlideSplit(attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>((resolve) => {
       if (!document) {
         resolve();
@@ -336,6 +345,29 @@ export class CreateSlidesUtils {
       }
 
       const slide: JSX.IntrinsicElements = <deckgo-slide-aspect-ratio key={uuid()} grid={true} editable={true}></deckgo-slide-aspect-ratio>;
+
+      resolve(slide);
+    });
+  }
+
+  static createSlideDemo(src: string = undefined): Promise<JSX.IntrinsicElements> {
+    return new Promise<JSX.IntrinsicElements>((resolve) => {
+      if (!document) {
+        resolve();
+        return;
+      }
+
+      const start = <section slot="start"></section>;
+
+      const end = <deckgo-demo slot="end" src={src}></deckgo-demo>;
+
+      // @ts-ignore
+      // prettier-ignore
+      const slide: JSX.IntrinsicElements = (<deckgo-slide-split key={uuid()}>
+            {start}
+            {end}
+          </deckgo-slide-split>
+      );
 
       resolve(slide);
     });

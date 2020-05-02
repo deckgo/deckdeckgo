@@ -9,11 +9,11 @@ import {get, set} from 'idb-keyval';
 import {forkJoin, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import {SlideAttributes, SlideTemplate} from '../../../../../models/data/slide';
+import {SlideAttributes} from '../../../../../models/data/slide';
 
 import {MoreAction} from '../../../../../utils/editor/more-action';
 
-import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
+import {CreateSlidesUtils, CreateSlideUserInputs} from '../../../../../utils/editor/create-slides.utils';
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
 import {OfflineService} from '../../../../../services/editor/offline/offline.service';
@@ -21,7 +21,7 @@ import {RemoteService} from '../../../../../services/editor/remote/remote.servic
 
 @Component({
   tag: 'app-actions-deck',
-  shadow: false
+  shadow: false,
 })
 export class AppActionsDeck {
   @Element() el: HTMLElement;
@@ -123,19 +123,21 @@ export class AppActionsDeck {
       event: $event.detail,
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu popover-menu-wide'
+      cssClass: 'popover-menu popover-menu-wide',
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail && detail.data) {
-        if (detail.data.template === SlideTemplate.GIF) {
+        if (detail.data.userInputs === CreateSlideUserInputs.GIF) {
           await this.openGifPicker();
-        } else if (detail.data.template === SlideTemplate.YOUTUBE) {
+        } else if (detail.data.userInputs === CreateSlideUserInputs.YOUTUBE) {
           await this.openYoutube();
-        } else if (detail.data.template === SlideTemplate.CHART) {
+        } else if (detail.data.userInputs === CreateSlideUserInputs.CHART) {
           await this.openChart(detail.data.attributes);
-        } else if (detail.data.template === SlideTemplate.POLL) {
+        } else if (detail.data.userInputs === CreateSlideUserInputs.POLL) {
           await this.openPoll();
+        } else if (detail.data.userInputs === CreateSlideUserInputs.DEMO) {
+          await this.openDemo();
         }
 
         if (detail.data.slide) {
@@ -149,7 +151,7 @@ export class AppActionsDeck {
 
   private async openGifPicker() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-gif'
+      component: 'app-gif',
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -161,7 +163,7 @@ export class AppActionsDeck {
 
   private async openYoutube() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-youtube'
+      component: 'app-youtube',
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -171,9 +173,21 @@ export class AppActionsDeck {
     await modal.present();
   }
 
+  private async openDemo() {
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-demo',
+    });
+
+    modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+      await this.addSlideDemo(detail.data);
+    });
+
+    await modal.present();
+  }
+
   private async openPoll() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-poll-options'
+      component: 'app-poll-options',
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -189,7 +203,7 @@ export class AppActionsDeck {
 
   private async openChart(attributes: SlideAttributes) {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-custom-data'
+      component: 'app-custom-data',
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -232,6 +246,21 @@ export class AppActionsDeck {
     });
   }
 
+  private addSlideDemo(demoUrl: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!demoUrl || demoUrl === undefined || demoUrl === '') {
+        resolve();
+        return;
+      }
+
+      const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideDemo(demoUrl);
+
+      this.addSlide.emit(slide);
+
+      resolve();
+    });
+  }
+
   private addSlidePoll(question: string, answers: string[]): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!question || question === undefined || question === '' || !answers || answers.length <= 0) {
@@ -263,7 +292,7 @@ export class AppActionsDeck {
 
       if (!attributes) {
         attributes = {
-          src: url
+          src: url,
         };
       } else {
         attributes.src = url;
@@ -286,7 +315,7 @@ export class AppActionsDeck {
 
   private async openSlideNavigate() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-slide-navigate'
+      component: 'app-slide-navigate',
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -303,7 +332,7 @@ export class AppActionsDeck {
       component: component,
       event: $event,
       mode: 'ios',
-      cssClass: 'info'
+      cssClass: 'info',
     });
 
     await popover.present();
@@ -311,7 +340,7 @@ export class AppActionsDeck {
 
   private async openEmbed() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-embed'
+      component: 'app-embed',
     });
 
     await modal.present();
@@ -325,10 +354,10 @@ export class AppActionsDeck {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-deck-actions',
       componentProps: {
-        offline: this.offline
+        offline: this.offline,
       },
       event: $event,
-      mode: 'ios'
+      mode: 'ios',
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -374,7 +403,7 @@ export class AppActionsDeck {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-fullscreen-info',
       mode: 'ios',
-      cssClass: 'info'
+      cssClass: 'info',
     });
 
     popover.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -392,10 +421,10 @@ export class AppActionsDeck {
       componentProps: {
         signIn: this.signIn,
         blockSlide: this.blockSlide,
-        deckDidChange: this.deckDidChange
+        deckDidChange: this.deckDidChange,
       },
       mode: 'md',
-      cssClass: 'popover-menu popover-menu-wide'
+      cssClass: 'popover-menu popover-menu-wide',
     });
 
     await popover.present();
@@ -405,9 +434,9 @@ export class AppActionsDeck {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-offline',
       componentProps: {
-        offline: this.offline
+        offline: this.offline,
       },
-      cssClass: 'fullscreen'
+      cssClass: 'fullscreen',
     });
 
     await modal.present();

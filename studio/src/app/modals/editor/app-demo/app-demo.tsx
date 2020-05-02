@@ -1,22 +1,23 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
+
 import {sanitizeUrl} from '@braintree/sanitize-url';
 
 @Component({
-  tag: 'app-youtube',
-  styleUrl: 'app-youtube.scss',
+  tag: 'app-demo',
+  styleUrl: 'app-demo.scss',
 })
-export class AppYoutube {
+export class AppDemo {
   @Element() el: HTMLElement;
 
   @State()
-  private youtubeUrl: string;
+  private demoUrl: string;
 
   @Prop()
   selectedElement: HTMLElement;
 
   componentWillLoad() {
     if (this.selectedElement) {
-      this.youtubeUrl = this.selectedElement.getAttribute('src');
+      this.demoUrl = this.selectedElement.getAttribute('src');
     }
   }
 
@@ -34,41 +35,37 @@ export class AppYoutube {
   }
 
   async save() {
-    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(sanitizeUrl(this.youtubeUrl));
+    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(sanitizeUrl(this.demoUrl));
   }
 
   private handleInput($event: CustomEvent<KeyboardEvent>) {
-    this.youtubeUrl = ($event.target as InputTargetEvent).value;
+    this.demoUrl = ($event.target as InputTargetEvent).value;
   }
 
   render() {
     return [
       <ion-header>
-        <ion-toolbar color="youtube">
+        <ion-toolbar color="primary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()}>
               <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">YouTube</ion-title>
+          <ion-title class="ion-text-uppercase">Demo</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
         <ion-list>
           <ion-item>
             <ion-input
-              value={this.youtubeUrl}
-              placeholder="Enter the URL of the video"
+              value={this.demoUrl}
+              placeholder="Enter the URL of your app or website"
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}></ion-input>
           </ion-item>
         </ion-list>
 
-        <ion-button
-          disabled={this.youtubeUrl === undefined || !this.youtubeUrl || this.youtubeUrl === ''}
-          color="dark"
-          shape="round"
-          onClick={() => this.save()}>
+        <ion-button disabled={this.demoUrl === undefined || !this.demoUrl || this.demoUrl === ''} color="dark" shape="round" onClick={() => this.save()}>
           <ion-label>Save</ion-label>
         </ion-button>
       </ion-content>,
