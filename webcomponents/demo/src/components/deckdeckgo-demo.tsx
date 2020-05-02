@@ -12,11 +12,11 @@ import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 export class DeckdeckgoDemo implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
-  @Prop() src: string;
+  @Prop({reflect: true}) src: string;
 
-  @Prop() frameTitle: string;
+  @Prop({reflect: true}) frameTitle: string;
 
-  @Prop() mode = 'md';
+  @Prop({reflect: true}) mode = 'md';
 
   @Prop() instant: boolean = false;
 
