@@ -56,6 +56,12 @@ deckgo-slide-split[vertical] > *[slot="end"] {
   text-align: center;
 }
 
+deckgo-slide-split > deckgo-demo {
+  width: 100%;
+  height: auto;
+  align-items: center;
+}
+
 deckgo-slide-split > deckgo-highlight-code {
   --deckgo-highlight-code-container-width: 100%;
   --deckgo-highlight-code-container-height: 100%;

@@ -20,7 +20,7 @@
     "@deckdeckgo/charts": "^1.0.1",
     "@deckdeckgo/color": "^1.1.0",
     "@deckdeckgo/core": "^1.0.1",
-    "@deckdeckgo/deck-utils": "^2.0.0",
+    "@deckdeckgo/deck-utils": "file:../utils/deck",
     "@deckdeckgo/demo": "file:../webcomponents/demo",
     "@deckdeckgo/drag-resize-rotate": "^1.0.0",
     "@deckdeckgo/highlight-code": "^1.0.2",
