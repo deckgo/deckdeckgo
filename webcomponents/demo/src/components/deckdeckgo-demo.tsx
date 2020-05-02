@@ -23,6 +23,8 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
   @State()
   private width: number;
 
+  private height: number;
+
   @State()
   private loading: boolean = false;
 
@@ -31,7 +33,7 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
   async componentDidLoad() {
     this.initWindowResize();
 
-    await this.onResizeContent();
+    await this.initSize();
 
     if (this.instant) {
       await this.lazyLoadContent();
@@ -40,19 +42,30 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
 
   componentDidUnload() {
     if (window) {
-      window.removeEventListener('resize', debounce(this.onResizeContent));
+      window.removeEventListener('resize', debounce(this.onResizeContent, 500));
     }
   }
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', debounce(this.onResizeContent));
+      window.addEventListener('resize', debounce(this.onResizeContent, 500));
     }
   }
 
   private onResizeContent = async () => {
-    this.width = this.el.offsetWidth;
+    await this.initSize();
+    await this.updateIFrame();
   };
+
+  private async initSize() {
+    const width: number = this.el.offsetWidth;
+    const height: number = this.el.offsetHeight;
+
+    const deviceHeight: number = (width * 704) / 304;
+
+    this.width = deviceHeight > height ? (height * 304) / 704 : width;
+    this.height = deviceHeight > height ? height : deviceHeight;
+  }
 
   @Method()
   lazyLoadContent(): Promise<void> {
@@ -96,7 +109,10 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
       element.setAttributeNode(allow);
 
       element.src = this.src;
+      element.width = '' + this.width;
+      element.height = '' + this.height;
       element.title = this.frameTitle;
+      element.frameBorder = '0';
 
       this.container.appendChild(element);
 
@@ -104,6 +120,15 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
 
       resolve();
     });
+  }
+
+  private async updateIFrame() {
+    const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
+
+    if (iframe) {
+      iframe.width = '' + this.width;
+      iframe.height = '' + this.height;
+    }
   }
 
   render() {
