@@ -26,4 +26,8 @@ export class SlotUtils {
   static isNodeSocial(selectedElement: HTMLElement): boolean {
     return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.SOCIAL;
   }
+
+  static isSlotTypeEditable(type: SlotType): boolean {
+    return type !== SlotType.IMG && type !== SlotType.SOCIAL && type !== SlotType.DEMO;
+  }
 }

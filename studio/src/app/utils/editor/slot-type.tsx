@@ -10,5 +10,6 @@ export enum SlotType {
   SOCIAL = 'deckgo-social',
   REVEAL = 'deckgo-reveal',
   REVEAL_LIST = 'deckgo-reveal-list',
-  DRAG_RESIZE_ROTATE = 'deckgo-drr'
+  DRAG_RESIZE_ROTATE = 'deckgo-drr',
+  DEMO = 'deckgo-demo',
 }

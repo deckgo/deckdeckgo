@@ -2,6 +2,8 @@
   display: block;
 
   height: 100%;
+
+  pointer-events: none;
 }
 
 .docs-demo-device {
@@ -50,6 +52,8 @@
   -webkit-mask-image: -webkit-radial-gradient(white, black);
 
   z-index: 1;
+
+  pointer-events: all;
 }
 
 .docs-demo-device.ios figure {

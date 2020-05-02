@@ -75,7 +75,7 @@ export class ToggleSlotUtils {
 
   private static updateContentEditable(selectedElement: HTMLElement, type: SlotType): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (type === SlotType.IMG || type === SlotType.SOCIAL) {
+      if (!SlotUtils.isSlotTypeEditable(type)) {
         selectedElement.removeAttribute('editable');
         selectedElement.removeAttribute('contenteditable');
       } else if (type === SlotType.CODE) {
@@ -92,7 +92,7 @@ export class ToggleSlotUtils {
 
   private static cleanAttributes(selectedElement: HTMLElement, type: SlotType): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (type !== SlotType.IMG && type !== SlotType.SOCIAL) {
+      if (SlotUtils.isSlotTypeEditable(type)) {
         selectedElement.removeAttribute('img-src');
         selectedElement.removeAttribute('img-alt');
         selectedElement.style.removeProperty('justify-content');
@@ -112,7 +112,7 @@ export class ToggleSlotUtils {
       const container: HTMLElement = this.createSlotContainer(element, type);
 
       // We don't copy content if the source or the destination is an image
-      if (SlotUtils.isNodeImage(currentContainer) || SlotUtils.isNodeSocial(currentContainer) || type === SlotType.IMG || type === SlotType.SOCIAL) {
+      if (SlotUtils.isNodeImage(currentContainer) || SlotUtils.isNodeSocial(currentContainer) || !SlotUtils.isSlotTypeEditable(type)) {
         resolve();
         return;
       }
