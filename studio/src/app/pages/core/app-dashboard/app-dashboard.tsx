@@ -15,8 +15,10 @@ import {AuthService} from '../../../services/auth/auth.service';
 import {DeckService} from '../../../services/data/deck/deck.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {SlideService} from '../../../services/data/slide/slide.service';
-
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
+
+import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
+import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -27,7 +29,7 @@ interface DeckAndFirstSlide {
 
 @Component({
   tag: 'app-dashboard',
-  styleUrl: 'app-dashboard.scss'
+  styleUrl: 'app-dashboard.scss',
 })
 export class AppDashboard {
   @State()
@@ -47,6 +49,9 @@ export class AppDashboard {
 
   private deckDashboardService: DeckDashboardService;
 
+  private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
+  private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
+
   constructor() {
     this.authService = AuthService.getInstance();
     this.navService = NavService.getInstance();
@@ -55,7 +60,10 @@ export class AppDashboard {
     this.deckDashboardService = DeckDashboardService.getInstance();
   }
 
-  componentWillLoad() {
+  async componentWillLoad() {
+    await this.imageEventsHandler.init();
+    await this.chartEventsHandler.init();
+
     this.authService
       .watch()
       .pipe(
@@ -72,6 +80,11 @@ export class AppDashboard {
         // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
         await this.initWatchForClonedDecks();
       });
+  }
+
+  componentDidUnload() {
+    this.imageEventsHandler.destroy();
+    this.chartEventsHandler.destroy();
   }
 
   private fetchFirstSlides(decks: Deck[]): Promise<DeckAndFirstSlide[]> {
@@ -138,7 +151,7 @@ export class AppDashboard {
           deck: deck,
           slide: element,
           style: style,
-          background: background
+          background: background,
         });
       } catch (err) {
         resolve(undefined);
@@ -164,7 +177,7 @@ export class AppDashboard {
           deck: deck,
           slide: element,
           style: style,
-          background: background
+          background: background,
         });
       } catch (err) {
         resolve(undefined);
@@ -212,7 +225,7 @@ export class AppDashboard {
   private async signIn() {
     this.navService.navigate({
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
+      direction: NavDirection.FORWARD,
     });
   }
 
@@ -247,14 +260,14 @@ export class AppDashboard {
 
     this.navService.navigate({
       url: url,
-      direction: NavDirection.ROOT
+      direction: NavDirection.ROOT,
     });
   }
 
   private async navigateEditor() {
     this.navService.navigate({
       url: '/editor',
-      direction: NavDirection.ROOT
+      direction: NavDirection.ROOT,
     });
   }
 
