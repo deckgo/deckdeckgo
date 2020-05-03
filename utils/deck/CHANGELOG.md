@@ -1,3 +1,20 @@
+<a name="2.1.1"></a>
+
+# 2.1.1 (2020-05-03)
+
+### Fix
+
+- split template column align per default is start
+
+<a name="2.1.0"></a>
+
+# 2.1.0 (2020-05-03)
+
+### Fix
+
+- `deckgo-slide-split` alignment in case of children (`b`, `i`, etc.)
+- `line-height` was too big in cas a small font size would be used
+
 <a name="2.0.0"></a>
 
 # 2.0.0 (2020-05-01)
