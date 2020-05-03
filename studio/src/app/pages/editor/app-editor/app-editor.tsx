@@ -22,8 +22,8 @@ import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-event
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
 import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
 import {PollEventsHandler} from '../../../handlers/editor/events/poll/poll-events.handler';
-import {ImageEventsHandler} from '../../../handlers/editor/events/image/image-events.handler';
-import {ChartEventsHandler} from '../../../handlers/editor/events/chart/chart-events.handler';
+import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
+import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
