@@ -1,5 +1,4 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
-import {sanitizeUrl} from '@braintree/sanitize-url';
 
 @Component({
   tag: 'app-youtube',
@@ -34,7 +33,7 @@ export class AppYoutube {
   }
 
   async save() {
-    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(sanitizeUrl(this.youtubeUrl));
+    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(this.youtubeUrl);
   }
 
   private handleInput($event: CustomEvent<KeyboardEvent>) {

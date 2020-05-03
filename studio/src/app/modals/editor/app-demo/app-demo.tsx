@@ -1,7 +1,5 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
-import {sanitizeUrl} from '@braintree/sanitize-url';
-
 @Component({
   tag: 'app-demo',
   styleUrl: 'app-demo.scss',
@@ -35,7 +33,7 @@ export class AppDemo {
   }
 
   async save() {
-    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(sanitizeUrl(this.demoUrl));
+    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(this.demoUrl);
   }
 
   private handleInput($event: CustomEvent<KeyboardEvent>) {
