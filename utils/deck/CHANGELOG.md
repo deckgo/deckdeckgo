@@ -1,3 +1,11 @@
+<a name="2.1.1"></a>
+
+# 2.1.1 (2020-05-03)
+
+### Fix
+
+- split template column align per default is start
+
 <a name="2.1.0"></a>
 
 # 2.1.0 (2020-05-03)
