@@ -42,36 +42,13 @@ deckgo-deck deckgo-lazy-img[slot] {
 
 /* Slide split */
 
-deckgo-slide-split > *[slot="start"],
-deckgo-slide-split > *[slot="end"] {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  word-break: break-word;
-}
-
-deckgo-slide-split[vertical] > *[slot="start"],
-deckgo-slide-split[vertical] > *[slot="end"] {
-  align-items: center;
-  text-align: center;
-}
-
-deckgo-slide-split > deckgo-highlight-code {
-  --deckgo-highlight-code-container-width: 100%;
-  --deckgo-highlight-code-container-height: 100%;
-  --deckgo-highlight-code-container-display: flex;
-  --deckgo-highlight-code-container-justify-content: center;
-  --deckgo-highlight-code-container-align-items: center;
-  --deckgo-highlight-code-container-flex-direction: column;
-}
-
 deckgo-slide-split {
+  --slide-split-align: center;
+  --slide-split-text-align: center;
   --slide-split-padding-top: 64px;
   --slide-split-padding-bottom: 64px;
-}
 
-@media screen and (max-width: 1024px) {
-  deckgo-slide-split {
+  @media screen and (max-width: 1024px) {
     --slide-split-padding-top: 16px;
     --slide-split-padding-bottom: 16px;
   }
@@ -111,6 +88,11 @@ deckgo-deck deckgo-lazy-img {
   --deckgo-lazy-img-height: 100%;
   --deckgo-lazy-img-vertical-align: top;
   --deckgo-lazy-img-object-fit: contain;
+}
+
+deckgo-deck deckgo-slide-split deckgo-lazy-img[slot] {
+  --deckgo-lazy-img-height: auto;
+  --deckgo-lazy-img-max-height: 100%;
 }
 
 deckgo-deck deckgo-drr deckgo-lazy-img {
