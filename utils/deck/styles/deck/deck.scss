@@ -44,9 +44,12 @@ deckgo-deck deckgo-lazy-img[slot] {
 
 deckgo-slide-split {
   --slide-split-align: center;
-  --slide-split-text-align: center;
   --slide-split-padding-top: 64px;
   --slide-split-padding-bottom: 64px;
+
+  &[vertical] {
+    --slide-split-text-align: center;
+  }
 
   @media screen and (max-width: 1024px) {
     --slide-split-padding-top: 16px;
