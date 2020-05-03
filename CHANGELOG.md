@@ -4,7 +4,7 @@
 
 ### Applications
 
-- demo: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
+- demo: v2.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
 
 ### Web Components
 
@@ -14,7 +14,7 @@
 ### Others
 
 - deck-utils: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
-- starter kit: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+- starter kit: v2.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.0.0"></a>
 
