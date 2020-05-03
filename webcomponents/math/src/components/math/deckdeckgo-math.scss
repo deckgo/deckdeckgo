@@ -26,10 +26,10 @@
 div.deckgo-math-container {
   color: var(--deckgo-math-color, inherit);
   background: var(--deckgo-math-backgroun);
-  padding: var(--deckgo-math-padding, 0 16px);
+  padding: var(--deckgo-math-padding, 8px);
   border-radius: var(--deckgo-math-border-radius);
 
-  margin: var(--deckgo-math-margin, 16px 0);
+  margin: var(--deckgo-math-margin, 0px);
 
   transform-origin: bottom left;
   transition: all 0.2s ease-in-out;
