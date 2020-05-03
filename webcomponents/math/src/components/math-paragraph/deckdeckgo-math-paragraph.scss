@@ -1,7 +1,0 @@
-@import "~katex/dist/katex.min.css";
-
-:host {
-  ::slotted([slot="math"]) {
-    display: none;
-  }
-}

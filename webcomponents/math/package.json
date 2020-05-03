@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/math",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "description": "A Web Component to write math expressions",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

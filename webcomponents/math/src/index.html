@@ -10,7 +10,7 @@
   </head>
 
   <body>
-    <deckgo-math-paragraph>
+    <deckgo-math editable="true">
       <div slot="math">
         <br />
         You can write math expression inside paragraph like this: $x + 1$
@@ -20,16 +20,6 @@
         <br />
         <br />and displayed equations can be written using \$$ e.g: $$\sum_{i=1}^n 2^i$$
       </div>
-    </deckgo-math-paragraph>
-
-    <h2>Single expression</h2>
-    <deckgo-math expression="\sum_{i=1}^n 2^i"></deckgo-math>
+    </deckgo-math>
   </body>
-  <script>
-    var deckgoMath = document.querySelector('deckgo-math');
-
-    deckgoMath.options = {
-      displayMode: true,
-    };
-  </script>
 </html>

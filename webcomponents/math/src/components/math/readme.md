@@ -1,18 +1,20 @@
-# deckgo-math
+# deckdeckgo-code
 
 <!-- Auto Generated Below -->
 
 ## Properties
 
-| Property  | Attribute | Description | Type                    | Default     |
-| --------- | --------- | ----------- | ----------------------- | ----------- |
-| `options` | --        |             | `DeckDeckGoMathOptions` | `undefined` |
+| Property   | Attribute  | Description | Type                    | Default     |
+| ---------- | ---------- | ----------- | ----------------------- | ----------- |
+| `editable` | `editable` |             | `boolean`               | `false`     |
+| `options`  | --         |             | `DeckDeckGoMathOptions` | `undefined` |
 
 ## Events
 
-| Event       | Description | Type               |
-| ----------- | ----------- | ------------------ |
-| `mathError` |             | `CustomEvent<any>` |
+| Event           | Description | Type                       |
+| --------------- | ----------- | -------------------------- |
+| `mathDidChange` |             | `CustomEvent<HTMLElement>` |
+| `mathError`     |             | `CustomEvent<any>`         |
 
 ---
 

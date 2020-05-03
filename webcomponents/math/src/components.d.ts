@@ -8,10 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DeckDeckGoMathOptions, } from "./components/declarations/deckdeckgo-math-options";
 export namespace Components {
     interface DeckgoMath {
-        "expression": string;
-        "options": any;
-    }
-    interface DeckgoMathParagraph {
+        "editable": boolean;
         "options": DeckDeckGoMathOptions;
     }
 }
@@ -22,30 +19,19 @@ declare global {
         prototype: HTMLDeckgoMathElement;
         new (): HTMLDeckgoMathElement;
     };
-    interface HTMLDeckgoMathParagraphElement extends Components.DeckgoMathParagraph, HTMLStencilElement {
-    }
-    var HTMLDeckgoMathParagraphElement: {
-        prototype: HTMLDeckgoMathParagraphElement;
-        new (): HTMLDeckgoMathParagraphElement;
-    };
     interface HTMLElementTagNameMap {
         "deckgo-math": HTMLDeckgoMathElement;
-        "deckgo-math-paragraph": HTMLDeckgoMathParagraphElement;
     }
 }
 declare namespace LocalJSX {
     interface DeckgoMath {
-        "expression"?: string;
-        "onMathError"?: (event: CustomEvent<any>) => void;
-        "options"?: any;
-    }
-    interface DeckgoMathParagraph {
+        "editable"?: boolean;
+        "onMathDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onMathError"?: (event: CustomEvent<any>) => void;
         "options"?: DeckDeckGoMathOptions;
     }
     interface IntrinsicElements {
         "deckgo-math": DeckgoMath;
-        "deckgo-math-paragraph": DeckgoMathParagraph;
     }
 }
 export { LocalJSX as JSX };
@@ -53,7 +39,6 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "deckgo-math": LocalJSX.DeckgoMath & JSXBase.HTMLAttributes<HTMLDeckgoMathElement>;
-            "deckgo-math-paragraph": LocalJSX.DeckgoMathParagraph & JSXBase.HTMLAttributes<HTMLDeckgoMathParagraphElement>;
         }
     }
 }
