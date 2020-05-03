@@ -127,6 +127,11 @@ export class AppSlideAdd {
         <ion-item>
           <p>Code</p>
         </ion-item>
+      </a>,
+      <a onClick={() => this.closePopover(SlotType.MATH)} class={this.currentType === SlotType.MATH ? 'current' : ''}>
+        <ion-item>
+          <p>Math</p>
+        </ion-item>
       </a>
     ];
   }

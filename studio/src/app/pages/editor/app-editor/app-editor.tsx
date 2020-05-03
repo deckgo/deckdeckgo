@@ -44,7 +44,7 @@ import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
 @Component({
   tag: 'app-editor',
-  styleUrl: 'app-editor.scss',
+  styleUrl: 'app-editor.scss'
 })
 export class AppEditor {
   @Element() el: HTMLElement;
@@ -392,7 +392,7 @@ export class AppEditor {
 
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-publish',
-      cssClass: 'fullscreen',
+      cssClass: 'fullscreen'
     });
 
     modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -589,7 +589,7 @@ export class AppEditor {
   async signIn() {
     this.navService.navigate({
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD,
+      direction: NavDirection.FORWARD
     });
   }
 
@@ -603,7 +603,7 @@ export class AppEditor {
       const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
       elements.forEach((e: HTMLElement) => {
         if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
-          if (e.nodeName.toLowerCase() === SlotType.CODE) {
+          if (e.nodeName.toLowerCase() === SlotType.CODE || e.nodeName.toLowerCase() === SlotType.MATH) {
             e.setAttribute('editable', '');
           } else if (ParseElementsUtils.isElementContentEditable(e)) {
             e.setAttribute('contentEditable', '');
@@ -673,7 +673,6 @@ export class AppEditor {
       <ion-content>
         <main class={this.slidesEditable ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
           {this.renderLoading()}
-
           <deckgo-deck
             embedded={true}
             style={this.style}
@@ -710,7 +709,7 @@ export class AppEditor {
         img-anchor="deckgo-lazy-img"
         list={false}
         align={false}></deckgo-inline-editor>,
-      <app-inactivity fullscreen={this.fullscreen} onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}></app-inactivity>,
+      <app-inactivity fullscreen={this.fullscreen} onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}></app-inactivity>
     ];
   }
 

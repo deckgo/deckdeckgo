@@ -27,7 +27,7 @@ import {BusyService} from '../../../../../services/editor/busy/busy.service';
 @Component({
   tag: 'app-actions-element',
   styleUrl: 'app-actions-element.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppActionsElement {
   @Element() el: HTMLElement;
@@ -51,6 +51,9 @@ export class AppActionsElement {
 
   @State()
   private code: boolean = false;
+
+  @State()
+  private math: boolean = false;
 
   @State()
   private image: boolean = false;
@@ -246,6 +249,10 @@ export class AppActionsElement {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.CODE;
   }
 
+  private isElementMath(element: HTMLElement): boolean {
+    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.MATH;
+  }
+
   private isElementShape(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
   }
@@ -352,7 +359,7 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-element-delete',
       event: $event,
-      mode: isMobile() && !isIOS() ? 'md' : 'ios',
+      mode: isMobile() && !isIOS() ? 'md' : 'ios'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -450,11 +457,11 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-slot-type',
       componentProps: {
-        selectedElement: this.selectedElement,
+        selectedElement: this.selectedElement
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -481,11 +488,11 @@ export class AppActionsElement {
         qrCode: this.slideNodeName === 'deckgo-slide-qrcode',
         chart: this.slideNodeName === 'deckgo-slide-chart',
         author: this.slideNodeName === 'deckgo-slide-author',
-        slideDidChange: this.slideDidChange,
+        slideDidChange: this.slideDidChange
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
@@ -511,11 +518,11 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-shape',
       componentProps: {
-        selectedElement: this.selectedElement,
+        selectedElement: this.selectedElement
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
@@ -533,11 +540,11 @@ export class AppActionsElement {
       componentProps: {
         selectedElement: this.selectedElement,
         slide: this.slide,
-        imgDidChange: this.imgDidChange,
+        imgDidChange: this.imgDidChange
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     return popover;
@@ -552,8 +559,8 @@ export class AppActionsElement {
       component: 'app-poll-options',
       componentProps: {
         selectedElement: this.selectedElement,
-        slideDidChange: this.slideDidChange,
-      },
+        slideDidChange: this.slideDidChange
+      }
     });
 
     modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -573,11 +580,11 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: component,
       componentProps: {
-        selectedElement: this.selectedElement,
+        selectedElement: this.selectedElement
       },
       mode: 'ios',
       event: $event,
-      cssClass: 'info',
+      cssClass: 'info'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -602,11 +609,11 @@ export class AppActionsElement {
       component: 'app-code',
       componentProps: {
         selectedElement: this.selectedElement,
-        codeDidChange: this.codeDidChange,
+        codeDidChange: this.codeDidChange
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     await popover.present();
@@ -620,8 +627,8 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-youtube',
       componentProps: {
-        selectedElement: this.selectedElement,
-      },
+        selectedElement: this.selectedElement
+      }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -666,8 +673,8 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-notes',
       componentProps: {
-        selectedElement: this.selectedElement,
-      },
+        selectedElement: this.selectedElement
+      }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -766,6 +773,7 @@ export class AppActionsElement {
       this.slideNodeName = this.slide ? element.nodeName.toLowerCase() : undefined;
       this.slideDemo = this.slide && this.slideNodeName === 'deckgo-slide-split' && element.getAttribute('type') === SlideSplitType.DEMO;
 
+      this.math = this.isElementMath(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
@@ -857,11 +865,11 @@ export class AppActionsElement {
       component: 'app-color',
       componentProps: {
         slide: this.slide,
-        selectedElement: this.selectedElement,
+        selectedElement: this.selectedElement
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: `popover-menu ${this.slideNodeName === 'deckgo-slide-poll' ? 'popover-menu-wide' : ''}`,
+      cssClass: `popover-menu ${this.slideNodeName === 'deckgo-slide-poll' ? 'popover-menu-wide' : ''}`
     });
 
     await popover.present();
@@ -1013,10 +1021,10 @@ export class AppActionsElement {
         notes: this.slide,
         copy: this.slide || this.shape,
         reveal: !this.hideReveal(),
-        list: this.list !== undefined,
+        list: this.list !== undefined
       },
       event: $event,
-      mode: 'ios',
+      mode: 'ios'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -1039,7 +1047,7 @@ export class AppActionsElement {
   }
 
   private hideReveal(): boolean {
-    return this.slide || this.code || this.shape || this.slideNodeName === 'deckgo-slide-youtube';
+    return this.slide || this.code || this.math || this.shape || this.slideNodeName === 'deckgo-slide-youtube';
   }
 
   render() {
@@ -1137,7 +1145,7 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.openSlotType()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
         <ion-icon src="/assets/icons/ionicons/add.svg"></ion-icon>
         <ion-label>Toggle</ion-label>
-      </ion-tab-button>,
+      </ion-tab-button>
     ];
   }
 
@@ -1148,7 +1156,7 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.openShape()} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
         <ion-icon src="/assets/icons/ionicons/shapes.svg"></ion-icon>
         <ion-label>Add shape</ion-label>
-      </ion-tab-button>,
+      </ion-tab-button>
     ];
   }
 

@@ -11,6 +11,7 @@ import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/remote';
 import '@deckdeckgo/qrcode';
 import '@deckdeckgo/highlight-code';
+import '@deckdeckgo/math';
 import '@deckdeckgo/lazy-img';
 import '@deckdeckgo/color';
 import '@deckdeckgo/charts';

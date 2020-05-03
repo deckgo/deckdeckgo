@@ -48,16 +48,19 @@ export class ToggleSlotUtils {
   }
 
   private static createSlotContainer(element: HTMLElement, type: SlotType): HTMLElement {
-    if (type !== SlotType.CODE) {
+    if (type == SlotType.CODE) {
+      return this.createNamedSlotContainer(element, 'code', 'code');
+    } else if (type == SlotType.MATH) {
+      return this.createNamedSlotContainer(element, 'div', 'math');
+    } else {
       return element;
     }
-
-    const code: HTMLElement = document.createElement('code');
-    code.setAttribute('slot', 'code');
-
-    element.appendChild(code);
-
-    return code;
+  }
+  private static createNamedSlotContainer(element: HTMLElement, slotElementName: string, slotName: string) {
+    const container: HTMLElement = document.createElement(slotElementName);
+    container.setAttribute('slot', slotName);
+    element.appendChild(container);
+    return container;
   }
 
   private static getSlotContainer(selectedElement: HTMLElement): HTMLElement {
@@ -78,7 +81,7 @@ export class ToggleSlotUtils {
       if (!SlotUtils.isSlotTypeEditable(type)) {
         selectedElement.removeAttribute('editable');
         selectedElement.removeAttribute('contenteditable');
-      } else if (type === SlotType.CODE) {
+      } else if (type === SlotType.CODE || type == SlotType.MATH) {
         selectedElement.setAttribute('editable', 'true');
         selectedElement.removeAttribute('contenteditable');
       } else {
