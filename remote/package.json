@@ -17,7 +17,7 @@
   "dependencies": {
     "@deckdeckgo/charts": "^1.0.1",
     "@deckdeckgo/core": "^1.0.1",
-    "@deckdeckgo/deck-utils": "^2.1.0",
+    "@deckdeckgo/deck-utils": "^2.1.1",
     "@deckdeckgo/drag-resize-rotate": "^1.0.0",
     "@deckdeckgo/highlight-code": "^1.0.2",
     "@deckdeckgo/lazy-img": "^1.0.0",
