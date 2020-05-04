@@ -7,9 +7,9 @@
 }
 
 .docs-demo-device {
-  --device-frame-width: calc(var(--size, var(--auto-size)) / (344 / 12));
-  --device-ios-border-radius: calc(var(--size, var(--auto-size)) / (344 / 54));
-  --device-md-border-radius: calc(var(--size, var(--auto-size)) / (344 / 44));
+  --device-frame-width: calc(var(--auto-size) / (344 / 12));
+  --device-ios-border-radius: calc(var(--auto-size) / (344 / 54));
+  --device-md-border-radius: calc(var(--auto-size) / (344 / 44));
 
   display: block;
   height: inherit;
@@ -20,8 +20,8 @@
 
   box-shadow: 0 2px 8px rgba(2, 8, 20, 0.1), 0 8px 16px rgba(2, 8, 20, 0.08);
 
-  width: var(--size, var(--auto-size));
-  height: calc(var(--size, var(--auto-size)) * 704 / 304);
+  width: var(--auto-size);
+  height: calc(var(--auto-size) * 704 / 304);
 
   overflow: hidden;
 
@@ -94,7 +94,7 @@
   display: none;
   fill: #090a0d;
   padding-top: calc(var(--device-frame-width) - 4px);
-  width: calc(var(--size, var(--auto-size)) / 2);
+  width: calc(var(--auto-size) / 2);
   z-index: 2;
 }
 

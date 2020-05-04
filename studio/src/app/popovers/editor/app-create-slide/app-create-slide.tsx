@@ -656,7 +656,7 @@ export class AppCreateSlide {
           class="showcase"
           content={EnvironmentConfigService.getInstance().get('deckdeckgo').appUrl}
           img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
-          <p slot="title">QR code</p>
+          <p slot="title">QR Code Deep Linking</p>
         </deckgo-slide-qrcode>
       </div>
     );

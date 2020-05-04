@@ -58,8 +58,10 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
   };
 
   private async initSize() {
-    const width: number = this.el.offsetWidth;
-    const height: number = this.el.offsetHeight;
+    const style: CSSStyleDeclaration | undefined = window ? window.getComputedStyle(this.el) : undefined;
+
+    const width: number = style ? parseInt(style.width) : this.el.offsetWidth;
+    const height: number = style ? parseInt(style.height) : this.el.offsetHeight;
 
     const deviceHeight: number = (width * 704) / 304;
 
