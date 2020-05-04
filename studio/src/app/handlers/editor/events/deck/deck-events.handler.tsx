@@ -10,7 +10,7 @@ import '@firebase/firestore';
 
 import {AuthUser} from '../../../../models/auth/auth.user';
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
-import {Slide, SlideAttributes, SlideAttributesYAxisDomain, SlideChartType, SlideData, SlideTemplate} from '../../../../models/data/slide';
+import {Slide, SlideAttributes, SlideAttributesYAxisDomain, SlideChartType, SlideData, SlideSplitType, SlideTemplate} from '../../../../models/data/slide';
 
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
@@ -238,7 +238,7 @@ export class DeckEventsHandler {
   private postSlide(deck: Deck, slide: HTMLElement): Promise<Slide> {
     return new Promise<Slide>(async (resolve) => {
       const slideData: SlideData = {
-        template: this.getSlideTemplate(slide)
+        template: this.getSlideTemplate(slide),
       };
 
       const content: string = await this.cleanSlideContent(slide);
@@ -276,7 +276,7 @@ export class DeckEventsHandler {
           .subscribe(async (authUser: AuthUser) => {
             let deck: DeckData = {
               name: `Presentation ${await Utils.getNow()}`,
-              owner_id: authUser.uid
+              owner_id: authUser.uid,
             };
 
             // Retrieve text and background color style randomly generated in the editor
@@ -444,8 +444,8 @@ export class DeckEventsHandler {
         const slideUpdate: Slide = {
           id: slide.getAttribute('slide_id'),
           data: {
-            template: this.getSlideTemplate(slide)
-          }
+            template: this.getSlideTemplate(slide),
+          },
         };
 
         const content: string = await this.cleanSlideContent(slide);
@@ -609,6 +609,10 @@ export class DeckEventsHandler {
       } else if (cleanFields) {
         // @ts-ignore
         attributes.vertical = firebase.firestore.FieldValue.delete();
+      }
+
+      if (slide.hasAttribute('type')) {
+        attributes.type = slide.getAttribute('type') as SlideSplitType;
       }
 
       resolve(attributes);
@@ -907,7 +911,7 @@ export class DeckEventsHandler {
     return new Promise<void>(async (resolve) => {
       const slideDidUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>('slideDidUpdate', {
         bubbles: true,
-        detail: element
+        detail: element,
       });
 
       this.el.dispatchEvent(slideDidUpdate);

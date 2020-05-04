@@ -3,12 +3,12 @@ import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/c
 import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import {SlideAttributes, SlideChartType, SlideTemplate} from '../../../models/data/slide';
+import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
 import {User} from '../../../models/data/user';
 import {Deck} from '../../../models/data/deck';
 
-import {CreateSlidesUtils, CreateSlideUserInputs} from '../../../utils/editor/create-slides.utils';
+import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 
 import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -144,12 +144,12 @@ export class AppCreateSlide {
 
   private async addSlide(template: SlideTemplate, deck?: Deck) {
     const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, deck, this.user);
-    await this.closePopover(CreateSlideUserInputs.NONE, slide);
+    await this.closePopover(template, slide);
   }
 
-  private async addSlideSplit(attributes: SlideAttributes = undefined) {
+  private async addSlideSplit(template: SlideTemplate, attributes: SlideAttributes = undefined) {
     const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(attributes);
-    await this.closePopover(CreateSlideUserInputs.NONE, slide);
+    await this.closePopover(template, slide);
   }
 
   private addSlideQRCode() {
@@ -172,11 +172,11 @@ export class AppCreateSlide {
     }
 
     const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, null, this.user);
-    await this.closePopover(CreateSlideUserInputs.NONE, slide);
+    await this.closePopover(template, slide);
   }
 
   // User will need an account to upload her/his data
-  private async closePopoverRestrictedChart(attributes: SlideAttributes) {
+  private async closePopoverRestricted(template: SlideTemplate, attributes: SlideAttributes) {
     const isAnonymous: boolean = await this.anonymousService.isAnonymous();
 
     if (isAnonymous) {
@@ -185,16 +185,16 @@ export class AppCreateSlide {
       return;
     }
 
-    await this.closePopover(CreateSlideUserInputs.CHART, null, attributes);
+    await this.closePopover(template, null, attributes);
   }
 
   private async closePopoverWithoutResults() {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
-  private async closePopover(userInputs: CreateSlideUserInputs, slide?: JSX.IntrinsicElements, attributes?: SlideAttributes) {
+  private async closePopover(template: SlideTemplate, slide?: JSX.IntrinsicElements, attributes?: SlideAttributes) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      userInputs: userInputs,
+      template: template,
       slide: slide,
       attributes: attributes,
     });
@@ -237,7 +237,7 @@ export class AppCreateSlide {
         {this.renderYoutube()}
         {this.renderShapes()}
 
-        <div class="item" custom-tappable onClick={() => this.closePopover(CreateSlideUserInputs.POLL)}>
+        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
           <deckgo-slide-poll
             class="showcase"
             poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
@@ -297,7 +297,7 @@ export class AppCreateSlide {
 
         <div class="list">
           {/* Pie */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.PIE})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE})}>
             <deckgo-slide-chart
               class="showcase"
               type="pie"
@@ -314,7 +314,7 @@ export class AppCreateSlide {
           </div>
 
           {/* Donut */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.PIE, innerRadius: 100})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, innerRadius: 100})}>
             <deckgo-slide-chart
               class="showcase"
               type="pie"
@@ -332,7 +332,7 @@ export class AppCreateSlide {
           </div>
 
           {/* Animated Pie */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.PIE, animation: true})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, animation: true})}>
             <deckgo-slide-chart
               class="showcase"
               type="pie"
@@ -350,7 +350,7 @@ export class AppCreateSlide {
           </div>
 
           {/* Area */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.LINE})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE})}>
             <deckgo-slide-chart
               class="showcase"
               type="line"
@@ -369,7 +369,7 @@ export class AppCreateSlide {
           </div>
 
           {/* Sharp area */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.LINE, smooth: false})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, smooth: false})}>
             <deckgo-slide-chart
               class="showcase"
               type="line"
@@ -389,7 +389,7 @@ export class AppCreateSlide {
           </div>
 
           {/* Lines */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.LINE, area: false})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, area: false})}>
             <deckgo-slide-chart
               class="showcase"
               type="line"
@@ -407,7 +407,7 @@ export class AppCreateSlide {
           </div>
 
           {/* Animated area */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.LINE, animation: true})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, animation: true})}>
             <deckgo-slide-chart
               class="showcase"
               type="line"
@@ -427,7 +427,7 @@ export class AppCreateSlide {
           </div>
 
           {/* Bar */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.BAR})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
             <deckgo-slide-chart
               class="showcase"
               type="bar"
@@ -444,7 +444,7 @@ export class AppCreateSlide {
           </div>
 
           {/* Grouped bars */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.BAR})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
             <deckgo-slide-chart
               class="showcase"
               type="bar"
@@ -466,7 +466,7 @@ export class AppCreateSlide {
           </div>
 
           {/* Animation bars */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestrictedChart({type: SlideChartType.BAR, animation: true})}>
+          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR, animation: true})}>
             <deckgo-slide-chart
               class="showcase"
               type="bar"
@@ -550,7 +550,7 @@ export class AppCreateSlide {
 
   private renderSplit() {
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlideSplit()}>
+      <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT)}>
         <deckgo-slide-split class="showcase">
           <p slot="start">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
@@ -569,7 +569,7 @@ export class AppCreateSlide {
 
   private renderVertical() {
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlideSplit({vertical: true})}>
+      <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true})}>
         <deckgo-slide-split vertical={true} class="showcase">
           <p slot="start">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
@@ -597,7 +597,7 @@ export class AppCreateSlide {
     }
 
     return (
-      <div class="item" custom-tappable onClick={() => this.closePopover(CreateSlideUserInputs.GIF)}>
+      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
         <deckgo-slide-gif class="showcase" src={this.assets.gif.exampleSrc} alt="Slide Gif">
           <p slot="header">
             <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
@@ -617,7 +617,7 @@ export class AppCreateSlide {
     }
 
     return (
-      <div class="item" custom-tappable onClick={() => this.closePopover(CreateSlideUserInputs.YOUTUBE)}>
+      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.YOUTUBE)}>
         <deckgo-slide-content class="showcase gif">
           <p slot="title">YouTube</p>
           <p slot="content">
@@ -664,7 +664,7 @@ export class AppCreateSlide {
 
   private renderDemo() {
     return (
-      <div class="item" custom-tappable onClick={() => this.closePopover(CreateSlideUserInputs.DEMO)}>
+      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.SPLIT, null, {type: SlideSplitType.DEMO})}>
         <deckgo-slide-split class="showcase">
           <p slot="start">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>

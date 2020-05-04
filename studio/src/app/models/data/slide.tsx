@@ -8,13 +8,17 @@ export enum SlideTemplate {
   QRCODE = 'qrcode',
   CHART = 'chart',
   POLL = 'poll',
-  'ASPECT-RATIO' = 'aspect-ratio'
+  'ASPECT-RATIO' = 'aspect-ratio',
 }
 
 export enum SlideChartType {
   LINE = 'line',
   PIE = 'pie',
-  BAR = 'bar'
+  BAR = 'bar',
+}
+
+export enum SlideSplitType {
+  DEMO = 'demo',
 }
 
 export type SlideAttributesYAxisDomain = 'max' | 'extent';
@@ -29,7 +33,7 @@ export interface SlideAttributes {
   content?: string;
   customQRCode?: boolean;
 
-  type?: SlideChartType;
+  type?: SlideChartType | SlideSplitType;
   innerRadius?: number;
   animation?: boolean;
   datePattern?: string;

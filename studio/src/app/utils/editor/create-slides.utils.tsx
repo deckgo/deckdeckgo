@@ -12,15 +12,6 @@ import {Deck} from '../../models/data/deck';
 
 import {QRCodeUtils} from './qrcode.utils';
 
-export enum CreateSlideUserInputs {
-  NONE,
-  GIF,
-  YOUTUBE,
-  CHART,
-  POLL,
-  DEMO,
-}
-
 export class CreateSlidesUtils {
   static createSlide(template: SlideTemplate, deck?: Deck, user?: User): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
@@ -363,7 +354,7 @@ export class CreateSlidesUtils {
 
       // @ts-ignore
       // prettier-ignore
-      const slide: JSX.IntrinsicElements = (<deckgo-slide-split key={uuid()}>
+      const slide: JSX.IntrinsicElements = (<deckgo-slide-split key={uuid()} type="demo">
             {start}
             {end}
           </deckgo-slide-split>

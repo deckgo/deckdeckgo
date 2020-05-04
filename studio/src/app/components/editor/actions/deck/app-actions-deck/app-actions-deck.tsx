@@ -9,11 +9,11 @@ import {get, set} from 'idb-keyval';
 import {forkJoin, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import {SlideAttributes} from '../../../../../models/data/slide';
+import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 
 import {MoreAction} from '../../../../../utils/editor/more-action';
 
-import {CreateSlidesUtils, CreateSlideUserInputs} from '../../../../../utils/editor/create-slides.utils';
+import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
 import {OfflineService} from '../../../../../services/editor/offline/offline.service';
@@ -128,15 +128,15 @@ export class AppActionsDeck {
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail && detail.data) {
-        if (detail.data.userInputs === CreateSlideUserInputs.GIF) {
+        if (detail.data.template === SlideTemplate.GIF) {
           await this.openGifPicker();
-        } else if (detail.data.userInputs === CreateSlideUserInputs.YOUTUBE) {
+        } else if (detail.data.template === SlideTemplate.YOUTUBE) {
           await this.openYoutube();
-        } else if (detail.data.userInputs === CreateSlideUserInputs.CHART) {
+        } else if (detail.data.template === SlideTemplate.CHART) {
           await this.openChart(detail.data.attributes);
-        } else if (detail.data.userInputs === CreateSlideUserInputs.POLL) {
+        } else if (detail.data.template === SlideTemplate.POLL) {
           await this.openPoll();
-        } else if (detail.data.userInputs === CreateSlideUserInputs.DEMO) {
+        } else if (detail.data.template === SlideTemplate.SPLIT && detail.data.attributes && detail.data.attributes.type === SlideSplitType.DEMO) {
           await this.openDemo();
         }
 
