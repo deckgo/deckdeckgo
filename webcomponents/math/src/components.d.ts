@@ -5,11 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckDeckGoMathOptions, } from "./components/declarations/deckdeckgo-math-options";
 export namespace Components {
     interface DeckgoMath {
         "editable": boolean;
-        "options": DeckDeckGoMathOptions;
+        "fleqn": boolean;
+        "leqno": boolean;
     }
 }
 declare global {
@@ -26,9 +26,10 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoMath {
         "editable"?: boolean;
+        "fleqn"?: boolean;
+        "leqno"?: boolean;
         "onMathDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onMathError"?: (event: CustomEvent<any>) => void;
-        "options"?: DeckDeckGoMathOptions;
     }
     interface IntrinsicElements {
         "deckgo-math": DeckgoMath;

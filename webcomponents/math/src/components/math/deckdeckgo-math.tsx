@@ -1,7 +1,6 @@
 import {Component, Prop, Watch, Element, h, State, Host, Event, EventEmitter} from '@stencil/core';
 import katex from 'katex';
 import {extractMath, Segment} from 'extract-math';
-import {DeckDeckGoMathOptions} from '../declarations/deckdeckgo-math-options';
 
 @Component({
   tag: 'deckgo-math',
@@ -15,10 +14,15 @@ export class DeckdeckgoMath {
 
   @State() editing: boolean = false;
 
-  @Prop() options: DeckDeckGoMathOptions;
+  @Prop({reflectToAttr: true}) leqno: boolean = false;
+  @Watch('leqno')
+  async leqnoChanged() {
+    await this.parseSlottedMath();
+  }
 
-  @Watch('options')
-  async optionsChanged() {
+  @Prop({reflectToAttr: true}) fleqn: boolean = false;
+  @Watch('fleqn')
+  async fleqnChanged() {
     await this.parseSlottedMath();
   }
 
@@ -74,8 +78,9 @@ export class DeckdeckgoMath {
       if (segment.math) {
         try {
           renderedHTML += katex.renderToString(segment.raw, {
-            ...this.options,
-            displayMode: segment.type === 'display'
+            displayMode: segment.type === 'display',
+            leqno: this.leqno,
+            fleqn: this.fleqn
           });
         } catch (error) {
           if (error instanceof katex.ParseError) {
@@ -116,7 +121,6 @@ export class DeckdeckgoMath {
         setTimeout(() => {
           slottedMath.setAttribute('contentEditable', 'true');
           slottedMath.addEventListener('blur', this.applyMath, {once: true});
-          //slottedMath.addEventListener('keydown', this.catchNewLine);
 
           slottedMath.focus();
         }, 100);

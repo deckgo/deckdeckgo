@@ -4,10 +4,11 @@
 
 ## Properties
 
-| Property   | Attribute  | Description | Type                    | Default     |
-| ---------- | ---------- | ----------- | ----------------------- | ----------- |
-| `editable` | `editable` |             | `boolean`               | `false`     |
-| `options`  | --         |             | `DeckDeckGoMathOptions` | `undefined` |
+| Property   | Attribute  | Description | Type      | Default |
+| ---------- | ---------- | ----------- | --------- | ------- |
+| `editable` | `editable` |             | `boolean` | `false` |
+| `fleqn`    | `fleqn`    |             | `boolean` | `false` |
+| `leqno`    | `leqno`    |             | `boolean` | `false` |
 
 ## Events
 
