@@ -73,6 +73,7 @@ export class AppActionsElement {
 
   @Event() private slideDidChange: EventEmitter<HTMLElement>;
   @Event() private codeDidChange: EventEmitter<HTMLElement>;
+  @Event() private mathDidChange: EventEmitter<HTMLElement>;
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
   @Event() private notesDidChange: EventEmitter<HTMLElement>;
 
@@ -230,7 +231,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (element.hasAttribute('slot') && element.getAttribute('slot') !== 'code') {
+      if (element.hasAttribute('slot') && element.getAttribute('slot') !== 'code' && element.getAttribute('slot') !== 'math') {
         resolve(element);
         return;
       }
@@ -610,6 +611,24 @@ export class AppActionsElement {
       componentProps: {
         selectedElement: this.selectedElement,
         codeDidChange: this.codeDidChange
+      },
+      mode: 'md',
+      showBackdrop: false,
+      cssClass: 'popover-menu'
+    });
+
+    await popover.present();
+  }
+  private async openMath() {
+    if (!this.math) {
+      return;
+    }
+
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-math',
+      componentProps: {
+        selectedElement: this.selectedElement,
+        mathDidChange: this.mathDidChange
       },
       mode: 'md',
       showBackdrop: false,
@@ -1062,6 +1081,7 @@ export class AppActionsElement {
           {this.renderList()}
           {this.renderImages()}
           {this.renderCodeOptions()}
+          {this.renderMathOptions()}
         </ion-buttons>
 
         <ion-buttons slot="end">
@@ -1167,6 +1187,16 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.openCode()} aria-label="Code attributes" color="primary" mode="md" class={classSlideCode}>
         <ion-icon src="/assets/icons/ionicons/code.svg"></ion-icon>
         <ion-label>Attributes</ion-label>
+      </ion-tab-button>
+    );
+  }
+  private renderMathOptions() {
+    const classSlideMath: string | undefined = this.math ? undefined : 'hidden';
+
+    return (
+      <ion-tab-button onClick={() => this.openMath()} aria-label="Math options" color="primary" mode="md" class={classSlideMath}>
+        <ion-icon name="settings-outline"></ion-icon>
+        <ion-label>Options</ion-label>
       </ion-tab-button>
     );
   }
