@@ -1,3 +1,11 @@
+<a name="1.1.0"></a>
+
+# 1.1.0 (2020-05-07)
+
+### Features
+
+- update `slide-utils` to support the new component `deckgo-demo`
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-19)

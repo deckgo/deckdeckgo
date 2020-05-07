@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-split",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The Split template is a simple slide to display the content in two columns on a slide of your presentation",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
