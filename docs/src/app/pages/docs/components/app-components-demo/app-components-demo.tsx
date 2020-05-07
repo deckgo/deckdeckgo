@@ -67,7 +67,7 @@ export class AppComponentsDemo {
           </ul>
           <h2 id="app-components-demo-showcase">Showcase</h2>
           <div style={{position: 'relative'}}>
-            <deckgo-demo style={{width: '304px', height: '704px'}} src="https://deckdeckgo.com" instant="true"></deckgo-demo>
+            <deckgo-demo style={{width: '304px', height: '704px'}} src="https://deckdeckgo.com" instant={true}></deckgo-demo>
           </div>
 
           <h2 id="app-components-demo-installation">Installation</h2>

@@ -21,7 +21,7 @@ It is largely inspired and based on the awesome [work](https://github.com/ionic-
 ## Showcase
 
 <div style={{position: 'relative'}}>
-  <deckgo-demo style={{'width': '304px', 'height': '704px'}} src="https://deckdeckgo.com" instant="true">
+  <deckgo-demo style={{'width': '304px', 'height': '704px'}} src="https://deckdeckgo.com" instant={true}>
   </deckgo-demo>
 </div>
 
