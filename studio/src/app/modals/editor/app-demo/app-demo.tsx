@@ -109,7 +109,7 @@ export class AppDemo {
         <deckgo-demo mode={mode}></deckgo-demo>
 
         <div class="ion-margin-top">
-          <ion-radio value={mode}></ion-radio>
+          <ion-radio value={mode} mode="md"></ion-radio>
           <ion-label>{mode === 'md' ? 'Android' : 'iOS'}</ion-label>
         </div>
       </article>
