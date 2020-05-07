@@ -665,13 +665,16 @@ export class AppCreateSlide {
   private renderDemo() {
     return (
       <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.SPLIT, null, {type: SlideSplitType.DEMO})}>
-        <deckgo-slide-split class="showcase">
+        <deckgo-slide-split class="showcase" type="demo">
           <p slot="start">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
             <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
           </p>
-          <deckgo-demo slot="end"></deckgo-demo>
+          <div slot="end">
+            <deckgo-demo></deckgo-demo>
+            <ion-label>Showcase Your Apps</ion-label>
+          </div>
         </deckgo-slide-split>
       </div>
     );
