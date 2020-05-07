@@ -231,10 +231,13 @@ export class AppCreateSlide {
       <div class="container ion-margin-bottom ion-padding-start ion-padding-end">
         {this.renderTitle()}
         {this.renderContent()}
+
         {this.renderSplit()}
         {this.renderVertical()}
-        {this.renderGif()}
+
+        {this.renderDemo()}
         {this.renderYoutube()}
+
         {this.renderShapes()}
 
         <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
@@ -252,10 +255,11 @@ export class AppCreateSlide {
           </deckgo-slide-poll>
         </div>
 
+        {this.renderGif()}
         {this.renderChart()}
+
         {this.renderQRCode()}
         {this.renderAuthor()}
-        {this.renderDemo()}
       </div>,
     ];
   }
