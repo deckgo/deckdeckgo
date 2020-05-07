@@ -10,5 +10,41 @@ app-demo {
     ion-list {
       --ion-item-background: transparent;
     }
+
+    ion-radio-group.devices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+      grid-column-gap: 16px;
+
+      margin: 8px 0;
+
+      article {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        background: white;
+        border: 1px solid #dedede;
+
+        border-radius: 4px;
+
+        deckgo-demo {
+          width: 200px;
+          height: 200px;
+          display: flex;
+          justify-content: center;
+        }
+
+        > div {
+          display: inline-flex;
+
+          ion-radio {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
   }
 }

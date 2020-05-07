@@ -341,7 +341,7 @@ export class CreateSlidesUtils {
     });
   }
 
-  static createSlideDemo(src: string = undefined): Promise<JSX.IntrinsicElements> {
+  static createSlideDemo(src: string = undefined, mode: 'md' | 'ios'): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>((resolve) => {
       if (!document) {
         resolve();
@@ -350,7 +350,7 @@ export class CreateSlidesUtils {
 
       const start = <section slot="start"></section>;
 
-      const end = <deckgo-demo slot="end" src={src}></deckgo-demo>;
+      const end = <deckgo-demo slot="end" src={src} mode={mode}></deckgo-demo>;
 
       // @ts-ignore
       // prettier-ignore

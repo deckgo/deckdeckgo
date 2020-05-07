@@ -14,6 +14,7 @@ import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../mod
 import {MoreAction} from '../../../../../utils/editor/more-action';
 
 import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
+import {DemoAction} from '../../../../../utils/editor/demo-action';
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
 import {OfflineService} from '../../../../../services/editor/offline/offline.service';
@@ -246,14 +247,14 @@ export class AppActionsDeck {
     });
   }
 
-  private addSlideDemo(demoUrl: string): Promise<void> {
+  private addSlideDemo(demo: DemoAction): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!demoUrl || demoUrl === undefined || demoUrl === '') {
+      if (!demo || !demo.src || demo.src === undefined || demo.src === '') {
         resolve();
         return;
       }
 
-      const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideDemo(demoUrl);
+      const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideDemo(demo.src, demo.mode);
 
       this.addSlide.emit(slide);
 

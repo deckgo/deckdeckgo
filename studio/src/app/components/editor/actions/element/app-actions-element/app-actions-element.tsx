@@ -9,6 +9,8 @@ import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 import {ImageHelper} from '../../../../../helpers/editor/image.helper';
 import {ShapeHelper} from '../../../../../helpers/editor/shape.helper';
 
+import {SlideSplitType} from '../../../../../models/data/slide';
+
 import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotType} from '../../../../../utils/editor/slot-type';
@@ -18,9 +20,9 @@ import {ListUtils} from '../../../../../utils/editor/list.utils';
 
 import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
+import {DemoAction} from '../../../../../utils/editor/demo-action';
 
 import {BusyService} from '../../../../../services/editor/busy/busy.service';
-import {SlideSplitType} from '../../../../../models/data/slide';
 
 @Component({
   tag: 'app-actions-element',
@@ -900,12 +902,12 @@ export class AppActionsElement {
     });
   }
 
-  private async updateSlideDemo(demoUrl: string): Promise<void> {
+  private async updateSlideDemo(demoAttr: DemoAction): Promise<void> {
     if (!this.selectedElement || !this.slideDemo) {
       return;
     }
 
-    if (!demoUrl || demoUrl === undefined || demoUrl === '') {
+    if (!demoAttr || !demoAttr.src || demoAttr.src === undefined || demoAttr.src === '') {
       return;
     }
 
@@ -915,7 +917,8 @@ export class AppActionsElement {
       return;
     }
 
-    demo.setAttribute('src', demoUrl);
+    demo.setAttribute('src', demoAttr.src);
+    demo.setAttribute('mode', demoAttr.mode);
 
     this.slideDidChange.emit(this.selectedElement);
   }

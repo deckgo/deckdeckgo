@@ -671,7 +671,7 @@ export class AppCreateSlide {
             <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
           </p>
-          <deckgo-demo slot="end" instant={true}></deckgo-demo>
+          <deckgo-demo slot="end"></deckgo-demo>
         </deckgo-slide-split>
       </div>
     );
