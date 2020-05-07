@@ -6,7 +6,7 @@
   pointer-events: none;
 }
 
-.docs-demo-device {
+.demo-device {
   --device-frame-width: calc(var(--auto-size) / (344 / 12));
   --device-ios-border-radius: calc(var(--auto-size) / (344 / 54));
   --device-md-border-radius: calc(var(--auto-size) / (344 / 44));
@@ -18,7 +18,7 @@
   align-items: center;
 }
 
-.docs-demo-device > figure {
+.demo-device > figure {
   margin: 0;
 
   box-shadow: 0 2px 8px rgba(2, 8, 20, 0.1), 0 8px 16px rgba(2, 8, 20, 0.08);
@@ -37,8 +37,8 @@
   align-items: flex-start;
 }
 
-.docs-demo-device > figure > iframe,
-.docs-demo-device div.placeholder {
+.demo-device > figure > iframe,
+.demo-device div.placeholder {
   position: absolute;
 
   top: 0;
@@ -60,12 +60,12 @@
   pointer-events: all;
 }
 
-.docs-demo-device.ios figure,
-.docs-demo-device div.placeholder {
+.demo-device.ios figure,
+.demo-device div.placeholder {
   border-radius: var(--device-ios-border-radius);
 }
 
-.docs-demo-device div.placeholder {
+.demo-device div.placeholder {
   background: var(--deckgo-demo-placeholder-background, #323639);
 }
 
