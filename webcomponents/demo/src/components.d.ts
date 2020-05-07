@@ -12,6 +12,7 @@ export namespace Components {
         "lazyLoadContent": () => Promise<void>;
         "mode": string;
         "src": string;
+        "updateIFrame": () => Promise<void>;
     }
 }
 declare global {

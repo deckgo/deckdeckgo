@@ -56,15 +56,24 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
   }
 
   private onResizeContent = async () => {
-    await this.initSize();
-    await this.updateIFrame();
+    await this.resizeReload();
   };
+
+  @Method()
+  async updateIFrame() {
+    await this.resizeReload();
+  }
+
+  private async resizeReload() {
+    await this.initSize();
+    await this.updateIFrameSizeReload();
+  }
 
   private async initSize() {
     const style: CSSStyleDeclaration | undefined = window ? window.getComputedStyle(this.el) : undefined;
 
-    const width: number = style ? parseInt(style.width) : this.el.offsetWidth;
-    const height: number = style ? parseInt(style.height) : this.el.offsetHeight;
+    const width: number = style && parseInt(style.width) > 0 ? parseInt(style.width) : this.el.offsetWidth;
+    const height: number = style && parseInt(style.height) > 0 ? parseInt(style.height) : this.el.offsetHeight;
 
     const deviceHeight: number = (width * 704) / 304;
 
@@ -128,7 +137,7 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
     });
   }
 
-  private async updateIFrame() {
+  private async updateIFrameSizeReload() {
     const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
 
     if (iframe) {

@@ -45,7 +45,15 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return lazyLoadContent(this.el);
+    return new Promise<void>(async (resolve) => {
+      const promises = [];
+      promises.push(lazyLoadContent(this.el));
+      promises.push(this.resizeDemo());
+
+      await Promise.all(promises);
+
+      resolve();
+    });
   }
 
   @Method()
@@ -56,6 +64,18 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
   @Method()
   hideContent(): Promise<void> {
     return hideAllRevealElements(this.el);
+  }
+
+  private async resizeDemo() {
+    if (this.type !== 'demo') {
+      return;
+    }
+
+    const element: HTMLElement = this.el.querySelector(':scope > deckgo-demo');
+
+    if (element && typeof (element as any).updateIFrame === 'function') {
+      await (element as any).updateIFrame();
+    }
   }
 
   render() {
