@@ -13,18 +13,18 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "^1.0.0"
+    "@deckdeckgo/utils": "^1.1.0"
   },
   "devDependencies": {
-    "husky": "^4.2.3",
-    "prettier": "1.19.1",
+    "husky": "^4.2.5",
+    "prettier": "2.0.5",
     "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.1.0",
+    "rollup": "^2.8.2",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript": "^1.0.1",
-    "tslib": "^1.11.1",
+    "tslib": "^1.11.2",
     "typescript": "^3.8.3"
   },
   "main": "lib/index.cjs.js",
