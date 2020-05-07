@@ -1,3 +1,11 @@
+<a name="1.1.0"></a>
+
+# 1.1.0 (2020-05-07)
+
+### Features
+
+- add new component `deckgo-demo` to the list of component to lazy load
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-18)
