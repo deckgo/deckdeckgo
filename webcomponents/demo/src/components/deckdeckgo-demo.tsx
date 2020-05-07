@@ -134,6 +134,9 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
     if (iframe) {
       iframe.width = '' + this.width;
       iframe.height = '' + this.height;
+
+      // Reload a cross-domain frame. Accessing the content is not allowed because of the CSP cross-origin restriction.
+      iframe.src = iframe.src;
     }
   }
 
