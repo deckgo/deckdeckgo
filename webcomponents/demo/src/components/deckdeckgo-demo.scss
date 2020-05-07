@@ -11,8 +11,11 @@
   --device-ios-border-radius: calc(var(--auto-size) / (344 / 54));
   --device-md-border-radius: calc(var(--auto-size) / (344 / 44));
 
-  display: block;
   height: inherit;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .docs-demo-device > figure {
