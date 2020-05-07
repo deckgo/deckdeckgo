@@ -175,6 +175,10 @@ export class AppComponentsDemo {
           <deckgo-highlight-code language="javascript">
             <code slot="code">lazyLoadContent(): Promise&lt;void&gt;</code>
           </deckgo-highlight-code>
+          <h4 id="app-components-demo-refresh-iframe-size-and-reload-content">Refresh iframe size and reload content</h4>
+          <deckgo-highlight-code language="javascript">
+            <code slot="code">updateIFrame(): Promise&lt;void&gt;</code>
+          </deckgo-highlight-code>
           <h3 id="app-components-demo-theming">Theming</h3>
           <p>The following theming options will affect this component if set on its host or parent.</p>
           <table>

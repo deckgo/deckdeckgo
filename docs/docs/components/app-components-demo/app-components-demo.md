@@ -100,6 +100,12 @@ The `<deckgo-demo/>` component exposes the following methods:
 lazyLoadContent(): Promise<void>
 ```
 
+#### Refresh iframe size and reload content
+
+```
+updateIFrame(): Promise<void>
+```
+
 ### Theming
 
 The following theming options will affect this component if set on its host or parent.
