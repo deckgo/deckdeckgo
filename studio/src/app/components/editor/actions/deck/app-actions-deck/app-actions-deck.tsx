@@ -169,7 +169,11 @@ export class AppActionsDeck {
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       await this.addSlideYoutube(detail.data);
+
+      this.blockSlide.emit(false);
     });
+
+    this.blockSlide.emit(true);
 
     await modal.present();
   }
@@ -181,7 +185,11 @@ export class AppActionsDeck {
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       await this.addSlideDemo(detail.data);
+
+      this.blockSlide.emit(false);
     });
+
+    this.blockSlide.emit(true);
 
     await modal.present();
   }
