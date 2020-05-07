@@ -28,6 +28,9 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
   @State()
   private loading: boolean = false;
 
+  @State()
+  private loaded: boolean = false;
+
   container!: HTMLElement;
 
   async componentDidLoad() {
@@ -118,6 +121,7 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
 
       this.container.appendChild(element);
 
+      this.loaded = true;
       this.loading = false;
 
       resolve();
@@ -148,6 +152,7 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
           <svg class="docs-demo-device__ios-notch" viewBox="0 0 219 31">
             <path d="M0 1V0h219v1a5 5 0 0 0-5 5v3c0 12.15-9.85 22-22 22H27C14.85 31 5 21.15 5 9V6a5 5 0 0 0-5-5z" fill-rule="evenodd" />
           </svg>
+          {!this.loaded ? <div class="placeholder"></div> : undefined}
         </figure>
       </div>
     );

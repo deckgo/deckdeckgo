@@ -34,7 +34,8 @@
   align-items: flex-start;
 }
 
-.docs-demo-device > figure > iframe {
+.docs-demo-device > figure > iframe,
+.docs-demo-device div.placeholder {
   position: absolute;
 
   top: 0;
@@ -56,30 +57,38 @@
   pointer-events: all;
 }
 
-.docs-demo-device.ios figure {
-  background: black;
-
+.docs-demo-device.ios figure,
+.docs-demo-device div.placeholder {
   border-radius: var(--device-ios-border-radius);
 }
 
-.docs-demo-device.ios > figure > iframe {
+.docs-demo-device div.placeholder {
+  background: var(--device-placeholder-background, #323639);
+}
+
+.docs-demo-device.md figure,
+.docs-demo-device.ios figure {
+  background: black;
+}
+
+.docs-demo-device.ios > figure > iframe,
+.docs-demo-device.ios div.placeholder {
   border-radius: calc(var(--device-ios-border-radius) * 38 / 54);
 }
 
 .docs-demo-device.md figure {
-  background: black;
-
   border-radius: var(--device-md-border-radius);
 }
 
-.docs-demo-device.md > figure > iframe {
+.docs-demo-device.md > figure > iframe,
+.docs-demo-device.md div.placeholder {
   border-radius: calc(var(--device-md-border-radius) * 32 / 44);
 }
 
 .docs-demo-device.ios figure:after {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 2px;
-  bottom: 18px;
+  bottom: calc(var(--auto-size) / (344 / 18));
   content: "";
   display: none;
   height: 4px;
