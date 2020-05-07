@@ -18,6 +18,7 @@ export enum SlideChartType {
 }
 
 export enum SlideSplitType {
+  DEFAULT = 'default',
   DEMO = 'demo',
 }
 

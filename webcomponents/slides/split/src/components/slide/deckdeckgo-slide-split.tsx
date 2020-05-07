@@ -7,13 +7,13 @@ import {
   beforeSwipe,
   lazyLoadContent,
   hideAllRevealElements,
-  showAllRevealElements
+  showAllRevealElements,
 } from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-split',
   styleUrl: 'deckdeckgo-slide-split.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
@@ -24,6 +24,8 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   @Prop({reflectToAttr: true}) vertical: boolean = false;
+
+  @Prop({reflectToAttr: true}) type: 'demo' | 'default' = 'default';
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);

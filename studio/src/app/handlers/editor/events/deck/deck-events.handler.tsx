@@ -611,8 +611,9 @@ export class DeckEventsHandler {
         attributes.vertical = firebase.firestore.FieldValue.delete();
       }
 
-      if (slide.hasAttribute('type')) {
-        attributes.type = slide.getAttribute('type') as SlideSplitType;
+      // We only want to persist the currently specific 'demo' type, not the default one
+      if (slide.hasAttribute('type') && (slide.getAttribute('type') as SlideSplitType) === SlideSplitType.DEMO) {
+        attributes.type = SlideSplitType.DEMO;
       }
 
       resolve(attributes);

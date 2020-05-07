@@ -1,3 +1,11 @@
+<a name="1.1.1"></a>
+
+# 1.1.1 (2020-05-07)
+
+### Features
+
+- expose an attribute type use in studio to handle the new `demo` component
+
 <a name="1.1.0"></a>
 
 # 1.1.0 (2020-05-07)
