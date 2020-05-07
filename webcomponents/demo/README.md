@@ -1,6 +1,6 @@
 # DeckDeckGo - Demo
 
-A Web Component to display an iframe inside a demo device.
+A Web Component to display your apps or websites inside an Android or iOS frame
 
 It is largely inspired and based on the awesome [work](https://github.com/ionic-team/ionic-docs/tree/c5a624ac35d5285b871e7d8513d3849bdea63271/src/components/demo) of the [Ionic](https://ionicframework.com/) team.
 

@@ -1,7 +1,7 @@
 {
   "name": "@deckdeckgo/demo",
   "version": "1.0.0",
-  "description": "Display an iframe inside a demo device",
+  "description": "Display your apps or websites inside an Android or iOS frame.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "es2015": "dist/esm/index.mjs",

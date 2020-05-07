@@ -12,6 +12,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface AppComponentsCharts {}
   interface AppComponentsColor {}
+  interface AppComponentsDemo {}
   interface AppComponentsDrr {}
   interface AppComponentsGif {}
   interface AppComponentsHighlightCode {}
@@ -88,6 +89,12 @@ declare global {
   var HTMLAppComponentsColorElement: {
     prototype: HTMLAppComponentsColorElement;
     new (): HTMLAppComponentsColorElement;
+  };
+
+  interface HTMLAppComponentsDemoElement extends Components.AppComponentsDemo, HTMLStencilElement {}
+  var HTMLAppComponentsDemoElement: {
+    prototype: HTMLAppComponentsDemoElement;
+    new (): HTMLAppComponentsDemoElement;
   };
 
   interface HTMLAppComponentsDrrElement extends Components.AppComponentsDrr, HTMLStencilElement {}
@@ -422,6 +429,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'app-components-charts': HTMLAppComponentsChartsElement;
     'app-components-color': HTMLAppComponentsColorElement;
+    'app-components-demo': HTMLAppComponentsDemoElement;
     'app-components-drr': HTMLAppComponentsDrrElement;
     'app-components-gif': HTMLAppComponentsGifElement;
     'app-components-highlight-code': HTMLAppComponentsHighlightCodeElement;
@@ -483,6 +491,7 @@ declare global {
 declare namespace LocalJSX {
   interface AppComponentsCharts {}
   interface AppComponentsColor {}
+  interface AppComponentsDemo {}
   interface AppComponentsDrr {}
   interface AppComponentsGif {}
   interface AppComponentsHighlightCode {}
@@ -548,6 +557,7 @@ declare namespace LocalJSX {
   interface IntrinsicElements {
     'app-components-charts': AppComponentsCharts;
     'app-components-color': AppComponentsColor;
+    'app-components-demo': AppComponentsDemo;
     'app-components-drr': AppComponentsDrr;
     'app-components-gif': AppComponentsGif;
     'app-components-highlight-code': AppComponentsHighlightCode;
@@ -614,6 +624,7 @@ declare module "@stencil/core" {
     interface IntrinsicElements {
       'app-components-charts': LocalJSX.AppComponentsCharts & JSXBase.HTMLAttributes<HTMLAppComponentsChartsElement>;
       'app-components-color': LocalJSX.AppComponentsColor & JSXBase.HTMLAttributes<HTMLAppComponentsColorElement>;
+      'app-components-demo': LocalJSX.AppComponentsDemo & JSXBase.HTMLAttributes<HTMLAppComponentsDemoElement>;
       'app-components-drr': LocalJSX.AppComponentsDrr & JSXBase.HTMLAttributes<HTMLAppComponentsDrrElement>;
       'app-components-gif': LocalJSX.AppComponentsGif & JSXBase.HTMLAttributes<HTMLAppComponentsGifElement>;
       'app-components-highlight-code': LocalJSX.AppComponentsHighlightCode & JSXBase.HTMLAttributes<HTMLAppComponentsHighlightCodeElement>;
