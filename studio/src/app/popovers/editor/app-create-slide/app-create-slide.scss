@@ -427,6 +427,28 @@ app-create-slide {
           }
         }
       }
+
+      deckgo-slide-split[type="demo"] {
+        div[slot="end"] {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+
+          deckgo-demo {
+            width: 62px;
+            height: 62px;
+          }
+
+          ion-label {
+            font-size: var(--font-size-very-small);
+            white-space: pre-wrap;
+            text-align: center;
+            padding-top: 4px;
+          }
+        }
+      }
     }
   }
 

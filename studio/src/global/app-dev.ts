@@ -2,7 +2,7 @@ import '@ionic/core';
 
 import {setupConfig} from '@ionic/core';
 setupConfig({
-  inputBlurring: false
+  inputBlurring: false,
 });
 
 import '@deckdeckgo/core';
@@ -17,6 +17,7 @@ import '@deckdeckgo/charts';
 import '@deckdeckgo/social';
 import '@deckdeckgo/youtube';
 import '@deckdeckgo/drag-resize-rotate';
+import '@deckdeckgo/demo';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-content';
@@ -39,7 +40,7 @@ setupDeckGoConfig({
     pollUrl: 'http://localhost:3333/poll',
     apiUrl: '<@API_URL@>',
     presentationUrl: '<@PRESENTATION_URL@>',
-    socketUrl: '<@SOCKET_URL@>'
+    socketUrl: '<@SOCKET_URL@>',
   },
   firebase: {
     apiKey: '<@FIREBASE_API_KEY@>',
@@ -49,18 +50,18 @@ setupDeckGoConfig({
     storageBucket: '<@FIREBASE_STORAGE_BUCKET@>',
     messagingSenderId: '<@FIREBASE_MESSAGING_SENDER_ID@>',
     storageUrl: '<@FIREBASE_STORAGE_URL@>',
-    appId: '<@FIREBASE_APP_ID@>'
+    appId: '<@FIREBASE_APP_ID@>',
   },
   tenor: {
     url: 'https://api.tenor.com/v1/',
-    key: '<@TENOR_KEY@>'
+    key: '<@TENOR_KEY@>',
   },
   unsplash: {
-    url: '<@UNSPLASH_URL@>'
+    url: '<@UNSPLASH_URL@>',
   },
   google: {
-    fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
-  }
+    fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family=',
+  },
 });
 
 // https://github.com/deckgo/deckdeckgo/issues/327

@@ -9,6 +9,8 @@ import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 import {ImageHelper} from '../../../../../helpers/editor/image.helper';
 import {ShapeHelper} from '../../../../../helpers/editor/shape.helper';
 
+import {SlideSplitType} from '../../../../../models/data/slide';
+
 import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotType} from '../../../../../utils/editor/slot-type';
@@ -18,6 +20,7 @@ import {ListUtils} from '../../../../../utils/editor/list.utils';
 
 import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
+import {DemoAction} from '../../../../../utils/editor/demo-action';
 
 import {BusyService} from '../../../../../services/editor/busy/busy.service';
 
@@ -42,6 +45,9 @@ export class AppActionsElement {
 
   @State()
   private slideNodeName: string | undefined;
+
+  @State()
+  private slideDemo: boolean = false;
 
   @State()
   private code: boolean = false;
@@ -631,6 +637,31 @@ export class AppActionsElement {
     await modal.present();
   }
 
+  private async openEditDemoSlide() {
+    if (!this.slideDemo) {
+      return;
+    }
+
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-demo',
+      componentProps: {
+        selectedElement: this.selectedElement,
+      },
+    });
+
+    modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+      if (detail && detail.data && this.selectedElement) {
+        await this.updateSlideDemo(detail.data);
+      }
+
+      this.blockSlide.emit(false);
+    });
+
+    this.blockSlide.emit(true);
+
+    await modal.present();
+  }
+
   private async openNotes() {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-notes',
@@ -733,6 +764,7 @@ export class AppActionsElement {
       this.slide = this.isElementSlide(element);
 
       this.slideNodeName = this.slide ? element.nodeName.toLowerCase() : undefined;
+      this.slideDemo = this.slide && this.slideNodeName === 'deckgo-slide-split' && element.getAttribute('type') === SlideSplitType.DEMO;
 
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
@@ -870,6 +902,27 @@ export class AppActionsElement {
     });
   }
 
+  private async updateSlideDemo(demoAttr: DemoAction): Promise<void> {
+    if (!this.selectedElement || !this.slideDemo) {
+      return;
+    }
+
+    if (!demoAttr || !demoAttr.src || demoAttr.src === undefined || demoAttr.src === '') {
+      return;
+    }
+
+    const demo: HTMLElement = this.selectedElement.querySelector('deckgo-demo');
+
+    if (!demo) {
+      return;
+    }
+
+    demo.setAttribute('src', demoAttr.src);
+    demo.setAttribute('mode', demoAttr.mode);
+
+    this.slideDidChange.emit(this.selectedElement);
+  }
+
   private toggleList(destinationListType: SlotType.OL | SlotType.UL): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selectedElement || !this.list) {
@@ -944,7 +997,8 @@ export class AppActionsElement {
       this.slideNodeName === 'deckgo-slide-chart' ||
       this.slideNodeName === 'deckgo-slide-poll' ||
       this.slideNodeName === 'deckgo-slide-youtube' ||
-      this.slideNodeName === 'deckgo-slide-author'
+      this.slideNodeName === 'deckgo-slide-author' ||
+      this.slideDemo
     );
   }
 
@@ -1069,6 +1123,8 @@ export class AppActionsElement {
             ? this.openEditPollSlide()
             : this.slideNodeName === 'deckgo-slide-youtube'
             ? this.openEditYoutubeSlide()
+            : this.slideDemo
+            ? this.openEditDemoSlide()
             : this.openEditSlide()
         }
         color="primary"

@@ -2,7 +2,7 @@ import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
 @Component({
   tag: 'app-youtube',
-  styleUrl: 'app-youtube.scss'
+  styleUrl: 'app-youtube.scss',
 })
 export class AppYoutube {
   @Element() el: HTMLElement;
@@ -70,7 +70,7 @@ export class AppYoutube {
           onClick={() => this.save()}>
           <ion-label>Save</ion-label>
         </ion-button>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

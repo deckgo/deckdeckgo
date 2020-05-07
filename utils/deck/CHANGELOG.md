@@ -1,3 +1,11 @@
+<a name="2.2.0"></a>
+
+# 2.2.0 (2020-05-07)
+
+### Features
+
+- add style for new component `deckgo-demo` in `split` template
+
 <a name="2.1.1"></a>
 
 # 2.1.1 (2020-05-03)

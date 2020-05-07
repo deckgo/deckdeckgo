@@ -1,0 +1,51 @@
+app-demo {
+  ion-content {
+    --background: var(--ion-color-light);
+
+    ion-item.item-input ion-input[class*="sc-ion-input"] {
+      --background: white;
+      background: white;
+    }
+
+    ion-list {
+      --ion-item-background: transparent;
+    }
+
+    ion-radio-group.devices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+      grid-column-gap: 16px;
+
+      margin: 8px 0;
+
+      article {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        background: white;
+        border: 1px solid #dedede;
+
+        border-radius: 4px;
+
+        deckgo-demo {
+          max-width: calc(100vw / 4);
+          width: 200px;
+          height: 200px;
+          display: flex;
+          justify-content: center;
+        }
+
+        > div {
+          display: inline-flex;
+
+          ion-radio {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+  }
+}

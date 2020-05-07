@@ -58,7 +58,7 @@ export class ParseSlidesUtils {
         src: slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined,
         'custom-background': slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined,
         'img-src': slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined,
-        'img-alt': slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined
+        'img-alt': slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined,
       };
 
       if (slide.data.template === SlideTemplate.QRCODE) {
@@ -82,6 +82,7 @@ export class ParseSlidesUtils {
 
       if (slide.data.template === SlideTemplate.SPLIT) {
         attributes['vertical'] = slide.data.attributes && slide.data.attributes.vertical ? 'true' : undefined;
+        attributes['type'] = slide.data.attributes && slide.data.attributes.type ? slide.data.attributes.type : undefined;
       }
 
       if (slide.data.template === SlideTemplate.POLL) {

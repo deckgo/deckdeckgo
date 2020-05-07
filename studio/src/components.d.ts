@@ -154,6 +154,9 @@ export namespace Components {
   interface AppDeckTransition {
     'deckElement': HTMLElement;
   }
+  interface AppDemo {
+    'selectedElement': HTMLElement;
+  }
   interface AppDeveloper {}
   interface AppDiscover {}
   interface AppEditSlide {
@@ -498,6 +501,12 @@ declare global {
   var HTMLAppDeckTransitionElement: {
     prototype: HTMLAppDeckTransitionElement;
     new (): HTMLAppDeckTransitionElement;
+  };
+
+  interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {}
+  var HTMLAppDemoElement: {
+    prototype: HTMLAppDemoElement;
+    new (): HTMLAppDemoElement;
   };
 
   interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {}
@@ -948,6 +957,7 @@ declare global {
     'app-deck-fonts': HTMLAppDeckFontsElement;
     'app-deck-style': HTMLAppDeckStyleElement;
     'app-deck-transition': HTMLAppDeckTransitionElement;
+    'app-demo': HTMLAppDemoElement;
     'app-developer': HTMLAppDeveloperElement;
     'app-discover': HTMLAppDiscoverElement;
     'app-edit-slide': HTMLAppEditSlideElement;
@@ -1161,6 +1171,9 @@ declare namespace LocalJSX {
   interface AppDeckTransition {
     'deckElement'?: HTMLElement;
     'onTransitionChange'?: (event: CustomEvent<void>) => void;
+  }
+  interface AppDemo {
+    'selectedElement'?: HTMLElement;
   }
   interface AppDeveloper {}
   interface AppDiscover {}
@@ -1385,6 +1398,7 @@ declare namespace LocalJSX {
     'app-deck-fonts': AppDeckFonts;
     'app-deck-style': AppDeckStyle;
     'app-deck-transition': AppDeckTransition;
+    'app-demo': AppDemo;
     'app-developer': AppDeveloper;
     'app-discover': AppDiscover;
     'app-edit-slide': AppEditSlide;
@@ -1492,6 +1506,7 @@ declare module "@stencil/core" {
       'app-deck-fonts': LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
       'app-deck-style': LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
       'app-deck-transition': LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
+      'app-demo': LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
       'app-developer': LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
       'app-discover': LocalJSX.AppDiscover & JSXBase.HTMLAttributes<HTMLAppDiscoverElement>;
       'app-edit-slide': LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;

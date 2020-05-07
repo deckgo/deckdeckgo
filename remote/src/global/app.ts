@@ -8,6 +8,7 @@ import '@deckdeckgo/charts';
 import '@deckdeckgo/social';
 import '@deckdeckgo/youtube';
 import '@deckdeckgo/drag-resize-rotate';
+import '@deckdeckgo/demo';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-author';
@@ -27,7 +28,7 @@ import '@deckdeckgo/slide-aspect-ratio';
 import {setupConfig} from '../app/services/environment/environment-config';
 
 setupConfig({
-  signalingServerUrl: 'https://api.deckdeckgo.com'
+  signalingServerUrl: 'https://api.deckdeckgo.com',
 });
 
 // import { setupConfig } from '@ionic/core';

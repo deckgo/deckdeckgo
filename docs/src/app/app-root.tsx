@@ -2,7 +2,7 @@ import {Component, Element, h} from '@stencil/core';
 
 @Component({
   tag: 'app-root',
-  styleUrl: 'app-root.scss'
+  styleUrl: 'app-root.scss',
 })
 export class AppRoot {
   @Element() el: HTMLElement;
@@ -57,6 +57,7 @@ export class AppRoot {
           <ion-route url="/components/lazy-img" component="app-components-lazy-img" />
           <ion-route url="/components/color" component="app-components-color" />
           <ion-route url="/components/drr" component="app-components-drr" />
+          <ion-route url="/components/demo" component="app-components-demo" />
 
           <ion-route url="/deck" component="app-deck-transition" />
           <ion-route url="/deck/transition" component="app-deck-transition" />
@@ -183,6 +184,9 @@ export class AppRoot {
                   <ion-item detail={false} href="/components/color" routerDirection="forward">
                     <ion-label>Color Picker</ion-label>
                   </ion-item>
+                  <ion-item detail={false} href="/components/demo" routerDirection="forward">
+                    <ion-label>Demo</ion-label>
+                  </ion-item>
                   <ion-item detail={false} href="/components/drr" routerDirection="forward">
                     <ion-label>Drag, Resize and Rotate</ion-label>
                   </ion-item>
@@ -263,7 +267,7 @@ export class AppRoot {
         </ion-menu>
 
         <ion-nav id="menu-content" />
-      </ion-app>
+      </ion-app>,
     ];
   }
 }

@@ -3,7 +3,7 @@ import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/c
 import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import {SlideAttributes, SlideChartType, SlideTemplate} from '../../../models/data/slide';
+import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
 import {User} from '../../../models/data/user';
 import {Deck} from '../../../models/data/deck';
@@ -20,7 +20,7 @@ import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/en
 
 @Component({
   tag: 'app-create-slide',
-  styleUrl: 'app-create-slide.scss'
+  styleUrl: 'app-create-slide.scss',
 })
 export class AppCreateSlide {
   @Element() el: HTMLElement;
@@ -196,7 +196,7 @@ export class AppCreateSlide {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
       template: template,
       slide: slide,
-      attributes: attributes
+      attributes: attributes,
     });
   }
 
@@ -231,10 +231,13 @@ export class AppCreateSlide {
       <div class="container ion-margin-bottom ion-padding-start ion-padding-end">
         {this.renderTitle()}
         {this.renderContent()}
+
         {this.renderSplit()}
         {this.renderVertical()}
-        {this.renderGif()}
+
+        {this.renderDemo()}
         {this.renderYoutube()}
+
         {this.renderShapes()}
 
         <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
@@ -252,10 +255,12 @@ export class AppCreateSlide {
           </deckgo-slide-poll>
         </div>
 
+        {this.renderGif()}
         {this.renderChart()}
+
         {this.renderQRCode()}
         {this.renderAuthor()}
-      </div>
+      </div>,
     ];
   }
 
@@ -457,7 +462,7 @@ export class AppCreateSlide {
               style={{
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
-                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
+                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
               }}
               custom-loader={true}>
               <p slot="title">Grouped bars</p>
@@ -480,7 +485,7 @@ export class AppCreateSlide {
               style={{
                 '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
                 '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
-                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
+                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
               }}
               custom-loader={true}>
               <p slot="title">Bar comparison</p>
@@ -655,8 +660,26 @@ export class AppCreateSlide {
           class="showcase"
           content={EnvironmentConfigService.getInstance().get('deckdeckgo').appUrl}
           img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
-          <p slot="title">QR code</p>
+          <p slot="title">QR Code Deep Linking</p>
         </deckgo-slide-qrcode>
+      </div>
+    );
+  }
+
+  private renderDemo() {
+    return (
+      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.SPLIT, null, {type: SlideSplitType.DEMO})}>
+        <deckgo-slide-split class="showcase" type="demo">
+          <p slot="start">
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+          </p>
+          <div slot="end">
+            <deckgo-demo></deckgo-demo>
+            <ion-label>Showcase Your Apps</ion-label>
+          </div>
+        </deckgo-slide-split>
       </div>
     );
   }
