@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/demo",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Display your apps or websites inside an Android or iOS frame.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
