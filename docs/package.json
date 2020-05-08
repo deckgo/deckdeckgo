@@ -17,7 +17,7 @@
     "@deckdeckgo/charts": "^1.0.1",
     "@deckdeckgo/color": "^1.1.0",
     "@deckdeckgo/core": "^1.0.1",
-    "@deckdeckgo/demo": "^1.0.2",
+    "@deckdeckgo/demo": "^1.0.3",
     "@deckdeckgo/drag-resize-rotate": "^1.0.0",
     "@deckdeckgo/highlight-code": "^1.0.4",
     "@deckdeckgo/inline-editor": "^1.2.0",
@@ -38,7 +38,7 @@
     "@deckdeckgo/slide-video": "^1.0.0",
     "@deckdeckgo/slide-youtube": "^1.0.0",
     "@deckdeckgo/social": "^1.0.0",
-    "@deckdeckgo/youtube": "^1.1.0",
+    "@deckdeckgo/youtube": "^1.1.1",
     "@ionic/core": "^5.1.0",
     "idb-keyval": "^3.2.0",
     "rxjs": "^6.5.5"
