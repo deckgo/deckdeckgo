@@ -1,3 +1,11 @@
+<a name="1.0.1"></a>
+
+# 1.0.1 (2020-05-08)
+
+### Features
+
+- slot selector on load for Stenci prerendering
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-18)

@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, Prop, h, Host, Build} from '@stencil/core';
 
 import {
   DeckdeckgoSlide,
@@ -71,7 +71,7 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
       return;
     }
 
-    const element: HTMLElement = this.el.querySelector(':scope > deckgo-demo');
+    const element: HTMLElement = this.el.querySelector(Build.isBrowser ? ':scope > deckgo-demo' : '> deckgo-demo');
 
     if (element && typeof (element as any).updateIFrame === 'function') {
       await (element as any).updateIFrame();
