@@ -1,4 +1,4 @@
-import {Component, h, Host, Prop, State, Element, Event, EventEmitter} from '@stencil/core';
+import {Component, h, Host, Prop, State, Element, Event, EventEmitter, Build} from '@stencil/core';
 
 import {unifyEvent} from '@deckdeckgo/utils';
 
@@ -12,7 +12,7 @@ interface ResizeMatrix {
 @Component({
   tag: 'deckgo-drr',
   styleUrl: 'deckdeckgo-drr.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoDragResizeRotate {
   @Element() el: HTMLElement;
@@ -160,7 +160,7 @@ export class DeckdeckgoDragResizeRotate {
   }
 
   private async displaySlot() {
-    const element: HTMLElement = this.el.querySelector(`:scope > *`);
+    const element: HTMLElement = this.el.querySelector(Build.isBrowser ? `:scope > *` : '> *');
 
     if (element && element.style.display === 'none') {
       element.style.display = '';
@@ -416,7 +416,7 @@ export class DeckdeckgoDragResizeRotate {
 
     return {
       x: this.dragBottom || this.dragTop ? 0 : currentX - this.startX,
-      y: this.dragStart || this.dragEnd ? 0 : currentY - this.startY
+      y: this.dragStart || this.dragEnd ? 0 : currentY - this.startY,
     };
   }
 
@@ -512,7 +512,7 @@ export class DeckdeckgoDragResizeRotate {
       a,
       b,
       c,
-      d
+      d,
     };
   }
 
@@ -527,7 +527,7 @@ export class DeckdeckgoDragResizeRotate {
           '--height': `${this.height}${heightUnit}`,
           '--top': `${this.top}${heightUnit}`,
           '--left': `${this.left}${widthUnit}`,
-          '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`
+          '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`,
         }}
         class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
         {this.renderEdgesAnchors()}
@@ -571,7 +571,7 @@ export class DeckdeckgoDragResizeRotate {
         onMouseDown={() => (this.dragTopStart = true)}
         onTouchStart={() => (this.dragTopStart = true)}>
         <div></div>
-      </div>
+      </div>,
     ];
   }
 
@@ -600,7 +600,7 @@ export class DeckdeckgoDragResizeRotate {
         class="border start"
         onClick={($event) => $event.stopPropagation()}
         onMouseDown={() => (this.dragStart = true)}
-        onTouchStart={() => (this.dragStart = true)}></div>
+        onTouchStart={() => (this.dragStart = true)}></div>,
     ];
   }
 
