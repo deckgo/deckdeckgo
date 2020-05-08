@@ -5,7 +5,7 @@ import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 @Component({
   tag: 'deckgo-youtube',
   styleUrl: 'deckdeckgo-youtube.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoYoutube implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
@@ -122,12 +122,12 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
 
       const allow: Attr = document.createAttribute('allow');
       allow.value = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-      element.setAttributeNode(allow);
+      this.setAttributeNode(element, allow);
 
       if (this.allowFullscreen) {
         const allowFullScreen: Attr = document.createAttribute('allowfullscreen');
         allowFullScreen.value = '';
-        element.setAttributeNode(allowFullScreen);
+        this.setAttributeNode(element, allowFullScreen);
       }
 
       let src: string = await this.formatSrc();
@@ -136,7 +136,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
         // Not auto fullscreen on iOS: https://developers.google.com/youtube/player_parameters
         const playsinline: Attr = document.createAttribute('playsinline');
         playsinline.value = '1';
-        element.setAttributeNode(playsinline);
+        this.setAttributeNode(element, playsinline);
 
         const split: string[] = src.split('?');
 
@@ -162,6 +162,13 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
       this.loaded = true;
       resolve();
     });
+  }
+
+  private setAttributeNode(element: HTMLIFrameElement, attr: Attr) {
+    // Stencil prerendering
+    if ((element as any).setAttributeNode === 'function') {
+      element.setAttributeNode(attr);
+    }
   }
 
   private formatSrc(): Promise<string> {
@@ -232,7 +239,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
         JSON.stringify({
           event: 'command',
           func: play ? 'playVideo' : 'pauseVideo',
-          args: ''
+          args: '',
         }),
         '*'
       );

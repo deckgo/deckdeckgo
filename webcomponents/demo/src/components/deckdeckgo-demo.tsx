@@ -118,9 +118,12 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
 
       const element: HTMLIFrameElement = document.createElement('iframe');
 
-      const allow: Attr = document.createAttribute('allow');
-      allow.value = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-      element.setAttributeNode(allow);
+      // Stencil prerendering
+      if ((element as any).setAttributeNode === 'function') {
+        const allow: Attr = document.createAttribute('allow');
+        allow.value = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+        element.setAttributeNode(allow);
+      }
 
       element.src = this.src;
       element.width = '' + this.width;
