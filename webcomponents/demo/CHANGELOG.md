@@ -1,3 +1,11 @@
+<a name="1.0.3"></a>
+
+# 1.0.3 (2020-07-08)
+
+### Features
+
+- `setAttributeNode` check for Stencil prerendering
+
 <a name="1.0.2"></a>
 
 # 1.0.2 (2020-05-07)
