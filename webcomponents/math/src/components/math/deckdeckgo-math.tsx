@@ -5,7 +5,7 @@ import {extractMath, Segment} from 'extract-math';
 @Component({
   tag: 'deckgo-math',
   styleUrl: 'deckdeckgo-math.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoMath {
   @Element() el: HTMLElement;
@@ -72,23 +72,20 @@ export class DeckdeckgoMath {
   }
 
   private extractAndRenderMath(mathContentHTML: string) {
-    var segments: Segment[] = extractMath(mathContentHTML);
-    var renderedHTML = '';
+    let segments: Segment[] = extractMath(mathContentHTML);
+    let renderedHTML = '';
     segments.map((segment) => {
       if (segment.math) {
         try {
           renderedHTML += katex.renderToString(segment.raw, {
             displayMode: segment.type === 'display',
             leqno: this.leqno,
-            fleqn: this.fleqn
+            fleqn: this.fleqn,
           });
         } catch (error) {
           if (error instanceof katex.ParseError) {
             // KaTeX can't parse the expression
-            let message = ("Error in LaTeX '" + segment.raw + "': " + error.message)
-              .replace(/&/g, '&amp;')
-              .replace(/</g, '&lt;')
-              .replace(/>/g, '&gt;');
+            let message = ("Error in LaTeX '" + segment.raw + "': " + error.message).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             this.mathError.emit(message);
           } else {
             this.mathError.emit(error); //other error
@@ -153,7 +150,7 @@ export class DeckdeckgoMath {
     return (
       <Host
         class={{
-          'deckgo-math-edit': this.editing
+          'deckgo-math-edit': this.editing,
         }}>
         <div class="deckgo-math-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
           <div class="math"></div>
