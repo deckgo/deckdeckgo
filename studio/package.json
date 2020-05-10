@@ -25,6 +25,7 @@
     "@deckdeckgo/highlight-code": "^1.0.4",
     "@deckdeckgo/inline-editor": "^1.2.0",
     "@deckdeckgo/lazy-img": "^1.0.0",
+    "@deckdeckgo/math": "^1.0.0",
     "@deckdeckgo/qrcode": "^1.0.0",
     "@deckdeckgo/remote": "^1.1.0",
     "@deckdeckgo/slide-aspect-ratio": "^1.0.0",

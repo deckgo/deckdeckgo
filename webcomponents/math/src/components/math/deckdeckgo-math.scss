@@ -1,0 +1,60 @@
+@import "~katex/dist/katex.min.css";
+
+:host {
+  ::slotted([slot="math"]) {
+    display: none;
+  }
+}
+
+:host([editable]) {
+  div.math:empty:not(:focus):after {
+    content: var(--deckgo-math-empty-text, "Click to add your math expression");
+  }
+}
+
+:host(.deckgo-math-edit) {
+  ::slotted([slot="math"]) {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  div.math {
+    display: none;
+  }
+}
+
+div.deckgo-math-container {
+  color: var(--deckgo-math-color, inherit);
+  background: var(--deckgo-math-backgroun);
+  padding: var(--deckgo-math-padding, 8px);
+  border-radius: var(--deckgo-math-border-radius);
+
+  margin: var(--deckgo-math-margin, 0px);
+
+  transform-origin: bottom left;
+  transition: all 0.2s ease-in-out;
+  transform: scale(var(--deckgo-math-zoom, 1));
+
+  direction: var(--deckgo-math-direction, ltr);
+  text-align: var(--deckgo-math-text-align, start);
+
+  width: var(--deckgo-math-container-width);
+  height: var(--deckgo-math-container-height);
+  display: var(--deckgo-math-container-display, block);
+  justify-content: var(--deckgo-math-container-justify-content);
+  flex-direction: var(--deckgo-math-container-flex-direction);
+  align-items: var(--deckgo-math-container-align-items);
+
+  div.math {
+    overflow-y: var(--deckgo-math-scroll, scroll);
+
+    white-space: pre-wrap;
+
+    font-size: var(--deckgo-math-font-size);
+    font-family: var(--deckgo-math-font-family);
+
+    display: var(--deckgo-math-display, block);
+
+    counter-reset: linenumber;
+  }
+}
