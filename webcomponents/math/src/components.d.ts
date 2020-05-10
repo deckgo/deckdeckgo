@@ -10,6 +10,9 @@ export namespace Components {
         "editable": boolean;
         "fleqn": boolean;
         "leqno": boolean;
+        "macros": {
+            "\\f": string;
+        };
     }
 }
 declare global {
@@ -28,6 +31,9 @@ declare namespace LocalJSX {
         "editable"?: boolean;
         "fleqn"?: boolean;
         "leqno"?: boolean;
+        "macros"?: {
+            "\\f": string;
+        };
         "onMathDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onMathError"?: (event: CustomEvent<any>) => void;
     }

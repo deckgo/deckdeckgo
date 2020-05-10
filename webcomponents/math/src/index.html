@@ -31,7 +31,7 @@
       <div slot="math"></div>
     </deckgo-math>
 
-    <h1>Not editable:</h1>
+    <h1>Just an expression (not editable):</h1>
 
     <!-- prettier-ignore -->
     <deckgo-math>
@@ -40,5 +40,18 @@
         \hat \f\xi\,e^{2 \pi i \xi x}
         \,d\xi</div>
     </deckgo-math>
+
+    <h1>Not an expression (not editable):</h1>
+
+    <deckgo-math><div slot="math">Yolo I'm formatted but that's not a problem</div></deckgo-math>
+
+    <small
+      >Above text is formatted as an expression as it does not contain any math expression. We accept this in order to support both inline and paragraph
+      mode.</small
+    >
+
+    <h1>A single line paragraph (not editable):</h1>
+
+    <deckgo-math><div slot="math">You can write math expression inside paragraph like this: $x + 1$</div></deckgo-math>
   </body>
 </html>

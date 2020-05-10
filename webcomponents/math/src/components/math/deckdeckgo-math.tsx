@@ -17,6 +17,8 @@ export class DeckdeckgoMath {
 
   @Prop({reflectToAttr: true}) fleqn: boolean = false;
 
+  @Prop({reflectToAttr: true}) macros = {'\\f': 'f(#1)'};
+
   @State()
   private editing: boolean = false;
 
@@ -87,16 +89,16 @@ export class DeckdeckgoMath {
   private async extractAndRenderMath(mathContentHTML: string): Promise<string> {
     const segments: Segment[] = extractMath(mathContentHTML);
 
+    if (!segments || (segments.length === 1 && !segments[0].math)) {
+      return this.extract(segments[0].raw, segments[0].type);
+    }
+
     let renderedHTML = '';
 
     segments.forEach((segment) => {
       if (segment.math) {
         try {
-          renderedHTML += katex.renderToString(segment.raw, {
-            displayMode: segment.type === 'display',
-            leqno: this.leqno,
-            fleqn: this.fleqn,
-          });
+          renderedHTML += this.extract(segment.raw, segment.type);
         } catch (error) {
           if (error instanceof katex.ParseError) {
             // KaTeX can't parse the expression
@@ -112,6 +114,15 @@ export class DeckdeckgoMath {
     });
 
     return renderedHTML;
+  }
+
+  private extract(raw: string, type: 'text' | 'display' | 'inline') {
+    return katex.renderToString(raw, {
+      displayMode: type === 'display',
+      leqno: this.leqno,
+      fleqn: this.fleqn,
+      macros: this.macros,
+    });
   }
 
   private applyMath = async () => {
