@@ -73,7 +73,7 @@ export class DeckdeckgoMath {
         let div: HTMLElement = document.createElement('div');
         div.innerHTML = await this.extractAndRenderMath(mathContentHTML);
 
-        if (div.childElementCount > 0) {
+        if (div.childNodes) {
           container.children[0].append(...Array.from(div.childNodes));
         }
 
