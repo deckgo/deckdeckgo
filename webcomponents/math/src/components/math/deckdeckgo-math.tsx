@@ -47,7 +47,7 @@ export class DeckdeckgoMath {
     const mathContent: HTMLElement = this.el.querySelector("[slot='math']");
 
     if (mathContent) {
-      return this.parseMath(mathContent.innerHTML);
+      return this.parseMath(mathContent.innerText);
     } else {
       return new Promise<void>((resolve) => {
         resolve();
@@ -122,6 +122,8 @@ export class DeckdeckgoMath {
       leqno: this.leqno,
       fleqn: this.fleqn,
       macros: this.macros,
+      strict: 'warn',
+      trust: false,
     });
   }
 
