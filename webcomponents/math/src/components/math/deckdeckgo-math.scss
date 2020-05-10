@@ -25,15 +25,11 @@
 
 div.deckgo-math-container {
   color: var(--deckgo-math-color, inherit);
-  background: var(--deckgo-math-backgroun);
+  background: var(--deckgo-math-background);
   padding: var(--deckgo-math-padding, 8px);
   border-radius: var(--deckgo-math-border-radius);
 
   margin: var(--deckgo-math-margin, 0px);
-
-  transform-origin: bottom left;
-  transition: all 0.2s ease-in-out;
-  transform: scale(var(--deckgo-math-zoom, 1));
 
   direction: var(--deckgo-math-direction, ltr);
   text-align: var(--deckgo-math-text-align, start);
@@ -54,7 +50,5 @@ div.deckgo-math-container {
     font-family: var(--deckgo-math-font-family);
 
     display: var(--deckgo-math-display, block);
-
-    counter-reset: linenumber;
   }
 }

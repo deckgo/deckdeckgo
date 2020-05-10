@@ -1,4 +1,5 @@
 import {Component, Prop, Watch, Element, h, State, Host, Event, EventEmitter} from '@stencil/core';
+
 import katex from 'katex';
 import {extractMath, Segment} from 'extract-math';
 
@@ -12,29 +13,34 @@ export class DeckdeckgoMath {
 
   @Prop() editable: boolean = false;
 
-  @State() editing: boolean = false;
-
   @Prop({reflectToAttr: true}) leqno: boolean = false;
-  @Watch('leqno')
-  async leqnoChanged() {
-    await this.parseSlottedMath();
-  }
 
   @Prop({reflectToAttr: true}) fleqn: boolean = false;
-  @Watch('fleqn')
-  async fleqnChanged() {
-    await this.parseSlottedMath();
-  }
 
-  @Event() mathError!: EventEmitter<any>;
+  @State()
+  private editing: boolean = false;
+
+  @Event() private mathError!: EventEmitter<any>;
   @Event() private mathDidChange: EventEmitter<HTMLElement>;
 
   async componentDidLoad() {
     await this.parseSlottedMath();
   }
+
   async componentDidUpdate() {
     await this.parseSlottedMath();
   }
+
+  @Watch('leqno')
+  async leqnoChanged() {
+    await this.parseSlottedMath();
+  }
+
+  @Watch('fleqn')
+  async fleqnChanged() {
+    await this.parseSlottedMath();
+  }
+
   private parseSlottedMath(): Promise<void> {
     const mathContent: HTMLElement = this.el.querySelector("[slot='math']");
 
@@ -49,32 +55,39 @@ export class DeckdeckgoMath {
 
   private parseMath(mathContentHTML: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-math-container');
-
       if (!mathContentHTML || mathContentHTML === undefined || mathContentHTML === '') {
         resolve();
         return;
       }
-      if (container) {
-        try {
-          container.children[0].innerHTML = '';
 
-          let div: HTMLElement = document.createElement('div');
-          div.innerHTML = this.extractAndRenderMath(mathContentHTML);
+      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-math-container');
 
-          container.children[0].appendChild(div);
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
+      if (!container) {
+        resolve();
+        return;
+      }
+
+      try {
+        container.children[0].innerHTML = '';
+
+        let div: HTMLElement = document.createElement('div');
+        div.innerHTML = await this.extractAndRenderMath(mathContentHTML);
+
+        container.children[0].appendChild(div);
+
+        resolve();
+      } catch (err) {
+        reject(err);
       }
     });
   }
 
-  private extractAndRenderMath(mathContentHTML: string) {
-    let segments: Segment[] = extractMath(mathContentHTML);
+  private async extractAndRenderMath(mathContentHTML: string): Promise<string> {
+    const segments: Segment[] = extractMath(mathContentHTML);
+
     let renderedHTML = '';
-    segments.map((segment) => {
+
+    segments.forEach((segment) => {
       if (segment.math) {
         try {
           renderedHTML += katex.renderToString(segment.raw, {
@@ -95,6 +108,7 @@ export class DeckdeckgoMath {
         renderedHTML += segment.value;
       }
     });
+
     return renderedHTML;
   }
 
@@ -103,6 +117,7 @@ export class DeckdeckgoMath {
 
     await this.parseSlottedMath();
   };
+
   private edit(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.editable) {
@@ -126,6 +141,7 @@ export class DeckdeckgoMath {
       resolve();
     });
   }
+
   private stopEditing(): Promise<void> {
     return new Promise<void>((resolve) => {
       this.editing = false;

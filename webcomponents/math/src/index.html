@@ -10,6 +10,9 @@
   </head>
 
   <body>
+    <h1>Editable:</h1>
+
+    <!-- prettier-ignore -->
     <deckgo-math editable="true">
       <div slot="math">
         <br />
@@ -20,6 +23,22 @@
         <br />
         <br />and displayed equations can be written using \$$ e.g: $$\sum_{i=1}^n 2^i$$
       </div>
+    </deckgo-math>
+
+    <h1>Editable empty:</h1>
+
+    <deckgo-math editable="true">
+      <div slot="math"></div>
+    </deckgo-math>
+
+    <h1>Not editable:</h1>
+
+    <!-- prettier-ignore -->
+    <deckgo-math>
+      <div slot="math">% \f is defined as f(#1) using the macro
+        \f{x} = \int_{-\infty}^\infty
+        \hat \f\xi\,e^{2 \pi i \xi x}
+        \,d\xi</div>
     </deckgo-math>
   </body>
 </html>
