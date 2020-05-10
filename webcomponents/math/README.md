@@ -1,6 +1,6 @@
 # DeckDeckGo - Math
 
-A Web Component to write math expressions.
+A Web Component to write and render math expressions.
 
 It is developed with [Stencil](https://stenciljs.com) and use [Katex](https://katex.org/) to renders the math expressions.
 
