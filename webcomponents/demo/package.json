@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/demo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Display your apps or websites inside an Android or iOS frame.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -24,18 +24,18 @@
   },
   "devDependencies": {
     "@deckdeckgo/slide-utils": "^1.1.0",
-    "@stencil/core": "^1.12.7",
+    "@stencil/core": "^1.13.0",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.3.1",
-    "@types/jest": "24.9.1",
-    "@types/puppeteer": "1.20.3",
+    "@types/jest": "25.2.1",
+    "@types/puppeteer": "2.0.1",
     "autoprefixer": "^9.7.6",
     "husky": "^4.2.5",
-    "jest": "24.9.0",
-    "jest-cli": "24.9.0",
+    "jest": "26.0.1",
+    "jest-cli": "26.0.1",
     "prettier": "2.0.5",
     "pretty-quick": "^2.0.1",
-    "puppeteer": "1.20.0"
+    "puppeteer": "3.0.4"
   },
   "license": "MIT",
   "repository": {
