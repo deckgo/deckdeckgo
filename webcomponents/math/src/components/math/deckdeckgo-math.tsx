@@ -26,6 +26,8 @@ export class DeckdeckgoMath {
 
   private parseAfterUpdate: boolean = false;
 
+  private containerRef!: HTMLDivElement;
+
   async componentDidLoad() {
     await this.parseSlottedMath();
   }
@@ -68,15 +70,13 @@ export class DeckdeckgoMath {
         return;
       }
 
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-math-container');
-
-      if (!container) {
+      if (!this.containerRef) {
         resolve();
         return;
       }
 
       try {
-        container.children[0].innerHTML = '';
+        this.containerRef.children[0].innerHTML = '';
 
         const div: HTMLElement = document.createElement('div');
 
@@ -84,10 +84,10 @@ export class DeckdeckgoMath {
           div.innerHTML = await this.extractAndRenderMath(mathContentHTML);
 
           if (div.childNodes) {
-            container.children[0].append(...Array.from(div.childNodes));
+            this.containerRef.children[0].append(...Array.from(div.childNodes));
           }
         } catch (err) {
-          container.children[0].innerHTML = mathContentHTML;
+          this.containerRef.children[0].innerHTML = mathContentHTML;
           console.error(err);
         }
 
@@ -188,7 +188,11 @@ export class DeckdeckgoMath {
         class={{
           'deckgo-math-edit': this.editing,
         }}>
-        <div class="deckgo-math-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
+        <div
+          class="deckgo-math-container"
+          ref={(el) => (this.containerRef = el as HTMLInputElement)}
+          onMouseDown={() => this.edit()}
+          onTouchStart={() => this.edit()}>
           <div class="math"></div>
           <slot name="math"></slot>
         </div>
