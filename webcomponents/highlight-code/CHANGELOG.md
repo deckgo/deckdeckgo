@@ -1,3 +1,9 @@
+# 1.0.5 (2020-05-11)
+
+### Feat
+
+- update Stencil for Gatsby build
+
 <a name="1.0.4"></a>
 
 # 1.0.4 (2020-04-27)
