@@ -24,21 +24,30 @@ export class DeckdeckgoMath {
 
   @Event() private mathDidChange: EventEmitter<HTMLElement>;
 
+  private parseAfterUpdate: boolean = false;
+
   async componentDidLoad() {
     await this.parseSlottedMath();
   }
 
   async componentDidUpdate() {
-    await this.parseSlottedMath();
+    if (this.parseAfterUpdate) {
+      await this.parseSlottedMath();
+      this.parseAfterUpdate = false;
+    }
   }
 
   @Watch('leqno')
   async leqnoChanged() {
+    this.parseAfterUpdate = true;
+
     await this.parseSlottedMath();
   }
 
   @Watch('fleqn')
   async fleqnChanged() {
+    this.parseAfterUpdate = true;
+
     await this.parseSlottedMath();
   }
 
@@ -122,6 +131,8 @@ export class DeckdeckgoMath {
   }
 
   private applyMath = async () => {
+    console.log('blur');
+
     await this.stopEditing();
 
     await this.parseSlottedMath();
