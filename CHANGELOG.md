@@ -15,6 +15,7 @@
 
 ### Web Components: Update
 
+- core: v1.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 - drag-resize-rotate: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/drag-resize-rotate/CHANGELOG.md))
 - highlight-code: v1.0.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 - inline-editor: v1.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
