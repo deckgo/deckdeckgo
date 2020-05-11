@@ -1,3 +1,9 @@
+# 1.0.1 (2020-05-11)
+
+### Feat
+
+- update Stencil for Gatsby build
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-19)
@@ -8,19 +14,13 @@ To infinity and beyond 🚀
 
 - update dependencies
 
-<a name="1.0.0-rc.3"></a>
-
 # 1.0.0-rc.3 (2020-01-16)
 
 - add option to custom load (fetch) the data
 
-<a name="1.0.0-rc.2-1"></a>
-
 # 1.0.0-rc.2-1 (2019-11-30)
 
 - use margin for the chart pie too
-
-<a name="1.0.0-rc.2"></a>
 
 # 1.0.0-rc.2 (2019-10-19)
 
@@ -32,8 +32,6 @@ To infinity and beyond 🚀
 ### Features
 
 - update recent libs
-
-<a name="1.0.0-rc.1-1"></a>
 
 # 1.0.0-rc.1-1 (2019-10-08)
 
