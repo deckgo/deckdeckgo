@@ -35,7 +35,6 @@ declare namespace LocalJSX {
             "\\f": string;
         };
         "onMathDidChange"?: (event: CustomEvent<HTMLElement>) => void;
-        "onMathError"?: (event: CustomEvent<any>) => void;
     }
     interface IntrinsicElements {
         "deckgo-math": DeckgoMath;

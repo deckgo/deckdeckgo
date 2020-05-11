@@ -22,7 +22,6 @@ export class DeckdeckgoMath {
   @State()
   private editing: boolean = false;
 
-  @Event() private mathError!: EventEmitter<any>;
   @Event() private mathDidChange: EventEmitter<HTMLElement>;
 
   async componentDidLoad() {
@@ -49,9 +48,7 @@ export class DeckdeckgoMath {
     if (mathContent) {
       return this.parseMath(mathContent.innerText);
     } else {
-      return new Promise<void>((resolve) => {
-        resolve();
-      });
+      return Promise.resolve();
     }
   }
 
@@ -72,11 +69,17 @@ export class DeckdeckgoMath {
       try {
         container.children[0].innerHTML = '';
 
-        let div: HTMLElement = document.createElement('div');
-        div.innerHTML = await this.extractAndRenderMath(mathContentHTML);
+        const div: HTMLElement = document.createElement('div');
 
-        if (div.childNodes) {
-          container.children[0].append(...Array.from(div.childNodes));
+        try {
+          div.innerHTML = await this.extractAndRenderMath(mathContentHTML);
+
+          if (div.childNodes) {
+            container.children[0].append(...Array.from(div.childNodes));
+          }
+        } catch (err) {
+          container.children[0].innerHTML = mathContentHTML;
+          console.error(err);
         }
 
         resolve();
@@ -97,17 +100,7 @@ export class DeckdeckgoMath {
 
     segments.forEach((segment) => {
       if (segment.math) {
-        try {
-          renderedHTML += this.extract(segment.raw, segment.type);
-        } catch (error) {
-          if (error instanceof katex.ParseError) {
-            // KaTeX can't parse the expression
-            let message = ("Error in LaTeX '" + segment.raw + "': " + error.message).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            this.mathError.emit(message);
-          } else {
-            this.mathError.emit(error); //other error
-          }
-        }
+        renderedHTML += this.extract(segment.raw, segment.type);
       } else {
         renderedHTML += segment.value;
       }
@@ -124,6 +117,7 @@ export class DeckdeckgoMath {
       macros: this.macros,
       strict: 'warn',
       trust: false,
+      throwOnError: true,
     });
   }
 
