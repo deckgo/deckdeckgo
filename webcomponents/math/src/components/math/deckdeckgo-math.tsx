@@ -65,12 +65,14 @@ export class DeckdeckgoMath {
 
   private parseMath(mathContentHTML: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      if (!mathContentHTML || mathContentHTML === undefined || mathContentHTML === '') {
+      if (!this.containerRef) {
         resolve();
         return;
       }
 
-      if (!this.containerRef) {
+      if (!mathContentHTML || mathContentHTML === undefined || mathContentHTML === '') {
+        this.containerRef.children[0].innerHTML = '';
+
         resolve();
         return;
       }
@@ -131,8 +133,6 @@ export class DeckdeckgoMath {
   }
 
   private applyMath = async () => {
-    console.log('blur');
-
     await this.stopEditing();
 
     await this.parseSlottedMath();
