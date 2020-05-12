@@ -31,11 +31,9 @@ div.deckgo-math-container {
 
   margin: var(--deckgo-math-margin, 0px);
 
-  direction: var(--deckgo-math-direction, ltr);
-  text-align: var(--deckgo-math-text-align, start);
+  direction: var(--deckgo-math-direction);
+  text-align: var(--deckgo-math-text-align);
 
-  width: var(--deckgo-math-container-width);
-  height: var(--deckgo-math-container-height);
   display: var(--deckgo-math-container-display, block);
   justify-content: var(--deckgo-math-container-justify-content);
   flex-direction: var(--deckgo-math-container-flex-direction);
