@@ -47,16 +47,17 @@ export class ToggleSlotUtils {
     });
   }
 
-  private static createSlotContainer(element: HTMLElement, type: SlotType): HTMLElement {
+  private static async createSlotContainer(element: HTMLElement, type: SlotType): Promise<HTMLElement> {
     if (type == SlotType.CODE) {
       return this.createNamedSlotContainer(element, 'code', 'code');
     } else if (type == SlotType.MATH) {
-      return this.createNamedSlotContainer(element, 'div', 'math');
+      return this.createNamedSlotContainer(element, 'p', 'math');
     } else {
       return element;
     }
   }
-  private static createNamedSlotContainer(element: HTMLElement, slotElementName: string, slotName: string) {
+
+  private static async createNamedSlotContainer(element: HTMLElement, slotElementName: 'code' | 'p', slotName: 'code' | 'math'): Promise<HTMLElement> {
     const container: HTMLElement = document.createElement(slotElementName);
     container.setAttribute('slot', slotName);
     element.appendChild(container);
@@ -112,7 +113,7 @@ export class ToggleSlotUtils {
         reveal && !SlotUtils.isNodeRevealList(selectedElement) ? (selectedElement.firstElementChild as HTMLElement) : selectedElement
       );
 
-      const container: HTMLElement = this.createSlotContainer(element, type);
+      const container: HTMLElement = await this.createSlotContainer(element, type);
 
       // We don't copy content if the source or the destination is an image
       if (SlotUtils.isNodeImage(currentContainer) || SlotUtils.isNodeSocial(currentContainer) || !SlotUtils.isSlotTypeEditable(type)) {

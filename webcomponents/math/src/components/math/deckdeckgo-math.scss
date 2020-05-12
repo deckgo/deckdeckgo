@@ -47,7 +47,7 @@ div.deckgo-math-container {
     white-space: pre-wrap;
 
     font-size: var(--deckgo-math-font-size);
-    font-family: var(--deckgo-math-font-family);
+    min-height: var(--deckgo-math-min-height, 23px);
 
     display: var(--deckgo-math-display, block);
   }

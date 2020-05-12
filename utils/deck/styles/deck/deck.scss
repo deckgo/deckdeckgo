@@ -170,3 +170,9 @@ deckgo-deck ul {
 deckgo-deck ol {
   list-style-type: decimal;
 }
+
+deckgo-deck deckgo-math p {
+  margin: 0;
+  outline: 0;
+  min-height: 23px;
+}
