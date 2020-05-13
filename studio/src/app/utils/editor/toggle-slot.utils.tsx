@@ -51,13 +51,13 @@ export class ToggleSlotUtils {
     if (type == SlotType.CODE) {
       return this.createNamedSlotContainer(element, 'code', 'code');
     } else if (type == SlotType.MATH) {
-      return this.createNamedSlotContainer(element, 'p', 'math');
+      return this.createNamedSlotContainer(element, 'article', 'math');
     } else {
       return element;
     }
   }
 
-  private static async createNamedSlotContainer(element: HTMLElement, slotElementName: 'code' | 'p', slotName: 'code' | 'math'): Promise<HTMLElement> {
+  private static async createNamedSlotContainer(element: HTMLElement, slotElementName: 'code' | 'article', slotName: 'code' | 'math'): Promise<HTMLElement> {
     const container: HTMLElement = document.createElement(slotElementName);
     container.setAttribute('slot', slotName);
     element.appendChild(container);

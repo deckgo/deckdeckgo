@@ -44,6 +44,12 @@ deckgo-deck {
     }
   }
 
+  deckgo-math {
+    article[slot] {
+      min-height: 23px;
+    }
+  }
+
   a {
     cursor: pointer;
   }

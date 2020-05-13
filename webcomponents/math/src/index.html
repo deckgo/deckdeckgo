@@ -14,34 +14,34 @@
 
     <!-- prettier-ignore -->
     <deckgo-math editable="true">
-      <p slot="math">
+      <article slot="math">
         You can write math expression inside paragraph like this: $x + 1$
         <br />
         Inline formulas can be written with \$ e.g: $c = \pm\sqrt{a^2 + b^2}$
         <br />
         and displayed equations can be written using \$$ e.g: $$\sum_{i=1}^n 2^i$$
-      </p>
+      </article>
     </deckgo-math>
 
     <h1>Editable empty:</h1>
 
     <deckgo-math editable="true">
-      <p slot="math"></p>
+      <article slot="math"></article>
     </deckgo-math>
 
     <h1>Just an expression (not editable):</h1>
 
     <!-- prettier-ignore -->
     <deckgo-math>
-      <p slot="math">% \f is defined as f(#1) using the macro
+      <article slot="math">% \f is defined as f(#1) using the macro
         \f{x} = \int_{-\infty}^\infty
         \hat \f\xi\,e^{2 \pi i \xi x}
-        \,d\xi</p>
+        \,d\xi</article>
     </deckgo-math>
 
     <h1>Not an expression (not editable):</h1>
 
-    <deckgo-math><p slot="math">Yolo I'm formatted but that's not a problem</p></deckgo-math>
+    <deckgo-math><article slot="math">Yolo I'm formatted but that's not a problem</article></deckgo-math>
 
     <small
       >Above text is formatted as an expression as it does not contain any math expression. We accept this in order to support both inline and paragraph
@@ -50,25 +50,25 @@
 
     <h1>A single line paragraph (not editable):</h1>
 
-    <deckgo-math><p slot="math">You can write math expression inside paragraph like this: $x + 1$</p></deckgo-math>
+    <deckgo-math><article slot="math">You can write math expression inside paragraph like this: $x + 1$</article></deckgo-math>
 
     <h1>More examples (not editable):</h1>
 
     <small>Source: https://tiddlywiki.com/plugins/tiddlywiki/katex/</small>
 
-    <deckgo-math><p slot="math">f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi</p></deckgo-math>
+    <deckgo-math><article slot="math">f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi</article></deckgo-math>
 
     <deckgo-math
-      ><p slot="math">
+      ><article slot="math">
         \frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} = 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}} {1+\frac{e^{-8\pi}}
         {1+\cdots} } } }
-      </p></deckgo-math
+      </article></deckgo-math
     >
 
     <deckgo-math
-      ><p slot="math">
+      ><article slot="math">
         1 + \frac{q^2}{(1-q)}+\frac{q^6}{(1-q)(1-q^2)}+\cdots = \prod_{j=0}^{\infty}\frac{1}{(1-q^{5j+2})(1-q^{5j+3})}, \quad\quad \text{for }\lvert q\rvert<1.
-      </p></deckgo-math
+      </article></deckgo-math
     >
   </body>
 </html>
