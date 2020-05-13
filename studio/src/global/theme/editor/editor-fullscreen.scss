@@ -58,7 +58,8 @@
         ul,
         deckgo-reveal-list,
         *:not([slot="background"]) > deckgo-lazy-img,
-        deckgo-reveal[img] {
+        deckgo-reveal[img],
+        deckgo-math {
           border: 1px solid transparent;
         }
 
