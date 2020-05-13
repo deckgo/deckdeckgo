@@ -5,12 +5,12 @@ enum MathFontSize {
   SMALL,
   NORMAL,
   BIG,
-  VERY_BIG
+  VERY_BIG,
 }
 
 @Component({
   tag: 'app-math',
-  styleUrl: 'app-math.scss'
+  styleUrl: 'app-math.scss',
 })
 export class AppMath {
   @Element() el: HTMLElement;
@@ -25,10 +25,7 @@ export class AppMath {
   private currentFontSize: MathFontSize = undefined;
 
   @State()
-  private leqno: boolean = false;
-
-  @State()
-  private fleqn: boolean = false;
+  private macros: string | undefined;
 
   constructor() {}
 
@@ -40,13 +37,9 @@ export class AppMath {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
-  private initCurrent(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.currentFontSize = await this.initFontSize();
-      this.leqno = this.selectedElement && this.selectedElement.hasAttribute('leqno');
-      this.fleqn = this.selectedElement && this.selectedElement.hasAttribute('fleqn');
-      resolve();
-    });
+  private async initCurrent(): Promise<void> {
+    this.currentFontSize = await this.initFontSize();
+    this.macros = this.selectedElement ? this.selectedElement.getAttribute('macros') : undefined;
   }
 
   private emitMathDidChange() {
@@ -108,24 +101,22 @@ export class AppMath {
     });
   }
 
-  private toggleOptions($event: CustomEvent, propName: string): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
+  private handleMacrosInput($event: CustomEvent<KeyboardEvent>) {
+    this.macros = ($event.target as InputTargetEvent).value;
+  }
 
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private async applyMacrosInput(): Promise<void> {
+    if (!this.selectedElement) {
+      return;
+    }
 
-      this.selectedElement.setAttribute(propName, $event.detail.checked);
+    if (this.macros && this.macros !== '') {
+      this.selectedElement.setAttribute('macros', this.macros);
+    } else {
+      this.selectedElement.removeAttribute('macros');
+    }
 
-      this.emitMathDidChange();
-
-      resolve();
-    });
+    this.emitMathDidChange();
   }
 
   render() {
@@ -137,15 +128,6 @@ export class AppMath {
         </ion-router-link>
       </ion-toolbar>,
       <ion-list>
-        <ion-item>
-          <ion-label>Leqno</ion-label>
-          <ion-checkbox slot="end" checked={this.leqno} onIonChange={($event: CustomEvent) => this.toggleOptions($event, 'leqno')}></ion-checkbox>
-        </ion-item>
-
-        <ion-item>
-          <ion-label>Fleqn</ion-label>
-          <ion-checkbox slot="end" checked={this.fleqn} onIonChange={($event: CustomEvent) => this.toggleOptions($event, 'fleqn')}></ion-checkbox>
-        </ion-item>
         <ion-item-divider class="ion-padding-top">
           <ion-label>Font size</ion-label>
         </ion-item-divider>
@@ -165,7 +147,22 @@ export class AppMath {
             <ion-select-option value={MathFontSize.VERY_BIG}>Very big</ion-select-option>
           </ion-select>
         </ion-item>
-      </ion-list>
+
+        <ion-item-divider>
+          <ion-label>Macros</ion-label>
+        </ion-item-divider>
+
+        <ion-item class="select">
+          <ion-textarea
+            rows={5}
+            value={this.macros}
+            debounce={500}
+            maxlength={254}
+            placeholder="A collection of custom macros. Property with a name like \\name which maps to a string that describes the expansion."
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleMacrosInput($event)}
+            onIonChange={() => this.applyMacrosInput()}></ion-textarea>
+        </ion-item>
+      </ion-list>,
     ];
   }
 }

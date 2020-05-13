@@ -13,16 +13,13 @@ export class DeckdeckgoMath {
 
   @Prop() editable: boolean = false;
 
-  @Prop({reflectToAttr: true}) leqno: boolean = false;
-
-  @Prop({reflectToAttr: true}) fleqn: boolean = false;
-
-  @Prop({reflectToAttr: true}) macros = {'\\f': 'f(#1)'};
+  @Prop({reflectToAttr: true}) macros: string = `{"\\\\f":"f(#1)"}`;
 
   @State()
   private editing: boolean = false;
 
-  @Event() private mathDidChange: EventEmitter<HTMLElement>;
+  @Event()
+  private mathDidChange: EventEmitter<HTMLElement>;
 
   private parseAfterUpdate: boolean = false;
 
@@ -39,15 +36,8 @@ export class DeckdeckgoMath {
     }
   }
 
-  @Watch('leqno')
-  async leqnoChanged() {
-    this.parseAfterUpdate = true;
-
-    await this.parseSlottedMath();
-  }
-
-  @Watch('fleqn')
-  async fleqnChanged() {
+  @Watch('macros')
+  async macrosChanged() {
     this.parseAfterUpdate = true;
 
     await this.parseSlottedMath();
@@ -123,9 +113,9 @@ export class DeckdeckgoMath {
   private extract(raw: string, type: 'text' | 'display' | 'inline') {
     return katex.renderToString(raw, {
       displayMode: type === 'display',
-      leqno: this.leqno,
-      fleqn: this.fleqn,
-      macros: this.macros,
+      leqno: false,
+      fleqn: false,
+      macros: this.macros ? JSON.parse(this.macros) : null,
       strict: 'warn',
       trust: false,
       throwOnError: true,

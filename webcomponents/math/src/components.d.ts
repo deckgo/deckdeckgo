@@ -8,11 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoMath {
         "editable": boolean;
-        "fleqn": boolean;
-        "leqno": boolean;
-        "macros": {
-            "\\f": string;
-        };
+        "macros": string;
     }
 }
 declare global {
@@ -29,11 +25,7 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoMath {
         "editable"?: boolean;
-        "fleqn"?: boolean;
-        "leqno"?: boolean;
-        "macros"?: {
-            "\\f": string;
-        };
+        "macros"?: string;
         "onMathDidChange"?: (event: CustomEvent<HTMLElement>) => void;
     }
     interface IntrinsicElements {
