@@ -18,6 +18,7 @@ export namespace Components {
   interface AppComponentsHighlightCode {}
   interface AppComponentsInlineEditor {}
   interface AppComponentsLazyImg {}
+  interface AppComponentsMath {}
   interface AppComponentsQrcode {}
   interface AppComponentsSocial {}
   interface AppComponentsYoutube {}
@@ -125,6 +126,12 @@ declare global {
   var HTMLAppComponentsLazyImgElement: {
     prototype: HTMLAppComponentsLazyImgElement;
     new (): HTMLAppComponentsLazyImgElement;
+  };
+
+  interface HTMLAppComponentsMathElement extends Components.AppComponentsMath, HTMLStencilElement {}
+  var HTMLAppComponentsMathElement: {
+    prototype: HTMLAppComponentsMathElement;
+    new (): HTMLAppComponentsMathElement;
   };
 
   interface HTMLAppComponentsQrcodeElement extends Components.AppComponentsQrcode, HTMLStencilElement {}
@@ -435,6 +442,7 @@ declare global {
     'app-components-highlight-code': HTMLAppComponentsHighlightCodeElement;
     'app-components-inline-editor': HTMLAppComponentsInlineEditorElement;
     'app-components-lazy-img': HTMLAppComponentsLazyImgElement;
+    'app-components-math': HTMLAppComponentsMathElement;
     'app-components-qrcode': HTMLAppComponentsQrcodeElement;
     'app-components-social': HTMLAppComponentsSocialElement;
     'app-components-youtube': HTMLAppComponentsYoutubeElement;
@@ -497,6 +505,7 @@ declare namespace LocalJSX {
   interface AppComponentsHighlightCode {}
   interface AppComponentsInlineEditor {}
   interface AppComponentsLazyImg {}
+  interface AppComponentsMath {}
   interface AppComponentsQrcode {}
   interface AppComponentsSocial {}
   interface AppComponentsYoutube {}
@@ -563,6 +572,7 @@ declare namespace LocalJSX {
     'app-components-highlight-code': AppComponentsHighlightCode;
     'app-components-inline-editor': AppComponentsInlineEditor;
     'app-components-lazy-img': AppComponentsLazyImg;
+    'app-components-math': AppComponentsMath;
     'app-components-qrcode': AppComponentsQrcode;
     'app-components-social': AppComponentsSocial;
     'app-components-youtube': AppComponentsYoutube;
@@ -630,6 +640,7 @@ declare module "@stencil/core" {
       'app-components-highlight-code': LocalJSX.AppComponentsHighlightCode & JSXBase.HTMLAttributes<HTMLAppComponentsHighlightCodeElement>;
       'app-components-inline-editor': LocalJSX.AppComponentsInlineEditor & JSXBase.HTMLAttributes<HTMLAppComponentsInlineEditorElement>;
       'app-components-lazy-img': LocalJSX.AppComponentsLazyImg & JSXBase.HTMLAttributes<HTMLAppComponentsLazyImgElement>;
+      'app-components-math': LocalJSX.AppComponentsMath & JSXBase.HTMLAttributes<HTMLAppComponentsMathElement>;
       'app-components-qrcode': LocalJSX.AppComponentsQrcode & JSXBase.HTMLAttributes<HTMLAppComponentsQrcodeElement>;
       'app-components-social': LocalJSX.AppComponentsSocial & JSXBase.HTMLAttributes<HTMLAppComponentsSocialElement>;
       'app-components-youtube': LocalJSX.AppComponentsYoutube & JSXBase.HTMLAttributes<HTMLAppComponentsYoutubeElement>;
