@@ -1,3 +1,11 @@
+<a name="2.3.0"></a>
+
+# 2.3.0 (2020-05-14)
+
+### Features
+
+- add style for new component `deckgo-math`
+
 <a name="2.2.0"></a>
 
 # 2.2.0 (2020-05-07)

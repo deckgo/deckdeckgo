@@ -40,7 +40,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy
 
 ### Install from NPM
 
-Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
+Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/demo) using the following command:
 
 ```bash
 npm install @deckdeckgo/demo

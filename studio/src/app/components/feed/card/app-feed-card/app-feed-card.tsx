@@ -1,6 +1,6 @@
-import { Component, Prop, State, h, Element } from "@stencil/core";
+import {Component, Prop, State, h, Element} from '@stencil/core';
 
-import { debounce } from "@deckdeckgo/utils";
+import {debounce} from '@deckdeckgo/utils';
 
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
@@ -11,7 +11,7 @@ import {EnvironmentConfigService} from '../../../../services/core/environment/en
 @Component({
   tag: 'app-feed-card',
   styleUrl: 'app-feed-card.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppFeedCard {
   @Element() el: HTMLElement;
@@ -74,7 +74,7 @@ export class AppFeedCard {
 
   private onWindowResize = async () => {
     this.width = this.el.offsetWidth;
-  }
+  };
 
   private init(): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -158,7 +158,11 @@ export class AppFeedCard {
   }
 
   render() {
-    return <ion-card class="ion-margin-top" style={{'--card-width': `${this.width}px`}}>{this.renderCardContent()}</ion-card>;
+    return (
+      <ion-card class="ion-margin-top" style={{'--card-width': `${this.width}px`}}>
+        {this.renderCardContent()}
+      </ion-card>
+    );
   }
 
   private renderCardContent() {

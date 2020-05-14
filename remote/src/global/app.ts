@@ -9,6 +9,7 @@ import '@deckdeckgo/social';
 import '@deckdeckgo/youtube';
 import '@deckdeckgo/drag-resize-rotate';
 import '@deckdeckgo/demo';
+import '@deckdeckgo/math';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-author';

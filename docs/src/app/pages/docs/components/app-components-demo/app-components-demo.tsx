@@ -87,7 +87,7 @@ export class AppComponentsDemo {
           </deckgo-highlight-code>
           <h3 id="app-components-demo-install-from-npm">Install from NPM</h3>
           <p>
-            Install it in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a> using the following command:
+            Install it in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/demo">npm</a> using the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;demo</code>

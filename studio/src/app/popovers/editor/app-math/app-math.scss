@@ -1,0 +1,8 @@
+app-math {
+  @import "../../../../global/theme/editor/editor-info";
+  @import "../../../../global/theme/editor/editor-popover";
+
+  ion-textarea[class*="sc-ion-textarea"] {
+    margin: 8px 16px;
+  }
+}
