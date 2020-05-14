@@ -1163,8 +1163,8 @@ export class AppActionsElement {
         <ion-label>Options</ion-label>
       </ion-tab-button>,
       <ion-tab-button onClick={() => this.openSlotType()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
-        <ion-icon src="/assets/icons/ionicons/add.svg"></ion-icon>
-        <ion-label>Toggle</ion-label>
+        <ion-icon src="/assets/icons/ionicons/color-wand.svg"></ion-icon>
+        <ion-label>Transform</ion-label>
       </ion-tab-button>,
     ];
   }
