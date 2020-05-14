@@ -12,7 +12,8 @@ deckgo-deck {
   section,
   ol,
   ul,
-  deckgo-reveal-list {
+  deckgo-reveal-list,
+  deckgo-math {
     border-radius: 2px;
     border: 1px solid var(--ion-color-light);
   }
@@ -40,6 +41,12 @@ deckgo-deck {
 
       font-size: var(--deckgo-highlight-code-font-size);
       font-family: var(--deckgo-highlight-code-font-family, monospace);
+    }
+  }
+
+  deckgo-math {
+    code[slot] {
+      min-height: 23px;
     }
   }
 

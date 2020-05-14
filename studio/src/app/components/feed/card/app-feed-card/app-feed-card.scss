@@ -1,4 +1,6 @@
 app-feed-card {
+  display: block;
+
   ion-card {
     --background: white;
 
@@ -22,10 +24,15 @@ app-feed-card {
 
       deckgo-lazy-img {
         display: block;
-        height: 48vw;
-        max-height: 400px;
         --deckgo-lazy-img-width: 100%;
-        --deckgo-lazy-img-height: auto;
+        --deckgo-lazy-img-height: calc(((var(--card-width) - 20px) * 576) / 1024);
+        --deckgo-lazy-img-display: block;
+      }
+
+      &.ios {
+        deckgo-lazy-img {
+          --deckgo-lazy-img-height: calc(((var(--card-width) - 32px) * 576) / 1024);
+        }
       }
     }
 

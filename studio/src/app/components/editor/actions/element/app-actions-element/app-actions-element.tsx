@@ -53,6 +53,9 @@ export class AppActionsElement {
   private code: boolean = false;
 
   @State()
+  private math: boolean = false;
+
+  @State()
   private image: boolean = false;
 
   @State()
@@ -70,6 +73,7 @@ export class AppActionsElement {
 
   @Event() private slideDidChange: EventEmitter<HTMLElement>;
   @Event() private codeDidChange: EventEmitter<HTMLElement>;
+  @Event() private mathDidChange: EventEmitter<HTMLElement>;
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
   @Event() private notesDidChange: EventEmitter<HTMLElement>;
 
@@ -227,7 +231,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (element.hasAttribute('slot') && element.getAttribute('slot') !== 'code') {
+      if (element.hasAttribute('slot') && element.getAttribute('slot') !== 'code' && element.getAttribute('slot') !== 'math') {
         resolve(element);
         return;
       }
@@ -244,6 +248,10 @@ export class AppActionsElement {
 
   private isElementCode(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.CODE;
+  }
+
+  private isElementMath(element: HTMLElement): boolean {
+    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.MATH;
   }
 
   private isElementShape(element: HTMLElement): boolean {
@@ -611,6 +619,24 @@ export class AppActionsElement {
 
     await popover.present();
   }
+  private async openMath() {
+    if (!this.math) {
+      return;
+    }
+
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-math',
+      componentProps: {
+        selectedElement: this.selectedElement,
+        mathDidChange: this.mathDidChange,
+      },
+      mode: 'md',
+      showBackdrop: false,
+      cssClass: 'popover-menu',
+    });
+
+    await popover.present();
+  }
 
   private async openEditYoutubeSlide() {
     if (this.slideNodeName !== 'deckgo-slide-youtube') {
@@ -766,6 +792,7 @@ export class AppActionsElement {
       this.slideNodeName = this.slide ? element.nodeName.toLowerCase() : undefined;
       this.slideDemo = this.slide && this.slideNodeName === 'deckgo-slide-split' && element.getAttribute('type') === SlideSplitType.DEMO;
 
+      this.math = this.isElementMath(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
@@ -1039,7 +1066,7 @@ export class AppActionsElement {
   }
 
   private hideReveal(): boolean {
-    return this.slide || this.code || this.shape || this.slideNodeName === 'deckgo-slide-youtube';
+    return this.slide || this.code || this.math || this.shape || this.slideNodeName === 'deckgo-slide-youtube';
   }
 
   render() {
@@ -1054,6 +1081,7 @@ export class AppActionsElement {
           {this.renderList()}
           {this.renderImages()}
           {this.renderCodeOptions()}
+          {this.renderMathOptions()}
         </ion-buttons>
 
         <ion-buttons slot="end">
@@ -1158,6 +1186,16 @@ export class AppActionsElement {
     return (
       <ion-tab-button onClick={() => this.openCode()} aria-label="Code attributes" color="primary" mode="md" class={classSlideCode}>
         <ion-icon src="/assets/icons/ionicons/code.svg"></ion-icon>
+        <ion-label>Attributes</ion-label>
+      </ion-tab-button>
+    );
+  }
+  private renderMathOptions() {
+    const classSlideMath: string | undefined = this.math ? undefined : 'hidden';
+
+    return (
+      <ion-tab-button onClick={() => this.openMath()} aria-label="Math options" color="primary" mode="md" class={classSlideMath}>
+        <ion-icon src="/assets/icons/math.svg"></ion-icon>
         <ion-label>Attributes</ion-label>
       </ion-tab-button>
     );

@@ -603,7 +603,7 @@ export class AppEditor {
       const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
       elements.forEach((e: HTMLElement) => {
         if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
-          if (e.nodeName.toLowerCase() === SlotType.CODE) {
+          if (e.nodeName.toLowerCase() === SlotType.CODE || e.nodeName.toLowerCase() === SlotType.MATH) {
             e.setAttribute('editable', '');
           } else if (ParseElementsUtils.isElementContentEditable(e)) {
             e.setAttribute('contentEditable', '');
@@ -673,7 +673,6 @@ export class AppEditor {
       <ion-content>
         <main class={this.slidesEditable ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
           {this.renderLoading()}
-
           <deckgo-deck
             embedded={true}
             style={this.style}

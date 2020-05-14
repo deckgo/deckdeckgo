@@ -38,17 +38,17 @@ export class ThemeService {
 
       // If user already specified once a preference, we use that as default
       if (savedDarkModePreference !== undefined) {
-        this.switch(savedDarkModePreference);
+        await this.switch(savedDarkModePreference);
         return;
       }
     } catch (err) {
-      this.switch(false);
+      await this.switch(false);
       return;
     }
 
     // Otherwise we check the prefers-color-scheme of the OS
     const darkModePreferenceFromMedia: MediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
-    this.switch(darkModePreferenceFromMedia.matches);
+    await this.switch(darkModePreferenceFromMedia.matches);
   }
 }

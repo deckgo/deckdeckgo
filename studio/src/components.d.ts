@@ -229,6 +229,10 @@ export namespace Components {
     'selectedElement': HTMLElement;
   }
   interface AppLogo {}
+  interface AppMath {
+    'mathDidChange': EventEmitter<HTMLElement>;
+    'selectedElement': HTMLElement;
+  }
   interface AppMenu {}
   interface AppMoreDeckActions {
     'offline': boolean;
@@ -689,6 +693,12 @@ declare global {
     new (): HTMLAppLogoElement;
   };
 
+  interface HTMLAppMathElement extends Components.AppMath, HTMLStencilElement {}
+  var HTMLAppMathElement: {
+    prototype: HTMLAppMathElement;
+    new (): HTMLAppMathElement;
+  };
+
   interface HTMLAppMenuElement extends Components.AppMenu, HTMLStencilElement {}
   var HTMLAppMenuElement: {
     prototype: HTMLAppMenuElement;
@@ -988,6 +998,7 @@ declare global {
     'app-landing-footer': HTMLAppLandingFooterElement;
     'app-list': HTMLAppListElement;
     'app-logo': HTMLAppLogoElement;
+    'app-math': HTMLAppMathElement;
     'app-menu': HTMLAppMenuElement;
     'app-more-deck-actions': HTMLAppMoreDeckActionsElement;
     'app-more-element-actions': HTMLAppMoreElementActionsElement;
@@ -1081,6 +1092,7 @@ declare namespace LocalJSX {
     'onBlockSlide'?: (event: CustomEvent<boolean>) => void;
     'onCodeDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'onMathDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onNotesDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'onResetted'?: (event: CustomEvent<void>) => void;
     'onSignIn'?: (event: CustomEvent<void>) => void;
@@ -1260,6 +1272,10 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
   }
   interface AppLogo {}
+  interface AppMath {
+    'mathDidChange'?: EventEmitter<HTMLElement>;
+    'selectedElement'?: HTMLElement;
+  }
   interface AppMenu {}
   interface AppMoreDeckActions {
     'offline'?: boolean;
@@ -1429,6 +1445,7 @@ declare namespace LocalJSX {
     'app-landing-footer': AppLandingFooter;
     'app-list': AppList;
     'app-logo': AppLogo;
+    'app-math': AppMath;
     'app-menu': AppMenu;
     'app-more-deck-actions': AppMoreDeckActions;
     'app-more-element-actions': AppMoreElementActions;
@@ -1537,6 +1554,7 @@ declare module "@stencil/core" {
       'app-landing-footer': LocalJSX.AppLandingFooter & JSXBase.HTMLAttributes<HTMLAppLandingFooterElement>;
       'app-list': LocalJSX.AppList & JSXBase.HTMLAttributes<HTMLAppListElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
+      'app-math': LocalJSX.AppMath & JSXBase.HTMLAttributes<HTMLAppMathElement>;
       'app-menu': LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
       'app-more-deck-actions': LocalJSX.AppMoreDeckActions & JSXBase.HTMLAttributes<HTMLAppMoreDeckActionsElement>;
       'app-more-element-actions': LocalJSX.AppMoreElementActions & JSXBase.HTMLAttributes<HTMLAppMoreElementActionsElement>;

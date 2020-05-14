@@ -58,6 +58,7 @@ export class AppRoot {
           <ion-route url="/components/color" component="app-components-color" />
           <ion-route url="/components/drr" component="app-components-drr" />
           <ion-route url="/components/demo" component="app-components-demo" />
+          <ion-route url="/components/math" component="app-components-math" />
 
           <ion-route url="/deck" component="app-deck-transition" />
           <ion-route url="/deck/transition" component="app-deck-transition" />
@@ -198,6 +199,9 @@ export class AppRoot {
                   </ion-item>
                   <ion-item detail={false} href="/components/lazy-img" routerDirection="forward">
                     <ion-label>Lazy Image</ion-label>
+                  </ion-item>
+                  <ion-item detail={false} href="/components/math" routerDirection="forward">
+                    <ion-label>Math</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/components/qrcode" routerDirection="forward">
                     <ion-label>QR Code</ion-label>

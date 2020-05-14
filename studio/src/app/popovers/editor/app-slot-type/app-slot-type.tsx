@@ -5,7 +5,7 @@ import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-slot-type',
-  styleUrl: 'app-slot-type.scss'
+  styleUrl: 'app-slot-type.scss',
 })
 export class AppSlideAdd {
   @Element() el: HTMLElement;
@@ -68,7 +68,7 @@ export class AppSlideAdd {
 
   private async closePopover(type?: SlotType) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      type: this.currentType !== type ? type : null
+      type: this.currentType !== type ? type : null,
     });
   }
 
@@ -103,7 +103,7 @@ export class AppSlideAdd {
           </ion-item>
         </a>
         {this.renderComplexTypes()}
-      </ion-list>
+      </ion-list>,
     ];
   }
 
@@ -127,7 +127,12 @@ export class AppSlideAdd {
         <ion-item>
           <p>Code</p>
         </ion-item>
-      </a>
+      </a>,
+      <a onClick={() => this.closePopover(SlotType.MATH)} class={this.currentType === SlotType.MATH ? 'current' : ''}>
+        <ion-item>
+          <p>Math</p>
+        </ion-item>
+      </a>,
     ];
   }
 }

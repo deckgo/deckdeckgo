@@ -47,17 +47,21 @@ export class ToggleSlotUtils {
     });
   }
 
-  private static createSlotContainer(element: HTMLElement, type: SlotType): HTMLElement {
-    if (type !== SlotType.CODE) {
+  private static async createSlotContainer(element: HTMLElement, type: SlotType): Promise<HTMLElement> {
+    if (type == SlotType.CODE) {
+      return this.createSlotCode(element, 'code');
+    } else if (type == SlotType.MATH) {
+      return this.createSlotCode(element, 'math');
+    } else {
       return element;
     }
+  }
 
-    const code: HTMLElement = document.createElement('code');
-    code.setAttribute('slot', 'code');
-
-    element.appendChild(code);
-
-    return code;
+  private static async createSlotCode(element: HTMLElement, slotName: 'code' | 'math'): Promise<HTMLElement> {
+    const container: HTMLElement = document.createElement('code');
+    container.setAttribute('slot', slotName);
+    element.appendChild(container);
+    return container;
   }
 
   private static getSlotContainer(selectedElement: HTMLElement): HTMLElement {
@@ -78,7 +82,7 @@ export class ToggleSlotUtils {
       if (!SlotUtils.isSlotTypeEditable(type)) {
         selectedElement.removeAttribute('editable');
         selectedElement.removeAttribute('contenteditable');
-      } else if (type === SlotType.CODE) {
+      } else if (type === SlotType.CODE || type == SlotType.MATH) {
         selectedElement.setAttribute('editable', 'true');
         selectedElement.removeAttribute('contenteditable');
       } else {
@@ -109,7 +113,7 @@ export class ToggleSlotUtils {
         reveal && !SlotUtils.isNodeRevealList(selectedElement) ? (selectedElement.firstElementChild as HTMLElement) : selectedElement
       );
 
-      const container: HTMLElement = this.createSlotContainer(element, type);
+      const container: HTMLElement = await this.createSlotContainer(element, type);
 
       // We don't copy content if the source or the destination is an image
       if (SlotUtils.isNodeImage(currentContainer) || SlotUtils.isNodeSocial(currentContainer) || !SlotUtils.isSlotTypeEditable(type)) {

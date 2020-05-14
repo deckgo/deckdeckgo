@@ -1,3 +1,19 @@
+<a name="1.1.0"></a>
+
+# 1.1.0 (2020-05-08)
+
+### Features
+
+- showcase interacted apps and websites in presentations ([#715](https://github.com/deckgo/deckdeckgo/issues/715))
+- add "Studio" as a PWA to Google Play ([#687](https://github.com/deckgo/deckdeckgo/issues/687))
+- deck font review ([#713](https://github.com/deckgo/deckdeckgo/pull/713))
+- `font-weight: 700` for h1 and h2 ([#704](https://github.com/deckgo/deckdeckgo/issues/704))
+
+### Fix
+
+- load images and charts in dashboard ([#717](https://github.com/deckgo/deckdeckgo/pull/717))
+- alignment fonts in split template ([#716](https://github.com/deckgo/deckdeckgo/pull/716))
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-04-21)
