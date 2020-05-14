@@ -238,6 +238,7 @@
     {"src": "/icons/ionicons/checkmark.svg", "ariaLabel": "Check"},
     {"src": "/icons/align-center.svg", "ariaLabel": "Align center"},
     {"src": "/icons/align-left.svg", "ariaLabel": "Align left"},
-    {"src": "/icons/align-right.svg", "ariaLabel": "Align right"}
+    {"src": "/icons/align-right.svg", "ariaLabel": "Align right"},
+    {"src": "/icons/math.svg", "ariaLabel": "Math"}
   ]
 }

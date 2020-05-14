@@ -289,8 +289,6 @@ export class AppActionsElement {
 
       const parseTexts: string[] = parseText.replace(/(?:\r\n|\r|\n)/g, '<br/>').split('<br/>');
 
-      console.log('parse', parseTexts);
-
       if (!parseTexts || parseTexts.length <= 0) {
         resolve();
         return;
@@ -1197,8 +1195,8 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openMath()} aria-label="Math options" color="primary" mode="md" class={classSlideMath}>
-        <ion-icon name="settings-outline"></ion-icon>
-        <ion-label>Options</ion-label>
+        <ion-icon src="/assets/icons/math.svg"></ion-icon>
+        <ion-label>Attributes</ion-label>
       </ion-tab-button>
     );
   }
