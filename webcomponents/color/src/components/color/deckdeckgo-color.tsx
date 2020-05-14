@@ -7,7 +7,7 @@ import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../../
 @Component({
   tag: 'deckgo-color',
   styleUrl: 'deckdeckgo-color.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoColor {
   @Element() el: HTMLElement;
@@ -151,7 +151,7 @@ export class DeckdeckgoColor {
 
     const color: DeckdeckgoPaletteColor = {
       hex: selectedColor,
-      rgb: rgb
+      rgb: rgb,
     };
 
     this.applyColorHexChange(selectedColor, rgb);
@@ -228,8 +228,13 @@ export class DeckdeckgoColor {
       return this.palette.map((element: DeckdeckgoPalette) => {
         const style = {
           '--deckdeckgo-palette-color-hex': `${element.color.hex}`,
-          '--deckdeckgo-palette-color-rgb': `${element.color.rgb}`
+          '--deckdeckgo-palette-color-rgb': `${element.color.rgb}`,
         };
+
+        if (element.display) {
+          style['--deckdeckgo-palette-border-color'] = element.display.borderColor;
+          style['--deckdeckgo-palette-box-shadow-color'] = element.display.boxShadowColor;
+        }
 
         return (
           <button
