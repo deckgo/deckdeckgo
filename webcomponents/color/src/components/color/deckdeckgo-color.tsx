@@ -306,6 +306,10 @@ export class DeckdeckgoColor {
       return undefined;
     }
 
+    if (!this.selectedColorHex && !this.selectedCustomColorRgb && !this.selectedColorRgb) {
+      return <p class="color-label"></p>;
+    }
+
     const color: string = `${
       this.selectedColorHex ? this.selectedColorHex : `rgb(${this.selectedCustomColorRgb ? this.selectedCustomColorRgb : this.selectedColorRgb})`
     }`;
