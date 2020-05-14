@@ -49,16 +49,16 @@ export class ToggleSlotUtils {
 
   private static async createSlotContainer(element: HTMLElement, type: SlotType): Promise<HTMLElement> {
     if (type == SlotType.CODE) {
-      return this.createNamedSlotContainer(element, 'code', 'code');
+      return this.createSlotCode(element, 'code');
     } else if (type == SlotType.MATH) {
-      return this.createNamedSlotContainer(element, 'article', 'math');
+      return this.createSlotCode(element, 'math');
     } else {
       return element;
     }
   }
 
-  private static async createNamedSlotContainer(element: HTMLElement, slotElementName: 'code' | 'article', slotName: 'code' | 'math'): Promise<HTMLElement> {
-    const container: HTMLElement = document.createElement(slotElementName);
+  private static async createSlotCode(element: HTMLElement, slotName: 'code' | 'math'): Promise<HTMLElement> {
+    const container: HTMLElement = document.createElement('code');
     container.setAttribute('slot', slotName);
     element.appendChild(container);
     return container;
