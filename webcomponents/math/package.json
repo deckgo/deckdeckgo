@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/math",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Web Component to write and render math expressions",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -40,7 +40,7 @@
     "type": "git",
     "url": "git+https://github.com/deckgo/deckdeckgo.git"
   },
-  "author": "David Dal Busco",
+  "author": "Akash Borad",
   "bugs": {
     "url": "https://github.com/deckgo/deckdeckgo"
   },

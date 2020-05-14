@@ -8,6 +8,7 @@ It is developed with [Stencil](https://stenciljs.com) and use [Katex](https://ka
 
 - [Getting Started](#getting-started)
 - [Develop](#develop)
+- [Credits](#credits)
 - [License](#license)
 
 ## Getting Started
@@ -24,6 +25,10 @@ cd deckdeckgo/webcomponents/math
 npm install
 npm run start
 ```
+
+## Credits
+
+Shout out to [Akash Borad](https://twitter.com/BoradAkash) for having created this component!
 
 ## License
 
