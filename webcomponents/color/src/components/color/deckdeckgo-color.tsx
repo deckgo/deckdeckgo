@@ -20,6 +20,8 @@ export class DeckdeckgoColor {
   @Prop() colorHex: string;
   @Prop() colorRgb: string;
 
+  @Prop() label: boolean = true;
+
   @State()
   private selectedColorHex: string;
 
@@ -32,6 +34,9 @@ export class DeckdeckgoColor {
   @State()
   private selectedCustomColorRgb: string;
 
+  @State()
+  private selectedColorLabel: string;
+
   @Event()
   colorChange: EventEmitter<DeckdeckgoPaletteColor>;
 
@@ -40,6 +45,7 @@ export class DeckdeckgoColor {
   constructor() {
     this.debounceInitSelectedColorPalette = debounce(async () => {
       this.selectedColorPalette = await this.initSelectedColorPalette();
+      await this.initSelectedColorPaletteAlt();
 
       this.selectedCustomColorRgb = !this.selectedColorPalette ? this.selectedColorRgb : undefined;
     }, 150);
@@ -50,6 +56,7 @@ export class DeckdeckgoColor {
     this.selectedColorRgb = this.colorRgb ? this.colorRgb : await this.hexToRgb(this.colorHex);
 
     this.selectedColorPalette = await this.initSelectedColorPalette();
+    await this.initSelectedColorPaletteAlt();
 
     if (!this.selectedColorPalette) {
       this.selectedCustomColorRgb = this.selectedColorRgb;
@@ -91,7 +98,7 @@ export class DeckdeckgoColor {
   }
 
   private pickColor(paletteColor: DeckdeckgoPalette): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (!this.palette || this.palette.length <= 0) {
         resolve();
         return;
@@ -103,6 +110,8 @@ export class DeckdeckgoColor {
       this.colorChange.emit(paletteColor.color);
 
       this.selectedColorPalette = true;
+
+      await this.initSelectedColorPaletteAlt();
 
       this.selectedCustomColorRgb = undefined;
 
@@ -212,6 +221,19 @@ export class DeckdeckgoColor {
     });
   }
 
+  private async initSelectedColorPaletteAlt(): Promise<void> {
+    if (!this.palette || this.palette.length <= 0) {
+      this.selectedColorLabel = undefined;
+      return undefined;
+    }
+
+    const palette: DeckdeckgoPalette = this.palette.find((element: DeckdeckgoPalette) => {
+      return this.isHexColorSelected(element) || this.isRgbColorSelected(element);
+    });
+
+    this.selectedColorLabel = palette ? palette.alt : undefined;
+  }
+
   render() {
     return (
       <Host>
@@ -219,6 +241,7 @@ export class DeckdeckgoColor {
           {this.renderPalette()}
           {this.renderMore()}
         </div>
+        {this.renderLabel()}
       </Host>
     );
   }
@@ -276,5 +299,21 @@ export class DeckdeckgoColor {
     } else {
       return undefined;
     }
+  }
+
+  private renderLabel() {
+    if (!this.label) {
+      return undefined;
+    }
+
+    const color: string = `${
+      this.selectedColorHex ? this.selectedColorHex : `rgb(${this.selectedCustomColorRgb ? this.selectedCustomColorRgb : this.selectedColorRgb})`
+    }`;
+
+    return (
+      <p class="color-label">
+        <span>{this.selectedColorLabel ? this.selectedColorLabel : <slot name="custom-label">Custom</slot>}</span> <small>{color}</small>
+      </p>
+    );
   }
 }

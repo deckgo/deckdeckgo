@@ -1,9 +1,6 @@
 # my-component
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,10 +8,10 @@
 | ---------- | ----------- | ----------- | --------------------- | ----------------- |
 | `colorHex` | `color-hex` |             | `string`              | `undefined`       |
 | `colorRgb` | `color-rgb` |             | `string`              | `undefined`       |
+| `label`    | `label`     |             | `boolean`             | `true`            |
 | `more`     | `more`      |             | `boolean`             | `true`            |
 | `moreAlt`  | `more-alt`  |             | `string`              | `'More'`          |
 | `palette`  | --          |             | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
-
 
 ## Events
 
@@ -22,7 +19,6 @@
 | ------------- | ----------- | ------------------------------------- |
 | `colorChange` |             | `CustomEvent<DeckdeckgoPaletteColor>` |
 
+---
 
-----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_
