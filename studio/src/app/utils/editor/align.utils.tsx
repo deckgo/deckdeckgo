@@ -43,6 +43,7 @@ export class AlignUtils {
         SlotType.UL.toString(),
         SlotType.REVEAL.toString(),
         SlotType.REVEAL_LIST.toString(),
+        SlotType.MATH.toString(),
       ].indexOf(element.nodeName.toLowerCase()) > -1
     );
   }
