@@ -10,9 +10,16 @@ export namespace Components {
     interface DeckgoColor {
         "colorHex": string;
         "colorRgb": string;
+        "label": boolean;
         "more": boolean;
         "moreAlt": string;
         "palette": DeckdeckgoPalette[];
+    }
+    interface DeckgoColorLabel {
+        "colorHex": string;
+        "colorLabel": string;
+        "colorRgb": string;
+        "customColorRgb": string;
     }
 }
 declare global {
@@ -22,21 +29,36 @@ declare global {
         prototype: HTMLDeckgoColorElement;
         new (): HTMLDeckgoColorElement;
     };
+    interface HTMLDeckgoColorLabelElement extends Components.DeckgoColorLabel, HTMLStencilElement {
+    }
+    var HTMLDeckgoColorLabelElement: {
+        prototype: HTMLDeckgoColorLabelElement;
+        new (): HTMLDeckgoColorLabelElement;
+    };
     interface HTMLElementTagNameMap {
         "deckgo-color": HTMLDeckgoColorElement;
+        "deckgo-color-label": HTMLDeckgoColorLabelElement;
     }
 }
 declare namespace LocalJSX {
     interface DeckgoColor {
         "colorHex"?: string;
         "colorRgb"?: string;
+        "label"?: boolean;
         "more"?: boolean;
         "moreAlt"?: string;
         "onColorChange"?: (event: CustomEvent<DeckdeckgoPaletteColor>) => void;
         "palette"?: DeckdeckgoPalette[];
     }
+    interface DeckgoColorLabel {
+        "colorHex"?: string;
+        "colorLabel"?: string;
+        "colorRgb"?: string;
+        "customColorRgb"?: string;
+    }
     interface IntrinsicElements {
         "deckgo-color": DeckgoColor;
+        "deckgo-color-label": DeckgoColorLabel;
     }
 }
 export { LocalJSX as JSX };
@@ -44,6 +66,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "deckgo-color": LocalJSX.DeckgoColor & JSXBase.HTMLAttributes<HTMLDeckgoColorElement>;
+            "deckgo-color-label": LocalJSX.DeckgoColorLabel & JSXBase.HTMLAttributes<HTMLDeckgoColorLabelElement>;
         }
     }
 }

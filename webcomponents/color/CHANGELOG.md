@@ -1,6 +1,16 @@
+# 2.0.0 (2020-05-15)
+
+### Breaking
+
+- add color "white" and remove "purple"
+
+### Features
+
+- display the color's name description (can be optionally be set as hidden)
+
 # 1.1.1 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 

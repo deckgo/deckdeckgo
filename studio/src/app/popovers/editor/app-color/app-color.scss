@@ -3,12 +3,18 @@ app-color {
   @import "../../../../global/theme/editor/editor-popover";
 
   ion-icon.more {
-    font-size: 1.4rem;
+    font-size: 1rem;
     padding-top: 2px;
-    color: var(--ion-color-medium);
+    color: black;
   }
 
   ion-item.item-opacity {
     --padding-start: 8px;
+  }
+
+  ion-item-divider {
+    small {
+      font-size: var(--font-size-very-small);
+    }
   }
 }

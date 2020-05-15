@@ -18,7 +18,7 @@ It is fully configurable in terms of colors, you could define the set of colors 
 ## Showcase
 
 <div>
-    <deckgo-color>
+    <deckgo-color style={{width: '240px'}}>
       <span slot="more">...</span>
     </deckgo-color>
 </div>
@@ -77,6 +77,8 @@ The "Color Picker" Web Component could be integrated using the tag `<deckgo-colo
 
 The slot `more` is optional, moreover, the "more" action itself could be turned off.
 
+The slot `custom-label` is optional and can be used to display another label than `Custom` when user selects a custom color.
+
 ### Attributes
 
 This component offers the following options which could be set using attributes:
@@ -88,6 +90,7 @@ This component offers the following options which could be set using attributes:
 | `more`     | `more`      | In case you would not like to offer the "more" options.   | `boolean`             | `true`            |
 | `moreAlt`  | `more-alt`  | An accessibility label for the "more action.              | `string`              | `'More'`          |
 | `palette`  |             | The palette of color (see here under).                    | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE` |
+| `label`    | `label`     | Display a label for the description of the selected color | `boolean`             | `true`            |
 
 #### Palette
 
@@ -113,83 +116,87 @@ The default palette is the following:
 
 ```
 export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [
-  {
-    color: {
-      hex: '#FF6900',
-      rgb: '255,105,0'
+    {
+      color: {
+        hex: '#8ED1FC',
+        rgb: '142,209,252',
+      },
+      alt: 'Light blue',
     },
-    alt: 'Orange'
-  },
-  {
-    color: {
-      hex: '#FCB900',
-      rgb: '252,185,0'
+    {
+      color: {
+        hex: '#0693E3',
+        rgb: '6,147,227',
+      },
+      alt: 'Blue',
     },
-    alt: 'Yellow'
-  },
-  {
-    color: {
-      hex: '#7BDCB5',
-      rgb: '123,220,181'
+    {
+      color: {
+        hex: '#7BDCB5',
+        rgb: '123,220,181',
+      },
+      alt: 'Light green',
     },
-    alt: 'Light green'
-  },
-  {
-    color: {
-      hex: '#00D084',
-      rgb: '0,208,132'
+    {
+      color: {
+        hex: '#00D084',
+        rgb: '0,208,132',
+      },
+      alt: 'Green',
     },
-    alt: 'Green'
-  },
-  {
-    color: {
-      hex: '#8ED1FC',
-      rgb: '142,209,252'
+    {
+      color: {
+        hex: '#FCB900',
+        rgb: '252,185,0',
+      },
+      alt: 'Yellow',
     },
-    alt: 'Light blue'
-  },
-  {
-    color: {
-      hex: '#0693E3',
-      rgb: '6,147,227'
+    {
+      color: {
+        hex: '#FF6900',
+        rgb: '255,105,0',
+      },
+      alt: 'Orange',
     },
-    alt: 'Blue'
-  },
-  {
-    color: {
-      hex: '#ABB8C3',
-      rgb: '171,184,195'
+    {
+      color: {
+        hex: '#F78DA7',
+        rgb: '247,141,167',
+      },
+      alt: 'Pink',
     },
-    alt: 'Grey'
-  },
-  {
-    color: {
-      hex: '#EB144C',
-      rgb: '235,20,76'
+    {
+      color: {
+        hex: '#EB144C',
+        rgb: '235,20,76',
+      },
+      alt: 'Red',
     },
-    alt: 'Red'
-  },
-  {
-    color: {
-      hex: '#F78DA7',
-      rgb: '247,141,167'
+    {
+      color: {
+        hex: '#ffffff',
+        rgb: '255,255,255',
+      },
+      alt: 'White',
+      display: {
+        borderColor: '#ddd',
+        boxShadowColor: '221,221,221',
+      },
     },
-    alt: 'Pink'
-  },
-  {
-    color: {
-      hex: '#9900EF',
-      rgb: '153,0,239'
+    {
+      color: {
+        hex: '#ABB8C3',
+        rgb: '171,184,195',
+      },
+      alt: 'Grey',
     },
-    alt: 'Violet'
-  },
-  {
-    color: {
-      hex: '#000000',
-      rgb: '0,0,0'
+    {
+      color: {
+        hex: '#000000',
+        rgb: '0,0,0',
+      },
+      alt: 'Black',
     },
-    alt: 'Black'
-  }
 ];
 ```
 
@@ -197,20 +204,26 @@ export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                      | Default     | Note                                                          |
-| ---------------------------------- | ----------- | ------------------------------------------------------------- |
-| --deckgo-button-width              | 28px        | The width of a button to select a color and the more button   |
-| --deckgo-button-height             | 28px        | The height of a button to select a color and the more button  |
-| --deckgo-button-margin             | 4px         | The margin of a button to select a color and the more button  |
-| --deckgo-button-outline            | none        | The outline of a button to select a color and the more button |
-| --deckgo-button-border             | none        | The border of a button to select a color and the more button  |
-| --deckgo-button-border-radius      | 50%         | The border radius of a button to select a color               |
-| --deckgo-button-more-border-radius | 50%         | The border radius of the more button                          |
-| --deckgo-button-more-border        | none        | The border of the more button                                 |
-| --deckgo-button-more-outline       | none        | The outline of the more button                                |
-| --deckgo-flex-wrap                 | wrap        | Wrap properties of the buttons' container                     |
-| --deckgo-overflow                  | visible     | Overflow property of the buttons's container                  |
-| --deckgo-button-more-background    | transparent | The background of the more button                             |
+| CSS4 variable                          | Default     | Note                                                          |
+| -------------------------------------- | ----------- | ------------------------------------------------------------- |
+| --deckgo-button-width                  | 28px        | The width of a button to select a color and the more button   |
+| --deckgo-button-height                 | 28px        | The height of a button to select a color and the more button  |
+| --deckgo-button-margin                 | 4px         | The margin of a button to select a color and the more button  |
+| --deckgo-button-outline                | none        | The outline of a button to select a color and the more button |
+| --deckgo-button-border                 | none        | The border of a button to select a color and the more button  |
+| --deckgo-button-border-radius          | 50%         | The border radius of a button to select a color               |
+| --deckgo-button-more-border-radius     | 50%         | The border radius of the more button                          |
+| --deckgo-button-more-border            | none        | The border of the more button                                 |
+| --deckgo-button-more-outline           | none        | The outline of the more button                                |
+| --deckgo-flex-wrap                     | wrap        | Wrap properties of the buttons' container                     |
+| --deckgo-overflow                      | visible     | Overflow property of the buttons's container                  |
+| --deckgo-button-more-background        | transparent | The background of the more button                             |
+| --deckgo-color-label-margin            | 0           | Margin of the color description                               |
+| --deckgo-color-label-padding           | 12px 8px    | Padding of the color description                              |
+| --deckgo-color-label-font-size         | 12px        | Font size of the color description                            |
+| --deckgo-color-label-min-height        | 15px        | Minimal height of the color description                       |
+| --deckgo-color-label-text-align        | center      | Text alignment of the color description                       |
+| --deckgo-color-label-color-font-weight | 300         | Font weight of the hexadecimal value of the color description |
 
 ### Events
 
