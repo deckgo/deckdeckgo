@@ -50,7 +50,7 @@ export class ColorActions {
 
     return (
       <Host class={cssClass}>
-        <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} more={false} palette={this.palette}>
+        <deckgo-color label={false} onColorChange={($event: CustomEvent) => this.selectColor($event)} more={false} palette={this.palette}>
           <div slot="more"></div>
         </deckgo-color>
       </Host>
