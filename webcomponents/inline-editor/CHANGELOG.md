@@ -1,3 +1,9 @@
+# 1.3.0 (2020-05-15)
+
+### Feat
+
+- update color component
+
 # 1.2.1 (2020-05-11)
 
 ### Feat
