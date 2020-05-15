@@ -1,11 +1,12 @@
 <a name="1.2.0"></a>
 
-# [1.2.0](https://github.com/deckgo/deckdeckgo/compare/v1.1.0...v1.2.0) (2020-07-14)
+# [1.2.0](https://github.com/deckgo/deckdeckgo/compare/v1.1.0...v1.2.0) (2020-07-15)
 
 ### Applications
 
 - docs: v1.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 - remote: v1.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- studio: v1.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components: New
 

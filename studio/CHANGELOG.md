@@ -1,3 +1,17 @@
+<a name="1.2.0"></a>
+
+# 1.2.0 (2020-05-15)
+
+### Features
+
+- integration `math` component ([#622](https://github.com/deckgo/deckdeckgo/issues/622))
+- colors should have a name description (a11y, [#544](https://github.com/deckgo/deckdeckgo/issues/544))
+- replace "toggle" with "transform" ([#731](https://github.com/deckgo/deckdeckgo/pull/731))
+
+### Fix
+
+- preserve card and image ratio on feed ([#727](https://github.com/deckgo/deckdeckgo/pull/727))
+
 <a name="1.1.0"></a>
 
 # 1.1.0 (2020-05-08)
