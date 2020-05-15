@@ -56,7 +56,7 @@ export class AppComponentsColor {
           </ul>
           <h2 id="app-components-color-showcase">Showcase</h2>
           <div>
-            <deckgo-color>
+            <deckgo-color style={{width: '240px'}}>
               <span slot="more">...</span>
             </deckgo-color>
           </div>
@@ -115,6 +115,9 @@ export class AppComponentsColor {
           <h3 id="app-components-color-slots">Slots</h3>
           <p>
             The slot <code>more</code> is optional, moreover, the &quot;more&quot; action itself could be turned off.
+          </p>
+          <p>
+            The slot <code>custom-label</code> is optional and can be used to display another label than <code>Custom</code> when user selects a custom color.
           </p>
           <h3 id="app-components-color-attributes">Attributes</h3>
           <p>This component offers the following options which could be set using attributes:</p>
@@ -202,6 +205,21 @@ export class AppComponentsColor {
                   <code>DEFAULT_PALETTE</code>
                 </td>
               </tr>
+              <tr>
+                <td>
+                  <code>label</code>
+                </td>
+                <td>
+                  <code>label</code>
+                </td>
+                <td>Display a label for the description of the selected color</td>
+                <td>
+                  <code>boolean</code>
+                </td>
+                <td>
+                  <code>true</code>
+                </td>
+              </tr>
             </tbody>
           </table>
           <h4 id="app-components-color-palette">Palette</h4>
@@ -223,19 +241,20 @@ export class AppComponentsColor {
           <p>The default palette is the following:</p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
-              export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#FF6900&#039;,{'\n'} rgb:
-              &#039;255,105,0&#039;{'\n'} &#125;,{'\n'} alt: &#039;Orange&#039;{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#FCB900&#039;,
-              {'\n'} rgb: &#039;252,185,0&#039;{'\n'} &#125;,{'\n'} alt: &#039;Yellow&#039;{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex:
-              &#039;#7BDCB5&#039;,{'\n'} rgb: &#039;123,220,181&#039;{'\n'} &#125;,{'\n'} alt: &#039;Light green&#039;{'\n'} &#125;,{'\n'} &#123;{'\n'} color:
-              &#123;{'\n'} hex: &#039;#00D084&#039;,{'\n'} rgb: &#039;0,208,132&#039;{'\n'} &#125;,{'\n'} alt: &#039;Green&#039;{'\n'} &#125;,{'\n'} &#123;
-              {'\n'} color: &#123;{'\n'} hex: &#039;#8ED1FC&#039;,{'\n'} rgb: &#039;142,209,252&#039;{'\n'} &#125;,{'\n'} alt: &#039;Light blue&#039;{'\n'}{' '}
-              &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#0693E3&#039;,{'\n'} rgb: &#039;6,147,227&#039;{'\n'} &#125;,{'\n'} alt:
-              &#039;Blue&#039;{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#ABB8C3&#039;,{'\n'} rgb: &#039;171,184,195&#039;{'\n'} &#125;,
-              {'\n'} alt: &#039;Grey&#039;{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#EB144C&#039;,{'\n'} rgb: &#039;235,20,76&#039;{'\n'}{' '}
-              &#125;,{'\n'} alt: &#039;Red&#039;{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#F78DA7&#039;,{'\n'} rgb:
-              &#039;247,141,167&#039;{'\n'} &#125;,{'\n'} alt: &#039;Pink&#039;{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#9900EF&#039;,
-              {'\n'} rgb: &#039;153,0,239&#039;{'\n'} &#125;,{'\n'} alt: &#039;Violet&#039;{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex:
-              &#039;#000000&#039;,{'\n'} rgb: &#039;0,0,0&#039;{'\n'} &#125;,{'\n'} alt: &#039;Black&#039;{'\n'} &#125;{'\n'}];
+              export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#8ED1FC&#039;,{'\n'} rgb:
+              &#039;142,209,252&#039;,{'\n'} &#125;,{'\n'} alt: &#039;Light blue&#039;,{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex:
+              &#039;#0693E3&#039;,{'\n'} rgb: &#039;6,147,227&#039;,{'\n'} &#125;,{'\n'} alt: &#039;Blue&#039;,{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;
+              {'\n'} hex: &#039;#7BDCB5&#039;,{'\n'} rgb: &#039;123,220,181&#039;,{'\n'} &#125;,{'\n'} alt: &#039;Light green&#039;,{'\n'} &#125;,{'\n'} &#123;
+              {'\n'} color: &#123;{'\n'} hex: &#039;#00D084&#039;,{'\n'} rgb: &#039;0,208,132&#039;,{'\n'} &#125;,{'\n'} alt: &#039;Green&#039;,{'\n'} &#125;,
+              {'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#FCB900&#039;,{'\n'} rgb: &#039;252,185,0&#039;,{'\n'} &#125;,{'\n'} alt: &#039;Yellow&#039;,
+              {'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#FF6900&#039;,{'\n'} rgb: &#039;255,105,0&#039;,{'\n'} &#125;,{'\n'} alt:
+              &#039;Orange&#039;,{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#F78DA7&#039;,{'\n'} rgb: &#039;247,141,167&#039;,{'\n'}{' '}
+              &#125;,{'\n'} alt: &#039;Pink&#039;,{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#EB144C&#039;,{'\n'} rgb:
+              &#039;235,20,76&#039;,{'\n'} &#125;,{'\n'} alt: &#039;Red&#039;,{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#ffffff&#039;,
+              {'\n'} rgb: &#039;255,255,255&#039;,{'\n'} &#125;,{'\n'} alt: &#039;White&#039;,{'\n'} display: &#123;{'\n'} borderColor: &#039;#ddd&#039;,{'\n'}{' '}
+              boxShadowColor: &#039;221,221,221&#039;,{'\n'} &#125;,{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#ABB8C3&#039;,{'\n'} rgb:
+              &#039;171,184,195&#039;,{'\n'} &#125;,{'\n'} alt: &#039;Grey&#039;,{'\n'} &#125;,{'\n'} &#123;{'\n'} color: &#123;{'\n'} hex: &#039;#000000&#039;,
+              {'\n'} rgb: &#039;0,0,0&#039;,{'\n'} &#125;,{'\n'} alt: &#039;Black&#039;,{'\n'} &#125;,{'\n'}];
             </code>
           </deckgo-highlight-code>
           <h3 id="app-components-color-theming">Theming</h3>
@@ -308,6 +327,36 @@ export class AppComponentsColor {
                 <td>--deckgo-button-more-background</td>
                 <td>transparent</td>
                 <td>The background of the more button</td>
+              </tr>
+              <tr>
+                <td>--deckgo-color-label-margin</td>
+                <td>0</td>
+                <td>Margin of the color description</td>
+              </tr>
+              <tr>
+                <td>--deckgo-color-label-padding</td>
+                <td>12px 8px</td>
+                <td>Padding of the color description</td>
+              </tr>
+              <tr>
+                <td>--deckgo-color-label-font-size</td>
+                <td>12px</td>
+                <td>Font size of the color description</td>
+              </tr>
+              <tr>
+                <td>--deckgo-color-label-min-height</td>
+                <td>15px</td>
+                <td>Minimal height of the color description</td>
+              </tr>
+              <tr>
+                <td>--deckgo-color-label-text-align</td>
+                <td>center</td>
+                <td>Text alignment of the color description</td>
+              </tr>
+              <tr>
+                <td>--deckgo-color-label-color-font-weight</td>
+                <td>300</td>
+                <td>Font weight of the hexadecimal value of the color description</td>
               </tr>
             </tbody>
           </table>

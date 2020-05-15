@@ -1,3 +1,9 @@
+# 1.3.0 (2020-05-15)
+
+### Features
+
+- new `color` slot, property and styles
+
 # 1.2.0 (2020-05-14)
 
 ### Features
