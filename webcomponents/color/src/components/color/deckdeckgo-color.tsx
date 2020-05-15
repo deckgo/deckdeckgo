@@ -306,18 +306,14 @@ export class DeckdeckgoColor {
       return undefined;
     }
 
-    if (!this.selectedColorHex && !this.selectedCustomColorRgb && !this.selectedColorRgb) {
-      return <p class="color-label"></p>;
-    }
-
-    const color: string = `${
-      this.selectedColorHex ? this.selectedColorHex : `rgb(${this.selectedCustomColorRgb ? this.selectedCustomColorRgb : this.selectedColorRgb})`
-    }`;
-
     return (
-      <p class="color-label">
-        <span>{this.selectedColorLabel ? this.selectedColorLabel : <slot name="custom-label">Custom</slot>}</span> <small>{color}</small>
-      </p>
+      <deckgo-color-label
+        colorHex={this.selectedColorHex}
+        colorRgb={this.selectedColorRgb}
+        colorLabel={this.selectedColorLabel}
+        customColorRgb={this.selectedCustomColorRgb}>
+        <slot name="custom-label">Custom</slot>
+      </deckgo-color-label>
     );
   }
 }
