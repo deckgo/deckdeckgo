@@ -5,11 +5,11 @@ import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
   TEXT,
-  BACKGROUND
+  BACKGROUND,
 }
 
 @Component({
-  tag: 'app-color-sides'
+  tag: 'app-color-sides',
 })
 export class AppColorSides {
   @Element() el: HTMLElement;
@@ -177,7 +177,9 @@ export class AppColorSides {
           </ion-item>
         </ion-radio-group>
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Opacity</ion-label>
+          <ion-label>
+            Opacity <small>{this.colorOpacity}%</small>
+          </ion-label>
         </ion-item-divider>
         <ion-item class="item-opacity">
           <ion-range
@@ -201,7 +203,7 @@ export class AppColorSides {
         <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete">
           <ion-label>{this.resetLabelContent()}</ion-label>
         </ion-button>
-      </ion-item>
+      </ion-item>,
     ];
   }
 

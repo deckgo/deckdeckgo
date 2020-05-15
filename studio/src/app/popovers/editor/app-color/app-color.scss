@@ -11,4 +11,10 @@ app-color {
   ion-item.item-opacity {
     --padding-start: 8px;
   }
+
+  ion-item-divider {
+    small {
+      font-size: var(--font-size-very-small);
+    }
+  }
 }

@@ -11,11 +11,11 @@ enum ApplyColorType {
   STROKE,
   TEXT,
   AXIS,
-  GRID
+  GRID,
 }
 
 @Component({
-  tag: 'app-color-chart'
+  tag: 'app-color-chart',
 })
 export class AppColorDeckSlide {
   @Element() el: HTMLElement;
@@ -207,7 +207,9 @@ export class AppColorDeckSlide {
       </ion-item>,
 
       <ion-item-divider class="ion-padding-top">
-        <ion-label>Opacity</ion-label>
+        <ion-label>
+          Opacity <small>{this.colorOpacity}%</small>
+        </ion-label>
       </ion-item-divider>,
 
       <ion-item class="item-opacity">
@@ -227,7 +229,7 @@ export class AppColorDeckSlide {
         onColorChange={($event: CustomEvent) => this.selectColor($event)}
         color-rgb={this.color}>
         <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-      </deckgo-color>
+      </deckgo-color>,
     ];
   }
 
@@ -235,7 +237,7 @@ export class AppColorDeckSlide {
     const options = [
       <ion-select-option value={ApplyColorType.FILL}>Fill</ion-select-option>,
       <ion-select-option value={ApplyColorType.STROKE}>Stroke</ion-select-option>,
-      <ion-select-option value={ApplyColorType.TEXT}>Text</ion-select-option>
+      <ion-select-option value={ApplyColorType.TEXT}>Text</ion-select-option>,
     ];
 
     if (this.chartType != SlideChartType.PIE) {
