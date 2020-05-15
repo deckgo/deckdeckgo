@@ -1,12 +1,18 @@
+# 1.3.1 (2020-05-15)
+
+### Fix
+
+- color icon always default color to avoid white on white
+
 # 1.3.0 (2020-05-15)
 
-### Feat
+### Features
 
 - update color component
 
 # 1.2.1 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 

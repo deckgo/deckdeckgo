@@ -823,8 +823,6 @@ export class DeckdeckgoInlineEditor {
   }
 
   private renderSelectionActions() {
-    const styleColor = this.color ? {'--deckgo-inline-editor-button-color': this.color} : {};
-
     return [
       <deckgo-ie-style-actions
         mobile={this.mobile}
@@ -838,7 +836,7 @@ export class DeckdeckgoInlineEditor {
       this.renderFontSizeAction(),
 
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker()}>
-        <deckgo-ie-action-image cssClass={'pick-color'} style={styleColor}></deckgo-ie-action-image>
+        <deckgo-ie-action-image cssClass={'pick-color'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
 
       this.renderSeparator(),
