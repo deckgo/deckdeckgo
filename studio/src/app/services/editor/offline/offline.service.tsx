@@ -158,7 +158,7 @@ export class OfflineService {
 
               const offline: OfflineDeck = {
                 id: deck.id,
-                name: deck.data.name
+                name: deck.data.name,
               };
 
               await set('deckdeckgo_offline', offline);
@@ -279,7 +279,7 @@ export class OfflineService {
       this.assetsShapes(assets),
       this.assetsDeckDeckGo(assets),
       this.assetsNavigation(assets),
-      this.assetCharts(assets)
+      this.assetCharts(assets),
     ];
 
     // We don't cache PrismJS definition file.
@@ -304,7 +304,7 @@ export class OfflineService {
       ...this.assetsShapesList(assets, 'computers'),
       ...this.assetsShapesList(assets, 'dateTime'),
       ...this.assetsShapesList(assets, 'files'),
-      ...this.assetsShapesList(assets, 'finance')
+      ...this.assetsShapesList(assets, 'finance'),
     ];
 
     await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);
@@ -388,6 +388,10 @@ export class OfflineService {
               }
 
               await this.saveSlides(deck);
+
+              if (deck.data.background && OfflineUtils.shouldAttributeBeCleaned(deck.data.background)) {
+                deck.data.background = null;
+              }
 
               await set(`/decks/${deck.id}`, deck);
 
