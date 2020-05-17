@@ -19,6 +19,7 @@ export namespace Components {
         "load": () => Promise<void>;
         "src": string;
         "terminal": "carbon" | "ubuntu" | "none";
+        "theme": "3024-night" | "a11y-dark" | "blackboard" | "base16-dark" | "base16-light" | "cobalt" | "dracula" | "duotone" | "hopscotch" | "lucario" | "material" | "monokai" | "night-owl" | "nord" | "oceanic-next" | "one-light" | "one-dark" | "panda" | "paraiso" | "seti" | "shades-of-purple" | "solarized-dark" | "solarized-light" | "synthwave" | "twilight" | "verminal" | "vscode" | "yeti" | "zenburn";
         "zoomCode": (zoom: boolean) => Promise<void>;
     }
 }
@@ -46,6 +47,7 @@ declare namespace LocalJSX {
         "onPrismLanguageLoaded"?: (event: CustomEvent<string>) => void;
         "src"?: string;
         "terminal"?: "carbon" | "ubuntu" | "none";
+        "theme"?: "3024-night" | "a11y-dark" | "blackboard" | "base16-dark" | "base16-light" | "cobalt" | "dracula" | "duotone" | "hopscotch" | "lucario" | "material" | "monokai" | "night-owl" | "nord" | "oceanic-next" | "one-light" | "one-dark" | "panda" | "paraiso" | "seti" | "shades-of-purple" | "solarized-dark" | "solarized-light" | "synthwave" | "twilight" | "verminal" | "vscode" | "yeti" | "zenburn";
     }
     interface IntrinsicElements {
         "deckgo-highlight-code": DeckgoHighlightCode;
