@@ -6,6 +6,369 @@
   }
 }
 
+:host(.theme-3024-night) {
+  --deckgo-highlight-code-carbon-background: #090300;
+  --deckgo-highlight-code-carbon-color: #d6d5d4;
+  --deckgo-highlight-code-token-atrule: #db2d20;
+  --deckgo-highlight-code-token-comment: #cdab53;
+  --deckgo-highlight-code-token-function: #01a252;
+  --deckgo-highlight-code-token-property: #01a252;
+  --deckgo-highlight-code-token-punctuation: #d6d5d4;
+  --deckgo-highlight-code-token-regex: #fded02;
+  --deckgo-highlight-code-token-selector: #db2d20;
+  --deckgo-highlight-code-token-operator: #fff;
+}
+:host(.theme-a11y-dark) {
+  --deckgo-highlight-code-carbon-background: #2b2b2b;
+  --deckgo-highlight-code-carbon-color: #f8f8f2;
+  --deckgo-highlight-code-token-atrule: #ffa07a;
+  --deckgo-highlight-code-token-comment: #d4d0ab;
+  --deckgo-highlight-code-token-function: #00e0e0;
+  --deckgo-highlight-code-token-property: #abe338;
+  --deckgo-highlight-code-token-punctuation: #f8f8f2;
+  --deckgo-highlight-code-token-regex: #ffd700;
+  --deckgo-highlight-code-token-selector: #f8f8f2;
+  --deckgo-highlight-code-token-operator: #f8f8f2;
+}
+
+:host(.theme-blackboard) {
+  --deckgo-highlight-code-carbon-background: #0c1021;
+  --deckgo-highlight-code-carbon-color: #f8f8f8;
+  --deckgo-highlight-code-token-atrule: #fbde2d;
+  --deckgo-highlight-code-token-comment: #aeaeae;
+  --deckgo-highlight-code-token-function: #ff6400;
+  --deckgo-highlight-code-token-operator: #ffffff;
+  --deckgo-highlight-code-token-property: #ffffff;
+  --deckgo-highlight-code-token-punctuation: #ffffff;
+  --deckgo-highlight-code-token-regex: #61ce3c;
+  --deckgo-highlight-code-token-selector: #8da6ce;
+}
+
+:host(.theme-base16-dark) {
+  --deckgo-highlight-code-carbon-background: #151515;
+  --deckgo-highlight-code-carbon-color: #e0e0e0;
+  --deckgo-highlight-code-token-atrule: #ac4142;
+  --deckgo-highlight-code-token-comment: #8f5536;
+  --deckgo-highlight-code-token-function: #90a959;
+  --deckgo-highlight-code-token-operator: #ffffff;
+  --deckgo-highlight-code-token-property: #90a959;
+  --deckgo-highlight-code-token-punctuation: #e0e0e0;
+  --deckgo-highlight-code-token-regex: #f4bf75;
+  --deckgo-highlight-code-token-selector: #ac4142;
+}
+:host(.theme-base16-light) {
+  --deckgo-highlight-code-carbon-background: #f5f5f5;
+  --deckgo-highlight-code-carbon-color: #202020;
+  --deckgo-highlight-code-token-atrule: #ac4142;
+  --deckgo-highlight-code-token-comment: #8f5536;
+  --deckgo-highlight-code-token-function: #90a959;
+  --deckgo-highlight-code-token-operator: #202020;
+  --deckgo-highlight-code-token-property: #90a959;
+  --deckgo-highlight-code-token-punctuation: #202020;
+  --deckgo-highlight-code-token-regex: #f4bf75;
+  --deckgo-highlight-code-token-selector: #ac4142;
+}
+
+:host(.theme-cobalt) {
+  --deckgo-highlight-code-carbon-background: #002240;
+  --deckgo-highlight-code-carbon-color: #fff;
+  --deckgo-highlight-code-token-atrule: #ffee80;
+  --deckgo-highlight-code-token-comment: #08f;
+  --deckgo-highlight-code-token-function: #fff;
+  --deckgo-highlight-code-token-property: #ff80e1;
+  --deckgo-highlight-code-token-punctuation: #d8d8d8;
+  --deckgo-highlight-code-token-regex: #3ad900;
+  --deckgo-highlight-code-token-selector: #9effff;
+  --deckgo-highlight-code-token-operator: #ffffff;
+}
+
+:host(.theme-dracula) {
+  --deckgo-highlight-code-carbon-background: #282a36;
+  --deckgo-highlight-code-carbon-color: #ffffff;
+  --deckgo-highlight-code-token-atrule: #ff79c6; //get from JAVA interface color
+  --deckgo-highlight-code-token-comment: #6272a4; // get from JAVA yolo comment
+  --deckgo-highlight-code-token-function: #ffb86c; // get from JAVA className color
+  --deckgo-highlight-code-token-operator: #ff79c6; // get from JAVA equal color(NumericTest isEven (=) )
+  --deckgo-highlight-code-token-property: #bd93f9; // get from CSS propName
+  --deckgo-highlight-code-token-punctuation: #6272a4; // get from CSS colon
+  --deckgo-highlight-code-token-selector: #50fa7b; //get from CSS selector button
+  --deckgo-highlight-code-token-regex: #f1fa8c; // get from JAVASCROIP REGEX
+}
+
+:host(.theme-duotone) {
+  --deckgo-highlight-code-carbon-background: #2a2734;
+  --deckgo-highlight-code-carbon-color: #eeebff;
+  --deckgo-highlight-code-token-atrule: #ffcc99;
+  --deckgo-highlight-code-token-comment: #6c6783;
+  --deckgo-highlight-code-token-function: #eeebff;
+  --deckgo-highlight-code-token-operator: #ffad5c;
+  --deckgo-highlight-code-token-property: #9a86fd;
+  --deckgo-highlight-code-token-punctuation: #6c6783;
+  --deckgo-highlight-code-token-selector: #eeebff;
+  --deckgo-highlight-code-token-regex: #ffb870;
+}
+:host(.theme-hopscotch) {
+  --deckgo-highlight-code-carbon-background: #322931;
+  --deckgo-highlight-code-carbon-color: #d5d3d5;
+  --deckgo-highlight-code-token-atrule: #dd464c;
+  --deckgo-highlight-code-token-comment: #b33508;
+  --deckgo-highlight-code-token-function: #8fc13e;
+  --deckgo-highlight-code-token-operator: #d5d3d5;
+  --deckgo-highlight-code-token-property: #8fc13e;
+  --deckgo-highlight-code-token-punctuation: #d5d3d5;
+  --deckgo-highlight-code-token-regex: #fdcc59;
+  --deckgo-highlight-code-token-selector: #dd464c;
+}
+
+:host(.theme-lucario) {
+  --deckgo-highlight-code-carbon-background: #2b3e50;
+  --deckgo-highlight-code-carbon-color: rgb(248, 248, 242);
+  --deckgo-highlight-code-token-atrule: #ff6541;
+  --deckgo-highlight-code-token-comment: #5c98cd;
+  --deckgo-highlight-code-token-function: #f8f8f2;
+  --deckgo-highlight-code-token-operator: #66d9ef;
+  --deckgo-highlight-code-token-property: #f8f8f2;
+  --deckgo-highlight-code-token-punctuation: rgb(248, 248, 242);
+  --deckgo-highlight-code-token-regex: #e6db74;
+  --deckgo-highlight-code-token-selector: #ff6541;
+}
+:host(.theme-material) {
+  --deckgo-highlight-code-carbon-background: #263238;
+  --deckgo-highlight-code-carbon-color: rgb(233, 237, 237);
+  --deckgo-highlight-code-token-atrule: rgba(199, 146, 234);
+  --deckgo-highlight-code-token-comment: #546e7a;
+  --deckgo-highlight-code-token-function: #82b1ff;
+  --deckgo-highlight-code-token-operator: rgb(233, 237, 237);
+  --deckgo-highlight-code-token-property: #80cbae;
+  --deckgo-highlight-code-token-punctuation: rgb(233, 237, 237);
+  --deckgo-highlight-code-token-regex: #c3e88d;
+  --deckgo-highlight-code-token-selector: #ff5370;
+}
+
+:host(.theme-monokai) {
+  --deckgo-highlight-code-carbon-background: #272822;
+  --deckgo-highlight-code-carbon-color: #f8f8f2;
+  --deckgo-highlight-code-token-atrule: #f92672;
+  --deckgo-highlight-code-token-comment: #75715e;
+  --deckgo-highlight-code-token-function: #fd971f;
+  --deckgo-highlight-code-token-operator: #ffffff;
+  --deckgo-highlight-code-token-property: #a6e22e;
+  --deckgo-highlight-code-token-punctuation: #f8f8f2;
+  --deckgo-highlight-code-token-regex: #e6db74;
+  --deckgo-highlight-code-token-selector: #f92672;
+}
+:host(.theme-night-owl) {
+  --deckgo-highlight-code-carbon-background: #011627;
+  --deckgo-highlight-code-carbon-color: rgb(171, 178, 191);
+  --deckgo-highlight-code-token-atrule: #c792ea;
+  --deckgo-highlight-code-token-comment: #5c6370;
+  --deckgo-highlight-code-token-function: #82aaff;
+  --deckgo-highlight-code-token-operator: #c792ea;
+  --deckgo-highlight-code-token-property: #ffffff;
+  --deckgo-highlight-code-token-punctuation: rgb(171, 178, 191);
+  --deckgo-highlight-code-token-regex: #ecc48b;
+  --deckgo-highlight-code-token-selector: #abb2bf;
+}
+:host(.theme-nord) {
+  --deckgo-highlight-code-carbon-background: #2e3440;
+  --deckgo-highlight-code-carbon-color: #d8dee9;
+  --deckgo-highlight-code-token-atrule: #81a1ca;
+  --deckgo-highlight-code-token-comment: #4c566a;
+  --deckgo-highlight-code-token-function: #d8dee9;
+  --deckgo-highlight-code-token-operator: #81a1ca;
+  --deckgo-highlight-code-token-property: #d8dee9;
+  --deckgo-highlight-code-token-punctuation: #d8dee9;
+  --deckgo-highlight-code-token-regex: #a3be8c;
+  --deckgo-highlight-code-token-selector: #81a1c1;
+}
+
+:host(.theme-oceanic-next) {
+  --deckgo-highlight-code-carbon-background: #304148;
+  --deckgo-highlight-code-carbon-color: #f8f8f2;
+  --deckgo-highlight-code-token-atrule: #c594c5;
+  --deckgo-highlight-code-token-comment: #65737e;
+  --deckgo-highlight-code-token-function: #69c;
+  --deckgo-highlight-code-token-operator: #fff;
+  --deckgo-highlight-code-token-property: #99c794;
+  --deckgo-highlight-code-token-punctuation: #f8f8f2;
+  --deckgo-highlight-code-token-regex: #99c794;
+  --deckgo-highlight-code-token-selector: #c594c5;
+}
+
+:host(.theme-one-light) {
+  --deckgo-highlight-code-carbon-background: #fafafa;
+  --deckgo-highlight-code-carbon-color: rgb(56, 58, 66);
+  --deckgo-highlight-code-token-atrule: #a626a4;
+  --deckgo-highlight-code-token-comment: #65737e;
+  --deckgo-highlight-code-token-function: #4078f2;
+  --deckgo-highlight-code-token-operator: #0184bc;
+  --deckgo-highlight-code-token-property: #4078f2;
+  --deckgo-highlight-code-token-punctuation: rgb(56, 58, 66);
+  --deckgo-highlight-code-token-regex: rgb(80, 161, 79);
+  --deckgo-highlight-code-token-selector: #e45649;
+}
+:host(.theme-one-dark) {
+  --deckgo-highlight-code-carbon-background: #282c34;
+  --deckgo-highlight-code-carbon-color: rgb(171, 178, 191);
+  --deckgo-highlight-code-token-atrule: #c678dd;
+  --deckgo-highlight-code-token-comment: #5c6370;
+  --deckgo-highlight-code-token-function: #e5c07b;
+  --deckgo-highlight-code-token-operator: #56b6c2;
+  --deckgo-highlight-code-token-property: #56b6c2;
+  --deckgo-highlight-code-token-punctuation: rgb(171, 178, 191);
+  --deckgo-highlight-code-token-regex: #98c379;
+  --deckgo-highlight-code-token-selector: #e06c75;
+}
+
+:host(.theme-panda) {
+  --deckgo-highlight-code-carbon-background: #292a2b;
+  --deckgo-highlight-code-carbon-color: #e6e6e6;
+  --deckgo-highlight-code-token-atrule: #ff75b5;
+  --deckgo-highlight-code-token-comment: #676b79;
+  --deckgo-highlight-code-token-function: #ffb86c;
+  --deckgo-highlight-code-token-operator: #f3f3f3;
+  --deckgo-highlight-code-token-property: #f3f3f3;
+  --deckgo-highlight-code-token-regex: rgb(25, 249, 216);
+  --deckgo-highlight-code-token-punctuation: #f3f3f3;
+  --deckgo-highlight-code-token-selector: #ff2c6d;
+}
+:host(.theme-paraiso) {
+  --deckgo-highlight-code-carbon-background: #2f1e2e;
+  --deckgo-highlight-code-carbon-color: #b9b6b0;
+  --deckgo-highlight-code-token-atrule: #ef6155;
+  --deckgo-highlight-code-token-comment: #e96ba8;
+  --deckgo-highlight-code-token-function: #48b685;
+  --deckgo-highlight-code-token-operator: #fff;
+  --deckgo-highlight-code-token-property: #48b685;
+  --deckgo-highlight-code-token-punctuation: #b9b6b0;
+  --deckgo-highlight-code-token-regex: #fec418;
+  --deckgo-highlight-code-token-selector: #ef6155;
+}
+
+:host(.theme-seti) {
+  --deckgo-highlight-code-carbon-background: #151718;
+  --deckgo-highlight-code-carbon-color: #cfd2d1;
+  --deckgo-highlight-code-token-atrule: #e6cd69;
+  --deckgo-highlight-code-token-comment: #41535b;
+  --deckgo-highlight-code-token-function: #55b5db;
+  --deckgo-highlight-code-token-operator: #9fca56;
+  --deckgo-highlight-code-token-property: #a074c4;
+  --deckgo-highlight-code-token-regex: #55b5db;
+  --deckgo-highlight-code-token-selector: #55b5db;
+  --deckgo-highlight-code-token-punctuation: #cfd2d1;
+}
+
+:host(.theme-shades-of-purple) {
+  --deckgo-highlight-code-carbon-background: #2d2b55;
+  --deckgo-highlight-code-carbon-color: #fff;
+  --deckgo-highlight-code-token-atrule: #ff9d00;
+  --deckgo-highlight-code-token-comment: #b362ff;
+  --deckgo-highlight-code-token-function: #9effff;
+  --deckgo-highlight-code-token-operator: #ff9d00;
+  --deckgo-highlight-code-token-property: #fad000;
+  --deckgo-highlight-code-token-regex: rgb(165, 255, 144);
+  --deckgo-highlight-code-token-selector: #ffffff;
+  --deckgo-highlight-code-token-punctuation: #fff;
+}
+:host(.theme-solarized-dark) {
+  --deckgo-highlight-code-carbon-background: #002b36;
+  --deckgo-highlight-code-carbon-color: rgb(131, 148, 150);
+  --deckgo-highlight-code-token-atrule: #cb4b16;
+  --deckgo-highlight-code-token-comment: #586e75;
+  --deckgo-highlight-code-token-function: #2aa198;
+  --deckgo-highlight-code-token-operator: #6c7164;
+  --deckgo-highlight-code-token-property: #2aa198;
+  --deckgo-highlight-code-token-regex: rgb(165, 255, 144);
+  --deckgo-highlight-code-token-selector: #93a1a1;
+  --deckgo-highlight-code-token-punctuation: rgb(131, 148, 150);
+}
+:host(.theme-solarized-light) {
+  --deckgo-highlight-code-carbon-background: rgb(253, 246, 227);
+  --deckgo-highlight-code-carbon-color: rgb(101, 123, 131);
+  --deckgo-highlight-code-token-atrule: #cb4b16;
+  --deckgo-highlight-code-token-comment: #586e75;
+  --deckgo-highlight-code-token-function: #2aa198;
+  --deckgo-highlight-code-token-operator: #6c7164;
+  --deckgo-highlight-code-token-property: #2aa198;
+  --deckgo-highlight-code-token-regex: rgb(133, 153, 0);
+  --deckgo-highlight-code-token-selector: #93a1a1;
+  --deckgo-highlight-code-token-punctuation: rgb(101, 123, 131);
+}
+
+:host(.theme-synthwave) {
+  --deckgo-highlight-code-carbon-background: #2b213a;
+  --deckgo-highlight-code-carbon-color: rgb(182, 177, 177);
+  --deckgo-highlight-code-token-atrule: #f4eee4;
+  --deckgo-highlight-code-token-comment: #6d77b3;
+  --deckgo-highlight-code-token-function: #f92aad;
+  --deckgo-highlight-code-token-operator: #f4eee4;
+  --deckgo-highlight-code-token-property: #fdfdfd;
+  --deckgo-highlight-code-token-regex: #ff8b39;
+  --deckgo-highlight-code-token-selector: #b6b1b1;
+  --deckgo-highlight-code-token-punctuation: rgb(182, 177, 177);
+}
+
+:host(.theme-twilight) {
+  --deckgo-highlight-code-carbon-background: #141414;
+  --deckgo-highlight-code-carbon-color: #f7f7f7;
+  --deckgo-highlight-code-token-atrule: #f9ee98;
+  --deckgo-highlight-code-token-comment: #777;
+  --deckgo-highlight-code-token-function: #607392;
+  --deckgo-highlight-code-token-operator: #cda869;
+  --deckgo-highlight-code-token-property: #ffffff;
+  --deckgo-highlight-code-token-regex: #8f9d6a;
+  --deckgo-highlight-code-token-selector: #607392;
+  --deckgo-highlight-code-token-punctuation: #ffffff;
+}
+:host(.theme-verminal) {
+  --deckgo-highlight-code-carbon-background: rgba(0, 0, 0, 0.85);
+  --deckgo-highlight-code-carbon-color: #fff;
+  --deckgo-highlight-code-token-atrule: #9ae1ff;
+  --deckgo-highlight-code-token-comment: #5c6370;
+  --deckgo-highlight-code-token-function: #34b7ff;
+  --deckgo-highlight-code-token-operator: #fa78c3;
+  --deckgo-highlight-code-token-property: #0af;
+  --deckgo-highlight-code-token-regex: rgb(152, 195, 121);
+  --deckgo-highlight-code-token-selector: #e06c75;
+  --deckgo-highlight-code-token-punctuation: #fff;
+}
+:host(.theme-vscode) {
+  --deckgo-highlight-code-carbon-color: rgb(212, 212, 212);
+  --deckgo-highlight-code-carbon-background: rgb(30, 30, 30);
+  --deckgo-highlight-code-token-atrule: rgb(197, 134, 192);
+  --deckgo-highlight-code-token-comment: rgb(106, 153, 85);
+  --deckgo-highlight-code-token-function: rgb(220, 220, 170);
+  --deckgo-highlight-code-token-operator: #d4d4d4;
+  --deckgo-highlight-code-token-property: rgb(220, 220, 170);
+  --deckgo-highlight-code-token-regex: rgb(206, 145, 120);
+  --deckgo-highlight-code-token-selector: #d4d4d4;
+  --deckgo-highlight-code-token-punctuation: rgb(220, 220, 170);
+}
+:host(.theme-yeti) {
+  --deckgo-highlight-code-carbon-background: #eceae8;
+  --deckgo-highlight-code-carbon-color: rgb(209, 201, 192);
+  --deckgo-highlight-code-token-atrule: #9fb96e;
+  --deckgo-highlight-code-token-comment: #d4c8be;
+  --deckgo-highlight-code-token-function: #55b5db;
+  --deckgo-highlight-code-token-operator: #9fb96e;
+  --deckgo-highlight-code-token-property: #a074c4;
+  --deckgo-highlight-code-token-regex: #96c0d8;
+  --deckgo-highlight-code-token-selector: #96c0d8;
+  --deckgo-highlight-code-token-punctuation: rgb(209, 201, 192);
+}
+:host(.theme-zenburn) {
+  --deckgo-highlight-code-carbon-background: #3f3f3f;
+  --deckgo-highlight-code-carbon-color: #dcdccc;
+  --deckgo-highlight-code-token-atrule: #f0dfaf;
+  --deckgo-highlight-code-token-comment: #7f9f7f;
+  --deckgo-highlight-code-token-function: #dcdccc;
+  --deckgo-highlight-code-token-operator: #f0efd0;
+  --deckgo-highlight-code-token-property: #dfaf8f;
+  --deckgo-highlight-code-token-regex: #cc9393;
+  --deckgo-highlight-code-token-selector: #93e0e3;
+  --deckgo-highlight-code-token-punctuation: #dcdccc;
+}
+
 :host(.deckgo-highlight-code-edit) {
   ::slotted([slot="code"]) {
     display: block;
