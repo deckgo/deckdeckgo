@@ -32,7 +32,7 @@ export class DeckdeckgoHighlightCode {
 
   @Prop() editable: boolean = false;
 
-  @Prop() theme:
+  @Prop({reflectToAttr: true}) theme:
     | '3024-night'
     | 'a11y-dark'
     | 'blackboard'
@@ -61,7 +61,7 @@ export class DeckdeckgoHighlightCode {
     | 'verminal'
     | 'vscode'
     | 'yeti'
-    | 'zenburn' = 'zenburn';
+    | 'zenburn' = 'dracula';
 
   @State() editing: boolean = false;
 
@@ -561,42 +561,18 @@ export class DeckdeckgoHighlightCode {
   }
 
   render() {
+    const hostClass = {
+      'deckgo-highlight-code-edit': this.editing,
+      'deckgo-highlight-code-carbon': this.terminal === 'carbon',
+      'deckgo-highlight-code-ubuntu': this.terminal === 'ubuntu',
+    };
+
+    if (this.terminal === 'carbon') {
+      hostClass[`deckgo-highlight-code-theme-${this.theme}`] = true;
+    }
+
     return (
-      <Host
-        class={{
-          'deckgo-highlight-code-edit': this.editing,
-          'deckgo-highlight-code-carbon': this.terminal === 'carbon',
-          'deckgo-highlight-code-ubuntu': this.terminal === 'ubuntu',
-          'theme-3024-night': this.terminal === 'carbon' && this.theme === '3024-night',
-          'theme-a11y-dark': this.terminal === 'carbon' && this.theme === 'a11y-dark',
-          'theme-blackboard': this.terminal === 'carbon' && this.theme === 'blackboard',
-          'theme-base16-dark': this.terminal === 'carbon' && this.theme === 'base16-dark',
-          'theme-base16-light': this.terminal === 'carbon' && this.theme === 'base16-light',
-          'theme-cobalt': this.terminal === 'carbon' && this.theme === 'cobalt',
-          'theme-dracula': this.terminal === 'carbon' && this.theme === 'dracula',
-          'theme-duotone': this.terminal === 'carbon' && this.theme === 'duotone',
-          'theme-hopscotch': this.terminal === 'carbon' && this.theme === 'hopscotch',
-          'theme-lucario': this.terminal === 'carbon' && this.theme === 'lucario',
-          'theme-material': this.terminal === 'carbon' && this.theme === 'material',
-          'theme-monokai': this.terminal === 'carbon' && this.theme === 'monokai',
-          'theme-night-owl': this.terminal === 'carbon' && this.theme === 'night-owl',
-          'theme-nord': this.terminal === 'carbon' && this.theme === 'nord',
-          'theme-oceanic-next': this.terminal === 'carbon' && this.theme === 'oceanic-next',
-          'theme-one-light': this.terminal === 'carbon' && this.theme === 'one-light',
-          'theme-one-dark': this.terminal === 'carbon' && this.theme === 'one-dark',
-          'theme-panda': this.terminal === 'carbon' && this.theme === 'panda',
-          'theme-paraiso': this.terminal === 'carbon' && this.theme === 'paraiso',
-          'theme-seti': this.terminal === 'carbon' && this.theme === 'seti',
-          'theme-shades-of-purple': this.terminal === 'carbon' && this.theme === 'shades-of-purple',
-          'theme-solarized-dark': this.terminal === 'carbon' && this.theme === 'solarized-dark',
-          'theme-solarized-light': this.terminal === 'carbon' && this.theme === 'solarized-light',
-          'theme-synthwave': this.terminal === 'carbon' && this.theme === 'synthwave',
-          'theme-twilight': this.terminal === 'carbon' && this.theme === 'twilight',
-          'theme-verminal': this.terminal === 'carbon' && this.theme === 'verminal',
-          'theme-vscode': this.terminal === 'carbon' && this.theme === 'vscode',
-          'theme-yeti': this.terminal === 'carbon' && this.theme === 'yeti',
-          'theme-zenburn': this.terminal === 'carbon' && this.theme === 'zenburn',
-        }}>
+      <Host class={hostClass}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
         <div class="deckgo-highlight-code-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>

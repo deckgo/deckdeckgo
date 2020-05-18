@@ -6,7 +6,7 @@
   }
 }
 
-:host(.theme-3024-night) {
+:host(.deckgo-highlight-code-theme-3024-night) {
   --deckgo-highlight-code-carbon-background: #090300;
   --deckgo-highlight-code-carbon-color: #d6d5d4;
   --deckgo-highlight-code-token-atrule: #db2d20;
@@ -18,7 +18,7 @@
   --deckgo-highlight-code-token-selector: #db2d20;
   --deckgo-highlight-code-token-operator: #fff;
 }
-:host(.theme-a11y-dark) {
+:host(.deckgo-highlight-code-theme-a11y-dark) {
   --deckgo-highlight-code-carbon-background: #2b2b2b;
   --deckgo-highlight-code-carbon-color: #f8f8f2;
   --deckgo-highlight-code-token-atrule: #ffa07a;
@@ -31,7 +31,7 @@
   --deckgo-highlight-code-token-operator: #f8f8f2;
 }
 
-:host(.theme-blackboard) {
+:host(.deckgo-highlight-code-theme-blackboard) {
   --deckgo-highlight-code-carbon-background: #0c1021;
   --deckgo-highlight-code-carbon-color: #f8f8f8;
   --deckgo-highlight-code-token-atrule: #fbde2d;
@@ -44,7 +44,7 @@
   --deckgo-highlight-code-token-selector: #8da6ce;
 }
 
-:host(.theme-base16-dark) {
+:host(.deckgo-highlight-code-theme-base16-dark) {
   --deckgo-highlight-code-carbon-background: #151515;
   --deckgo-highlight-code-carbon-color: #e0e0e0;
   --deckgo-highlight-code-token-atrule: #ac4142;
@@ -56,7 +56,7 @@
   --deckgo-highlight-code-token-regex: #f4bf75;
   --deckgo-highlight-code-token-selector: #ac4142;
 }
-:host(.theme-base16-light) {
+:host(.deckgo-highlight-code-theme-base16-light) {
   --deckgo-highlight-code-carbon-background: #f5f5f5;
   --deckgo-highlight-code-carbon-color: #202020;
   --deckgo-highlight-code-token-atrule: #ac4142;
@@ -69,7 +69,7 @@
   --deckgo-highlight-code-token-selector: #ac4142;
 }
 
-:host(.theme-cobalt) {
+:host(.deckgo-highlight-code-theme-cobalt) {
   --deckgo-highlight-code-carbon-background: #002240;
   --deckgo-highlight-code-carbon-color: #fff;
   --deckgo-highlight-code-token-atrule: #ffee80;
@@ -82,7 +82,7 @@
   --deckgo-highlight-code-token-operator: #ffffff;
 }
 
-:host(.theme-dracula) {
+:host(.deckgo-highlight-code-theme-dracula) {
   --deckgo-highlight-code-carbon-background: #282a36;
   --deckgo-highlight-code-carbon-color: #ffffff;
   --deckgo-highlight-code-token-atrule: #ff79c6; //get from JAVA interface color
@@ -95,7 +95,7 @@
   --deckgo-highlight-code-token-regex: #f1fa8c; // get from JAVASCROIP REGEX
 }
 
-:host(.theme-duotone) {
+:host(.deckgo-highlight-code-theme-duotone) {
   --deckgo-highlight-code-carbon-background: #2a2734;
   --deckgo-highlight-code-carbon-color: #eeebff;
   --deckgo-highlight-code-token-atrule: #ffcc99;
@@ -107,7 +107,7 @@
   --deckgo-highlight-code-token-selector: #eeebff;
   --deckgo-highlight-code-token-regex: #ffb870;
 }
-:host(.theme-hopscotch) {
+:host(.deckgo-highlight-code-theme-hopscotch) {
   --deckgo-highlight-code-carbon-background: #322931;
   --deckgo-highlight-code-carbon-color: #d5d3d5;
   --deckgo-highlight-code-token-atrule: #dd464c;
@@ -120,7 +120,7 @@
   --deckgo-highlight-code-token-selector: #dd464c;
 }
 
-:host(.theme-lucario) {
+:host(.deckgo-highlight-code-theme-lucario) {
   --deckgo-highlight-code-carbon-background: #2b3e50;
   --deckgo-highlight-code-carbon-color: rgb(248, 248, 242);
   --deckgo-highlight-code-token-atrule: #ff6541;
@@ -132,7 +132,7 @@
   --deckgo-highlight-code-token-regex: #e6db74;
   --deckgo-highlight-code-token-selector: #ff6541;
 }
-:host(.theme-material) {
+:host(.deckgo-highlight-code-theme-material) {
   --deckgo-highlight-code-carbon-background: #263238;
   --deckgo-highlight-code-carbon-color: rgb(233, 237, 237);
   --deckgo-highlight-code-token-atrule: rgba(199, 146, 234);
@@ -145,7 +145,7 @@
   --deckgo-highlight-code-token-selector: #ff5370;
 }
 
-:host(.theme-monokai) {
+:host(.deckgo-highlight-code-theme-monokai) {
   --deckgo-highlight-code-carbon-background: #272822;
   --deckgo-highlight-code-carbon-color: #f8f8f2;
   --deckgo-highlight-code-token-atrule: #f92672;
@@ -157,7 +157,7 @@
   --deckgo-highlight-code-token-regex: #e6db74;
   --deckgo-highlight-code-token-selector: #f92672;
 }
-:host(.theme-night-owl) {
+:host(.deckgo-highlight-code-theme-night-owl) {
   --deckgo-highlight-code-carbon-background: #011627;
   --deckgo-highlight-code-carbon-color: rgb(171, 178, 191);
   --deckgo-highlight-code-token-atrule: #c792ea;
@@ -169,7 +169,7 @@
   --deckgo-highlight-code-token-regex: #ecc48b;
   --deckgo-highlight-code-token-selector: #abb2bf;
 }
-:host(.theme-nord) {
+:host(.deckgo-highlight-code-theme-nord) {
   --deckgo-highlight-code-carbon-background: #2e3440;
   --deckgo-highlight-code-carbon-color: #d8dee9;
   --deckgo-highlight-code-token-atrule: #81a1ca;
@@ -182,7 +182,7 @@
   --deckgo-highlight-code-token-selector: #81a1c1;
 }
 
-:host(.theme-oceanic-next) {
+:host(.deckgo-highlight-code-theme-oceanic-next) {
   --deckgo-highlight-code-carbon-background: #304148;
   --deckgo-highlight-code-carbon-color: #f8f8f2;
   --deckgo-highlight-code-token-atrule: #c594c5;
@@ -195,7 +195,7 @@
   --deckgo-highlight-code-token-selector: #c594c5;
 }
 
-:host(.theme-one-light) {
+:host(.deckgo-highlight-code-theme-one-light) {
   --deckgo-highlight-code-carbon-background: #fafafa;
   --deckgo-highlight-code-carbon-color: rgb(56, 58, 66);
   --deckgo-highlight-code-token-atrule: #a626a4;
@@ -207,7 +207,7 @@
   --deckgo-highlight-code-token-regex: rgb(80, 161, 79);
   --deckgo-highlight-code-token-selector: #e45649;
 }
-:host(.theme-one-dark) {
+:host(.deckgo-highlight-code-theme-one-dark) {
   --deckgo-highlight-code-carbon-background: #282c34;
   --deckgo-highlight-code-carbon-color: rgb(171, 178, 191);
   --deckgo-highlight-code-token-atrule: #c678dd;
@@ -220,7 +220,7 @@
   --deckgo-highlight-code-token-selector: #e06c75;
 }
 
-:host(.theme-panda) {
+:host(.deckgo-highlight-code-theme-panda) {
   --deckgo-highlight-code-carbon-background: #292a2b;
   --deckgo-highlight-code-carbon-color: #e6e6e6;
   --deckgo-highlight-code-token-atrule: #ff75b5;
@@ -232,7 +232,7 @@
   --deckgo-highlight-code-token-punctuation: #f3f3f3;
   --deckgo-highlight-code-token-selector: #ff2c6d;
 }
-:host(.theme-paraiso) {
+:host(.deckgo-highlight-code-theme-paraiso) {
   --deckgo-highlight-code-carbon-background: #2f1e2e;
   --deckgo-highlight-code-carbon-color: #b9b6b0;
   --deckgo-highlight-code-token-atrule: #ef6155;
@@ -245,7 +245,7 @@
   --deckgo-highlight-code-token-selector: #ef6155;
 }
 
-:host(.theme-seti) {
+:host(.deckgo-highlight-code-theme-seti) {
   --deckgo-highlight-code-carbon-background: #151718;
   --deckgo-highlight-code-carbon-color: #cfd2d1;
   --deckgo-highlight-code-token-atrule: #e6cd69;
@@ -258,7 +258,7 @@
   --deckgo-highlight-code-token-punctuation: #cfd2d1;
 }
 
-:host(.theme-shades-of-purple) {
+:host(.deckgo-highlight-code-theme-shades-of-purple) {
   --deckgo-highlight-code-carbon-background: #2d2b55;
   --deckgo-highlight-code-carbon-color: #fff;
   --deckgo-highlight-code-token-atrule: #ff9d00;
@@ -270,7 +270,7 @@
   --deckgo-highlight-code-token-selector: #ffffff;
   --deckgo-highlight-code-token-punctuation: #fff;
 }
-:host(.theme-solarized-dark) {
+:host(.deckgo-highlight-code-theme-solarized-dark) {
   --deckgo-highlight-code-carbon-background: #002b36;
   --deckgo-highlight-code-carbon-color: rgb(131, 148, 150);
   --deckgo-highlight-code-token-atrule: #cb4b16;
@@ -282,7 +282,7 @@
   --deckgo-highlight-code-token-selector: #93a1a1;
   --deckgo-highlight-code-token-punctuation: rgb(131, 148, 150);
 }
-:host(.theme-solarized-light) {
+:host(.deckgo-highlight-code-theme-solarized-light) {
   --deckgo-highlight-code-carbon-background: rgb(253, 246, 227);
   --deckgo-highlight-code-carbon-color: rgb(101, 123, 131);
   --deckgo-highlight-code-token-atrule: #cb4b16;
@@ -295,7 +295,7 @@
   --deckgo-highlight-code-token-punctuation: rgb(101, 123, 131);
 }
 
-:host(.theme-synthwave) {
+:host(.deckgo-highlight-code-theme-synthwave) {
   --deckgo-highlight-code-carbon-background: #2b213a;
   --deckgo-highlight-code-carbon-color: rgb(182, 177, 177);
   --deckgo-highlight-code-token-atrule: #f4eee4;
@@ -308,7 +308,7 @@
   --deckgo-highlight-code-token-punctuation: rgb(182, 177, 177);
 }
 
-:host(.theme-twilight) {
+:host(.deckgo-highlight-code-theme-twilight) {
   --deckgo-highlight-code-carbon-background: #141414;
   --deckgo-highlight-code-carbon-color: #f7f7f7;
   --deckgo-highlight-code-token-atrule: #f9ee98;
@@ -320,7 +320,7 @@
   --deckgo-highlight-code-token-selector: #607392;
   --deckgo-highlight-code-token-punctuation: #ffffff;
 }
-:host(.theme-verminal) {
+:host(.deckgo-highlight-code-theme-verminal) {
   --deckgo-highlight-code-carbon-background: rgba(0, 0, 0, 0.85);
   --deckgo-highlight-code-carbon-color: #fff;
   --deckgo-highlight-code-token-atrule: #9ae1ff;
@@ -332,7 +332,7 @@
   --deckgo-highlight-code-token-selector: #e06c75;
   --deckgo-highlight-code-token-punctuation: #fff;
 }
-:host(.theme-vscode) {
+:host(.deckgo-highlight-code-theme-vscode) {
   --deckgo-highlight-code-carbon-color: rgb(212, 212, 212);
   --deckgo-highlight-code-carbon-background: rgb(30, 30, 30);
   --deckgo-highlight-code-token-atrule: rgb(197, 134, 192);
@@ -344,7 +344,7 @@
   --deckgo-highlight-code-token-selector: #d4d4d4;
   --deckgo-highlight-code-token-punctuation: rgb(220, 220, 170);
 }
-:host(.theme-yeti) {
+:host(.deckgo-highlight-code-theme-yeti) {
   --deckgo-highlight-code-carbon-background: #eceae8;
   --deckgo-highlight-code-carbon-color: rgb(209, 201, 192);
   --deckgo-highlight-code-token-atrule: #9fb96e;
@@ -356,7 +356,7 @@
   --deckgo-highlight-code-token-selector: #96c0d8;
   --deckgo-highlight-code-token-punctuation: rgb(209, 201, 192);
 }
-:host(.theme-zenburn) {
+:host(.deckgo-highlight-code-theme-zenburn) {
   --deckgo-highlight-code-carbon-background: #3f3f3f;
   --deckgo-highlight-code-carbon-color: #dcdccc;
   --deckgo-highlight-code-token-atrule: #f0dfaf;
