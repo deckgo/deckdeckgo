@@ -323,6 +323,28 @@ export class AppComponentsHighlightCode {
                   <code>carbon</code>
                 </td>
               </tr>
+              <tr>
+                <td>
+                  <code>theme</code>
+                </td>
+                <td>
+                  <code>theme</code>
+                </td>
+                <td>
+                  The theme of the selected <code>terminal</code> (applied only in case of <code>carbon</code>)
+                </td>
+                <td>
+                  <code>3024-night</code>, <code>a11y-dark</code>, <code>blackboard</code>, <code>base16-dark</code>, <code>base16-light</code>,{' '}
+                  <code>cobalt</code>, <code>dracula</code>, <code>duotone</code>, <code>hopscotch</code>, <code>lucario</code>, <code>material</code>,{' '}
+                  <code>monokai</code>, <code>night-owl</code>, <code>nord</code>, <code>oceanic-next</code>, <code>one-light</code>, <code>one-dark</code>,{' '}
+                  <code>panda</code>, <code>paraiso</code>, <code>seti</code>, <code>shades-of-purple</code>, <code>solarized-dark</code>,{' '}
+                  <code>solarized-light</code>, <code>synthwave</code>, <code>twilight</code>, <code>verminal</code>, <code>vscode</code>, <code>yeti</code> and{' '}
+                  <code>zenburn</code>
+                </td>
+                <td>
+                  <code>dracula</code>
+                </td>
+              </tr>
             </tbody>
           </table>
           <h3 id="app-components-highlight-code-fonts">Fonts</h3>
