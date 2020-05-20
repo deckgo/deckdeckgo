@@ -38,7 +38,7 @@ export class DeckdeckgoHighlightCode {
 
   @Prop() editable: boolean = false;
 
-  @Prop({reflectToAttr: true}) theme: DeckdeckgoCarbonTheme = 'dracula';
+  @Prop({reflectToAttr: true}) theme: DeckdeckgoCarbonTheme = DeckdeckgoCarbonTheme.DRACULA;
 
   @State() editing: boolean = false;
 
