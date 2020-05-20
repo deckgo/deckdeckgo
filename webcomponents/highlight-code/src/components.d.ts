@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { DeckdeckgoHighlightCodeTerminal, } from "./declarations/deckdeckgo-highlight-code-terminal";
 import { DeckdeckgoCarbonTheme, } from "./declarations/deckdeckgo-highlight-code-carbon-theme";
 import { DeckdeckgoHighlightCodeAnchor, } from "./declarations/deckdeckgo-highlight-code-anchor";
 export namespace Components {
@@ -19,7 +20,7 @@ export namespace Components {
         "lineNumbers": boolean;
         "load": () => Promise<void>;
         "src": string;
-        "terminal": "carbon" | "ubuntu" | "none";
+        "terminal": DeckdeckgoHighlightCodeTerminal;
         "theme": DeckdeckgoCarbonTheme;
         "zoomCode": (zoom: boolean) => Promise<void>;
     }
@@ -47,7 +48,7 @@ declare namespace LocalJSX {
         "onCodeDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onPrismLanguageLoaded"?: (event: CustomEvent<string>) => void;
         "src"?: string;
-        "terminal"?: "carbon" | "ubuntu" | "none";
+        "terminal"?: DeckdeckgoHighlightCodeTerminal;
         "theme"?: DeckdeckgoCarbonTheme;
     }
     interface IntrinsicElements {
