@@ -8,69 +8,69 @@ export const Theme: FunctionalComponent<{style: string}> = ({style}) => {
   );
 };
 
-export async function loadTheme(themeName: string | undefined): Promise<{theme} | undefined> {
+export function loadTheme(themeName: string | undefined): Promise<{theme} | undefined> {
   if (!themeName || themeName === undefined) {
     return undefined;
   }
 
   switch (themeName) {
     case '3024-night':
-      return await import(`../themes/3024-night`);
+      return import(`../themes/3024-night`);
     case 'a11y-dark':
-      return await import(`../themes/a11y-dark`);
+      return import(`../themes/a11y-dark`);
     case 'base16-dark':
-      return await import(`../themes/base16-dark`);
+      return import(`../themes/base16-dark`);
     case 'base16-light':
-      return await import(`../themes/base16-light`);
+      return import(`../themes/base16-light`);
     case 'blackboard':
-      return await import(`../themes/blackboard`);
+      return import(`../themes/blackboard`);
     case 'cobalt':
-      return await import(`../themes/cobalt`);
+      return import(`../themes/cobalt`);
     case 'duotone':
-      return await import(`../themes/duotone`);
+      return import(`../themes/duotone`);
     case 'hopscotch':
-      return await import(`../themes/hopscotch`);
+      return import(`../themes/hopscotch`);
     case 'lucario':
-      return await import(`../themes/lucario`);
+      return import(`../themes/lucario`);
     case 'material':
-      return await import(`../themes/material`);
+      return import(`../themes/material`);
     case 'monokai':
-      return await import(`../themes/monokai`);
+      return import(`../themes/monokai`);
     case 'night-owl':
-      return await import(`../themes/night-owl`);
+      return import(`../themes/night-owl`);
     case 'nord':
-      return await import(`../themes/nord`);
+      return import(`../themes/nord`);
     case 'oceanic-next':
-      return await import(`../themes/oceanic-next`);
+      return import(`../themes/oceanic-next`);
     case 'one-dark':
-      return await import(`../themes/one-dark`);
+      return import(`../themes/one-dark`);
     case 'one-light':
-      return await import(`../themes/one-light`);
+      return import(`../themes/one-light`);
     case 'panda':
-      return await import(`../themes/panda`);
+      return import(`../themes/panda`);
     case 'paraiso':
-      return await import(`../themes/paraiso`);
+      return import(`../themes/paraiso`);
     case 'seti':
-      return await import(`../themes/seti`);
+      return import(`../themes/seti`);
     case 'shades-of-purple':
-      return await import(`../themes/shades-of-purple`);
+      return import(`../themes/shades-of-purple`);
     case 'solarized-dark':
-      return await import(`../themes/solarized-dark`);
+      return import(`../themes/solarized-dark`);
     case 'solarized-light':
-      return await import(`../themes/solarized-light`);
+      return import(`../themes/solarized-light`);
     case 'synthwave':
-      return await import(`../themes/synthwave`);
+      return import(`../themes/synthwave`);
     case 'twilight':
-      return await import(`../themes/twilight`);
+      return import(`../themes/twilight`);
     case 'verminal':
-      return await import(`../themes/verminal`);
+      return import(`../themes/verminal`);
     case 'vscode':
-      return await import(`../themes/vscode`);
+      return import(`../themes/vscode`);
     case 'yeti':
-      return await import(`../themes/yeti`);
+      return import(`../themes/yeti`);
     case 'zenburn':
-      return await import(`../themes/zenburn`);
+      return import(`../themes/zenburn`);
     default:
-      return await import(`../themes/dracula`);
+      return import(`../themes/dracula`);
   }
 }
