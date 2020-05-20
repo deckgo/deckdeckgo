@@ -4,6 +4,8 @@ import Prism from 'prismjs';
 
 import {injectCSS} from '@deckdeckgo/utils';
 
+import {loadTheme, Theme} from '../themes/deckdeckgo-highlight-code-theme';
+
 import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
 
 @Component({
@@ -69,8 +71,13 @@ export class DeckdeckgoHighlightCode {
 
   private fetchOrParseAfterUpdate: boolean = false;
 
+  @State()
+  private themeStyle: string | undefined;
+
   async componentWillLoad() {
     await this.loadGoogleFonts();
+
+    await this.loadTheme();
   }
 
   async componentDidLoad() {
@@ -88,6 +95,17 @@ export class DeckdeckgoHighlightCode {
       await this.fetchOrParse();
       this.fetchOrParseAfterUpdate = false;
     }
+  }
+
+  @Watch('theme')
+  async loadTheme() {
+    if (this.terminal !== 'carbon' || !this.theme) {
+      this.themeStyle = undefined;
+      return;
+    }
+
+    const {theme} = await loadTheme(this.theme);
+    this.themeStyle = theme;
   }
 
   @Listen('prismLanguageLoaded', {target: 'document'})
@@ -588,13 +606,14 @@ export class DeckdeckgoHighlightCode {
       return undefined;
     }
 
-    return (
+    return [
+      <Theme style={this.themeStyle} />,
       <div class="carbon">
         {this.renderCarbonCircle('red')}
         {this.renderCarbonCircle('yellow')}
         {this.renderCarbonCircle('green')}
-      </div>
-    );
+      </div>,
+    ];
   }
 
   private renderCarbonCircle(color: 'red' | 'yellow' | 'green') {
