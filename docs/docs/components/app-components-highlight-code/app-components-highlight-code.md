@@ -28,11 +28,52 @@ Moreover, per default, your code will be displayed in form of a stylish "windowe
 
 Carbon terminal card:
 
-```java
-public static void main(String args[]) {
-  System.out.println("Hello World");
-}
-```
+<div>
+    <deckgo-highlight-code theme={this.theme}>
+    <code slot="code">console.log('Hello World');</code>
+    </deckgo-highlight-code>
+</div>
+
+<div class="ion-margin-bottom">
+    <small>Theme:&nbsp;</small>
+    <select style={{color: 'black'}}
+        ref={(el) => (this.selectTheme = el as HTMLSelectElement)}
+        onChange={() => {
+          this.theme = this.selectTheme.value as DeckdeckgoCarbonTheme;
+        }}>
+        <option value="3024-night">3024-night</option>
+        <option value="a11y-dark">a11y-dark</option>
+        <option value="blackboard">blackboard</option>
+        <option value="base16-dark">base16-dark</option>
+        <option value="base16-light">base16-light</option>
+        <option value="cobalt">cobalt</option>
+        <option value="dracula" selected={true}>
+          dracula
+        </option>
+        <option value="duotone">duotone</option>
+        <option value="hopscotch">hopscotch</option>
+        <option value="lucario">lucario</option>
+        <option value="material">material</option>
+        <option value="monokai">monokai</option>
+        <option value="night-owl">night-owl</option>
+        <option value="nord">nord</option>
+        <option value="oceanic-next">oceanic-next</option>
+        <option value="one-light">one-light</option>
+        <option value="one-dark">one-dark</option>
+        <option value="panda">panda</option>
+        <option value="paraiso">paraiso</option>
+        <option value="seti">seti</option>
+        <option value="shades-of-purple">shades-of-purple</option>
+        <option value="solarized-dark">solarized-dark</option>
+        <option value="solarized-light">solarized-light</option>
+        <option value="synthwave">synthwave</option>
+        <option value="twilight">twilight</option>
+        <option value="verminal">verminal</option>
+        <option value="vscode">vscode</option>
+        <option value="yeti">yeti</option>
+        <option value="zenburn">zenburn</option>
+    </select>
+</div>
 
 <div class="ion-padding-top">Ubuntu terminal card:</div>
 
