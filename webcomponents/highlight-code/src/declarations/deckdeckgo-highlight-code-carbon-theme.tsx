@@ -1,4 +1,4 @@
-export enum DeckdeckgoCarbonTheme {
+export enum DeckdeckgoHighlightCodeCarbonTheme {
   '3024-NIGHT' = '3024-night',
   'A11Y-DARK' = 'a11y-dark',
   BLACKBOARD = 'blackboard',

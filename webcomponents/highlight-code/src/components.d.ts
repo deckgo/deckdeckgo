@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DeckdeckgoHighlightCodeTerminal, } from "./declarations/deckdeckgo-highlight-code-terminal";
-import { DeckdeckgoCarbonTheme, } from "./declarations/deckdeckgo-highlight-code-carbon-theme";
+import { DeckdeckgoHighlightCodeCarbonTheme, } from "./declarations/deckdeckgo-highlight-code-carbon-theme";
 import { DeckdeckgoHighlightCodeAnchor, } from "./declarations/deckdeckgo-highlight-code-anchor";
 export namespace Components {
     interface DeckgoHighlightCode {
@@ -21,7 +21,7 @@ export namespace Components {
         "load": () => Promise<void>;
         "src": string;
         "terminal": DeckdeckgoHighlightCodeTerminal;
-        "theme": DeckdeckgoCarbonTheme;
+        "theme": DeckdeckgoHighlightCodeCarbonTheme;
         "zoomCode": (zoom: boolean) => Promise<void>;
     }
 }
@@ -49,7 +49,7 @@ declare namespace LocalJSX {
         "onPrismLanguageLoaded"?: (event: CustomEvent<string>) => void;
         "src"?: string;
         "terminal"?: DeckdeckgoHighlightCodeTerminal;
-        "theme"?: DeckdeckgoCarbonTheme;
+        "theme"?: DeckdeckgoHighlightCodeCarbonTheme;
     }
     interface IntrinsicElements {
         "deckgo-highlight-code": DeckgoHighlightCode;

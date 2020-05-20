@@ -39,11 +39,11 @@ Carbon terminal card:
     <select style={{color: 'black'}}
         ref={(el) => (this.selectTheme = el as HTMLSelectElement)}
         onChange={() => {
-          this.theme = this.selectTheme.value as DeckdeckgoCarbonTheme;
+          this.theme = this.selectTheme.value as DeckdeckgoHighlightCodeCarbonTheme;
         }}>
         {
-            Object.keys(DeckdeckgoCarbonTheme).map((key: DeckdeckgoCarbonTheme) => {
-              return <option selected={DeckdeckgoCarbonTheme[key] === DeckdeckgoCarbonTheme.DRACULA} value={DeckdeckgoCarbonTheme[key]}>{DeckdeckgoCarbonTheme[key].replace(/^\w/, (c) => c.toUpperCase())}</option>
+            Object.keys(DeckdeckgoHighlightCodeCarbonTheme).map((key: DeckdeckgoHighlightCodeCarbonTheme) => {
+              return <option selected={DeckdeckgoHighlightCodeCarbonTheme[key] === DeckdeckgoHighlightCodeCarbonTheme.DRACULA} value={DeckdeckgoHighlightCodeCarbonTheme[key]}>{DeckdeckgoHighlightCodeCarbonTheme[key].replace(/^\w/, (c) => c.toUpperCase())}</option>
             })
         }
     </select>

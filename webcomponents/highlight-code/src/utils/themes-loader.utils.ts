@@ -1,66 +1,66 @@
-import {DeckdeckgoCarbonTheme} from '../declarations/deckdeckgo-highlight-code-carbon-theme';
+import {DeckdeckgoHighlightCodeCarbonTheme} from '../declarations/deckdeckgo-highlight-code-carbon-theme';
 
-export function loadTheme(theme: DeckdeckgoCarbonTheme | undefined): Promise<{theme} | undefined> {
+export function loadTheme(theme: DeckdeckgoHighlightCodeCarbonTheme | undefined): Promise<{theme} | undefined> {
   if (!theme || theme === undefined) {
     return undefined;
   }
 
   switch (theme) {
-    case DeckdeckgoCarbonTheme['3024-NIGHT']:
+    case DeckdeckgoHighlightCodeCarbonTheme['3024-NIGHT']:
       return import(`../components/themes/3024-night`);
-    case DeckdeckgoCarbonTheme['A11Y-DARK']:
+    case DeckdeckgoHighlightCodeCarbonTheme['A11Y-DARK']:
       return import(`../components/themes/a11y-dark`);
-    case DeckdeckgoCarbonTheme['BASE16-DARK']:
+    case DeckdeckgoHighlightCodeCarbonTheme['BASE16-DARK']:
       return import(`../components/themes/base16-dark`);
-    case DeckdeckgoCarbonTheme['BASE16-LIGHT']:
+    case DeckdeckgoHighlightCodeCarbonTheme['BASE16-LIGHT']:
       return import(`../components/themes/base16-light`);
-    case DeckdeckgoCarbonTheme.BLACKBOARD:
+    case DeckdeckgoHighlightCodeCarbonTheme.BLACKBOARD:
       return import(`../components/themes/blackboard`);
-    case DeckdeckgoCarbonTheme.COBALT:
+    case DeckdeckgoHighlightCodeCarbonTheme.COBALT:
       return import(`../components/themes/cobalt`);
-    case DeckdeckgoCarbonTheme.DUOTONE:
+    case DeckdeckgoHighlightCodeCarbonTheme.DUOTONE:
       return import(`../components/themes/duotone`);
-    case DeckdeckgoCarbonTheme.HOPSCOTCH:
+    case DeckdeckgoHighlightCodeCarbonTheme.HOPSCOTCH:
       return import(`../components/themes/hopscotch`);
-    case DeckdeckgoCarbonTheme.LUCARIO:
+    case DeckdeckgoHighlightCodeCarbonTheme.LUCARIO:
       return import(`../components/themes/lucario`);
-    case DeckdeckgoCarbonTheme.MATERIAL:
+    case DeckdeckgoHighlightCodeCarbonTheme.MATERIAL:
       return import(`../components/themes/material`);
-    case DeckdeckgoCarbonTheme.MONOKAI:
+    case DeckdeckgoHighlightCodeCarbonTheme.MONOKAI:
       return import(`../components/themes/monokai`);
-    case DeckdeckgoCarbonTheme['NIGHT-OWL']:
+    case DeckdeckgoHighlightCodeCarbonTheme['NIGHT-OWL']:
       return import(`../components/themes/night-owl`);
-    case DeckdeckgoCarbonTheme.NORD:
+    case DeckdeckgoHighlightCodeCarbonTheme.NORD:
       return import(`../components/themes/nord`);
-    case DeckdeckgoCarbonTheme['OCEANIC-NEXT']:
+    case DeckdeckgoHighlightCodeCarbonTheme['OCEANIC-NEXT']:
       return import(`../components/themes/oceanic-next`);
-    case DeckdeckgoCarbonTheme['ONE-DARK']:
+    case DeckdeckgoHighlightCodeCarbonTheme['ONE-DARK']:
       return import(`../components/themes/one-dark`);
-    case DeckdeckgoCarbonTheme['ONE-LIGHT']:
+    case DeckdeckgoHighlightCodeCarbonTheme['ONE-LIGHT']:
       return import(`../components/themes/one-light`);
-    case DeckdeckgoCarbonTheme.PANDA:
+    case DeckdeckgoHighlightCodeCarbonTheme.PANDA:
       return import(`../components/themes/panda`);
-    case DeckdeckgoCarbonTheme.PARAISO:
+    case DeckdeckgoHighlightCodeCarbonTheme.PARAISO:
       return import(`../components/themes/paraiso`);
-    case DeckdeckgoCarbonTheme.SETI:
+    case DeckdeckgoHighlightCodeCarbonTheme.SETI:
       return import(`../components/themes/seti`);
-    case DeckdeckgoCarbonTheme['SHADES-OF-PURPLE']:
+    case DeckdeckgoHighlightCodeCarbonTheme['SHADES-OF-PURPLE']:
       return import(`../components/themes/shades-of-purple`);
-    case DeckdeckgoCarbonTheme['SOLARIZED-DARK']:
+    case DeckdeckgoHighlightCodeCarbonTheme['SOLARIZED-DARK']:
       return import(`../components/themes/solarized-dark`);
-    case DeckdeckgoCarbonTheme['SOLARIZED-LIGHT']:
+    case DeckdeckgoHighlightCodeCarbonTheme['SOLARIZED-LIGHT']:
       return import(`../components/themes/solarized-light`);
-    case DeckdeckgoCarbonTheme.SYNTHWAVE:
+    case DeckdeckgoHighlightCodeCarbonTheme.SYNTHWAVE:
       return import(`../components/themes/synthwave`);
-    case DeckdeckgoCarbonTheme.TWILIGHT:
+    case DeckdeckgoHighlightCodeCarbonTheme.TWILIGHT:
       return import(`../components/themes/twilight`);
-    case DeckdeckgoCarbonTheme.VERMINAL:
+    case DeckdeckgoHighlightCodeCarbonTheme.VERMINAL:
       return import(`../components/themes/verminal`);
-    case DeckdeckgoCarbonTheme.VSCODE:
+    case DeckdeckgoHighlightCodeCarbonTheme.VSCODE:
       return import(`../components/themes/vscode`);
-    case DeckdeckgoCarbonTheme.YETI:
+    case DeckdeckgoHighlightCodeCarbonTheme.YETI:
       return import(`../components/themes/yeti`);
-    case DeckdeckgoCarbonTheme.ZENBURN:
+    case DeckdeckgoHighlightCodeCarbonTheme.ZENBURN:
       return import(`../components/themes/zenburn`);
     default:
       return import(`../components/themes/dracula`);

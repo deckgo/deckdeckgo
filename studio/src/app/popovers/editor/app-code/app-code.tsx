@@ -2,7 +2,7 @@ import {Component, Element, EventEmitter, Prop, State, h} from '@stencil/core';
 
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
-import {DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
+import {DeckdeckgoHighlightCodeTerminal, DeckdeckgoHighlightCodeCarbonTheme} from '@deckdeckgo/highlight-code';
 
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
@@ -39,6 +39,9 @@ export class AppCode {
   @State()
   private terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
 
+  @State()
+  private theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
+
   private prismService: PrismService;
 
   constructor() {
@@ -63,6 +66,11 @@ export class AppCode {
         this.selectedElement && this.selectedElement.hasAttribute('terminal')
           ? (this.selectedElement.getAttribute('terminal') as DeckdeckgoHighlightCodeTerminal)
           : DeckdeckgoHighlightCodeTerminal.CARBON;
+
+      this.theme =
+        this.selectedElement && this.selectedElement.hasAttribute('theme')
+          ? (this.selectedElement.getAttribute('theme') as DeckdeckgoHighlightCodeCarbonTheme)
+          : DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
       resolve();
     });
@@ -133,7 +141,7 @@ export class AppCode {
     });
   }
 
-  private toggleTerminal($event: CustomEvent): Promise<void> {
+  private toggle($event: CustomEvent, attribute: 'terminal' | 'theme'): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!$event || !$event.detail) {
         resolve();
@@ -145,9 +153,13 @@ export class AppCode {
         return;
       }
 
-      this.terminal = $event.detail.value;
+      if (attribute === 'terminal') {
+        this.terminal = $event.detail.value;
+      } else if (attribute === 'theme') {
+        this.theme = $event.detail.value;
+      }
 
-      this.selectedElement.setAttribute('terminal', $event.detail.value);
+      this.selectedElement.setAttribute(attribute, $event.detail.value);
 
       this.emitCodeDidChange();
 
@@ -247,12 +259,35 @@ export class AppCode {
           <ion-select
             value={this.terminal}
             placeholder="Select a terminal"
-            onIonChange={($event: CustomEvent) => this.toggleTerminal($event)}
+            onIonChange={($event: CustomEvent) => this.toggle($event, 'terminal')}
             class="ion-padding-start ion-padding-end ion-text-capitalize">
             {Object.keys(DeckdeckgoHighlightCodeTerminal).map((key: string) => {
               return (
                 <ion-select-option value={DeckdeckgoHighlightCodeTerminal[key]}>
                   {DeckdeckgoHighlightCodeTerminal[key].replace(/^\w/, (c) => c.toUpperCase())}
+                </ion-select-option>
+              );
+            })}
+          </ion-select>
+        </ion-item>
+
+        <ion-item-divider class="ion-padding-top">
+          <ion-label>Theme</ion-label>
+        </ion-item-divider>
+
+        <ion-item class="select">
+          <ion-label>Theme</ion-label>
+
+          <ion-select
+            value={this.theme}
+            placeholder="Select a theme"
+            disabled={this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON}
+            onIonChange={($event: CustomEvent) => this.toggle($event, 'theme')}
+            class="ion-padding-start ion-padding-end ion-text-capitalize">
+            {Object.keys(DeckdeckgoHighlightCodeCarbonTheme).map((key: string) => {
+              return (
+                <ion-select-option value={DeckdeckgoHighlightCodeCarbonTheme[key]}>
+                  {DeckdeckgoHighlightCodeCarbonTheme[key].replace(/^\w/, (c) => c.toUpperCase())}
                 </ion-select-option>
               );
             })}

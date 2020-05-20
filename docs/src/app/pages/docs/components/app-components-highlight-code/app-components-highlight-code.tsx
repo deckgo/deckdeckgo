@@ -1,6 +1,6 @@
 import {Component, Element, h, State} from '@stencil/core';
 
-import {DeckdeckgoCarbonTheme} from '@deckdeckgo/highlight-code';
+import {DeckdeckgoHighlightCodeCarbonTheme} from '@deckdeckgo/highlight-code';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -11,7 +11,7 @@ export class AppComponentsHighlightCode {
   @Element() el: HTMLElement;
 
   @State()
-  private theme: DeckdeckgoCarbonTheme = DeckdeckgoCarbonTheme.DRACULA;
+  private theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
   selectTheme!: HTMLSelectElement;
 
@@ -103,12 +103,14 @@ export class AppComponentsHighlightCode {
               style={{color: 'black'}}
               ref={(el) => (this.selectTheme = el as HTMLSelectElement)}
               onChange={() => {
-                this.theme = this.selectTheme.value as DeckdeckgoCarbonTheme;
+                this.theme = this.selectTheme.value as DeckdeckgoHighlightCodeCarbonTheme;
               }}>
-              {Object.keys(DeckdeckgoCarbonTheme).map((key: DeckdeckgoCarbonTheme) => {
+              {Object.keys(DeckdeckgoHighlightCodeCarbonTheme).map((key: DeckdeckgoHighlightCodeCarbonTheme) => {
                 return (
-                  <option selected={DeckdeckgoCarbonTheme[key] === DeckdeckgoCarbonTheme.DRACULA} value={DeckdeckgoCarbonTheme[key]}>
-                    {DeckdeckgoCarbonTheme[key].replace(/^\w/, (c) => c.toUpperCase())}
+                  <option
+                    selected={DeckdeckgoHighlightCodeCarbonTheme[key] === DeckdeckgoHighlightCodeCarbonTheme.DRACULA}
+                    value={DeckdeckgoHighlightCodeCarbonTheme[key]}>
+                    {DeckdeckgoHighlightCodeCarbonTheme[key].replace(/^\w/, (c) => c.toUpperCase())}
                   </option>
                 );
               })}

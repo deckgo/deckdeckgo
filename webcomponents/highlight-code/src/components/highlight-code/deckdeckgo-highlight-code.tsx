@@ -8,7 +8,7 @@ import {loadTheme} from '../../utils/themes-loader.utils';
 
 import {CarbonThemeStyle} from '../styles/deckdeckgo-highlight-code-theme';
 
-import {DeckdeckgoCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
+import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
 import {DeckdeckgoHighlightCodeAnchor} from '../../declarations/deckdeckgo-highlight-code-anchor';
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
 
@@ -38,7 +38,7 @@ export class DeckdeckgoHighlightCode {
 
   @Prop() editable: boolean = false;
 
-  @Prop({reflectToAttr: true}) theme: DeckdeckgoCarbonTheme = DeckdeckgoCarbonTheme.DRACULA;
+  @Prop({reflectToAttr: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
   @State() editing: boolean = false;
 
