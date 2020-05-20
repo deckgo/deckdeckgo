@@ -4,9 +4,12 @@ import Prism from 'prismjs';
 
 import {injectCSS} from '@deckdeckgo/utils';
 
-import {loadTheme, Theme} from '../themes/deckdeckgo-highlight-code-theme';
+import {loadTheme} from '../../utils/themes-loader.utils';
 
-import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
+import {CarbonThemeStyle} from '../styles/deckdeckgo-highlight-code-theme';
+
+import {DeckdeckgoCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
+import {DeckdeckgoHighlightCodeAnchor} from '../../declarations/deckdeckgo-highlight-code-anchor';
 
 @Component({
   tag: 'deckgo-highlight-code',
@@ -34,36 +37,7 @@ export class DeckdeckgoHighlightCode {
 
   @Prop() editable: boolean = false;
 
-  @Prop({reflectToAttr: true}) theme:
-    | '3024-night'
-    | 'a11y-dark'
-    | 'blackboard'
-    | 'base16-dark'
-    | 'base16-light'
-    | 'cobalt'
-    | 'dracula'
-    | 'duotone'
-    | 'hopscotch'
-    | 'lucario'
-    | 'material'
-    | 'monokai'
-    | 'night-owl'
-    | 'nord'
-    | 'oceanic-next'
-    | 'one-light'
-    | 'one-dark'
-    | 'panda'
-    | 'paraiso'
-    | 'seti'
-    | 'shades-of-purple'
-    | 'solarized-dark'
-    | 'solarized-light'
-    | 'synthwave'
-    | 'twilight'
-    | 'verminal'
-    | 'vscode'
-    | 'yeti'
-    | 'zenburn' = 'dracula';
+  @Prop({reflectToAttr: true}) theme: DeckdeckgoCarbonTheme = 'dracula';
 
   @State() editing: boolean = false;
 
@@ -607,7 +581,7 @@ export class DeckdeckgoHighlightCode {
     }
 
     return [
-      <Theme style={this.themeStyle} />,
+      <CarbonThemeStyle style={this.themeStyle} />,
       <div class="carbon">
         {this.renderCarbonCircle('red')}
         {this.renderCarbonCircle('yellow')}
