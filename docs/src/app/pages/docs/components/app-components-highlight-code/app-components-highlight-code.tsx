@@ -1,4 +1,6 @@
-import {Component, Element, h} from '@stencil/core';
+import {Component, Element, h, State} from '@stencil/core';
+
+import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
 
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
@@ -7,6 +9,11 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 })
 export class AppComponentsHighlightCode {
   @Element() el: HTMLElement;
+
+  @State()
+  private theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
+
+  selectTheme!: HTMLSelectElement;
 
   async componentDidLoad() {
     await DeckdeckgoDocsUtils.reloadCode(this.el);
@@ -84,15 +91,36 @@ export class AppComponentsHighlightCode {
           </ul>
           <h2 id="app-components-highlight-code-showcase">Showcase</h2>
           <p>Carbon terminal card:</p>
-          <deckgo-highlight-code language="java">
-            <code slot="code">
-              public static void main(String args[]) &#123;{'\n'} System.out.println(&quot;Hello World&quot;);{'\n'}&#125;
-            </code>
-          </deckgo-highlight-code>
+          <div>
+            <deckgo-highlight-code theme={this.theme}>
+              <code slot="code">console.log('Hello World');</code>
+            </deckgo-highlight-code>
+          </div>
+
+          <div class="ion-margin-bottom">
+            <small>Theme:&nbsp;</small>
+            <select
+              style={{color: 'black'}}
+              ref={(el) => (this.selectTheme = el as HTMLSelectElement)}
+              onChange={() => {
+                this.theme = this.selectTheme.value as DeckdeckgoHighlightCodeCarbonTheme;
+              }}>
+              {Object.keys(DeckdeckgoHighlightCodeCarbonTheme).map((key: DeckdeckgoHighlightCodeCarbonTheme) => {
+                return (
+                  <option
+                    selected={DeckdeckgoHighlightCodeCarbonTheme[key] === DeckdeckgoHighlightCodeCarbonTheme.DRACULA}
+                    value={DeckdeckgoHighlightCodeCarbonTheme[key]}>
+                    {DeckdeckgoHighlightCodeCarbonTheme[key].replace(/^\w/, (c) => c.toUpperCase())}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
           <div class="ion-padding-top">Ubuntu terminal card:</div>
 
           <div>
-            <deckgo-highlight-code terminal="ubuntu">
+            <deckgo-highlight-code terminal={DeckdeckgoHighlightCodeTerminal.UBUNTU}>
               <code slot="code">console.log('Hello World');</code>
               <span slot="user">david@ubuntu:~</span>
             </deckgo-highlight-code>
@@ -101,7 +129,7 @@ export class AppComponentsHighlightCode {
           <div class="ion-padding-top">No terminal:</div>
 
           <div>
-            <deckgo-highlight-code terminal="none" style={{'--deckgo-highlight-code-padding': '0'}}>
+            <deckgo-highlight-code terminal={DeckdeckgoHighlightCodeTerminal.NONE} style={{'--deckgo-highlight-code-padding': '0'}}>
               <code slot="code">console.log('Hello World');</code>
             </deckgo-highlight-code>
           </div>
@@ -321,6 +349,28 @@ export class AppComponentsHighlightCode {
                 </td>
                 <td>
                   <code>carbon</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>theme</code>
+                </td>
+                <td>
+                  <code>theme</code>
+                </td>
+                <td>
+                  The theme of the selected <code>terminal</code> (applied only in case of <code>carbon</code>)
+                </td>
+                <td>
+                  <code>3024-night</code>, <code>a11y-dark</code>, <code>blackboard</code>, <code>base16-dark</code>, <code>base16-light</code>,{' '}
+                  <code>cobalt</code>, <code>dracula</code>, <code>duotone</code>, <code>hopscotch</code>, <code>lucario</code>, <code>material</code>,{' '}
+                  <code>monokai</code>, <code>night-owl</code>, <code>nord</code>, <code>oceanic-next</code>, <code>one-light</code>, <code>one-dark</code>,{' '}
+                  <code>panda</code>, <code>paraiso</code>, <code>seti</code>, <code>shades-of-purple</code>, <code>solarized-dark</code>,{' '}
+                  <code>solarized-light</code>, <code>synthwave</code>, <code>twilight</code>, <code>verminal</code>, <code>vscode</code>, <code>yeti</code> and{' '}
+                  <code>zenburn</code>
+                </td>
+                <td>
+                  <code>dracula</code>
                 </td>
               </tr>
             </tbody>

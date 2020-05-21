@@ -239,6 +239,7 @@
     {"src": "/icons/align-center.svg", "ariaLabel": "Align center"},
     {"src": "/icons/align-left.svg", "ariaLabel": "Align left"},
     {"src": "/icons/align-right.svg", "ariaLabel": "Align right"},
-    {"src": "/icons/math.svg", "ariaLabel": "Math"}
+    {"src": "/icons/math.svg", "ariaLabel": "Math"},
+    {"src": "/icons/ionicons/color-wand.svg", "ariaLabel": "Transform element"}
   ]
 }

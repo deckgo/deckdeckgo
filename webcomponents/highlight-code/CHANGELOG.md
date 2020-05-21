@@ -1,6 +1,12 @@
+# 1.1.0 (2020-05-21)
+
+### Features
+
+- themes for the carbon terminals
+
 # 1.0.5 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 

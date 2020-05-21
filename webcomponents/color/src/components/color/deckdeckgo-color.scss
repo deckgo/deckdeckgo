@@ -22,22 +22,22 @@ div.color-container {
     padding: 0;
 
     outline: var(--deckgo-button-outline, none);
-    border: var(--deckgo-button-border, none);
   }
 
   button {
     cursor: pointer;
 
+    border: 1px solid var(--deckdeckgo-palette-border-color, var(--deckdeckgo-palette-color-hex));
     border-radius: var(--deckgo-button-border-radius, 50%);
 
     background: var(--deckdeckgo-palette-color-hex);
 
     &.selected {
-      box-shadow: 0 0 8px 4px rgba(var(--deckdeckgo-palette-color-rgb), 0.4);
+      box-shadow: 0 0 8px 4px rgba(var(--deckdeckgo-palette-box-shadow-color, var(--deckdeckgo-palette-color-rgb)), 0.4);
     }
 
     &:not(.selected):hover {
-      box-shadow: 0 0 8px 2px rgba(var(--deckdeckgo-palette-color-rgb), 0.4);
+      box-shadow: 0 0 8px 2px rgba(var(--deckdeckgo-palette-box-shadow-color, var(--deckdeckgo-palette-color-rgb)), 0.4);
     }
   }
 
@@ -64,6 +64,10 @@ div.color-container {
 
       outline: var(--deckgo-button-more-outline, none);
       border: var(--deckgo-button-more-border, none);
+
+      &.selected {
+        border: 1px solid var(--deckdeckgo-palette-color-hex, var(--deckgo-button-more-border));
+      }
 
       background: var(--deckgo-button-more-background, transparent);
     }

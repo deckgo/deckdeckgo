@@ -4,7 +4,13 @@ import Prism from 'prismjs';
 
 import {injectCSS} from '@deckdeckgo/utils';
 
-import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
+import {loadTheme} from '../../utils/themes-loader.utils';
+
+import {CarbonThemeStyle} from '../styles/deckdeckgo-highlight-code-theme';
+
+import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
+import {DeckdeckgoHighlightCodeAnchor} from '../../declarations/deckdeckgo-highlight-code-anchor';
+import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
 
 @Component({
   tag: 'deckgo-highlight-code',
@@ -28,9 +34,11 @@ export class DeckdeckgoHighlightCode {
   @Prop({reflectToAttr: true}) highlightLines: string;
   @Prop({reflectToAttr: true}) lineNumbers: boolean = false;
 
-  @Prop({reflectToAttr: true}) terminal: 'carbon' | 'ubuntu' | 'none' = 'carbon';
+  @Prop({reflectToAttr: true}) terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
 
   @Prop() editable: boolean = false;
+
+  @Prop({reflectToAttr: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
   @State() editing: boolean = false;
 
@@ -38,8 +46,13 @@ export class DeckdeckgoHighlightCode {
 
   private fetchOrParseAfterUpdate: boolean = false;
 
+  @State()
+  private themeStyle: string | undefined;
+
   async componentWillLoad() {
     await this.loadGoogleFonts();
+
+    await this.loadTheme();
   }
 
   async componentDidLoad() {
@@ -57,6 +70,17 @@ export class DeckdeckgoHighlightCode {
       await this.fetchOrParse();
       this.fetchOrParseAfterUpdate = false;
     }
+  }
+
+  @Watch('theme')
+  async loadTheme() {
+    if (this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON || !this.theme) {
+      this.themeStyle = undefined;
+      return;
+    }
+
+    const {theme} = await loadTheme(this.theme);
+    this.themeStyle = theme;
   }
 
   @Listen('prismLanguageLoaded', {target: 'document'})
@@ -152,7 +176,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   private async loadGoogleFonts() {
-    if (this.terminal === 'ubuntu') {
+    if (this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU) {
       await injectCSS('google-fonts-ubuntu', 'https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Mono&display=swap');
     }
   }
@@ -530,13 +554,18 @@ export class DeckdeckgoHighlightCode {
   }
 
   render() {
+    const hostClass = {
+      'deckgo-highlight-code-edit': this.editing,
+      'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
+      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU,
+    };
+
+    if (this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON) {
+      hostClass[`deckgo-highlight-code-theme-${this.theme}`] = true;
+    }
+
     return (
-      <Host
-        class={{
-          'deckgo-highlight-code-edit': this.editing,
-          'deckgo-highlight-code-carbon': this.terminal === 'carbon',
-          'deckgo-highlight-code-ubuntu': this.terminal === 'ubuntu',
-        }}>
+      <Host class={hostClass}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
         <div class="deckgo-highlight-code-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
@@ -548,17 +577,18 @@ export class DeckdeckgoHighlightCode {
   }
 
   private renderCarbon() {
-    if (this.terminal !== 'carbon') {
+    if (this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON) {
       return undefined;
     }
 
-    return (
+    return [
+      <CarbonThemeStyle style={this.themeStyle} />,
       <div class="carbon">
         {this.renderCarbonCircle('red')}
         {this.renderCarbonCircle('yellow')}
         {this.renderCarbonCircle('green')}
-      </div>
-    );
+      </div>,
+    ];
   }
 
   private renderCarbonCircle(color: 'red' | 'yellow' | 'green') {
@@ -566,7 +596,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   private renderUbuntu() {
-    if (this.terminal !== 'ubuntu') {
+    if (this.terminal !== DeckdeckgoHighlightCodeTerminal.UBUNTU) {
       return undefined;
     }
 

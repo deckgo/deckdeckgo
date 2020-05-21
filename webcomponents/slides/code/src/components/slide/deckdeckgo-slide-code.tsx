@@ -3,15 +3,17 @@ import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} f
 import {isMobile} from '@deckdeckgo/utils';
 import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
+import {DeckdeckgoHighlightCodeTerminal, DeckdeckgoHighlightCodeCarbonTheme} from '@deckdeckgo/highlight-code';
+
 enum DeckdeckgoSlideCodeAction {
   SWIPE,
-  SCROLL
+  SCROLL,
 }
 
 @Component({
   tag: 'deckgo-slide-code',
   styleUrl: 'deckdeckgo-slide-code.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
@@ -35,6 +37,9 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   @Prop({reflectToAttr: true}) customActions: boolean = false;
   @Prop({reflectToAttr: true}) customBackground: boolean = false;
+
+  @Prop() terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
+  @Prop() theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
   componentWillLoad() {
     this.mobile = isMobile();
@@ -233,6 +238,8 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
               anchor={this.anchor}
               anchorZoom={this.anchorZoom}
               hideAnchor={this.hideAnchor}
+              terminal={this.terminal}
+              theme={this.theme}
               language={this.language}></deckgo-highlight-code>
           </div>
           <slot name="code"></slot>

@@ -7,7 +7,7 @@ import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../../
 @Component({
   tag: 'deckgo-color',
   styleUrl: 'deckdeckgo-color.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoColor {
   @Element() el: HTMLElement;
@@ -19,6 +19,8 @@ export class DeckdeckgoColor {
 
   @Prop() colorHex: string;
   @Prop() colorRgb: string;
+
+  @Prop() label: boolean = true;
 
   @State()
   private selectedColorHex: string;
@@ -32,6 +34,9 @@ export class DeckdeckgoColor {
   @State()
   private selectedCustomColorRgb: string;
 
+  @State()
+  private selectedColorLabel: string;
+
   @Event()
   colorChange: EventEmitter<DeckdeckgoPaletteColor>;
 
@@ -40,6 +45,7 @@ export class DeckdeckgoColor {
   constructor() {
     this.debounceInitSelectedColorPalette = debounce(async () => {
       this.selectedColorPalette = await this.initSelectedColorPalette();
+      await this.initSelectedColorPaletteAlt();
 
       this.selectedCustomColorRgb = !this.selectedColorPalette ? this.selectedColorRgb : undefined;
     }, 150);
@@ -50,6 +56,7 @@ export class DeckdeckgoColor {
     this.selectedColorRgb = this.colorRgb ? this.colorRgb : await this.hexToRgb(this.colorHex);
 
     this.selectedColorPalette = await this.initSelectedColorPalette();
+    await this.initSelectedColorPaletteAlt();
 
     if (!this.selectedColorPalette) {
       this.selectedCustomColorRgb = this.selectedColorRgb;
@@ -91,7 +98,7 @@ export class DeckdeckgoColor {
   }
 
   private pickColor(paletteColor: DeckdeckgoPalette): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (!this.palette || this.palette.length <= 0) {
         resolve();
         return;
@@ -103,6 +110,8 @@ export class DeckdeckgoColor {
       this.colorChange.emit(paletteColor.color);
 
       this.selectedColorPalette = true;
+
+      await this.initSelectedColorPaletteAlt();
 
       this.selectedCustomColorRgb = undefined;
 
@@ -151,7 +160,7 @@ export class DeckdeckgoColor {
 
     const color: DeckdeckgoPaletteColor = {
       hex: selectedColor,
-      rgb: rgb
+      rgb: rgb,
     };
 
     this.applyColorHexChange(selectedColor, rgb);
@@ -212,6 +221,19 @@ export class DeckdeckgoColor {
     });
   }
 
+  private async initSelectedColorPaletteAlt(): Promise<void> {
+    if (!this.palette || this.palette.length <= 0) {
+      this.selectedColorLabel = undefined;
+      return undefined;
+    }
+
+    const palette: DeckdeckgoPalette = this.palette.find((element: DeckdeckgoPalette) => {
+      return this.isHexColorSelected(element) || this.isRgbColorSelected(element);
+    });
+
+    this.selectedColorLabel = palette ? palette.alt : undefined;
+  }
+
   render() {
     return (
       <Host>
@@ -219,6 +241,7 @@ export class DeckdeckgoColor {
           {this.renderPalette()}
           {this.renderMore()}
         </div>
+        {this.renderLabel()}
       </Host>
     );
   }
@@ -228,8 +251,13 @@ export class DeckdeckgoColor {
       return this.palette.map((element: DeckdeckgoPalette) => {
         const style = {
           '--deckdeckgo-palette-color-hex': `${element.color.hex}`,
-          '--deckdeckgo-palette-color-rgb': `${element.color.rgb}`
+          '--deckdeckgo-palette-color-rgb': `${element.color.rgb}`,
         };
+
+        if (element.display) {
+          style['--deckdeckgo-palette-border-color'] = element.display.borderColor;
+          style['--deckdeckgo-palette-box-shadow-color'] = element.display.boxShadowColor;
+        }
 
         return (
           <button
@@ -271,5 +299,21 @@ export class DeckdeckgoColor {
     } else {
       return undefined;
     }
+  }
+
+  private renderLabel() {
+    if (!this.label) {
+      return undefined;
+    }
+
+    return (
+      <deckgo-color-label
+        colorHex={this.selectedColorHex}
+        colorRgb={this.selectedColorRgb}
+        colorLabel={this.selectedColorLabel}
+        customColorRgb={this.selectedCustomColorRgb}>
+        <slot name="custom-label">Custom</slot>
+      </deckgo-color-label>
+    );
   }
 }

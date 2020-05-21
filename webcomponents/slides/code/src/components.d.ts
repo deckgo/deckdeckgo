@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal, } from "@deckdeckgo/highlight-code";
 export namespace Components {
     interface DeckgoSlideCode {
         "afterSwipe": () => Promise<void>;
@@ -19,6 +20,8 @@ export namespace Components {
         "lazyLoadContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
         "src": string;
+        "terminal": DeckdeckgoHighlightCodeTerminal;
+        "theme": DeckdeckgoHighlightCodeCarbonTheme;
     }
 }
 declare global {
@@ -43,6 +46,8 @@ declare namespace LocalJSX {
         "onScrolling"?: (event: CustomEvent<boolean>) => void;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
         "src"?: string;
+        "terminal"?: DeckdeckgoHighlightCodeTerminal;
+        "theme"?: DeckdeckgoHighlightCodeCarbonTheme;
     }
     interface IntrinsicElements {
         "deckgo-slide-code": DeckgoSlideCode;

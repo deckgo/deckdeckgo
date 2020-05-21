@@ -115,6 +115,13 @@ workbox.routing.registerRoute(
   })
 );
 
+workbox.routing.registerRoute(
+  /^(?=.*deckdeckgo\.com\/editor\/).*/,
+  new workbox.strategies.NetworkFirst({
+    cacheName: 'editor',
+  })
+);
+
 // the precache manifest will be injected into the following line
 self.workbox.precaching.precacheAndRoute([], {
   // Ignore all URL parameters otherwise /editor/:id won't be cached and therefore not accessible directly offline

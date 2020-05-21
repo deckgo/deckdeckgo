@@ -11,18 +11,18 @@ enum ImageSize {
   SMALL = '25%',
   MEDIUM = '50%',
   LARGE = '75%',
-  ORIGINAL = '100%'
+  ORIGINAL = '100%',
 }
 
 enum ImageAlignment {
   START = 'flex-start',
   CENTER = 'center',
-  END = 'flex-end'
+  END = 'flex-end',
 }
 
 @Component({
   tag: 'app-image',
-  styleUrl: 'app-image.scss'
+  styleUrl: 'app-image.scss',
 })
 export class AppImage {
   @Element() el: HTMLElement;
@@ -148,7 +148,7 @@ export class AppImage {
 
   private async selectAction(action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile) {
     const data: ImageAction = {
-      action: action
+      action: action,
     };
 
     if (image) {
@@ -174,7 +174,7 @@ export class AppImage {
   private async presentHistoryInfo() {
     const alert: HTMLIonAlertElement = await alertController.create({
       message: 'The editor keeps track of the last 10 images you would have use in any of your presentations.<br/><br/>Select one to add it again quickly.',
-      buttons: ['Ok']
+      buttons: ['Ok'],
     });
 
     return await alert.present();
@@ -351,7 +351,7 @@ export class AppImage {
             <ion-select-option value={ImageSize.LARGE}>Large</ion-select-option>
             <ion-select-option value={ImageSize.ORIGINAL}>Original</ion-select-option>
           </ion-select>
-        </ion-item>
+        </ion-item>,
       ];
     }
   }
@@ -372,12 +372,14 @@ export class AppImage {
             value={this.currentImageAlignment}
             placeholder="Align the image"
             onIonChange={(e: CustomEvent) => this.toggleImageAlignment(e)}
+            interface="popover"
+            mode="md"
             class="ion-padding-start ion-padding-end">
             <ion-select-option value={ImageAlignment.START}>Start</ion-select-option>
             <ion-select-option value={ImageAlignment.CENTER}>Center</ion-select-option>
             <ion-select-option value={ImageAlignment.END}>End</ion-select-option>
           </ion-select>
-        </ion-item>
+        </ion-item>,
       ];
     }
   }

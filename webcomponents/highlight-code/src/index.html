@@ -31,6 +31,38 @@ public static void main(String args[]) {
 }</code>
 </deckgo-highlight-code>
 
+    <select id="themeToggler" onchange="changeTheme()">
+      <option value="3024-night">3024-night</option>
+      <option value="a11y-dark">a11y-dark</option>
+      <option value="blackboard">blackboard</option>
+      <option value="base16-dark">base16-dark</option>
+      <option value="base16-light">base16-light</option>
+      <option value="cobalt">cobalt</option>
+      <option value="dracula" selected="selected">dracula</option>
+      <option value="duotone">duotone</option>
+      <option value="hopscotch">hopscotch</option>
+      <option value="lucario">lucario</option>
+      <option value="material">material</option>
+      <option value="monokai">monokai</option>
+      <option value="night-owl">night-owl</option>
+      <option value="nord">nord</option>
+      <option value="oceanic-next">oceanic-next</option>
+      <option value="one-light">one-light</option>
+      <option value="one-dark">one-dark</option>
+      <option value="panda">panda</option>
+      <option value="paraiso">paraiso</option>
+      <option value="seti">seti</option>
+      <option value="shades-of-purple">shades-of-purple</option>
+      <option value="solarized-dark">solarized-dark</option>
+      <option value="solarized-light">solarized-light</option>
+      <option value="synthwave">synthwave</option>
+      <option value="twilight">twilight</option>
+      <option value="verminal">verminal</option>
+      <option value="vscode">vscode</option>
+      <option value="yeti">yeti</option>
+      <option value="zenburn">zenburn</option>
+    </select>
+
     <script type="text/javascript">
       function toggleLineNumbers() {
         const elem = document.getElementsByTagName('deckgo-highlight-code');
@@ -43,6 +75,16 @@ public static void main(String args[]) {
         const elem = document.getElementsByTagName('deckgo-highlight-code');
         if (elem && elem.length > 0) {
           elem[0].terminal = elem[0].terminal === 'carbon' ? 'none' : 'carbon';
+        }
+      }
+
+      function changeTheme() {
+        const toggler = document.getElementById('themeToggler');
+        const theme = toggler.value;
+
+        const elem = document.getElementsByTagName('deckgo-highlight-code');
+        if (elem && elem.length > 0) {
+          elem[0].theme = theme;
         }
       }
     </script>

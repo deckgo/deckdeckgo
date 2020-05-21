@@ -11,12 +11,12 @@ enum CodeColorType {
   KEYWORD,
   FUNCTION,
   REGEX,
-  LINE_NUMBERS
+  LINE_NUMBERS,
 }
 
 @Component({
   tag: 'app-color-code',
-  styleUrl: 'app-color-code.scss'
+  styleUrl: 'app-color-code.scss',
 })
 export class AppColorCode {
   @Element() el: HTMLElement;
@@ -309,6 +309,8 @@ export class AppColorCode {
             value={this.codeColorType}
             placeholder="Select a category"
             onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
+            interface="popover"
+            mode="md"
             class="ion-padding-start ion-padding-end">
             <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
             <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
@@ -323,7 +325,9 @@ export class AppColorCode {
         </ion-item>
 
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Opacity</ion-label>
+          <ion-label>
+            Opacity <small>{this.codeColorOpacity}%</small>
+          </ion-label>
         </ion-item-divider>
 
         <ion-item class="item-opacity">
@@ -370,7 +374,9 @@ export class AppColorCode {
         </ion-item>
 
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Opacity</ion-label>
+          <ion-label>
+            Opacity <small>{this.highlightColorOpacity}%</small>
+          </ion-label>
         </ion-item-divider>
 
         <ion-item class="item-opacity">
@@ -393,7 +399,7 @@ export class AppColorCode {
             <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
           </deckgo-color>
         </div>
-      </ion-list>
+      </ion-list>,
     ];
   }
 }

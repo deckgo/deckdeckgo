@@ -28,16 +28,31 @@ Moreover, per default, your code will be displayed in form of a stylish "windowe
 
 Carbon terminal card:
 
-```java
-public static void main(String args[]) {
-  System.out.println("Hello World");
-}
-```
+<div>
+    <deckgo-highlight-code theme={this.theme}>
+    <code slot="code">console.log('Hello World');</code>
+    </deckgo-highlight-code>
+</div>
+
+<div class="ion-margin-bottom">
+    <small>Theme:&nbsp;</small>
+    <select style={{color: 'black'}}
+        ref={(el) => (this.selectTheme = el as HTMLSelectElement)}
+        onChange={() => {
+          this.theme = this.selectTheme.value as DeckdeckgoHighlightCodeCarbonTheme;
+        }}>
+        {
+            Object.keys(DeckdeckgoHighlightCodeCarbonTheme).map((key: DeckdeckgoHighlightCodeCarbonTheme) => {
+              return <option selected={DeckdeckgoHighlightCodeCarbonTheme[key] === DeckdeckgoHighlightCodeCarbonTheme.DRACULA} value={DeckdeckgoHighlightCodeCarbonTheme[key]}>{DeckdeckgoHighlightCodeCarbonTheme[key].replace(/^\w/, (c) => c.toUpperCase())}</option>
+            })
+        }
+    </select>
+</div>
 
 <div class="ion-padding-top">Ubuntu terminal card:</div>
 
 <div>
-    <deckgo-highlight-code terminal="ubuntu">
+    <deckgo-highlight-code terminal={DeckdeckgoHighlightCodeTerminal.UBUNTU}>
     <code slot="code">console.log('Hello World');</code>
     <span slot="user">david@ubuntu:~</span>
     </deckgo-highlight-code>
@@ -46,7 +61,7 @@ public static void main(String args[]) {
 <div class="ion-padding-top">No terminal:</div>
 
 <div>
-    <deckgo-highlight-code terminal="none" style={{'--deckgo-highlight-code-padding': '0'}}>
+    <deckgo-highlight-code terminal={DeckdeckgoHighlightCodeTerminal.NONE} style={{'--deckgo-highlight-code-padding': '0'}}>
     <code slot="code">console.log('Hello World');</code>
     </deckgo-highlight-code>
 </div>
@@ -105,17 +120,18 @@ If you are displaying your code in an Ubuntu terminal, you could also displays a
 
 The `<deckgo-highlight-code/>` expose the following properties:
 
-| Property         | Attribute         | Description                                                                                                                                                                                      | Type                         | Default               |
-| ---------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- | --------------------- |
-| `src`            | `src`             | The web url to the source code you would like to showcase                                                                                                                                        | `string`                     |                       |
-| `anchor`         | `anchor`          | The anchor identifier which will be use to find the next anchor to scroll too using `findNextAnchor()`                                                                                           | `string`                     | `'// DeckDeckGo'`     |
-| `anchorZoom`     | `anchor-zoom`     | The anchor identifier which will be use to find the next anchor to zoom inside your code using `findNextAnchor()`                                                                                | `string`                     | `'// DeckDeckGoZoom'` |
-| `hideAnchor`     | `hide-anchor`     | Set this attribute to `false` in case you would like to actually display the anchor value too                                                                                                    | `boolean`                    | `true`                |
-| `language`       | `language`        | Define the language to be used for the syntax highlighting. The list of [supported languages](https://prismjs.com/#languages-list) is defined by [Prism.js](https://prismjs.com/#languages-list) | `string`                     | `'javascript'`        |
-| `highlightLines` | `highlight-lines` | If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with space. For example: "3,5 8,9 13,13 14,17"           | `string`                     |                       |
-| `lineNumbers`    | `line-numbers`    | Display the number of the lines of code                                                                                                                                                          | `boolean`                    | `false`               |
-| `editable`       | `editable`        | In case you would like to set the code component as being editable.                                                                                                                              | `boolean`                    | `false`               |
-| `terminal`       | `terminal`        | Present the code in a stylish "windowed" card.                                                                                                                                                   | `carbon`, `ubuntu` or `none` | `carbon`              |
+| Property         | Attribute         | Description                                                                                                                                                                                      | Type                                                                                                                                                                                                                                                                                                                                                                          | Default               |
+| ---------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| `src`            | `src`             | The web url to the source code you would like to showcase                                                                                                                                        | `string`                                                                                                                                                                                                                                                                                                                                                                      |                       |
+| `anchor`         | `anchor`          | The anchor identifier which will be use to find the next anchor to scroll too using `findNextAnchor()`                                                                                           | `string`                                                                                                                                                                                                                                                                                                                                                                      | `'// DeckDeckGo'`     |
+| `anchorZoom`     | `anchor-zoom`     | The anchor identifier which will be use to find the next anchor to zoom inside your code using `findNextAnchor()`                                                                                | `string`                                                                                                                                                                                                                                                                                                                                                                      | `'// DeckDeckGoZoom'` |
+| `hideAnchor`     | `hide-anchor`     | Set this attribute to `false` in case you would like to actually display the anchor value too                                                                                                    | `boolean`                                                                                                                                                                                                                                                                                                                                                                     | `true`                |
+| `language`       | `language`        | Define the language to be used for the syntax highlighting. The list of [supported languages](https://prismjs.com/#languages-list) is defined by [Prism.js](https://prismjs.com/#languages-list) | `string`                                                                                                                                                                                                                                                                                                                                                                      | `'javascript'`        |
+| `highlightLines` | `highlight-lines` | If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with space. For example: "3,5 8,9 13,13 14,17"           | `string`                                                                                                                                                                                                                                                                                                                                                                      |                       |
+| `lineNumbers`    | `line-numbers`    | Display the number of the lines of code                                                                                                                                                          | `boolean`                                                                                                                                                                                                                                                                                                                                                                     | `false`               |
+| `editable`       | `editable`        | In case you would like to set the code component as being editable.                                                                                                                              | `boolean`                                                                                                                                                                                                                                                                                                                                                                     | `false`               |
+| `terminal`       | `terminal`        | Present the code in a stylish "windowed" card.                                                                                                                                                   | `carbon`, `ubuntu` or `none`                                                                                                                                                                                                                                                                                                                                                  | `carbon`              |
+| `theme`          | `theme`           | The theme of the selected `terminal` (applied only in case of `carbon`)                                                                                                                          | `3024-night`, `a11y-dark`, `blackboard`, `base16-dark`, `base16-light`, `cobalt`, `dracula`, `duotone`, `hopscotch`, `lucario`, `material`, `monokai`, `night-owl`, `nord`, `oceanic-next`, `one-light`, `one-dark`, `panda`, `paraiso`, `seti`, `shades-of-purple`, `solarized-dark`, `solarized-light`, `synthwave`, `twilight`, `verminal`, `vscode`, `yeti` and `zenburn` | `dracula`             |
 
 ### Fonts
 
