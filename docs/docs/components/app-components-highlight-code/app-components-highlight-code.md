@@ -52,7 +52,7 @@ Carbon terminal card:
 <div class="ion-padding-top">Ubuntu terminal card:</div>
 
 <div>
-    <deckgo-highlight-code terminal="ubuntu">
+    <deckgo-highlight-code terminal={DeckdeckgoHighlightCodeTerminal.UBUNTU}>
     <code slot="code">console.log('Hello World');</code>
     <span slot="user">david@ubuntu:~</span>
     </deckgo-highlight-code>
@@ -61,7 +61,7 @@ Carbon terminal card:
 <div class="ion-padding-top">No terminal:</div>
 
 <div>
-    <deckgo-highlight-code terminal="none" style={{'--deckgo-highlight-code-padding': '0'}}>
+    <deckgo-highlight-code terminal={DeckdeckgoHighlightCodeTerminal.NONE} style={{'--deckgo-highlight-code-padding': '0'}}>
     <code slot="code">console.log('Hello World');</code>
     </deckgo-highlight-code>
 </div>

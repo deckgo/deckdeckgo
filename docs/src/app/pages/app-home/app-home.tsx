@@ -1,8 +1,10 @@
 import {Component, h} from '@stencil/core';
 
+import {DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
+
 @Component({
   tag: 'app-home',
-  styleUrl: 'app-home.scss'
+  styleUrl: 'app-home.scss',
 })
 export class AppHome {
   render() {
@@ -51,7 +53,7 @@ export class AppHome {
           <section class="cta ion-text-center ion-padding">
             <div class="cta__primary">
               <h2>Get started now 🔥</h2>
-              <deckgo-highlight-code class="ion-padding" terminal="none">
+              <deckgo-highlight-code class="ion-padding" terminal={DeckdeckgoHighlightCodeTerminal.NONE}>
                 <code slot="code">$ npm init deckdeckgo</code>
               </deckgo-highlight-code>
             </div>
@@ -91,7 +93,7 @@ export class AppHome {
         </main>
 
         <app-footer start={true}></app-footer>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }
