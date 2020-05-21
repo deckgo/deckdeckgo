@@ -1,6 +1,12 @@
+# 1.1.0 (2020-05-21)
+
+### Features
+
+- add properties `terminal` and `theme` as in `@deckdeckgo/highlight-code`
+
 # 1.0.1 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 

@@ -10,6 +10,10 @@
 
 - highlight-code: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
+### Web Components: Templates
+
+- slide-code: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/code/CHANGELOG.md))
+
 <a name="1.2.0"></a>
 
 # [1.2.0](https://github.com/deckgo/deckdeckgo/compare/v1.1.0...v1.2.0) (2020-07-15)
