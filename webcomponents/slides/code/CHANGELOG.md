@@ -1,3 +1,9 @@
+# 1.1.1 (2020-05-21)
+
+### Fix
+
+- container height (overflow over title)
+
 # 1.1.0 (2020-05-21)
 
 ### Features

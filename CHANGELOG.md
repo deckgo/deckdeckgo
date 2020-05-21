@@ -12,7 +12,7 @@
 
 ### Web Components: Templates
 
-- slide-code: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/code/CHANGELOG.md))
+- slide-code: v1.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/code/CHANGELOG.md))
 
 <a name="1.2.0"></a>
 
