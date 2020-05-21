@@ -30,3 +30,13 @@ ion-popover.popover-menu {
 ion-popover.info {
   --min-width: 300px;
 }
+
+ion-popover.select-popover {
+  --backdrop-opacity: 0;
+
+  ion-select-popover {
+    ion-item {
+      --border-color: transparent;
+    }
+  }
+}

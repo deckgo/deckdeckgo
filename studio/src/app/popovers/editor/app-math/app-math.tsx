@@ -139,6 +139,8 @@ export class AppMath {
             value={this.currentFontSize}
             placeholder="Select a font size"
             onIonChange={($event: CustomEvent) => this.toggleFontSize($event)}
+            interface="popover"
+            mode="md"
             class="ion-padding-start ion-padding-end">
             <ion-select-option value={MathFontSize.VERY_SMALL}>Very small</ion-select-option>
             <ion-select-option value={MathFontSize.SMALL}>Small</ion-select-option>

@@ -309,6 +309,8 @@ export class AppColorCode {
             value={this.codeColorType}
             placeholder="Select a category"
             onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
+            interface="popover"
+            mode="md"
             class="ion-padding-start ion-padding-end">
             <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
             <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>

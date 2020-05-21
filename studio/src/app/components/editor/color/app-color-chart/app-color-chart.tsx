@@ -184,6 +184,8 @@ export class AppColorDeckSlide {
           value={this.applyColorType}
           placeholder="Apply color to"
           onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
+          interface="popover"
+          mode="md"
           class="ion-padding-start ion-padding-end">
           {this.renderColorOptions()}
         </ion-select>
@@ -201,6 +203,8 @@ export class AppColorDeckSlide {
           placeholder="Series index"
           disabled={this.applyColorType !== ApplyColorType.FILL && this.applyColorType !== ApplyColorType.STROKE}
           onIonChange={(e: CustomEvent) => this.selectColorIndex(e)}
+          interface="popover"
+          mode="md"
           class="ion-padding-start ion-padding-end">
           {this.renderChartIndexes()}
         </ion-select>
