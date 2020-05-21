@@ -3,11 +3,11 @@ import {Component, Element, Prop, h, EventEmitter, State} from '@stencil/core';
 enum ImageMode {
   COVER = 'cover',
   CIRCLE = 'circle',
-  NONE = 'none'
+  NONE = 'none',
 }
 
 @Component({
-  tag: 'app-edit-slide-author'
+  tag: 'app-edit-slide-author',
 })
 export class AppEditSlideAuthor {
   @Element() el: HTMLElement;
@@ -77,12 +77,14 @@ export class AppEditSlideAuthor {
           value={this.currentImageMode}
           placeholder="Select a mode to display the image"
           onIonChange={(e: CustomEvent) => this.toggleImageMode(e)}
+          interface="popover"
+          mode="md"
           class="ion-padding-start ion-padding-end">
           <ion-select-option value={ImageMode.COVER}>Cover</ion-select-option>
           <ion-select-option value={ImageMode.CIRCLE}>Circle</ion-select-option>
           <ion-select-option value={ImageMode.NONE}>None</ion-select-option>
         </ion-select>
-      </ion-item>
+      </ion-item>,
     ];
   }
 }

@@ -240,6 +240,8 @@ export class AppCode {
             value={this.currentFontSize}
             placeholder="Select a font size"
             onIonChange={($event: CustomEvent) => this.toggleFontSize($event)}
+            interface="popover"
+            mode="md"
             class="ion-padding-start ion-padding-end">
             <ion-select-option value={CodeFontSize.VERY_SMALL}>Very small</ion-select-option>
             <ion-select-option value={CodeFontSize.SMALL}>Small</ion-select-option>
@@ -260,6 +262,8 @@ export class AppCode {
             value={this.terminal}
             placeholder="Select a terminal"
             onIonChange={($event: CustomEvent) => this.toggle($event, 'terminal')}
+            interface="popover"
+            mode="md"
             class="ion-padding-start ion-padding-end ion-text-capitalize">
             {Object.keys(DeckdeckgoHighlightCodeTerminal).map((key: string) => {
               return (
@@ -283,6 +287,8 @@ export class AppCode {
             placeholder="Select a theme"
             disabled={this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON}
             onIonChange={($event: CustomEvent) => this.toggle($event, 'theme')}
+            interface="popover"
+            mode="md"
             class="ion-padding-start ion-padding-end ion-text-capitalize">
             {Object.keys(DeckdeckgoHighlightCodeCarbonTheme).map((key: string) => {
               return (
